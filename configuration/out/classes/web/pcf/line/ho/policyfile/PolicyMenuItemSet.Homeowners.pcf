@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <MenuItemSet
+    id="PolicyMenuItemSet"
+    mode="Homeowners">
+    <Require
+      name="period"
+      type="PolicyPeriod"/>
+    <Require
+      name="asOfDate"
+      type="DateTime"/>
+    <MenuItem
+      action="PolicyFile_PolicyInfo.go(period, asOfDate)"
+      id="PolicyMenuItemSet_PolicyInfo"
+      label="displaykey.Web.PolicyFile.PolicyInfo"/>
+    <MenuItem
+      action="PolicyFileDwellingHOE.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Dwelling"
+      label="displaykey.Web.PolicyFile.Dwelling"/>
+    <MenuItem
+      action="PolicyFileDwellingConstructionHOE.go(period, asOfDate)"
+      id="PolicyMenuItemSet_DwellingConstruction"
+      label="displaykey.Web.PolicyFile.DwellingConstruction"/>
+    <MenuItem
+      action="PolicyFileHomeownersCoveragesHOE.go(period, asOfDate)"
+      id="PolicyMenuItemSet_HomeownersCoverages"
+      label="displaykey.Web.PolicyFile.Coverages"/>
+    <MenuItem
+      action="PolicyFile_Pricing.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Pricing"
+      label="displaykey.Web.PolicyFile.Pricing"/>
+    <MenuItem
+      action="PolicyFileFormsHOE.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Endorsements"
+      label="displaykey.Web.PolicyFile.Endorsements"/>
+  </MenuItemSet>
+</PCF>

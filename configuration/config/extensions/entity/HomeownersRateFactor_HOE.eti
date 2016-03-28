@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel" 
+  autoSplit="false"
+  desc="A rate factor is a risk characteristic and its associated numeric value which might have an impact on premium. As used here rate factors are applied to base premium rather than rates. A common example of Rate Factors are the components of IRPM (individual risk premium modifier)."
+  effDatedBranchType="PolicyPeriod"
+  entity="HomeownersRateFactor_HOE"
+  loadable="false" 
+  exportable="true"
+  extendable="true"
+  final="false"
+  table="horatefactor_hoe"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.ho.HomeownersRateFactorAdapter_HOE"
+    name="RateFactor"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.ho.HomeownersRateFactorMatcher_HOE"/>
+  <foreignkey
+    fkentity="HomeownersModifier_HOE"
+    name="HomeownersModifier"
+    nullok="false"/>
+</entity>

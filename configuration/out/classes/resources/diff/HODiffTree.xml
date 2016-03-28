@@ -1,0 +1,82 @@
+<DiffTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/difftree.xsd">
+  <Section label="displaykey.Web.Differences.LOB.Common.PolicyInfo" sortorder="1">
+    <RootProperties includefromtype="PolicyPeriod" sortorder="1"/>
+    <RootProperties includefromtype="EffectiveDatedFields" sortorder="2">
+      <PropertyDisplay propertyname="OfferingCode" value="ENTITY.getOfferingName(VALUE)"/>
+    </RootProperties>
+    <RootEntity type="PolicyPriNamedInsured" label="displaykey.Web.Differences.LOB.Common.PolicyPriNamedInsured(ENTITY.DisplayName)" sortorder="3"/>
+    <RootEntity type="PolicyAddlNamedInsured" label="displaykey.Web.Differences.LOB.Common.PolicyAddlNamedInsured(ENTITY.DisplayName)" sortorder="4">
+      <Properties includefromtype="PolicyAddlNamedInsured" parentpath="ENTITY">
+          <PropertyDisplay propertyname="DescOfInterest_HOE" label="displaykey.Web.Differences.LOB.HO.DescriptionOfInterest"/>
+      </Properties>
+    </RootEntity>
+	<RootEntity type="PolicyAddlInterest" showadds="false" showremoves="false" label="displaykey.Web.Differences.LOB.Common.PolicyAddlInterest(ENTITY.DisplayName)" sortorder="5"/>
+    <RootEntity type="PolicyAddress" label="displaykey.Web.Differences.LOB.Common.PolicyAddress(ENTITY.AddressType)" sortorder="6"/> 
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.HO.Dwelling" sortorder="2">
+    <RootEntity type="Dwelling_HOE">
+      <SubSection label="displaykey.Web.Differences.LOB.HO.DwellingLocation" sortorder="1">
+        <Properties includefromtype="HOLocation_HOE" parentpath="ENTITY.HOLine.Dwelling"/>
+      </SubSection>
+      <Properties includefromtype="Dwelling_HOE" parentpath="ENTITY" sortorder="2"/>
+      <SubSection label="displaykey.Web.Differences.LOB.HO.Animals" sortorder="3">
+        <Entity type="DwellingAnimal_HOE" label="ENTITY.AnimalType.DisplayName" parentpath="ENTITY.Dwelling" sortorder="3">
+          <Properties includefromtype="DwellingAnimal_HOE" parentpath="ENTITY"/>
+        </Entity> 
+      </SubSection>
+      <SubSection label="displaykey.Web.Differences.LOB.HO.AdditionalInterests" sortorder="4">
+        <Entity type="HODwellingAddlInt_HOE" parentpath="ENTITY.Dwelling" label="displaykey.Web.Differences.LOB.Common.PolicyAddlInterestDetail(ENTITY.AddlInterestDesc, ENTITY.AdditionalInterestType)"/>
+      </SubSection>
+      <SubSection label="displaykey.Web.Differences.LOB.HO.DwellingCoverages" sortorder="5">
+        <Entity type="DwellingCov_HOE" label="ENTITY.Pattern.Name" parentpath="ENTITY.Dwelling" sortorder="1">
+          <Properties includefromtype="DwellingCov_HOE" parentpath="ENTITY" sortorder="1">
+            <ExcludedProperty propertyname="DirectTerm1Avl"/>
+            <ExcludedProperty propertyname="DirectTerm2Avl"/>
+            <ExcludedProperty propertyname="ChoiceTerm1Avl"/>
+            <ExcludedProperty propertyname="ChoiceTerm2Avl"/>
+            <ExcludedProperty propertyname="ChoiceTerm3Avl"/>
+            <ExcludedProperty propertyname="ChoiceTerm4Avl"/>
+            <ExcludedProperty propertyname="ChoiceTerm5Avl"/>
+            <ExcludedProperty propertyname="BooleanTerm1Avl"/>
+            <ExcludedProperty propertyname="BooleanTerm2Avl"/>
+          </Properties>
+          <SubSection label="displaykey.Web.Differences.LOB.HO.ScheduledItems" sortorder="2">
+            <Entity type="ScheduledItem_HOE" parentpath="ENTITY.DwellingCov">
+              <Properties includefromtype="ScheduledItem_HOE" parentpath="ENTITY">
+                <ExcludedProperty propertyname="ItemNumber"/>
+              </Properties>
+            </Entity>
+          </SubSection>
+        </Entity> 
+      </SubSection>
+    </RootEntity>
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.Common.LineCoverages" sortorder="3">
+    <RootEntity type="HomeownersLineCov_HOE" label="ENTITY.Pattern.Name">
+      <Properties includefromtype="HomeownersLineCov_HOE" parentpath="ENTITY" sortorder="1">
+        <ExcludedProperty propertyname="DirectTerm1Avl"/>
+        <ExcludedProperty propertyname="DirectTerm2Avl"/>
+        <ExcludedProperty propertyname="ChoiceTerm1Avl"/>
+        <ExcludedProperty propertyname="ChoiceTerm2Avl"/>
+        <ExcludedProperty propertyname="ChoiceTerm3Avl"/>
+        <ExcludedProperty propertyname="ChoiceTerm4Avl"/>
+        <ExcludedProperty propertyname="ChoiceTerm5Avl"/>
+        <ExcludedProperty propertyname="BooleanTerm1Avl"/>
+        <ExcludedProperty propertyname="BooleanTerm2Avl"/>
+      </Properties>
+      <SubSection label="displaykey.Web.Differences.LOB.HO.CoveredLocations" sortorder="2">
+        <Entity type="CoveredLocation_HOE" label="ENTITY.PolicyLocation.DisplayName" parentpath="ENTITY.HOLineCov">
+          <Properties includefromtype="CoveredLocation_HOE" parentpath="ENTITY">
+            <ExcludedProperty propertyname="LocationNumber"/>
+          </Properties>
+        </Entity> 
+      </SubSection>
+    </RootEntity>
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.HO.LineConditions" sortorder="4">
+    <RootEntity type="HomeownersLineCond_HOE" label="ENTITY.Pattern.Name"/>
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.HO.LineExclusions" sortorder="5">
+    <RootEntity type="HomeownersLineExcl_HOE" label="ENTITY.Pattern.Name"/>
+  </Section>
+</DiffTree>

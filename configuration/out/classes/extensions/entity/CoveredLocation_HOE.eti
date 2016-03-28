@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<!--Covered Location-->
+<entity xmlns="http://guidewire.com/datamodel" entity="CoveredLocation_HOE" loadable="false" table="coveredlocation_hoe" exportable="true" final="false" type="effdated" platform="false" 
+	effDatedBranchType="PolicyPeriod">
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.lob.ho.CoveredLocationCopier_HOE"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.ho.CoveredLocationMatcher_HOE"/>
+
+  <column name="LocationNumber" nullok="false" type="integer" desc="Location number (auto generated)"/>
+  <column name="Description" type="varchar" desc="Description" nullok="true">
+      <columnParam name="size" value="100"/>
+  </column>
+  <typekey name="LocationLimit" typelist="LocationLimit_HOE" desc="Increase in limit required for the location" nullok="true"/>
+  <foreignkey fkentity="HomeownersLineCov_HOE" name="HOLineCov" desc="Line-level coverage for Homeowners" nullok="false"/>
+  <foreignkey fkentity="PolicyLocation" name="PolicyLocation" desc="Location possibly for dwelling" nullok="false"/>
+</entity>
+

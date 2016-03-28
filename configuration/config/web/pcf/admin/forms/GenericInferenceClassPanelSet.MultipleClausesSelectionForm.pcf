@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <PanelSet
+    id="GenericInferenceClassPanelSet"
+    mode="MultipleClausesSelectionForm">
+    <Require
+      name="formPattern"
+      type="FormPattern"/>
+    <Variable
+      initialValue="formPattern.PolicyLinePatternRange"
+      name="policyLineRange"
+      type="List&lt;gw.admin.PatternRef&lt;gw.api.productmodel.PolicyLinePattern&gt;&gt;"/>
+    <PanelRef>
+      <Toolbar
+        id="ClauseToolbar"
+        visible="CurrentLocation.InEditMode">
+        <PickerToolbarButton
+          action="FormClausePatternsSelectionPopup.push(formPattern, formPattern.FormPatternClauseCodes*.Code ?: {})"
+          id="pickClausePatternsButton"
+          label="displaykey.Web.Admin.AddClauses"
+          onPick="addClauses(PickedValue)"/>
+        <RemoveButton
+          id="removeButton"
+          iterator="clauseIterator"
+          label="displaykey.Button.Remove"/>
+      </Toolbar>
+      <ListViewPanel
+        id="ClauseLV">
+        <RowIterator
+          checkBoxVisible="CurrentLocation.InEditMode"
+          editable="false"
+          elementName="clause"
+          id="clauseIterator"
+          toRemove="formPattern.removeFromFormPatternClauseCodes(clause)"
+          value="formPattern.FormPatternClauseCodes">
+          <Row>
+            <Cell
+              id="clauseName"
+              label="displaykey.Web.Coverage.SearchPage.Coverage"
+              value="gw.api.productmodel.ClausePatternLookup.getByPublicID(clause.Code).DisplayName"/>
+            <Cell
+              id="Category"
+              label="displaykey.Web.Coverage.SearchPage.Category"
+              value="gw.api.productmodel.ClausePatternLookup.getByPublicID(clause.Code).CoverageCategory.DisplayName"/>
+            <Cell
+              id="clauseDesc"
+              label="displaykey.Web.Coverage.SearchPage.Type"
+              value="gw.api.productmodel.ClausePatternLookup.getByPublicID(clause.Code).ClauseName"/>
+          </Row>
+        </RowIterator>
+      </ListViewPanel>
+    </PanelRef>
+    <Code><![CDATA[uses gw.api.productmodel.ClausePattern
+
+function addClauses(clausePatterns : ClausePattern[]) {
+  clausePatterns.each( \ clausePattern -> {
+    var code = new FormPatternClauseCode()
+    code.Code = clausePattern.CodeIdentifier
+    code.FormPattern = formPattern
+    formPattern.addToFormPatternClauseCodes(code)
+  })
+}]]></Code>
+  </PanelSet>
+</PCF>

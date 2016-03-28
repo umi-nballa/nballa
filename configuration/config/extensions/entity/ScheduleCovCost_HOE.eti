@@ -1,0 +1,7 @@
+<?xml version="1.0"?>
+<!--Schedule Coverage Cost-->
+<subtype xmlns="http://guidewire.com/datamodel" entity="ScheduleCovCost_HOE" supertype="DwellingCovCost_HOE">
+  <foreignkey fkentity="ScheduledItem_HOE" name="ScheduledItem" nullok="true"/>    
+  <implementsEntity name="Cost" adapter="gw.lob.ho.financials.HomeownersCostAdapter_HOE"/>
+  <implementsInterface iface="gw.lob.ho.financials.HOCostMethods_HOE" impl="gw.lob.ho.financials.ScheduleCovCostMethodsImpl_HOE"/>
+</subtype>

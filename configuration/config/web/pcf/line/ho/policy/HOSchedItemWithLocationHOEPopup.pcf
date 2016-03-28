@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Popup
+    canEdit="editMode"
+    canVisit="true"
+    id="HOSchedItemWithLocationHOEPopup"
+    returnType="ScheduledItem_HOE"
+    startInEditMode="editMode"
+    title="covPattern.Name">
+    <LocationEntryPoint
+      signature="HOSchedItemWithLocationHOEPopup(dwelling: Dwelling_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <LocationEntryPoint
+      signature="HOSchedItemWithLocationHOEPopup(dwelling: Dwelling_HOE, schedItem : ScheduledItem_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <Variable
+      initialValue="dwelling.createAndAddScheduledItem(covPattern.CodeIdentifier)"
+      name="schedItem"
+      type="ScheduledItem_HOE"/>
+    <Variable
+      name="dwelling"
+      type="Dwelling_HOE"/>
+    <Variable
+      name="covPattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Variable
+      name="locFilter"
+      type="boolean"/>
+    <Variable
+      name="editMode"
+      type="boolean"/>
+    <Screen
+      editable="editMode">
+      <Toolbar>
+        <EditButtons
+          pickValue="schedItem"/>
+      </Toolbar>
+      <DetailViewPanel
+        editable="editMode">
+        <InputColumn>
+          <InputSetRef
+            def="HOSchedItemLocationHOEInputSet(schedItem, dwelling, dwelling.HOLine.Branch, covPattern.CodeIdentifier, locFilter,  editMode)"/>
+          <Input
+            editable="editMode"
+            id="OtheStructuresOffPremisesDesc"
+            label="displaykey.Web.Homeowners.HOCoveragesScreen.OtherStructuresOffPremisesDesc"
+            required="true"
+            value="schedItem.Description"
+            visible="covPattern.CodeIdentifier &lt;&gt; &quot;HODW_PersonalPropertyOffResidence_HOE&quot;"/>
+          <TypeKeyInput
+            editable="editMode"
+            formatType="percentagePoints"
+            id="OtheResNamedInsuredDirectTerm"
+            label="displaykey.Web.Homeowners.Coverages.Limit"
+            numCols="5"
+            required="true"
+            value="schedItem.AdditionalLimit"
+            visible="covPattern.CodeIdentifier &lt;&gt; &quot;HODW_OtherStructuresOffPremise_HOE&quot;"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </Screen>
+  </Popup>
+</PCF>

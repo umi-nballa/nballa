@@ -1,0 +1,167 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="RatingTxDetailsPanelSet"
+    mode="HomeownersLine_HOE">
+    <Require
+      name="thePeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="totalPremLabel"
+      type="String"/>
+    <Require
+      name="totalCostLabel"
+      type="String"/>
+    <Require
+      name="OpenForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="thePeriod.HOTransactions.toSet().AnyProrated"
+      name="prorated"/>
+    <Variable
+      initialValue="thePeriod.HOTransactions.where(\ tx -&gt; tx.Cost typeis entity.HomeownersBaseCost_HOE).sortBy(\ t -&gt; t.Amount)"
+      name="baseTx"/>
+    <Variable
+      initialValue="thePeriod.HOTransactions.where(\ tx -&gt; tx.Cost typeis entity.HOTaxCost_HOE).sortBy(\ t -&gt; t.Amount)"
+      name="taxTx"/>
+    <Variable
+      initialValue="thePeriod.HOTransactions.where(\ tx -&gt; tx.Cost typeis entity.DwellingCovCost_HOE or tx.Cost typeis entity.HomeownersCovCost_HOE).sortBy(\ t -&gt; gw.lob.ho.TransactionHelper_HOE.getDescription(t,&quot;&quot;))"
+      name="coverageTx"/>
+    <Variable
+      initialValue="coverageTx.where(\ tx -&gt; tx.HomeownersCost.Coverage.Pattern.CoverageCategoryID.equals(&quot;HODW_SectionI_HOE&quot;))"
+      name="sectionOneTx"/>
+    <Variable
+      initialValue="coverageTx.where(\ tx -&gt; tx.HomeownersCost.Coverage.Pattern.CoverageCategoryID.equals(&quot;HODW_SectionII_HOE&quot;))"
+      name="sectionTwoTx"/>
+    <Variable
+      initialValue="coverageTx.subtract(sectionOneTx).subtract(sectionTwoTx.toSet()).toTypedArray()"
+      name="addlCovTx"/>
+    <Variable
+      initialValue="{ &quot;1&quot; + displaykey.Web.Homeowners.Quote.BaseCoverageTitle -&gt; baseTx, &quot;2&quot; + displaykey.Web.Homeowners.Quote.SectionOneTitle -&gt; sectionOneTx, &quot;3&quot; + displaykey.Web.Homeowners.Quote.SectionTwoTitle -&gt; sectionTwoTx, &quot;4&quot; + displaykey.Web.Homeowners.Quote.AddlCoveragesTitle -&gt; addlCovTx }"
+      name="txBySection"/>
+    <Variable
+      initialValue="{displaykey.Web.Homeowners.Quote.BaseCoverageTitle -&gt; displaykey.Web.Homeowners.Quote.BasePremium}"
+      name="desc"/>
+    <PanelIterator
+      elementName="txSection"
+      id="txSectionIterator"
+      value="txBySection.Keys.toTypedArray()">
+      <IteratorSort
+        sortBy="txSection"
+        sortOrder="1"/>
+      <PanelRef
+        visible="not(txBySection.get(txSection).IsEmpty)">
+        <TitleBar
+          title="txSection.substring(1)"/>
+        <PanelSet>
+          <ListViewPanel>
+            <RowIterator
+              editable="false"
+              elementName="tx"
+              id="txIterator"
+              pageSize="0"
+              value="txBySection.get(txSection)">
+              <Row>
+                <Cell
+                  footerLabel="displaykey.Web.Financials.Subtotal"
+                  id="Description"
+                  label="displaykey.Web.PolicyLine.Coverages.Description"
+                  value="gw.lob.ho.TransactionHelper_HOE.getDescription(tx, desc.get(txSection.substring(1)))"
+                  visible="not prorated"/>
+                <Cell
+                  footerLabel="displaykey.Web.Financials.Subtotal"
+                  id="DescriptionProrated"
+                  label="displaykey.Web.PolicyLine.Coverages.Description"
+                  value="gw.lob.ho.TransactionHelper_HOE.getDescription(tx, desc.get(txSection.substring(1)))"
+                  visible="prorated"/>
+                <Cell
+                  enableSort="false"
+                  id="TermAmount"
+                  label="displaykey.Web.Homeowners.Quote.Amount"
+                  value="tx.HomeownersCost.ActualTermAmount"
+                  visible="prorated"/>
+                <Cell
+                  enableSort="false"
+                  id="EffDate"
+                  label="displaykey.Web.Quote.CumulDetail.Default.PeriodStart"
+                  value="tx.EffDate"
+                  visible="prorated"/>
+                <Cell
+                  enableSort="false"
+                  id="ExpDate"
+                  label="displaykey.Web.Quote.CumulDetail.Default.PeriodEnd"
+                  value="tx.ExpDate"
+                  visible="prorated"/>
+                <Cell
+                  align="right"
+                  id="TxProration"
+                  label="displaykey.Web.Homeowners.Quote.Prorata"
+                  value="gw.api.util.StringUtil.formatNumber(tx.Proration, &quot;#0.0000&quot;)"
+                  visible="prorated"/>
+                <Cell
+                  enableSort="false"
+                  id="TxAmount"
+                  label="displaykey.Web.Homeowners.Quote.Premium"
+                  value="tx.Amount">
+                  <ColumnFooter>
+                    <TextCell
+                      id="SectionSubTotal"
+                      value="txBySection.get(txSection).toList().AmountSum(thePeriod.PreferredSettlementCurrency)"/>
+                  </ColumnFooter>
+                </Cell>
+              </Row>
+            </RowIterator>
+          </ListViewPanel>
+        </PanelSet>
+      </PanelRef>
+    </PanelIterator>
+    <ListViewPanel>
+      <Row>
+        <Cell
+          align="right"
+          bold="true"
+          id="SubTotalLabel"
+          value="displaykey.Web.Financials.PremiumSubtotal"/>
+        <Cell
+          bold="true"
+          formatType="currency"
+          id="SubTotal"
+          value="baseTx.toList().AmountSum(thePeriod.PreferredSettlementCurrency) + coverageTx.toList().AmountSum(thePeriod.PreferredSettlementCurrency)"/>
+      </Row>
+      <RowIterator
+        canPick="false"
+        editable="false"
+        elementName="tx"
+        pageSize="0"
+        value="taxTx">
+        <IteratorSort
+          sortBy="(typeof tx.Cost).AllTypesInHierarchy.Count"
+          sortDirection="descending"
+          sortOrder="1"/>
+        <IteratorSort
+          sortBy="typeof tx.Cost"
+          sortOrder="2"/>
+        <IteratorSort
+          sortBy="tx.EffDate"
+          sortOrder="3"/>
+        <Row>
+          <Cell
+            align="right"
+            enableSort="false"
+            id="Description"
+            value="displaykey.Web.Homeowners.Quote.Tax"/>
+          <Cell
+            enableSort="false"
+            formatType="currency"
+            id="Amount"
+            value="tx.Amount"/>
+        </Row>
+      </RowIterator>
+    </ListViewPanel>
+  </PanelSet>
+</PCF>

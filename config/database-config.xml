@@ -42,9 +42,10 @@
   </database>
 -->
 
+
 <!-- SQL Server -->
-  <database name="xxx_gwpc" dbtype="sqlserver" autoupgrade="true" env="LOCAL">
-    <dbcp-connection-pool jdbc-url="jdbc:sqlserver://UIMDEVGWDB01:1433;DatabaseName=xxx_gwpc;User=xxx_gwdbuser;Password=xxx_gwdbuser"/>
+  <database name="user_gwpc" dbtype="sqlserver" autoupgrade="true" env="LOCAL">
+    <dbcp-connection-pool jdbc-url="jdbc:sqlserver://UIMDEVGWDB01:1433;DatabaseName=user_gwpc;User=user_gwdbuser;Password=gwuser"/>
     <upgrade defer-create-nonessential-indexes="false">
       <versiontriggers dbmsperfinfothreshold="600" />
     </upgrade>
@@ -54,6 +55,21 @@
       </tablestatistics>
     </databasestatistics>
   </database>
+  
+  
+  
+     <!-- SQL Server JNDI-->
+  <database name="PolicyCenter_DEV" dbtype="sqlserver"  autoupgrade="false" env="pc_dev">
+  <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
+  <upgrade defer-create-nonessential-indexes="false">
+      <versiontriggers dbmsperfinfothreshold="600" />
+    </upgrade>
+	<databasestatistics>
+      <tablestatistics name="pc_jobuserroleassign">
+        <histogramstatistics name="CreateTime" numbuckets="75"/>
+      </tablestatistics>
+    </databasestatistics>
+ </database>
   
 <!-- SQL Server with filegroups
   <database name="PolicyCenterDatabase" dbtype="sqlserver" autoupgrade="true">

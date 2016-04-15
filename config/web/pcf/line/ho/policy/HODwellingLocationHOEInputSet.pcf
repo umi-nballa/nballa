@@ -1,0 +1,74 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    editable="openForEdit and (jobSubtype == typekey.Job.TC_ISSUANCE or jobSubtype == typekey.Job.TC_SUBMISSION or jobSubtype == typekey.Job.TC_REWRITE)"
+    id="HODwellingLocationHOEInputSet">
+    <Require
+      name="dwelling"
+      type="Dwelling_HOE"/>
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="openForEdit"
+      type="Boolean"/>
+    <Variable
+      initialValue="policyPeriod.getUnassignedAccountLocations().toTypedArray()"
+      name="unassignedAccountLocations"
+      recalculateOnRefresh="true"/>
+    <Require
+      name="jobWizardHelper"
+      type="gw.api.web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="policyPeriod.Job.Subtype"
+      name="jobSubtype"/>
+    <RangeInput
+      action="LocationPopup.push(null,dwelling.HOLocation.PolicyLocation, policyPeriod, openForEdit, false, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+      editable="true"
+      id="HODwellingLocationInput"
+      label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
+      required="true"
+      value="dwelling.HOLocation.PolicyLocation"
+      valueRange="policyPeriod.PolicyLocations"
+      valueWidth="180">
+      <PickerMenuItem
+        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+        id="NewGarageLocation"
+        label="displaykey.Web.Policy.LocationContainer.Location.New"
+        onPick="dwelling.HOLocation.PolicyLocation = PickedValue; dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"/>
+      <MenuItem
+        id="AddExistingAccountLocation"
+        label="displaykey.Web.Policy.LocationContainer.Location.AddExistingAccountLocation">
+        <MenuItemIterator
+          elementName="unassignedAccountLocation"
+          id="MenuItemIteratorId"
+          value="unassignedAccountLocations">
+          <IteratorSort
+            sortBy="unassignedAccountLocation.LocationNum"
+            sortOrder="1"/>
+          <PickerMenuItem
+            action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+            id="unassignedAccountLocation"
+            label="unassignedAccountLocation"
+            onPick="dwelling.HOLocation.PolicyLocation = PickedValue; dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"/>
+        </MenuItemIterator>
+      </MenuItem>
+      <PickerMenuItem
+        action="LocationPopup.push(null, dwelling.HOLocation.PolicyLocation, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+        id="EditDwellingLocation"
+        label="displaykey.Web.Policy.LocationContainer.Location.EditLocation"
+        onPick="dwelling.HOLocation.PolicyLocation = PickedValue; dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"
+        visible="dwelling.HOLocation.PolicyLocation != null"/>
+      <PostOnChange
+        onChange=" dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"/>
+    </RangeInput>
+    <Code><![CDATA[function findModifiablesToSyncOnEdit() : Modifiable[] {
+  var modifiables = new java.util.ArrayList<Modifiable>()
+  modifiables.add(policyPeriod.HomeownersLine_HOE)
+  modifiables.add(dwelling)
+  return modifiables.toTypedArray()
+}]]></Code>
+  </InputSet>
+</PCF>

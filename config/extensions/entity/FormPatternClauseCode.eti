@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A property (datamodel field) of a CR7 clause code associated with a form pattern."
+  entity="FormPatternClauseCode"
+  exportable="true"
+  loadable="false"
+  table="formpatternclausecode"
+  type="retireable">
+  <column
+    desc="The class code."
+    name="Code"
+    nullok="false"
+    type="shorttext"/>
+  <foreignkey
+    desc="The form pattern associated with this coverable property."
+    fkentity="FormPattern"
+    name="FormPattern"
+    nullok="false"/>
+  <array
+    arrayentity="FormPatternClauseCovTerm"
+    cascadeDelete="true"
+    desc="Cov terms associated with this clause"
+    name="FormPatternClauseCovTerms"
+    owner="true"/>
+</entity>

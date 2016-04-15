@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Page
+    afterEnter="gw.api.web.PebblesUtil.addWebMessages(CurrentLocation, policyPeriod.PolicyFileMessages)"
+    canVisit="perm.PolicyPeriod.view(policyPeriod) and perm.System.pfiledetails"
+    id="PolicyFileHomeownersCoveragesHOE"
+    parent="PolicyFile(PolicyPeriod, AsOfDate)"
+    title="displaykey.Web.PolicyFile.Coverages">
+    <LocationEntryPoint
+      signature="PolicyFileHomeownersCoveragesHOE(policyPeriod : PolicyPeriod, AsOfDate : DateTime)"/>
+    <Variable
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      name="AsOfDate"
+      type="DateTime"/>
+    <Screen
+      id="PolicyFile_HomeownersCoveragesScreen">
+      <TitleBar/>
+      <Toolbar/>
+      <CardViewPanel>
+        <Card
+          id="HOPolicyLevelCoverages"
+          title="displaykey.Web.Homeowners.HOCoveragesScreen.MainCoverage">
+          <PanelRef
+            def="HOMainCoveragesHOEPanelSet(policyPeriod.HomeownersLine_HOE, policyPeriod.HomeownersLine_HOE.Dwelling, false)"/>
+        </Card>
+        <Card
+          id="HOPOlicyLevelEndorsementsCardId"
+          title="displaykey.Web.Homeowners.HOCoveragesScreen.PolicyLevelEndorsements">
+          <PanelRef
+            def="HOAdditionalCoveragesPanelSet(policyPeriod.HomeownersLine_HOE, new String[] {&quot;HOLI_Optional_HOE&quot;, &quot;HOLI_SpecialLocationCov_HOE&quot;}, true)"
+            id="HOLineEndorsements"/>
+        </Card>
+        <Card
+          id="HODwellingEndorsementsCardId"
+          title="displaykey.Web.Homeowners.HOCoveragesScreen.DwellingEndorsements">
+          <PanelRef
+            def="HOAdditionalCoveragesPanelSet(policyPeriod.HomeownersLine_HOE.Dwelling, new String[] {&quot;HODW_Optional_HOE&quot;, &quot;HODW_SpecialLocationCov_HOE&quot;, &quot;HODW_SchedulesCov_HOE&quot;}, true)"
+            id="DwellingEndorsements"/>
+        </Card>
+        <Card
+          id="HOPolicyLevelExclusionsAndConditionsCard"
+          title="displaykey.Web.Homeowners.HOCoveragesScreen.PolicyLevelExclusionsAndConditions">
+          <PanelRef
+            def="HOAdditionalExclusionsAndConditionsPanelSet(policyPeriod.HomeownersLine_HOE, new String[] {&quot;HODW_ConditionsExclusions_HOE&quot;}, true)"
+            id="PolicyLevelConditionsAndExclusions"/>
+        </Card>
+      </CardViewPanel>
+    </Screen>
+  </Page>
+</PCF>

@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="HODwellingSingleHOEPanelSet">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="line"
+      type="HomeownersLine_HOE"/>
+    <Require
+      name="openForEdit"
+      type="Boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="gw.api.web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="line.Dwelling"
+      name="dwelling"/>
+    <CardViewPanel>
+      <Card
+        id="DwellingDetailsSingleID"
+        title="displaykey.Web.Homeowners.Dwelling.Details">
+        <PanelRef
+          def="HODwellingDetailsHOEDV(policyPeriod, dwelling, openForEdit, jobWizardHelper)"/>
+      </Card>
+      <Card
+        id="DwellingSingleProtectionId"
+        title="displaykey.Web.Homeowners.DwellingProtection.CardLabel">
+        <PanelRef
+          def="HODwellingProtectionDetailsHOEDV(dwelling, openForEdit)"/>
+      </Card>
+      <Card
+        id="DwellingAdditionalInterestId"
+        title="displaykey.Web.Homeowners.Dwelling.AdditionalInterest.CardLabel">
+        <PanelRef
+          def="HOAdditionalInterestDetailsHOEDV(line.Dwelling, openForEdit)"/>
+      </Card>
+    </CardViewPanel>
+  </PanelSet>
+</PCF>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <WizardStepSet
+    id="LineWizardStepSet"
+    mode="Homeowners">
+    <Require
+      name="job"
+      type="Job"/>
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="jobWizardHelper"
+      type="gw.api.web.job.JobWizardHelper"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <JobWizardStep
+      beforeSave="policyPeriod.HomeownersLine_HOE.Dwelling.beforeSavingDwellingPage()"
+      id="HomeownersDwelling"
+      save="true"
+      screen="HODwellingHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
+      title="displaykey.Web.Homeowners.Dwelling.DwellingTitle"/>
+    <JobWizardStep
+      beforeSave="policyPeriod.HomeownersLine_HOE.Dwelling.beforeSavingDwellingConstructionPage()"
+      id="HomeownersDwellingConstruction"
+      save="true"
+      screen="HODwellingConstructionHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
+      title="displaykey.Web.Homeowners.DwellingConstruction.DwellingConstruction"/>
+    <JobWizardStep
+      beforeSave="gw.lob.ho.CoveragesValidation_HOE.validateCoveragesStep(policyPeriod.HomeownersLine_HOE)"
+      id="HOCoverages"
+      onEnter="if (policyPeriod.OpenForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages(policyPeriod.HomeownersLine_HOE.AllCoverables, null)}"
+      save="policyPeriod.OpenForEdit"
+      screen="HOCoveragesHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
+      title="displaykey.Web.Homeowners.HOCoveragesScreen.HOCoverages_HOEScreen"/>
+  </WizardStepSet>
+</PCF>

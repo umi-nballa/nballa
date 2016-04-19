@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7PhotographyItem"
+  coverageCategory="BP7LineStdGrp"
+  coverageSubtype="BP7LineSchedCovItemCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7LineSchedCovItemCov"
+  owningEntityType="BP7LineSchedCovItem"
+  policyLinePattern="BP7Line"
+  priority="1530"
+  public-id="BP7PhotographyItem"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7LineSchedCovItem.isAvailableForItem("BP7PhotographyItem")]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7LimitOfInsurance"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LineSchedCovItemCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7LimitOfInsurance"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7LimitOfInsuranceUSD"
+          currency="usd"
+          minVal="0.0"
+          public-id="BP7LimitOfInsuranceUSD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

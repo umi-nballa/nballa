@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7IDFraudExpenseCov"
+  coverageCategory="BP7LineAddlGrp"
+  coverageSubtype="BP7LineCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7LineCov"
+  owningEntityType="BP7BusinessOwnersLine"
+  policyLinePattern="BP7Line"
+  priority="420"
+  public-id="BP7IDFraudExpenseCov"
+  referenceDateByType="PolicyTerm">
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7AggregateLimit3"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LineCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7AggregateLimit3"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7AggregateLimit3USD"
+          currency="usd"
+          minVal="25000.0"
+          public-id="BP7AggregateLimit3USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

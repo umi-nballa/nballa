@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="BP7 Blanket"
+  displayName="BP7 Blanket"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7Blanket"
+  exportable="true"
+  loadable="false"
+  table="bp7blanket"
+  type="effdated">
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
+  <foreignkey
+    fkentity="BP7BusinessOwnersLine"
+    name="Line"
+    nullok="false"/>
+  <typekey
+    columnName="bp7blankettype"
+    desc="Blanket Type"
+    name="BlanketType"
+    nullok="false"
+    typelist="BP7BlktType"/>
+  <column
+    desc="Blanket Limit"
+    name="BlanketLimit"
+    nullok="false"
+    type="decimal">
+    <columnParam
+      name="scale"
+      value="4"/>
+    <columnParam
+      name="precision"
+      value="20"/>
+  </column>
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="The blanket number"
+    name="BlanketNumber"
+    nullok="false"
+    type="integer"/>
+  <array
+    arrayentity="BP7BuildingCov"
+    name="BuildingBlanketedCovs"/>
+  <array
+    arrayentity="BP7ClassificationCov"
+    name="ClassificationBlanketedCovs"/>
+</entity>

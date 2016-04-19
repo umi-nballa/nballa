@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="An additional interest on a building"
+  entity="BP7BldgAddlInterest"
+  supertype="AddlInterestDetail">
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.bp7.BP7BldgAddlInterestMatcher"/>
+  <implementsInterface
+    iface="gw.api.domain.account.Mergeable"
+    impl="gw.lob.bp7.BP7BldgAddlInterestMergeableImpl"/>
+  <foreignkey
+    fkentity="BP7Building"
+    name="BP7Building"
+    nullok="false"/>
+</subtype>

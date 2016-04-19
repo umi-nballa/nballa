@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7Earthquake"
+  coverageCategory="BP7BuildingAddlGrp"
+  coverageSubtype="BP7BuildingCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7BuildingCov"
+  owningEntityType="BP7Building"
+  policyLinePattern="BP7Line"
+  priority="950"
+  public-id="BP7Earthquake"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Building.earthquakeAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="BP7EarthquakeRate"
+      coverageColumn="StringTerm1"
+      defaultValue=""
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7EarthquakeRate"
+      required="true"/>
+    <GenericCovTermPattern
+      codeIdentifier="BP7EarthquakeBPPRate"
+      coverageColumn="StringTerm2"
+      defaultValue=""
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7EarthquakeBPPRate"
+      required="true"/>
+    <GenericCovTermPattern
+      codeIdentifier="BP7PercentageDeductible"
+      coverageColumn="StringTerm3"
+      defaultValue=""
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Deductible"
+      priority="30"
+      public-id="BP7PercentageDeductible"
+      required="true"/>
+  </CovTerms>
+</CoveragePattern>

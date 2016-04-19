@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <MenuItemSet
+    id="PolicyMenuItemSet"
+    mode="BP7BusinessOwners">
+    <Require
+      name="period"
+      type="PolicyPeriod"/>
+    <Require
+      name="asOfDate"
+      type="DateTime"/>
+    <MenuItem
+      action="PolicyFile_PolicyInfo.go(period, asOfDate)"
+      id="PolicyMenuItemSet_PolicyInfo"
+      label="displaykey.Web.PolicyFile.PolicyInfo"/>
+    <MenuItem
+      action="PolicyFile_BP7LineCoverages.go(period, asOfDate)"
+      id="PolicyMenuItemSet_LineCoverages"
+      label="displaykey.Web.Policy.BP7.BusinessownersLine"/>
+    <MenuItem
+      action="PolicyFile_BP7Location.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Locations"
+      label="displaykey.Web.PolicyFile.BP7.PolicyFile_BP7Location"/>
+    <MenuItem
+      action="PolicyFile_BP7Building.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Buildings"
+      label="displaykey.Web.PolicyFile.BP7.PolicyFile_Buildings"/>
+    <MenuItem
+      action="PolicyFile_BP7Blanket.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Blanket"
+      label="displaykey.Web.PolicyFile.BP7.PolicyFile_Blanket"/>
+    <MenuItem
+      action="PolicyFile_BP7Modifiers.go(period, asOfDate)"
+      id="PolicyMenuItemSet_BP7Modifiers"
+      label="displaykey.Web.PolicyFile.BP7.PolicyFile_Modifiers"/>
+    <MenuItem
+      action="PolicyFile_Pricing.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Pricing"
+      label="displaykey.Web.PolicyFile.Pricing"/>
+    <MenuItem
+      action="PolicyFile_Forms_BP7.go(period, asOfDate)"
+      id="PolicyMenuItemSet_Endorsements"
+      label="displaykey.Web.PolicyFile.Endorsements"/>
+  </MenuItemSet>
+</PCF>

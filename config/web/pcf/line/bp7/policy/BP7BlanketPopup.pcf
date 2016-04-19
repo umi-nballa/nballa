@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Popup
+    afterEnter="initialize()"
+    beforeCommit="validateBlanket()"
+    canEdit="openForEdit"
+    id="BP7BlanketPopup"
+    returnType="BP7Blanket"
+    startInEditMode="openForEdit"
+    title="return blanket == null ? displaykey.Web.Policy.BP7.Blanket.Blanket : blanket.DisplayName">
+    <LocationEntryPoint
+      signature="BP7BlanketPopup(line : BP7Line, openForEdit : boolean, jobWizardHelper : web.job.JobWizardHelper)"/>
+    <LocationEntryPoint
+      signature="BP7BlanketPopup(line : BP7Line, blanket : entity.BP7Blanket, openForEdit : boolean, jobWizardHelper : web.job.JobWizardHelper)"/>
+    <Variable
+      name="line"
+      type="BP7Line"/>
+    <Variable
+      name="blanket"
+      type="BP7Blanket"/>
+    <Variable
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Screen>
+      <Toolbar
+        id="okCancelToolbar">
+        <EditButtons
+          id="BlanketPopup_btns"
+          pickValue="blanket"/>
+      </Toolbar>
+      <PanelRef
+        def="BP7BlanketDetailPanelSet(blanket, line, openForEdit, jobWizardHelper)"/>
+    </Screen>
+    <Code><![CDATA[uses gw.validation.PCValidationContext
+uses gw.lob.bp7.blanket.BP7BlanketValidation
+
+function initialize() {
+  if (blanket == null) {    
+    blanket = line.createAndAddBlanket()
+  }
+}
+
+function validateBlanket() {
+  if (blanket != null) {
+    PCValidationContext.doPageLevelValidation( \ context -> {
+      var blanketValidation = new BP7BlanketValidation(context, blanket)
+      blanketValidation.validate()
+    })
+  }
+}]]></Code>
+  </Popup>
+</PCF>

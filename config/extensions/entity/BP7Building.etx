@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="BP7Building">
+  <column
+    columnName="bp7rabopwanted"
+    default="false"
+    desc="Rate With Risk Analyzer BOP"
+    name="RABOPWanted"
+    nullok="false"
+    type="bit"/>
+  <typekey
+    columnName="bp7raboptype"
+    default="Smoothed"
+    desc="Building Risk Analyzer Type"
+    name="RABOPType"
+    nullok="true"
+    typelist="BP7RABOPType"/>
+  <typekey
+    columnName="bp7raboptypeliabilityless"
+    default="Smoothed"
+    desc="Liability Lessors Risk Analyzer Type"
+    name="RABOPTypeLiabilityLess"
+    nullok="true"
+    typelist="BP7RABOPType"/>
+  <column
+    columnName="bp7unitnumber"
+    desc="Building Number"
+    name="UnitNumber"
+    nullok="true"
+    type="shorttext"/>
+  <typekey
+    columnName="bp7propertytype"
+    default=""
+    desc="Property Type"
+    name="PropertyType"
+    nullok="false"
+    typelist="BP7PropertyType"/>
+  <typekey
+    columnName="bp7bldgcodeeffgradeclass"
+    default="NotGraded"
+    desc="Community Classification"
+    name="BldgCodeEffGradeClass"
+    nullok="false"
+    typelist="BP7BldgCodeEffectivenessGradeClass"/>
+  <typekey
+    columnName="bp7bldgcodeeffgrade"
+    default=""
+    desc="Community Grade"
+    name="BldgCodeEffGrade"
+    nullok="false"
+    typelist="BP7BldgCodeEffectivenessGrade"/>
+  <typekey
+    columnName="bp7constructiontype"
+    default=""
+    desc="Construction Type"
+    name="ConstructionType"
+    nullok="false"
+    typelist="BP7ConstructionType"/>
+  <column
+    columnName="bp7sprinklered"
+    default="false"
+    desc="Automatic Sprinkler System"
+    name="Sprinklered"
+    nullok="false"
+    type="bit"/>
+  <typekey
+    columnName="bp7pctowneroccupied"
+    default=""
+    desc="Percentage Owner Occupied"
+    name="PctOwnerOccupied"
+    nullok="false"
+    typelist="BP7PctOwnerOccupied"/>
+  <column
+    columnName="bp7totalcondobldgsquarefo"
+    desc="Total Condominium Building Square Footage"
+    name="TotalCondoBldgSquareFo"
+    nullok="true"
+    type="positiveinteger"/>
+</extension>

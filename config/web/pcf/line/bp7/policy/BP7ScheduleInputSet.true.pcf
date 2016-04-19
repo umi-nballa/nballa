@@ -1,0 +1,124 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="BP7ScheduleInputSet"
+    mode="true">
+    <Require
+      name="clause"
+      type="gw.api.domain.Clause"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="clause typeis gw.api.productmodel.Schedule ? clause : null"
+      name="schedule"
+      recalculateOnRefresh="true"
+      type="gw.api.productmodel.Schedule"/>
+    <Variable
+      initialValue="clause.Pattern.CoverageCategory"
+      name="category"
+      recalculateOnRefresh="true"
+      type="gw.api.productmodel.CoverageCategory"/>
+    <Variable
+      initialValue="clause.PolicyLine.AdditionalInsuredOtherCandidates.asViews()"
+      name="otherContacts"
+      type="AccountContactView[]"/>
+    <Variable
+      initialValue="clause.PolicyLine.ExistingAdditionalInsureds.asViews()"
+      name="existingAdditionalInsureds"
+      recalculateOnRefresh="true"
+      type="AccountContactView[]"/>
+    <Variable
+      initialValue="gw.plugin.Plugins.get(gw.plugin.contact.IContactConfigPlugin)"
+      name="contactConfigPlugin"
+      recalculateOnRefresh="true"/>
+    <ListViewInput
+      boldLabel="true"
+      def="BP7ScheduledItemsLV(schedule, openForEdit)"
+      editable="true"
+      label="displaykey.Web.Policy.Schedule.ScheduledItems"
+      labelAbove="true">
+      <Toolbar>
+        <AddButton
+          hideIfReadOnly="true"
+          id="AddContactsButton"
+          iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+          label="displaykey.Web.Contact.Add"
+          subMenuOnDemand="true"
+          visible="schedule.isSimpleSchedule and {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code}.contains(category.Code)">
+          <AddMenuItemIterator
+            elementName="contactType"
+            value="contactConfigPlugin.getAllowedContactTypesForPolicyContactRoleType(typekey.PolicyContactRole.TC_POLICYADDLINSURED)">
+            <IteratorSort
+              sortBy="contactType.DisplayName"
+              sortOrder="1"/>
+            <AddMenuItem
+              conversionExpression="schedule.addNewScheduledItem(PickedValue)"
+              id="ContactType"
+              iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+              label="displaykey.Web.Contact.AddNewOfType(contactType)"
+              pickLocation="NewAdditionalInsuredPopup.push(clause.PolicyLine, contactType)"/>
+          </AddMenuItemIterator>
+          <AddMenuItem
+            conversionExpression="schedule.addNewScheduledItem(clause.PolicyLine.addNewAdditionalInsuredDetailForContact(PickedValue))"
+            id="AddFromSearch"
+            iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+            label="displaykey.Web.Policy.Contact.FromAddressBook"
+            pickLocation="ContactSearchPopup.push(&quot;AdditionalInsured&quot;)"/>
+          <AddMenuItem
+            id="AddExistingContact"
+            iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+            label="displaykey.Web.Policy.Contact.AddExisting(PolicyAddlInsured.Type.TypeInfo.DisplayName)"
+            visible="true">
+            <AddMenuItemIterator
+              elementName="additionalInsured"
+              id="ContactOfSameType"
+              value="existingAdditionalInsureds">
+              <IteratorSort
+                sortBy="additionalInsured.DisplayName"
+                sortOrder="1"/>
+              <AddMenuItem
+                id="ExistingAdditionalInsured"
+                iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+                label="additionalInsured"
+                toCreateAndAdd="schedule.addNewScheduledItem(clause.PolicyLine.addNewAdditionalInsuredDetailForContact(additionalInsured.AccountContact.Contact))"/>
+            </AddMenuItemIterator>
+          </AddMenuItem>
+          <AddMenuItem
+            id="AddOtherContact"
+            iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+            label="displaykey.Web.Policy.Contact.AddOtherContacts"
+            visible="getOtherContacts().Count &gt; 0">
+            <AddMenuItemIterator
+              elementName="otherContact"
+              id="ContactOfOtherType"
+              value="otherContacts">
+              <IteratorSort
+                sortBy="otherContact.DisplayName"
+                sortOrder="1"/>
+              <AddMenuItem
+                id="OtherContact"
+                iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+                label="otherContact"
+                toCreateAndAdd="schedule.addNewScheduledItem(clause.PolicyLine.addNewAdditionalInsuredDetailForContact(otherContact.AccountContact.Contact))"/>
+            </AddMenuItemIterator>
+          </AddMenuItem>
+        </AddButton>
+        <IteratorButtons
+          addVisible="schedule.isSimpleSchedule and not {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code}.contains(category.Code)"
+          id="ScheduledItemsAddRemoveButtons"
+          iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"/>
+        <ToolbarButton
+          action="BP7ScheduledItemPopup.push(schedule, category, openForEdit, true, jobWizardHelper)"
+          id="ToolbarButton"
+          label="openForEdit ? displaykey.Web.Policy.BP7.Schedule.EditButton : displaykey.Web.Policy.BP7.Schedule.DetailsButton"
+          visible="not schedule.isSimpleSchedule"/>
+      </Toolbar>
+    </ListViewInput>
+  </InputSet>
+</PCF>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7TheftLimitations"
+  coverageCategory="BP7ClassificationStdGrp"
+  coverageSubtype="BP7ClassificationCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7ClassificationCov"
+  owningEntityType="BP7Classification"
+  policyLinePattern="BP7Line"
+  priority="140"
+  public-id="BP7TheftLimitations"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Classification.theftLimitationsAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7Limit14"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7Limit14"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7Limit14USD"
+          currency="usd"
+          defaultValue="2500"
+          minVal="2500.0"
+          public-id="BP7Limit14USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

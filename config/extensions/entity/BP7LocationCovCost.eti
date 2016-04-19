@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Location Level Cost"
+  entity="BP7LocationCovCost"
+  supertype="BP7Cost">
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostMethods"
+    impl="gw.lob.bp7.financials.BP7LocationCovCostMethods"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.financials.BP7CostAdapter"
+    name="Cost"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7Location"
+    name="Location"
+    nullok="false"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7LocationCov"
+    name="LocationCov"
+    nullok="false"/>
+</subtype>

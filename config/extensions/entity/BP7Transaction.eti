@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A transaction for the Business Owners line"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7Transaction"
+  exportable="true"
+  extendable="true"
+  loadable="false"
+  platform="false"
+  table="bp7transaction"
+  type="effdated">
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostDisplayable"
+    impl="gw.lob.bp7.financials.BP7TxDisplayableImpl"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.financials.BP7TransactionAdapter"
+    name="Transaction"/>
+  <foreignkey
+    desc="The cost this transaction modifies."
+    fkentity="BP7Cost"
+    name="BP7Cost"
+    nonEffDated="true"
+    nullok="false"/>
+</entity>

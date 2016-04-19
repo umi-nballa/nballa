@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Popup
+    countsAsWork="false"
+    id="BP7BlanketCoveragesSearchPopup"
+    returnType="gw.lob.bp7.blanket.BP7Blanketable[]"
+    title="displaykey.Web.Policy.BP7.Blanket.EligibleCoverages">
+    <LocationEntryPoint
+      signature="BP7BlanketCoveragesSearchPopup(blanket : BP7Blanket, line : BP7Line, openForEdit : boolean, jobWizardHelper : web.job.JobWizardHelper)"/>
+    <Variable
+      name="blanket"
+      type="BP7Blanket"/>
+    <Variable
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      name="line"
+      type="BP7Line"/>
+    <Screen>
+      <PanelRef
+        available="true"
+        def="BP7BlanketCoveragesLV(blanket.EligibleCoverages, blanket, line, openForEdit, false, jobWizardHelper)">
+        <Toolbar>
+          <CheckedValuesToolbarButton
+            id="attachSelectedButton"
+            iterator="BP7BlanketCoveragesLV.BP7BlanketCoveragesIterator"
+            label="displaykey.Web.Policy.BP7.Blanket.AttachCoverages"
+            pickValue="blanket.addCoverages(CheckedValues.toList(), jobWizardHelper)"/>
+        </Toolbar>
+      </PanelRef>
+    </Screen>
+  </Popup>
+</PCF>

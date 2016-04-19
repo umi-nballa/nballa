@@ -1,0 +1,93 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="BP7LinePanelSet">
+    <Require
+      name="line"
+      type="BP7Line"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <CardViewPanel>
+      <Card
+        id="Details"
+        title="displaykey.Web.Policy.BP7.Line.Details">
+        <PanelSet
+          id="BP7LineCoveragesPanelSet">
+          <PanelRow>
+            <PanelColumn>
+              <PanelRef
+                def="BP7LineBusinessOperationsPanelSet(line, openForEdit, jobWizardHelper)">
+                <TitleBar
+                  title="displaykey.Web.LineWizard.BusinessAndOperations"/>
+              </PanelRef>
+            </PanelColumn>
+            <PanelColumn>
+              <PanelRef
+                def="BP7CoveragesDV(line, openForEdit, line.Pattern.getCoverageCategory(gw.lob.bp7.BP7Categories.BP7LineStdGrp.Code), jobWizardHelper)"
+                id="MandatoryCoverages">
+                <TitleBar
+                  title="displaykey.Web.LineWizard.MandatoryCoverages"/>
+              </PanelRef>
+            </PanelColumn>
+            <PanelColumn>
+              <PanelRef
+                def="BP7CoveragesDV(line, openForEdit, line.Pattern.getCoverageCategory(gw.lob.bp7.BP7Categories.BP7LineDefaultsGrp.Code), jobWizardHelper)"
+                id="CoverageDefaults">
+                <TitleBar
+                  title="displaykey.Web.Policy.BP7.Line.Defaults"/>
+              </PanelRef>
+              <PanelRef
+                def="BP7CoveragesDV(line, openForEdit, line.Pattern.getCoverageCategory(gw.lob.bp7.BP7Categories.BP7LineContractorBusGrp.Code), jobWizardHelper)"
+                id="CoverageForContractors"
+                visible="line.BP7LineBusinessType == BP7PropertyType.TC_CONTRACTOR">
+                <TitleBar
+                  title="displaykey.Web.Policy.BP7.Line.ContractorsGroup"/>
+              </PanelRef>
+            </PanelColumn>
+          </PanelRow>
+        </PanelSet>
+      </Card>
+      <Card
+        id="AdditionalCoverages"
+        title="displaykey.Web.LineWizard.AdditionalCoverages">
+        <PanelRef
+          def="BP7AdditionalCoveragesPanelSet(line, additionalCoverageCategories().toTypedArray(), true, jobWizardHelper)">
+          <TitleBar
+            title="displaykey.Web.LineWizard.AdditionalCoverages"/>
+          <Toolbar/>
+        </PanelRef>
+      </Card>
+      <Card
+        id="ExclusionsAndConditionsCard"
+        title="displaykey.Web.LineWizard.ExclusionsAndConditions">
+        <PanelRef
+          def="BP7AdditionalExclusionsAndConditionsPanelSet(line, {gw.lob.bp7.BP7Categories.BP7LineExclGrp.Code, gw.lob.bp7.BP7Categories.BP7LineCondGrp.Code}, true, jobWizardHelper)"
+          id="PolicyLevelExclusionsAndConditions"/>
+      </Card>
+      <Card
+        id="AdditionalInsuredCoverages"
+        title="displaykey.Web.LineWizard.AdditionalInsuredCoverages">
+        <PanelRef
+          def="BP7AdditionalCoveragesPanelSet(line, {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code}, true, jobWizardHelper)"
+          id="LineAdditionalInsuredsCoverages">
+          <TitleBar
+            title="displaykey.Web.LineWizard.AdditionalInsuredCoverages"/>
+          <Toolbar/>
+        </PanelRef>
+      </Card>
+    </CardViewPanel>
+    <Code><![CDATA[function additionalCoverageCategories() : List<String>{
+  var categories = {gw.lob.bp7.BP7Categories.BP7LineAddlGrp.Code}
+  if(line.BP7LineBusinessType != BP7PropertyType.TC_CONTRACTOR){
+    categories.add(gw.lob.bp7.BP7Categories.BP7LineContractorBusGrp.Code)
+  }
+  return categories
+}]]></Code>
+  </PanelSet>
+</PCF>

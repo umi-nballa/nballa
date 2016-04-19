@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="null"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7LocSchedExclItem"
+  exportable="true"
+  final="false"
+  loadable="false"
+  subpackage="lob.bp7"
+  table="bp7locschedexclitem"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.bp7.schedules.BP7LocSchedExclItemAdapter"
+    name="Coverable"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.schedules.BP7LocSchedExclItemAdapter"
+    name="ScheduledItem"/>
+  <implementsEntity
+    name="BP7ScheduledItem"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.lob.common.schedules.ScheduledItemCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.bp7.schedules.BP7LocSchedExclItemMatcher"/>
+  <foreignkey
+    fkentity="BP7LocSchedExcl"
+    name="Schedule"
+    nullok="false"/>
+  <onetoone
+    desc="Conditions directly attached to the LocSchedExclItem"
+    fkentity="BP7LocSchedExclItemExcl"
+    name="Exclusion"
+    nullok="true"/>
+</entity>

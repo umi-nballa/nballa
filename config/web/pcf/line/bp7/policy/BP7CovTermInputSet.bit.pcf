@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="BP7CovTermInputSet"
+    mode="bit">
+    <Require
+      name="term"
+      type="gw.api.domain.covterm.CovTerm"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="gw.api.web.job.JobWizardHelper"/>
+    <BooleanRadioInput
+      editable="true"
+      id="BooleanTermInput"
+      label="term.Pattern.DisplayName"
+      required="term.Pattern.Required"
+      value="(term as gw.api.domain.covterm.GenericCovTerm&lt;Boolean&gt;).Value">
+      <PostOnChange
+        onChange="gw.lob.bp7.BP7PostOnChangeHandler.handleTerm(term, jobWizardHelper)"/>
+    </BooleanRadioInput>
+  </InputSet>
+</PCF>

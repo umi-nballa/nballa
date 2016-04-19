@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7TenantsLiability"
+  coverageCategory="BP7BuildingAddlGrp"
+  coverageSubtype="BP7BuildingCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7BuildingCov"
+  owningEntityType="BP7Building"
+  policyLinePattern="BP7Line"
+  priority="910"
+  public-id="BP7TenantsLiability"
+  referenceDateByType="PolicyTerm">
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7LimitInteger"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7LimitInteger"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7LimitIntegerUSD"
+          currency="usd"
+          defaultValue="50000"
+          maxVal="1000000.0"
+          minVal="50000.0"
+          public-id="BP7LimitIntegerUSD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

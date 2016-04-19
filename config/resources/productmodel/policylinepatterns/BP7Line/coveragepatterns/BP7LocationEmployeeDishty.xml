@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7LocationEmployeeDishty"
+  coverageCategory="BP7LocationStdGrp"
+  coverageSubtype="BP7LocationCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7LocationCov"
+  owningEntityType="BP7Location"
+  policyLinePattern="BP7Line"
+  priority="147"
+  public-id="BP7LocationEmployeeDishty"
+  referenceDateByType="PolicyTerm">
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7LocationCovOpt"
+      codeIdentifier="BP7EmployeeDishtyApply"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7EmployeeDishtyApply"
+      required="true"
+      restrictionModel="bipd"
+      valueType="other">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="BP7EmployeeDishtyApplyNOCURRENCY"
+          defaultValue="Yes"
+          public-id="BP7EmployeeDishtyApplyNOCURRENCY"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zsqigdubtdadh226odlqd9o4209"
+          optionCode="NotApplicable"
+          priority="10"
+          public-id="zsqigdubtdadh226odlqd9o4209"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7LocationEmployeeDishty.employeeDishonestyIncludedTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="znnj6ef8miacmd0d0kl9gh9ir78"
+          optionCode="Yes"
+          priority="20"
+          public-id="znnj6ef8miacmd0d0kl9gh9ir78"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7LocationEmployeeDishty.employeeDishonestyIncludedTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zmvjsemjgb8ogek26u9q0l7t6b8"
+          optionCode="No"
+          priority="30"
+          public-id="zmvjsemjgb8ogek26u9q0l7t6b8"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7LocationEmployeeDishty.employeeDishonestyIncludedTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+      </Options>
+    </OptionCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="BP7NumEmployees1"
+      coverageColumn="PositiveIntTerm1"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7NumEmployees1"
+      required="true">
+      <AvailabilityScript><![CDATA[return BP7Location.BP7LocationEmployeeDishty.employeeDishonestyNumEmployeesCovTermAvailable()]]></AvailabilityScript>
+    </GenericCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

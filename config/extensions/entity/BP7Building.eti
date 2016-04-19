@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="BP7 Building"
+  displayName="BP7 Building"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7Building"
+  exportable="true"
+  loadable="false"
+  table="bp7building"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.bp7.building.BP7BuildingCoverableAdapter"
+    name="Coverable"/>
+  <implementsInterface
+    iface="gw.api.domain.LineSpecificBuilding"
+    impl="gw.lob.bp7.BP7SpecificBuilding"/>
+  <implementsInterface
+    iface="gw.lob.common.autonumbers.AutoNumbersContainer"
+    impl="gw.lob.bp7.building.BP7BuildingAutoNumbersContainerAdapter"/>
+  <implementsInterface
+    iface="gw.lob.common.dependency.FieldDependency"
+    impl="gw.lob.bp7.dependency.BP7BuildingDependencies"/>
+  <foreignkey
+    fkentity="BP7Location"
+    name="Location"
+    nullok="false"/>
+  <foreignkey
+    fkentity="Building"
+    name="Building"
+    nullok="false"/>
+  <foreignkey
+    desc="Sequence to autonumber classifications"
+    fkentity="AutoNumberSequence"
+    name="ClassificationAutoNumberSeq"
+    nullok="true"/>
+  <array
+    arrayentity="BP7BuildingCov"
+    cascadeDelete="true"
+    desc="Coverages directly attached to the Building"
+    name="Coverages"/>
+  <array
+    arrayentity="BP7BuildingExcl"
+    cascadeDelete="true"
+    desc="Exclusions directly attached to the Building"
+    name="Exclusions"/>
+  <array
+    arrayentity="BP7BuildingCond"
+    cascadeDelete="true"
+    desc="Conditions directly attached to the Building"
+    name="Conditions"/>
+  <array
+    arrayentity="BP7Classification"
+    cascadeDelete="true"
+    desc="BOP Classification"
+    name="Classifications"/>
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+  <implementsInterface
+    iface="gw.lob.bp7.defaults.EntityCovTermDefaults"
+    impl="gw.lob.bp7.building.BP7BuildingCovTermDefaults"/>
+  <array
+    arrayentity="BP7BldgAddlInterest"
+    desc="Additional interests on this building"
+    name="AdditionalInterests"/>
+</entity>

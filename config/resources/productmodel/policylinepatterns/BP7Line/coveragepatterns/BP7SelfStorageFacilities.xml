@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7SelfStorageFacilities"
+  coverageCategory="BP7ClassificationSelfStorageBusGrp"
+  coverageSubtype="BP7ClassificationCov"
+  coveredPartyType="ThirdParty"
+  existence=""
+  lookupTableName="BP7ClassificationCov"
+  owningEntityType="BP7Classification"
+  policyLinePattern="BP7Line"
+  priority="1180"
+  public-id="BP7SelfStorageFacilities"
+  referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[ return (BP7Classification.ClassPropertyType == BP7ClassificationPropertyType.TC_SELFSTORAGEFACILITY) ? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE ]]></ExistenceScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7Limit30"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7Limit30"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7Limit30USD"
+          currency="usd"
+          defaultValue="50000"
+          minVal="50000.0"
+          public-id="BP7Limit30USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Business Owners line of business"
+  displayName="Business Owners"
+  entity="BP7BusinessOwnersLine"
+  supertype="PolicyLine">
+  <implementsInterface
+    iface="gw.api.policy.PolicyLineMethods"
+    impl="gw.lob.bp7.BP7PolicyLineMethods"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.line.BP7LineCoverableAdapter"
+    name="Coverable"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.line.BP7LineModifiableAdapter"
+    name="Modifiable"/>
+  <implementsInterface
+    iface="gw.api.domain.LineSpecificLocationContainer"
+    impl="gw.lob.bp7.BP7SpecificLocationContainer"/>
+  <implementsInterface
+    iface="gw.lob.common.dependency.FieldDependency"
+    impl="gw.lob.bp7.dependency.BP7LineDependencies"/>
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+  <typekey
+    desc="Business Type"
+    name="BP7LineBusinessType"
+    nullok="true"
+    typelist="BP7PropertyType"/>
+  <array
+    arrayentity="BP7Cost"
+    cascadeDelete="true"
+    name="BP7Costs"/>
+  <array
+    arrayentity="BP7LineCov"
+    cascadeDelete="true"
+    desc="Line-level coverages for Business Owners"
+    name="BP7LineCoverages"/>
+  <array
+    arrayentity="BP7LineExcl"
+    cascadeDelete="true"
+    desc="Line-level exclusions for Business Owners"
+    name="BP7LineExclusions"/>
+  <array
+    arrayentity="BP7LineCond"
+    cascadeDelete="true"
+    desc="Line-level conditions for Business Owners"
+    name="BP7LineConditions"/>
+  <array
+    arrayentity="BP7LineMod"
+    cascadeDelete="true"
+    desc="Line-level modifiers for Business Owners"
+    name="BP7LineModifiers"/>
+  <array
+    arrayentity="BP7Location"
+    cascadeDelete="true"
+    desc="Covered Location"
+    name="BP7Locations"/>
+  <array
+    arrayentity="BP7Blanket"
+    cascadeDelete="true"
+    desc="Covered blanket"
+    name="Blankets"/>
+  <foreignkey
+    desc="Sequence for auto numbering BP7Blankets"
+    fkentity="AutoNumberSequence"
+    name="BlanketAutoNumberSeq"
+    nullok="true"/>
+</subtype>

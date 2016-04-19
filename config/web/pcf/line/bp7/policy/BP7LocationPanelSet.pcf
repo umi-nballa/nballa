@@ -1,0 +1,143 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="BP7LocationPanelSet">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="policyPeriod.BP7Line.UnusedLocations"
+      name="unassignedAccountLocations"
+      recalculateOnRefresh="true"/>
+    <PanelRef>
+      <Toolbar>
+        <IteratorButtons
+          addLabel="displaykey.Web.Policy.LocationContainer.CreateNewLocation"
+          id="AddLocationButton"
+          iterator="LocationsEdit_LV"
+          removeVisible="false"/>
+        <CheckedValuesToolbarButton
+          checkedRowAction="BP7LocationPopup.push(null, CheckedValue, policyPeriod, openForEdit, true, jobWizardHelper)"
+          flags="one canEdit"
+          id="editLocation"
+          iterator="LocationsEdit_LV"
+          label="displaykey.Web.Policy.BP7.Location.Edit"
+          visible="openForEdit"/>
+        <IteratorButtons
+          addVisible="false"
+          id="RemoveLocationButton"
+          iterator="LocationsEdit_LV"
+          removeConfirmMessage="displaykey.Web.Policy.BP7.Building.RemoveLocationsConfirmMsg"
+          removeFlags="all removable"/>
+        <CheckedValuesToolbarButton
+          checkedRowAction="policyPeriod.PrimaryLocation = CheckedValue.Location"
+          flags="one canSetToPrimary"
+          id="setToPrimary"
+          iterator="LocationsEdit_LV"
+          label="displaykey.Web.Policy.LocationContainer.SetAsPrimary"
+          visible="openForEdit"/>
+        <ToolbarButton
+          available="unassignedAccountLocations.Count &gt; 0"
+          hideIfReadOnly="true"
+          id="addExistingLocationButton"
+          label="displaykey.Web.Policy.LocationContainer.Location.AddExistingAccountLocation">
+          <AddMenuItemIterator
+            elementName="unassignedAccountLocation"
+            value="unassignedAccountLocations">
+            <IteratorSort
+              sortBy="unassignedAccountLocation.LocationNum"
+              sortOrder="1"/>
+            <AddMenuItem
+              id="UnassignedAccountLocation"
+              iterator="LocationIterator"
+              label="unassignedAccountLocation"
+              pickLocation="BP7LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, jobWizardHelper)"/>
+          </AddMenuItemIterator>
+        </ToolbarButton>
+      </Toolbar>
+      <ListDetailPanel
+        id="LocationsEdit_DP"
+        selectionName="selectedLocation"
+        selectionType="BP7Location">
+        <ListViewPanel
+          id="LocationsEdit_LV">
+          <RowIterator
+            editable="true"
+            elementName="location"
+            hasCheckBoxes="true"
+            hideCheckBoxesIfReadOnly="true"
+            id="LocationIterator"
+            numEntriesRequired="1"
+            pickLocation="BP7LocationPopup.push(null, null, policyPeriod, openForEdit, true, jobWizardHelper)"
+            toRemove="policyPeriod.BP7Line.removeFromLineSpecificLocations(location)"
+            validationLabel="displaykey.Web.Policy.LocationContainer.Locations"
+            value="policyPeriod.BP7Line.BP7Locations">
+            <ToolbarFlag
+              condition="!location.Location.PrimaryLoc"
+              name="removable"/>
+            <ToolbarFlag
+              condition="!location.Location.PrimaryLoc"
+              name="canSetToPrimary"/>
+            <ToolbarFlag
+              condition="openForEdit"
+              name="canEdit"/>
+            <Row>
+              <!-- postOnChange is required on the Primary Location button to enable the
+restriction on removing the primary location -->
+              <RadioButtonCell
+                align="center"
+                id="PrimaryLocation"
+                label="displaykey.Web.Policy.LocationContainer.Location.PrimaryLocation"
+                radioButtonGroup="PrimaryLocation"
+                validationExpression="policyPeriod.PrimaryLocation != null ? null : displaykey.Web.Policy.LocationContainer.Location.PrimaryLocationError.SelectAtleastOne"
+                value="location.Location == policyPeriod.PrimaryLocation"/>
+              <TextCell
+                action="BP7LocationPopup.push(null, location, policyPeriod, openForEdit, true, jobWizardHelper)"
+                align="left"
+                id="Loc"
+                label="displaykey.Web.Policy.LocationContainer.Location.LocNum"
+                numCols="4"
+                sortOrder="1"
+                value="location.Location.LocationNum"/>
+              <TextCell
+                align="left"
+                id="LocationCode"
+                label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
+                numCols="16"
+                value="location.Location.AccountLocation.LocationCode"/>
+              <TextCell
+                align="left"
+                id="LocationName"
+                label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
+                numCols="16"
+                value="location.Location.AccountLocation.LocationName"/>
+              <TextCell
+                align="left"
+                id="Address"
+                label="displaykey.Web.Policy.LocationContainer.Location.CompactAddress"
+                numCols="64"
+                value="location.Location.addressString(&quot;,&quot;, false, false)"/>
+              <Cell
+                align="left"
+                id="InSync"
+                label="displaykey.Web.Account.Locations.IsSynchronized"
+                value="location.Location.isUpToDate()"
+                visible="policyPeriod.Promoted"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+        <PanelRef
+          def="BP7LocationDetailCV(selectedLocation, false, jobWizardHelper)"
+          visible="policyPeriod.PolicyLocations.Count &gt; 0 and selectedLocation != null"/>
+      </ListDetailPanel>
+    </PanelRef>
+  </PanelSet>
+</PCF>

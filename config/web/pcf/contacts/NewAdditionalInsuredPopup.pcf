@@ -12,6 +12,8 @@
     title="displaykey.Web.Contact.NewContact(entity.PolicyAddlInsured.Type.TypeInfo.DisplayName)">
     <LocationEntryPoint
       signature="NewAdditionalInsuredPopup(line: PolicyLine, contactType: typekey.ContactType)"/>
+    <LocationEntryPoint
+      signature="NewAdditionalInsuredPopup(line: PolicyLine, contactType: typekey.ContactType, additionalInsuredType: typekey.AdditionalInsuredType)"/>
     <Variable
       name="line"
       type="PolicyLine"/>
@@ -19,7 +21,10 @@
       name="contactType"
       type="typekey.ContactType"/>
     <Variable
-      initialValue="line.addNewAdditionalInsuredDetailOfContactType(contactType)"
+      name="additionalInsuredType"
+      type="typekey.AdditionalInsuredType"/>
+    <Variable
+      initialValue="line.addNewAdditionalInsuredDetailOfContactType(contactType, additionalInsuredType)"
       name="policyAddlInsuredDetail"/>
     <Variable
       initialValue="policyAddlInsuredDetail.PolicyAddlInsured"
@@ -52,17 +57,10 @@
           label="displaykey.Web.Contact.CheckForDuplicates"
           visible="duplicateContactsPopupHelper.ShowButton"/>
       </Toolbar>
-      <DetailViewPanel
-        id="AdditionalInsuredInfoDV">
-        <InputColumn>
-          <TypeKeyInput
-            editable="true"
-            id="Type"
-            label="displaykey.Web.LineWizard.AdditionalInsured.Type"
-            required="true"
-            value="policyAddlInsuredDetail.AdditionalInsuredType"/>
-        </InputColumn>
-      </DetailViewPanel>
+      <PanelRef
+        def="AdditionalInsuredInfoDV(policyAddlInsuredDetail)"
+        id="AdditionalInsuredInfoDV"
+        mode="line.Pattern.CodeIdentifier"/>
       <PanelRef
         def="NewPolicyContactRoleDetailsCV(policyAddlInsured, false)"/>
     </Screen>

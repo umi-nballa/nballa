@@ -11,6 +11,8 @@ uses gw.diff.tree.DiffTree
 uses gw.plugin.diff.IPolicyPeriodDiffPlugin
 
 uses java.util.ArrayList
+uses java.util.List
+uses gw.lob.bp7.BP7DiffHelper
 
 /**
   * All these methods are invoked from Java.
@@ -141,7 +143,12 @@ class PolicyPeriodDiffPlugin implements IPolicyPeriodDiffPlugin {
     
     // Filter specific diffs for OOS
     if (reason == DiffReason.TC_APPLYCHANGES) {
+      var productAbbrev = currentPeriod.Policy.Product.Abbreviation
+      if (productAbbrev == "BP7") {
+        diffHelper = new BP7DiffHelper(reason, null, null)
+      } else {
       diffHelper = new DiffHelper(reason, null, null)
+      }
       diffItems = diffHelper.filterDiffItems(diffItems)
     }
     return new ArrayList<DiffItem>(diffItems.order())

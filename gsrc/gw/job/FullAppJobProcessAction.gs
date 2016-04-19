@@ -3,6 +3,7 @@ uses gw.validation.PCValidationContext
 uses gw.api.web.job.JobWizardHelper
 
 @Export
+@java.lang.SuppressWarnings("There are some unused parameters in base functions for this class")
 class FullAppJobProcessAction implements JobProcessAction {
 
   protected var policyPeriod : PolicyPeriod

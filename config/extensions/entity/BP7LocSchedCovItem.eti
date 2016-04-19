@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="null"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7LocSchedCovItem"
+  exportable="true"
+  final="false"
+  loadable="false"
+  subpackage="lob.bp7"
+  table="bp7locschedcovitem"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.bp7.schedules.BP7LocSchedCovItemAdapter"
+    name="Coverable"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.schedules.BP7LocSchedCovItemAdapter"
+    name="ScheduledItem"/>
+  <implementsEntity
+    name="BP7ScheduledItem"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.lob.common.schedules.ScheduledItemCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.bp7.schedules.BP7LocSchedCovItemMatcher"/>
+  <foreignkey
+    fkentity="BP7LocSchedCov"
+    name="Schedule"
+    nullok="false"/>
+  <array
+    arrayentity="BP7LocSchedCovItemCov"
+    cascadeDelete="true"
+    desc="Coverages directly attached to the LocSchedCovItem"
+    name="Coverages"/>
+</entity>

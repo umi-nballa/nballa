@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Scheduled item"
+  entity="BP7LocSchedCond"
+  subpackage="lob.bp7"
+  supertype="BP7LocationCond">
+  <implementsInterface
+    iface="gw.api.productmodel.Schedule"
+    impl="gw.lob.bp7.schedules.BP7LocSchedCondImpl"/>
+  <implementsEntity
+    name="ScheduleAutoNumberSequence"/>
+  <array
+    arrayentity="BP7LocSchedCondItem"
+    cascadeDelete="true"
+    desc="Scheduled Items"
+    name="ScheduledItems"/>
+</subtype>

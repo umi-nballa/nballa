@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="BP7ScheduleInputSet"
+    mode="false">
+    <Require
+      name="clause"
+      type="gw.api.domain.Clause"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="clause typeis gw.api.productmodel.Schedule ? clause : null"
+      name="schedule"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="clause typeis gw.api.productmodel.Schedule ? schedule.ScheduledItemMultiPatterns?.first() : null "
+      name="scheduledItemPattern"
+      recalculateOnRefresh="true"/>
+  </InputSet>
+</PCF>

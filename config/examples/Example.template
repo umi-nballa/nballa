@@ -1,0 +1,24 @@
+package $package
+
+uses gw.jbehave.GWStoryRunner
+uses gw.testharness.Jira
+uses gw.testharness.v3.PCServerTestClass
+uses gw.lob.bp7.steps.BP7SubmissionSteps
+
+@gw.testharness.v3.Suites("pcv3bp7lobexample")
+class $className extends PCServerTestClass {
+
+  construct(testName : String) {
+    super(testName)
+  }
+
+  override function beforeClass() {
+    super.beforeClass()
+  }
+
+  @Jira("ENTER_JIRA_NUMBER")
+  function testStory() {
+    new GWStoryRunner().runTestForStory(this, new BP7SubmissionSteps())
+  }
+
+}

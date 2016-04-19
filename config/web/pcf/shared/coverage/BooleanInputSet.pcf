@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="BooleanInputSet">
+    <Require
+      name="displayable"
+      type="gw.lob.common.displayable.Displayable&lt;Boolean&gt;"/>
+    <Require
+      name="fieldDependencyInput"
+      type="boolean"/>
+    <Require
+      name="wizard"
+      type="web.job.JobWizardHelper"/>
+    <CheckBoxInput
+      confirmMessage="displayable.ConfirmMessage"
+      editable="displayable.Editable"
+      id="Displayable"
+      label="displayable.Label"
+      required="false"
+      showConfirmMessage="displayable.ShowConfirmMessage"
+      value="displayable.Value"
+      visible="not fieldDependencyInput and displayable.Visible"/>
+    <CheckBoxInput
+      confirmMessage="displayable.ConfirmMessage"
+      editable="displayable.Editable"
+      id="FieldDependencyDisplayable"
+      label="displayable.Label"
+      required="false"
+      showConfirmMessage="displayable.ShowConfirmMessage"
+      value="displayable.Value"
+      visible="fieldDependencyInput and displayable.Visible">
+      <PostOnChange
+        onChange="displayable.onChange(wizard)"/>
+    </CheckBoxInput>
+  </InputSet>
+</PCF>

@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="RangeInputSet">
+    <Require
+      name="displayable"
+      type="gw.lob.common.displayable.Displayable"/>
+    <Require
+      name="fieldDependencyInput"
+      type="boolean"/>
+    <Require
+      name="wizard"
+      type="web.job.JobWizardHelper"/>
+    <RangeInput
+      confirmMessage="displayable.ConfirmMessage"
+      editable="displayable.Editable"
+      id="Displayable"
+      label="displayable.Label"
+      required="displayable.Required"
+      showConfirmMessage="displayable.ShowConfirmMessage"
+      value="displayable.Value"
+      valueRange="displayable.ValueRange"
+      visible="not fieldDependencyInput and displayable.Visible"/>
+    <RangeInput
+      confirmMessage="displayable.ConfirmMessage"
+      editable="displayable.Editable"
+      id="FieldDependencyDisplayable"
+      label="displayable.Label"
+      required="displayable.Required"
+      showConfirmMessage="displayable.ShowConfirmMessage"
+      value="displayable.Value"
+      valueRange="displayable.ValueRange"
+      visible="fieldDependencyInput and displayable.Visible">
+      <PostOnChange
+        onChange="displayable.onChange(wizard)"/>
+    </RangeInput>
+  </InputSet>
+</PCF>

@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="BP7BasicCoverageInputSet">
+    <Require
+      name="coveragePattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Require
+      name="coverable"
+      type="Coverable"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <HiddenInput
+      id="CovPatternDisplayName"
+      value="coveragePattern.DisplayName"/>
+    <InputGroup
+      allowToggle="coveragePattern.allowToggle(coverable)"
+      childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
+      id="CovPatternInputGroup"
+      label="coveragePattern.DisplayName"
+      onToggle="coverable.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+      <InputIterator
+        elementName="term"
+        forceRefreshDespiteChangedEntries="true"
+        id="CovTermIterator"
+        type="gw.api.domain.covterm.CovTerm"
+        value="coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -&gt; term.Pattern.Priority )">
+        <InputSetRef
+          def="CovTermInputSet(term, openForEdit)"
+          mode="term.ValueTypeName"/>
+      </InputIterator>
+    </InputGroup>
+  </InputSet>
+</PCF>

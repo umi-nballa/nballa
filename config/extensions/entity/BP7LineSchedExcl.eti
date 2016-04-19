@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Scheduled item"
+  entity="BP7LineSchedExcl"
+  subpackage="lob.bp7"
+  supertype="BP7LineExcl">
+  <implementsInterface
+    iface="gw.api.productmodel.Schedule"
+    impl="gw.lob.bp7.schedules.BP7LineSchedExclImpl"/>
+  <implementsEntity
+    name="ScheduleAutoNumberSequence"/>
+  <array
+    arrayentity="BP7LineSchedExclItem"
+    cascadeDelete="true"
+    desc="Scheduled Items"
+    name="ScheduledItems"/>
+</subtype>

@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7SprinklerLeakageEQExt"
+  coverageCategory="BP7BuildingAddlGrp"
+  coverageSubtype="BP7BuildingCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7BuildingCov"
+  owningEntityType="BP7Building"
+  policyLinePattern="BP7Line"
+  priority="1030"
+  public-id="BP7SprinklerLeakageEQExt"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Building.sprinklerLeakageEQExtAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="BP7SprinklerLeakageRate"
+      coverageColumn="StringTerm1"
+      defaultValue=""
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7SprinklerLeakageRate"
+      required="true"/>
+    <GenericCovTermPattern
+      codeIdentifier="BP7SprinklerLeakageBPPRate"
+      coverageColumn="StringTerm2"
+      defaultValue=""
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7SprinklerLeakageBPPRate"
+      required="true"/>
+  </CovTerms>
+</CoveragePattern>

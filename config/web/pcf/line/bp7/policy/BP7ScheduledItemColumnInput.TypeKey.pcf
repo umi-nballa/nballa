@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <ModalCell
+    id="BP7ScheduledItemColumnInput"
+    mode="TypeKey">
+    <Require
+      name="schedulePropertyInfo"
+      type="gw.api.productmodel.SchedulePropertyInfo"/>
+    <Require
+      name="scheduledItem"
+      type="ScheduledItem"/>
+    <Variable
+      initialValue="new gw.api.productmodel.SchedulePropertyValueProvider&lt;String&gt;(scheduledItem, schedulePropertyInfo.PropertyInfo)"
+      name="valueProvider"
+      type="gw.api.productmodel.SchedulePropertyValueProvider&lt;String&gt;"/>
+    <RangeCell
+      editable="true"
+      id="RangeValue"
+      requestValidationExpression="return gw.lob.bp7.BP7PostOnChangeHandler.validateScheduledItemField(scheduledItem, schedulePropertyInfo, VALUE)"
+      required="schedulePropertyInfo.Required"
+      value="valueProvider.Value"
+      valueRange="schedulePropertyInfo.ValueRange">
+      <PostOnChange/>
+    </RangeCell>
+  </ModalCell>
+</PCF>

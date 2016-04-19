@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Covered Location"
+  displayName="Location"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7Location"
+  exportable="true"
+  extendable="true"
+  loadable="false"
+  platform="false"
+  table="bp7location"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.bp7.location.BP7LocationCoverableAdapter"
+    name="Coverable"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.bp7.location.BP7LocationMatcher"/>
+  <implementsInterface
+    iface="gw.api.domain.LineSpecificLocation"
+    impl="gw.lob.bp7.BP7SpecificLocation"/>
+  <implementsInterface
+    iface="gw.lob.common.dependency.FieldDependency"
+    impl="gw.lob.bp7.dependency.BP7LocationDependencies"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7BusinessOwnersLine"
+    name="Line"
+    nullok="false"/>
+  <foreignkey
+    exportable="true"
+    fkentity="PolicyLocation"
+    name="Location"
+    nullok="false"/>
+  <array
+    arrayentity="BP7LocationCov"
+    cascadeDelete="true"
+    desc="Coverages directly attached to the Location"
+    name="Coverages"
+    owner="false"/>
+  <array
+    arrayentity="BP7LocationExcl"
+    cascadeDelete="true"
+    desc="Exclusions directly attached to the Location"
+    name="Exclusions"
+    owner="false"/>
+  <array
+    arrayentity="BP7LocationCond"
+    cascadeDelete="true"
+    desc="Conditions directly attached to the Location"
+    name="Conditions"
+    owner="false"/>
+  <array
+    arrayentity="BP7Building"
+    cascadeDelete="true"
+    desc="Buildings on this location"
+    name="Buildings"
+    owner="false"/>
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+</entity>

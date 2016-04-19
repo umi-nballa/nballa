@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7PharmacistsBroadCov"
+  coverageCategory="BP7LineAddlGrp"
+  coverageSubtype="BP7LineCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7LineCov"
+  owningEntityType="BP7BusinessOwnersLine"
+  policyLinePattern="BP7Line"
+  priority="720"
+  public-id="BP7PharmacistsBroadCov"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7BusinessOwnersLine.pharmacistsBroadCovAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7GrossSales1"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LineCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7GrossSales1"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7GrossSales1USD"
+          currency="usd"
+          minVal="1.0"
+          public-id="BP7GrossSales1USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

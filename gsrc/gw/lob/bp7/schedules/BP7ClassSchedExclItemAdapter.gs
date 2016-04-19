@@ -1,0 +1,53 @@
+ package gw.lob.bp7.schedules
+
+uses gw.api.domain.Clause
+uses gw.api.productmodel.Schedule
+uses gw.lob.common.AbstractScheduledItemAdapter
+uses gw.policy.PolicyLineConfiguration
+
+class BP7ClassSchedExclItemAdapter extends AbstractScheduledItemAdapter {
+
+  var _owner : BP7ClassSchedExclItem as readonly Owner
+
+  construct(item : BP7ClassSchedExclItem) {
+    _owner = item
+  }
+
+  override property get ScheduleParent() : Schedule {
+    return _owner.Schedule
+  }
+
+  override property get PolicyLine() : PolicyLine {
+    return _owner.Schedule.PolicyLine
+  }
+
+  // processed by the coverable generator - made the scheduled item a coverable
+  override property get Clause() : Clause {
+    return AllExclusions.firstWhere(\cov -> cov.Pattern == ScheduleParent.ScheduledItemMultiPatterns?.first())
+  }
+
+  override function hasClause() : boolean {
+    return Clause != null
+  }
+
+  override property get AllExclusions() : Exclusion[] {
+    return _owner.Exclusion != null ? {_owner.Exclusion} : {}
+  }
+
+  override function addExclusion(clause : Exclusion) {
+   _owner.Exclusion = clause as BP7ClassSchedExclItemExcl
+  }
+
+  override function removeExclusion(clause : Exclusion) {
+    if(_owner.Exclusion == clause) {
+      _owner.Exclusion.remove()
+    }
+  }
+  override property get DefaultCurrency() : Currency {
+    return _owner.Branch.BP7Line.PreferredCoverageCurrency
+  }
+
+  override property get AllowedCurrencies() : List<Currency> {
+    return PolicyLineConfiguration.getByLine(InstalledPolicyLine.TC_BP7).AllowedCurrencies
+  }
+}

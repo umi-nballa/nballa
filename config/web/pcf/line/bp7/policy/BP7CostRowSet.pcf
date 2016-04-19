@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <RowSet
+    id="BP7CostRowSet">
+    <Require
+      name="displayCosts"
+      type="java.util.List&lt;gw.lob.bp7.financials.BP7CostDisplayable&gt;"/>
+    <Require
+      name="prorated"
+      type="boolean"/>
+    <Require
+      name="title"
+      type="String"/>
+    <Row
+      visible="(displayCosts.HasElements) and (not prorated)">
+      <Cell
+        bold="true"
+        colspan="7"
+        enableSort="false"
+        id="NonProratedTitle"
+        value="title"/>
+    </Row>
+    <Row
+      visible="displayCosts.HasElements and prorated">
+      <Cell
+        bold="true"
+        colspan="11"
+        enableSort="false"
+        id="ProratedTitle"
+        value="title"/>
+
+    </Row>
+    <RowIterator
+      editable="false"
+      elementName="displayCost"
+      pageSize="0"
+      value="displayCosts">
+      <IteratorSort
+        sortBy="displayCost.Qualifier"
+        sortOrder="1"/>
+      <IteratorSort
+        sortBy="displayCost.DisplayEffectiveDate"
+        sortOrder="2"/>
+      <IteratorSort
+        sortBy="displayCost.DisplayCostID"
+        sortOrder="3"/>
+      <Row>
+        <Cell
+          id="EmptyColumn"
+          value="&quot;&quot;"/>
+        <Cell
+          id="Qualifier"
+          value="displayCost.DisplayDescription"/>
+        <Cell
+          id="Coverage"
+          value="displayCost.DisplayCoverageName"/>
+        <Cell
+          id="CostAdjRate"
+          value="displayCost.DisplayActualAdjRate.setScale(3, java.math.RoundingMode.HALF_UP)"/>
+        <Cell
+          align="right"
+          id="CostBasis"
+          value="com.guidewire.pl.system.util.NumberFormatUtil.render(displayCost.DisplayBasis)"/>
+        <Cell
+          formatType="currency"
+          id="CostTermAmount"
+          value="displayCost.DisplayActualTermAmount"
+          valueVisible="prorated"/>
+        <Cell
+          id="CostEffDate"
+          value="displayCost.DisplayEffectiveDate"
+          valueVisible="prorated"/>
+        <Cell
+          id="CostExpDate"
+          value="displayCost.DisplayExpirationDate"
+          valueVisible="prorated"/>
+        <Cell
+          align="right"
+          id="CostProration"
+          value="gw.api.util.StringUtil.formatNumber(displayCost.DisplayProration, &quot;#0.0000&quot;)"
+          valueVisible="prorated"/>
+        <Cell
+          align="right"
+          formatType="currency"
+          id="CostAmount"
+          value="displayCost.DisplayActualAmount"/>
+        <Cell
+          align="center"
+          id="CostBlanketed"
+          value="displayCost.DisplayBlanketed ? displaykey.Web.Policy.BP7.Financials.InBlanket : displaykey.Web.Policy.BP7.Financials.NotInBlanket"/>
+      </Row>
+    </RowIterator>
+  </RowSet>
+</PCF>

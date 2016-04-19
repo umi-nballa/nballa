@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A modifier for Business Owners"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7LineMod"
+  exportable="true"
+  extendable="true"
+  final="false"
+  loadable="false"
+  table="bp7linemod"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.bp7.line.BP7LineModifierAdapter"
+    name="Modifier"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.bp7.line.BP7LineModifierMatcher"/>
+  <foreignkey
+    fkentity="BP7BusinessOwnersLine"
+    name="BP7Line"
+    nullok="false"/>
+  <array
+    arrayentity="BP7LineRF"
+    cascadeDelete="true"
+    desc="Individual components of the rating factor"
+    name="LineRateFactors"
+    owner="false"/>
+</entity>

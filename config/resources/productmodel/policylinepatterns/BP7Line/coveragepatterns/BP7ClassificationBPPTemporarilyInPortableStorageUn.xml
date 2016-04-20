@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7ClassificationBPPTemporarilyInPortableStorageUn"
+  coverageCategory="BP7ClassificationStdGrp"
+  coverageSubtype="BP7ClassificationCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7ClassificationCov"
+  owningEntityType="BP7Classification"
+  policyLinePattern="BP7Line"
+  priority="180"
+  public-id="BP7ClassificationBPPTemporarilyInPortableStorageUn"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Classification.classificationBPPTemporarilyInPortableStorageAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7Limit1"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7Limit1"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7Limit1USD"
+          currency="usd"
+          defaultValue="10000"
+          minVal="10000.0"
+          public-id="BP7Limit1USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

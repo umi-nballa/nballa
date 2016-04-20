@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7ClassificationBusinessIncomeFromDependentProps"
+  coverageCategory="BP7ClassificationStdGrp"
+  coverageSubtype="BP7ClassificationCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7ClassificationCov"
+  owningEntityType="BP7Classification"
+  policyLinePattern="BP7Line"
+  priority="170"
+  public-id="BP7ClassificationBusinessIncomeFromDependentProps"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Classification.classificationBusinessIncomeFromDependentPropsClauseAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7Limit38"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7Limit38"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7Limit38USD"
+          currency="usd"
+          defaultValue="5000"
+          minVal="5000.0"
+          public-id="BP7Limit38USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="BP7BusinessIncomeFromSecondaryDependentProperties"
+      coverageColumn="BooleanTerm1"
+      defaultValue="false"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7BusinessIncomeFromSecondaryDependentProperties"
+      required="true"/>
+  </CovTerms>
+</CoveragePattern>

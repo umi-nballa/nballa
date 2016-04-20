@@ -1,0 +1,50 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="BP7CoveragesDV">
+    <Require
+      name="coverable"
+      type="Coverable"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="coverageCategory"
+      type="gw.api.productmodel.CoverageCategory"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="initCoveragePatterns()"
+      name="covPatterns"
+      recalculateOnRefresh="true"/>
+    <InputColumn>
+      <InputIterator
+        elementName="coveragePattern"
+        forceRefreshDespiteChangedEntries="true"
+        id="covIterator"
+        value="covPatterns">
+        <IteratorSort
+          sortBy="coveragePattern.Priority"
+          sortOrder="1"/>
+        <InputSetRef
+          def="BP7CoverageInputSet(coveragePattern, coverable, openForEdit, jobWizardHelper)"
+          mode="coveragePattern.CodeIdentifier"/>
+      </InputIterator>
+    </InputColumn>
+    <Code><![CDATA[function initCoveragePatterns() : gw.api.productmodel.CoveragePattern[] {
+  if (coverable == null || coverageCategory == null) return null
+  switch (typeof(coverable)) {
+    case BP7Location:
+      return coverageCategory.coveragePatternsForEntity(BP7Location).where(\ c -> coverable.isCoverageSelectedOrAvailable(c))
+    case BP7Building:
+      return coverageCategory.coveragePatternsForEntity(BP7Building).where(\ c -> coverable.isCoverageSelectedOrAvailable(c))
+    case BP7Classification:
+      return coverageCategory.coveragePatternsForEntity(BP7Classification).where(\ c -> coverable.isCoverageSelectedOrAvailable(c))
+  }
+  return coverageCategory.coveragePatternsForEntity(BP7BusinessOwnersLine).where(\ c -> coverable.isCoverageSelectedOrAvailable(c))
+}]]></Code>
+  </DetailViewPanel>
+</PCF>

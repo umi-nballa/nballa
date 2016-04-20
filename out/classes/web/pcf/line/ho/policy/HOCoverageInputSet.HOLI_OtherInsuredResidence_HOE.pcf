@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="HOCoverageInputSet"
+    mode="HOLI_OtherInsuredResidence_HOE">
+    <Require
+      name="coveragePattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Require
+      name="coverable"
+      type="Coverable"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      initialValue="(coverable as HomeownersLine_HOE)"
+      name="holine"/>
+    <HiddenInput
+      id="CovPatternCode"
+      value="coveragePattern.CodeIdentifier"/>
+    <InputGroup
+      allowToggle="coveragePattern.allowToggle(coverable)"
+      childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
+      id="CovLocationInputGroup"
+      label="coveragePattern.DisplayName"
+      onToggle="holine.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+      <ListViewInput
+        boldLabel="true"
+        editable="true"
+        id="CovLocationsListLV"
+        label="displaykey.Web.Homeowners.HOCoveragesScreen.OtherLocations">
+        <Toolbar>
+          <IteratorButtons
+            addLabel="displaykey.Web.Homeowners.HOCoveragesScreen.AddLocation"
+            iterator="LocationsLV"
+            removeLabel="displaykey.Web.Homeowners.HOCoveragesScreen.RemoveLocation"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="openForEdit"
+          id="LocationsLV">
+          <RowIterator
+            editable="openForEdit"
+            elementName="locItem"
+            hideCheckBoxesIfReadOnly="true"
+            pickLocation="HOCovLocationHOEPopup.push(holine, coveragePattern, true, openForEdit)"
+            toRemove="holine.HOLI_OtherInsuredResidence_HOE.removeCoveredLocation(locItem)"
+            value="holine.HOLI_OtherInsuredResidence_HOE.CoveredLocations">
+            <IteratorSort
+              sortBy="locItem.LocationNumber"
+              sortOrder="1"/>
+            <Row>
+              <Cell
+                action="HOCovLocationHOEPopup.push(holine, locItem, coveragePattern.CodeIdentifier, true, openForEdit)"
+                id="LocationID"
+                label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
+                value="locItem.PolicyLocation.DisplayName"/>
+              <Cell
+                editable="true"
+                id="LimitId"
+                label="displaykey.Web.Homeowners.Coverages.Limit"
+                required="true"
+                value="locItem.LocationLimit"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
+      <PostOnChange/>
+    </InputGroup>
+  </InputSet>
+</PCF>

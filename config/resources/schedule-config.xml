@@ -1,0 +1,733 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ScheduleConfig xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schedule-config.xsd">
+  <Clause pattern="BP7BusinessIncome">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="2">
+      <Name>ExemptJobClassification</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.JobClassification</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="3">
+      <Name>ExemptEmployee</Name>
+      <ColumnName>StringCol2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.Employee</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7FunctlBusnPrsnlPropValtn">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="2">
+      <Name>Description</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Classification.Schedule.Description</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+    <IntegerPropertyInfo priority="3">
+      <Name>ACV</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>NonNegativeInt1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Classification.Schedule.ACV</ColumnLabel>
+      <Required>false</Required>
+    </IntegerPropertyInfo>
+    <IntegerPropertyInfo priority="4">
+      <Name>Limit</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>NonNegativeInt2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Classification.Schedule.Limit</ColumnLabel>
+      <Required>true</Required>
+    </IntegerPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AmendmentLiquorLiabExclExcptn">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="2">
+      <Name>Description</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.DescriptionPremisesActivities</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7WaiverTransferRightsOfRecoveryAgainstOthersToUs">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="2">
+      <Name>Description</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.NameOfPersonOrOrganization</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7ContrctrsToolsAndEquipmntSchedule">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="2">
+      <Name>Description</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.DescriptionOfItem</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+    <IntegerPropertyInfo priority="3">
+      <Name>Limit</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>NonNegativeInt1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.Limit</ColumnLabel>
+      <Required>true</Required>
+    </IntegerPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7ProtectiveSafeguards">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <TypeKeyPropertyInfo isKey="true" priority="2">
+      <Name>Symbol</Name>
+      <ColumnName>TypeKeyCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Building.Schedule.ProtectiveSafeguardsSymbol</ColumnLabel>
+      <Required>true</Required>
+      <TypeList>BP7ProtectiveDeviceOrService</TypeList>
+    </TypeKeyPropertyInfo>
+    <StringPropertyInfo priority="3">
+      <Name>Description</Name>
+      <ColumnName>StringCol2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Building.Schedule.ProtectiveSafeguardsDescription</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7DesignatedPremisesProject">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="2">
+      <Name>DescriptionOfPremises</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.DescriptionOfPremises</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo isKey="true" priority="3">
+      <Name>DescriptionOfProject</Name>
+      <ColumnName>StringCol2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.DescriptionOfProject</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7EmployeeDishonestyNamedEmployees">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo priority="2" isKey="true">
+      <Name>NameOfEmployees</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.NameOfEmployees</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7DiscretionaryPayrollExpense">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo priority="2" isKey="true">
+      <Name>JobClassificationsOrEmployees</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.JobClassificationsOrEmployees</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo priority="3">
+      <Name>MaximumNumberOfDaysForDiscretionaryPayrollExpense</Name>
+      <ColumnName>StringCol2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.MaximumNumberOfDaysForDiscretionaryPayrollExpense</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7Y2KComputerRelatedProblemsExclSpecifiedCov">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <BooleanPropertyInfo priority="110">
+      <Name>BodilyInjuryExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>BoolCol3</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BodilyInjuryExcluded</ColumnLabel>
+      <Required>true</Required>
+    </BooleanPropertyInfo>
+    <BooleanPropertyInfo priority="120">
+      <Name>PropertyDamageExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>BoolCol4</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.PropertyDamageExcluded</ColumnLabel>
+      <Required>true</Required>
+    </BooleanPropertyInfo>
+    <BooleanPropertyInfo priority="130">
+      <Name>PersonalAndAdvertisingInjuryExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>BoolCol5</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.PersonalAndAdvertisingInjuryExcluded</ColumnLabel>
+      <Required>true</Required>
+    </BooleanPropertyInfo>
+    <TextAreaPropertyInfo priority="140" isKey="true">
+      <Name>DescriptionOfLocationsProductsOperationsOrServicesToBeExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.DescriptionOfLocationsProductsOperationsOrServicesToBeExcluded</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7Y2KComputerRelatedProblemsLimitedCovOptions">
+    <AutoNumberPropertyInfo priority="1">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <BooleanPropertyInfo priority="110">
+      <Name>BodilyInjuryExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>BoolCol3</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BodilyInjuryExcluded</ColumnLabel>
+      <Required>true</Required>
+    </BooleanPropertyInfo>
+    <BooleanPropertyInfo priority="120">
+      <Name>PropertyDamageExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>BoolCol4</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.PropertyDamageExcluded</ColumnLabel>
+      <Required>true</Required>
+    </BooleanPropertyInfo>
+    <BooleanPropertyInfo priority="130">
+      <Name>PersonalAndAdvertisingInjuryExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>BoolCol5</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.PersonalAndAdvertisingInjuryExcluded</ColumnLabel>
+      <Required>true</Required>
+    </BooleanPropertyInfo>
+    <TextAreaPropertyInfo priority="140" isKey="true">
+      <Name>DescriptionOfLocationsProductsOperationsOrServicesToBeExcluded</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.DescriptionOfLocationsProductsOperationsOrServicesToBeExcluded</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7CondLmtnOfCovTerrSublimitAnnualAggTerrAct2002">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <TextAreaPropertyInfo priority="30" isKey="true">
+      <Name>DescOfPropOrCov</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7CondLmtnOfCovTerrSublimitAnnualAggTerrAct2002.DescOfPropOrCov</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+    <StringPropertyInfo priority="20">
+      <Name>States</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7CondLmtnOfCovTerrSublimitAnnualAggTerrAct2002.States</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7LmtnOfCovForTerrSubLimitAnnualAggBasis">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <TextAreaPropertyInfo priority="30" isKey="true">
+      <Name>DescOfPropOrCov</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7LmtnOfCovForTerrSubLimitAnnualAggBasis.DescOfPropOrCov</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+    <StringPropertyInfo priority="20">
+      <Name>States</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7LmtnOfCovForTerrSubLimitAnnualAggBasis.States</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7LossRentalValueLandlordDesignatedPayee">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo priority="20" isKey="true">
+      <Name>Name</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7LossRentalValueLandlordDesignatedPayee.Name</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo priority="30">
+      <Name>DesignationOfPremises</Name>
+      <ColumnName>StringCol2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7LossRentalValueLandlordDesignatedPayee.DesignationOfPremises</ColumnLabel>
+      <Required>true</Required>
+    </StringPropertyInfo>
+    <Item pattern="BP7LossRentalValueLandlordDesignatedPayeeItem"/>
+  </Clause>
+  <Clause pattern="BP7Photography">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <StringPropertyInfo priority="20" isKey="true">
+      <Name>DescriptionOfEquipment</Name>
+      <ColumnName>StringCol2</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7Photography.DescriptionOfEquipment</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo priority="20">
+      <Name>Make</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7Photography.Make</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo priority="20">
+      <Name>ModelNumber</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>StringCol3</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7Photography.ModelNumber</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+    <StringPropertyInfo priority="20">
+      <Name>SerialNumber</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>StringCol4</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7Photography.SerialNumber</ColumnLabel>
+      <Required>false</Required>
+    </StringPropertyInfo>
+    <Item pattern="BP7PhotographyItem"/>
+  </Clause>
+  <Clause pattern="BP7OffPremIntrpOfBusnVehiclesAndMobileEquipment">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <TextAreaPropertyInfo isKey="true" priority="20">
+      <Name>DescriptionOfScheduledProperty</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Line.Schedule.BP7OffPremIntrpOfBusnVehiclesAndMobileEquipment.DescriptionOfScheduledProperty</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+    <Item pattern="BP7OffPremIntrpOfBusnVehiclesAndMobileEquipItem"/>
+  </Clause>
+  <Clause pattern="BP7ApartmentBuildingsTenantsAutos">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <ForeignKeyPropertyInfo priority="20" isKey="true">
+      <Name>Location</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>Location</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Location</ColumnLabel>
+      <Required>true</Required>
+      <ValueRangeGetter>gw.lob.bp7.schedules.BP7LineLocationsValueRangeGetter</ValueRangeGetter>
+    </ForeignKeyPropertyInfo>
+    <Item pattern="BP7ApartmentBuildingsTenantsAutosItem"/>
+  </Clause>
+  <Clause pattern="BP7RestaurantsLossOrDamageToCustomersAutosLegalLia">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <ForeignKeyPropertyInfo priority="20" isKey="true">
+      <Name>Location</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>Location</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Location</ColumnLabel>
+      <Required>true</Required>
+      <ValueRangeGetter>gw.lob.bp7.schedules.BP7LineLocationsValueRangeGetter</ValueRangeGetter>
+    </ForeignKeyPropertyInfo>
+    <Item pattern="BP7RestaurantsLossOrDamageToCustomersAutosLegalLi1"/>
+  </Clause>
+  <Clause pattern="BP7AddlInsdVendors">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+    <Item pattern="BP7AddlInsdVendorsItem"/>
+  </Clause>
+  <Clause pattern="BP7AddlInsdControllingInterest">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdOwnersLesseesOrContrctrsCompldOps">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <TextAreaPropertyInfo priority="30">
+      <Name>LocationAndDescription</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Schedule.BP7AddlInsdOwnersLesseesOrContrctrsCompldOps.LocationAndDescription</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdLessorsLeasedEquipmt">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+    <Item pattern="BP7AddlInsdLessorsLeasedEquipmtItem"/>
+  </Clause>
+  <Clause pattern="BP7AddlInsdDesignatedPersonOrg">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+    <Item pattern="BP7AddlInsdDesignatedPersonOrgItem"/>
+  </Clause>
+  <Clause pattern="BP7AddlInsdStatePoliticalSubdivisions">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdStatePoliticalSubdivisionsPermits">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdEngineersArchitectsSurveyorsNotEngagedB">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LineSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+    <Item pattern="BP7AddlInsdEngineersArchitectsSurveyorsNotEngaged1"/>
+  </Clause>
+  <Clause pattern="BP7AddlInsdBldgOwners">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <ReadOnlyPropertyInfo priority="30">
+      <Name>Address</Name>
+      <ColumnName>StringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Address</ColumnLabel>
+      <Required>false</Required>
+      <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddressDisplayValue</MethodExpression>
+    </ReadOnlyPropertyInfo>
+    <TextAreaPropertyInfo priority="40">
+      <Name>BuildingDescription</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Schedule.BP7AddlInsdBldgOwners.BuildingDescription</ColumnLabel>
+      <Required>false</Required>
+    </TextAreaPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdMortgageeAssigneeReceiver">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <TextAreaPropertyInfo priority="30">
+      <Name>DesignationOfPremises</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Schedule.BP7AddlInsdMortgageeAssigneeReceiver.DesignationOfPremises</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdOwnersLesseesContrctrs">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <Item pattern="BP7AddlInsdOwnersLesseesContrctrsItem"/>
+  </Clause>
+  <Clause pattern="BP7AddlInsdGrantorOfFranchiseEndorsement">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdCoOwnerInsdPremises">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdLandLeased">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <TextAreaPropertyInfo priority="30">
+      <Name>DesignationOfPremises</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Schedule.BP7AddlInsdLandLeased.DesignationOfPremises</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+  </Clause>
+  <Clause pattern="BP7AddlInsdManagersLessorsPremises">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInsuredPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInsured</Name>
+      <ScheduledItemType>BP7LocSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInsured</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInsured.Name</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInsuredPropertyInfo>
+    <TextAreaPropertyInfo priority="30">
+      <Name>DesignationOfPremises</Name>
+      <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+      <ColumnName>LongStringCol1</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.Location.Schedule.BP7AddlInsdManagersLessorsPremises.DesignationOfPremises</ColumnLabel>
+      <Required>true</Required>
+    </TextAreaPropertyInfo>
+    <Item pattern="BP7AddlInsdManagersLessorsPremisesItem"/>
+  </Clause>
+  <Clause pattern="BP7LossPayable">
+    <AutoNumberPropertyInfo priority="10">
+      <Name>ScheduleNumber</Name>
+      <ColumnName>ScheduleNumber</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.ScheduleNumber</ColumnLabel>
+      <Required>false</Required>
+    </AutoNumberPropertyInfo>
+    <AdditionalInterestPropertyInfo priority="20" isKey="true">
+      <Name>AdditionalInterest</Name>
+      <ScheduledItemType>BP7BldgSchedCovItem</ScheduledItemType>
+      <ColumnName>AdditionalInterest</ColumnName>
+      <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInterest.Contact</ColumnLabel>
+      <Required>true</Required>
+    </AdditionalInterestPropertyInfo>
+    <Item pattern="BP7LossPayableItem"/>
+  </Clause>
+</ScheduleConfig>

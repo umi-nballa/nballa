@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7ClassificationPermanentYardsStorage"
+  coverageCategory="BP7ClassificationStdGrp"
+  coverageSubtype="BP7ClassificationCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7ClassificationCov"
+  owningEntityType="BP7Classification"
+  policyLinePattern="BP7Line"
+  priority="190"
+  public-id="BP7ClassificationPermanentYardsStorage"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Classification.classificationPermanentYardsStorageClauseAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7Limit2"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7Limit2"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7Limit2USD"
+          currency="usd"
+          minVal="1.0"
+          public-id="BP7Limit2USD"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

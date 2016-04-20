@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7FunctlBldgValtn"
+  coverageCategory="BP7BuildingAddlGrp"
+  coverageSubtype="BP7BuildingCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7BuildingCov"
+  owningEntityType="BP7Building"
+  policyLinePattern="BP7Line"
+  priority="980"
+  public-id="BP7FunctlBldgValtn"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Building.functlBldgValtnAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="BP7BusinessIncomeExtraExpense"
+      coverageColumn="BooleanTerm1"
+      defaultValue=""
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7BusinessIncomeExtraExpense"
+      required="true"/>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7BuildingCovOpt"
+      codeIdentifier="BP7NumberOfHours"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7NumberOfHours"
+      required="false"
+      restrictionModel="bipd"
+      valueType="hours">
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zifjsacvml0sh1r1ajahh0q2ejb"
+          optionCode="0"
+          priority="10"
+          public-id="zifjsacvml0sh1r1ajahh0q2ejb"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7FunctlBldgValtn.functionBuildingValuationHoursWaitingTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zv9horqfsma1h7onq0mjohrs20a"
+          optionCode="72"
+          priority="20"
+          public-id="zv9horqfsma1h7onq0mjohrs20a"
+          value="72">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7FunctlBldgValtn.functionBuildingValuationHoursWaitingTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zn3h4mu6femk653tl6jd6t75o19"
+          optionCode="NotApplicable"
+          priority="30"
+          public-id="zn3h4mu6femk653tl6jd6t75o19"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7FunctlBldgValtn.functionBuildingValuationHoursWaitingTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+      </Options>
+    </OptionCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

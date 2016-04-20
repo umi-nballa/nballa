@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="ScheduledItemPropertyInputSet">
+    <Require
+      name="schedulePropertyInfo"
+      type="gw.api.productmodel.SchedulePropertyInfo"/>
+    <Require
+      name="scheduledItem"
+      type="ScheduledItem"/>
+    <Require
+      name="jobWizardHelper"
+      type="gw.api.web.job.JobWizardHelper"/>
+    <Require
+      name="displayableFactory"
+      type="gw.lob.common.displayable.SchedulePropertyInfoDisplayableFactory"/>
+    <Variable
+      initialValue="displayableFactory.createEditableSchedulePropertyInfoDisplayable(scheduledItem, schedulePropertyInfo)"
+      name="displayable"
+      recalculateOnRefresh="true"
+      type="gw.lob.common.displayable.Displayable"/>
+    <Variable
+      initialValue="displayableFactory.doesPropertyHaveDependents(scheduledItem, schedulePropertyInfo)"
+      name="propertyInfoHasDependent"
+      type="boolean"/>
+    <InputSetRef
+      def="IntegerInputSet(displayable as gw.lob.common.displayable.Displayable&lt;java.lang.Integer&gt;, scheduledItem, schedulePropertyInfo, propertyInfoHasDependent, jobWizardHelper)"
+      id="IntegerInput"
+      visible="schedulePropertyInfo.ValueType == &quot;AutoNumber&quot; or schedulePropertyInfo.ValueType == &quot;Integer&quot; or schedulePropertyInfo.ValueType == &quot;Percent&quot; or schedulePropertyInfo.ValueType == &quot;IntegerRange&quot;"/>
+    <InputSetRef
+      def="BooleanInputSet(displayable as gw.lob.common.displayable.Displayable&lt;Boolean&gt;, propertyInfoHasDependent, jobWizardHelper)"
+      id="BooleanInput"
+      visible="schedulePropertyInfo.ValueType == &quot;Boolean&quot;"/>
+    <InputSetRef
+      def="DateInputSet(displayable as gw.lob.common.displayable.Displayable&lt;java.util.Date&gt;, propertyInfoHasDependent, jobWizardHelper)"
+      id="DateInput"
+      visible="schedulePropertyInfo.ValueType == &quot;Date&quot;"/>
+    <InputSetRef
+      def="StringInputSet(displayable as gw.lob.common.displayable.Displayable&lt;String&gt;, propertyInfoHasDependent, jobWizardHelper)"
+      id="StringInput"
+      visible="schedulePropertyInfo.ValueType == &quot;String&quot;"/>
+    <InputSetRef
+      def="RangeInputSet(displayable, propertyInfoHasDependent, jobWizardHelper)"
+      id="RangeInput"
+      visible="schedulePropertyInfo.ValueType == &quot;TypeKey&quot; or schedulePropertyInfo.ValueType == &quot;ForeignKey&quot;"/>
+    <InputSetRef
+      def="BigDecimalInputSet(displayable as gw.lob.common.displayable.Displayable&lt;java.math.BigDecimal&gt;, scheduledItem, schedulePropertyInfo, propertyInfoHasDependent, jobWizardHelper)"
+      visible="schedulePropertyInfo.ValueType == &quot;BigDecimal&quot;"/>
+    <InputSetRef
+      def="TextAreaInputSet(displayable as gw.lob.common.displayable.Displayable&lt;String&gt;, scheduledItem, schedulePropertyInfo, propertyInfoHasDependent, jobWizardHelper)"
+      visible="schedulePropertyInfo.ValueType == &quot;TextArea&quot;"/>
+    <InputSetRef
+      def="AdditionalInsuredInputSet(displayable as gw.lob.common.displayable.Displayable&lt;PolicyAddlInsuredDetail&gt;, propertyInfoHasDependent, jobWizardHelper)"
+      id="AdditionalInsured"
+      visible="schedulePropertyInfo.ValueType == &quot;AdditionalInsured&quot;"/>
+    <InputSetRef
+      def="AdditionalInterestInputSet(displayable as gw.lob.common.displayable.Displayable&lt;AddlInterestDetail&gt;, propertyInfoHasDependent, jobWizardHelper)"
+      id="AdditionalInterest"
+      visible="schedulePropertyInfo.ValueType == &quot;AdditionalInterest&quot;"/>
+  </InputSet>
+</PCF>

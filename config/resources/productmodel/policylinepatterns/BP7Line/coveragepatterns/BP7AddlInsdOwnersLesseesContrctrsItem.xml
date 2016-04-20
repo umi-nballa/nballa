@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7AddlInsdOwnersLesseesContrctrsItem"
+  coverageCategory="BP7LocationStdGrp"
+  coverageSubtype="BP7LocSchedCovItemCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7LocSchedCovItemCov"
+  owningEntityType="BP7LocSchedCovItem"
+  policyLinePattern="BP7Line"
+  priority="1310"
+  public-id="BP7AddlInsdOwnersLesseesContrctrsItem"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7LocSchedCovItem.isAvailableForItem("BP7AddlInsdOwnersLesseesContrctrsItem")]]></AvailabilityScript>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="BP7CGLClassCode6"
+      coverageColumn="StringTerm1"
+      defaultValue=""
+      lookupTableName="BP7LocSchedCovItemCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7CGLClassCode6"
+      required="true"/>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7ManualPremium13"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LocSchedCovItemCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7ManualPremium13"
+      required="true"
+      restrictionModel="bipd"
+      valueType="other">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7ManualPremium13NOCURRENCY"
+          minVal="0.0"
+          public-id="BP7ManualPremium13NOCURRENCY"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

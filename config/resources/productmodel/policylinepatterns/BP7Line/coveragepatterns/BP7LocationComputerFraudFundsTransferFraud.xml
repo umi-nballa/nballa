@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7LocationComputerFraudFundsTransferFraud"
+  coverageCategory="BP7LocationStdGrp"
+  coverageSubtype="BP7LocationCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7LocationCov"
+  owningEntityType="BP7Location"
+  policyLinePattern="BP7Line"
+  priority="520"
+  public-id="BP7LocationComputerFraudFundsTransferFraud"
+  referenceDateByType="PolicyTerm">
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7LocationCovOpt"
+      codeIdentifier="BP7ComputerFraudApply"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7ComputerFraudApply"
+      required="true"
+      restrictionModel="bipd"
+      valueType="other">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="BP7ComputerFraudApplyNOCURRENCY"
+          defaultValue="Yes"
+          public-id="BP7ComputerFraudApplyNOCURRENCY"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z2vh82o2ec6gndui5i6lrqq1mu9"
+          optionCode="NotApplicable"
+          priority="10"
+          public-id="z2vh82o2ec6gndui5i6lrqq1mu9"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7LocationComputerFraudFundsTransferFraud.computerFraudLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z11i0sl7bh0ucd5l854mkuda5tb"
+          optionCode="Yes"
+          priority="20"
+          public-id="z11i0sl7bh0ucd5l854mkuda5tb"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7LocationComputerFraudFundsTransferFraud.computerFraudLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z9ohi702nokou5tbdmia9vqv1e9"
+          optionCode="No"
+          priority="30"
+          public-id="z9ohi702nokou5tbdmia9vqv1e9"
+          value="0">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7LocationComputerFraudFundsTransferFraud.computerFraudLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+      </Options>
+    </OptionCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="BP7ComputerFraudNumEmployees"
+      coverageColumn="PositiveIntTerm1"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Other"
+      priority="20"
+      public-id="BP7ComputerFraudNumEmployees"
+      required="true">
+      <AvailabilityScript><![CDATA[return BP7Location.BP7LocationComputerFraudFundsTransferFraud.computerFraudNumEmployeesCovTermAvailable()]]></AvailabilityScript>
+    </GenericCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

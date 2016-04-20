@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="BP7Location">
+  <column
+    columnName="bp7unitnumber"
+    desc="Location Number"
+    name="UnitNumber"
+    nullok="true"
+    type="shorttext"/>
+  <typekey
+    columnName="bp7feettohydrant"
+    default=""
+    desc="Feet to Water Source/Hydrant"
+    name="FeetToHydrant"
+    nullok="true"
+    typelist="BP7FeetToHydrant"/>
+  <typekey
+    columnName="bp7fireprotectionclassppc"
+    default=""
+    desc="Protection Class"
+    name="FireProtectionClassPPC"
+    nullok="true"
+    typelist="BP7FireProtectionClassPPC"/>
+  <column
+    columnName="bp7liquorliabgrade"
+    default="0"
+    desc="Liquor Liability Grade"
+    name="LiquorLiabGrade"
+    nullok="true"
+    type="IntegerRange">
+    <columnParam
+      name="minimum"
+      value="0"/>
+    <columnParam
+      name="maximum"
+      value="10"/>
+  </column>
+</extension>

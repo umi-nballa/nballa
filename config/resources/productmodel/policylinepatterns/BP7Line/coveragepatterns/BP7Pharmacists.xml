@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7Pharmacists"
+  coverageCategory="BP7LineAddlGrp"
+  coverageSubtype="BP7LineCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7LineCov"
+  owningEntityType="BP7BusinessOwnersLine"
+  policyLinePattern="BP7Line"
+  priority="710"
+  public-id="BP7Pharmacists"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7BusinessOwnersLine.pharmacistsAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="BP7GrossSales"
+      coverageColumn="StringTerm1"
+      defaultValue=""
+      lookupTableName="BP7LineCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7GrossSales"
+      required="true"/>
+  </CovTerms>
+</CoveragePattern>

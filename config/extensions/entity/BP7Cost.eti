@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  abstract="true"
+  desc="A unit of premium or other cost (taxes, fees, etc.) for the Business Owners line."
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7Cost"
+  exportable="true"
+  extendable="true"
+  final="false"
+  loadable="false"
+  platform="false"
+  table="bp7cost"
+  type="effdated">
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostMethods"
+    impl="gw.lob.bp7.financials.BP7AbstractCostMethods"/>
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostDisplayable"
+    impl="gw.lob.bp7.financials.BP7CostDisplayableImpl"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.financials.BP7CostAdapter"
+    name="Cost"/>
+  <foreignkey
+    fkentity="BP7BusinessOwnersLine"
+    name="Line"
+    nullok="false"/>
+  <array
+    arrayentity="BP7Transaction"
+    cascadeDelete="true"
+    getterScriptability="doesNotExist"
+    name="Transactions"
+    setterScriptability="hidden"/>
+</entity>

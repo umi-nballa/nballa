@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7ApartmentBuildingsTenantsAutosItem"
+  coverageCategory="BP7LineStdGrp"
+  coverageSubtype="BP7LineSchedCovItemCov"
+  coveredPartyType="ThirdParty"
+  existence="Required"
+  lookupTableName="BP7LineSchedCovItemCov"
+  owningEntityType="BP7LineSchedCovItem"
+  policyLinePattern="BP7Line"
+  priority="1330"
+  public-id="BP7ApartmentBuildingsTenantsAutosItem"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7LineSchedCovItem.isAvailableForItem("BP7ApartmentBuildingsTenantsAutosItem")]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7NumLimits"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LineSchedCovItemCovTerm"
+      modelType="Limit"
+      priority="10"
+      public-id="BP7NumLimits"
+      required="true"
+      restrictionModel="bipd"
+      valueType="count">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7NumLimitsNOCURRENCY"
+          defaultValue="0"
+          minVal="0.0"
+          public-id="BP7NumLimitsNOCURRENCY"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

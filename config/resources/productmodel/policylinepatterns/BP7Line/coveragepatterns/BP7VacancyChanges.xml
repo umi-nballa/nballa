@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="BP7VacancyChanges"
+  coverageCategory="BP7BuildingAddlGrp"
+  coverageSubtype="BP7BuildingCov"
+  coveredPartyType="ThirdParty"
+  existence="Electable"
+  lookupTableName="BP7BuildingCov"
+  owningEntityType="BP7Building"
+  policyLinePattern="BP7Line"
+  priority="1050"
+  public-id="BP7VacancyChanges"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Building.vacancyChangesAvailable()]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7MinPctRented"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
+      priority="10"
+      public-id="BP7MinPctRented"
+      required="true"
+      restrictionModel="bipd"
+      valueType="percent">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="BP7MinPctRentedNOCURRENCY"
+          maxVal="30.0"
+          minVal="10.0"
+          public-id="BP7MinPctRentedNOCURRENCY"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

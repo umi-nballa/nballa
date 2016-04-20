@@ -1,0 +1,23 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Building Level Cost"
+  entity="BP7BuildingCovCost"
+  supertype="BP7Cost">
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostMethods"
+    impl="gw.lob.bp7.financials.BP7BuildingCovCostMethods"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.financials.BP7CostAdapter"
+    name="Cost"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7Building"
+    name="Building"
+    nullok="false"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7BuildingCov"
+    name="BuildingCov"
+    nullok="false"/>
+</subtype>

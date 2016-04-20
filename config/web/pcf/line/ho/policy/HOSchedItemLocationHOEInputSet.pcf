@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="HOSchedItemLocationHOEInputSet">
+    <Require
+      name="schedItem"
+      type="ScheduledItem_HOE"/>
+    <Require
+      name="dwelling"
+      type="Dwelling_HOE"/>
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="covPattern"
+      type="String"/>
+    <Require
+      name="locFilter"
+      type="boolean"/>
+    <Require
+      name="openForEdit"
+      type="Boolean"/>
+    <Variable
+      initialValue="policyPeriod.getUnassignedAccountLocations().toTypedArray()"
+      name="unassignedAccountLocations"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="dwelling.getAllPolLocationsExceptDwellingPolLoc(locFilter, covPattern )"
+      name="availablePolicyLocations"
+      type="PolicyLocation[]"/>
+    <RangeInput
+      action="LocationPopup.push(null,schedItem.PolicyLocation, policyPeriod, openForEdit, false, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+      editable="openForEdit"
+      id="HOCoveredLocationInput"
+      label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
+      required="true"
+      value="schedItem.PolicyLocation"
+      valueRange="availablePolicyLocations"
+      valueWidth="180">
+      <PickerMenuItem
+        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+        id="NewCovLocation"
+        label="displaykey.Web.Policy.LocationContainer.Location.New"
+        onPick="schedItem.PolicyLocation = PickedValue;"/>
+      <MenuItem
+        id="AddExistingAccountLocation"
+        label="displaykey.Web.Policy.LocationContainer.Location.AddExistingAccountLocation">
+        <MenuItemIterator
+          elementName="unassignedAccountLocation"
+          id="MenuItemIteratorId"
+          value="unassignedAccountLocations">
+          <IteratorSort
+            sortBy="unassignedAccountLocation.LocationNum"
+            sortOrder="1"/>
+          <PickerMenuItem
+            action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+            id="unassignedAccountLocation"
+            label="unassignedAccountLocation"
+            onPick="schedItem.PolicyLocation = PickedValue;"/>
+        </MenuItemIterator>
+      </MenuItem>
+      <PickerMenuItem
+        action="LocationPopup.push(null,schedItem.PolicyLocation, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+        id="EditCovLocation"
+        label="displaykey.Web.Policy.LocationContainer.Location.EditLocation"
+        onPick="schedItem.PolicyLocation = PickedValue; "
+        visible="schedItem.PolicyLocation != null"/>
+    </RangeInput>
+  </InputSet>
+</PCF>

@@ -1,0 +1,142 @@
+<DiffTree xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="schema/difftree.xsd">
+  <Section label="displaykey.Web.Differences.LOB.Common.PolicyInfo" sortorder="1">
+    <RootProperties includefromtype="PolicyPeriod" sortorder="1"/>
+    <RootProperties includefromtype="EffectiveDatedFields" sortorder="2">
+      <PropertyDisplay propertyname="OfferingCode" value="ENTITY.getOfferingName(VALUE)"/>
+    </RootProperties>
+    <RootEntity type="PolicyPriNamedInsured" label="displaykey.Web.Differences.LOB.Common.PolicyPriNamedInsured(ENTITY.DisplayName)" sortorder="3"/>
+    <RootEntity type="PolicySecNamedInsured" label="displaykey.Web.Differences.LOB.Common.PolicySecNamedInsured(ENTITY.DisplayName)" sortorder="4"/>
+    <RootEntity type="PolicyAddlNamedInsured" label="displaykey.Web.Differences.LOB.Common.PolicyAddlNamedInsured(ENTITY.DisplayName)" sortorder="5"/>
+    <RootEntity type="PolicyAddlInterest" showadds="false" showremoves="false" label="displaykey.Web.Differences.LOB.Common.PolicyAddlInterest(ENTITY.DisplayName)" sortorder="8"/>
+    <RootEntity type="PolicyAddress" label="displaykey.Web.Differences.LOB.Common.PolicyAddress(ENTITY.AddressType)" sortorder="8"/>
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.BP7.Line" sortorder="2">
+    <RootEntity type="BP7BusinessOwnersLine">
+      <Properties includefromtype="BP7BusinessOwnersLine" parentpath="ENTITY" sortorder="1"/>
+      <SubSection label="displaykey.Web.Differences.LOB.Common.Coverages" sortorder="2">
+        <Entity type="BP7LineCov" parentpath="ENTITY.BP7Line"/>
+        <Entity type="BP7LineSchedCov" parentpath="ENTITY.BP7Line" sortorder="2">
+          <Entity type="BP7LineSchedCovItem" parentpath="ENTITY.Schedule">
+            <Entity type="BP7LineSchedCovItemCov" parentpath="ENTITY.LineSchedCovItem"/>
+          </Entity>
+        </Entity>
+      </SubSection>
+      <SubSection label="displaykey.Web.Differences.LOB.BP7.Exclusions" sortorder="3">
+        <Entity type="BP7LineExcl" parentpath="ENTITY.BP7Line" sortorder="1"/>
+        <Entity type="BP7LineSchedExcl" parentpath="ENTITY.BP7Line" sortorder="2">
+          <Entity type="BP7LineSchedExclItem" parentpath="ENTITY.Schedule">
+            <Entity type="BP7LineSchedExclItemExcl" parentpath="ENTITY.LineSchedExclItem"/>
+          </Entity>
+        </Entity>
+      </SubSection>
+      <SubSection label="displaykey.Web.Differences.LOB.BP7.Conditions" sortorder="4">
+        <Entity type="BP7LineCond" parentpath="ENTITY.BP7Line" sortorder="1"/>
+        <Entity type="BP7LineSchedCond" parentpath="ENTITY.BP7Line" sortorder="2">
+          <Entity type="BP7LineSchedCondItem" parentpath="ENTITY.Schedule">
+            <Entity type="BP7LineSchedCondItemCond" parentpath="ENTITY.LineSchedCondItem"/>
+          </Entity>
+        </Entity>
+      </SubSection>
+      <SubSection label="displaykey.Web.Differences.LOB.BP7.Modifiers" sortorder="4">
+        <Entity type="BP7LineMod" parentpath="ENTITY.BP7Line">
+          <Entity type="BP7LineRF" parentpath="ENTITY.BP7LineModifier"/>
+        </Entity>
+      </SubSection>
+    </RootEntity>
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.Common.Locations" sortorder="3">
+    <RootEntity type="BP7Location">
+        <Properties includefromtype="PolicyLocation" parentpath="ENTITY.Branch.BP7Line.BP7Locations.firstWhere(\ bl->bl.Location==ENTITY)" sortorder="1"/>
+        <Properties includefromtype="TerritoryCode" parentpath="ENTITY.Branch.BP7Line.BP7Locations.firstWhere(\ bl->bl.Location.TerritoryCodes.first()==ENTITY)" sortorder="2"/>
+        <Properties includefromtype="BP7Location" parentpath="ENTITY" sortorder="3"/>
+        <SubSection label="displaykey.Web.Differences.LOB.Common.Coverages" sortorder="4">
+            <Entity type="entity.BP7LocationCov" parentpath="ENTITY.Location"/>
+            <Entity type="BP7LocSchedCov" parentpath="ENTITY.Location" sortorder="2">
+                <Entity type="BP7LocSchedCovItem" parentpath="ENTITY.Schedule">
+                    <Entity type="BP7LocSchedCovItemCov" parentpath="ENTITY.LocSchedCovItem"/>
+                </Entity>
+            </Entity>
+        </SubSection>
+        <SubSection label="displaykey.Web.Differences.LOB.BP7.Exclusions" sortorder="5">
+            <Entity type="entity.BP7LocationExcl" parentpath="ENTITY.Location"/>
+            <Entity type="BP7LocSchedExcl" parentpath="ENTITY.Location" sortorder="2">
+                <Entity type="BP7LocSchedExclItem" parentpath="ENTITY.Schedule">
+                    <Entity type="BP7LocSchedExclItemExcl" parentpath="ENTITY.LocSchedExclItem"/>
+                </Entity>
+            </Entity>
+        </SubSection>
+        <SubSection label="displaykey.Web.Differences.LOB.BP7.Conditions" sortorder="6">
+            <Entity type="entity.BP7LocationCond" parentpath="ENTITY.Location"/>
+            <Entity type="BP7LocSchedCond" parentpath="ENTITY.Location" sortorder="2">
+              <Entity type="BP7LocSchedCondItem" parentpath="ENTITY.Schedule">
+                <Entity type="BP7LocSchedCondItemCond" parentpath="ENTITY.LocSchedCondItem"/>
+              </Entity>
+            </Entity>
+        </SubSection>
+        <SubSection label="displaykey.Web.Differences.LOB.BP7.BuildingsAndClassifications" sortorder="7">
+            <Entity type="BP7Building" parentpath="ENTITY.Location" sortorder="1">
+                <Properties includefromtype="Building" parentpath="ENTITY.Branch.BP7Line.BP7Locations*.Buildings.firstWhere(\ b -> b.Building == ENTITY)" sortorder="1"/>
+                <Properties includefromtype="BP7Building" parentpath="ENTITY" sortorder="2"/>
+                <SubSection label="displaykey.Web.Differences.LOB.Common.Coverages" sortorder="3">
+                    <Entity type="BP7BuildingCov" parentpath="ENTITY.Building" sortorder="1">
+                        <Properties includefromtype="BP7BuildingCov" parentpath="ENTITY"/>
+                    </Entity>
+                    <Entity type="BP7BldgSchedCov" parentpath="ENTITY.Building" sortorder="2">
+                      <Entity type="BP7BldgSchedCovItem" parentpath="ENTITY.Schedule">
+                        <Entity type="BP7BldgSchedCovItemCov" parentpath="ENTITY.BldgSchedCovItem"/>
+                      </Entity>
+                    </Entity>
+                </SubSection>
+                <SubSection label="displaykey.Web.Differences.LOB.BP7.Exclusions" sortorder="4">
+                    <Entity type="entity.BP7BuildingExcl" parentpath="ENTITY.Building"/>
+                    <Entity type="BP7BldgSchedExcl" parentpath="ENTITY.Building" sortorder="2">
+                        <Entity type="BP7BldgSchedExclItem" parentpath="ENTITY.Schedule">
+                            <Entity type="BP7BldgSchedExclItemExcl" parentpath="ENTITY.BldgSchedExclItem"/>
+                        </Entity>
+                    </Entity>
+                </SubSection>
+                <SubSection label="displaykey.Web.Differences.LOB.BP7.Conditions" sortorder="5">
+                    <Entity type="entity.BP7BuildingCond" parentpath="ENTITY.Building"/>
+                    <Entity type="BP7BldgSchedCond" parentpath="ENTITY.Building" sortorder="2">
+                        <Entity type="BP7BldgSchedCondItem" parentpath="ENTITY.Schedule">
+                            <Entity type="BP7BldgSchedCondItemCond" parentpath="ENTITY.BldgSchedCondItem"/>
+                        </Entity>
+                    </Entity>
+                </SubSection>
+                <Entity type="BP7Classification" parentpath="ENTITY.Building" sortorder="6">
+                    <Properties includefromtype="BP7Classification" parentpath="ENTITY" sortorder="1"/>
+                    <SubSection label="displaykey.Web.Differences.LOB.Common.Coverages" sortorder="2">
+                        <Entity type="BP7ClassificationCov" parentpath="ENTITY.Classification" sortorder="1">
+                            <Properties includefromtype="BP7ClassificationCov" parentpath="ENTITY"/>
+                        </Entity>
+                        <Entity type="BP7ClassSchedCov" parentpath="ENTITY.Classification" sortorder="2">
+                          <Entity type="BP7ClassSchedCovItem" parentpath="ENTITY.Schedule">
+                            <Entity type="BP7ClassSchedCovItemCov" parentpath="ENTITY.ClassSchedCovItem"/>
+                          </Entity>
+                        </Entity>
+                    </SubSection>
+                    <SubSection label="displaykey.Web.Differences.LOB.BP7.Exclusions" sortorder="3">
+                        <Entity type="entity.BP7ClassificationExcl" parentpath="ENTITY.Classification"/>
+                        <Entity type="BP7ClassSchedExcl" parentpath="ENTITY.Classification" sortorder="2">
+                            <Entity type="BP7ClassSchedExclItem" parentpath="ENTITY.Schedule">
+                                <Entity type="BP7ClassSchedExclItemExcl" parentpath="ENTITY.ClassSchedExclItem"/>
+                            </Entity>
+                        </Entity>
+                    </SubSection>
+                    <SubSection label="displaykey.Web.Differences.LOB.BP7.Conditions" sortorder="4">
+                        <Entity type="entity.BP7ClassificationCond" parentpath="ENTITY.Classification"/>
+                        <Entity type="BP7ClassSchedCond" parentpath="ENTITY.Classification" sortorder="2">
+                            <Entity type="BP7ClassSchedCondItem" parentpath="ENTITY.Schedule">
+                                <Entity type="BP7ClassSchedCondItemCond" parentpath="ENTITY.ClassSchedCondItem"/>
+                            </Entity>
+                        </Entity>
+                    </SubSection>
+                </Entity>
+            </Entity>
+        </SubSection>
+     </RootEntity>
+  </Section>
+  <Section label="displaykey.Web.Differences.LOB.BP7.Blankets" sortorder="4">
+    <RootEntity type="BP7Blanket"/>
+  </Section>
+</DiffTree>

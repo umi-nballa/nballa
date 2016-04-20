@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Popup
+    canEdit="editMode"
+    canVisit="true"
+    id="HOCovLocationHOEPopup"
+    returnType="CoveredLocation_HOE"
+    startInEditMode="editMode"
+    title="covPattern.Name">
+    <LocationEntryPoint
+      signature="HOCovLocationHOEPopup(hoLine: HomeownersLine_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <LocationEntryPoint
+      signature="HOCovLocationHOEPopup(hoLine: HomeownersLine_HOE, coveredLocation : CoveredLocation_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <Variable
+      initialValue="hoLine.createAndAddCoveredLocation(covPattern.CodeIdentifier)"
+      name="coveredLocation"
+      type="CoveredLocation_HOE"/>
+    <Variable
+      name="hoLine"
+      type="HomeownersLine_HOE"/>
+    <Variable
+      name="locFilter"
+      type="boolean"/>
+    <Variable
+      name="covPattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Variable
+      name="editMode"
+      type="boolean"/>
+    <Screen
+      editable="editMode">
+      <Toolbar>
+        <EditButtons
+          pickValue="coveredLocation"/>
+      </Toolbar>
+      <DetailViewPanel
+        editable="editMode">
+        <InputColumn>
+          <InputSetRef
+            def="HOCovLocationHOEInputSet(coveredLocation, hoLine, hoLine.Branch, covPattern.CodeIdentifier, locFilter, editMode)"/>
+          <TypeKeyInput
+            editable="editMode"
+            id="OtheResNamedInsuredDirectTerm"
+            label="displaykey.Web.Homeowners.Coverages.Limit"
+            numCols="5"
+            required="true"
+            value="coveredLocation.LocationLimit"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </Screen>
+  </Popup>
+</PCF>

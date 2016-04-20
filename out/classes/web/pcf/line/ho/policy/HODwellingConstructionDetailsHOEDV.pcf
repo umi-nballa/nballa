@@ -1,0 +1,321 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <DetailViewPanel
+    editable="openForEdit"
+    id="HODwellingConstructionDetailsHOEDV">
+    <Require
+      name="dwelling"
+      type="Dwelling_HOE"/>
+    <Require
+      name="openForEdit"
+      type="Boolean"/>
+    <InputColumn
+      labelWidth="350">
+      <Input
+        editable="true"
+        id="YearBuilt"
+        label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
+        numCols="8"
+        required="false"
+        value="dwelling.YearBuilt"/>
+      <TypeKeyInput
+        editable="true"
+        id="ConstructionType"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionType"
+        required="false"
+        value="dwelling.ConstructionType">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="ConstructionTypeDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.ConstructionTypeDescription"
+        visible="dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_OTHER"/>
+      <TypeKeyInput
+        editable="true"
+        id="NumStories"
+        label="displaykey.Web.Homeowners.DwellingConstruction.NumStories"
+        required="false"
+        value="dwelling.StoriesNumber"/>
+      <Input
+        editable="true"
+        id="ApproxSqFoot"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ApproxSqFoor"
+        numCols="7"
+        required="false"
+        value="dwelling.ApproxSquareFootage"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6"/>
+      <TypeKeyInput
+        editable="true"
+        id="Garage"
+        label="displaykey.Web.Homeowners.DwellingConstruction.Garage"
+        numCols="5"
+        required="true"
+        value="dwelling.Garage"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="GarageArea"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.GarageArea, ScriptParameters.HOChildQuestionIndent)"
+        numCols="7"
+        required="false"
+        value="dwelling.GarageArea"
+        visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) and (dwelling.Garage != typekey.GarageType_HOE.TC_NONE and dwelling.Garage != null)"/>
+      <BooleanRadioInput
+        editable="true"
+        id="CoveredPorches"
+        label="displaykey.Web.Homeowners.DwellingConstruction.CoveredPorches"
+        required="false"
+        value="dwelling.CoveredPorch"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </BooleanRadioInput>
+      <Input
+        editable="true"
+        id="PorchArea"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.PorchArea, ScriptParameters.HOChildQuestionIndent)"
+        numCols="7"
+        required="false"
+        value="dwelling.CoveredPorchArea"
+        visible="(dwelling.CoveredPorch and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) )"/>
+      <TypeKeyInput
+        editable="true"
+        id="FoundationType"
+        label="displaykey.Web.Homeowners.DwellingConstruction.FoundationType"
+        required="false"
+        value="dwelling.Foundation"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="BasementAreaFinished"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.BasementAreaFinished, ScriptParameters.HOChildQuestionIndent)"
+        numCols="7"
+        required="false"
+        value="dwelling.BasementFinishedArea"
+        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <Input
+        editable="true"
+        id="BasementAreaUnFinished"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.BasementAreaUnFinished, ScriptParameters.HOChildQuestionIndent)"
+        numCols="7"
+        required="false"
+        value="dwelling.BasementUnfinishedArea"
+        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and  (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 ))"/>
+      <TypeKeyInput
+        editable="true"
+        id="RoofType"
+        label="displaykey.Web.Homeowners.DwellingConstruction.RoofType"
+        required="false"
+        value="dwelling.RoofType">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="RoofTypeDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.RoofTypeDescription"
+        visible="dwelling.RoofType == typekey.RoofType.TC_OTHER"/>
+      <TypeKeyInput
+        editable="true"
+        id="PrimaryHeating"
+        label="displaykey.Web.Homeowners.DwellingConstruction.PrimaryHeating"
+        required="false"
+        value="dwelling.PrimaryHeating"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <TypeKeyInput
+        editable="true"
+        id="FuelStorageTankLocation"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.FuelStorageTankLocation, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.PrimaryHeatingFuelTankLocation"
+        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <TypeKeyInput
+        actionAvailable="false"
+        editable="true"
+        id="FuelLineLocation"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.FuelLineLocation, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.PrimaryHeatingFuelLineLocation"
+        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <Input
+        editable="true"
+        id="PrimaryHeatingTypeDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.PrimaryHeatingDescription"
+        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <BooleanRadioInput
+        editable="true"
+        id="SecondaryHeatingExists"
+        label="displaykey.Web.Homeowners.DwellingConstruction.SecondaryHeatingExists"
+        required="false"
+        value="dwelling.SecondaryHeatingExists"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6"/>
+      <TypeKeyInput
+        editable="true"
+        id="PlumbingSystem"
+        label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingSystem"
+        required="false"
+        value="dwelling.PlumbingType"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="PlumbingTypeDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.PlumbingTypeDescription"
+        visible="(dwelling.PlumbingType == PlumbingType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <TypeKeyInput
+        editable="true"
+        id="Wiring"
+        label="displaykey.Web.Homeowners.DwellingConstruction.Wiring"
+        required="false"
+        value="dwelling.WiringType"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="WiringTypeDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.WiringTypeDescription"
+        visible="(dwelling.WiringType == typekey.WiringType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <TypeKeyInput
+        editable="true"
+        id="ElectricalSystem"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ElectricalSystem"
+        required="false"
+        value="dwelling.ElectricalType"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="ElectricalTypeDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.ElectricalTypeDescription"
+        visible="(dwelling.ElectricalType == typekey.BreakerType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <Input
+        editable="true"
+        id="NumberofAmps"
+        label="displaykey.Web.Homeowners.DwellingConstruction.NumberOfAmps"
+        numCols="5"
+        required="false"
+        value="dwelling.Amperage"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2"/>
+      <TypeKeyInput
+        editable="true"
+        id="WindClass"
+        label="displaykey.Web.Homeowners.DwellingConstruction.WindClass"
+        required="false"
+        value="dwelling.WindClass"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="WindClassDesc"
+        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
+        required="true"
+        value="dwelling.WindClassDescription"
+        visible="(dwelling.WindClass == typekey.WindRating.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+      <Input
+        editable="true"
+        id="ConstructionClass"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionClass"
+        numCols="10"
+        value="dwelling.ConstructionCode"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2"/>
+    </InputColumn>
+    <InputColumn
+      labelWidth="250">
+      <Label
+        label="displaykey.Web.Homeowners.DwellingConstruction.Upgrades"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2"/>
+      <CheckBoxInput
+        editable="true"
+        id="HeatingUpgrade"
+        label="displaykey.Web.Homeowners.DwellingConstruction.HeatingUpgrade"
+        value="dwelling.HeatingUpgrade"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange
+          onChange="if (dwelling.HeatingUpgrade == false) dwelling.HeatingUpgradeDate = null"/>
+      </CheckBoxInput>
+      <Input
+        editable="true"
+        id="HeatingUpgradeDate"
+        label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
+        numCols="8"
+        required="false"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.HeatingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.HeatUpgradeYearErrorMsg : null"
+        value="dwelling.HeatingUpgradeDate"
+        visible="dwelling.HeatingUpgrade and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)"/>
+      <CheckBoxInput
+        editable="true"
+        id="PlumbingUpgrade"
+        label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingUpgrade"
+        value="dwelling.PlumbingUpgrade"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <Input
+        editable="true"
+        id="PlumbingUpgradeDate"
+        label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
+        numCols="8"
+        required="false"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.PlumbingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.PlumbingUpgradeYearErrorMsg : null"
+        value="dwelling.PlumbingUpgradeDate"
+        visible="dwelling.PlumbingUpgrade and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)"/>
+      <CheckBoxInput
+        editable="true"
+        id="RoofingUpgrade"
+        label="displaykey.Web.Homeowners.DwellingConstruction.RoofingUpgrade"
+        value="dwelling.RoofingUpgrade"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <Input
+        editable="true"
+        id="RoofingUpgradeDate"
+        label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
+        numCols="8"
+        required="false"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.RoofingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.RoofingUpgradeYearErrorMsg : null"
+        value="dwelling.RoofingUpgradeDate"
+        visible="dwelling.RoofingUpgrade and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)"/>
+      <CheckBoxInput
+        editable="true"
+        id="ElectricalSystemUpgrade"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ElectricalSystemUpgrade"
+        value="dwelling.ElectricalSystemUpgrade"
+        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <Input
+        editable="true"
+        id="ElectricalUpgradeDate"
+        label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
+        numCols="8"
+        required="false"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.ElectricalSystemUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.ElectricalUpgradeYearErrorMsg : null"
+        value="dwelling.ElectricalSystemUpgradeDate"
+        visible="dwelling.ElectricalSystemUpgrade and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)"/>
+    </InputColumn>
+  </DetailViewPanel>
+</PCF>

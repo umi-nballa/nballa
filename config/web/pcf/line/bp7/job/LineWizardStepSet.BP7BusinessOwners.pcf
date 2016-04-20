@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <WizardStepSet
+    id="LineWizardStepSet"
+    mode="BP7BusinessOwners">
+    <Require
+      name="job"
+      type="Job"/>
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <JobWizardStep
+      beforeSave="gw.lob.bp7.line.BP7LineValidation.validateLineStep(policyPeriod.BP7Line)"
+      id="LineCoverages"
+      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper);  gw.lob.bp7.BP7PostOnChangeHandler.updateProdComplOpsAggrLimit(policyPeriod.BP7Line)}"
+      save="policyPeriod.OpenForEdit"
+      screen="BP7LineScreen(policyPeriod, openForEdit,jobWizardHelper)"
+      title="displaykey.Web.Policy.BP7.BusinessownersLine"/>
+    <JobWizardStep
+      beforeSave="gw.lob.bp7.location.BP7LocationValidation.validateLocationsStep(policyPeriod)"
+      id="Locations"
+      onChange="policyPeriod.BP7Line.refreshBlanketLimits()"
+      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper) }"
+      save="policyPeriod.OpenForEdit"
+      screen="BP7LocationScreen(policyPeriod, openForEdit,jobWizardHelper)"
+      title="displaykey.Web.LineWizardMenu.BP7.LocationScreen"/>
+    <JobWizardStep
+      beforeSave="gw.lob.bp7.building.BP7BuildingValidation.validateBuildingsAndClassificationsStep(policyPeriod.BP7Line)"
+      id="Buildings"
+      onChange="policyPeriod.BP7Line.refreshBlanketLimits()"
+      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper) }"
+      save="policyPeriod.OpenForEdit"
+      screen="BP7BuildingScreen(policyPeriod, openForEdit, jobWizardHelper)"
+      title="displaykey.Web.LineWizardMenu.BP7.BuildingScreen"/>
+    <JobWizardStep
+      id="Blanket"
+      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper) }"
+      save="policyPeriod.OpenForEdit"
+      screen="BP7BlanketScreen(policyPeriod, openForEdit, jobWizardHelper)"
+      title="displaykey.Web.LineWizardMenu.BP7.BlanketScreen"/>
+    <JobWizardStep
+      id="Modifiers"
+      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper) }"
+      save="policyPeriod.OpenForEdit"
+      screen="BP7ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper)"
+      title="displaykey.Web.LineWizardMenu.BP7.ModifiersScreen"/>
+  </WizardStepSet>
+</PCF>

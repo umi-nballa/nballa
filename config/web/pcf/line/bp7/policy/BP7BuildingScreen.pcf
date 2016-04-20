@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Screen
+    editable="openForEdit"
+    id="BP7BuildingScreen">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Toolbar>
+      <WizardButtons/>
+      <ToolbarButtonSetRef
+        mode="policyPeriod.Job.Subtype"
+        toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, policyPeriod.Job, jobWizardHelper)"/>
+    </Toolbar>
+    <PanelRef
+      def="OOSEPanelSet(policyPeriod, jobWizardHelper)"/>
+    <PanelRef
+      def="BP7BuildingPanelSet(policyPeriod, openForEdit, jobWizardHelper)"/>
+    <Code><![CDATA[function getLimitedNumberOfSortedUnusedLocations(locs : AccountLocation[], numberOfLocations : int) : AccountLocation[] {
+  var sortedLocs = locs.toList().sortBy(\acctLoc -> acctLoc.LocationNum)
+  if (sortedLocs.Count > numberOfLocations) {
+    sortedLocs = sortedLocs.subList(0, numberOfLocations)
+  }
+  return sortedLocs.toTypedArray()
+}]]></Code>
+  </Screen>
+</PCF>

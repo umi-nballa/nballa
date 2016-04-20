@@ -1,0 +1,163 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="DPDW_Theft_HOE"
+  coverageCategory="HODW_Additional_HOE"
+  coverageSubtype="DwellingCov_HOE"
+  coveredPartyType="FirstParty"
+  existence="Suggested"
+  lookupTableName="DwellingCov"
+  owningEntityType="Dwelling_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="4200"
+  public-id="DPDW_Theft_HOE"
+  referenceDateByType="ApplicableObject">
+  <AvailabilityScript><![CDATA[return ( ( Dwelling_HOE.Occupancy == DwellingOccupancyType_HOE.TC_OWNER) or
+    ( Dwelling_HOE.Occupancy == DwellingOccupancyType_HOE.TC_NONOWN) or
+    ( Dwelling_HOE.Occupancy == DwellingOccupancyType_HOE.TC_TENANT))]]></AvailabilityScript>
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="DPDW_TheftBasis_HOE"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Other"
+      priority="4210"
+      public-id="DPDW_TheftBasis_HOE"
+      required="false"
+      restrictionModel="prp"
+      valueType="count">
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z8hj2ap3masq15v4eck0qh6koha"
+          optionCode="Broad"
+          priority="4211"
+          public-id="z8hj2ap3masq15v4eck0qh6koha"
+          value="1.0000">
+          <AvailabilityScript><![CDATA[return (((CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.ResidenceType == ResidenceType_HOE.TC_FAM1 or
+    (CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.ResidenceType == ResidenceType_HOE.TC_FAM2 or
+    (CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.ResidenceType == ResidenceType_HOE.TC_TOWNROW or
+    (CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.ResidenceType == ResidenceType_HOE.TC_MOBILE) and 
+    (CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER ) ]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z6ggep0s3o3hmcl75hgn8qfbrd9"
+          optionCode="Limited"
+          priority="4212"
+          public-id="z6ggep0s3o3hmcl75hgn8qfbrd9"
+          value="2.0000">
+          <AvailabilityScript><![CDATA[return (((CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_NONOWN or
+      (CovTerm.Coverage as DPDW_Theft_HOE).Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_TENANT) ) ]]></AvailabilityScript>
+        </CovTermOpt>
+      </Options>
+    </OptionCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="DPDW_OnPremiseLimit_HOE"
+      coverageColumn="ChoiceTerm2"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="4220"
+      public-id="DPDW_OnPremiseLimit_HOE"
+      required="false"
+      restrictionModel="prp"
+      valueType="money">
+      <AvailabilityScript><![CDATA[//Use same logic as in Basis script for Broad Covterm
+return ((Dwelling_HOE.ResidenceType == ResidenceType_HOE.TC_FAM1 or
+    Dwelling_HOE.ResidenceType == ResidenceType_HOE.TC_FAM2 or
+    Dwelling_HOE.ResidenceType == ResidenceType_HOE.TC_TOWNROW or
+    Dwelling_HOE.ResidenceType == ResidenceType_HOE.TC_MOBILE) and 
+    Dwelling_HOE.Occupancy == DwellingOccupancyType_HOE.TC_OWNER)
+]]></AvailabilityScript>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zi9j0ikp98i5q16uh2konauf25a"
+          currency="usd"
+          optionCode="2500"
+          priority="4222"
+          public-id="zi9j0ikp98i5q16uh2konauf25a"
+          value="2500.0000"/>
+        <CovTermOpt
+          codeIdentifier="zgog2u0l32oqucepgt6lh8uomr8"
+          currency="usd"
+          optionCode="5000"
+          priority="4223"
+          public-id="zgog2u0l32oqucepgt6lh8uomr8"
+          value="5000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zfmgumqaqaa1d20itqgotl64e7b"
+          currency="usd"
+          optionCode="10000"
+          priority="4224"
+          public-id="zfmgumqaqaa1d20itqgotl64e7b"
+          value="10000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zg7hcugkjskko83987a9a91rl78"
+          currency="usd"
+          optionCode="0"
+          priority="4221"
+          public-id="zg7hcugkjskko83987a9a91rl78"
+          value="1.0000"/>
+      </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="DPDW_OnPremiseLimit_HOEusd"
+          currency="usd"
+          defaultValue="0"
+          public-id="DPDW_OnPremiseLimit_HOEusd"/>
+      </DefaultsSet>
+    </OptionCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="DPDW_OffPremiseLimit_HOE"
+      coverageColumn="ChoiceTerm3"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="4230"
+      public-id="DPDW_OffPremiseLimit_HOE"
+      required="false"
+      restrictionModel="prp"
+      valueType="money">
+      <AvailabilityScript><![CDATA[return true]]></AvailabilityScript>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zevji97lu2me449o2f922bhvjdb"
+          currency="usd"
+          optionCode="2500"
+          priority="4232"
+          public-id="zevji97lu2me449o2f922bhvjdb"
+          value="2500.0000"/>
+        <CovTermOpt
+          codeIdentifier="zm8i0v8l4afsn3b1vqo1gcsmju8"
+          currency="usd"
+          optionCode="5000"
+          priority="4233"
+          public-id="zm8i0v8l4afsn3b1vqo1gcsmju8"
+          value="5000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zsugg8cksmtd478dq29u1ps98ha"
+          currency="usd"
+          optionCode="10000"
+          priority="4234"
+          public-id="zsugg8cksmtd478dq29u1ps98ha"
+          value="10000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zs7i4c43sjmq33jr531v9qqk5ea"
+          currency="usd"
+          optionCode="0"
+          priority="4231"
+          public-id="zs7i4c43sjmq33jr531v9qqk5ea"
+          value="1.0000"/>
+      </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="DPDW_OffPremiseLimit_HOEusd"
+          currency="usd"
+          defaultValue="0"
+          public-id="DPDW_OffPremiseLimit_HOEusd"/>
+      </DefaultsSet>
+    </OptionCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

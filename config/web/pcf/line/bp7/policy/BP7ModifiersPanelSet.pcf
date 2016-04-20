@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="BP7ModifiersPanelSet">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="policyPeriod.BP7Line.Modifiers"
+      name="scheduleModifiers"/>
+    <PanelRef
+      def="OOSEPanelSet(policyPeriod, jobWizardHelper)"
+      id="oosePanelSet"/>
+    <PanelRef
+      def="ScheduleRateDV(scheduleModifiers)"/>
+  </PanelSet>
+</PCF>

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  entity="HOCededPremium"
+  type="retireable"
+  desc="A Homeowners implementation of the RICededPremium delegate"
+  exportable="true"
+  extendable="true"
+  platform="false"
+  loadable="false"
+  table="hocededpremium">
+  <implementsEntity
+    name="RICededPremium"
+    adapter="gw.lob.ho.reinsurance.ceding.HOCededPremiumAdapter"/>
+  <foreignkey
+    name="HomeownersCost"
+    fkentity="HomeownersCost_HOE"
+    nonEffDated="true"
+    nullok="false"/>
+  <array
+    name="CedingTransactions"
+    arrayentity="HOCededPremiumTransaction"
+    cascadeDelete="true"/>
+  <array
+     name="CedingHistory"
+     arrayentity="HOCededPremiumHistory"
+     cascadeDelete="true"/>
+</entity>

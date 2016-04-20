@@ -1,0 +1,96 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="BP7BuildingPanelSet">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <PanelRef
+      editable="true">
+      <Toolbar>
+        <ToolbarButton
+          hideIfReadOnly="true"
+          id="addBuildingButton"
+          label="displaykey.Web.Policy.BP7.Building.CreateBuilding"
+          visible="policyPeriod.BP7Line.BP7Locations.Count &gt; 1">
+          <AddMenuItemIterator
+            elementName="selectedLocation"
+            value="policyPeriod.BP7Line.BP7Locations">
+            <IteratorSort
+              sortBy="selectedLocation.PolicyLocation.LocationNum"
+              sortOrder="1"/>
+            <AddMenuItem
+              id="location"
+              iterator="BuildingIterator"
+              label="selectedLocation"
+              toCreateAndAdd="selectedLocation.createAndAddBuilding(jobWizardHelper)"/>
+          </AddMenuItemIterator>
+        </ToolbarButton>
+        <IteratorButtons
+          addLabel="displaykey.Web.Policy.BP7.Building.CreateBuilding"
+          addVisible="policyPeriod.BP7Line.BP7Locations.Count == 1"
+          iterator="BuildingsEdit_LV"
+          removeConfirmMessage="displaykey.Web.Policy.BP7.Building.RemoveBuildingsConfirmMsg"
+          removeLabel="displaykey.Web.Policy.BP7.Building.RemoveBuildings"/>
+      </Toolbar>
+      <ListDetailPanel
+        id="BuildingsEdit_DP"
+        selectionName="selectedBuilding"
+        selectionType="BP7Building">
+        <ListViewPanel
+          id="BuildingsEdit_LV">
+          <RowIterator
+            editable="true"
+            elementName="building"
+            hasCheckBoxes="true"
+            hideCheckBoxesIfReadOnly="true"
+            id="BuildingIterator"
+            pickValue="building"
+            toCreateAndAdd="policyPeriod.BP7Line.BP7Locations.single().createAndAddBuilding(jobWizardHelper)"
+            toRemove="building.Location.removeFromLineSpecificBuildings(building); jobWizardHelper.Wizard.refreshCurrentStep()"
+            type="BP7Building"
+            validationLabel="displaykey.Web.Policy.LocationContainer.Location.Building"
+            value="policyPeriod.BP7Line.BP7Locations*.Buildings">
+            <IteratorSort
+              sortBy="building.Location.PolicyLocation.LocationNum"
+              sortOrder="1"/>
+            <IteratorSort
+              sortBy="building.Building.BuildingNum"
+              sortOrder="2"/>
+            <Row>
+              <TextCell
+                align="left"
+                id="Building"
+                label="displaykey.Web.Policy.BP7.Building.Building"
+                sortBy="building.Building.BuildingNum"
+                value="building"/>
+              <TextCell
+                align="left"
+                id="Loc"
+                label="displaykey.Web.Policy.LocationContainer.Location"
+                sortBy="building.Location.PolicyLocation.LocationNum"
+                value="building.Location"/>
+              <Cell
+                action="BP7BlanketPopup.push(policyPeriod.BP7Line, building.AssociatedBlanket, openForEdit, jobWizardHelper)"
+                actionAvailable="building.AssociatedBlanket.BlanketNumber != null"
+                id="BlanketNumber"
+                label="displaykey.Web.Policy.BP7.Blanket.NumberShortened"
+                value="building.AssociatedBlanket.BlanketNumber"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+        <PanelRef
+          def="BP7BuildingDetailCV(selectedBuilding, openForEdit, jobWizardHelper)"
+          visible="policyPeriod.BP7Line.BP7Locations*.Buildings.Count &gt; 0 and selectedBuilding != null"/>
+      </ListDetailPanel>
+    </PanelRef>
+  </PanelSet>
+</PCF>

@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<Entity
+  name="Dwelling_HOE">
+  <Columns>
+    <Column
+      beanPath="Dwelling_HOE.HOLocation.PolicyLocation"
+      name="location"/>
+  </Columns>
+  <DisplayName><![CDATA[var address = (location.AddressLine1.HasContent ? location.AddressLine1 + ", " : "") +
+  (location.City.HasContent ? location.City + ", "  : "") + location.State.Code
+
+var prefix = displaykey.Web.Homeowners.Entity.Dwelling.Prefix
+if (prefix <> null && not prefix.Empty && prefix.charAt(prefix.length - 1) <> " " as char) prefix = prefix + " "
+return prefix + address]]></DisplayName>
+</Entity>

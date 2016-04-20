@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="BOP Classification"
+  displayName="Classification"
+  effDatedBranchType="PolicyPeriod"
+  entity="BP7Classification"
+  exportable="true"
+  extendable="true"
+  loadable="false"
+  platform="false"
+  table="bp7classification"
+  type="effdated">
+  <implementsEntity
+    adapter="gw.lob.bp7.classification.BP7ClassificationCoverableAdapter"
+    name="Coverable"/>
+  <implementsInterface
+    iface="gw.lob.common.dependency.FieldDependency"
+    impl="gw.lob.bp7.dependency.BP7ClassificationDependencies"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7Building"
+    name="Building"
+    nullok="false"/>
+  <array
+    arrayentity="BP7ClassificationCov"
+    cascadeDelete="true"
+    desc="Coverages directly attached to the Classification"
+    name="Coverages"
+    owner="false"/>
+  <array
+    arrayentity="BP7ClassificationExcl"
+    cascadeDelete="true"
+    desc="Exclusions directly attached to the Classification"
+    name="Exclusions"
+    owner="false"/>
+  <array
+    arrayentity="BP7ClassificationCond"
+    cascadeDelete="true"
+    desc="Conditions directly attached to the Classification"
+    name="Conditions"
+    owner="false"/>
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Classification number"
+    name="ClassificationNumber"
+    nullok="false"
+    type="integer"/>
+  <column
+    default="false"
+    desc="Predominant Override"
+    name="PredominantOverride"
+    nullok="false"
+    type="bit"/>
+</entity>

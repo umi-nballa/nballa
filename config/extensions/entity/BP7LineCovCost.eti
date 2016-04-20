@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Line Level Cost"
+  entity="BP7LineCovCost"
+  supertype="BP7Cost">
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostMethods"
+    impl="gw.lob.bp7.financials.BP7LineCovCostMethods"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.financials.BP7CostAdapter"
+    name="Cost"/>
+  <foreignkey
+    exportable="true"
+    fkentity="BP7LineCov"
+    name="LineCoverage"
+    nullok="false"/>
+</subtype>

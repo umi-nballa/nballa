@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="BP7Classification">
+  <column
+    columnName="bp7rabopwanted"
+    default="false"
+    desc="Rate With Risk Analyzer BOP"
+    name="RABOPWanted"
+    nullok="false"
+    type="bit"/>
+  <typekey
+    columnName="bp7raboptype"
+    default="Smoothed"
+    desc="Business Personal Property Risk Analyzer Type"
+    name="RABOPType"
+    nullok="true"
+    typelist="BP7RABOPType"/>
+  <typekey
+    columnName="bp7raboptypeliabilityoccu"
+    default="Smoothed"
+    desc="Liability Occupants Risk Analyzer Type"
+    name="RABOPTypeLiabilityOccu"
+    nullok="true"
+    typelist="BP7RABOPType"/>
+  <typekey
+    columnName="bp7classpropertytype"
+    default=""
+    desc="Property Type"
+    name="ClassPropertyType"
+    nullok="false"
+    typelist="BP7ClassificationPropertyType"/>
+  <typekey
+    columnName="bp7classdescription"
+    default=""
+    desc="Classification Description"
+    name="ClassDescription"
+    nullok="false"
+    typelist="BP7ClassDescription"/>
+  <column
+    columnName="bp7classcode"
+    desc="Classification Code"
+    name="ClassCode"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    columnName="bp7ratenumber"
+    desc="Rate Number"
+    name="RateNumber"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    columnName="bp7classgroup"
+    desc="Class Group"
+    name="ClassGroup"
+    nullok="true"
+    type="shorttext"/>
+  <typekey
+    columnName="bp7exposurebasis"
+    default=""
+    desc="Liability Exposure Base"
+    name="ExposureBasis"
+    nullok="false"
+    typelist="BP7ExposureBasis"/>
+  <column
+    columnName="bp7exposure"
+    desc="Liability Exposure"
+    name="Exposure"
+    nullok="true"
+    type="positiveinteger"/>
+  <column
+    columnName="bp7area"
+    desc="Classification Square Footage"
+    name="Area"
+    nullok="false"
+    type="positiveinteger"/>
+  <column
+    columnName="bp7amusementarea"
+    default="false"
+    desc="Amusement Area"
+    name="AmusementArea"
+    nullok="false"
+    type="bit"/>
+  <typekey
+    columnName="bp7playground"
+    default="None"
+    desc="Playground"
+    name="Playground"
+    nullok="false"
+    typelist="BP7Playground"/>
+  <column
+    columnName="bp7numswimmingpools"
+    default="0"
+    desc="Number of Swimming Pools"
+    name="NumSwimmingPools"
+    nullok="true"
+    type="shorttext"/>
+</extension>

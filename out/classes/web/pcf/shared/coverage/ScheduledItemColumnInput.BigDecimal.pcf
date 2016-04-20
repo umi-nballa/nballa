@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <ModalCell
+    id="ScheduledItemColumnInput"
+    mode="BigDecimal">
+    <Require
+      name="schedulePropertyInfo"
+      type="gw.api.productmodel.SchedulePropertyInfo"/>
+    <Require
+      name="scheduledItem"
+      type="ScheduledItem"/>
+    <Variable
+      initialValue="new gw.api.productmodel.SchedulePropertyValueProvider&lt;java.math.BigDecimal&gt;(scheduledItem, schedulePropertyInfo.PropertyInfo)"
+      name="valueProvider"
+      type="gw.api.productmodel.SchedulePropertyValueProvider&lt;java.math.BigDecimal&gt;"/>
+    <Cell
+      align="right"
+      editable="true"
+      id="DecimalValue"
+      required="schedulePropertyInfo.Required"
+      value="valueProvider.Value"/>
+  </ModalCell>
+</PCF>

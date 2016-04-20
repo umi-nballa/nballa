@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <ListViewPanel
+    id="HOCoverageSummaryHOELV">
+    <Require
+      name="clauses"
+      type="List&lt;domain.Clause&gt;"/>
+    <Row
+      renderAsSmartHeader="true">
+      <Cell
+        align="left"
+        id="Description"
+        value="displaykey.Web.PolicyLine.Coverages.Description"/>
+      <Cell
+        align="right"
+        id="Value"
+        value="displaykey.Web.Homeowners.HOCoveragesScreen.CovTermValue"/>
+    </Row>
+    <RowIterator
+      editable="false"
+      elementName="clause"
+      pageSize="0"
+      value="clauses.toArray( new domain.Clause[clauses.Count] )">
+      <IteratorSort
+        sortBy="clause.Pattern.CoverageCategory.Priority"
+        sortOrder="1"/>
+      <IteratorSort
+        sortBy="clause.Pattern.CoverageCategory.PublicID"
+        sortOrder="2"/>
+      <IteratorSort
+        sortBy="clause.Pattern.Priority"
+        sortOrder="3"/>
+      <IteratorSort
+        sortBy="clause.Pattern.PublicID"
+        sortOrder="4"/>
+      <Row>
+        <Cell
+          align="left"
+          bold="true"
+          enableSort="false"
+          id="Description"
+          value="displaykey.Web.PolicyLine.Coverage(clause.Pattern)"/>
+        <Cell
+          align="right"
+          enableSort="false"
+          id="CovLevelValue"/>
+      </Row>
+      <RowIterator
+        editable="false"
+        elementName="CovTerm"
+        id="RegularCovTerms"
+        pageSize="0"
+        value="clause.CovTerms">
+        <IteratorSort
+          sortBy="CovTerm.Pattern.Priority"
+          sortOrder="1"/>
+        <IteratorSort
+          sortBy="CovTerm.Pattern.PublicID"
+          sortOrder="2"/>
+        <Row>
+          <Cell
+            align="left"
+            enableSort="false"
+            icon=""
+            id="Description"
+            value="pad(CovTerm.DisplayName)"/>
+          <Cell
+            align="right"
+            id="term"
+            value="CovTerm.DisplayValue"/>
+        </Row>
+      </RowIterator>
+      <RowIterator
+        editable="false"
+        elementName="covDetailLine"
+        id="SpecialCovTerms"
+        pageSize="0"
+        value="getSpecialCovTermNameValueCost(clause)"
+        visible="isSpecialCoverage(clause)">
+        <Row>
+          <Cell
+            align="left"
+            enableSort="false"
+            icon=""
+            id="Description"
+            value="&quot;       &quot; + covDetailLine[0]"/>
+          <Cell
+            align="right"
+            id="term"
+            value="covDetailLine[1]"/>
+        </Row>
+      </RowIterator>
+    </RowIterator>
+    <Code><![CDATA[function pad(s: String): String {
+  return "       " + s;
+}
+
+function empty(): String {
+  return "";
+}
+
+function isSpecialCoverage(clause : domain.Clause) : boolean {
+  if (clause typeis Coverage) {
+    return gw.lob.ho.CoverageSummaryUtil_HOE.isSpecialCoverage(clause)
+  } else {
+    return false
+  }
+}
+
+
+function getSpecialCovTermNameValueCost(clause : domain.Clause) : List<String[]> {
+  if (clause typeis Coverage) {
+    return gw.lob.ho.CoverageSummaryUtil_HOE.getSpecialCovTermNameValueCost(clause)
+  } else {
+    return new java.util.ArrayList<String[]>()
+  }
+}]]></Code>
+  </ListViewPanel>
+</PCF>

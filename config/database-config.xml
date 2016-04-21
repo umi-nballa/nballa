@@ -43,29 +43,68 @@
 -->
 
 <!-- SQL Server -->
-    <database name="dvillapakkam_gwpc" dbtype="sqlserver" autoupgrade="true" env="LOCAL">
-        <dbcp-connection-pool jdbc-url="jdbc:sqlserver://UIMDEVGWDB01:1433;DatabaseName=dvillapakkam_gwbc;User=dvillapakkam_gwdbuser;Password=testSQL"/>
+    <database name="xxxxxx_gwpc" dbtype="sqlserver" autoupgrade="true" env="LOCAL">
+        <dbcp-connection-pool jdbc-url="jdbc:sqlserver://UIMDEVGWDB01:1433;DatabaseName=xxxxxx_gwbc;User=xxxxxx_gwdbuser;Password=xxxxxx"/>
         <upgrade defer-create-nonessential-indexes="false">
             <versiontriggers dbmsperfinfothreshold="600" />
         </upgrade>
     </database>
-  
-<!-- SQL Server with filegroups
-  <database name="PolicyCenterDatabase" dbtype="sqlserver" autoupgrade="true">
-    <dbcp-connection-pool
-        jdbc-url="jdbc:sqlserver://<HOSTNAME>:<PORT>;DatabaseName=<DBNAME>;User=<USER>;Password=<PASSWORD>"/>
-    <upgrade defer-create-nonessential-indexes="false">
-      <versiontriggers dbmsperfinfothreshold="600"/>
-      <mssql-db-ddl>
-        <mssql-filegroups admin="ADMINFG" index="INDEXFG" op="OPFG" staging="STAGINGFG" typelist="TYPELISTFG" lob="LOBSFG"/>
-      </mssql-db-ddl>
-    </upgrade>
-    <databasestatistics>
-      <tablestatistics name="pc_jobuserroleassign">
-        <histogramstatistics name="CreateTime" numbuckets="75"/>
-      </tablestatistics>
-    </databasestatistics>
-  </database>
--->
+
+
+    <!-- SQL Server PC JNDI-->
+    <database name="PolicyCenter_DEV" dbtype="sqlserver"  autoupgrade="true" env="pc_dev">
+        <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
+        <upgrade defer-create-nonessential-indexes="false">
+            <versiontriggers dbmsperfinfothreshold="600" />
+        </upgrade>
+        <databasestatistics>
+            <tablestatistics name="pc_jobuserroleassign">
+                <histogramstatistics name="CreateTime" numbuckets="75"/>
+            </tablestatistics>
+        </databasestatistics>
+    </database>
+
+    <database name="PolicyCenter_ASM" dbtype="sqlserver"  autoupgrade="true" env="pc_asm">
+        <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
+        <upgrade defer-create-nonessential-indexes="false">
+            <versiontriggers dbmsperfinfothreshold="600" />
+        </upgrade>
+        <databasestatistics>
+            <tablestatistics name="pc_jobuserroleassign">
+                <histogramstatistics name="CreateTime" numbuckets="75"/>
+            </tablestatistics>
+        </databasestatistics>
+    </database>
+
+    <database name="PolicyCenter_QA" dbtype="sqlserver"  autoupgrade="true" env="pc_qa">
+        <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
+        <upgrade defer-create-nonessential-indexes="false">
+            <versiontriggers dbmsperfinfothreshold="600" />
+        </upgrade>
+        <databasestatistics>
+            <tablestatistics name="pc_jobuserroleassign">
+                <histogramstatistics name="CreateTime" numbuckets="75"/>
+            </tablestatistics>
+        </databasestatistics>
+    </database>
+
+
+    <!-- SQL Server with filegroups
+      <database name="PolicyCenterDatabase" dbtype="sqlserver" autoupgrade="true">
+        <dbcp-connection-pool
+            jdbc-url="jdbc:sqlserver://<HOSTNAME>:<PORT>;DatabaseName=<DBNAME>;User=<USER>;Password=<PASSWORD>"/>
+        <upgrade defer-create-nonessential-indexes="false">
+          <versiontriggers dbmsperfinfothreshold="600"/>
+          <mssql-db-ddl>
+            <mssql-filegroups admin="ADMINFG" index="INDEXFG" op="OPFG" staging="STAGINGFG" typelist="TYPELISTFG" lob="LOBSFG"/>
+          </mssql-db-ddl>
+        </upgrade>
+        <databasestatistics>
+          <tablestatistics name="pc_jobuserroleassign">
+            <histogramstatistics name="CreateTime" numbuckets="75"/>
+          </tablestatistics>
+        </databasestatistics>
+      </database>
+    -->
 
 </database-config>

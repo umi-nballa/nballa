@@ -24,6 +24,11 @@ class StringUtil {
   function firstLetterLOB() : String {
     var value : String
 
+
+    if(PolicyPeriod.BP7LineExists){
+      value = displaykey.Ext.bopline
+    }
+
     if(PolicyPeriod.BOPLineExists){
       value = displaykey.Ext.bopline
     }

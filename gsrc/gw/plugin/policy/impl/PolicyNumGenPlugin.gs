@@ -5,8 +5,7 @@ uses java.lang.Math
 uses java.lang.Integer
 uses java.lang.StringBuilder
 uses gw.plugin.util.SequenceUtil
-uses una.utils.StringUtil_EXT
-
+uses una.utils.StringUtil
 @Export
 class PolicyNumGenPlugin implements IPolicyNumGenPlugin {
 
@@ -25,7 +24,7 @@ class PolicyNumGenPlugin implements IPolicyNumGenPlugin {
   }
 
   private function genSeqNumber(policyPeriod: PolicyPeriod): String {
-    var strUtil = new StringUtil_EXT(policyPeriod)
+    var strUtil = new StringUtil(policyPeriod)
     var counterString = "P" + policyPeriod.BaseState + strUtil.firstLetterLOB()
     return counterString + SequenceUtil.getSequenceUtil().next(1000000000, counterString)
   }

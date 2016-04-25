@@ -29,10 +29,6 @@ class StringUtil {
       value = displaykey.Ext.bopline
     }
 
-    if(PolicyPeriod.BOPLineExists){
-      value = displaykey.Ext.bopline
-    }
-
     if(PolicyPeriod.HomeownersLine_HOEExists) {
       value = displaykey.Ext.homeownersline
     }

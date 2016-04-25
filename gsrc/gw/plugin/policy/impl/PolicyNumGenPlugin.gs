@@ -26,7 +26,7 @@ class PolicyNumGenPlugin implements IPolicyNumGenPlugin {
   private function genSeqNumber(policyPeriod: PolicyPeriod): String {
     var strUtil = new StringUtil(policyPeriod)
     var counterString = "P" + policyPeriod.BaseState + strUtil.firstLetterLOB()
-    return counterString + SequenceUtil.getSequenceUtil().next(1000000000, counterString)
+    return counterString + SequenceUtil.getSequenceUtil().next(0000000001, counterString)
   }
 
   private function randomPolicyNumber(): String {

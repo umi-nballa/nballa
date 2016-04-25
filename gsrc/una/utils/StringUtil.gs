@@ -5,7 +5,7 @@ package una.utils
  * Date: 4/21/16
  * Time: 7:08 PM
  */
-class StringUtil_EXT {
+class StringUtil {
 
    var _polPeriod : PolicyPeriod
 

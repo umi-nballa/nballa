@@ -11,11 +11,17 @@
     <Require
       name="openForEdit"
       type="boolean"/>
+    <Require
+      name="coverable_Ext"
+      type="Coverable"/>
     <CovTermDirectInput
       editable="true"
       id="DirectTermInput"
       label="term.Pattern.DisplayName"
       required="term.Pattern.Required"
-      value="term"/>
+      value="term">
+      <PostOnChange
+        onChange="una.pcf_gs.CovTermPOCHOEInputSet.onchange(coverable_Ext, term)"/>
+    </CovTermDirectInput>
   </InputSet>
 </PCF>

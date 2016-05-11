@@ -27,8 +27,13 @@ class CovTermPOCHOEInputSet {
 
         switch(_covTerm.PatternCode) {
         case "HODW_Dwelling_Limit_HOE":
-              dwelling.HODW_Dwelling_Cov_HOE.setDwellingDefaultLimits_Ext()
+              dwelling.HODW_Dwelling_Cov_HOE.setHomeownersDefaultLimits_Ext()
               break
+        case "DPDW_Dwelling_Limit_HOE" :
+            dwelling.DPDW_Dwelling_Cov_HOE.setDwellingDefaultLimits_Ext()
+            break
+
+
         default:
               break;
         }

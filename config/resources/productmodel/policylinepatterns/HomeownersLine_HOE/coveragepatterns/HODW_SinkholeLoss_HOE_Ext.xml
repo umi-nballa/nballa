@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="HODW_SinkholeLoss_HOE_Ext"
+  coverageCategory="HODW_Optional_HOE"
+  coverageSubtype="DwellingCov_HOE"
+  coveredPartyType="FirstParty"
+  lookupTableName="DwellingCov"
+  owningEntityType="Dwelling_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="14000"
+  public-id="HODW_SinkholeLoss_HOE_Ext"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return(Dwelling_HOE.Branch.Job typeis PolicyChange)?false:true]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[return (Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3)? ExistenceType.TC_ELECTABLE : 
+(Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 || 
+ Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 || 
+(Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT && Dwelling_HOE.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO) ) ? ExistenceType.TC_REQUIRED: null]]></ExistenceScript>
+  <CovTerms/>
+</CoveragePattern>

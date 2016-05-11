@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="DPLI_Premise_Liability_HOE_Ext"
+  coverageCategory="DPDW_LiabilityCoverages_HOE"
+  coverageSubtype="HomeownersLineCov_HOE"
+  coveredPartyType="ThirdParty"
+  lookupTableName="HomeownersLineCov"
+  owningEntityType="HomeownersLine_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="11600"
+  public-id="DPLI_Premise_Liability_HOE_Ext"
+  referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[return(HomeownersLine_HOE.Branch.PolicyAddress.State == typekey.State.TC_CA || 
+       HomeownersLine_HOE.Branch.PolicyAddress.State == typekey.State.TC_TX ) ? ExistenceType.TC_SUGGESTED : (HomeownersLine_HOE.Branch.PolicyAddress.State == typekey.State.TC_FL ||
+       HomeownersLine_HOE.Branch.PolicyAddress.State == typekey.State.TC_HI)?ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE]]></ExistenceScript>
+  <CovTerms/>
+</CoveragePattern>

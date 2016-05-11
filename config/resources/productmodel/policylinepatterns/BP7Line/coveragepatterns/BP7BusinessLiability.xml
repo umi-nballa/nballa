@@ -24,13 +24,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="BP7EachOccLimitUSD"
-          currency="usd"
-          defaultValue="300000"
-          public-id="BP7EachOccLimitUSD"/>
-      </DefaultsSet>
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="z64iofe7m4cm80jpfmsv3lat9q8"
@@ -74,6 +68,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zohj2bubte0ubbocnimougo7n2a"
@@ -147,6 +142,24 @@
           value="6000000">
           <AvailabilityScript><![CDATA[return CovTerm.BP7BusinessLiability.prodCompldOpsAggregateLimitAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
         </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zjegulo6m9amb6p0dv87dnrkvk8"
+          currency="usd"
+          optionCode="300000"
+          priority="180"
+          public-id="zjegulo6m9amb6p0dv87dnrkvk8"
+          value="300000">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7BusinessLiability.prodCompldOpsAggregateLimitAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zegg6bh41172k8gic7bte5519m8"
+          currency="usd"
+          optionCode="500000"
+          priority="280"
+          public-id="zegg6bh41172k8gic7bte5519m8"
+          value="500000">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7BusinessLiability.prodCompldOpsAggregateLimitAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern
@@ -156,11 +169,12 @@
       coverageColumn="ChoiceTerm3"
       lookupTableName="BP7LineCovTerm"
       modelType="Limit"
-      priority="40"
+      priority="15"
       public-id="BP7AggregateLimit"
       required="true"
       restrictionModel="bipd"
       valueType="money">
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zbki63go9gvque6m8d91ka1o95a"
@@ -269,6 +283,7 @@
       required="true"
       restrictionModel="pd"
       valueType="money">
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zv6j2di52ens49hhkp4o18hjlp8"
@@ -314,9 +329,9 @@
         <CovTermLimits
           codeIdentifier="BP7TenantsFireLiabLimitUSD"
           currency="usd"
-          defaultValue="50000"
+          defaultValue="100000"
           maxVal="1000000.0"
-          minVal="50000.0"
+          minVal="100000"
           public-id="BP7TenantsFireLiabLimitUSD"/>
       </LimitsSet>
     </DirectCovTermPattern>

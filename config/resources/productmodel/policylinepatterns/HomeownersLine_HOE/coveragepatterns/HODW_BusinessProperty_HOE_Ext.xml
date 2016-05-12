@@ -11,5 +11,7 @@
   priority="11800"
   public-id="HODW_BusinessProperty_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return(Dwelling_HOE.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS ||
+       Dwelling_HOE.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC )? false:true]]></AvailabilityScript>
   <CovTerms/>
 </CoveragePattern>

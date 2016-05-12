@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="BP7ForgeryAlteration"
-  coverageCategory="BP7LineStdGrp"
+  coverageCategory="BP7LineAddlGrp"
   coverageSubtype="BP7LineCov"
   coveredPartyType="ThirdParty"
   existence="Required"
@@ -21,7 +21,7 @@
       modelType="Limit"
       priority="10"
       public-id="BP7Limit7"
-      required="true"
+      required="false"
       restrictionModel="bipd"
       valueType="money">
       <DefaultsSet>
@@ -84,6 +84,15 @@
           priority="60"
           public-id="z7hgs60tq6cj90lo7h7dejku6a9"
           value="100000">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7ForgeryAlteration.forgeryAlterationLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z9shsgf64l7ivbq5rhen6l2611a"
+          currency="usd"
+          optionCode="20000"
+          priority="35"
+          public-id="z9shsgf64l7ivbq5rhen6l2611a"
+          value="20000">
           <AvailabilityScript><![CDATA[return CovTerm.BP7ForgeryAlteration.forgeryAlterationLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
         </CovTermOpt>
       </Options>

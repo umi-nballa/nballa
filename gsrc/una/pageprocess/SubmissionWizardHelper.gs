@@ -1,4 +1,6 @@
 package una.pageprocess
+
+uses una.utils.EnvironmentUtil
 /**
  * Created with IntelliJ IDEA.
  * User: spitchaimuthu
@@ -63,6 +65,13 @@ class SubmissionWizardHelper {
    * @return boolean
    */
   public static function canAllowSubmission(acct : Account) : boolean {
+
+    /* It Enable submission for developer testing which is identified by a combination of
+    * of environment check and script parameter to be set to true
+     */
+   if (EnvironmentUtil.isLocal() && ScriptParameters.EnableMultiPolicyForLocal)
+      return true
+
     return (acct.IssuedPolicies.Count == 0) ? true : false
   }
 

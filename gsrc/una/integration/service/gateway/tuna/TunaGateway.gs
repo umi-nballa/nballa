@@ -26,13 +26,13 @@ class TunaGateway implements TunaInterface {
   }
 
 
-  override function getPropertyInformationComplete(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformationComplete(policyPeriod: PolicyPeriod): TunaAppResponse {
 
    try{
     logger.debug(" Inside Tunagateway GetPropertyInformationComplete ", this.IntrinsicType)
     var reqMapper = new TunaRequestMapper()
-    var request = reqMapper.createRequestMapper(policyPeriod)
-    var tunaResponse = sendToTuna(request)
+    var req = reqMapper.createRequestMapper(policyPeriod)
+    var tunaResponse = tunaCommunicator.GetPropertyInformationComplete(req)
     var resMapper = new TunaResponseMapper()
     var response = resMapper.tunaAppResponse(tunaResponse)
 
@@ -47,33 +47,25 @@ class TunaGateway implements TunaInterface {
    }
   }
 
-  override function getPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
     return null
   }
 
-  override function getPropertyInformationScrubOnly(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformationScrubOnly(policyPeriod: PolicyPeriod): TunaAppResponse {
     return null
   }
 
-  override function getPropertyInformationGeoLookUp(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformationGeoLookUp(policyPeriod: PolicyPeriod): TunaAppResponse {
     return null
   }
 
-  override function getPropertyInformation360ValueLookUpOnlyExl(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod: PolicyPeriod): TunaAppResponse {
     return null
   }
 
-  override function getPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse {
     return null
   }
-
-
-  private function sendToTuna(requestPayload : GetPropertyInformationRequestModel ) : PropertyGeographyModel {
-   logger.info(" Tuna Call " , this.IntrinsicType)
-   tunaCommunicator.sendTunaRequest(requestPayload)
-   return null
-  }
-
 
 
 

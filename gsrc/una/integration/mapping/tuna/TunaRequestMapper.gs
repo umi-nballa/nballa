@@ -26,13 +26,14 @@ class TunaRequestMapper {
 
      //TODO message should be mapped to policyPeriod information
 
-     message.YearBuild = ""
+     message.YearBuild = 2000
      message.AsOfDate = theXmlDate
      message.Address.City = "Sarasota"
      message.Address.Country = "US"
      message.Address.State = "FL"
      message.Address.Street =  "101 Paramount Dr"
      message.Address.ZipCode = "34232"
+     message.TotalSquareFootage=2000
 
      return message
 

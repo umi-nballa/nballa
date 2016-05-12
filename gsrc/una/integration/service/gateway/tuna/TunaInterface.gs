@@ -10,11 +10,11 @@ uses una.integration.mapping.tuna.TunaAppResponse
  */
 interface TunaInterface {
 
- public function getPropertyInformationComplete(policyPeriod : PolicyPeriod): TunaAppResponse
- public function getPropertyInformation(policyPeriod : PolicyPeriod): TunaAppResponse
- public function getPropertyInformationScrubOnly(policyPeriod : PolicyPeriod) : TunaAppResponse
- public function getPropertyInformationGeoLookUp(policyPeriod : PolicyPeriod) : TunaAppResponse
- public function getPropertyInformation360ValueLookUpOnlyExl(policyPeriod : PolicyPeriod): TunaAppResponse
- public function getPropertyInformation360ValueLookUpOnlyInc(policyPeriod : PolicyPeriod) : TunaAppResponse
+ public function fetchPropertyInformationComplete(policyPeriod : PolicyPeriod): TunaAppResponse
+ public function fetchPropertyInformation(policyPeriod : PolicyPeriod): TunaAppResponse
+ public function fetchPropertyInformationScrubOnly(policyPeriod : PolicyPeriod) : TunaAppResponse
+ public function fetchPropertyInformationGeoLookUp(policyPeriod : PolicyPeriod) : TunaAppResponse
+ public function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod : PolicyPeriod): TunaAppResponse
+ public function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod : PolicyPeriod) : TunaAppResponse
 
 }

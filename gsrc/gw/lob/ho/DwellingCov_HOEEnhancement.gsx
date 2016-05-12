@@ -113,13 +113,13 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
    */
   function getDefaultLimitValue_Ext(cov: DwellingCov_HOE) : BigDecimal {
 
-    var limitA = roundDown_Ext(this.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value)
-
-    var limitC = roundDown_Ext(this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value)
 
     var policyType = this.Dwelling.HOPolicyType
     var state = this.Branch.BaseState
     var defaultValue : BigDecimal
+    var limitA = roundDown_Ext(this.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value)
+
+    var limitC = roundDown_Ext(this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value)
 
     switch(typeof(cov)) {
 
@@ -153,12 +153,79 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     return defaultValue == null ? null : roundDown_Ext(defaultValue)
   }
 
+  function getDPDefaultLimitValue_Ext(cov: DwellingCov_HOE) : BigDecimal {
+
+
+    var policyType = this.Dwelling.HOPolicyType
+    var state = this.Branch.BaseState
+    var defaultValue : BigDecimal
+    var limitA = roundDown_Ext(this.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value)
+
+    var limitC = roundDown_Ext(this.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value)
+
+    switch(typeof(cov)) {
+
+      case DPDW_Loss_Of_Use_HOE:
+         if (limitA != null)
+           defaultValue = limitA.multiply(ScriptParameters.HODwellingCovDefaultFactorCovD_default)
+         break
+
+      case DPDW_Personal_Property_HOE:
+          if(limitA != null)
+            defaultValue = limitA.multiply(ScriptParameters.HODwellingCovDefaultFactorCovC_default)
+          break
+      case DPDW_Other_Structures_HOE:
+          if(limitA != null)
+            defaultValue = limitA.multiply(ScriptParameters.HODwellingCovDefaultFactorCovB_default)
+          break
+    }
+    return defaultValue == null ? null : roundDown_Ext(defaultValue)
+  }
+
   /*
 *  Author: Sen Pitchaimuthu
 *  Change Log: Added the new function setDefaultLimitvalue to set the default value of Other Structure,
 *  Personal Property and Loss of use coverages based on Dwelling Coverages
  */
   function setDwellingDefaultLimits_Ext() {
+
+    var limitA = roundDown_Ext(this.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value)
+
+    var limitC = roundDown_Ext(this.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value)
+
+    var covB = this.Dwelling.DPDW_Other_Structures_HOE
+    var covC = this.Dwelling.DPDW_Personal_Property_HOE
+    var covD = this.Dwelling.DPDW_Loss_Of_Use_HOE
+
+    // Dwelling Limit changed
+    if (this typeis DPDW_Dwelling_Cov_HOE and limitA != null){
+
+        this.DPDW_Dwelling_Limit_HOETerm.Value = limitA
+
+       if(covB.HasDPDW_OtherStructuresLimit_HOETerm)
+            covB.DPDW_OtherStructuresLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covB)
+
+        if (covC.HasDPDW_PersonalPropertyLimit_HOETerm)
+            covC.DPDW_PersonalPropertyLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covC)
+
+        if (this.Dwelling.DPDW_Loss_Of_Use_HOEExists)
+           covD.DPDW_LossOfUseDwelLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covD)
+     }
+     else if(this typeis DPDW_Personal_Property_HOE) {
+        if(covC.HasDPDW_PersonalPropertyLimit_HOETerm and limitC == null)
+          covC.DPDW_PersonalPropertyLimit_HOETerm.Value = limitC
+
+        if (this.Dwelling.DPDW_Loss_Of_Use_HOEExists)
+          covD.DPDW_LossOfUseDwelLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covD)
+      }
+  }
+
+  /*
+*  Author: Sen Pitchaimuthu
+*  Change Log: Added the new function setHomeownersDefaultLimitvalue to set the default value of Other Structure,
+*  Personal Property and Loss of use coverages based on Dwelling Coverages
+ */
+  function setHomeownersDefaultLimits_Ext() {
 
     var limitA = roundDown_Ext(this.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value)
 
@@ -168,34 +235,33 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     var covC = this.Dwelling.HODW_Personal_Property_HOE
     var covD = this.Dwelling.HODW_Loss_Of_Use_HOE
 
-    // Coverage A changed
+    // Dwelling Limit changed
     if (this typeis HODW_Dwelling_Cov_HOE and limitA != null){
 
-        this.HODW_Dwelling_Limit_HOETerm.Value = limitA
+      this.HODW_Dwelling_Limit_HOETerm.Value = limitA
 
-        if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
-          return
+      if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
+        return
 
-        if(covB.HasHODW_OtherStructures_Limit_HOETerm)
-            //and covB.HODW_OtherStructures_Limit_HOETerm.Value == null)
-            covB.HODW_OtherStructures_Limit_HOETerm.Value = getDefaultLimitValue_Ext(covB)
+      if(covB.HasHODW_OtherStructures_Limit_HOETerm)
+          covB.HODW_OtherStructures_Limit_HOETerm.Value = getDefaultLimitValue_Ext(covB)
 
-        if (covC.HasHODW_PersonalPropertyLimit_HOETerm)
-        //    and covC.HODW_PersonalPropertyLimit_HOETerm.Value == null)
-            covC.HODW_PersonalPropertyLimit_HOETerm.Value = getDefaultLimitValue_Ext(covC)
+      if (covC.HasHODW_PersonalPropertyLimit_HOETerm)
+          covC.HODW_PersonalPropertyLimit_HOETerm.Value = getDefaultLimitValue_Ext(covC)
 
-        if (this.Dwelling.HODW_Loss_Of_Use_HOEExists)
-          //and covD.HODW_LossOfUseDwelLimit_HOETerm.Value == null)
-            covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
-     }
-     else if(this typeis HODW_Personal_Property_HOE) {
-        if(covC.HasHODW_PersonalPropertyLimit_HOETerm and limitC == null)
-          covC.HODW_PersonalPropertyLimit_HOETerm.Value = limitC
-
-        if (this.Dwelling.HODW_Loss_Of_Use_HOEExists and ((this.Dwelling.HOLine.HOPolicyType == TC_HO6) or (this.Dwelling.HOLine.HOPolicyType == TC_HO4)))
+      if (this.Dwelling.HODW_Loss_Of_Use_HOEExists)
           covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
-      }
+    }
+    else if(this typeis HODW_Personal_Property_HOE) {
+      if(covC.HasHODW_PersonalPropertyLimit_HOETerm and limitC == null)
+        covC.HODW_PersonalPropertyLimit_HOETerm.Value = limitC
+
+      if (this.Dwelling.HODW_Loss_Of_Use_HOEExists and ((this.Dwelling.HOLine.HOPolicyType == TC_HO6) or (this.Dwelling.HOLine.HOPolicyType == TC_HO4)))
+        covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
+    }
   }
+
+
 
   /*
 *  Author: Sen Pitchaimuthu

@@ -110,6 +110,7 @@
       value="policyPeriod.BaseState"
       visible="gw.web.policy.PolicyInfoUIHelper.getBaseStateVisibility(policyPeriod)">
       <PostOnChange
+        onChange="if (policyPeriod.HomeownersLine_HOEExists) policyPeriod.HomeownersLine_HOE.HOPolicyType = null //Sen Pitchaimuthu: Added onchange logic to clear the Policy Type to get the correct list of policy types based on the state"
         target="UWCompanyInputSet"/>
     </TypeKeyInput>
     <Input

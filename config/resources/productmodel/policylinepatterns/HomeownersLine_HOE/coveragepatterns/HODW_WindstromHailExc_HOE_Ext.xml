@@ -10,5 +10,9 @@
   priority="1199"
   public-id="HODW_WindstromHailExc_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[var availableForTerritoryCodes = {"7","8","48","49","52"}
+var state = HomeownersLine_HOE?.Branch?.PolicyAddress?.State
+var count =  HomeownersLine_HOE?.HOLocation?.PolicyLocation?.TerritoryCodes?.countWhere( \ tc -> (availableForTerritoryCodes.contains(tc.Code)) )
+return(state == typekey.State.TC_NC && count>0)]]></AvailabilityScript>
   <CovTerms/>
 </ExclusionPattern>

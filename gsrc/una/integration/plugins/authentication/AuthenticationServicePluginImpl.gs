@@ -31,6 +31,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
   final static var LDAP_ADMIN_USER = PropertiesHolder.getProperty("LDAP_ADMIN_USER")
   final static var LDAP_ADMIN_PASSWORD = PropertiesHolder.getProperty("LDAP_ADMIN_PASSWORD")
   final static var LDAP_SECURITY_LEVEL = PropertiesHolder.getProperty("LDAP_SECURITY_LEVEL")
+  final static var LDAP_CONTEXT_NAME = PropertiesHolder.getProperty("LDAP_CONTEXT_NAME")
   final static var LDAP_SERVER_BYPASS_ENV = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_ENV")
   final static var LDAP_SERVER_BYPASS_USERNAME = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_USERNAME")
 
@@ -109,6 +110,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       throw new FailedLoginException("Invalid username/password provided for: ${source.Username}")
     }
   }
+
   /**
    * Authenticate user against LDAP server
    * @param source Username password information
@@ -127,10 +129,10 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
 
       // Search for the user that is trying to login
       var searchFilter = "(&(objectClass=user)(sAMAccountName=" + source.Username + "))"
-      var controls = new SearchControls()
-      controls.setSearchScope(SearchControls.SUBTREE_SCOPE)
-      controls.setReturningAttributes({"memberOf"})
-      var results = ctx.search("DC=UNAGW,DC=com", searchFilter, controls)
+      var searchControls = new SearchControls()
+      searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE)
+      searchControls.setReturningAttributes({"memberOf"})
+      var results = ctx.search(LDAP_CONTEXT_NAME, searchFilter, searchControls)
       var dn: String = null
       if (results != null && results.hasMoreElements()) {
         dn = results.next().getNameInNamespace()

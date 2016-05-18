@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<QuestionSet
+  answerContainerType="entity.PolicyPeriod"
+  codeIdentifier="HO_PreQual_Ext"
+  lookupTableName="PeriodQuestionSetLookup"
+  priority="360"
+  public-id="HO_PreQual_Ext"
+  questionSetType="prequal">
+  <Questions>
+    <Question
+      codeIdentifier="HO_OwnATV_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="100"
+      public-id="HO_OwnATV_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return ((((PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO3 or
+    PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO4) and PolicyPeriod.BaseState != Jurisdiction.TC_AZ) or
+    PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOA_EXT or
+              PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT ))]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+  </Questions>
+</QuestionSet>

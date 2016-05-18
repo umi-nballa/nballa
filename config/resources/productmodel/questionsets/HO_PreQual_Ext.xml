@@ -24,5 +24,160 @@
       <Choices/>
       <SupplementalTexts/>
     </Question>
+    <Question
+      codeIdentifier="HO_ATVonPremise_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="200"
+      public-id="HO_ATVonPremise_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return (((PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT  and PolicyPeriod.BaseState != Jurisdiction.TC_CA) or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP1_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP2_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT 
+					   ))]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+    <Question
+      codeIdentifier="HO_OpenClaim_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="300"
+      public-id="HO_OpenClaim_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return (( (             (PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO6)
+					   and
+                      (PolicyPeriod.BaseState != Jurisdiction.TC_AZ ) and (PolicyPeriod.BaseState != Jurisdiction.TC_FL ) )  or
+				      (PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT and PolicyPeriod.BaseState != Jurisdiction.TC_FL)  or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOA_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HCONB_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP1_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP1_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP2_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT 
+					   ))			   					   
+					   ]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+    <Question
+      codeIdentifier="HO_Damage_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="400"
+      public-id="HO_Damage_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return (( (   (PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO4) and PolicyPeriod.BaseState != Jurisdiction.TC_AZ) or
+			   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP1_EXT or
+               PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP2_EXT or 
+			   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT or 
+		       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT or
+			   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOA_EXT or
+               PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT or
+		       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP1_EXT or
+			   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT ))]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+    <Question
+      codeIdentifier="HO_Crime_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="500"
+      public-id="HO_Crime_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return (( (             (PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO6)
+					   and
+                      (PolicyPeriod.BaseState != Jurisdiction.TC_AZ ) and (PolicyPeriod.BaseState != Jurisdiction.TC_FL ) )  or
+				      (PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT and PolicyPeriod.BaseState != Jurisdiction.TC_FL)  or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOA_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HCONB_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP1_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP1_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP2_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT 
+					   ))	]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+    <Question
+      codeIdentifier="HO_Fraud_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="600"
+      public-id="HO_Fraud_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[ return (( ((PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO6)
+					   and
+                      (PolicyPeriod.BaseState != Jurisdiction.TC_AZ )  )  or
+				       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT  or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOA_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HCONB_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP1_EXT or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP1_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP2_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT 
+					   ))	]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+    <Question
+      codeIdentifier="HO_FamilyFelony_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="700"
+      public-id="HO_FamilyFelony_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return ( ((PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO3 or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO4 or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_HO6 or
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT) and (PolicyPeriod.BaseState == Jurisdiction.TC_FL) ))]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
+    <Question
+      codeIdentifier="HO_Lapse_Ext"
+      lookupTableName="PeriodQuestionLookup"
+      priority="800"
+      public-id="HO_Lapse_Ext"
+      questionFormat="BooleanRadio"
+      questionPostOnChange="auto"
+      questionType="Boolean"
+      required="true">
+      <AvailabilityScript><![CDATA[return((PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP1_EXT or
+                       PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP2_EXT or 
+					   PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT or
+					   ((PolicyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT) and (PolicyPeriod.BaseState != Jurisdiction.TC_CA) and (PolicyPeriod.BaseState != Jurisdiction.TC_FL) )
+					  ))]]></AvailabilityScript>
+      <Filters/>
+      <Choices/>
+      <SupplementalTexts/>
+    </Question>
   </Questions>
 </QuestionSet>

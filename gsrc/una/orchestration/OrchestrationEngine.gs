@@ -1,5 +1,9 @@
 package una.orchestration
 
+uses una.integration.service.gateway.plugin.GatewayPlugin
+uses una.logging.UnaLoggerCategory
+uses una.integration.service.gateway.tuna.TunaInterface
+
 /**
  * Created with IntelliJ IDEA.
  * User: pyerrumsetty
@@ -8,7 +12,25 @@ package una.orchestration
  * To change this template use File | Settings | File Templates.
  *
  */
+class OrchestrationEngine {
+  private var _newIntake: boolean
+  private var _TUNAGateway = GatewayPlugin.makeTunaGateway()
+  private var _logger = UnaLoggerCategory.UNA_DATAMAPPER
 
-class OrchestrationEngine{
+  construct() {
+    _newIntake = true
+  }
+
+
+  property get TUNAGateway(): TunaInterface {
+    return _TUNAGateway
+  }
+
+
+  function processAPPRequestData(appRequest : AppRequestData) : PolicyPeriod {
+
+    return null
+  }
+
 
 }

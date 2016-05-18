@@ -1,6 +1,8 @@
 package una.integration.service.gateway.tuna
 
 uses una.integration.mapping.tuna.TunaAppResponse
+uses gw.api.address.AddressFillable
+uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,5 +18,6 @@ interface TunaInterface {
  public function fetchPropertyInformationGeoLookUp(policyPeriod : PolicyPeriod) : TunaAppResponse
  public function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod : PolicyPeriod): TunaAppResponse
  public function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod : PolicyPeriod) : TunaAppResponse
+ public function validateAddress(address: AddressFillable) : PropertyGeographyModel
 
 }

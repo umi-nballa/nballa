@@ -240,8 +240,8 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
       this.HODW_Dwelling_Limit_HOETerm.Value = limitA
 
-      if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
-        return
+      //if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
+      //  return
 
       if(covB.HasHODW_OtherStructures_Limit_HOETerm)
           covB.HODW_OtherStructures_Limit_HOETerm.Value = getDefaultLimitValue_Ext(covB)
@@ -270,5 +270,19 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
   private static function roundDown_Ext(number: BigDecimal) : BigDecimal {
     return number?.setScale(0, java.math.RoundingMode.DOWN)
   }
+
+  static function setAllOtherPerilDefault(_dwelling: Dwelling_HOE)
+  {
+
+      if (_dwelling.HOPolicyType != TC_HO3 or _dwelling.Branch.BaseState == TC_AZ)
+        {
+          _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("500")
+        }
+      else
+        {
+          _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("500")
+        }
+     }
+
 
  }

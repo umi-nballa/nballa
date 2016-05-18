@@ -11,5 +11,46 @@
   priority="11400"
   public-id="HODW_Limited_Earthquake_CA_HOE"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_EQDwellingLimit_HOE_Ext"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="200"
+      public-id="HODW_EQDwellingLimit_HOE_Ext"
+      required="true"
+      restrictionModel="bld"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_EQDedPercentageAmount_HOE_Ext"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Deductible"
+      priority="100"
+      public-id="HODW_EQDedPercentageAmount_HOE_Ext"
+      required="true"
+      restrictionModel="pd"
+      valueType="percent">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zl3jslptqk30ac0vvtsu0c6ugaa"
+          defaultValue="15"
+          public-id="zl3jslptqk30ac0vvtsu0c6ugaa"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zvbj23nk0itvkdcrrv73hkocana"
+          optionCode="15"
+          priority="100"
+          public-id="zvbj23nk0itvkdcrrv73hkocana"
+          value="15.0000"/>
+      </Options>
+    </OptionCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

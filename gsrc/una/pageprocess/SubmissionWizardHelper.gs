@@ -78,14 +78,27 @@ class SubmissionWizardHelper {
     return (acct.IssuedPolicies.Count == 0) ? true : false
   }
 
+
   /**
    * Function to copy number of employees into coverage term. Should be caleed all places where such copy is required.
    * Eg: BP7EmployeeDishty
    * @param covTerm: gw.api.domain.covterm.DirectCovTerm
-   * @param noOfEmployees : Integer
+   * @param noOfEmployees : int
    * @return void
    */
   public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
+    covTerm.setValue(noOfEmployees)
+  }
+
+
+  /**
+   * Function to copy number of employees into coverage term. Should be caleed all places where such copy is required.
+   * Eg: BP7EmployeeDishty
+   * @param covTerm: gw.api.domain.covterm.DirectCovTerm
+   * @param noOfEmployees : int
+   * @return void
+   */
+  public static function populateForSubmission(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
     covTerm.setValue(noOfEmployees)
   }
 }

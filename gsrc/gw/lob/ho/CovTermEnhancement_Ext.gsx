@@ -82,7 +82,7 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
              return false
            if (isHO6 and personalPerpertyLimit >= 50000bd and personalPerpertyLimit <= 300000bd)
              return true
-           else return false
+           return false
 
         case "5":
         case "10":
@@ -92,7 +92,7 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
               return true
             if (isHO3 and dwellingLimit >= 100000bd)
               return true
-            else return false
+            return false
         default:
         break
     }

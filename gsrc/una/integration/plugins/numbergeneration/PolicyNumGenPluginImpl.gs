@@ -18,7 +18,7 @@ class PolicyNumGenPluginImpl implements IPolicyNumGenPlugin {
    */
   override function genNewPeriodPolicyNumber(policyPeriod: PolicyPeriod ) : String {
     if (policyPeriod.Status == PolicyPeriodStatus.TC_LEGACYCONVERSION) {
-      LOGGER.debug("New Policy Number create is :"+genSeqNumber(policyPeriod))
+      LOGGER.debug("New Policy Number Created is :"+genSeqNumber(policyPeriod))
       return genSeqNumber(policyPeriod)
     }
     var job = policyPeriod.Job

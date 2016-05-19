@@ -30,22 +30,6 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
   private function validteQuestions() {
    //TODO: only skeleton. To be filled
-/*
-\rint(' inside validate Question ')
-    var qs =       _policyEvalContext.Period.QuestionSets.where( \ elt -> elt.CodeIdentifier== 'HO_PreQual_Ext').first()
-    print('print' +_policyEvalContext.Period.hasAnswerForQuestionSet(qs))
-    var shortDescription = \ -> displaykey.UWIssue.PersonalAuto.TooManyVehicles.ShortDesc
-    var longDescription = \ -> displaykey.UWIssue.PersonalAuto.TooManyVehicles.LongDesc(0)
-    _policyEvalContext.addIssue("IneligibleQualificationQuestion_Ext", "IneligibleQualificationQuestion_Ext",
-        shortDescription, longDescription, 0)
-*/
-    var qs =       _policyEvalContext.Period.QuestionSets.where( \ elt -> elt.CodeIdentifier== 'HO_PreQual_Ext').first()
-
-    print('print' +_policyEvalContext.Period.hasAnswerForQuestionSet(qs))
-    var shortDescription = \ -> displaykey.UWIssue.PersonalAuto.TooManyVehicles.ShortDesc
-    var longDescription = \ -> displaykey.UWIssue.PersonalAuto.TooManyVehicles.LongDesc(0)
-    _policyEvalContext.addIssue("IneligibleQualificationQuestion_Ext", "IneligibleQualificationQuestion_Ext",
-        shortDescription, longDescription, 0)
 
   }
 }

@@ -48,7 +48,7 @@
       modelType="Limit"
       priority="300"
       public-id="HODW_EQCovB_HOE"
-      required="true"
+      required="false"
       restrictionModel="pd"
       valueType="percent">
       <DefaultsSet/>
@@ -70,8 +70,8 @@
       modelType="Limit"
       priority="500"
       public-id="HODW_EQCovC_Deductible_HOE"
-      required="true"
-      restrictionModel="per"
+      required="false"
+      restrictionModel="prp"
       valueType="percent">
       <DefaultsSet/>
       <Options>
@@ -119,7 +119,7 @@
       modelType="Deductible"
       priority="400"
       public-id="HODW_EQOtherStructure_Deductible_HOE"
-      required="true"
+      required="false"
       restrictionModel="bld"
       valueType="percent">
       <DefaultsSet>
@@ -145,10 +145,32 @@
       modelType="Limit"
       priority="200"
       public-id="HODW_EQCovA_HOE"
-      required="true"
+      required="false"
       restrictionModel="bld"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_"
+      coverageColumn="ChoiceTerm6"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="700"
+      public-id="HODW_"
+      required="false"
+      restrictionModel="exp"
+      valueType="percent">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z5pik6ru2cktp5m7vnbjnjih7u9"
+          optionCode="20"
+          priority="100"
+          public-id="z5pik6ru2cktp5m7vnbjnjih7u9"
+          value="20.0000"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

@@ -19,9 +19,9 @@ class TunaGateway implements TunaInterface {
   var tunaCommunicator: TunaCommunicator
   var reqMapper: TunaRequestMapper
   var resMapper: TunaResponseMapper
-  var timeout: int
+  var timeout = "500"
 
-  construct(thresholdTimeout: int) {
+  construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     tunaCommunicator = new TunaCommunicator()
     reqMapper = new TunaRequestMapper()
@@ -68,10 +68,10 @@ class TunaGateway implements TunaInterface {
    * synchronous event to validate the property information from Tuna WebService
    * @param policyPeriod have the values entered in Create account screen
    */
-  override function fetchPropertyInformationScrubOnly(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformationScrubOnly(address: AddressFillable): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformationScrubOnly ", this.IntrinsicType)
-      var req = reqMapper.createRequestMapper(policyPeriod)
+      var req = reqMapper.createMappingAddress(address)
       var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformationScrubOnly ", this.IntrinsicType)
@@ -144,12 +144,14 @@ class TunaGateway implements TunaInterface {
     try {
       logger.debug(" Inside Tunagateway FetchAddressValidation ", this.IntrinsicType)
       var req = reqMapper.createMappingAddress(address)
-        var tunaResponse = tunaCommunicator.getPropertyInformation(req)
-        logger.debug(" Tuna Call Complete FetchAddressValidation ", this.IntrinsicType)
-        return tunaResponse
-      } catch (e: Exception) {
-        logger.error("TunaGateway : FetchAddressValidation " + " : StackTrace = " + e.StackTraceAsString)
-        throw e
-      }
+      var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
+      print("response " + tunaResponse.toString())
+      logger.debug(" Tuna Call Complete FetchAddressValidation ", this.IntrinsicType)
+      return tunaResponse
+    } catch (e: Exception) {
+      logger.error("TunaGateway : FetchAddressValidation " + " : StackTrace = " + e.StackTraceAsString)
+      throw e
     }
   }
+
+}

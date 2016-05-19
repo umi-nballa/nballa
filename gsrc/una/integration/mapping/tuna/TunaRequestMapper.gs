@@ -17,7 +17,7 @@ class TunaRequestMapper {
 
   final static var logger = UnaLoggerCategory.UNA_INTEGRATION
      /*Default Mapping fields for the request*/
-   function createRequestMapper(policyPeriod : PolicyPeriod) : GetPropertyInformationRequestModel {
+   function createRequestMapper(address : PolicyPeriod) : GetPropertyInformationRequestModel {
      var message = new wsi.remote.una.tuna.quoteservice.types.complex.GetPropertyInformationRequestModel()
      var date = new Date()
      var df = new SimpleDateFormat("yyyy-MM-d'T'HH:mm:ss.S")

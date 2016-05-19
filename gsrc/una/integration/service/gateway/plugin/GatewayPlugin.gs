@@ -44,7 +44,7 @@ class GatewayPlugin {
    **************************************************/
 
   static var logger = UnaLoggerCategory.UNA_INTEGRATION
-  static var config =loadPluginConfig()
+  static var config = loadPluginConfig()
 
 
   /**
@@ -62,6 +62,7 @@ class GatewayPlugin {
       //get plugin config file relative to the location of this class
       //config = loadPluginConfig()
       var plugin = config.Plugin.firstWhere( \ plugin -> plugin.Name==pluginName)
+      print("hi thi is plugin " + plugin.Name)
       var myFullClassName = plugin.ClassImpl
 
       //using reflection, instantiate implementation on the configuration file's ClassImpl
@@ -96,6 +97,7 @@ class GatewayPlugin {
       of plugin config file.  i.e. foo.bar -> foo/bar   +  "/GatewayPlugin.xml"
        */
       var resourceName=GatewayPlugin.Type.Namespace.replace(".","/")+"/GatewayPlugin.xml"
+       print("the resource name is " + resourceName)
 
       //get physical path to file from relative path using Type.TypeLoader.getResource(...)
       var pluginConfigFile = new File(GatewayPlugin.Type.TypeLoader.getResource(resourceName).File)
@@ -106,6 +108,7 @@ class GatewayPlugin {
       //find configuration settings for the current runtime environment
       var env = una.utils.EnvironmentUtil.PolicyCenterRuntime
       var envConfig = pluginConfig.Configuration.firstWhere( \ configx -> configx.Environment.equalsIgnoreCase(env))
+      print(envConfig)
 
       return envConfig
 

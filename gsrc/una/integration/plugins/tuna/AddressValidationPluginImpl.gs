@@ -7,6 +7,7 @@ uses una.logging.UnaLoggerCategory
 uses una.utils.PropertiesHolder
 uses java.lang.Exception
 uses una.integration.service.gateway.tuna.TunaInterface
+uses una.integration.service.gateway.plugin.GatewayPlugin
 
 /**
  * Address Service Plugin Implementation class for validating address from tuna.
@@ -14,11 +15,16 @@ uses una.integration.service.gateway.tuna.TunaInterface
  */
 class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
   final static var logger = UnaLoggerCategory.UNA_INTEGRATION
-  var tunaGateway: TunaInterface
+  private var _TUNAGateway = GatewayPlugin.makeTunaGateway()
 
   construct() {
-    tunaGateway = new TunaGateway(PropertiesHolder.getProperty("TUNA_GATEWAY_TIMEOUT"))
   }
+
+
+  property get TUNAGateway(): TunaInterface {
+    return _TUNAGateway
+  }
+
 
   /**
    * Initializes the plugin IAddressAutoCompletePlugin
@@ -31,7 +37,7 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
       // Validating address against Tuna gateway if all the mandatory fields are available
       if (null != address.AddressLine1 && null != address.City && null != address.State && null != address.PostalCode) {
         logger.debug(" Inside Tunagateway autofillAddress For AddressValidation ", this.IntrinsicType)
-        var finalRes = tunaGateway.validateAddress(address)
+        var finalRes = TUNAGateway.validateAddress(address)
         if (finalRes.Status != 0) {
           throw new gw.api.util.DisplayableException (finalRes.Address.Note)
         }

@@ -1,9 +1,8 @@
-package una.lob.ho
+package una.lob.bp7
 
-
+uses java.util.Set
 uses gw.lob.common.AbstractUnderwriterEvaluator
 uses gw.policy.PolicyEvalContext
-uses java.util.Set
 uses gw.lang.reflect.IType
 
 /**
@@ -13,7 +12,7 @@ uses gw.lang.reflect.IType
  * Time: 10:16 PM
  * To change this template use File | Settings | File Templates.
  */
-class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
+class BP7_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
   private static final var  INELIGIBLE_QQ = "IneligibleQQ_Ext"
   private static final var  PREQUAL_IDENTIFIER = "HO_PreQual_Ext"
@@ -41,22 +40,14 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     questionSet.Questions.each( \ elt ->
       {
         if (elt != null) {
+
           if (elt?.isQuestionAvailable(_policyEvalContext.Period) ) {
             var answeredTrue = _policyEvalContext.Period.getAnswerValue(elt)?.toString() as boolean
+            print(elt.DisplayName)
+            print(answeredTrue)
             if (null != answeredTrue && answeredTrue) {
               switch (elt.DisplayName) {
-                case 'HO_OwnATV_Ext':
-                print ('data  here ' + elt.DisplayName)
-                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_OwnATV_Ext
-                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
-                    _policyEvalContext.addIssue('HO_OwnATV_Ext','HO_OwnATV_Ext', shortDescription, longDescription)
-                    break
-                case 'HO_ATVonPremise_Ext':
-                    print ('data  here ' + elt.DisplayName)
-                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_ATVonPremise_Ext
-                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
-                    _policyEvalContext.addIssue('HO_ATVonPremise_Ext','HO_ATVonPremise_Ext', shortDescription, longDescription)
-                    break
+               //TODO: finish this
                   default:
                   break
               }

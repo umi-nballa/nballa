@@ -4,12 +4,63 @@
   coverageCategory="HODW_Additional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
-  existence="Required"
+  existence="Electable"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="12900"
   public-id="HODW_PermittedIncOcp_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="HODWDwelling_HOE"
+      coverageColumn="BooleanTerm2"
+      lookupTableName="DwellingCovTerm"
+      priority="400"
+      public-id="HODWDwelling_HOE"
+      required="false"/>
+    <DirectCovTermPattern
+      codeIdentifier="HODW_DescriptionofBusiness_HOE"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="100"
+      public-id="HODW_DescriptionofBusiness_HOE"
+      required="true"
+      valueType="other">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="HODW_DescriptionOtherSRP_HOE"
+      coverageColumn="BooleanTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="300"
+      public-id="HODW_DescriptionOtherSRP_HOE"
+      required="false"/>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_Limit_HOE"
+      coverageColumn="DirectTerm2"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="200"
+      public-id="HODW_Limit_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zccjefkq4h0d58tg7242vuv4ea9"
+          currency="usd"
+          defaultValue="2500"
+          public-id="zccjefkq4h0d58tg7242vuv4ea9"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="HODW_OtherStructure_HOE"
+      coverageColumn="BooleanTerm3"
+      lookupTableName="DwellingCovTerm"
+      priority="500"
+      public-id="HODW_OtherStructure_HOE"
+      required="false"/>
+  </CovTerms>
 </CoveragePattern>

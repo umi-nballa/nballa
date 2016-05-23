@@ -170,17 +170,16 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
                     _policyEvalContext.addIssue('HO_Farm_Ext','HO_Farm_Ext', shortDescription, longDescription)
                     break
-                case 'Question_HO_island_Ext':
+                case 'HO_island_Ext':
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_island_Ext
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
                     _policyEvalContext.addIssue('HO_island_Ext','HO_island_Ext', shortDescription, longDescription)
                     break
-                /*case 'Question_HO_island_Ext':
-                    print ('data  here ' + elt.DisplayName)
+                case 'HO_Island_DP_Ext':
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Island_DP_Ext
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
-                    _policyEvalContext.addIssue('HO_island_DP_Ext','HO_island_DP_Ext', shortDescription, longDescription)
-                    break*/
+                    _policyEvalContext.addIssue('HO_Island_DP_Ext','HO_Island_DP_Ext', shortDescription, longDescription)
+                    break
                 case 'HO_DwellingQAflip_Ext':
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_DwellingQAflip_Ext
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)

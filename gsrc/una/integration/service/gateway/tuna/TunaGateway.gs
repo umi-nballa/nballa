@@ -35,7 +35,7 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformationComplete(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformationComplete ", this.IntrinsicType)
-      var req = reqMapper.createRequestMapper(policyPeriod)
+      var req = reqMapper.createRequestModel(policyPeriod)
       var tunaResponse = tunaCommunicator.getPropertyInformationComplete(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformationComplete ", this.IntrinsicType)
@@ -53,7 +53,7 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformation ", this.IntrinsicType)
-      var req = reqMapper.createRequestMapper(policyPeriod)
+      var req = reqMapper.createRequestModel(policyPeriod)
       var tunaResponse = tunaCommunicator.getPropertyInformation(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformation ", this.IntrinsicType)
@@ -71,7 +71,7 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformationScrubOnly(address: AddressFillable): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformationScrubOnly ", this.IntrinsicType)
-      var req = reqMapper.createMappingAddress(address)
+      var req = reqMapper.createRequestModel(address)
       var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformationScrubOnly ", this.IntrinsicType)
@@ -89,7 +89,7 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformationGeoLookUp(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformationGeoLookUp ", this.IntrinsicType)
-      var req = reqMapper.createRequestMapper(policyPeriod)
+      var req = reqMapper.createRequestModel(policyPeriod)
       var tunaResponse = tunaCommunicator.getPropertyInformationGeoLookUp(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformationGeoLookUp ", this.IntrinsicType)
@@ -107,7 +107,7 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformation360ValueLookUpOnlyExl ", this.IntrinsicType)
-      var req = reqMapper.createRequestMapper(policyPeriod)
+      var req = reqMapper.createRequestModel(policyPeriod)
       var tunaResponse = tunaCommunicator.getPropertyInformationISOLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformation360ValueLookUpOnlyExl ", this.IntrinsicType)
@@ -125,7 +125,7 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Inside Tunagateway GetPropertyInformation360ValueLookUpOnlyInc ", this.IntrinsicType)
-      var req = reqMapper.createRequestMapper(policyPeriod)
+      var req = reqMapper.createRequestModel(policyPeriod)
       var tunaResponse = tunaCommunicator.getPropertyInformation360ValueLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Tuna Call Complete GetPropertyInformation360ValueLookUpOnlyInc ", this.IntrinsicType)
@@ -143,7 +143,7 @@ class TunaGateway implements TunaInterface {
   override function validateAddress(address: AddressFillable): PropertyGeographyModel {
     try {
       logger.debug(" Inside Tunagateway FetchAddressValidation ", this.IntrinsicType)
-      var req = reqMapper.createMappingAddress(address)
+      var req = reqMapper.createRequestModel(address)
       var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
       print("response " + tunaResponse.toString())
       logger.debug(" Tuna Call Complete FetchAddressValidation ", this.IntrinsicType)

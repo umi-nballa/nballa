@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="HODW_PlantsShrubsTrees_HOE_Ext"
-  coverageCategory="HOLI_Additional_HOE"
+  coverageCategory="HODW_Additional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
   existence="Required"
@@ -11,5 +11,57 @@
   priority="14700"
   public-id="HODW_PlantsShrubsTrees_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_PlantsShrubsLimitbyTree_HOE"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_PlantsShrubsLimitbyTree_HOE"
+      required="true"
+      restrictionModel="pd"
+      valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zoqh0n9rondu90sr42fqrkhrj1b"
+          currency="usd"
+          defaultValue="500"
+          public-id="zoqh0n9rondu90sr42fqrkhrj1b"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z8jgs280kif1ganrfdttlp4p2ia"
+          currency="usd"
+          optionCode="500"
+          priority="100"
+          public-id="z8jgs280kif1ganrfdttlp4p2ia"
+          value="500.000"/>
+      </Options>
+    </OptionCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_PlantsShrubsLimit_HOE"
+      coverageColumn="ChoiceTerm2"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_PlantsShrubsLimit_HOE"
+      required="true"
+      restrictionModel="pd"
+      valueType="percent">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zkjiupv7v2l2nen1q4dl564hlg9"
+          optionCode="5"
+          priority="200"
+          public-id="zkjiupv7v2l2nen1q4dl564hlg9"
+          value="5.0000"/>
+      </Options>
+    </OptionCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

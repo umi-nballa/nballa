@@ -11,5 +11,38 @@
   priority="12000"
   public-id="HODW_SpecificAddAmt_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_AdditionalAmtInsurance_HOE"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_AdditionalAmtInsurance_HOE"
+      required="false"
+      valueType="percent">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zpeiib9n7j1i6dns7d92bent1ja"
+          defaultValue="25"
+          public-id="zpeiib9n7j1i6dns7d92bent1ja"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zjtii2lssbm7h222kf1g7585d6a"
+          optionCode="50"
+          priority="100"
+          public-id="zjtii2lssbm7h222kf1g7585d6a"
+          value="50.0000"/>
+        <CovTermOpt
+          codeIdentifier="z0the0fkq0rgvehc7k2hu3mofea"
+          optionCode="25"
+          priority="100"
+          public-id="z0the0fkq0rgvehc7k2hu3mofea"
+          value="25.0000"/>
+      </Options>
+    </OptionCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

@@ -26,7 +26,7 @@
     <RowIterator
       editable="true"
       elementName="productOffer"
-      value="productOffers">
+      value="una.pageprocess.SubmissionWizardHelper.filterProductSelection(productOffers, producerSelection.State)">
       <Row>
         <LinkCell
           align="center"
@@ -34,11 +34,12 @@
           visible="createSingle"
           width="75">
           <Link
-            action="gw.web.job.submission.NewSubmissionUIHelper.createOneSubmission(productOffer, producerSelection, account, quoteType)"
+            action="una.pageprocess.SubmissionWizardHelper.doesProducerHaveJurisdiction(producerSelection.Producer);gw.web.job.submission.NewSubmissionUIHelper.createOneSubmission(productOffer, producerSelection, account, quoteType)"
             id="addSubmission"
             label="displaykey.Web.Submission.Products.Select"
+            recalculateArgOnRefresh="true"
             styleClass="miniButton"
-            visible="productOffer.ProductSelectionStatus == &quot;Available&quot; || productOffer.ProductSelectionStatus == &quot;AutoDeclined&quot;"/>
+            visible="productOffer.ProductSelectionStatus == &quot;Available&quot; || productOffer.ProductSelectionStatus == &quot;AutoDeclined&quot; || producerSelection.State == typekey.Jurisdiction.TC_FL"/>
         </LinkCell>
         <RangeCell
           align="left"

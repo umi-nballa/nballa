@@ -3,6 +3,7 @@ package una.pageprocess
 uses una.utils.EnvironmentUtil
 uses gw.api.productmodel.DirectCovTermPattern
 uses java.lang.Integer
+uses gw.api.util.DisplayableException
 
 /**
  * Created with IntelliJ IDEA.
@@ -100,5 +101,32 @@ class SubmissionWizardHelper {
    */
   public static function populateForSubmission(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
     covTerm.setValue(noOfEmployees)
+  }
+
+  /**
+   * Function to filter product selection by state.
+   * @param productSelection: ProductSelection[]
+   * @param jurisdiction : typekey.Jurisdiction
+   * @return ProductSelection[] - Filtered products
+   */
+  public static function filterProductSelection(productSelection: ProductSelection[], jurisdiction : typekey.Jurisdiction) : ProductSelection[] {
+    if(jurisdiction == typekey.Jurisdiction.TC_FL or jurisdiction == null) {
+      return productSelection
+    } else {
+      return productSelection.where( \ elt -> elt.Product.CodeIdentifier=='Homeowners')
+    }
+  }
+  /**
+   * Function to validate if a submission can be created. This is based on  1 Account - 1 Policy of UN
+   *
+   * @param acct Account
+   * @return boolean
+   */
+  public static function doesProducerHaveJurisdiction(producer : Organization) : boolean {
+    var regionsOfProducer = producer.RootGroup.Regions*.Region.getRegionZones()
+    if (regionsOfProducer == null or regionsOfProducer.Count == 0 ) {
+      throw new DisplayableException(displaykey.Ext.Submission.SubmissionWizardHelper.ProducerNoRegions)
+    }
+    return true
   }
 }

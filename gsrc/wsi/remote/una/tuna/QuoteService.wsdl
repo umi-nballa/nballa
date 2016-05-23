@@ -1,0 +1,944 @@
+<?xml version="1.0"?>
+<wsdl:definitions targetNamespace="http://quotingservice.quoting.api.uihna.com/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:tns="http://quotingservice.quoting.api.uihna.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="http://quotingservice.quoting.api.uihna.com/" elementFormDefault="qualified">
+      <s:element name="GetQuickQuote">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:QuickQuoteRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuickQuoteRequestModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="QuoteNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Inputs" type="tns:QuickQuoteInputsModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteInputsModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyState" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LineOfBusiness" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TypeOfPolicy" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TypeOfDwelling" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ConstructionType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DwellingOccupancy" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Disclaimer" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NewClosing" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrderInsuranceScoreReport" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InsuredBirthDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredFirstName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredLastName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredMiddleInitial" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyAddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyCity" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyZip" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyCounty" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentInsuranceCompany" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CurrentInsuranceCompanyOther" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NewClosingDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberUNAYears" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PriorPolicyExpirationDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PriorUNAPolicyNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CreditHistoryDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfPropertyClaims" nillable="true" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ProtectionClass" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TotalSquareFootage" nillable="true" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Territory" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="YearBuilt" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DistanceFireDepartment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DistanceFireHydrant" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FloorLocation" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfFamilies" nillable="true" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="NumberOfUnits" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="NumberOfUnitsFirewalls" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfMortgagees" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfWeatherClaims" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageALimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageBLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageCLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageDLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageELimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageFLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageLLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageMLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AOPDeductible" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="HurricaneDeductible" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BCEGGrade" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DistanceToCoast" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MitigationAffidavit" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ProofYearBuilt" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WindHailExclusion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WindHailExclusionPrimarySecondary" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WindHailExclusionQuestion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="RentalExposure" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FBCWindSpeed" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InternalPressureDesign" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OpeningProtection" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofCover" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofDeckAttachment" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofDecking" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofingMaterial" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofingMaterialOther" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofShape" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="RoofWallConnection" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SecondaryWaterResistance" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TerrainExposure" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WindBorneDebrisRegion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WindSpeedDesign" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DoorStrength" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SeasonalOrSecondary" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CentralFireAlarm" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OverseenReputableParty" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SecuredCommunityProfessionalManagement" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MonthsOfConsecutiveUnoccupancy" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AnimalLiability" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AnimalLiabilityBreed" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AnimalLiabilityApprovedBreed" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AnimalLiabilityLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AnimalLiabilityDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageALimitAdditional" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EquipmentBreakdown" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FungiIncreasedAmountCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FungiIncreasedAmountCoverageLimit" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="GolfCartPhysicalDamage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IdentityTheftExpense" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedBuildingAdditions" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedBuildingAdditionsLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedBusinessProperty" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedBusinessPropertyLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedOtherStructures" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="IncreasedOtherStructuresDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedOtherStructuresLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedOtherStructuresNumber" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiability" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityElectronicApparatus" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityFirearms" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityJewelryWatchesFurs" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityMoney" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilitySecurities" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilitySilverware" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossAssessment" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossAssessmentLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossAssessmentLiability" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossAssessmentLiabilityLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrdinanceLawIncrease" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonalInjury" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonalPropertyExclusion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PreferredBuilderCredit" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PreferredBuilder" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ProtectiveDeviceCredit" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ProtectiveDeviceCreditBurglar" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ProtectiveDeviceCreditFire" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ProtectiveDeviceCreditSprinkler" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ProtectiveDeviceCreditCombination" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ProtectiveDeviceCreditSprinklerCertificate" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SinkholeLossCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SinkholeLossCoverageLimit" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PremisesLiabilityCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialComputerCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialComputerCoverageLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersCoverageASpecial" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="StructuresRentedResidencePremises" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="StructuresRentedResidencePremisesLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="StructuresRentedResidencePremisesDescription" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="StructuresRentedResidencePremisesFamilies" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="RefrigeratedPersonalProperty" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalNamedInsuredCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossPayableClauseCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ResidenceGlassUnscheduledCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ResidentialGlassCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialPersonalPropertyCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ReplacementCostPersonalProperty" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ActualCashValueHoldback" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersRentalOthers" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersOtherStructuresCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersOtherStructuresCoverageLimit1" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersOtherStructuresCoverageLimit2" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WaterBackupSumpOverflow" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WaterBackupSumpOverflowLimit" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LimitedScreenEnclosure" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LimitedScreenEnclosureLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PermittedIncidentalOccupancyLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PermittedIncidentalOccupancyDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PermittedIncidentalOccupancy" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PermittedIncidentalOccupancyLocation" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PermittedIncidentalOccupancySectionII" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ActualCashValueHoldbackWind" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalResidences" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AffinityDiscount" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AffinityDiscountOrganization" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AutomaticIncreaseInInsuranceCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AutomaticIncreaseInInsuranceCoveragePercentage" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ContractOfSaleCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CounterfeitMoneyCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CounterfeitMoneyCoverageLimit" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DifferenceInConditions" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DifferenceInConditionsOtherCarrierLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverageAnchorBolted" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EarthquakeCoverageChimney" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EarthquakeCoverageCrippleWalls" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverageDeductible" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverageHeaterSecured" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EarthquakeCoveragePreExistingDamage" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverageSteepGrade" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EarthquakeCoverageType" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LaundryFacilitiesGroundLevelQuestion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SupplementalHeatingDevicesQuestion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExecutiveCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Exposure" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FirelineAdjustedHazardScore" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FirelinePropertyAccessToFireDepartment" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="GatedCommunity" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="HailResistantRoofCredit" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="HOAPlusCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LimitedTheftCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MultiLineDiscount" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MultiLineDiscountDwellingFirePolicyNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MultiLineDiscountFloodPolicyNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="MultiLineDiscountHomeownersPolicyNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OwnershipDiscount" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OwnershipDiscountType" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PlantsShrubsTreesCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="RenovationCredit" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="RentalProperty" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ReplacementCostDwelling" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ReplacementCostDwellingRoofSurfacePaymentSchedule" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="VandalismOrMaliciousMischiefExclusion" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WatercraftLiabilityCoverage" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WatercraftLiabilityCoverageBoatHP" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WatercraftLiabilityCoverageBoatLength" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WatercraftLiabilityCoverageBoatType" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WatercraftLiabilityCoverageClass" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WatercraftLiabilityCoverageDescription" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WatercraftLiabilityCoverageMaxSpeed" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WorkersCompensation" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WorkersCompensationNumberOfEmployees" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WorkersCompensationNumberOfInservants" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WorkersCompensationNumberOfOccasionalEmployees" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WorkersCompensationNumberOfOutservants" nillable="true" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WorkersCompensationTypeOfEmployees" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WindHailDeductible" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OrdinanceLawIncreaseLimit" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ActualCashValueLossSettlement" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersCoverageCSpecial" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityJewelryWatchesFursSubLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityJewelryWatchesFursCount" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalCoveragesUnscheduled" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalCoveragesUnscheduledLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalCoveragesUnscheduledSubLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalCoveragesUnscheduledCount" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonalInjuryAggregate" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EarthquakeCoverageConstruction" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverageLossAssessment" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="BusinessPursuits" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="BusinessPursuitsGroup" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ResidenceTrust" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ResidenceTrustGrantor" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ResidenceTrustType" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EarthquakeCoverageLossAssessmentLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ActualCashValue" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WoodburningStove" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InsuredTenantDiscount" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FireDepartmentCharges" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FireDepartmentChargesLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageALimitAdditionalPercent" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MatureHomeownerDiscount" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedOtherStructuresRented" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedBusinessPropertyQualifier" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FirstTimeDeeded" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="FirstTimeDeededWarranty" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="NumberOfStories" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LapseInCoverageQuestion" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FloodZone" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalInsuredPremisesLiability" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfInterests" nillable="true" type="s:int"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetQuickQuoteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetQuickQuoteResult" type="tns:QuickQuoteResponseModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="QuickQuoteResponseModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="QuoteNumber" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SummaryPDF" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="tns:QuickQuoteResponseStatus"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Messages" type="tns:ArrayOfQuotingMessageModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PayPlans" type="tns:ArrayOfQuickQuotePayPlanModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Outputs" type="tns:QuickQuoteOutputsModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AppUrl" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="QuickQuoteResponseStatus">
+        <s:restriction base="s:string">
+          <s:enumeration value="Errored"/>
+          <s:enumeration value="Invalidated"/>
+          <s:enumeration value="Completed"/>
+          <s:enumeration value="Referred"/>
+          <s:enumeration value="Declined"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfQuotingMessageModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="QuotingMessageModel" nillable="true" type="tns:QuotingMessageModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuotingMessageModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Type" type="tns:QuotingMessageType"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Summary" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Details" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="QuotingMessageType">
+        <s:restriction base="s:string">
+          <s:enumeration value="Error"/>
+          <s:enumeration value="Alert"/>
+          <s:enumeration value="Warning"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="ArrayOfQuickQuotePayPlanModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="QuickQuotePayPlanModel" nillable="true" type="tns:QuickQuotePayPlanModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuotePayPlanModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PaymentOption" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DownPayment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NumberOfInstallments" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InstallmentAmount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="InstallmentFee" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteOutputsModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredFirstName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredMiddleInitial" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredLastName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyAddress" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyCity" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyState" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyZip" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="InsuredPropertyCounty" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LineOfBusiness" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TypeOfPolicy" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Coverages" type="tns:QuickQuoteCoveragesModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Deductibles" type="tns:QuickQuoteDeductiblesModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AdjustmentsSurchargesCredits" type="tns:QuickQuoteAdjustmentsSurchargesCreditsModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="OptionalCoverages" type="tns:QuickQuoteOptionalCoveragesModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PayPlans" type="tns:ArrayOfQuickQuotePayPlanModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TotalFees" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TotalPremium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteCoveragesModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageA" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageB" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageC" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageD" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageE" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageF" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteCoverageSimpleLimitModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Limit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Premium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteDeductiblesModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="AOP" type="tns:QuickQuoteDeductibleModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Hurricane" type="tns:QuickQuoteDeductibleModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EarthquakeCoverage" type="tns:QuickQuoteDeductibleModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteDeductibleModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Deductible" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Premium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteAdjustmentsSurchargesCreditsModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AgeOfHomeAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CustomerMatrixAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AgeOfConstructionAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SuperiorConstructionCredit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="BCEGAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SeasonalSecondaryAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ProtectiveDeviceCredit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PreferredBuilderCredit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MultiLineDiscount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="HailResistantRoofCredit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="RenovationCredit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AffinityDiscount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OwnershipDiscount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="GatedCommunityDiscount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MaximumDiscount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="NoPriorInsuranceAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TownhouseRowhouseAdjustment" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WindMitigationCredit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="VacancySurcharge" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="MatureHomeownerDiscount" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossHistoryPremium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteOptionalCoveragesModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="AdditionalNamedInsuredCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AnimalLiability" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="AutomaticIncreaseInInsuranceCoverage" type="tns:QuickQuoteCoveragePercentModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ContractOfSaleCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CounterfeitMoneyCoverage" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CoverageALimitAdditionalPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="DifferenceInConditions" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EquipmentBreakdownPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExecutiveCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="FungiIncreasedAmountCoverage" type="tns:QuickQuoteCoverageComplexLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="GatedCommunityPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="GolfCartPhysicalDamagePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="HOAPlusCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IdentityTheftExpensePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="IncreasedBuildingAdditions" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="IncreasedBusinessProperty" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="IncreasedOtherStructures" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="IncreasedSpecialLimitsLiabilityPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LimitedScreenEnclosure" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LimitedTheftCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LossAssessment" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LossAssessmentLiability" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="LossPayableClauseCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="OrdinanceLawIncreasePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PermittedIncidentalOccupancy" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PersonalInjuryPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PlantsShrubsTreesCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageL" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CoverageM" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="RefrigeratedPersonalPropertyPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ReplacementCostDwellingPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ReplacementCostDwellingRoofSurfacePaymentSchedulePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ReplacementCostPersonalPropertyPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ActualCashValueHoldbackPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ResidenceGlassUnscheduledCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ResidentialGlassCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SinkholeLossCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="SpecialComputerCoverage" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="SpecialPersonalPropertyCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="StructuresRentedResidencePremises" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersCoverageASpecialPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UnitOwnersOtherStructuresCoverage" type="tns:QuickQuoteCoverageComplexLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="UnitOwnersRentalOthersPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="VandalismOrMaliciousMischiefExclusionPremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="WaterBackupSumpOverflowPremium" type="tns:QuickQuoteCoverageSimpleLimitModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WaterBackupSumpOverflowLimit" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WatercraftLiabilityCoveragePremium" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="WorkersCompensationPremium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteCoveragePercentModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Percentage" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Premium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="QuickQuoteCoverageComplexLimitModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Limit1" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Limit2" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Premium" nillable="true" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="QuoteAuthenticationHeader" type="tns:QuoteAuthenticationHeader"/>
+      <s:complexType name="QuoteAuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Group" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Passkey" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string"/>
+        </s:sequence>
+        <s:anyAttribute/>
+      </s:complexType>
+      <s:element name="GetPropertyInformation">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:GetPropertyInformationRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="GetPropertyInformationRequestModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="YearBuild" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Address" type="tns:PropertySimpleAddressModel"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AsOfDate" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Owner" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="TotalSquareFootage" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Coordinates" type="tns:PropertyCoordinatesModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertySimpleAddressModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Street" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ZipCode" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Country" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyCoordinatesModel">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Latitude" type="s:double"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Longitude" type="s:double"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPropertyInformationResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPropertyInformationResult" type="tns:PropertyGeographyModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="PropertyGeographyModel">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:ResponseModelBase">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Address" type="tns:PropertyComplexAddressModel"/>
+              <s:element minOccurs="1" maxOccurs="1" name="IsExact" type="s:boolean"/>
+              <s:element minOccurs="0" maxOccurs="1" name="Counties" type="tns:ArrayOfPropertyDatumModel"/>
+              <s:element minOccurs="0" maxOccurs="1" name="Lines" type="tns:ArrayOfPropertyLine"/>
+              <s:element minOccurs="0" maxOccurs="1" name="Coordinates" type="tns:PropertyCoordinatesModel"/>
+              <s:element minOccurs="0" maxOccurs="1" name="Datums" type="tns:ArrayOfPropertyDatumModel"/>
+              <s:element minOccurs="1" maxOccurs="1" name="ResultingPrecision" type="s:int"/>
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ResponseModelBase" abstract="true">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="Status" type="s:int"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Messages" type="tns:ArrayOfResponseMessage"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfResponseMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="ResponseMessage" nillable="true" type="tns:ResponseMessage"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ResponseMessage">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Class" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Code" type="tns:ResponseCode"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Text" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="ResponseCode">
+        <s:restriction base="s:string">
+          <s:enumeration value="Errored"/>
+          <s:enumeration value="Invalidated"/>
+          <s:enumeration value="Completed"/>
+          <s:enumeration value="Flagged"/>
+          <s:enumeration value="Referred"/>
+          <s:enumeration value="Restricted"/>
+          <s:enumeration value="Declined"/>
+          <s:enumeration value="Negative100"/>
+          <s:enumeration value="Severe"/>
+        </s:restriction>
+      </s:simpleType>
+      <s:complexType name="PropertyComplexAddressModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Street" type="tns:PropertyStreetAddressModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="City" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="State" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Zipcode" type="tns:PropertyZipCodeModel"/>
+          <s:element minOccurs="0" maxOccurs="1" name="County" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Note" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="NoteDetail" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="USPSOnly" type="s:boolean"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyStreetAddressModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Number" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PreDirection" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PostDirection" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Type" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UnitName" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="UnitNumber" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyZipCodeModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Major" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Minor" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPropertyDatumModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PropertyDatumModel" nillable="true" type="tns:PropertyDatumModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyDatumModel">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Value" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Line" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Percent" type="s:decimal"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LevelRecord" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="NamedValue" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ListValue" type="tns:ArrayOfPropertyDatumModel"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPropertyLine">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PropertyLine" nillable="true" type="tns:PropertyLine"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyLine">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Line" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Territories" type="tns:ArrayOfPropertyTerritory"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPropertyTerritory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PropertyTerritory" nillable="true" type="tns:PropertyTerritory"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PropertyTerritory">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Code" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Name" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PercentTerritory" type="s:double"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetPropertyInformationScrubOnly">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:GetPropertyInformationRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationScrubOnlyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPropertyInformationScrubOnlyResult" type="tns:PropertyGeographyModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationComplete">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:GetPropertyInformationRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationCompleteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPropertyInformationCompleteResult" type="tns:PropertyGeographyModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationISOLookUpOnly">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:GetPropertyInformationRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationISOLookUpOnlyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPropertyInformationISOLookUpOnlyResult" type="tns:PropertyGeographyModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationGeoLookUp">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:GetPropertyInformationRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformationGeoLookUpResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPropertyInformationGeoLookUpResult" type="tns:PropertyGeographyModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformation360ValueLookUpOnly">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Request" type="tns:GetPropertyInformationRequestModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetPropertyInformation360ValueLookUpOnlyResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetPropertyInformation360ValueLookUpOnlyResult" type="tns:PropertyGeographyModel"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="GetQuickQuoteSoapIn">
+    <wsdl:part name="parameters" element="tns:GetQuickQuote"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuickQuoteSoapOut">
+    <wsdl:part name="parameters" element="tns:GetQuickQuoteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetQuickQuoteQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformation"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationScrubOnlySoapIn">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationScrubOnly"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationScrubOnlySoapOut">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationScrubOnlyResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationScrubOnlyQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationCompleteSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationComplete"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationCompleteSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationCompleteResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationCompleteQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationISOLookUpOnlySoapIn">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationISOLookUpOnly"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationISOLookUpOnlySoapOut">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationISOLookUpOnlyResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationISOLookUpOnlyQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationGeoLookUpSoapIn">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationGeoLookUp"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationGeoLookUpSoapOut">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformationGeoLookUpResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformationGeoLookUpQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformation360ValueLookUpOnlySoapIn">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformation360ValueLookUpOnly"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformation360ValueLookUpOnlySoapOut">
+    <wsdl:part name="parameters" element="tns:GetPropertyInformation360ValueLookUpOnlyResponse"/>
+  </wsdl:message>
+  <wsdl:message name="GetPropertyInformation360ValueLookUpOnlyQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:portType name="QuoteServiceSoap">
+    <wsdl:operation name="GetQuickQuote">
+      <wsdl:input message="tns:GetQuickQuoteSoapIn"/>
+      <wsdl:output message="tns:GetQuickQuoteSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformation">
+      <wsdl:input message="tns:GetPropertyInformationSoapIn"/>
+      <wsdl:output message="tns:GetPropertyInformationSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationScrubOnly">
+      <wsdl:input message="tns:GetPropertyInformationScrubOnlySoapIn"/>
+      <wsdl:output message="tns:GetPropertyInformationScrubOnlySoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationComplete">
+      <wsdl:input message="tns:GetPropertyInformationCompleteSoapIn"/>
+      <wsdl:output message="tns:GetPropertyInformationCompleteSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationISOLookUpOnly">
+      <wsdl:input message="tns:GetPropertyInformationISOLookUpOnlySoapIn"/>
+      <wsdl:output message="tns:GetPropertyInformationISOLookUpOnlySoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationGeoLookUp">
+      <wsdl:input message="tns:GetPropertyInformationGeoLookUpSoapIn"/>
+      <wsdl:output message="tns:GetPropertyInformationGeoLookUpSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformation360ValueLookUpOnly">
+      <wsdl:input message="tns:GetPropertyInformation360ValueLookUpOnlySoapIn"/>
+      <wsdl:output message="tns:GetPropertyInformation360ValueLookUpOnlySoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="QuoteServiceSoap" type="tns:QuoteServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetQuickQuote">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetQuickQuote" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetQuickQuoteQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformation">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformation" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetPropertyInformationQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationScrubOnly">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationScrubOnly" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetPropertyInformationScrubOnlyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationComplete">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationComplete" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetPropertyInformationCompleteQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationISOLookUpOnly">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationISOLookUpOnly" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetPropertyInformationISOLookUpOnlyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationGeoLookUp">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationGeoLookUp" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetPropertyInformationGeoLookUpQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformation360ValueLookUpOnly">
+      <soap:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformation360ValueLookUpOnly" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:GetPropertyInformation360ValueLookUpOnlyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="QuoteServiceSoap12" type="tns:QuoteServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetQuickQuote">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetQuickQuote" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetQuickQuoteQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformation">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformation" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetPropertyInformationQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationScrubOnly">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationScrubOnly" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetPropertyInformationScrubOnlyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationComplete">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationComplete" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetPropertyInformationCompleteQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationISOLookUpOnly">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationISOLookUpOnly" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetPropertyInformationISOLookUpOnlyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformationGeoLookUp">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformationGeoLookUp" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetPropertyInformationGeoLookUpQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetPropertyInformation360ValueLookUpOnly">
+      <soap12:operation soapAction="http://quotingservice.quoting.api.uihna.com/GetPropertyInformation360ValueLookUpOnly" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:GetPropertyInformation360ValueLookUpOnlyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="QuoteService">
+    <wsdl:port name="QuoteServiceSoap" binding="tns:QuoteServiceSoap">
+      <soap:address location="http://qa01:3274/Services/Quoting/QuoteService.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="QuoteServiceSoap12" binding="tns:QuoteServiceSoap12">
+      <soap12:address location="http://qa01:3274/Services/Quoting/QuoteService.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

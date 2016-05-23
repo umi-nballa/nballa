@@ -240,8 +240,8 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
       this.HODW_Dwelling_Limit_HOETerm.Value = limitA
 
-      if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
-        return
+      //if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
+      //  return
 
       if(covB.HasHODW_OtherStructures_Limit_HOETerm)
           covB.HODW_OtherStructures_Limit_HOETerm.Value = getDefaultLimitValue_Ext(covB)
@@ -271,4 +271,40 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     return number?.setScale(0, java.math.RoundingMode.DOWN)
   }
 
+ /*
+    *  Author: Sen Pitchaimuthu
+    *  Change Log: Added the new function setAllOtherPerilDefault to default the All other Peril value
+    */
+
+  static function setAllOtherPerilDefault(_dwelling: Dwelling_HOE)
+  {
+
+      if (_dwelling.HOPolicyType == TC_HO3 and _dwelling.Branch.BaseState != TC_AZ)
+      {
+        _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("1000")
+      }
+      else
+      {
+         _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("500")
+      }
+  }
+  /*
+    *  Author: Sen Pitchaimuthu
+    *  Change Log: Added the new function setValutaionMethodDefault to default the Valuation Method
+    */
+
+
+  static function setValuationMethodDefault(_dwelling: Dwelling_HOE)
+  {
+
+    if (_dwelling.Branch.BaseState == TC_TX)
+    {
+      _dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.setValueFromString("Actual")
+    }
+    else
+    {
+      _dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.setValueFromString("Replacement")
+    }
+  }
  }
+

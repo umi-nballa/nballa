@@ -21,7 +21,7 @@
       modelType="Limit"
       priority="10"
       public-id="BP7Limit7"
-      required="false"
+      required="true"
       restrictionModel="bipd"
       valueType="money">
       <DefaultsSet>
@@ -95,7 +95,29 @@
           value="20000">
           <AvailabilityScript><![CDATA[return CovTerm.BP7ForgeryAlteration.forgeryAlterationLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
         </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z0mige23fosn1ehp8ufpv5vp3ob"
+          currency="usd"
+          optionCode="20000_EXT"
+          priority="35"
+          public-id="z0mige23fosn1ehp8ufpv5vp3ob"
+          value="20000">
+          <AvailabilityScript><![CDATA[return CovTerm.BP7ForgeryAlteration.forgeryAlterationLimitTermOptionAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
+        </CovTermOpt>
       </Options>
     </OptionCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7NoOfEmployeesForgery_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LineCovTerm"
+      modelType="Other"
+      priority="110"
+      public-id="BP7NoOfEmployeesForgery_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="count">
+      <LimitsSet/>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

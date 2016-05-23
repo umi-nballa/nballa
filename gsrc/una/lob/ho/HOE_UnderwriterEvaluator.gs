@@ -165,7 +165,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
                     _policyEvalContext.addIssue('HO_DwellingDP_Ext','HO_DwellingDP_Ext', shortDescription, longDescription)
                     break
-                case 'Question_HO_Farm_Ext':
+                case 'HO_Farm_Ext':
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Farm_Ext
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
                     _policyEvalContext.addIssue('HO_Farm_Ext','HO_Farm_Ext', shortDescription, longDescription)

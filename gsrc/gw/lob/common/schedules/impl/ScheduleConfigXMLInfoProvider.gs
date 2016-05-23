@@ -1,5 +1,7 @@
 package gw.lob.common.schedules.impl
 
+uses gw.api.productmodel.ScheduleAdditionalInsuredPropertyInfo
+uses gw.api.productmodel.ScheduleAdditionalInterestPropertyInfo
 uses gw.api.productmodel.ScheduleAutoNumberPropertyInfo
 uses gw.api.productmodel.ScheduleBooleanPropertyInfo
 uses gw.api.productmodel.ScheduleDatePropertyInfo
@@ -11,11 +13,14 @@ uses gw.api.productmodel.SchedulePropertyInfo
 uses gw.api.productmodel.ScheduleReadOnlyPropertyInfo
 uses gw.api.productmodel.ScheduleStringPropertyInfo
 uses gw.api.productmodel.ScheduleStringPropertyInfoWithDefaultValue
+uses gw.api.productmodel.ScheduleTextAreaPropertyInfo
 uses gw.api.productmodel.ScheduleTypeKeyPropertyInfo
 uses gw.api.productmodel.ScheduleTypePropertyInfoWithDefaultValue
 uses gw.entity.ITypeFilter
 uses gw.lang.reflect.IType
 uses gw.lang.reflect.TypeSystem
+uses gw.lob.common.schedules.schemas.schedule_config.types.complex.AdditionalInsuredPropertyInfoType
+uses gw.lob.common.schedules.schemas.schedule_config.types.complex.AdditionalInterestPropertyInfoType
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.AutoNumberPropertyInfoType
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.BooleanPropertyInfoType
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.DatePropertyInfoType
@@ -28,9 +33,8 @@ uses gw.lob.common.schedules.schemas.schedule_config.types.complex.PolicyLocatio
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.PropertyInfoType
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.ReadOnlyPropertyInfoType
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.StringPropertyInfoType
-uses gw.lob.common.schedules.schemas.schedule_config.types.complex.TypeKeyPropertyInfoType
 uses gw.lob.common.schedules.schemas.schedule_config.types.complex.TextAreaPropertyInfoType
-uses gw.api.productmodel.ScheduleTextAreaPropertyInfo
+uses gw.lob.common.schedules.schemas.schedule_config.types.complex.TypeKeyPropertyInfoType
 
 class ScheduleConfigXMLInfoProvider {
 
@@ -64,6 +68,10 @@ class ScheduleConfigXMLInfoProvider {
         return newScheduleReadOnlyPropertyInfo(p)
       case TextAreaPropertyInfoType :
         return newScheduleTextAreaPropertyInfo(p)
+      case AdditionalInsuredPropertyInfoType :
+        return newAdditionalInsuredPropertyInfo(p)
+      case AdditionalInterestPropertyInfoType :
+          return newAdditionalInterestPropertyInfo(p)
       default:
         throw "unknown SchedulePropertyInfo type ${typeof p}"   
     }
@@ -191,6 +199,22 @@ class ScheduleConfigXMLInfoProvider {
       return new ScheduleDecimalPropertyInfo(schedItemType, propInfo.ColumnName, getLabel(propInfo), propInfo.Required, propInfo.Min, propInfo.Max)
     }
     return new ScheduleDecimalPropertyInfo(propInfo.ColumnName, getLabel(propInfo), propInfo.Required, propInfo.Min, propInfo.Max)
+  }
+
+  private function newAdditionalInsuredPropertyInfo(propInfo: AdditionalInsuredPropertyInfoType): SchedulePropertyInfo {
+    if (propInfo.ScheduledItemType <> null) {
+      var schedItemType = getEntityTypeFromName(propInfo)
+      return new ScheduleAdditionalInsuredPropertyInfo(schedItemType, propInfo.ColumnName, getLabel(propInfo), propInfo.Required)
+    }
+    return new ScheduleAdditionalInsuredPropertyInfo(propInfo.ColumnName, getLabel(propInfo), propInfo.Required)
+  }
+
+  private function newAdditionalInterestPropertyInfo(propInfo: AdditionalInterestPropertyInfoType): SchedulePropertyInfo {
+    if (propInfo.ScheduledItemType <> null) {
+      var schedItemType = getEntityTypeFromName(propInfo)
+      return new ScheduleAdditionalInterestPropertyInfo(schedItemType, propInfo.ColumnName, getLabel(propInfo), propInfo.Required)
+    }
+    return new ScheduleAdditionalInterestPropertyInfo(propInfo.ColumnName, getLabel(propInfo), propInfo.Required)
   }
 
   private function getEntityTypeFromName(propInfo : PropertyInfoType) : IType {

@@ -12,8 +12,8 @@
   public-id="HODW_SpecificOtherStructure_HOE_Ext"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[var availableForTerritoryCodes = {"110","120","130","140","150","160"}
-var state = Dwelling_HOE?.Branch?.PolicyAddress?.State
+var state = Dwelling_HOE?.Branch?.BaseState
 var count =  Dwelling_HOE?.HOLocation?.PolicyLocation?.TerritoryCodes?.countWhere( \ tc -> (availableForTerritoryCodes.contains(tc.Code)) )
-return(state == typekey.State.TC_NC && count>0)]]></AvailabilityScript>
+return(state == TC_NC && count>0)]]></AvailabilityScript>
   <CovTerms/>
 </CoveragePattern>

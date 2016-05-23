@@ -73,14 +73,15 @@ enhancement ScheduledItemEnhancement : entity.ScheduledItem {
 
   function isAvailableForItem(pattern : ClausePattern) : boolean {
     var schedule = this.ScheduleParent as Clause & gw.api.productmodel.Schedule
-      var amendedClause = ServiceLocator.get(ScheduleConfigSource).getAmendedClause(schedule, pattern)
-      var whenClause = ServiceLocator.get(ScheduleConfigSource).getWhenClause(schedule, pattern)
-      return this.ScheduleParent.ScheduledItemMultiPatterns.contains(pattern)
-          and (amendedClause == null or (this as Coverable).getCoverageConditionOrExclusion(amendedClause) != null)
-          and (whenClause == null or schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause) != null)
-    }
+    var amendedClause = ServiceLocator.get(ScheduleConfigSource).getAmendedClause(schedule, pattern)
+    var whenClause = ServiceLocator.get(ScheduleConfigSource).getWhenClause(schedule, pattern)
 
-public function getAdditionalInsuredColumn(columnName: String = "AdditionalInsured") : PolicyAddlInsuredDetail {
+    return this.ScheduleParent.ScheduledItemMultiPatterns?.contains(pattern)
+        and (amendedClause == null or (this as Coverable).getCoverageConditionOrExclusion(amendedClause) != null)
+        and (whenClause == null or schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause) != null)
+  }
+
+  public function getAdditionalInsuredColumn(columnName: String = "AdditionalInsured") : PolicyAddlInsuredDetail {
     return ServiceLocator.get(ScheduleConfigSource).getScheduledItemValueProvider<PolicyAddlInsuredDetail>(columnName, this).Value
   }
 

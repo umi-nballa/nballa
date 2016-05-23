@@ -46,40 +46,153 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
             if (null != answeredTrue && answeredTrue) {
               switch (elt.DisplayName) {
                 case 'HO_OwnATV_Ext':
-                print ('data  here ' + elt.DisplayName)
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_OwnATV_Ext
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
                     _policyEvalContext.addIssue('HO_OwnATV_Ext','HO_OwnATV_Ext', shortDescription, longDescription)
                     break
                 case 'HO_ATVonPremise_Ext':
-                    print ('data  here ' + elt.DisplayName)
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_ATVonPremise_Ext
                     var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
                     _policyEvalContext.addIssue('HO_ATVonPremise_Ext','HO_ATVonPremise_Ext', shortDescription, longDescription)
                     break
-                  default:
-                  break
+                case 'HO_OpenClaim_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_OpenClaim_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_OpenClaim_Ext','HO_OpenClaim_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Damage_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Damage_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Damage_Ext','HO_Damage_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Crime_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Crime_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Crime_Ext','HO_Crime_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Fraud_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Fraud_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Fraud_Ext','HO_Fraud_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_FamilyFelony_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_FamilyFelony_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_FamilyFelony_Ext','HO_FamilyFelony_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Lapse_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Lapse_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Lapse_Ext','HO_Lapse_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_LapseHO_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_LapseHO_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_LapseHO_Ext','HO_LapseHO_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Lapse45_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Lapse45_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Lapse45_Ext','HO_Lapse45_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Lapse60_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Lapse60_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Lapse60_Ext','HO_Lapse60_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Lapse3years_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Lapse3years_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Lapse3years_Ext','HO_Lapse3years_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Sinkhole_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Sinkhole_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Sinkhole_Ext','HO_Sinkhole_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Sinkholeother_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Sinkholeother_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Sinkholeother_Ext','HO_Sinkholeother_Ext', shortDescription, longDescription)
+                    break
+           case 'HO_PropertyLoss1_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_PropertyLoss1_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_PropertyLoss1_Ext','HO_PropertyLoss1_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_PropertyLossv2_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_PropertyLossv2_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_PropertyLossv2_Ext','HO_PropertyLossv2_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Propertyv3_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Propertyv3_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Propertyv3_Ext','HO_Propertyv3_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Propertyv4_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Propertyv4_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Propertyv4_Ext','HO_Propertyv4_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Any3Loss_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Any3Loss_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Any3Loss_Ext','HO_Any3Loss_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Weather_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Weather_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Weather_Ext','HO_Weather_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Weatherissues_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Weatherissues_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Weatherissues_Ext','HO_Weatherissues_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_Lease_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Lease_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Lease_Ext','HO_Lease_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_DwellingQA_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_DwellingQA_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_DwellingQA_Ext','HO_DwellingQA_Ext', shortDescription, longDescription)
+                    break
+                case 'HO_DwellingDP_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_DwellingDP_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_DwellingDP_Ext','HO_DwellingDP_Ext', shortDescription, longDescription)
+                    break
+                case 'Question_HO_Farm_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Farm_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_Farm_Ext','HO_Farm_Ext', shortDescription, longDescription)
+                    break
+                case 'Question_HO_island_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_island_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_island_Ext','HO_island_Ext', shortDescription, longDescription)
+                    break
+                /*case 'Question_HO_island_Ext':
+                    print ('data  here ' + elt.DisplayName)
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_Island_DP_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_island_DP_Ext','HO_island_DP_Ext', shortDescription, longDescription)
+                    break*/
+                case 'HO_DwellingQAflip_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_DwellingQAflip_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.HOE.long (elt.Text)
+                    _policyEvalContext.addIssue('HO_DwellingQAflip_Ext','HO_DwellingQAflip_Ext', shortDescription, longDescription)
+                    break
+                default:
+                break
               }
             }
           }
         }
       }
     )
-  }
-
-  private function addIssue(issueName : String): void {
-    var shortDescription : String
-    /*switch (issueName) {
-      case 'abc':
-        shortDescription = \ -> Ext.UWIssue.HOE.HO_ATVonPremise_Ext
-        break
-      case 'abc':
-          shortDescription = \ -> Ext.UWIssue.HOE.HO_ATVonPremise_Ext
-          break
-      default:
-        break
-    }*/
-    //var shortDescription = \ -> displaykey.Ext.UWIssue.HOE.AnswerIsTrue(elt.Text)
-    //_policyEvalContext.addIssue(INELIGIBLE_QQ,INELIGIBLE_QQ, shortDescription, longDescription)
   }
 }

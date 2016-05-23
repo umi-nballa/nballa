@@ -24,6 +24,9 @@ uses java.util.ArrayList
 uses java.util.HashSet
 uses java.util.Map
 uses java.util.Set
+uses gw.policy.PolicyEvalContext
+uses gw.lob.common.UnderwriterEvaluator
+uses una.lob.bp7.BP7_UnderwriterEvaluator
 
 @Export
 class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
@@ -286,4 +289,10 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   override protected function getCannotDeleteBuildingFutureMessage(building : Building, dates : String) : String {
     return displaykey.Web.Policy.BP7.Building.CannotDelete.HasFutureBP7Building(building, dates)
   }
-}
+
+    /* UNA specific implementation to start Underwriting Evaluation for BP7
+   */
+    override function createUnderwriterEvaluator(context : PolicyEvalContext) : UnderwriterEvaluator {
+      return new BP7_UnderwriterEvaluator(context)
+    }
+ }

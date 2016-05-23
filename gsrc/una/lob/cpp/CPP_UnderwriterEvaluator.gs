@@ -13,10 +13,10 @@ uses gw.lang.reflect.IType
  * Time: 10:16 PM
  * To change this template use File | Settings | File Templates.
  */
+
 class CPP_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
-  private static final var  INELIGIBLE_QQ = "IneligibleQQ_Ext"
-  private static final var  PREQUAL_IDENTIFIER = "IneligibleQQ_Ext"
+  private static final var  PREQUAL_IDENTIFIER = "CRP_Qual_Ext"
 
   construct(policyEvalContext : PolicyEvalContext) {
     super(policyEvalContext)
@@ -36,20 +36,26 @@ class CPP_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
    */
   private function validteQuestions() {
 
-    // Question set for HO
+    // Question set for CPP / CRP
     var questionSet = _policyEvalContext.Period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == PREQUAL_IDENTIFIER)
-
     questionSet.Questions.each( \ elt -> {
-      print (' elt ' + elt)
-      print('elt?.isQuestionAvailable(_policyEvalContext.Period) ' + elt.isQuestionAvailable(_policyEvalContext.Period))
         if (elt?.isQuestionAvailable(_policyEvalContext.Period) ) {
-          print(' data ' +  _policyEvalContext.Period.getAnswerValue(elt)  )
           var answeredTrue = _policyEvalContext.Period.getAnswerValue(elt)?.toString()
-          print(answeredTrue)
-          if (null != answeredTrue && answeredTrue) {
-            var shortDescription = \ -> displaykey.Ext.UWIssue.HOE.AnswerIsTrue(elt.Text)
-            var longDescription = \ -> displaykey.Ext.UWIssue.HOE.AnswerIsTrue (elt.Text)
-            _policyEvalContext.addIssue(INELIGIBLE_QQ,INELIGIBLE_QQ, shortDescription, longDescription)
+          if (null != answeredTrue && answeredTrue as boolean) {
+            switch (elt.DisplayName) {
+              case 'CRP_Q1_CoverageDecline_Ext':
+                  var shortDescription = \-> displaykey.Ext.UWIssue.CRP.CRP_CoverageDecline_Ext
+                  var longDescription = \ -> displaykey.Ext.UWIssue.CRP.long (elt.Text)
+                  _policyEvalContext.addIssue('CRP_CoverageDecline_Ext','CRP_CoverageDecline_Ext', shortDescription, longDescription)
+                  break
+              case 'CRP_Q2_CancelRenew_Ext':
+                  var shortDescription = \-> displaykey.Ext.UWIssue.CRP.CRP_CancelRenew_Ext
+                  var longDescription = \ -> displaykey.Ext.UWIssue.CRP.long (elt.Text)
+                  _policyEvalContext.addIssue('CRP_CancelRenew_Ext','CRP_CancelRenew_Ext', shortDescription, longDescription)
+                  break
+                default:
+                break
+            }
           }
         }
       }

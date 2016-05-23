@@ -7,11 +7,6 @@ enhancement ScheduleEnhancement : gw.api.productmodel.Schedule {
   }
 
   property get isSimpleSchedule() : boolean {
-    if (this typeis ScheduleMultiPatterns) {
-      return this.ScheduledItemMultiPatterns == null or this.ScheduledItemMultiPatterns.IsEmpty
-    }
-
-    return this.ScheduledItemPattern == null
+    return this.ScheduledItemMultiPatterns == null or this.ScheduledItemMultiPatterns.IsEmpty
   }
-
 }

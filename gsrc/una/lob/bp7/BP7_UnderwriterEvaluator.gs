@@ -14,8 +14,7 @@ uses gw.lang.reflect.IType
  */
 class BP7_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
-  private static final var  INELIGIBLE_QQ = "IneligibleQQ_Ext"
-  private static final var  PREQUAL_IDENTIFIER = "HO_PreQual_Ext"
+  private static final var  PREQUAL_IDENTIFIER = "BP7_Prequal_Ext"
 
   construct(policyEvalContext : PolicyEvalContext) {
     super(policyEvalContext)
@@ -43,13 +42,55 @@ class BP7_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
           if (elt?.isQuestionAvailable(_policyEvalContext.Period) ) {
             var answeredTrue = _policyEvalContext.Period.getAnswerValue(elt)?.toString() as boolean
-            print(elt.DisplayName)
-            print(answeredTrue)
             if (null != answeredTrue && answeredTrue) {
               switch (elt.DisplayName) {
-               //TODO: finish this
-                  default:
-                  break
+                case 'BP7_Q1_Businesshours_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Businesshours_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Businesshours_Ext','BP7_Businesshours_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q2_Homebased_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Homebased_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Homebased_Ext','BP7_Homebased_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q3_Litigation_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Litigation_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Litigation_Ext','BP7_Litigation_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q4_CivilLitigation_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_CivilLitigation_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_CivilLitigation_Ext','BP7_CivilLitigation_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q5_Occupancy_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Occupancy_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Occupancy_Ext','BP7_Occupancy_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q6_Pincode_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Pincode_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Pincode_Ext','BP7_Pincode_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q7_Cooking_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Cooking_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Cooking_Ext','BP7_Cooking_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q9_Underwriting_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Underwriting_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Underwriting_Ext','BP7_Underwriting_Ext', shortDescription, longDescription)
+                    break
+                case 'BP7_Q8_Liquor_Ext':
+                    var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Liquor_Ext
+                    var longDescription = \ -> displaykey.Ext.UWIssue.BP7.long (elt.Text)
+                    _policyEvalContext.addIssue('BP7_Liquor_Ext','BP7_Liquor_Ext', shortDescription, longDescription)
+                    break
+                default:
+                   break
               }
             }
           }
@@ -58,19 +99,4 @@ class BP7_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     )
   }
 
-  private function addIssue(issueName : String): void {
-    var shortDescription : String
-    /*switch (issueName) {
-      case 'abc':
-        shortDescription = \ -> Ext.UWIssue.HOE.HO_ATVonPremise_Ext
-        break
-      case 'abc':
-          shortDescription = \ -> Ext.UWIssue.HOE.HO_ATVonPremise_Ext
-          break
-      default:
-        break
-    }*/
-    //var shortDescription = \ -> displaykey.Ext.UWIssue.HOE.AnswerIsTrue(elt.Text)
-    //_policyEvalContext.addIssue(INELIGIBLE_QQ,INELIGIBLE_QQ, shortDescription, longDescription)
-  }
 }

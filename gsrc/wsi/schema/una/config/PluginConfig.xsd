@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.uihna.com/PASPluginConfig" elementFormDefault="qualified" xmlns="http://www.w3.org/2001/XMLSchema" xmlns:tns="http://www.uihna.com/PASPluginConfig">
+
+
+    <complexType name="Plugin">
+        <sequence>
+            <element name="Name" type="string" minOccurs="1" maxOccurs="1"></element>
+            <element name="ClassImpl" type="string" minOccurs="0" maxOccurs="1"></element>
+            <element name="Settings" type="tns:PluginSettings" minOccurs="0" maxOccurs="1"></element>
+        </sequence>
+    </complexType>
+
+
+    <complexType name="Configuration">
+        <sequence>
+            <element name="Plugin" type="tns:Plugin" minOccurs="0"
+                     maxOccurs="unbounded">
+            </element>
+        </sequence>
+        <attribute name="Environment" type="string"></attribute>
+    </complexType>
+
+    <element name="PluginConfig" type="tns:Configurations"></element>
+
+    <complexType name="Configurations">
+        <sequence>
+            <element name="Configuration" type="tns:Configuration" minOccurs="0" maxOccurs="unbounded"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="PluginSetting">
+        <sequence>
+            <element name="Name" type="string" minOccurs="1" maxOccurs="1"></element>
+            <element name="Value" type="string" minOccurs="1" maxOccurs="1"></element>
+            <element name="Description" type="string" minOccurs="0" maxOccurs="1"></element>
+        </sequence>
+    </complexType>
+
+    <complexType name="PluginSettings">
+        <sequence>
+            <element name="Setting" type="tns:PluginSetting" minOccurs="0" maxOccurs="unbounded"></element>
+        </sequence>
+    </complexType>
+
+</schema>

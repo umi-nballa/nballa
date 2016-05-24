@@ -18,8 +18,8 @@ uses javax.naming.directory.SearchControls
 uses javax.security.auth.login.FailedLoginException
 uses java.lang.Exception
 uses java.lang.IllegalArgumentException
-uses java.util.Hashtable
 uses java.util.Enumeration
+uses java.util.Hashtable
 
 /**
  * Authentication Service Plugin Implementation class for authentication of users logging in from UI.
@@ -35,7 +35,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
   final static var LDAP_CONTEXT_NAME = PropertiesHolder.getProperty("LDAP_CONTEXT_NAME")
   final static var LDAP_SERVER_BYPASS_ENV = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_ENV")
   final static var LDAP_SERVER_BYPASS_USERNAME = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_USERNAME")
-
+  final static var LDAP_PC_USER_GROUP = "PolicyCenter"
   var _callbackHandler: AuthenticationServicePluginCallbackHandler
 
   /**
@@ -139,11 +139,10 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       var dn: String = null
       if (results != null && results.hasMoreElements()) {
         var result = results.next()
-
-        if(isUserMemberOfPCGroup(result))
-
-        dn = result.getNameInNamespace()
-
+        // Checks if the login user belongs to the PolicyCenter Group
+        if(isUserMemberOfPCGroup(result)) {
+          dn = result.getNameInNamespace()
+        }
       }
       if (dn == null || dn.length() == 0) {
         throw new FailedLoginException("Invalid username/password provided for: ${source.Username}" )
@@ -167,8 +166,10 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
     }
   }
 
-
-  public static function isUserMemberOfPCGroup(result: javax.naming.directory.SearchResult): boolean {
+  /**
+   * Checks if the given user is member of PolicyCenter group.
+   */
+  private function isUserMemberOfPCGroup(result: javax.naming.directory.SearchResult): boolean {
     var ret = false
     var memberOf: javax.naming.directory.Attribute = null
     memberOf = result.getAttributes().get("memberOf");
@@ -177,7 +178,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       if (e1.hasMoreElements()){
         while (e1.hasMoreElements()) {
           var memberOfGroup = getGroupsName(e1.nextElement().toString())
-          if (memberOfGroup.equalsIgnoreCase("PolicyCenter")) {
+          if (memberOfGroup.equalsIgnoreCase(LDAP_PC_USER_GROUP)) {
             ret = true
           }
         }
@@ -186,7 +187,10 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
     return ret
   }
 
-  public static function getGroupsName(cnName: String): String {
+  /**
+   * Retrieves the group name for the given input.
+   */
+  private function getGroupsName(cnName: String): String {
     if (cnName != null && cnName.toUpperCase().startsWith("CN=")) {
       cnName = cnName.substring(3);
     }

@@ -10,44 +10,40 @@ uses java.lang.NullPointerException
  * simple utility for getting environmental information on policycenter (dev, int, qa, etc.)
  */
 class EnvironmentUtil {
-  public static final var LOCAL_ENVIRONMENT : String = "local"
-  public static final var LOCAL_DEV_ENVIRONMENT : String = "pc_dev"
-  public static final var INT_ENVIRONMENT : String = "pc_asm"
-  public static final var QA_ENVIRONMENT : String = "pc_qa"
-  public static final var UAT_ENVIRONMENT : String = "pc_uat"
-  public static final var PROD_ENVIRONMENT : String = "prd"
-
-  static property get PolicyCenterRuntime():String{
+  public static final var LOCAL_ENVIRONMENT: String = "local"
+  public static final var LOCAL_DEV_ENVIRONMENT: String = "pc_dev"
+  public static final var INT1_ENVIRONMENT: String = "pc_asm"
+  public static final var QA_ENVIRONMENT: String = "pc_qa"
+  public static final var UAT_ENVIRONMENT: String = "pc_uat"
+  public static final var PROD_ENVIRONMENT: String = "prd"
+  static property get PolicyCenterRuntime(): String {
     //serverutil does not work from gosuscratch pad. Default to local if this fails so unit tests can be run
-    try{
-      var env =gw.api.system.server.ServerUtil.getEnv()
-      return env!=null and !env.Empty ? env:"local"
+    try {
+      var env = gw.api.system.server.ServerUtil.getEnv()
+      return env != null and !env.Empty ? env : "local"
     }
-    catch(e:NullPointerException){
-      return "local"
-    }
+        catch (e: NullPointerException) {
+          return "local"
+        }
   }
 
-
-  static function isProduction() : boolean {
-    if(EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty){
+  static function isProduction(): boolean {
+    if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty) {
       return false
-    }else if( EnvironmentUtil.PolicyCenterRuntime == PROD_ENVIRONMENT){
+    } else if (EnvironmentUtil.PolicyCenterRuntime == PROD_ENVIRONMENT) {
       return true
-    } else{
+    } else {
       return false
     }
   }
 
-
-  static function isLocal() : boolean {
-    if(EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty
+  static function isLocal(): boolean {
+    if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_ENVIRONMENT
-      || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_ENVIRONMENT ){
+        || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_ENVIRONMENT) {
       return true
-    } else{
+    } else {
       return false
     }
   }
-
 }

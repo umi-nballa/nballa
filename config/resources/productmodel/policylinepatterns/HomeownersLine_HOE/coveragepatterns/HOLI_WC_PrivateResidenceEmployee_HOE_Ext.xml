@@ -3,7 +3,7 @@
   codeIdentifier="HOLI_WC_PrivateResidenceEmployee_HOE_Ext"
   coverageCategory="HOLI_Additional_HOE"
   coverageSubtype="HomeownersLineCov_HOE"
-  coveredPartyType="FirstParty"
+  coveredPartyType="ThirdParty"
   existence="Required"
   lookupTableName="HomeownersLineCov"
   owningEntityType="HomeownersLine_HOE"
@@ -11,5 +11,44 @@
   priority="12100"
   public-id="HOLI_WC_PrivateResidenceEmployee_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HOLI_WC_OccasionalEmployees_HOE"
+      coverageColumn="DirectTerm1"
+      lookupTableName="HomeownersLineCovTerm"
+      modelType="Other"
+      priority="100"
+      public-id="HOLI_WC_OccasionalEmployees_HOE"
+      required="true"
+      restrictionModel="bi"
+      valueType="count">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zeoj4qh388eso6kjo6j64v9p9j8"
+          maxVal="99"
+          minVal="0"
+          public-id="zeoj4qh388eso6kjo6j64v9p9j8"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HOLI_WC_FulltimeEmployees_HOE"
+      coverageColumn="DirectTerm2"
+      lookupTableName="HomeownersLineCovTerm"
+      modelType="Other"
+      priority="100"
+      public-id="HOLI_WC_FulltimeEmployees_HOE"
+      required="true"
+      restrictionModel="bi"
+      valueType="count">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="z7cggno98qd5a8t8cnh6k3o3cg9"
+          maxVal="99"
+          minVal="0"
+          public-id="z7cggno98qd5a8t8cnh6k3o3cg9"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

@@ -19,6 +19,7 @@ uses javax.security.auth.login.FailedLoginException
 uses java.lang.Exception
 uses java.lang.IllegalArgumentException
 uses java.util.Hashtable
+uses java.util.Enumeration
 
 /**
  * Authentication Service Plugin Implementation class for authentication of users logging in from UI.
@@ -129,13 +130,20 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
 
       // Search for the user that is trying to login
       var searchFilter = "(&(objectClass=user)(sAMAccountName=" + source.Username + "))"
+
+
       var searchControls = new SearchControls()
       searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE)
       searchControls.setReturningAttributes({"memberOf"})
       var results = ctx.search(LDAP_CONTEXT_NAME, searchFilter, searchControls)
       var dn: String = null
       if (results != null && results.hasMoreElements()) {
-        dn = results.next().getNameInNamespace()
+        var result = results.next()
+
+        if(isUserMemberOfPCGroup(result))
+
+        dn = result.getNameInNamespace()
+
       }
       if (dn == null || dn.length() == 0) {
         throw new FailedLoginException("Invalid username/password provided for: ${source.Username}" )
@@ -147,7 +155,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       ctx.addToEnvironment(Context.SECURITY_CREDENTIALS, source.Password)
       try {
         var obj = ctx.lookup(dn)
-      } catch (e: NamingException) {
+       } catch (e: NamingException) {
         throw new FailedLoginException("Invalid username/password provided for: ${source.Username}")
       }
     } catch (ex: FailedLoginException) {
@@ -158,5 +166,37 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       throw new FailedLoginException("Unexpected Error during Authentication")
     }
   }
+
+
+  public static function isUserMemberOfPCGroup(result: javax.naming.directory.SearchResult): boolean {
+    var ret = false
+    var memberOf: javax.naming.directory.Attribute = null
+    memberOf = result.getAttributes().get("memberOf");
+    if (memberOf != null){
+      var e1: Enumeration = memberOf.getAll()
+      if (e1.hasMoreElements()){
+        while (e1.hasMoreElements()) {
+          var memberOfGroup = getGroupsName(e1.nextElement().toString())
+          if (memberOfGroup.equalsIgnoreCase("PolicyCenter")) {
+            ret = true
+          }
+        }
+      }
+    }
+    return ret
+  }
+
+  public static function getGroupsName(cnName: String): String {
+    if (cnName != null && cnName.toUpperCase().startsWith("CN=")) {
+      cnName = cnName.substring(3);
+    }
+    var position = cnName.indexOf(',');
+    if (position == - 1) {
+      return cnName;
+    } else {
+      return cnName.substring(0, position);
+    }
+  }
+
 
 }

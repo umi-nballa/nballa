@@ -4,12 +4,42 @@
   coverageCategory="HODW_Optional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
+  existence="Electable"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="12700"
   public-id="HODW_FireDWVacancy_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <ExistenceScript><![CDATA[return(Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT)? ExistenceType.TC_REQUIRED:ExistenceType.TC_ELECTABLE]]></ExistenceScript>
-  <CovTerms/>
+  <AvailabilityScript/>
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_FireDWExtraDaysVacanct_HOE"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_FireDWExtraDaysVacanct_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="days">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zmnheultt7b6c94url48o2mgl08"
+          optionCode="60"
+          priority="100"
+          public-id="zmnheultt7b6c94url48o2mgl08"
+          value="2"/>
+        <CovTermOpt
+          codeIdentifier="zuoi67kq066585op8fd65bn0bf8"
+          optionCode="30"
+          priority="100"
+          public-id="zuoi67kq066585op8fd65bn0bf8"
+          value="1"/>
+      </Options>
+    </OptionCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

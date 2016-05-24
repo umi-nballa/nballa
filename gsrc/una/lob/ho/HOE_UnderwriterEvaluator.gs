@@ -15,7 +15,6 @@ uses gw.lang.reflect.IType
  */
 class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
-  private static final var  INELIGIBLE_QQ = "IneligibleQQ_Ext"
   private static final var  PREQUAL_IDENTIFIER = "HO_PreQual_Ext"
 
   construct(policyEvalContext : PolicyEvalContext) {
@@ -27,8 +26,10 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     return allowedJobs.contains(typeof(_policyEvalContext.Period.Job))
   }
 
-  override function onPrequote() {
+  override function onDefault() {
+    if(_policyEvalContext.CheckingSet == UWIssueCheckingSet.TC_PREBIND) {
       validteQuestions()
+    }
   }
 
   /*

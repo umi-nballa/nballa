@@ -22,4 +22,18 @@ enhancement LOBJobProcessEnhancement : gw.job.JobProcess {
       this.JobProcessValidator = prevValidator
     }  
   }
+
+  function requestQuoteWithoutUWIssues() {
+    doSkippingEvaluation(\ -> this.requestQuote())
+  }
+
+  private function doSkippingEvaluation(action()) {
+    var prevEvaluator = this.JobProcessEvaluator
+    try {
+      this.JobProcessEvaluator = JobProcessUWIssueEvaluator.NO_OP_EVALUATOR
+      action()
+    } finally {
+      this.JobProcessEvaluator = prevEvaluator
+    }  
+  }
 }

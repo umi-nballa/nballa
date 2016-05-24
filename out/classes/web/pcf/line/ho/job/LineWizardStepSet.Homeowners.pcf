@@ -32,7 +32,7 @@
     <JobWizardStep
       beforeSave="gw.lob.ho.CoveragesValidation_HOE.validateCoveragesStep(policyPeriod.HomeownersLine_HOE)"
       id="HOCoverages"
-      onEnter="if (policyPeriod.OpenForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages(policyPeriod.HomeownersLine_HOE.AllCoverables, null)}"
+      onEnter="if (policyPeriod.OpenForEdit) { gw.web.productmodel.LineWizardStepHelper_Ext.coveragesOnEnterHO(policyPeriod.HomeownersLine_HOE.AllCoverables, null)}"
       save="policyPeriod.OpenForEdit"
       screen="HOCoveragesHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
       title="displaykey.Web.Homeowners.HOCoveragesScreen.HOCoverages_HOEScreen"/>

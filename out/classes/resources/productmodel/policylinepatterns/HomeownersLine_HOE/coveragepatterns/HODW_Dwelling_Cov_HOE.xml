@@ -12,9 +12,7 @@
   public-id="HODW_Dwelling_Cov_HOE"
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
-  <AvailabilityScript/>
-  <InitializeScript/>
-  <OnRemovalScript/>
+  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setValuationMethodDefault(HODW_Dwelling_Cov_HOE.Dwelling)]]></InitializeScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
@@ -27,7 +25,7 @@
       required="true"
       restrictionModel="bld"
       valueType="money">
-      <AvailabilityScript/>
+      <LimitsSet/>
     </DirectCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -41,6 +39,13 @@
       required="true"
       restrictionModel="bld"
       valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="Limit_HO6_HOEusd"
+          currency="usd"
+          defaultValue="5000"
+          public-id="Limit_HO6_HOEusd"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="z40h0oau30638fnmniv5gaifp59"
@@ -71,13 +76,6 @@
           public-id="zlsigjh8o6q552a8nu61ck1ficb"
           value="20000.0000"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="Limit_HO6_HOEusd"
-          currency="usd"
-          defaultValue="5000"
-          public-id="Limit_HO6_HOEusd"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -93,6 +91,12 @@
       valueType="percent">
       <AvailabilityScript><![CDATA[return (Dwelling_HOE.HODW_Dwelling_Cov_HOE != null and Dwelling_HOE.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.OptionValue == "Special")
 ]]></AvailabilityScript>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HO_FullRepPercent_HOEnocurrency"
+          defaultValue="10"
+          public-id="HO_FullRepPercent_HOEnocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zdtiijr4v10ol9i9k5so5pig0vb"
@@ -125,12 +129,6 @@
           public-id="zdfi69g0pus656nt07vgm616lb9"
           value="50.0000"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HO_FullRepPercent_HOEnocurrency"
-          defaultValue="10"
-          public-id="HO_FullRepPercent_HOEnocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -144,6 +142,12 @@
       required="true"
       restrictionModel="bld"
       valueType="count">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_DwellingValuation_HOEnocurrency"
+          defaultValue="Replacement"
+          public-id="HODW_DwellingValuation_HOEnocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zsthmbq93or7taj0968ogvb7328"
@@ -164,12 +168,6 @@
           public-id="zq3g47p61sgg5d6j8goolomqtt8"
           value="3.0"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_DwellingValuation_HOEnocurrency"
-          defaultValue="Replacement"
-          public-id="HODW_DwellingValuation_HOEnocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

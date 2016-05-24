@@ -34,15 +34,16 @@
     <DetailViewPanel
       visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;">
       <InputColumn>
-        <TypeKeyInput
+        <RangeInput
           editable="true"
           id="HOPolicyType"
           label="displaykey.Web.Homeowners.PolicyTypeLabel"
           required="true"
-          value="PolicyPeriod.HomeownersLine_HOE.HOPolicyType">
+          value="policyPeriod.HomeownersLine_HOE.HOPolicyType"
+          valueRange="una.pageprocess.SubmissionWizardHelper.filterHOPolicyTypes(policyPeriod.BaseState)">
           <PostOnChange
             onChange="changePolicyType(PolicyPeriod)"/>
-        </TypeKeyInput>
+        </RangeInput>
       </InputColumn>
     </DetailViewPanel>
     <PanelRef
@@ -84,6 +85,8 @@
     line.InitialExclusionsCreated = false
     line.InitialConditionsCreated = false
   }
-}]]></Code>
+}
+
+]]></Code>
   </Screen>
 </PCF>

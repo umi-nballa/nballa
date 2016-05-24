@@ -2,12 +2,11 @@ package una.integration.plugins.tuna
 
 uses gw.api.address.AddressFillable
 uses gw.api.address.DefaultAddressAutocompletePlugin
-uses una.integration.service.gateway.tuna.TunaGateway
-uses una.logging.UnaLoggerCategory
-uses una.utils.PropertiesHolder
-uses java.lang.Exception
-uses una.integration.service.gateway.tuna.TunaInterface
 uses una.integration.service.gateway.plugin.GatewayPlugin
+uses una.integration.service.gateway.tuna.TunaInterface
+uses una.logging.UnaLoggerCategory
+
+uses java.lang.Exception
 
 /**
  * Address Service Plugin Implementation class for validating address from tuna.
@@ -23,6 +22,7 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
 
   property get TUNAGateway(): TunaInterface {
     return _TUNAGateway
+
   }
 
 
@@ -40,6 +40,7 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
         var finalRes = TUNAGateway.validateAddress(address)
         if (finalRes.Status != 0) {
           throw new gw.api.util.DisplayableException (finalRes.Address.Note)
+
         }
       } else {
         super.autofillAddress(address, triggerField, alwaysOverride)

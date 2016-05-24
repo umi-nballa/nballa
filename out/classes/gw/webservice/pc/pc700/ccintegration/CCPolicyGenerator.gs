@@ -1,5 +1,6 @@
 package gw.webservice.pc.pc700.ccintegration
 
+uses gw.api.system.logging.LOBLoggerCategory
 uses gw.webservice.pc.pc700.ccintegration.ccentities.CCVehicleRU
 uses gw.webservice.pc.pc700.ccintegration.ccentities.CCLocationBasedRU
 uses gw.webservice.pc.pc700.ccintegration.ccentities.CCPCFilteringCriteria

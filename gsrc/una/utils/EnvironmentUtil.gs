@@ -16,6 +16,8 @@ class EnvironmentUtil {
   public static final var QA_ENVIRONMENT: String = "pc_qa"
   public static final var UAT_ENVIRONMENT: String = "pc_uat"
   public static final var PROD_ENVIRONMENT: String = "prd"
+
+
   static property get PolicyCenterRuntime(): String {
     //serverutil does not work from gosuscratch pad. Default to local if this fails so unit tests can be run
     try {

@@ -1,137 +1,67 @@
 <?xml version="1.0"?>
-<import xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.guidewire.com/cc/import/cc_import.xsd">
-  <UWIssueType public-id="z37hqusqea9iu8u7b14gre9nvla">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PANumberOfVehicles</Code>
-    <Comparator>Numeric_LE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>EndOfTerm</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>OffsetAmount</DefaultValueAssignmentType>
-    <DefaultValueOffsetAmount>1</DefaultValueOffsetAmount>
-    <Description>PA: The number of vehicles on the policy requires approval</Description>
-    <Name>PA: Number of vehicles</Name>
-    <ValueFormatterType>Integer</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zd8h0uqfngn28d6k9794ed69919">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAGaragingZip</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>BlocksIssuance</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>OneYear</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>PA: The zip of principle garaging doesn't match the address of the primary insured</Description>
-    <Name>PA: Zip of principal garaging mismatch</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zodi2nqu7at55cpvcv244mfpcga">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAOtherVehicleType</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>PA: A vehicle has a type of "Other"</Description>
-    <Name>PA: Vehicle type of "Other"</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="ksjdgefylxlsvwwvmcytg83pmdf">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>ChangedProducerOrg</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>NextChange</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <Description>Raised when Producer Organization has been changed from previous value.</Description>
-    <Name>Producer Organization Changed</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="jm3imm11vs8ys0egtzju3rax55a">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>ChangedProducerCode</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>NextChange</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <Description>Raised when Producer Code  has been changed from previous value.</Description>
-    <Name>Producer Code Changed</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zd5jiebsguqaba0kutd114b477a">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAOtherVehicleTypeNonMotorcycle</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>PA: A vehicle has a type of "Other" and a body type other than "Motorcycle"</Description>
-    <Name>PA: Vehicle type of "Other" and not "Motorcycle"</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z3ggmupmet6nm03ilr4071ar7a9">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAOtherVehicleTypeAndHighRiskDriver</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>ThreeYears</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>NOT USED - PA: A vehicle has a type of "Other" and a driver under the age of 25</Description>
-    <Name>PA: Vehicle type of "Other" and driver under 25</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z83jg0dhajm1u8kr18l8hq0hk78">
+<import>
+  <UWIssueType public-id="zv4jagrbeeip4fchncae31fi1i8">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuote</BlockingPoint>
     <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAVINStartsWithFRE</Code>
+    <Code>HO_Lapse45_Ext</Code>
     <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>NextChange</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <Description>PA: The vehicle's VIN number beings with FRE</Description>
-    <Name>PA: Vehicle VIN beings with FRE</Name>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Lapse 45 Days</Description>
+    <Name>Qual - Lapse 45 Days</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="z5ejkjq7m62shenmc9g7kavjs79">
+  <UWIssueType public-id="zdchmkcaf2hss3ii8t13j8u861b">
     <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Island_DP_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Barrier Island DP</Description>
+    <Name>Qual - Barrier Island DP</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zgegq5grd4u01dhjnn406o39je8">
+    <AutoApprovable>true</AutoApprovable>
     <BlockingPoint>BlocksBind</BlockingPoint>
     <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAHighValueAuto</Code>
-    <Comparator>Monetary_LE</Comparator>
+    <Code>PACollisionDeductible</Code>
+    <Comparator>Monetary_GE</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>NextChange</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>OffsetPercent</DefaultValueAssignmentType>
-    <DefaultValueOffsetAmount>10</DefaultValueOffsetAmount>
-    <Description>PA: High value vehicle</Description>
-    <Name>PA: High value vehicle</Name>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: Collision deductible</Description>
+    <Name>PA: Collision deductible</Name>
     <ValueFormatterType>MonetaryAmount</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="z7ljogpcvdhh9e3sdo0p01lehna">
+  <UWIssueType public-id="zcfjsufmmt01o79043rc0afdqp9">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreBind</CheckingSet>
-    <Code>PAHighValueAutoDocumentation</Code>
+    <CheckingSet>MVR</CheckingSet>
+    <Code>PAMVRAccidentsViolations</Code>
     <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>BlocksIssuance</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>OneYear</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <Description>NOT USED - PA: High value vehicles must have documentation of their value</Description>
-    <Name>PA: High value vehicle documentation requirement</Name>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: The accidents/violations on the policy are different than those on the MVR</Description>
+    <Name>PA: Accidents/violations do not match MVR</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="z4pggm8f3876e4euqq1bmi2iit8">
@@ -144,23 +74,139 @@
     <DefaultDurationType>OneYear</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
     <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>PA: Driver under 25 years of age</Description>
     <Name>PA:  Driver under 25</Name>
     <ValueFormatterType>Integer</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zd8imtpej3isob7ro25261nbo2a">
+  <UWIssueType public-id="z3oj0b83te87s6bsui87hqkrnba">
     <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
     <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAPrimaryDriverUnder25</Code>
-    <Comparator>Numeric_GE</Comparator>
+    <Code>BP7_Homebased_Ext</Code>
+    <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>EndOfTerm</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Home Based</Description>
+    <Name>Qual - Home Based</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zmujcfaf7sv8u8ii7k7m49v9ri8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksIssuance</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAGoodDriverDiscountEvidence</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>ThreeYears</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: Good driver discount requires evidence of qualification</Description>
+    <Name>PA: Good driver discount documentation</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="upgrade:legacypolicyevalissue">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Upgrade</CheckingSet>
+    <Code>LegacyPolicyEvalIssue</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Issue that was automatically generated at upgrade time from an existing, open policy UW issue</Description>
+    <Name>Converted policy UW issue</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zfth4iqiibuks1kbg3l4dg0bfe9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UWManagerReviewBlocksBind</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriting manager, blocking bind</Description>
+    <Name>To be reviewed by underwriting manager, blocking bind</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z6kjevastpf594vfd8cffqge8b9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>CRP_CancelRenew_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Cancelled In Last 3 Years</Description>
+    <Name>Qual - Cancelled In Last 3 Years</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zp9h4gmuqgtptal0glqon07p8v9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Farm_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Farm or Ranch</Description>
+    <Name>Qual - Farm or Ranch</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zehjiqe9nucb1alico81renvmta">
+    <AutoApprovable>true</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Renewal</CheckingSet>
+    <Code>RatioOfClaimsTotalIncurredToWrittenPremium</Code>
+    <Comparator>Numeric_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
     <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>PA: Primary driver under 25 years of age</Description>
-    <Name>PA: Primary driver under 25</Name>
-    <ValueFormatterType>Integer</ValueFormatterType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Ratio of claims total incurred to policy written premium</Description>
+    <Name>Ratio of claims total incurred to policy written premium</Name>
+    <ValueFormatterType>Number</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zvjgskrc5asqp0is8jrsmrfpk98">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UW1ReviewBlocksBind</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriter 1, blocking bind</Description>
+    <Name>To be reviewed by underwriter 1, blocking bind</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="z9bi4m8dnjp3n6ur8fqbdupkml9">
     <AutoApprovable>true</AutoApprovable>
@@ -178,46 +224,36 @@
     <Name>PA: Total premium</Name>
     <ValueFormatterType>MonetaryAmount</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zp1jeu3mq0farco6thc6auu3la9">
-    <AutoApprovable>true</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PACompDeductible</Code>
-    <Comparator>Monetary_GE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>EndOfTerm</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <DefaultValueOffsetAmount/>
-    <Description>PA: Comprehensive deductible</Description>
-    <Name>PA: Comprehensive deductible</Name>
-    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zgegq5grd4u01dhjnn406o39je8">
-    <AutoApprovable>true</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PACollisionDeductible</Code>
-    <Comparator>Monetary_GE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>NextChange</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>PA: Collision deductible</Description>
-    <Name>PA: Collision deductible</Name>
-    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zeuieh9b2n3v128i8uqrla6vhu9">
+  <UWIssueType public-id="zr9jstvt82rfba5dvr5rlr7da48">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>NonBlocking</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAUnappliedGoodDriverDiscount</Code>
+    <CheckingSet>Referral</CheckingSet>
+    <Code>ReferralNonBlocking</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>NextChange</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <Description>PA: Driver qualified for good driver discount, but not applied</Description>
-    <Name>PA: Unapplied good driver discount</Name>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Non-blocking issue generated from UW referral reason</Description>
+    <Name>Non-blocking referral</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z75j6c5c4ihi51183t16k7bb9t8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>RegulatoryHold</CheckingSet>
+    <Code>RegulatoryPolicyHold</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Regulatory Policy Hold</Description>
+    <Name>Regulatory Policy Hold</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="zdqjcccgi0oila2rn2r80bmunb8">
@@ -231,210 +267,25 @@
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
     <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
     <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>NOT USED - PA: High value vehicle and driver(s) under 25</Description>
     <Name>PA: High value vehicle and driver(s) under 25</Name>
     <ValueFormatterType>MonetaryAmount</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zn5g0bfnhb7rk745umciuvkc5l9">
+  <UWIssueType public-id="zjij05q38b43h9sllb8b110r51b">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PADriverUnder25AndLowCompDeductible</Code>
-    <Comparator>Monetary_GE</Comparator>
-    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>EndOfTerm</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <DefaultValueOffsetAmount/>
-    <Description>NOT USED - PA: Driver(s) under 25 and comp deductible</Description>
-    <Name>PA: Driver(s) under 25 and comp deductible</Name>
-    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z1mj4n9bt9uj73lcqsqtb936a3a">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PADriverUnder25AndLowCollisionDeductible</Code>
-    <Comparator>Monetary_GE</Comparator>
-    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>OneYear</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <DefaultValueOffsetAmount/>
-    <Description>NOT USED - PA: Driver(s) under 25 and collision deductible</Description>
-    <Name>PA: Driver(s) under 25 and collision deductible</Name>
-    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zmujcfaf7sv8u8ii7k7m49v9ri8">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksIssuance</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAGoodDriverDiscountEvidence</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>ThreeYears</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>PA: Good driver discount requires evidence of qualification</Description>
-    <Name>PA: Good driver discount documentation</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zsmhoits3qk4s7e885q69ek20a8">
-    <AutoApprovable>true</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>PAGarageState</Code>
-    <Comparator>State_Set</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>ThreeYears</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>PA: Garage states</Description>
-    <Name>PA: Garage states</Name>
-    <ValueFormatterType>StateSet</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zp1j4q36n2u8d5qr17o6fqv82ga">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UW1ReviewBlocksQuoteRelease</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriter 1, blocking quote release</Description>
-    <Name>To be reviewed by underwriter 1, blocking quote release</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z12h4ijlbs5005ir9p8dfea3989">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UW2ReviewBlocksQuoteRelease</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriter 2, blocking quote release</Description>
-    <Name>To be reviewed by underwriter 2, blocking quote release</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z1mhajnf61g8c3c8m143rs0ilpb">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UWManagerReviewBlocksQuoteRelease</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriting manager, blocking quote release</Description>
-    <Name>To be reviewed by underwriting manager, blocking quote release</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z0bikjdcdqh0c1t6568aen3fr99">
-    <AutoApprovable>true</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Renewal</CheckingSet>
-    <Code>ClaimTotalIncurred</Code>
-    <Comparator>Monetary_LE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Highest cost claim</Description>
-    <Name>Claim total incurred</Name>
-    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zehjiqe9nucb1alico81renvmta">
-    <AutoApprovable>true</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Renewal</CheckingSet>
-    <Code>RatioOfClaimsTotalIncurredToWrittenPremium</Code>
-    <Comparator>Numeric_LE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Ratio of claims total incurred to policy written premium</Description>
-    <Name>Ratio of claims total incurred to policy written premium</Name>
-    <ValueFormatterType>Number</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z5uikpvda84nk6lab8i2enf2648">
-    <AutoApprovable>true</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Renewal</CheckingSet>
-    <Code>IncidenceOfClaims</Code>
-    <Comparator>Numeric_LE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Incidence of claims</Description>
-    <Name>Incidence of claims</Name>
-    <ValueFormatterType>Number</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zugj6fbeq58r11mm5hne6u13dfb">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Renewal</CheckingSet>
-    <Code>ManualClaimReviewNeeded</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Too many claims found for automated retrieve</Description>
-    <Name>Manual claim review needed</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zarja72584ssi9u3tilg2q5upj9">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Renewal</CheckingSet>
-    <Code>UnableRetrieveClaimInfo</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Unable to retrieve claims information</Description>
-    <Name>Unable to retrieve claims information</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zctg8595550t11ilclhqvpd3hub">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PreQuote</CheckingSet>
-    <Code>RewritePeriodDates</Code>
+    <CheckingSet>PreQuoteRelease</CheckingSet>
+    <Code>QuoteHasManualOverrides</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>NextChange</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>The rewrite period's dates don't match the dates of the based-on period</Description>
-    <Name>Rewrite changes period dates</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zr9jstvt82rfba5dvr5rlr7da48">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>NonBlocking</BlockingPoint>
-    <CheckingSet>Referral</CheckingSet>
-    <Code>ReferralNonBlocking</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Non-blocking issue generated from UW referral reason</Description>
-    <Name>Non-blocking referral</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zcihgdl4jn2cdc7ul9act7h18da">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>Referral</CheckingSet>
-    <Code>ReferralBlockingQuote</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Issue blocking quote generated from UW referral reason</Description>
-    <Name>Quote referral</Name>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Quote has one or more manual overrides</Description>
+    <Name>Quote Has Manual Overrides</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="zsiieonlr6q8lfiu4466nnr1cna">
@@ -446,99 +297,107 @@
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>Issue blocking bind generated from UW referral reason</Description>
     <Name>Bind referral</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zvjgskrc5asqp0is8jrsmrfpk98">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UW1ReviewBlocksBind</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriter 1, blocking bind</Description>
-    <Name>To be reviewed by underwriter 1, blocking bind</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zeghkogo1mg7v46f8l05ueh77v9">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksIssuance</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UW1ReviewBlocksIssuance</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriter 1, blocking issuance</Description>
-    <Name>To be reviewed by underwriter 1, blocking issuance</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zphiekjns5sdj0bhjn0in5jf529">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UW2ReviewBlocksBind</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriter 2, blocking bind</Description>
-    <Name>To be reviewed by underwriter 2, blocking bind</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zftiobebn9o0s7od98fpd3eidhb">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksIssuance</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UW2ReviewBlocksIssuance</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriter 2, blocking issuance</Description>
-    <Name>To be reviewed by underwriter 2, blocking issuance</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zfth4iqiibuks1kbg3l4dg0bfe9">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UWManagerReviewBlocksBind</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriting manager, blocking bind</Description>
-    <Name>To be reviewed by underwriting manager, blocking bind</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z24ig8iggdqfqdvr1k8mlsjir4b">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksIssuance</BlockingPoint>
-    <CheckingSet>Manual</CheckingSet>
-    <Code>UWManagerReviewBlocksIssuance</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>To be reviewed by underwriting manager, blocking issuance</Description>
-    <Name>To be reviewed by underwriting manager, blocking issuance</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z51gsao9p1u7kdlmmcl8veftgi9">
+  <UWIssueType public-id="zjrgouj7un1vve3ecd71d6on8ha">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuote</BlockingPoint>
-    <CheckingSet>Question</CheckingSet>
-    <Code>QuestionBlockingQuote</Code>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_island_Ext</Code>
     <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Barrier Island HO</Description>
+    <Name>Qual - Barrier Island HO</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z5uikpvda84nk6lab8i2enf2648">
+    <AutoApprovable>true</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Renewal</CheckingSet>
+    <Code>IncidenceOfClaims</Code>
+    <Comparator>Numeric_LE</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Automatically generated based on question answer, blocking pre-quote</Description>
-    <Name>Question blocking quote</Name>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Incidence of claims</Description>
+    <Name>Incidence of claims</Name>
+    <ValueFormatterType>Number</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zmhgsck7upngf3225ik4s1q002b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_Cooking_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Cooking</Description>
+    <Name>Qual - Cooking</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zp1jeu3mq0farco6thc6auu3la9">
+    <AutoApprovable>true</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PACompDeductible</Code>
+    <Comparator>Monetary_GE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: Comprehensive deductible</Description>
+    <Name>PA: Comprehensive deductible</Name>
+    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zmkg08e8q5g4o56f7kcgtva0lea">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Propertyv3_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - 2 or More Prior Property Losses Last 3 Years FL HI</Description>
+    <Name>Qual - 2 or More Prior Property Losses Last 3 Years FL HI</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zcohea1sior7bedn7tcdihsl0db">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_FamilyFelony_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>HO FamilyFelony</Description>
+    <Name>HO FamilyFelony</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="ztbhc4rsggq13cfe3rhga5jtq6a">
@@ -550,9 +409,44 @@
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>Automatically generated based on question answer, blocking pre-bind</Description>
     <Name>Question blocking bind</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zctg8595550t11ilclhqvpd3hub">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>RewritePeriodDates</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>The rewrite period's dates don't match the dates of the based-on period</Description>
+    <Name>Rewrite changes period dates</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zsmhoits3qk4s7e885q69ek20a8">
+    <AutoApprovable>true</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAGarageState</Code>
+    <Comparator>State_Set</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>ThreeYears</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: Garage states</Description>
+    <Name>PA: Garage states</Name>
+    <ValueFormatterType>StateSet</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="zd8hmcr4bip9kf8c9j1hpfo0gf8">
     <AutoApprovable>false</AutoApprovable>
@@ -563,8 +457,27 @@
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>Automatically generated based on question answer, merely informational</Description>
     <Name>Question non-blocking</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zutjo6n0a7o224ntr9vtg0i9iab">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_Underwriting_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Declined, Cancelled or Non Renewed Last 3 Years</Description>
+    <Name>Qual - Declined, Cancelled or Non Renewed Last 3 Years</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="zq7ies1d7538i827h3ipar71naa">
@@ -577,129 +490,202 @@
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
     <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>Automatically generated based on question answer that includes a number, blocking pre-quote</Description>
     <Name>Question with number blocking quote</Name>
     <ValueFormatterType>Integer</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zt3he0nebl7kbdd72sadmov3eda">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Question</CheckingSet>
-    <Code>QuestionNumberBlockingBind</Code>
-    <Comparator>Numeric_LE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Automatically generated based on question answer that includes a number, blocking pre-bind</Description>
-    <Name>Question with number blocking bind</Name>
-    <ValueFormatterType>Integer</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zvrhu9rubbmq9bv8qtbe6ngsl59">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>NonBlocking</BlockingPoint>
-    <CheckingSet>Question</CheckingSet>
-    <Code>QuestionNumberNonBlocking</Code>
-    <Comparator>Numeric_LE</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Automatically generated based on question answer that includes a number, merely informational</Description>
-    <Name>Question with number non-blocking</Name>
-    <ValueFormatterType>Integer</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zkiiirvn56uordi5madltdgl899">
+  <UWIssueType public-id="zm3hadf0dm589auggas6sr04b0a">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuote</BlockingPoint>
     <CheckingSet>PreQuote</CheckingSet>
-    <Code>PreQualQuestionRiskPointSum</Code>
-    <Comparator>Numeric_LE</Comparator>
+    <Code>BP7_Litigation_Ext</Code>
+    <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Sum of pre-qual question risk points</Description>
-    <Name>Sum of pre-qual risk points</Name>
-    <ValueFormatterType>Integer</ValueFormatterType>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Criminal Litigation</Description>
+    <Name>Qual - Criminal Litigation</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zjij05q38b43h9sllb8b110r51b">
+  <UWIssueType public-id="zcricf8eh5gq0fs87nib66nvdk9">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>PreQuoteRelease</CheckingSet>
-    <Code>QuoteHasManualOverrides</Code>
+    <CheckingSet>Reinsurance</CheckingSet>
+    <Code>AgreementsDoNotCedeToCapacity</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>NextChange</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Quote has one or more manual overrides</Description>
-    <Name>Quote Has Manual Overrides</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Some reinsurance agreements do not cede to capacity</Description>
+    <Name>Some reinsurance agreements do not cede to capacity</Name>
+    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="za3go9f1egpk5916gin97h6vnrb">
+  <UWIssueType public-id="z5ejkjq7m62shenmc9g7kavjs79">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Referral</CheckingSet>
-    <Code>ReferralNumberBlockingBind</Code>
-    <Comparator>Numeric_LE</Comparator>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAHighValueAuto</Code>
+    <Comparator>Monetary_LE</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
-    <Description>Issue with a numeric value blocking bind generated from UW referral reason</Description>
-    <Name>Referral with number blocking bind</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
+    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>OffsetPercent</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount>10</DefaultValueOffsetAmount>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: High value vehicle</Description>
+    <Name>PA: High value vehicle</Name>
+    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="upgrade:legacypolicyevalissue">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Upgrade</CheckingSet>
-    <Code>LegacyPolicyEvalIssue</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Issue that was automatically generated at upgrade time from an existing, open policy UW issue</Description>
-    <Name>Converted policy UW issue</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="upgrade:legacypolicyevalissueclosed">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>NonBlocking</BlockingPoint>
-    <CheckingSet>Upgrade</CheckingSet>
-    <Code>LegacyPolicyEvalIssueClosed</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Issue that was automatically converted at upgrade time based on a closed policy UW issue</Description>
-    <Name>Closed converted policy UW issue</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="upgrade:legacyreferralreason">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>Referral</CheckingSet>
-    <Code>LegacyReferralReason</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Issue arising from a referral reason that was converted from an existing referral reason</Description>
-    <Name>Converted referral reason</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="ztjjgmlt0687qe1862c2rjf5fb9">
+  <UWIssueType public-id="z83jg0dhajm1u8kr18l8hq0hk78">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuote</BlockingPoint>
     <CheckingSet>PreQuote</CheckingSet>
-    <Code>UWCompanySegmentValid</Code>
+    <Code>PAVINStartsWithFRE</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: The vehicle's VIN number beings with FRE</Description>
+    <Name>PA: Vehicle VIN beings with FRE</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zeuieh9b2n3v128i8uqrla6vhu9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>NonBlocking</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAUnappliedGoodDriverDiscount</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: Driver qualified for good driver discount, but not applied</Description>
+    <Name>PA: Unapplied good driver discount</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zd8imtpej3isob7ro25261nbo2a">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAPrimaryDriverUnder25</Code>
+    <Comparator>Numeric_GE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: Primary driver under 25 years of age</Description>
+    <Name>PA: Primary driver under 25</Name>
+    <ValueFormatterType>Integer</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zcfjcafe2o8ng9bfotc5qkk6lha">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PolicyRenewalAPI</CheckingSet>
+    <Code>PolicyRenewalAPIPolicyNumberCollision</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>When importing this policy, the specified policy number was already in use in the system. It has been changed.</Description>
+    <Name>Imported PolicyNumber Conflicts</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zd8h0uqfngn28d6k9794ed69919">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAGaragingZip</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>BlocksIssuance</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>OneYear</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Underwriting Company Not Valid for Policy Segment</Description>
-    <Name>Underwriting Company Not Valid for Policy Segment</Name>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: The zip of principle garaging doesn't match the address of the primary insured</Description>
+    <Name>PA: Zip of principal garaging mismatch</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z67h2nv88nnescldcntb1q49jia">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_OwnATV_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Own ATV</Description>
+    <Name>Qual - Own ATV</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z3ggmupmet6nm03ilr4071ar7a9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAOtherVehicleTypeAndHighRiskDriver</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>ThreeYears</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>NOT USED - PA: A vehicle has a type of "Other" and a driver under the age of 25</Description>
+    <Name>PA: Vehicle type of "Other" and driver under 25</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zbai08obkk5189ali5ps79dsi5b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Fraud_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Non Renewed</Description>
+    <Name>Qual - Non Renewed</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zdkj2r85eri3ia1p194behkn098">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Lapse3years_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Lapse 3 Years</Description>
+    <Name>Qual - Lapse 3 Years</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="zg6h8777c365o978oo8fjrs7qda">
@@ -712,35 +698,11 @@
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
     <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>RI: Net retention greater than target max retention</Description>
     <Name>RI: Net retention</Name>
     <ValueFormatterType>MonetaryAmount</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="zs5jkl1mmj802bekpc8sca2ksf8">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>UWHold</CheckingSet>
-    <Code>UWPolicyHold</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>UW Policy Hold</Description>
-    <Name>UW Policy Hold</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
-  </UWIssueType>
-  <UWIssueType public-id="z75j6c5c4ihi51183t16k7bb9t8">
-    <AutoApprovable>false</AutoApprovable>
-    <BlockingPoint>BlocksQuote</BlockingPoint>
-    <CheckingSet>RegulatoryHold</CheckingSet>
-    <Code>RegulatoryPolicyHold</Code>
-    <Comparator>None</Comparator>
-    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>Regulatory Policy Hold</Description>
-    <Name>Regulatory Policy Hold</Name>
-    <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="z0pj4ov3dnrasb2pe3gfnm2el4b">
     <AutoApprovable>false</AutoApprovable>
@@ -751,34 +713,203 @@
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
     <Description>PA: A driver is excluded from the policy</Description>
     <Name>PA: Excluded driver</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zcfjsufmmt01o79043rc0afdqp9">
+  <UWIssueType public-id="zugj6fbeq58r11mm5hne6u13dfb">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>MVR</CheckingSet>
-    <Code>PAMVRAccidentsViolations</Code>
+    <CheckingSet>Renewal</CheckingSet>
+    <Code>ManualClaimReviewNeeded</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Too many claims found for automated retrieve</Description>
+    <Name>Manual claim review needed</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zcbi6h5jvlgg3c9qrv99qd0nmu8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_OpenClaim_Ext</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>EndOfTerm</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
-    <Description>PA: The accidents/violations on the policy are different than those on the MVR</Description>
-    <Name>PA: Accidents/violations do not match MVR</Name>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Pending Claims</Description>
+    <Name>Qual - Pending Claims</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zcfjcafe2o8ng9bfotc5qkk6lha">
+  <UWIssueType public-id="z29ja6n0j9r7q90mtei37t68rkb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Lease_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Foreclosure</Description>
+    <Name>Qual - Foreclosure</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zu7jc90bnuvak1jdumd6glse99b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Lapse60_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Lapse 60 Days</Description>
+    <Name>Qual - Lapse 60 Days</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zh6hacvi8bkl3elldthc1v9qgu8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Sinkholeother_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>HO Sinkhole other</Description>
+    <Name>HO Sinkhole other</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="jm3imm11vs8ys0egtzju3rax55a">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksBind</BlockingPoint>
-    <CheckingSet>PolicyRenewalAPI</CheckingSet>
-    <Code>PolicyRenewalAPIPolicyNumberCollision</Code>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>ChangedProducerCode</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Raised when Producer Code  has been changed from previous value.</Description>
+    <Name>Producer Code Changed</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="upgrade:legacypolicyevalissueclosed">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>NonBlocking</BlockingPoint>
+    <CheckingSet>Upgrade</CheckingSet>
+    <Code>LegacyPolicyEvalIssueClosed</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
     <DefaultDurationType>Rescinded</DefaultDurationType>
-    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
-    <Description>When importing this policy, the specified policy number was already in use in the system. It has been changed.</Description>
-    <Name>Imported PolicyNumber Conflicts</Name>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Issue that was automatically converted at upgrade time based on a closed policy UW issue</Description>
+    <Name>Closed converted policy UW issue</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z9lg6s99qu6m75ar5045d47ifrb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Crime_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Convitction or Felony 10 Years</Description>
+    <Name>Qual - Convitction or Felony 10 Years</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zd5jiebsguqaba0kutd114b477a">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAOtherVehicleTypeNonMotorcycle</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: A vehicle has a type of "Other" and a body type other than "Motorcycle"</Description>
+    <Name>PA: Vehicle type of "Other" and not "Motorcycle"</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z1mhajnf61g8c3c8m143rs0ilpb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UWManagerReviewBlocksQuoteRelease</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriting manager, blocking quote release</Description>
+    <Name>To be reviewed by underwriting manager, blocking quote release</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="ztjjgmlt0687qe1862c2rjf5fb9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>UWCompanySegmentValid</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Underwriting Company Not Valid for Policy Segment</Description>
+    <Name>Underwriting Company Not Valid for Policy Segment</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zp1j4q36n2u8d5qr17o6fqv82ga">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UW1ReviewBlocksQuoteRelease</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriter 1, blocking quote release</Description>
+    <Name>To be reviewed by underwriter 1, blocking quote release</Name>
     <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
   <UWIssueType public-id="zlqggvfbk87o56e8q99aii6r1s9">
@@ -797,20 +928,628 @@
     <Name>Some fixed-cost, facultative reinsurance agreements have no ceded risk</Name>
     <ValueFormatterType>MonetaryAmount</ValueFormatterType>
   </UWIssueType>
-  <UWIssueType public-id="zcricf8eh5gq0fs87nib66nvdk9">
+  <UWIssueType public-id="zcihgdl4jn2cdc7ul9act7h18da">
     <AutoApprovable>false</AutoApprovable>
     <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
-    <CheckingSet>Reinsurance</CheckingSet>
-    <Code>AgreementsDoNotCedeToCapacity</Code>
+    <CheckingSet>Referral</CheckingSet>
+    <Code>ReferralBlockingQuote</Code>
     <Comparator>None</Comparator>
     <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
-    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
     <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
     <DefaultValueAssignmentType/>
     <DefaultValueOffsetAmount/>
     <DefaultValueOffsetCurrency/>
-    <Description>Some reinsurance agreements do not cede to capacity</Description>
-    <Name>Some reinsurance agreements do not cede to capacity</Name>
+    <Description>Issue blocking quote generated from UW referral reason</Description>
+    <Name>Quote referral</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zt3gsg45c8vap0athu76gq4h1qb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_PropertyLoss1_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - 2 or More Prior Property Losses Last 5 Years SC NC NV HI</Description>
+    <Name>Qual - 2 or More Prior Property Losses Last 5 Years SC NC NV HI</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z37hqusqea9iu8u7b14gre9nvla">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PANumberOfVehicles</Code>
+    <Comparator>Numeric_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>OffsetAmount</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount>1</DefaultValueOffsetAmount>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: The number of vehicles on the policy requires approval</Description>
+    <Name>PA: Number of vehicles</Name>
+    <ValueFormatterType>Integer</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zp8i052fol8g9ast401tk41o8h8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Sinkhole_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Sinkhole Activity</Description>
+    <Name>Qual - Sinkhole Activity</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zupgif7b4ltg14v8rm74tf1ab09">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Lapse_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Lapse 30 Days HO </Description>
+    <Name>Qual - Lapse 30 Days HO </Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z7ljogpcvdhh9e3sdo0p01lehna">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreBind</CheckingSet>
+    <Code>PAHighValueAutoDocumentation</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>BlocksIssuance</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>OneYear</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>NOT USED - PA: High value vehicles must have documentation of their value</Description>
+    <Name>PA: High value vehicle documentation requirement</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="za3go9f1egpk5916gin97h6vnrb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Referral</CheckingSet>
+    <Code>ReferralNumberBlockingBind</Code>
+    <Comparator>Numeric_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Issue with a numeric value blocking bind generated from UW referral reason</Description>
+    <Name>Referral with number blocking bind</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="upgrade:legacyreferralreason">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Referral</CheckingSet>
+    <Code>LegacyReferralReason</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Issue arising from a referral reason that was converted from an existing referral reason</Description>
+    <Name>Converted referral reason</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z12h4ijlbs5005ir9p8dfea3989">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UW2ReviewBlocksQuoteRelease</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriter 2, blocking quote release</Description>
+    <Name>To be reviewed by underwriter 2, blocking quote release</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zt3he0nebl7kbdd72sadmov3eda">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Question</CheckingSet>
+    <Code>QuestionNumberBlockingBind</Code>
+    <Comparator>Numeric_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Automatically generated based on question answer that includes a number, blocking pre-bind</Description>
+    <Name>Question with number blocking bind</Name>
+    <ValueFormatterType>Integer</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zkiiirvn56uordi5madltdgl899">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PreQualQuestionRiskPointSum</Code>
+    <Comparator>Numeric_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Sum of pre-qual question risk points</Description>
+    <Name>Sum of pre-qual risk points</Name>
+    <ValueFormatterType>Integer</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z24ig8iggdqfqdvr1k8mlsjir4b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksIssuance</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UWManagerReviewBlocksIssuance</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriting manager, blocking issuance</Description>
+    <Name>To be reviewed by underwriting manager, blocking issuance</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z34ic8r04cb2m3ffhmccf7912p8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_Businesshours_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Open 24 </Description>
+    <Name>Qual - Open 24 </Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zeghkogo1mg7v46f8l05ueh77v9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksIssuance</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UW1ReviewBlocksIssuance</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriter 1, blocking issuance</Description>
+    <Name>To be reviewed by underwriter 1, blocking issuance</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z9rhiqr06b6h9d5o7gomm3cvjea">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_Pincode_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Prior Code Violations</Description>
+    <Name>Qual - Prior Code Violations</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zpfgckr6ollvm6vlsncu50pteo9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_DwellingDP_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - For Sale, Under Construction, Renovation or Vacant DP</Description>
+    <Name>Qual - For Sale, Under Construction, Renovation or Vacant DP</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z1mj4n9bt9uj73lcqsqtb936a3a">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PADriverUnder25AndLowCollisionDeductible</Code>
+    <Comparator>Monetary_GE</Comparator>
+    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>OneYear</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>NOT USED - PA: Driver(s) under 25 and collision deductible</Description>
+    <Name>PA: Driver(s) under 25 and collision deductible</Name>
     <ValueFormatterType>MonetaryAmount</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zhujap1sf8kt9aoukk9g4fgfkua">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Weather_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Prior Non Weather TX</Description>
+    <Name>Qual - Prior Non Weather TX</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z11job7oma0o21pqq33svnd042b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>CRP_CoverageDecline_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Declined In Last 3 Years</Description>
+    <Name>Qual - Declined In Last 3 Years</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zvrgcn7qucai771uvqjsueu9ksa">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_DwellingQAflip_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Flip</Description>
+    <Name>Qual - Flip</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zs5jkl1mmj802bekpc8sca2ksf8">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>UWHold</CheckingSet>
+    <Code>UWPolicyHold</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>UW Policy Hold</Description>
+    <Name>UW Policy Hold</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zftiobebn9o0s7od98fpd3eidhb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksIssuance</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UW2ReviewBlocksIssuance</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriter 2, blocking issuance</Description>
+    <Name>To be reviewed by underwriter 2, blocking issuance</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zfig45s8021877lcik9mm70s06b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_ATVonPremise_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Useage ATV</Description>
+    <Name>Qual - Useage ATV</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zvrhu9rubbmq9bv8qtbe6ngsl59">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>NonBlocking</BlockingPoint>
+    <CheckingSet>Question</CheckingSet>
+    <Code>QuestionNumberNonBlocking</Code>
+    <Comparator>Numeric_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Automatically generated based on question answer that includes a number, merely informational</Description>
+    <Name>Question with number non-blocking</Name>
+    <ValueFormatterType>Integer</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zm8ig83vc1rs14q0as26sdjem9a">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_Liquor_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Alcohol Consuption </Description>
+    <Name>Qual - Alcohol Consuption </Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zarja72584ssi9u3tilg2q5upj9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Renewal</CheckingSet>
+    <Code>UnableRetrieveClaimInfo</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Unable to retrieve claims information</Description>
+    <Name>Unable to retrieve claims information</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zn5g0bfnhb7rk745umciuvkc5l9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuoteRelease</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PADriverUnder25AndLowCompDeductible</Code>
+    <Comparator>Monetary_GE</Comparator>
+    <DefaultApprovalBlockingPoint>BlocksBind</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>NOT USED - PA: Driver(s) under 25 and comp deductible</Description>
+    <Name>PA: Driver(s) under 25 and comp deductible</Name>
+    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zu7i4f584pea922hpm2pbf3ar1b">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Damage_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Evidence of Damage</Description>
+    <Name>Qual - Evidence of Damage</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zf7hi0k5g5pp8chnpl7q7oe4929">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_Occupancy_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Residential Occupancy</Description>
+    <Name>Qual - Residential Occupancy</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zo8ic8c4127lv96c0mpkamhetdb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>BP7_CivilLitigation_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Civil Litigation</Description>
+    <Name>Qual - Civil Litigation</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zaghon198c4e36u5jnsj83bpgab">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_PropertyLossv2_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - 2 or More Prior Property Losses Last 5 Years CA TX</Description>
+    <Name>Qual - 2 or More Prior Property Losses Last 5 Years CA TX</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z51gsao9p1u7kdlmmcl8veftgi9">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>Question</CheckingSet>
+    <Code>QuestionBlockingQuote</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Automatically generated based on question answer, blocking pre-quote</Description>
+    <Name>Question blocking quote</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zksj2i2m7nf7u17gg5tf4gj3mda">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_DwellingQA_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - For Sale, Under Construction, Renovation or Vacant HO</Description>
+    <Name>Qual - For Sale, Under Construction, Renovation or Vacant HO</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zd5iej8kb80mc23q55c7j9aleqb">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_Propertyv4_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - 2 or More Weather Related Last 3 Years</Description>
+    <Name>Qual - 2 or More Weather Related Last 3 Years</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="z0bikjdcdqh0c1t6568aen3fr99">
+    <AutoApprovable>true</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Renewal</CheckingSet>
+    <Code>ClaimTotalIncurred</Code>
+    <Comparator>Monetary_LE</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType>Fixed</DefaultValueAssignmentType>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Highest cost claim</Description>
+    <Name>Claim total incurred</Name>
+    <ValueFormatterType>MonetaryAmount</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zphiekjns5sdj0bhjn0in5jf529">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>Manual</CheckingSet>
+    <Code>UW2ReviewBlocksBind</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>To be reviewed by underwriter 2, blocking bind</Description>
+    <Name>To be reviewed by underwriter 2, blocking bind</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zodi2nqu7at55cpvcv244mfpcga">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>PAOtherVehicleType</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>Rescinded</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>PA: A vehicle has a type of "Other"</Description>
+    <Name>PA: Vehicle type of "Other"</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="zflg2fn8bk60ad5e0skkgabc7ab">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksQuote</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>HO_LapseHO_Ext</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>EndOfTerm</DefaultDurationType>
+    <DefaultEditBeforeBind>false</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Qual - Lapse 30 Days DP </Description>
+    <Name>Qual - Lapse 30 Days DP </Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
+  </UWIssueType>
+  <UWIssueType public-id="ksjdgefylxlsvwwvmcytg83pmdf">
+    <AutoApprovable>false</AutoApprovable>
+    <BlockingPoint>BlocksBind</BlockingPoint>
+    <CheckingSet>PreQuote</CheckingSet>
+    <Code>ChangedProducerOrg</Code>
+    <Comparator>None</Comparator>
+    <DefaultApprovalBlockingPoint>NonBlocking</DefaultApprovalBlockingPoint>
+    <DefaultDurationType>NextChange</DefaultDurationType>
+    <DefaultEditBeforeBind>true</DefaultEditBeforeBind>
+    <DefaultValueAssignmentType/>
+    <DefaultValueOffsetAmount/>
+    <DefaultValueOffsetCurrency/>
+    <Description>Raised when Producer Organization has been changed from previous value.</Description>
+    <Name>Producer Organization Changed</Name>
+    <ValueFormatterType>Unformatted</ValueFormatterType>
   </UWIssueType>
 </import>

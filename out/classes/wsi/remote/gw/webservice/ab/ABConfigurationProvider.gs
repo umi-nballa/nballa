@@ -8,7 +8,7 @@ uses gw.xml.ws.IWsiWebserviceConfigurationProvider
 class ABConfigurationProvider implements IWsiWebserviceConfigurationProvider {
 
   override function configure( serviceName : QName, portName : QName, config : WsdlConfig )  {
-    config.Guidewire.Authentication.Username = "ClientAppPC"
+    config.Guidewire.Authentication.Username = "su"
     config.Guidewire.Authentication.Password = "gw"
   }
 

@@ -3,15 +3,18 @@ package gw.rating
 uses com.guidewire.commons.config.APIConfigFileAccess
 uses com.guidewire.pl.quickjump.Argument
 uses com.guidewire.pl.quickjump.BaseCommand
+uses gw.api.webservice.importTools.ImportToolsImpl
 uses gw.api.database.Query
 uses gw.api.system.PCLoggerCategory
 uses gw.pl.logging.LoggerCategory
 uses gw.rating.rtm.domain.migration.RateBookImporter
 uses gw.rating.rtm.mock.MockWebFile
+uses gw.util.StreamUtil
 
 uses java.io.File
 uses java.io.FileInputStream
 uses java.io.FilenameFilter
+uses gw.api.system.logging.LOBLoggerCategory
 
 class LOBRateBookImporter {
 
@@ -36,11 +39,11 @@ class LOBRateBookImporter {
 
   function loadBooks(jurisdiction : String = null) {
     if (_rateBooksDir == null) {
-      LoggerCategory.CONFIG.warn(displaykey.Web.RateBook.Import.Errors.MissingDirectoryStructure(RATEBOOKS_DIR))
+      LOBLoggerCategory.CONFIG.warn(displaykey.Web.RateBook.Import.Errors.MissingDirectoryStructure(RATEBOOKS_DIR))
       return
     }
     if (_rateBooksDir.listFiles().IsEmpty) {
-      LoggerCategory.CONFIG.warn(displaykey.Web.RateBook.Import.Errors.MissingRateBookFiles(RATEBOOKS_DIR))
+      LOBLoggerCategory.CONFIG.warn(displaykey.Web.RateBook.Import.Errors.MissingRateBookFiles(RATEBOOKS_DIR))
       return
     }
 

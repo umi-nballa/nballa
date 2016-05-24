@@ -23,6 +23,9 @@ uses java.util.ArrayList
 uses java.util.Map
 uses java.util.Set
 uses java.util.TreeMap
+uses una.lob.cpp.CPP_UnderwriterEvaluator
+uses gw.policy.PolicyEvalContext
+uses gw.lob.common.UnderwriterEvaluator
 
 @Export
 class CPPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
@@ -279,5 +282,12 @@ class CPPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
 
   override property get BaseStateRequired(): boolean {
     return true
+  }
+
+  /* UNA specific implementation to start Underwriting Evaluation for CPP. There is no product level evaluation
+  * hence using the CP line level evaluation for this
+  */
+  override function createUnderwriterEvaluator(context : PolicyEvalContext) : UnderwriterEvaluator {
+    return new CPP_UnderwriterEvaluator(context)
   }
 }

@@ -73,13 +73,27 @@ enhancement ScheduledItemEnhancement : entity.ScheduledItem {
 
   function isAvailableForItem(pattern : ClausePattern) : boolean {
     var schedule = this.ScheduleParent as Clause & gw.api.productmodel.Schedule
-    if(this.ScheduleParent typeis ScheduleMultiPatterns) {
-      var amendedClause = ServiceLocator.get(ScheduleConfigSource).getAmendedClause(schedule, pattern)
-      var whenClause = ServiceLocator.get(ScheduleConfigSource).getWhenClause(schedule, pattern)
-      return this.ScheduleParent.ScheduledItemMultiPatterns.contains(pattern)
-          and (amendedClause == null or (this as Coverable).getCoverageConditionOrExclusion(amendedClause) != null)
-          and (whenClause == null or schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause) != null)
-    }
-    return false
+    var amendedClause = ServiceLocator.get(ScheduleConfigSource).getAmendedClause(schedule, pattern)
+    var whenClause = ServiceLocator.get(ScheduleConfigSource).getWhenClause(schedule, pattern)
+
+    return this.ScheduleParent.ScheduledItemMultiPatterns?.contains(pattern)
+        and (amendedClause == null or (this as Coverable).getCoverageConditionOrExclusion(amendedClause) != null)
+        and (whenClause == null or schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause) != null)
+  }
+
+  public function getAdditionalInsuredColumn(columnName: String = "AdditionalInsured") : PolicyAddlInsuredDetail {
+    return ServiceLocator.get(ScheduleConfigSource).getScheduledItemValueProvider<PolicyAddlInsuredDetail>(columnName, this).Value
+  }
+
+  public function setAdditionalInsuredColumn(columnName: String, value: PolicyAddlInsuredDetail) {
+    ServiceLocator.get(ScheduleConfigSource).getScheduledItemValueProvider<PolicyAddlInsuredDetail>(columnName, this).setValue(value)
+  }
+
+  public function getAdditionalInterestColumn(columnName: String = "AdditionalInterest") : AddlInterestDetail {
+    return ServiceLocator.get(ScheduleConfigSource).getScheduledItemValueProvider<AddlInterestDetail>(columnName, this).Value
+  }
+
+  public function setAdditionalInterestColumn(columnName: String, value: AddlInterestDetail) {
+    ServiceLocator.get(ScheduleConfigSource).getScheduledItemValueProvider<AddlInterestDetail>(columnName, this).setValue(value)
   }
 }

@@ -7,6 +7,7 @@ uses una.integration.service.gateway.tuna.TunaInterface
 uses una.logging.UnaLoggerCategory
 
 uses java.lang.Exception
+uses una.utils.PropertiesHolder
 
 /**
  * Address Service Plugin Implementation class for validating address from tuna.
@@ -35,7 +36,8 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
         logger.debug(" Inside Tunagateway autofillAddress For AddressValidation ", this.IntrinsicType)
         var finalRes = TUNAGateway.validateAddress(address)
         //Validating the response with either status code and Note
-        if (finalRes.Status != 0 ) {
+        if (finalRes.Status != 0 ||
+            finalRes.Address.Note.equalsIgnoreCase(PropertiesHolder.getProperty("TUNA_RESPONSE_VALIDATION"))) {
           throw new gw.api.util.DisplayableException (finalRes.Address.Note)
         }
             //Populating Tuna Validated Response values to the UI if Address is Validated

@@ -47,7 +47,8 @@
             value="propertyInfos">
             <TextCell
               id="ColumnHeader"
-              value="columnInfo.Label"/>
+              required="false"
+              value="(columnInfo.Required &amp;&amp; openForEdit) ? displaykey.Web.Policy.Schedule.ScheduledItems.RequiredColumnLabel(columnInfo.Label) : columnInfo.Label"/>
           </CellIterator>
           <CellIterator
             elementName="covTermPattern"
@@ -55,7 +56,8 @@
             value="covTermPatterns">
             <TextCell
               id="CovTermHeader"
-              value="covTermPattern.Name"/>
+              required="false"
+              value="(covTermPattern.Required &amp;&amp; openForEdit) ? displaykey.Web.Policy.Schedule.ScheduledItems.RequiredColumnLabel(covTermPattern.Name) : covTermPattern.Name"/>
           </CellIterator>
         </Row>
         <RowIterator

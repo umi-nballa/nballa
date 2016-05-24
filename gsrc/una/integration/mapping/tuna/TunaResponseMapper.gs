@@ -6,9 +6,10 @@ uses java.lang.Exception
 uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
 
 /**
- * Created by
+ * Created with IntelliJ IDEA.
  * User: pyerrumsetty
- *
+ * Date: 5/11/16
+ * Time: 6:11 PM
  */
 
 class TunaResponseMapper {
@@ -17,7 +18,6 @@ class TunaResponseMapper {
     var response = new TunaAppResponse()
 
     try {
-
 
       //TODO Tuna response to TunaAPPResponse
 

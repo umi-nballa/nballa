@@ -400,59 +400,40 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
         break
       case HODW_Other_Structures_HOE : 
         if ( dwell.HOPolicyType == HOPolicyType_HOE.TC_HO3 ) {
-          rateOtherStructures(cov, cov.HODW_OtherStructures_Limit_HOETerm.Value, dwell,
-              cov.HODW_OtherStructures_Limit_HOETerm.Value)
-          // Change log: Sen Pitchaimuthu
-          // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-                //theDefaultValue(cov.HODW_OtherStructures_Limit_HOETerm.Pattern))
+          rateOtherStructures(cov, cov.HODW_OtherStructures_Limit_HOETerm.Value, dwell, 
+                theDefaultValue(cov.HODW_OtherStructures_Limit_HOETerm.Pattern))
         }
         break
-      case DPDW_Other_Structures_HOE :
+      case DPDW_Other_Structures_HOE : 
         if ( dwell.HOPolicyType == HOPolicyType_HOE.TC_DP2 ) {
-        rateOtherStructures(cov, cov.DPDW_OtherStructuresLimit_HOETerm.Value, dwell,
-            // Change log: Sen Pitchaimuthu
-            // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-               cov.DPDW_OtherStructuresLimit_HOETerm.Value)
+        rateOtherStructures(cov, cov.DPDW_OtherStructuresLimit_HOETerm.Value, dwell, 
+                theDefaultValue(cov.DPDW_OtherStructuresLimit_HOETerm.Pattern))
         }
         break
       case HODW_Personal_Property_HOE : 
         // only rate for HO3 - otherwise it is part of base premium
         if ( dwell.HOPolicyType == HOPolicyType_HOE.TC_HO3 ) {
-          // Change log: Sen Pitchaimuthu
-          // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-          ratePersonalProperty(cov, cov.HODW_PersonalPropertyLimit_HOETerm.Value,
-          cov.HODW_TheftDed_HOETerm.Value, dwell,cov.HODW_PersonalPropertyLimit_HOETerm.Value)
-            //theDefaultValue(cov.HODW_PersonalPropertyLimit_HOETerm.Pattern))
+        ratePersonalProperty(cov, cov.HODW_PersonalPropertyLimit_HOETerm.Value,
+          cov.HODW_TheftDed_HOETerm.Value, dwell, theDefaultValue(cov.HODW_PersonalPropertyLimit_HOETerm.Pattern))
         }
         break
-      case DPDW_Personal_Property_HOE :
-          // Change log: Sen Pitchaimuthu
-          // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-
-          ratePersonalProperty(cov, cov.DPDW_PersonalPropertyLimit_HOETerm.Value, 0, dwell,
-            cov.DPDW_PersonalPropertyLimit_HOETerm.Value)
-                //theDefaultValue(cov.DPDW_PersonalPropertyLimit_HOETerm.Pattern))
+      case DPDW_Personal_Property_HOE : 
+        ratePersonalProperty(cov, cov.DPDW_PersonalPropertyLimit_HOETerm.Value, 0, dwell, 
+                theDefaultValue(cov.DPDW_PersonalPropertyLimit_HOETerm.Pattern))
         break
       case HODW_Loss_Of_Use_HOE :
         //if HO3 use one covterm, else the other for HO4 and HO6
         if ( dwell.HOPolicyType == HOPolicyType_HOE.TC_HO3 ) {
-          // Change log: Sen Pitchaimuthu
-          // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-          rateLossOfUse(cov, cov.HODW_LossOfUseDwelLimit_HOETerm.Value, dwell,
-            cov.HODW_LossOfUseDwelLimit_HOETerm.Value)
-        //        theDefaultValue(cov.HODW_LossOfUseDwelLimit_HOETerm.Pattern))
+        rateLossOfUse(cov, cov.HODW_LossOfUseDwelLimit_HOETerm.Value, dwell,  
+                theDefaultValue(cov.HODW_LossOfUseDwelLimit_HOETerm.Pattern))
         } else {
-        rateLossOfUse(cov, cov.HODW_LossOfUsePropLimit_HOETerm.Value, dwell,
-            cov.HODW_LossOfUseDwelLimit_HOETerm.Value)
-                //theDefaultValue(cov.HODW_LossOfUsePropLimit_HOETerm.Pattern))
+        rateLossOfUse(cov, cov.HODW_LossOfUsePropLimit_HOETerm.Value, dwell,  
+                theDefaultValue(cov.HODW_LossOfUsePropLimit_HOETerm.Pattern))
         }
         break
-      case DPDW_Loss_Of_Use_HOE :
-          // Change log: Sen Pitchaimuthu
-          // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-          rateLossOfUse(cov, cov.DPDW_LossOfUseDwelLimit_HOETerm.Value, dwell,
-            cov.DPDW_LossOfUseDwelLimit_HOETerm.Value)
-        //        theDefaultValue(cov.DPDW_LossOfUseDwelLimit_HOETerm.Pattern))
+      case DPDW_Loss_Of_Use_HOE : 
+        rateLossOfUse(cov, cov.DPDW_LossOfUseDwelLimit_HOETerm.Value, dwell, 
+                theDefaultValue(cov.DPDW_LossOfUseDwelLimit_HOETerm.Pattern))
         break
       case HODW_OrdinanceCov_HOE : 
         rateOrdinanceOrLaw(cov, cov.HODW_OrdinanceLimit_HOETerm.Value, dwell)

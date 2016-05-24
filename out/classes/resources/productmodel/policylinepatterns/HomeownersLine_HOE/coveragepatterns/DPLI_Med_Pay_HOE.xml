@@ -12,6 +12,9 @@
   public-id="DPLI_Med_Pay_HOE"
   rICoverageGroupType="Liability"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript/>
+  <InitializeScript/>
+  <OnRemovalScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -25,13 +28,7 @@
       required="true"
       restrictionModel="med"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="DPLI_MedPay_Limit_HOEusd"
-          currency="usd"
-          defaultValue="1000"
-          public-id="DPLI_MedPay_Limit_HOEusd"/>
-      </DefaultsSet>
+      <AvailabilityScript/>
       <Options>
         <CovTermOpt
           codeIdentifier="zm2i04ltljj3k3ecglm4ngad5fb"
@@ -39,21 +36,27 @@
           optionCode="1000"
           priority="11111"
           public-id="zm2i04ltljj3k3ecglm4ngad5fb"
-          value="1000.0000"/>
+          value="1000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zl6ikfoe9ej534h5qp1tt359br9"
           currency="usd"
           optionCode="2000"
           priority="11112"
           public-id="zl6ikfoe9ej534h5qp1tt359br9"
-          value="2000.0000"/>
+          value="2000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zgrh8j7g5p67d6el27k5mlbb479"
           currency="usd"
           optionCode="5000"
           priority="11115"
           public-id="zgrh8j7g5p67d6el27k5mlbb479"
-          value="5000.0000"/>
+          value="5000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="z51hkd2ni2u9n313ups2a3ii0o9"
           currency="usd"
@@ -75,14 +78,14 @@
           priority="11116"
           public-id="zr6hm0thdc2543kesh0jvporqab"
           value="10000.0000"/>
-        <CovTermOpt
-          codeIdentifier="zk4g0t6amo3mgbrs80gr9jjthd9"
-          currency="usd"
-          optionCode="500_Ext"
-          priority="11011"
-          public-id="zk4g0t6amo3mgbrs80gr9jjthd9"
-          value="500.0000"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="DPLI_MedPay_Limit_HOEusd"
+          currency="usd"
+          defaultValue="1000"
+          public-id="DPLI_MedPay_Limit_HOEusd"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

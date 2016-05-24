@@ -12,11 +12,12 @@
       name="scheduledItem"
       type="ScheduledItem"/>
     <Variable
-      initialValue="schedulePropertyInfo.createValueProvider(scheduledItem)"
-      name="valueProvider"/>
+      initialValue="new gw.api.productmodel.SchedulePropertyValueProvider&lt;String&gt;(scheduledItem, schedulePropertyInfo.PropertyInfo)"
+      name="valueProvider"
+      type="gw.api.productmodel.SchedulePropertyValueProvider&lt;String&gt;"/>
     <TextCell
       align="left"
-      editable="not (schedulePropertyInfo typeis gw.api.productmodel.ScheduleReadOnlyPropertyInfo)"
+      editable="true"
       id="StringValue"
       required="schedulePropertyInfo.Required"
       value="valueProvider.Value"/>

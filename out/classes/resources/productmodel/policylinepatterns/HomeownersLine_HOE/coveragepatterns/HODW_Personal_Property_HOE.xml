@@ -12,7 +12,55 @@
   public-id="HODW_Personal_Property_HOE"
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
+  <AvailabilityScript/>
+  <InitializeScript/>
+  <OnRemovalScript/>
   <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_PersonalPropertyLimit_HOE"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="1310"
+      public-id="HODW_PersonalPropertyLimit_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="percent">
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zjuhsn4o3f8rt5lrrqtrqj0id7b"
+          optionCode="50"
+          priority="1311"
+          public-id="zjuhsn4o3f8rt5lrrqtrqj0id7b"
+          value="50.0000"/>
+        <CovTermOpt
+          codeIdentifier="z3kh63vrberjn096mrd1c6iod4a"
+          optionCode="55"
+          priority="1312"
+          public-id="z3kh63vrberjn096mrd1c6iod4a"
+          value="55.0000"/>
+        <CovTermOpt
+          codeIdentifier="zmdjiaasm8ln50pnvlda3as915b"
+          optionCode="60"
+          priority="1313"
+          public-id="zmdjiaasm8ln50pnvlda3as915b"
+          value="60.0000"/>
+        <CovTermOpt
+          codeIdentifier="z6rhalt9b2a0ld01jbhi4tq4pa9"
+          optionCode="65"
+          priority="1314"
+          public-id="z6rhalt9b2a0ld01jbhi4tq4pa9"
+          value="65.0000"/>
+      </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_PersonalPropertyLimit_HOEnocurrency"
+          defaultValue="50"
+          public-id="HODW_PersonalPropertyLimit_HOEnocurrency"/>
+      </DefaultsSet>
+    </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
       choiceLookupTableName="DwellingCovCovOpt"
@@ -25,13 +73,6 @@
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_PropertyHO4_6Limit_HOEusd"
-          currency="usd"
-          defaultValue="25000"
-          public-id="HODW_PropertyHO4_6Limit_HOEusd"/>
-      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zusiunru9emrgaqujo55hrcsj09"
@@ -83,6 +124,13 @@
           public-id="z54iqrh7j7jvc20u6b4cnjk3so8"
           value="100000.0000"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_PropertyHO4_6Limit_HOEusd"
+          currency="usd"
+          defaultValue="25000"
+          public-id="HODW_PropertyHO4_6Limit_HOEusd"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -98,13 +146,6 @@
       valueType="money">
       <AvailabilityScript><![CDATA[return (Dwelling_HOE.HODW_Personal_Property_HOE != null and Dwelling_HOE.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.OptionValue == "100")
 ]]></AvailabilityScript>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_TheftDed_HOEusd"
-          currency="usd"
-          defaultValue="250"
-          public-id="HODW_TheftDed_HOEusd"/>
-      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zbnh089c7logl6pgijcnr60tfha"
@@ -135,6 +176,13 @@
           public-id="z1hh818tbmgqpdllg8v9v5o5ls9"
           value="500.0000"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_TheftDed_HOEusd"
+          currency="usd"
+          defaultValue="250"
+          public-id="HODW_TheftDed_HOEusd"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -148,12 +196,6 @@
       required="true"
       restrictionModel="prp"
       valueType="count">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_PropertyValuation_HOEnocurrency"
-          defaultValue="Actual"
-          public-id="HODW_PropertyValuation_HOEnocurrency"/>
-      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zsmiobuq1n9e52smcth0pe4rp2b"
@@ -168,19 +210,12 @@
           public-id="zdghehtrqjs2sb3oiu1qod7263b"
           value="2.0"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_PropertyValuation_HOEnocurrency"
+          defaultValue="Actual"
+          public-id="HODW_PropertyValuation_HOEnocurrency"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
-    <DirectCovTermPattern
-      aggregationModel="po"
-      codeIdentifier="HODW_PersonalPropertyLimit_HOE"
-      coverageColumn="DirectTerm1"
-      lookupTableName="DwellingCovTerm"
-      modelType="Limit"
-      priority="1220"
-      public-id="HODW_PersonalPropertyLimit_HOE"
-      required="true"
-      restrictionModel="prp"
-      valueType="money">
-      <LimitsSet/>
-    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

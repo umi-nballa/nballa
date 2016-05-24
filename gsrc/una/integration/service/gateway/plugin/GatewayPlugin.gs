@@ -52,7 +52,6 @@ class GatewayPlugin {
    */
   static function makeTunaGateway():TunaInterface{
     var instance = makeGateway("TUNA")
-    print("instance..."+instance.toString())
     return instance as TunaInterface
   }
 

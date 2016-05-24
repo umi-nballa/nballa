@@ -4,29 +4,23 @@ uses gw.plugin.policynumgen.IPolicyNumGenPlugin
 uses java.lang.Math
 uses java.lang.Integer
 uses java.lang.StringBuilder
-uses gw.plugin.util.SequenceUtil
-uses una.utils.StringUtil
+
+
 @Export
 class PolicyNumGenPlugin implements IPolicyNumGenPlugin {
 
-   override function genNewPeriodPolicyNumber( policyPeriod: PolicyPeriod ) : String {
+  override function genNewPeriodPolicyNumber( policyPeriod: PolicyPeriod ) : String {
     if (policyPeriod.Status == PolicyPeriodStatus.TC_LEGACYCONVERSION) {
-      return genSeqNumber(policyPeriod)
+      return randomPolicyNumber()
     }
     var job = policyPeriod.Job
     if (job == null) throw "Cannot have null job"
 
     if (job typeis Submission or job typeis Rewrite or job typeis RewriteNewAccount) {
-      return genSeqNumber(policyPeriod)
+      return randomPolicyNumber()
     } else {
       return policyPeriod.PolicyNumber
     }
-  }
-
-  private function genSeqNumber(policyPeriod: PolicyPeriod): String {
-    var strUtil = new StringUtil(policyPeriod)
-    var counterString = "P" + policyPeriod.BaseState + strUtil.firstLetterLOB()
-    return counterString + String.format("%010d" , {SequenceUtil.getSequenceUtil().next(0000000001, counterString)})
   }
 
   private function randomPolicyNumber(): String {

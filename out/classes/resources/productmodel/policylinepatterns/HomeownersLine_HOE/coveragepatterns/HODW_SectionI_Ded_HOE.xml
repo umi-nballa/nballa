@@ -8,10 +8,12 @@
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
-  priority="1900"
+  priority="1000"
   public-id="HODW_SectionI_Ded_HOE"
   referenceDateByType="ApplicableObject">
-  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setAllOtherPerilDefault(HODW_SectionI_Ded_HOE.Dwelling)]]></InitializeScript>
+  <AvailabilityScript/>
+  <InitializeScript/>
+  <OnRemovalScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -25,13 +27,7 @@
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_OtherPerils_Ded_HOEusd"
-          currency="usd"
-          defaultValue="250"
-          public-id="HODW_OtherPerils_Ded_HOEusd"/>
-      </DefaultsSet>
+      <AvailabilityScript/>
       <Options>
         <CovTermOpt
           codeIdentifier="zlji080j4u01sauki0bacbmvlj9"
@@ -39,14 +35,18 @@
           optionCode="1000"
           priority="1014"
           public-id="zlji080j4u01sauki0bacbmvlj9"
-          value="1000.0000"/>
+          value="1000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zf2gkternt49nc13cl4pdmve1ka"
           currency="usd"
           optionCode="2500"
-          priority="1017"
+          priority="1016"
           public-id="zf2gkternt49nc13cl4pdmve1ka"
-          value="2500.0000"/>
+          value="2500.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zirg2ljgbn46td2hvogbnhf3u59"
           currency="usd"
@@ -75,49 +75,14 @@
           priority="1015"
           public-id="zeghce8cs73ecd48bgsu83pldl9"
           value="1500.0000"/>
-        <CovTermOpt
-          codeIdentifier="zlbi867e7pkjf8t7s8jeh23ed48"
-          currency="usd"
-          optionCode="7500_ext"
-          priority="1104"
-          public-id="zlbi867e7pkjf8t7s8jeh23ed48"
-          value="7500.0000"/>
-        <CovTermOpt
-          codeIdentifier="zoqjgo6qvjkkcfhc4cj67tb91ob"
-          currency="usd"
-          optionCode="3000_ext"
-          priority="1067"
-          public-id="zoqjgo6qvjkkcfhc4cj67tb91ob"
-          value="3000.0000"/>
-        <CovTermOpt
-          codeIdentifier="z1rjg10no7d2ma1a5mi14t60a99"
-          currency="usd"
-          optionCode="10000_ext"
-          priority="1110"
-          public-id="z1rjg10no7d2ma1a5mi14t60a99"
-          value="10000.0000"/>
-        <CovTermOpt
-          codeIdentifier="z4dicobqdq5t0329rts0sv9jsua"
-          currency="usd"
-          optionCode="25000_ext"
-          priority="1117"
-          public-id="z4dicobqdq5t0329rts0sv9jsua"
-          value="25000.0000"/>
-        <CovTermOpt
-          codeIdentifier="zc7godb5h64o625ll3bjuarcra9"
-          currency="usd"
-          optionCode="2000_ext"
-          priority="1016"
-          public-id="zc7godb5h64o625ll3bjuarcra9"
-          value="2000.0000"/>
-        <CovTermOpt
-          codeIdentifier="z6hjanvt9s7gt3rbp94cm1sgua8"
-          currency="usd"
-          optionCode="5000_ext"
-          priority="1092"
-          public-id="z6hjanvt9s7gt3rbp94cm1sgua8"
-          value="5000.0000"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_OtherPerils_Ded_HOEusd"
+          currency="usd"
+          defaultValue="250"
+          public-id="HODW_OtherPerils_Ded_HOEusd"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -131,12 +96,7 @@
       required="false"
       restrictionModel="pd"
       valueType="percent">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_Hurricane_Ded_HOEnocurrency"
-          defaultValue="0"
-          public-id="HODW_Hurricane_Ded_HOEnocurrency"/>
-      </DefaultsSet>
+      <AvailabilityScript/>
       <Options>
         <CovTermOpt
           codeIdentifier="zm6icjo2np5tf4dut4kmpd179ma"
@@ -149,52 +109,26 @@
           optionCode="2"
           priority="1022"
           public-id="zbjhkgs9eemkh6hp5blt55h31b8"
-          value="2.0000">
-          <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
-        </CovTermOpt>
+          value="2.0000"/>
         <CovTermOpt
           codeIdentifier="z3kho68a7hq7c75ueo02ljpjhc8"
           optionCode="5"
-          priority="1024"
+          priority="1023"
           public-id="z3kho68a7hq7c75ueo02ljpjhc8"
-          value="5.0000">
-          <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
-        </CovTermOpt>
+          value="5.0000"/>
         <CovTermOpt
           codeIdentifier="z7qikoufr96u9331se758af6k18"
           optionCode="0"
-          priority="924"
+          priority="1024"
           public-id="z7qikoufr96u9331se758af6k18"
           value="0.0000"/>
-        <CovTermOpt
-          codeIdentifier="zdbg6df41gnjd3mke3pelb355e8"
-          optionCode="0_Ext"
-          priority="973"
-          public-id="zdbg6df41gnjd3mke3pelb355e8"
-          value="0.0000"/>
-        <CovTermOpt
-          codeIdentifier="z0khuq0m5lo98bqmg9tsm2ba0la"
-          optionCode="10_Ext"
-          priority="1124"
-          public-id="z0khuq0m5lo98bqmg9tsm2ba0la"
-          value="10.0000">
-          <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
-        </CovTermOpt>
-        <CovTermOpt
-          codeIdentifier="zb5hkij5f3248bj03ggdjj09c69"
-          optionCode="500_Ext"
-          priority="997"
-          public-id="zb5hkij5f3248bj03ggdjj09c69"
-          value="500.0000">
-          <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
-        </CovTermOpt>
-        <CovTermOpt
-          codeIdentifier="z6pg079steihh63lieahjaq4d49"
-          optionCode="3_Ext"
-          priority="1023"
-          public-id="z6pg079steihh63lieahjaq4d49"
-          value="3.0000"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_Hurricane_Ded_HOEnocurrency"
+          defaultValue="0"
+          public-id="HODW_Hurricane_Ded_HOEnocurrency"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -208,12 +142,7 @@
       required="false"
       restrictionModel="pd"
       valueType="percent">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_WindHail_Ded_HOEnocurrency"
-          defaultValue="0"
-          public-id="HODW_WindHail_Ded_HOEnocurrency"/>
-      </DefaultsSet>
+      <AvailabilityScript/>
       <Options>
         <CovTermOpt
           codeIdentifier="z2ihqk5ncb98q31e57h4heits2b"
@@ -240,6 +169,12 @@
           public-id="zj2ha67dvn88bfcifs1ko2qgsd8"
           value="0.0000"/>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="HODW_WindHail_Ded_HOEnocurrency"
+          defaultValue="0"
+          public-id="HODW_WindHail_Ded_HOEnocurrency"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

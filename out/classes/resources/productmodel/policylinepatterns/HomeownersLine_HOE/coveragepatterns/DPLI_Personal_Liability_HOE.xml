@@ -4,6 +4,7 @@
   coverageCategory="DPDW_LiabilityCoverages_HOE"
   coverageSubtype="HomeownersLineCov_HOE"
   coveredPartyType="ThirdParty"
+  existence="Suggested"
   lookupTableName="HomeownersLineCov"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
@@ -11,9 +12,9 @@
   public-id="DPLI_Personal_Liability_HOE"
   rICoverageGroupType="Liability"
   referenceDateByType="PolicyTerm">
-  <ExistenceScript><![CDATA[return (HomeownersLine_HOE.Branch.BaseState == TC_TX? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED)
-
-]]></ExistenceScript>
+  <AvailabilityScript/>
+  <InitializeScript/>
+  <OnRemovalScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -27,13 +28,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="DPLI_LiabilityLimit_HOEusd"
-          currency="usd"
-          defaultValue="100K"
-          public-id="DPLI_LiabilityLimit_HOEusd"/>
-      </DefaultsSet>
+      <AvailabilityScript/>
       <Options>
         <CovTermOpt
           codeIdentifier="zn4gotshd2gi410830l6sjv6889"
@@ -41,43 +36,53 @@
           optionCode="100K"
           priority="11011"
           public-id="zn4gotshd2gi410830l6sjv6889"
-          value="100000.0000"/>
+          value="100000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="z41jqjmfd800e4eup75i00tf3rb"
           currency="usd"
           optionCode="200K"
           priority="11012"
           public-id="z41jqjmfd800e4eup75i00tf3rb"
-          value="200000.0000"/>
+          value="200000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="z3qhsh2eag7b46d0psc67nq1n3b"
           currency="usd"
           optionCode="300k"
           priority="11013"
           public-id="z3qhsh2eag7b46d0psc67nq1n3b"
-          value="300000.0000"/>
+          value="300000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="znfie8q3etnk352b3iljcnba7t8"
           currency="usd"
           optionCode="400k"
           priority="11014"
           public-id="znfie8q3etnk352b3iljcnba7t8"
-          value="400000.0000"/>
+          value="400000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zaohqm17fnn748h197veds24oa9"
           currency="usd"
           optionCode="500k"
           priority="11015"
           public-id="zaohqm17fnn748h197veds24oa9"
-          value="500000.0000"/>
-        <CovTermOpt
-          codeIdentifier="zrrgu24pp1vrr8mmn9789jf14p9"
-          currency="usd"
-          optionCode="250K_Ext"
-          priority="11012"
-          public-id="zrrgu24pp1vrr8mmn9789jf14p9"
-          value="250000.0000"/>
+          value="500000.0000">
+          <AvailabilityScript/>
+        </CovTermOpt>
       </Options>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="DPLI_LiabilityLimit_HOEusd"
+          currency="usd"
+          defaultValue="100K"
+          public-id="DPLI_LiabilityLimit_HOEusd"/>
+      </DefaultsSet>
     </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

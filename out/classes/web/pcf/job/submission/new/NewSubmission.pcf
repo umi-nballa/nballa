@@ -35,9 +35,6 @@
       name="selectionOfProducer"
       type="ProducerSelection"/>
     <Variable
-      initialValue="selectionOfProducer.State = una.pageprocess.SubmissionWizardHelper.selectBaseState(selectionOfProducer, acct);return null"
-      name="updateBaseState_Ext"/>
-    <Variable
       initialValue="uiHelper.performNameClearance(acct, selectionOfProducer)"
       name="productOffers"
       recalculateOnRefresh="true"
@@ -47,12 +44,9 @@
       name="createSingle"
       type="boolean"/>
     <Variable
-      initialValue="typekey.QuoteType.TC_QUICK"
+      initialValue="typekey.QuoteType.TC_FULL"
       name="typeOfQuote"
       type="QuoteType"/>
-    <Variable
-      initialValue="selectionOfProducer.DefaultPPEffDate = gw.api.util.DateUtil.currentDate().addDays(1); return null"
-      name="settDate_Ext"/>
     <Screen
       editable="true"
       id="NewSubmissionScreen">
@@ -132,6 +126,7 @@
               label="displaykey.Web.ProductOffers.NoProductsOffered"
               visible="productOffers.Count == 0"/>
             <BooleanRadioInput
+              editable="true"
               falseLabel="displaykey.Web.Submission.Products.Multiple"
               id="CreateSingle"
               label="displaykey.Web.Submission.Products.SingleMultiplePolicy"

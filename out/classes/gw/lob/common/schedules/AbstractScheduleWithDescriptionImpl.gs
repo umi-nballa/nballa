@@ -3,8 +3,8 @@ package gw.lob.common.schedules
 uses gw.api.productmodel.ClausePattern
 uses gw.api.productmodel.Schedule
 uses gw.api.productmodel.SchedulePropertyInfo
-uses gw.api.productmodel.ScheduleStringPropertyInfoWithDefaultValue
-uses gw.api.productmodel.ScheduleTypePropertyInfoWithDefaultValue
+uses gw.api.productmodel.ScheduleStringPropertyInfo
+uses gw.api.productmodel.ScheduleTypeKeyPropertyInfo
 uses gw.lang.reflect.IPropertyInfo
 uses gw.lob.common.AbstractScheduleImpl
 uses gw.lob.common.dependency.FieldDependency
@@ -12,9 +12,11 @@ uses gw.lob.common.schedules.impl.ScheduleConfigXMLInfoProvider
 uses gw.lob.common.service.ServiceLocator
 
 uses java.util.ArrayList
+uses gw.api.productmodel.ScheduleTypePropertyInfoWithDefaultValue
+uses gw.api.productmodel.ScheduleStringPropertyInfoWithDefaultValue
 
 abstract class AbstractScheduleWithDescriptionImpl<T extends ScheduleAutoNumberSequence & Schedule & gw.api.domain.Clause>
-    extends AbstractScheduleImpl<T> {
+    extends AbstractScheduleImpl<T> implements ScheduleMultiPatterns{
   construct(delegateOwner : T) {
     super(delegateOwner)
   }
@@ -78,6 +80,13 @@ abstract class AbstractScheduleWithDescriptionImpl<T extends ScheduleAutoNumberS
 
   override property get ScheduleNumberPropInfo() : IPropertyInfo {
     return ScheduledItem#ScheduleNumber.PropertyInfo
+  }
+
+  override property get ScheduledItemPattern() : ClausePattern {
+    if(ScheduledItemMultiPatterns.Count > 1) {
+      throw "please use ScheduledItemMultiPatterns"
+    }
+    return ScheduledItemMultiPatterns.first()
   }
 
   override property get ScheduledItemMultiPatterns() : ClausePattern[] {

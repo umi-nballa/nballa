@@ -20,7 +20,6 @@ uses java.util.Date
 uses java.util.Map
 uses java.util.Set
 uses gw.api.rating.RatingException
-uses gw.rating.RateFlowLogger
 
 enhancement RateBookEnhancement : entity.RateBook {
 

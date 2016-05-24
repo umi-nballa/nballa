@@ -14,9 +14,6 @@ uses java.lang.Iterable
 uses java.util.Map
 uses gw.rating.AbstractRatingEngine
 uses gw.lob.ho.rating.HORatingEngine_HOE
-uses gw.policy.PolicyEvalContext
-uses gw.lob.common.UnderwriterEvaluator
-uses una.lob.ho.HOE_UnderwriterEvaluator
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -116,7 +113,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
 
   override function onPrimaryLocationCreation(location : PolicyLocation) { 
     if (_line.Dwelling == null) {
-      _line.createAndAddDwelling( location )
+      _line.createAndAddDwelling( location )     
     }
   }
   
@@ -192,11 +189,5 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
 
   override property get BaseStateRequired(): boolean {
     return true
-  }
-
-  /* UNA specific implementation to start Underwriting Evaluation for HO
-   */
-  override function createUnderwriterEvaluator(context : PolicyEvalContext) : UnderwriterEvaluator {
-    return new HOE_UnderwriterEvaluator(context)
   }
 }

@@ -18,6 +18,17 @@ abstract class AbstractScheduledItemMatcher<T extends EffDated & ScheduledItem> 
 
   construct(owner : T, scheduleParentProperty : String) {
     super(owner)
+    _schedClause = owner.ScheduleParent as Schedule & Clause
+    if(_schedClause == null){
+      // to support some OOSE scenarios
+      var orderedVersions = owner.AdditionalVersions.orderBy(\ effDated -> effDated.EffectiveDate)
+      for (version in orderedVersions) {
+        _schedClause = (version as ScheduledItem).ScheduleParent as Schedule & Clause
+        if (_schedClause != null) {
+          break
+        }
+      }
+    }
     _scheduleParentProperty = scheduleParentProperty
   }
 
@@ -25,7 +36,7 @@ abstract class AbstractScheduledItemMatcher<T extends EffDated & ScheduledItem> 
     if(_parentColumns == null){
       _parentColumns =  ServiceLocator
             .get(ScheduleConfigSource)
-            .getScheduledItemParentColumns(ScheduleClause, T)
+            .getScheduledItemParentColumns(_schedClause, T)
             .concat({T.Type.TypeInfo.getProperty(_scheduleParentProperty) as ILinkPropertyInfo})
     }
     return _parentColumns
@@ -35,27 +46,10 @@ abstract class AbstractScheduledItemMatcher<T extends EffDated & ScheduledItem> 
     if(_identityColumns == null){
       _identityColumns = ServiceLocator
             .get(ScheduleConfigSource)
-            .getScheduledItemIdentityColumns(ScheduleClause, T)
+            .getScheduledItemIdentityColumns(_schedClause, T)
     }
     return _identityColumns
   }
 
-  private property get ScheduleClause() : Schedule & Clause {
-    _schedClause = _entity.ScheduleParent as Schedule & Clause
-    if(_schedClause == null){
-      // to support some OOSE scenarios
-      var orderedVersions = _entity.AdditionalVersions.orderBy(\ effDated -> effDated.EffectiveDate)
-      for (version in orderedVersions) {
-        _schedClause = (version as ScheduledItem).ScheduleParent as Schedule & Clause
-        if (_schedClause != null) {
-          break
-        }
-      }
-      if(_schedClause == null) {
-        _schedClause = (_entity.getSliceUntyped(_entity.EffectiveDate) as ScheduledItem).ScheduleParent as Schedule & Clause
-      }
-    }
 
-    return _schedClause
-  }
 }

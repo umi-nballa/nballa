@@ -3,7 +3,6 @@ uses gw.validation.PCValidationContext
 uses gw.api.web.job.JobWizardHelper
 
 @Export
-@java.lang.SuppressWarnings("There are some unused parameters in base functions for this class")
 class FullAppJobProcessAction implements JobProcessAction {
 
   protected var policyPeriod : PolicyPeriod
@@ -25,7 +24,7 @@ class FullAppJobProcessAction implements JobProcessAction {
 
   override function process() {
     try {
-      saveDraftWithLoadSaveValidation()
+      saveDraftAndIgnoreValidation()
       // "IgnoreValidation" in the above really means "do not throw validation exceptions to the user" 
       // but if there are validation errors, the messages will exist in the helper.   Rather than try
       // to quote--which should be guaranteed to fail--we'll just let these messages stay, and expect
@@ -43,7 +42,7 @@ class FullAppJobProcessAction implements JobProcessAction {
           // helper.goDirectlyToStepWithoutWidgetValidation
           helper.Wizard.finish()
         } else {
-          saveDraftWithLoadSaveValidation()
+          saveDraftAndIgnoreValidation()
         }
 
         // Go to the appropriate place based on whether we have a valid quote, or if the policy is quoted at all.
@@ -80,10 +79,5 @@ class FullAppJobProcessAction implements JobProcessAction {
 
   function saveDraftAndIgnoreValidation() {
     PCValidationContext.doWhileIgnoringPageLevelValidation( \ -> helper.Wizard.saveDraft())
-  }
-  function saveDraftWithLoadSaveValidation() {
-    PCValidationContext.doPageLevelValidation(\ context ->{
-      helper.Wizard.saveDraft()
-    }, typekey.ValidationLevel.TC_LOADSAVE)
   }
 }

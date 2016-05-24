@@ -36,15 +36,6 @@
         <PanelRef
           def="DifferencesPanelSet(&quot;PolicyReview&quot;, policyPeriod.BasedOn, policyPeriod, rootNode, diffTreeConfig)"/>
       </Card>
-      <Card
-        id="BP7PolicyReview"
-        title="displaykey.Web.PolicyChangeWizard.Review"
-        visible="policyPeriod.BP7LineExists">
-        <PanelRef
-          def="PolicyLineSummaryPanelSet(policyPeriod.BP7Line, jobWizardHelper)"
-          id="BP7PolicyReviewPanel"
-          mode="policyPeriod.BP7Line.Pattern.CodeIdentifier"/>
-      </Card>
     </CardViewPanel>
     <Code><![CDATA[function getRootNode() : gw.api.tree.RowTreeRootNode {
   if (policyPeriod.BasedOn.PolicyTerm.Archived) {

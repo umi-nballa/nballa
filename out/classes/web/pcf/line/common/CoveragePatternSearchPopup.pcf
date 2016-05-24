@@ -8,8 +8,6 @@
     returnType="gw.api.productmodel.ClausePattern[]"
     title="searchType == CoveragePatternSearchType.TC_COVERAGE ? displaykey.Web.Coverage.SearchPage.Title(coverable.DisplayName) : displaykey.Web.Search.ExclusionAndCondition.Title(coverable.DisplayName)">
     <LocationEntryPoint
-      signature="CoveragePatternSearchPopup(coverable : Coverable, searchType : CoveragePatternSearchType, coverageCategories : String[], includeElseExclude : boolean, jobWizardHelper : gw.api.web.job.JobWizardHelper)"/>
-    <LocationEntryPoint
       signature="CoveragePatternSearchPopup(coverable : Coverable, searchType : CoveragePatternSearchType, coverageCategories : String[], includeElseExclude : boolean)"/>
     <Variable
       name="coverable"
@@ -26,9 +24,6 @@
     <Variable
       name="searchType"
       type="CoveragePatternSearchType"/>
-    <Variable
-      name="jobWizardHelper"
-      type="gw.api.web.job.JobWizardHelper"/>
     <Screen
       id="CoveragePatternSearchScreen">
       <SearchPanel
@@ -36,8 +31,8 @@
         criteriaName="searchCriteria"
         resultsName="coveragePatterns"
         search="filteredSearchResults(searchCriteria)"
-        searchCriteria="new gw.productmodel.ClausePatternSearchCriteria() { :SearchType = searchType, :PolicyLinePatternCode = coverable.PolicyLine.Pattern.CodeIdentifier }"
-        searchOnEnter="true"
+        searchCriteria="new gw.productmodel.ClausePatternSearchCriteria() { :SearchType = searchType, :PolicyLinePatternCode = coverable.PolicyLine.Pattern.Code }"
+        searchOnEnter="false"
         searchResultsType="gw.api.productmodel.ClausePattern[]">
         <PanelRef
           def="CoveragePatternSearchDV(searchCriteria, policyLinePattern, coverageCategories, includeElseExclude)"/>
@@ -45,7 +40,7 @@
           def="CoveragePatternSearchResultsLV(coveragePatterns)">
           <Toolbar>
             <CheckedValuesToolbarButton
-              allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues ); CheckedValues.each(\ value -&gt; gw.lob.bp7.BP7PostOnChangeHandler.handleClause(coverable, value, true, jobWizardHelper))"
+              allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues )"
               id="AddCoverageButton"
               iterator="CoveragePatternSearchResultsLV.CoveragePatternSearchResultsLV"
               label="searchType == CoveragePatternSearchType.TC_COVERAGE ? displaykey.Web.Coverage.SearchPage.AddSelectedCoverages : displaykey.Web.Coverage.SearchPage.AddSelectedExclusionsAndConditions"/>

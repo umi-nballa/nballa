@@ -238,10 +238,6 @@ class CCPolicyGenerator {
         mapper = new CCWCPolicyLineMapper(line, this);
         break;
       // Add additional policy lines here
-      case "BP7Line":
-        mapper = new gw.webservice.pc.pc800.ccintegration.lob.CCBP7PolicyLineMapper(line, this)
-        break
-      // Add additional policy lines here
       case "HomeownersLine_HOE":
         mapper = new CCHOPolicyLineMapper_HOE(line, this)
         break

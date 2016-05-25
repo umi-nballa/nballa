@@ -51,13 +51,9 @@ class SubmissionWizardHelper {
     var jurisdiction : Jurisdiction =  producerSelection.State
     var regionsOfProducer = producerSelection.Producer.RootGroup.Regions*.Region.getRegionZones()
 
-    /* no regions on the producer then throw error */
-    if (regionsOfProducer.Count==0) {
-        throw new DisplayableException(displaykey.Ext.Submission.SubmissionWizardHelper.ProducerNoRegions)
-    }
     /* only one state for producer then default that
     * this is the highest priority */
-    else if (regionsOfProducer.Count==1) {
+    if (regionsOfProducer.Count==1) {
       jurisdiction = regionsOfProducer.first().Code
     }
     /*  account's address is not in the UNA states then set it to null */
@@ -140,7 +136,6 @@ class SubmissionWizardHelper {
     var prod : Product
     if (acct.SubmissionGroups.HasElements && acct.SubmissionGroups.first().Submissions.HasElements)  {
       prod = acct.SubmissionGroups.first().Submissions.first().Policy.Product
-      print('prod ' + prod + ' selcted product ' + productSelection.Product )
       if (productSelection.Product != prod) {
         throw new DisplayableException(displaykey.Ext.Submission.SubmissionWizardHelper.DifferntProductError(prod))
       }

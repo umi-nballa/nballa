@@ -1,36 +1,220 @@
-<?xml version="1.0" encoding="UTF-8"?><entity xmlns="http://guidewire.com/datamodel" effDatedBranchType="PolicyPeriod" entity="HomeownersLineCov_HOE" loadable="false" exportable="true" final="false" platform="false" table="homeownerslinecov_hoe" type="effdated">
-
-  <implementsInterface iface="gw.api.copier.EffDatedCopyable" impl="gw.api.copier.EffDatedCopier"/>
-  <implementsInterface iface="gw.api.logicalmatch.EffDatedLogicalMatcher" impl="gw.lob.ho.HomeownersLineCovMatcher_HOE"/>
-
-  <column desc="direct cov term field" getterScriptability="doesNotExist" name="DirectTerm1" nullok="true" setterScriptability="doesNotExist" type="decimal">
-    <columnParam name="scale" value="4"/>
-    <columnParam name="precision" value="20"/>
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  effDatedBranchType="PolicyPeriod"
+  entity="HomeownersLineCov_HOE"
+  exportable="true"
+  final="false"
+  loadable="false"
+  table="homeownerslinecov_hoe"
+  type="effdated">
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.ho.HomeownersLineCovMatcher_HOE"/>
+  <column
+    desc="direct cov term field"
+    getterScriptability="doesNotExist"
+    name="DirectTerm1"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="decimal">
+    <columnParam
+      name="scale"
+      value="4"/>
+    <columnParam
+      name="precision"
+      value="20"/>
   </column>
-  <column desc="whether or not the DirectTerm1 field was available the last time availability was checked" getterScriptability="doesNotExist" name="DirectTerm1Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="direct cov term field" getterScriptability="doesNotExist" name="DirectTerm2" nullok="true" setterScriptability="doesNotExist" type="decimal">
-    <columnParam name="scale" value="4"/>
-    <columnParam name="precision" value="20"/>
+  <column
+    desc="whether or not the DirectTerm1 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="DirectTerm1Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="direct cov term field"
+    getterScriptability="doesNotExist"
+    name="DirectTerm2"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="decimal">
+    <columnParam
+      name="scale"
+      value="4"/>
+    <columnParam
+      name="precision"
+      value="20"/>
   </column>
-  <column desc="whether or not the DirectTerm2 field was available the last time availability was checked" getterScriptability="doesNotExist" name="DirectTerm2Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="choice cov term field" getterScriptability="doesNotExist" name="ChoiceTerm1" nullok="true" setterScriptability="doesNotExist" type="patterncode"/>
-  <column desc="whether or not the ChoiceTerm1 field was available the last time availability was checked" getterScriptability="doesNotExist" name="ChoiceTerm1Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="choice cov term field" getterScriptability="doesNotExist" name="ChoiceTerm2" nullok="true" setterScriptability="doesNotExist" type="patterncode"/>
-  <column desc="whether or not the ChoiceTerm2 field was available the last time availability was checked" getterScriptability="doesNotExist" name="ChoiceTerm2Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="choice cov term field" getterScriptability="doesNotExist" name="ChoiceTerm3" nullok="true" setterScriptability="doesNotExist" type="patterncode"/>
-  <column desc="whether or not the ChoiceTerm3 field was available the last time availability was checked" getterScriptability="doesNotExist" name="ChoiceTerm3Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="choice cov term field" getterScriptability="doesNotExist" name="ChoiceTerm4" nullok="true" setterScriptability="doesNotExist" type="patterncode"/>
-  <column desc="whether or not the ChoiceTerm4 field was available the last time availability was checked" getterScriptability="doesNotExist" name="ChoiceTerm4Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="choice cov term field" getterScriptability="doesNotExist" name="ChoiceTerm5" nullok="true" setterScriptability="doesNotExist" type="patterncode"/>
-  <column desc="whether or not the ChoiceTerm5 field was available the last time availability was checked" getterScriptability="doesNotExist" name="ChoiceTerm5Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="boolean cov term field" getterScriptability="doesNotExist" name="BooleanTerm1" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="whether or not the BooleanTerm1 field was available the last time availability was checked" getterScriptability="doesNotExist" name="BooleanTerm1Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="boolean cov term field" getterScriptability="doesNotExist" name="BooleanTerm2" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <column desc="whether or not the BooleanTerm2 field was available the last time availability was checked" getterScriptability="doesNotExist" name="BooleanTerm2Avl" nullok="true" setterScriptability="doesNotExist" type="bit"/>
-  <implementsEntity adapter="gw.lob.ho.HomeownersLineCoverageAdapter_HOE" name="Coverage"/>
-  <foreignkey desc="Sequence to autonumber covered locations" fkentity="AutoNumberSequence" name="CoveredLocationAutoNumberSeq" nullok="true"/>
-  <foreignkey fkentity="HomeownersLine_HOE" name="HOLine" nullok="false"/>
-  <array arrayentity="HomeownersCovCost_HOE" cascadeDelete="true" name="Costs"/>
-  <array arrayentity="CoveredLocation_HOE" cascadeDelete="true" desc="Locations with costs" name="CoveredLocations" setterScriptability="all"/>
-
+  <column
+    desc="whether or not the DirectTerm2 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="DirectTerm2Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="choice cov term field"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm1"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="patterncode"/>
+  <column
+    desc="whether or not the ChoiceTerm1 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm1Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="choice cov term field"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm2"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="patterncode"/>
+  <column
+    desc="whether or not the ChoiceTerm2 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm2Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="choice cov term field"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm3"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="patterncode"/>
+  <column
+    desc="whether or not the ChoiceTerm3 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm3Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="choice cov term field"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm4"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="patterncode"/>
+  <column
+    desc="whether or not the ChoiceTerm4 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm4Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="choice cov term field"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm5"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="patterncode"/>
+  <column
+    desc="whether or not the ChoiceTerm5 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="ChoiceTerm5Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="boolean cov term field"
+    getterScriptability="doesNotExist"
+    name="BooleanTerm1"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="whether or not the BooleanTerm1 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="BooleanTerm1Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="boolean cov term field"
+    getterScriptability="doesNotExist"
+    name="BooleanTerm2"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="whether or not the BooleanTerm2 field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="BooleanTerm2Avl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <implementsEntity
+    adapter="gw.lob.ho.HomeownersLineCoverageAdapter_HOE"
+    name="Coverage"/>
+  <foreignkey
+    desc="Sequence to autonumber covered locations"
+    fkentity="AutoNumberSequence"
+    name="CoveredLocationAutoNumberSeq"
+    nullok="true"/>
+  <foreignkey
+    fkentity="HomeownersLine_HOE"
+    name="HOLine"
+    nullok="false"/>
+  <array
+    arrayentity="HomeownersCovCost_HOE"
+    cascadeDelete="true"
+    name="Costs"/>
+  <array
+    arrayentity="CoveredLocation_HOE"
+    cascadeDelete="true"
+    desc="Locations with costs"
+    name="CoveredLocations"/>
+  <column
+    desc="direct cov term field"
+    getterScriptability="doesNotExist"
+    name="DirectTerm3_Ext"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="integer"/>
+  <column
+    desc="whether or not the DirectTerm3_Ext field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="DirectTerm3_ExtAvl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="direct cov term field"
+    getterScriptability="doesNotExist"
+    name="DirectTerm4_Ext"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="integer"/>
+  <column
+    desc="whether or not the DirectTerm4_Ext field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="DirectTerm4_ExtAvl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
+  <column
+    desc="direct cov term field"
+    getterScriptability="doesNotExist"
+    name="DirectTerm5_Ext"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="integer"/>
+  <column
+    desc="whether or not the DirectTerm5_Ext field was available the last time availability was checked"
+    getterScriptability="doesNotExist"
+    name="DirectTerm5_ExtAvl"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    type="bit"/>
 </entity>

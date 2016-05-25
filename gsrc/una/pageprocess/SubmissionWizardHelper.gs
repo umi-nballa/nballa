@@ -4,6 +4,7 @@ uses una.utils.EnvironmentUtil
 uses gw.api.productmodel.DirectCovTermPattern
 uses java.lang.Integer
 uses gw.api.util.DisplayableException
+uses gw.api.productmodel.Product
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,20 +46,20 @@ class SubmissionWizardHelper {
    * @return Jurisdiction
    */
   public static function selectBaseState(producerSelection : ProducerSelection, acct : Account) : Jurisdiction{
+
     //default to base state from account
     var jurisdiction : Jurisdiction =  producerSelection.State
     var regionsOfProducer = producerSelection.Producer.RootGroup.Regions*.Region.getRegionZones()
 
     /* only one state for producer then default that
-    //this is the highest priority */
-    if (regionsOfProducer.Count==1)
+    * this is the highest priority */
+    if (regionsOfProducer.Count==1) {
       jurisdiction = regionsOfProducer.first().Code
-
-    /* if there are more than one state in which producer writes
-     and account holder state is not one of hte the UNA states then set it ot null */
-    else if (!regionsOfProducer.hasMatch( \ elt1 -> elt1.Code == jurisdiction))
-      jurisdiction = null
-
+    }
+    /*  account's address is not in the UNA states then set it to null */
+    else if (!(Jurisdiction.TF_JURISDICTIONUNA_EXT.TypeKeys.hasMatch( \ elt1 -> elt1 == jurisdiction))) {
+        jurisdiction = null
+      }
     return jurisdiction
   }
 
@@ -128,5 +129,20 @@ class SubmissionWizardHelper {
       throw new DisplayableException(displaykey.Ext.Submission.SubmissionWizardHelper.ProducerNoRegions)
     }
     return true
+  }
+
+  public static function isSameProduct(productSelection : ProductSelection, acct : Account) : boolean {
+    var isSameProduct = false
+    var prod : Product
+    if (acct.SubmissionGroups.HasElements && acct.SubmissionGroups.first().Submissions.HasElements)  {
+      prod = acct.SubmissionGroups.first().Submissions.first().Policy.Product
+      if (productSelection.Product != prod) {
+        throw new DisplayableException(displaykey.Ext.Submission.SubmissionWizardHelper.DifferntProductError(prod))
+      }
+      else
+        return true
+
+    } else
+      return true
   }
 }

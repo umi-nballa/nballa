@@ -34,7 +34,7 @@
           visible="createSingle"
           width="75">
           <Link
-            action="una.pageprocess.SubmissionWizardHelper.doesProducerHaveJurisdiction(producerSelection.Producer);gw.web.job.submission.NewSubmissionUIHelper.createOneSubmission(productOffer, producerSelection, account, quoteType)"
+            action="una.pageprocess.SubmissionWizardHelper.isSameProduct(productOffer, account); una.pageprocess.SubmissionWizardHelper.doesProducerHaveJurisdiction(producerSelection.Producer);gw.web.job.submission.NewSubmissionUIHelper.createOneSubmission(productOffer, producerSelection, account, quoteType) // updated calls for UNA"
             id="addSubmission"
             label="displaykey.Web.Submission.Products.Select"
             recalculateArgOnRefresh="true"
@@ -74,5 +74,8 @@
           visible="!createSingle"/>
       </Row>
     </RowIterator>
+    <Code><![CDATA[function alreadyUsedforLoB(productSelection : ProductSelection) {
+  //account.IssuedPolicies.  
+}]]></Code>
   </ListViewPanel>
 </PCF>

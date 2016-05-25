@@ -27,8 +27,10 @@ class CPP_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     return allowedJobs.contains(typeof(_policyEvalContext.Period.Job))
   }
 
-  override function onPrequote() {
+  override function onDefault() {
+    if(_policyEvalContext.CheckingSet == UWIssueCheckingSet.TC_PREBIND) {
       validteQuestions()
+    }
   }
 
   /*

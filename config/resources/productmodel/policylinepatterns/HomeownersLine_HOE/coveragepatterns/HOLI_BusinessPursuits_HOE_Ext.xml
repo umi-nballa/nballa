@@ -3,7 +3,7 @@
   codeIdentifier="HOLI_BusinessPursuits_HOE_Ext"
   coverageCategory="HOLI_Optional_HOE"
   coverageSubtype="HomeownersLineCov_HOE"
-  coveredPartyType="FirstParty"
+  coveredPartyType="ThirdParty"
   existence="Electable"
   lookupTableName="HomeownersLineCov"
   owningEntityType="HomeownersLine_HOE"
@@ -11,5 +11,51 @@
   priority="12300"
   public-id="HOLI_BusinessPursuits_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="HOLI_CorporalPunishment_HOE_Ext"
+      coverageColumn="DirectTerm7_Ext"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="600"
+      public-id="HOLI_CorporalPunishment_HOE_Ext"
+      required="true"/>
+    <GenericCovTermPattern
+      codeIdentifier="HOLI_NumClericalEmp_HOE_Ext"
+      coverageColumn="DirectTerm3_Ext"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="100"
+      public-id="HOLI_NumClericalEmp_HOE_Ext"
+      required="true"/>
+    <DirectCovTermPattern
+      codeIdentifier="HOLI_NumTeachers_HOE_Ext"
+      coverageColumn="DirectTerm1"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="300"
+      public-id="HOLI_NumTeachers_HOE_Ext"
+      required="true"
+      valueType="count">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="HOLI_NotOtherwiseclassified_HOE_Ext"
+      coverageColumn="DirectTerm6_Ext"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="500"
+      public-id="HOLI_NotOtherwiseclassified_HOE_Ext"
+      required="true"/>
+    <GenericCovTermPattern
+      codeIdentifier="HOLI_NumOfSCMIDS_HOE_Ext"
+      coverageColumn="DirectTerm4_Ext"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="200"
+      public-id="HOLI_NumOfSCMIDS_HOE_Ext"
+      required="true"/>
+    <GenericCovTermPattern
+      codeIdentifier="HOLI_NumLabAthmanPhytra_HOE_Ext"
+      coverageColumn="DirectTerm5_Ext"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="400"
+      public-id="HOLI_NumLabAthmanPhytra_HOE_Ext"
+      required="true"/>
+  </CovTerms>
 </CoveragePattern>

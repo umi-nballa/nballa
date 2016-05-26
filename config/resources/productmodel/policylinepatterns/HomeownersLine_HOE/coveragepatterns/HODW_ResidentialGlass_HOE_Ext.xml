@@ -11,5 +11,43 @@
   priority="12400"
   public-id="HODW_ResidentialGlass_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <OptionCovTermPattern
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_Unscheduled_HOE_Ext"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="100"
+      public-id="HODW_Unscheduled_HOE_Ext"
+      required="true"
+      valueType="other">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="z3ng41dfb8c9l2g3mhqeesnbhl9"
+          defaultValue="Yes_Ext"
+          public-id="z3ng41dfb8c9l2g3mhqeesnbhl9"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zj4g2v4kehqfl7p5a0s251iph18"
+          optionCode="Yes_Ext"
+          priority="100"
+          public-id="zj4g2v4kehqfl7p5a0s251iph18"
+          value="0"/>
+        <CovTermOpt
+          codeIdentifier="z7gjceqc89rgs9q4ijbunkvitu9"
+          optionCode="No_Ext"
+          priority="200"
+          public-id="z7gjceqc89rgs9q4ijbunkvitu9"
+          value="0"/>
+      </Options>
+    </OptionCovTermPattern>
+    <GenericCovTermPattern
+      codeIdentifier="HODW_Scheduled_HOE_Ext"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="200"
+      public-id="HODW_Scheduled_HOE_Ext"
+      required="false"/>
+  </CovTerms>
 </CoveragePattern>

@@ -11,5 +11,48 @@
   priority="14100"
   public-id="HODW_BlanketSchPP_HI_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <DirectCovTermPattern
+      codeIdentifier="HODW_value_HOE_Ext"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="200"
+      public-id="HODW_value_HOE_Ext"
+      required="false"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zbhjomsu1jf9q5dh8au3qi8pj38"
+          currency="usd"
+          maxVal="10000"
+          minVal="1"
+          public-id="zbhjomsu1jf9q5dh8au3qi8pj38"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="HODW_Class_HOE_Ext"
+      coverageColumn="ChoiceTerm1"
+      defaultValue="Jewelry"
+      lookupTableName="DwellingCovTerm"
+      priority="300"
+      public-id="HODW_Class_HOE_Ext"
+      required="true"
+      typefilter="BlanketSchCov_Ext"
+      typelist="ScheduleType_HOE"/>
+    <DirectCovTermPattern
+      codeIdentifier="HODW_BlanketSchdCovPP_Description_HOE"
+      coverageColumn="DirectTerm2"
+      lookupTableName="DwellingCovTerm"
+      priority="400"
+      public-id="HODW_BlanketSchdCovPP_Description_HOE"
+      required="false"
+      valueType="other">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="z59g6okq449m04lmo1l76jikpu8"
+          maxVal="1500"
+          public-id="z59g6okq449m04lmo1l76jikpu8"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

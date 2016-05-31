@@ -34,7 +34,7 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
       // Validating address against Tuna gateway if all the mandatory fields are available
       if (null != address.AddressLine1 && null != address.City && null != address.State && null != address.PostalCode) {
         logger.debug(" Inside Tunagateway autofillAddress For AddressValidation ", this.IntrinsicType)
-        var finalRes = TUNAGateway.validateAddress(address)
+        var finalRes = TUNAGateway.fetchPropertyInformationScrubOnly(address)
         //Validating the response with either status code and Note
         if (finalRes.Status != 0 ||
             finalRes.Address.Note.equalsIgnoreCase(PropertiesHolder.getProperty("TUNA_RESPONSE_VALIDATION"))) {

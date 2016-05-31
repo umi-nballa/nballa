@@ -14,10 +14,9 @@ interface TunaInterface {
 
  public function fetchPropertyInformationComplete(policyPeriod : PolicyPeriod): TunaAppResponse
  public function fetchPropertyInformation(policyPeriod : PolicyPeriod): TunaAppResponse
- public function fetchPropertyInformationScrubOnly(address: AddressFillable) : TunaAppResponse
+ public function fetchPropertyInformationScrubOnly(address: AddressFillable) : PropertyGeographyModel
  public function fetchPropertyInformationGeoLookUp(policyPeriod : PolicyPeriod) : TunaAppResponse
  public function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod : PolicyPeriod): TunaAppResponse
  public function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod : PolicyPeriod) : TunaAppResponse
- public function validateAddress(address: AddressFillable) : PropertyGeographyModel
 
 }

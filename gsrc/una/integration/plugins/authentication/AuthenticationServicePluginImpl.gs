@@ -35,7 +35,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
   final static var LDAP_CONTEXT_NAME = PropertiesHolder.getProperty("LDAP_CONTEXT_NAME")
   final static var LDAP_SERVER_BYPASS_ENV = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_ENV")
   final static var LDAP_SERVER_BYPASS_USERNAME = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_USERNAME")
-  final static var LDAP_PC_USER_GROUP = "PolicyCenter"
+  final static var LDAP_PC_USER_GROUP = PropertiesHolder.getProperty("LDAP_PC_USER_GROUP")
   var _callbackHandler: AuthenticationServicePluginCallbackHandler
 
   /**
@@ -52,6 +52,7 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
    * @return String the user's publicID
    */
   override function authenticate(authSource: AuthenticationSource): String {
+    LOGGER.debug("Entering AuthenticationServicePluginImpl.authenticate() method.")
     // Basic validation of AuthenticationSource data
     if (!(authSource typeis UserNamePasswordAuthenticationSource)) {
       LOGGER.error("Authentication source type [${typeof authSource}] is not known to this plugin")
@@ -94,8 +95,8 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       // Validate User through LDAP Server.
       authenticateUserAtLDAPServer(source)
     }
-
     LOGGER.info("Authentication complete with userID ${user.PublicID}")
+    LOGGER.debug("Exiting AuthenticationServicePluginImpl.authenticate() method.")
     return user.PublicID
   }
 

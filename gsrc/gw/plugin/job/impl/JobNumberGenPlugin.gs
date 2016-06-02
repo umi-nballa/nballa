@@ -27,8 +27,8 @@ class JobNumberGenPlugin implements IJobNumberGenPlugin {
 
   protected function genSeqNumber(p0: Job): String {
     var strUtil = new StringUtil(p0.LatestPeriod)
-    var counterString  = "Q" + p0.LatestPeriod.BaseState.Code + strUtil.firstLetterLOB()
-    return counterString + String.format("%010d" , {SequenceUtil.getSequenceUtil().next(0000000001, counterString)})
+    var counterString  = "Q" + strUtil.firstLetterLOB()
+    return counterString + String.format("%012d" , {SequenceUtil.getSequenceUtil().next(000000000001, counterString)})
   }
 
 

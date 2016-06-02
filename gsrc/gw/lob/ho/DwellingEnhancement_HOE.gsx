@@ -117,6 +117,10 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
           this.ResidenceType = null
         }
       }
+
+      // TODO: UNDO THIS ONCE RESIDENCE REQUIREMENTS ARE IN!!!!!!!!!!!!!!!!!!!
+      // UNA temporary fix for continuting testing only
+      if (this.ResidenceType == null) this.ResidenceType = ResidenceType_HOE.TC_FAM1
     }
     
     //Set the default for Dwelling Occupancy to Non Owner for HO4 and Owner for others only if there is not a

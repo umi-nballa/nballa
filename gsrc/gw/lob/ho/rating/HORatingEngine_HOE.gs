@@ -136,8 +136,8 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
         limit = lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
         break
       case HOPolicyType_HOE.TC_HO6 :
-        limit = (lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
-              + lineVersion.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value)
+        limit = null/*(lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
+              + lineVersion.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value) */
         break
       case HOPolicyType_HOE.TC_DP2 :
         limit = lineVersion.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
@@ -442,8 +442,21 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
             cov.HODW_LossOfUseDwelLimit_HOETerm.Value)
         //        theDefaultValue(cov.HODW_LossOfUseDwelLimit_HOETerm.Pattern))
         } else {
-        rateLossOfUse(cov, cov.HODW_LossOfUsePropLimit_HOETerm.Value, dwell,
-            cov.HODW_LossOfUseDwelLimit_HOETerm.Value)
+          //TEMP premiumvalue
+          var start = cov.SliceDate
+          var end = getNextSliceDateAfter(start)
+          var cost = new DwellingCovCostData_HOE(start, end, cov.Currency, RateCache, cov.FixedId)
+          cost.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
+
+          cost.Basis = 100//dwellingValue * ratedportion * .01
+          cost.StandardBaseRate    = _homeownersBaseRate
+          var increasedlimitfactor = (1 + ((cost.Basis - 75000) * .007bd / 1000)) * 0.5 * cost.StandardBaseRate
+          cost.StandardAdjRate = increasedlimitfactor * _homeownersDeductfactor * getUWCompanyRateFactor(dwell.HOLine)
+          cost.StandardTermAmount = cost.StandardAdjRate.setScale( this.RoundingLevel, java.math.RoundingMode.HALF_UP )
+          cost.copyStandardColumnsToActualColumns()
+          addCost(cost)
+        //rateLossOfUse(cov, cov.HODW_LossOfUsePropLimit_HOETerm.Value, dwell,
+            //cov.HODW_LossOfUseDwelLimit_HOETerm.Value)
                 //theDefaultValue(cov.HODW_LossOfUsePropLimit_HOETerm.Pattern))
         }
         break

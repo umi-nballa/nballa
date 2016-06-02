@@ -22,7 +22,7 @@ class SubmissionWizardHelper {
   public static function filterHOPolicyTypes(state : Jurisdiction) : HOPolicyType_HOE[] {
     var policyTypes : HOPolicyType_HOE[]
     if(Jurisdiction.TC_CA == state) {
-      policyTypes = typekey.HOPolicyType_HOE.TF_CALIFORNIA_EXT.TypeKeys.toTypedArray()
+     policyTypes = typekey.HOPolicyType_HOE.TF_CALIFORNIA_EXT.TypeKeys.toTypedArray()
     }
     else if (Jurisdiction.TC_TX == state)
     {
@@ -32,6 +32,14 @@ class SubmissionWizardHelper {
       {
         policyTypes = typekey.HOPolicyType_HOE.TF_NORTHCAROLINA_EXT.TypeKeys.toTypedArray()
       }
+     else if (Jurisdiction.TC_AZ == state)
+          {
+           policyTypes = typekey.HOPolicyType_HOE.TF_ARIZONA_EXT.TypeKeys.toTypedArray()
+          }
+     else if (Jurisdiction.TC_HI == state || Jurisdiction.TC_FL == state)
+          {
+          policyTypes = typekey.HOPolicyType_HOE.TF_HAWAIFLORIDA_EXT.TypeKeys.toTypedArray()
+          }
       else {
         policyTypes = typekey.HOPolicyType_HOE.TF_ALLOTHERSTATE_EXT.TypeKeys.toTypedArray()
       }

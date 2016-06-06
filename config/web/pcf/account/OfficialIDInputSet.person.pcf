@@ -13,12 +13,12 @@
       name="person"
       recalculateOnRefresh="true"
       type="Person"/>
-    <TextInput
+    <!-- <TextInput
       editable="true"
       id="OfficialIDDV_Input"
       inputMask="&quot;###-##-####&quot;"
       label="displaykey.Web.SubmissionWizard.Account.SSN"
-      value="person.SSNOfficialID"/>
+      value="person.SSNOfficialID"/> -->
     <Code><![CDATA[function checkValidSSN(contact : Contact, ssn : String) : String {
   var query = gw.api.database.Query.make(OfficialID)
   query.compare(OfficialID#OfficialIDValue.PropertyInfo.Name, Equals, ssn)

@@ -12,7 +12,7 @@ class NameOwnerFieldId {
 
   property get Name() : String {
     return _name
-  }  
+  }
 
   override function equals(obj : Object) : boolean {
     return obj typeis NameOwnerFieldId and Name == obj.Name
@@ -43,26 +43,26 @@ class NameOwnerFieldId {
 
   /** Empty set of fields */
   public final static var NO_FIELDS : Set<NameOwnerFieldId>
-          = { }.freeze()
+      = { }.freeze()
 
   public final static var ALL_PCF_FIELDS : Set<NameOwnerFieldId> =
-    { PREFIX, FIRSTNAME, MIDDLENAME, PARTICLE, LASTNAME, SUFFIX, FIRSTNAMEKANJI, LASTNAMEKANJI, NP_NAME, NAMEKANJI }.freeze()
+      { PREFIX, FIRSTNAME, MIDDLENAME, PARTICLE, LASTNAME, SUFFIX, FIRSTNAMEKANJI, LASTNAMEKANJI, NP_NAME, NAMEKANJI }.freeze()
 
   /** Fields used for non-Person names */
   public final static var ALL_CONTACT_PCF_FIELDS : Set<NameOwnerFieldId> = { NP_NAME, NAMEKANJI }.freeze()
 
   /** Required fields (union of fields for both Persons and non-Persons) */
   public final static var REQUIRED_NAME_FIELDS : Set<NameOwnerFieldId> =
-    { LASTNAME, NP_NAME }.freeze()
+      { LASTNAME, NP_NAME }.freeze()
 
   /** Fields shown in display names */
   public static final var DISPLAY_NAME_FIELDS : Set<NameOwnerFieldId> = {
-    FIRSTNAME, PARTICLE, LASTNAME, SUFFIX }.freeze()
-          
+      FIRSTNAME,MIDDLENAME, PARTICLE, LASTNAME, SUFFIX }.freeze()
+
   /** Fields for simple name */
   public final static var FIRST_LAST_FIELDS : Set<NameOwnerFieldId> =
-    { FIRSTNAME, LASTNAME }.freeze()
+      { FIRSTNAME,LASTNAME }.freeze()
 
   public final static var HIDDEN_FOR_SEARCH : Set<NameOwnerFieldId> =
-  { PREFIX, MIDDLENAME, PARTICLE, SUFFIX }.freeze()
+      { PREFIX, PARTICLE, SUFFIX }.freeze()
 }

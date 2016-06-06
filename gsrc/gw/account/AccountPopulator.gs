@@ -41,7 +41,7 @@ class AccountPopulator {
     _companyName = searchCriteria.CompanyName
     _companyNameKanji = searchCriteria.CompanyNameKanji
     _officialId = searchCriteria.OfficialId
-    _workPhone = searchCriteria.Phone
+    _workPhone = searchCriteria.WorkPhone
     _addressLine1 = searchCriteria.AddressLine1
     _addressLine2 = searchCriteria.AddressLine2
     _addressLine1Kanji = searchCriteria.AddressLine1Kanji

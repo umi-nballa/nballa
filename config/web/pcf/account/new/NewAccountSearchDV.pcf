@@ -27,8 +27,15 @@
         label="displaykey.Web.AccountSearch.CompanyNameExactMatch"
         required="false"
         value="searchCriteria.CompanyNameExact"/>
+      <Input
+        editable="true"
+        id="CompanyPhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Company.Phone_Ext"
+        value="searchCriteria.CompanyPhone"/>
+      <InputDivider
+        id="CompanyPersonDivider_Ext"/>
       <InputSetRef
-        def="GlobalPersonNameInputSet(new gw.search.BasicNameOwner(accountSearchAdapter))"
+        def="GlobalPersonNameInputSet(new una.pageprocess.search.AccountSearchNameOwner_Ext(accountSearchAdapter))"
         mode="gw.api.name.NameLocaleSettings.PCFMode"/>
       <CheckBoxInput
         editable="true"
@@ -42,6 +49,24 @@
         label="displaykey.Web.AccountSearch.LastNameExactMatch"
         required="false"
         value="searchCriteria.LastNameExact"/>
+      <Input
+        editable="true"
+        id="PersonWorkPhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Person.WorkPhone_Ext"
+        value="searchCriteria.WorkPhone"/>
+      <Input
+        editable="true"
+        id="PersonHomePhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Person.HomePhone_Ext"
+        value="searchCriteria.HomePhone"/>
+      <Input
+        editable="true"
+        id="PersonCellPhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Person.CellPhone_Ext"
+        value="searchCriteria.CellPhone"/>
+    </InputColumn>
+    <InputColumn
+      width="70%">
       <InputSetRef
         def="AddressOwnerAddressInputSet(new gw.pcf.contacts.NewAccountAddressAreaOwner(addrAreaAdapter))"
         mode="gw.pcf.AccountSearchHelper.getCountry(searchCriteria)"/>

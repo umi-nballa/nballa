@@ -68,10 +68,11 @@
             editable="account.Editable"
             id="AccountCurrency"
             visible="gw.api.util.CurrencyUtil.isMultiCurrencyMode()"/>
-          <InputDivider/>
+          <InputDivider
+            visible="typeof (account.AccountHolderContact) == Company"/>
           <Label
             label="displaykey.Web.AccountFile.Summary.OfficialIDs"
-            visible="contact != null"/>
+            visible="contact != null and typeof (account.AccountHolderContact) == Company"/>
           <InputSetRef
             def="OfficialIDInputSet(contact)"
             mode="contact.Subtype"

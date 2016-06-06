@@ -12,10 +12,11 @@
     <SearchPanel
       cachingEnabled="false"
       criteriaName="searchCriteria"
-      maxSearchResults="100"
+      maxSearchResults="500"
+      resultCachingEnabled="false"
       resultsName="accountSummaries"
       search="searchCriteria.performSearch()"
-      searchCriteria="new gw.account.AccountSearchCriteria(){ :RestrictiveMinimumSearchCriteriaForPersonName = true, :FirstNameExact = true, :LastNameExact = true, :CompanyNameExact = true }"
+      searchCriteria="new gw.account.AccountSearchCriteria(){ :RestrictiveMinimumSearchCriteriaForPersonName = false, :FirstNameExact = true, :LastNameExact = true, :CompanyNameExact = true }"
       searchOnEnter="false"
       searchOnRefresh="false"
       searchResultsType="AccountSummaryQuery">

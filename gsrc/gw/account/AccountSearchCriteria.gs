@@ -29,11 +29,16 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
   var _lastName         : String  as LastName
   var _companyName      : String  as CompanyName
   var _firstNameKanji   : String  as FirstNameKanji
+  var _middleName_Ext       : String  as MiddleName
   var _lastNameKanji    : String  as LastNameKanji
+  var _suffix           : String  as Suffix
   var _companyNameKanji : String  as CompanyNameKanji
   var _officialId       : String  as OfficialId
-  var _phone            : String  as Phone
-
+  //var _phone            : String  as Phone
+  var _workPhone_Ext            : String  as WorkPhone
+  var _homePhone_Ext            : String  as HomePhone
+  var _cellPhone_Ext            : String  as CellPhone
+  var _companyPhone     : String  as CompanyPhone
   // Address
   var _addressLine1     : String  as AddressLine1
   var _addressLine1Kanji: String  as AddressLine1Kanji
@@ -114,7 +119,8 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
   override protected property get MinimumSearchCriteriaMessage() : String {
     if (_officialId.NotBlank
         or _accountNumber.NotBlank
-        or _phone.NotBlank
+        //or _phone.NotBlank
+        or _companyPhone.NotBlank
         or _producer != null
         or _producerCode != null
         or CanBypassMinimumSearchCriteriaUsingProducerCodeSecurity
@@ -139,9 +145,17 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
     return isNonBlankAndExactOrMinimumLength(_companyName, CompanyNameExact, 5)
         or isNonBlankAndExactOrMinimumLength(_companyNameKanji, true, 1)
   }
-  
+
+  //updated for UNA and hence commented out OOTB one and replaced with this method
   internal property get HasMinimumSearchCriteriaForPersonName() : boolean {
-    /*var hasFirstName = isNonBlankAndExactOrMinimumLength(_firstName, FirstNameExact, 3)
+    var hasLastName = isNonBlankAndExactOrMinimumLength(_lastName, false, 2)
+    var sufficientNameInfo =  hasLastName
+    return sufficientNameInfo
+  }
+
+  //updated for UNA and hence commented out. Replaced with the one above
+/*  internal property get HasMinimumSearchCriteriaForPersonName() : boolean {
+    var hasFirstName = isNonBlankAndExactOrMinimumLength(_firstName, FirstNameExact, 3)
     var hasLastName = isNonBlankAndExactOrMinimumLength(_lastName, LastNameExact, 3)
     var sufficientNameInfo = hasFirstName and hasLastName
 
@@ -153,9 +167,8 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
       return (sufficientNameInfo and (LastNameExact or additionalAddressInfo)) or sufficientKanjiInfo
     } else {
       return sufficientNameInfo or sufficientKanjiInfo
-    }*/
-    return true
-  }
+    }
+  }*/
   
   internal static function isNonBlankAndExactOrMinimumLength(arg : String, exact : boolean, minimumLength : int) : boolean {
     return arg.NotBlank and (exact or arg.length >= minimumLength)
@@ -180,7 +193,11 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
   protected property get HasCompanyName() : boolean {
     return _companyName.NotBlank
   }
-  
+
+  protected property  get HasMiddleName(): boolean {
+    return _middleName_Ext.NotBlank
+  }
+
   internal function configureAccountSummaryQueryBuilder(builder : AccountSummaryQueryBuilder) : AccountSummaryQueryBuilder {
     builder.withAccountNumber(_accountNumber)
       .withAccountOrgType(_accountOrgType)
@@ -202,10 +219,15 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
         or _lastName.NotBlank
         or _companyName.NotBlank
         or _firstNameKanji.NotBlank
+        or _middleName_Ext.NotBlank
         or _lastNameKanji.NotBlank
         or _companyNameKanji.NotBlank
         or _officialId.NotBlank
-        or _phone.NotBlank
+        or _companyPhone.NotBlank
+        or _workPhone_Ext.NotBlank
+        or _homePhone_Ext.NotBlank
+        or _cellPhone_Ext.NotBlank
+        or _companyPhone.NotBlank
         or _addressLine1.NotBlank
         or _addressLine2.NotBlank
         or _city.NotBlank
@@ -224,10 +246,14 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
         .withLastNameRestricted(_lastName, _lastNameRestrictor)
         .withCompanyNameRestricted(_companyName, _companyNameRestrictor)
         .withFirstNameKanji(_firstNameKanji)
+        .withMiddleNameStarting(_middleName_Ext)
         .withLastNameKanji(_lastNameKanji)
         .withCompanyNameKanji(_companyNameKanji)
         .withOfficialId(_officialId)
-        .withWorkPhone(_phone)
+        .withWorkPhone(_workPhone_Ext)
+        .withHomePhone(_homePhone_Ext)
+        .withCellPhone(_cellPhone_Ext)
+        .withCompanyPhone(_companyPhone)
         .withCityDenormStarting(_city)
         .withCityKanjiDenormStarting(_cityKanji)
         .withPostalCodeDenormStarting(_postalCode)

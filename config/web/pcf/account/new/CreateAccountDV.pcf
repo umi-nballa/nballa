@@ -17,6 +17,9 @@
     <Variable
       initialValue="producerSelection.getRangeOfActiveProducerCodesForCurrentUser(true)"
       name="producerCodeRange"/>
+    <Variable
+      initialValue="producerSelection = null;return null;"
+      name="clearProducer_Ext"/>
     <InputColumn>
       <InputSetRef
         def="CreateAccountContactInputSet(account.AccountHolderContact)"
@@ -56,11 +59,13 @@
           value="account.BusOpsDesc"/>
       </InputSet>
       <Label
-        label="displaykey.Web.AccountFile.Summary.OfficialIDs"/>
+        label="displaykey.Web.AccountFile.Summary.OfficialIDs"
+        visible="typeof (account.AccountHolderContact) == Company"/>
       <InputSetRef
         def="OfficialIDInputSet(account.AccountHolderContact)"
         mode="account.AccountHolderContact.Subtype"/>
-      <InputDivider/>
+      <InputDivider
+        visible="typeof (account.AccountHolderContact) == Company"/>
       <Input
         editable="true"
         id="PrimaryLanguage"

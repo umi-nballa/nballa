@@ -95,4 +95,9 @@ interface NameOwner {
    */
   function clearNonvisibleFields() : void
 
+  /**
+   * label to use for the phonetic middle name of a Person contact
+   */
+  property get MiddleNameLabel() : String
+
 }

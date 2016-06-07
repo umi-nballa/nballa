@@ -13,6 +13,12 @@ uses gw.lang.reflect.features.PropertyReference
 class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
   var _firstName : String
   var _firstNameRestrictor : StringColumnRestrictor
+  var _middleName_Ext : String
+  var _middleNameRestrictor_Ext : StringColumnRestrictor
+  var _workRestrictor_Ext : StringColumnRestrictor
+  var _cellRestrictor_Ext : StringColumnRestrictor
+  var _homeRestrictor_Ext : StringColumnRestrictor
+
   var _lastName : String
   var _lastNameRestrictor : StringColumnRestrictor
   var _personNameRestrictor : PersonNameRestrictor = FirstAndLast
@@ -28,7 +34,12 @@ class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
   var _particle: String
   var _particleRestrictor : StringColumnRestrictor
   
-  var _workPhone : String
+  var _workPhone_Ext : String    // used for person
+  var _homePhone_Ext : String    // used for person
+  var _cellPhone_Ext : String    // used for person
+
+  var _companyPhone_Ext : String // used for company
+
   var _taxId : String
   var _officialId: String
 
@@ -49,7 +60,34 @@ class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
   function withFirstNameStarting(value : String) : ContactQueryBuilder {
     return withFirstNameRestricted(value, StartsWithIgnoringCase)
   }
-  
+
+  function withMiddleNameStarting(value : String) : ContactQueryBuilder {
+    return withMiddleNameRestricted(value, StartsWithIgnoringCase)
+  }
+
+  function withWorkPhoneRestrictor_Ext(value : String) : ContactQueryBuilder {
+    _workPhone_Ext = value
+    _workRestrictor_Ext = StartsWith
+    return this
+  }
+
+  function withCellPhoneRestrictor_Ext(value : String) : ContactQueryBuilder {
+    _cellPhone_Ext = value
+    _cellRestrictor_Ext = StartsWith
+    return this
+  }
+
+  function withHomePhoneRestrictor_Ext(value : String) : ContactQueryBuilder {
+    _homePhone_Ext = value
+    _homeRestrictor_Ext = StartsWith
+    return this
+  }
+
+  function withMiddleNameRestricted(value : String, restrictor : StringColumnRestrictor) : ContactQueryBuilder {
+    _middleName_Ext = value
+    _middleNameRestrictor_Ext = restrictor
+    return this
+  }
   function withFirstNameRestricted(value : String, restrictor : StringColumnRestrictor) : ContactQueryBuilder {
     _firstName = value
     _firstNameRestrictor = restrictor
@@ -133,10 +171,25 @@ class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
   }
 
   function withWorkPhone(value : String) : ContactQueryBuilder {
-    _workPhone = value
+    _workPhone_Ext = value
     return this
   }
-  
+
+  function withHomePhone(value : String) : ContactQueryBuilder {
+    _homePhone_Ext = value
+    return this
+  }
+
+  function withCellPhone(value : String) : ContactQueryBuilder {
+    _cellPhone_Ext = value
+    return this
+  }
+
+  function withCompanyPhone(value : String) : ContactQueryBuilder {
+    _companyPhone_Ext = value
+    return this
+  }
+
   function withTaxId(value : String) : ContactQueryBuilder {
     _taxId = value
     return this
@@ -213,6 +266,10 @@ class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
       selectQueryBuilder.cast(Person)
       _lastNameKanjiRestrictor.restrict(selectQueryBuilder, Person#LastNameKanji.PropertyInfo.Name, _lastNameKanji)
     }
+    if (_middleName_Ext.NotBlank) {
+      selectQueryBuilder.cast(Person)
+      _middleNameRestrictor_Ext.restrict(selectQueryBuilder, Person#MiddleName.PropertyInfo.Name, _middleName_Ext)
+    }
     if (_companyNameKanji.NotBlank) {
       selectQueryBuilder.cast(Company)
       _companyNameKanjiRestrictor.restrict(selectQueryBuilder, Company#NameKanji.PropertyInfo.Name, _companyNameKanji)
@@ -221,16 +278,27 @@ class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
       selectQueryBuilder.cast(Person)
       _particleRestrictor.restrict(selectQueryBuilder, Person#Particle.PropertyInfo.Name, _particle)
     }
-    if (_workPhone.NotBlank) {
+
+    if (_companyPhone_Ext.NotBlank) {
       var country = PhoneUtil.getDefaultPhoneCountryCode()
-      var gwPhone = PhoneUtil.parse(_workPhone, country);
+      var gwPhone = PhoneUtil.parse(_companyPhone_Ext, country);
       if (gwPhone != null) {
         selectQueryBuilder.compare(Contact#WorkPhone.PropertyInfo.Name, Equals, gwPhone.NationalNumber)
-      } else {
-        throw new gw.api.util.DisplayableException(displaykey.Java.PhoneUtil.Error.ParseError(_workPhone))
+       }   else {
+        throw new gw.api.util.DisplayableException(displaykey.Java.PhoneUtil.Error.ParseError(_companyPhone_Ext))
       }
     }
-    if (_taxId.NotBlank) {
+    if (_homePhone_Ext.NotBlank or _cellPhone_Ext.NotBlank or _workPhone_Ext.NotBlank) {
+      if (_cellPhone_Ext.NotBlank)
+        selectQueryBuilder.or(\ restriction -> _cellRestrictor_Ext.restrict(restriction, Person#CellPhone.PropertyInfo.Name, _cellPhone_Ext))
+      if (_homePhone_Ext.NotBlank)
+        selectQueryBuilder.or(\ restriction -> _homeRestrictor_Ext.restrict(restriction, Person#HomePhone.PropertyInfo.Name, _homePhone_Ext))
+      if (_workPhone_Ext.NotBlank)    {
+        selectQueryBuilder.or(\ restriction -> _workRestrictor_Ext.restrict(restriction, Person#WorkPhone.PropertyInfo.Name, _workPhone_Ext))
+        }
+    }
+
+      if (_taxId.NotBlank) {
       selectQueryBuilder.compare(Contact#TaxID.PropertyInfo.Name, Equals, _taxId)
     }
     if (_officialId.NotBlank) {
@@ -295,7 +363,7 @@ class ContactQueryBuilder extends EntityQueryBuilder<Contact> {
             FirstAndLast.restrict(selectQueryBuilder, firstNameRestrictor, firstName, lastNameRestrictor, lastName)
           }
         }),
-    
+
     var _restrictor : block(selectQueryBuilder : ISelectQueryBuilder, firstNameRestrictor : StringColumnRestrictor, firstName : String, lastNameRestrictor : StringColumnRestrictor, lastName : String)
     
     private construct(restrictor : block(selectQueryBuilder : ISelectQueryBuilder, firstNameRestrictor : StringColumnRestrictor, firstName : String, lastNameRestrictor : StringColumnRestrictor, lastName : String)) {

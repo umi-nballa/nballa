@@ -19,7 +19,85 @@ class AccountPlugin implements IAccountPlugin {
   override function populateAccountSummary(summary: AccountSummary, Account: Account ) : void {
   }
 
+  /* UPDATED FOR UNA  TO NOT INCLUDE  THE CONTACT TYPES BASED CLEARANCE */
   override function performNameClearance(account : Account, policyProductRoot : PolicyProductRoot): NameClearanceResult {
+    var nameClearanceResult = new NameClearanceResult(policyProductRoot)
+
+    nameClearanceResult.OtherProdsAvail = false
+    var myProducerCode = policyProductRoot.ProducerCode
+
+    // Set the basic product availability based upon the account type, which is set in the product model.
+    // This section will add all Products that are available according to the product model configuration
+    // to the name clearance result.  The later sections will potentially set the status of some products
+    // to something other than Available.
+    for (product in ProductLookup.getAll()) {
+      // updated for UNA
+      if (product.isContactTypeSuitableForProductAccountType(typeof account.AccountHolder.AccountContact.Contact)) {
+        nameClearanceResult.addProductOffer( product, ProductSelectionStatus.TC_AVAILABLE ).MaxCreate = 5
+      }
+        nameClearanceResult.addProductOffer( product, ProductSelectionStatus.TC_AVAILABLE ).MaxCreate = 5
+      // end of updated for UNA
+    }
+
+    // If there is a bound policy on this account with a different producer code,
+    // set its status to Risk Reserved to prevent another producer from submitting it
+    if (myProducerCode != null) {
+      var boundPolicies = account.IssuedPolicies
+      var it = boundPolicies.iterator()
+      while (it.hasNext()) {
+        var summary = it.next()
+        var producerCode = summary.ProducerCodeOfRecord
+        if (producerCode != null
+            and not myProducerCode.Code.equals(producerCode.Code)
+            and isPeriodInForce(summary, Date.CurrentDate)) {
+          for (productOffer in nameClearanceResult.ProductOffers) {
+            if (productOffer.Product == summary.Product) {
+              productOffer.ProductSelectionStatus = ProductSelectionStatus.TC_RISKRESERVED
+              break
+            }
+          }
+        }
+      }
+    }
+
+    // For DEMO purposes only!!!
+    // Show as Not Applicable any policies that are not allowed for this specific producer code,
+    // but might be allowed for others.  The algorithm for this is going to be entirely unique
+    // to each customer, so for demo purposes it will just check for one of our product names
+    // in the producer code description, and if it exists, only allow that product.
+    for (product in ProductLookup.getAll()) {
+      if (myProducerCode.Description != null and myProducerCode.Description.indexOf(product.Name) >= 0) {
+        for (productOffer in nameClearanceResult.ProductOffers) {
+          if (productOffer.Product != product) {
+            productOffer.ProductSelectionStatus = ProductSelectionStatus.TC_NOTAPPLICABLE
+          }
+        }
+      }
+    }
+
+    // For TESTING purposes only!!!
+    // Any product offer status can be set for all products through the primary address line 2.
+    // If this is set, all the products found above get that status.
+    var contact = account.AccountHolder.AccountContact.Contact
+    if (contact.PrimaryAddress != null) {
+      var line2 = contact.PrimaryAddress.AddressLine2
+      if (line2 != null and line2.startsWith( "OfferStatus:" )) {
+        var statusCode = line2.substring( line2.indexOf( ":" ) + 1).trim()
+        var status: ProductSelectionStatus = statusCode
+        if (status != null) {
+          for (productOffer in nameClearanceResult.ProductOffers) {
+            productOffer.ProductSelectionStatus = status
+          }
+        }
+      }
+    }
+
+    return nameClearanceResult
+  }
+
+  /* COMMENTED OUT GUIDEWIRE METHOD TO CHANGE TO NOT INCLUDE THE CONTACT TYP IN THE CLEARANCE*/
+
+ /* override function performNameClearance(account : Account, policyProductRoot : PolicyProductRoot): NameClearanceResult {
     var nameClearanceResult = new NameClearanceResult(policyProductRoot)
 
     nameClearanceResult.OtherProdsAvail = false
@@ -89,7 +167,7 @@ class AccountPlugin implements IAccountPlugin {
     }
 
     return nameClearanceResult
-  }
+  }*/
 
   /**
    * Returns a random string of 10 digits.

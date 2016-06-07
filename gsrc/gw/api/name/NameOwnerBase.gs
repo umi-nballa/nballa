@@ -64,6 +64,10 @@ abstract class NameOwnerBase implements NameOwner {
     return displaykey.Web.ContactDetail.Name.FirstNamePhonetic
   }
 
+  override property get MiddleNameLabel() : String {
+    return displaykey.Web.ContactDetail.Name.MiddleName
+  }
+
   override property get LastNameLabel() : String {
     return displaykey.Web.ContactDetail.Name.LastName
   }

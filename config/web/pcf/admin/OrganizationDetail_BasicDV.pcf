@@ -32,11 +32,19 @@
       initialValue="orgHelper.newDefaultCurrencyBillPlanSelector()"
       name="planSelector"/>
     <InputColumn>
+      <Input
+        editable="(organization.New and !organization.Carrier) and perm.Organization.editbasic(organization)"
+        id="AgentyNumber_Ext"
+        label="displaykey.Ext.Web.Admin.OrganizationDetail.BasicDV.AgentNumber"
+        required="return (organization.Type == typekey.BusinessType.TC_AGENCY)"
+        value="organization.AgenyNumber_Ext">
+        <PostOnChange/>
+      </Input>
       <InputSetRef
         def="GlobalContactNameInputSet(new gw.search.OrganizationNameOwner(orgNameAdapter))"
         mode="gw.api.name.NameLocaleSettings.PCFMode"/>
       <PickerInput
-        editable="(organization.New and !organization.Carrier) and perm.Organization.editbasic(organization)"
+        editable="(!organization.Carrier) and perm.Organization.editbasic(organization)"
         id="MasterOrganization"
         label="displaykey.Web.Admin.OrganizationDetail.BasicDV.MasterOrganization_Ext"
         pickLocation="OrganizationSearchPopup.push(false, false)"
@@ -45,11 +53,11 @@
         <PostOnChange/>
       </PickerInput>
       <TypeKeyInput
-        editable="(organization.New and !organization.Carrier) and perm.Organization.editbasic(organization)"
+        editable="(organization.New) and perm.Organization.editbasic(organization)"
         filter="!VALUE.hasCategory(BusinessTypeCategory.TC_CARRIER)"
         id="Type"
         label="displaykey.Web.Admin.OrganizationDetail.BasicDV.Type"
-        required="true"
+        required="false"
         value="organization.Type">
         <PostOnChange/>
       </TypeKeyInput>
@@ -59,7 +67,10 @@
         label="displaykey.Web.Admin.OrganizationDetail.BasicDV.ProducerStatus"
         required="true"
         value="organization.ProducerStatus"
-        visible="organization.Producer and perm.System.orgviewagency"/>
+        visible="organization.Producer and perm.System.orgviewagency">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
       <Input
         editable="perm.Organization.editagency(organization)"
         id="Tier"

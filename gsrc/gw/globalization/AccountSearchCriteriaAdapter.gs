@@ -22,6 +22,14 @@ class AccountSearchCriteriaAdapter extends UnsupportedPersonNameFields {
     _searchCriteria.FirstName = value
   }
 
+  override property get MiddleName(): String {
+    return _searchCriteria.MiddleName
+  }
+
+  override property set MiddleName(value: String) {
+    _searchCriteria.MiddleName = value
+  }
+
   override property get LastName(): String {
     return _searchCriteria.LastName
   }

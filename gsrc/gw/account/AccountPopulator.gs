@@ -21,7 +21,15 @@ class AccountPopulator {
   var _companyName : String
   var _companyNameKanji : String
   var _officialId : String
+  //for UNA implementation
+  var _companyPhone_Ext : String
+
   var _workPhone : String
+
+  //for UNA implementation
+  var _cellPhone_Ext : String
+  //for UNA implementation
+  var _homePhone_Ext : String
   var _addressLine1 : String
   var _addressLine2 : String
   var _addressLine1Kanji : String
@@ -32,16 +40,32 @@ class AccountPopulator {
   var _state : State
   var _country : Country
   var _postalCode : String
+  //for UNA implementation
+  var _firstNameExact_Ext : boolean
+  var _lastNameExact_Ext : boolean
+  var _companyNameExact_Ext : boolean
 
   construct(searchCriteria : gw.account.AccountSearchCriteria) {
     _firstName = searchCriteria.FirstName
+
+    //for UNA implementation
+    _firstNameExact_Ext = searchCriteria.FirstNameExact
+    _lastNameExact_Ext = searchCriteria.LastNameExact
+    _companyNameExact_Ext = searchCriteria.CompanyNameExact
+
     _firstNameKanji = searchCriteria.FirstNameKanji
     _lastName = searchCriteria.LastName
     _lastNameKanji = searchCriteria.LastNameKanji
     _companyName = searchCriteria.CompanyName
     _companyNameKanji = searchCriteria.CompanyNameKanji
     _officialId = searchCriteria.OfficialId
-    _workPhone = searchCriteria.Phone
+    _workPhone = searchCriteria.WorkPhone
+
+    //for UNA implementation
+    _cellPhone_Ext = searchCriteria.CellPhone
+    _homePhone_Ext = searchCriteria.HomePhone
+    _companyPhone_Ext = searchCriteria.CompanyPhone
+
     _addressLine1 = searchCriteria.AddressLine1
     _addressLine2 = searchCriteria.AddressLine2
     _addressLine1Kanji = searchCriteria.AddressLine1Kanji
@@ -79,18 +103,31 @@ class AccountPopulator {
     var idType : OfficialIDType
     if (contact typeis Person) {
       var person = contact
-      person.FirstName = _firstName
+
+      //for UNA implementation - customized for UNA to copy only if it is eact
+      if (_firstNameExact_Ext) person.FirstName = _firstName
       person.FirstNameKanji = _firstNameKanji
-      person.LastName = _lastName
+
+      //for UNA implementation - customized for UNA to copy only if it is eact
+      if(_lastNameExact_Ext) {
+        person.LastName = _lastName
+        contact.HomePhone = _homePhone_Ext
+        contact.CellPhone = _cellPhone_Ext
+        contact.WorkPhone = _workPhone
+      }
       person.LastNameKanji = _lastNameKanji
       idType = OfficialIDType.TC_SSN
     } else {
-      contact.Name = _companyName
-      contact.NameKanji = _companyNameKanji
-      idType = OfficialIDType.TC_FEIN
-    }
+
+      //for UNA implementation - customized for UNA to copy only if it is eact
+      if (_companyNameExact_Ext) {
+        contact.Name = _companyName
+        contact.WorkPhone = _companyPhone_Ext
+        }
+      }
+    contact.NameKanji = _companyNameKanji
+    idType = OfficialIDType.TC_FEIN
     contact.setOfficialID(idType, _officialId)
-    contact.WorkPhone = _workPhone
     contact.PrimaryAddress = new Address()
     var address = contact.PrimaryAddress
     address.AddressLine1 = _addressLine1

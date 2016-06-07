@@ -53,7 +53,9 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
   var _firstNameRestrictor   : StringColumnRestrictor  // data for FirstNameExact property
   var _lastNameRestrictor    : StringColumnRestrictor  // data for LastNameExact property
   var _companyNameRestrictor : StringColumnRestrictor  // data for CompanyNameExact property
-
+  var _workRestrictor : StringColumnRestrictor  // data for CompanyNameExact property
+  var _cellRestrictor : StringColumnRestrictor  // data for CompanyNameExact property
+  var _homeRestrictor : StringColumnRestrictor  // data for CompanyNameExact property
   // minimum search criteria directives
   var _bypassMinimumSearchCriteriaUsingProducerCodeSecurity = false
   var _restrictiveMinimumSearchCriteriaForPersonName        = false
@@ -250,9 +252,9 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
         .withLastNameKanji(_lastNameKanji)
         .withCompanyNameKanji(_companyNameKanji)
         .withOfficialId(_officialId)
-        .withWorkPhone(_workPhone_Ext)
-        .withHomePhone(_homePhone_Ext)
-        .withCellPhone(_cellPhone_Ext)
+        .withWorkPhoneRestrictor_Ext(_workPhone_Ext)
+        .withCellPhoneRestrictor_Ext(_cellPhone_Ext)
+        .withHomePhoneRestrictor_Ext(_homePhone_Ext)
         .withCompanyPhone(_companyPhone)
         .withCityDenormStarting(_city)
         .withCityKanjiDenormStarting(_cityKanji)

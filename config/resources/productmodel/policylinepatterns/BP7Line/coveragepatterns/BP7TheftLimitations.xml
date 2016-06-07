@@ -33,5 +33,35 @@
           public-id="BP7Limit14USD"/>
       </LimitsSet>
     </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7ClassificationCovOpt"
+      codeIdentifier="BP7LimitOptions_EXT"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="110"
+      public-id="BP7LimitOptions_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zglgmshgrku5568gg166c5n1nka"
+          currency="usd"
+          optionCode="BP7TheftExcluded_EXT"
+          priority="100"
+          public-id="zglgmshgrku5568gg166c5n1nka"
+          value="0"/>
+        <CovTermOpt
+          codeIdentifier="zvsj84ru8obdedf6mdb7dn3pnl9"
+          currency="usd"
+          optionCode="BP7TheftIncluded_EXT"
+          priority="100"
+          public-id="zvsj84ru8obdedf6mdb7dn3pnl9"
+          value="1"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

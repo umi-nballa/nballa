@@ -24,12 +24,22 @@
       <InputSetRef
         def="CreateAccountContactInputSet(account.AccountHolderContact)"
         mode="account.AccountHolderContact.Subtype"/>
+      <TypeKeyInput
+        available="true"
+        editable="true"
+        id="PreferredMethodOfContact"
+        label="displaykey.Web.AddressDetail.PreferredContact"
+        required="true"
+        value="account.AccountHolderContact.PreferredmethodOfContact">
+        <PostOnChange/>
+      </TypeKeyInput>
       <InputSetRef
         def="LinkedAddressInputSet(selectedAddress, account.AccountHolderContact, null, account, CurrentLocation.InEditMode)"/>
       <InputSetRef
         def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(selectedAddress, false, true))"
         editable="selectedAddress.LinkedAddress == null"/>
       <TypeKeyInput
+        available="true"
         editable="selectedAddress.LinkedAddress == null"
         id="AddressType"
         label="displaykey.Web.AddressDetail.AddressType"
@@ -46,17 +56,19 @@
         id="AccountCurrency"
         visible="gw.api.util.CurrencyUtil.isMultiCurrencyMode()"/>
       <InputSet
-        visible="account.AccountHolderContact typeis Company">
-        <TypeKeyInput
+        visible="account.AccountHolderContact typeis Company or account.AccountHolderContact typeis Person ">
+        <RangeInput
           editable="true"
           id="OrgType"
-          label="displaykey.Web.EditAccount.OrgType"
-          value="account.AccountOrgType"/>
+          label="displaykey.Web.EditAccount.EntityType"
+          value="account.AccountOrgType"
+          valueRange="if (account.AccountHolderContact typeis Person) {return AccountOrgType.TF_PERSONENTITYLIST.TypeKeys } else {return AccountOrgType.TF_COMPANYENTITYLIST.TypeKeys}"/>
         <Input
           editable="true"
           id="DescriptionOfBusiness"
           label="displaykey.Web.EditAccount.DescriptionOfBusiness"
-          value="account.BusOpsDesc"/>
+          value="account.BusOpsDesc"
+          visible="account.AccountHolderContact typeis Company "/>
       </InputSet>
       <Label
         label="displaykey.Web.AccountFile.Summary.OfficialIDs"
@@ -122,6 +134,8 @@
   } else {
     producerSelection.ProducerCode = null
   }
-}]]></Code>
+}
+
+]]></Code>
   </DetailViewPanel>
 </PCF>

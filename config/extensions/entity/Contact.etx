@@ -17,6 +17,46 @@
     <indexcol
         keyposition="4"
         name="ID"/>
+  </index>
+
+   KanjiIndexDefinition: Uncomment if you use kanji name fields for Japanese.
+
+  <index
+      desc="Covering index for search by name; need subtype to know whether name is relevant"
+      name="CompanyNameK1"
+      unique="true">
+    <indexcol
+        keyposition="1"
+        name="NameKanji"/>
+    <indexcol
+        keyposition="2"
+        name="Subtype"/>
+    <indexcol
+        keyposition="3"
+        name="Retired"/>
+    <indexcol
+        keyposition="4"
+        name="ID"/>
+  </index>
+
+   KanjiIndexDefinition: Uncomment if you use kanji name fields for Japanese.
+
+  <index
+      desc="Covering index for search by name; need subtype to know whether name is relevant"
+      name="CompanyNameK1"
+      unique="true">
+    <indexcol
+        keyposition="1"
+        name="NameKanji"/>
+    <indexcol
+        keyposition="2"
+        name="Subtype"/>
+    <indexcol
+        keyposition="3"
+        name="Retired"/>
+    <indexcol
+        keyposition="4"
+        name="ID"/>
   </index> -->
 <extension
   xmlns="http://guidewire.com/datamodel"
@@ -74,4 +114,9 @@
       keyposition="3"
       name="ID"/>
   </index>
+  <typekey
+    desc="Preferred method Of Contact"
+    name="PreferredmethodOfContact"
+    nullok="true"
+    typelist="PreferredContact_Ext"/>
 </extension>

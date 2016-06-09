@@ -33,6 +33,15 @@
             def="ContactNameInputSet(contact)"
             mode="contact.Subtype.Code"
             visible="contact != null"/>
+          <TypeKeyInput
+            available="true"
+            editable="true"
+            id="PreferredMethodOfContact"
+            label="displaykey.Web.AddressDetail.PreferredContact"
+            required="true"
+            value="account.AccountHolderContact.PreferredmethodOfContact">
+            <PostOnChange/>
+          </TypeKeyInput>
           <Input
             editable="true"
             id="PrimaryLanguage"
@@ -79,11 +88,12 @@
             visible="contact != null"/>
           <InputSet
             visible="account.AccountHolderContact typeis Company">
-            <TypeKeyInput
+            <RangeInput
               editable="true"
               id="OrgType"
-              label="displaykey.Web.EditAccount.OrgType"
-              value="account.AccountOrgType"/>
+              label="displaykey.Web.EditAccount.EntityType"
+              value="account.AccountOrgType"
+              valueRange="if (account.AccountHolderContact typeis Person) {return AccountOrgType.TF_PERSONENTITYLIST.TypeKeys } else {return AccountOrgType.TF_COMPANYENTITYLIST.TypeKeys}"/>
             <IndustryCodeInput
               domain="&quot;SIC&quot; as IndustryCodeType"
               editable="true"

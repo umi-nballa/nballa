@@ -10,6 +10,14 @@
     <Variable
       initialValue="account.AccountHolderContact.PrimaryAddress"
       name="address"/>
+    <Variable
+      initialValue="contact as Company"
+      name="company"
+      type="Company"/>
+    <Variable
+      initialValue="contact"
+      name="contact"
+      type="Contact"/>
     <InputColumn>
       <Input
         id="AccountNumber"
@@ -47,6 +55,17 @@
       <InputSetRef
         def="AddressShortInputSet(address)"
         hideIfEditable="true"/>
+      <Input
+        editable="true"
+        id="website"
+        label="displaykey.Web.ContactDetail.Company.Website"
+        value="(account.AccountHolderContact as Company).Website_Ext"
+        visible="account.AccountHolderContact typeis Company"/>
+      <Input
+        editable="true"
+        id="preferredcontact"
+        label="displaykey.Web.AddressDetail.PreferredContact"
+        value="account.AccountHolderContact.PreferredmethodOfContact"/>
       <InputSetRef
         def="AccountCurrencyInputSet(account, address, false)"
         editable="account.Editable"
@@ -56,7 +75,7 @@
     <InputColumn>
       <Label
         label="displaykey.Web.AccountFile.Summary.OfficialIDs"
-        visible="typeof (account.AccountHolderContact) == Company"/>
+        visible="contact typeis Company"/>
       <InputSetRef
         def="OfficialIDInputSet(account.AccountHolderContact)"
         mode="account.AccountHolderContact.Subtype"/>
@@ -76,7 +95,7 @@
         <Input
           editable="true"
           id="OrgType"
-          label="displaykey.Web.EditAccount.OrgType"
+          label="displaykey.Web.EditAccount.EntityType"
           value="account.AccountOrgType"/>
         <IndustryCodeInput
           domain="&quot;SIC&quot; as IndustryCodeType"

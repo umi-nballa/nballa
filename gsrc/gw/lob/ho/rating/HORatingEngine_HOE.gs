@@ -528,7 +528,7 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
   private function ratePersonalProperty(cov: DwellingCov_HOE,
     percentage: BigDecimal, deduct: BigDecimal, dwell: Dwelling_HOE, thedefaultValue : BigDecimal) {
 
-    var ratedportion = percentage - thedefaultValue
+    var ratedportion = new BigDecimal(100)//percentage - thedefaultValue
     var dwellingValue = getDwellingValue(dwell)
     if(dwellingValue != null and ratedportion > 0 ){
       var start = cov.SliceDate

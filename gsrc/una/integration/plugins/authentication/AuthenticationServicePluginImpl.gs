@@ -18,7 +18,6 @@ uses javax.naming.directory.SearchControls
 uses javax.security.auth.login.FailedLoginException
 uses java.lang.Exception
 uses java.lang.IllegalArgumentException
-uses java.util.Enumeration
 uses java.util.Hashtable
 
 /**
@@ -35,7 +34,10 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
   final static var LDAP_CONTEXT_NAME = PropertiesHolder.getProperty("LDAP_CONTEXT_NAME")
   final static var LDAP_SERVER_BYPASS_ENV = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_ENV")
   final static var LDAP_SERVER_BYPASS_USERNAME = PropertiesHolder.getProperty("LDAP_SERVER_BYPASS_USERNAME")
-  final static var LDAP_PC_USER_GROUP = "PolicyCenter"
+  final static var LDAP_PC_USER_GROUP = PropertiesHolder.getProperty("LDAP_PC_USER_GROUP")
+  final static var LDAP_ATTR_MEMBER_OF = "memberOf"
+  final static var LDAP_ATTR_COMMON_NAME = "CN="
+
   var _callbackHandler: AuthenticationServicePluginCallbackHandler
 
   /**
@@ -48,10 +50,11 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
 
   /**
    * Authenticate user information against LDAP server, fetch user from GW DB, and verify account status
-   * @param authSource    source which contains Username and password
+   * @param authSource source which contains Username and password
    * @return String the user's publicID
    */
   override function authenticate(authSource: AuthenticationSource): String {
+    LOGGER.debug("Entering AuthenticationServicePluginImpl.authenticate() method.")
     // Basic validation of AuthenticationSource data
     if (!(authSource typeis UserNamePasswordAuthenticationSource)) {
       LOGGER.error("Authentication source type [${typeof authSource}] is not known to this plugin")
@@ -94,8 +97,8 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
       // Validate User through LDAP Server.
       authenticateUserAtLDAPServer(source)
     }
-
-    LOGGER.info("Authentication complete with userID ${user.PublicID}")
+    LOGGER.info("Authentication successful for the userID ${user.PublicID}")
+    LOGGER.debug("Exiting AuthenticationServicePluginImpl.authenticate() method.")
     return user.PublicID
   }
 
@@ -118,89 +121,83 @@ public class AuthenticationServicePluginImpl implements AuthenticationServicePlu
    */
   private function authenticateUserAtLDAPServer(source: UserNamePasswordAuthenticationSource) {
     try {
-      // Create a context with admin user credentials
+      // 1. Create a context with admin user credentials
       var env = new Hashtable<String, String>()
       env.put(Context.INITIAL_CONTEXT_FACTORY, CONTEXT_FACTORY_CLASS)
       env.put(Context.PROVIDER_URL, LDAP_PROVIDER_URL)
       env.put(Context.SECURITY_AUTHENTICATION, LDAP_SECURITY_LEVEL)
       env.put(Context.SECURITY_PRINCIPAL, LDAP_ADMIN_USER)
       env.put(Context.SECURITY_CREDENTIALS, LDAP_ADMIN_PASSWORD)
-      // Create context with admin credentials
-      var ctx = new InitialDirContext(env)
-
-      // Search for the user that is trying to login
+      var context = new InitialDirContext(env)
+      // 2. Search for the LDAP User in the PolicyCenter Group for the given login username
       var searchFilter = "(&(objectClass=user)(sAMAccountName=" + source.Username + "))"
-
-
       var searchControls = new SearchControls()
       searchControls.setSearchScope(SearchControls.SUBTREE_SCOPE)
-      searchControls.setReturningAttributes({"memberOf"})
-      var results = ctx.search(LDAP_CONTEXT_NAME, searchFilter, searchControls)
-      var dn: String = null
+      searchControls.setReturningAttributes({ LDAP_ATTR_MEMBER_OF })
+      var results = context.search(LDAP_CONTEXT_NAME, searchFilter, searchControls)
+      var userNameWithDomain: String = null
       if (results != null && results.hasMoreElements()) {
         var result = results.next()
         // Checks if the login user belongs to the PolicyCenter Group
-        if(isUserMemberOfPCGroup(result)) {
-          dn = result.getNameInNamespace()
+        if(isUserMemberOfGroup(result, LDAP_PC_USER_GROUP)) {
+          userNameWithDomain = result.getNameInNamespace()
         }
       }
-      if (dn == null || dn.length() == 0) {
+      if (userNameWithDomain == null || userNameWithDomain.length() == 0) {
         throw new FailedLoginException("Invalid username/password provided for: ${source.Username}" )
       }
-
-      // Authenticate the user against AD using full DN
-      ctx.addToEnvironment(Context.SECURITY_AUTHENTICATION, LDAP_SECURITY_LEVEL)
-      ctx.addToEnvironment(Context.SECURITY_PRINCIPAL, dn)
-      ctx.addToEnvironment(Context.SECURITY_CREDENTIALS, source.Password)
+      // 3. Verify the user credentials
+      context.addToEnvironment(Context.SECURITY_AUTHENTICATION, LDAP_SECURITY_LEVEL)
+      context.addToEnvironment(Context.SECURITY_PRINCIPAL, userNameWithDomain)
+      context.addToEnvironment(Context.SECURITY_CREDENTIALS, source.Password)
       try {
-        var obj = ctx.lookup(dn)
-       } catch (e: NamingException) {
+        context.lookup(userNameWithDomain)
+      } catch (ex: NamingException) {
         throw new FailedLoginException("Invalid username/password provided for: ${source.Username}")
       }
     } catch (ex: FailedLoginException) {
       LOGGER.warn(ex.Message)
       throw ex
-    } catch (e:Exception) {
-      LOGGER.error("Unexpected Error during Authentication", e)
+    } catch (ex: Exception) {
+      LOGGER.error("Unexpected Error during Authentication", ex)
       throw new FailedLoginException("Unexpected Error during Authentication")
     }
   }
 
   /**
-   * Checks if the given user is member of PolicyCenter group.
+   * Checks if the given user is member of the given group.
    */
-  private function isUserMemberOfPCGroup(result: javax.naming.directory.SearchResult): boolean {
-    var ret = false
-    var memberOf: javax.naming.directory.Attribute = null
-    memberOf = result.getAttributes().get("memberOf");
+  private function isUserMemberOfGroup(result: javax.naming.directory.SearchResult, group: String): boolean {
+    var isMemberOfGroup = false
+    var memberOf = result.getAttributes().get(LDAP_ATTR_MEMBER_OF);
     if (memberOf != null){
-      var e1: Enumeration = memberOf.getAll()
-      if (e1.hasMoreElements()){
-        while (e1.hasMoreElements()) {
-          var memberOfGroup = getGroupsName(e1.nextElement().toString())
-          if (memberOfGroup.equalsIgnoreCase(LDAP_PC_USER_GROUP)) {
-            ret = true
+      var memberGroups = memberOf.getAll()
+      if (memberGroups.hasMoreElements()){
+        while (memberGroups.hasMoreElements()) {
+          var groupName = getGroupName(memberGroups.nextElement() as String)
+          if (groupName.equalsIgnoreCase(group)) {
+            isMemberOfGroup = true
+            break
           }
         }
       }
     }
-    return ret
+    return isMemberOfGroup
   }
 
   /**
-   * Retrieves the group name for the given input.
+   * Retrieves the group name from the given LDAP Common Name string.
    */
-  private function getGroupsName(cnName: String): String {
-    if (cnName != null && cnName.toUpperCase().startsWith("CN=")) {
-      cnName = cnName.substring(3);
+  private function getGroupName(commonName: String): String {
+    // LDAP Group Common Name starts with "CN="
+    if (commonName != null && commonName.toUpperCase().startsWith(LDAP_ATTR_COMMON_NAME)) {
+      commonName = commonName.substring(3);
     }
-    var position = cnName.indexOf(',');
+    var position = commonName.indexOf(',');
     if (position == - 1) {
-      return cnName;
+      return commonName;
     } else {
-      return cnName.substring(0, position);
+      return commonName.substring(0, position);
     }
   }
-
-
 }

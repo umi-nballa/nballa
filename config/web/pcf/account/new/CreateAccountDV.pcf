@@ -15,10 +15,10 @@
       name="selectedAddress"
       recalculateOnRefresh="true"/>
     <Variable
-      initialValue="producerSelection.getRangeOfActiveProducerCodesForCurrentUser(true)"
-      name="producerCodeRange"/>
+      name="producerCodeRange"
+      type="List&lt;ProducerCode&gt;"/>
     <Variable
-      initialValue="producerSelection = null;return null;"
+      initialValue="producerCodeRange = null; producerSelection.Producer = null; return null; // additional changs for UNA since no defaults is recommended"
       name="clearProducer_Ext"/>
     <InputColumn>
       <InputSetRef
@@ -90,6 +90,7 @@
           label="displaykey.Web.NewSubmission.ProducerSelection"/>
         <OrgInput
           editable="not User.util.CurrentUser.ExternalUser"
+          hideChildrenIfReadOnly="false"
           id="Producer"
           label="displaykey.Web.ProducerSelection.Producer"
           onPick="changedProducer()"

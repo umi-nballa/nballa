@@ -7,10 +7,10 @@
     afterEnter="gw.api.web.PebblesUtil.addWebMessages(CurrentLocation, policyPeriod.PolicyFileMessages); policyPeriod.reevalutateAttachments()"
     beforeCommit="policyPeriod.RIRiskVersionLists.each(\ v -&gt; v.AllVersions.each(\ r -&gt; gw.reinsurance.risk.RIRiskValidation.validateUI(r)))"
     canEdit="not hasOpenJobs"
-    canVisit="perm.PolicyPeriod.view(policyPeriod) and perm.System.viewpolicyfile and policyPeriod.AllReinsurables.HasElements and perm.System.viewreinsuranceforpolicy"
+    canVisit="false//perm.PolicyPeriod.view(policyPeriod) and perm.System.viewpolicyfile and policyPeriod.AllReinsurables.HasElements and perm.System.viewreinsuranceforpolicy // Make it unavailable for UNA PC.30.01.10 PolicyCenter Reinsurance - Policy File"
     countsAsWork="false"
     id="PolicyFile_Reinsurance"
-    title="displaykey.Web.PolicyFile.Reinsurance">
+    title="displaykey.Ext.Web.PolicyFile.Reinsurance">
     <LocationEntryPoint
       signature="PolicyFile_Reinsurance(policyPeriod : PolicyPeriod, asOfDate : DateTime)"/>
     <Variable

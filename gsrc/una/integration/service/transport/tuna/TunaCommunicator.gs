@@ -16,139 +16,136 @@ uses java.lang.Exception
 
 /**
  * Class for communicating with tuna services
- * Created  by: pyerrumsetty on 5/14/2016
+ * Created  by: Prathyush on 5/14/2016
  *
  */
 class TunaCommunicator {
   final static var logger = UnaLoggerCategory.UNA_INTEGRATION
+  private static final var CLASS_NAME = TunaCommunicator.Type.DisplayName
   final static var service = new wsi.remote.una.tuna.quoteservice.QuoteService()
-
   /**
    *
-   * Sending Authenticating details to the service
-   */
-  private function quoteAuthenticationInformation(): QuoteAuthenticationHeader
-  {
-    var headerQuote = new QuoteAuthenticationHeader()
-    headerQuote.Username = PropertiesHolder.getProperty("TUNA_GATEWAY_USERNAME")
-    headerQuote.Password = PropertiesHolder.getProperty("TUNA_GATEWAY_PASSWORD")
-    return headerQuote
-  }
-
-  /**
-   *
-   * synchronous event to getPropertyInformationComplete from Tuna WebService
-   * @param requestPayload : request xml will be append to the service method
-   * @return PropertyGeographyModel : response is available in this object
+   * The method hits the TUNA - GetPropertyInformationComplete Service (Requirement Yet to Update)
+   * @param requestPayload : request payload is passed as a parameter
+   * @return res Returns PropertyGeographyModel response
    */
   function getPropertyInformationComplete(requestPayload: GetPropertyInformationRequestModel): PropertyGeographyModel {
     try {
-      logger.debug(" Sending request to TUNA GetPropertyInformationComplete : TunaCommunicator", this.IntrinsicType)
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
       var header = new GetPropertyInformationCompleteHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
       var res = service.GetPropertyInformationComplete(requestPayload, header)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
       return res
-    } catch (e: Exception) {
-      logger.error("TunaGateway : getPropertyInformationComplete " + " : StackTrace = " + e.StackTraceAsString)
-      throw e
+    } catch (exp: Exception) {
+      logger.error( CLASS_NAME + " :: " + " getPropertyInformationComplete " + " : StackTrace = " + exp)
+      throw exp
     }
   }
 
   /**
-   *
-   * synchronous event to getPropertyInformation from Tuna WebService
-   * @param requestPayload : request xml will be append to the service method
-   * @return PropertyGeographyModel : response is available in this object
+   * TBD - No Implementation Available
    */
   function getPropertyInformation(requestPayload: GetPropertyInformationRequestModel): PropertyGeographyModel {
     try {
-      logger.debug(" Sending request to TUNA GetPropertyInformation : TunaCommunicator", this.IntrinsicType)
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformation" + "For ", this.IntrinsicType)
       var header = new GetPropertyInformationHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
       var res = service.GetPropertyInformation(requestPayload, header)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformation" + "For ", this.IntrinsicType)
       return res
-    } catch (e: Exception) {
-      logger.error("TunaGateway : getPropertyInformation " + " : StackTrace = " + e.StackTraceAsString)
-      throw e
+    } catch (exp: Exception) {
+      logger.error( CLASS_NAME + " :: " + " getPropertyInformation " + " : StackTrace = " + exp)
+      throw exp
     }
   }
 
   /**
    *
-   * synchronous event to getPropertyInformationScrubOnly from Tuna WebService
-   * @param requestPayload : request xml will be append to the service method
-   * @return PropertyGeographyModel : response is available in this object
+   * The method hits the TUNA - GetPropertyInformationScrubOnly Service to validate the address
+   * @param requestPayload : request payload is passed as a parameter
+   * @return res Returns PropertyGeographyModel response
    */
   function getPropertyInformationScrubOnly(requestPayload: GetPropertyInformationRequestModel): PropertyGeographyModel {
     try {
-      logger.debug(" Sending request to TUNA  GetPropertyInformationScrubOnly: TunaCommunicator", this.IntrinsicType)
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationScrubOnly" + "For Address Validation ", this.IntrinsicType)
       var header = new GetPropertyInformationScrubOnlyHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
       var res = service.GetPropertyInformationScrubOnly(requestPayload, header)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationScrubOnly" + "For Address Validation ", this.IntrinsicType)
       return res
-    } catch (e: Exception) {
-      logger.error("TunaGateway : getPropertyInformationScrubOnly " + " : StackTrace = " + e.StackTraceAsString)
-      throw e
+    } catch (exp: Exception) {
+      logger.error(CLASS_NAME + " :: " + " getPropertyInformationScrubOnly " + " : StackTrace = " + exp)
+      throw exp
     }
   }
 
   /**
-   *
-   * synchronous event to getPropertyInformationGeoLookUp from Tuna WebService
-   * @param requestPayload : request xml will be append to the service method
-   * @return PropertyGeographyModel : response is available in this object
+   *TBD - No Implementation Available
    */
   function getPropertyInformationGeoLookUp(requestPayload: GetPropertyInformationRequestModel): PropertyGeographyModel {
     try {
-      logger.debug(" Sending request to TUNA  GetPropertyInformationGeoLookUp: TunaCommunicator", this.IntrinsicType)
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationGeoLookUp" + "For ", this.IntrinsicType)
       var header = new GetPropertyInformationGeoLookUpHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
       var res = service.GetPropertyInformationGeoLookUp(requestPayload, header)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationGeoLookUp" + "For ", this.IntrinsicType)
       return res
-    } catch (e: Exception) {
-      logger.error("TunaGateway : getPropertyInformationGeoLookUp " + " : StackTrace = " + e.StackTraceAsString)
-      throw e
+    } catch (exp: Exception) {
+      logger.error( CLASS_NAME + " :: " + " getPropertyInformationGeoLookUp " + " : StackTrace = " + exp)
+      throw exp
     }
   }
 
   /**
-   *
-   * synchronous event to getPropertyInformationISOLookUpOnly from Tuna WebService
-   * @param requestPayload : request xml will be append to the service method
-   * @return PropertyGeographyModel : response is available in this object
+   *TBD - No Implementation Available
    */
   function getPropertyInformationISOLookUpOnly(requestPayload: GetPropertyInformationRequestModel):
       PropertyGeographyModel {
     try {
-      logger.debug(" Sending request to TUNA GetPropertyInformationISOLookUpOnly : TunaCommunicator", this.IntrinsicType)
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationISOLookUpOnly" + "For ", this.IntrinsicType)
       var header = new GetPropertyInformationISOLookUpOnlyHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
       var res = service.GetPropertyInformationISOLookUpOnly(requestPayload, header)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationISOLookUpOnly" + "For ", this.IntrinsicType)
       return res
-    } catch (e: Exception) {
-      logger.error("TunaGateway : getPropertyInformationISOLookUpOnly " + " : StackTrace = " + e.StackTraceAsString)
-      throw e
+    } catch (exp: Exception) {
+      logger.error(CLASS_NAME + " :: " + " getPropertyInformationISOLookUpOnly " + " : StackTrace = " + exp)
+      throw exp
     }
   }
 
   /**
-   *
-   * synchronous event to GetPropertyInformation360ValueLookUpOnly from Tuna WebService
-   * @param requestPayload : request xml will be append to the service method
-   * @return PropertyGeographyModel : response is available in this object
+   * TBD  - No Implementation Available
    */
   function getPropertyInformation360ValueLookUpOnly(requestPayload: GetPropertyInformationRequestModel):
       PropertyGeographyModel {
     try {
-      logger.debug(" Sending request to TUNA: GetPropertyInformation360ValueLookUpOnly TunaCommunicator",
-          this.IntrinsicType)
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformation360ValueLookUpOnly" + "For ", this.IntrinsicType)
       var header = new GetPropertyInformation360ValueLookUpOnlyHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
       var res = service.GetPropertyInformation360ValueLookUpOnly(requestPayload, header)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformation360ValueLookUpOnly" + "For ", this.IntrinsicType)
       return res
-    } catch (e: Exception) {
-      logger.error("TunaGateway : getPropertyInformation360ValueLookUpOnly " + " : StackTrace = " + e.StackTraceAsString)
-      throw e
+    } catch (exp: Exception) {
+      logger.error( CLASS_NAME + " :: " + " getPropertyInformation360ValueLookUpOnly " + " : StackTrace = " + exp)
+      throw exp
+    }
+  }
+
+  /**
+   * Sending Authenticating details to the service
+   */
+  private function quoteAuthenticationInformation(): QuoteAuthenticationHeader
+  {
+    try {
+      var headerQuote = new QuoteAuthenticationHeader()
+      headerQuote.Username = PropertiesHolder.getProperty("TUNA_GATEWAY_USERNAME")
+      headerQuote.Password = PropertiesHolder.getProperty("TUNA_GATEWAY_PASSWORD")
+      return headerQuote
+    } catch (exp: Exception) {
+      logger.error( CLASS_NAME + " :: " + " quoteAuthenticationInformation " + " : StackTrace = " + exp)
+      throw exp
     }
   }
 }

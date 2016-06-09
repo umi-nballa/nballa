@@ -10,6 +10,7 @@ uses gw.lob.common.TaxLocationSearchCriteria
 class TaxLocationSearchAdapter extends UnsupportedAddressFillable {
 
   var _searchCriteria: TaxLocationSearchCriteria
+  var _ignoredPropertyBehavior = new IgnoredPropertyBehavior()
 
   construct(searchCriteria: TaxLocationSearchCriteria) {
     _searchCriteria = searchCriteria
@@ -34,5 +35,14 @@ class TaxLocationSearchAdapter extends UnsupportedAddressFillable {
   }
   override property set State(st: State) {
     _searchCriteria.State = StateJurisdictionMappingUtil.getJurisdictionMappingForState(st)
+  }
+
+  /* Fix for DE37: Added Country and PostalCode property setters as these are necessary for AddressAutocompleteUtil */
+  override property set Country(country : Country) {
+    _ignoredPropertyBehavior.setValue("Country")  // necessary for AddressAutocompleteUtil, but we don't need it
+  }
+
+  override property set PostalCode(pc: String) {
+    _ignoredPropertyBehavior.setValue("PostalCode")  // necessary for AddressAutocompleteUtil, but we don't need it
   }
 }

@@ -3,7 +3,7 @@
   codeIdentifier="DPDW_Personal_Property_HOE"
   coverageCategory="HODW_SectionI_HOE"
   coverageSubtype="DwellingCov_HOE"
-  coveredPartyType="FirstParty"
+  coveredPartyType="ThirdParty"
   existence="Suggested"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
@@ -12,6 +12,7 @@
   public-id="DPDW_Personal_Property_HOE"
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
+  <ExistenceScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -59,5 +60,62 @@
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="HODW_FireDWPP_Limit_HOE_Ext"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="1820"
+      public-id="HODW_FireDWPP_Limit_HOE_Ext"
+      required="false"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zl8jmurrv2qfd6vjhptcet3o3e9"
+          currency="usd"
+          defaultValue="100000"
+          public-id="zl8jmurrv2qfd6vjhptcet3o3e9"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zecjkvknb02nc80c3riutro9oj8"
+          currency="usd"
+          optionCode="100000"
+          priority="100"
+          public-id="zecjkvknb02nc80c3riutro9oj8"
+          value="100000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zfkj2st23lsf410adi3erin40q9"
+          currency="usd"
+          optionCode="200000"
+          priority="200"
+          public-id="zfkj2st23lsf410adi3erin40q9"
+          value="200000.0000"/>
+        <CovTermOpt
+          codeIdentifier="z08judoimakmt4arh8sko7ptobb"
+          currency="usd"
+          optionCode="250000"
+          priority="200"
+          public-id="z08judoimakmt4arh8sko7ptobb"
+          value="250000.0000"/>
+        <CovTermOpt
+          codeIdentifier="z6jgkrv163lti6o0o71u41o2j9a"
+          currency="usd"
+          optionCode="300000"
+          priority="100"
+          public-id="z6jgkrv163lti6o0o71u41o2j9a"
+          value="300000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zqji2l4c38jjjfsbr6the61ujs8"
+          currency="usd"
+          optionCode="500000"
+          priority="200"
+          public-id="zqji2l4c38jjjfsbr6the61ujs8"
+          value="500000.0000"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

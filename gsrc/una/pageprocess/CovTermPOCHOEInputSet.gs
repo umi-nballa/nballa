@@ -15,28 +15,19 @@ class CovTermPOCHOEInputSet {
   static function onchange(_coverable: Coverable, _covTerm: gw.api.domain.covterm.CovTerm)
   {
     var dwelling = _coverable as Dwelling_HOE
-    if(dwelling.PolicyPeriod.HomeownersLine_HOEExists and dwelling.PolicyPeriod.HomeownersLine_HOE.HOPolicyType ==
-        typekey.HOPolicyType_HOE.TC_HO6
-        and _covTerm.PatternCode == "HODW_Dwelling_Limit_HOE")  {
-      var value = _covTerm.ValueAsString == null ? 0.0bd : _covTerm.ValueAsString.toBigDecimal()
-      _covTerm.setValueFromString(value?.setScale(0, java.math.RoundingMode.DOWN) as java.lang.String)
-    }
-    else  {
-        dwelling.PolicyPeriod.editIfQuoted()
-        ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
+    dwelling.PolicyPeriod.editIfQuoted()
+    ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
 
-        switch(_covTerm.PatternCode) {
+    switch(_covTerm.PatternCode) {
         case "HODW_Dwelling_Limit_HOE":
               dwelling.HODW_Dwelling_Cov_HOE.setHomeownersDefaultLimits_Ext()
               break
         case "DPDW_Dwelling_Limit_HOE" :
             dwelling.DPDW_Dwelling_Cov_HOE.setDwellingDefaultLimits_Ext()
             break
-
-
         default:
               break;
         }
-        }
     }
+
 }

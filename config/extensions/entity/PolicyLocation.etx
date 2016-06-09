@@ -1,43 +1,49 @@
 <?xml version="1.0"?>
-<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyLocation">
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="PolicyLocation">
   <column
-    name="AddressLine1KanjiInternal"
-    type="addressline"
-    nullok="true"
     desc="Address Line 1 Kanji.  Used only for Japanese addresses and will be null otherwise."
     getterScriptability="doesNotExist"
-    setterScriptability="doesNotExist"/>
-  <column
-    name="AddressLine2KanjiInternal"
-    type="addressline"
+    name="AddressLine1KanjiInternal"
     nullok="true"
+    setterScriptability="doesNotExist"
+    type="addressline"/>
+  <column
     desc="Address Line 2 Kanji.  Used only for Japanese addresses and will be null otherwise."
     getterScriptability="doesNotExist"
-    setterScriptability="doesNotExist"/>
-  <column
-    name="CityKanjiInternal"
-    type="varchar"
+    name="AddressLine2KanjiInternal"
     nullok="true"
+    setterScriptability="doesNotExist"
+    type="addressline"/>
+  <column
     desc="City Kanji.  Used only for Japanese addresses and will be null otherwise."
     getterScriptability="doesNotExist"
+    name="CityKanjiInternal"
+    nullok="true"
     setterScriptability="doesNotExist"
-    supportsLinguisticSearch="true">
+    supportsLinguisticSearch="true"
+    type="varchar">
     <columnParam
       name="size"
       value="60"/>
   </column>
   <column
+    desc="CEDEX: Special business mail delivery flag (France)"
     name="CEDEXInternal"
-    type="bit"
     nullok="true"
-    desc="CEDEX: Special business mail delivery flag (France)"/>
+    type="bit"/>
   <column
+    desc="CEDEX: Special business mail delivery bureau (France)"
     name="CEDEXBureauInternal"
-    type="varchar"
     nullok="true"
-    desc="CEDEX: Special business mail delivery bureau (France)">
-      <columnParam
-        name="size"
-        value="2"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
   </column>
+  <column
+    name="InspectionContact_Ext"
+    nullok="true"
+    type="shorttext"/>
 </extension>

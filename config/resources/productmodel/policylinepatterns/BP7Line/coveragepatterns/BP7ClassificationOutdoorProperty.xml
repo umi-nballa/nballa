@@ -28,9 +28,39 @@
           codeIdentifier="BP7Limit39USD"
           currency="usd"
           defaultValue="2500"
+          maxVal="2500.01"
           minVal="2500.0"
           public-id="BP7Limit39USD"/>
       </LimitsSet>
     </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="pi"
+      choiceLookupTableName="BP7ClassificationCovOpt"
+      codeIdentifier="BP7LimitPerTreeShrubPlant_EXT"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="110"
+      public-id="BP7LimitPerTreeShrubPlant_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="z0khk6679tnl8944sgpf852pvc9"
+          currency="usd"
+          defaultValue="BP7Limit500_EXT"
+          public-id="z0khk6679tnl8944sgpf852pvc9"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zj4gi49qusjdvcdjln5bm3mi2sb"
+          currency="usd"
+          optionCode="BP7Limit500_EXT"
+          priority="100"
+          public-id="zj4gi49qusjdvcdjln5bm3mi2sb"
+          value="500"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

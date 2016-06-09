@@ -240,9 +240,6 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
       this.HODW_Dwelling_Limit_HOETerm.Value = limitA
 
-      //if(this.Dwelling.HOLine.HOPolicyType == TC_HO6)
-      //  return
-
       if(covB.HasHODW_OtherStructures_Limit_HOETerm)
           covB.HODW_OtherStructures_Limit_HOETerm.Value = getDefaultLimitValue_Ext(covB)
 
@@ -253,10 +250,6 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
           covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
     }
     else if(this typeis HODW_Personal_Property_HOE) {
-      if(covC.HasHODW_PersonalPropertyLimit_HOETerm and limitC == null)
-        covC.HODW_PersonalPropertyLimit_HOETerm.Value = limitC
-
-      if (this.Dwelling.HODW_Loss_Of_Use_HOEExists and ((this.Dwelling.HOLine.HOPolicyType == TC_HO6) or (this.Dwelling.HOLine.HOPolicyType == TC_HO4)))
         covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
     }
   }

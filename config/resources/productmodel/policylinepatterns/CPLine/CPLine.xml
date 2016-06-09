@@ -22,7 +22,12 @@
       codeIdentifier="CPBlanketCovCategory"
       priority="-1"
       public-id="CPBlanketCovCategory"/>
+    <CoverageCategory
+      codeIdentifier="CPAdditionalPropCovCategory_EXT"
+      priority="99"
+      public-id="CPAdditionalPropCovCategory_EXT"/>
   </CoverageCategories>
+  <CoverageSymbolGroupPatterns/>
   <ModifierPatterns>
     <ModifierPattern
       codeIdentifier="CPScheduleCredits"
@@ -106,8 +111,10 @@
       referenceDateByType="PolicyTerm">
       <AvailabilityScript><![CDATA[// multiple locations in different zipcodes implies dispersed location and therefore reduced risk
 return CommercialPropertyLine.Branch.PolicyLocations.map(\ p -> p.PostalCode).toSet().Count > 1]]></AvailabilityScript>
+      <RateFactorPatterns/>
     </ModifierPattern>
   </ModifierPatterns>
+  <OfficialIdPatterns/>
   <AvailableCoverageCurrencies>
     <AvailableCoverageCurrency
       codeIdentifier="CPLineusd"

@@ -50,12 +50,11 @@ class NewSubmissionUIHelper {
 
   function performNameClearance(acct: Account, selectionOfProducer: ProducerSelection) : ProductSelection[]
   {
-    // UNA Default effective date is not required Hence this error message is not required
-    //
-    /*if(selectionOfProducer.DefaultPPEffDate == null) {
+
+    if(selectionOfProducer.DefaultPPEffDate == null) {
 
     throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
-    }*/
+    }
     if( canPerformNameClearance(acct, selectionOfProducer) )
     {
       var offers = acct.getAvailableProducts(selectionOfProducer.SubmissionPolicyProductRoot) as ProductSelection[]

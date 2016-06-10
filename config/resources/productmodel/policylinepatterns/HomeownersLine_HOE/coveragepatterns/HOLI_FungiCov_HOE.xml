@@ -4,13 +4,13 @@
   coverageCategory="HOLI_Additional_HOE"
   coverageSubtype="HomeownersLineCov_HOE"
   coveredPartyType="ThirdParty"
-  existence="Suggested"
   lookupTableName="HomeownersLineCov"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="3100"
   public-id="HOLI_FungiCov_HOE"
   referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[return(HomeownersLine_HOE.Branch.BaseState == TC_FL)? ExistenceType.TC_REQUIRED: ExistenceType.TC_SUGGESTED]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"

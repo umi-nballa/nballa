@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <DetailViewPanel
     id="AdditionalNamedInsuredsDV"
-    visible="not period.Policy.Product.Personal and (period.Submission.QuoteType == &quot;Full&quot; or not (period.Job typeis Submission))">
+    visible="((not period.Policy.Product.Personal) or period.HomeownersLine_HOEExists) and (period.Submission.QuoteType == 'Full' or not (period.Job typeis Submission))">
     <Require
       name="period"
       type="PolicyPeriod"/>

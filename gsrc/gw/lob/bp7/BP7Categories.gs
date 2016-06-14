@@ -29,5 +29,10 @@ enum BP7Categories{
   BP7ClassificationMotelBusGrp,
   BP7ClassificationSelfStorageBusGrp,
   BP7ClassificationLandscapeBusGrp,
-  BP7ClassificationFunctionalBPPValuationGrp
+  BP7ClassificationFunctionalBPPValuationGrp,
+
+  BP7BuildingOptionalGrp_EXT,
+  BP7LocationOptionalGrp_EXT,
+  BP7LineOptionalGrp_EXT,
+  BP7ClassificationOptionalGrp_EXT
 }

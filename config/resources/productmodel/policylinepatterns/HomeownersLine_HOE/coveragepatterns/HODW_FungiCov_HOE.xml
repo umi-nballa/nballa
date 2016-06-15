@@ -4,13 +4,14 @@
   coverageCategory="HODW_Additional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
-  existence="Suggested"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="4300"
   public-id="HODW_FungiCov_HOE"
   referenceDateByType="ApplicableObject">
+  <ExistenceScript><![CDATA[return((Dwelling_HOE.Branch.BaseState == TC_AZ ||Dwelling_HOE.Branch.BaseState == TC_NV || Dwelling_HOE.Branch.BaseState == TC_SC)&&
+        !Dwelling_HOE.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists)? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="ag"

@@ -69,4 +69,8 @@ class AccountSearchCriteriaAdapter extends UnsupportedPersonNameFields {
   override property set NameKanji(value : String) {
     _searchCriteria.CompanyNameKanji = value
   }
+
+  override property set Suffix(value : typekey.NameSuffix) {
+    _searchCriteria.Suffix = value
+  }
 }

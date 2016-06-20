@@ -20,6 +20,26 @@
       label="displaykey.Web.ProducerSelection.Producer"
       value="policyPeriod.ProducerCodeOfRecord.Organization"/>
     <Input
+      id="AgencyNumberPOR_Ext"
+      label="displaykey.Ext.Web.ProducerSelection.AgencyNumber"
+      required="true"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.AgenyNumber_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
+      id="MasterOrganizationPOR_Ext"
+      label="displaykey.Ext.Web.ProducerSelection.MasterOrganization"
+      required="true"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.MasterOrganization_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
       id="ProducerCodeOfRecord"
       label="displaykey.Web.ProducerSelection.ProducerCode"
       value="displaykey.Web.ProducerSelection.ProducerCode.OptionLabel(policyPeriod.ProducerCodeOfRecord.Code, policyPeriod.ProducerCodeOfRecord.Description != null ? policyPeriod.ProducerCodeOfRecord.Description : &quot;&quot;)"/>
@@ -37,6 +57,26 @@
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
     </OrgInput>
+    <Input
+      id="AgencyNumberPOS_Ext"
+      label="displaykey.Ext.Web.ProducerSelection.AgencyNumber"
+      required="true"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.AgenyNumber_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
+      id="MasterOrganizationPOS_Ext"
+      label="displaykey.Ext.Web.ProducerSelection.MasterOrganization"
+      required="true"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.MasterOrganization_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
     <RangeInput
       editable="true"
       id="ProducerCode"

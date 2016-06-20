@@ -26,7 +26,7 @@
       <Input
         id="Name"
         label="displaykey.Web.AccountFile.Summary.Name"
-        value="account.AccountHolderContact.DisplayName"/>
+        value="account.AccountHolderContact.AccountFullName_Ext"/>
       <Input
         id="AccountStatus"
         label="displaykey.Web.AccountFile.Summary.AccountStatus"
@@ -66,6 +66,11 @@
         id="preferredcontact"
         label="displaykey.Web.AddressDetail.PreferredContact"
         value="account.AccountHolderContact.PreferredmethodOfContact"/>
+      <Input
+        editable="true"
+        id="organizationType"
+        label="displaykey.Ext.Web.AddressDetail.EntityType"
+        value="account.AccountOrgType"/>
       <InputSetRef
         def="AccountCurrencyInputSet(account, address, false)"
         editable="account.Editable"
@@ -92,11 +97,6 @@
       <InputDivider/>
       <InputSet
         visible="account.AccountHolderContact typeis Company">
-        <Input
-          editable="true"
-          id="OrgType"
-          label="displaykey.Web.EditAccount.EntityType"
-          value="account.AccountOrgType"/>
         <IndustryCodeInput
           domain="&quot;SIC&quot; as IndustryCodeType"
           editable="true"
@@ -133,6 +133,18 @@
                 value="apc.ProducerCode.Description"
                 width="300"
                 wrap="true"/>
+              <Cell
+                id="AgencyNumber"
+                label="displaykey.Ext.Web.Organization.AgencyNumber_Ext"
+                value="apc.ProducerCode.Organization.AgenyNumber_Ext"/>
+              <Cell
+                id="AgencyName"
+                label="displaykey.Ext.Web.Organization.AgencyName_Ext"
+                value="apc.ProducerCode.Organization.Name"/>
+              <Cell
+                id="MasterOrganizationName"
+                label="displaykey.Ext.Web.Organization.MasterOrgName_Ext"
+                value="apc.ProducerCode.Organization.MasterOrganization_Ext"/>
             </Row>
           </RowIterator>
         </ListViewPanel>

@@ -1,9 +1,9 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="BP7LocationMoneySecurities"
-  coverageCategory="BP7LocationStdGrp"
+  coverageCategory="BP7LocationOptionalGrp_EXT"
   coverageSubtype="BP7LocationCov"
-  coveredPartyType="ThirdParty"
+  coveredPartyType="FirstParty"
   existence="Electable"
   lookupTableName="BP7LocationCov"
   owningEntityType="BP7Location"
@@ -51,5 +51,49 @@
           public-id="BP7OffPremisesLimitUSD"/>
       </LimitsSet>
     </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7LocationCovOpt"
+      codeIdentifier="BP7OnPremisesLimit_EXT"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Limit"
+      priority="120"
+      public-id="BP7OnPremisesLimit_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z9qgijn41ooob6v37qhhmcdo139"
+          currency="usd"
+          optionCode="BP75000/5000_EXT"
+          priority="50"
+          public-id="z9qgijn41ooob6v37qhhmcdo139"
+          value="2"/>
+        <CovTermOpt
+          codeIdentifier="zidgm6c37vduo0a1uc8257d55fb"
+          currency="usd"
+          optionCode="BP710000/2000_EXT"
+          priority="75"
+          public-id="zidgm6c37vduo0a1uc8257d55fb"
+          value="3"/>
+        <CovTermOpt
+          codeIdentifier="zdqiqq2allpe13eumsh5p7fmkq9"
+          currency="usd"
+          optionCode="BP710000/10000_EXT"
+          priority="100"
+          public-id="zdqiqq2allpe13eumsh5p7fmkq9"
+          value="4"/>
+        <CovTermOpt
+          codeIdentifier="zvvg2k5e2so3r0jjgm513uahloa"
+          currency="usd"
+          optionCode="BP75000/2000_EXT"
+          priority="0"
+          public-id="zvvg2k5e2so3r0jjgm513uahloa"
+          value="1"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

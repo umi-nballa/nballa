@@ -7,6 +7,7 @@ uses org.springframework.context.support.GenericXmlApplicationContext
 
 uses java.lang.Exception
 uses java.util.concurrent.locks.ReentrantLock
+uses gw.api.util.ConfigAccess
 
 /**
  * This class manages a singleton Application Context, loads configured beans into the context and retrieves the required beans from the context.
@@ -15,7 +16,9 @@ uses java.util.concurrent.locks.ReentrantLock
 class DIContextHelper {
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   final static var DB_DATA_SOURCE_TYPE_KEY = "db_datasourcetype"
-  final static var PERSISTENCE_CONTEXT_FILE_PATH = "una/integration/framework/persistence/di_config/integrationDatabase-persistence.xml"
+  final static var PERSISTENCE_CONTEXT_FILE = "una/integration/framework/persistence/di_config/integrationDatabase-persistence.xml"
+  final static var PERSISTENCE_FILE_PATH = "file:" + ConfigAccess.getModuleRoot("configuration").Path + "/gsrc/" + PERSISTENCE_CONTEXT_FILE
+
 
   static var _applicationContext: GenericXmlApplicationContext
   static var _lock = new ReentrantLock()
@@ -33,7 +36,7 @@ class DIContextHelper {
         var dataSourceType = PropertiesHolder.getProperty(DB_DATA_SOURCE_TYPE_KEY)
         _applicationContext.Environment.addActiveProfile(dataSourceType)
         // Loading beans into application context
-        _applicationContext.load(new String[]{ PERSISTENCE_CONTEXT_FILE_PATH })
+        _applicationContext.load(new String[]{ PERSISTENCE_FILE_PATH })
         _applicationContext.refresh()
       }
       return _applicationContext

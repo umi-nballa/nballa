@@ -8,6 +8,7 @@ uses org.beanio.StreamFactory
 
 uses java.io.File
 uses java.util.ArrayList
+uses gw.api.util.ConfigAccess
 
 /**
  * Helper class for reading and writing file using BeanIO open source java framework.
@@ -15,7 +16,7 @@ uses java.util.ArrayList
  */
 final class BeanIOHelper {
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
-  final static var BEANIO_MAPPING_FILE_KEY = "beaniomappingfile"
+  final static var MAPPING_FILE_PATH = "file:" + ConfigAccess.getModuleRoot("configuration").Path + "/gsrc/" + PropertiesHolder.getProperty("beaniomappingfile")
 
   static var _streamFactory: StreamFactory
 
@@ -27,7 +28,7 @@ final class BeanIOHelper {
   private static function initStreamFactory() {
     if (_streamFactory == null) {
       _streamFactory = StreamFactory.newInstance()
-      _streamFactory.loadResource(PropertiesHolder.getProperty(BEANIO_MAPPING_FILE_KEY))
+      _streamFactory.loadResource(MAPPING_FILE_PATH)
       _logger.debug("BeanIO StreamFactory is initialized.")
     }
   }

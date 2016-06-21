@@ -66,16 +66,24 @@
                 <TypeKeyInput
                   editable="true"
                   id="PropertyType"
-                  label="displaykey.Web.Policy.BP7.Building.PropertyType"
-                  value="building.PropertyType">
+                  label="displaykey.Web.Policy.BP7.Building.PredominantOccupancyType"
+                  value="building.BP7PredominantOccupancy">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
                 </TypeKeyInput>
-                <TypeKeyInput
+                <!-- <TypeKeyInput
                   editable="true"
                   id="EffectivenessGradeClass"
                   label="displaykey.Web.Policy.BP7.Building.EffectivenessGradeClass"
                   value="building.BldgCodeEffGradeClass">
+                  <PostOnChange
+                    onChange="building.updateDependentFields(null, jobWizardHelper)"/>
+                </TypeKeyInput> -->
+                <TypeKeyInput
+                  editable="true"
+                  id="PredominantOccupancyType"
+                  label="displaykey.Web.Policy.BP7.Building.OccupancyType"
+                  value="building.BP7OccupancyType">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
                 </TypeKeyInput>
@@ -89,6 +97,48 @@
                   valueRange="building.BldgCodeEffGradeValues.sortBy(\ grade -&gt; grade.Priority)"/>
                 <TypeKeyInput
                   editable="true"
+                  id="FireprotectionClass"
+                  label="&quot;Fire Protection Class&quot;"
+                  required="true"
+                  value="location.FireProtectionClassPPC">
+                  <PostOnChange
+                    onChange="building.updateDependentFields(null, jobWizardHelper)"/>
+                </TypeKeyInput>
+                <Input
+                  editable="true"
+                  id="yearbuilt"
+                  label="displaykey.Web.Policy.BP7.Building.Yearbuilt"
+                  required="true"
+                  value="building.YearBuilt">
+                  <PostOnChange/>
+                </Input>
+                <Input
+                  editable="true"
+                  id="Storey"
+                  label="displaykey.Web.Policy.BP7.Building.NoOFStorey"
+                  required="true"
+                  value="building.NoOfStories">
+                  <PostOnChange/>
+                </Input>
+                <Input
+                  editable="true"
+                  id="units"
+                  label="displaykey.Web.Policy.BP7.Building.NoOfUnits"
+                  required="true"
+                  value="building.NoOfUnits">
+                  <PostOnChange/>
+                </Input>
+                <BooleanRadioInput
+                  editable="true"
+                  id="FireDepartment"
+                  label="displaykey.Web.Policy.BP7.Building.FireDepartment"
+                  required="false"
+                  value="building.FireDepartmentDistance">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <TypeKeyInput
+                  editable="true"
                   id="ConstructionType"
                   label="displaykey.Web.Policy.BP7.Building.ConstructionType"
                   value="building.ConstructionType"/>
@@ -100,7 +150,52 @@
                   <PostOnChange
                     onChange="building.bp7sync(jobWizardHelper)"/>
                 </BooleanRadioInput>
-                <RangeInput
+                <BooleanRadioInput
+                  editable="true"
+                  id="CentralBurglarAlarm"
+                  label="displaykey.Web.Policy.BP7.Building.CentralBurglarAlarm"
+                  required="true"
+                  value="building.CentralBurglarAlarm">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <BooleanRadioInput
+                  editable="true"
+                  id="firealarm"
+                  label="displaykey.Web.Policy.BP7.Building.CentralFireAlarmSystem"
+                  required="true"
+                  value="building.CentralFireAlarmSystem">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <Label
+                  id="airconditioning"
+                  label="displaykey.Web.Policy.BP7.Building.AirConditioning"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="caged"
+                  label="displaykey.Web.Policy.BP7.Building.AirConditioning.caged"
+                  value="building.caged">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <BooleanRadioInput
+                  editable="true"
+                  id="alarmed"
+                  label="displaykey.Web.Policy.BP7.Building.AirConditioning.alarmed"
+                  value="building.Alarmed">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <BooleanRadioInput
+                  editable="true"
+                  id="monitored"
+                  label="displaykey.Web.Policy.BP7.Building.AirConditioning.monitored"
+                  value="building.Monitored">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <!-- <RangeInput
                   editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(building.PctOwnerOccupied, building.PercentageOwnerOccupiedValues)"
                   id="PercentOwnerOccupied"
                   label="displaykey.Web.Policy.BP7.Building.PctOwnerOccupied"
@@ -108,7 +203,7 @@
                   valueRange="building.PercentageOwnerOccupiedValues">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </RangeInput>
+                </RangeInput> -->
                 <Input
                   editable="true"
                   id="TotalCondominiumBuildingSquareFootage"
@@ -116,26 +211,26 @@
                   required="true"
                   value="building.TotalCondoBldgSquareFo"
                   visible="building.TotalCondoBldgSquareFoVisible"/>
-                <BooleanRadioInput
+                <!-- <BooleanRadioInput
                   editable="true"
                   id="RABOPWanted"
                   label="displaykey.Web.Policy.BP7.Building.RABOPWanted"
                   value="building.RABOPWanted">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </BooleanRadioInput>
-                <TypeKeyInput
+                </BooleanRadioInput> -->
+                <!-- <TypeKeyInput
                   editable="true"
                   id="RABOPType"
                   label="displaykey.Web.Policy.BP7.Building.RABOPType"
                   required="building.RABOPWanted"
-                  value="building.RABOPType"/>
-                <TypeKeyInput
+                  value="building.RABOPType"/> -->
+                <!-- <TypeKeyInput
                   editable="true"
                   id="RABOPTypeLiabilityLess"
                   label="displaykey.Web.Policy.BP7.Building.RABOPTypeLiabilityLess"
                   required="building.RABOPTypeLiabilityLessorsRequired"
-                  value="building.RABOPTypeLiabilityLess"/>
+                  value="building.RABOPTypeLiabilityLess"/> -->
               </InputColumn>
             </DetailViewPanel>
           </PanelColumn>
@@ -247,16 +342,21 @@
                               recalculateOnRefresh="true"
                               type="typekey.BP7ClassDescription"/>
                             <InputColumn>
-                              <RangeInput
+                              <TextInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassPropertyType, selectedClassification.ClassPropertyTypeValues)"
                                 id="ClassPropertyType"
-                                label="displaykey.Web.Policy.BP7.Classification.ClassPropertyType"
-                                optionLabel=" VALUE.Description"
-                                value="selectedClassification.ClassPropertyType"
-                                valueRange="selectedClassification.ClassPropertyTypeValues">
+                                label="displaykey.Web.Policy.BP7.Classification.PredominantOccupancyType"
+                                value="selectedClassification.Building.BP7PredominantOccupancy">
+                                <PostOnChange/>
+                              </TextInput>
+                              <TextInput
+                                editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassPropertyType, selectedClassification.ClassPropertyTypeValues)"
+                                id="OccupancyType"
+                                label="displaykey.Web.Policy.BP7.Classification.OccupancyType"
+                                value="selectedClassification.Building.BP7OccupancyType">
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassPropertyType.PropertyInfo, previousPropertyTypeValue), jobWizardHelper)"/>
-                              </RangeInput>
+                              </TextInput>
                               <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassDescription, selectedClassification.ClassDescriptionValues)"
                                 id="ClassDescription"
@@ -267,10 +367,17 @@
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue))"/>
                               </RangeInput>
-                              <TypeKeyInput
+                              <!-- <TextInput
+                                id="classcode"
+                                label="displaykey.Web.Policy.BP7.Classification.Classcode"
+                                value="selectedClassification.ClassCode">
+                                <PostOnChange
+                                  onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassPropertyType.PropertyInfo, previousPropertyTypeValue), jobWizardHelper)"/>
+                              </TextInput> -->
+                              <!-- <TypeKeyInput
                                 id="ExposureBasis"
                                 label="displaykey.Web.Policy.BP7.Classification.ExposureBasis"
-                                value="selectedClassification.ExposureBasis"/>
+                                value="selectedClassification.ExposureBasis"/> -->
                               <Input
                                 editable="selectedClassification.ExposureBasis != null"
                                 id="Exposure"
@@ -278,11 +385,11 @@
                                 required="true"
                                 value="selectedClassification.Exposure"
                                 visible="selectedClassification.isExposureApplicable"/>
-                              <Input
+                              <!-- <Input
                                 id="UneditableExposure"
                                 label="displaykey.Web.Policy.BP7.Classification.Exposure"
                                 value="displaykey.Web.Policy.BP7.Classification.ExposureNotApplicableMsg"
-                                visible="not selectedClassification.isExposureApplicable"/>
+                                visible="not selectedClassification.isExposureApplicable"/> -->
                               <Input
                                 editable="true"
                                 id="Area"
@@ -290,44 +397,48 @@
                                 value="selectedClassification.Area">
                                 <PostOnChange/>
                               </Input>
-                              <BooleanRadioInput
+                              <Input
+                                editable="true"
+                                id="OccupiedArea"
+                                label="displaykey.Web.Policy.BP7.Classification.VacantArea"
+                                value="selectedClassification.VacantSquareFootage">
+                                <PostOnChange/>
+                              </Input>
+                              <!-- <BooleanRadioInput
                                 editable="true"
                                 id="AmusementArea"
                                 label="displaykey.Web.Policy.BP7.Classification.AmusementArea"
-                                value="selectedClassification.AmusementArea"
-                                visible="false"/>
-                              <TypeKeyInput
+                                value="selectedClassification.AmusementArea"/> -->
+                              <!-- <TypeKeyInput
                                 editable="true"
                                 id="Playground"
                                 label="displaykey.Web.Policy.BP7.Classification.Playground"
-                                value="selectedClassification.Playground"
-                                visible="false"/>
-                              <Input
+                                value="selectedClassification.Playground"/> -->
+                              <!-- <Input
                                 editable="true"
                                 id="NumSwimmingPools"
                                 label="displaykey.Web.Policy.BP7.Classification.NumSwimmingPools"
-                                value="selectedClassification.NumSwimmingPools"
-                                visible="false"/>
-                              <BooleanRadioInput
+                                value="selectedClassification.NumSwimmingPools"/> -->
+                              <!-- <BooleanRadioInput
                                 editable="true"
                                 id="ClassificationRABOPWanted"
                                 label="displaykey.Web.Policy.BP7.Classification.RABOPWanted"
                                 value="selectedClassification.RABOPWanted">
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(null, jobWizardHelper)"/>
-                              </BooleanRadioInput>
-                              <TypeKeyInput
+                              </BooleanRadioInput> -->
+                              <!-- <TypeKeyInput
                                 editable="true"
                                 id="ClassificationRABOPType"
                                 label="displaykey.Web.Policy.BP7.Classification.RABOPType"
                                 required="selectedClassification.RABOPWanted"
-                                value="selectedClassification.RABOPType"/>
-                              <TypeKeyInput
+                                value="selectedClassification.RABOPType"/> -->
+                              <!-- <TypeKeyInput
                                 editable="true"
                                 id="ClassificationRABOPTypeLiabilityOccu"
                                 label="displaykey.Web.Policy.BP7.Classification.RABOPTypeLiabilityOccu"
                                 required="selectedClassification.RABOPTypeLiabilityOccupantsRequired"
-                                value="selectedClassification.RABOPTypeLiabilityOccu"/>
+                                value="selectedClassification.RABOPTypeLiabilityOccu"/> -->
                             </InputColumn>
                           </DetailViewPanel>
                         </PanelSet>
@@ -366,21 +477,28 @@
                   </PanelRow>
                 </PanelSet>
               </Card>
-              <Card
+              <!-- <Card
                 id="FunctionalValuationCoveragesCard"
                 title="displaykey.Web.Policy.BP7.Classification.FunctionalValuation">
                 <PanelRef
                   def="BP7CoveragesDV(selectedClassification, openForEdit, selectedClassification.FunctionalBPPValuationCoverageCoverages, jobWizardHelper)"
                   id="FunctionalValuationCoverages"/>
-              </Card>
+              </Card> -->
               <Card
                 id="AdditionalCoveragesCard"
-                title="displaykey.Web.LineWizard.AdditionalCoverages">
+                title="displaykey.Ext.Web.LineWizard.AdditionalAndOptionalCoverages">
                 <PanelRef
                   def="BP7AdditionalCoveragesPanelSet(selectedClassification, selectedClassification.AdditionalCoveragesCategories, true, jobWizardHelper)">
                   <TitleBar
+                    id="additionalcoverage"
                     title="displaykey.Web.LineWizard.AdditionalCoverages"/>
-                  <Toolbar/>
+                </PanelRef>
+                <PanelRef
+                  def="BP7AdditionalCoveragesPanelSet(building,selectedClassification.AdditionalCoveragesCategories, true, jobWizardHelper)"
+                  id="optionalCoverage">
+                  <TitleBar
+                    id="optionalCov"
+                    title="displaykey.Ext.Web.LineWizard.OptionalCoverages"/>
                 </PanelRef>
               </Card>
               <Card

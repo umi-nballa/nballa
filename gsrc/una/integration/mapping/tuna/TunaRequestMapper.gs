@@ -110,12 +110,12 @@ class TunaRequestMapper {
       var df = new SimpleDateFormat(PropertiesHolder.getProperty("TUNA_DATE_FORMAT"))
       var s = df.format(DateUtil.currentDate())
       var theXmlDate = new XmlDateTime(s)
-      message.YearBuild = DEFAULT_VALUE as Integer
+      message.YearBuild = DEFAULT_VALUE
       message.AsOfDate = theXmlDate
-      message.TotalSquareFootage = DEFAULT_VALUE as Integer
+      message.TotalSquareFootage = DEFAULT_VALUE
       message.Coordinates.Latitude = DEFAULT_VALUE as Double
       message.Coordinates.Longitude = DEFAULT_VALUE as Double
-      message.Owner = DEFAULT_VALUE
+      message.Owner = DEFAULT_VALUE as String
     } catch (exp: Exception) {
       logger.error(CLASS_NAME + " :: " + "payloadRequestMapping : DefaultMapping ", exp)
       throw exp

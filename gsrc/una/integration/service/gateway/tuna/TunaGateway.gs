@@ -10,6 +10,12 @@ uses una.model.AddressDTO
 uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
 
 uses java.lang.Exception
+uses una.integration.mapping.tuna.TunaInformationCompleteResponseMapper
+uses una.integration.mapping.tuna.TunaInformationResponseMapper
+uses una.integration.mapping.tuna.TunaScrubOnlyResponseMapper
+uses una.integration.mapping.tuna.TunaGeoLookupResponseMapper
+uses una.integration.mapping.tuna.TunaLookupExlResponseMapper
+uses una.integration.mapping.tuna.TunaLookUpIncResponseMapper
 
 /**
  * TunaGateway Implementation class for calling tuna service.
@@ -18,9 +24,9 @@ uses java.lang.Exception
 class TunaGateway implements TunaInterface {
   final static var logger = UnaLoggerCategory.UNA_INTEGRATION
   private static final var CLASS_NAME = TunaGateway.Type.DisplayName
-  var tunaCommunicator: TunaCommunicator as tunaCommunicator
-  var reqMapper: TunaRequestMapper as reqMapper
-  var resMapper: TunaResponseMapper as resMapper
+  var tunaCommunicator: TunaCommunicator
+  var reqMapper: TunaRequestMapper
+  var resMapper: TunaResponseMapper
   var timeout = "500"
 
   //Parametrized constructor
@@ -28,7 +34,6 @@ class TunaGateway implements TunaInterface {
     timeout = thresholdTimeout
     tunaCommunicator = new TunaCommunicator()
     reqMapper = new TunaRequestMapper()
-    resMapper = new TunaResponseMapper()
   }
 
   /**
@@ -38,11 +43,13 @@ class TunaGateway implements TunaInterface {
    */
   override function fetchPropertyInformationComplete(address: AddressDTO): PropertyGeographyModel {
     try {
+      resMapper = new TunaInformationCompleteResponseMapper()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
       var req = reqMapper.createRequestModel(address)
-      logger.info("Request For PropertyInformationComplete :"+req)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformationComplete(req)
-      logger.info("Response For PropertyInformationComplete :"+tunaResponse)
+      var response = resMapper.tunaAppResponse(tunaResponse)
+      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
       return tunaResponse
     } catch (exp: Exception) {
@@ -56,12 +63,13 @@ class TunaGateway implements TunaInterface {
    */
   override function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
+      resMapper = new TunaInformationResponseMapper()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation" + "For ", this.IntrinsicType)
       var req = reqMapper.createRequestModel(policyPeriod)
-      logger.info("Request For PropertyInformation :"+req)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      logger.info("Response For PropertyInformation :"+response)
+      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {
@@ -78,12 +86,12 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformationScrubOnly(address: AddressFillable): PropertyGeographyModel {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
+      resMapper = new TunaScrubOnlyResponseMapper()
       var req = reqMapper.createRequestModel(address)
-      logger.info("Request For ScrubOnly :"+req)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
-      logger.info("Response For ScrubOnly :"+tunaResponse)
-      logger.info("AddressLine1:" + address.AddressLine1 +" "+address.City +"State: "+address.State.DisplayName +"PostalCode:"
-          +address.PostalCode +"Country: "+address.Country.DisplayName)
+      var response = resMapper.tunaAppResponse(tunaResponse)
+      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
       return tunaResponse
     } catch (exp: Exception) {
@@ -98,11 +106,12 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformationGeoLookUp(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationGeoLookUp" + "For ", this.IntrinsicType)
+      resMapper = new TunaGeoLookupResponseMapper()
       var req = reqMapper.createRequestModel(policyPeriod)
-      logger.info("Request For GeoLookUp :"+req)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformationGeoLookUp(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      logger.info("Response For GeoLookUp :"+response)
+      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationGeoLookUp" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {
@@ -117,11 +126,12 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyExl" + "For ", this.IntrinsicType)
+      resMapper = new TunaLookupExlResponseMapper()
       var req = reqMapper.createRequestModel(policyPeriod)
-      logger.info("Request For 360onlyExl :"+req)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation360ValueLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      logger.info("Response For 360onlyExl :"+response)
+      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyExl" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {
@@ -136,11 +146,12 @@ class TunaGateway implements TunaInterface {
   override function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyInc" + "For ", this.IntrinsicType)
+      resMapper = new TunaLookUpIncResponseMapper()
       var req = reqMapper.createRequestModel(policyPeriod)
-      logger.info("Request For 360onlyInc :"+req)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation360ValueLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      logger.info("Response For 360onlyInc :"+response)
+      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyInc" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {

@@ -71,7 +71,9 @@ class TunaCommunicator {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationScrubOnly" + "For Address Validation ", this.IntrinsicType)
       var header = new GetPropertyInformationScrubOnlyHeaders()
       header.QuoteAuthenticationHeader = quoteAuthenticationInformation()
+      requestPayload.print()
       var res = service.GetPropertyInformationScrubOnly(requestPayload, header)
+      res.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationScrubOnly" + "For Address Validation ", this.IntrinsicType)
       return res
     } catch (exp: Exception) {

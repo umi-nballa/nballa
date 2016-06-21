@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+	   					   http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- Transaction Manager -->
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" lazy-init="true">
+        <property name="dataSource" ref ="dataSource"/>
+    </bean>
+
+    <!-- JNDI Profile - DataSource Configuration-->
+    <beans profile="JNDI" >
+        <bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean" lazy-init="true">
+            <property name="jndiName">
+                <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                    <property name="targetClass" value="una.integration.framework.util.PropertiesHolder"/>
+                    <property name="targetMethod" value="getProperty"/>
+                    <property name="arguments" value="db_jndiname" />
+                </bean>
+            </property>
+        </bean>
+    </beans>
+
+    <!-- JDBC Profile - DataSource configuration-->
+    <beans profile="JDBC">
+        <bean id="dataSource" class="org.springframework.jdbc.datasource.DriverManagerDataSource" lazy-init="true">
+            <property name="driverClassName">
+                <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                    <property name="targetClass" value="una.integration.framework.util.PropertiesHolder"/>
+                    <property name="targetMethod" value="getProperty"/>
+                    <property name="arguments" value="db_driver" />
+                </bean>
+            </property>
+            <property name="url">
+                <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                    <property name="targetClass" value="una.integration.framework.util.PropertiesHolder"/>
+                    <property name="targetMethod" value="getProperty"/>
+                    <property name="arguments" value="db_url" />
+                </bean>
+            </property>
+            <property name="username">
+                <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                    <property name="targetClass" value="una.integration.framework.util.PropertiesHolder"/>
+                    <property name="targetMethod" value="getProperty"/>
+                    <property name="arguments" value="db_username" />
+                </bean>
+            </property>
+            <property name="password">
+                <bean class="org.springframework.beans.factory.config.MethodInvokingFactoryBean">
+                    <property name="targetClass" value="una.integration.framework.util.PropertiesHolder"/>
+                    <property name="targetMethod" value="getProperty"/>
+                    <property name="arguments" value="db_password" />
+                </bean>
+            </property>
+        </bean>
+    </beans>
+
+</beans>

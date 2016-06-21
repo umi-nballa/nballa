@@ -21,6 +21,7 @@ uses java.util.Date
 uses java.util.HashSet
 uses gw.api.database.ISelectQueryBuilder
 uses gw.api.name.ContactNameFields
+uses java.lang.StringBuffer
 
 enhancement ContactEnhancement : entity.Contact {
   
@@ -558,4 +559,42 @@ enhancement ContactEnhancement : entity.Contact {
     formattedName = new NameFormatter().format(contact, " ")
     return formattedName.HasContent ? formattedName : null
   }
+
+  public property get AccountFullName_Ext() : String {
+    var name : String
+    var formattedName : String
+    var contact : ContactNameFields
+
+    if (this typeis Person){
+      var sb = new StringBuffer()
+      //var pName = name as PersonNameFields
+      var delimiter = " "
+      if (this.Prefix != null) {sb.append(this.Prefix)
+        sb.append(delimiter)
+      }
+      if (this.FirstName !=null ) {sb.append(this.FirstName)
+        sb.append(delimiter)
+      }
+      if (this.MiddleName !=null ) { sb.append(this.MiddleName)
+        sb.append(delimiter)
+      }
+      if (this.LastName !=null ) { sb.append(this.LastName)
+        sb.append(delimiter)
+      }
+      if (this.Suffix !=null ) {  sb.append(this.Suffix)
+      }
+      name = sb.toString()
+    } else {
+      name = this.Name
+      /*contact = new PersonNameFieldsImpl() {
+          :LastName = this.LastName,
+          :FirstName = this.FirstName,
+          :Suffix = this.Suffix,
+          :MiddleName = this.MiddleName,
+          :Particle = this.Particle*/
+
+    }
+    return name
+  }
+
 }

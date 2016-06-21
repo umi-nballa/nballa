@@ -13,7 +13,9 @@ uses java.util.Properties
 uses java.util.Map
 uses gw.api.system.PLLoggerCategory
 uses gw.plugin.email.HtmlEmail
-
+uses javax.mail.Authenticator
+uses javax.mail.PasswordAuthentication
+uses una.utils.PropertiesHolder
 
 /** This is a fully exposed javax mail implementation so that packages like JavaMail-Crypto can
  * be used to sign documents.
@@ -24,14 +26,12 @@ uses gw.plugin.email.HtmlEmail
 class JavaxEmailMessageTransport extends AbstractEmailMessageTransport {
 
   public static final var DEBUG_PARAM : String = "Debug"
+  final static var USER = PropertiesHolder.getProperty("USERNAME")
+  final static var PASSWORD = PropertiesHolder.getProperty("PASSWORD")
   var debug = false
-/* authenticated session
-  public static final var USERNAME_PARAM : String = "Username"
-  var user : String = ""; // need to input real user id
-  public static final var PASSWORD_PARAM : String = "Password"
-  var password : String = ""; // Need to use real password
-*/
-
+// authenticated session
+  var user : String = USER // need to input real user id
+  var password : String = PASSWORD // Need to use real password
   construct() {
   }
 
@@ -41,16 +41,6 @@ class JavaxEmailMessageTransport extends AbstractEmailMessageTransport {
     if (work != null) {
       debug = work as boolean
     }
-/* authenticated session
-    work = params.get(USERNAME_PARAM) as String
-    if (work != null) {
-      user = work
-    }
-    work = params.get(PASSWORD_PARAM) as String
-    if (work != null) {
-      password = work
-    }
-*/
     PLLoggerCategory.CONFIG.info("Starting JavaXEmailMessageTransport with emailHost=${smtpHost} port=${smtpPort} debug=${debug} ")
   }
 
@@ -113,9 +103,6 @@ class JavaxEmailMessageTransport extends AbstractEmailMessageTransport {
   protected override function createHtmlEmailAndSend(wkSmtpHost : String, wkSmtpPort : String, email : Email) {
 
     var out = createHtmlEmail(wkSmtpHost, wkSmtpPort, email)
-    // encrypt or sign via your own plugin    
-    // out = EncryptionManager.getEncryptionUtils(EncryptionManager.SMIME).signMessage(session, out, cryptoKey)
-    // Transport.send(out)
     if (wkSmtpHost != "") {
       out.send()
     }
@@ -126,7 +113,6 @@ class JavaxEmailMessageTransport extends AbstractEmailMessageTransport {
     var props = new Properties()
     props.put("mail.smtp.host", wkSmtpHost)
     props.put("mail.smtp.port", wkSmtpPort)
-//    props.put("mail.smtp.ssl.enable", "true")
     var address : String
     var name : String
     if (email.Sender != null && email.Sender.EmailAddress != null) {
@@ -139,22 +125,15 @@ class JavaxEmailMessageTransport extends AbstractEmailMessageTransport {
     props.put("sender.email", address)
     props.put("sender.name", name)
     props.put("mail.transport.protocol", "smtp");
-
-    // create some properties and get the default Session
-    var sn = Session.getInstance(props)
-
-    /* authenticated alternative
-      props.put("mail.smtp.auth", "true");
-      var authenticator : Authenticator = new Authenticator() {
-        protected override property get PasswordAuthentication() : PasswordAuthentication{
-            return new PasswordAuthentication(user, password);
-        }
-      };
-      var sn = Session.getInstance(props, authenticator)
-    */
-
+    //  authenticated alternative
+    props.put("mail.smtp.auth", "true");
+    var authenticator : Authenticator = new Authenticator() {
+    protected override property get PasswordAuthentication() : PasswordAuthentication{
+    return new PasswordAuthentication(user, password);
+    }
+    }
+    var sn = Session.getInstance(props, authenticator)
     sn.setDebug(debug)
-
     var out = new HtmlEmail(sn)
     out.setFrom(address, name)
     out.setCharset("UTF-8")
@@ -164,6 +143,7 @@ class JavaxEmailMessageTransport extends AbstractEmailMessageTransport {
     }
     out.addReplyTo(address, name)
     populateEmail(out, email)
+
     return out
   }
 

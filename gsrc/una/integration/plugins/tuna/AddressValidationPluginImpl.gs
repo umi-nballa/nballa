@@ -5,9 +5,10 @@ uses gw.api.address.DefaultAddressAutocompletePlugin
 uses una.integration.service.gateway.plugin.GatewayPlugin
 uses una.integration.service.gateway.tuna.TunaInterface
 uses una.logging.UnaLoggerCategory
-uses una.utils.PropertiesHolder
 
 uses java.lang.Exception
+uses java.util.regex.Pattern
+uses una.utils.PropertiesHolder
 
 /**
  * Address Service Plugin Implementation class for validating address from tuna.
@@ -17,6 +18,7 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
   final static var logger = UnaLoggerCategory.UNA_INTEGRATION
   private var _TUNAGateway = GatewayPlugin.makeTunaGateway()
   private static final var CLASS_NAME = AddressValidationPluginImpl.Type.DisplayName
+  final static var _pattern = Pattern.compile("^[0-9]{5}(?:-[0-9]{4})?$")
 
   /**
    * Default Constructor
@@ -25,6 +27,7 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
   }
 
   // Explicit property getter for TUNAGateway, visible only to classes in this package
+
   property get TUNAGateway(): TunaInterface {
     return _TUNAGateway
   }
@@ -40,22 +43,26 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
       // Validating address against Tuna gateway if all the mandatory fields are available
       if (null != address.AddressLine1 && null != address.City && null != address.State && null != address.PostalCode) {
         logger.debug(" Entering  " + CLASS_NAME + " :: " + " autofillAddress" + "For AddressValidation ", this.IntrinsicType)
-        var finalRes = TUNAGateway.fetchPropertyInformationScrubOnly(address)
-        //Validating the response with either status code and Note
-        if (finalRes.Status != 0 ||
-            finalRes.Address.Note.equalsIgnoreCase(PropertiesHolder.getProperty("TUNA_RESPONSE_VALIDATION"))) {
-          throw new gw.api.util.DisplayableException (finalRes.Address.Note)
-        }
+        var matcher = _pattern.matcher(address.PostalCode)
+        if (matcher.matches()) {
+          var finalRes = TUNAGateway.fetchPropertyInformationScrubOnly(address)
+          //Validating the response with either status code and Note
+          //AddressScrubbed = 1, AddressScrubFailed = 2, AddressScrubUnknown = 3
+          if (finalRes.Status == 0 && finalRes.Address.ScrubStatus == 1) {
             //Populating Tuna Validated Response values to the UI if Address is Validated
-        else if (finalRes.Status == 0) {
-          logger.debug(" populating values to the UI after validating ", this.IntrinsicType)
-          address.AddressLine1 = finalRes.Address.Street.Number + " " + finalRes.Address.Street.Name + " "
-              + finalRes.Address.Street.Type
-          address.City = finalRes.Address.City
-          //Converting String to TypeKey State
-          address.State = typekey.State.getState(address.Country, finalRes.Address.State)
-          address.PostalCode = finalRes.Address.Zipcode.Major + "-" + finalRes.Address.Zipcode.Minor
-          logger.debug("Converting String to State Type " + typekey.State.getState(address.Country, finalRes.Address.State))
+            logger.debug(" populating values to the UI after validating ", this.IntrinsicType)
+            address.AddressLine1 = finalRes.Address.Street.Number + " " + finalRes.Address.Street.Name + " "
+                + finalRes.Address.Street.Type
+            address.City = finalRes.Address.City
+            //Converting String to TypeKey State
+            address.State = typekey.State.getState(address.Country, finalRes.Address.State)
+            address.PostalCode = finalRes.Address.Zipcode.Major + "-" + finalRes.Address.Zipcode.Minor
+            logger.debug("Converting String to State Type " + typekey.State.getState(address.Country, finalRes.Address.State))
+          } else {
+            throw new gw.api.util.DisplayableException (finalRes.Address.Note)
+          }
+        } else {
+          throw new gw.api.util.DisplayableException (displaykey.AutoFill.Tuna.ZipCode)
         }
         logger.debug(" Leaving  " + CLASS_NAME + " :: " + " autofillAddress" + "For AddressValidation ", this.IntrinsicType)
       } else {

@@ -1,4 +1,4 @@
-package una.pageprocess.search
+package una.pageprocess.account
 
 uses gw.api.name.ContactNameOwner
 uses gw.api.name.NameOwnerFieldId
@@ -11,7 +11,7 @@ uses gw.api.name.ContactNameFields
  * Time: 4:25 PM
  * To change this template use File | Settings | File Templates.
  */
-class AccountSearchNameOwner_Ext extends ContactNameOwner{
+class AccountSearchNameOwner extends ContactNameOwner{
 
   construct(fields : ContactNameFields) {
     super(fields)

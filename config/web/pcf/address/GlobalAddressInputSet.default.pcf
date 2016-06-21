@@ -46,13 +46,18 @@
         target="globalAddressContainer"/>
     </TypeKeyInput>
     <Input
+      action="gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;AddressLine1&quot;)"
       available="return addressOwner.isAvailable(fieldId.ADDRESSLINE1)"
       editable="addressOwner.isEditable(fieldId.ADDRESSLINE1)"
       id="AddressLine1"
       label="addressOwner.AddressLine1Label"
       required="addressOwner.isRequired(fieldId.ADDRESSLINE1)"
       value="addressOwner.AddressDelegate.AddressLine1"
-      visible="addressOwner.isVisible(fieldId.ADDRESSLINE1)"/>
+      visible="addressOwner.isVisible(fieldId.ADDRESSLINE1)">
+      <PostOnChange
+        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;AddressLine1&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
+        target="globalAddressContainer"/>
+    </Input>
     <Input
       available="addressOwner.isAvailable(fieldId.ADDRESSLINE2)"
       editable="addressOwner.isEditable(fieldId.ADDRESSLINE2)"
@@ -84,7 +89,7 @@
       value="addressOwner.AddressDelegate.City"
       visible="addressOwner.isVisible(fieldId.CITY)">
       <PostOnChange
-        onChange="if (addressOwner.AutofillEnabled) gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;City&quot;, false)"
+        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;City&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
         target="globalAddressContainer"/>
     </AddressAutoFillInput>
     <TextInput
@@ -99,7 +104,7 @@
       value="addressOwner.AddressDelegate.County"
       visible="addressOwner.isVisible(fieldId.COUNTY)">
       <PostOnChange
-        onChange="if (addressOwner.AutofillEnabled) gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;County&quot;, false)"
+        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;County&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
         target="globalAddressContainer"/>
     </TextInput>
     <RangeInput
@@ -114,7 +119,7 @@
       valueWidth="228"
       visible="addressOwner.isVisible(fieldId.STATE)">
       <PostOnChange
-        onChange="if (addressOwner.AutofillEnabled) gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;State&quot;, false)"
+        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;State&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
         target="globalAddressContainer"/>
     </RangeInput>
     <AddressAutoFillInput
@@ -134,7 +139,7 @@
       value="addressOwner.AddressDelegate.PostalCode"
       visible="addressOwner.isVisible(fieldId.POSTALCODE)">
       <PostOnChange
-        onChange="if (addressOwner.AutofillEnabled) gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;PostalCode&quot;, false)"
+        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;PostalCode&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
         target="globalAddressContainer"/>
     </AddressAutoFillInput>
   </InputSet>

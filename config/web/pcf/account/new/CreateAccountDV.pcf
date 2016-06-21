@@ -20,6 +20,9 @@
     <Variable
       initialValue="producerCodeRange = null; producerSelection.Producer = null; return null; // additional changs for UNA since no defaults is recommended"
       name="clearProducer_Ext"/>
+    <Variable
+      initialValue="account.AccountHolderContact.PrimaryAddress.AddressType = AddressType.TC_BILLING; return null"
+      name="setAccountType_Ext"/>
     <InputColumn>
       <InputSetRef
         def="CreateAccountContactInputSet(account.AccountHolderContact)"
@@ -40,7 +43,7 @@
         editable="selectedAddress.LinkedAddress == null"/>
       <TypeKeyInput
         available="true"
-        editable="selectedAddress.LinkedAddress == null"
+        editable="false // selectedAddress.LinkedAddress == null Updated for UNA PC.10.03.30 Create New Account"
         id="AddressType"
         label="displaykey.Web.AddressDetail.AddressType"
         required="true"

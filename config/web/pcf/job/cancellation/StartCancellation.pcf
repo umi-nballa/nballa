@@ -98,7 +98,7 @@
             required="true"
             value="job.CancelReasonCode">
             <PostOnChange
-              onChange="refundCalcMethod = job.calculateRefundCalcMethod(policyPeriod); effectiveDate = job.CancelReasonCode != null ? job.getDefaultEffectiveDate(policyPeriod, refundCalcMethod) : effectiveDate"/>
+              onChange="refundCalcMethod = job.calculateRefundCalcMethod(policyPeriod); effectiveDate = job.CancelReasonCode != null ? job.getDefaultEffectiveDate(policyPeriod, refundCalcMethod) : effectiveDate;job.Description=job.CancelReasonCode.Description"/>
           </TypeKeyInput>
           <!-- The description field doesn't affect any other fields on this page -->
           <TextAreaInput

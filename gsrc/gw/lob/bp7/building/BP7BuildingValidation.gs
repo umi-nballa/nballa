@@ -98,6 +98,7 @@ class BP7BuildingValidation extends PCValidationBase {
         BP7Building#PropertyType.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.PropertyType)
     }
+    // DGupta - 06/22 : Commented below code as per Building story card
 //    if (_building.BldgCodeEffGradeClass == null) {
 //      addDataModelFieldError(
 //        BP7Building#BldgCodeEffGradeClass.PropertyInfo.Name,

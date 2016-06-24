@@ -84,10 +84,14 @@
                 id="LocationName"
                 label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
                 value="polLocation.AccountLocation.LocationName"/>
-              <InputSetRef
-                def="AddressInputSet(new gw.pcf.policylocation.PolicyLocationAddressOwner(polLocation))"
-                mode="polLocation.CountryCode"
-                visible="polLocation.SyncedToAccount"/>
+              <Input
+                editable="true"
+                id="inspectioncontact"
+                label="displaykey.Web.Policy.LocationContainer.Location.InspectionContact"
+                required="true"
+                value="polLocation.InspectionContact">
+                <PostOnChange/>
+              </Input>
               <InputSet
                 id="UnsyncedAddressInputSet"
                 visible="not polLocation.SyncedToAccount">
@@ -109,9 +113,10 @@
                   <PostOnChange/>
                 </TypeKeyInput>
               </InputSet>
-              <Input
+              <TextInput
                 editable="true"
                 id="Phone"
+                inputMask="&quot;###-###-####&quot;"
                 label="displaykey.Web.Policy.LocationContainer.Location.Phone"
                 value="polLocation.AccountLocation.Phone"/>
               <PickerInput

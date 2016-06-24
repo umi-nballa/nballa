@@ -49,9 +49,9 @@ class BP7LocationValidation extends PCValidationBase {
     if (_location.FeetToHydrant == null) {
       addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.FeetToHydrant)
     }
-    if (_location.FireProtectionClassPPC == null) {
-      addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.FireProtectionClass)
-    }
+//    if (_location.FireProtectionClassPPC == null) {
+//      addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.FireProtectionClass)
+//    }
     if (not _location.TerritoryCode.Code.HasContent) {
       addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.TerritoryCode)
     }

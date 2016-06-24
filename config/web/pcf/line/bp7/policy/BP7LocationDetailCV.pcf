@@ -56,19 +56,29 @@
                         editable="acctLocation.New"
                         id="NonSpecificLocation"
                         label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
-                        value="acctLocation.NonSpecific">
+                        value="acctLocation.NonSpecific"
+                        visible="false">
                         <PostOnChange/>
                       </BooleanRadioInput>
                       <Input
                         editable="true"
                         id="LocationCode"
                         label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
-                        value="polLocation.AccountLocation.LocationCode"/>
+                        value="polLocation.AccountLocation.LocationCode"
+                        visible="false"/>
                       <Input
                         editable="true"
                         id="LocationName"
                         label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
                         value="polLocation.AccountLocation.LocationName"/>
+                      <Input
+                        editable="true"
+                        id="inspectioncontact"
+                        label="displaykey.Web.Policy.LocationContainer.Location.InspectionContact"
+                        required="false"
+                        value="polLocation.InspectionContact">
+                        <PostOnChange/>
+                      </Input>
                       <InputSetRef
                         def="AddressInputSet(new gw.pcf.policylocation.PolicyLocationAddressOwner(polLocation))"
                         mode="polLocation.CountryCode"
@@ -84,6 +94,7 @@
                           editable="true"
                           id="UnsyncedCounty"
                           label="displaykey.Web.ContactDetail.AddressDetail.County"
+                          required="true"
                           value="polLocation.County"/>
                         <TypeKeyInput
                           editable="polLocation.canChangeState()"
@@ -96,8 +107,15 @@
                       </InputSet>
                       <Input
                         editable="true"
+                        formatType="phoneNumber"
                         id="Phone"
                         label="displaykey.Web.Policy.LocationContainer.Location.Phone"
+                        value="polLocation.AccountLocation.Phone"/>
+                      <TextInput
+                        editable="true"
+                        id="mask2"
+                        inputMask="&quot;###-###-####&quot;"
+                        label="&quot;Phone2&quot;"
                         value="polLocation.AccountLocation.Phone"/>
                       <PickerInput
                         available="gw.api.domain.StateSet.get(&quot;TaxLocation&quot;).contains(polLocation.State)"

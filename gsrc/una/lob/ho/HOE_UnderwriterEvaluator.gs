@@ -44,7 +44,8 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         if (elt != null) {
           if (elt?.isQuestionAvailable(_policyEvalContext.Period) ) {
             var answeredTrue = _policyEvalContext.Period.getAnswerValue(elt)?.toString() as boolean
-            if (null != answeredTrue && answeredTrue) {
+            //uim-svallabhapurapu - DE33 : do not generate UW issues for Internal User(i.e UW issues will be generated for External user only)
+            if (null != answeredTrue && answeredTrue and User.util.CurrentUser.ExternalUser) {
               switch (elt.DisplayName) {
                 case 'HO_OwnATV_Ext':
                     var shortDescription = \-> displaykey.Ext.UWIssue.HOE.HO_OwnATV_Ext

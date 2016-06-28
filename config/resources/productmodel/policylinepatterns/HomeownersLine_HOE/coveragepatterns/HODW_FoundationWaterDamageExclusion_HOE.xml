@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<ConditionPattern
+  codeIdentifier="HODW_FoundationWaterDamageExclusion_HOE"
+  conditionSubtype="HomeownersLineCond_HOE"
+  coverageCategory="HODW_ConditionsExclusions_HOE"
+  lookupTableName="HomeownersLineCond"
+  owningEntityType="HomeownersLine_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="3260"
+  public-id="HODW_FoundationWaterDamageExclusion_HOE"
+  referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[var isRequired = HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.County?.equalsIgnoreCase("nueces")
+
+if(HomeownersLine_HOE.BaseState == TC_TX){
+  if(isRequired){
+    return typekey.ExistenceType.TC_REQUIRED
+  }else{
+    return typekey.ExistenceType.TC_ELECTABLE
+  }
+}]]></ExistenceScript>
+  <CovTerms/>
+</ConditionPattern>

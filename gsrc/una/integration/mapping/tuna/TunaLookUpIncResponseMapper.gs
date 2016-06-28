@@ -1,12 +1,12 @@
 package una.integration.mapping.tuna
 
 uses una.logging.UnaLoggerCategory
-uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
-uses java.lang.NullPointerException
-uses java.lang.Exception
 uses una.model.PropertyDataModel
-uses java.util.ArrayList
+uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
+
 uses java.lang.Double
+uses java.lang.Exception
+uses java.util.ArrayList
 
 /**
  * Created for mapping the GetPropertyInformation360LookupOnly(Inc) response
@@ -18,7 +18,11 @@ class TunaLookUpIncResponseMapper extends TunaResponseMapper {
   private static final var CLASS_NAME = TunaLookUpIncResponseMapper.Type.DisplayName
   var response : TunaAppResponse
 
-  /*TBD - Response should map to the PCF */
+/**
+ * Tuna Response is Mapped to Transient Object to map in PCF
+ * @param tunaResponse of type PropertyGeographyModel from Tuna
+ * @return response
+ */
   override  function tunaAppResponse(tunaResponse: PropertyGeographyModel): TunaAppResponse {
     response = new TunaAppResponse()
     try {
@@ -40,10 +44,9 @@ class TunaLookUpIncResponseMapper extends TunaResponseMapper {
       }
       response.Datums = propertyList
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " tunaAppResponse" + "For response Mapping ", this.IntrinsicType)
-    } catch (exp: NullPointerException) {
-      logger.error("Tuna Respone Mapping Failure NullPointer  : StackTrace = " + exp.StackTraceAsString)
     } catch (exp: Exception) {
       logger.error("Tuna Response Mapping Failure  : Stacktrace = " + exp.StackTraceAsString)
+      throw exp
     }
     return response
   }

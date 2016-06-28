@@ -3,7 +3,7 @@ package una.integration.mapping.tuna
 uses una.logging.UnaLoggerCategory
 uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
 uses java.lang.Exception
-uses java.lang.NullPointerException
+
 
 /**
  * Created for mapping the GetPropertyInformationScrubOnly response
@@ -15,9 +15,11 @@ class TunaScrubOnlyResponseMapper extends TunaResponseMapper {
   static final var CLASS_NAME = TunaScrubOnlyResponseMapper.Type.DisplayName
   var response : TunaAppResponse
 
-  /*
-  *
-  * */
+  /**
+   * Tuna Response is Mapped to Transient Object to map in PCF
+   * @param tunaResponse of type PropertyGeographyModel from Tuna
+   * @return response
+   */
   override function tunaAppResponse(tunaResponse: PropertyGeographyModel): TunaAppResponse {
     response = new TunaAppResponse()
     try {

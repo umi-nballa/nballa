@@ -1,13 +1,13 @@
 package una.integration.authentication
 
 uses com.guidewire.pl.system.service.LoginServiceAuthenticationServicePluginCallbackHandler
+uses gw.api.util.DisplayableLoginException
 uses gw.plugin.security.AuthenticationServicePlugin
 uses gw.plugin.security.UserNamePasswordAuthenticationSource
 uses una.integration.UnaIntTestBase
+uses una.integration.framework.util.PropertiesHolder
 uses una.integration.plugins.authentication.AuthenticationServicePluginImpl
-uses una.utils.PropertiesHolder
 
-uses javax.security.auth.login.FailedLoginException
 uses java.lang.Exception
 
 /**
@@ -54,7 +54,7 @@ class AuthenticationServiceTest extends UnaIntTestBase {
   }
 
   /**
-   * Tests the authentication service with ldap user credentials (FThompson/Uicna@2016).
+   * Tests the authentication service with valid ldap user credentials .
    */
   function testValidLDAPUserAuthentication() {
     Logger.info("Entering the test method 'testValidLDAPUserAuthentication'")
@@ -67,7 +67,7 @@ class AuthenticationServiceTest extends UnaIntTestBase {
 
     var userPublicID = authPlugin.authenticate(authSource)
     Logger.info("The User Public ID: ${userPublicID}")
-    assertNotNull("Login failed for the LDAP user ${user.Credential.UserName}", userPublicID)
+    assertNotNull("Login failed for the LDAP user  ${user.Credential.UserName}", userPublicID)
     Logger.info("Exiting the test method 'testValidLDAPUserAuthentication'")
   }
 
@@ -89,7 +89,8 @@ class AuthenticationServiceTest extends UnaIntTestBase {
       exception = ex
     } finally {
       assertNotNull("No exception thrown. Should throw FailedLoginException for invalid user credentials", exception)
-      assertTrue("Incorrect exception thrown. Should throw FailedLoginException for invalid user credentials", exception typeis FailedLoginException)
+      assertTrue("Incorrect exception thrown. Should throw DisplayableLoginException for invalid user credentials", exception typeis DisplayableLoginException)
+      assertTrue("Incorrect Error message", exception.Message == displaykey.Integration.LDAP.LoginFailed)
     }
     Logger.info("Exiting the test method 'testInvalidLDAPUserAuthentication'")
   }

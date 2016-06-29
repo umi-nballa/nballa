@@ -40,10 +40,9 @@ class TunaLookupExlResponseMapper extends  TunaResponseMapper {
       }
       response.Datums = propertyList
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " tunaAppResponse" + "For response Mapping ", this.IntrinsicType)
-    } catch (exp: NullPointerException) {
-      logger.error("Tuna Respone Mapping Failure NullPointer  : StackTrace = " + exp.StackTraceAsString)
-    } catch (exp: Exception) {
+    }catch (exp: Exception) {
       logger.error("Tuna Response Mapping Failure  : Stacktrace = " + exp.StackTraceAsString)
+      throw exp
     }
     return response
   }

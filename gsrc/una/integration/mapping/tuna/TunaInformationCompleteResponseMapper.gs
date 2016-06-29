@@ -1,13 +1,13 @@
 package una.integration.mapping.tuna
 
 uses una.logging.UnaLoggerCategory
-uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
-uses java.lang.NullPointerException
-uses java.lang.Exception
-uses java.util.ArrayList
-uses java.lang.Double
 uses una.model.PropertyDataModel
 uses una.model.PropertyTerritoryModel
+uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
+
+uses java.lang.Double
+uses java.lang.Exception
+uses java.util.ArrayList
 
 /**
  * Created for mapping the GetPropertyInformationComplete response
@@ -19,7 +19,11 @@ class TunaInformationCompleteResponseMapper extends TunaResponseMapper {
   static final var CLASS_NAME = TunaInformationCompleteResponseMapper.Type.DisplayName
   var response : TunaAppResponse
 
-  /*TBD - Response should map to the PCF */
+  /**
+   * Tuna Response is Mapped to Transient Object to map in PCF
+   * @param tunaResponse of type PropertyGeographyModel from Tuna
+   * @return response
+   */
   override function tunaAppResponse(tunaResponse: PropertyGeographyModel): TunaAppResponse {
      response = new TunaAppResponse()
 

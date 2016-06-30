@@ -19,10 +19,8 @@ class BP7BuildingValidation extends PCValidationBase {
     Context.addToVisited( this, "validateImpl")
     validateBuilding()
     atLeastOneClassification()
-
     atMostOneClassificationWithPredominantOverride()
     atLeastTwoClassificationsForMixedPropertyType()
-    morethanOneClassification()
     requiredCoverages()
     limitValidation()
     vacancyPermitDatesValidation()
@@ -98,12 +96,11 @@ class BP7BuildingValidation extends PCValidationBase {
         BP7Building#PropertyType.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.PropertyType)
     }
-    // DGupta - 06/22 : Commented below code as per Building story card
-//    if (_building.BldgCodeEffGradeClass == null) {
-//      addDataModelFieldError(
-//        BP7Building#BldgCodeEffGradeClass.PropertyInfo.Name,
-//        displaykey.Web.Policy.BP7.Building.EffectivenessGradeClass)
-//    }
+    if (_building.BldgCodeEffGradeClass == null) {
+      addDataModelFieldError(
+        BP7Building#BldgCodeEffGradeClass.PropertyInfo.Name, 
+        displaykey.Web.Policy.BP7.Building.EffectivenessGradeClass)
+    }
     if (_building.BldgCodeEffGrade == null) {
       addDataModelFieldError(
         BP7Building#BldgCodeEffGrade.PropertyInfo.Name, 
@@ -119,11 +116,11 @@ class BP7BuildingValidation extends PCValidationBase {
         BP7Building#Sprinklered.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.Sprinklered)
     }
-//    if (_building.PctOwnerOccupied == null) {
-//      addDataModelFieldError(
-//        BP7Building#PctOwnerOccupied.PropertyInfo.Name,
-//        displaykey.Web.Policy.BP7.Building.PctOwnerOccupied)
-//    }
+    if (_building.PctOwnerOccupied == null) {
+      addDataModelFieldError(
+        BP7Building#PctOwnerOccupied.PropertyInfo.Name, 
+        displaykey.Web.Policy.BP7.Building.PctOwnerOccupied)
+    }
     if (_building.TotalCondoBldgSquareFoVisible and _building.TotalCondoBldgSquareFo == null) {
       addDataModelFieldError(
         BP7Building#TotalCondoBldgSquareFo.PropertyInfo.Name, 
@@ -151,18 +148,6 @@ class BP7BuildingValidation extends PCValidationBase {
           displaykey.Web.Policy.BP7.Validation.Building.LessThanTwoClassificationsForMixedPropertyType(_building.Location, _building))
     }
   }
-
-  //Logic for BR2
-  private function morethanOneClassification() {
-    if(_building.Classifications.Count > 1) {
-      Result.addError(_building,
-          ValidationLevel.TC_DEFAULT,
-          displaykey.Web.Policy.BP7.Validation.Building.Buildingmorethanoneclassification(_building))
-    }
-  }
-
-
-
 
   private function limitValidation() {
     Context.addToVisited( this, "limitValidation")

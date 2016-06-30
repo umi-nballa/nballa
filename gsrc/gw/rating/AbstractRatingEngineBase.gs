@@ -475,7 +475,16 @@ abstract class AbstractRatingEngineBase<SL> {
    *
    * This property should return that rating engine's standard term length, in days.
    */
-  abstract protected property get NumDaysInCoverageRatedTerm() : int
+  protected property get NumDaysInCoverageRatedTerm() : int {
+    var p = Prorater.forFinancialDays(TC_PRORATABYDAYS)
+    var endDate = Plugins.get(IPolicyTermPlugin).calculatePeriodEnd(Branch.PeriodStart, Branch.Policy.Product.DefaultTermType, Branch)
+    switch(Branch.Policy.Product.DefaultTermType) {
+      case "Annual":  return endDate.compareIgnoreTime( Branch.PeriodEnd ) == 0 ? Branch.NumDaysInPeriod :
+          p.financialDaysBetween("01/01/2010" as Date, "01/01/2011" as Date)
+      case "HalfYear" : return p.financialDaysBetween(endDate, Branch.PeriodStart)
+        default: throw "Unexpected term type ${Branch.Policy.Product.DefaultTermType}"
+    }
+  }
 
   // _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/ _/
 

@@ -37,7 +37,7 @@ class HORateRoutineConfig implements IRateRoutineConfig {
   }
 
   override function worksheetsEnabledForLine(linePatternCode : String) : boolean {
-    return false
+    return true
   }
 
   override function includeProperty(policyLinePatternCode: String, prop: IPropertyInfo): Boolean {

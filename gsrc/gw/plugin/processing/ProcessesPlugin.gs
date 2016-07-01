@@ -4,6 +4,7 @@ uses gw.processes.BatchProcess
 uses gw.processes.PolicyRenewalClearCheckDate
 uses gw.processes.ApplyPendingAccountDataUpdates
 uses gw.processes.SolrDataImportBatchProcess
+uses una.integration.batch.outbound.ivans.IVANSPolicyPeriodBatch
 
 @Export
 class ProcessesPlugin implements IProcessesPlugin {
@@ -19,6 +20,8 @@ class ProcessesPlugin implements IProcessesPlugin {
         return new ApplyPendingAccountDataUpdates()
       case BatchProcessType.TC_SOLRDATAIMPORT:
         return new SolrDataImportBatchProcess()
+      case BatchProcessType.TC_IVANSPOLICYPERIOD:
+        return new IVANSPolicyPeriodBatch()
       default:
         return null
     }

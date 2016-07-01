@@ -2,7 +2,7 @@ package una.integration.mapping
 
 uses una.integration.framework.file.IFileDataMapping
 uses gw.lang.reflect.gs.IGosuClass
-
+uses una.model.PolicyPeriodDTO
 
 /**
  * This Enum implements IFileDataMapping and provides mapping for each flat file integration.
@@ -14,15 +14,18 @@ enum FileIntegrationMapping implements IFileDataMapping {
 // Sample Mapping - this will be deleted after one actual implementation
 //  LockboxWholeSaleInbound(LockboxWholeSaleInboundData,DataTable.WholesaleLockBoxFileThree,BeanIOStream.LockboxWholeSaleInboundIntegration),
 //  LockboxRetailInbound (LockboxRetailInboundData, DataTable.RetailLockBoxFileThree, BeanIOStream.LockboxRetailInboundIntegration)
+  IVANSPolicyPeriodOutbound(PolicyPeriodDTO,DataTable.IVANSPolicyPeriodOutbound,BeanIOStream.IVANSPolicyPeriodIntegration)
 
   enum DataTable {
    RetailLockBoxFileThree ,
-   WholesaleLockBoxFileThree
+   WholesaleLockBoxFileThree,
+   IVANSPolicyPeriodOutbound
   }
 
   enum BeanIOStream {
     LockboxRetailInboundIntegration ,
-    LockboxWholeSaleInboundIntegration
+    LockboxWholeSaleInboundIntegration,
+    IVANSPolicyPeriodIntegration
   }
 
   var _dataClass: IGosuClass

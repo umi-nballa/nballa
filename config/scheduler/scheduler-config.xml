@@ -130,9 +130,13 @@
     <CronSchedule hours="2"/>
   </ProcessSchedule>
   <!-- Apply any pending contact changes at every day at 12:10 AM -->
-  <ProcessSchedule process="ApplyPendingAccountDataUpdates">
-    <CronSchedule hours="0" minutes="10"/>
-  </ProcessSchedule>
+
+    <ProcessSchedule process="ApplyPendingAccountDataUpdates">
+        <CronSchedule hours="0" minutes="10"/>
+    </ProcessSchedule>
+    <ProcessSchedule process="IVANSPolicyPeriod">
+        <CronSchedule hours="0" minutes="1"/>
+    </ProcessSchedule>
   <!-- Delete unused, closed Jobs and Policy Periods at 4:30 AM  Disabled by default -->
 <!--  <ProcessSchedule process="Purge">
     <CronSchedule hours="4" minutes="30"/>

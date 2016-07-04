@@ -25,7 +25,7 @@
           id="DateBusinessStarted"
           label="displaykey.Web.Policy.BP7.Line.DateBusinessCreated"
           value="line.DateBusinessStarted"/>
-        <TypeKeyInput
+        <!-- <TypeKeyInput
           editable="openForEdit"
           id="LineBusinessType"
           label="displaykey.Web.Policy.BP7.Line.BusinessType"
@@ -33,7 +33,7 @@
           value="line.BP7LineBusinessType">
           <PostOnChange
             onChange="line.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7BusinessOwnersLine#BP7LineBusinessType.PropertyInfo, oldBusinessTypeValue), jobWizardHelper)"/>
-        </TypeKeyInput>
+        </TypeKeyInput> -->
         <TextAreaInput
           editable="openForEdit"
           id="BusinessDesc"
@@ -46,10 +46,17 @@
           editable="true"
           id="NumberOfEmployees_Ext"
           label="displaykey.Web.Policy.BP7.Line.NumberOfEmployees_Ext"
+          required="true"
           value="line.NoOfEmployees_Ext">
           <PostOnChange
             onChange="una.pageprocess.SubmissionWizardHelper.populateNumberOfEmployeesForAllCovTerms(line.BP7EmployeeDishty.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm, line.NoOfEmployees_Ext)"/>
         </Input>
+        <Input
+          editable="true"
+          id="NumberOfPartEmployees_Ext"
+          label="displaykey.Web.Policy.BP7.Line.NumberOfPartEmployees_Ext"
+          required="true"
+          value="line.NoOfPartEmployee_Ext"/>
       </InputColumn>
     </DetailViewPanel>
   </PanelSet>

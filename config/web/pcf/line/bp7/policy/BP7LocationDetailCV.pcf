@@ -52,23 +52,28 @@
                         initialValue="new contact.AddressAutocompleteHandler(&quot;postalcode&quot;,&quot;Country,City,County,State,PostalCode&quot;,true)"
                         name="pchandler"
                         type="contact.AddressAutocompleteHandler"/>
-                      <BooleanRadioInput
+                      <!-- <BooleanRadioInput
                         editable="acctLocation.New"
                         id="NonSpecificLocation"
                         label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
                         value="acctLocation.NonSpecific">
                         <PostOnChange/>
-                      </BooleanRadioInput>
-                      <Input
+                      </BooleanRadioInput> -->
+                      <!-- <Input
                         editable="true"
                         id="LocationCode"
                         label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
-                        value="polLocation.AccountLocation.LocationCode"/>
+                        value="polLocation.AccountLocation.LocationCode"/> -->
                       <Input
                         editable="true"
                         id="LocationName"
                         label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
                         value="polLocation.AccountLocation.LocationName"/>
+                      <Input
+                        editable="true"
+                        id="InspectionContact"
+                        label="displaykey.Web.Policy.LocationContainer.Location.InspectionContact"
+                        value="polLocation.InspectionContact"/>
                       <InputSetRef
                         def="AddressInputSet(new gw.pcf.policylocation.PolicyLocationAddressOwner(polLocation))"
                         mode="polLocation.CountryCode"
@@ -84,6 +89,7 @@
                           editable="true"
                           id="UnsyncedCounty"
                           label="displaykey.Web.ContactDetail.AddressDetail.County"
+                          required="true"
                           value="polLocation.County"/>
                         <TypeKeyInput
                           editable="polLocation.canChangeState()"

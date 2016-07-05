@@ -16,32 +16,6 @@
             </record>
         </stream>
 -->
-    <!--  IVANS Outbound File layout configuration-->
-    <stream name="IVANSPolicyPeriodIntegration" format="fixedlength">
-
-        <record name="PolicyPeriodRecord" class="una.model.PolicyPeriodDTO">
-            <field name="recordID" length="3"/>
-            <field name="policyNumber" length="25" justify="left" />
-            <field name="agencyNumber" length="10" justify="left" />
-            <field name="writingCompanyCode" length="10" justify="left" />
-            <field name="lineOfBusinessCode" length="10" justify="left" />
-            <field name="lineOfBusinessSubCode" length="10" justify="left" />
-            <field name="policyEffectiveDate" length="8" justify="left" format="yyyyMMdd"/>
-            <field name="policyExpirationDate" length="8" justify="left" format="yyyyMMdd"/>
-            <field name="originalPolicyInceptionDate" length="8" justify="left" format="yyyyMMdd"/>
-            <field name="policyTerm" length="2" justify="left" format="00"/>
-            <field name="fullTermAnnualPremium" length="12" format="00000000000+;00000000000-" justify="left"/>
-            <field name="netChangePremium" length="12" format="00000000000+;00000000000-" justify="left"/>
-            <field name="companyProductCode" length="10" justify="left"/>
-            <field name="transactionTypeCode" length="10" justify="left"/>
-            <field name="cancelOrChangeReasonCode" length="10" justify="left"/>
-            <field name="cancellationMethod"  length="10" justify="left"/>
-            <field name="transactionEffectiveDate" length="8" justify="left" format="yyyyMMdd"/>
-            <field name="agentSystemID" length="30" justify="left"/>
-           <field name="producerSubCode" length="7" justify="left"/>
-            <field name="reservedForFutureUse" length="13" justify="left"/>
-        </record>
-    </stream>
 
 
 </beanio>

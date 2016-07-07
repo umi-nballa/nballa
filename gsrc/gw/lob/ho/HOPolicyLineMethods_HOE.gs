@@ -17,6 +17,7 @@ uses gw.lob.ho.rating.HORatingEngine_HOE
 uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.ho.HOE_UnderwriterEvaluator
+uses una.rating.ho.UNAHORatingEngine_HOE
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -178,8 +179,12 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
     return BigDecimal.ZERO
   }
 
+  //updating this method to create the custom rating engine by calling the custom UNA implementation
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
-    return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    if(method == RateMethod.TC_SYSTABLE) {
+      return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    }
+    return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }
 
   override property get SupportsNonSpecificLocations() : boolean {

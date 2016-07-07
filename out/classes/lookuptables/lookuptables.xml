@@ -1,0 +1,1933 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<LookupTables xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:noNamespaceSchemaLocation="lookuptables.xsd">
+
+  <LookupTable code="ProductLookup" entityName="ProductLookup" root="PolicyProductRoot">
+    <Dimension field="State" valuePath="PolicyProductRoot.State" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyProductRoot.JobType" precedence="1"/>
+    <Dimension field="IndustryCode" valuePath="PolicyProductRoot.Account.IndustryCode" precedence="2"/>
+    <DistinguishingField field="ProductCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- RefDate Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <LookupTable code="RefDateLookup" entityName="RefDateTypeLookup" root="gw.plugin.productmodel.impl.RefDateLookupCriteria">
+    <Dimension field="PolicyLinePatternCode" valuePath="RefDateLookupCriteria.PolicyLinePatternCode" precedence="0"/>
+    <Dimension field="ProductCode" valuePath="RefDateLookupCriteria.ProductCode" precedence="1"/>
+    <Dimension field="State" valuePath="RefDateLookupCriteria.State" precedence="2"/>
+    <Dimension field="UWCompanyCode" valuePath="RefDateLookupCriteria.UWCompanyCode" precedence="3"/>
+    <DistinguishingField field="Availability"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Offering Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <LookupTable code="OfferingLookup" entityName="OfferingLookup" root="PolicyPeriod">
+    <Dimension field="State" valuePath="PolicyPeriod.BaseState" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyPeriod.Job.Subtype" precedence="1"/>
+    <Dimension field="IndustryCode" valuePath="PolicyPeriod.Policy.Account.IndustryCode" precedence="2"/>
+    <DistinguishingField field="OfferingCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Question/QuestionSet Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <LookupTable code="PeriodQuestionSetLookup" entityName="QuestionSetLookup" root="PolicyPeriod">
+    <Dimension field="State" valuePath="PolicyPeriod.BaseState" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyPeriod.Job.Subtype" precedence="1"/>
+    <Dimension field="IndustryCode" valuePath="PolicyPeriod.Policy.Account.IndustryCode" precedence="2"/>
+    <DistinguishingField field="QuestionSetCode"/>
+  </LookupTable>
+
+  <LookupTable code="PeriodQuestionLookup" entityName="QuestionLookup" root="PolicyPeriod">
+    <Dimension field="State" valuePath="PolicyPeriod.BaseState" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyPeriod.Job.Subtype" precedence="1"/>
+    <DistinguishingField field="QuestionCode"/>
+  </LookupTable>
+
+  <LookupTable code="LocationQuestionSetLookup" entityName="QuestionSetLookup" root="PolicyLocation">
+    <Dimension field="State" valuePath="PolicyLocation.Branch.BaseState" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyLocation.Branch.Job.Subtype" precedence="1"/>
+    <Dimension field="IndustryCode" valuePath="PolicyLocation.Branch.Policy.Account.IndustryCode" precedence="2"/>
+    <DistinguishingField field="QuestionSetCode"/>
+  </LookupTable>
+
+  <LookupTable code="LocationQuestionLookup" entityName="QuestionLookup" root="PolicyLocation">
+    <Dimension field="State" valuePath="PolicyLocation.Branch.BaseState" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyLocation.Branch.Job.Subtype" precedence="1"/>
+    <DistinguishingField field="QuestionCode"/>
+  </LookupTable>
+
+  <LookupTable code="LineQuestionSetLookup" entityName="QuestionSetLookup" root="PolicyLine">
+    <Dimension field="PolicyLinePatternCode" valuePath="PolicyLine.PatternCode" precedence="0"/>
+    <Dimension field="State" valuePath="PolicyLine.Branch.BaseState" precedence="1"/>
+    <Dimension field="JobType" valuePath="PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="QuestionSetCode"/>
+  </LookupTable>
+
+  <LookupTable code="LineQuestionLookup" entityName="QuestionLookup" root="PolicyLine">
+    <Dimension field="State" valuePath="PolicyLine.Branch.BaseState" precedence="0"/>
+    <Dimension field="JobType" valuePath="PolicyLine.Branch.Job.Subtype" precedence="1"/>
+    <DistinguishingField field="QuestionCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Product Modifiers Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <LookupTable code="ProductModifier" entityName="ProductModifierLookup" root="EffectiveDatedFields">
+    <Filter field="ProductCode" valuePath="EffectiveDatedFields.Branch.Policy.ProductCode"/>
+    <Dimension field="State" valuePath="EffectiveDatedFields.Branch.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="EffectiveDatedFields.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="EffectiveDatedFields.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="ProductRateFactor" entityName="ProductRateFactorLookup" root="EffectiveDatedFields">
+    <Filter field="ProductCode" valuePath="EffectiveDatedFields.Branch.Policy.ProductCode"/>
+    <Dimension field="State" valuePath="EffectiveDatedFields.Branch.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="EffectiveDatedFields.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="EffectiveDatedFields.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Business Auto Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- Modifiers -->
+  <LookupTable code="BAModifier" entityName="BAModLookup" root="BusinessAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessAutoLine.PolicyType" precedence="3"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BARateFactor" entityName="BARateLookup" root="BusinessAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessAutoLine.PolicyType" precedence="3"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <!-- BusinessAutoLine -->
+  <LookupTable code="BACov" entityName="BACovLookup" root="BusinessAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessAutoLine.PolicyType" precedence="3"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAExcl" entityName="BAExclLookup" root="BusinessAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessAutoLine.PolicyType" precedence="3"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BACond" entityName="BACondLookup" root="BusinessAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessAutoLine.PolicyType" precedence="3"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BACovTerm" entityName="CovTermLookup" root="BusinessAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BACovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BusinessAutoLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BACovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BusinessAutoLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BAJurisdiction -->
+  <!-- JurisModifiers -->
+  <LookupTable code="BAJurisModifier" entityName="BAModLookup" root="BAJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="BAJurisdiction.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="BAJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BAJurisdiction.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BAJurisdiction.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BAJurisdiction.BALine.PolicyType" precedence="3"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAJurisRateFactor" entityName="BARateLookup" root="BAJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="BAJurisdiction.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="BAJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BAJurisdiction.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BAJurisdiction.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BAJurisdiction.BALine.PolicyType" precedence="3"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAStateCov" entityName="BACovLookup" root="BAJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="BAJurisdiction.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="BAJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BAJurisdiction.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BAJurisdiction.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BAJurisdiction.BALine.PolicyType" precedence="3"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAStateExcl" entityName="BAExclLookup" root="BAJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="BAJurisdiction.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="BAJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BAJurisdiction.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BAJurisdiction.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BAJurisdiction.BALine.PolicyType" precedence="3"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAStateCond" entityName="BACondLookup" root="BAJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="BAJurisdiction.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="BAJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BAJurisdiction.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BAJurisdiction.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BAJurisdiction.BALine.PolicyType" precedence="3"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAStateCovTerm" entityName="CovTermLookup" root="BAJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="BAJurisdiction.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="BAJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BAJurisdiction.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BAJurisdiction.BALine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAStateCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BAJurisdiction">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAStateCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BAJurisdiction">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BusinessVehicle -->
+  <!-- Modifiers -->
+  <LookupTable code="BAVehicleModifier" entityName="BusinessVehicleModifierLookup" root="BusinessVehicle">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessVehicle.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BusinessVehicle.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessVehicle.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessVehicle.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessVehicle.BALine.PolicyType" precedence="3"/>
+    <Dimension field="VehicleType" valuePath="BusinessVehicle.VehicleType" precedence="4"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAVehicleCov" entityName="BAVehicleCovLookup" root="BusinessVehicle">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessVehicle.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BusinessVehicle.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessVehicle.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessVehicle.BALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="PolicyType" valuePath="BusinessVehicle.BALine.PolicyType" precedence="3"/>
+    <Dimension field="VehicleType" valuePath="BusinessVehicle.VehicleType" precedence="4"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAVehicleCovTerm" entityName="CovTermLookup" root="BusinessVehicle">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessVehicle.BALine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BusinessVehicle.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessVehicle.BALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessVehicle.BALine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAVehicleCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BusinessVehicle">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BAVehicleCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BusinessVehicle">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Business Owners Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- Modifiers -->
+  <LookupTable code="BOPModifier" entityName="ModifierLookup" root="BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessOwnersLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPRateFactor" entityName="RateFactorLookup" root="BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessOwnersLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <!-- BusinessOwnersLine -->
+  <LookupTable code="BOPCov" entityName="CoverageLookup" root="BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessOwnersLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPExcl" entityName="ExclusionLookup" root="BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessOwnersLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPCond" entityName="ConditionLookup" root="BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessOwnersLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPCovTerm" entityName="CovTermLookup" root="BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BusinessOwnersLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BusinessOwnersLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BusinessOwnersLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BOPLocation -->
+  <LookupTable code="BOPLocationCov" entityName="CoverageLookup" root="BOPLocation">
+    <Filter field="PolicyLinePatternCode" valuePath="BOPLocation.BOPLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BOPLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BOPLocation.BOPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BOPLocation.BOPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPLocationCovTerm" entityName="CovTermLookup" root="BOPLocation">
+    <Filter field="PolicyLinePatternCode" valuePath="BOPLocation.BOPLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BOPLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BOPLocation.BOPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BOPLocation.BOPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPLocationCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BOPLocation">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPLocationCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BOPLocation">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BOPBuilding -->
+  <LookupTable code="BOPBuildingCov" entityName="CoverageLookup" root="BOPBuilding">
+    <Filter field="PolicyLinePatternCode" valuePath="BOPBuilding.BOPLocation.BOPLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BOPBuilding.BOPLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BOPBuilding.BOPLocation.BOPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BOPBuilding.BOPLocation.BOPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPBuildingCovTerm" entityName="CovTermLookup" root="BOPBuilding">
+    <Filter field="PolicyLinePatternCode" valuePath="BOPBuilding.BOPLocation.BOPLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(BOPBuilding.BOPLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BOPBuilding.BOPLocation.BOPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BOPBuilding.BOPLocation.BOPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPBuildingCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BOPBuilding">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BOPBuildingCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BOPBuilding">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Commercial Property Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- CommercialPropertyLine -->
+  <LookupTable code="CPCov" entityName="CoverageLookup" root="CommercialPropertyLine">
+    <Filter field="PolicyLinePatternCode" valuePath="CommercialPropertyLine.PatternCode"/>
+    <Dimension field="State" valuePath="CommercialPropertyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CommercialPropertyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CommercialPropertyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPExcl" entityName="ExclusionLookup" root="CommercialPropertyLine">
+    <Filter field="PolicyLinePatternCode" valuePath="CommercialPropertyLine.PatternCode"/>
+    <Dimension field="State" valuePath="CommercialPropertyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CommercialPropertyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CommercialPropertyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPCond" entityName="ConditionLookup" root="CommercialPropertyLine">
+    <Filter field="PolicyLinePatternCode" valuePath="CommercialPropertyLine.PatternCode"/>
+    <Dimension field="State" valuePath="CommercialPropertyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CommercialPropertyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CommercialPropertyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPCovTerm" entityName="CovTermLookup" root="CommercialPropertyLine">
+    <Filter field="PolicyLinePatternCode" valuePath="CommercialPropertyLine.PatternCode"/>
+    <Dimension field="State" valuePath="CommercialPropertyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CommercialPropertyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CommercialPropertyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CommercialPropertyLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CommercialPropertyLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- CPLocation -->
+  <LookupTable code="CPLocationCov" entityName="CoverageLookup" root="CPLocation">
+    <Filter field="PolicyLinePatternCode" valuePath="CPLocation.CPLine.PatternCode"/>
+    <Dimension field="State" valuePath="CPLocation.CPLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CPLocation.CPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CPLocation.CPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPLocationCovTerm" entityName="CovTermLookup" root="CPLocation">
+    <Filter field="PolicyLinePatternCode" valuePath="CPLocation.CPLine.PatternCode"/>
+    <Dimension field="State" valuePath="CPLocation.CPLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CPLocation.CPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CPLocation.CPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPLocationCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CPLocation">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPLocationCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CPLocation">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- Modifiers -->
+  <LookupTable code="CPModifier" entityName="ModifierLookup" root="CommercialPropertyLine">
+    <Filter field="PolicyLinePatternCode" valuePath="CommercialPropertyLine.PatternCode"/>
+    <Dimension field="State" valuePath="CommercialPropertyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CommercialPropertyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CommercialPropertyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPRateFactor" entityName="RateFactorLookup" root="CommercialPropertyLine">
+    <Filter field="PolicyLinePatternCode" valuePath="CommercialPropertyLine.PatternCode"/>
+    <Dimension field="State" valuePath="CommercialPropertyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CommercialPropertyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CommercialPropertyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <!-- CPBuilding -->
+  <LookupTable code="CPBuildingCov" entityName="CPBuildingCovLookup" root="CPBuilding">
+    <Filter field="PolicyLinePatternCode" valuePath="CPBuilding.CPLocation.CPLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(CPBuilding.CPLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CPBuilding.CPLocation.CPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="CoverageForm" valuePath="CPBuilding.CoverageForm" precedence="2"/>
+    <Dimension field="JobType" valuePath="CPBuilding.CPLocation.CPLine.Branch.Job.Subtype" precedence="3"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPBuildingCovTerm" entityName="CovTermLookup" root="CPBuilding">
+    <Filter field="PolicyLinePatternCode" valuePath="CPBuilding.CPLocation.CPLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(CPBuilding.CPLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CPBuilding.CPLocation.CPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CPBuilding.CPLocation.CPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPBuildingCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CPBuilding">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPBuildingCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CPBuilding">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- CPBlanket -->
+  <LookupTable code="CPBlanketCov" entityName="CoverageLookup" root="CPBlanket">
+    <Filter field="PolicyLinePatternCode" valuePath="CPBlanket.CPLine.PatternCode"/>
+    <Dimension field="State" valuePath="CPBlanket.CPLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CPBlanket.CPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CPBlanket.CPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPBlanketCovTerm" entityName="CovTermLookup" root="CPBlanket">
+    <Filter field="PolicyLinePatternCode" valuePath="CPBlanket.CPLine.PatternCode"/>
+    <Dimension field="State" valuePath="CPBlanket.CPLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CPBlanket.CPLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CPBlanket.CPLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPBlanketCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CPBlanket">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="CPBlanketCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="CPBlanket">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- General Liability Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- GeneralLiabilityLine -->
+  <LookupTable code="GLCov" entityName="CoverageLookup" root="GeneralLiabilityLine">
+    <Filter field="PolicyLinePatternCode" valuePath="GeneralLiabilityLine.PatternCode"/>
+    <Dimension field="State" valuePath="GeneralLiabilityLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GeneralLiabilityLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GeneralLiabilityLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLExcl" entityName="ExclusionLookup" root="GeneralLiabilityLine">
+    <Filter field="PolicyLinePatternCode" valuePath="GeneralLiabilityLine.PatternCode"/>
+    <Dimension field="State" valuePath="GeneralLiabilityLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GeneralLiabilityLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GeneralLiabilityLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLCond" entityName="ConditionLookup" root="GeneralLiabilityLine">
+    <Filter field="PolicyLinePatternCode" valuePath="GeneralLiabilityLine.PatternCode"/>
+    <Dimension field="State" valuePath="GeneralLiabilityLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GeneralLiabilityLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GeneralLiabilityLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLCovTerm" entityName="CovTermLookup" root="GeneralLiabilityLine">
+    <Filter field="PolicyLinePatternCode" valuePath="GeneralLiabilityLine.PatternCode"/>
+    <Dimension field="State" valuePath="GeneralLiabilityLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GeneralLiabilityLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GeneralLiabilityLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="GeneralLiabilityLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="GeneralLiabilityLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+    <LookupTable code="GLLineSchCovItemCov" entityName="CoverageLookup" root="GLLineScheduleCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="GLLineScheduleCovItem.Schedule.GLLine.PatternCode"/>
+    <Dimension field="State" valuePath="GLLineScheduleCovItem.Schedule.GLLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GLLineScheduleCovItem.Schedule.GLLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GLLineScheduleCovItem.Schedule.GLLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLLineSchCovItemCovTerm" entityName="CovTermLookup" root="GLLineScheduleCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="GLLineScheduleCovItem.Schedule.GLLine.PatternCode"/>
+    <Dimension field="State" valuePath="GLLineScheduleCovItem.Schedule.GLLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GLLineScheduleCovItem.Schedule.GLLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GLLineScheduleCovItem.Schedule.GLLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLLineSchCovItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="GLLineScheduleCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <!-- Modifiers -->
+  <LookupTable code="GLModifier" entityName="ModifierLookup" root="GeneralLiabilityLine">
+    <Filter field="PolicyLinePatternCode" valuePath="GeneralLiabilityLine.PatternCode"/>
+    <Dimension field="State" valuePath="GeneralLiabilityLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GeneralLiabilityLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GeneralLiabilityLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="GLRateFactor" entityName="RateFactorLookup" root="GeneralLiabilityLine">
+    <Filter field="PolicyLinePatternCode" valuePath="GeneralLiabilityLine.PatternCode"/>
+    <Dimension field="State" valuePath="GeneralLiabilityLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="GeneralLiabilityLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="GeneralLiabilityLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+  <!-- ======================================================================================= -->
+  <!-- Homeowners Lookup Tables -->
+  <!-- ======================================================================================= -->
+<!-- Modifiers -->
+  <LookupTable code="HomeownersModifier" entityName="ModifierLookup" root="HomeownersLine_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="HomeownersLine_HOE.PatternCode"/>
+    <Dimension field="State" valuePath="HomeownersLine_HOE.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="HomeownersLine_HOE.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="HomeownersLine_HOE.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="DwellingModifier" entityName="ModifierLookup" root="Dwelling_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="Dwelling_HOE.HOLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(Dwelling_HOE.HOLocation.PolicyLocation)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="Dwelling_HOE.HOLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="Dwelling_HOE.HOLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <!-- HomeownersLine -->
+  <LookupTable code="HomeownersLineCov" entityName="HOCoverageLookup_HOE" root="HomeownersLine_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="HomeownersLine_HOE.PatternCode"/>
+    <Dimension field="State" valuePath="HomeownersLine_HOE.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="HomeownersLine_HOE.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="HomeownersLine_HOE.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="HomeownersLineCovTerm" entityName="HOCovTermLookup_HOE" root="HomeownersLine_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="HomeownersLine_HOE.PatternCode"/>
+    <Dimension field="State" valuePath="HomeownersLine_HOE.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="HomeownersLine_HOE.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="HomeownersLine_HOE.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="HomeownersLineCovOpt" entityName="HOCovTermOptLookup_HOE" root="gw.api.domain.covterm.CovTerm" appliesTo="HomeownersLine_HOE">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="CovTerm.Clause.PolicyLine.Branch.HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="HomeownersLineCovPack" entityName="HOCovTermPackLookup_HOE" root="gw.api.domain.covterm.CovTerm" appliesTo="HomeownersLine_HOE">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="CovTerm.Clause.PolicyLine.Branch.HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <LookupTable code="HomeownersLineExcl" entityName="ExclusionLookup_HOE" root="HomeownersLine_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="HomeownersLine_HOE.PatternCode"/>
+    <Dimension field="State" valuePath="HomeownersLine_HOE.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="HomeownersLine_HOE.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="HomeownersLine_HOE.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="HomeownersLine_HOE.Branch.HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="HomeownersLineCond" entityName="ConditionLookup_HOE" root="HomeownersLine_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="HomeownersLine_HOE.PatternCode"/>
+    <Dimension field="State" valuePath="HomeownersLine_HOE.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="HomeownersLine_HOE.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="HomeownersLine_HOE.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="HomeownersLine_HOE.Branch.HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <!-- Dwelling -->
+  <LookupTable code="DwellingCov" entityName="HOCoverageLookup_HOE" root="Dwelling_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="Dwelling_HOE.HOLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(Dwelling_HOE.HOLocation.PolicyLocation)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="Dwelling_HOE.HOLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="Dwelling_HOE.HOLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="Dwelling_HOE.HOLine.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="DwellingCovTerm" entityName="HOCovTermLookup_HOE" root="Dwelling_HOE">
+    <Filter field="PolicyLinePatternCode" valuePath="Dwelling_HOE.HOLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(Dwelling_HOE.HOLocation.PolicyLocation)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="Dwelling_HOE.HOLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="Dwelling_HOE.HOLine.Branch.Job.Subtype" precedence="2"/>   
+    <Dimension field="HOPolicyType" valuePath="Dwelling_HOE.HOLine.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="DwellingCovCovOpt" entityName="HOCovTermOptLookup_HOE" root="gw.api.domain.covterm.CovTerm" appliesTo="Dwelling_HOE">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="CovTerm.Clause.PolicyLine.Branch.HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="DwellingCovPack" entityName="HOCovTermPackLookup_HOE" root="gw.api.domain.covterm.CovTerm" appliesTo="Dwelling_HOE">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="HOPolicyType" valuePath="CovTerm.Clause.PolicyLine.Branch.HomeownersLine_HOE.HOPolicyType" precedence="3"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+  <!-- ======================================================================================= -->
+  <!-- Inland Marine Lookup Tables -->
+
+  <!-- ======================================================================================= -->
+  <!-- Inland Marine Contractors Equipment Part Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- Inland Marine Contractors Equipment Part -->
+  <LookupTable code="ContrEquipPartCov" entityName="CoverageLookup" root="ContractorsEquipPart">
+    <Filter field="PolicyLinePatternCode" valuePath="ContractorsEquipPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="ContractorsEquipPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMContrEquipExcl" entityName="ExclusionLookup" root="ContractorsEquipPart">
+    <Filter field="PolicyLinePatternCode" valuePath="ContractorsEquipPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="ContractorsEquipPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMContrEquipCond" entityName="ConditionLookup" root="ContractorsEquipPart">
+    <Filter field="PolicyLinePatternCode" valuePath="ContractorsEquipPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="ContractorsEquipPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="ContrEquipPartCovTerm" entityName="CovTermLookup" root="ContractorsEquipPart">
+    <Filter field="PolicyLinePatternCode" valuePath="ContractorsEquipPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="ContractorsEquipPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="ContractorsEquipPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="ContrEquipPartCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="ContractorsEquipPart">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="ContrEquipPartCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="ContractorsEquipPart">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- Inland Marine Contractors Equipment -->
+  <LookupTable code="ContractorsEquipCov" entityName="CoverageLookup" root="ContractorsEquipment">
+    <Filter field="PolicyLinePatternCode" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="ContrEquipCovTerm" entityName="CovTermLookup" root="ContractorsEquipment">
+    <Filter field="PolicyLinePatternCode" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="ContractorsEquipment.ContractorsEquipPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="ContrEquipCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="ContractorsEquipment">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="ContrEquipCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="ContractorsEquipment">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Inland Marine Sign Part Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- Inland Marine Signs -->
+  <LookupTable code="IMSignCov" entityName="CoverageLookup" root="IMSign">
+    <Filter field="PolicyLinePatternCode" valuePath="IMSign.IMSignPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(IMSign.IMLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMSign.IMSignPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMSign.IMSignPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMSignCovTerm" entityName="CovTermLookup" root="IMSign">
+    <Filter field="PolicyLinePatternCode" valuePath="IMSign.IMSignPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(IMSign.IMLocation.Location)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMSign.IMSignPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMSign.IMSignPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMSignCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="IMSign">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMSignCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="IMSign">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Inland Marine Accounts Receivable Part Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- Inland Marine Accounts Receivable Part -->
+  <LookupTable code="AccountsRecPartCov" entityName="CoverageLookup" root="IMAccountsRecPart">
+    <Filter field="PolicyLinePatternCode" valuePath="IMAccountsRecPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="IMAccountsRecPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMAccountsRecExcl" entityName="ExclusionLookup" root="IMAccountsRecPart">
+    <Filter field="PolicyLinePatternCode" valuePath="IMAccountsRecPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="IMAccountsRecPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="IMAccountsRecCond" entityName="ConditionLookup" root="IMAccountsRecPart">
+    <Filter field="PolicyLinePatternCode" valuePath="IMAccountsRecPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="IMAccountsRecPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="AccountsRecPartCovTerm" entityName="CovTermLookup" root="IMAccountsRecPart">
+    <Filter field="PolicyLinePatternCode" valuePath="IMAccountsRecPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="IMAccountsRecPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMAccountsRecPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="AccountsRecPartCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="IMAccountsRecPart">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="AccountsRecPartCov.Pack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="IMAccountsRecPart">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- Inland Marine Accounts Receivable -->
+  <LookupTable code="AccountsRecCov" entityName="CoverageLookup" root="IMAccountsReceivable">
+    <Filter field="PolicyLinePatternCode" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="AccountsRecCovTerm" entityName="CovTermLookup" root="IMAccountsReceivable">
+    <Filter field="PolicyLinePatternCode" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.PatternCode"/>
+    <Dimension field="State" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="IMAccountsReceivable.IMAccountsRecPart.InlandMarineLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="AccountsRecCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="IMAccountsReceivable">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="AccountsRecCov.Pack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="IMAccountsReceivable">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Personal Auto Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- Modifiers -->
+  <LookupTable code="PAModifier" entityName="ModifierLookup" root="PersonalAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="PersonalAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PAVehicleModifier" entityName="PAVehicleModifierLkup" root="PersonalVehicle">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalVehicle.PALine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(PersonalVehicle.GarageLocation)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalVehicle.PALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalVehicle.PALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="VehicleType" valuePath="PersonalVehicle.VehicleType" precedence="3"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PARateFactor" entityName="RateFactorLookup" root="PersonalAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="PersonalAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PAExcl" entityName="ExclusionLookup" root="PersonalAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="PersonalAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PACond" entityName="ConditionLookup" root="PersonalAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="PersonalAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <!-- PersonalAutoLine -->
+  <LookupTable code="PACov" entityName="CoverageLookup" root="PersonalAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="PersonalAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PACovTerm" entityName="CovTermLookup" root="PersonalAutoLine">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalAutoLine.PatternCode"/>
+    <Dimension field="State" valuePath="PersonalAutoLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalAutoLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalAutoLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PACovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="PersonalAutoLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="PACovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="PersonalAutoLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- PersonalVehicle -->
+  <LookupTable code="PAVehicleCov" entityName="PAVehicleCovLookup" root="PersonalVehicle">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalVehicle.PALine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(PersonalVehicle.GarageLocation)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalVehicle.PALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalVehicle.PALine.Branch.Job.Subtype" precedence="2"/>
+    <Dimension field="VehicleType" valuePath="PersonalVehicle.VehicleType" precedence="3"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PAVehicleCovTerm" entityName="CovTermLookup" root="PersonalVehicle">
+    <Filter field="PolicyLinePatternCode" valuePath="PersonalVehicle.PALine.PatternCode"/>
+    <Dimension field="State" valuePath="gw.api.util.JurisdictionMappingUtil.getJurisdictionMappingForPolicyLocation(PersonalVehicle.GarageLocation)" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="PersonalVehicle.PALine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="PersonalVehicle.PALine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="PAVehicleCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="PersonalVehicle">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="PAVehicleCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="PersonalVehicle">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- ======================================================================================= -->
+  <!-- Workers Comp Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <LookupTable code="WCModifier" entityName="ModifierLookup" root="WCJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="WCJurisdiction.WCLine.PatternCode"/>
+    <Dimension field="State" valuePath="WCJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WCJurisdiction.WCLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WCJurisdiction.WCLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCRateFactor" entityName="RateFactorLookup" root="WCJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="WCJurisdiction.WCLine.PatternCode"/>
+    <Dimension field="State" valuePath="WCJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WCJurisdiction.WCLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WCJurisdiction.WCLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+  </LookupTable>
+
+  <!-- WorkersCompLine -->
+  <LookupTable code="WCCov" entityName="CoverageLookup" root="WorkersCompLine">
+    <Filter field="PolicyLinePatternCode" valuePath="WorkersCompLine.PatternCode"/>
+    <Dimension field="State" valuePath="WorkersCompLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WorkersCompLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WorkersCompLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCExcl" entityName="ExclusionLookup" root="WorkersCompLine">
+    <Filter field="PolicyLinePatternCode" valuePath="WorkersCompLine.PatternCode"/>
+    <Dimension field="State" valuePath="WorkersCompLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WorkersCompLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WorkersCompLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCCond" entityName="ConditionLookup" root="WorkersCompLine">
+    <Filter field="PolicyLinePatternCode" valuePath="WorkersCompLine.PatternCode"/>
+    <Dimension field="State" valuePath="WorkersCompLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WorkersCompLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WorkersCompLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCCovTerm" entityName="CovTermLookup" root="WorkersCompLine">
+    <Filter field="PolicyLinePatternCode" valuePath="WorkersCompLine.PatternCode"/>
+    <Dimension field="State" valuePath="WorkersCompLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WorkersCompLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WorkersCompLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="WorkersCompLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="WorkersCompLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.PolicyLine.BaseState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- WCJurisdiction -->
+  <LookupTable code="WCStateCov" entityName="CoverageLookup" root="WCJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="WCJurisdiction.WCLine.PatternCode"/>
+    <Dimension field="State" valuePath="WCJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WCJurisdiction.WCLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WCJurisdiction.WCLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCStateCovTerm" entityName="CovTermLookup" root="WCJurisdiction">
+    <Filter field="PolicyLinePatternCode" valuePath="WCJurisdiction.WCLine.PatternCode"/>
+    <Dimension field="State" valuePath="WCJurisdiction.State" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="WCJurisdiction.WCLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="WCJurisdiction.WCLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCStateCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="WCJurisdiction">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="WCStateCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="WCJurisdiction">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+<!-- ======================================================================================= -->
+  <!-- BP7 Business Owners Lookup Tables -->
+  <!-- ======================================================================================= -->
+
+  <!-- BP7BusinessOwnersLine -->
+  
+  <LookupTable code="BP7LineCov" entityName="CoverageLookup" root="BP7BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BusinessOwnersLine.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineCovTerm" entityName="CovTermLookup" root="BP7BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BusinessOwnersLine.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BusinessOwnersLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BusinessOwnersLine">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineExcl" entityName="ExclusionLookup" root="BP7BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BusinessOwnersLine.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+ </LookupTable>
+
+  <LookupTable code="BP7LineCond" entityName="ConditionLookup" root="BP7BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BusinessOwnersLine.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+ </LookupTable>
+
+  <LookupTable code="BP7LineMod" entityName="ModifierLookup" root="BP7BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BusinessOwnersLine.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ModifierPatternCode"/>
+ </LookupTable>
+
+  <LookupTable code="BP7LineRF" entityName="RateFactorLookup" root="BP7BusinessOwnersLine">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BusinessOwnersLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BusinessOwnersLine.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BusinessOwnersLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BusinessOwnersLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="RateFactorPatternCode"/>
+ </LookupTable>
+
+  <!-- BP7Location -->
+  
+  <LookupTable code="BP7LocationCov" entityName="CoverageLookup" root="BP7Location">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Location.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Location.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Location.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Location.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocationCovTerm" entityName="CovTermLookup" root="BP7Location">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Location.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Location.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Location.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Location.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocationCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7Location">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocationCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7Location">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocationExcl" entityName="ExclusionLookup" root="BP7Location">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Location.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Location.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Location.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Location.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+ </LookupTable>
+
+  <LookupTable code="BP7LocationCond" entityName="ConditionLookup" root="BP7Location">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Location.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Location.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Location.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Location.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+ </LookupTable>
+
+  <!-- BP7Building -->
+  
+  <LookupTable code="BP7BuildingCov" entityName="CoverageLookup" root="BP7Building">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Building.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Building.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Building.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Building.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BuildingCovTerm" entityName="CovTermLookup" root="BP7Building">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Building.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Building.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Building.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Building.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BuildingCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7Building">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BuildingCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7Building">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BuildingExcl" entityName="ExclusionLookup" root="BP7Building">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Building.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Building.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Building.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Building.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+ </LookupTable>
+
+  <LookupTable code="BP7BuildingCond" entityName="ConditionLookup" root="BP7Building">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Building.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Building.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Building.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Building.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+ </LookupTable>
+
+  <!-- BP7Classification -->
+  
+  <LookupTable code="BP7ClassificationCov" entityName="CoverageLookup" root="BP7Classification">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Classification.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Classification.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Classification.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Classification.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassificationCovTerm" entityName="CovTermLookup" root="BP7Classification">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Classification.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Classification.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Classification.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Classification.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassificationCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7Classification">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassificationCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7Classification">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassificationExcl" entityName="ExclusionLookup" root="BP7Classification">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Classification.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Classification.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Classification.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Classification.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ExclusionPatternCode"/>
+ </LookupTable>
+
+  <LookupTable code="BP7ClassificationCond" entityName="ConditionLookup" root="BP7Classification">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7Classification.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7Classification.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7Classification.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7Classification.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+ </LookupTable>
+
+  <!-- BP7BldgSchedCovItem -->
+
+  <LookupTable code="BP7BldgSchedCovItemCov" entityName="CoverageLookup" root="BP7BldgSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BldgSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BldgSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BldgSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BldgSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedCovItemCovTerm" entityName="CovTermLookup" root="BP7BldgSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BldgSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BldgSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BldgSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BldgSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedCovItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BldgSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedCovItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BldgSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7BldgSchedCondItem -->
+
+  <LookupTable code="BP7BldgSchedCondItemCond" entityName="ConditionLookup" root="BP7BldgSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BldgSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BldgSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BldgSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BldgSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedCondItemCovTerm" entityName="CovTermLookup" root="BP7BldgSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BldgSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BldgSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BldgSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BldgSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedCondItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BldgSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedCondItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BldgSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7BldgSchedExclItem -->
+
+  <LookupTable code="BP7BldgSchedExclItemExcl" entityName="ConditionLookup" root="BP7BldgSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BldgSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BldgSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BldgSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BldgSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedExclItemCovTerm" entityName="CovTermLookup" root="BP7BldgSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7BldgSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7BldgSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7BldgSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7BldgSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedExclItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BldgSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7BldgSchedExclItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7BldgSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7ClassSchedCovItem -->
+
+  <LookupTable code="BP7ClassSchedCovItemCov" entityName="CoverageLookup" root="BP7ClassSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7ClassSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7ClassSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7ClassSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7ClassSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedCovItemCovTerm" entityName="CovTermLookup" root="BP7ClassSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7ClassSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7ClassSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7ClassSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7ClassSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedCovItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7ClassSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedCovItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7ClassSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7ClassSchedCondItem -->
+
+  <LookupTable code="BP7ClassSchedCondItemCond" entityName="ConditionLookup" root="BP7ClassSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7ClassSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7ClassSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7ClassSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7ClassSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedCondItemCovTerm" entityName="CovTermLookup" root="BP7ClassSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7ClassSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7ClassSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7ClassSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7ClassSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedCondItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7ClassSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedCondItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7ClassSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7ClassSchedExclItem -->
+
+  <LookupTable code="BP7ClassSchedExclItemExcl" entityName="ConditionLookup" root="BP7ClassSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7ClassSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7ClassSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7ClassSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7ClassSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedExclItemCovTerm" entityName="CovTermLookup" root="BP7ClassSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7ClassSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7ClassSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7ClassSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7ClassSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedExclItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7ClassSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7ClassSchedExclItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7ClassSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7LineSchedCovItem -->
+
+  <LookupTable code="BP7LineSchedCovItemCov" entityName="CoverageLookup" root="BP7LineSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LineSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LineSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LineSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LineSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedCovItemCovTerm" entityName="CovTermLookup" root="BP7LineSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LineSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LineSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LineSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LineSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedCovItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LineSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedCovItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LineSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7LineSchedCondItem -->
+
+  <LookupTable code="BP7LineSchedCondItemCond" entityName="ConditionLookup" root="BP7LineSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LineSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LineSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LineSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LineSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedCondItemCovTerm" entityName="CovTermLookup" root="BP7LineSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LineSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LineSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LineSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LineSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedCondItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LineSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedCondItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LineSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7LineSchedExclItem -->
+
+  <LookupTable code="BP7LineSchedExclItemExcl" entityName="ConditionLookup" root="BP7LineSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LineSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LineSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LineSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LineSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedExclItemCovTerm" entityName="CovTermLookup" root="BP7LineSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LineSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LineSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LineSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LineSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedExclItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LineSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LineSchedExclItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LineSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7LocSchedCovItem -->
+
+  <LookupTable code="BP7LocSchedCovItemCov" entityName="CoverageLookup" root="BP7LocSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LocSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LocSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LocSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LocSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CoveragePatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedCovItemCovTerm" entityName="CovTermLookup" root="BP7LocSchedCovItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LocSchedCovItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LocSchedCovItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LocSchedCovItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LocSchedCovItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedCovItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LocSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedCovItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LocSchedCovItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7LocSchedCondItem -->
+
+  <LookupTable code="BP7LocSchedCondItemCond" entityName="ConditionLookup" root="BP7LocSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LocSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LocSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LocSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LocSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedCondItemCovTerm" entityName="CovTermLookup" root="BP7LocSchedCondItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LocSchedCondItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LocSchedCondItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LocSchedCondItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LocSchedCondItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedCondItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LocSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedCondItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LocSchedCondItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+  <!-- BP7LocSchedExclItem -->
+
+  <LookupTable code="BP7LocSchedExclItemExcl" entityName="ConditionLookup" root="BP7LocSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LocSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LocSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LocSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LocSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="ConditionPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedExclItemCovTerm" entityName="CovTermLookup" root="BP7LocSchedExclItem">
+    <Filter field="PolicyLinePatternCode" valuePath="BP7LocSchedExclItem.PolicyLine.PatternCode"/>
+    <Dimension field="State" valuePath="BP7LocSchedExclItem.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="BP7LocSchedExclItem.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="BP7LocSchedExclItem.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPatternCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedExclItemCovOpt" entityName="CovTermOptLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LocSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermOptCode"/>
+  </LookupTable>
+
+  <LookupTable code="BP7LocSchedExclItemCovPack" entityName="CovTermPackLookup" root="gw.api.domain.covterm.CovTerm" appliesTo="BP7LocSchedExclItem">
+    <Filter field="CovTermPatternCode" valuePath="CovTerm.PatternCode"/>
+    <Filter field="Currency" valuePath="CovTerm.Clause.Currency" exactMatch="false"/>
+    <Dimension field="State" valuePath="CovTerm.Clause.OwningCoverable.CoverableState" precedence="0"/>
+    <Dimension field="UWCompanyCode" valuePath="CovTerm.Clause.PolicyLine.Branch.UWCompany.Code" precedence="1"/>
+    <Dimension field="JobType" valuePath="CovTerm.Clause.PolicyLine.Branch.Job.Subtype" precedence="2"/>
+    <DistinguishingField field="CovTermPackCode"/>
+  </LookupTable>
+
+</LookupTables>

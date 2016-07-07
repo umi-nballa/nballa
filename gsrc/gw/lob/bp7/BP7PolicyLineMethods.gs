@@ -264,10 +264,11 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   }
 
   override function createRatingEngine(method: RateMethod, parameters: Map<RateEngineParameter, Object>): AbstractRatingEngine<BP7Line> {
-    if (RateMethod.TC_SYSTABLE == method) {
+    /*if (RateMethod.TC_SYSTABLE == method) {
       return new BP7SysTableRatingEngine(_line as BP7Line)
     }
-    return new BP7RatingEngine(_line as BP7Line, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    return new BP7RatingEngine(_line as BP7Line, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)*/
+    return new BP7SysTableRatingEngine(_line as BP7Line)
   }
 
   override property get BaseStateRequired(): boolean {

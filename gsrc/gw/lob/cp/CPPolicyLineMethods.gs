@@ -274,10 +274,11 @@ class CPPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   }
 
   override function createRatingEngine(method: RateMethod, parameters: Map<RateEngineParameter, Object>): AbstractRatingEngine {
-    if (RateMethod.TC_SYSTABLE == method) {
+    /*if (RateMethod.TC_SYSTABLE == method) {
       return new CPSysTableRatingEngine(_line)
     }
-    return new CPRatingEngine(_line as CPLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    return new CPRatingEngine(_line as CPLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)*/
+    return new CPSysTableRatingEngine(_line)
   }
 
   override property get BaseStateRequired(): boolean {

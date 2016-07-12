@@ -112,6 +112,7 @@ class NewSubmissionUIHelper {
     var policyPeriod = submission.LatestPeriod
     gw.transaction.Transaction.runWithNewBundle( \ bun -> {
       policyPeriod = bun.add( policyPeriod )
+      policyPeriod.BaseState = producerSelection.State
       policyPeriod.SubmissionProcess.beginEditing()
     } )
 

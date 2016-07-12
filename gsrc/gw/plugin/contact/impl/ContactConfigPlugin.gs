@@ -29,7 +29,8 @@ class ContactConfigPlugin implements IContactConfigPlugin {
       new ContactConfig(true, {"company"          }, "LaborContractor",    {"PolicyLaborContractor"}),
       new ContactConfig(true, {"company", "person"}, "NamedInsured",       {"PolicyPriNamedInsured", "PolicySecNamedInsured", "PolicyAddlNamedInsured"}),
       new ContactConfig(true, {           "person"}, "OwnerOfficer",       {"PolicyOwnerOfficer"}),
-      new ContactConfig(true, {"company", "person"}, "SecondaryContact",   {})
+      new ContactConfig(true, {"company", "person"}, "SecondaryContact",   {}),
+      new ContactConfig(true, {"company", "person"}, "DBARole_Ext",        {"PolicyDBARole_Ext"})
     }
   }
   

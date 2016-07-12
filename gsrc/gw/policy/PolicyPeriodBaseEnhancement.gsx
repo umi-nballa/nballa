@@ -1071,6 +1071,19 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
     if (polNamedInsured == this.getSecondaryNamedInsured()) {
       this.EffectiveDatedFields.setFieldValue("SecondaryNamedInsured", null);
     }
+    /**
+     * Added by Marcia Gomes da Silva DBA - Accelerator 09/13/2012
+     * Removes the DBAs from the Named Insured before removing the actual Policy Contact Role
+     */
+
+    for(dba in polNamedInsured.DBAs){
+      polNamedInsured.Bundle.add(dba.PolicyDBARole)
+      polNamedInsured.removeFromDBAs(dba)
+      polNamedInsured.Branch.removeFromPolicyContactRoles(dba.PolicyDBARole)
+    }
+
+    //***************************************************************
+
     this.removeFromPolicyContactRoles(polNamedInsured)
   }
 

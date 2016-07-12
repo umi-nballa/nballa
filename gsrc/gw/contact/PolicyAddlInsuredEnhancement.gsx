@@ -25,6 +25,13 @@ enhancement PolicyAddlInsuredEnhancement : PolicyAddlInsured
    */
   function removeDetail(toRemove : PolicyAddlInsuredDetail) {
     this.removeFromPolicyAdditionalInsuredDetails(toRemove)
+
+    for(dba in this.DBAs){
+        this.removeFromDBAs(dba)
+        this.Branch.removeFromPolicyContactRoles(dba.PolicyDBARole)
+
+    }
+
     if (this.PolicyAdditionalInsuredDetails.Count == 0) {
       this.Branch.removeFromPolicyContactRoles(this)
     }

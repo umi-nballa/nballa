@@ -1,0 +1,121 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="PolicyDBAsDV"
+    visible="period.Submission.QuoteType == &quot;Full&quot; or not (period.Job typeis Submission)">
+    <Require
+      name="period"
+      type="PolicyPeriod"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      initialValue="gw.plugin.Plugins.get(gw.plugin.contact.IContactConfigPlugin)"
+      name="contactConfigPlugin"/>
+    <Variable
+      initialValue="null"
+      name="unassignedAdditionalNamedInsureds"
+      recalculateOnRefresh="true"
+      type="AccountContactView[]"/>
+    <Variable
+      initialValue="null"
+      name="otherContacts"
+      recalculateOnRefresh="true"
+      type="AccountContactView[]"/>
+    <Variable
+      initialValue="com.guidewire.pl.system.dependency.PLDependencies.getPluginConfig()"
+      name="pluginConfig"/>
+    <Variable
+      initialValue="getAllPolicyDBAs()"
+      name="policyDBAs"
+      recalculateOnRefresh="true"/>
+    <InputColumn>
+      <InputSet
+        id="NamedInsuredInputSet">
+        <Label
+          label="displaykey.Accelerator.DBA.Policy.DBA.DBAsForThisPolicy"/>
+        <ListViewInput
+          editable="true"
+          labelAbove="true">
+          <Toolbar>
+            <CheckedValuesToolbarButton
+              checkedRowAction="period.PrimaryDBA = CheckedValue.PolicyDBARole"
+              id="setToPrimary"
+              iterator="DBAListIterator"
+              label="displaykey.Accelerator.DBA.Policy.SetAsPrimary"
+              visible="openForEdit"/>
+          </Toolbar>
+          <ListViewPanel
+            id="DBAListLV">
+            <RowIterator
+              editable="openForEdit"
+              elementName="pcrDbaRole"
+              hasCheckBoxes="true"
+              hideCheckBoxesIfReadOnly="true"
+              id="DBAListIterator"
+              value="getAllPolicyDBAs()">
+              <Variable
+                initialValue="pcrDbaRole.PolicyDBARole"
+                name="dbaRole"
+                type="PolicyDBARole_Ext"/>
+              <Variable
+                initialValue="pcrDbaRole.PolicyContactRole"
+                name="pcr"
+                type="PolicyContactRole"/>
+              <Row
+                editable="openForEdit">
+                <TextCell
+                  action="EditPolicyContactRolePopup.push(pcr, openForEdit)"
+                  id="Name"
+                  label="displaykey.Accelerator.DBA.Policy.DBA.Insured"
+                  numCols="32"
+                  value="pcr.DisplayName"/>
+                <TextCell
+                  action="EditDBAContactPopup.push(dbaRole.AccountContactRole.AccountContact)"
+                  id="DBAName"
+                  label="displaykey.Accelerator.DBA.Policy.DBA.DoingBusinessAs"
+                  numCols="32"
+                  value="dbaRole.AccountContactRole.AccountContact.Contact.DisplayName"/>
+                <RadioButtonCell
+                  id="DBAPrimary"
+                  label="displaykey.Accelerator.DBA.Policy.DBA.PrimaryDBA"
+                  radioButtonGroup="DBAPrimary"
+                  value="period.PrimaryDBA == dbaRole"/>
+                <Cell
+                  id="DBAAddress"
+                  label="displaykey.Accelerator.DBA.Policy.DBA.AddressLine"
+                  value="dbaRole.AccountContactRole.AccountContact.Contact.PrimaryAddress.AddressLine1"/>
+                <Cell
+                  id="DBAAddressCity"
+                  label="displaykey.Web.AddressBook.AddressInputSet.City"
+                  value="dbaRole.AccountContactRole.AccountContact.Contact.PrimaryAddress.City"/>
+                <Cell
+                  id="DBAAddressState"
+                  label="displaykey.Web.AddressBook.AddressInputSet.State"
+                  value="dbaRole.AccountContactRole.AccountContact.Contact.PrimaryAddress.State"/>
+                <Cell
+                  id="DBAAddressPostalCode"
+                  label="displaykey.Web.AddressBook.AddressInputSet.ZIP"
+                  value="dbaRole.AccountContactRole.AccountContact.Contact.PrimaryAddress.PostalCode"/>
+              </Row>
+            </RowIterator>
+          </ListViewPanel>
+        </ListViewInput>
+      </InputSet>
+    </InputColumn>
+    <Code><![CDATA[function getAllPolicyDBAs() : PolicyContactRoleDBARole_Ext[]{
+  var result = new java.util.ArrayList<PolicyContactRoleDBARole_Ext>()
+
+  for(pcr in period.PolicyContactRoles){
+    //result.add(pcr)
+    result.addAll(pcr.DBAs as java.util.Collection<entity.PolicyContactRoleDBARole_Ext>)
+    //print(pcr.PolicyContactRole.AccountContactRole.AccountContact.Contact + " policy contact role")
+    //print(pcr.PolicyDBARole.AccountContactRole.AccountContact.Contact + "policy dba role")
+  }
+  
+  return result as entity.PolicyContactRoleDBARole_Ext[]
+}]]></Code>
+  </DetailViewPanel>
+</PCF>

@@ -10,6 +10,17 @@
     <Require
       name="openForEditOverride"
       type="boolean"/>
+    <Variable
+      initialValue="gw.plugin.Plugins.get(gw.plugin.contact.IContactConfigPlugin)"
+      name="contactConfigPlugin"/>
+    <Variable
+      initialValue="policyContactRole.AccountContactRole.AccountContact"
+      name="acctContact"
+      type="AccountContact"/>
+    <Variable
+      initialValue="getUnassignedDBAs()"
+      name="unassignedDBAs"
+      recalculateOnRefresh="true"/>
     <Card
       id="PolicyContactRoleDetailCard"
       title="displaykey.Web.AccountContacts.AccountDetail">
@@ -39,5 +50,139 @@
       <PanelRef
         def="AddressesPanelSet(policyContactRole.AccountContactRole.AccountContact.Contact,false,policyContactRole.Branch.Policy.Account, policyContactRole.Branch)"/>
     </Card>
+    <Card
+      id="DBACard"
+      title="displaykey.Accelerator.DBA.Admin.UserDetailDV.DBA"
+      visible="policyContactRole typeis PolicyNamedInsured">
+      <PanelRef
+        visible="true">
+        <Toolbar
+          visible="perm.Account.edit( policyContactRole.AccountContactRole.AccountContact.Account)">
+          <ToolbarButton
+            id="addContactButton"
+            label="displaykey.Accelerator.DBA.Account.Contact.AddDBA">
+            <AddMenuItem
+              id="AddExistingDBAs"
+              iterator="DBAIterator"
+              label="displaykey.Accelerator.DBA.Policy.AdditionalInsured.AddExisting">
+              <AddMenuItemIterator
+                elementName="existingDBA"
+                id="ExistingDBAIterator"
+                value="getUnassignedDBAs()">
+                <AddMenuItem
+                  id="addExistingMenuItem"
+                  iterator="DBAIterator"
+                  label="existingDBA.DisplayName"
+                  toCreateAndAdd="policyContactRole.Branch.Lines.first().addNewPolicyDBARole(policyContactRole.AccountContactRole.AccountContact.Contact, policyContactRole, existingDBA)"/>
+              </AddMenuItemIterator>
+            </AddMenuItem>
+            <MenuItemIterator
+              elementName="roleType"
+              id="addNewDBA"
+              value="contactConfigPlugin.AvailableAccountContactRoleTypes.where(\ a -&gt; a.Code == typekey.AccountContactRole.TC_DBAROLE_EXT.Code)">
+              <MenuItemIterator
+                elementName="contactType"
+                value="contactConfigPlugin.getAllowedContactTypesForAccountContactRoleType(roleType)">
+                <IteratorSort
+                  sortBy="contactType.DisplayName"
+                  sortOrder="1"/>
+                <MenuItem
+                  action="NewPolicyDBAContact_ExtPopup.push(acctContact.Account, policyContactRole, typekey.PolicyContactRole.TC_POLICYDBAROLE_EXT, contactType)"
+                  id="contactType"
+                  label="displaykey.Web.Contact.AddNewOfType(contactType)"/>
+              </MenuItemIterator>
+            </MenuItemIterator>
+          </ToolbarButton>
+          <CheckedValuesToolbarButton
+            allCheckedRowsAction="removeDBAContacts(CheckedValues)"
+            id="removeDBAContact"
+            iterator="ContactDBALV"
+            label="displaykey.Accelerator.DBA.Account.Contact.RemoveDBA"/>
+          <IteratorButtons
+            addVisible="false"
+            iterator="ContactDBALV"
+            removeLabel="displaykey.Accelerator.DBA.Account.Contact.RemoveDBA"
+            removeVisible="true"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="true"
+          id="ContactDBALV">
+          <!-- Dummy toCreateAndAdd is needed to make Add button visible. It will never be called since it is only used by
+                default Add button and default Add button is not visible. Current action does nothing. -->
+          <RowIterator
+            canPick="false"
+            checkBoxVisible="true"
+            editable="true"
+            elementName="policyDBA"
+            hasCheckBoxes="true"
+            hideCheckBoxesIfReadOnly="true"
+            id="DBAIterator"
+            pickLocation="NewPolicyDBAContact_ExtPopup.push(null, policyContactRole.AccountContactRole.AccountContact.Account, policyContactRole)"
+            pickValue="PolicyContactRoleDBARole_Ext"
+            startChecked="false"
+            type="PolicyContactRoleDBARole_Ext"
+            value="policyContactRole.DBAs">
+            <Row
+              editable="true">
+              <Cell
+                id="DBAContact"
+                label="displaykey.Accelerator.DBA.Policy.DBAName"
+                value="policyDBA.PolicyDBARole.AccountContactRole.AccountContact.DisplayName"/>
+              <Cell
+                id="effdateDBA"
+                label="displaykey.Accelerator.DBA.Policy.DBA.EffectiveDate"
+                value="policyDBA.PolicyDBARole.EffectiveDBADate"/>
+              <Cell
+                id="expdateDBA"
+                label="displaykey.Accelerator.DBA.Policy.DBA.ExpirationDate"
+                value="policyDBA.PolicyDBARole.ExpirationDBADate"/>
+              <Cell
+                id="DBAAddressLine1"
+                label="displaykey.Web.AddressBook.AddressInputSet.Address1"
+                required="false"
+                value="policyDBA.PolicyDBARole.AccountContactRole.AccountContact.Contact.PrimaryAddress.AddressLine1"/>
+              <Cell
+                id="City"
+                label="displaykey.Web.AddressBook.AddressInputSet.City"
+                value="policyDBA.PolicyDBARole.AccountContactRole.AccountContact.Contact.PrimaryAddress.City"/>
+              <Cell
+                id="DBAStateLine1"
+                label="displaykey.Web.AddressBook.AddressInputSet.State"
+                value="policyDBA.PolicyDBARole.AccountContactRole.AccountContact.Contact.PrimaryAddress.State"/>
+              <Cell
+                id="PostalCode"
+                label="displaykey.Web.AddressBook.AddressInputSet.ZIP"
+                value="policyDBA.PolicyDBARole.AccountContactRole.AccountContact.Contact.PrimaryAddress.PostalCode"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </PanelRef>
+    </Card>
+    <Code><![CDATA[/**
+  * When removing a DBA from a policy remove it not only from the DBA array in policy contact role
+  * but also from the policy period's contact roles, otherwise this contact will stay linked to the
+  * policy and would not be removable from the account
+  */
+function removeDBAContacts(policyDBAList : PolicyContactRoleDBARole_Ext[]) {
+ for(d in policyDBAList){
+   policyContactRole.removeFromDBAs(d)
+   policyContactRole.Branch.removeFromPolicyContactRoles(d.PolicyDBARole)
+ }
+}
+
+/**
+ * Obtains the Account level DBAs for a contact that have not yet been added to a policy
+ * Called from the "Add Existing" menu
+ */
+function getUnassignedDBAs() : Contact[] {
+  var assignedDBAs = new java.util.ArrayList<Contact>()
+
+  for(pcrdba in policyContactRole.DBAs){
+     assignedDBAs.add(pcrdba.PolicyDBARole.AccountContactRole.AccountContact.Contact)
+  }
+
+  var result = acctContact.getAssociatedActiveDBAs().subtract(assignedDBAs.toTypedArray()) as entity.Contact[]
+  return result
+}]]></Code>
   </CardViewPanel>
 </PCF>

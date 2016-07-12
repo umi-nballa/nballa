@@ -35,9 +35,6 @@
       name="selectionOfProducer"
       type="ProducerSelection"/>
     <Variable
-      initialValue="selectionOfProducer.State = una.pageprocess.SubmissionWizardHelper.selectBaseState(selectionOfProducer, acct);return null"
-      name="updateBaseState_Ext"/>
-    <Variable
       initialValue="uiHelper.performNameClearance(acct, selectionOfProducer)"
       name="productOffers"
       recalculateOnRefresh="true"
@@ -53,6 +50,10 @@
     <Variable
       initialValue="selectionOfProducer.DefaultPPEffDate = null; return null"
       name="settDate_Ext"/>
+    <Variable
+      initialValue="return una.pageprocess.SubmissionWizardHelper.checkActStateExistsWithProducer(selectionOfProducer)"
+      name="unaDefaultBaseState"
+      type="Jurisdiction"/>
     <Screen
       editable="true"
       id="NewSubmissionScreen">
@@ -147,14 +148,16 @@
               value="typeOfQuote">
               <PostOnChange/>
             </TypeKeyInput>
-            <TypeKeyInput
+            <RangeInput
               editable="true"
-              id="DefaultBaseState"
-              label="displaykey.Web.NewSubmission.DefaultBaseState"
+              id="DefaultBaseStateRange"
+              label="&quot;Default Base State&quot;"
+              onPick="//selectionOfProducer.State =  VALUE as Jurisdiction//una.pageprocess.SubmissionWizardHelper.orgGroupRegionToJurisdiction(PickedValue as GroupRegion)"
               required="true"
-              value="selectionOfProducer.State">
+              value="selectionOfProducer.State"
+              valueRange="una.pageprocess.SubmissionWizardHelper.orgGroupRegionsToJurisdictions(selectionOfProducer.Producer.RootGroup.Regions)">
               <PostOnChange/>
-            </TypeKeyInput>
+            </RangeInput>
             <DateInput
               editable="true"
               id="DefaultPPEffDate"

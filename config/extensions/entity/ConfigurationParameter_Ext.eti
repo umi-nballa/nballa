@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  autoSplit="false"
+  cacheable="false"
+  desc="System table that contains configurable rows that correspond to a Configuration Parameter Meta Data Type."
+  entity="ConfigurationParameter_Ext"
+  exportable="true"
+  table="config_param_ext"
+  type="retireable">
+  <column
+    columnName="EffectiveDate"
+    desc="The effective date of the row"
+    name="EffectiveDate"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    columnName="ExpirationDate"
+    desc="The expiration date  of the row"
+    name="ExpirationDate"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    desc="The server tier that this row is applicable to.  (e.g. Dev or Prod)"
+    name="ServerTier"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="40"/>
+  </column>
+  <typekey
+    columnName="State"
+    desc="The State that this row applies to.  If left blank, the row applies to all states that do not have a state-specific row"
+    name="State"
+    nullok="true"
+    typefilter="JurisdictionUNA_Ext"
+    typelist="Jurisdiction"/>
+  <column
+    columnName="Value"
+    desc="The value to be returned"
+    name="Value"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="480"/>
+  </column>
+  <typekey
+    desc="Configuration Parameter Type that corresponds to this Config Parameter row "
+    name="ConfigParameterType"
+    nullok="false"
+    typelist="ConfigParameterType_Ext"/>
+  <column
+    desc="An optional filter used to limit return values"
+    name="ConfigurationFilter"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="120"/>
+  </column>
+</entity>

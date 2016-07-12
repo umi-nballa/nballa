@@ -2,6 +2,7 @@ package una.logging
 
 uses gw.api.system.PCLoggerCategory
 uses gw.pl.logging.Logger
+uses gw.util.ILogger
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +22,7 @@ class UnaLoggerCategory extends PCLoggerCategory {
   public static final var UNA_TESTFRAMEWORK : Logger = createLogger("UniversalTestFramework");
   public static final var UNA_METRICS : Logger = createLogger("UniversalMetrics");
   public static final var UNA_RATING : Logger = createLogger("UniversalRating");
+  public static final var UNA_CONFIG_PARAMS : ILogger = createLogger("UniversalConfigParameters")
   public static function load() : void {
   }
 }

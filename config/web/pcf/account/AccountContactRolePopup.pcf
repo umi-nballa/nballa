@@ -3,6 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Popup
+    beforeCommit="validateAccountContact(acctContactRole.AccountContact)"
     canEdit="true"
     id="AccountContactRolePopup"
     startInEditMode="true"
@@ -26,5 +27,10 @@
         </InputColumn>
       </DetailViewPanel>
     </Screen>
+    <Code><![CDATA[static function validateAccountContact(acctContact : AccountContact){
+  var context = gw.validation.ValidationUtil.createContext("default")
+  new gw.acc.dba.accountContact.AccountContactRoleValidation(context,acctContactRole).validate()
+  context.raiseExceptionIfProblemsFound()
+}]]></Code>
   </Popup>
 </PCF>

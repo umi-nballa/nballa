@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <InputSet
+    id="AccountContactInputSet"
+    mode="DBARole_Ext">
+    <Require
+      name="acctContactRole"
+      type="AccountContactRole"/>
+    <Variable
+      initialValue="acctContactRole as DBARole_Ext"
+      name="dba"/>
+    <Input
+      editable="true"
+      id="effdbadate"
+      label="displaykey.Accelerator.DBA.AccountContacts.DBA.EffectiveDate"
+      required="true"
+      value="dba.EffectiveDBADate"/>
+    <Input
+      editable="true"
+      id="expdbadate"
+      label="displaykey.Accelerator.DBA.AccountContacts.DBA.ExpirationDate"
+      required="true"
+      value="dba.ExpirationDBADate"/>
+  </InputSet>
+</PCF>

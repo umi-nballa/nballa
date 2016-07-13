@@ -218,7 +218,7 @@ return false}]]></AvailabilityScript>
       <AvailabilityScript><![CDATA[var  isHO3HO4HO6 = PolicyPeriod?.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || PolicyPeriod?.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||  PolicyPeriod?.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6					   
 var  isDP3 = PolicyPeriod?.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT
 var  isLPP = PolicyPeriod?.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT
-if((isLPP) || (isDP3 && PolicyPeriod?.BaseState != TC_FL) || (isHO3HO4HO6 && PolicyPeriod?.BaseState != TC_NC && PolicyPeriod?.BaseState != TC_FL )){
+if((isLPP) || (isDP3 && PolicyPeriod?.BaseState == TC_FL) || (isHO3HO4HO6 && ( PolicyPeriod?.BaseState == TC_NC || PolicyPeriod?.BaseState == TC_FL) )){
 return true}
 else{
 return false}	]]></AvailabilityScript>
@@ -284,7 +284,7 @@ return false}]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_Sinkholeother_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="1601"
+      priority="1325"
       public-id="HO_Sinkholeother_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -359,7 +359,7 @@ return false}	]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_Propertyv3_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="1800"
+      priority="1706"
       public-id="HO_Propertyv3_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -377,7 +377,7 @@ return false}]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_Propertyv4_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="1762"
+      priority="1707"
       public-id="HO_Propertyv4_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -395,7 +395,7 @@ return false}	]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_Any3Loss_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="1637"
+      priority="1716"
       public-id="HO_Any3Loss_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -440,7 +440,7 @@ return false}	]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_DwellingQA_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="2139"
+      priority="1778"
       public-id="HO_DwellingQA_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -482,7 +482,7 @@ return false}
     <Question
       codeIdentifier="HO_island_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="2601"
+      priority="2139"
       public-id="HO_island_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -549,7 +549,7 @@ return false}]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_Weatherissues_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="2701"
+      priority="1487"
       public-id="HO_Weatherissues_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"
@@ -567,7 +567,7 @@ return false}]]></AvailabilityScript>
     <Question
       codeIdentifier="HO_Dwelling_Ext"
       lookupTableName="PeriodQuestionLookup"
-      priority="2801"
+      priority="1804"
       public-id="HO_Dwelling_Ext"
       questionFormat="BooleanRadio"
       questionPostOnChange="always"

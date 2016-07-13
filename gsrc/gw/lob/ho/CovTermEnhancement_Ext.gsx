@@ -1,4 +1,10 @@
 package gw.lob.ho
+
+uses gw.util.Pair
+uses una.config.ConfigParamsUtil
+uses java.math.BigDecimal
+
+
 /**
  * Created with IntelliJ IDEA.
  * User: spitchaimuthu
@@ -11,92 +17,115 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
   @Param("holine", "The current homeowners instance")
   @Param("option", "The deductible option which availability is going to be evaluated")
   @Returns("The availability of the received option")
-  static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _holine: entity.HomeownersLine_HOE) : boolean {
-    var state = _holine.Branch.BaseState
-    var policyType = _holine.HOPolicyType
-    var isHO3HO4HO6 = policyType == typekey.HOPolicyType_HOE.TC_HO3 or policyType == typekey.HOPolicyType_HOE.TC_HO4 or policyType == typekey.HOPolicyType_HOE.TC_HO6
-    var isHOAHOBHCONB = policyType == typekey.HOPolicyType_HOE.TC_HOA_EXT or policyType == typekey.HOPolicyType_HOE.TC_HOB_EXT or policyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT
-    var personalLiabilityLimit = _holine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
-    var specificStatesGreater100kLiabilityLimit = ((state == TC_AZ or state == TC_FL or state == TC_CA or state == TC_NV or state == TC_TX)
-        and personalLiabilityLimit > 100000bd and (isHO3HO4HO6 or isHOAHOBHCONB))
-    var  HIwith300KLiability = (state == TC_HI and isHO3HO4HO6 and personalLiabilityLimit == 300000bd)
-    var  HIwith500KLiability = (state == TC_HI and isHO3HO4HO6 and personalLiabilityLimit == 500000bd)
+  static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
+    var result = true
+    var state = _hoLine.Branch.BaseState
+    var isValidForMedPayLimitOption = HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(_hoLine.HOPolicyType)
+    var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
+    var variantStates : List<typekey.Jurisdiction> = {TC_TX, TC_HI}
 
-    switch (_option.OptionCode) {
-        case "1000":
-            if (personalLiabilityLimit > 100000bd)
-              return false
-            break
-        case "2000":
-            if (specificStatesGreater100kLiabilityLimit or (state == TC_NC and personalLiabilityLimit == 100000bd))
-              return false
-            break
-      case "4000":
-          if (personalLiabilityLimit == 100000bd)
-            return false
-          break
-      case "3000":
-            if ((state == TC_HI and personalLiabilityLimit != 300000bd) or (state == TC_NC and personalLiabilityLimit == 100000bd))
-              return false
-            break
-        case "5000":
-            if (HIwith300KLiability or (state == TC_NC and personalLiabilityLimit == 100000bd))
-              return false
-            break
-        default:
-            break
+    if(isValidForMedPayLimitOption){
+      if(variantStates.contains(state)){
+        result = isMedPayOptionAvailableVariantFilter(personalLiabilityLimit, _option, state)
+      }else{
+        result = isMedPayOptionAvailableStandardFilter(personalLiabilityLimit, _option, state)
       }
-    return true
-  }
-
-  static function isHurricaneDedOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _dwelling: entity.Dwelling_HOE) : boolean {
-    var state = _dwelling.Branch.BaseState
-    var policyType = _dwelling.HOPolicyType
-    var isHO3 = policyType == typekey.HOPolicyType_HOE.TC_HO3
-    var isHO4 = policyType == typekey.HOPolicyType_HOE.TC_HO4
-    var isHO6 = policyType == typekey.HOPolicyType_HOE.TC_HO6
-    var isHOAHOBHCONB = policyType == typekey.HOPolicyType_HOE.TC_HOA_EXT or policyType == typekey.HOPolicyType_HOE.TC_HOB_EXT or policyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT
-    var dwellingLimit = _dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-    var personalPerpertyLimit = _dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
-    var allPerilDed = _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
-
-    if (state == TC_FL)
-    {
-      switch (_option.OptionCode) {
-        case "500":
-            if (allPerilDed != 500bd)
-              return false
-            break
-
-        case "2":
-           if (allPerilDed == 500bd or allPerilDed == 1000bd)
-             return true
-            if (isHO3)
-           {
-            if ((allPerilDed == 2500bd and dwellingLimit > 100000bd)
-                or ((allPerilDed == 5000bd or allPerilDed == 7500bd) and dwellingLimit > 200000bd))
-                return true
-            return false
-           }
-           if (isHO4)
-             return false
-           if (isHO6 and personalPerpertyLimit >= 50000bd and personalPerpertyLimit <= 300000bd)
-             return true
-           return false
-
-        case "5":
-        case "10":
-            if (isHO4)
-              return false
-            if (isHO6 and personalPerpertyLimit >= 50000bd and personalPerpertyLimit <= 300000bd)
-              return true
-            if (isHO3 and dwellingLimit >= 100000bd)
-              return true
-            return false
-        default:
-        break
     }
+
+    return result
   }
-  return true
+
+  @Param("option", "The deductible option which availability is to be evaluated.")
+  @Param("dwelling", "The current dwelling instance.")
+  @Returns("The availability of the evaluated option")
+  static function isHurricaneDedOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _dwelling: entity.Dwelling_HOE) : boolean {
+    var result : boolean = true
+
+    var state = _dwelling.Branch.BaseState
+    var otherPerilsValue = _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+    var dwellingValue = _dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+    var shouldLimitHurricaneDedOptions = ConfigParamsUtil.getBoolean(TC_LIMITHURRICANEOPTIONS, state, _dwelling.HOPolicyType.Code)
+    var dwellingLimitsRange = ConfigParamsUtil.getRange(TC_DWELLINGLIMITRANGEFORHURRICANEDEDRESTRICTION, state)
+
+    if(shouldLimitHurricaneDedOptions and dwellingValue > dwellingLimitsRange.LowerBound and dwellingValue < dwellingLimitsRange.UpperBound){
+      var restrictedValues = ConfigParamsUtil.getList(TC_RESTRICTEDHURRICANEDEDUTIBLEVALUES, state, otherPerilsValue?.setScale(0)?.toString())
+
+      if(restrictedValues.HasElements){
+        result = restrictedValues?.contains(_option.Value?.setScale(0)?.toString())
+      }
+    }
+
+    return result
+  }
+
+  @Param("homeOwnersLine", "The homeowners line instance to be evaluated.")
+  @Returns("The existence type evaluated for the given homeowners instance.")
+  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : HomeownersLine_HOE) : ExistenceType{
+    var result : ExistenceType
+    var contact = homeOwnersLine.Branch.PrimaryNamedInsured.ContactDenorm
+//    var isSuggestedForCorporation  //TODO tlv - filter for organization type
+
+    switch(homeOwnersLine.BaseState){
+      case TC_FL:
+      case TC_HI:
+        result = TC_REQUIRED
+        break
+      case TC_CA:
+      case TC_TX:
+        result = TC_SUGGESTED
+        break
+      default:
+        result = TC_ELECTABLE
+    }
+
+    return result
+  }
+
+  @Param("covTermOpt", "The coverage term option to determine availability for.")
+  @Param("hoLine", "The homeowners line instance for which to evaluate availability of the given covTermOpt.")
+  @Returns("The availability of this covTermOpt.")
+  static function isFireDwellingMedicalPaymentLimitAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
+    var result = true
+    var allowedLimitsPersonalLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Personal_Liability_HOE.PatternCode)
+    var allowedLimitsPremiseLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Premise_Liability_HOE_Ext.PatternCode)
+
+    if(hoLine.BaseState == TC_CA){
+      if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
+        result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
+      }else if(hoLine.DPLI_Personal_Liability_HOEExists){
+        result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
+      }
+    }
+
+    return result
+  }
+
+  private static function isMedPayOptionAvailableVariantFilter(personalLiabilityLimit : BigDecimal, _option : gw.api.productmodel.CovTermOpt, state : Jurisdiction): boolean{
+    var result = true
+
+    if(state == TC_HI){     //Hawaii is a one-off.  If more than this exists in the future, probably move to a config parameter
+      var limitsPairHigh = new Pair<BigDecimal, BigDecimal>(new BigDecimal(500000), new BigDecimal(5000))
+      var limitsPairLow = new Pair<BigDecimal, BigDecimal>(new BigDecimal(300000), new BigDecimal(3000))
+
+      if(personalLiabilityLimit == limitsPairHigh.First){
+        result = _option.Value == limitsPairHigh.Second
+      }else if(personalLiabilityLimit == limitsPairLow.First){
+        result = _option.Value == limitsPairLow.Second
+      }
+    }
+
+    return result
+  }
+
+  private static function isMedPayOptionAvailableStandardFilter(personalLiabilityLimit : BigDecimal, _option: gw.api.productmodel.CovTermOpt, state : Jurisdiction) : boolean{
+    var result = true
+    var personalLiabilityLimitThreshold = ConfigParamsUtil.getBigDecimal(ConfigParameterType_Ext.TC_MEDICALPAYMENTSLIMITTHRESHOLD, state)
+
+    if(personalLiabilityLimit > personalLiabilityLimitThreshold){
+      var allowedLimits = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_MEDICALPAYMENTRESTRICTEDOPTIONS, state)
+      result = allowedLimits.hasMatch( \ limit -> limit?.toBigDecimal() == _option.Value)
+    }
+
+    return result
   }
 }

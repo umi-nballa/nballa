@@ -5,6 +5,7 @@ uses gw.api.productmodel.DirectCovTermPattern
 uses java.lang.Integer
 uses gw.api.util.DisplayableException
 uses gw.api.productmodel.Product
+uses java.util.ArrayList
 
 /**
  * Created with IntelliJ IDEA.
@@ -71,6 +72,55 @@ class SubmissionWizardHelper {
     return jurisdiction
   }
 
+
+  public static function orgGroupRegionToJurisdiction(grpRegion: GroupRegion) : Jurisdiction {
+    var theState = typekey.Jurisdiction.get(grpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).first().Code)
+
+    return theState
+  }
+
+  public static function orgRegionZoneToJurisdiction(theRegion: RegionZone) : Jurisdiction {
+    var theState = typekey.Jurisdiction.get(theRegion.Code)
+
+    return theState
+  }
+
+  public static function orgGroupRegionsToJurisdictions(grpRegions : GroupRegion[]) : Jurisdiction[] {
+    var theStates = new ArrayList<Jurisdiction>()
+    for(aGrpRegion in grpRegions){
+       var aState = typekey.Jurisdiction.get(aGrpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).first().Code)
+      theStates.add(aState)
+    }
+    return (theStates.toArray(new Jurisdiction[theStates.size()]))
+  }
+
+  public static function checkIfValidRangeOfBaseState(theProducerSelection : ProducerSelection, theState : Jurisdiction) : boolean {
+    var whatProducerHad = theState
+    var res = false
+    for(aGrpRegion in theProducerSelection.Producer.RootGroup.Regions){
+      var aState = typekey.Jurisdiction.get(aGrpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).first().Code)
+      if(whatProducerHad.Code.equalsIgnoreCase(aState.Code)){
+        res = true
+      }
+    }
+    return res
+  }
+
+  public static function checkActStateExistsWithProducer(theProducerSelection : ProducerSelection) : Jurisdiction {
+    var whatProducerHad = theProducerSelection.State
+    theProducerSelection.State = null
+    for(aGrpRegion in theProducerSelection.Producer.RootGroup.Regions){
+      var aState = typekey.Jurisdiction.get(aGrpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).first().Code)
+      if(whatProducerHad.Code.equalsIgnoreCase(aState.Code)){
+        theProducerSelection.State = aState
+      }
+    }
+    return theProducerSelection.State
+  }
+
+  public static function getBaseState(theProducerSelection : ProducerSelection) : Jurisdiction {
+    return checkActStateExistsWithProducer(theProducerSelection)
+  }
   /**
    * Function to validate if a submission can be created. This is based on  1 Account - 1 Policy of UN
    *

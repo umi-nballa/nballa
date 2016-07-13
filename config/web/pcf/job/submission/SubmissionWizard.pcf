@@ -81,7 +81,7 @@
       title="displaykey.Web.SubmissionWizardMenu.Offerings"
       visible="offeringNecessary"/>
     <JobWizardStep
-      beforeSave="gw.question.IncorrectAnswerProcessor.processIncorrectAnswers(policyPeriod, incorrectAnswerMap); print('aftr processing'); gw.policy.PolicyPeriodValidation.validatePreQualAnswers(policyPeriod)"
+      beforeSave="gw.question.IncorrectAnswerProcessor.processIncorrectAnswers(policyPeriod, incorrectAnswerMap); gw.policy.PolicyPeriodValidation.validatePreQualAnswers(policyPeriod)"
       id="PreQualification"
       onEnter="if(openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncQuestions( {policyPeriod}, jobWizardHelper )}"
       save="openForEdit"

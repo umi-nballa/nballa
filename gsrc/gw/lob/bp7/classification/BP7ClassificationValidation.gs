@@ -59,16 +59,16 @@ class BP7ClassificationValidation extends PCValidationBase {
         BP7Classification#Area.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Classification.Area)
     }
-//    if (_classification.AmusementArea == null) {
-//      addDataModelFieldError(
-//        BP7Classification#AmusementArea.PropertyInfo.Name,
-//        displaykey.Web.Policy.BP7.Classification.AmusementArea)
-//    }
-//    if (_classification.Playground == null) {
-//      addDataModelFieldError(
-//        BP7Classification#Playground.PropertyInfo.Name,
-//        displaykey.Web.Policy.BP7.Classification.Playground)
-//    }
+    if (_classification.AmusementArea == null) {
+      addDataModelFieldError(
+        BP7Classification#AmusementArea.PropertyInfo.Name, 
+        displaykey.Web.Policy.BP7.Classification.AmusementArea)
+    }
+    if (_classification.Playground == null) {
+      addDataModelFieldError(
+        BP7Classification#Playground.PropertyInfo.Name, 
+        displaykey.Web.Policy.BP7.Classification.Playground)
+    }
   }
 
   private function addDataModelFieldError(fieldName : String, fieldDisplayName : String) {

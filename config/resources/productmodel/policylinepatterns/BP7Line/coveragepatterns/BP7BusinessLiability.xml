@@ -68,13 +68,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="z1th876i5pjgtcks247lltv39ua"
-          currency="usd"
-          defaultValue="Included_EXT"
-          public-id="z1th876i5pjgtcks247lltv39ua"/>
-      </DefaultsSet>
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zohj2bubte0ubbocnimougo7n2a"
@@ -148,20 +142,6 @@
           value="6000000">
           <AvailabilityScript><![CDATA[return CovTerm.BP7BusinessLiability.prodCompldOpsAggregateLimitAvailable(CovTermOpt.OptionCode)]]></AvailabilityScript>
         </CovTermOpt>
-        <CovTermOpt
-          codeIdentifier="z5ih62gdl54cqdf61tpadn43jlb"
-          currency="usd"
-          optionCode="Included_EXT"
-          priority="180"
-          public-id="z5ih62gdl54cqdf61tpadn43jlb"
-          value="1"/>
-        <CovTermOpt
-          codeIdentifier="ztqi2h1golgr8djij90vdtc0q8a"
-          currency="usd"
-          optionCode="Excluded_EXT"
-          priority="180"
-          public-id="ztqi2h1golgr8djij90vdtc0q8a"
-          value="0"/>
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern
@@ -371,6 +351,42 @@
           priority="20"
           public-id="zhdi0jn19jlps9pef5daqvoatjb"
           value="10000"/>
+      </Options>
+    </OptionCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7LineCovOpt"
+      codeIdentifier="BP7ProdCompldOps_EXT"
+      coverageColumn="ChoiceTerm7"
+      lookupTableName="BP7LineCovTerm"
+      modelType="Limit"
+      priority="50"
+      public-id="BP7ProdCompldOps_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zpjh04posjkqn8mt7bqkdmmk1i9"
+          currency="usd"
+          defaultValue="Included_EXT"
+          public-id="zpjh04posjkqn8mt7bqkdmmk1i9"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z8ri2d61q3k7bd1qb6fo39kami8"
+          currency="usd"
+          optionCode="Included_EXT"
+          priority="180"
+          public-id="z8ri2d61q3k7bd1qb6fo39kami8"
+          value="1"/>
+        <CovTermOpt
+          codeIdentifier="zdgi2cglanfqiff6p4egkdkjtvb"
+          currency="usd"
+          optionCode="Excluded_EXT"
+          priority="180"
+          public-id="zdgi2cglanfqiff6p4egkdkjtvb"
+          value="0"/>
       </Options>
     </OptionCovTermPattern>
   </CovTerms>

@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  entity="DBARole_Ext"
+  subpackage="account"
+  supertype="AccountContactRole">
+  <fulldescription><![CDATA[
+    A company or person representing an insured entity
+    operating under a DBA (Doing Business As) name.
+  ]]></fulldescription>
+  <column
+    default="false"
+    desc="Whether this is the primary DBA for an Account Contact or not."
+    name="PrimaryDBA"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="The effective date for this DBA"
+    name="EffectiveDBADate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="The expiration date for this DBA"
+    name="ExpirationDBADate"
+    nullok="true"
+    type="datetime"/>
+</subtype>

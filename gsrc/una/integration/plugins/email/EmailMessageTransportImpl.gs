@@ -43,7 +43,7 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
    */
   protected override function createHtmlEmailAndSend(wkSmtpHost : String, wkSmtpPort : String, email : Email) {
 
-    PLLoggerCategory.CONFIG.info("Starting JavaXEmailMessageTransport with emailHost=${smtpHost} port=${smtpPort} debug=${debug} ")
+    PLLoggerCategory.CONFIG.info("Starting EmailMessageTransportImpl with emailHost=${smtpHost} port=${smtpPort} debug=${debug} ")
     var out = createHtmlEmail(wkSmtpHost, wkSmtpPort, email)
     // Use below code to encrypt or sign via your own plugin
     // out = EncryptionManager.getEncryptionUtils(EncryptionManager.SMIME).signMessage(session, out, cryptoKey)
@@ -72,7 +72,6 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
     props.put("sender.email", address)
     props.put("sender.name", name)
     props.put("mail.transport.protocol", "smtp");
-
     //authenticated alternative
     props.put("mail.smtp.auth", "true");
 

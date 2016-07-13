@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <Popup
+    canEdit="true"
+    id="EditDBAContactPopup"
+    returnType="AccountContact"
+    startInEditMode="true"
+    title="accountContact.Contact.DisplayName">
+    <LocationEntryPoint
+      signature="EditDBAContactPopup(accountContact: AccountContact)"/>
+    <Variable
+      name="accountContact"
+      type="AccountContact"/>
+    <Variable
+      initialValue="accountContact.Contact"
+      name="contact"
+      recalculateOnRefresh="true"/>
+    <Screen
+      editable="true"
+      id="ContactDetailScreen">
+      <Toolbar>
+        <EditButtons
+          pickValue="accountContact"/>
+      </Toolbar>
+      <PanelRef
+        def="AccountDBAContactCV(accountContact, true)"
+        editable="true"/>
+    </Screen>
+  </Popup>
+</PCF>

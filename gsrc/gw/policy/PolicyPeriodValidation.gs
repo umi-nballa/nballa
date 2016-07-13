@@ -13,6 +13,7 @@ uses gw.api.util.StateJurisdictionMappingUtil
 uses gw.api.validation.ValidationResult
 uses gw.lob.common.AnswerValidation
 uses gw.plugin.Plugins
+uses gw.plugin.billing.IBillingSystemPlugin
 uses gw.plugin.exchangerate.IFXRatePlugin
 uses gw.plugin.reinsurance.IReinsurancePlugin
 uses gw.validation.PCValidationBase
@@ -132,6 +133,11 @@ class PolicyPeriodValidation extends PCValidationBase {
     modifiers.each(\ m -> new ModifierValidation(Context, m).validate() )
     checkCoverageAndSettlementCurrenciesCompatible()
     checkBaseState()
+
+    //****** DBA Functionality*************
+    checkAllDBAsValid()
+    //*************************************
+
     new InvariantValidation(Context, Period).validate()
   }
 
@@ -602,4 +608,28 @@ class PolicyPeriodValidation extends PCValidationBase {
       orphanedFKs.each(\o -> Result.addError(o.First, ValidationLevel.TC_DEFAULT, displaykey.Web.Policy.PolicyPeriod.Validation.OrphanedField(o.First, o.Second)))
     }
   }
+
+  /**
+   * Added by Marcia Gomes da Silva - DBA Accelerator 09/14/2012
+   * Checks if all the DBAs in the policy are valid.
+   * For the cases where this period relates to a policy change or renewal for example,
+   * if previous DBAs have expired they need to be removed from the policy
+   *
+   */
+  private function checkAllDBAsValid() {
+    Context.addToVisited(this, "checkAllDBAsValid")
+
+    if(Context.isAtLeast(_quoteRelatedThreshold)){
+      for(policyCR in Period.PolicyContactRoles){
+        for(dba in policyCR.DBAs){
+          if(dba.PolicyDBARole.isExpired()){
+            Result.addError(Period, _quoteRelatedThreshold,
+                displaykey.Accelerator.DBA.Policy.PolicyPeriod.Validation.ExpiredDBAs(policyCR.AccountContactRole.AccountContact.Contact.DisplayName,
+                    dba.PolicyDBARole.AccountContactRole.AccountContact.Contact.DisplayName))
+          }
+        }
+      }
+    }
+  }
+
 }

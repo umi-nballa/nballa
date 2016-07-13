@@ -133,7 +133,7 @@ class ConfigParamsUtil {
         throw new ConfigurationParameterConversionException(boolean.Type.toString(), configParameter.Value)
       }
 
-      result = configParameter.Value?.toBoolean()
+      result = configParameter.Value as Boolean
     }
 
     return result
@@ -300,7 +300,7 @@ class ConfigParamsUtil {
         throw new ConfigurationParameterConversionException(boolean.Type.toString(), configParameter.Value)
       }
 
-      result = configParameter.Value?.toBoolean()
+      result = configParameter.Value as Boolean
     }
 
     return result

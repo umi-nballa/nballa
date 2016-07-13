@@ -1,6 +1,7 @@
 package gw.lob.ho
 uses java.math.BigDecimal
 uses gw.web.productmodel.ProductModelSyncIssuesHandler
+uses gw.web.productmodel.LineWizardStepHelper_Ext
 
 enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
@@ -20,11 +21,11 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
     return limit
   }
-  
+
   private function dwellingCovLimitDP2() : BigDecimal {
     var dwelling = this.Dwelling
     var percentageOfDwellingLimit : BigDecimal
-        
+
     switch (this.PatternCode){
       case "DPDW_Dwelling_Cov_HOE":
         return dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
@@ -40,7 +41,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
       case "DPDW_Personal_Property_HOE":
         percentageOfDwellingLimit = dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value
         return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
-      default: 
+      default:
         return BigDecimal.ZERO
     }
   }
@@ -57,7 +58,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
     return limit
   }
-  
+
   private function dwellingCovLimitHO4_6() : BigDecimal {
     var limit : BigDecimal
     switch(this.PatternCode){
@@ -72,12 +73,12 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
     return limit
   }
-  
+
   private function dwellingCovLimitHO() : BigDecimal {
     var dwelling = this.Dwelling
     var percentageOfDwellingLimit : BigDecimal
     var percentageOfPropertyLimit : BigDecimal
-        
+
     switch (this.PatternCode){
       case "HODW_Dwelling_Cov_HOE":
         return dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
@@ -94,11 +95,11 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
         percentageOfDwellingLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value
 
         return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
-      default: 
+      default:
         return BigDecimal.ZERO
-    }      
+    }
   }
-  
+
   private function calculateDollarFromPercentage(dwellingLimit : BigDecimal, percentage : BigDecimal) : BigDecimal {
     var dollarValue = 0bd
     if(dwellingLimit != null and percentage != null){
@@ -226,7 +227,6 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 *  Personal Property and Loss of use coverages based on Dwelling Coverages
  */
   function setHomeownersDefaultLimits_Ext() {
-
     var limitA = roundDown_Ext(this.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value)
 
     var limitC = roundDown_Ext(this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value)
@@ -248,6 +248,10 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
       if (this.Dwelling.HODW_Loss_Of_Use_HOEExists)
           covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
+
+      if(covC.HasHODW_PersonalPropertyLimit_HOETerm  and covC.HODW_PersonalPropertyLimit_HOETerm.Value != null){//is initial load change
+        LineWizardStepHelper_Ext.setSpecialLimitsPersonalPropertyDefaults(this.Dwelling)
+      }
     }
     else if(this typeis HODW_Personal_Property_HOE) {
         covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)

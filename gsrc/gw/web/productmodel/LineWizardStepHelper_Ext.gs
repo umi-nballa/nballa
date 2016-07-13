@@ -5,7 +5,7 @@ uses gw.api.util.LocationUtil
 uses java.lang.Throwable
 uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.DirectCovTerm
-uses una.utils.MathUtil
+//uses una.utils.MathUtil
 
 /**
  * Created with IntelliJ IDEA.

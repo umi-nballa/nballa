@@ -273,17 +273,19 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   }
   
   private function dollarValueFromPercent(covTerm: CovTerm, percent: BigDecimal) : BigDecimal{
-    var dollarValue : BigDecimal
+    var dollarValue : BigDecimal = 0
     
     if(_dwellingBasisForPercentage == null and _propertyBasisForPercentage == null){
       throw new DisplayableException(displaykey.Web.Homeowners.CCMapping.DwellingPersonalPropertyLimitNotSet)
     }
     else if(_propertyBasisForPercentage == null){
+      if(percent != null)
       dollarValue = _dwellingBasisForPercentage * percent / 100
     }
     else if(_dwellingBasisForPercentage == null){
       //should only be for HO4
       if(_hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4){
+        if(percent != null)
         dollarValue = _propertyBasisForPercentage * percent / 100
       } else {
         throw new DisplayableException(displaykey.Web.Homeowners.CCMapping.DwellingBasisNeededButNotSetForPolicyType(_hoLine.HOPolicyType.DisplayName))
@@ -291,13 +293,15 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     } else{ //both _propertyBasisForPercentage and _dwellingBasisForPercentage are set
       dollarValue = dollarValueFromPercentChosenFromPropertyOrDwelling(covTerm, percent)
     }
+
     return dollarValue
   }
   
   private function dollarValueFromPercentChosenFromPropertyOrDwelling(covTerm : CovTerm, percent: BigDecimal) : BigDecimal {
-      var dollarValue : BigDecimal
+      var dollarValue : BigDecimal  = 0
       //if cov term option is a percentage of the personal property limit then calculate that, 
       //otherwise all other cases are based off of the dwelling limit then multiply by the dwellingBasisForPercentage
+    if(percent!=null){
       switch(covTerm.PatternCode){
         //The following limits are based off of the personal property limit
         case "HODW_LossOfUsePropLimit_HOE":
@@ -314,6 +318,7 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
         default:
           dollarValue = _dwellingBasisForPercentage * percent / 100
           break
+      }
       }
       return dollarValue
   }

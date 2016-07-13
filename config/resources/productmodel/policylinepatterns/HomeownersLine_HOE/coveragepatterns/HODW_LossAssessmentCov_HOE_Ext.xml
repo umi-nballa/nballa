@@ -1,16 +1,16 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="HODW_LossAssessmentCov_HOE_Ext"
-  coverageCategory="HOSS_SchSpecialLocationCov_HOE_Ext"
+  coverageCategory="HODW_Optional_HOE"
   coverageSubtype="HomeownersLineCov_HOE"
-  coveredPartyType="ThirdParty"
-  existence="Required"
+  coveredPartyType="FirstParty"
   lookupTableName="HomeownersLineCov"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="17400"
   public-id="HODW_LossAssessmentCov_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[return(HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)? ExistenceType.TC_REQUIRED  :  ExistenceType.TC_ELECTABLE)]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -173,5 +173,25 @@
           value="1"/>
       </Options>
     </OptionCovTermPattern>
+    <DirectCovTermPattern
+      codeIdentifier="HOPL_Deductible_HOE"
+      coverageColumn="DirectTerm1"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="300"
+      public-id="HOPL_Deductible_HOE"
+      required="true"
+      valueType="other">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      codeIdentifier="HOPL_SpecialLimitDeductibleAssessment_HOE"
+      coverageColumn="DirectTerm2"
+      lookupTableName="HomeownersLineCovTerm"
+      priority="400"
+      public-id="HOPL_SpecialLimitDeductibleAssessment_HOE"
+      required="true"
+      valueType="other">
+      <LimitsSet/>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

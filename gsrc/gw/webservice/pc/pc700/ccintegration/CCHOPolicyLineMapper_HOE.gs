@@ -293,7 +293,6 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     } else{ //both _propertyBasisForPercentage and _dwellingBasisForPercentage are set
       dollarValue = dollarValueFromPercentChosenFromPropertyOrDwelling(covTerm, percent)
     }
-
     return dollarValue
   }
   

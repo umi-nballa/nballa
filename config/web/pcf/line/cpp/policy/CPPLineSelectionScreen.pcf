@@ -45,7 +45,7 @@
               elementName="policyLinePattern"
               value="policyPeriod.Policy.Product.LinePatterns.where(\p -&gt; p.isAvailable(policyPeriod))">
               <Variable
-                initialValue="new gw.lob.cpp.ui.CPPLineSelectionCheckboxWrapper(policyLinePattern, policyPeriod)"
+                initialValue="new una.pageprocess.CPLineSelectionCheckboxWrapper(policyLinePattern, policyPeriod)"
                 name="checkboxWrapper"/>
               <IteratorSort
                 sortBy="policyLinePattern.Priority"
@@ -57,7 +57,6 @@
                   value="policyLinePattern.DisplayName"/>
                 <CheckBoxCell
                   confirmMessage="displaykey.Web.CommercialPackage.Warning.ConfirmLine"
-                  editable="true"
                   id="LineSelected"
                   label="displaykey.Web.CommercialPackage.LineEnabled"
                   showConfirmMessage="policyPeriod.getLineExists(policyLinePattern) "

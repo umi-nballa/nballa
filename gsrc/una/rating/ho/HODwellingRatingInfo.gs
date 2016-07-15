@@ -18,6 +18,7 @@ class HODwellingRatingInfo {
   var _windOrHailPercentage : String as WindOrHailPercentage
   var _namedStormPercentage : String as NamedStormPercentage
   var _isTerritoryIncludedForNamedStormDeductibleFactor : boolean as IsTerritoryIncludedForNamedStormDeductibleFactor
+  var _isResidentialGlassCovUnscheduled : String as IsResidentialGlassCovUnscheduled
 
   construct(){}
 
@@ -41,6 +42,10 @@ class HODwellingRatingInfo {
       if(dwellingCov.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
         _namedStormPercentage = dwellingCov.Dwelling.HODW_SectionI_Ded_HOE?.HODW_NamedStrom_Ded_HOE_ExtTerm?.DisplayValue
         _isTerritoryIncludedForNamedStormDeductibleFactor = IsTerritoryIncludedForNamedStormDeductibleFactor()
+      }
+
+      if(dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_ExtExists){
+        _isResidentialGlassCovUnscheduled = dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue
       }
     }
   }

@@ -42,6 +42,7 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       var hoRatingInfo = new HORatingInfo()
 
+      if(_baseState.Code == typekey.Jurisdiction.TC_TX.Code){
       //rate line level coverages
       _logger.info("Rating Line Level HO Coverages")
       for (lineCov in lineVersion.HOLineCoverages) {
@@ -61,6 +62,7 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       }
 
       _logger.info("Done rating Dwelling Level HO Coverages")
+      }
     }
   }
 
@@ -96,6 +98,9 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       case HOLI_Personal_Liability_HOE:
           ratePersonalLiability(lineCov, dateRange)
           break
+      case HOLI_PersonalInjury_HOE:
+          ratePersonalInjury(lineCov, dateRange)
+          break
     }
   }
 
@@ -113,16 +118,23 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       case HODW_SpecificOtherStructure_HOE_Ext:
         rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
         break
+      case HODW_ResidentialGlass_HOE_Ext:
+        rateResidentialGlassCoverage(dwellingCov, dateRange)
+        break
     }
   }
 
   abstract protected function rateMedicalPayments(lineCov: HOLI_Med_Pay_HOE, dateRange : DateRange)
+
+  abstract protected function ratePersonalInjury(lineCov: HOLI_PersonalInjury_HOE, dateRange : DateRange)
 
   abstract protected function ratePersonalLiability(lineCov: HOLI_Personal_Liability_HOE, dateRange : DateRange)
 
   abstract protected function rateEquipmentBreakdownCoverage(dwellingCov : HODW_EquipBreakdown_HOE_Ext, dateRange : DateRange)
 
   abstract protected function rateAnimalLiabilityCoverage(dwellingCov : HODW_AnimalLiability_HOE_Ext, dateRange : DateRange)
+
+  abstract protected function rateResidentialGlassCoverage(dwellingCov : HODW_ResidentialGlass_HOE_Ext, dateRange : DateRange)
 
   abstract protected function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov : HODW_SpecificOtherStructure_HOE_Ext, dateRange : DateRange)
 

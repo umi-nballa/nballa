@@ -10,11 +10,13 @@ class HOLineRatingInfo {
 
   var _medPayLimit : int as MedPayLimit
   var _personalLiabilityLimit : int as PersonalLiabilityLimit
+  var _personalInjuryLimit : int as PersonalInjuryLimit
 
   construct(){}
 
   construct(lineCov : HomeownersLineCov_HOE){
     _medPayLimit = (lineCov.HOLine.HOLI_Med_Pay_HOEExists)? lineCov.HOLine.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.Value?.intValue() : 0
     _personalLiabilityLimit = (lineCov.HOLine.HOLI_Personal_Liability_HOEExists)? lineCov.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.Value?.intValue() : 0
+    _personalInjuryLimit = (lineCov.HOLine.HOLI_PersonalInjury_HOEExists)? lineCov.HOLine.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue() : 0
   }
 }

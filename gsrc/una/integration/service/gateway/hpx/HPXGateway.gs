@@ -9,8 +9,10 @@ uses java.io.File
 uses java.io.FileInputStream
 uses org.apache.commons.io.IOUtils
 uses una.integration.service.transport.hpx.HPXCommunicator
+uses una.integration.mapping.hpx.HPXResponseMapper
 uses java.lang.Exception
 uses org.apache.commons.codec.binary.Base64
+uses una.integration.mapping.hpx.HPXRequestMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,9 +27,10 @@ class HPXGateway implements HPXInterface {
 
   var reqMapper: PublishDocumentRequest
   var ewsRequest :EwsComposeRequest
+  var timeout = "500"
 
-
-  construct() {
+  construct(thresholdTimeout: String) {
+       timeout = thresholdTimeout
        reqMapper = new PublishDocumentRequest()
        ewsRequest = new EwsComposeRequest()
 
@@ -48,12 +51,11 @@ class HPXGateway implements HPXInterface {
           ewsRequest.PubFile = "PolicyCenterNA.pub"
 
        //call EWS
-          var response = new HPXCommunicator()
-          response.ewsEngineService(ewsRequest)
-
-       // Todo : map response to response object mapper
-
-
+          var ewsRequestMapper = new HPXRequestMapper()
+          var hpxComm = new HPXCommunicator()
+          var ewsResponse = hpxComm.ewsEngineService(ewsRequest)
+          var responseMapper = new HPXResponseMapper()
+          responseMapper.updateResponseModel(ewsResponse, policyPeriod)
 
       return "Success"
     } catch (exp: Exception) {

@@ -21,7 +21,7 @@ class HPXMessageTransportImpl extends  AbstractMessageTransport implements Initi
   override function send(p0: gw.pl.messaging.entity.Message, p1: String) {
     if(p0 != null)
       sendToHPX(p0.PolicyPeriod)
-    p0.reportError()
+    //p0.reportError()
   }
 
   function sendToHPX(policyPeriod : PolicyPeriod) {

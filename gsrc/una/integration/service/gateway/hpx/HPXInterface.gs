@@ -8,6 +8,6 @@ package una.integration.service.gateway.hpx
 
 interface HPXInterface {
 
-  public function generateDocuments(policyPeriod : PolicyPeriod): String
+  public function generateDocuments(ewsRequestXML : wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeRequest): wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeResponse
 
 }

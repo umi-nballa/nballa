@@ -4,6 +4,7 @@ uses una.integration.UnaIntTestBase
 uses una.logging.UnaLoggerCategory
 uses una.integration.plugins.hpx.HPXMessageTransportImpl
 uses gw.api.builder.MessageBuilder
+uses una.integration.mapping.hpx.HPXRequestMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,9 +29,15 @@ class HPXMessageTransportImplTest extends UnaIntTestBase {
   }
 
   function testCreateStaticDocument() {
-    //var message = new MessageBuilder()
-    //message.withPolicyPeriod(null)
     hpxMsgTransport = new HPXMessageTransportImpl()
-    hpxMsgTransport.sendToHPX()
+    var requestMapper = new HPXRequestMapper()
+    var p1 = requestMapper.createXMLRequestModel(null)
+    var ewsRequest = new wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeRequest()
+    ewsRequest.Driver.Driver = new gw.xml.BinaryData(p1.Bytes)
+    ewsRequest.Driver.FileName = "EWS_INPUT"
+    ewsRequest.IncludeHeader = true
+    ewsRequest.IncludeMessageFile = true
+    ewsRequest.PubFile = "PolicyCenterNA.pub"
+    hpxMsgTransport.sendToHPX(ewsRequest)
   }
 }

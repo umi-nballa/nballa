@@ -37,27 +37,15 @@ class HPXGateway implements HPXInterface {
     }
 
 
-  override function generateDocuments(policyPeriod: PolicyPeriod): String {
+  override function generateDocuments(ewsRequestXML : wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeRequest): wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeResponse {
 
     try{
-
-          var file = new File("C:\\Universal\\testxml\\xml.txt")
-          var myScan = new FileInputStream(file)
-          var bytes  = IOUtils.toByteArray(myScan)
-          ewsRequest.Driver.Driver = new gw.xml.BinaryData(bytes)
-          ewsRequest.Driver.FileName = "EWS_INPUT"
-          ewsRequest.IncludeHeader = true
-          ewsRequest.IncludeMessageFile = true
-          ewsRequest.PubFile = "PolicyCenterNA.pub"
-
-       //call EWS
-          var ewsRequestMapper = new HPXRequestMapper()
           var hpxComm = new HPXCommunicator()
-          var ewsResponse = hpxComm.ewsEngineService(ewsRequest)
+          var ewsResponse = hpxComm.ewsEngineService(ewsRequestXML)
           var responseMapper = new HPXResponseMapper()
-          responseMapper.updateResponseModel(ewsResponse, policyPeriod)
+          responseMapper.updateResponseModel(ewsResponse)
 
-      return "Success"
+      return ewsResponse
     } catch (exp: Exception) {
       logger.error( "Exception while calling EWS " + exp)
       throw exp

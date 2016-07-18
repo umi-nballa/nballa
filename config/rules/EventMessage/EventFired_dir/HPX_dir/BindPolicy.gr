@@ -1,4 +1,5 @@
 package rules.EventMessage.EventFired_dir.HPX_dir
+uses una.integration.mapping.hpx.HPXRequestMapper
 
 
 @gw.rules.RuleName("Bind Policy")
@@ -11,7 +12,10 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
 
   static function doAction(messageContext  :  entity.MessageContext, actions : gw.rules.Action) {
 /*start00rule*/
-messageContext.createMessage("${messageContext.EventName} - ${messageContext.Root}") 
+var ewsRequestMapper = new HPXRequestMapper()
+var ewsRequestXML = ewsRequestMapper.createXMLRequestModel(messageContext.Root as PolicyPeriod)
+print(ewsRequestXML)
+messageContext.createMessage(ewsRequestXML)
 /*end00rule*/
   }
 }

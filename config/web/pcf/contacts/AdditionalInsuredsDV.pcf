@@ -40,7 +40,7 @@
             iterator="AdditionalInsuredLV"
             label="displaykey.Web.Contact.Add"
             subMenuOnDemand="true">
-          <AddMenuItemIterator
+            <AddMenuItemIterator
               elementName="contactType"
               value="contactConfigPlugin.getAllowedContactTypesForPolicyContactRoleType(typekey.PolicyContactRole.TC_POLICYADDLINSURED)">
               <IteratorSort
@@ -142,7 +142,7 @@
 
 function getOtherContacts() : AccountContactView[] {
   if (otherContacts == null) {
-    otherContacts = policyLine.AdditionalInsuredOtherCandidates.asViews()
+    otherContacts = policyLine.AdditionalInsuredOtherCandidatesExclueDBA.asViews()
   }
   return otherContacts
 }]]></Code>

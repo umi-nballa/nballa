@@ -86,14 +86,14 @@
               editable="true"
               elementName="acctContact"
               hasCheckBoxes="true"
-              value="account.AccountContacts">
+              value="account.AccountContacts.where(\ a -&gt; !a.hasRole(typekey.AccountContactRole.TC_DBAROLE_EXT) )">
               <ToolbarFilter
                 cacheOptions="false"
                 name="roleFilters">
                 <ToolbarFilterOption
                   filter="new filters.StandardBeanFilter(displaykey.Web.AccountContacts.DisplayAllRoles, \ x -&gt; true)"/>
                 <ToolbarFilterOptionGroup
-                  filters="new gw.api.web.contact.ContactRoleFilterSet().getFilterOptions(account.AccountContactRoleSubtypes)"/>
+                  filters="new gw.api.web.contact.ContactRoleFilterSet().getFilterOptions(account.AccountContactRoleSubtypes.where( \ elt -&gt; elt.compareTo(typekey.AccountContactRole.TC_DBAROLE_EXT) != 0))"/>
               </ToolbarFilter>
               <ToolbarFilter
                 name="personCompanyFilters">
@@ -141,6 +141,11 @@
                   label="displaykey.Web.AccountContactsLV.Email"
                   value="acctContact.Contact.EmailAddress1"
                   width="300"/>
+                <Cell
+                  id="DBAs"
+                  label="displaykey.Accelerator.DBA.AccountContactsLV.DBAs"
+                  value="getRelatedAccountDBAs(acctContact)"
+                  wrap="true"/>
               </Row>
             </RowIterator>
           </ListViewPanel>
@@ -151,5 +156,13 @@
           editable="false"/>
       </ListDetailPanel>
     </Screen>
+    <Code><![CDATA[/**
+* Returns a comma separated display string of dba names
+* @param AccountContact
+*/
+function getRelatedAccountDBAs(aContact : AccountContact) : String{
+  return aContact.Contact.AllContactContacts.where(\ c -> c.Relationship == TC_DBA)
+      .map(\ c -> c.RelatedContact.AccountContacts.first().DisplayName).join(", ")
+}]]></Code>
   </Page>
 </PCF>

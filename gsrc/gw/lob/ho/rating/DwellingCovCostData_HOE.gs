@@ -16,6 +16,11 @@ class DwellingCovCostData_HOE<T extends DwellingCovCost_HOE> extends HOCostData_
     assertKeyType(covID, DwellingCov_HOE)
     _covID = covID
   }
+
+  construct(cost : T, rateCache : PolicyPeriodFXRateCache){
+    super(cost, rateCache)
+    _covID = cost.Coverage.FixedId
+  }
   
   override function setSpecificFieldsOnCost(line : HomeownersLine_HOE, cost : T) {
     super.setSpecificFieldsOnCost(line, cost)

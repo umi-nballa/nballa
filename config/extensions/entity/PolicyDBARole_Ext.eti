@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  entity="PolicyDBARole_Ext"
+  supertype="PolicyContactRole">
+  <fulldescription><![CDATA[
+    A company or person representing an insured entity
+    operating under a DBA (Doing Business As) name.
+  ]]></fulldescription>
+	
+  <column
+    desc="Whether this is the primary DBA for the policy or not."
+    getterScriptability="doesNotExist"
+    name="PrimaryDBAInternal"
+    setterScriptability="doesNotExist"
+    type="bit"
+	nullok="true"/>
+	
+  <column
+    desc="The effective date for this DBA"
+    getterScriptability="doesNotExist"
+    name="EffectiveDBADateInternal"
+    setterScriptability="doesNotExist"
+    type="datetime"
+	nullok="true"/>
+	
+  <column
+    desc="The expiration date for this DBA"
+    getterScriptability="doesNotExist"
+    name="ExpirationDBADateInternal"
+    setterScriptability="doesNotExist"
+    type="datetime"
+	nullok="true"/>
+  
+  <implementsInterface
+    iface="gw.api.domain.account.AccountSyncable"
+    impl="gw.acc.dba.contact.PolicyDBARole_ExtAccountSyncableImpl"/>
+  <implementsInterface
+    iface="gw.api.domain.account.Mergeable"
+    impl="gw.contact.SingletonPolicyContactRoleMergeableImpl"/>  
+  <implementsEntity name="Validatable"/>
+	
+  
+	
+</subtype>

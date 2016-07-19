@@ -2,6 +2,7 @@ package gw.account
 
 uses gw.plugin.contact.DuplicateContactResult
 uses java.util.Date
+uses java.util.ArrayList
 
 enhancement AccountContactEnhancement : entity.AccountContact {
 
@@ -117,5 +118,54 @@ enhancement AccountContactEnhancement : entity.AccountContact {
     var activity = this.Account.newActivity(activityPattern)
     activity.AccountContact = this
     return activity
+  }
+
+
+/**
+ * ************************************************************
+ * Added by Marcia Gomes da Silva - DBA Accelerator 09/13/2012
+ *
+ */
+
+/**
+ * Returns the DBA contacts related to an account contact
+ */
+  function getAssociatedDBAs() : Contact[]{
+    var resultDBAs = new ArrayList<Contact>()
+
+    for(cc in this.Contact.AllContactContacts){
+     if(cc.Relationship == typekey.ContactRel.TC_DBA){
+       resultDBAs.add(cc.RelatedContact)
+     }
+    }
+
+    return resultDBAs.toTypedArray()
+  }
+
+  function getAssociatedActiveDBAs() : Contact[]{
+    var resultDBAs = new ArrayList<Contact>()
+    for(cc in this.Contact.AllContactContacts){
+     if(cc.Relationship == typekey.ContactRel.TC_DBA){
+
+       var accountContacts = cc.RelatedContact.AccountContacts
+       for(ac in accountContacts){
+         var role = ac.getRole(typekey.AccountContactRole.TC_DBAROLE_EXT) as DBARole_Ext
+         if(role.EffectiveDBADate <= Date.CurrentDate and role.ExpirationDBADate > Date.CurrentDate){
+            resultDBAs.add(cc.RelatedContact)
+         }
+       }
+     }
+    }
+
+    return resultDBAs.toTypedArray()
+  }
+
+
+ /**
+  * Returns the number of connections
+  */
+  function getNumberOfContactRelations() : int{
+    return this.Contact.AllContactContacts.Count
+
   }
 }

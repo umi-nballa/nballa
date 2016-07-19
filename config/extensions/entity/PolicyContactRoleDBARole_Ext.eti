@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A join of Policy Contacs with DBA's."
+  effDatedBranchType="PolicyPeriod"
+  entity="PolicyContactRoleDBARole_Ext"
+  exportable="true"
+  table="policycontactroledbarole"
+  type="effdated">
+  <fulldescription><![CDATA[<p>
+      Relates a PolicyContactRole relate to a DBA - that is also a PolicyContactRole
+    ]]></fulldescription>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.acc.dba.contact.PolicyContactRoleDBARoleCopier_Ext"/>
+  <implementsInterface
+    iface="gw.api.domain.account.Mergeable"
+    impl="gw.account.EffDatedDefaultMergeableImpl"/>
+  <foreignkey
+    desc="The policy contact Role the DBA is associated with."
+    fkentity="PolicyContactRole"
+    name="PolicyContactRole"
+    nullok="false"/>
+  <foreignkey
+    desc="The DBA contact Role the PCR is associated with."
+    fkentity="PolicyDBARole_Ext"
+    name="PolicyDBARole"
+    nullok="false"/>
+</entity>

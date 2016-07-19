@@ -6,6 +6,7 @@ uses gw.rating.CostData
 uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses gw.lob.ho.rating.HomeownersCovCostData_HOE
+uses gw.lob.ho.rating.DwellingCovCostData_HOE
 
 /**
  * User: bduraiswamy
@@ -39,19 +40,29 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
 
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
+      var hoRatingInfo = new HORatingInfo()
 
+      if(_baseState.Code == typekey.Jurisdiction.TC_TX.Code){
       //rate line level coverages
       _logger.info("Rating Line Level HO Coverages")
       for (lineCov in lineVersion.HOLineCoverages) {
-        //rateLineCoverages(lineCov, sliceRange)
+        rateLineCoverages(lineCov, sliceRange)
       }
       _logger.info("Done rating Line Level HO Coverages")
 
       //rate dwelling level coverages
       _logger.info("Rating Dwelling Level HO Coverages")
-      for (dwellingCov in lineVersion.Dwelling.Coverages) {
+      if(lineVersion.Dwelling != null){
+        //var rater = new HODwellingRater(lineVersion.Dwelling, PolicyLine, _executor, RateCache, hoRatingInfo, BaseState)
+        //var costs = rater.ratePremiums(sliceRange, this.NumDaysInCoverageRatedTerm)
+        //addCost(costs)
+        for (dwellingCov in lineVersion.Dwelling.Coverages) {
+          rateDwellingCoverages(dwellingCov, sliceRange, hoRatingInfo)
+        }
       }
+
       _logger.info("Done rating Dwelling Level HO Coverages")
+      }
     }
   }
 
@@ -68,6 +79,10 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
     switch(typeof c){
       case HomeownersCovCost_HOE:
         cd = new HomeownersCovCostData_HOE(c, RateCache)
+        break
+      case DwellingCovCost_HOE:
+        cd = new DwellingCovCostData_HOE(c, RateCache)
+        break
     }
     return cd
   }
@@ -76,15 +91,6 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
    * Rate the line level coverages
   */
   private function rateLineCoverages(lineCov: HomeownersLineCov_HOE, dateRange : DateRange) {
-    if (lineCov.CoverageCategory.Code == "HODW_SectionII_HOE"){
-      rateSectionIICoverages(lineCov, dateRange)
-    }
-  }
-
-  /**
-  * Rate the section 2 coverages
-   */
-  private function rateSectionIICoverages(lineCov: HomeownersLineCov_HOE, dateRange : DateRange) {
     switch (typeof lineCov) {
       case HOLI_Med_Pay_HOE:
           rateMedicalPayments(lineCov, dateRange)
@@ -92,11 +98,44 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       case HOLI_Personal_Liability_HOE:
           ratePersonalLiability(lineCov, dateRange)
           break
+      case HOLI_PersonalInjury_HOE:
+          ratePersonalInjury(lineCov, dateRange)
+          break
+    }
+  }
+
+  /**
+   * Rate the line level coverages
+   */
+  private function rateDwellingCoverages(dwellingCov : DwellingCov_HOE, dateRange : DateRange, ratingInfo : HORatingInfo) {
+    switch(typeof dwellingCov){
+      case HODW_EquipBreakdown_HOE_Ext:
+        rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
+        break
+      case HODW_AnimalLiability_HOE_Ext:
+        rateAnimalLiabilityCoverage(dwellingCov, dateRange)
+        break
+      case HODW_SpecificOtherStructure_HOE_Ext:
+        rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
+        break
+      case HODW_ResidentialGlass_HOE_Ext:
+        rateResidentialGlassCoverage(dwellingCov, dateRange)
+        break
     }
   }
 
   abstract protected function rateMedicalPayments(lineCov: HOLI_Med_Pay_HOE, dateRange : DateRange)
 
+  abstract protected function ratePersonalInjury(lineCov: HOLI_PersonalInjury_HOE, dateRange : DateRange)
+
   abstract protected function ratePersonalLiability(lineCov: HOLI_Personal_Liability_HOE, dateRange : DateRange)
+
+  abstract protected function rateEquipmentBreakdownCoverage(dwellingCov : HODW_EquipBreakdown_HOE_Ext, dateRange : DateRange)
+
+  abstract protected function rateAnimalLiabilityCoverage(dwellingCov : HODW_AnimalLiability_HOE_Ext, dateRange : DateRange)
+
+  abstract protected function rateResidentialGlassCoverage(dwellingCov : HODW_ResidentialGlass_HOE_Ext, dateRange : DateRange)
+
+  abstract protected function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov : HODW_SpecificOtherStructure_HOE_Ext, dateRange : DateRange)
 
 }

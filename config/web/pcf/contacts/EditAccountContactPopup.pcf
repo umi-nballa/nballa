@@ -3,6 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Popup
+    beforeCommit="validateAccountContact(accountContact)"
     canEdit="true"
     id="EditAccountContactPopup"
     returnType="AccountContact"
@@ -41,10 +42,17 @@
         editable="true"/>
     </Screen>
     <Code><![CDATA[function copyFromAddressBook(){
+  uses com.guidewire.pc.system.bundle.BundleUtil
   contact.syncWithAddressBook()
   //BundleUtil.evict(contact)
   CurrentLocation.cancel()
   EditAccountContactPopup.push(accountContact)
+}
+
+static function validateAccountContact(acctContact : AccountContact){
+  var context = gw.validation.ValidationUtil.createContext("default")
+  new gw.acc.dba.accountContact.AccountContactValidation(context,acctContact).validate()
+  context.raiseExceptionIfProblemsFound()
 }]]></Code>
   </Popup>
 </PCF>

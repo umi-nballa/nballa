@@ -13,6 +13,11 @@
     <Variable
       initialValue="gw.plugin.Plugins.get(gw.plugin.contact.IContactConfigPlugin)"
       name="contactConfigPlugin"/>
+    <Variable
+      initialValue="getUnassignedAccountDBAs()"
+      name="unassignedDBAs"
+      recalculateOnRefresh="true"
+      type="AccountContact[]"/>
     <Card
       id="AccountContactDetailCard"
       title="displaykey.Web.AccountContacts.AccountDetail">
@@ -130,6 +135,117 @@
         <Toolbar/>
       </PanelRef>
     </Card>
+    <Card
+      id="DBACard"
+      title="displaykey.Accelerator.DBA.Admin.UserDetailDV.DBA"
+      visible="acctContact != null and !acctContact.New and acctContact.Roles.where(\ a -&gt; a typeis NamedInsured ).Count &gt; 0">
+      <PanelRef
+        visible="true">
+        <Toolbar
+          visible="perm.Account.edit( acctContact.Account )">
+          <ToolbarButton
+            id="addContactButton"
+            label="displaykey.Accelerator.DBA.Account.Contact.AddDBA">
+            <MenuItemIterator
+              elementName="roleType"
+              id="rolesIterator"
+              value="contactConfigPlugin.AvailableAccountContactRoleTypes.where(\ a -&gt; a.Code == typekey.AccountContactRole.TC_DBAROLE_EXT.Code)">
+              <IteratorSort
+                sortBy="roleType.DisplayName"
+                sortOrder="1"/>
+              <MenuItemIterator
+                elementName="contactType"
+                value="contactConfigPlugin.getAllowedContactTypesForAccountContactRoleType(roleType)">
+                <IteratorSort
+                  sortBy="contactType.DisplayName"
+                  sortOrder="1"/>
+                <MenuItem
+                  action="NewDBAContactPopup.push(acctContact.Account, acctContact, roleType, contactType)"
+                  id="contactType"
+                  label="displaykey.Web.Contact.AddNewOfType(contactType)"/>
+              </MenuItemIterator>
+            </MenuItemIterator>
+            <AddMenuItem
+              id="AddExistingDBAs"
+              iterator="DBAIterator"
+              label="displaykey.Accelerator.DBA.Account.Contacts.OtherDBAs">
+              <AddMenuItemIterator
+                elementName="existingDBA"
+                id="ExistingDBAIterator"
+                value="unassignedDBAs">
+                <AddMenuItem
+                  id="addExistingMenuItem"
+                  iterator="DBAIterator"
+                  label="existingDBA.DisplayName"
+                  toCreateAndAdd="addContactContact(acctContact, existingDBA)"/>
+              </AddMenuItemIterator>
+            </AddMenuItem>
+          </ToolbarButton>
+          <CheckedValuesToolbarButton
+            allCheckedRowsAction="removeDBAContacts(CheckedValues)"
+            id="removeDBAContact"
+            iterator="ContactDBALV"
+            label="displaykey.Accelerator.DBA.Account.Contact.RemoveDBA"/>
+          <IteratorButtons
+            addVisible="false"
+            iterator="ContactDBALV"
+            removeLabel="displaykey.Accelerator.DBA.Account.Contact.RemoveDBA"
+            removeVisible="true"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="true"
+          id="ContactDBALV">
+          <!-- Dummy toCreateAndAdd is needed to make Add button visible. It will never be called since it is only used by
+                default Add button and default Add button is not visible. Current action does nothing. -->
+          <RowIterator
+            canPick="false"
+            checkBoxVisible="true"
+            editable="true"
+            elementName="aDBAContact"
+            hasCheckBoxes="true"
+            id="DBAIterator"
+            pickValue="AccountContact"
+            startChecked="false"
+            type="AccountContact"
+            value="getRelatedAccountContacts()">
+            <Row
+              editable="true">
+              <Cell
+                action="EditDBAContactPopup.push(aDBAContact)"
+                hasCheckBox="true"
+                id="DBAContact"
+                label="displaykey.Accelerator.DBA.Account.Contact.DBAName"
+                value="aDBAContact.DisplayName"/>
+              <Cell
+                id="effdate"
+                label="displaykey.Accelerator.DBA.AccountContacts.DBA.EffectiveDate"
+                value="(aDBAContact.getRole(typekey.AccountContactRole.TC_DBAROLE_EXT) as DBARole_Ext).EffectiveDBADate"/>
+              <Cell
+                id="expdate"
+                label="displaykey.Accelerator.DBA.AccountContacts.DBA.ExpirationDate"
+                value="(aDBAContact.getRole(typekey.AccountContactRole.TC_DBAROLE_EXT) as DBARole_Ext).ExpirationDBADate"/>
+              <Cell
+                id="DBAAddressLine1"
+                label="displaykey.Web.AddressBook.AddressInputSet.Address1"
+                required="false"
+                value="aDBAContact.Contact.PrimaryAddress.AddressLine1"/>
+              <Cell
+                id="City"
+                label="displaykey.Web.AddressBook.AddressInputSet.City"
+                value="aDBAContact.Contact.PrimaryAddress.City"/>
+              <Cell
+                id="DBAStateLine1"
+                label="displaykey.Web.AddressBook.AddressInputSet.State"
+                value="aDBAContact.Contact.PrimaryAddress.State"/>
+              <Cell
+                id="PostalCode"
+                label="displaykey.Web.AddressBook.AddressInputSet.ZIP"
+                value="aDBAContact.Contact.PrimaryAddress.PostalCode"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </PanelRef>
+    </Card>
     <Code><![CDATA[function tryToRemoveRole(acRole : AccountContactRole) {
  if (acRole.AccountContact.Roles.Count == 1) {
     throw new gw.api.util.DisplayableException(displaykey.Web.AccountContactCV.Error.CannotRemoveOnlyRole)
@@ -143,6 +259,149 @@
 
 function dummyCreateAndAddAccountContactRole() : AccountContactRole {
   return null
+}
+
+
+/**
+ * Removes DBA Contacts from the related Account Contacts
+ */
+function removeDBAContacts(accountContacts: AccountContact[]) {
+
+  gw.transaction.Transaction.runWithNewBundle(\ bundle ->{
+
+    for(ac in accountContacts){
+      ac = bundle.add(ac)
+
+      /**
+       * Lookup the correct ContactContact relationship between the source Account Contact
+       * and its DBAs to remove
+       */
+      var contactContact = ac.Contact.AllContactContacts
+                              .where(\ cc -> cc.SourceContact == acctContact.Contact and
+                               cc.RelatedContact == ac.Contact and
+                               cc.Relationship == typekey.ContactRel.TC_DBA).first()
+
+      if(contactContact != null) ac.Contact.removeContactContact(contactContact)
+
+      /**
+       * A DBA can be shared between 2 contacts so if there are no more connections
+       * in an Account to a certain DBA it must be removed as an Account Contact Role and
+       * an Account Contact
+       */
+      if(ac.getNumberOfContactRelations() == 0){
+          var anACRole = ac.Roles.firstWhere(\ a -> a.Subtype == "DBARole_Ext" )
+
+          ac.removeFromRoles(anACRole)
+
+          ac.Contact.removeFromAccountContacts(ac)
+      }
+    }
+  } )
+}
+
+/*  Find all the DBA Names used by a primary contact.  Look up the contact in
+the ContactContact table and find all realted contacts with the DBA role,.
+*/
+
+function getRelatedAccountContacts() : AccountContact[]{
+  var dbaContacts = new java.util.ArrayList<AccountContact>()
+
+  for( c in acctContact.Contact.AllContactContacts){
+      if(c.Relationship == typekey.ContactRel.TC_DBA){
+        dbaContacts.add(c.RelatedContact.AccountContacts.first())
+      }
+  }
+  return dbaContacts as entity.AccountContact[]
+}
+
+
+// this method is here because the AB Search page is read only, and simply selects a Contact to return - it does not perform the domain logic to do the add like the NewAccountContactPopup does
+// additionally, this page is read-only itself, so we need to create up a new bundle, load the Account in it, call the domain logic and then commit the bundle
+function addContactFromAddressBook(accContact : Contact, roleType : typekey.AccountContactRole) {
+
+  // if the Contact is brand new (freshly imported from AB), we can use it's bundle
+  if (accContact.New) {
+
+    var localAccount = accContact.Bundle.add(acctContact.Account)
+    localAccount.maybeAddNewAccountContact(accContact).addNewRole(roleType)
+    accContact.Bundle.commit()
+  } else {
+    gw.transaction.Transaction.runWithNewBundle(\bundle -> {
+      var localAccount = bundle.add(acctContact.Account)
+      localAccount.maybeAddNewAccountContact(accContact).addNewRole(roleType)
+    })
+  }
+}
+
+
+/**
+ * Method used when a new DBA contact is added to an Account Contact.
+ * Creates a ContactContact relationship between the two contacts
+ */
+function addContactContact(pickedContact : Contact, acRoleType : typekey.AccountContactRole){
+  if(acRoleType != null){
+      if(acRoleType == typekey.AccountContactRole.TC_DBAROLE_EXT){
+        /*  Create a ContactContact relating AccountContact with DBAContact
+        */
+        acctContact.refresh()
+
+        var cc = new gw.api.databuilder.ContactContactBuilder().create(gw.transaction.Transaction.getCurrent())
+        cc.SourceContact = acctContact.Contact
+        cc.RelatedContact = pickedContact
+        cc.Relationship = typekey.ContactRel.TC_DBA
+
+        gw.transaction.Transaction.getCurrent().commit()
+      }
+   }
+}
+
+function getOtherAccountDBAs() : Contact[]{
+
+  var result = new java.util.ArrayList<Contact>()
+
+  for(contact in acctContact.Account.AccountContacts){
+    if(contact != acctContact){
+      for(cc in contact.Contact.AllContactContacts){
+        if(cc.Relationship == typekey.ContactRel.TC_DBA){
+          result.add(cc.RelatedContact)
+        }
+      }
+    }
+  }
+
+  return result as entity.Contact[]
+}
+
+function addContactContact(sourceContact : AccountContact, relatedContact : AccountContact): AccountContact{
+
+      var cc = new gw.api.databuilder.ContactContactBuilder().create(gw.transaction.Transaction.getCurrent())
+      cc.SourceContact = sourceContact.Contact
+      cc.RelatedContact = relatedContact.Contact
+      cc.Relationship = typekey.ContactRel.TC_DBA
+
+      gw.transaction.Transaction.getCurrent().commit()
+
+      return  relatedContact
+}
+
+function getUnassignedAccountDBAs():AccountContact[]{
+  if (acctContact == null) {
+     return new entity.AccountContact[0]
+  }
+
+  //get DBA contacts related to this account contact
+  var relatedDBAs = acctContact.getAssociatedDBAs()
+
+  //get DBAs from the account contact's account
+
+  var accountDBAs = new java.util.ArrayList<AccountContact>()
+  for(contact in acctContact.Account.AccountContacts.where(\ a -> a.hasRole("DBARole_Ext"))){
+    if(!relatedDBAs.contains(contact.Contact) and !accountDBAs.contains(contact)){
+      accountDBAs.add(contact)
+    }
+  }
+
+  return accountDBAs as entity.AccountContact[]
 }]]></Code>
   </CardViewPanel>
 </PCF>

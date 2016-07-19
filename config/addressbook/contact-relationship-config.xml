@@ -33,4 +33,10 @@
     <Primary name="CollectionAgency" cardinality="zeroorone" contactBidiRelCode="collectionagency" entity="Company"/>
     <Inverse name="Case" cardinality="zeroormore" contactBidiRelCode="case" entity="Contact"/>
   </ContactRelationshipPair>
+
+  <ContactRelationshipPair contactRelCode="dba" >
+    <Primary name="PrimaryDBA" cardinality="zeroormore" contactBidiRelCode="primarydba" entity="Contact" />
+    <Inverse name="DBAs" cardinality="zeroormore" contactBidiRelCode="dba" entity="Contact" />
+  </ContactRelationshipPair>
+
 </ContactRelationshipConfigFile>

@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <ModalCell
+    id="AccountContactDisplayCell"
+    mode="DBARole_Ext">
+    <Require
+      name="acctContactRole"
+      type="AccountContactRole"/>
+    <Variable
+      initialValue="acctContactRole as DBARole_Ext"
+      name="dba"
+      recalculateOnRefresh="true"
+      type="DBARole_Ext"/>
+    <FormatCell
+      id="details">
+      <ContentInput
+        visible="CurrentLocation.InEditMode">
+        <Link
+          action="AccountContactRolePopup.push(acctContactRole)"
+          id="editContactRole"
+          label="displaykey.Web.Account.Contact.Edit"
+          styleClass="miniButton"/>
+      </ContentInput>
+      <TextInput
+        id="effdbadate"
+        label="displaykey.Accelerator.DBA.AccountContacts.DBA.EffectiveDate"
+        value="dba.EffectiveDBADate.ShortFormat"/>
+      <TextInput
+        id="expdbadate"
+        label="displaykey.Accelerator.DBA.AccountContacts.DBA.ExpirationDate"
+        value="dba.ExpirationDBADate.ShortFormat"/>
+    </FormatCell>
+  </ModalCell>
+</PCF>

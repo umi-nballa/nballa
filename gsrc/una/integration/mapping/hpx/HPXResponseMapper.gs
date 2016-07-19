@@ -12,15 +12,10 @@ uses java.util.logging.FileHandler
  * To change this template use File | Settings | File Templates.
  */
 class HPXResponseMapper {
-  /*function updateResponseModel(ewsResponse : EwsComposeResponse, policyPeriod : PolicyPeriod) {
-    var fileOutput = ewsResponse.Files.get(0).FileOutput
-    var file = new File("U:/Shared_Documents/Core Systems Transformation Program(Guidewire)/Project Phase Deliverables/03-Development and Implementation Phase/04-Integration/hpx/generatedforms/" + ewsResponse.Files.get(0).FileName)
-    file.writeBytes(fileOutput.Bytes)
-  }
-   */
+
   function updateResponseModel(ewsResponse : EwsComposeResponse) {
     var fileOutput = ewsResponse.Files.get(0).FileOutput
-    var file = new File("U:/Shared_Documents/Core Systems Transformation Program(Guidewire)/Project Phase Deliverables/03-Development and Implementation Phase/04-Integration/hpx/generatedforms/" + ewsResponse.Files.get(0).FileName)
+    var file = new File("//uimfs02/users/Shared_Documents/Core Systems Transformation Program(Guidewire)/Integration Docs/FileIntegrations/DevServer/HPX/generatedforms/" + ewsResponse.Files.get(0).FileName)
     file.writeBytes(fileOutput.Bytes)
   }
 }

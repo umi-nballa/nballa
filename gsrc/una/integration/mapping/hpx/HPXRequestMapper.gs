@@ -24,7 +24,7 @@ class HPXRequestMapper {
 
 
   function createXMLRequestModel(policyPeriod : PolicyPeriod) : String {
-    var file = new File("U:/Shared_Documents/Core Systems Transformation Program(Guidewire)/Project Phase Deliverables/03-Development and Implementation Phase/04-Integration/hpx/ewsrequest/xml.txt")
+    var file = new File("//uimfs02/users/Shared_Documents/Core Systems Transformation Program(Guidewire)/Integration Docs/FileIntegrations/DevServer/HPX/ewsrequest/xml.txt")
     var myScan = new FileReader(file)
     var bis = new BufferedReader(myScan)
     var xml = new StringBuilder()

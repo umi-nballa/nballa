@@ -13,7 +13,6 @@
   public-id="CPBldgCov"
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
-  <AvailabilityScript/>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
@@ -47,6 +46,13 @@
       required="false"
       restrictionModel="bld"
       valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="CPBldgCovDeductibleusd"
+          currency="usd"
+          defaultValue="2500"
+          public-id="CPBldgCovDeductibleusd"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="rBgAPbfzOkEAAAAA"
@@ -91,13 +97,6 @@
           public-id="rBgAPUgVgfAAAAAA"
           value="25000"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBldgCovDeductibleusd"
-          currency="usd"
-          defaultValue="2500"
-          public-id="CPBldgCovDeductibleusd"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -111,6 +110,12 @@
       required="false"
       restrictionModel="bld"
       valueType="percent">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="CPBldgCovWindDeductiblenocurrency"
+          defaultValue="2"
+          public-id="CPBldgCovWindDeductiblenocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="wKgEvvujr20AAAAA"
@@ -137,12 +142,6 @@
           public-id="wKgEvkTi_HAAAAAA"
           value="0"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBldgCovWindDeductiblenocurrency"
-          defaultValue="2"
-          public-id="CPBldgCovWindDeductiblenocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="pi"
@@ -156,7 +155,12 @@
       required="true"
       restrictionModel="prp"
       valueType="percent">
-      <AvailabilityScript/>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="CPBldgCovCoinsurancenocurrency"
+          defaultValue="80"
+          public-id="CPBldgCovCoinsurancenocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="wKgEvvhJzg4AAAAA"
@@ -183,17 +187,10 @@
           public-id="wKgEvvMXe4wAAAAA"
           value="0"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBldgCovCoinsurancenocurrency"
-          defaultValue="80"
-          public-id="CPBldgCovCoinsurancenocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <TypekeyCovTermPattern
       codeIdentifier="CPBldgCovCauseOfLoss"
       coverageColumn="ChoiceTerm4"
-      defaultValue="Basic"
       lookupTableName="CPBuildingCovTerm"
       modelType="Other"
       priority="2"
@@ -222,6 +219,12 @@
       required="false"
       restrictionModel="bld"
       valueType="percent">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="CPBldgCovAutoIncreasenocurrency"
+          defaultValue="4"
+          public-id="CPBldgCovAutoIncreasenocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="wKgEvsVi62oAAAAA"
@@ -260,12 +263,6 @@
           public-id="wKgEvsRh_QsAAAAA"
           value="10"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBldgCovAutoIncreasenocurrency"
-          defaultValue="4"
-          public-id="CPBldgCovAutoIncreasenocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <GenericCovTermPattern
       codeIdentifier="CPBldgCovExcludeVandalism"
@@ -275,9 +272,7 @@
       modelType="Other"
       priority="-1"
       public-id="CPBldgCovExcludeVandalism"
-      required="false">
-      <AvailabilityScript/>
-    </GenericCovTermPattern>
+      required="false"/>
     <GenericCovTermPattern
       codeIdentifier="CPBldgCovExcludeSprinkler"
       coverageColumn="BooleanTerm2"
@@ -286,9 +281,7 @@
       modelType="Other"
       priority="-1"
       public-id="CPBldgCovExcludeSprinkler"
-      required="false">
-      <AvailabilityScript/>
-    </GenericCovTermPattern>
+      required="false"/>
     <GenericCovTermPattern
       codeIdentifier="CPBldgCovExcludeTheft"
       coverageColumn="BooleanTerm3"
@@ -298,10 +291,55 @@
       priority="-1"
       public-id="CPBldgCovExcludeTheft"
       required="false">
-      <AvailabilityScript><![CDATA[
-return CPBuilding.CPBldgCov.CPBldgCovCauseOfLossTerm.Value == "Special" as CPCauseOfLoss
+      <AvailabilityScript><![CDATA[return CPBuilding.CPBldgCov.CPBldgCovCauseOfLossTerm.Value == "Special" as CPCauseOfLoss
         
       ]]></AvailabilityScript>
     </GenericCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="CPBuildingCovOpt"
+      codeIdentifier="CPBldgCovHurricaneDeductible_EXT"
+      coverageColumn="ChoiceTerm7"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Deductible"
+      priority="108"
+      public-id="CPBldgCovHurricaneDeductible_EXT"
+      required="true"
+      restrictionModel="bld"
+      valueType="percent">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zkjj8afo141msdpnhs5v59catr8"
+          optionCode="CPHurricaneDed10%_EXT"
+          priority="200"
+          public-id="zkjj8afo141msdpnhs5v59catr8"
+          value="10"/>
+        <CovTermOpt
+          codeIdentifier="zk1iqbq7v6kl9ca0dfkvb1a1qta"
+          optionCode="CPHurricaneDed5%_EXT"
+          priority="200"
+          public-id="zk1iqbq7v6kl9ca0dfkvb1a1qta"
+          value="5"/>
+        <CovTermOpt
+          codeIdentifier="z9mjghhfso39p5m5opco8d1nthb"
+          optionCode="CPHurricaneDedNotApplicable_EXT"
+          priority="100"
+          public-id="z9mjghhfso39p5m5opco8d1nthb"
+          value="0"/>
+        <CovTermOpt
+          codeIdentifier="zhpjg7s6lps8n3tagsa6qor816b"
+          optionCode="CPHurricaneDed3%_EXT"
+          priority="200"
+          public-id="zhpjg7s6lps8n3tagsa6qor816b"
+          value="3"/>
+        <CovTermOpt
+          codeIdentifier="zrlhids2odlcc74u7c7clff74gb"
+          optionCode="CPHurricaneDed2%_EXT"
+          priority="200"
+          public-id="zrlhids2odlcc74u7c7clff74gb"
+          value="2"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

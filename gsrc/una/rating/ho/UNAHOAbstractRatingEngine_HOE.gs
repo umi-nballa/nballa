@@ -101,11 +101,14 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       case HOLI_PersonalInjury_HOE:
           ratePersonalInjury(lineCov, dateRange)
           break
+      case HODW_LossAssessmentCov_HOE_Ext:
+          rateLossAssessmentCoverage(lineCov, dateRange)
+          break
     }
   }
 
   /**
-   * Rate the line level coverages
+   * Rate the Dwelling level coverages
    */
   private function rateDwellingCoverages(dwellingCov : DwellingCov_HOE, dateRange : DateRange, ratingInfo : HORatingInfo) {
     switch(typeof dwellingCov){
@@ -121,6 +124,9 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
       case HODW_ResidentialGlass_HOE_Ext:
         rateResidentialGlassCoverage(dwellingCov, dateRange)
         break
+      case HODW_IdentityTheftExpenseCov_HOE_Ext:
+          rateIdentityTheftExpenseCoverage(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -137,5 +143,9 @@ abstract class UNAHOAbstractRatingEngine_HOE<L extends HomeownersLine_HOE> exten
   abstract protected function rateResidentialGlassCoverage(dwellingCov : HODW_ResidentialGlass_HOE_Ext, dateRange : DateRange)
 
   abstract protected function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov : HODW_SpecificOtherStructure_HOE_Ext, dateRange : DateRange)
+
+  abstract protected function rateLossAssessmentCoverage(lineCov : HODW_LossAssessmentCov_HOE_Ext, dateRange : DateRange)
+
+  abstract protected function rateIdentityTheftExpenseCoverage(dwellingCov : HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange : DateRange)
 
 }

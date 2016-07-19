@@ -55,6 +55,7 @@ uses gw.plugin.reinsurance.IReinsuranceConfigPlugin
 uses java.text.DateFormat
 uses gw.api.system.PCLoggerCategory
 uses org.apache.commons.lang.ObjectUtils
+uses gw.lob.cpp.ui.CPPLineSelectionScreenHelper
 
 enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
   /**
@@ -1704,6 +1705,17 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
    */
   property get SupportsNonSpecificLocations() : boolean {
     return this.Lines.hasMatch(\ l -> l.SupportsNonSpecificLocations)
+  }
+  /**
+   * Removes the General Liability Line if the Product is Commercial Package from the menu.
+   * As per requirements US762 and PC.11.07.10 Line Selection
+   */
+  function removeGlLine(){
+    if(this.Policy.Product.DisplayName == displaykey.Web.Product.CommercialPackage.Name ){
+      var pattern = this.Policy.Product.LinePatterns.firstWhere( \ elt -> elt.DisplayName == displaykey.Web.PolicyLine_GLLine.Name)
+      CPPLineSelectionScreenHelper.createOrRemoveLine(this, pattern, false)
+    }
+
   }
 }
 

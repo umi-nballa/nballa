@@ -16,7 +16,9 @@
       type="boolean"/>
     <HiddenInput
       id="CovPatternDisplayName"
-      value="coveragePattern.DisplayName"/>
+      value="coveragePattern.DisplayName">
+      <PostOnChange/>
+    </HiddenInput>
     <InputGroup
       allowToggle="coveragePattern.allowToggle(coverable)"
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
@@ -36,6 +38,7 @@
       <InputSetRef
         def="ScheduleInputSet(coverable.getCoverageConditionOrExclusion(coveragePattern), openForEdit)"
         mode="coverable.getCoverageConditionOrExclusion(coveragePattern) typeis gw.api.productmodel.Schedule"/>
+      <PostOnChange/>
     </InputGroup>
     <InputDivider
       visible="openForEdit or coverable.getCoverageConditionOrExclusion(coveragePattern) != null"/>

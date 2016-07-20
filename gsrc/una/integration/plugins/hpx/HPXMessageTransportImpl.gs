@@ -5,7 +5,6 @@ uses una.integration.service.gateway.plugin.GatewayPlugin
 uses java.util.Map
 uses gw.plugin.InitializablePlugin
 uses java.lang.Exception
-uses org.apache.poi.util.IOUtils
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,24 +19,28 @@ class HPXMessageTransportImpl extends  AbstractMessageTransport implements Initi
   override function setParameters(p0: Map) {
   }
 
-  override function send(p0: gw.pl.messaging.entity.Message, p1: String) {
+  override function send(message: gw.pl.messaging.entity.Message, payload: String) {
   try {
-    if(p1 != null) {
+    if(payload != null) {
       var ewsRequest = new wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeRequest()
-      ewsRequest.Driver.Driver = new gw.xml.BinaryData(p1.Bytes)
+      ewsRequest.Driver.Driver = new gw.xml.BinaryData(payload.Bytes)
       ewsRequest.Driver.FileName = "EWS_INPUT"
       ewsRequest.IncludeHeader = true
       ewsRequest.IncludeMessageFile = true
       ewsRequest.PubFile = "PolicyCenterNA.pub"
       var ewsResponse = sendToHPX(ewsRequest)
-      p0.reportAck()
+      message.reportAck()
     }
   } catch (e : Exception) {
     e.printStackTrace()
-    p0.reportError()
+    message.reportError()
   }
 
 
+  }
+
+  override function suspend() {
+    gw.api.email.EmailUtil.sendEmailWithBody( null, "ananayakkara@uihna.com" , "Anil Nanayakkara", "akreci@unagw.com", "Anthony", "HPX queue has been suspended", "Please take a look at the queues")
   }
 
   function sendToHPX(ewsRequest : wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeRequest)

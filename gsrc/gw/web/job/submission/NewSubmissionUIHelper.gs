@@ -110,10 +110,13 @@ class NewSubmissionUIHelper {
     var submission = SubmissionUtil.createSubmission( offer, account, producerSelection, quoteType )
     // For one new submission - go straight to Submission view
     var policyPeriod = submission.LatestPeriod
+    
     gw.transaction.Transaction.runWithNewBundle( \ bun -> {
       policyPeriod = bun.add( policyPeriod )
       policyPeriod.BaseState = producerSelection.State
       policyPeriod.SubmissionProcess.beginEditing()
+      //removed the GL Line from main menu at the initial view for Commercial Package
+      policyPeriod.removeGlLine()
     } )
 
     JobForward.go(submission, policyPeriod)

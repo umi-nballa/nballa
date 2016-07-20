@@ -31,6 +31,7 @@
           editable="true"
           id="PackageRisk"
           label="displaykey.Web.CommercialPackage.PackageRiskType"
+          required="true"
           value="policyPeriod.Policy.PackageRisk"/>
         <InputDivider/>
         <ListViewInput
@@ -45,7 +46,7 @@
               elementName="policyLinePattern"
               value="policyPeriod.Policy.Product.LinePatterns.where(\p -&gt; p.isAvailable(policyPeriod))">
               <Variable
-                initialValue="new una.pageprocess.CPLineSelectionCheckboxWrapper(policyLinePattern, policyPeriod)"
+                initialValue="new gw.lob.cpp.ui.CPPLineSelectionCheckboxWrapper(policyLinePattern, policyPeriod)"
                 name="checkboxWrapper"/>
               <IteratorSort
                 sortBy="policyLinePattern.Priority"
@@ -57,9 +58,10 @@
                   value="policyLinePattern.DisplayName"/>
                 <CheckBoxCell
                   confirmMessage="displaykey.Web.CommercialPackage.Warning.ConfirmLine"
+                  editable="!policyLinePattern.DisplayName.equalsIgnoreCase(displaykey.Web.Differences.LOB.CP.CommercialProperty)"
                   id="LineSelected"
                   label="displaykey.Web.CommercialPackage.LineEnabled"
-                  showConfirmMessage="policyPeriod.getLineExists(policyLinePattern) "
+                  showConfirmMessage="policyPeriod.getLineExists(policyLinePattern)"
                   value="checkboxWrapper.Value">
                   <PostOnChange/>
                 </CheckBoxCell>

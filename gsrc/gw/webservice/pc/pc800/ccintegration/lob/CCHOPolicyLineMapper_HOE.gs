@@ -25,14 +25,14 @@ uses gw.webservice.pc.pc800.ccintegration.ProductModelTypelistGenerator
 class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   var _hoLine : HomeownersLine_HOE
   var _RUCount : int
-  var _dwellingBasisForPercentage: BigDecimal
-  var _propertyBasisForPercentage: BigDecimal
+  var _dwellingBasisForPercentage: BigDecimal = 0
+  var _propertyBasisForPercentage: BigDecimal = 0
   
   construct(line : PolicyLine, policyGen : CCPolicyGenerator) {
-    super(line, policyGen)
-    _hoLine = line as HomeownersLine_HOE;
-    choosePercentageBasis()
-  }
+  super(line, policyGen)
+  _hoLine = line as HomeownersLine_HOE;
+  choosePercentageBasis()
+}
 
   // Create a summary list of covered buildings for the PolicySummary that is returned for a search result (not a full policy mapping)
   override function mapPropertySummaries(propertyList : ArrayList<CCPolicySummaryProperty>) {

@@ -10,6 +10,7 @@ uses java.lang.IllegalStateException
 uses java.lang.Integer
 uses java.lang.Double
 uses una.logging.UnaLoggerCategory
+uses una.utils.EnvironmentUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -151,18 +152,21 @@ class ConfigParamsUtil {
 
     if(configParameterType != null and state != null){
       configParameter = getConfigParameter(configParameterType, state, null)
-      var splitConfigParams = configParameter.Value?.split(",")*.trim()
 
-      if(splitConfigParams == null or splitConfigParams.Count != 2){
-        throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
-      }
+      if(configParameter != null){
+        var splitConfigParams = configParameter.Value?.split(",")*.trim()
 
-      result = new Range()
-      result.LowerBound = splitConfigParams[0].toBigDecimal()
-      result.UpperBound = splitConfigParams[1].toBigDecimal()
+        if(splitConfigParams.Count != 2){
+          throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
+        }
 
-      if(result.LowerBound >= result.UpperBound){
-        throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
+        result = new Range()
+        result.LowerBound = splitConfigParams[0].toBigDecimal()
+        result.UpperBound = splitConfigParams[1].toBigDecimal()
+
+        if(result.LowerBound >= result.UpperBound){
+          throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
+        }
       }
     }
 
@@ -319,18 +323,21 @@ class ConfigParamsUtil {
 
     if(configParameterType != null and state != null){
       configParameter = getConfigParameter(configParameterType, state, configFilter)
-      var splitConfigParams = configParameter.Value?.split(",")*.trim()
 
-      if(splitConfigParams == null or splitConfigParams.Count != 2){
-        throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
-      }
+      if(configParameter != null){
+        var splitConfigParams = configParameter.Value?.split(",")*.trim()
 
-      result = new Range()
-      result.LowerBound = splitConfigParams[0].toBigDecimal()
-      result.UpperBound = splitConfigParams[1].toBigDecimal()
+        if(splitConfigParams.Count != 2){
+          throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
+        }
 
-      if(result.LowerBound >= result.UpperBound){
-        throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
+        result = new Range()
+        result.LowerBound = splitConfigParams[0].toBigDecimal()
+        result.UpperBound = splitConfigParams[1].toBigDecimal()
+
+        if(result.LowerBound >= result.UpperBound){
+          throw new ConfigurationParameterConversionException(Range.Type.toString(), configParameter.Value)
+        }
       }
     }
 
@@ -425,6 +432,6 @@ class ConfigParamsUtil {
   }
 
   private static function getServerTier() : String{
-    return null  //TODO tlv should retrieve some environment info somehow
+    return EnvironmentUtil.PolicyCenterRuntime
   }
 }

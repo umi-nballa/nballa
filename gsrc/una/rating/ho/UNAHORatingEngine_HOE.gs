@@ -62,6 +62,29 @@ class UNAHORatingEngine_HOE extends UNAHOAbstractRatingEngine_HOE<HomeownersLine
   }
 
   /**
+   * Rate Loss Assessment Coverage line coverage
+   */
+  override function rateLossAssessmentCoverage(lineCov: HODW_LossAssessmentCov_HOE_Ext, dateRange : DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
+    var costData = createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COV_TX_ROUTINE_NAME)
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Loss Assessment Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Identity Theft Expense Coverage coverage
+   */
+  override function rateIdentityTheftExpenseCoverage(dwellingCov : HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
+    var costData = createCostDataForDwellingCoverage(dwellingCov, dateRange, dwellingRatingInfo, HORateRoutineNames.IDENTITY_THEFT_EXPENSE_COV_ROUTINE_NAME)
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
   * Rate Equipment breakdown coverage
    */
   override function rateEquipmentBreakdownCoverage(dwellingCov : HODW_EquipBreakdown_HOE_Ext, dateRange : DateRange){

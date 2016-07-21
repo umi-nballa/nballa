@@ -12,13 +12,9 @@ class HODwellingRatingInfo {
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
   var _otherStructuresIncreasedOrDecreasedLimit : int as OtherStructuresIncreasedOrDecreasedLimit
+  var _isResidentialGlassCovUnscheduled : String as IsResidentialGlassCovUnscheduled
   var _territoryCode : String as TerritoryCode
   var _county : String as County
-  var _allOtherPerils : String as AllOtherPerils
-  var _windOrHailPercentage : String as WindOrHailPercentage
-  var _namedStormPercentage : String as NamedStormPercentage
-  var _isTerritoryIncludedForNamedStormDeductibleFactor : boolean as IsTerritoryIncludedForNamedStormDeductibleFactor
-  var _isResidentialGlassCovUnscheduled : String as IsResidentialGlassCovUnscheduled
 
   construct(){}
 
@@ -31,27 +27,10 @@ class HODwellingRatingInfo {
       _otherStructuresIncreasedOrDecreasedLimit = (_otherStructuresLimit - (_dwellingLimit*0.1)) as int
     }
 
+    if(dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_ExtExists){
+      _isResidentialGlassCovUnscheduled = dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue
+    }
     _territoryCode = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
     _county = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County != null)? dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County : ""
-
-    if(dwellingCov.Dwelling?.HODW_SectionI_Ded_HOEExists){
-      _allOtherPerils = dwellingCov.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm?.DisplayValue
-      if(dwellingCov.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm){
-        _windOrHailPercentage = dwellingCov.Dwelling.HODW_SectionI_Ded_HOE?.HODW_WindHail_Ded_HOETerm?.DisplayValue
-      }
-      if(dwellingCov.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
-        _namedStormPercentage = dwellingCov.Dwelling.HODW_SectionI_Ded_HOE?.HODW_NamedStrom_Ded_HOE_ExtTerm?.DisplayValue
-        _isTerritoryIncludedForNamedStormDeductibleFactor = IsTerritoryIncludedForNamedStormDeductibleFactor()
-      }
-
-      if(dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_ExtExists){
-        _isResidentialGlassCovUnscheduled = dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue
-      }
-    }
-  }
-
-  private function IsTerritoryIncludedForNamedStormDeductibleFactor() : boolean{
-    var territoryCodes = new String[]{"1", "1A", "8", "9", "10", "11", "11A", "11B", "11H", "14A"}
-    return territoryCodes.contains(_territoryCode)
   }
 }

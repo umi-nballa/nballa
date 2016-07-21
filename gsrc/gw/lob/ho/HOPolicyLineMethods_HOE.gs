@@ -18,6 +18,7 @@ uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.ho.HOE_UnderwriterEvaluator
 uses una.rating.ho.UNAHORatingEngine_HOE
+uses una.rating.ho.UNAHOTXRatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -183,6 +184,9 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
     if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    } else {
+      if(_line.BaseState == typekey.Jurisdiction.TC_TX)
+        return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
     return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }

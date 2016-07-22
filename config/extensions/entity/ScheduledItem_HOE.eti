@@ -67,63 +67,14 @@
     name="jurisdiction_Ext"
     nullok="true"
     typelist="Jurisdiction"/>
-  <foreignkey
-    desc="HomeOwners coverage"
-    fkentity="HomeownersLineCov_HOE"
-    name="homeOwnersCov_Ext"
-    nullok="true"/>
-  <column
-    desc="Watercraft Name"
-    name="watercraftName_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
-  <typekey
-    desc="Watercraft Type"
-    name="watercraftType_Ext"
-    nullok="true"
-    typelist="WatercraftType_Ext"/>
-  <typekey
-    desc="Overall Length"
-    name="overallLength_Ext"
-    nullok="true"
-    typelist="OverallLength_Ext"/>
-  <typekey
-    desc="Horsepower"
-    name="horsepower_Ext"
-    nullok="true"
-    typelist="Horsepower_Ext"/>
-  <typekey
-    desc="Speed Rating"
-    name="speedRating_Ext"
-    nullok="true"
-    typelist="SpeedRating_Ext"/>
-  <column
-    desc="Navigation Period Each Year"
-    name="navPeriodEachYear_Ext"
-    nullok="true"
-    type="positiveinteger"/>
-  <column
-    desc="From Date"
-    name="fromDate_Ext"
-    nullok="true"
-    type="datetime"/>
-  <column
-    desc="To Date"
-    name="toDate_Ext"
-    nullok="true"
-    type="datetime"/>
-  <column
-    desc="Watercraft Description"
-    name="watercraftDescription_Ext"
-    nullok="true"
-    type="longtext"/>
   <column
     desc="Rented to Others"
     name="rentedtoOthers_Ext"
     nullok="true"
     type="bit"/>
+  <foreignkey
+    desc="the related ho line coverage"
+    fkentity="HomeownersLineCov_HOE"
+    name="HOLineCoverage"
+    nullok="true"/>
 </entity>

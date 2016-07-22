@@ -21,6 +21,9 @@
       initialValue="dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.sum(\ s -&gt; s.ExposureValue )"
       name="currentTotal"
       type="int"/>
+    <Variable
+      initialValue="scheduleTypeRange()"
+      name="scheduleTypeRange"/>
     <HiddenInput
       id="CovPatternCode"
       value="coveragePattern.CodeIdentifier"/>
@@ -53,12 +56,13 @@
               sortBy="schedItem.ItemNumber"
               sortOrder="1"/>
             <Row>
-              <TypeKeyCell
+              <RangeCell
                 editable="true"
                 id="ArticleType"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.ArticlePropertyType"
                 required="true"
-                value="schedItem.ScheduleType"/>
+                value="schedItem.ScheduleType"
+                valueRange="scheduleTypeRange"/>
               <Cell
                 editable="true"
                 id="SchedItemDescriptionId"
@@ -71,6 +75,7 @@
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.SchedItemExposureValue"
                 numCols="10"
                 required="true"
+                validationExpression="if(schedItem.ScheduleType == typekey.ScheduleType_HOE.TC_GUNS_EXT and schedItem.ExposureValue &gt; 25000 )return displaykey.Web.Homeowners.HOCoveragesScreen.validateScheduleValue"
                 value="schedItem.ExposureValue"/>
             </Row>
           </RowIterator>
@@ -78,5 +83,14 @@
       </ListViewInput>
       <PostOnChange/>
     </InputGroup>
+    <Code><![CDATA[/**
+ *  Amrita D
+ *  Added function to get ScheduleType Range value as per the base state selected
+ */
+function scheduleTypeRange() :List<gw.entity.TypeKey>{
+ 
+  var scheduleTypeValue  = ScheduleType_HOE.Type.getTypeKeysByCategory(dwelling.PolicyPeriod.BaseState)
+  return scheduleTypeValue
+  }]]></Code>
   </InputSet>
 </PCF>

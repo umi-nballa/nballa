@@ -44,6 +44,12 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
       case HODW_LossAssessmentCov_HOE_Ext:
           rateLossAssessmentCoverage(lineCov, dateRange)
           break
+      case HOLI_AddResidenceRentedtoOthers_HOE:
+          rateAdditionalResidenceRentedToOthersCoverage(lineCov, dateRange)
+          break
+      case HOLI_AnimalLiabilityCov_HOE_Ext:
+          rateAnimalLiabilityCoverage(lineCov, dateRange)
+          break
     }
   }
 
@@ -55,9 +61,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
       case HODW_EquipBreakdown_HOE_Ext:
           rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
           break
-      case HODW_AnimalLiability_HOE_Ext:
-          rateAnimalLiabilityCoverage(dwellingCov, dateRange)
-          break
       case HODW_SpecificOtherStructure_HOE_Ext:
           rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
           break
@@ -66,6 +69,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
           break
       case HODW_IdentityTheftExpenseCov_HOE_Ext:
           rateIdentityTheftExpenseCoverage(dwellingCov, dateRange)
+          break
+      case HODW_UnitOwnersOutbuildingCov_HOE_Ext:
+          rateUnitOwnersOutbuildingAndOtherStructuresCoverage(dwellingCov, dateRange)
           break
     }
   }
@@ -90,6 +96,25 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
     if(costData != null)
       addCost(costData)
     _logger.debug("Personal Liability Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateAdditionalResidenceRentedToOthersCoverage(lineCov: HOLI_AddResidenceRentedtoOthers_HOE, dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalResidenceRentedToOthersCoverage to rate Additional Residence Rented To Others Coverage", this.IntrinsicType)
+    var costData = createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_TX_ROUTINE_NAME)
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Animal Liability Coverage
+   */
+  function rateAnimalLiabilityCoverage(lineCov : HOLI_AnimalLiabilityCov_HOE_Ext, dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAnimalLiabilityCoverage to rate Animal Liability Coverage", this.IntrinsicType)
+    var costData = createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME)
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -153,18 +178,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
   }
 
   /**
-   * Rate Animal Liability Coverage
-   */
-  function rateAnimalLiabilityCoverage(dwellingCov : HODW_AnimalLiability_HOE_Ext, dateRange : DateRange){
-    _logger.debug("Entering " + CLASS_NAME + ":: rateAnimalLiabilityCoverage to rate Animal Liability Coverage", this.IntrinsicType)
-    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
-    var costData = createCostDataForDwellingCoverage(dwellingCov, dateRange, dwellingRatingInfo, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME)
-    if(costData != null)
-      addCost(costData)
-    _logger.debug("Animal Liability Coverage Rated Successfully", this.IntrinsicType)
-  }
-
-  /**
    * Rate Other structures - Increased or decreased Limits coverage for HCONB
    */
   function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov : HODW_SpecificOtherStructure_HOE_Ext, dateRange : DateRange){
@@ -174,6 +187,15 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
     if(costData != null)
       addCost(costData)
     _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateUnitOwnersOutbuildingAndOtherStructuresCoverage(dwellingCov : HODW_UnitOwnersOutbuildingCov_HOE_Ext, dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersOutbuildingAndOtherStructuresCoverage to rate Unit Owners Outbuilding and Other Structures Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
+    var costData = createCostDataForDwellingCoverage(dwellingCov, dateRange, dwellingRatingInfo, HORateRoutineNames.UNIT_OWNERS_OUTBUILDINGS_AND_OTHER_STRUCTURES_COV_TX_ROUTINE_NAME)
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Unit Owners Outbuilding and Other Structures Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

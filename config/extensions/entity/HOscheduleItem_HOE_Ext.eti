@@ -1,0 +1,81 @@
+<?xml version="1.0"?>
+<entity
+  desc="scheduled Item for homeowners"
+  effDatedBranchType="PolicyPeriod"
+  entity="HOscheduleItem_HOE_Ext"
+  exportable="true"
+  final="false"
+  loadable="false"
+  table="hoscheduleitem_hoe"
+  type="effdated">
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.lob.ho.HOScheduledItemCopier_HOE_Ext"/>
+  <implementsInterface
+    iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
+    impl="gw.lob.ho.HOScheduledItemMatcher_HOE_Ext"/>
+  <foreignkey
+    desc="HomeOwners coverage"
+    fkentity="HomeownersLineCov_HOE"
+    name="homeOwnersCov"
+    nullok="true"/>
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Watercraft Name"
+    name="watercraftName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Watercraft Type"
+    name="watercraftType"
+    nullok="true"
+    typelist="WatercraftType_Ext"/>
+  <typekey
+    desc="Overall Length"
+    name="overallLength"
+    nullok="true"
+    typelist="OverallLength_Ext"/>
+  <typekey
+    desc="Horsepower"
+    name="horsepower"
+    nullok="true"
+    typelist="Horsepower_Ext"/>
+  <typekey
+    desc="Speed Rating"
+    name="speedRating"
+    nullok="true"
+    typelist="SpeedRating_Ext"/>
+  <column
+    desc="From Date"
+    name="fromDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="To Date"
+    name="toDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Watercraft Description"
+    name="watercraftDescription"
+    nullok="true"
+    type="longtext"/>
+  <column
+    desc="Navigation Period Each Year"
+    name="navPeriodEachYear"
+    nullok="true"
+    type="positiveinteger"/>
+  <column
+    desc="Item number (auto generated)"
+    name="ItemNum"
+    nullok="true"
+    type="integer"/>
+</entity>

@@ -1,0 +1,1781 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!--
+ **************************************************************
+  (c) 2008 by ChoicePoint Asset Company.  All rights reserved.
+ **************************************************************
+-->
+<xs:schema targetNamespace="http://cp.com/rules/client" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:rf="http://cp.com/rules/client" elementFormDefault="qualified" attributeFormDefault="unqualified" jxb:version="1.0">
+	<!-- <xs:simpleType name="edits_date">	-->
+	<!--	<xs:restriction base="xs:string">	-->
+	<!--		<xs:pattern value="[0-9][0-9][0-3][0-9][012][0-9]{3}"/>	-->
+	<!--	</xs:restriction>			-->
+	<!-- global Simple Type 		-->
+	<!-- </xs:simpleType>			-->
+	<xs:include schemaLocation="../CPRulesCommonElementsSchema.xsd"/>
+	
+
+
+	<xs:simpleType name="credit_vendors" >
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="vendorNameEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Equifax"/>
+			<xs:enumeration value="Experian"/>
+			<xs:enumeration value="TransUnion"/>
+			<xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+
+	<xs:simpleType name="edits_time">
+		<xs:restriction base="xs:string">
+			<xs:pattern value="[0-2][0-9][0-5][0-9]"/>
+		</xs:restriction>
+		<!-- global Simple Type -->
+	</xs:simpleType>
+	<xs:simpleType name="whole_dollar">
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:maxInclusive value="9999999"/>
+		</xs:restriction>
+		<!-- global Simple Type -->
+	</xs:simpleType>
+	<xs:simpleType name="counter">
+		<xs:restriction base="xs:nonNegativeInteger">
+			<xs:maxInclusive value="99999"/>
+		</xs:restriction>
+		<!-- global Simple Type -->
+	</xs:simpleType>
+	<xs:simpleType name="employment">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="employmentEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="current"/>
+			<xs:enumeration value="first_former"/>
+			<xs:enumeration value="second_former"/>
+                        <xs:enumeration value="unknown"/>
+		</xs:restriction>
+		<!-- global Simple Type -->
+	</xs:simpleType>
+
+	<xs:simpleType name="score_status">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="scoreStatusEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Scored"/>
+			<xs:enumeration value="No Score"/>
+			<xs:enumeration value="No Hit"/>
+			<xs:enumeration value="No Result"/>
+			<xs:enumeration value="Error"/>
+                        <xs:enumeration value="Unknown"/>
+		</xs:restriction>
+		<!-- global Simple Type -->
+	</xs:simpleType>
+
+<!--
+	<xs:simpleType name="state_code">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="stateCodeEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="AL"/>
+			<xs:enumeration value="AK"/>
+			<xs:enumeration value="AZ"/>
+			<xs:enumeration value="AR"/>
+			<xs:enumeration value="CA"/>
+			<xs:enumeration value="CO"/>
+			<xs:enumeration value="CT"/>
+			<xs:enumeration value="DE"/>
+			<xs:enumeration value="DC"/>
+			<xs:enumeration value="FL"/>
+			<xs:enumeration value="GA"/>
+			<xs:enumeration value="HI"/>
+			<xs:enumeration value="ID"/>
+			<xs:enumeration value="IL"/>
+			<xs:enumeration value="IN"/>
+			<xs:enumeration value="IA"/>
+			<xs:enumeration value="KS"/>
+			<xs:enumeration value="KY"/>
+			<xs:enumeration value="LA"/>
+			<xs:enumeration value="ME"/>
+			<xs:enumeration value="MD"/>
+			<xs:enumeration value="MA"/>
+			<xs:enumeration value="MI"/>
+			<xs:enumeration value="MN"/>
+			<xs:enumeration value="MS"/>
+			<xs:enumeration value="MO"/>
+			<xs:enumeration value="MT"/>
+			<xs:enumeration value="NE"/>
+			<xs:enumeration value="NV"/>
+			<xs:enumeration value="NH"/>
+			<xs:enumeration value="NJ"/>
+			<xs:enumeration value="NM"/>
+			<xs:enumeration value="NY"/>
+			<xs:enumeration value="NC"/>
+			<xs:enumeration value="ND"/>
+			<xs:enumeration value="OH"/>
+			<xs:enumeration value="OK"/>
+			<xs:enumeration value="OR"/>
+			<xs:enumeration value="PA"/>
+			<xs:enumeration value="RI"/>
+			<xs:enumeration value="SC"/>
+			<xs:enumeration value="SD"/>
+			<xs:enumeration value="TN"/>
+			<xs:enumeration value="TX"/>
+			<xs:enumeration value="UT"/>
+			<xs:enumeration value="VT"/>
+			<xs:enumeration value="VA"/>
+			<xs:enumeration value="WA"/>
+			<xs:enumeration value="WV"/>
+			<xs:enumeration value="WI"/>
+			<xs:enumeration value="WY"/>
+			<xs:enumeration value="AB"/>
+			<xs:enumeration value="AS"/>
+			<xs:enumeration value="AT"/>
+			<xs:enumeration value="BC"/>
+			<xs:enumeration value="BI"/>
+			<xs:enumeration value="DR"/>
+			<xs:enumeration value="GU"/>
+			<xs:enumeration value="HA"/>
+			<xs:enumeration value="JI"/>
+			<xs:enumeration value="MB"/>
+			<xs:enumeration value="NB"/>
+			<xs:enumeration value="NF"/>
+			<xs:enumeration value="NS"/>
+			<xs:enumeration value="NT"/>
+			<xs:enumeration value="ON"/>
+			<xs:enumeration value="PE"/>
+			<xs:enumeration value="PQ"/>
+			<xs:enumeration value="PR"/>
+			<xs:enumeration value="SK"/>
+			<xs:enumeration value="TT"/>
+			<xs:enumeration value="VI"/>
+			<xs:enumeration value="YK"/>
+		</xs:restriction>
+
+	</xs:simpleType>
+-->
+	<!-- The following chart indicates the valid ECOA /Account Designator codes used in the FI81 and FI90 records: -->
+	<xs:simpleType name="ecoa_codes">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="collectionsEcoaCodeEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Subject (Individual)"/>
+			<xs:enumeration value="Joint"/>
+			<xs:enumeration value="Other"/>
+			<xs:enumeration value="Primary"/>
+			<xs:enumeration value="Authorized User"/>
+			<xs:enumeration value="Undesignated"/>
+			<xs:enumeration value="On behalf of"/>
+			<xs:enumeration value="Terminated"/>
+			<xs:enumeration value="Maker"/>
+			<xs:enumeration value="Co-maker"/>
+			<xs:enumeration value="Shared"/>
+                        <xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="sex_values">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="sexTypeEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Female"/>
+			<xs:enumeration value="Male"/>
+			<xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="address_types">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="addressTypeEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="residence"/>
+			<xs:enumeration value="former"/>
+                        <xs:enumeration value="unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="true_false">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="trueFalseEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="true"/>
+			<xs:enumeration value="false"/>
+                        <xs:enumeration value="unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- The following chart lists the Account summary codes in the Summary section -->
+	<xs:simpleType name="summary_account_codes">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="summaryAccountTypesEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Too New to Rate or Approved But Not Used"/>
+			<xs:enumeration value="Pays Account as Agreed"/>
+			<xs:enumeration value="Pays/Paid 30-60 Days or Max 2 Payments Past Due"/>
+			<xs:enumeration value="Pays/Paid 60-90 Days or Max 3 Payments Past Due"/>
+			<xs:enumeration value="Pays/Paid 90-120 Days or Max 4 Payments Past Due"/>
+			<xs:enumeration value="Pays/Paid 120+ Days or 4+ Payments Past Due"/>
+			<xs:enumeration value="Regular Payments Under Debtor Plan/Arrangement"/>
+			<xs:enumeration value="Repossession"/>
+			<xs:enumeration value="Bad Debt"/>
+			<xs:enumeration value="Status Not Known"/>
+                        <xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<!-- The following chart lists the valid Account Type codes used in the E.D.I.T.S. financial records: -->
+	<xs:simpleType name="financial_accounts">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="financialAccountTypesEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Revolving"/>
+			<xs:enumeration value="Open-ended"/>
+			<xs:enumeration value="Installment"/>
+                       <xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:simpleType name="financial_rate_codes">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="financialRateCodesEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="Too new to rate or approved but not used"/>
+			<xs:enumeration value="Pays account as agreed"/>
+			<xs:enumeration value="Not more than two payments past due"/>
+			<xs:enumeration value="Not more than three payments past due"/>
+			<xs:enumeration value="Not more than four payments past due"/>
+			<xs:enumeration value="At least 120 days or more than four payments past due"/>
+			<xs:enumeration value="Making regular payments under W.E.P."/>
+			<xs:enumeration value="Repossession"/>
+			<xs:enumeration value="Bad debt; placed for collection; skip"/>
+			<xs:enumeration value="Account is inactive"/>
+			<xs:enumeration value="Lost or stolen card "/>
+			<xs:enumeration value="Contact member for status"/>
+			<xs:enumeration value="Account refinanced or renewed"/>
+			<xs:enumeration value="Consumer deceased"/>
+			<xs:enumeration value="Included in financial counseling"/>
+			<xs:enumeration value="Foreclosure proceedings started"/>
+			<xs:enumeration value="In WEP of other party"/>
+			<xs:enumeration value="Adjustment pending"/>
+			<xs:enumeration value="Escrow account only"/>
+			<xs:enumeration value="BMO need authorization to clear"/>
+			<xs:enumeration value="Account included in CH13"/>
+			<xs:enumeration value="Creditor declines to clear"/>
+			<xs:enumeration value="No response from creditor"/>
+			<xs:enumeration value="Dispute - resolution pending"/>
+			<xs:enumeration value="Out-of-area trade"/>
+			<xs:enumeration value="Unable to check without account number"/>
+			<xs:enumeration value="Account not approved"/>
+			<xs:enumeration value="Need consumer authorization"/>
+			<xs:enumeration value="No record of account"/>
+			<xs:enumeration value="Account included in bankruptcy"/>
+			<xs:enumeration value="In bankruptcy / other party"/>
+			<xs:enumeration value="Assigned to U.S. Dept of ED"/>
+			<xs:enumeration value="Invalid / Unknown"/>
+                        <xs:enumeration value="Unknown"/>
+		</xs:restriction>
+		<!-- The following describes the rate codes used in E.D.I.T.S. financial records: -->
+	</xs:simpleType>
+	<xs:simpleType name="narrativeType">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="narrativeTypesEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="city"/>
+			<xs:enumeration value="state"/>
+            <xs:enumeration value="unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	<xs:complexType name="narratives">
+		<xs:sequence>
+			<xs:element name="narrative" minOccurs="0" maxOccurs="4">
+				<xs:complexType>
+					<xs:simpleContent>
+						<xs:extension base="xs:string">
+							<xs:attribute name="type" type="rf:narrativeType"/>
+						</xs:extension>
+					</xs:simpleContent>
+				</xs:complexType>
+			</xs:element>
+		</xs:sequence>
+	</xs:complexType>
+	<xs:element name="ncf_report">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="rf:admin"/>
+				<xs:element ref="rf:report"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- root element requence -->
+	<xs:element name="report">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element ref="rf:alerts_scoring" minOccurs="0" />
+				<xs:element ref="rf:search_dataset" minOccurs="0"/>
+				<xs:element ref="rf:vendor_dataset" minOccurs="0"/>
+				<xs:element ref="rf:summary" minOccurs="0"/>
+				<xs:element ref="rf:employment_history" minOccurs="0"/>
+				<xs:element ref="rf:public_records" minOccurs="0"/>
+				<xs:element ref="rf:collections" minOccurs="0"/>
+				<xs:element ref="rf:trade_account_activity" minOccurs="0"/>
+				<xs:element ref="rf:consumer_statements" minOccurs="0"/>
+				<xs:element ref="rf:inquiry_history" minOccurs="0"/>
+				<xs:element ref="rf:additional_information" minOccurs="0"/>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- report -->
+	<!-- <xs:element name="public_records">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="rf:bankruptcies" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="rf:judgements" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="rf:guaranteed_loans" minOccurs="0" maxOccurs="99" />
+            <xs:element ref="rf:foreclosures" minOccurs="0" maxOccurs="99" />
+            <xs:element ref="rf:non_responsibilities" minOccurs="0" maxOccurs="99" />
+            <xs:element ref="rf:marital_history" minOccurs="0" maxOccurs="99" />
+            <xs:element ref="rf:tax_liens" minOccurs="0" maxOccurs="unbounded" />
+            <xs:element ref="rf:financial_counselors" minOccurs="0" maxOccurs="99" />
+            <xs:element ref="rf:garnishments" minOccurs="0" maxOccurs="99" />
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>  -->
+	<!-- public_records -->
+	<xs:element name="admin">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="quoteback" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="name" type="xs:string" use="required"/>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="product_group">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jxb:typesafeEnumClass name="productGroupTypeEnum"/>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Regular NCF transaction"/>
+							<xs:enumeration value="FSI (Financial Stress Indicator)"/>
+							<xs:enumeration value="Government"/>
+							<xs:enumeration value="NCF Report"/>
+							<xs:enumeration value="Commercial Insurance"/>
+							<xs:enumeration value="Attract with Claims"/>
+							<xs:enumeration value="Independent Agent"/>
+							<xs:enumeration value="Social Search"/>
+							<xs:enumeration value="Parallel Product Report"/>
+							<xs:enumeration value="Address Update"/>
+							<xs:enumeration value="Canadian Search"/>
+							<xs:enumeration value="Comparative Credit"/>
+							<xs:enumeration value="NCF transaction with Current Carrier"/>
+							<xs:enumeration value="Canadian report"/>
+                            <xs:enumeration value="Unknown"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<!-- RI51 Product Group -->
+				</xs:element>
+				<xs:element name="pnc_account">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:pattern value="\d{6}[A-Z]{3}"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="pnc_account_name" type="xs:string" minOccurs="0"/>
+				<xs:element name="product_reference" type="xs:string" minOccurs="0"/>
+				<xs:element name="report_type">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jxb:typesafeEnumClass name="reportTypeEnum"/>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Individual"/>
+							<xs:enumeration value="Joint"/>
+				                        <xs:enumeration value="Unknown"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="status">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jxb:typesafeEnumClass name="processingStatusEnum"/>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Complete, No Report (credit bureau manual report)"/>
+							<xs:enumeration value="Credit bureau no-hit"/>
+							<xs:enumeration value="Credit bureau designed error"/>
+							<xs:enumeration value="Invalid Account"/>
+							<xs:enumeration value="Invalid Request"/>
+							<xs:enumeration value="Complete"/>
+							<xs:enumeration value="Unscored"/>
+							<xs:enumeration value="PLS >= account threshold"/>
+							<xs:enumeration value="Low PLS"/>
+			                                <xs:enumeration value="Unknown"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<!-- RI51 Processing Status -->
+				</xs:element>
+				<xs:element name="ownership" minOccurs="0">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jxb:typesafeEnumClass name="ownershipEnum"/>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Personal"/>
+							<xs:enumeration value="Commercial"/>
+				                        <xs:enumeration value="Unknown"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="special_billing_id" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:string">
+							<xs:maxLength value="15"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="report_code" minOccurs="0">
+					<xs:simpleType>
+						<xs:restriction base="xs:nonNegativeInteger">
+							<xs:maxInclusive value="9999"/>
+						</xs:restriction>
+					</xs:simpleType>
+				</xs:element>
+				<xs:element name="report_description" type="xs:string" minOccurs="0"/>
+				<xs:element name="line_of_business" minOccurs="0">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jxb:typesafeEnumClass name="lineOfBusinessEnum"/>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Property"/>
+							<xs:enumeration value="Auto"/>	
+							<xs:enumeration value="Financial"/>
+				                        <xs:enumeration value="Unknown"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<!-- RI51 -->
+				</xs:element>
+				<xs:element name="purpose" minOccurs="0">
+					<xs:simpleType>
+						<xs:annotation>
+							<xs:appinfo>
+								<jxb:typesafeEnumClass name="purposeEnum"/>
+							</xs:appinfo>
+						</xs:annotation>
+						<xs:restriction base="xs:string">
+							<xs:enumeration value="Underwriting"/>
+							<xs:enumeration value="Claims"/>
+							<xs:enumeration value="Financial"/>
+				                        <xs:enumeration value="Unknown"/>
+						</xs:restriction>
+					</xs:simpleType>
+					<!-- RI51 -->
+				</xs:element>
+				<xs:element name="date_request_ordered" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="date_request_received" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="date_request_completed" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="time_report_processed" type="rf:edits_time" minOccurs="0"/>
+				<xs:element name="multiple_scores_ordered" type="rf:true_false" minOccurs="0"/>
+				<xs:element name="vendor" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="name" type="rf:credit_vendors" /> <!-- RI52 Special Field #3 -->
+						<xs:attribute name="address" type="xs:string" />
+						<xs:attribute name="status">
+							<xs:simpleType>
+								<xs:annotation>
+									<xs:appinfo>
+										<jxb:typesafeEnumClass name="vendorStatusEnum"/>
+									</xs:appinfo>
+								</xs:annotation>
+								<xs:restriction base="xs:string">
+									<xs:enumeration value="Equifax No Hit"/>
+									<xs:enumeration value="Equifax System Unavailable"/>
+									<xs:enumeration value="TransUnion No Hit"/>
+									<xs:enumeration value="TransUnion System Unavailable"/>
+									<xs:enumeration value="Experian No Hit"/>
+									<xs:enumeration value="Experian System Unavailable"/>
+									<xs:enumeration value="Completed"/>
+									<xs:enumeration value="Unknown"/>
+								</xs:restriction>
+							</xs:simpleType>
+									<!-- RI52 Special Field #3 -->
+						</xs:attribute>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="report"  minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="sequence" type="xs:string" minOccurs="0"/>
+							<xs:element name="count" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>	
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- base elements of 1 admin section -->
+	<xs:element name="alerts_scoring">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="scoring" minOccurs="0" maxOccurs="1">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="score" minOccurs="1" maxOccurs="9" >
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="model_label" type="xs:string" minOccurs="0" />
+										<xs:element name="score" type="rf:counter" minOccurs="0" />
+										<xs:element name="rating_state" type="xs:string" minOccurs="0" />
+										<xs:element name="model_id" type="xs:string" minOccurs="0" />
+										<xs:element name="classification" type="rf:AlertsClassification" minOccurs="0"/>
+										<xs:element name="exclusion_code" type="xs:string" minOccurs="0"  />
+										<xs:element name="exclusion_msg" type="xs:string" minOccurs="0" />
+										<xs:element name="reason_codes" minOccurs="0" maxOccurs="99" >
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="code" type="xs:string" minOccurs="0" />
+													<xs:element name="description" type="xs:string" minOccurs="0" />
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="status" type="rf:score_status" />
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="error" minOccurs="0" maxOccurs="99" >
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="error_text" type="xs:string" minOccurs="0" maxOccurs="99" />
+							<xs:element name="error_code" type="xs:string" minOccurs="0" />
+							<xs:element name="vendor" type="rf:credit_vendors" minOccurs="0" />
+							<xs:element name="exclusion_code" >
+								<xs:simpleType>
+									<xs:annotation>
+										<xs:appinfo>
+											<jxb:typesafeEnumClass name="AlertsErrorEnum"/>
+										</xs:appinfo>
+									</xs:annotation>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="Reprocess - Credit Vendor Accessed is Temporarily Unavailable"/>
+										<xs:enumeration value="Data Error - Stop Processing - Read Message"/>
+										<xs:enumeration value="Fatal Error. Call LexisNexis for Additional Information"/>
+							                        <xs:enumeration value="Unknown"/>
+									</xs:restriction>
+								</xs:simpleType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="facs" minOccurs="0" maxOccurs="99" type="xs:string" />
+				<xs:element name="general" minOccurs="0" maxOccurs="99">
+					<xs:complexType>
+						<xs:simpleContent>
+							<xs:extension base="xs:string">
+								<xs:attribute name="classification" type="rf:AlertsClassification" use="optional"/>
+								<xs:attribute name="narrativeCode" use="optional">
+									<xs:simpleType>
+										<xs:annotation>
+											<xs:appinfo>
+												<jxb:typesafeEnumClass name="narrativeCodeEnum"/>
+											</xs:appinfo>
+										</xs:annotation>
+										<xs:restriction base="xs:string">
+											<xs:enumeration value="Security Freeze"/>
+											<xs:enumeration value="Address Mismatch"/>
+											<xs:enumeration value="Current address does not match input address (Experian)"/>
+											<xs:enumeration value="Prior address does not match one input address (Experian)"/>
+											<xs:enumeration value="Prior address does not match any input addresses (Experian)"/>
+											<xs:enumeration value="Current address does not match input address (TransUnion)"/>
+											<xs:enumeration value="Prior address does not match one input address (TransUnion)"/>
+											<xs:enumeration value="Prior address does not match any input addresses (TransUnion)"/>
+											<xs:enumeration value="Active Duty Alert"/>
+											<xs:enumeration value="Fraud Victim Alert"/>
+											<xs:enumeration value="Extended Fraud Victim Alert"/>
+											<xs:enumeration value="Consumer Statement"/>
+											<xs:enumeration value="Natural Disaster"/>
+											<xs:enumeration value="Foreclosure Activity"/>
+											<xs:enumeration value="Subject deceased"/>
+											<xs:enumeration value="Identity Theft Victim"/>
+											<xs:enumeration value="Unknown"/>
+										</xs:restriction>
+									</xs:simpleType>
+								</xs:attribute>
+							</xs:extension>
+						</xs:simpleContent>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="search_dataset">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="subjects" maxOccurs="2">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="subject">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="first" type="xs:string" minOccurs="0"/>
+													<xs:element name="middle" type="xs:string" minOccurs="0"/>
+													<xs:element name="last" type="xs:string" minOccurs="0"/>
+													<xs:element name="suffix" type="xs:string" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="birth_date" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="gender" type="rf:sex_values" minOccurs="0"/>
+									    <xs:element name="age" type="xs:int" minOccurs="0"/>
+									    <xs:element name="ssn" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="\d{9}"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="address" minOccurs="0" maxOccurs="2">
+											<xs:complexType>
+												<xs:attribute name="type" type="rf:address_types" use="required"/>
+												<xs:attribute name="ref" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="type" use="required">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="subjectRelationshipEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="primary"/>
+												<xs:enumeration value="spouse"/>
+                                                                                                <xs:enumeration value="unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="addresses" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="address" minOccurs="0" maxOccurs="2">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="house" type="xs:string" minOccurs="0"/>
+										<xs:element name="street1" type="xs:string" minOccurs="0"/>
+										<xs:element name="apartment" type="xs:string" minOccurs="0"/>
+										<xs:element name="city" type="xs:string" minOccurs="0"/>
+										<xs:element name="state" type="xs:string" minOccurs="0"/>
+										<xs:element name="postalcode" type="xs:string" minOccurs="0"/>
+										<xs:element name="zip4" type="xs:string" minOccurs="0" />
+									</xs:sequence>
+									<xs:attribute name="ref" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- subjects -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="vendor_dataset">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="subjects" maxOccurs="2">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="subject" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" minOccurs="0" maxOccurs="2">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="first" type="xs:string" minOccurs="0"/>
+													<xs:element name="middle" type="xs:string" minOccurs="0"/>
+													<xs:element name="last" type="xs:string" minOccurs="0"/>
+													<xs:element name="suffix" type="xs:string" minOccurs="0"/>
+												</xs:sequence>
+												<xs:attribute name="type" use="required">
+													<xs:simpleType>
+														<xs:annotation>
+															<xs:appinfo>
+																<jxb:typesafeEnumClass name="SubjectNameTypeEnum"/>
+															</xs:appinfo>
+														</xs:annotation>
+														<xs:restriction base="xs:string">
+															<xs:enumeration value="Report Subject"/>
+															<xs:enumeration value="Former"/>
+															<xs:enumeration value="Alias"/>
+															<xs:enumeration value="Spouse"/>
+                                                                                                                        <xs:enumeration value="Unknown"/>
+														</xs:restriction>
+													</xs:simpleType>
+												</xs:attribute>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="birth_date" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="ssn" minOccurs="0">
+											<xs:simpleType>
+												<xs:restriction base="xs:string">
+													<xs:pattern value="\d{9}"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="description" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="age" type="xs:integer" minOccurs="0"/>
+													<xs:element name="marital_status" minOccurs="0">
+														<xs:simpleType>
+															<xs:annotation>
+																<xs:appinfo>
+																	<jxb:typesafeEnumClass name="maritalValueEnum"/>
+																</xs:appinfo>
+															</xs:annotation>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="Married"/>
+																<xs:enumeration value="Divorced"/>
+																<xs:enumeration value="Separated"/>
+																<xs:enumeration value="Single"/>
+																<xs:enumeration value="Widowed"/>
+																<xs:enumeration value="Unknown"/>
+															</xs:restriction>
+														</xs:simpleType>
+														<!-- PI01/PI51 Marital Status Codes -->
+													</xs:element>
+													<xs:element name="number_dependents" type="xs:integer" minOccurs="0"/>
+													<xs:element name="sex" type="rf:sex_values" minOccurs="0"/>
+													<xs:element name="death_date" type="rf:USDateType" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="address" minOccurs="0" maxOccurs="3">
+											<xs:complexType>
+												<xs:attribute name="type" type="rf:address_types" use="required"/>
+												<xs:attribute name="ref" type="xs:string" use="required"/>
+											</xs:complexType>
+										</xs:element>
+										<!-- description -->
+									</xs:sequence>
+									<xs:attribute name="type" use="required">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="vendorNameTypeEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Primary"/>
+												<xs:enumeration value="Spouse"/>
+												<xs:enumeration value="Alias"/>
+												<xs:enumeration value="Former"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="relationship_to_data" use="optional">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="relationshipToDataEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Subject"/>
+												<xs:enumeration value="Subject's Spouse"/>
+												<xs:enumeration value="Subject's dependent"/>
+												<xs:enumeration value="Insured"/>
+												<xs:enumeration value="Policyholder"/>
+												<xs:enumeration value="Claimant"/>
+												<xs:enumeration value="Other"/>
+												<xs:enumeration value="Surname Match"/>
+                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- edits PI51 -->
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- subject -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="addresses" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="address" minOccurs="0" maxOccurs="3">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="house" type="xs:string" minOccurs="0"/>
+										<xs:element name="street1" type="xs:string" minOccurs="0"/>
+										<xs:element name="apartment" type="xs:string" minOccurs="0"/>
+										<xs:element name="city" type="xs:string" minOccurs="0"/>
+										<xs:element name="state" type="xs:string" minOccurs="0"/>
+										<xs:element name="postalcode" type="xs:string" minOccurs="0"/>
+										<xs:element name="zip4" type="xs:string" minOccurs="0" />
+										<xs:element name="date_first_at_address" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_last_at_address" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="data_source_indicator" minOccurs="0" >
+											<xs:simpleType>
+												<xs:annotation>
+													<xs:appinfo>
+														<jxb:typesafeEnumClass name="dataSourceIndicatorEnum"/>
+													</xs:appinfo>
+												</xs:annotation>
+												<xs:restriction base="xs:string">
+													<xs:enumeration value="Equifax"/>
+													<xs:enumeration value="DAT"/>
+													<xs:enumeration value="AUT"/>
+													<xs:enumeration value="Unknown"/>
+												</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+									</xs:sequence>
+									<xs:attribute name="id" type="xs:string" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- subjects -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- vendor_dataset -->
+	<xs:element name="summary">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="date_file_established" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="date_oldest_trade" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="date_latest_trade" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="date_latest_activity" type="rf:USDateType" minOccurs="0"/>
+				<xs:element name="includes_bankruptcies">
+					<xs:complexType>
+						<xs:attribute name="flag" type="rf:true_false" use="required"/>
+						<xs:attribute name="date" type="rf:USDateType" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="includes_other_records">
+					<xs:complexType>
+						<xs:attribute name="public_records" type="rf:true_false" use="optional"/>
+						<xs:attribute name="collection" type="rf:true_false" use="optional"/>
+						<xs:attribute name="consumer_statement" type="rf:true_false" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="credit_range">
+					<xs:complexType>
+						<xs:attribute name="high" type="rf:whole_dollar" use="optional"/>
+						<xs:attribute name="low" type="rf:whole_dollar" use="optional"/>
+						<xs:attribute name="number_trade_lines" type="rf:counter" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="account_status_counters" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="account" minOccurs="0" maxOccurs="18">
+								<xs:complexType>
+									<xs:simpleContent>
+										<xs:extension base="xs:integer">
+											<xs:attribute name="type">
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:enumeration value="current"/>
+														<xs:enumeration value="former"/>
+                                                                                                                <xs:enumeration value="unknown"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+											<xs:attribute name="description" type="rf:summary_account_codes" use="required"/>
+											<xs:attribute name="status">
+												<xs:simpleType>
+													<xs:restriction base="xs:string">
+														<xs:pattern value="[ 0-9]"/>
+													</xs:restriction>
+												</xs:simpleType>
+											</xs:attribute>
+										</xs:extension>
+									</xs:simpleContent>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="account_summaries">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="account" minOccurs="0" maxOccurs="9">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="number_accounts" type="rf:counter" minOccurs="0"/>
+										<xs:element name="total_owed" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="total_past_due" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="high_amount" type="rf:whole_dollar" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="type" type="rf:financial_accounts" use="optional"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="inquiry_history" minOccurs="0">
+					<xs:complexType>
+						<xs:attribute name="count" type="rf:counter" use="optional"/>
+						<xs:attribute name="since" type="rf:USDateType" use="optional"/>
+					</xs:complexType>
+				</xs:element>
+				<!-- account_status_counters -->
+				<!-- account_summaries -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- summary -->
+	<xs:element name="employment_history">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="employment_primary_subject" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="job" minOccurs="0" maxOccurs="3">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="position" type="xs:string" minOccurs="0"/>
+										<xs:element name="monthly_salary" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="employer" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="name" type="xs:string" minOccurs="0"/>
+													<xs:element name="city" type="xs:string" minOccurs="0"/>
+													<xs:element name="state" type="xs:string" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="date_employed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_verified" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_last_employed" type="rf:USDateType" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="entry" type="rf:employment" use="required"/>
+									<xs:attribute name="indirectly_verified" type="rf:true_false" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<!-- job -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="employment_spouse" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="job" minOccurs="0" maxOccurs="3">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="position" type="xs:string" minOccurs="0"/>
+										<xs:element name="monthly_salary" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="employer" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="name" type="xs:string" minOccurs="0"/>
+													<xs:element name="city" type="xs:string" minOccurs="0"/>
+													<xs:element name="state" type="xs:string" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="date_employed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_verified" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_last_employed" type="rf:USDateType" minOccurs="0"/>
+									</xs:sequence>
+									<xs:attribute name="entry" type="rf:employment" use="required"/>
+									<xs:attribute name="indirectly_verified" type="rf:true_false" use="required"/>
+								</xs:complexType>
+							</xs:element>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="other_income" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_verified" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="amount" type="rf:whole_dollar" minOccurs="0"/>
+							<xs:element name="source" type="xs:string" minOccurs="0"/>
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- employment_history -->
+	<xs:element name="public_records">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="bankruptcies" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="bankruptcy" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_filed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_discharged" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="assets" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="liabilities" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="information_source" minOccurs="0">
+											<xs:simpleType>
+												<xs:annotation>
+													<xs:appinfo>
+														<jxb:typesafeEnumClass name="bankruptInformationSourceEnum"/>
+													</xs:appinfo>
+												</xs:annotation>
+												<xs:restriction base="xs:string">
+														<xs:enumeration value="Reported by CBI"/>
+														<xs:enumeration value="Other reporting source"/>
+														<xs:enumeration value="Unknown"/>
+													</xs:restriction>
+											</xs:simpleType>
+										</xs:element>
+										<xs:element name="amount_exempt" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="case_number">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="court" type="xs:string"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+									<xs:attribute name="filed_by">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="bankruptFiledByEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Individual"/>
+												<xs:enumeration value="Joint"/>
+												<xs:enumeration value="Spouse"/>
+												<xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI61 TYPE OF FILING -->
+									</xs:attribute>
+									<xs:attribute name="type">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="bankruptTypeEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Personal"/>
+												<xs:enumeration value="Business"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI61 TYPE OF BANKRUPTCY   -->
+									</xs:attribute>
+									<xs:attribute name="status">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="bankruptStatusEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Discharged (Chapter 7)"/>
+												<xs:enumeration value="Chapter 13 (Filed)"/>
+												<xs:enumeration value="Chapter 11 (Fixed)"/>
+												<xs:enumeration value="Dismissed (Chapter 11)"/>
+												<xs:enumeration value="Discharged (Chapter 11)"/>
+												<xs:enumeration value="Chapter 12 (Filed)"/>
+												<xs:enumeration value="Discharged (Chapter 12)"/>
+												<xs:enumeration value="Dismissed (Chapter 12)"/>
+												<xs:enumeration value="Dismissed (Chapter 13)"/>
+												<xs:enumeration value="Discharged (Chapter 13)"/>
+												<xs:enumeration value="Dismissed (Chapter 7)"/>
+												<xs:enumeration value="Non-adjudicated"/>
+												<xs:enumeration value="Voluntary (Chapter 7)"/>
+												<xs:enumeration value="Involuntary (Chapter 7)"/>
+												<xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI61 BANKRUPTCY STATUS   -->
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- bankruptcy -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="judgements" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="judgement" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_filed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_satisfied" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_verified" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="case_number" minOccurs="0" >
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="court" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="defendant" type="xs:string" minOccurs="0"/>
+										<xs:element name="plaintiff" type="xs:string" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+									<xs:attribute name="type">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="judgementTypeEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Suit"/>
+												<xs:enumeration value="Judgment"/>
+												<xs:enumeration value="Satisfied Judgment"/>
+												<xs:enumeration value="Annulment"/>
+												<xs:enumeration value="Divorce Filed / Dissolution"/>
+												<xs:enumeration value="Divorce Final"/>
+												<xs:enumeration value="Divorce Pending/ Final Decree"/>
+												<xs:enumeration value="Separate Maintenance"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+									<xs:attribute name="status">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="judgementStatusEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Appealed"/>
+												<xs:enumeration value="Dismissed"/>
+												<xs:enumeration value="Pending"/>
+												<xs:enumeration value="Satisfied"/>
+												<xs:enumeration value="Settled"/>
+									                        <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI73  STATUS OF RECORD/ITEM -->
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- judgement -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="guaranteed_loans" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="loan" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_filed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_maturity" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="case_number" minOccurs="0">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="court" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<!-- loan -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="foreclosures" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="foreclosure" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_vendor_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_checked" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="reporting_member" type="xs:string" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<!-- foreclosure -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="non_responsibilities" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="non_responsibility" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_vendor_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+									<xs:attribute name="person_filing" use="required">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="nonResponsibilitesPersonFilingEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Subject"/>
+												<xs:enumeration value="Spouse"/>
+												<xs:enumeration value="Both"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+                                                                                      </xs:restriction>
+										</xs:simpleType>
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- non_responsibility -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="marital_history" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="marital" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_filed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_verified" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="case_number" minOccurs="0">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="court" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="plaintiff" type="xs:string" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+									<xs:attribute name="type">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="maritalHistoryTypeEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Suit"/>
+												<xs:enumeration value="Judgment"/>
+												<xs:enumeration value="Satisfied Judgment"/>
+												<xs:enumeration value="Annulment"/>
+												<xs:enumeration value="Divorce Filed / Dissolution"/>
+												<xs:enumeration value="Divorce Final"/>
+												<xs:enumeration value="Divorce Pending/ Final Decree"/>
+												<xs:enumeration value="Separate Maintenance"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI73 -->
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- marital -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="tax_liens" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="lien" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_filed" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_released" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_verified" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="case_number" minOccurs="0">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="court" type="xs:string" use="optional"/>
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+									<xs:attribute name="creditor_class">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="taxLiensCreditorClassEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Federal"/>
+												<xs:enumeration value="State"/>
+												<xs:enumeration value="County"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI76 - ACB CREDITOR CLASS -->
+									</xs:attribute>
+									<xs:attribute name="acb_creditor_class" type="xs:string"  />
+								</xs:complexType>
+							</xs:element>
+							<!-- lien -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="financial_counselors" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="counselor" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_vendor_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_checked" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_settled" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+									<xs:attribute name="reporting_member_number" type="xs:string" use="optional"/>
+									<xs:attribute name="status">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="financialCounselorsStatusEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Satisfied"/>
+												<xs:enumeration value="Terminated"/>
+												<xs:enumeration value="Involuntary Discharge"/>
+												<xs:enumeration value="Voluntary Discharge"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI77 COUNSELING STATUS CODE -->
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- counselor -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="garnishments" minOccurs="0">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="garnishment" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="date_vendor_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_checked" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_satisfied" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="case_number" minOccurs="0">
+											<xs:complexType>
+												<xs:simpleContent>
+													<xs:extension base="xs:string">
+														<xs:attribute name="court" type="xs:string" />
+													</xs:extension>
+												</xs:simpleContent>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="defendant" type="xs:string" minOccurs="0"/>
+										<xs:element name="plaintiff" type="xs:string" minOccurs="0"/>
+										<xs:element name="garnishee" type="xs:string" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<!-- garnishment -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- bankruptcies -->
+				<!-- judgements -->
+				<!-- guaranteed_loans -->
+				<!-- foreclosures -->
+				<!-- non_responsibilities -->
+				<!-- marital_history -->
+				<!-- tax_liens -->
+				<!-- financial_counselors -->
+				<!-- garnishments -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- public_records -->
+	<xs:element name="collections">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="collection" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="reporting_member_number" type="xs:string" minOccurs="0"/>
+							<xs:element name="ecoa_code" type="rf:ecoa_codes"/>
+							<xs:element name="date_vendor_reported" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_assigned" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_last_activity" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_balance" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_last_checked" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="status">
+								<xs:simpleType>
+									<xs:annotation>
+										<xs:appinfo>
+											<jxb:typesafeEnumClass name="collectionsStatusByEnum"/>
+										</xs:appinfo>
+									</xs:annotation>
+									<xs:restriction base="xs:string">
+										<xs:enumeration value="Unpaid"/>
+										<xs:enumeration value="Financial counselor"/>
+										<xs:enumeration value="Adjustment"/>
+										<xs:enumeration value="Wage earner"/>
+										<xs:enumeration value="New listing"/>
+										<xs:enumeration value="Paid"/>
+										<xs:enumeration value="Account disputed"/>
+										<xs:enumeration value="Payment"/>
+										<xs:enumeration value="Unknown"/>
+										<xs:enumeration value="Checked"/>
+										<xs:enumeration value="In bankruptcy"/>
+									</xs:restriction>
+								</xs:simpleType>
+								<!-- FI81 Collection Item Status codes -->
+							</xs:element>
+							<xs:element name="grantor" minOccurs="0">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="name" type="xs:string" minOccurs="0"/>
+										<xs:element name="description" type="xs:string" minOccurs="0"/>
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<xs:element name="account_serial_number" type="xs:string" minOccurs="0"/>							<xs:element name="orginal_amount" type="rf:whole_dollar" minOccurs="0"/>
+							<xs:element name="balance_amount" type="rf:whole_dollar" minOccurs="0"/>
+							<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+							<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- collection -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- collections -->
+	<xs:element name="trade_account_activity">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="credit_trades" minOccurs="0" maxOccurs="1" >
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="credit_trade" minOccurs="0" maxOccurs="unbounded">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="reporting_member" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="number" type="xs:string" minOccurs="0"/>
+													<xs:element name="name" type="xs:string" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="account">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="type" type="rf:financial_accounts" minOccurs="0"/>
+													<xs:element name="terms" type="xs:string" minOccurs="0"/>
+													<xs:element name="number" type="xs:string" minOccurs="0"/>
+													<xs:element name="months_reviewed" type="rf:counter" minOccurs="0"/>
+													<xs:element name="designator" type="rf:ecoa_codes" minOccurs="0"/>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_opened" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_last_activity" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="current_rate" type="rf:financial_rate_codes" minOccurs="0"/>
+										<xs:element name="highest_amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="balance_amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="past_due_amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="previous_rates" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="rate" minOccurs="0" maxOccurs="3">
+														<xs:complexType>
+															<xs:attribute name="status" type="rf:financial_rate_codes" use="optional"/>
+															<xs:attribute name="date" type="rf:USDateType" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<!-- rate -->
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="past_due_counters" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="counter" minOccurs="0" maxOccurs="3">
+														<xs:complexType>
+															<xs:attribute name="days_past_due" use="optional">
+																<xs:simpleType>
+																	<xs:annotation>
+																		<xs:appinfo>
+																			<jxb:typesafeEnumClass name="creditTradeDaysPastDueEnum"/>
+																		</xs:appinfo>
+																	</xs:annotation>
+																	<xs:restriction base="xs:string">
+																		<xs:enumeration value="Days 30"/>
+																		<xs:enumeration value="Days 60"/>
+																		<xs:enumeration value="Days 90"/>
+                                                                                                                                                <xs:enumeration value="Unknown"/>
+																	</xs:restriction>
+																</xs:simpleType>
+															</xs:attribute>
+															<xs:attribute name="count" type="rf:counter" use="optional"/>
+														</xs:complexType>
+													</xs:element>
+													<!-- counter -->
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0" />	 <!-- NR51 -->
+										<xs:element name="payment_history_24_month" type="xs:string" minOccurs="0"/>
+										<!-- account -->
+										<!-- previous_rates -->
+										<!-- past_due_counters -->
+									</xs:sequence>
+									<xs:attribute name="automated_tape_supplier" type="rf:true_false" use="required"/>
+								</xs:complexType>
+							</xs:element>
+							<!-- credit_trade -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="non_member_trades" minOccurs="0" maxOccurs="1" >
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="non_member_trade" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="account_type" type="rf:financial_accounts" minOccurs="0"/>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_opened" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="current_rate" type="rf:financial_rate_codes" minOccurs="0"/>
+										<xs:element name="highest_amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="balance_amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="past_due_amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="customer_narrative" type="xs:string" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0" /><!-- NR51 -->
+									</xs:sequence>
+								</xs:complexType>
+							</xs:element>
+							<!-- non_member_trade -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<xs:element name="checking_savings_accounts" minOccurs="0" maxOccurs="1" >
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="account" minOccurs="0" maxOccurs="99">
+								<xs:complexType>
+									<xs:sequence>
+										<xs:element name="reporting_member" minOccurs="0">
+											<xs:complexType>
+												<xs:sequence>
+													<xs:element name="member_number" type="xs:string"/>
+													<xs:element name="reason_code" minOccurs="0">
+														<xs:simpleType>
+															<xs:annotation>
+																<xs:appinfo>
+																	<jxb:typesafeEnumClass name="checkingSavingsReasonEnum"/>
+																</xs:appinfo>
+															</xs:annotation>
+															<xs:restriction base="xs:string">
+																<xs:enumeration value="Non-sufficient funds"/>
+																<xs:enumeration value="Restrained"/>
+                                                                                                                                <xs:enumeration value="Unknown"/>
+															</xs:restriction>
+														</xs:simpleType>
+														<!-- FI80 REASON CODE -->
+													</xs:element>
+												</xs:sequence>
+											</xs:complexType>
+										</xs:element>
+										<xs:element name="date_vendor_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_reported" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="date_opened" type="rf:USDateType" minOccurs="0"/>
+										<xs:element name="amount" type="rf:whole_dollar" minOccurs="0"/>
+										<xs:element name="narratives" type="rf:narratives" minOccurs="0"/>
+										<xs:element name="messages" type="rf:messageListType" minOccurs="0"/>	 <!-- NR51 -->
+										<!-- reporting_member -->
+									</xs:sequence>
+									<xs:attribute name="type">
+										<xs:simpleType>
+											<xs:annotation>
+												<xs:appinfo>
+													<jxb:typesafeEnumClass name="checkingSavingsTypeEnum"/>
+												</xs:appinfo>
+											</xs:annotation>
+											<xs:restriction base="xs:string">
+												<xs:enumeration value="Checking"/>
+												<xs:enumeration value="Savings"/>
+                                                                                                <xs:enumeration value="Unknown"/>
+											</xs:restriction>
+										</xs:simpleType>
+										<!-- FI80 ACCOUNT TYPE -->
+									</xs:attribute>
+								</xs:complexType>
+							</xs:element>
+							<!-- account -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+				<!-- credit_trades -->
+				<!-- non_member_trades -->
+				<!-- checking_savings_accounts -->
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<!-- trade_account_activity -->
+	<xs:element name="consumer_statements">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="statement" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:sequence>
+							<xs:element name="date_filed" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="date_to_purge" type="rf:USDateType" minOccurs="0"/>
+							<xs:element name="filing_individual" type="xs:string" minOccurs="0"/>
+							<xs:element name="messages" type="rf:messageListType" minOccurs="0"/><!-- NR51 -->
+						</xs:sequence>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	<xs:element name="inquiry_history">
+		<xs:complexType>
+			<xs:sequence>
+				<xs:element name="inquiry" minOccurs="0" maxOccurs="unbounded">
+					<xs:complexType>
+						<xs:attribute name="date" type="rf:USDateType"/>
+						<xs:attribute name="name" type="xs:string"/>
+						<xs:attribute name="member" type="xs:string"/>
+					</xs:complexType>
+				</xs:element>
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	
+	<xs:element name="additional_information" type="rf:messageListType"/>
+
+	<xs:simpleType name="AlertsClassification">
+		<xs:annotation>
+			<xs:appinfo>
+				<jxb:typesafeEnumClass name="AlertsClassificationEnum"/>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:string">
+			<xs:enumeration value="ASSIST Score and Reasons"/>
+			<xs:enumeration value="Beacon Message"/>
+			<xs:enumeration value="FICO"/>
+			<xs:enumeration value="Empirica"/>
+			<xs:enumeration value="Fraud Detection/Safescan Message"/>
+			<xs:enumeration value="FACS+"/>
+			<xs:enumeration value="Hawk"/>
+			<xs:enumeration value="LexisNexis Custom Model"/>
+			<xs:enumeration value="LexisNexis Model"/>
+			<xs:enumeration value="National Risk"/>
+			<xs:enumeration value="General Message"/>
+			<xs:enumeration value="Attract 3.0 Model"/>
+			<xs:enumeration value="Unknown"/>
+		</xs:restriction>
+	</xs:simpleType>
+	
+	
+		
+</xs:schema>

@@ -24,4 +24,12 @@
     <indexcol keyposition="3" name="ID"/>
   </index>
   <edgeForeignKey nullok="true" desc="The primary DBA for this Policy" edgeTableName="PrimPcDBA" exportasid="true" fkentity="PolicyDBARole_Ext" name="PrimaryDBA"/>
+ <!-- Credit related fields -->
+  <edgeForeignKey
+    desc="Associated Credit Information (credit level or credit report)"
+    edgeTableName="PPCreditInfoExt"
+    exportable="false"
+    fkentity="CreditInfoExt"
+    name="CreditInfoExt"
+    nullok="true"/>
 </extension>

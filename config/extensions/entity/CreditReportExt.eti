@@ -1,0 +1,190 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A building-level coverage for Commercial Property"
+  effDatedBranchType="PolicyPeriod"
+  entity="CreditReportExt"
+  exportable="true"
+  table="CreditReportExt"
+  type="effdated">
+  <column
+    desc="Was an alternate address used to get the credit report?"
+    name="AlternateAddressInd"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Was an alternate (e.g. Maiden) name used to get the credit report?"
+    name="AlternateNameInd"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="The order of the credit reports on a policy contact. First credit report, second credit report, etc."
+    name="CreditReportOrder"
+    nullok="true"
+    type="integer"/>
+  <foreignkey
+    columnName="AlternateAddressID"
+    desc="Did the customer request an alternative address for this credit report?"
+    fkentity="Address"
+    name="AlternateAddress"
+    nullok="true"/>
+  <column
+    desc="Did the customer request a credit report under a different first name?"
+    name="AlternateFirstName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Did the customer request a credit report under a different middle name?"
+    name="AlternateMiddleName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Did the customer request a credit report under a different last name?"
+    name="AlternateLastName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="This is a return code from credit bureau indicating a discrepancy between the address sent and what they have on file."
+    name="AddrDiscrepancyInd"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="The credit bureau where the score was acquired."
+    name="CreditBureau"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="A pointer to the external Credit report location."
+    name="FolderID"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="10"/>
+  </column>
+  <typekey
+    desc="Status Code returned by the Credit Reporting service."
+    name="CreditStatus"
+    nullok="true"
+    typelist="CreditStatusExt"/>
+  <column
+    desc="Additional information behind credit status."
+    name="CreditStatusDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="50"/>
+  </column>
+  <column
+    desc="A credit score is a numerical expression based on a statistical analysis of a person's credit files, to represent the creditworthiness of that person."
+    name="CreditScore"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="10"/>
+  </column>
+  <column
+    desc="Date when the score was obtained."
+    name="CreditScoreDate"
+    nullok="true"
+    type="datetime"/>
+  <foreignkey
+    columnName="PolicyContactRoleID"
+    desc="The PolicyContactRole this CreditScoreExt applies to."
+    fkentity="PolicyContactRole"
+    name="PolicyContactRole"
+    nullok="true"/>
+  <!-- The fields below this line are added to replace in memory cache to store credit reports.
+		This is just an example for convenience so one does not have to configure external DB for accelerator, 
+		but on actual project change this persistence to use table in an external DB. -->
+  <column
+    desc="First Name of the customer"
+    name="FirstName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Middle name"
+    name="MiddleName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Last name"
+    name="LastName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Address Line 1"
+    name="AddressLine1"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="Address City"
+    name="AddressCity"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <!-- <column
+    desc="Address State"
+	name="AddressState"
+	type="varchar" exportable="true" loadable="true">
+	<columnParam
+	  name="size"
+	  value="2"/>
+  </column> -->
+  <typekey
+    desc="Sate code"
+    name="AddressState"
+    nullok="true"
+    typelist="State"/>
+  <column
+    desc="Address Zip/postal code"
+    name="AddressZip"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="Cache expiration date"
+    name="CacheExpireDate"
+    nullok="true"
+    type="datetime"/>
+</entity>

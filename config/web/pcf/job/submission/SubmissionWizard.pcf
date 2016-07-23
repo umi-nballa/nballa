@@ -98,6 +98,12 @@
         save="openForEdit"
         screen="SubmissionWizard_PolicyInfoScreen(submission, policyPeriod, openForEdit, jobWizardHelper)"
         title="displaykey.Web.SubmissionWizardMenu.PolicyInfo"/>
+      <JobWizardStep
+        id="SubmissionWizard_CreditReport"
+        save="PolicyPeriod.OpenForEdit"
+        screen="SubmissionWizard_CreditReportScreen(submission, policyPeriod, openForEdit, jobWizardHelper)"
+        title="&quot;Credit Reporting&quot;"
+        visible="PolicyPeriod.HomeownersLine_HOEExists"/>
       <WizardStepSetRef
         def="LineWizardStepSet(job, policyPeriod, jobWizardHelper, openForEdit)"
         mode="productCode"/>

@@ -1,0 +1,21 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A building-level coverage for Commercial Property"
+  effDatedBranchType="PolicyPeriod"
+  entity="CreditInfoExt"
+  exportable="true"
+  table="CreditInfoExt"
+  type="effdated">
+  <foreignkey
+    columnName="CreditReportID"
+    desc="The associated credit report (if any)"
+    fkentity="CreditReportExt"
+    name="CreditReport"
+    nullok="true"/>
+  <typekey
+    desc="Credit level indicating an estimated credit score for a quick quote"
+    name="CreditLevel"
+    nullok="true"
+    typelist="CreditLevelExt"/>
+</entity>

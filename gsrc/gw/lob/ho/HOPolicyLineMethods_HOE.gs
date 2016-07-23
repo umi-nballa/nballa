@@ -164,6 +164,10 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
     if(_line.HOLineCoverages != null){
       _line.HOLineCoverages.each(\ c -> c.CoveredLocationAutoNumberSeq.renumberNewBeans(c.CoveredLocations, CoveredLocation_HOE.Type.TypeInfo.getProperty("LocationNumber")))
     }
+
+    if(_line.HOLineCoverages != null){
+      _line.HOLineCoverages.each(\ c -> c.ScheduleItemsAutoNumberSeq_Ext.renumberNewBeans(c.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum")))
+    }
   }
 
   override function createPolicyLineDiffHelper(reason : DiffReason, policyLine : PolicyLine) : HODiffHelper {

@@ -46,6 +46,26 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     return coveredLocation
     
   }
+
+  /**
+   * The createAndAddScheduledItem adds a scheduled item entity and associates it to the owning coverage that covers
+   * scheduled items.    The function has been designed with the coverage pattern as an input so that
+   * the function can be resused for any other coverage at homeownersline level that also have an array of scheduled items
+   */
+  function createAndAddHOScheduledItem(covPattern : String) : HOscheduleItem_HOE_Ext {
+
+    var schedItem = new HOscheduleItem_HOE_Ext(this.Branch)
+
+    if (covPattern.matches("HOSL_OutboardMotorsWatercraft_HOE_Ext") and this.HOSL_OutboardMotorsWatercraft_HOE_ExtExists) {
+      this.HOSL_OutboardMotorsWatercraft_HOE_Ext.addScheduledItem(schedItem)
+    }/* else if (covPattern.matches("HOSL_WatercraftLiabilityCov_HOE_Ext") and this.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
+      this.HOSL_WatercraftLiabilityCov_HOE_Ext.addScheduledItem(schedItem)
+    }*/ else {
+      throw "Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx"
+    }
+
+    return schedItem
+  }
   
   /** 
    * This function returns all the policy locations on the policy except the one that is currently 
@@ -95,4 +115,5 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     var branch = this.Branch
     return branch.getSlice(branch.PeriodStart).HOTransactions
   }
+
 }

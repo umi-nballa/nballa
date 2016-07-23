@@ -64,7 +64,18 @@ class CoveragesValidation_HOE extends PCValidationBase {
       if (_dwelling.HODW_OtherStructuresOnPremise_HOE.ScheduledItems.length == 0) {
         Result.addError(_dwelling, "default", displaykey.Web.Policy.HomeownersLine.Validation.OtherStructuresOnPremiseEmpty)
       }
-    }   
+    }
+    if (_holine.HOSL_OutboardMotorsWatercraft_HOE_ExtExists) {
+      if (_holine.HOSL_OutboardMotorsWatercraft_HOE_Ext.scheduledItem_Ext.length == 0) {
+        Result.addError(_holine, "default", displaykey.Web.Policy.HomeownersLine.Validation.OutboardMotorsWatercraftEmpty_Ext)
+      }
+    }
+    if (_holine.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
+      if (_holine.HOSL_WatercraftLiabilityCov_HOE_Ext.scheduledItem_Ext.length == 0) {
+        Result.addError(_holine, "default", displaykey.Web.Policy.HomeownersLine.Validation.WatercraftLiabilityEmpty_Ext)
+      }
+    }
+
   }
   
   function checkUniqueDescription(cov: DwellingCov_HOE){

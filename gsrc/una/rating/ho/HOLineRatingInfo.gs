@@ -12,6 +12,7 @@ class HOLineRatingInfo {
   var _personalLiabilityLimit : int as PersonalLiabilityLimit
   var _personalInjuryLimit : int as PersonalInjuryLimit
   var _lossAssessmentLimit : int as LossAssessmentLimit
+  var _animalLiabilityLimit : int as AnimalLiabilityLimit
 
   construct(){}
 
@@ -20,5 +21,6 @@ class HOLineRatingInfo {
     _personalLiabilityLimit = (lineCov.HOLine.HOLI_Personal_Liability_HOEExists)? lineCov.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.Value?.intValue() : 0
     _personalInjuryLimit = (lineCov.HOLine.HOLI_PersonalInjury_HOEExists)? lineCov.HOLine.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue() : 0
     _lossAssessmentLimit = (lineCov.HOLine.HODW_LossAssessmentCov_HOE_ExtExists)? lineCov.HOLine.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
+    _animalLiabilityLimit = ((lineCov.HOLine.HOLI_AnimalLiabilityCov_HOE_ExtExists)? lineCov.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext?.HOLI_AnimalLiabLimit_HOETerm?.Value : 0) as int
   }
 }

@@ -77,4 +77,36 @@ enhancement HomeownersLineCovEnhancement_HOE : entity.HomeownersLineCov_HOE {
         return BigDecimal.ZERO
     }
   }
+
+  function addScheduledItem(item: HOscheduleItem_HOE_Ext){
+    this.addToScheduledItem_Ext(item)
+    //this.ScheduleItemsAutoNumberSeq_Ext.number(item, this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum"))
+  }
+
+  function removeScheduledItem(item: HOscheduleItem_HOE_Ext) {
+    this.removeFromScheduledItem_Ext(item)
+
+    //renumberScheduledItems()
+  }
+  private function renumberScheduledItems() {
+    this.ScheduleItemsAutoNumberSeq_Ext.renumber(this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum") )
+  }
+
+  function cloneScheduledItemAutoNumberSequence() {
+    this.ScheduleItemsAutoNumberSeq_Ext = this.ScheduleItemsAutoNumberSeq_Ext.clone( this.Bundle )
+  }
+
+  function resetScheduledItemAutoNumberSequence() {
+    this.ScheduleItemsAutoNumberSeq_Ext.reset()
+    renumberScheduledItems()
+  }
+
+  function bindScheduledItemAutoNumberSequence() {
+    renumberScheduledItems()
+    this.ScheduleItemsAutoNumberSeq_Ext.bind( this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum"))
+  }
+
+  function initializeScheduledItemAutoNumberSequence(bundle : Bundle) {
+    this.ScheduleItemsAutoNumberSeq_Ext = new AutoNumberSequence(bundle)
+  }
 }

@@ -11,5 +11,6 @@ class HORatingInfo {
 
   var _standardBaseClassPremium : BigDecimal as StandardBaseClassPremium
   var _adjustedBaseClassPremium : BigDecimal as AdjustedBaseClassPremium
-  var _finalBaseClassPremium : BigDecimal as FinalBaseClassPremium
+  var _finalAdjustedBaseClassPremium : BigDecimal as FinalAdjustedBaseClassPremium
+  var _totalBasePremium : BigDecimal as TotalBasePremium
 }

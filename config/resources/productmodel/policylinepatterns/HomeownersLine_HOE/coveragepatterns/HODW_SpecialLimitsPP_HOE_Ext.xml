@@ -13,13 +13,16 @@
   referenceDateByType="PolicyTerm">
   <CovTerms>
     <OptionCovTermPattern
+      aggregationModel="po"
       choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_ElectronicApparatusLimit_HOE"
       coverageColumn="ChoiceTerm6"
       lookupTableName="DwellingCovTerm"
-      priority="600"
+      modelType="Limit"
+      priority="802"
       public-id="HODW_ElectronicApparatusLimit_HOE"
       required="true"
+      restrictionModel="prp"
       valueType="money">
       <DefaultsSet>
         <CovTermDefault
@@ -329,12 +332,15 @@
       </Options>
     </OptionCovTermPattern>
     <DirectCovTermPattern
+      aggregationModel="po"
       codeIdentifier="HODW_SilverwareGoldwareLimit_HOE"
       coverageColumn="DirectTerm1"
       lookupTableName="DwellingCovTerm"
+      modelType="Limit"
       priority="800"
       public-id="HODW_SilverwareGoldwareLimit_HOE"
       required="true"
+      restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
@@ -345,7 +351,7 @@
       coverageColumn="ChoiceTerm7"
       lookupTableName="DwellingCovTerm"
       modelType="Limit"
-      priority="700"
+      priority="150"
       public-id="HODW_JewelryFursSingleItemLimit_HOE"
       required="false"
       restrictionModel="prp"
@@ -382,24 +388,76 @@
       </Options>
     </OptionCovTermPattern>
     <DirectCovTermPattern
+      aggregationModel="po"
       codeIdentifier="HODW_FirearmsLimit_HOE"
       coverageColumn="DirectTerm2"
       lookupTableName="DwellingCovTerm"
-      priority="900"
+      modelType="Limit"
+      priority="801"
       public-id="HODW_FirearmsLimit_HOE"
       required="true"
+      restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
     <DirectCovTermPattern
+      aggregationModel="po"
       codeIdentifier="HODW_SecurityLimits_HOE"
       coverageColumn="DirectTerm3"
       lookupTableName="DwellingCovTerm"
-      priority="1000"
+      modelType="Limit"
+      priority="500"
       public-id="HODW_SecurityLimits_HOE"
       required="true"
+      restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_TrailerOthers_HOE"
+      coverageColumn="DirectTerm5"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="903"
+      public-id="HODW_TrailerOthers_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="money">
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value == true ){
+return true
+}else return false]]></AvailabilityScript>
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="za1ha1rkiie93d6k1i2l1eht6s8"
+          currency="usd"
+          defaultValue="2000"
+          maxVal="2000"
+          public-id="za1ha1rkiie93d6k1i2l1eht6s8"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_Watercraft_HOE"
+      coverageColumn="DirectTerm4"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="803"
+      public-id="HODW_Watercraft_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="money">
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value == true ){
+return true
+}else return false]]></AvailabilityScript>
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="za9j8hemrcpmtfsns3uilaeutrb"
+          currency="usd"
+          defaultValue="2000"
+          maxVal="2000"
+          public-id="za9j8hemrcpmtfsns3uilaeutrb"/>
+      </LimitsSet>
     </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

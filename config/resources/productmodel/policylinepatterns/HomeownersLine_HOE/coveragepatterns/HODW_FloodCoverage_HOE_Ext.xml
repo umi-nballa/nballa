@@ -20,9 +20,12 @@
       modelType="Limit"
       priority="100"
       public-id="HODW_FloodCov_Dwelling_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "DPA" || Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "DA" ){
+return true
+}else return false]]></AvailabilityScript>
       <LimitsSet>
         <CovTermLimits
           codeIdentifier="ztdgqkbagud3ad7855hrpj5c7g9"
@@ -41,9 +44,12 @@
       modelType="Limit"
       priority="200"
       public-id="HODW_FllodCovPP_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "DPA" || Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "PA" ){
+return true
+}else return false]]></AvailabilityScript>
       <LimitsSet>
         <CovTermLimits
           codeIdentifier="zeqhufq7f2oudfsupbs5i48v408"
@@ -61,7 +67,7 @@
       coverageColumn="ChoiceTerm1"
       lookupTableName="DwellingCovTerm"
       modelType="Limit"
-      priority="300"
+      priority="201"
       public-id="HODW_Lossofuse_HOE_Ext"
       required="true"
       restrictionModel="prp"
@@ -78,28 +84,28 @@
           codeIdentifier="z82jm08m3o63dajjb9sb0s7kaoa"
           currency="usd"
           optionCode="20000"
-          priority="100"
+          priority="87"
           public-id="z82jm08m3o63dajjb9sb0s7kaoa"
           value="20000.0000"/>
         <CovTermOpt
           codeIdentifier="zdggoneknqe18ehuglsf0h0mp09"
           currency="usd"
           optionCode="5000"
-          priority="100"
+          priority="0"
           public-id="zdggoneknqe18ehuglsf0h0mp09"
           value="5000.0000"/>
         <CovTermOpt
           codeIdentifier="z84jeudunpqurfvfrr8ofuhlq6a"
           currency="usd"
           optionCode="15000"
-          priority="100"
+          priority="75"
           public-id="z84jeudunpqurfvfrr8ofuhlq6a"
           value="15000.0000"/>
         <CovTermOpt
           codeIdentifier="z9ciah172fml38uk5u5pt3daqn9"
           currency="usd"
           optionCode="10000"
-          priority="100"
+          priority="50"
           public-id="z9ciah172fml38uk5u5pt3daqn9"
           value="10000.0000"/>
         <CovTermOpt
@@ -118,7 +124,7 @@
       coverageColumn="ChoiceTerm3"
       lookupTableName="DwellingCovTerm"
       modelType="Deductible"
-      priority="0"
+      priority="752"
       public-id="HODW_FloodCov_Ded_HOE"
       required="false"
       restrictionModel="prp"
@@ -127,7 +133,7 @@
         <CovTermDefault
           codeIdentifier="z8pgc55htg4q71c3mkc822p39pb"
           currency="usd"
-          defaultValue="500"
+          defaultValue="1000"
           public-id="z8pgc55htg4q71c3mkc822p39pb"/>
       </DefaultsSet>
       <Options>
@@ -182,9 +188,9 @@
       coverageColumn="ChoiceTerm6"
       lookupTableName="DwellingCovTerm"
       modelType="Limit"
-      priority="700"
+      priority="651"
       public-id="HODW_SpecialLimitsPP_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
       <DefaultsSet>
@@ -213,7 +219,7 @@
       modelType="Limit"
       priority="500"
       public-id="HODW_LossAvoidanceMeasures_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
       <DefaultsSet>
@@ -242,7 +248,7 @@
       modelType="Limit"
       priority="400"
       public-id="HODW_IncCostCompliance_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
       <DefaultsSet>
@@ -296,7 +302,7 @@
       codeIdentifier="HODW_FloodCovType_HOE"
       coverageColumn="ChoiceTerm7"
       lookupTableName="DwellingCovTerm"
-      priority="800"
+      priority="0"
       public-id="HODW_FloodCovType_HOE"
       required="true"
       valueType="other">
@@ -322,5 +328,34 @@
           value="1"/>
       </Options>
     </OptionCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_CondominiumLossAssessment_HOE"
+      coverageColumn="DirectTerm4"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="652"
+      public-id="HODW_CondominiumLossAssessment_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="z8bggasaqu2u0f09acvb90o89q9"
+          currency="usd"
+          maxVal="250000"
+          public-id="z8bggasaqu2u0f09acvb90o89q9"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      codeIdentifier="HODW_DebrisRemoval_HOE"
+      coverageColumn="DirectTerm3"
+      lookupTableName="DwellingCovTerm"
+      priority="650"
+      public-id="HODW_DebrisRemoval_HOE"
+      required="true"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

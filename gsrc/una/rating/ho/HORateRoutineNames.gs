@@ -12,6 +12,8 @@ public final class HORateRoutineNames {
   public static final var PERSONAL_LIABILITY_TX_ROUTINE_NAME : String = "UNAHOPersonalLiabilityTXRateRoutine"
   public static final var RESIDENTIAL_GLASS_TX_COV_ROUTINE_NAME : String = "UNAHOResidentialGlassCovTXRateRoutine"
   public static final var LOSS_ASSESSMENT_COV_TX_ROUTINE_NAME : String = "UNAHOLossAssessmentCovTXRateRoutine"
+  public static final var UNIT_OWNERS_OUTBUILDINGS_AND_OTHER_STRUCTURES_COV_TX_ROUTINE_NAME : String = "UNAHOUnitOwnersOutbuildingsAndOtherStructuresCovTXRateRoutine"
+  public static final var ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_TX_ROUTINE_NAME : String = "UNAHOAdditionalResidenceRentedToOthersTXRateRoutine"
 
   public static final var PERSONAL_INJURY_ROUTINE_NAME : String = "UNAHOPersonalInjuryRateRoutine"
   public static final var EQUIPMENT_BREAKDOWN_COV_ROUTINE_NAME : String = "UNAHOEquipmentBreakdownCovRateRoutine"

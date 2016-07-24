@@ -5,6 +5,7 @@ uses gw.api.util.DisplayableException
 uses pcf.SubmissionManager
 uses gw.api.util.JurisdictionMappingUtil
 uses pcf.JobForward
+uses java.util.ArrayList
 
 @Export
 class NewSubmissionUIHelper {
@@ -41,8 +42,8 @@ class NewSubmissionUIHelper {
   {
     if (selectionOfProducer.Account <> acct) {
       selectionOfProducer.Account = acct
-      selectionOfProducer.State =
-        JurisdictionMappingUtil.getJurisdiction(acct.AccountHolderContact.PrimaryAddress)
+      //selectionOfProducer.State =   JurisdictionMappingUtil.getJurisdiction(acct.AccountHolderContact.PrimaryAddress)
+      checkActStateExistsWithProducer(selectionOfProducer)
     }
     var productOffers = performNameClearance(acct, selectionOfProducer)
     gw.api.web.PebblesUtil.invalidateIterators(_currentLocation, ProductSelection )
@@ -50,10 +51,9 @@ class NewSubmissionUIHelper {
 
   function performNameClearance(acct: Account, selectionOfProducer: ProducerSelection) : ProductSelection[]
   {
-
+    isProducerStatesEmpty(selectionOfProducer)
     if(selectionOfProducer.DefaultPPEffDate == null) {
-
-    throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
+      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
     }
     if( canPerformNameClearance(acct, selectionOfProducer) )
     {
@@ -68,6 +68,48 @@ class NewSubmissionUIHelper {
     {
       return null
     }
+  }
+
+  function checkActStateExistsWithProducer(theProducerSelection : ProducerSelection) : Jurisdiction {
+    var whatProducerHad = theProducerSelection.State
+    theProducerSelection.State = null
+    for(aGrpRegion in theProducerSelection.Producer.RootGroup.Regions){
+      var aState = typekey.Jurisdiction.get(aGrpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).first().Code)
+      if(whatProducerHad != null && whatProducerHad.Code.equalsIgnoreCase(aState.Code)){
+        theProducerSelection.State = aState
+      }
+    }
+    return theProducerSelection.State
+  }
+
+  function isProducerStatesEmpty(theProducerSelection: ProducerSelection) : boolean {
+    var res = false
+    var prefix = ""
+    var baseState = theProducerSelection.State
+    for(aGrpRegion in theProducerSelection.Producer.RootGroup.Regions){
+      if(aGrpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).length > 0){
+        res = true
+      }
+    }
+    if(theProducerSelection.DefaultPPEffDate == null){
+      prefix = displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired + "|"
+    }
+    if(baseState == null && res == false){
+      throw new gw.api.util.DisplayableException(prefix + displaykey.Web.SubmissionManagerLV.NoActiveStates)
+    } else if(baseState == null && res == true){
+      throw new gw.api.util.DisplayableException(prefix + displaykey.Web.SubmissionManagerLV.DefaultBaseStateRequired)
+    }
+    return res
+  }
+
+  function orgGroupRegionsToJurisdictions(theProducerSelection: ProducerSelection) : Jurisdiction[] {
+    var grpRegions = theProducerSelection.Producer.RootGroup.Regions
+    var theStates = new ArrayList<Jurisdiction>()
+    for(aGrpRegion in grpRegions){
+      var aState = typekey.Jurisdiction.get(aGrpRegion.Region.getRegionZones(typekey.ZoneType.TC_STATE).first().Code)
+      theStates.add(aState)
+    }
+    return (theStates.toArray(new Jurisdiction[theStates.size()]))
   }
 
   function canPerformNameClearance(acct: Account, selectionOfProducer: ProducerSelection) : boolean
@@ -110,7 +152,6 @@ class NewSubmissionUIHelper {
     var submission = SubmissionUtil.createSubmission( offer, account, producerSelection, quoteType )
     // For one new submission - go straight to Submission view
     var policyPeriod = submission.LatestPeriod
-    
     gw.transaction.Transaction.runWithNewBundle( \ bun -> {
       policyPeriod = bun.add( policyPeriod )
       policyPeriod.BaseState = producerSelection.State

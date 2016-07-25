@@ -58,9 +58,9 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
 
     if (covPattern.matches("HOSL_OutboardMotorsWatercraft_HOE_Ext") and this.HOSL_OutboardMotorsWatercraft_HOE_ExtExists) {
       this.HOSL_OutboardMotorsWatercraft_HOE_Ext.addScheduledItem(schedItem)
-    }/* else if (covPattern.matches("HOSL_WatercraftLiabilityCov_HOE_Ext") and this.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
+    } else if (covPattern.matches("HOSL_WatercraftLiabilityCov_HOE_Ext") and this.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
       this.HOSL_WatercraftLiabilityCov_HOE_Ext.addScheduledItem(schedItem)
-    }*/ else {
+    } else {
       throw "Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx"
     }
 

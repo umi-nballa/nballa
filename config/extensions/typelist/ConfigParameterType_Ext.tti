@@ -29,8 +29,8 @@
   </typecode>
   <typecode
     code="LimitHurricaneOptions"
-    desc="Whether to limit hurricane percentage options"
-    name="Limit Hurricane Percentage Options">
+    desc="Whether to limit hurricane percentage options based on a range of values"
+    name="Limit Hurricane Percentage Options For Range">
     <category
       code="boolean"
       typelist="ConfigParamDataType_Ext"/>
@@ -45,8 +45,8 @@
   </typecode>
   <typecode
     code="RestrictedHurricaneDedutibleValues"
-    desc="A list of allowable hurricane deductible values when restrictions apply"
-    name="Restricted Hurricane Deductible Values">
+    desc="A list of allowable hurricane deductible values when restrictions apply to a given range of values"
+    name="Restricted Hurricane Deductible Values for Range">
     <category
       code="list"
       typelist="ConfigParamDataType_Ext"/>
@@ -138,6 +138,166 @@
     name="Is Coverage Term Editable">
     <category
       code="boolean"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="PolicyTypesToValidateNamedStormPercentage"
+    desc="Polity types in which named storm percentage is validated"
+    name="Policy Types to Validate Named Storm Percentage">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="TerritoryCodesToValidateNamedStormPercentage"
+    desc="Territory codes where we validate a named storm percentage"
+    name="Territory Codes to Validate Named Storm Percentage">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="NamedStormDeductibleMinPercentage"
+    desc="The minimum percentage allowed to be selected for named storm when restrictions apply"
+    name="Named Storm Deductible Minimum Percentage">
+    <category
+      code="double"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="TerritoryCodesToValidateHurricanePercentage"
+    desc="Territory codes where hurricane percentage is validated"
+    name="Territory Codes to Validate Hurricane Percentage">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="HurricaneDeductiblePerecentageMinimum"
+    desc="The minimum percentage allowed for specific territories"
+    name="Hurricane Deductible Percentage Minimum">
+    <category
+      code="double"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="LossAssessmentDeductibleDefault"
+    desc="The deductible default "
+    name="Loss Assessment Deductible Default">
+    <category
+      code="bigdecimal"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="CovAThresholdForHurricaneDeductible"
+    desc="The Coverage A threshold for limiting hurricane deductible options"
+    name="Coverage A Threshold for Hurricane Deductible">
+    <category
+      code="bigdecimal"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="LimitHurricaneOptionsForThreshold"
+    desc="Whether to limit hurricane deductible options based on a threshold"
+    name="Limit Hurricane Options For Threshold">
+    <category
+      code="boolean"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="RestrictedHurricaneDedutibleValuesForThreshold"
+    desc="A list of options that are not allowed based on a given threshold"
+    name="Restricted Hurricane Options For Threshold">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="IncludeWaterBackupAutomatically"
+    desc="Whether to automatically include water backup coverage"
+    name="Include Water Backup Automattically">
+    <category
+      code="boolean"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="HurricanePerecentageRestrictionCovAThreshold"
+    desc="The threshold at which we restrict hurricane percentage options"
+    name="Hurricane Percentage Restriction Cov A Threshold">
+    <category
+      code="double"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="ExecutiveCoverageOnlyPatternCodes"
+    desc="Coverage Pattern Codes that are available only when executive coverage is selected"
+    name="Executive Coverage Only Pattern Codes">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="RoundingFactor"
+    desc="The nearest number to round to.  i.e. the nearest 10, 50, 100, 1000"
+    name="Rounding Factor">
+    <category
+      code="int"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="TerritoryCodesToValidateWindHail"
+    desc="Territory codes where wind/hail percentage is validated"
+    name="Territory Codes to Validate Wind Hail Percentage">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="WindHailDeductibleMinimumPercentage"
+    desc="The minimum percentage that is allowed - usually for a specific territory"
+    name="Wind Hail Deductible Minimum Percentage">
+    <category
+      code="double"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="LossAssessmentOptionsWithPersonalLiability"
+    desc="Loss Assessment options available when Personal Liability exists for FL DP3 policies"
+    name="Loss Assessment Available Options With Personal Liability">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="LossAssessmentOptionsCondoOnly"
+    desc="Available loss assessment options when FL DP policies are Condo-only with no personal liability"
+    name="Loss Assessment Options Condo Only">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="TerritoryCodesToValidateNamedStormValue"
+    desc="Territory codes where a minimum storm deductible dollar value is needed"
+    name="Territory Codes to Validate Named Storm Value">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="NamedStormDeductileDollarMin"
+    desc="The minimum dollar amount allowed when restrictions apply to a given territory"
+    name="Named Storm Deductible Dollar Amount Minimum">
+    <category
+      code="double"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="NamedStormValuePolicyTypes"
+    desc="Policy types where the resulting value for the named storm percentage is validated"
+    name="Named Storm Value Policy types">
+    <category
+      code="list"
       typelist="ConfigParamDataType_Ext"/>
   </typecode>
 </typelist>

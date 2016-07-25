@@ -13,6 +13,9 @@
     <Require
       name="includeExclude"
       type="boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.HOAdditionalCoveragesPanelSet(coverable, coverageCategories)"
+      name="pcfController"/>
     <PanelRef
       def="HOAdditionalCoveragesDV(coverable, coverageCategories, includeExclude)">
       <Toolbar>
@@ -21,7 +24,7 @@
           hideIfReadOnly="true"
           id="Add"
           label="displaykey.Web.Policy.Coverages.AddCoverages"
-          onPick="createCoverageList(PickedValue.whereTypeIs( productmodel.CoveragePattern).toList())"/>
+          onPick="createCoverageList(PickedValue.whereTypeIs( productmodel.CoveragePattern).toList()); pcfController.onPick(PickedValue.whereTypeIs(productmodel.CoveragePattern).toList())"/>
       </Toolbar>
     </PanelRef>
     <Code><![CDATA[function createCoverageList(patterns : java.util.List<productmodel.CoveragePattern>) {

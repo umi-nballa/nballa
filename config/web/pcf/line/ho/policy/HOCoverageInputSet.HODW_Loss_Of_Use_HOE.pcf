@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <PCF
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <InputSet
     id="HOCoverageInputSet"
-    mode="default">
+    mode="HODW_Loss_Of_Use_HOE">
     <Require
       name="coveragePattern"
       type="gw.api.productmodel.ClausePattern"/>
@@ -14,20 +14,15 @@
     <Require
       name="openForEdit"
       type="boolean"/>
-    <Variable
-      initialValue="new una.pageprocess.HOCoverageInputSet(coveragePattern, coverable, openForEdit)"
-      name="pcfController"/>
     <HiddenInput
-      id="CovPatternDisplayName"
-      value="coveragePattern.DisplayName">
-      <PostOnChange/>
-    </HiddenInput>
+      id="CovPatternCode"
+      value="coveragePattern.CodeIdentifier"/>
     <InputGroup
       allowToggle="coveragePattern.allowToggle(coverable)"
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
       id="CovPatternInputGroup"
       label="coveragePattern.DisplayName"
-      onToggle="pcfController.onToggle(VALUE)">
+      onToggle="coverable.setCoverageConditionOrExclusionExists(coveragePattern, VALUE);">
       <InputIterator
         elementName="term"
         forceRefreshDespiteChangedEntries="true"
@@ -35,15 +30,10 @@
         type="gw.api.domain.covterm.CovTerm"
         value="coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -&gt; term.Pattern.Priority )">
         <InputSetRef
-          def="CovTermInputSet(term, openForEdit)"
+          def="CovTermPOCHOEInputSet(term, openForEdit, coverable)"
           mode="term.ValueTypeName"/>
       </InputIterator>
-      <InputSetRef
-        def="ScheduleInputSet(coverable.getCoverageConditionOrExclusion(coveragePattern), openForEdit)"
-        mode="coverable.getCoverageConditionOrExclusion(coveragePattern) typeis gw.api.productmodel.Schedule"/>
       <PostOnChange/>
     </InputGroup>
-    <InputDivider
-      visible="openForEdit or coverable.getCoverageConditionOrExclusion(coveragePattern) != null"/>
   </InputSet>
 </PCF>

@@ -3,7 +3,7 @@ package gw.lob.ho
 uses gw.util.Pair
 uses una.config.ConfigParamsUtil
 uses java.math.BigDecimal
-
+uses gw.api.productmodel.CovTermOpt
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,14 +44,26 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     var state = _dwelling.Branch.BaseState
     var otherPerilsValue = _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     var dwellingValue = _dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-    var shouldLimitHurricaneDedOptions = ConfigParamsUtil.getBoolean(TC_LIMITHURRICANEOPTIONS, state, _dwelling.HOPolicyType.Code)
     var dwellingLimitsRange = ConfigParamsUtil.getRange(TC_DWELLINGLIMITRANGEFORHURRICANEDEDRESTRICTION, state)
+    var shouldLimitHurricaneDedOptions = ConfigParamsUtil.getBoolean(TC_LimitHurricaneOptions, state, _dwelling.HOPolicyType.Code) and dwellingLimitsRange != null
+    var shouldLimitHurricaneDedOptionsForThreshold = ConfigParamsUtil.getBoolean(TC_LimitHurricaneOptionsForThreshold, state)
 
-    if(shouldLimitHurricaneDedOptions and dwellingValue > dwellingLimitsRange.LowerBound and dwellingValue < dwellingLimitsRange.UpperBound){
-      var restrictedValues = ConfigParamsUtil.getList(TC_RESTRICTEDHURRICANEDEDUTIBLEVALUES, state, otherPerilsValue?.setScale(0)?.toString())
+    if(shouldLimitHurricaneDedOptions
+        and dwellingValue > dwellingLimitsRange.LowerBound
+        and dwellingValue < dwellingLimitsRange.UpperBound){
+      var restrictedValues = ConfigParamsUtil.getList(TC_RestrictedHurricaneDedutibleValues, state, otherPerilsValue?.setScale(0)?.toString())
 
       if(restrictedValues.HasElements){
         result = restrictedValues?.contains(_option.Value?.setScale(0)?.toString())
+      }
+    }
+
+    if(shouldLimitHurricaneDedOptionsForThreshold){
+      var excludedValues = ConfigParamsUtil.getList(TC_RestrictedHurricaneDedutibleValuesForThreshold, state)
+      var thresholdAmount = ConfigParamsUtil.getDouble(TC_HurricanePerecentageRestrictionCovAThreshold, state)
+
+      if(dwellingValue?.doubleValue() > thresholdAmount and excludedValues.HasElements){
+        result = !excludedValues?.contains(_option.Value?.setScale(0, BigDecimal.ROUND_FLOOR).toString())
       }
     }
 
@@ -63,18 +75,18 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
   static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : HomeownersLine_HOE) : ExistenceType{
     var result : ExistenceType
     var contact = homeOwnersLine.Branch.PrimaryNamedInsured.ContactDenorm
-//    var isSuggestedForCorporation  //TODO tlv - filter for organization type
+    //    var isSuggestedForCorporation  //TODO tlv - filter for organization type  - this is not available, still.  question is will it ever be - BA will have to answer
 
     switch(homeOwnersLine.BaseState){
       case TC_FL:
       case TC_HI:
-        result = TC_REQUIRED
-        break
+          result = TC_REQUIRED
+          break
       case TC_CA:
       case TC_TX:
-        result = TC_SUGGESTED
-        break
-      default:
+          result = TC_SUGGESTED
+          break
+        default:
         result = TC_ELECTABLE
     }
 
@@ -95,6 +107,30 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
         result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
       }
+    }
+
+    return result
+  }
+
+  static function isLossAssessmentLimitOptionAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(hoLine.BaseState == TC_FL and hoLine.HOPolicyType == TC_DP3_Ext){
+      if(hoLine.DPLI_Personal_Liability_HOEExists){
+        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, hoLine.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
+      }else if(hoLine.Dwelling.ResidenceType == TC_CONDO){
+        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, hoLine.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
+      }
+    }
+
+    return result
+  }
+
+  public static function isSpecialLimitOptionAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(hoLine.BaseState == TC_FL or hoLine.BaseState == TC_CA){
+      result = hoLine.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
     }
 
     return result

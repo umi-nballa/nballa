@@ -1,23 +1,25 @@
 package gw.lob.ho
 uses java.math.BigDecimal
-uses gw.web.productmodel.ProductModelSyncIssuesHandler
 uses gw.web.productmodel.LineWizardStepHelper_Ext
+uses una.utils.MathUtil
+uses una.config.ConfigParamsUtil
 
-enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
+enhancement
+    DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
-    property get TotalCovLimit() : BigDecimal {
-   var limit : BigDecimal
+  property get TotalCovLimit() : BigDecimal {
+    var limit : BigDecimal
     switch(this.Dwelling.HOPolicyType){
       case HOPolicyType_HOE.TC_DP2:
-        limit = dwellingCovLimitDP2()
-        break
+          limit = dwellingCovLimitDP2()
+          break
       case HOPolicyType_HOE.TC_HO3:
-        limit = dwellingCovLimitHO3()
-        break
+          limit = dwellingCovLimitHO3()
+          break
       case HOPolicyType_HOE.TC_HO4:
       case HOPolicyType_HOE.TC_HO6:
-        limit = dwellingCovLimitHO4_6()
-        break
+          limit = dwellingCovLimitHO4_6()
+          break
     }
     return limit
   }
@@ -28,20 +30,20 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
     switch (this.PatternCode){
       case "DPDW_Dwelling_Cov_HOE":
-        return dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
+          return dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
       case "DPDW_Loss_Of_Use_HOE":
-        percentageOfDwellingLimit = dwelling.DPDW_Loss_Of_Use_HOE.DPDW_LossOfUseDwelLimit_HOETerm.Value
-        return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
+          percentageOfDwellingLimit = dwelling.DPDW_Loss_Of_Use_HOE.DPDW_LossOfUseDwelLimit_HOETerm.Value
+          return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
       case "DPDW_OrdinanceCov_HOE":
-        percentageOfDwellingLimit = dwelling.DPDW_OrdinanceCov_HOE.DPDW_OrdinanceLimit_HOETerm.Value
-        return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
+          percentageOfDwellingLimit = dwelling.DPDW_OrdinanceCov_HOE.DPDW_OrdinanceLimit_HOETerm.Value
+          return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
       case "DPDW_Other_Structures_HOE":
-        percentageOfDwellingLimit = dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value
-        return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
+          percentageOfDwellingLimit = dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value
+          return calculateDollarFromPercentage(dwelling.DwellingLimitcovTerm.Value, percentageOfDwellingLimit)
       case "DPDW_Personal_Property_HOE":
-        percentageOfDwellingLimit = dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value
-        return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
-      default:
+          percentageOfDwellingLimit = dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value
+          return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
+        default:
         return BigDecimal.ZERO
     }
   }
@@ -52,7 +54,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     if(this.PatternCode == "HODW_Personal_Property_HOE"){
       var dwelling = this.Dwelling
       var percentageOfDwellingLimit = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
-      limit = calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
+      limit = calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
     } else {
       limit = dwellingCovLimitHO()
     }
@@ -63,12 +65,12 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     var limit : BigDecimal
     switch(this.PatternCode){
       case "HODW_Personal_Property_HOE":
-        limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
-        break
+          limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
+          break
       case "HODW_Dwelling_Cov_HOE":
-        limit = this.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
-        break
-      default:
+          limit = this.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
+          break
+        default:
         limit = dwellingCovLimitHO()
     }
     return limit
@@ -81,21 +83,21 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 
     switch (this.PatternCode){
       case "HODW_Dwelling_Cov_HOE":
-        return dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+          return dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
       case "HODW_Loss_Of_Use_HOE":
-        percentageOfDwellingLimit = dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value
-        var lossOfUseDwelLimitValue = calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
-        percentageOfPropertyLimit = dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUsePropLimit_HOETerm.Value
-        var lossOfUsePropLimitValue = calculateDollarFromPercentage(dwelling.PersonalPropertyLimit, percentageOfPropertyLimit)
-        return lossOfUseDwelLimitValue + lossOfUsePropLimitValue
+          percentageOfDwellingLimit = dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value
+          var lossOfUseDwelLimitValue = calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
+          percentageOfPropertyLimit = dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUsePropLimit_HOETerm.Value
+          var lossOfUsePropLimitValue = calculateDollarFromPercentage(dwelling.PersonalPropertyLimitCovTerm.Value, percentageOfPropertyLimit)
+          return lossOfUseDwelLimitValue + lossOfUsePropLimitValue
       case "HODW_OrdinanceCov_HOE":
-        percentageOfDwellingLimit = dwelling.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.Value
-        return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
+          percentageOfDwellingLimit = dwelling.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.Value
+          return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
       case "HODW_Other_Structures_HOE":
-        percentageOfDwellingLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value
+          percentageOfDwellingLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value
 
-        return calculateDollarFromPercentage(dwelling.DwellingLimit, percentageOfDwellingLimit)
-      default:
+          return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
+        default:
         return BigDecimal.ZERO
     }
   }
@@ -167,9 +169,9 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     switch(typeof(cov)) {
 
       case DPDW_Loss_Of_Use_HOE:
-         if (limitA != null)
-           defaultValue = limitA.multiply(ScriptParameters.HODwellingCovDefaultFactorCovD_default)
-         break
+          if (limitA != null)
+            defaultValue = limitA.multiply(ScriptParameters.HODwellingCovDefaultFactorCovD_default)
+          break
 
       case DPDW_Personal_Property_HOE:
           if(limitA != null)
@@ -201,24 +203,23 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     // Dwelling Limit changed
     if (this typeis DPDW_Dwelling_Cov_HOE and limitA != null){
 
-        this.DPDW_Dwelling_Limit_HOETerm.Value = limitA
+      this.DPDW_Dwelling_Limit_HOETerm.Value = limitA
 
-       if(covB.HasDPDW_OtherStructuresLimit_HOETerm)
-            covB.DPDW_OtherStructuresLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covB)
+      if(covB.HasDPDW_OtherStructuresLimit_HOETerm)
+        covB.DPDW_OtherStructuresLimit_HOETerm.Value = MathUtil.roundTo(getDPDefaultLimitValue_Ext(covB), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covB.DPDW_OtherStructuresLimit_HOETerm.PatternCode))
 
-        if (covC.HasDPDW_PersonalPropertyLimit_HOETerm)
-            covC.DPDW_PersonalPropertyLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covC)
+      if (covC.HasDPDW_PersonalPropertyLimit_HOETerm)
+        covC.DPDW_PersonalPropertyLimit_HOETerm.Value = MathUtil.roundTo(getDPDefaultLimitValue_Ext(covC), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covC.DPDW_PersonalPropertyLimit_HOETerm.PatternCode))
+      if (this.Dwelling.DPDW_Loss_Of_Use_HOEExists)
+        covD.DPDW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDPDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.DPDW_LossOfUseDwelLimit_HOETerm.PatternCode))
+    }
+    else if(this typeis DPDW_Personal_Property_HOE) {
+      if(covC.HasDPDW_PersonalPropertyLimit_HOETerm and limitC == null)
+        covC.DPDW_PersonalPropertyLimit_HOETerm.Value = limitC
 
-        if (this.Dwelling.DPDW_Loss_Of_Use_HOEExists)
-           covD.DPDW_LossOfUseDwelLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covD)
-     }
-     else if(this typeis DPDW_Personal_Property_HOE) {
-        if(covC.HasDPDW_PersonalPropertyLimit_HOETerm and limitC == null)
-          covC.DPDW_PersonalPropertyLimit_HOETerm.Value = limitC
-
-        if (this.Dwelling.DPDW_Loss_Of_Use_HOEExists)
-          covD.DPDW_LossOfUseDwelLimit_HOETerm.Value = getDPDefaultLimitValue_Ext(covD)
-      }
+      if (this.Dwelling.DPDW_Loss_Of_Use_HOEExists)
+        covD.DPDW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDPDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.DPDW_LossOfUseDwelLimit_HOETerm.PatternCode))
+    }
   }
 
   /*
@@ -241,20 +242,20 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
       this.HODW_Dwelling_Limit_HOETerm.Value = limitA
 
       if(covB.HasHODW_OtherStructures_Limit_HOETerm)
-          covB.HODW_OtherStructures_Limit_HOETerm.Value = getDefaultLimitValue_Ext(covB)
+        covB.HODW_OtherStructures_Limit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covB), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covB.HODW_OtherStructures_Limit_HOETerm.PatternCode))
 
       if (covC.HasHODW_PersonalPropertyLimit_HOETerm)
-          covC.HODW_PersonalPropertyLimit_HOETerm.Value = getDefaultLimitValue_Ext(covC)
+        covC.HODW_PersonalPropertyLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covC), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covC.HODW_PersonalPropertyLimit_HOETerm.PatternCode))
 
       if (this.Dwelling.HODW_Loss_Of_Use_HOEExists)
-          covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
+        covD.HODW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.HODW_LossOfUseDwelLimit_HOETerm.PatternCode))
 
       if(covC.HasHODW_PersonalPropertyLimit_HOETerm  and covC.HODW_PersonalPropertyLimit_HOETerm.Value != null){//is initial load change
         LineWizardStepHelper_Ext.setSpecialLimitsPersonalPropertyDefaults(this.Dwelling)
       }
     }
     else if(this typeis HODW_Personal_Property_HOE) {
-        covD.HODW_LossOfUseDwelLimit_HOETerm.Value = getDefaultLimitValue_Ext(covD)
+      covD.HODW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.PatternCode))
     }
   }
 
@@ -268,22 +269,22 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     return number?.setScale(0, java.math.RoundingMode.DOWN)
   }
 
- /*
-    *  Author: Sen Pitchaimuthu
-    *  Change Log: Added the new function setAllOtherPerilDefault to default the All other Peril value
-    */
+  /*
+     *  Author: Sen Pitchaimuthu
+     *  Change Log: Added the new function setAllOtherPerilDefault to default the All other Peril value
+     */
 
   static function setAllOtherPerilDefault(_dwelling: Dwelling_HOE)
   {
 
-      if (_dwelling.HOPolicyType == TC_HO3 and _dwelling.Branch.BaseState != TC_AZ)
-      {
-        _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("1000")
-      }
-      else
-      {
-         _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("500")
-      }
+    if (_dwelling.HOPolicyType == TC_HO3 and _dwelling.Branch.BaseState != TC_AZ)
+    {
+      _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("1000")
+    }
+    else
+    {
+      _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("500")
+    }
   }
   /*
     *  Author: Sen Pitchaimuthu
@@ -303,5 +304,5 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
       _dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.setValueFromString("Replacement")
     }
   }
- }
+}
 

@@ -142,13 +142,13 @@
           optionCode="1"
           priority="1021"
           public-id="zm6icjo2np5tf4dut4kmpd179ma"
-          value="1.0000"/>
+          value="0.01"/>
         <CovTermOpt
           codeIdentifier="zbjhkgs9eemkh6hp5blt55h31b8"
           optionCode="2"
           priority="1022"
           public-id="zbjhkgs9eemkh6hp5blt55h31b8"
-          value="2.0000">
+          value="0.02">
           <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
         </CovTermOpt>
         <CovTermOpt
@@ -156,7 +156,7 @@
           optionCode="5"
           priority="1024"
           public-id="z3kho68a7hq7c75ueo02ljpjhc8"
-          value="5.0000">
+          value="0.05">
           <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
         </CovTermOpt>
         <CovTermOpt
@@ -176,7 +176,7 @@
           optionCode="10_Ext"
           priority="1025"
           public-id="z0khuq0m5lo98bqmg9tsm2ba0la"
-          value="10.0000">
+          value="0.10">
           <AvailabilityScript><![CDATA[return (gw.lob.ho.CovTermEnhancement_Ext.isHurricaneDedOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling))]]></AvailabilityScript>
         </CovTermOpt>
         <CovTermOpt
@@ -192,7 +192,7 @@
           optionCode="3_Ext"
           priority="1128"
           public-id="z6pg079steihh63lieahjaq4d49"
-          value="3.0000"/>
+          value="0.03"/>
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern
@@ -255,7 +255,10 @@
           optionCode="1.5"
           priority="1031"
           public-id="zaoje6ius91bqceuk5upsj9a4ca"
-          value="1.5000"/>
+          value="1.5000">
+          <AvailabilityScript><![CDATA[return (CovTerm.Coverage as HODW_SectionI_Ded_HOE).HasHODW_NamedStrom_Ded_HOE_ExtTerm and
+(CovTerm.Coverage as HODW_SectionI_Ded_HOE).HODW_NamedStrom_Ded_HOE_ExtTerm.Value != null]]></AvailabilityScript>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zjlh2t0eedcjsa0gbr6hdhmoj98"
           optionCode="5000"
@@ -313,13 +316,13 @@
           optionCode="2"
           priority="75"
           public-id="zoqgodl8lk2fd4ighoj3uoofe0a"
-          value="2.0000"/>
+          value="0.02"/>
         <CovTermOpt
           codeIdentifier="zami8otujm2a1bdaskg1evk4hkb"
           optionCode="1"
           priority="50"
           public-id="zami8otujm2a1bdaskg1evk4hkb"
-          value="1.0000"/>
+          value="0.01"/>
         <CovTermOpt
           codeIdentifier="z5uj213vf2lg455ats7ri3fb9u8"
           optionCode="0"
@@ -331,13 +334,13 @@
           optionCode="10"
           priority="100"
           public-id="zjag0215fsvq2alvg264pivr358"
-          value="10.0000"/>
+          value="0.10"/>
         <CovTermOpt
           codeIdentifier="zbejmanhfublbf8p0v4a3542lsb"
           optionCode="5"
           priority="87"
           public-id="zbejmanhfublbf8p0v4a3542lsb"
-          value="5.0000"/>
+          value="0.05"/>
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern

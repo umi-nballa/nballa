@@ -10,6 +10,7 @@
   priority="17400"
   public-id="HODW_LossAssessmentCov_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return HODW_LossAssessmentCov_HOE_Ext.isAvailable(HomeownersLine_HOE)]]></AvailabilityScript>
   <ExistenceScript><![CDATA[return(HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)? ExistenceType.TC_REQUIRED  :  ExistenceType.TC_ELECTABLE]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
@@ -21,7 +22,7 @@
       modelType="Limit"
       priority="200"
       public-id="HOPL_LossAssCovLimit_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
       <DefaultsSet/>
@@ -32,7 +33,111 @@
           optionCode="1000"
           priority="100"
           public-id="za2ge92pp83p72b9m2racpund5a"
-          value="1000.0000"/>
+          value="1000.0000">
+          <AvailabilityScript><![CDATA[return gw.lob.ho.CovTermEnhancement_Ext.isLossAssessmentLimitOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z9hi2fepn4onj13ie1f2vu9j57a"
+          currency="usd"
+          optionCode="2000"
+          priority="200"
+          public-id="z9hi2fepn4onj13ie1f2vu9j57a"
+          value="2000">
+          <AvailabilityScript><![CDATA[return gw.lob.ho.CovTermEnhancement_Ext.isLossAssessmentLimitOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zbuh6n23m6ml129kskccbff3rg8"
+          currency="usd"
+          optionCode="3000"
+          priority="300"
+          public-id="zbuh6n23m6ml129kskccbff3rg8"
+          value="3000"/>
+        <CovTermOpt
+          codeIdentifier="zm1i858fr8pkcctqf7720ehjcqa"
+          currency="usd"
+          optionCode="5000"
+          priority="400"
+          public-id="zm1i858fr8pkcctqf7720ehjcqa"
+          value="5000"/>
+        <CovTermOpt
+          codeIdentifier="zupjokrfkvc0k6qejfqgarqbrm8"
+          currency="usd"
+          optionCode="25000"
+          priority="800"
+          public-id="zupjokrfkvc0k6qejfqgarqbrm8"
+          value="25000"/>
+        <CovTermOpt
+          codeIdentifier="ze0i4v40hbanmags8cg7rcenej9"
+          currency="usd"
+          optionCode="10000"
+          priority="500"
+          public-id="ze0i4v40hbanmags8cg7rcenej9"
+          value="10000"/>
+        <CovTermOpt
+          codeIdentifier="z05jssopk055j2qc7o572klesa8"
+          currency="usd"
+          optionCode="30000"
+          priority="900"
+          public-id="z05jssopk055j2qc7o572klesa8"
+          value="30000"/>
+        <CovTermOpt
+          codeIdentifier="zr8jm9vnajtub0amfit9okvnv28"
+          currency="usd"
+          optionCode="0"
+          priority="1400"
+          public-id="zr8jm9vnajtub0amfit9okvnv28"
+          value="0">
+          <AvailabilityScript><![CDATA[return gw.lob.ho.CovTermEnhancement_Ext.isLossAssessmentLimitOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="z3ggifqd2s51m406huvjueb3lea"
+          currency="usd"
+          optionCode="45000"
+          priority="1200"
+          public-id="z3ggifqd2s51m406huvjueb3lea"
+          value="45000"/>
+        <CovTermOpt
+          codeIdentifier="zl1h682h0bvmm70if5kubkg6rl8"
+          currency="usd"
+          optionCode="15000"
+          priority="600"
+          public-id="zl1h682h0bvmm70if5kubkg6rl8"
+          value="15000"/>
+        <CovTermOpt
+          codeIdentifier="zdbjan2jj0k1p4jlghjcfoevp8a"
+          currency="usd"
+          optionCode="50000"
+          priority="1300"
+          public-id="zdbjan2jj0k1p4jlghjcfoevp8a"
+          value="50000"/>
+        <CovTermOpt
+          codeIdentifier="zp9gcf2sch3e342gisiapk1sk58"
+          currency="usd"
+          optionCode="20000"
+          priority="700"
+          public-id="zp9gcf2sch3e342gisiapk1sk58"
+          value="20000"/>
+        <CovTermOpt
+          codeIdentifier="z3nhcpifhos3h3r42sias8q1bib"
+          currency="usd"
+          optionCode="35000"
+          priority="1000"
+          public-id="z3nhcpifhos3h3r42sias8q1bib"
+          value="35000"/>
+        <CovTermOpt
+          codeIdentifier="zujicuqd2a3hp9l6dl4t85vq6vb"
+          currency="usd"
+          optionCode="40000"
+          priority="1100"
+          public-id="zujicuqd2a3hp9l6dl4t85vq6vb"
+          value="40000"/>
+        <CovTermOpt
+          codeIdentifier="zlkg42jvlfa1n5e2c2it6u7ld39"
+          currency="usd"
+          optionCode="4000"
+          priority="1500"
+          public-id="zlkg42jvlfa1n5e2c2it6u7ld39"
+          value="4000"/>
       </Options>
     </OptionCovTermPattern>
     <DirectCovTermPattern
@@ -41,7 +146,7 @@
       lookupTableName="HomeownersLineCovTerm"
       priority="100"
       public-id="HOPL_Deductible_HOE"
-      required="false"
+      required="true"
       valueType="other">
       <LimitsSet/>
     </DirectCovTermPattern>
@@ -52,7 +157,7 @@
       lookupTableName="HomeownersLineCovTerm"
       priority="300"
       public-id="HOPL_SpecialLimitDeductibleAssessment_HOE"
-      required="false"
+      required="true"
       valueType="other">
       <DefaultsSet/>
       <Options>
@@ -62,6 +167,24 @@
           priority="100"
           public-id="zqtj41o1bv1nl71hb15ekujgbda"
           value="1000.0000"/>
+        <CovTermOpt
+          codeIdentifier="zejhqurkr8ij960533j72hrfa39"
+          optionCode="2000_Section1"
+          priority="300"
+          public-id="zejhqurkr8ij960533j72hrfa39"
+          value="2000"/>
+        <CovTermOpt
+          codeIdentifier="zh7heusqctua6efphi7astu4188"
+          optionCode="2000"
+          priority="200"
+          public-id="zh7heusqctua6efphi7astu4188"
+          value="2000"/>
+        <CovTermOpt
+          codeIdentifier="zdkiqcos7vunabm19dg1bmslmkb"
+          optionCode="1000_Section2"
+          priority="400"
+          public-id="zdkiqcos7vunabm19dg1bmslmkb"
+          value="1000"/>
       </Options>
     </OptionCovTermPattern>
   </CovTerms>

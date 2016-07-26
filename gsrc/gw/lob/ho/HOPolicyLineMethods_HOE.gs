@@ -192,7 +192,8 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
-    return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }
 
   override property get SupportsNonSpecificLocations() : boolean {

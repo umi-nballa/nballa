@@ -116,7 +116,7 @@ class GatewayPlugin {
       //find configuration settings for the current runtime environment
       var env = una.utils.EnvironmentUtil.PolicyCenterRuntime
       var envConfig = pluginConfig.Configuration.firstWhere( \ configx -> configx.Environment.equalsIgnoreCase(env))
-      print(envConfig)
+      logger.info("envConfig:::"+envConfig)
 
       return envConfig
 

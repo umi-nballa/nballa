@@ -23,7 +23,7 @@ class CreditReportFactory {
   static function getReportDaysValid() : int {
     
     var creditReportParameters = CreditReportUtil.getCreditReportParameters(
-            'PersonalAutoLine', 
+            'HomeownersLine',
             typekey.UWCompanyCode.get("1111_11111"), // ACME Low Hazard Insurane
             typekey.Jurisdiction.get("VA")           // Virginia
           )

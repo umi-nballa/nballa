@@ -18,14 +18,14 @@ uses typekey.CreditReportDMExt
 uses typekey.CreditStatusExt
 
 
-uses una.integration.service.creditreport.ncf.xsd.cprulesresultschema.NationalCreditFile
-uses una.integration.service.creditreport.ncf.xsd.cprulesresultschema.Result
-uses una.integration.service.creditreport.ncf.xsd.lexisnexis.ncfv2rev1result.anonymous.elements.AlertsScoring_Scoring_Score
-uses una.integration.service.creditreport.ncf.xsd.lexisnexis.ncfv2rev1result.enums.ScoreStatus
-uses una.integration.service.creditreport.ncf.xsd.lexisnexis.ncfv2rev1result.NcfReport
-uses una.integration.service.creditreport.ncf.xsd.cprulesorderschema.Order
-uses una.integration.service.creditreport.ncf.xsd.cprulesorderschema.enums.SubjectAddressType_Type
-uses una.integration.service.creditreport.ncf.xsd.lexisnexis.ncfv2rev1result.enums.SearchDataset_Subjects_Subject_Type
+uses wsi.schema.una.inscore.cprulesresultschema.NationalCreditFile
+uses wsi.schema.una.inscore.cprulesresultschema.Result
+uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.anonymous.elements.AlertsScoring_Scoring_Score
+uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.ScoreStatus
+uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.NcfReport
+uses wsi.schema.una.inscore.cprulesorderschema.Order
+uses wsi.schema.una.inscore.cprulesorderschema.enums.SubjectAddressType_Type
+uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.SearchDataset_Subjects_Subject_Type
 uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
 
 
@@ -61,9 +61,11 @@ class NCFCreditReportService implements ICreditReportService {
         var xmlRequest = getOrderXml(creditReportRequest)
         if (xmlRequest != null) {
           // Submit request to service
+          print(xmlRequest.asUTFString())
           var orderAPI = new InteractiveOrderHandler()
           _logger.debug("Sending response to the web service...")
           var xmlResponse = orderAPI.handleInteractiveOrder(xmlRequest.asUTFString())
+          print(xmlResponse.toString())
           _logger.debug("Response from web service received")
  
           if (xmlResponse != null) {
@@ -171,8 +173,8 @@ class NCFCreditReportService implements ICreditReportService {
     order.Accounting.Pnc.Account = ScriptParameters.LexisNexisAccountNumber
 
     // Rule_Plan node
-    order.RulePlan.Parameter_elem[0].Name = "lineOfBusiness" 
-    order.RulePlan.Parameter_elem[0].$Value = "VAHome"   
+    order.RulePlan.Parameter_elem[0].Name = "lineOfBusiness"
+    order.RulePlan.Parameter_elem[0].$Value = "VAHome"
 
     // Products
     // a) Build subject first
@@ -183,7 +185,7 @@ class NCFCreditReportService implements ICreditReportService {
     subject.Name[0].First = request.FirstName  
     subject.Name[0].Last = request.LastName 
     subject.Name[0].Middle = request.MiddleName
-    subject.Ssn = request.SocialSecurityNumber  
+    subject.Ssn = request.SocialSecurityNumber
     subject.Birthdate = request.DateOfBirth as java.lang.String 
 
     subject.Address[0].Type = SubjectAddressType_Type.Risk

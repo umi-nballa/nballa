@@ -14,6 +14,7 @@ uses gw.api.productmodel.ConditionPattern
 uses gw.api.productmodel.ConditionPattern
 uses gw.api.productmodel.ExclusionPattern
 uses gw.api.productmodel.ExclusionPattern
+uses gwservices.pc.dm.util.MigrationUtil
 
 enhancement CoverableEnhancement : Coverable {
 
@@ -166,6 +167,7 @@ enhancement CoverableEnhancement : Coverable {
    * and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncCoverages() : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkCoveragesAgainstProductModel()
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -179,6 +181,7 @@ enhancement CoverableEnhancement : Coverable {
    * fixes any issues marked ShouldFixDuringNormalSync, and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncCoverages(patternsToSync : CoveragePattern[]) : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkCoveragesAgainstProductModel(patternsToSync)
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -192,6 +195,7 @@ enhancement CoverableEnhancement : Coverable {
    * and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncExclusions() : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkExclusionsAgainstProductModel()
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -205,6 +209,7 @@ enhancement CoverableEnhancement : Coverable {
    * issues marked ShouldFixDuringNormalSync, and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncExclusions(patternsToSync : ExclusionPattern []) : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkExclusionsAgainstProductModel(patternsToSync)
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -218,6 +223,7 @@ enhancement CoverableEnhancement : Coverable {
    * and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncConditions() : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkConditionsAgainstProductModel()
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -231,6 +237,7 @@ enhancement CoverableEnhancement : Coverable {
    * any issues marked ShouldFixDuringNormalSync, and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncConditions(patternsToSync : ConditionPattern []) : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkConditionsAgainstProductModel(patternsToSync)
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -244,6 +251,7 @@ enhancement CoverableEnhancement : Coverable {
    * and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncCoveragesForQuote() : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkCoveragesAgainstProductModel()
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -257,6 +265,7 @@ enhancement CoverableEnhancement : Coverable {
    * and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncExclusionsForQuote() : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkExclusionsAgainstProductModel()
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -270,6 +279,7 @@ enhancement CoverableEnhancement : Coverable {
    * and returns all the issues detected regardless of whether or not they were fixed.
    */
   function syncConditionsForQuote() : List<ProductModelSyncIssueWrapper> {
+    if (DisableSynchronization) return {}
     var originalIssues = this.checkConditionsAgainstProductModel()
     var issueWrappers = ProductModelSyncIssueWrapper.wrapIssues( originalIssues )
 
@@ -336,5 +346,14 @@ enhancement CoverableEnhancement : Coverable {
    */
   function isConditionSelectedOrAvailable( condPattern : ConditionPattern) : boolean {
     return this.hasCondition( condPattern ) or this.isConditionAvailable( condPattern )
+  }
+
+  /**
+   * Convenience
+   */
+  private property get DisableSynchronization() : boolean {
+    var job = this.PolicyLine.AssociatedPolicyPeriod.Job
+    var jobDisable = job.MigrationJobInfo_Ext.DisableSynchronization
+    return jobDisable and job.MigrationJob
   }
 }

@@ -3,6 +3,7 @@ package gw.policy
 uses entity.windowed.UWIssueVersionList
 uses gw.job.uw.types.ExclusiveSet
 uses gw.pl.currency.MonetaryAmount
+uses gwservices.pc.dm.util.MigrationUtil
 
 uses java.lang.IllegalArgumentException
 uses java.lang.RuntimeException
@@ -121,6 +122,12 @@ class PolicyEvalContext {
     if (not issue.Active) {
       issue.Active = true
       issue.addCreateHistory(AutomaticOperationCause)
+    }
+    if (MigrationUtil.DisableUWRule(issue.IssueType, _period)) {
+      if (issue.Approval == null) {
+        issue.createAutoApproval()
+        issue.createApprovalHistoryFromCurrentValues()
+      }
     }
     return issue
   }

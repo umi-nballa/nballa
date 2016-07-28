@@ -26,6 +26,7 @@ uses gw.api.system.PLDependenciesGateway
 uses gw.sampledata.large.LargeSampleArchivedPoilcyData
 uses gw.api.system.PLConfigParameters
 uses com.guidewire.pl.system.integration.messaging.dispatch.QPlexorForwardingProxy
+uses gwservices.pc.dm.util.MigrationSampleData
 uses java.lang.Exception
 uses java.lang.NullPointerException
 
@@ -63,6 +64,7 @@ class SampleData
       loadCollection(new TinySampleContactData())
       loadCollection(new TinyZoneData())
       loadCollection(new AllSampleFormData())
+      loadCollection(new MigrationSampleData())
       if(gw.api.system.PCConfigParameters.RatingModuleOn()) {
         loadCollection(new TinySampleRatingData())
       }

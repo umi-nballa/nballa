@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Migration work configuration"
+  entity="MigrationWorkConfig_Ext"
+  exportable="true"
+  loadable="false"
+  table="migrationworkconfig_ext"
+  type="retireable">
+  <array
+    arrayentity="MigrationWorkConfigParameter_Ext"
+    cascadeDelete="true"
+    name="Parameters"/>
+  <column
+    name="SequenceMin"
+    nullok="false"
+    type="longint"/>
+  <column
+    name="SequenceMax"
+    nullok="false"
+    type="longint"/>
+  <column
+    columnName="attempted"
+    desc="Number of records work item attempted to process"
+    name="Attempted"
+    nullok="true"
+    type="integer"/>
+  <column
+    columnName="success"
+    desc="Number of records work item successfully processed"
+    name="Successful"
+    nullok="true"
+    type="integer"/>
+</entity>

@@ -1,0 +1,77 @@
+<?xml version="1.0"?>
+<delegate
+  xmlns="http://guidewire.com/datamodel"
+  effdatedOnly="true"
+  name="MigrationCostInfo_Ext">
+  <column
+    desc="The source system actual amount"
+    name="ActualAmount"
+    nullok="true"
+    type="money"/>
+  <column
+    desc="The actual cost over a term from the source system"
+    name="ActualTermAmount"
+    nullok="true"
+    type="money"/>
+  <column
+    desc="The source system override amount"
+    name="OverrideAmount"
+    nullok="true"
+    type="money"/>
+  <column
+    desc="The source system override term amount"
+    name="OverrideTermAmount"
+    nullok="true"
+    type="money"/>
+  <column
+    desc="The actual amount from PolicyCenter"
+    name="PolicyCenterAmount"
+    nullok="true"
+    type="money"/>
+  <column
+    desc="The term amount from PolicyCenter"
+    name="PolicyCenterTermAmount"
+    nullok="true"
+    type="money"/>
+  <column
+    default="false"
+    desc="Has this migration cost been processed"
+    name="Complete"
+    nullok="false"
+    type="bit"/>
+  <column
+    desc="Directly load cost from MCI"
+    name="DirectLoad"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Captures the original effective date"
+    name="OriginalEffDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Captures the original expiration date"
+    name="OriginalExpDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Cost basis"
+    name="Basis"
+    nullok="true"
+    type="ratinglinebasisamount"/>
+  <column
+    desc="The cost adjusted rate"
+    name="ActualAdjRate"
+    nullok="true"
+    type="rate"/>
+  <column
+    desc="The cost base rate"
+    name="ActualBaseRate"
+    nullok="true"
+    type="rate"/>
+  <typekey
+    desc="Currency for direct load"
+    name="Currency"
+    nullok="true"
+    typelist="Currency"/>
+</delegate>

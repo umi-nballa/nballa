@@ -2,6 +2,7 @@ package gw.validation
 
 uses gw.api.validation.ValidationIssue
 uses gw.api.validation.ValidationResult
+uses gwservices.pc.dm.util.MigrationUtil
 
 /**
  * Defines methods that make it easier to work with ValidationResult from Platform 
@@ -30,7 +31,9 @@ class PCValidationResult extends ValidationResult {
    * @param wizardStepId       The ID of the Wizard step where the problem can be rectified
    */
   function addError(problematicBean : KeyableBean, level : ValidationLevel, reason : String, wizardStepId : String) {
-    reject(problematicBean.ID, null, null, level, appendSliceDate(problematicBean, reason), null, null, wizardStepId)
+    if (not MigrationUtil.DisableClassValidation(reason, problematicBean)) {
+      reject(problematicBean.ID, null, null, level, appendSliceDate(problematicBean, reason), null, null, wizardStepId)
+    }
   }
 
   /**
@@ -38,7 +41,9 @@ class PCValidationResult extends ValidationResult {
    * #appendSliceDate(problematicBean : KeyableBean, reason : String)
    */
   override function addError(bean : KeyableBean, errorLevel : ValidationLevel, errorReason : String) {
-    super.addError(bean, errorLevel, appendSliceDate(bean, errorReason))
+    if (not MigrationUtil.DisableClassValidation(errorReason, bean)) {
+      super.addError(bean, errorLevel, appendSliceDate(bean, errorReason))
+    }
   }
 
   /**
@@ -52,7 +57,9 @@ class PCValidationResult extends ValidationResult {
    * @param wizardStepId         The ID of the Wizard step where the problem can be rectified
    */
   function addFieldError(problematicBean : KeyableBean, fieldPath : String, level : ValidationLevel, reason : String, wizardStepId : String) {
-    reject(problematicBean.ID, null, fieldPath, level, appendSliceDate(problematicBean, reason), null, null, wizardStepId)
+    if (not MigrationUtil.DisableClassValidation(reason, problematicBean)) {
+      reject(problematicBean.ID, null, fieldPath, level, appendSliceDate(problematicBean, reason), null, null, wizardStepId)
+    }
   }
 
   /**
@@ -65,7 +72,9 @@ class PCValidationResult extends ValidationResult {
    * @param wizardStepId         The ID of the Wizard step where the problem can be rectified
    */
   function addWarning(problematicBean : KeyableBean, level : ValidationLevel, reason : String, wizardStepId : String) {
-    reject(problematicBean.ID, null, null, null, null, level, appendSliceDate(problematicBean, reason), wizardStepId)
+    if (not MigrationUtil.DisableClassValidation(reason, problematicBean)) {
+      reject(problematicBean.ID, null, null, null, null, level, appendSliceDate(problematicBean, reason), wizardStepId)
+    }
   }
 
   /**
@@ -79,7 +88,9 @@ class PCValidationResult extends ValidationResult {
    * @param wizardStepId         The ID of the Wizard step where the problem can be rectified
    */
   function addFieldWarning(problematicBean : KeyableBean, fieldPath : String, level : ValidationLevel, reason : String, wizardStepId : String) {
-    reject(problematicBean.ID, null, fieldPath, null, null, level, appendSliceDate(problematicBean, reason), wizardStepId)
+    if (not MigrationUtil.DisableClassValidation(reason, problematicBean)) {
+      reject(problematicBean.ID, null, fieldPath, null, null, level, appendSliceDate(problematicBean, reason), wizardStepId)
+    }
   }
 
   /**

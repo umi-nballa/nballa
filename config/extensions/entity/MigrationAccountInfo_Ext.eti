@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Account data migration information"
+  entity="MigrationAccountInfo_Ext"
+  final="false"
+  loadable="false"
+  table="migrationaccountinfo_ext"
+  type="retireable">
+  <array
+    arrayentity="MigrationLegacyPolicy_Ext"
+    desc="Associated legacy policies"
+    name="LegacyPolicies"/>
+  <column
+    default="false"
+    desc="Auto delete children on this account?"
+    name="AutoDelete"
+    nullok="false"
+    type="bit"/>
+  <foreignkey
+    desc="Associated account"
+    fkentity="Account"
+    name="Account"
+    nullok="false"/>
+</entity>

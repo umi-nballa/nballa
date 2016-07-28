@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Legacy policy information. Used for associating items to accounts."
+  entity="MigrationLegacyPolicy_Ext"
+  final="false"
+  loadable="false"
+  table="migrationlegacypolicy_ext"
+  type="retireable">
+  <column
+    name="PolicyNumber"
+    nullok="false"
+    type="policynumber"/>
+  <foreignkey
+    desc="The account migration information"
+    fkentity="MigrationAccountInfo_Ext"
+    name="MigrationInfo"
+    nullok="false"/>
+  <index
+    name="LegacyPolNum_Ext">
+    <indexcol
+      keyposition="1"
+      name="PolicyNumber"/>
+  </index>
+</entity>

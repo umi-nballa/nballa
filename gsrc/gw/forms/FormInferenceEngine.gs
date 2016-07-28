@@ -8,6 +8,7 @@ uses java.util.HashMap
 uses java.util.HashSet
 uses java.util.Collections
 uses java.util.ArrayList
+uses gwservices.pc.dm.util.MigrationUtil
 
 /**
  * The FormInferenceEngine serves as the main access point for the rest of the application logic into the form inference logic.
@@ -43,9 +44,11 @@ class FormInferenceEngine {
    * @param oosSliceDates_ out of sequence execution dates to infer forms for.
    */
   function inferPostQuoteFormsInSlices(pr : PolicyPeriod, oosSliceDates_ : java.util.Date[]) {
-    pr.removeAllNewlyAddedForms()
-    var formPatterns = findPotentialForms(pr, {"quote","bind"})
-    processFormPatternsInSlices(pr, formPatterns, oosSliceDates_)
+    if (not pr.Job.MigrationJobInfo_Ext.DisableFormsInference) {
+      pr.removeAllNewlyAddedForms()
+      var formPatterns = findPotentialForms(pr, {"quote","bind"})
+      processFormPatternsInSlices(pr, formPatterns, oosSliceDates_)
+    }
   }
 
   /**
@@ -54,10 +57,12 @@ class FormInferenceEngine {
    * that might have been inferred during quote time.
    */
   function inferPreBindForms(pr : PolicyPeriod) {
-    pr.removeNewlyAddedBindTimeForms()
-    var formPatterns = findPotentialForms(pr, {"bind"})
-    processFormPatterns(pr, formPatterns)
-    PCProfilerTag.FORM_NUMBER_ENDORSEMENTS.execute(\ -> FormEndorsementNumberer.Instance.assignEndorsementNumbers(pr))
+    if (not pr.Job.MigrationJobInfo_Ext.DisableFormsInference) {
+      pr.removeNewlyAddedBindTimeForms()
+      var formPatterns = findPotentialForms(pr, {"bind"})
+      processFormPatterns(pr, formPatterns)
+      PCProfilerTag.FORM_NUMBER_ENDORSEMENTS.execute(\ -> FormEndorsementNumberer.Instance.assignEndorsementNumbers(pr))
+    }
   }
 
   // -------------------------------------- Private functions

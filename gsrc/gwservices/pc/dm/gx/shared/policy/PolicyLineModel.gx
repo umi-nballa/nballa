@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<gx-model type="entity.PolicyLine" xmlns="http://guidewire.com/gx">
+  <includes>
+    <include path="(entity-HomeownersLine_HOE).Dwelling" type="entity.Dwelling_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel"/>
+    <include path="(entity-HomeownersLine_HOE).HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm" type="productmodel.OptionHOLI_MedPay_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="(entity-HomeownersLine_HOE).HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm" type="productmodel.OptionHOLI_Liability_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="(entity-HomeownersLine_HOE).HOLineCoverages[]" type="entity.HomeownersLineCov_HOE" propertyInclusionType="NORMAL" model="gw.webservice.pc.pc800.gxmodel.clausemodel"/>
+    <include path="(entity-HomeownersLine_HOE).HOPolicyType" type="typekey.HOPolicyType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="AdditionalInsureds[]" type="entity.PolicyAddlInsured" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.contact.policycontactrolemodel"/>
+    <include path="LineAnswers[]" type="entity.PolicyLineAnswer" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.policylineanswermodel"/>
+    <include path="PatternCode" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="PublicID" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Subtype" type="typekey.PolicyLine" propertyInclusionType="NORMAL"/>
+  </includes>
+</gx-model>

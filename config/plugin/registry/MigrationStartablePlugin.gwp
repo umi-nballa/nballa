@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<plugin
+  interface="IStartablePlugin"
+  name="MigrationStartablePlugin">
+  <plugin-gosu
+    gosuclass="gwservices.pc.dm.batch.MigrationStartablePlugin">
+    <param
+      name="workQueueClass"
+      value="gwservices.pc.dm.batch.PAMigrationWorker"/>
+    <param
+      name="runOnServerStartup"
+      value="false"/>
+    <param
+      name="sleepTimeInSeconds"
+      value="10"/>
+  </plugin-gosu>
+</plugin>

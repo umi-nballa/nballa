@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<gx-model type="entity.PolicyTerm" xmlns="http://guidewire.com/gx">
+  <includes>
+    <include path="DaysReported" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="DepositAmount" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
+    <include path="DepositReleased" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="FinalAuditOption" type="typekey.FinalAuditOption" propertyInclusionType="NORMAL"/>
+    <include path="NonRenewAddExplanation" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="NonRenewalExplanations[]" type="entity.NonRenewalExplanation" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.nonrenewalexplanationmodel"/>
+    <include path="NonRenewReason" type="typekey.NonRenewalCode" propertyInclusionType="NORMAL"/>
+    <include path="PreRenewalDirection" type="typekey.PreRenewalDirection" propertyInclusionType="NORMAL"/>
+    <include path="PublicID" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="TotalEstimatedPremium" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
+    <include path="TotalReportedPremium" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
+  </includes>
+</gx-model>

@@ -20,7 +20,7 @@ class AddlInterestDetailMethodsDefaultImpl implements AddlInterestDetailMethods 
    */
   override function addlInterestDetailRemoved(){
     var policyAddlInterest = _addlInterestDetail.PolicyAddlInterest
-    if (policyAddlInterest.AdditionalInterestDetails.Count == 0) {
+    if (policyAddlInterest != null and policyAddlInterest.AdditionalInterestDetails.Count == 0) {
 
       // Remove the PolicyAddlInterest
       policyAddlInterest.Branch.removeFromPolicyContactRoles(policyAddlInterest)

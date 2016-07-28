@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Data migration policy information"
+  displayName="MigrationPolicyInfo_Ext"
+  entity="MigrationPolicyInfo_Ext"
+  loadable="false"
+  table="migrationpolinfo_ext"
+  type="retireable">
+  <column
+    desc="Legacy policy number. If creating new policy numbers, this allows a reference point back to the legacy system."
+    name="LegacyPolicyNumber"
+    nullok="true"
+    type="policynumber"/>
+  <column
+    desc="Is this a migrated policy?"
+    name="MigratedPolicy"
+    nullok="false"
+    type="bit"/>
+  <array
+    arrayentity="MigrationDisableAdjustments_Ext"
+    cascadeDelete="true"
+    name="DisableAdjustments"/>
+</entity>

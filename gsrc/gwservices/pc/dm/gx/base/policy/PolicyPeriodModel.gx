@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<gx-model type="entity.PolicyPeriod" xmlns="http://guidewire.com/gx">
+  <includes>
+    <include path="AllContacts[]" type="entity.Contact" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.contact.contactmodel"/>
+    <include path="AltBillingAccountNumber" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="AssignedRisk" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="BaseState" type="typekey.Jurisdiction" propertyInclusionType="NORMAL"/>
+    <include path="BillingMethod" type="typekey.BillingMethod" propertyInclusionType="NORMAL"/>
+    <include path="Cancellation.CancelProcessDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="Cancellation.CancelReasonCode" type="typekey.ReasonCode" propertyInclusionType="NORMAL"/>
+    <include path="Cancellation.Description" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Cancellation.Source" type="typekey.CancellationSource" propertyInclusionType="NORMAL"/>
+    <include path="CancellationDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="DepositAmount" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
+    <include path="DepositCollected" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
+    <include path="EditEffectiveDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="Forms[]" type="entity.Form" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.formmodel"/>
+    <include path="Job" type="entity.Job" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.jobmodel"/>
+    <include path="Lines[]" type="entity.PolicyLine" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.policy.policylinemodel"/>
+    <include path="Notes[]" type="entity.Note" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.notemodel"/>
+    <include path="PeriodAnswers[]" type="entity.PeriodAnswer" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.periodanswermodel"/>
+    <include path="Policy" type="entity.Policy" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.policy.policymodel"/>
+    <include path="PolicyAddress" type="entity.PolicyAddress" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.location.policyaddressmodel"/>
+    <include path="PolicyContactRoles[]" type="entity.PolicyContactRole" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.contact.policycontactrolemodel"/>
+    <include path="PolicyLocations[]" type="entity.PolicyLocation" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.location.policylocationmodel"/>
+    <include path="PolicyNumber" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="PolicyTerm" type="entity.PolicyTerm" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.policy.policytermmodel"/>
+    <include path="PreferredCoverageCurrency" type="typekey.Currency" propertyInclusionType="NORMAL"/>
+    <include path="PreferredSettlementCurrency" type="typekey.Currency" propertyInclusionType="NORMAL"/>
+    <include path="ProducerCodeOfRecord" type="entity.ProducerCode" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.producer.producercodemodel"/>
+    <include path="PublicID" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="RateAsOfDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="RefundCalcMethod" type="typekey.CalculationMethod" propertyInclusionType="NORMAL"/>
+    <include path="SelectedPaymentPlan" type="entity.PaymentPlanSummary" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.plan.paymentplansummarymodel"/>
+    <include path="TermNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="TermType" type="typekey.TermType" propertyInclusionType="NORMAL"/>
+    <include path="UWCompany" type="entity.UWCompany" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.uwcompanymodel"/>
+    <include path="UWIssuesIncludingSoftDeleted[]" type="entity.UWIssue" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.uwissuemodel"/>
+  </includes>
+</gx-model>

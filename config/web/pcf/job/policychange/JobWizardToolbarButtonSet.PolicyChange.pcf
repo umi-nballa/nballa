@@ -56,6 +56,11 @@
       shortcut="Q"
       visible="policyChangeProcess.canRequestQuote().Okay"/>
     <ToolbarButton
+      action="policyPeriod.toggleDisableAdjustments()"
+      id="ToggleMigrationAdjustments"
+      label="policyPeriod.DisableAdjustments.Disabled ? displaykey.Accelerator.DataMigration.Job.Operation.EnableAdjustments_Ext : displaykey.Accelerator.DataMigration.Job.Operation.DisableAdjustments_Ext"
+      visible="perm.System.disableadjustments_ext and not job.MigrationJob and job.LatestPeriod.HasMigrationCostInfos and policyChangeProcess.canRequestQuote().Okay"/>
+    <ToolbarButton
       action="wizard.saveDraft(); policyChangeProcess.edit(); jobWizardHelper.goToVisibleStep(policyPeriod)"
       confirmMessage="displaykey.Job.Operation.Edit.Confirm"
       id="EditPolicy"

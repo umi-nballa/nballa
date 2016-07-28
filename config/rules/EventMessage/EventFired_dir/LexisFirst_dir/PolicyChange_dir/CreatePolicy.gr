@@ -8,6 +8,7 @@ internal class CreatePolicy {
   static function doCondition(messageContext : entity.MessageContext) : boolean {
 /*start00rule*/
 return messageContext.EventName=="PolicyPeriodChanged"
+and (messageContext.Root as PolicyPeriod).PolicyEndDate != null
 /*end00rule*/
 }
 

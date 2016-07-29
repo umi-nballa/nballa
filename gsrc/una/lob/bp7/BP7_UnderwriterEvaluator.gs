@@ -41,10 +41,10 @@ class BP7_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     questionSet.Questions.each( \ elt ->
       {
         if (elt != null) {
-
           if (elt?.isQuestionAvailable(_policyEvalContext.Period) ) {
             var answeredTrue = _policyEvalContext.Period.getAnswerValue(elt)?.toString() as boolean
-            if (null != answeredTrue && answeredTrue) {
+            // uim-svallabhapurapu - DE97 : do not generate UW issues for Internal User(i.e UW issues will be generated for External user only)
+            if (null != answeredTrue && answeredTrue and User.util.CurrentUser.ExternalUser) {
               switch (elt.DisplayName) {
                 case 'BP7_Q1_Businesshours_Ext':
                     var shortDescription = \-> displaykey.Ext.UWIssue.BP7.BP7_Businesshours_Ext

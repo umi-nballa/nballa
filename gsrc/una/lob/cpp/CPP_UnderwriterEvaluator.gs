@@ -43,7 +43,8 @@ class CPP_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     questionSet.Questions.each( \ elt -> {
         if (elt?.isQuestionAvailable(_policyEvalContext.Period) ) {
           var answeredTrue = _policyEvalContext.Period.getAnswerValue(elt)?.toString()
-          if (null != answeredTrue && answeredTrue as boolean) {
+          // uim-svallabhapurapu - DE97 : do not generate UW issues for Internal User(i.e UW issues will be generated for External user only)
+          if (null != answeredTrue && answeredTrue as boolean and User.util.CurrentUser.ExternalUser) {
             switch (elt.DisplayName) {
               case 'CRP_Q1_CoverageDecline_Ext':
                   var shortDescription = \-> displaykey.Ext.UWIssue.CRP.CRP_CoverageDecline_Ext

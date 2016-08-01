@@ -17,7 +17,7 @@ class ScheduledItemMatcher_HOE extends AbstractEffDatedPropertiesMatcher<Schedul
     
     if(_entity.DwellingCov typeis HODW_PersonalPropertyOffResidence_HOE){
       columns = {}
-    }else if(_entity.Description <> null){
+    }else if(_entity.Description != null){
       columns = {ScheduledItem_HOE.Type.TypeInfo.getProperty("Description") as IEntityPropertyInfo}
     }else{
       // don't match

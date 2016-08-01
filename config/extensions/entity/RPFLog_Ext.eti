@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="RPF log for skipped validation"
+  entity="RPFLog_Ext"
+  loadable="false"
+  table="rpflog_ext"
+  type="retireable">
+  <column
+    desc="Matching control pattern"
+    name="Pattern"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="255"/>
+  </column>
+  <typekey
+    desc="Type of validation"
+    name="Type"
+    nullok="false"
+    typelist="RPFControlType_Ext"/>
+  <foreignkey
+    desc="The control record that matched the validation"
+    fkentity="RPFControl_Ext"
+    name="Control"
+    nullok="true"/>
+  <column
+    desc="Soft reference to job number"
+    name="JobNumber"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="Soft reference to policy number"
+    name="PolicyNumber"
+    nullok="false"
+    type="policynumber"/>
+  <index
+    desc="Used for looking up log entries by PolicyNumber"
+    name="rpflog_ext1">
+    <indexcol
+      keyposition="1"
+      name="PolicyNumber"/>
+  </index>
+  <index
+    desc="Used for looking up log entries by Job"
+    name="rpflog_ext2">
+    <indexcol
+      keyposition="1"
+      name="JobNumber"/>
+  </index>
+</entity>

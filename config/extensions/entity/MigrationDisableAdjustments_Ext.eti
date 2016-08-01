@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Disable adjustments on slices"
+  entity="MigrationDisableAdjustments_Ext"
+  loadable="false"
+  table="migdisableadjustments_ext"
+  type="retireable">
+  <column
+    desc="Slice date that should be disabled"
+    name="SliceDate"
+    nullok="false"
+    type="datetime"/>
+  <column
+    name="Disabled"
+    nullok="false"
+    type="bit"/>
+  <foreignkey
+    fkentity="MigrationPolicyInfo_Ext"
+    name="MigrationPolicyInfo"
+    nullok="false"/>
+</entity>

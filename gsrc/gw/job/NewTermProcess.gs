@@ -147,6 +147,9 @@ abstract class NewTermProcess extends JobProcess {
   }
 
   private function setRateAsOfDate() {
+    // if this is a migrated transaction, keep "RateAsOfDate"
+    if (not _branch.Job.MigrationJob or _branch.RateAsOfDate == null) {
     _branch.RateAsOfDate = java.util.Date.CurrentDate
   }
+}
 }

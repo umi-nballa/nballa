@@ -5,7 +5,7 @@ uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.BooleanCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
-
+uses una.utils.MathUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,8 +35,10 @@ class CovTermPOCHOEInputSet {
           setExecutiveCoverageDefaults(_coverable as Dwelling_HOE, _covTerm as BooleanCovTerm)
           break
         default:
-              break;
-        }
+          break;
+     }
+
+    roundInputValue(_coverable, _covTerm)
   }
 
   static function isCovTermEditable(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) : boolean {
@@ -51,12 +53,8 @@ class CovTermPOCHOEInputSet {
   }
 
   static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
-    if(term.PatternCode == "HODW_OnPremises_Limit_HOE" and coverable typeis Dwelling_HOE){
-      var onPremisesValue = coverable.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value
-      var factor = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_OFFPREMISESLIMITFACTOR, coverable.PolicyLine.BaseState)
-
-      coverable.HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm.Value = onPremisesValue * factor
-    }
+    onCovTermOptionChange_OnPremisesLimit(term, coverable)
+    onCovTermOptionChange_LossAssessmentLimit(term, coverable)
   }
 
   static function getOptionLabel(covTerm : gw.api.domain.covterm.CovTerm, coverable : Coverable) : String{
@@ -73,12 +71,16 @@ class CovTermPOCHOEInputSet {
   }
 
   private static function setExecutiveCoverageDefaults(dwelling : Dwelling_HOE, booleanCovTerm : BooleanCovTerm){
-    if(booleanCovTerm.Value == true and !dwelling.BasedOn.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value){ //now true but previously not or null
+
+    if(booleanCovTerm.Value == true){
       var coveragePatternsToSelect = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTSELECTEDCOVERAGEPATTERNS, dwelling.PolicyLine.BaseState)
-      dwelling.HOLine.setCoverageConditionOrExclusionExists("HOLI_PersonalInjury_HOE", true)
 
       coveragePatternsToSelect.each( \ coveragePattern -> {
-        dwelling.setCoverageConditionOrExclusionExists(coveragePattern, true)
+        if(dwelling.isCoverageAvailable(coveragePattern)){
+          dwelling.setCoverageConditionOrExclusionExists(coveragePattern, true)
+        }else if(dwelling.HOLine.isCoverageAvailable(coveragePattern)){
+          dwelling.HOLine.setCoverageConditionOrExclusionExists(coveragePattern, true)
+        }
       })
 
       setExecutiveDefaultsForCoverage(dwelling.Coverages, dwelling)
@@ -108,6 +110,31 @@ class CovTermPOCHOEInputSet {
     }else if(covTerm typeis OptionCovTerm){
       var option = covTerm.AvailableOptions.atMostOneWhere( \ option -> option.Value.doubleValue() == defaultValue)
       covTerm.setOptionValue(option)
+    }
+  }
+
+  private static function roundInputValue(coverable : Coverable, covTerm: gw.api.domain.covterm.CovTerm){
+    var roundingFactor = ConfigParamsUtil.getInt(ConfigParameterType_Ext.TC_ROUNDINGFACTOR, coverable.PolicyLine.BaseState, covTerm.PatternCode)
+
+    if(covTerm.ValueAsString != null and roundingFactor != null){
+      var doubleVal = (covTerm as DirectCovTerm).Value.doubleValue()
+      var roundedNumber = MathUtil.roundTo(doubleVal, roundingFactor)
+      (covTerm as DirectCovTerm).Value = roundedNumber
+    }
+  }
+
+  private static function onCovTermOptionChange_OnPremisesLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable ){
+    if(term.PatternCode == "HODW_OnPremises_Limit_HOE" and coverable typeis Dwelling_HOE){
+      var onPremisesValue = coverable.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value
+      var factor = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_OFFPREMISESLIMITFACTOR, coverable.PolicyLine.BaseState)
+
+      coverable.HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm.Value = onPremisesValue * factor
+    }
+  }
+
+  private static function onCovTermOptionChange_LossAssessmentLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable){
+    if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable typeis HomeownersLine_HOE){
+      coverable.HODW_LossAssessmentCov_HOE_Ext.setDefaults()
     }
   }
 }

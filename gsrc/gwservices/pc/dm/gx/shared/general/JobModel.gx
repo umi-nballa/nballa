@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<gx-model type="entity.Job" xmlns="http://guidewire.com/gx">
+  <includes>
+    <include path="(entity-Cancellation).CancelProcessDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="(entity-Cancellation).CancelReasonCode" type="typekey.ReasonCode" propertyInclusionType="NORMAL"/>
+    <include path="(entity-Cancellation).Source" type="typekey.CancellationSource" propertyInclusionType="NORMAL"/>
+    <include path="(entity-Reinstatement).ReinstateCode" type="typekey.ReinstateCode" propertyInclusionType="NORMAL"/>
+    <include path="Description" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="LatestPeriod" type="entity.PolicyPeriod" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.base.policy.policyperiodmodel"/>
+    <include path="MigrationJobInfo_Ext" type="entity.MigrationJobInfo_Ext" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.migrationjobinfomodel"/>
+    <include path="PublicID" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Subtype" type="typekey.Job" propertyInclusionType="NORMAL"/>
+  </includes>
+</gx-model>

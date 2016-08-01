@@ -18,6 +18,7 @@ uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.ho.HOE_UnderwriterEvaluator
 uses una.rating.ho.UNAHORatingEngine_HOE
+uses una.rating.ho.UNAHOTXRatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -163,6 +164,10 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
     if(_line.HOLineCoverages != null){
       _line.HOLineCoverages.each(\ c -> c.CoveredLocationAutoNumberSeq.renumberNewBeans(c.CoveredLocations, CoveredLocation_HOE.Type.TypeInfo.getProperty("LocationNumber")))
     }
+
+    if(_line.HOLineCoverages != null){
+      _line.HOLineCoverages.each(\ c -> c.ScheduleItemsAutoNumberSeq_Ext.renumberNewBeans(c.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum")))
+    }
   }
 
   override function createPolicyLineDiffHelper(reason : DiffReason, policyLine : PolicyLine) : HODiffHelper {
@@ -183,8 +188,12 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
     if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    } else {
+      if(_line.BaseState == typekey.Jurisdiction.TC_TX)
+        return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
-    return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }
 
   override property get SupportsNonSpecificLocations() : boolean {

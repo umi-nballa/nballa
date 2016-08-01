@@ -1,6 +1,7 @@
 package gw.policy
 
 uses gw.api.domain.FKLoader
+uses gwservices.pc.dm.util.MigrationUtil
 
 @Export
 enhancement PolicyPeriodFormsEnhancement : PolicyPeriod
@@ -21,13 +22,17 @@ enhancement PolicyPeriodFormsEnhancement : PolicyPeriod
   }
   
   function removeAllNewlyAddedForms() {
+    if (not this.Job.MigrationJobInfo_Ext.DisableFormsInference) {
     removeForms(null)
+  }
   }
 
   function removeNewlyAddedBindTimeForms() {
+    if (not this.Job.MigrationJobInfo_Ext.DisableFormsInference) {
     removeForms("bind")
   }
-  
+  }
+
   private function removeForms(inferenceTime : FormInferenceTime) {
     var forms = this.Forms
       .where(\ f -> inferenceTime == null || f.InferenceTime == inferenceTime)

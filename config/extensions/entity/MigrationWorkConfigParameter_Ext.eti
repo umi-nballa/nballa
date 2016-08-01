@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Name/value pairs for migration work."
+  entity="MigrationWorkConfigParameter_Ext"
+  exportable="true"
+  loadable="false"
+  table="migrationparameter_ext"
+  type="versionable">
+  <column
+    desc="Property name."
+    name="PropName"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="120"/>
+  </column>
+  <column
+    desc="Property value."
+    name="PropValue"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="200"/>
+  </column>
+  <foreignkey
+    columnName="MigrationWorkConfig"
+    desc="Owning migration work configuration."
+    fkentity="MigrationWorkConfig_Ext"
+    name="MigrationWorkConfig"
+    nullok="false"/>
+  <index
+    name="PropName">
+    <indexcol
+      keyposition="1"
+      name="PropName"/>
+  </index>
+  <index
+    name="PropValue">
+    <indexcol
+      keyposition="1"
+      name="PropValue"/>
+  </index>
+</entity>

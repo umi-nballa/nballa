@@ -211,8 +211,8 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
 
   /* Functions to convert from percentage to dollar amount */
   private function choosePercentageBasis(){
-    _dwellingBasisForPercentage = _hoLine.Dwelling.DwellingLimit
-    _propertyBasisForPercentage = _hoLine.Dwelling.PersonalPropertyLimit
+    _dwellingBasisForPercentage = _hoLine.Dwelling.DwellingLimitCovTerm.Value
+    _propertyBasisForPercentage = _hoLine.Dwelling.PersonalPropertyLimitCovTerm.Value
   }
 
   /* covers the special case where an option cov term is used as classification.

@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Data migration job information"
+  displayName="MigrationJobInfo_Ext"
+  entity="MigrationJobInfo_Ext"
+  loadable="false"
+  table="migrationjobinfo_ext"
+  type="retireable">
+  <column
+    default="false"
+    desc="Should product model synchronization be disabled for coverables"
+    name="DisableSynchronization"
+    nullok="false"
+    type="bit"/>
+  <column
+    default="false"
+    desc="Should forms inference be disabled for this transaction?"
+    name="DisableFormsInference"
+    nullok="true"
+    type="bit"/>
+  <column
+    default="false"
+    desc="Disable rating entirely for migrated policies"
+    name="DisableRating"
+    nullok="false"
+    type="bit"/>
+  <column
+    desc="Enable automatic deletion of entities between transactions"
+    name="AutoDelete"
+    nullok="true"
+    type="bit"/>
+  <foreignkey
+    desc="The corresponding job"
+    fkentity="Job"
+    name="Job"
+    nullok="false"/>
+  <column
+    name="BasedOnEffectiveDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Update a payload into the staging table"
+    name="UpdatePayload"
+    nullok="true"
+    type="bit"/>
+</entity>

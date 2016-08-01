@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Controls overall RPF framework"
+  entity="RPFAdmin_Ext"
+  exportable="true"
+  final="false"
+  loadable="false"
+  table="rpfadmin_ext"
+  type="retireable">
+  <typekey
+    columnName="admintype"
+    desc="Type of validation rule configured"
+    name="Type"
+    nullok="false"
+    typelist="RPFControlType_Ext"/>
+  <typekey
+    desc="Override all controls at a global level"
+    name="GlobalLevel"
+    nullok="true"
+    typelist="RPFControlLevel_Ext"/>
+  <column
+    desc="Environment where configuration applies. Should be null for default"
+    name="Env"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <index
+    desc="Only one type per environment"
+    name="rpfadminext1"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="admintype"/>
+    <indexcol
+      keyposition="2"
+      name="Env"/>
+  </index>
+</entity>

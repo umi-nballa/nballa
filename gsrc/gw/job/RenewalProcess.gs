@@ -3,6 +3,7 @@ package gw.job
 uses com.guidewire.pl.system.bundle.validation.EntityValidationException
 uses gw.api.job.JobProcessLogger
 uses gw.api.util.DisplayableException
+uses gw.api.web.util.TransactionUtil
 uses gw.forms.FormInferenceEngine
 uses gw.job.permissions.RenewalPermissions
 uses gw.job.uw.UWAuthorityBlocksProgressException
@@ -82,14 +83,27 @@ class RenewalProcess extends NewTermProcess {
    * Initializes the renewal, starting the StartRenewalWF workflow.
    */
   override function start() {
+    // let the migration process start the workflow
+    if (not Job.MigrationJob) {
+      start(true)
+    }
+  }
+
+  /**
+   * This function is used for data migration.
+   * @params: startRenewalWorkflow set to true if renewal work flow needs to be launched, set to false otherwise
+   */
+  function start(startRenewalWorkflow : boolean){
     canStart().assertOkay()
     startJobAsNew()
     JobProcessLogger.logInfo("Starting renewal for branch: " + _branch)
 
     if (Job.ActivePeriods.Count == 1) {
       initialize()
+      if (startRenewalWorkflow) {
       JobProcessLogger.logInfo("Starting renewal workflow for branch: " + _branch)
       _timeoutHandler.startAutomatedRenewal(_branch)
+      }
     } else {
       // multiquote
       _branch.edit()

@@ -4,13 +4,14 @@
   coverageCategory="HODW_Additional_HOE"
   coverageSubtype="HomeownersLineCov_HOE"
   coveredPartyType="ThirdParty"
+  existence="Electable"
   lookupTableName="HomeownersLineCov"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="12800"
   public-id="HOPR_LossAssEarthQuake_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <ExistenceScript><![CDATA[return(HomeownersLine_HOE.Dwelling.HODW_Earthquake_HOEExists)? ExistenceType.TC_ELECTABLE : ExistenceType.TC_SUGGESTED]]></ExistenceScript>
+  <AvailabilityScript><![CDATA[return(HomeownersLine_HOE.Dwelling.HODW_Earthquake_HOEExists && HomeownersLine_HOE.HODW_LossAssessmentCov_HOE_ExtExists)? true:false]]></AvailabilityScript>
   <CovTerms>
     <OptionCovTermPattern
       choiceLookupTableName="HomeownersLineCovOpt"

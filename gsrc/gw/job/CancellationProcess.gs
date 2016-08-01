@@ -13,6 +13,7 @@ uses java.lang.UnsupportedOperationException
 uses java.util.ArrayList
 uses gw.plugin.Plugins
 uses gw.plugin.reinsurance.IReinsurancePlugin
+uses gw.api.web.util.TransactionUtil
 uses gw.api.util.MonetaryAmounts
 uses java.lang.IllegalStateException
 uses gw.api.web.util.TransactionUtil
@@ -81,7 +82,9 @@ class CancellationProcess extends JobProcess {
                                  displaykey.Job.Cancellation.CancellationForRenewal,
                                  displaykey.Job.Cancellation.OpenRenewal(_branch.PolicyNumber))
     }
+    if (not Job.MigrationJob) {
     requestQuote()
+  }
   }
 
   /**
@@ -302,7 +305,9 @@ class CancellationProcess extends JobProcess {
 
   private function startScheduledCancellation(processDate : DateTime) {
     // We want to throw here instead of disabling the buttons so that the end user gets visible feedback
+    if (not Job.MigrationJob) {
    JobProcessValidator.validateCancellationDateNotTooSoon(_branch, Job)
+    }
 
     if (InitialNotificationsHaveBeenSent) {
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CANCEL_RESCHEDULE, \ -> displaykey.Job.Cancellation.History.Reschedule(processDate))
@@ -415,7 +420,9 @@ class CancellationProcess extends JobProcess {
    * Rescinds the cancellation.  Invoke {@link #finishRescind} to finalize.
    */
   function rescind() {
+    if (not Job.MigrationJob) {
     canRescind(false).assertOkay()
+    }
     JobProcessLogger.logInfo("Rescinding cancellation for branch \"${_branch}\"")
     Job.RescindNotificationDate = DateTime.CurrentDate
     _branch.Status = TC_RESCINDING
@@ -438,7 +445,9 @@ class CancellationProcess extends JobProcess {
    * Finishes rescinding the cancellation.
    */
   function finishRescind() {
+    if (not Job.MigrationJob) {
     canFinishRescind().assertOkay()
+    }
     JobProcessLogger.logInfo("Finished rescinding cancellation for branch \"${_branch}\"")
     _branch.Status = TC_RESCINDED
     _branch.lockBranch()

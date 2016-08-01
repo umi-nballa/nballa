@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="RPF Control Table. Holds the rules"
+  entity="RPFControl_Ext"
+  exportable="true"
+  final="false"
+  loadable="false"
+  table="rpfcontrol_ext"
+  type="retireable">
+  <typekey
+    columnName="controltype"
+    desc="Type of validation"
+    name="Type"
+    nullok="false"
+    typelist="RPFControlType_Ext"/>
+  <typekey
+    columnName="controllevel"
+    desc="Rule control level"
+    name="Level"
+    nullok="false"
+    typelist="RPFControlLevel_Ext"/>
+  <column
+    desc="Pattern used to identify the validation"
+    name="Pattern"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="255"/>
+  </column>
+  <column
+    default="false"
+    desc="Ignore this control. Allows for documenting items from automatic updates"
+    name="Ignore"
+    nullok="false"
+    type="bit"/>
+  <column
+    desc="Optional description of the rule"
+    name="Description"
+    nullok="true"
+    type="longtext"/>
+  <column
+    desc="Control environment. Should be null for default"
+    name="Env"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <index
+    desc="Only one control item per environment"
+    name="rpfcontrolext1">
+    <indexcol
+      keyposition="1"
+      name="controltype"/>
+    <indexcol
+      keyposition="2"
+      name="Pattern"/>
+    <indexcol
+      keyposition="3"
+      name="Env"/>
+  </index>
+</entity>

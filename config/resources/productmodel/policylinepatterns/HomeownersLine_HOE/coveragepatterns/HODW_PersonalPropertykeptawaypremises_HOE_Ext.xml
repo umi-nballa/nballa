@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="HODW_PersonalPropertykeptawaypremises_HOE_Ext"
+  coverageCategory="HODW_Additional_HOE"
+  coverageSubtype="DwellingCov_HOE"
+  coveredPartyType="FirstParty"
+  existence="Required"
+  lookupTableName="DwellingCov"
+  owningEntityType="Dwelling_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="18800"
+  public-id="HODW_PersonalPropertykeptawaypremises_HOE_Ext"
+  referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return Dwelling_HOE.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
+]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_PPRegularlyKeptAway_HOE"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_PPRegularlyKeptAway_HOE"
+      required="true"
+      restrictionModel="prp"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="z8kishmmt22tef4pg4rro466kb9"
+          currency="usd"
+          defaultValue="10000"
+          public-id="z8kishmmt22tef4pg4rro466kb9"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

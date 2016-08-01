@@ -80,16 +80,19 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
     _homeownersBaseRate = 1
     switch (theLine.HOPolicyType) {
       case HOPolicyType_HOE.TC_HO3 :
-        _homeownersBaseRate = 300
+        _homeownersBaseRate = 100000
         break
       case HOPolicyType_HOE.TC_HO4 :
-        _homeownersBaseRate = 70
+        _homeownersBaseRate = 100000
         break
       case HOPolicyType_HOE.TC_HO6 :
-        _homeownersBaseRate = 50
+        _homeownersBaseRate = 100000
         break
+      case HOPolicyType_HOE.TC_DP1_EXT :
+          _homeownersBaseRate = 100000
+          break
       case HOPolicyType_HOE.TC_DP2 :
-        _homeownersBaseRate = 285
+        _homeownersBaseRate = 100000
         break
       default :
         PCFinancialsLogger.logDebug( "Unkown base premium for  ${(theLine.HOPolicyType)}")

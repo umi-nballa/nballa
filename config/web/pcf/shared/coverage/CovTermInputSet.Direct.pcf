@@ -11,11 +11,17 @@
     <Require
       name="openForEdit"
       type="boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.CovTermInputSet(term, openForEdit)"
+      name="pcfController"/>
     <CovTermDirectInput
       editable="true"
       id="DirectTermInput"
       label="term.Pattern.DisplayName"
       required="term.Pattern.Required"
-      value="term"/>
+      value="term">
+      <PostOnChange
+        onChange="pcfController.onChange()"/>
+    </CovTermDirectInput>
   </InputSet>
 </PCF>

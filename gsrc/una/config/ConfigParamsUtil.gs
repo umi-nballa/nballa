@@ -33,7 +33,7 @@ class ConfigParamsUtil {
     var result : BigDecimal
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       try{
         configParameter = getConfigParameter(configParameterType, state, null)
 
@@ -59,7 +59,7 @@ class ConfigParamsUtil {
     var result : Integer
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       try{
         configParameter = getConfigParameter(configParameterType, state, null)
 
@@ -84,7 +84,7 @@ class ConfigParamsUtil {
   public static function getString(configParameterType : ConfigParameterType_Ext, state : Jurisdiction) : String{
     var result : String
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       result = getConfigParameter(configParameterType, state, null).Value
     }
 
@@ -101,7 +101,7 @@ class ConfigParamsUtil {
     var result : java.lang.Double
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       try{
         configParameter = getConfigParameter(configParameterType, state, null)
 
@@ -127,7 +127,7 @@ class ConfigParamsUtil {
     var configParameter : ConfigurationParameter_Ext
     var booleanStrings = {"false", "true", null}
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       configParameter = getConfigParameter(configParameterType, state,  null)
 
       if(!booleanStrings.contains(configParameter.Value?.toLowerCase())){
@@ -150,7 +150,7 @@ class ConfigParamsUtil {
     var result : Range
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       configParameter = getConfigParameter(configParameterType, state, null)
 
       if(configParameter != null){
@@ -182,7 +182,7 @@ class ConfigParamsUtil {
   public static function getList(configParamType : ConfigParameterType_Ext, state : Jurisdiction) : List<String> {
     var results : List<String> = {}
 
-    if(configParamType != null and state != null){
+    if(configParamType != null){
       var retrievedConfigParam = getConfigParameter(configParamType, state, null)
       results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
     }
@@ -201,7 +201,7 @@ class ConfigParamsUtil {
     var result : BigDecimal
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       try{
         configParameter = getConfigParameter(configParameterType, state, configFilter)
 
@@ -227,7 +227,7 @@ class ConfigParamsUtil {
     var result : Integer
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       try{
         configParameter = getConfigParameter(configParameterType, state, configFilter)
 
@@ -252,7 +252,7 @@ class ConfigParamsUtil {
   public static function getString(configParameterType: ConfigParameterType_Ext, state : Jurisdiction, configFilter : String) : String{
     var result : String
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       result = getConfigParameter(configParameterType, state, configFilter).Value
     }
 
@@ -270,7 +270,7 @@ class ConfigParamsUtil {
     var result : java.lang.Double
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       try{
         configParameter = getConfigParameter(configParameterType, state, configFilter)
 
@@ -297,7 +297,7 @@ class ConfigParamsUtil {
     var configParameter : ConfigurationParameter_Ext
     var booleanStrings = {"false", "true", null} //null == false.  if not present, it is inferred that we should return false
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       configParameter = getConfigParameter(configParameterType, state, configFilter)
 
       if(!booleanStrings.contains(configParameter.Value?.toLowerCase())){
@@ -321,7 +321,7 @@ class ConfigParamsUtil {
     var result : Range
     var configParameter : ConfigurationParameter_Ext
 
-    if(configParameterType != null and state != null){
+    if(configParameterType != null){
       configParameter = getConfigParameter(configParameterType, state, configFilter)
 
       if(configParameter != null){
@@ -354,7 +354,7 @@ class ConfigParamsUtil {
   public static function getList(configParamType : ConfigParameterType_Ext, state : Jurisdiction, configFilter : String) : List<String> {
     var results : List<String> = {}
 
-    if(configParamType != null and state != null){
+    if(configParamType != null){
       var retrievedConfigParam = getConfigParameter(configParamType, state, configFilter)
       results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
     }

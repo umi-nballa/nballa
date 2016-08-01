@@ -1,0 +1,84 @@
+<?xml version="1.0"?>
+<gx-model type="entity.Dwelling_HOE" xmlns="http://guidewire.com/gx">
+  <includes>
+    <include path="AdditionalInterests[]" type="entity.HODwellingAddlInt_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.contact.addlinterestdetailmodel"/>
+    <include path="Amperage" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="AnimalsInDwelling" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="ApproxSquareFootage" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="BurglarAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="BurglarAlarmType" type="typekey.BurglarAlarmType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionCode" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionType" type="typekey.ConstructionType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Coverages[]" type="entity.DwellingCov_HOE" propertyInclusionType="NORMAL" model="gw.webservice.pc.pc800.gxmodel.clausemodel"/>
+    <include path="CoveredPorch" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="CoveredPorchArea" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="Deadbolts" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="DeadboltsNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="DwellingLocation" type="typekey.DwellingLocationType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="DwellingLocationDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="DwellingUsage" type="typekey.DwellingUsage_HOE" propertyInclusionType="NORMAL"/>
+    <include path="ElectricalSystemUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="ElectricalSystemUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="ElectricalType" type="typekey.BreakerType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="ElectricalTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="FireAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="FireExtinguishers" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="FireplaceOrWoodStoveExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="FireplaceOrWoodStovesNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="Foundation" type="typekey.FoundationType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="Garage" type="typekey.GarageType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="GarageArea" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="HeatingUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatingUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm" type="gw.api.domain.covterm.DirectCovTerm" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm" type="productmodel.OptionHODW_OnPremises_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_CC_EFT_HOE_Ext.HODW_CC_EFTLimit_HOETerm" type="productmodel.OptionHODW_CC_EFTLimit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_Dwelling_Cov_HOE.HasHODW_ExecutiveCov_HOE_ExtTerm" type="boolean" propertyInclusionType="NORMAL"/>
+    <include path="HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm" type="gw.api.domain.covterm.DirectCovTerm" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm" type="productmodel.OptionHODW_DwellingValuation_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm" type="productmodel.OptionHODW_FungiSectionII_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm" type="productmodel.OptionHODW_FungiSectionILimit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm" type="productmodel.OptionHODW_OrdinanceLimit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm" type="gw.api.domain.covterm.DirectCovTerm" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm" type="gw.api.domain.covterm.DirectCovTerm" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm" type="productmodel.OptionHODW_PropertyValuation_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm" type="productmodel.OptionHODW_OtherPerils_Ded_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_SpecialLimitsCovC_HOE.HODW_Firearms_Limit_HOETerm" type="productmodel.OptionHODW_Firearms_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_SpecialLimitsCovC_HOE.HODW_JewelryWatchesFurs_Limit_HOETerm" type="productmodel.OptionHODW_JewelryWatchesFurs_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_SpecialLimitsCovC_HOE.HODW_Money_Limit_HOETerm" type="productmodel.OptionHODW_Money_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HODW_SpecialLimitsCovC_HOE.HODW_Securties_Limit_HOETerm" type="productmodel.OptionHODW_Securties_Limit_HOEType" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.product.covtermmodel"/>
+    <include path="HOLocation" type="entity.HOLocation_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.holocation_hoemodel"/>
+    <include path="KnownWaterLeakage" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="KnownWaterLeakageDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Occupancy" type="typekey.DwellingOccupancyType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="PlumbingType" type="typekey.PlumbingType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="PlumbingTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="PlumbingUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="PlumbingUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="PrimaryHeating" type="typekey.HeatingType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="PrimaryHeatingDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ReplacementCost" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="ResidenceType" type="typekey.ResidenceType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="RoofingUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="RoofingUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="RoofType" type="typekey.RoofType" propertyInclusionType="NORMAL"/>
+    <include path="RoofTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="RoomerBoarders" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="SecondaryHeatingExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="SmokeAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="SmokeAlarmOnAllFloors" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="SprinklerSystemType" type="typekey.SprinklerSystemType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="StoriesNumber" type="typekey.NumberOfStories_HOE" propertyInclusionType="NORMAL"/>
+    <include path="SwimmingPoolExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="TrampolineExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="UnitsNumber" type="typekey.NumUnits_HOE" propertyInclusionType="NORMAL"/>
+    <include path="VisibleToNeighbors" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="WindClass" type="typekey.WindRating" propertyInclusionType="NORMAL"/>
+    <include path="WindClassDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="WiringType" type="typekey.WiringType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="WiringTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="YearBuilt" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="YearPurchased" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+  </includes>
+</gx-model>

@@ -54,6 +54,10 @@ class LineWizardStepHelper_Ext {
       una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm, dwelling)
       setSpecialLimitsPersonalPropertyDefaults(dwelling)
     }
+
+    if(hoLine != null){
+      hoLine.HODW_LossAssessmentCov_HOE_Ext?.setDefaults()
+    }
   }
 
   private static function setFireDwellingValuationMethodDefault(dwelling : Dwelling_HOE){

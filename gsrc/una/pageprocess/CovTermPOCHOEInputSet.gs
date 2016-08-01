@@ -41,6 +41,22 @@ class CovTermPOCHOEInputSet {
     roundInputValue(_coverable, _covTerm)
   }
 
+  static function validateMinMaxValue(_coverable: Coverable, _covTerm: gw.api.domain.covterm.CovTerm):String{
+    var dwelling = _coverable as Dwelling_HOE
+    dwelling.PolicyPeriod.editIfQuoted()
+    ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
+
+    if((_coverable as Dwelling_HOE).HODW_Dwelling_Cov_HOEExists) {
+      return dwelling.HODW_Dwelling_Cov_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
+    }
+    if((_coverable as Dwelling_HOE).DPDW_Dwelling_Cov_HOEExists) {
+      return dwelling.DPDW_Dwelling_Cov_HOE.validateDPMinMaxLimits_Ext(_coverable as Dwelling_HOE)
+    }
+
+   roundInputValue(_coverable, _covTerm)
+    return null
+  }
+
   static function isCovTermEditable(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) : boolean {
     var result = true
     var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, term.PatternCode)

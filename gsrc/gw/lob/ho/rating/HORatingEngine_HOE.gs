@@ -88,9 +88,6 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
       case HOPolicyType_HOE.TC_HO6 :
         _homeownersBaseRate = 100000
         break
-      case HOPolicyType_HOE.TC_DP1_EXT :
-          _homeownersBaseRate = 100000
-          break
       case HOPolicyType_HOE.TC_DP2 :
         _homeownersBaseRate = 100000
         break
@@ -126,7 +123,7 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
   private function rateBasePremium(lineVersion : HomeownersLine_HOE) {
     var start = lineVersion.SliceDate
     var end = getNextSliceDateAfter(start)
-    var cost = new HomeownersBaseCostData_HOE(start, end, lineVersion.Branch.PreferredCoverageCurrency, RateCache)
+    var cost = new HomeownersBaseCostData_HOE(start, end, lineVersion.Branch.PreferredCoverageCurrency, RateCache, null)
     cost.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
     
     var limit : BigDecimal = 1

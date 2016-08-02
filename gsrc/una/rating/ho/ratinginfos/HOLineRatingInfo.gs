@@ -1,4 +1,12 @@
-package una.rating.ho
+package una.rating.ho.ratinginfos
+
+uses java.math.BigDecimal
+
+
+
+
+
+
 /**
  * User: bduraiswamy
  * Date: 6/16/16
@@ -13,6 +21,7 @@ class HOLineRatingInfo {
   var _personalInjuryLimit : int as PersonalInjuryLimit
   var _lossAssessmentLimit : int as LossAssessmentLimit
   var _animalLiabilityLimit : int as AnimalLiabilityLimit
+  var _totalBasePremium : BigDecimal as TotalBasePremium
 
   construct(){}
 

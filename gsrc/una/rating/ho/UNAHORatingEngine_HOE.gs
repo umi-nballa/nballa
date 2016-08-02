@@ -7,6 +7,8 @@ uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses gw.lob.ho.rating.HomeownersCovCostData_HOE
 uses gw.lob.ho.rating.DwellingCovCostData_HOE
+uses gw.financials.PolicyPeriodFXRateCache
+uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
 
 /**
  * User: bduraiswamy
@@ -44,23 +46,24 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
 
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
-      var hoRatingInfo = new HORatingInfo()
 
       if(_baseState == typekey.Jurisdiction.TC_TX){
-      //rate line level coverages
-      _logger.info("Rating Line Level HO Coverages")
-      lineVersion.HOLineCoverages?.each( \ lineCov -> rateLineCoverages(lineCov, sliceRange))
-      _logger.info("Done rating Line Level HO Coverages")
+        //rate base premium
+        rateHOBasePremium(lineVersion.Dwelling, RateCache, sliceRange)
 
-      //rate dwelling level coverages
-      _logger.info("Rating Dwelling Level HO Coverages")
-      if(lineVersion.Dwelling != null){
-        //var rater = new HODwellingRater(lineVersion.Dwelling, PolicyLine, _executor, RateCache, hoRatingInfo, BaseState)
-        //var costs = rater.ratePremiums(sliceRange, this.NumDaysInCoverageRatedTerm)
-        //addCost(costs)
-        lineVersion.Dwelling.Coverages?.each( \ dwellingCov -> rateDwellingCoverages(dwellingCov, sliceRange, hoRatingInfo))
-      }
-      _logger.info("Done rating Dwelling Level HO Coverages")
+        //rate line level coverages
+        _logger.info("Rating Line Level HO Coverages")
+        lineVersion.HOLineCoverages?.each( \ lineCov -> rateLineCoverages(lineCov, sliceRange))
+        _logger.info("Done rating Line Level HO Coverages")
+
+        //rate dwelling level coverages
+        _logger.info("Rating Dwelling Level HO Coverages")
+        if(lineVersion.Dwelling != null){
+          lineVersion.Dwelling.Coverages?.each( \ dwellingCov -> rateDwellingCoverages(dwellingCov, sliceRange))
+        }
+        _logger.info("Done rating Dwelling Level HO Coverages")
+
+        rateDiscountsOrSurcharges(lineVersion.Dwelling, sliceRange)
       }
     }
   }
@@ -76,6 +79,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   override protected function createCostDataForCost(c: Cost): CostData {
     var cd: CostData
     switch(typeof c){
+      case HomeownersBaseCost_HOE:
+          cd = new HomeownersBaseCostData_HOE(c, RateCache)
+          break
       case HomeownersCovCost_HOE:
         cd = new HomeownersCovCostData_HOE(c, RateCache)
         break
@@ -94,5 +100,15 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   /**
    * Rate the Dwelling level coverages
    */
-  function rateDwellingCoverages(dwellingCov : DwellingCov_HOE, dateRange : DateRange, ratingInfo : HORatingInfo) {}
+  function rateDwellingCoverages(dwellingCov : DwellingCov_HOE, dateRange : DateRange) {}
+
+  /**
+   * Rate the base premium for HO
+   */
+  function rateHOBasePremium(dwelling : Dwelling_HOE, rateCache : PolicyPeriodFXRateCache, dateRange : DateRange){}
+
+  /**
+   * Rate the discounts and Surcharges
+  */
+  function rateDiscountsOrSurcharges(dwelling : Dwelling_HOE, dateRange : DateRange){}
 }

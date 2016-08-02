@@ -20,4 +20,7 @@ public final class HORateRoutineNames {
   public static final var OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME : String = "UNAHOOtherStructuresIncreasedOrDecreasedLimitsCovRateRoutine"
   public static final var ANIMAL_LIABILITY_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovRateRoutine"
   public static final var IDENTITY_THEFT_EXPENSE_COV_ROUTINE_NAME : String = "UNAHOIdentityTheftExpenseCovRateRoutine"
+  public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovRateRoutine"
+  public static final var PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME : String = "UNAHOPersonalPropertyIncreasedLimitRateRoutine"
+  public static final var UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME : String = "UNAHOUnitOwnersRentedToOthersCovRateRoutine"
 }

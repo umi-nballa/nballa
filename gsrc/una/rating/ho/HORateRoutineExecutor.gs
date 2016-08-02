@@ -11,6 +11,8 @@ uses gw.api.rating.RatingException
 uses gw.rating.flow.util.QueryUtils
 uses una.logging.UnaLoggerCategory
 uses java.lang.Exception
+uses gw.lob.common.util.DateRange
+uses java.lang.IllegalStateException
 
 /**
  * User: bduraiswamy
@@ -25,6 +27,7 @@ class HORateRoutineExecutor {
   var _line : HomeownersLine_HOE
   var _ratingLevel : RateBookStatus
   var _offeringCode : String
+  var _sliceDateRange : DateRange
   final static var _logger = UnaLoggerCategory.UNA_RATING
 
   construct(referenceDate : IReferenceDatePlugin, line : HomeownersLine_HOE, ratingLevel : RateBookStatus, offeringCode : String) {
@@ -41,6 +44,25 @@ class HORateRoutineExecutor {
     try{
       var refDate = _referenceDate.getCoverageReferenceDate(coverage.Pattern as CoveragePattern, coverage.OwningCoverable)
       var rateBook = getRateBook(refDate)
+      rateBook.executeCalcRoutine(code, costData, costData, paramSet)
+    } catch(ex : Exception){
+      _logger.error("Error during executing rate routine : " + code , ex)
+      throw ex
+    }
+  }
+
+  /**
+   * Function which fetches the rate book and executes the rate routine
+   */
+  function executeBasedOnSliceDate(code : String, paramSet : Map<CalcRoutineParamName,Object>, costData : CostData, refStartDate : Date, refEndDate : Date) {
+    try{
+      var policyPeriod = _line.Branch
+      if(policyPeriod != null){
+        if(refStartDate.before(policyPeriod.PeriodStart) or refEndDate.after(policyPeriod.PeriodEnd)){
+          throw new IllegalStateException("Cannot lookup book for ${_line.BaseState}, the policy is not effective as of ${refStartDate.ShortFormat}")
+        }
+      }
+      var rateBook = getRateBook(refStartDate)
       rateBook.executeCalcRoutine(code, costData, costData, paramSet)
     } catch(ex : Exception){
       _logger.error("Error during executing rate routine : " + code , ex)

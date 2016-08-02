@@ -86,6 +86,11 @@ uses java.util.Map
 uses java.util.concurrent.locks.ReentrantLock
 uses gwservices.pc.dm.gx.base.account.accountmodel.anonymous.elements.Account_IndustryCode
 uses gwservices.pc.dm.gx.shared.general.IndustryCodePopulator
+uses gwservices.pc.dm.gx.lob.ho.homeownersline_hoemodel.anonymous.elements.HomeownersLine_HOE_HOLineCoverages_Entry
+uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_HomeownersLine_HOE_HOLineCoverages_Entry
+uses gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel.anonymous.elements.Dwelling_HOE_Coverages_Entry
+uses gwservices.pc.dm.gx.lob.ho.dwellingcov_hoemodel.anonymous.elements.DwellingCov_HOE_CovTerms_Entry
+uses gwservices.pc.dm.gx.lob.ho.homeownerslinecov_hoemodel.anonymous.elements.HomeownersLineCov_HOE_CovTerms_Entry
 
 /**
  * Entity populator registry
@@ -155,7 +160,9 @@ class Registry {
       Account_Notes_Entry -> getConstructor(NotePopulator),
       PolicyPeriod_Notes_Entry -> getConstructor(NotePopulator),
       Account_AccountContacts_Entry -> getConstructor(AccountContactPopulator),
-      Account_IndustryCode -> getConstructor(IndustryCodePopulator)
+      Account_IndustryCode -> getConstructor(IndustryCodePopulator),
+      PolicyLine_Entity_HomeownersLine_HOE_HOLineCoverages_Entry -> getConstructor(CoveragePopulator),
+      Dwelling_HOE_Coverages_Entry -> getConstructor(CoveragePopulator)
   }
   /** Items that should not be populated */
   private var _doNotPopulate: List<IType> as DoNotPopulate = {
@@ -164,7 +171,9 @@ class Registry {
       UWIssue_IssueType,
       Policy_Account,
       UWIssue_IssueType,
-      Policy_Account
+      Policy_Account,
+      DwellingCov_HOE_CovTerms_Entry,
+      HomeownersLineCov_HOE_CovTerms_Entry
   }
   /**
    * Entity types to not auto delete

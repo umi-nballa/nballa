@@ -28,6 +28,8 @@ enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
     this.PaymentPlanPublicId = period.SelectedPaymentPlan.BillingId
     this.ProducerCodeOfRecordId = period.ProducerCodeOfRecord.PublicID
     this.ProductCode = period.Policy.ProductCode
+    // US4887: PC-BC Integration: mapping added for HOPolicyType
+    this.HOPolicyType = period.HomeownersLine_HOE.HOPolicyType.Code
     this.UWCompanyCode = period.UWCompany.Code.Code
     if (period.ModelDate != null)
       this.ModelDate = period.ModelDate.XmlDateTime

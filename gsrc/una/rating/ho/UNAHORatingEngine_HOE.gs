@@ -63,7 +63,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         }
         _logger.info("Done rating Dwelling Level HO Coverages")
 
-        rateDiscountsOrSurcharges(lineVersion.Dwelling, sliceRange)
+        rateDiscountsOrSurcharges(sliceRange)
       }
     }
   }
@@ -110,5 +110,5 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   /**
    * Rate the discounts and Surcharges
   */
-  function rateDiscountsOrSurcharges(dwelling : Dwelling_HOE, dateRange : DateRange){}
+  function rateDiscountsOrSurcharges(dateRange : DateRange){}
 }

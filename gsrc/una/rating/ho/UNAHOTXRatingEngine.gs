@@ -10,6 +10,8 @@ uses gw.rating.CostData
 uses gw.financials.PolicyPeriodFXRateCache
 uses una.rating.ho.ratinginfos.HORatingInfo
 uses una.rating.ho.ratinginfos.HOLineRatingInfo
+uses una.rating.ho.ratinginfos.HODiscountsOrSurchargesRatingInfo
+uses gw.lob.ho.rating.ScheduleCovCostData_HOE
 
 /**
  * Created with IntelliJ IDEA.
@@ -99,30 +101,65 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
       case HODW_Personal_Property_HOE:
           rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
+      case HODW_ScheduledProperty_HOE:
+          //rateScheduledPersonalProperty(dwellingCov, dateRange)   //Need to implement this functionality
+          break
     }
   }
 
   /**
    * Function which rates the discounts and surcharges
   */
-  override function rateDiscountsOrSurcharges(dwelling : Dwelling_HOE, dateRange : DateRange){
+  override function rateDiscountsOrSurcharges(dateRange : DateRange){
+    var dwelling = PolicyLine.Dwelling
     if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
-
+      rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
+    if(dwelling?.BurglarAlarm){
+      rateBurglarProtectiveDevicesCredit(dateRange)
+    }
+    rateAgeOfHomeDiscount(dateRange)
+  }
+
+  /**
+   *  Function to rate the Seasonal Or Secondary Residence Surcharge
+   */
+  function rateAgeOfHomeDiscount(dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAgeOfHomeDiscount", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var costData = createCostDataForDiscountsOrSurcharges(dateRange, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE, discountOrSurchargeRatingInfo, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE)
+    _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Seasonal Or Secondary Residence Surcharge
+   */
+  function rateBurglarProtectiveDevicesCredit(dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateBurglarProtectiveDevicesCredit", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var costData = createCostDataForDiscountsOrSurcharges(dateRange, HORateRoutineNames.BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE, discountOrSurchargeRatingInfo, HOCostType_Ext.TC_BURGLARPROTECTIVEDEVICESCREDIT)
+    _hoRatingInfo.BurglarProtectiveDevicesCredit = costData?.ActualTermAmount
+    if(costData != null)
+      addCost(costData)
+    _logger.debug("Burglar Protective Devices Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**
   *  Function to rate the Seasonal Or Secondary Residence Surcharge
    */
-  function rateSeasonalOrSecondaryResidenceSurcharge(dwelling : Dwelling_HOE, dateRange : DateRange){
+  function rateSeasonalOrSecondaryResidenceSurcharge(dateRange : DateRange){
     _logger.debug("Entering " + CLASS_NAME + ":: rateSeasonalOrSecondaryResidenceSurcharge", this.IntrinsicType)
-    //var lineRatingInfo = new HODiscountsOrSurchargesRatingInfo()
-
-    /*lineRatingInfo.TotalBasePremium = hoRatingInfo.FinalAdjustedBaseClassPremium//need to update with the total base premium
-    var costData = createCostDataForDiscountsOrSurcharges(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME, lineRatingInfo)
+    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var costData = createCostDataForDiscountsOrSurcharges(dateRange, HORateRoutineNames.SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE, discountOrSurchargeRatingInfo, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE)
     if(costData != null)
-      addCost(costData) */
-    _logger.debug("Unit Owners Rental To Others Coverage Rated Successfully", this.IntrinsicType)
+      addCost(costData)
+    _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
   }
   /**
   * Rate the unit owners - Rental to other coverage
@@ -207,6 +244,20 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
     if(costData != null)
       addCost(costData)
     _logger.debug("Loss Assessment Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Personal property - Increased limits coverage
+   */
+  function rateScheduledPersonalProperty(dwellingCov : HODW_ScheduledProperty_HOE, dateRange : DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
+    for(item in dwellingCov.ScheduledItems){
+      var costData = createCostDataForScheduledCoverage(dwellingCov, dateRange, dwellingRatingInfo, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, item)
+      if(costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -337,6 +388,18 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
   }
 
   /**
+   * Returns the parameter set for the discounts or surcharges
+   */
+  private function getDiscountOrSurchargeParameterSet(costData : HOCostData_HOE, discountOrSurchargeRatingInfo : HODiscountsOrSurchargesRatingInfo) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> PolicyLine,
+        TC_STATE -> this.BaseState.Code,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo,
+        TC_COSTDATA -> costData
+    }
+  }
+
+  /**
    * creates cost data for the dwelling level coverages
   */
   private function createCostDataForDwellingCoverage(dwellingCov : DwellingCov_HOE, dateRange : DateRange, dwellingRatingInfo : HODwellingRatingInfo, routineName : String) : CostData{
@@ -350,7 +413,20 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
   }
 
   /**
-   * creates the cost data for the Line level coverages
+   * creates cost data for the scheduled coverages
+   */
+  private function createCostDataForScheduledCoverage(dwellingCov : DwellingCov_HOE, dateRange : DateRange, dwellingRatingInfo : HODwellingRatingInfo, routineName : String, item : ScheduledItem_HOE) : CostData{
+    var costData = new ScheduleCovCostData_HOE(dateRange.start, dateRange.end, dwellingCov.Currency, RateCache, dwellingCov.FixedId, item.FixedId)
+    costData.init(PolicyLine)
+    costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
+    var rateRoutineParameterMap = getDwellingCovParameterSet(costData, dwellingRatingInfo)
+    Executor.execute(routineName, dwellingCov, rateRoutineParameterMap, costData)
+    costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  /**
+  * creates the cost data for the Line level coverages
   */
   private function createCostDataForLineCoverages(lineCov : HomeownersLineCov_HOE, dateRange : DateRange, routineName : String, lineRatingInfo : HOLineRatingInfo) : CostData{
     var costData = new HomeownersCovCostData_HOE(dateRange.start, dateRange.end, lineCov.Currency, RateCache, lineCov.FixedId)
@@ -358,6 +434,19 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
     costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
     var rateRoutineParameterMap = getLineCovParameterSet(costData, lineRatingInfo)
     Executor.execute(routineName, lineCov, rateRoutineParameterMap, costData)
+    costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  /**
+   * creates the cost data for the discount or surcharges
+   */
+  private function createCostDataForDiscountsOrSurcharges(dateRange : DateRange, routineName : String, discountOrSurchargeRatingInfo : HODiscountsOrSurchargesRatingInfo, costType : HOCostType_Ext) : CostData{
+    var costData = new HomeownersLineCostData_HOE(dateRange.start, dateRange.end, PolicyLine.PreferredCoverageCurrency, RateCache, costType)
+    costData.init(PolicyLine)
+    costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
+    var rateRoutineParameterMap = getDiscountOrSurchargeParameterSet(costData, discountOrSurchargeRatingInfo)
+    Executor.executeBasedOnSliceDate(routineName, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
     costData.copyStandardColumnsToActualColumns()
     return costData
   }
@@ -370,7 +459,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE>{
   }*/
 
   private function updateTotalBasePremium(){
-    _hoRatingInfo.TotalBasePremium += (_hoRatingInfo.FinalAdjustedBaseClassPremium + _hoRatingInfo.ReplacementCostDwellingPremium)
+    _hoRatingInfo.TotalBasePremium += (_hoRatingInfo.FinalAdjustedBaseClassPremium + _hoRatingInfo.ReplacementCostDwellingPremium +
+                                       _hoRatingInfo.ReplacementCostPersonalPropertyPremium)
   }
 
 }

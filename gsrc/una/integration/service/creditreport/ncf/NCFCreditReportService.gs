@@ -27,8 +27,7 @@ uses wsi.schema.una.inscore.cprulesorderschema.Order
 uses wsi.schema.una.inscore.cprulesorderschema.enums.SubjectAddressType_Type
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.SearchDataset_Subjects_Subject_Type
 uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
-
-
+uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.VendorDataset_Addresses_Address_DataSourceIndicator
 
 /**
  * Returns hardwired response 
@@ -173,8 +172,9 @@ class NCFCreditReportService implements ICreditReportService {
     order.Accounting.Pnc.Account = ScriptParameters.LexisNexisAccountNumber
 
     // Rule_Plan node
+    order.RulePlan.Id = ScriptParameters.RulePlanId
     order.RulePlan.Parameter_elem[0].Name = "lineOfBusiness"
-    order.RulePlan.Parameter_elem[0].$Value = "VAHome"
+    order.RulePlan.Parameter_elem[0].$Value = "Property"
 
     // Products
     // a) Build subject first
@@ -188,7 +188,7 @@ class NCFCreditReportService implements ICreditReportService {
     subject.Ssn = request.SocialSecurityNumber
     subject.Birthdate = request.DateOfBirth as java.lang.String 
 
-    subject.Address[0].Type = SubjectAddressType_Type.Risk
+    subject.Address[0].Type = SubjectAddressType_Type.Residence
 
     // current address
     order.Dataset.Addresses.Address[0].Id = "A0"
@@ -219,6 +219,7 @@ class NCFCreditReportService implements ICreditReportService {
    }
   
     order.Products.NationalCreditFile[0].PrimarySubject = subject
+    //order.Products.NationalCreditFile[0].ReportCode = "2121"
 
     return order
   }

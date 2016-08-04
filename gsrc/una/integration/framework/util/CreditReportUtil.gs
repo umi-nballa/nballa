@@ -63,15 +63,17 @@ public class CreditReportUtil {
   static function getCreditReportParameters(lobPatternCode : String, uwCompanyCode : UWCompanyCode, jurisdictionCode : Jurisdiction) : CreditReportParametersExt {
   
     var result : CreditReportParametersExt = null
-    if(lobPatternCode != null && uwCompanyCode != null && jurisdictionCode != null) {
-      if(lobPatternCode != null && jurisdictionCode != null) {
+    //Right now turning this feature off for Jurisdiction and UWCompanyCode..depending on the business
+    //requirements need to extend or restrict this functionality
+    //if(lobPatternCode != null && uwCompanyCode != null && jurisdictionCode != null) {
+    if(lobPatternCode != null && jurisdictionCode != null) {
         result = Query.make(CreditReportParametersExt)
             .compare("LOBPatternCode", Equals, lobPatternCode)
-            .compare("UWCompanyCode", Equals, uwCompanyCode)
-            .compare("JurisdictionCode", Equals, jurisdictionCode)
+            //.compare("UWCompanyCode", Equals, uwCompanyCode)
+            //.compare("JurisdictionCode", Equals, jurisdictionCode)
             .select().FirstResult
       }
-     }
+     //}
 
     return result
   } 
@@ -112,6 +114,7 @@ public class CreditReportUtil {
                  .withAddressZip(address.PostalCode)
                  .withCacheExpireDate(cacheExpireDate)
                  .withPublicId(publicId)
+                 .withDateOfBirth(period.PrimaryNamedInsured.DateOfBirth)
                  .withCreditReportService(creditReportParameters.CreditReportService)
                  .create()
         }

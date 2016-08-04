@@ -73,8 +73,9 @@ public class CreditReportRequest {
     private var _priorAddressCity : String 
     private var _priorAddressState : String 
     private var _priorAddressZip : String
-    
-    private var _service = typekey.CreditReportServiceExt.TC_MOCK
+
+    //change this to Mock or NCF Service
+    private var _service = typekey.CreditReportServiceExt.TC_NCF
 
     public function withFirstName(firstName : String) : Builder {
       

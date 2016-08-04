@@ -40,7 +40,6 @@ class HPXRequestMapper {
 
 
   function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy,
-                               //  coverage : wsi.schema.una.hpx.hpx_application_request.Coverage,
                                  compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
     var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
     var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
@@ -48,7 +47,6 @@ class HPXRequestMapper {
     publishingEngineFileKey.setText("PolicyCenterNA.pub")
     var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
     transaction.setText("Policy Dwelling")
- //   polInfoTypeRq.addChild(createDwellingPolicy(policyPeriod, coverage))
     polInfoTypeRq.addChild(dwellingPolicy)
     hpxRequest.addChild(polInfoTypeRq)
     hpxRequest.addChild(publishingEngineFileKey)

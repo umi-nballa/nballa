@@ -578,9 +578,9 @@ enhancement
         LineWizardStepHelper_Ext.setSpecialLimitsPersonalPropertyDefaults(this.Dwelling)
       }
     }
-    /*else if(this typeis HODW_Personal_Property_HOE) {
+    else if(this typeis HODW_Personal_Property_HOE and limitC!= null) {
       covD.HODW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.PatternCode))
-    }*/}
+    }}
 
   /**
     * Amrita Dash

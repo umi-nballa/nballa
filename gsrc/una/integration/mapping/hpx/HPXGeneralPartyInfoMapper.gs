@@ -69,4 +69,25 @@ class HPXGeneralPartyInfoMapper {
     return addr
   }
 
+  function createProducerOrganization(organization : Organization) : wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo {
+    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo()
+    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.NameInfo()
+    var commlName = new wsi.schema.una.hpx.hpx_application_request.CommlName()
+    var commercialName = new wsi.schema.una.hpx.hpx_application_request.CommercialName()
+    commercialName.setText(organization.Name)
+    commlName.addChild(commercialName)
+    nameInfo.addChild(commlName)
+    var communications = new wsi.schema.una.hpx.hpx_application_request.Communications()
+    var phoneInfo = new wsi.schema.una.hpx.hpx_application_request.PhoneInfo()
+    var phoneTypeCd = new wsi.schema.una.hpx.hpx_application_request.PhoneTypeCd()
+    phoneTypeCd.setText(organization.Contact.PrimaryPhone)
+    phoneInfo.addChild(phoneTypeCd)
+    var phoneNumber = new wsi.schema.una.hpx.hpx_application_request.PhoneNumber()
+    phoneNumber.setText(organization.Contact.PrimaryPhoneValue)
+    phoneInfo.addChild(phoneNumber)
+    communications.addChild(phoneInfo)
+    generalPartyInfo.addChild(nameInfo)
+    generalPartyInfo.addChild(communications)
+    return generalPartyInfo
+  }
 }

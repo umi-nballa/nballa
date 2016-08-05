@@ -20,13 +20,6 @@ class HPXRequestMapper {
 
 
   function createXMLRequestModel(policyPeriod : PolicyPeriod) : String {
-
-   var policyPeriodXML = new gw.webservice.pc.pc800.gxmodel.policyperiodmodel.PolicyPeriod(policyPeriod)
-    var line = policyPeriod.HomeownersLine_HOE.AllCoverages
-    line.each( \ elt -> {
-      print(elt.CovTerms.where( \ elt1 -> elt1.DisplayName == "Limit" ).ValueAsString)
-    })
-    print(policyPeriodXML.asUTFString())
     var file = new File("//uimfs02/users/Shared_Documents/Core Systems Transformation Program(Guidewire)/Integration Docs/FileIntegrations/DevServer/HPX/ewsrequest/xml.txt")
     var myScan = new FileReader(file)
     var bis = new BufferedReader(myScan)

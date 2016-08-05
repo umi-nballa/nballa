@@ -13,6 +13,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   {
     var dwellingPolicy = new wsi.schema.una.hpx.hpx_application_request.DwellingPolicy()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
+    var producerMapper = new HPXProducerMapper()
     dwellingPolicy.addChild(createPolicySummaryInfo(policyPeriod))
     dwellingPolicy.addChild(createInsuredOrPrincipal(policyPeriod))
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
@@ -21,6 +22,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     }
     dwellingPolicy.addChild(createDwellingLineBusiness(policyPeriod, coverage))
     dwellingPolicy.addChild(createPolicyDetails(policyPeriod))
+    dwellingPolicy.addChild(producerMapper.createProducer(policyPeriod))
     return dwellingPolicy
   }
 
@@ -41,7 +43,9 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       loc.addChild(additionalInterest)
     }
     var dwellMapper = new HPXDwellMapper()
+    var dwellConstructionMapper = new HPXDwellConstructionMapper()
     var dwell = dwellMapper.createDwell(policyPeriod)
+    dwell.addChild(dwellConstructionMapper.createDwellConstruction(policyPeriod))
     dwell.addChild(loc)
     dwell.addChild(coverage)
     return dwell

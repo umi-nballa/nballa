@@ -9,9 +9,10 @@ package una.integration.mapping.hpx
 class HPXDwellMapper {
 
   function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
+    var buildingProtectionMapper = new HPXBuildingProtectionMapper()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.Dwell()
     dwell.addChild(createDwellRating(policyPeriod))
-    dwell.addChild(createBuildingProtection(policyPeriod))
+    dwell.addChild(buildingProtectionMapper.createBuildingProtection(policyPeriod))
     if (policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null) {
       var purchaseDt = new wsi.schema.una.hpx.hpx_application_request.PurchaseDt()
       purchaseDt.setText(policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased)
@@ -47,16 +48,6 @@ class HPXDwellMapper {
     return dwellRating
   }
 
-  function createBuildingProtection(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.BldgProtection {
-    var bldgProtection = new wsi.schema.una.hpx.hpx_application_request.BldgProtection()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode != null) {
-      var protectionClassGradeCd = new wsi.schema.una.hpx.hpx_application_request.ProtectionClassGradeCd()
-      protectionClassGradeCd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode)
-      bldgProtection.addChild(protectionClassGradeCd)
-    }
-    return bldgProtection
-  }
-
   function createDwellInspectionValuation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellInspectionValuation {
     var dwellingInspectionValuation = new wsi.schema.una.hpx.hpx_application_request.DwellInspectionValuation()
     var estimatedReplacementCostAmt = new wsi.schema.una.hpx.hpx_application_request.EstimatedReplCostAmt()
@@ -68,7 +59,6 @@ class HPXDwellMapper {
     }
     var numFamilies = new wsi.schema.una.hpx.hpx_application_request.NumFamilies()
     var numFamiliesDesc = new wsi.schema.una.hpx.hpx_application_request.NumFamiliesDesc()
-
     if(policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber != null) {
       switch (policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber) {
         case typekey.NumUnits_HOE.TC_ONE :
@@ -90,6 +80,15 @@ class HPXDwellMapper {
       }
       dwellingInspectionValuation.addChild(numFamilies)
       dwellingInspectionValuation.addChild(numFamiliesDesc)
+    }
+    var coveredPorch = new wsi.schema.una.hpx.hpx_application_request.PorchInfoInd()
+    if (policyPeriod.HomeownersLine_HOE.Dwelling.CoveredPorch != null) {
+      if(policyPeriod.HomeownersLine_HOE.Dwelling.CoveredPorch) {
+        coveredPorch.setText(true)
+      } else {
+        coveredPorch.setText(false)
+      }
+      dwellingInspectionValuation.addChild(coveredPorch)
     }
     return dwellingInspectionValuation
   }

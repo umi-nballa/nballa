@@ -136,6 +136,26 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     return result
   }
 
+  public static function isLossAssessmentDeductibleAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(hoLine.BaseState == TC_FL){
+      result = hoLine.Dwelling.ResidenceType == TC_CONDO
+    }
+
+    return result
+  }
+
+  public static function isLossAssessmentSpecialLimitForDedAssessmentAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(hoLine.BaseState == TC_FL){
+      result = hoLine.Dwelling.ResidenceType == TC_CONDO
+    }
+
+    return result
+  }
+
   private static function isMedPayOptionAvailableVariantFilter(personalLiabilityLimit : BigDecimal, _option : gw.api.productmodel.CovTermOpt, state : Jurisdiction): boolean{
     var result = true
 

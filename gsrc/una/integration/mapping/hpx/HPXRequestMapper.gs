@@ -20,13 +20,6 @@ class HPXRequestMapper {
 
 
   function createXMLRequestModel(policyPeriod : PolicyPeriod) : String {
-
-   var policyPeriodXML = new gw.webservice.pc.pc800.gxmodel.policyperiodmodel.PolicyPeriod(policyPeriod)
-    var line = policyPeriod.HomeownersLine_HOE.AllCoverages
-    line.each( \ elt -> {
-      print(elt.CovTerms.where( \ elt1 -> elt1.DisplayName == "Limit" ).ValueAsString)
-    })
-    print(policyPeriodXML.asUTFString())
     var file = new File("//uimfs02/users/Shared_Documents/Core Systems Transformation Program(Guidewire)/Integration Docs/FileIntegrations/DevServer/HPX/ewsrequest/xml.txt")
     var myScan = new FileReader(file)
     var bis = new BufferedReader(myScan)
@@ -40,7 +33,6 @@ class HPXRequestMapper {
 
 
   function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy,
-                               //  coverage : wsi.schema.una.hpx.hpx_application_request.Coverage,
                                  compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
     var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
     var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
@@ -48,7 +40,6 @@ class HPXRequestMapper {
     publishingEngineFileKey.setText("PolicyCenterNA.pub")
     var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
     transaction.setText("Policy Dwelling")
- //   polInfoTypeRq.addChild(createDwellingPolicy(policyPeriod, coverage))
     polInfoTypeRq.addChild(dwellingPolicy)
     hpxRequest.addChild(polInfoTypeRq)
     hpxRequest.addChild(publishingEngineFileKey)

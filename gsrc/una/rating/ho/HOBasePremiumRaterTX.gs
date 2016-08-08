@@ -17,7 +17,8 @@ uses una.rating.ho.ratinginfos.HORatingInfo
 class HOBasePremiumRaterTX {
 
   private static var BASE_PREMIUM_RATE_ROUTINE = "UNAHODwellingPremRate"
-  private static var HO_REPLACEMENT_COST_RATE_ROUTINE = "UNAHOReplacementCostRateRoutine"
+  private static var HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE = "UNAHOReplacementCostRateRoutine"
+  private static var HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE = "UNAHOReplacementCostPersonalPropertyRateRoutine"
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
@@ -54,11 +55,11 @@ class HOBasePremiumRaterTX {
     var costs: List<CostData> = {}
     if (!routinesToExecute.Empty) {
       for (routine in routinesToExecute) {
-        var dwellingRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
+        var basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
         var costData = new HomeownersBaseCostData_HOE(dateRange.start, dateRange.end, _line.Branch.PreferredCoverageCurrency, _rateCache, _routinesToCostTypeMapping.get(routine))
         costData.init(_line)
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
-        var rateRoutineParameterMap = createParameterSet(costData, dwellingRatingInfo)
+        var rateRoutineParameterMap = createParameterSet(costData, basePremiumRatingInfo)
         _executor.executeBasedOnSliceDate(routine, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
         if (costData != null){
           costs.add(costData)
@@ -76,11 +77,18 @@ class HOBasePremiumRaterTX {
     if (_dwelling.HODW_Dwelling_Cov_HOEExists){
       var dwellingValuation = _dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue
       if(dwellingValuation == "Replacement Cost"){
-        routines.add(HO_REPLACEMENT_COST_RATE_ROUTINE)
-        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
+        routines.add(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
+        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
       } else if(dwellingValuation == "Replacement Cost with Roof Surfacing"){
-        routines.add(HO_REPLACEMENT_COST_RATE_ROUTINE)
-        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTCOVERAGEWITHROOFSURFACING)
+        routines.add(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
+        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTCOVERAGEWITHROOFSURFACING)
+      }
+    }
+    if(_dwelling.HODW_Personal_Property_HOEExists){
+      var personalPropertyValuation = _dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.DisplayValue
+      if(personalPropertyValuation == "Replacement Cost"){
+        routines.add(HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE)
+        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY)
       }
     }
     return routines
@@ -89,12 +97,12 @@ class HOBasePremiumRaterTX {
   /**
    * Created parameter set to execute the base premium routines
    */
-  private function createParameterSet(costData: CostData, dwellingRatingInfo: HOBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
+  private function createParameterSet(costData: CostData, basePremiumRatingInfo: HOBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> _line,
         TC_RATINGINFO -> _hoRatingInfo,
         TC_DWELLING_EXT -> _dwelling,
-        TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo,
+        TC_DWELLINGRATINGINFO_EXT -> basePremiumRatingInfo,
         TC_State -> _line.BaseState.Code,
         TC_COSTDATA -> costData
     }

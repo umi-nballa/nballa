@@ -50,12 +50,13 @@ class LineWizardStepHelper_Ext {
 
     if(dwelling != null){
       //setFireDwellingValuationMethodDefault(dwelling)
-      setAnimalLiabilityLimitDefault(dwelling)
+      //setAnimalLiabilityLimitDefault(hoLine)
       una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm, dwelling)
       setSpecialLimitsPersonalPropertyDefaults(dwelling)
     }
 
     if(hoLine != null){
+      setAnimalLiabilityLimitDefault(hoLine)
       hoLine.HODW_LossAssessmentCov_HOE_Ext?.setDefaults()
     }
   }
@@ -74,9 +75,9 @@ class LineWizardStepHelper_Ext {
     }
   }*/
 
-  private static function setAnimalLiabilityLimitDefault(dwelling : Dwelling_HOE){
-    var limitCoverageTerm = dwelling.HODW_AnimalLiability_HOE_Ext.HODW_AnimalLiability_Limit_HOETerm
-    var shouldDefaultLimit = dwelling.HODW_AnimalLiability_HOE_ExtExists
+  private static function setAnimalLiabilityLimitDefault(holine : HomeownersLine_HOE){
+    var limitCoverageTerm = holine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm
+    var shouldDefaultLimit = holine.HOLI_AnimalLiabilityCov_HOE_ExtExists
         and limitCoverageTerm.Value == null
 
     if(shouldDefaultLimit){

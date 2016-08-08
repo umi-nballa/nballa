@@ -23,4 +23,7 @@ public final class HORateRoutineNames {
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovRateRoutine"
   public static final var PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME : String = "UNAHOPersonalPropertyIncreasedLimitRateRoutine"
   public static final var UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME : String = "UNAHOUnitOwnersRentedToOthersCovRateRoutine"
+  public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeRateRoutine"
+  public static final var AGE_OF_HOME_DISCOUNT_RATE_ROUTINE : String = "UNAHOAgeOfHomeDiscountRateRoutine"
+  public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDevicesCreditRateRoutine"
 }

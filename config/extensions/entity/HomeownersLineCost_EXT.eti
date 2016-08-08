@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Cost entity for HO Line "
+  entity="HomeownersLineCost_EXT"
+  supertype="HOTaxableCost_HOE">
+  <implementsEntity
+    adapter="gw.lob.ho.financials.HomeownersCostAdapter_HOE"
+    name="Cost"/>
+  <typekey
+    name="HOCostType"
+    nullok="true"
+    typelist="HOCostType_Ext"/>
+  <implementsInterface
+    iface="gw.lob.ho.financials.HOCostMethods_HOE"
+    impl="gw.lob.ho.financials.UNAHomeownersLineCostMethodsImpl_HOE"/>
+</subtype>

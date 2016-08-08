@@ -578,9 +578,9 @@ enhancement
         LineWizardStepHelper_Ext.setSpecialLimitsPersonalPropertyDefaults(this.Dwelling)
       }
     }
-    /*else if(this typeis HODW_Personal_Property_HOE) {
+    else if(this typeis HODW_Personal_Property_HOE and limitC!= null) {
       covD.HODW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.PatternCode))
-    }*/}
+    }}
 
   /**
     * Amrita Dash
@@ -785,16 +785,23 @@ enhancement
     }
   }
 
-  static function setAnimalLiabilityLimitDefault_Ext(_holine: HomeownersLine_HOE)
+  static function setSpecialLimitOptionCovTermDefault_Ext(_dwelling: Dwelling_HOE)
   {
 
-    if (_holine.Branch.BaseState == TC_TX)
+    if (_dwelling.Branch.BaseState == TC_TX)
     {
-      _holine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("25000")
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("500")
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_MoneyLimit_HOETerm.setValueFromString("100")
     }
-    else
+    else if(_dwelling.Branch.BaseState == TC_FL){
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_ElectronicApparatusLimit_HOETerm.setValueFromString("1000")
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("1000")
+    }
     {
-      _holine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("50000")
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("1500")
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_MoneyLimit_HOETerm.setValueFromString("200")
+      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_ElectronicApparatusLimit_HOETerm.setValueFromString("1500")
+
     }
   }
 }

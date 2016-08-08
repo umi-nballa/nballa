@@ -44,12 +44,14 @@ class AccountPopulator {
   var _firstNameExact_Ext : boolean
   var _lastNameExact_Ext : boolean
   var _companyNameExact_Ext : boolean
+  var _middleName : String
 
   construct(searchCriteria : gw.account.AccountSearchCriteria) {
     _firstName = searchCriteria.FirstName
 
     //for UNA implementation
     _firstNameExact_Ext = searchCriteria.FirstNameExact
+
     _lastNameExact_Ext = searchCriteria.LastNameExact
     _companyNameExact_Ext = searchCriteria.CompanyNameExact
 
@@ -76,6 +78,7 @@ class AccountPopulator {
     _state = searchCriteria.State
     _country = searchCriteria.Country
     _postalCode = searchCriteria.PostalCode
+    _middleName = searchCriteria.MiddleName
   }
 
   /**
@@ -116,6 +119,7 @@ class AccountPopulator {
         contact.WorkPhone = _workPhone
       }
       person.LastNameKanji = _lastNameKanji
+      person.MiddleName = _middleName
       idType = OfficialIDType.TC_SSN
     } else {
 

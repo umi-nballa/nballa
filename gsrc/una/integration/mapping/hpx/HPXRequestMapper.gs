@@ -1,14 +1,10 @@
 package una.integration.mapping.hpx
 
 uses java.io.File
-uses org.apache.poi.util.IOUtils
-uses java.io.FileInputStream
-uses wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeRequest
 uses java.lang.StringBuilder
-uses java.lang.management.BufferPoolMXBean
 uses java.io.BufferedReader
-uses java.io.BufferedInputStream
 uses java.io.FileReader
+uses wsi.schema.una.hpx.hpx_application_request.OtherIdentifier
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,5 +28,35 @@ class HPXRequestMapper {
       xml.append(bis.readLine())
     }
     return xml.toString()
+  }
+
+
+
+  function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy,
+                                 compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
+    var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
+    var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
+    var publishingEngineFileKey = new wsi.schema.una.hpx.hpx_application_request.PublishingEngineFileKey()
+    publishingEngineFileKey.setText("PolicyCenterNA.pub")
+    var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
+    transaction.setText("Policy Dwelling")
+    polInfoTypeRq.addChild(dwellingPolicy)
+    hpxRequest.addChild(polInfoTypeRq)
+    hpxRequest.addChild(publishingEngineFileKey)
+    hpxRequest.addChild(compositionUnit)
+    hpxRequest.addChild(transaction)
+    hpxRequest.addChild(createPublishingConsumerAppKey())
+    return hpxRequest.asUTFString()
+  }
+
+  function createPublishingConsumerAppKey() : wsi.schema.una.hpx.hpx_application_request.PublishingConsumerAppKey {
+    var publishingConsumerAppKey = new wsi.schema.una.hpx.hpx_application_request.PublishingConsumerAppKey()
+    var appKeyCode = new wsi.schema.una.hpx.hpx_application_request.AppKeyCd()
+    appKeyCode.setText("a")
+    var appKeyDesc = new wsi.schema.una.hpx.hpx_application_request.AppKeyDesc()
+    appKeyDesc.setText("String")
+    publishingConsumerAppKey.addChild(appKeyCode)
+    publishingConsumerAppKey.addChild(appKeyDesc)
+    return publishingConsumerAppKey
   }
 }

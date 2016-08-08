@@ -12,6 +12,7 @@
   public-id="DPDW_Dwelling_Cov_HOE"
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
+  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setVMFireDwellingDefault_Ext(DPDW_Dwelling_Cov_HOE.Dwelling)]]></InitializeScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
@@ -35,5 +36,33 @@
       public-id="DPDW_ValuationMethod_HOE"
       required="true"
       typelist="HOValuationMethod_HOE"/>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="DwellingCovCovOpt"
+      codeIdentifier="DPDW_ValuationMethod_HOE_Ext"
+      coverageColumn="ChoiceTerm2"
+      lookupTableName="DwellingCovTerm"
+      modelType="Other"
+      priority="1620"
+      public-id="DPDW_ValuationMethod_HOE_Ext"
+      required="false"
+      restrictionModel="bld"
+      valueType="count">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="z2fj0l96lhm62bn4nf5o6mtmcca"
+          optionCode="Replacement"
+          priority="100"
+          public-id="z2fj0l96lhm62bn4nf5o6mtmcca"
+          value="1.0"/>
+        <CovTermOpt
+          codeIdentifier="zq6gmg685q6ofdcd7i48i7jm3oa"
+          optionCode="Actual"
+          priority="200"
+          public-id="zq6gmg685q6ofdcd7i48i7jm3oa"
+          value="2.0"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

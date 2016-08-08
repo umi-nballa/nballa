@@ -23,7 +23,7 @@
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "DPA" || Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "DA" ){
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA" ){
 return true
 }else return false]]></AvailabilityScript>
       <LimitsSet>
@@ -47,7 +47,7 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "DPA" || Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.CodeIdentifier == "PA" ){
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA" ){
 return true
 }else return false]]></AvailabilityScript>
       <LimitsSet>
@@ -277,7 +277,7 @@ return true
       modelType="Limit"
       priority="600"
       public-id="HODW_PropertyRemoved_Safety_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
       <DefaultsSet>

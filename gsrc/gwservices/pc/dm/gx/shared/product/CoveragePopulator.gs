@@ -16,17 +16,17 @@ class CoveragePopulator extends AbstractCovTermPopulator<Coverage, Coverable> {
   }
 
   override function findEntity(model: XmlElement, parent: Coverable, bundle: Bundle): Coverage {
-    var patternCode = findElement(Coverage#PatternCode, model).SimpleValue.GosuValue as String
-    var covPattern = ClausePatternLookup.getCoveragePatternByCode(patternCode)
+    var publicID = findElement(Coverage#PublicID, model).SimpleValue.GosuValue as String
+    var covPattern = ClausePatternLookup.getCoveragePatternByPublicID(publicID)
     if (covPattern == null) {
-      throw new DataMigrationNonFatalException(CODE.INVALID_COVERAGE, patternCode)
+      throw new DataMigrationNonFatalException(CODE.INVALID_COVERAGE, covPattern.PublicID)
     }
     if (_logger.DebugEnabled) {
       _logger.debug(_LOG_TAG + "findEntity coverage pattern ${covPattern.Code}, parent ${parent}")
     }
     var coverage = parent.getOrCreateCoverage(covPattern)
     if (coverage == null) {
-      throw new DataMigrationNonFatalException(CODE.MISSING_COVERAGE, patternCode)
+      throw new DataMigrationNonFatalException(CODE.MISSING_COVERAGE, coverage.PublicID)
     }
     return coverage
   }

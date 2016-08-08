@@ -166,7 +166,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
     }
 
     if(_line.HOLineCoverages != null){
-      _line.HOLineCoverages.each(\ c -> c.ScheduleItemsAutoNumberSeq_Ext.renumberNewBeans(c.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum")))
+      _line.HOLineCoverages?.each(\ c -> c.ScheduleItemsAutoNumberSeq_Ext?.renumberNewBeans(c.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum")))
     }
   }
 

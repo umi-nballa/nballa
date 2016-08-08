@@ -29,6 +29,9 @@
     <Variable
       initialValue="getOtherCosts()"
       name="CostsAdditionalCovs"/>
+    <Variable
+      initialValue="(line.HomeownersCosts.whereTypeIs(HomeownersLineCost_EXT).where( \ cost -&gt; cost.HOCostType != null)) as List&lt;entity.HomeownersLineCost_EXT&gt;"
+      name="DiscountsOrSurChargesCosts"/>
     <PanelRef>
       <TitleBar
         title="displaykey.Web.Homeowners.PolicyType(line.Pattern.DisplayName, line.HOPolicyType.DisplayName)  "/>
@@ -86,6 +89,17 @@
             <PanelRef
               def="HOCostHOEDV(CostsAdditionalCovs)"
               id="AdditionalCovsCosts"
+              visible="not CostsAdditionalCovs.Empty"/>
+            <DetailViewPanel
+              visible="not DiscountsOrSurChargesCosts.Empty">
+              <InputColumn>
+                <Label
+                  label="&quot;Discounts And Surcharges&quot;"/>
+              </InputColumn>
+            </DetailViewPanel>
+            <PanelRef
+              def="HOCostHOEDiscountsOrSurchargesDV(DiscountsOrSurChargesCosts)"
+              id="AdditionalCovsCostsDiscounts"
               visible="not CostsAdditionalCovs.Empty"/>
           </PanelColumn>
         </PanelRow>

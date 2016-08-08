@@ -1,4 +1,6 @@
 package gwservices.pc.dm.gx.lob.ho
+
+uses gw.web.productmodel.ProductModelSyncIssueWrapper
 /**
  * Created with IntelliJ IDEA.
  * User: sboyapati
@@ -23,4 +25,11 @@ enhancement HomwownersLine_HOEEnhancement : entity.HomeownersLine_HOE {
     return policyAddlInsured
   }
 
+  function createAndAddCoverages(){
+    var cov = new HomeownersLineCov_HOE(this.Branch)
+    var _branch = this.Branch
+    _branch.Lines*.AllCoverables.each( \ c -> c.createOrSyncCoverages())
+
+//    return _branch.HomeownersLine_HOE.HOLineCoverages;
+  }
 }

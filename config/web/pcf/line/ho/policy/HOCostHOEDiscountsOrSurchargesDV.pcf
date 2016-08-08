@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="HOCostHOEDiscountsOrSurchargesDV">
+    <Require
+      name="DiscountsorSurchargesCosts"
+      type="List&lt;HomeownersLineCost_EXT&gt;"/>
+    <InputColumn>
+      <ListViewInput
+        labelAbove="true">
+        <Toolbar/>
+        <ListViewPanel
+          id="HOCostHOEDVDiscountsLV">
+          <RowIterator
+            editable="false"
+            elementName="discountsOrSurchargesRowIterator"
+            value="DiscountsorSurchargesCosts.toTypedArray()">
+            <Row>
+              <Cell
+                bold="true"
+                enableSort="false"
+                footerLabel="displaykey.Web.Policy.BA.Subtotal"
+                id="discountOrSurchargeType"
+                label="&quot;Discount/Surcharge Description&quot;"
+                value="(discountsOrSurchargesRowIterator).HOCostType"/>
+              <Cell
+                footerSumValue="discountsOrSurchargesRowIterator.ActualTermAmount"
+                id="Premium"
+                label="&quot;Premium&quot;"
+                value="(discountsOrSurchargesRowIterator).ActualTermAmount"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
+    </InputColumn>
+  </DetailViewPanel>
+</PCF>

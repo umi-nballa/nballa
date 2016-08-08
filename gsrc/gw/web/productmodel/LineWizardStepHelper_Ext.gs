@@ -49,18 +49,19 @@ class LineWizardStepHelper_Ext {
     var hoLine = coverables?.toList().whereTypeIs(HomeownersLine_HOE).atMostOne()
 
     if(dwelling != null){
-      setFireDwellingValuationMethodDefault(dwelling)
-      setAnimalLiabilityLimitDefault(dwelling)
+      //setFireDwellingValuationMethodDefault(dwelling)
+      //setAnimalLiabilityLimitDefault(hoLine)
       una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm, dwelling)
       setSpecialLimitsPersonalPropertyDefaults(dwelling)
     }
 
     if(hoLine != null){
+      setAnimalLiabilityLimitDefault(hoLine)
       hoLine.HODW_LossAssessmentCov_HOE_Ext?.setDefaults()
     }
   }
 
-  private static function setFireDwellingValuationMethodDefault(dwelling : Dwelling_HOE){
+  /*private static function setFireDwellingValuationMethodDefault(dwelling : Dwelling_HOE){
     var actualValueDefaultPolicyTypes : List<HOPolicyType_HOE> = {TC_TDP1_Ext, TC_TDP2_Ext}
     var shouldDefaultValuationMethod = dwelling.DPDW_Dwelling_Cov_HOEExists
         and dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOETerm.Value == null
@@ -72,11 +73,11 @@ class LineWizardStepHelper_Ext {
         dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOETerm.Value = TC_HOREPLACEMENT_HOE
       }
     }
-  }
+  }*/
 
-  private static function setAnimalLiabilityLimitDefault(dwelling : Dwelling_HOE){
-    var limitCoverageTerm = dwelling.HODW_AnimalLiability_HOE_Ext.HODW_AnimalLiability_Limit_HOETerm
-    var shouldDefaultLimit = dwelling.HODW_AnimalLiability_HOE_ExtExists
+  private static function setAnimalLiabilityLimitDefault(holine : HomeownersLine_HOE){
+    var limitCoverageTerm = holine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm
+    var shouldDefaultLimit = holine.HOLI_AnimalLiabilityCov_HOE_ExtExists
         and limitCoverageTerm.Value == null
 
     if(shouldDefaultLimit){

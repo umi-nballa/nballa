@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Building Units"
+  effDatedBranchType="PolicyPeriod"
+  entity="BuildingUnits_Ext"
+  exportable="true"
+  table="buildingunits_ext"
+  type="effdated">
+  <implementsEntity
+    name="Extractable"/>
+  <foreignkey
+    columnName="BP7BuildingId"
+    desc="Associated BP7Building"
+    fkentity="BP7Building"
+    name="BP7Building"
+    nullok="false"/>
+  <column
+    name="OccupantName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="40"/>
+  </column>
+  <column
+    desc="Description"
+    name="Description"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="40"/>
+  </column>
+  <column
+    name="TotalSqFootage"
+    nullok="true"
+    type="integer"/>
+</entity>

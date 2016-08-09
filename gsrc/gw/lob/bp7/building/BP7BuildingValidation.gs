@@ -116,11 +116,12 @@ class BP7BuildingValidation extends PCValidationBase {
         BP7Building#Sprinklered.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.Sprinklered)
     }
-    if (_building.PctOwnerOccupied == null) {
+    //uim-svallabhapurapu : comment validation as per BOP story card as field has been unavailable
+    /*if (_building.PctOwnerOccupied == null) {
       addDataModelFieldError(
         BP7Building#PctOwnerOccupied.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.PctOwnerOccupied)
-    }
+    }*/
     if (_building.TotalCondoBldgSquareFoVisible and _building.TotalCondoBldgSquareFo == null) {
       addDataModelFieldError(
         BP7Building#TotalCondoBldgSquareFo.PropertyInfo.Name, 

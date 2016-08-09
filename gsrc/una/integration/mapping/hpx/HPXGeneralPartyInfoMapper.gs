@@ -90,4 +90,39 @@ class HPXGeneralPartyInfoMapper {
     generalPartyInfo.addChild(communications)
     return generalPartyInfo
   }
+
+  function createUserGeneralPartyInfo(user : User) : wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo {
+    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo()
+    generalPartyInfo.addChild(createNameInfo(user.Contact))
+    //var userRole = user.Roles.where( \ elt1 -> elt1.Role.RoleType == typekey.RoleType.TC_USER).first()
+    //generalPartyInfo.addChild(createMiscPartyInfo(userRole.Role))
+    return generalPartyInfo
+  }
+
+  /************************************** Name Info ******************************************************/
+  function createNameInfo(user : UserContact) : wsi.schema.una.hpx.hpx_application_request.NameInfo {
+    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.NameInfo()
+    if (user.FirstName != null or user.LastName != null) {
+      var personName = new wsi.schema.una.hpx.hpx_application_request.PersonName()
+      var surName = new wsi.schema.una.hpx.hpx_application_request.Surname()
+      surName.setText(user.LastName)
+      var givenName = new wsi.schema.una.hpx.hpx_application_request.GivenName()
+      givenName.setText(user.FirstName)
+      personName.addChild(surName)
+      personName.addChild(givenName)
+      nameInfo.addChild(personName)
+    }
+    return nameInfo
+  }
+
+  function createMiscPartyInfo(party : Role) : wsi.schema.una.hpx.hpx_application_request.MiscPartyInfo {
+    var miscPartyInfo = new wsi.schema.una.hpx.hpx_application_request.MiscPartyInfo()
+    var miscPartyRoleCd = new wsi.schema.una.hpx.hpx_application_request.MiscPartyRoleCd()
+    switch (party.RoleType) {
+      case typekey.RoleType.TC_USER :
+          miscPartyRoleCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoleType.UserLogin)
+          break
+    }
+    return miscPartyInfo
+  }
 }

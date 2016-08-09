@@ -32,7 +32,8 @@ abstract class HPXPolicyMapper {
 
   /************************************** Policy Summary Info ******************************************************/
   function createPolicySummaryInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo {
-    var policySummaryInfo = new wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo()
+    var transactionMapper = new HPXJobMapper () // TODO - move to class level
+    var policySummaryInfo = transactionMapper.createJobStatus(policyPeriod)
     policySummaryInfo.addChild(createItemIdInfo())
     return policySummaryInfo
   }
@@ -53,6 +54,7 @@ abstract class HPXPolicyMapper {
     var coverageMapper = new HPXCoverageMapper()
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
+    var transactionMapper = new HPXJobMapper ()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
     switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
@@ -85,6 +87,9 @@ abstract class HPXPolicyMapper {
     var baseRate = new wsi.schema.una.hpx.hpx_application_request.ControllingStateProvCd()
     baseRate.setText(policyPeriod.BaseState)
     policyInfo.addChild(baseRate)
+    // user
+    var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
+    policyInfo.addChild(jobCreationUser)
     return policyInfo
   }
 

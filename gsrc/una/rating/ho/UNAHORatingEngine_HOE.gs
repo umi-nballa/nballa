@@ -75,6 +75,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   }
 
   override protected function rateWindow(line: HomeownersLine_HOE) {
+    //ratePolicy
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
@@ -93,6 +94,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         break
       case DwellingCovCost_HOE:
         cd = new DwellingCovCostData_HOE(c, RateCache)
+        break
+      case HomeownersLineCost_EXT:
+        cd = new HomeownersLineCostData_HOE(c, RateCache)
         break
     }
     return cd

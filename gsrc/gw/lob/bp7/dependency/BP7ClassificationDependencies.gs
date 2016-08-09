@@ -34,14 +34,14 @@ class BP7ClassificationDependencies extends AbstractFieldDependency<BP7Classific
         displaykey.Web.Policy.BP7.Classification.ClassPropertyType, 
         classification.ClassPropertyType.DisplayName)
     }
-    
-    else if (classification.ClassDescription != classDescription()) {
+   // uim-svallabhapurapu : OOTB validation that needs to be commented based on PctOwnerOccupied.Code
+   /* else if (classification.ClassDescription != classDescription()) {
       addDependentValueError(
         valContext, 
         BP7Classification#ClassDescription.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Classification.ClassDescription, 
         classification.ClassDescription.DisplayName)
-    }
+    }*/
     
     else
       exposure()

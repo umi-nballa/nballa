@@ -205,4 +205,37 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
     this.Coverages.where(\ cov -> (cov.Pattern.CoverageCategory == coverageCategory))
       .each(\ cov -> this.removeCoverageFromCoverable(cov))
   }
+
+
+  /*
+*  Author: uim-svallabhapurapu
+*  Change Log: Added the new function associatedClassCode to get the class code,
+*  BOP line of business
+ */
+  function associatedClassCode() {
+    this.ClassCode_Ext = ""
+    var classCode = gw.api.database.Query.make(BP7ClassCode)
+    print("---Class code description--"+this.ClassDescription)
+    var result =   classCode.compare(BP7ClassCode#Code, Equals, this.ClassDescription ).select().AtMostOneRow
+
+    if(result != null){
+      this.ClassCode_Ext = result.Code
+    }
+
+  }
+
+  /*
+*  Author: uim-svallabhapurapu
+*  Change Log: New function to decide coverage existance based on occupancyType typelist,
+*  BOP line of business
+*/
+  function bppCovExistance() : ExistenceType{
+    if(this.Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER or
+        this.Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT or
+        this.Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION) {
+      return ExistenceType.TC_ELECTABLE
+    }
+    return ExistenceType.TC_REQUIRED
+  }
+
 }

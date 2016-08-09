@@ -72,10 +72,21 @@ class SubmissionWizardHelper {
    * @param noOfEmployees : int
    * @return void
    */
-  public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
+  /*public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
     covTerm.setValue(noOfEmployees)
-  }
+  }*/
 
+  public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int, noOfPartialEmp : int) : void {
+
+    var partialEmp : int
+
+    if(noOfPartialEmp % 2 == 0){
+      partialEmp = noOfPartialEmp/2
+    } else {
+      partialEmp = noOfPartialEmp/2 + 1
+    }
+    covTerm.setValue(noOfEmployees + partialEmp)
+  }
 
   /**
    * Function to copy number of employees into coverage term. Should be caleed all places where such copy is required.

@@ -66,19 +66,88 @@
                 <TypeKeyInput
                   editable="true"
                   id="PropertyType"
-                  label="displaykey.Web.Policy.BP7.Building.PropertyType"
+                  label="displaykey.Web.Building.PredominentOccupancyType"
                   value="building.PropertyType">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
                 </TypeKeyInput>
+                <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
                 <TypeKeyInput
+                  editable="true"
+                  id="PreOccType"
+                  label="displaykey.Web.Building.OccupanyType"
+                  value="building.PredominentOccType_Ext">
+                  <PostOnChange
+                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;synchPM()"/>
+                </TypeKeyInput>
+                <!-- <TypeKeyInput
                   editable="true"
                   id="EffectivenessGradeClass"
                   label="displaykey.Web.Policy.BP7.Building.EffectivenessGradeClass"
                   value="building.BldgCodeEffGradeClass">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </TypeKeyInput>
+                </TypeKeyInput> -->
+                <TextInput
+                  editable="true"
+                  id="yearBuilt"
+                  label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
+                  required="true"
+                  value="building.YearBuilt_Ext"/>
+                <TextInput
+                  editable="true"
+                  id="noOfStories"
+                  label="displaykey.Web.Homeowners.DwellingConstruction.NumStories"
+                  required="true"
+                  value="building.NoOfStories_Ext"/>
+                <TextInput
+                  editable="true"
+                  id="noOfUnits"
+                  label="displaykey.Web.Building.NumberOfUnits"
+                  required="building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT"
+                  value="building.NoOfUnits_Ext"
+                  visible="building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT">
+                  <PostOnChange/>
+                </TextInput>
+                <!-- uim-svallabhapurapu : BOP story changes UI table to store Building units -->
+                <ListViewInput
+                  visible="building.NoOfUnits_Ext != 0 and building.NoOfUnits_Ext != null and building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT">
+                  <Toolbar>
+                    <IteratorButtons
+                      addLabel="displaykey.Web.Building.AddUnits"
+                      iterator="BldngUnitsLV"
+                      removeLabel="displaykey.Web.Building.RemoveUnits"/>
+                  </Toolbar>
+                  <ListViewPanel
+                    id="BldngUnitsLV">
+                    <RowIterator
+                      checkBoxVisible="true"
+                      editable="true"
+                      elementName="currentUnit"
+                      hasCheckBoxes="true"
+                      toCreateAndAdd="building.createAndAddNewBuildingUnits()"
+                      toRemove="building.removeFromBldgUnits(currentUnit)"
+                      value="building.BldgUnits">
+                      <Row>
+                        <Cell
+                          editable="true"
+                          id="occNmae"
+                          label="displaykey.Web.Building.OccupantName"
+                          value="currentUnit.OccupantName"/>
+                        <Cell
+                          editable="true"
+                          id="sqFootage"
+                          label="displaykey.Web.Building.TotalSquareFootage"
+                          value="currentUnit.TotalSqFootage"/>
+                        <Cell
+                          editable="true"
+                          id="description"
+                          label="displaykey.Web.Building.Description"
+                          value="currentUnit.Description"/>
+                      </Row>
+                    </RowIterator>
+                  </ListViewPanel>
+                </ListViewInput>
                 <RangeInput
                   editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(building.BldgCodeEffGrade, building.BldgCodeEffGradeValues)"
                   id="EffectivenessGrade"
@@ -87,6 +156,24 @@
                   sortValueRange="false"
                   value="building.BldgCodeEffGrade"
                   valueRange="building.BldgCodeEffGradeValues.sortBy(\ grade -&gt; grade.Priority)"/>
+                <TextInput
+                  editable="true"
+                  id="buildingSqFootage"
+                  label="displaykey.Web.Building.BuildingSqFootage"
+                  required="true"
+                  value="building.BuildingSqFootage_Ext"/>
+                <TypeKeyInput
+                  editable="true"
+                  id="FireProtectionClass"
+                  label="displaykey.Web.Policy.BP7.Location.FireProtectionClass "
+                  required="true"
+                  value="location.FireProtectionClassPPC"
+                  visible="true"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="windPoolElig"
+                  label="displaykey.Web.Building.FireDeptWithin5Miles"
+                  value="building.FireDepartmentDistance_Ext"/>
                 <TypeKeyInput
                   editable="true"
                   id="ConstructionType"
@@ -100,15 +187,52 @@
                   <PostOnChange
                     onChange="building.bp7sync(jobWizardHelper)"/>
                 </BooleanRadioInput>
-                <RangeInput
+                <BooleanRadioInput
+                  editable="true"
+                  id="burglarAlarm"
+                  label="displaykey.Web.Building.CentralBurglarAlarm"
+                  required="true"
+                  value="building.CentralBurglarAlarm_Ext">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <BooleanRadioInput
+                  editable="true"
+                  id="fireAlarm"
+                  label="displaykey.Web.Building.CnetralFireAlarm"
+                  required="true"
+                  value="building.CentralFireAlarmSystem_Ext">
+                  <PostOnChange
+                    onChange="building.bp7sync(jobWizardHelper)"/>
+                </BooleanRadioInput>
+                <Label
+                  id="airConditioning"
+                  label="displaykey.Web.Building.AirConditioning"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="caged"
+                  label="displaykey.Web.Building.Caged"
+                  value="building.Caged_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="alarmed"
+                  label="displaykey.Web.Building.Alarmed"
+                  value="building.Alarmed_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="monitored"
+                  label="displaykey.Web.Building.Monitored"
+                  value="building.Monitored_Ext"/>
+                <!-- <RangeInput
                   editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(building.PctOwnerOccupied, building.PercentageOwnerOccupiedValues)"
                   id="PercentOwnerOccupied"
                   label="displaykey.Web.Policy.BP7.Building.PctOwnerOccupied"
                   value="building.PctOwnerOccupied"
-                  valueRange="building.PercentageOwnerOccupiedValues">
+                  valueRange="building.PercentageOwnerOccupiedValues"
+                  visible="false">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </RangeInput>
+                </RangeInput> -->
                 <Input
                   editable="true"
                   id="TotalCondominiumBuildingSquareFootage"
@@ -116,26 +240,26 @@
                   required="true"
                   value="building.TotalCondoBldgSquareFo"
                   visible="building.TotalCondoBldgSquareFoVisible"/>
-                <BooleanRadioInput
+                <!-- <BooleanRadioInput
                   editable="true"
                   id="RABOPWanted"
                   label="displaykey.Web.Policy.BP7.Building.RABOPWanted"
                   value="building.RABOPWanted">
                   <PostOnChange
                     onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </BooleanRadioInput>
-                <TypeKeyInput
+                </BooleanRadioInput> -->
+                <!-- <TypeKeyInput
                   editable="true"
                   id="RABOPType"
                   label="displaykey.Web.Policy.BP7.Building.RABOPType"
                   required="building.RABOPWanted"
-                  value="building.RABOPType"/>
-                <TypeKeyInput
+                  value="building.RABOPType"/> -->
+                <!-- <TypeKeyInput
                   editable="true"
                   id="RABOPTypeLiabilityLess"
                   label="displaykey.Web.Policy.BP7.Building.RABOPTypeLiabilityLess"
                   required="building.RABOPTypeLiabilityLessorsRequired"
-                  value="building.RABOPTypeLiabilityLess"/>
+                  value="building.RABOPTypeLiabilityLess"/> -->
               </InputColumn>
             </DetailViewPanel>
           </PanelColumn>
@@ -186,7 +310,7 @@
                     <TextCell
                       align="left"
                       id="PropertyType"
-                      label="displaykey.Web.Policy.BP7.Classification.ClassPropertyType"
+                      label="displaykey.Web.Building.PredominentOccupancyType//displaykey.Web.Policy.BP7.Classification.ClassPropertyType"
                       numCols="16"
                       value="currentClassification.ClassPropertyType"/>
                     <TextCell
@@ -250,14 +374,21 @@
                               <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassPropertyType, selectedClassification.ClassPropertyTypeValues)"
                                 id="ClassPropertyType"
-                                label="displaykey.Web.Policy.BP7.Classification.ClassPropertyType"
+                                label="displaykey.Web.Building.PredominentOccupancyType"
                                 optionLabel=" VALUE.Description"
                                 value="selectedClassification.ClassPropertyType"
                                 valueRange="selectedClassification.ClassPropertyTypeValues">
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassPropertyType.PropertyInfo, previousPropertyTypeValue), jobWizardHelper)"/>
                               </RangeInput>
-                              <RangeInput
+                              <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
+                              <TypeKeyInput
+                                id="PreOccType"
+                                label="displaykey.Web.Building.OccupanyType"
+                                value="building.PredominentOccType_Ext">
+                                <PostOnChange/>
+                              </TypeKeyInput>
+                              <!-- <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassDescription, selectedClassification.ClassDescriptionValues)"
                                 id="ClassDescription"
                                 label="displaykey.Web.Policy.BP7.Classification.ClassDescription"
@@ -266,68 +397,84 @@
                                 valueRange="selectedClassification.ClassDescriptionValues">
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue))"/>
+                              </RangeInput> -->
+                              <RangeInput
+                                editable="true"
+                                id="ClassDescription1"
+                                label="displaykey.Web.Policy.BP7.Classification.ClassDescription"
+                                optionLabel="VALUE.Description"
+                                value="selectedClassification.ClassDescription"
+                                valueRange="getAssociatedClassification(selectedClassification.ClassPropertyType)">
+                                <PostOnChange
+                                  onChange="selectedClassification.associatedClassCode();"/>
                               </RangeInput>
-                              <TypeKeyInput
+                              <Input
+                                id="classcode"
+                                label="displaykey.Export.CPBuilding.ClassCode"
+                                value="selectedClassification.ClassDescription == null ? &quot;&quot; : selectedClassification.ClassCode_Ext">
+                                <PostOnChange/>
+                              </Input>
+                              <!-- <TypeKeyInput
                                 id="ExposureBasis"
                                 label="displaykey.Web.Policy.BP7.Classification.ExposureBasis"
-                                value="selectedClassification.ExposureBasis"/>
-                              <Input
+                                value="selectedClassification.ExposureBasis"/> -->
+                              <!-- <Input
                                 editable="selectedClassification.ExposureBasis != null"
                                 id="Exposure"
                                 label="displaykey.Web.Policy.BP7.Classification.Exposure"
                                 required="true"
                                 value="selectedClassification.Exposure"
-                                visible="selectedClassification.isExposureApplicable"/>
-                              <Input
+                                visible="selectedClassification.isExposureApplicable"/> -->
+                              <!-- <Input
                                 id="UneditableExposure"
                                 label="displaykey.Web.Policy.BP7.Classification.Exposure"
                                 value="displaykey.Web.Policy.BP7.Classification.ExposureNotApplicableMsg"
-                                visible="not selectedClassification.isExposureApplicable"/>
+                                visible="not selectedClassification.isExposureApplicable"/> -->
                               <Input
                                 editable="true"
                                 id="Area"
-                                label="displaykey.Web.Policy.BP7.Classification.ClassificationArea"
+                                label="displaykey.Web.Building.VacantSqFootage"
                                 value="selectedClassification.Area">
                                 <PostOnChange/>
                               </Input>
-                              <BooleanRadioInput
+                              <!-- <BooleanRadioInput
                                 editable="true"
                                 id="AmusementArea"
                                 label="displaykey.Web.Policy.BP7.Classification.AmusementArea"
                                 value="selectedClassification.AmusementArea"
-                                visible="false"/>
-                              <TypeKeyInput
+                                visible="false"/> -->
+                              <!-- <TypeKeyInput
                                 editable="true"
                                 id="Playground"
                                 label="displaykey.Web.Policy.BP7.Classification.Playground"
                                 value="selectedClassification.Playground"
-                                visible="false"/>
-                              <Input
+                                visible="false"/> -->
+                              <!-- <Input
                                 editable="true"
                                 id="NumSwimmingPools"
                                 label="displaykey.Web.Policy.BP7.Classification.NumSwimmingPools"
                                 value="selectedClassification.NumSwimmingPools"
-                                visible="false"/>
-                              <BooleanRadioInput
+                                visible="false"/> -->
+                              <!-- <BooleanRadioInput
                                 editable="true"
                                 id="ClassificationRABOPWanted"
                                 label="displaykey.Web.Policy.BP7.Classification.RABOPWanted"
                                 value="selectedClassification.RABOPWanted">
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(null, jobWizardHelper)"/>
-                              </BooleanRadioInput>
-                              <TypeKeyInput
+                              </BooleanRadioInput> -->
+                              <!-- <TypeKeyInput
                                 editable="true"
                                 id="ClassificationRABOPType"
                                 label="displaykey.Web.Policy.BP7.Classification.RABOPType"
                                 required="selectedClassification.RABOPWanted"
-                                value="selectedClassification.RABOPType"/>
-                              <TypeKeyInput
+                                value="selectedClassification.RABOPType"/> -->
+                              <!-- <TypeKeyInput
                                 editable="true"
                                 id="ClassificationRABOPTypeLiabilityOccu"
                                 label="displaykey.Web.Policy.BP7.Classification.RABOPTypeLiabilityOccu"
                                 required="selectedClassification.RABOPTypeLiabilityOccupantsRequired"
-                                value="selectedClassification.RABOPTypeLiabilityOccu"/>
+                                value="selectedClassification.RABOPTypeLiabilityOccu"/> -->
                             </InputColumn>
                           </DetailViewPanel>
                         </PanelSet>
@@ -344,14 +491,14 @@
                       <PanelRef
                         def="BP7CoveragesDV(selectedClassification, openForEdit, selectedClassification.MotelCoverages, jobWizardHelper)"
                         id="MotelCoverages"
-                        visible="selectedClassification.ClassPropertyType == BP7ClassificationPropertyType.TC_MOTEL">
+                        visible="false//selectedClassification.ClassPropertyType == BP7ClassificationPropertyType.TC_MOTEL">
                         <TitleBar
                           title="displaykey.Web.Policy.BP7.Classification.MotelGroup"/>
                       </PanelRef>
                       <PanelRef
                         def="BP7CoveragesDV(selectedClassification, openForEdit, selectedClassification.SelfStorageFacilitiesCoverages, jobWizardHelper)"
                         id="SelfStorageFacilitiesCoverages"
-                        visible="selectedClassification.ClassPropertyType == BP7ClassificationPropertyType.TC_SELFSTORAGEFACILITY">
+                        visible="false//selectedClassification.ClassPropertyType == BP7ClassificationPropertyType.TC_SELFSTORAGEFACILITY">
                         <TitleBar
                           title="displaykey.Web.Policy.BP7.Classification.SelfStorageFacilitiesGroup"/>
                       </PanelRef>
@@ -366,21 +513,29 @@
                   </PanelRow>
                 </PanelSet>
               </Card>
-              <Card
+              <!-- <Card
                 id="FunctionalValuationCoveragesCard"
                 title="displaykey.Web.Policy.BP7.Classification.FunctionalValuation">
                 <PanelRef
                   def="BP7CoveragesDV(selectedClassification, openForEdit, selectedClassification.FunctionalBPPValuationCoverageCoverages, jobWizardHelper)"
                   id="FunctionalValuationCoverages"/>
-              </Card>
+              </Card> -->
               <Card
                 id="AdditionalCoveragesCard"
-                title="displaykey.Web.LineWizard.AdditionalCoverages">
+                title="displaykey.Ext.Web.LineWizard.AdditionalAndOptionalCoverages">
                 <PanelRef
                   def="BP7AdditionalCoveragesPanelSet(selectedClassification, selectedClassification.AdditionalCoveragesCategories, true, jobWizardHelper)">
                   <TitleBar
                     title="displaykey.Web.LineWizard.AdditionalCoverages"/>
                   <Toolbar/>
+                </PanelRef>
+                <PanelRef
+                  def="BP7AdditionalCoveragesPanelSet(selectedClassification, {gw.lob.bp7.BP7Categories.BP7ClassificationOptionalGrp_EXT.Code}, true, jobWizardHelper)"
+                  id="additional">
+                  <TitleBar
+                    title="displaykey.Ext.Web.LineWizard.OptionalCoverages"/>
+                  <Toolbar
+                    id="optional"/>
                 </PanelRef>
               </Card>
               <Card
@@ -443,6 +598,30 @@ function predominantConfirmationMessage(classification : BP7Classification) : St
     message = displaykey.Web.Policy.BP7.Classification.ConfirmPredominantOverride(classification.ClassificationNumber)
   }
   return message
-}]]></Code>
+}
+
+//uim-svallabhapurapu get classification based on pre-dominent occupancy type
+ function getAssociatedClassification(propertyType : BP7ClassificationPropertyType) : List<typekey.BP7ClassDescription>{      
+    if(propertyType == typekey.BP7ClassificationPropertyType.TC_OFFICE){
+       return typekey.BP7ClassDescription.TF_OFFICE_EXT.TypeKeys
+    }
+   else if(propertyType == typekey.BP7ClassificationPropertyType.TC_SERVICE) {
+       return typekey.BP7ClassDescription.TF_SERVICE_EXT.TypeKeys
+    }
+     else if(propertyType == typekey.BP7ClassificationPropertyType.TC_DISTRIBUTOR) {
+        return typekey.BP7ClassDescription.TF_DISTRIBUTOR_EXT.TypeKeys
+      }
+     else if(propertyType == typekey.BP7ClassificationPropertyType.TC_RETAIL)   {
+          return  typekey.BP7ClassDescription.TF_RETAIL_EXT.TypeKeys
+        }
+    return null 
+ }
+ 
+ //uim-svallabhapurapu synch Product model since coverage has been made electible or required based on occupancy type
+ function synchPM(){
+  gw.web.productmodel.ProductModelSyncIssuesHandler.sync({building}, null, null, null, jobWizardHelper)
+   if(building.Classifications != null and building.Classifications.length == 1)
+   {gw.web.productmodel.ProductModelSyncIssuesHandler.sync({building.Classifications[0]}, null, null, null, jobWizardHelper)}  
+ }]]></Code>
   </CardViewPanel>
 </PCF>

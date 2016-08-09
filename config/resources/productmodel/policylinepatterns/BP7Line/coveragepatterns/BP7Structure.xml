@@ -4,13 +4,14 @@
   coverageCategory="BP7BuildingStdGrp"
   coverageSubtype="BP7BuildingCov"
   coveredPartyType="FirstParty"
-  existence="Electable"
   lookupTableName="BP7BuildingCov"
   owningEntityType="BP7Building"
   policyLinePattern="BP7Line"
   priority="915"
   public-id="BP7Structure"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7Building.isBuildingCovAvailable()]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[return BP7Building.buildingExistance()]]></ExistenceScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"

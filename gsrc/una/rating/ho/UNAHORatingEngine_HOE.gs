@@ -63,7 +63,13 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         }
         _logger.info("Done rating Dwelling Level HO Coverages")
 
+        //rate Discounts and Credits
+        _logger.info("Rating Discounts and Surcharges")
         rateDiscountsOrSurcharges(sliceRange)
+        _logger.info("Discounts and Surcharges rating done")
+
+        //Add the minimum premium adjustment, if the total premium is less than minimum premium
+        rateManualPremiumAdjustment(sliceRange)
       }
     }
   }
@@ -111,4 +117,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
    * Rate the discounts and Surcharges
   */
   function rateDiscountsOrSurcharges(dateRange : DateRange){}
+
+  /**
+  * Rate the manual premium Adjustment
+   */
+  function rateManualPremiumAdjustment(dateRange : DateRange){}
 }

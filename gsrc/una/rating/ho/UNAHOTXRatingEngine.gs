@@ -112,7 +112,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (dwelling?.BurglarAlarm){
       rateBurglarProtectiveDevicesCredit(dateRange)
     }
-    rateAgeOfHomeDiscount(dateRange)
+    if(PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT)
+      rateAgeOfHomeDiscount(dateRange)
   }
 
   /**

@@ -1,19 +1,17 @@
-package gw.lob.ho
+package una.productmodel
 
 uses gw.util.Pair
-uses una.config.ConfigParamsUtil
 uses java.math.BigDecimal
-uses gw.api.productmodel.CovTermOpt
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
- * User: spitchaimuthu
- * Date: 5/16/16
- * Time: 11:22 AM
+ * User: TVang
+ * Date: 8/10/16
+ * Time: 3:11 PM
  * To change this template use File | Settings | File Templates.
  */
-enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
-
+class CoverageTermAvailabilityUtil {
   @Param("holine", "The current homeowners instance")
   @Param("option", "The deductible option which availability is going to be evaluated")
   @Returns("The availability of the received option")
@@ -22,7 +20,7 @@ enhancement CovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     var state = _hoLine.Branch.BaseState
     var isValidForMedPayLimitOption = HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(_hoLine.HOPolicyType)
     var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
-    var variantStates : List<typekey.Jurisdiction> = {TC_TX, TC_HI}
+    var variantStates : java.util.List = {Jurisdiction.TC_TX, Jurisdiction.TC_HI}
 
     if(isValidForMedPayLimitOption){
       if(variantStates.contains(state)){

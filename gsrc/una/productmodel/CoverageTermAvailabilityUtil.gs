@@ -3,6 +3,8 @@ package una.productmodel
 uses gw.util.Pair
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
+uses gw.api.domain.covterm.OptionCovTerm
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +14,79 @@ uses una.config.ConfigParamsUtil
  * To change this template use File | Settings | File Templates.
  */
 class CoverageTermAvailabilityUtil {
-  @Param("holine", "The current homeowners instance")
-  @Param("option", "The deductible option which availability is going to be evaluated")
-  @Returns("The availability of the received option")
-  static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
+
+  @Param("option", "The CovTermOpt to evaluate availability for.")
+  @Param("covTerm", "The CovTerm that the option is associated with.")
+  @Param("coverable", "The related Coverable entity.")
+  @Returns("Availability of the given option.")
+  public static function isCovTermOptionAvailable(option : gw.api.productmodel.CovTermOpt, covTerm : OptionCovTerm, coverable : Coverable) : boolean{
+    var result = true
+
+    switch(covTerm.PatternCode){
+      case "HOLI_MedPay_Limit_HOE":
+        result = isMedPayOptionAvailable(option, coverable as entity.HomeownersLine_HOE)
+        break
+      case "HODW_Hurricane_Ded_HOE":
+        result = isHurricaneDedOptionAvailable(option, coverable as Dwelling_HOE)
+        break
+      case "DPLI_MedPay_Limit_HOE":
+        result = isFireDwellingMedicalPaymentLimitAvailable(option, coverable as HomeownersLine_HOE)
+        break
+      case "HOPL_LossAssCovLimit_HOE":
+        result = isLossAssessmentLimitOptionAvailable(option, coverable as HomeownersLine_HOE)
+        break
+      case "HODW_JewelryWatchesFursLimit_HOE":
+        result = isSpecialLimitOptionAvailable(coverable as HomeownersLine_HOE)
+        break
+      default:
+        break
+    }
+
+    return result
+  }
+
+  @Param("covTerm", "The CovTerm to evaluate availability for.")
+  @Param("coverable", "The related Coverable entity.")
+  @Returns("Availability of the given option.")
+  public static function isCoverageTermAvailable(patternCode : String, coverable : Coverable) : boolean{
+    var result = true
+
+    switch(patternCode){
+      case "HOPL_Deductible_HOE":
+      case "HOPL_SpecialLimitDeductibleAssessment_HOE":
+        result = isLossAssessmentDeductibleAvailable(coverable as HomeownersLine_HOE)
+        break
+      default:
+        break
+    }
+
+    return result
+  }
+
+  @Param("homeOwnersLine", "The homeowners line instance to be evaluated.")
+  @Returns("The existence type evaluated for the given homeowners instance.")
+  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : HomeownersLine_HOE) : ExistenceType{
+    var result : ExistenceType
+    var contact = homeOwnersLine.Branch.PrimaryNamedInsured.ContactDenorm
+    //    var isSuggestedForCorporation  //TODO tlv - filter for organization type  - this is not available, still.  question is will it ever be - BA will have to answer
+
+    switch(homeOwnersLine.BaseState){
+      case TC_FL:
+      case TC_HI:
+          result = TC_REQUIRED
+          break
+      case TC_CA:
+      case TC_TX:
+          result = TC_SUGGESTED
+          break
+        default:
+        result = TC_ELECTABLE
+    }
+
+    return result
+  }
+
+  private static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
     var result = true
     var state = _hoLine.Branch.BaseState
     var isValidForMedPayLimitOption = HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(_hoLine.HOPolicyType)
@@ -33,10 +104,7 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  @Param("option", "The deductible option which availability is to be evaluated.")
-  @Param("dwelling", "The current dwelling instance.")
-  @Returns("The availability of the evaluated option")
-  static function isHurricaneDedOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _dwelling: entity.Dwelling_HOE) : boolean {
+  private static function isHurricaneDedOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _dwelling: entity.Dwelling_HOE) : boolean {
     var result : boolean = true
 
     var state = _dwelling.Branch.BaseState
@@ -68,33 +136,7 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  @Param("homeOwnersLine", "The homeowners line instance to be evaluated.")
-  @Returns("The existence type evaluated for the given homeowners instance.")
-  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : HomeownersLine_HOE) : ExistenceType{
-    var result : ExistenceType
-    var contact = homeOwnersLine.Branch.PrimaryNamedInsured.ContactDenorm
-    //    var isSuggestedForCorporation  //TODO tlv - filter for organization type  - this is not available, still.  question is will it ever be - BA will have to answer
-
-    switch(homeOwnersLine.BaseState){
-      case TC_FL:
-      case TC_HI:
-          result = TC_REQUIRED
-          break
-      case TC_CA:
-      case TC_TX:
-          result = TC_SUGGESTED
-          break
-        default:
-        result = TC_ELECTABLE
-    }
-
-    return result
-  }
-
-  @Param("covTermOpt", "The coverage term option to determine availability for.")
-  @Param("hoLine", "The homeowners line instance for which to evaluate availability of the given covTermOpt.")
-  @Returns("The availability of this covTermOpt.")
-  static function isFireDwellingMedicalPaymentLimitAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
+  private static function isFireDwellingMedicalPaymentLimitAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
     var result = true
     var allowedLimitsPersonalLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Personal_Liability_HOE.PatternCode)
     var allowedLimitsPremiseLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Premise_Liability_HOE_Ext.PatternCode)
@@ -110,7 +152,7 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  static function isLossAssessmentLimitOptionAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
+  private static function isLossAssessmentLimitOptionAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
     var result = true
 
     if(hoLine.BaseState == TC_FL and hoLine.HOPolicyType == TC_DP3_Ext){
@@ -124,7 +166,7 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  public static function isSpecialLimitOptionAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+  private static function isSpecialLimitOptionAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
     var result = true
 
     if(hoLine.BaseState == TC_FL or hoLine.BaseState == TC_CA){
@@ -134,17 +176,7 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  public static function isLossAssessmentDeductibleAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
-    var result = true
-
-    if(hoLine.BaseState == TC_FL){
-      result = hoLine.Dwelling.ResidenceType == TC_CONDO
-    }
-
-    return result
-  }
-
-  public static function isLossAssessmentSpecialLimitForDedAssessmentAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+  private static function isLossAssessmentDeductibleAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
     var result = true
 
     if(hoLine.BaseState == TC_FL){

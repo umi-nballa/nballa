@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A producer code associated with a product"
+  entity="ProducerCodeProduct_Ext"
+  exportable="true"
+  extendable="false"
+  loadable="false"
+  table="producercodeproductext"
+  type="retireable">
+  <column
+    desc="The product available for the producer"
+    name="ProductCode"
+    nullok="false"
+    type="patterncode"/>
+  <foreignkey
+    desc="The producer code that has available this product"
+    fkentity="ProducerCode"
+    name="ProducerCode"
+    nullok="false"/>
+  <column
+    desc="Effective Date Eligible To Write Business"
+    name="EffectiveDateExt"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    desc="Expiration Date Eligible To Write Business"
+    name="ExpirationDateExt"
+    nullok="true"
+    type="dateonly"/>
+  <typekey
+    createhistogram="true"
+    desc="Jurisdiction Where Producere Can Write Business"
+    name="JurisdictionExt"
+    nullok="true"
+    typefilter="JurisdictionUNA_Ext"
+    typelist="Jurisdiction"/>
+</entity>

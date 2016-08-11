@@ -36,7 +36,7 @@ abstract class HPXPolicyMapper {
     var billingInfoMapper = new HPXBillingInfoMapper ()
     var policySummaryInfo = transactionMapper.createJobStatus(policyPeriod)
     policySummaryInfo.addChild(createItemIdInfo())
-    policySummaryInfo.addChild(billingInfoMapper.createBillingInfo(policyPeriod))
+   // policySummaryInfo.addChild(billingInfoMapper.createBillingInfo(policyPeriod))
     return policySummaryInfo
   }
 
@@ -95,14 +95,17 @@ abstract class HPXPolicyMapper {
     var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
     policyInfo.addChild(jobCreationUser)
     // billing method
+    /*
     var billingMethodInfo = billingInfoMapper.createBillingMethodInfo(policyPeriod)
     for (child in billingMethodInfo.$Children) {
       policyInfo.addChild(child)
     }
+
     var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
     for (paymentOption in paymentOptions) {
       policyInfo.addChild(paymentOption)
     }
+   */
     return policyInfo
   }
 

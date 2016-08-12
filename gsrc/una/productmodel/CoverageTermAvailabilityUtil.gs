@@ -179,7 +179,7 @@ class CoverageTermAvailabilityUtil {
   private static function isLossAssessmentDeductibleAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
     var result = true
 
-    if(hoLine.BaseState == TC_FL){
+    if(hoLine.BaseState == TC_FL and hoLine.HOPolicyType == TC_DP3_EXT){
       result = hoLine.Dwelling.ResidenceType == TC_CONDO
     }
 

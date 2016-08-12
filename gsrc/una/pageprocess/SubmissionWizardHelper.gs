@@ -5,15 +5,13 @@ uses gw.api.productmodel.DirectCovTermPattern
 uses java.lang.Integer
 uses gw.api.util.DisplayableException
 uses gw.api.productmodel.Product
+uses com.guidewire.pc.system.dependency.PCDependencies
 uses java.util.ArrayList
+uses java.util.Date
 
 /**
- * Created with IntelliJ IDEA.
- * User: spitchaimuthu
- * Date: 5/1/16
- * Time: 12:04 PM
- * To change this template use File | Settings | File Templates.
- */
+* Submission UI PCF Helper Class
+*/
 class SubmissionWizardHelper {
 
   private static final var CLASS_STRING = SubmissionWizardHelper.Type.DisplayName
@@ -23,7 +21,7 @@ class SubmissionWizardHelper {
   public static function filterHOPolicyTypes(state : Jurisdiction) : HOPolicyType_HOE[] {
     var policyTypes : HOPolicyType_HOE[]
     if(Jurisdiction.TC_CA == state) {
-     policyTypes = typekey.HOPolicyType_HOE.TF_CALIFORNIA_EXT.TypeKeys.toTypedArray()
+      policyTypes = typekey.HOPolicyType_HOE.TF_CALIFORNIA_EXT.TypeKeys.toTypedArray()
     }
     else if (Jurisdiction.TC_TX == state)
     {
@@ -33,17 +31,17 @@ class SubmissionWizardHelper {
       {
         policyTypes = typekey.HOPolicyType_HOE.TF_NORTHCAROLINA_EXT.TypeKeys.toTypedArray()
       }
-     else if (Jurisdiction.TC_AZ == state)
+      else if (Jurisdiction.TC_AZ == state)
+        {
+          policyTypes = typekey.HOPolicyType_HOE.TF_ARIZONA_EXT.TypeKeys.toTypedArray()
+        }
+        else if (Jurisdiction.TC_HI == state || Jurisdiction.TC_FL == state)
           {
-           policyTypes = typekey.HOPolicyType_HOE.TF_ARIZONA_EXT.TypeKeys.toTypedArray()
+            policyTypes = typekey.HOPolicyType_HOE.TF_HAWAIFLORIDA_EXT.TypeKeys.toTypedArray()
           }
-     else if (Jurisdiction.TC_HI == state || Jurisdiction.TC_FL == state)
-          {
-          policyTypes = typekey.HOPolicyType_HOE.TF_HAWAIFLORIDA_EXT.TypeKeys.toTypedArray()
+          else {
+            policyTypes = typekey.HOPolicyType_HOE.TF_ALLOTHERSTATE_EXT.TypeKeys.toTypedArray()
           }
-      else {
-        policyTypes = typekey.HOPolicyType_HOE.TF_ALLOTHERSTATE_EXT.TypeKeys.toTypedArray()
-      }
     return policyTypes
   }
 
@@ -58,7 +56,7 @@ class SubmissionWizardHelper {
     /* It Enable submission for developer testing which is identified by a combination of
     * of environment check and script parameter to be set to true
      */
-   if (EnvironmentUtil.isLocal() && ScriptParameters.EnableMultiPolicyForLocal)
+    if (EnvironmentUtil.isLocal() && ScriptParameters.EnableMultiPolicyForLocal)
       return true
 
     return (acct.IssuedPolicies.Count == 0) ? true : false
@@ -124,6 +122,34 @@ class SubmissionWizardHelper {
       throw new DisplayableException(displaykey.Ext.Submission.SubmissionWizardHelper.ProducerNoRegions)
     }
     return true
+  }
+
+  public static function isThisProductAvailable(producerSelection : ProducerSelection, productSelection : ProductSelection) : boolean {
+    var foundIt = false
+    var theSelectedState = producerSelection.State
+    var theSelectedDate =  producerSelection.DefaultPPEffDate
+    var theSelectedProducerCode = producerSelection.ProducerCode
+    var theSelectedProduct = productSelection.Product
+    for(availableProduct in theSelectedProducerCode.AvailableProductsExt){
+      var theAvailableProduct = PCDependencies.getProductModel().getAllInstances(Product).where(\ p -> p.Code.equalsIgnoreCase(availableProduct.ProductCode))?.first()
+      if(theAvailableProduct != null && (theSelectedProduct == theAvailableProduct && theSelectedDate >= availableProduct.EffectiveDateExt && theSelectedDate <= availableProduct.ExpirationDateExt) && availableProduct.JurisdictionExt == theSelectedState){
+        foundIt = true
+      }
+    }
+    return foundIt
+  }
+
+  public static function whatIsTheProductStatus(producerSelection : ProducerSelection, productSelection : ProductSelection, theProductSelectionStatus : String) : String {
+    var isThisProductAvailable = isThisProductAvailable(producerSelection,productSelection)
+    var whatIsTheStatus = isThisProductAvailable ? theProductSelectionStatus : "Not Available"
+    return whatIsTheStatus
+  }
+
+  public static function isDateRangeValid(theExpirationDate : Date, theEffectiveDate : Date) : String{
+    if((theExpirationDate != null && theEffectiveDate != null ) && theExpirationDate < theEffectiveDate){
+      throw new DisplayableException("Invalid Expiration Date, should be after Effective Date")
+    }
+    return null
   }
 
   public static function isSameProduct(productSelection : ProductSelection, acct : Account) : boolean {

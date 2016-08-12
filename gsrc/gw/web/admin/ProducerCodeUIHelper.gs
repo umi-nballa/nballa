@@ -4,6 +4,12 @@ uses gw.api.util.CurrencyUtil
 uses gw.api.util.DisplayableException
 uses gw.plugin.billing.CommissionPlanSummary
 uses gw.api.system.PCLoggerCategory
+uses gw.acc.productbyproducercode.ProducerCodeProductImport
+uses gw.api.util.LocationUtil
+uses java.lang.Exception
+uses gw.api.system.PCLoggerCategory
+uses java.lang.StringBuilder
+uses java.lang.StringBuffer
 
 @Export
 class ProducerCodeUIHelper {
@@ -74,5 +80,33 @@ class ProducerCodeUIHelper {
     } else {
       p.ProducerCode.removeRole(p.Role)
     }
+  }
+
+  /**
+   *  Upload available products for producer code from csv file
+   *  Selected csv file imported on click of "Upload" button from ProducerCodeProductImportPage
+   */
+  function importData(theFile:gw.api.web.WebFile, currentLocation : pcf.api.Location) : StringBuffer {
+
+    var importResult:StringBuilder
+    try {
+      if (theFile.MIMEType == "application/vnd.ms-excel" or theFile.MIMEType == "application/csv") {
+        importResult = ProducerCodeProductImport.importFromACSVFile(theFile)
+        LocationUtil.addRequestScopedInfoMessage(displaykey.Accelerator.ProductByProducerCode.Web.Admin.File.ImportFileOK)
+      }
+      else{
+        LocationUtil.addRequestScopedInfoMessage(displaykey.Accelerator.ProductByProducerCode.Web.Admin.File.FileFormatNotValid)
+      }
+      currentLocation.commit()
+
+      theFile = null
+
+      currentLocation.startEditing()
+    }
+    catch (ex : Exception) {
+          LocationUtil.addRequestScopedInfoMessage(ex.StackTraceAsString)
+          PCLoggerCategory.IMPORT.info(ex.StackTraceAsString)
+        }
+    return importResult
   }
 }

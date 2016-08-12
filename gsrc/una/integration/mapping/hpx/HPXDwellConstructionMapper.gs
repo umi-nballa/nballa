@@ -79,6 +79,8 @@ class HPXDwellConstructionMapper {
         case typekey.RoofType.TC_COPPER:
             roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.OT)
             break
+        // TODO Mapping
+        default : roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.OT)
       }
       roofingMaterialDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.RoofType.Description)
       roofingMaterial.addChild(roofingMaterialCd)
@@ -109,6 +111,7 @@ class HPXDwellConstructionMapper {
         case typekey.ConstructionType_HOE.TC_OTHER:
           constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.OT)
           break
+        default : constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.OT)
        }
     }
     return constructionCd

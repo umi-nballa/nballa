@@ -77,6 +77,9 @@ class HPXDwellMapper {
             numFamilies.setText(4)
             numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_FOUR.Description)
             break
+        default :
+          numFamilies.setText(1)
+          numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_ONE.Description)
       }
       dwellingInspectionValuation.addChild(numFamilies)
       dwellingInspectionValuation.addChild(numFamiliesDesc)

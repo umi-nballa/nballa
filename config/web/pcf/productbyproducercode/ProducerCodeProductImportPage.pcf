@@ -1,0 +1,56 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <Page
+    canEdit="true"
+    countsAsWork="false"
+    id="ProducerCodeProductImportPage"
+    showUpLink="true"
+    startInEditMode="true"
+    title="displaykey.Accelerator.ProductByProducerCode.Web.Admin.FileImport">
+    <Variable
+      name="theFile"
+      recalculateOnRefresh="true"
+      type="gw.api.web.WebFile"/>
+    <Variable
+      initialValue="new gw.web.admin.ProducerCodeUIHelper()"
+      name="producerCodeUIHelper"
+      type="gw.web.admin.ProducerCodeUIHelper"/>
+    <Variable
+      name="importResult"
+      recalculateOnRefresh="true"
+      type="java.lang.StringBuffer"/>
+    <Screen
+      id="ExtImportDataScreen">
+      <Toolbar>
+        <ToolbarButton
+          action="if (theFile != null) { importResult = producerCodeUIHelper.importData(theFile, CurrentLocation)}"
+          id="ToolbarButton"
+          label="displaykey.Accelerator.ProductByProducerCode.Web.Admin.ImportDataPopup.Upload"/>
+        <EditButtons
+          editVisible="false"
+          updateVisible="false"/>
+      </Toolbar>
+      <DetailViewPanel>
+        <InputColumn>
+          <TextAreaInput
+            id="importResult"
+            numCols="100"
+            numRows="10"
+            value="importResult"
+            visible="importResult != null"/>
+        </InputColumn>
+      </DetailViewPanel>
+      <DetailViewPanel>
+        <InputColumn>
+          <Input
+            editable="true"
+            id="File"
+            label="displaykey.Accelerator.ProductByProducerCode.Web.Admin.ExtImportDataPopup.File"
+            value="theFile"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </Screen>
+  </Page>
+</PCF>

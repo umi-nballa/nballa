@@ -30,7 +30,17 @@ class HPXRequestMapper {
     return xml.toString()
   }
 
-
+  function createForms(policyPeriod : PolicyPeriod) : String {
+    var mapper = new HPXRequestMapper()
+    var coverageMapper = new HPXCoverageMapper()
+    var compositionUnitMapper = new HPXCompositionUnitMapper()
+    var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
+    var returnString = new String()
+    var dwellingPolicy = dwellingPolicyMapper.createDwellingPolicy(policyPeriod, null)
+    var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
+    returnString = createHPXDwellingPolicyRequestModel(dwellingPolicy, compositionUnit)
+    return returnString
+  }
 
   function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy,
                                  compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {

@@ -18,7 +18,7 @@
       coverageColumn="DirectTerm1"
       lookupTableName="HomeownersLineCovTerm"
       modelType="Other"
-      priority="100"
+      priority="0"
       public-id="HOLI_WC_OccasionalEmployees_HOE"
       required="true"
       restrictionModel="bi"
@@ -39,7 +39,7 @@
       modelType="Other"
       priority="100"
       public-id="HOLI_WC_FulltimeEmployees_HOE"
-      required="true"
+      required="false"
       restrictionModel="bi"
       valueType="count">
       <LimitsSet>
@@ -50,12 +50,24 @@
           public-id="z7cggno98qd5a8t8cnh6k3o3cg9"/>
       </LimitsSet>
     </DirectCovTermPattern>
-    <GenericCovTermPattern
-      codeIdentifier="HOLI_FulltimeOutsideEmp_HOE"
-      coverageColumn="DirectTerm3_Ext"
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HOLI_NumFTOutSideCovEmp_HOE"
+      coverageColumn="DirectTerm3"
       lookupTableName="HomeownersLineCovTerm"
+      modelType="Other"
       priority="200"
-      public-id="HOLI_FulltimeOutsideEmp_HOE"
-      required="false"/>
+      public-id="HOLI_NumFTOutSideCovEmp_HOE"
+      required="false"
+      restrictionModel="bi"
+      valueType="count">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zqiimjpsrcdf1aupn97qh99jmpa"
+          maxVal="99"
+          minVal="0"
+          public-id="zqiimjpsrcdf1aupn97qh99jmpa"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

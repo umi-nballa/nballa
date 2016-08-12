@@ -797,6 +797,7 @@ enhancement
       _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_ElectronicApparatusLimit_HOETerm.setValueFromString("1000")
       _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("1000")
     }
+      else if(_dwelling.Branch.BaseState != TC_FL or _dwelling.Branch.BaseState != TC_TX )
     {
       _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("1500")
       _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_MoneyLimit_HOETerm.setValueFromString("200")
@@ -804,5 +805,11 @@ enhancement
 
     }
   }
+  static function setBusinessProp_Ext(_dwelling:Dwelling_HOE){
+    if(_dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value) {
+      _dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.setValueFromString("10000")
+    }
+  }
+
 }
 

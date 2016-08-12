@@ -32,8 +32,11 @@ abstract class HPXPolicyMapper {
 
   /************************************** Policy Summary Info ******************************************************/
   function createPolicySummaryInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo {
-    var policySummaryInfo = new wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo()
+    var transactionMapper = new HPXJobMapper () // TODO - move to class level
+    var billingInfoMapper = new HPXBillingInfoMapper ()
+    var policySummaryInfo = transactionMapper.createJobStatus(policyPeriod)
     policySummaryInfo.addChild(createItemIdInfo())
+   // policySummaryInfo.addChild(billingInfoMapper.createBillingInfo(policyPeriod))
     return policySummaryInfo
   }
 
@@ -53,6 +56,9 @@ abstract class HPXPolicyMapper {
     var coverageMapper = new HPXCoverageMapper()
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
+    var transactionMapper = new HPXJobMapper ()
+    var billingInfoMapper = new HPXBillingInfoMapper()
+    var paymentOptionMapper = new HPXPaymentOptionMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
     switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
@@ -85,6 +91,21 @@ abstract class HPXPolicyMapper {
     var baseRate = new wsi.schema.una.hpx.hpx_application_request.ControllingStateProvCd()
     baseRate.setText(policyPeriod.BaseState)
     policyInfo.addChild(baseRate)
+    // user
+    var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
+    policyInfo.addChild(jobCreationUser)
+    // billing method
+    /*
+    var billingMethodInfo = billingInfoMapper.createBillingMethodInfo(policyPeriod)
+    for (child in billingMethodInfo.$Children) {
+      policyInfo.addChild(child)
+    }
+
+    var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
+    for (paymentOption in paymentOptions) {
+      policyInfo.addChild(paymentOption)
+    }
+   */
     return policyInfo
   }
 

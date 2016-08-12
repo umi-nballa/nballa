@@ -7,13 +7,15 @@ internal class BindPolicy {
   static function doCondition(messageContext  :  entity.MessageContext) : boolean {
 /*start00rule*/
 return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.CREATEPERIOD_MSG
+//return messageContext.EventName == "IssueSubmission"
 /*end00rule*/
 }
 
   static function doAction(messageContext  :  entity.MessageContext, actions : gw.rules.Action) {
 /*start00rule*/
 var ewsRequestMapper = new HPXRequestMapper()
-var ewsRequestXML = ewsRequestMapper.createXMLRequestModel(messageContext.Root as PolicyPeriod)
+//var ewsRequestXML = ewsRequestMapper.createXMLRequestModel(messageContext.Root as PolicyPeriod)
+var ewsRequestXML = ewsRequestMapper.createForms((messageContext.Root as PolicyPeriod).LatestPeriod)
 print(ewsRequestXML)
 messageContext.createMessage(ewsRequestXML)
 /*end00rule*/

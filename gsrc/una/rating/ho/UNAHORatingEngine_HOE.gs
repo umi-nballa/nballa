@@ -63,12 +63,19 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         }
         _logger.info("Done rating Dwelling Level HO Coverages")
 
+        //rate Discounts and Credits
+        _logger.info("Rating Discounts and Surcharges")
         rateDiscountsOrSurcharges(sliceRange)
+        _logger.info("Discounts and Surcharges rating done")
+
+        //Add the minimum premium adjustment, if the total premium is less than minimum premium
+        rateManualPremiumAdjustment(sliceRange)
       }
     }
   }
 
   override protected function rateWindow(line: HomeownersLine_HOE) {
+    //ratePolicy
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
@@ -87,6 +94,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         break
       case DwellingCovCost_HOE:
         cd = new DwellingCovCostData_HOE(c, RateCache)
+        break
+      case HomeownersLineCost_EXT:
+        cd = new HomeownersLineCostData_HOE(c, RateCache)
         break
     }
     return cd
@@ -111,4 +121,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
    * Rate the discounts and Surcharges
   */
   function rateDiscountsOrSurcharges(dateRange : DateRange){}
+
+  /**
+  * Rate the manual premium Adjustment
+   */
+  function rateManualPremiumAdjustment(dateRange : DateRange){}
 }

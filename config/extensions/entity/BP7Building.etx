@@ -69,7 +69,7 @@
     default=""
     desc="Percentage Owner Occupied"
     name="PctOwnerOccupied"
-    nullok="false"
+    nullok="true"
     typelist="BP7PctOwnerOccupied"/>
   <column
     columnName="bp7totalcondobldgsquarefo"
@@ -77,4 +77,63 @@
     name="TotalCondoBldgSquareFo"
     nullok="true"
     type="positiveinteger"/>
+  <array
+    arrayentity="BuildingUnits_Ext"
+    cascadeDelete="true"
+    name="BldgUnits"/>
+  <column
+    desc="Central Burglar Alarm"
+    name="CentralBurglarAlarm_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Central Fire Alarm System"
+    name="CentralFireAlarmSystem_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Fire Department Within 5 Miles"
+    name="FireDepartmentDistance_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Air Conditioner Caged"
+    name="Caged_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Air Conditioning Type"
+    name="Alarmed_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Air Conditioning Type"
+    name="Monitored_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Year Built"
+    name="YearBuilt_Ext"
+    nullok="true"
+    type="year"/>
+  <column
+    desc="No Of stories"
+    name="NoOfStories_Ext"
+    nullok="true"
+    type="nonnegativeinteger"/>
+  <typekey
+    desc="bp7predominentoccupancytype"
+    name="PredominentOccType_Ext"
+    nullok="true"
+    typelist="BP7PredominentOccType_Ext"/>
+  <column
+    desc="No Of Units"
+    name="NoOfUnits_Ext"
+    nullok="true"
+    type="nonnegativeinteger"/>
+  <column
+    desc="Building Square Footage"
+    name="BuildingSqFootage_Ext"
+    nullok="true"
+    type="nonnegativeinteger"/>
 </extension>

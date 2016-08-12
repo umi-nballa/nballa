@@ -15,7 +15,12 @@ class HomeownersLineCostData_HOE<T extends HomeownersLineCost_EXT> extends HOCos
     super(effDate, expDate, c, rateCache)
     _costType_Ext = costType
   }
-  
+
+  construct(c : T, rateCache : PolicyPeriodFXRateCache){
+    super(c, rateCache)
+    _costType_Ext = c.HOCostType
+  }
+
   override function setSpecificFieldsOnCost(line : HomeownersLine_HOE, cost : T) {
     super.setSpecificFieldsOnCost(line, cost)
     cost.HOCostType = _costType_Ext

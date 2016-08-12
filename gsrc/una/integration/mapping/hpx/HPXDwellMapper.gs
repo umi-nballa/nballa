@@ -158,6 +158,10 @@ class HPXDwellMapper {
             dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.UNOCC)
             dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
             break
+        // TODO map non-owner
+        default :
+          dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.OT)
+          dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
       }
     }
     dwellOccupancy.addChild(dwellOccupancyType)

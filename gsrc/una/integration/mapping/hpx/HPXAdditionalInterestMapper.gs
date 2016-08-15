@@ -38,6 +38,7 @@ function createAdditionalInterests(additlInterests : AddlInterestDetail []) : Li
             break
         case "THIRDPARTY"   :  additionalInterestInfo.NatureInterestCd = wsi.schema.una.hpx.hpx_application_request.enums.Interest.THIRDPARTY
             break
+        default :  additionalInterestInfo.NatureInterestCd = wsi.schema.una.hpx.hpx_application_request.enums.Interest.OT
       }
 
       additionalInterestInfo.Description =  (addtlInterest as HODwellingAddlInt_HOE).AddlInterestDesc

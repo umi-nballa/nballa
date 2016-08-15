@@ -406,7 +406,7 @@
                                 value="selectedClassification.ClassDescription"
                                 valueRange="getAssociatedClassification(selectedClassification.ClassPropertyType)">
                                 <PostOnChange
-                                  onChange="selectedClassification.associatedClassCode();"/>
+                                  onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue));selectedClassification.associatedClassCode()"/>
                               </RangeInput>
                               <Input
                                 id="classcode"

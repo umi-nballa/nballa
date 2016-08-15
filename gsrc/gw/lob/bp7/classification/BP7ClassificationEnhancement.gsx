@@ -206,7 +206,6 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
       .each(\ cov -> this.removeCoverageFromCoverable(cov))
   }
 
-
   /*
 *  Author: uim-svallabhapurapu
 *  Change Log: Added the new function associatedClassCode to get the class code,
@@ -215,13 +214,11 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
   function associatedClassCode() {
     this.ClassCode_Ext = ""
     var classCode = gw.api.database.Query.make(BP7ClassCode)
-    print("---Class code description--"+this.ClassDescription)
     var result =   classCode.compare(BP7ClassCode#Code, Equals, this.ClassDescription ).select().AtMostOneRow
 
     if(result != null){
       this.ClassCode_Ext = result.Code
     }
-
   }
 
   /*

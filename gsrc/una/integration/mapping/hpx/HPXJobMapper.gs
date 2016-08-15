@@ -47,7 +47,7 @@ class HPXJobMapper {
     policySummaryInfo.addChild(policyStatusDesc)
     if(policyPeriod.Cancellation != null) {
       policySummaryInfo.addChild(createCancellationInfo(policyPeriod))
-    } else {
+    } else if (policyPeriod.Job != null) {
       policySummaryInfo.addChild(createEndorsementInfo(policyPeriod))
     }
     return policySummaryInfo

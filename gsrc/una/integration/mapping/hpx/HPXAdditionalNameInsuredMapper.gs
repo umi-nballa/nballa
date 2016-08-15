@@ -20,6 +20,13 @@ class HPXAdditionalNameInsuredMapper {
     insuredOrPrincipal.addChild(dwellingPolicyMapper.createItemIdInfo())
     insuredOrPrincipal.addChild(generalPartyInfoMapper.createGeneralPartyInfo(addtlNamedInsured.AccountContactRole.AccountContact.Contact,
         addtlNamedInsured))
+    if (addtlNamedInsured.DescOfInterest_HOE != null) {
+      var personInfo = new wsi.schema.una.hpx.hpx_application_request.PersonInfo()
+      var titleRelationshipDesc = new wsi.schema.una.hpx.hpx_application_request.TitleRelationshipDesc()
+      titleRelationshipDesc.setText(addtlNamedInsured.Relationship)
+      personInfo.addChild(titleRelationshipDesc)
+      insuredOrPrincipal.addChild(personInfo)
+    }
     additionalNameInsureds.add(insuredOrPrincipal)
   }
   return additionalNameInsureds

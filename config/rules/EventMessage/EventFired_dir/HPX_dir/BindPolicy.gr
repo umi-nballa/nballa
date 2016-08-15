@@ -15,9 +15,15 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
 /*start00rule*/
 var ewsRequestMapper = new HPXRequestMapper()
 //var ewsRequestXML = ewsRequestMapper.createXMLRequestModel(messageContext.Root as PolicyPeriod)
-var ewsRequestXML = ewsRequestMapper.createForms((messageContext.Root as PolicyPeriod).LatestPeriod)
-print(ewsRequestXML)
-messageContext.createMessage(ewsRequestXML)
+var period = (messageContext.Root as PolicyPeriod).LatestPeriod
+
+if (period.HomeownersLine_HOE != null)
+{
+  var ewsRequestXML = ewsRequestMapper.createForms(period)
+  print(ewsRequestXML)
+  messageContext.createMessage(ewsRequestXML)
+}
+
 /*end00rule*/
   }
 }

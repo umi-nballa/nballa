@@ -34,7 +34,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
    _line = owner
   }
 
-  override function getWorksheetRootNode(showConditionals : boolean) : RowTreeRootNode {
+  /*override function getWorksheetRootNode(showConditionals : boolean) : RowTreeRootNode {
     var treeNodes : List<WorksheetTreeNodeContainer> = {}
     var lineContainer = new WorksheetTreeNodeContainer(_line.DisplayName){
         :ExpandByDefault = false
@@ -68,7 +68,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       lineContainer.addChild(coverageContainer)
     }
     return lineContainer
-  }
+  }  */
 
   override property get CoveredStates() : Jurisdiction[] {
     var covStates = new HashSet<Jurisdiction>()

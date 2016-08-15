@@ -19,6 +19,10 @@ uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.ho.HOE_UnderwriterEvaluator
 uses una.rating.ho.UNAHORatingEngine_HOE
 uses una.rating.ho.UNAHOTXRatingEngine
+uses gw.rating.worksheet.treenode.WorksheetTreeNodeUtil
+uses gw.api.tree.RowTreeRootNode
+uses gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
+uses una.rating.ho.group1.UNAHOAZCANVRatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -29,7 +33,43 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
     super(owner)
    _line = owner
   }
-  
+
+  override function getWorksheetRootNode(showConditionals : boolean) : RowTreeRootNode {
+    var treeNodes : List<WorksheetTreeNodeContainer> = {}
+    var lineContainer = new WorksheetTreeNodeContainer(_line.DisplayName){
+        :ExpandByDefault = false
+    }
+    var treeContainer = _line.Branch.AllBeansWithWorksheets
+    var entries = treeContainer.entrySet().orderBy(\ e -> e.Key.DisplayName)
+    var nodes = entries.flatMap( \ e -> e.Value.map(\ ws -> WorksheetTreeNodeUtil.buildTreeNode(ws, showConditionals)))
+    lineContainer.addChildren(nodes as List<WorksheetTreeNodeContainer>)
+    getWorksheetForLineContainer(lineContainer, showConditionals)
+    treeNodes.add(lineContainer)
+    return WorksheetTreeNodeUtil.buildRootNode(treeNodes)
+  }
+
+  private function getWorksheetForLineContainer(lineContainer : WorksheetTreeNodeContainer, showConditionals : boolean) : WorksheetTreeNodeContainer{
+    var coverageContainer : WorksheetTreeNodeContainer
+    var hoLineCosts : List<HomeownersLineCost_EXT>= {}
+    for(cost in _line.HomeownersCosts){
+      if(cost typeis HomeownersLineCost_EXT){
+        if(cost.HOCostType == typekey.HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT){
+          hoLineCosts.add(cost)
+        }
+      }
+    }
+    //var costs = _line.HomeownersCosts.where( \ cost -> (cost as HomeownersLineCost_EXT).HOCostType == HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT)
+    for(cost in hoLineCosts){
+      coverageContainer = new WorksheetTreeNodeContainer(cost.DisplayName){
+          :ExpandByDefault = false
+      }
+      var costWithWorksheet = cost
+      coverageContainer.addChildren(WorksheetTreeNodeUtil.buildTreeNodes(costWithWorksheet, showConditionals))
+      lineContainer.addChild(coverageContainer)
+    }
+    return lineContainer
+  }
+
   override property get CoveredStates() : Jurisdiction[] {
     var covStates = new HashSet<Jurisdiction>()
     for (loc in _line.Branch.PolicyLocations) {
@@ -191,6 +231,8 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
     } else {
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+      if(_line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_AZ || _line.BaseState == typekey.Jurisdiction.TC_CA)
+        return new UNAHOAZCANVRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)

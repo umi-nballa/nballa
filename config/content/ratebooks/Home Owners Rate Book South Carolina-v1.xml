@@ -13,8 +13,8 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-21 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2016-08-01 11:57:58.588</LastStatusChangeDate>
-    <LastTableRowEdit>2016-07-28 15:07:12.969</LastTableRowEdit>
+    <LastStatusChangeDate>2016-08-14 22:53:38.355</LastStatusChangeDate>
+    <LastTableRowEdit>2016-08-10 10:41:27.912</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines/>
     <RateTables>
@@ -99,6 +99,39 @@
         <BasedOnTable/>
         <Definition public-id="pc:1407"/>
         <LastTableRowEdit>2016-07-28 15:07:12.970</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:404"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:3401">
+        <BasedOnTable/>
+        <Definition public-id="pc:529"/>
+        <LastTableRowEdit>2016-08-10 10:41:11.673</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:404"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:3402">
+        <BasedOnTable/>
+        <Definition public-id="pc:530"/>
+        <LastTableRowEdit>2016-08-10 10:41:27.912</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:404"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:3403">
+        <BasedOnTable/>
+        <Definition public-id="pc:528"/>
+        <LastTableRowEdit>2016-08-10 10:40:53.504</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:404"/>
@@ -308,39 +341,6 @@
         <BasedOnTable/>
         <Definition public-id="pc:519"/>
         <LastTableRowEdit>2016-06-20 13:12:38.630</LastTableRowEdit>
-        <NormalizedRowCount/>
-        <QueryStrategy>Memory</QueryStrategy>
-        <RateBook public-id="pc:404"/>
-        <ReduceMemoryUsage>false</ReduceMemoryUsage>
-        <RefTable/>
-        <RowUniformityStatus>nonuniform</RowUniformityStatus>
-      </RateTable>
-      <RateTable public-id="pc:604">
-        <BasedOnTable/>
-        <Definition public-id="pc:528"/>
-        <LastTableRowEdit>2016-06-20 13:12:51.410</LastTableRowEdit>
-        <NormalizedRowCount/>
-        <QueryStrategy>Memory</QueryStrategy>
-        <RateBook public-id="pc:404"/>
-        <ReduceMemoryUsage>false</ReduceMemoryUsage>
-        <RefTable/>
-        <RowUniformityStatus>nonuniform</RowUniformityStatus>
-      </RateTable>
-      <RateTable public-id="pc:605">
-        <BasedOnTable/>
-        <Definition public-id="pc:529"/>
-        <LastTableRowEdit>2016-06-20 13:13:05.314</LastTableRowEdit>
-        <NormalizedRowCount/>
-        <QueryStrategy>Memory</QueryStrategy>
-        <RateBook public-id="pc:404"/>
-        <ReduceMemoryUsage>false</ReduceMemoryUsage>
-        <RefTable/>
-        <RowUniformityStatus>nonuniform</RowUniformityStatus>
-      </RateTable>
-      <RateTable public-id="pc:606">
-        <BasedOnTable/>
-        <Definition public-id="pc:530"/>
-        <LastTableRowEdit>2016-06-20 13:13:20.425</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:404"/>
@@ -726,20 +726,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:102">
-    <CalcRoutineParameterSet public-id="pc:101"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>typekey.Jurisdiction</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:101">
     <CalcRoutineParameterSet public-id="pc:101"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:102">
+    <CalcRoutineParameterSet public-id="pc:101"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>typekey.Jurisdiction</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -8292,11 +8292,11 @@
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:533">
+          <RateTableArgumentSource public-id="pc:3101">
             <ArgumentSource/>
             <ArgumentSourceSet public-id="pc:528"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:533"/>
+            <Parameter public-id="pc:2201"/>
             <Root/>
           </RateTableArgumentSource>
         </RateTableArgumentSources>
@@ -8323,14 +8323,14 @@
       </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:533">
+      <RateTableMatchOp public-id="pc:2201">
         <Definition public-id="pc:528"/>
         <DisplayText>Cov A Amount</DisplayText>
         <DisplayText_L10N_ARRAY/>
-        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <MatchOpDefinition public-id="InterpolateWithRelaxMatchOpDef"/>
         <Name>CovAAmount</Name>
         <Params>
-          <RateTableColumn public-id="pc:577">
+          <RateTableColumn public-id="pc:3101">
             <ColumnLabel>Cov A Amount</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
             <ColumnName>CovAAmount</ColumnName>
@@ -8340,7 +8340,7 @@
             <DefinitionForParam public-id="pc:528"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:533"/>
+            <MatchOp public-id="pc:2201"/>
             <MultiSelect>false</MultiSelect>
             <PhysicalColumnName>int1</PhysicalColumnName>
             <SortOrder>0</SortOrder>
@@ -8356,8 +8356,8 @@
     <TableName>HO3 Key Factors Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
-  <DefaultRateFactorRow public-id="pc:5624">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36201">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8385,8 +8385,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5625">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36202">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8414,8 +8414,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5626">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36203">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8443,8 +8443,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5627">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36204">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8472,8 +8472,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5628">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36205">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8501,8 +8501,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5629">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36206">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8530,8 +8530,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5630">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36207">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8559,8 +8559,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5631">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36208">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8588,8 +8588,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5632">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36209">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8617,8 +8617,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5633">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36210">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8646,8 +8646,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5634">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36211">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8675,8 +8675,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5635">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36212">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8704,8 +8704,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5636">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36213">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8733,8 +8733,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5637">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36214">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8762,8 +8762,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5638">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36215">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8791,8 +8791,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5639">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36216">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8820,8 +8820,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5640">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36217">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8849,8 +8849,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5641">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36218">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8878,8 +8878,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5642">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36219">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8907,8 +8907,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5643">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36220">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8936,8 +8936,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5644">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36221">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8965,8 +8965,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5645">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36222">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8994,8 +8994,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5646">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36223">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9023,8 +9023,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5647">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36224">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9052,8 +9052,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5648">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36225">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9081,8 +9081,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5649">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36226">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9110,8 +9110,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5650">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36227">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9139,8 +9139,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5651">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36228">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9168,8 +9168,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5652">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36229">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9197,8 +9197,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5653">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36230">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9226,8 +9226,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5654">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36231">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9255,8 +9255,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5655">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36232">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9284,8 +9284,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5656">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36233">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9313,8 +9313,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5657">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36234">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9342,8 +9342,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5658">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36235">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9371,8 +9371,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5659">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36236">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9400,8 +9400,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5660">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36237">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9429,8 +9429,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5661">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36238">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9458,8 +9458,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5662">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36239">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9487,8 +9487,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5663">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36240">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9516,8 +9516,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5664">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36241">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9545,8 +9545,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5665">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36242">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9574,8 +9574,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5666">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36243">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9603,8 +9603,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5667">
-    <RateTable public-id="pc:604"/>
+  <DefaultRateFactorRow public-id="pc:36244">
+    <RateTable public-id="pc:3403"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17284,11 +17284,11 @@
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:534">
+          <RateTableArgumentSource public-id="pc:3102">
             <ArgumentSource/>
             <ArgumentSourceSet public-id="pc:529"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:534"/>
+            <Parameter public-id="pc:2202"/>
             <Root/>
           </RateTableArgumentSource>
         </RateTableArgumentSources>
@@ -17315,14 +17315,14 @@
       </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:534">
+      <RateTableMatchOp public-id="pc:2202">
         <Definition public-id="pc:529"/>
         <DisplayText>Cov C Amount</DisplayText>
         <DisplayText_L10N_ARRAY/>
-        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <MatchOpDefinition public-id="InterpolateWithRelaxMatchOpDef"/>
         <Name>CovCAmount</Name>
         <Params>
-          <RateTableColumn public-id="pc:579">
+          <RateTableColumn public-id="pc:3102">
             <ColumnLabel>Cov C Amount</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
             <ColumnName>CovCAmount</ColumnName>
@@ -17332,7 +17332,7 @@
             <DefinitionForParam public-id="pc:529"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:534"/>
+            <MatchOp public-id="pc:2202"/>
             <MultiSelect>false</MultiSelect>
             <PhysicalColumnName>int1</PhysicalColumnName>
             <SortOrder>0</SortOrder>
@@ -17348,8 +17348,8 @@
     <TableName>HO4 Key Factors Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
-  <DefaultRateFactorRow public-id="pc:5668">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36245">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17377,8 +17377,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5669">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36246">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17406,8 +17406,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5670">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36247">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17435,8 +17435,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5671">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36248">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17464,8 +17464,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5672">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36249">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17493,8 +17493,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5673">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36250">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17522,8 +17522,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5674">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36251">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17551,8 +17551,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5675">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36252">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17580,8 +17580,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5676">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36253">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17609,8 +17609,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5677">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36254">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17638,8 +17638,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5678">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36255">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17667,8 +17667,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5679">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36256">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17696,8 +17696,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5680">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36257">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17725,8 +17725,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5681">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36258">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17754,8 +17754,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5682">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36259">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17783,8 +17783,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5683">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36260">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17812,8 +17812,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5684">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36261">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17841,8 +17841,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5685">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36262">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17870,8 +17870,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5686">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36263">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17899,8 +17899,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5687">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36264">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17928,8 +17928,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5688">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36265">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17957,8 +17957,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5689">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36266">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17986,8 +17986,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5690">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36267">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -18015,8 +18015,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5691">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36268">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -18044,8 +18044,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5692">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36269">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -18073,8 +18073,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5693">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36270">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -18102,8 +18102,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5694">
-    <RateTable public-id="pc:605"/>
+  <DefaultRateFactorRow public-id="pc:36271">
+    <RateTable public-id="pc:3401"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -25783,11 +25783,11 @@
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:535">
+          <RateTableArgumentSource public-id="pc:3103">
             <ArgumentSource/>
             <ArgumentSourceSet public-id="pc:530"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:535"/>
+            <Parameter public-id="pc:2203"/>
             <Root/>
           </RateTableArgumentSource>
         </RateTableArgumentSources>
@@ -25814,14 +25814,14 @@
       </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:535">
+      <RateTableMatchOp public-id="pc:2203">
         <Definition public-id="pc:530"/>
         <DisplayText>Cov C Amount</DisplayText>
         <DisplayText_L10N_ARRAY/>
-        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <MatchOpDefinition public-id="InterpolateWithRelaxMatchOpDef"/>
         <Name>CovCAmount</Name>
         <Params>
-          <RateTableColumn public-id="pc:581">
+          <RateTableColumn public-id="pc:3103">
             <ColumnLabel>Cov C Amount</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
             <ColumnName>CovCAmount</ColumnName>
@@ -25831,7 +25831,7 @@
             <DefinitionForParam public-id="pc:530"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:535"/>
+            <MatchOp public-id="pc:2203"/>
             <MultiSelect>false</MultiSelect>
             <PhysicalColumnName>int1</PhysicalColumnName>
             <SortOrder>0</SortOrder>
@@ -25847,8 +25847,8 @@
     <TableName>HO6 Key Factors Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
-  <DefaultRateFactorRow public-id="pc:5695">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36272">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -25876,8 +25876,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5696">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36273">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -25905,8 +25905,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5697">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36274">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -25934,8 +25934,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5698">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36275">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -25963,8 +25963,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5699">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36276">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -25992,8 +25992,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5700">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36277">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26021,8 +26021,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5701">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36278">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26050,8 +26050,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5702">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36279">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26079,8 +26079,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5703">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36280">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26108,8 +26108,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5704">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36281">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26137,8 +26137,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5705">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36282">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26166,8 +26166,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5706">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36283">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26195,8 +26195,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5707">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36284">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26224,8 +26224,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5708">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36285">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26253,8 +26253,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5709">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36286">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26282,8 +26282,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5710">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36287">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26311,8 +26311,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5711">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36288">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26340,8 +26340,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5712">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36289">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26369,8 +26369,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5713">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36290">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26398,8 +26398,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5714">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36291">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26427,8 +26427,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5715">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36292">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26456,8 +26456,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5716">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36293">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26485,8 +26485,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5717">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36294">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26514,8 +26514,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5718">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36295">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -26543,8 +26543,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:5719">
-    <RateTable public-id="pc:606"/>
+  <DefaultRateFactorRow public-id="pc:36296">
+    <RateTable public-id="pc:3402"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -27326,20 +27326,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:201">
-    <CalcRoutineParameterSet public-id="pc:201"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>typekey.Jurisdiction</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:202">
     <CalcRoutineParameterSet public-id="pc:201"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:201">
+    <CalcRoutineParameterSet public-id="pc:201"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>typekey.Jurisdiction</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -27462,15 +27462,15 @@
   </DefaultRateFactorRow>
   <RateTableDefinition public-id="pc:510">
     <ArgumentSourceSets>
-      <RateTableArgumentSourceSet public-id="pc:510">
-        <CalcRoutineParameterSet public-id="pc:101"/>
+      <RateTableArgumentSourceSet public-id="pc:2901">
+        <CalcRoutineParameterSet public-id="pc:601"/>
         <Code>DEFAULT</Code>
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:513">
+          <RateTableArgumentSource public-id="pc:3201">
             <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:510"/>
+            <ArgumentSourceSet public-id="pc:2901"/>
             <IsModifier>false</IsModifier>
             <Parameter public-id="pc:513"/>
             <Root/>
@@ -27564,6 +27564,87 @@
     <TableName>HO Base Class Premiums Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
+  <CalcRoutineParameterSet public-id="pc:601">
+    <Code>HOBasePremiumGroup1ParamSet</Code>
+    <IncludesCost>true</IncludesCost>
+    <Name>Home Owners Base Premium Group 1 Parameter Set</Name>
+    <Name_L10N_ARRAY/>
+    <Parameters>
+      <CalcRoutineParameter public-id="pc:901">
+        <CalcRoutineParameterSet public-id="pc:601"/>
+        <Code>policyline</Code>
+        <CoveragePattern/>
+        <ParamType>entity.PolicyLine</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:902">
+        <CalcRoutineParameterSet public-id="pc:601"/>
+        <Code>state</Code>
+        <CoveragePattern/>
+        <ParamType>java.lang.String</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:903">
+        <CalcRoutineParameterSet public-id="pc:601"/>
+        <Code>dwellingRatingInfo_Ext</Code>
+        <CoveragePattern/>
+        <ParamType>una.rating.ho.group1.ratinginfos.HOBasePremiumRatingInfo</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:904">
+        <CalcRoutineParameterSet public-id="pc:601"/>
+        <Code>ratinginfo</Code>
+        <CoveragePattern/>
+        <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>true</Writable>
+      </CalcRoutineParameter>
+    </Parameters>
+    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
+  </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:904">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>true</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:901">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:902">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:903">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HOBasePremiumRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pc:5524">
     <RateTable public-id="pc:586"/>
     <bit1/>

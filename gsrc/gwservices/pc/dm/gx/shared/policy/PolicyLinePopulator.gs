@@ -12,7 +12,10 @@ class PolicyLinePopulator extends BaseEntityPopulator<PolicyLine, KeyableBean> {
     if (model typeis PolicyPeriod_Lines_Entry) {
       if (model.Subtype == typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE) {
         return Branch.HomeownersLine_HOE
-      } else {
+      }
+      if(model.Subtype == typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE){
+        return Branch.BP7Line
+      }else {
         throw new DataMigrationNonFatalException(CODE.INVALID_POLICY_LINE, model.Subtype as String)
       }
     }

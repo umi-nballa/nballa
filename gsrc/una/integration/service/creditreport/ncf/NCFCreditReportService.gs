@@ -9,7 +9,7 @@ uses una.integration.service.creditreport.ICreditReportService
 uses una.integration.mapping.creditreport.CreditReportRequest
 uses una.integration.mapping.creditreport.CreditReportResponse
 uses una.integration.framework.util.AddressParser
-uses gw.api.util.Logger
+
 
 uses java.lang.Exception
 
@@ -72,9 +72,10 @@ class NCFCreditReportService implements ICreditReportService {
             var result = Result.parse(xmlResponse)
             var ncfReport = NcfReport.parse(getNCF(result).Report)
             var score = getOrderResponseScore(ncfReport)
+            //var alertScoring = ncfReport.Report.AlertsScoring.Scoring
             var subject = ncfReport.Report.SearchDataset.Subjects.firstWhere(\ s -> s.Subject.Type == SearchDataset_Subjects_Subject_Type.Primary)
             var address = ncfReport.Report.SearchDataset.Addresses.Address.firstWhere(\ s -> s.Ref == "1")
-                              
+
             /**
              * Reported current address from vendor dataset may need to be persisted 
              * for clarification purposes by Reps with the customer. For this purpose,
@@ -101,7 +102,8 @@ class NCFCreditReportService implements ICreditReportService {
                 statusDescription = "Credit report found. "
                 if(countReasonCode > 0) {
                   statusDescription += countReasonCode + " reason code(s) found."  
-                  statusCode =  CreditStatusExt.TC_CREDIT_RECEIVED_WITH_REASON_ENTRY           
+                  statusCode =  CreditStatusExt.TC_CREDIT_RECEIVED_WITH_REASON_ENTRY
+
                 }
             }              
             creditReportResponse = new CreditReportResponse
@@ -123,7 +125,7 @@ class NCFCreditReportService implements ICreditReportService {
                                       .withSocialSecurityNumber(subject.Subject.Ssn)
                                       .withGender(subject.Subject.Gender as java.lang.String)
                                       .withScoreDate(ncfReport.Admin.DateRequestCompleted as java.util.Date)
-                                      .withOrderedDate(ncfReport.Admin.DateRequestOrdered as java.util.Date)   
+                                      .withReferenceNumber(ncfReport.Admin.ProductReference)
                                       .withAddressDiscrepancyInd( isOrderCurrentAddressDiffThanVendors )                                                                                                                                                                             
                                       .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
                                       .create()
@@ -179,6 +181,8 @@ class NCFCreditReportService implements ICreditReportService {
     // Products
     // a) Build subject first
     order.Dataset.Subjects.Subject[0].Id = "S0"
+
+
     var subject = order.Dataset.Subjects.Subject[0]
 
     subject.Quoteback = request.toString()
@@ -219,7 +223,10 @@ class NCFCreditReportService implements ICreditReportService {
    }
   
     order.Products.NationalCreditFile[0].PrimarySubject = subject
-    //order.Products.NationalCreditFile[0].ReportCode = "2121"
+    order.Products.NationalCreditFile[0].ReportCode ="1337"
+    order.Products.NationalCreditFile[0].Vendor = Equifax
+    order.Products.NationalCreditFile[0].Format = CP_XML
+    //order.Products.NationalCreditFile[0]. = "C1"
 
     return order
   }

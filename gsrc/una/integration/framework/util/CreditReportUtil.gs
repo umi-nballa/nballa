@@ -125,7 +125,7 @@ public class CreditReportUtil {
    
   /**
    * The credit report is required for policies which meet these three conditions:
-   * 1) This is a Personal Auto policy.
+   * 1) This is a Homeowners policy.
    * 2) The primary named insured is a person (not a company).
    * 3) The age of the primary insured is less than the "CreditReportMinimumAge" script parameter.
    * Did 
@@ -133,7 +133,7 @@ public class CreditReportUtil {
    * this in case other lines (i.e. Commercial Auto) get added to this requirement in the future.
    * 
    * For the age requirement, policy holder date-of-birth may not be available (according to OOTB configuration).
-   * Therefore, for this accelerator, we will require credit reporting for all ages UNLESS the age is defined 
+   * Therefore, for this implementation, we will require credit reporting for all ages UNLESS the age is defined
    * and under our minimum age.
   */
   @Param("period", "PolicyPeriod instance for which the credit report is being inquired")

@@ -6,6 +6,8 @@ uses gw.validation.PCValidationContext
 uses gw.api.util.Logger
 uses una.integration.service.creditreport.CreditReportServiceFactory
 uses una.integration.framework.util.CreditReportUtil
+uses java.util.Map
+uses java.util.HashMap
 
 /**
  * Validates request and delegates it to the service
@@ -121,7 +123,15 @@ class CreditReportRequestDispatcher extends PCValidationBase {
     creditReportExt.FolderID = creditReportResponse.FolderID
     creditReportExt.CreditStatus = creditReportResponse.StatusCode
     creditReportExt.CreditStatusDescription = creditReportResponse.StatusDescription
-    
+    creditReportExt.ProductReferenceNumber = creditReportResponse.ReferenceNumber
+    if(creditReportResponse.Reasons <> null){
+      creditReportResponse.Reasons.eachKeyAndValue( \ code,val -> {
+          var creditStatReason  = new CreditStatusReason(_policyPeriod)
+          creditStatReason.CreditStatusReasonCode = code as java.lang.Integer
+          creditStatReason.CreditStatusReasonDesc = val
+          creditReportExt.addToCreditStatusReasons(creditStatReason)
+        })
+     }
     creditReportExt.FirstName = creditReportResponse.FirstName
     creditReportExt.MiddleName = creditReportResponse.MiddleName
     creditReportExt.LastName = creditReportResponse.LastName

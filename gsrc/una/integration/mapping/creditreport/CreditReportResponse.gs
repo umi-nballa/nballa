@@ -2,7 +2,6 @@ package una.integration.mapping.creditreport
 
 uses typekey.State
 uses typekey.CreditStatusExt
-
 uses java.util.Date
 uses java.util.Map
 uses java.util.HashMap
@@ -31,6 +30,8 @@ class CreditReportResponse {
   private var _orderedDate : Date as OrderedDate
   private var _publicID : String as PublicID
   private var _gender : String as Gender
+
+  private var _referenceNumber : String as ReferenceNumber
   
   // This may need to be persisted for post notification or reporting purposes to customers 
   // who have received adverse or substandard rates. This is usually state-driven.
@@ -91,6 +92,8 @@ class CreditReportResponse {
     private var _statusCode : CreditStatusExt
     private var _statusDescription : String    
     private var _reasons : Map<String, String> = new HashMap<String, String>()
+
+    private var _referenceNumber : String
  
     construct() {
     }
@@ -249,7 +252,14 @@ class CreditReportResponse {
       }
       return this
     }
-  
+
+    public function withReferenceNumber(referenceNumber:String) : Builder {
+
+      this._referenceNumber = referenceNumber
+
+      return this
+    }
+
     public function create() : CreditReportResponse {
         
       return new CreditReportResponse(this)
@@ -283,9 +293,11 @@ class CreditReportResponse {
     this.FolderID = builder._folderId
     this.StatusCode = builder._statusCode
     this.StatusDescription = builder._statusDescription
- 
-    this.Reasons.putAll(builder._reasons)
+
+    this._reasons.putAll(builder._reasons)
     builder._reasons.clear()
     builder._reasons = null
+
+    this._referenceNumber = builder._referenceNumber
   }
 }

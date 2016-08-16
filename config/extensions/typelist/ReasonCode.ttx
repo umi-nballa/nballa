@@ -5,8 +5,8 @@
   name="ReasonCode">
   <typecode
     code="nonpayment"
-    desc="Payment not received"
-    name="Non-payment">
+    desc="Policy Cancelled by Carrier - Non-Payment of Policy Premium  "
+    name="Nonpayment of Premium">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -14,7 +14,24 @@
   <typecode
     code="fraud"
     desc="Fraud"
-    name="Fraud">
+    name="Fraud"
+    retired="true">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="flatrewrite"
+    desc="Policy Cancellation Requested By Named Insured - Rewriting Coverage Under &quot;Name of Underwriting Company&quot; - Policy # "
+    name="Policy rewritten or replaced (flat cancel)">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="midtermrewrite"
+    desc="Policy Cancellation Requested By Named Insured - Rewriting Coverage Under &quot;Name of Underwriting Company&quot; - Policy # "
+    name="Policy rewritten (mid-term)">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -22,7 +39,8 @@
   <typecode
     code="nottaken"
     desc="Policy not-taken"
-    name="Policy not-taken">
+    name="Policy not-taken"
+    retired="true">
     <category
       code="insured"
       typelist="CancellationSource"/>
@@ -41,8 +59,8 @@
   </typecode>
   <typecode
     code="sold"
-    desc="Out of business/sold"
-    name="Out of business/sold">
+    desc="Policy Cancellation Requested By Named Insured - Property Sold"
+    name="Property Sold">
     <category
       code="insured"
       typelist="CancellationSource"/>
@@ -50,7 +68,8 @@
   <typecode
     code="noemployee"
     desc="No employees/operations"
-    name="No employees/operations">
+    name="No employees/operations"
+    retired="true">
     <category
       code="insured"
       typelist="CancellationSource"/>
@@ -58,7 +77,8 @@
   <typecode
     code="noc"
     desc="Insured's request - N.O.C"
-    name="Insured's request - N.O.C">
+    name="Insured's request - N.O.C"
+    retired="true">
     <category
       code="NotTakenAck"
       typelist="LetterType"/>
@@ -69,7 +89,8 @@
   <typecode
     code="fincononpay"
     desc="Insured's request - (Finance co. nonpay)"
-    name="Insured's request - (finance co. nonpay)">
+    name="Insured's request - (finance co. nonpay)"
+    retired="true">
     <category
       code="insured"
       typelist="CancellationSource"/>
@@ -77,7 +98,8 @@
   <typecode
     code="violation"
     desc="Violation of health, safety, fire, or codes"
-    name="Violation of health, safety, fire, or codes">
+    name="Violation of health, safety, fire, or codes"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -85,7 +107,8 @@
   <typecode
     code="vacant"
     desc="Vacant; below occupancy limit"
-    name="Vacant; below occupancy limit">
+    name="Vacant; below occupancy limit"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -93,7 +116,8 @@
   <typecode
     code="uwreasons"
     desc="Underwriting reasons"
-    name="Underwriting reasons">
+    name="Underwriting reasons"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -101,31 +125,16 @@
   <typecode
     code="suspension"
     desc="Suspension or revocation of license or permits"
-    name="Suspension or revocation of license or permits">
+    name="Suspension or revocation of license or permits"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
   </typecode>
   <typecode
     code="riskchange"
-    desc="Substantial change in risk or increase in hazard"
-    name="Substantial change in risk or increase in hazard">
-    <category
-      code="carrier"
-      typelist="CancellationSource"/>
-  </typecode>
-  <typecode
-    code="flatrewrite"
-    desc="Policy rewritten or replaced (flat cancel)"
-    name="Policy rewritten or replaced (flat cancel)">
-    <category
-      code="carrier"
-      typelist="CancellationSource"/>
-  </typecode>
-  <typecode
-    code="midtermrewrite"
-    desc="Policy rewritten (mid-term)"
-    name="Policy rewritten (mid-term)">
+    desc="There has been a substantial change in the exposure insured against. The change(s) in risk that resulted in the cancellation is/are noted below:"
+    name="Substantial Change in Risk">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -133,7 +142,8 @@
   <typecode
     code="wrapup"
     desc="Participation in wrap-up complete"
-    name="Participation in wrap-up complete">
+    name="Participation in wrap-up complete"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -141,7 +151,8 @@
   <typecode
     code="nonreport"
     desc="Non-report of payroll or failure to cooperate"
-    name="Non-report of payroll or failure to cooperate">
+    name="Non-report of payroll or failure to cooperate"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -149,7 +160,8 @@
   <typecode
     code="nondisclose"
     desc="Non disclosure of losses or underwriting information"
-    name="Non disclosure of losses or underwriting information">
+    name="Non disclosure of losses or underwriting information"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -157,7 +169,8 @@
   <typecode
     code="eligibility"
     desc="No longer eligible for group or program"
-    name="No longer eligible for group or program">
+    name="No longer eligible for group or program"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -165,7 +178,8 @@
   <typecode
     code="reinsurance"
     desc="Loss of reinsurance"
-    name="Loss of reinsurance">
+    name="Loss of reinsurance"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -173,7 +187,8 @@
   <typecode
     code="failcoop"
     desc="Failure to cooperate"
-    name="Failure to cooperate">
+    name="Failure to cooperate"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -181,7 +196,8 @@
   <typecode
     code="failterm"
     desc="Failure to comply with terms and conditions"
-    name="Failure to comply with terms and conditions">
+    name="Failure to comply with terms and conditions"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -189,7 +205,8 @@
   <typecode
     code="failsafe"
     desc="Failure to comply with safety recommendations"
-    name="Failure to comply with safety recommendations">
+    name="Failure to comply with safety recommendations"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -197,7 +214,8 @@
   <typecode
     code="criminal"
     desc="Criminal conduct by the insured"
-    name="Criminal conduct by the insured">
+    name="Criminal conduct by the insured"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -205,7 +223,8 @@
   <typecode
     code="condemn"
     desc="Condemned/unsafe"
-    name="Condemned/unsafe">
+    name="Condemned/unsafe"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
@@ -213,15 +232,16 @@
   <typecode
     code="cancel"
     desc="Cancellation of underlying insurance"
-    name="Cancellation of underlying insurance">
+    name="Cancellation of underlying insurance"
+    retired="true">
     <category
       code="carrier"
       typelist="CancellationSource"/>
   </typecode>
   <typecode
     code="LossHistory"
-    desc="Loss history"
-    name="Loss history">
+    desc="The decision to cancel your policy is based on the following:"
+    name="Loss History">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -229,7 +249,8 @@
   <typecode
     code="OpsChars"
     desc="Operations characteristics"
-    name="Operations characteristics">
+    name="Operations characteristics"
+    retired="true">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -237,7 +258,8 @@
   <typecode
     code="ProductsChars"
     desc="Products characteristics"
-    name="Products characteristics">
+    name="Products characteristics"
+    retired="true">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -245,7 +267,8 @@
   <typecode
     code="PaymentHistory"
     desc="Payment history"
-    name="Payment history">
+    name="Payment history"
+    retired="true">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -253,7 +276,8 @@
   <typecode
     code="ProdRequirements"
     desc="Does not meet program/product requirements"
-    name="Does not meet program/product requirements">
+    name="Does not meet program/product requirements"
+    retired="true">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -261,7 +285,8 @@
   <typecode
     code="CovsNotAvailable"
     desc="Requested coverages/limits not available"
-    name="Requested coverages/limits not available">
+    name="Requested coverages/limits not available"
+    retired="true">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -269,9 +294,255 @@
   <typecode
     code="InfoNotProvided"
     desc="Required information not provided"
-    name="Required information not provided">
+    name="Required information not provided"
+    retired="true">
     <category
       code="Declination"
       typelist="LetterType"/>
   </typecode>
+  <typecode
+    code="RiskCharacteristics"
+    desc="The following ineligible exposure(s) resulted in policy cancellation:"
+    name="Risk Characteristics">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="BusinessClosed"
+    desc="Policy Cancellation Requested By Named Insured - Business Closed"
+    name="Business Closed">
+    <category
+      code="insured"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="CoveragePlacedElsewhere"
+    desc="Policy Cancellation Requested By Named Insured - Coverage Placed Elsewhere"
+    name="Coverage Placed Elsewhere">
+    <category
+      code="insured"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="AgentOfRecordChange"
+    desc="Policy Cancellation Requested By Named Insured - Agent of Record Change"
+    name="Agent of Record Change">
+    <category
+      code="insured"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="PolicyRewritten"
+    desc="Policy Cancellation Requested By Named Insured - Rewriting Coverage Under Universal Insurance Company of North America - Policy # "
+    name="Policy Rewrite">
+    <category
+      code="insured"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="OtherNotProvided"
+    desc="Policy Cancellation Requested By Named Insured"
+    name="Other/Not Provided"
+    priority="1">
+    <category
+      code="insured"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="SelfInsure"
+    desc="Self InsurePolicy Cancellation Requested By Named Insured - Insured Self Insuring Risk"
+    name="Self Insure">
+    <category
+      code="insured"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="Documentation"
+    desc="Failure to provide the following documentation/information resulted in policy cancellation: "
+    name="Documentation/Information Not Received">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="CombinationOfFactors"
+    desc="A combination of the following factors has resulted in policy cancellation: "
+    name="Combination of Factors">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="Foreclosure"
+    desc="Foreclosure"
+    name="Foreclosure">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="Other"
+    desc="Other"
+    name="Other">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="IneligibleOperations"
+    desc="Policy Cancelled by Carrier - Ineligible Operations "
+    name="Ineligible Operations">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="IneligibleTenants"
+    desc="Policy Cancelled by Carrier - Ineligible Tenants "
+    name="Ineligible Tenants">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="UnderwritingDocNotProvided"
+    desc="Policy Cancelled by Carrier - Failure to Provide Requested Underwriting Documentation: "
+    name="Failure to Provide Requested Underwriting Documentation">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="FailToComplyUnderwritingRequirementsIn90Days"
+    desc="Policy Cancelled by Carrier - Failure to comply, within 90 days after the date of effectuation of coverage, with underwriting requirements established by the insurer before the date of effectuation of coverage:  "
+    name="Failure To Comply With Underwriting Requirements Established By The Insurer Within 90 Days of Policy Inception">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="FailToComplyUnderwritingRequirementsOut90Days"
+    desc="Policy Cancelled by Carrier - Failure To Comply With Underwriting Requirements:"
+    name="Failure To Comply With Underwriting Requirements  ">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="AgentLeftUICNA"
+    desc="Policy Cancelled by Carrier - Agent No Longer Appointed With Universal Insurance Company of North America."
+    name="Agent No Longer Appointed With UICNA">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="PremiumFinanceCompanyRequest"
+    desc="Policy Cancelled by Carrier - Premium Finance Company Request"
+    name="Premium Finance Company Request">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typecode
+    code="DuplicateCoverage"
+    desc="Policy Cancelled by Carrier - Duplicate Coverage"
+    name="Duplicate Coverage">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typefilter
+    desc="Commercial - BOP or CPP - lines reason codes"
+    includeAll="true"
+    name="CommercialLinesReasonCodes">
+    <exclude
+      code="CombinationOfFactors"/>
+    <exclude
+      code="Documentation"/>
+    <exclude
+      code="Foreclosure"/>
+    <exclude
+      code="RiskCharacteristics"/>
+    <exclude
+      code="nonpayment"/>
+  </typefilter>
+  <typefilter
+    desc="Personal Lines (HO) reason codes types"
+    includeAll="true"
+    name="PersonalLinesReasonCodeTypes">
+    <exclude
+      code="AgentLeftUICNA"/>
+    <exclude
+      code="AgentOfRecordChange"/>
+    <exclude
+      code="BusinessClosed"/>
+    <exclude
+      code="FailToComplyUnderwritingRequirementsIn90Days"/>
+    <exclude
+      code="FailToComplyUnderwritingRequirementsOut90Days"/>
+    <exclude
+      code="IneligibleOperations"/>
+    <exclude
+      code="IneligibleTenants"/>
+    <exclude
+      code="PremiumFinanceCompanyRequest"/>
+    <exclude
+      code="SelfInsure"/>
+    <exclude
+      code="UnderwritingDocNotProvided"/>
+    <exclude
+      code="nonpayment"/>
+  </typefilter>
+  <typecode
+    code="RenewalNotTaken"
+    desc="Policy Cancellation Requested By Named Insured - Coverage Placed Elsewhere"
+    name="Renewal Not Taken">
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
+  </typecode>
+  <typefilter
+    desc="Reason codes that allow backdating of the effective date"
+    name="BackdatableReasonCodes">
+    <include
+      code="AgentOfRecordChange"/>
+    <include
+      code="BusinessClosed"/>
+    <include
+      code="CoveragePlacedElsewhere"/>
+    <include
+      code="DuplicateCoverage"/>
+    <include
+      code="flatrewrite"/>
+    <include
+      code="midtermrewrite"/>
+    <include
+      code="nonpayment"/>
+    <include
+      code="OtherNotProvided"/>
+    <include
+      code="PolicyRewritten"/>
+    <include
+      code="PremiumFinanceCompanyRequest"/>
+    <include
+      code="RenewalNotTaken"/>
+    <include
+      code="sold"/>
+  </typefilter>
+  <typefilter
+    desc="Discovery Period Types"
+    name="DiscoveryPeriodTypes">
+    <include
+      code="RiskCharacteristics"/>
+    <include
+      code="CombinationOfFactors"/>
+    <include
+      code="Documentation"/>
+    <include
+      code="LossHistory"/>
+    <include
+      code="riskchange"/>
+  </typefilter>
 </typelistextension>

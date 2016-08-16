@@ -2,6 +2,7 @@ package una.enhancements.java
 
 uses java.util.Date
 uses java.lang.IllegalStateException
+uses gw.api.util.DateUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -69,5 +70,19 @@ enhancement UNADateEnhancement_Ext : java.util.Date {
 
   public function trimToMidnightPlusOne() : Date {
     return this.trimToMidnight().addMinutes(1)
+  }
+
+  public function orNextBusinessDay(location : Address) : Date {
+    var result = this
+
+    if(location == null){
+      throw new IllegalStateException("Cannot evaluate 'orNextBusinessDay' with a null address provision.")
+    }
+
+    while(!DateUtil.isBusinessDay(result, location)){
+      result = result.addDays(1)
+    }
+
+    return result
   }
 }

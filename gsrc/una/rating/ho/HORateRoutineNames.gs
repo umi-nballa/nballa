@@ -26,4 +26,5 @@ public final class HORateRoutineNames {
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeRateRoutine"
   public static final var AGE_OF_HOME_DISCOUNT_RATE_ROUTINE : String = "UNAHOAgeOfHomeDiscountRateRoutine"
   public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDevicesCreditRateRoutine"
+  public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
 }

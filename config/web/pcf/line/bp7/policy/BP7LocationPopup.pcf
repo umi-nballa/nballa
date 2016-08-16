@@ -117,12 +117,18 @@
                   <PostOnChange/>
                 </TypeKeyInput>
               </InputSet>
-              <Input
+              <!-- <Input
                 editable="true"
                 formatType="phoneNumber"
                 id="Phone"
                 label="displaykey.Web.Policy.LocationContainer.Location.Phone"
                 validationExpression="gw.api.util.PhoneUtil.isValidExtension(polLocation.AccountLocation.Phone)"
+                value="polLocation.AccountLocation.Phone"/> -->
+              <TextInput
+                editable="true"
+                id="phone1"
+                inputMask="&quot;###-###-####&quot;"
+                label="displaykey.Web.Policy.LocationContainer.Location.Phone"
                 value="polLocation.AccountLocation.Phone"/>
               <PickerInput
                 available="gw.api.domain.StateSet.get(&quot;TaxLocation&quot;).contains(polLocation.State)"

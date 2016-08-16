@@ -45,18 +45,16 @@
       recalculateOnRefresh="true"
       type="boolean"/>
     <Variable
-      initialValue="job.findValidRefundMethods(policyPeriod.PeriodStart)"
-      name="refundMethods"
-      recalculateOnRefresh="true"/>
+      initialValue="new una.pageprocess.cancellation.CancellationPCFController (job, policyPeriod)"
+      name="pcfController"/>
     <Variable
-      initialValue="null"
-      name="refundCalcMethod"
-      type="CalculationMethod"/>
+      initialValue="Cancellation.findUWPeriodEnd(policyPeriod)"
+      name="uwPeriodEnd"/>
     <Screen
       id="StartCancellationScreen">
       <Toolbar>
         <ToolbarButton
-          action="if (job.startJobAndCommit(policy, effectiveDate, refundCalcMethod, CurrentLocation)) {CancellationWizard.go(job, job.LatestPeriod)                         }"
+          action="if (job.startJobAndCommit(policy, effectiveDate, pcfController.CancellationRefundMethod, CurrentLocation)) {CancellationWizard.go(job, job.LatestPeriod)                         }"
           available="policy.canStartCancellation(effectiveDate) == null"
           confirmMessage="confirmationMessage()"
           id="NewCancellation"
@@ -78,7 +76,8 @@
         warning="true"/>
       <DetailViewPanel
         id="CancelPolicyDV">
-        <InputColumn>
+        <InputColumn
+          width="50%">
           <!-- The cancellation source determines which reason codes are available -->
           <TypeKeyInput
             editable="true"
@@ -87,49 +86,127 @@
             label="displaykey.Web.CancellationWizard.Source"
             required="true"
             value="job.Source">
-            <PostOnChange
-              onChange="job.CancelReasonCode = null; refundCalcMethod = null; effectiveDate = null"/>
+            <PostOnChange/>
           </TypeKeyInput>
           <!-- Setting the reason code can also set a default refund calculation method and effective date -->
           <TypeKeyInput
             editable="true"
+            filter="pcfController.getCancelReasonCodes(VALUES)"
             id="Reason"
             label="displaykey.Web.CancellationWizard.Reason"
             required="true"
             value="job.CancelReasonCode">
             <PostOnChange
-              onChange="refundCalcMethod = job.calculateRefundCalcMethod(policyPeriod); effectiveDate = job.CancelReasonCode != null ? job.getDefaultEffectiveDate(policyPeriod, refundCalcMethod) : effectiveDate;job.Description=job.CancelReasonCode.Description"/>
+              onChange="effectiveDate = job.CancelReasonCode != null ? job.getDefaultEffectiveDate(policyPeriod, pcfController.CancellationRefundMethod) : effectiveDate;job.Description=job.CancelReasonCode.Description; pcfController.onChangeReasonCode(job.CancelReasonCode, effectiveDate)"/>
           </TypeKeyInput>
-          <!-- The description field doesn't affect any other fields on this page -->
+          <Label
+            label="displaykey.una.cancellation.CancelReasonDetails"
+            visible="pcfController.areCancelReasonDetailsVisible()"/>
+          <ListViewInput
+            labelAbove="true"
+            visible="pcfController.areCancelReasonDetailsVisible()"
+            width="50%">
+            <Toolbar>
+              <IteratorButtons
+                iterator="CRDetail"
+                showAddConfirmMessage="false"
+                showRemoveConfirmMessage="false"/>
+            </Toolbar>
+            <ListViewPanel
+              id="CancelReasonDetailLV">
+              <RowIterator
+                autoAdd="job.CancelReasonDetails.Count == 0 "
+                editable="true"
+                elementName="cancelReasonDetail"
+                hasCheckBoxes="true"
+                hideCheckBoxesIfReadOnly="true"
+                id="CRDetail"
+                toAdd="job.addToCancelReasonDetails(cancelReasonDetail)"
+                toRemove="job.removeFromCancelReasonDetails(cancelReasonDetail)"
+                value="job.CancelReasonDetails">
+                <Row>
+                  <RangeCell
+                    editable="true"
+                    id="ReasonDetailCode"
+                    label="&quot;Cancel Reason Detail&quot;"
+                    required="true"
+                    value="cancelReasonDetail.Code"
+                    valueRange="pcfController.ReasonDetailRange">
+                    <PostOnChange
+                      onChange="pcfController.onChangeReasonDetailCode(cancelReasonDetail)"/>
+                  </RangeCell>
+                  <TextCell
+                    editable="true"
+                    id="description"
+                    label="&quot;Reason Description&quot;"
+                    required="true"
+                    value="cancelReasonDetail.Description">
+                    <PostOnChange/>
+                  </TextCell>
+                </Row>
+              </RowIterator>
+            </ListViewPanel>
+          </ListViewInput>
           <TextAreaInput
+            align="center"
+            boldValue="true"
+            editable="pcfController.isReasonDescriptionEditable()"
+            id="CumulativeDescription"
+            label="displaykey.Web.CancellationWizard.ReasonDescription"
+            maxChars="811"
+            numCols="65"
+            numRows="5"
+            value="pcfController.CumulativeReasonDetailsDescription"/>
+          <!-- <TextAreaInput
             editable="true"
             id="ReasonDescription"
             label="displaykey.Web.CancellationWizard.ReasonDescription"
             numCols="30"
             numRows="3"
-            value="job.Description"/>
+            value="job.Description"/> -->
           <!-- Refund calculation method is not editable for rewrites -->
           <RangeInput
-            editable="perm.System.canceloverrefund and job.CancelReasonCode != &quot;flatrewrite&quot; and job.CancelReasonCode != &quot;midtermrewrite&quot; and refundMethods.Count != 1"
             id="CalcMethod"
             label="displaykey.Web.CancellationWizard.CalcMethod"
             required="true"
-            value="refundCalcMethod"
-            valueRange="refundMethods">
+            value="pcfController.CancellationRefundMethod"
+            valueRange="{pcfController.CancellationRefundMethod}">
             <PostOnChange
-              onChange="effectiveDate = job.CancelReasonCode != null ? job.getDefaultEffectiveDate(policyPeriod, refundCalcMethod) : effectiveDate"/>
+              onChange="effectiveDate = job.CancelReasonCode != null ? job.getDefaultEffectiveDate(policyPeriod, pcfController.CancellationRefundMethod) : effectiveDate"/>
           </RangeInput>
           <!-- Effective date is only editable if the refund method is not "flat" and the period is issued.  If date's time component is not editable, need to apply effective time plugin. -->
           <DateTimeInput
             editable="job.canEnterInitialEffectiveDate(policyPeriod, effectiveDate)"
             id="CancelDate"
             label="displaykey.Web.CancellationWizard.CancelDate"
-            onChange="if (effectiveDate != null) { effectiveDate = gw.api.job.EffectiveDateCalculator.instance().getCancellationEffectiveDate(effectiveDate, policyPeriod, job, refundCalcMethod) }"
+            onChange="pcfController.onChangeCancelEffectiveDate(effectiveDate)"
             required="true"
             timeVisible="false"
-            validationExpression="job.validateEffectiveDate(policyPeriod, effectiveDate, refundCalcMethod)"
+            validationExpression="job.validateEffectiveDate(policyPeriod, effectiveDate, pcfController.CancellationRefundMethod)"
             value="effectiveDate"/>
+          <DateTimeInput
+            editable="true"
+            id="MailDate"
+            label="displaykey.una.cancellation.CancellationMailDate"
+            onChange="pcfController.onChangeMailDate(job.CancelLetterMailDate)"
+            required="true"
+            timeVisible="false"
+            validationExpression="pcfController.validateMailDate()"
+            value="pcfController.CancellationLetterMailDate"/>
+          <Input
+            id="NumberOfDaysNotice"
+            label="displaykey.una.cancellation.NumberOfDaysNotice"
+            required="false"
+            value="pcfController.NumberOfDaysNotice"/>
+          <CheckBoxInput
+            editable="true"
+            id="SuppressPrint"
+            label="displaykey.una.cancellation.SupressPrint"
+            required="false"
+            value="job.SupressPrint"/>
         </InputColumn>
+        <InputColumn
+          width="50%"/>
       </DetailViewPanel>
     </Screen>
     <Code><![CDATA[function confirmationMessage() : String {

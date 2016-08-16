@@ -77,6 +77,9 @@ class HPXDwellMapper {
             numFamilies.setText(4)
             numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_FOUR.Description)
             break
+        default :
+          numFamilies.setText(1)
+          numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_ONE.Description)
       }
       dwellingInspectionValuation.addChild(numFamilies)
       dwellingInspectionValuation.addChild(numFamiliesDesc)
@@ -158,6 +161,10 @@ class HPXDwellMapper {
             dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.UNOCC)
             dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
             break
+        // TODO map non-owner
+        default :
+          dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.OT)
+          dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
       }
     }
     dwellOccupancy.addChild(dwellOccupancyType)

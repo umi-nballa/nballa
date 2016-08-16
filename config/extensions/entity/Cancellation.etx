@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="Cancellation">
+  <array
+    arrayentity="CancelReasonDetail"
+    arrayfield="Cancellation"
+    cascadeDelete="true"
+    desc="The associated cancellation reason details"
+    name="CancelReasonDetails"/>
+  <column
+    desc="The calculated mail date of the cancellation notification letter"
+    name="CancelLetterMailDate"
+    nullok="false"
+    type="datetime"/>
+  <column
+    desc="Holds cancellation description data.  This can either be free form or an accumulation of cancel reason details"
+    name="CancellationDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="811"/>
+  </column>
+</extension>

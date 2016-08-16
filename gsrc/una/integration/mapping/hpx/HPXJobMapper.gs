@@ -106,34 +106,41 @@ class HPXJobMapper {
     var previousPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.PreviousPremiumAmt()
     var previousAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
     var previousPremiumMonetaryAmt = policyPeriod.getOriginalValue("TotalPremiumRPT") as gw.pl.currency.MonetaryAmount
-    previousAmt.setText(previousPremiumMonetaryAmt.Amount)
-    previousPremiumAmt.addChild(previousAmt)
-    endorsementInfo.addChild(previousPremiumAmt)
+    if (previousPremiumMonetaryAmt != null) {
+      previousAmt.setText(previousPremiumMonetaryAmt.Amount)
+      previousPremiumAmt.addChild(previousAmt)
+      endorsementInfo.addChild(previousPremiumAmt)
+    }
     var newPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NewPremiumAmt()
     var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    amt.setText(policyPeriod.TotalPremiumRPT.Amount)
-    newPremiumAmt.addChild(amt)
-    endorsementInfo.addChild(newPremiumAmt)
-    var premiumDifference = policyPeriod.TotalPremiumRPT.Amount - previousPremiumMonetaryAmt.Amount
-    if (premiumDifference >= 0) {
-      // Additional Premium amt
-      var additionalPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.AdditionalPremiumAmt()
-      var additionalAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-      additionalAmt.setText(premiumDifference)
-      additionalPremiumAmt.addChild(additionalAmt)
-      endorsementInfo.addChild(additionalPremiumAmt)
-    } else {
-      var returnPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.ReturnPremiumAmt()
-      var returnAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-      returnAmt.setText(premiumDifference)
-      returnPremiumAmt.addChild(returnAmt)
-      endorsementInfo.addChild(returnPremiumAmt)
+    if (policyPeriod.TotalPremiumRPT.Amount != null) {
+      amt.setText(policyPeriod.TotalPremiumRPT.Amount)
+      newPremiumAmt.addChild(amt)
+      endorsementInfo.addChild(newPremiumAmt)
     }
-    var netPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NetPremiumAmt()
-    var netAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    netAmt.setText(premiumDifference)
-    netPremiumAmt.addChild(netAmt)
-    endorsementInfo.addChild(netPremiumAmt)
+    if (policyPeriod.TotalPremiumRPT.Amount != null and previousPremiumMonetaryAmt.Amount != null)
+    {
+      var premiumDifference = policyPeriod.TotalPremiumRPT.Amount - previousPremiumMonetaryAmt.Amount
+      if (premiumDifference >= 0) {
+        // Additional Premium amt
+        var additionalPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.AdditionalPremiumAmt()
+        var additionalAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+        additionalAmt.setText(premiumDifference)
+        additionalPremiumAmt.addChild(additionalAmt)
+        endorsementInfo.addChild(additionalPremiumAmt)
+      } else {
+        var returnPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.ReturnPremiumAmt()
+        var returnAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+        returnAmt.setText(premiumDifference)
+        returnPremiumAmt.addChild(returnAmt)
+        endorsementInfo.addChild(returnPremiumAmt)
+      }
+      var netPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NetPremiumAmt()
+      var netAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+      netAmt.setText(premiumDifference)
+      netPremiumAmt.addChild(netAmt)
+      endorsementInfo.addChild(netPremiumAmt)
+    }
     var premiumChanges = premiumMapper.createPremiumInfo(policyPeriod)
     for (premiumChange in premiumChanges) {
       endorsementInfo.addChild(premiumChange)

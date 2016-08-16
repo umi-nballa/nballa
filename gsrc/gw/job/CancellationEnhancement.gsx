@@ -5,6 +5,7 @@ uses gw.api.database.Relop
 uses gw.plugin.Plugins
 uses gw.plugin.notification.INotificationPlugin
 uses gw.api.job.EffectiveDateCalculator
+uses una.notifications.NotificationTypeEvolver
 
 enhancement CancellationEnhancement : Cancellation {
   /**
@@ -23,7 +24,7 @@ enhancement CancellationEnhancement : Cancellation {
 
   function canEnterInitialEffectiveDate(inForcePeriod: PolicyPeriod, defaultEffectiveDate : DateTime) : boolean {
     if (inForcePeriod.Locked or inForcePeriod.Job.IntrinsicType != Cancellation) {
-      var refundCalcMethod = calculateRefundCalcMethod(inForcePeriod)
+      var refundCalcMethod = CalculationMethod.TC_PRORATA
       return (perm.System.cancelovereffdate)
         and refundCalcMethod != null
         and refundCalcMethod != "flat"
@@ -80,7 +81,8 @@ enhancement CancellationEnhancement : Cancellation {
       var formatString = displaykey.Web.CancellationSetup.Error.DateFormatString
       if (this.CancelReasonCode != null) {
         var earliestDate = getEarliestEffectiveDate(inForcePeriod, refundCalcMethod)
-        if (newEffectiveDate < earliestDate) {
+
+        if (newEffectiveDate < earliestDate and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(this.CancelReasonCode)) {
           var effDateStr = newEffectiveDate.format(formatString)
           var earliestDateStr = earliestDate.format(formatString)
           return displaykey.Web.CancellationSetup.Error.EffectiveDateTooEarly(effDateStr, earliestDateStr)
@@ -124,11 +126,12 @@ enhancement CancellationEnhancement : Cancellation {
     if (canCancelFromPeriodStart(inForcePeriod, refundCalcMethod)) {
       return inForcePeriod.PeriodStart
     }
-    var initialProcessingDate = this.InitialNotificationDate != null ? this.InitialNotificationDate : DateTime.CurrentDate
+    var initialDate = (this.CancelLetterMailDate == null) ? this.CancelLetterMailDate : DateTime.CurrentDate.addDays(1).orNextBusinessDay(inForcePeriod.ProducerCodeOfRecord.Address)
+    var initialProcessingDate = this.InitialNotificationDate != null ? this.InitialNotificationDate : initialDate
     var leadTimeCalculator = new CancellationLeadTimeCalculator(this.CancelReasonCode,
       inForcePeriod.AllPolicyLinePatternsAndJurisdictions,
       initialProcessingDate,
-      initialProcessingDate <= findUWPeriodEnd(inForcePeriod))
+      initialProcessingDate <= findUWPeriodEnd(inForcePeriod), inForcePeriod)
     var leadTime = leadTimeCalculator.calculateMaximumLeadTime()
     if (leadTime == null) {
       // the correct behavior would be to set leadTime to 0, but to maintain backward compatibility,
@@ -223,7 +226,7 @@ enhancement CancellationEnhancement : Cancellation {
     var notificationPlugin = Plugins.get(INotificationPlugin)
     var lineToJurisdictions = inForcePeriod.AllPolicyLinePatternsAndJurisdictions
     var uwPeriodLength = notificationPlugin.getMinimumLeadTime(
-      inForcePeriod.PeriodStart, lineToJurisdictions, NotificationActionType.TC_UWPERIOD)
+      inForcePeriod.PeriodStart, lineToJurisdictions, new NotificationTypeEvolver(inForcePeriod).evolveActionType(NotificationActionType.TC_UWPERIOD))
 
     return startDate.addDays(uwPeriodLength)
   }

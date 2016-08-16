@@ -37,6 +37,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   function createDwell(policyPeriod : PolicyPeriod,
                        coverage : wsi.schema.una.hpx.hpx_application_request.Coverage) : wsi.schema.una.hpx.hpx_application_request.Dwell {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
+    var coverageMapper = new HPXCoverageMapper()
     var additionalInterests = additionalInterestMapper.createAdditionalInterests(policyPeriod.HomeownersLine_HOE.Dwelling.AdditionalInterestDetails)
     var loc = createLocation(policyPeriod)
     for (additionalInterest in additionalInterests) {
@@ -47,7 +48,11 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var dwell = dwellMapper.createDwell(policyPeriod)
     dwell.addChild(dwellConstructionMapper.createDwellConstruction(policyPeriod))
     dwell.addChild(loc)
-    dwell.addChild(coverage)
+    //dwell.addChild(coverage)
+    var covs = coverageMapper.createCoverages(policyPeriod)
+    for (cov in covs) {
+      dwell.addChild(cov)
+    }
     return dwell
   }
 }

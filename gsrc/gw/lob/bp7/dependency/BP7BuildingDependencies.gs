@@ -36,14 +36,14 @@ class BP7BuildingDependencies extends AbstractFieldDependency<BP7Building> {
         displaykey.Web.Policy.BP7.Building.EffectivenessGrade, 
         building.BldgCodeEffGrade.DisplayName)
     }
-
-    if (building.PctOwnerOccupied != percentageOwnerOccupied()) {
+    //Uim-svallabhapurapu : BOP story - PctOwnerOccupied field has been unavailable so commenting below validation
+    /*if (building.PctOwnerOccupied != percentageOwnerOccupied()) {
       addDependentValueError(
         valContext,
         BP7Building#PctOwnerOccupied.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.PctOwnerOccupied, 
         building.PctOwnerOccupied.DisplayName)
-    }
+    }*/
   }
   
   override protected property get Children() : List<FieldDependency> {

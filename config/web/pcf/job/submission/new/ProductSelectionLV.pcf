@@ -34,7 +34,8 @@
           visible="createSingle"
           width="75">
           <Link
-            action="una.pageprocess.SubmissionWizardHelper.isSameProduct(productOffer, account); una.pageprocess.SubmissionWizardHelper.doesProducerHaveJurisdiction(producerSelection.Producer);gw.web.job.submission.NewSubmissionUIHelper.createOneSubmission(productOffer, producerSelection, account, quoteType) // updated calls for UNA"
+            action="una.pageprocess.SubmissionWizardHelper.isSameProduct(productOffer, account); una.pageprocess.SubmissionWizardHelper.doesProducerHaveJurisdiction(producerSelection.Producer);gw.web.job.submission.NewSubmissionUIHelper.createOneSubmission(productOffer, producerSelection, account, quoteType);"
+            available="una.pageprocess.SubmissionWizardHelper.isThisProductAvailable(producerSelection,productOffer)"
             id="addSubmission"
             label="displaykey.Web.Submission.Products.Select"
             recalculateArgOnRefresh="true"
@@ -65,7 +66,7 @@
           align="left"
           id="Status"
           label="displaykey.Web.SubmissionManagerLV.Status"
-          value="productOffer.ProductSelectionStatus"/>
+          value="una.pageprocess.SubmissionWizardHelper.whatIsTheProductStatus(producerSelection,productOffer,productOffer.ProductSelectionStatus.Description)"/>
         <Cell
           align="left"
           id="MaxCreate"

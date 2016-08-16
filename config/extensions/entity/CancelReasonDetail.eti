@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Contains the cancellation reason details, including a reasoncode and editable description"
+  entity="CancelReasonDetail"
+  exportable="true"
+  table="cancel_reason_detail"
+  type="retireable">
+  <typekey
+    desc="The cancel reason detail typecode"
+    name="Code"
+    nullok="false"
+    typelist="CancelReasonDetailType"/>
+  <column
+    desc="Cancellation reason detail description"
+    name="Description"
+    nullok="false"
+    type="mediumtext"/>
+  <foreignkey
+    desc="The related cancellation job"
+    fkentity="Cancellation"
+    name="Cancellation"
+    nullok="false"/>
+</entity>

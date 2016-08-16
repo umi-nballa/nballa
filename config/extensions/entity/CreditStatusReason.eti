@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Credit Status Reason on Credit Report"
+  effDatedBranchType="PolicyPeriod"
+  entity="CreditStatusReason"
+  exportable="true"
+  table="creditstatusreason"
+  type="effdated">
+  <column
+    loadable="false"
+    name="CreditStatusReasonCode"
+    nullok="true"
+    type="integer"/>
+  <column
+    columnName="creditstatusreasondesc"
+    desc="CreditStatusReasonDescription"
+    name="CreditStatusReasonDesc"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="120"/>
+  </column>
+  <foreignkey
+    desc="FK reference to Credit Reports"
+    fkentity="CreditReportExt"
+    name="CreditReportExt"
+    nullok="false"/>
+</entity>

@@ -19,6 +19,7 @@ class HOBasePremiumRaterTX {
   private static var BASE_PREMIUM_RATE_ROUTINE = "UNAHODwellingPremRate"
   private static var HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE = "UNAHOReplacementCostRateRoutine"
   private static var HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE = "UNAHOReplacementCostPersonalPropertyRateRoutine"
+  private static var HOA_PLUS_COVERAGE_RATE_ROUTINE = "UNAHOAPlusCoverageRateRoutine"
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
@@ -79,9 +80,13 @@ class HOBasePremiumRaterTX {
       if(dwellingValuation == "Replacement Cost"){
         routines.add(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
-      } else if(dwellingValuation == "Replacement Cost with Roof Surfacing"){
+      } else{
         routines.add(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTCOVERAGEWITHROOFSURFACING)
+      }
+      if(_dwelling.HODW_AdditionalPerilCov_HOE_ExtExists){
+        routines.add(HOA_PLUS_COVERAGE_RATE_ROUTINE)
+        _routinesToCostTypeMapping.put(HOA_PLUS_COVERAGE_RATE_ROUTINE, HOCostType_Ext.TC_HOAPLUSCOVERAGE)
       }
     }
     if(_dwelling.HODW_Personal_Property_HOEExists){

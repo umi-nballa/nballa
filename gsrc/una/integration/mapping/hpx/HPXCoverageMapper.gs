@@ -106,7 +106,7 @@ class HPXCoverageMapper {
       } else if (covTerm typeis OptionCovTerm) {
         value = covTerm.Value
       }
-      if (value >= 0) {
+      if (value != "" and value >= 0) {
         if (covTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
           var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
           var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()

@@ -100,13 +100,13 @@ class HPXCoverageMapper {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.Deductible()
       var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
       var deductibleDesc = new wsi.schema.una.hpx.hpx_application_request.DeductibleDesc()
-      var value = 0.00
+      var value = -1.00
       if(covTerm typeis DirectCovTerm){
         value = covTerm.Value
       } else if (covTerm typeis OptionCovTerm) {
         value = covTerm.Value
       }
-      if (value  > 0) {
+      if (value >= 0) {
         if (covTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
           var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
           var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()

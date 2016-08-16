@@ -97,6 +97,7 @@ class HPXDwellMapper {
   }
 
   function createDwellOccupancy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellOccupancy{
+    var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
     var dwellOccupancy = new wsi.schema.una.hpx.hpx_application_request.DwellOccupancy()
     var residenceTypeCode = new wsi.schema.una.hpx.hpx_application_request.ResidenceTypeCd()
     var residenceTypeDesc = new wsi.schema.una.hpx.hpx_application_request.ResidenceTypeDesc()
@@ -148,27 +149,11 @@ class HPXDwellMapper {
     var dwellOccupancyType = new wsi.schema.una.hpx.hpx_application_request.OccupancyTypeCd()
     var dwellOccupancyTypeDesc = new wsi.schema.una.hpx.hpx_application_request.OccupancyTypeDesc()
     if(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy != null) {
-      switch (policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy) {
-        case typekey.DwellingOccupancyType_HOE.TC_OWNER :
-            dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.OWNER)
-            dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
-            break
-        case typekey.DwellingOccupancyType_HOE.TC_TENANT :
-            dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.TENAN)
-            dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
-            break
-        case typekey.DwellingOccupancyType_HOE.TC_VACANT :
-            dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.UNOCC)
-            dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
-            break
-        // TODO map non-owner
-        default :
-          dwellOccupancyType.setText(wsi.schema.una.hpx.hpx_application_request.enums.OccupancyType.OT)
-          dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
-      }
+      dwellOccupancyType.setText(typecodeMapper.getAliasByInternalCode("DwellingOccupancyType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy))
+      dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
+      dwellOccupancy.addChild(dwellOccupancyType)
+      dwellOccupancy.addChild(dwellOccupancyTypeDesc)
     }
-    dwellOccupancy.addChild(dwellOccupancyType)
-    dwellOccupancy.addChild(dwellOccupancyTypeDesc)
     return dwellOccupancy
   }
 

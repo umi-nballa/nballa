@@ -1,0 +1,54 @@
+<?xml version="1.0"?>
+<definitions targetNamespace="http://www.cp.rules/web-services/interactiveorderhandler" name="InteractiveOrderHandler" xmlns="http://schemas.xmlsoap.org/wsdl/" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tns="http://www.cp.rules/web-services/interactiveorderhandler" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+    <types>
+        <xsd:schema targetNamespace="http://www.cp.rules/web-services/interactiveorderhandler">
+            <!-- Created by Wsdl2Gosu -->
+            <xsd:element name="handleInteractiveOrder">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="string" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+            <!-- Created by Wsdl2Gosu -->
+            <xsd:element name="handleInteractiveOrderResponse">
+                <xsd:complexType>
+                    <xsd:sequence>
+                        <xsd:element name="response" type="xsd:string"/>
+                    </xsd:sequence>
+                </xsd:complexType>
+            </xsd:element>
+        </xsd:schema>
+    </types>
+    <message name="InteractiveOrderHandler_handleInteractiveOrder">
+        <part name="input" element="tns:handleInteractiveOrder"/>
+    </message>
+    <message name="InteractiveOrderHandler_handleInteractiveOrderResponse">
+        <part name="input" element="tns:handleInteractiveOrderResponse"/>
+    </message>
+    <portType name="InteractiveOrderHandler">
+        <operation name="handleInteractiveOrder" parameterOrder="string">
+            <input message="tns:InteractiveOrderHandler_handleInteractiveOrder"/>
+            <output message="tns:InteractiveOrderHandler_handleInteractiveOrderResponse"/>
+        </operation>
+    </portType>
+    <binding name="InteractiveOrderHandlerBinding" type="tns:InteractiveOrderHandler">
+        <!-- Converted from rpc style to document style by Wsdl2Gosu -->
+        <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="document"/>
+        <operation name="handleInteractiveOrder">
+            <soap:operation soapAction=""/>
+            <input>
+                <soap:body use="literal" namespace="http://www.cp.rules/web-services/interactiveorderhandler"/>
+            </input>
+            <output>
+                <soap:body use="literal" namespace="http://www.cp.rules/web-services/interactiveorderhandler"/>
+            </output>
+        </operation>
+    </binding>
+    <service name="InteractiveOrderHandler">
+        <port name="InteractiveOrderHandlerPort" binding="tns:InteractiveOrderHandlerBinding">
+            <!--<soap:address location="http://alalppnc026.choicepoint.net:8080/CPRules-rfCommunicationEJB/InteractiveOrderHandlerURI"/> -->
+            <soap:address location="http://alalppnc026-new.risk.regn.net:8180/rules-ejb/InteractiveOrderHandler/InteractiveOrderHandler"/>
+        </port>
+    </service>
+</definitions>

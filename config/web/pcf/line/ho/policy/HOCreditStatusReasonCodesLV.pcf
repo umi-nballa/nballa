@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <ListViewPanel
+    id="HOCreditStatusReasonCodesLV">
+    <Require
+      name="creditReport"
+      type="CreditReportExt"/>
+    <RowIterator
+      editable="false"
+      elementName="creditStatusReason"
+      id="creditStatusReason"
+      value="creditReport.CreditStatusReasons">
+      <Row>
+        <Cell
+          id="ReasonCode"
+          label="displaykey.Web.SubmissionWizard.CreditReporting.ReasonCode"
+          value="creditStatusReason.CreditStatusReasonCode"/>
+        <Cell
+          id="ReasonDescription"
+          label="displaykey.Web.SubmissionWizard.CreditReporting.ReasonDescription"
+          value="creditStatusReason.CreditStatusReasonDesc"/>
+      </Row>
+    </RowIterator>
+  </ListViewPanel>
+</PCF>

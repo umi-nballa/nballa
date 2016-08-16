@@ -34,7 +34,7 @@
           priority="100"
           public-id="za2ge92pp83p72b9m2racpund5a"
           value="1000.0000">
-          <AvailabilityScript><![CDATA[return gw.lob.ho.CovTermEnhancement_Ext.isLossAssessmentLimitOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
         </CovTermOpt>
         <CovTermOpt
           codeIdentifier="z9hi2fepn4onj13ie1f2vu9j57a"
@@ -43,7 +43,7 @@
           priority="200"
           public-id="z9hi2fepn4onj13ie1f2vu9j57a"
           value="2000">
-          <AvailabilityScript><![CDATA[return gw.lob.ho.CovTermEnhancement_Ext.isLossAssessmentLimitOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
         </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zbuh6n23m6ml129kskccbff3rg8"
@@ -87,7 +87,7 @@
           priority="1400"
           public-id="zr8jm9vnajtub0amfit9okvnv28"
           value="0">
-          <AvailabilityScript><![CDATA[return gw.lob.ho.CovTermEnhancement_Ext.isLossAssessmentLimitOptionAvailable(CovTermOpt, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).HOLine)]]></AvailabilityScript>
         </CovTermOpt>
         <CovTermOpt
           codeIdentifier="z3ggifqd2s51m406huvjueb3lea"
@@ -151,6 +151,7 @@
       required="false"
       restrictionModel="prp"
       valueType="other">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HOPL_SpecialLimitDeductibleAssessment_HOE", HomeownersLine_HOE)]]></AvailabilityScript>
       <LimitsSet/>
     </DirectCovTermPattern>
     <OptionCovTermPattern
@@ -162,6 +163,7 @@
       public-id="HOPL_SpecialLimitDeductibleAssessment_HOE"
       required="true"
       valueType="other">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HOPL_SpecialLimitDeductibleAssessment_HOE", HomeownersLine_HOE)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt

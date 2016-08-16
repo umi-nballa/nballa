@@ -74,16 +74,24 @@
                 value="acctLocation.NonSpecific">
                 <PostOnChange/>
               </BooleanRadioInput>
-              <Input
+              <!-- <Input
                 editable="true"
                 id="LocationCode"
                 label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
-                value="polLocation.AccountLocation.LocationCode"/>
+                value="polLocation.AccountLocation.LocationCode"/> -->
               <Input
                 editable="true"
                 id="LocationName"
                 label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
                 value="polLocation.AccountLocation.LocationName"/>
+              <Input
+                editable="true"
+                id="inspectioncontact"
+                label="displaykey.Web.Policy.LocationContainer.Location.InspectionContact"
+                required="false"
+                value="polLocation.InspectionContact">
+                <PostOnChange/>
+              </Input>
               <InputSetRef
                 def="AddressInputSet(new gw.pcf.policylocation.PolicyLocationAddressOwner(polLocation))"
                 mode="polLocation.CountryCode"
@@ -109,9 +117,17 @@
                   <PostOnChange/>
                 </TypeKeyInput>
               </InputSet>
-              <Input
+              <!-- <Input
                 editable="true"
+                formatType="phoneNumber"
                 id="Phone"
+                label="displaykey.Web.Policy.LocationContainer.Location.Phone"
+                validationExpression="gw.api.util.PhoneUtil.isValidExtension(polLocation.AccountLocation.Phone)"
+                value="polLocation.AccountLocation.Phone"/> -->
+              <TextInput
+                editable="true"
+                id="phone1"
+                inputMask="&quot;###-###-####&quot;"
                 label="displaykey.Web.Policy.LocationContainer.Location.Phone"
                 value="polLocation.AccountLocation.Phone"/>
               <PickerInput

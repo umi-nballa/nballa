@@ -40,6 +40,12 @@
           iterator="BuildingsEdit_LV"
           removeConfirmMessage="displaykey.Web.Policy.BP7.Building.RemoveBuildingsConfirmMsg"
           removeLabel="displaykey.Web.Policy.BP7.Building.RemoveBuildings"/>
+        <CheckedValuesToolbarButton
+          checkedRowAction="cloneBuilding(CheckedValue);jobWizardHelper.Wizard.refreshCurrentStep()"
+          id="clone"
+          iterator="BuildingsEdit_LV"
+          label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
+          visible="policyPeriod.Status == &quot;Draft&quot;"/>
       </Toolbar>
       <ListDetailPanel
         id="BuildingsEdit_DP"
@@ -92,5 +98,11 @@
           visible="policyPeriod.BP7Line.BP7Locations*.Buildings.Count &gt; 0 and selectedBuilding != null"/>
       </ListDetailPanel>
     </PanelRef>
+    <Code><![CDATA[//uim-svallabhapurapu : BOP building clone functionality
+function cloneBuilding(bldg : BP7Building) : BP7Building{
+ 
+  var cloneBldg = bldg.copyBuilding(jobWizardHelper)
+ return cloneBldg
+}]]></Code>
   </PanelSet>
 </PCF>

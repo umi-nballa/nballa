@@ -57,4 +57,17 @@ class HPXCompositionUnitMapper {
     }
     return documentComposition
   }
+
+  function createCompositionUnit(policyPeriod : PolicyPeriod)  : wsi.schema.una.hpx.hpx_application_request.CompositionUnit {
+    var forms = policyPeriod.NewlyAddedForms
+    var compositionUnitMapper = new HPXCompositionUnitMapper()
+    var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.DocumentForm>()
+    var recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
+    var documentForm1 = compositionUnitMapper.createDocumentForm("HO03170901","English","HO03170901", new java.util.Date(),"07-02", false)
+    var documentForm2 = compositionUnitMapper.createDocumentForm("HO04411000","English","HO04411000", new java.util.Date(),"07-02", false)
+    documentForms.add(documentForm1)
+    documentForms.add(documentForm2)
+    var compositionUnit = createCompositionUnit(recipient, documentForms)
+    return compositionUnit
+  }
 }

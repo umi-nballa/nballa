@@ -88,9 +88,12 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
       case HOPolicyType_HOE.TC_HO6 :
         _homeownersBaseRate = 100000
         break
-      case HOPolicyType_HOE.TC_DP2 :
+      case HOPolicyType_HOE.TC_DP3_EXT :
         _homeownersBaseRate = 100000
         break
+      case HOPolicyType_HOE.TC_LPP_EXT :
+          _homeownersBaseRate = 100000
+          break
       default :
         PCFinancialsLogger.logDebug( "Unkown base premium for  ${(theLine.HOPolicyType)}")
     }
@@ -136,12 +139,18 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
         limit = lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
         break
       case HOPolicyType_HOE.TC_HO6 :
-        limit = null/*(lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
+        limit = 100000/*(lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
               + lineVersion.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value) */
         break
       case HOPolicyType_HOE.TC_DP2 :
         limit = lineVersion.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
         break
+      case HOPolicyType_HOE.TC_DP3_EXT :
+          limit = 100000
+          break
+      case HOPolicyType_HOE.TC_LPP_EXT :
+          limit = 100000
+          break
       default :
         PCFinancialsLogger.logDebug( "Unkown limt for  ${(lineVersion.HOPolicyType)}")
     }

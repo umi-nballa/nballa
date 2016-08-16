@@ -5,6 +5,7 @@ uses java.lang.Integer
 uses gw.plugin.notification.impl.NotificationPluginNoMatchException
 uses java.util.Map
 uses gw.api.productmodel.PolicyLinePattern
+uses una.notifications.NotificationTypeEvolver
 
 /**
  * Calculates the maximum lead time a cancellation job needs to send its notifications.
@@ -15,6 +16,7 @@ class CancellationLeadTimeCalculator {
   var _cancellationReasonCode : ReasonCode
   var _lineToJurisdictions : Map<PolicyLinePattern, Jurisdiction[]>
   var _inUWPeriod : boolean
+  var _policyPeriod : PolicyPeriod
   
   protected construct() {}  // protected for testing
   
@@ -25,11 +27,12 @@ class CancellationLeadTimeCalculator {
    * attempting to calculate the lead time, the cancellation reason code and if we're within the
    * underwriting period.
    */
-  construct(cancellationReasonCode : ReasonCode, lineToJurisdictions : Map<PolicyLinePattern, Jurisdiction[]>, processingDate : DateTime, inUWPeriod : boolean) {
+  construct(cancellationReasonCode : ReasonCode, lineToJurisdictions : Map<PolicyLinePattern, Jurisdiction[]>, processingDate : DateTime, inUWPeriod : boolean, policyPeriod : PolicyPeriod) {
     _cancellationReasonCode = cancellationReasonCode
     _lineToJurisdictions = lineToJurisdictions
     _processingDate = processingDate
     _inUWPeriod = inUWPeriod
+    _policyPeriod = policyPeriod
   }
   
   /**
@@ -82,7 +85,13 @@ class CancellationLeadTimeCalculator {
     }
     var leadTime = getMaximumLeadTimeForActionType(NotificationActionType.TC_UWOTHERCANCEL)
     if (leadTime == null) {
-      leadTime = getMaximumLeadTimeForCategory(NotificationCategory.TC_UWCANCEL)
+      var actionTypeForCategory = new NotificationTypeEvolver(_policyPeriod).inferActionType(TC_UWCANCEL)
+
+      if(actionTypeForCategory != null){
+        leadTime = getMaximumLeadTimeForActionType(actionTypeForCategory)
+      }else{
+        leadTime = getMaximumLeadTimeForCategory(NotificationCategory.TC_UWCANCEL)
+      }
     }
     return leadTime
   }
@@ -108,7 +117,7 @@ class CancellationLeadTimeCalculator {
     if (actionType == null) {
       return null
     } 
-     
+
     var leadTime = wrapPluginCall(\ p -> p.getMaximumLeadTime(_processingDate, _lineToJurisdictions, actionType))   
     return leadTime
   }

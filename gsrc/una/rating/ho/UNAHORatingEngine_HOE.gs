@@ -47,9 +47,15 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
 
-      if(_baseState == typekey.Jurisdiction.TC_TX){
+      if(_baseState == typekey.Jurisdiction.TC_TX || _baseState == typekey.Jurisdiction.TC_AZ || _baseState == typekey.Jurisdiction.TC_CA
+         || _baseState == typekey.Jurisdiction.TC_NV){
         //rate base premium
         rateHOBasePremium(lineVersion.Dwelling, RateCache, sliceRange)
+
+        //rate Discounts and Credits
+        _logger.info("Rating Discounts and Surcharges")
+        rateHOLineCosts(sliceRange)
+        _logger.info("Discounts and Surcharges rating done")
 
         //rate line level coverages
         _logger.info("Rating Line Level HO Coverages")
@@ -63,12 +69,14 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         }
         _logger.info("Done rating Dwelling Level HO Coverages")
 
-        rateDiscountsOrSurcharges(sliceRange)
+        //Add the minimum premium adjustment, if the total premium is less than minimum premium
+        rateManualPremiumAdjustment(sliceRange)
       }
     }
   }
 
   override protected function rateWindow(line: HomeownersLine_HOE) {
+    //ratePolicyFee(line)
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
@@ -87,6 +95,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         break
       case DwellingCovCost_HOE:
         cd = new DwellingCovCostData_HOE(c, RateCache)
+        break
+      case HomeownersLineCost_EXT:
+        cd = new HomeownersLineCostData_HOE(c, RateCache)
         break
     }
     return cd
@@ -110,5 +121,15 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   /**
    * Rate the discounts and Surcharges
   */
-  function rateDiscountsOrSurcharges(dateRange : DateRange){}
+  function rateHOLineCosts(dateRange : DateRange){}
+
+  /**
+  * Rate the manual premium Adjustment
+   */
+  function rateManualPremiumAdjustment(dateRange : DateRange){}
+
+  /**
+   * Rate the Policy fee
+   */
+  function ratePolicyFee(line: HomeownersLine_HOE){}
 }

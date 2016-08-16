@@ -20,7 +20,8 @@ class HPXProducerMapper {
 
   function createProducerRoleCode(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.ProducerRoleCd {
     var producerRoleCode = new wsi.schema.una.hpx.hpx_application_request.ProducerRoleCd()
-      producerRoleCode.setText(policyPeriod.EffectiveDatedFields.ProducerCode.ProducerCodeRoles[0].Role)
+    // TODO - map producer types
+      producerRoleCode.setText("Producer")
     return producerRoleCode
   }
 

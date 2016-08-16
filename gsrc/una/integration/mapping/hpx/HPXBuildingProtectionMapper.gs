@@ -63,6 +63,7 @@ class HPXBuildingProtectionMapper {
         case typekey.BurglarAlarmType_HOE.TC_LOCAL :
             protectionDeviceBurglarCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.LO)
             break
+        default : protectionDeviceBurglarCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.OT)
       }
       bldgProtection.addChild(protectionDeviceBurglarCd)
       var protectionDeviceBurglarDesc = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceBurglarDesc()
@@ -81,6 +82,7 @@ class HPXBuildingProtectionMapper {
         case typekey.SprinklerSystemType_HOE.TC_PARTIAL :
             protectionDeviceSprinklerCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.PT)
             break
+        default : protectionDeviceSprinklerCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.OT)
       }
       bldgProtection.addChild(protectionDeviceSprinklerCd)
       var protectionDeviceSprinklerDesc = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceSprinklerDesc()

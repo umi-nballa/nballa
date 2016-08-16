@@ -1,29 +1,92 @@
 <?xml version="1.0"?>
-<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyPeriod">
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="PolicyPeriod">
   <!-- Line-specific transaction arrays.  Since the lines could be removed in a multi-line policy, but still need transactions generated
        in order to refund money for that line, we can't rely on attaching the transactions to the line or on getting the transactions
-       off of the line.-->
-  <array arrayentity="BATransaction" cascadeDelete="true" name="BATransactions" owner="true"/>
-  <array arrayentity="BOPTransaction" cascadeDelete="true" name="BOPTransactions" owner="true"/>
-  <array arrayentity="CPTransaction" cascadeDelete="true" name="CPTransactions" owner="true"/>
-  <array arrayentity="GLTransaction" cascadeDelete="true" name="GLTransactions" owner="true"/>
-  <array arrayentity="IMTransaction" cascadeDelete="true" name="IMTransactions" owner="true"/>
-  <array arrayentity="PATransaction" cascadeDelete="true" name="PATransactions" owner="true"/>
-  <array arrayentity="WCTransaction" cascadeDelete="true" name="WCTransactions" owner="true"/>
-  <array arrayentity="HOTransaction_HOE" cascadeDelete="true" name="HOTransactions" owner="true"/>
-  <array arrayentity="BP7Transaction" cascadeDelete="true" name="BP7Transactions" owner="true"/>
+       off of the line. -->
+  <array
+    arrayentity="BATransaction"
+    cascadeDelete="true"
+    name="BATransactions"
+    owner="true"/>
+  <array
+    arrayentity="BOPTransaction"
+    cascadeDelete="true"
+    name="BOPTransactions"
+    owner="true"/>
+  <array
+    arrayentity="CPTransaction"
+    cascadeDelete="true"
+    name="CPTransactions"
+    owner="true"/>
+  <array
+    arrayentity="GLTransaction"
+    cascadeDelete="true"
+    name="GLTransactions"
+    owner="true"/>
+  <array
+    arrayentity="IMTransaction"
+    cascadeDelete="true"
+    name="IMTransactions"
+    owner="true"/>
+  <array
+    arrayentity="PATransaction"
+    cascadeDelete="true"
+    name="PATransactions"
+    owner="true"/>
+  <array
+    arrayentity="WCTransaction"
+    cascadeDelete="true"
+    name="WCTransactions"
+    owner="true"/>
+  <array
+    arrayentity="HOTransaction_HOE"
+    cascadeDelete="true"
+    name="HOTransactions"
+    owner="true"/>
+  <array
+    arrayentity="BP7Transaction"
+    cascadeDelete="true"
+    name="BP7Transactions"
+    owner="true"/>
   <!-- Insert transaction arrays for additional lines here -->
-  <index desc="Performance index to address problems with consistency checks on policy periods." name="PPPerf1" unique="true">
-    <indexcol keyposition="1" name="ID"/>
-    <indexcol keyposition="2" name="PeriodStart"/>
-    <indexcol keyposition="3" name="PeriodEnd"/>
+  <index
+    desc="Performance index to address problems with consistency checks on policy periods."
+    name="PPPerf1"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="ID"/>
+    <indexcol
+      keyposition="2"
+      name="PeriodStart"/>
+    <indexcol
+      keyposition="3"
+      name="PeriodEnd"/>
   </index>
-  <index desc="Performance index to address problems with consistency checks on policy periods linked to policies." name="PPPerf2" unique="true" expectedtobecovering="true">
-    <indexcol keyposition="1" name="PolicyID"/>
-    <indexcol keyposition="2" name="Retired"/>
-    <indexcol keyposition="3" name="ID"/>
+  <index
+    desc="Performance index to address problems with consistency checks on policy periods linked to policies."
+    expectedtobecovering="true"
+    name="PPPerf2"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="PolicyID"/>
+    <indexcol
+      keyposition="2"
+      name="Retired"/>
+    <indexcol
+      keyposition="3"
+      name="ID"/>
   </index>
-  <edgeForeignKey nullok="true" desc="The primary DBA for this Policy" edgeTableName="PrimPcDBA" exportasid="true" fkentity="PolicyDBARole_Ext" name="PrimaryDBA"/>
+  <edgeForeignKey
+    desc="The primary DBA for this Policy"
+    edgeTableName="PrimPcDBA"
+    exportasid="true"
+    fkentity="PolicyDBARole_Ext"
+    name="PrimaryDBA"
+    nullok="true"/>
  <!-- Credit related fields -->
   <edgeForeignKey
     desc="Associated Credit Information (credit level or credit report)"
@@ -32,4 +95,27 @@
     fkentity="CreditInfoExt"
     name="CreditInfoExt"
     nullok="true"/>
+  <column
+    desc="Consent to rate"
+    name="ConsenttoRate_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Rule 180"
+    name="Rule180_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Rate Factor"
+    name="Factor_Ext"
+    nullok="true"
+    type="decimal">
+    <columnParam
+      name="scale"
+      value="3"/>
+    <columnParam
+      name="precision"
+      value="5"/>
+  </column>
+
 </extension>

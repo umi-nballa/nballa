@@ -151,6 +151,78 @@
             warning="true"/>
         </PanelRef>
       </Card>
+      <Card
+        id="ProducerCodeDetail_ProductsCard"
+        title="displaykey.Accelerator.ProductByProducerCode.Web.Admin.ProducerCodeDetail.Products">
+        <PanelRef
+          id="toolBar">
+          <Toolbar>
+            <AddButton
+              hideIfReadOnly="true"
+              id="AddProduct"
+              iterator="ProducerCodeProducts"
+              label="displaykey.Web.Generic.Add">
+              <AddMenuItemIterator
+                elementName="product"
+                value="producerCode.RemainingProducts">
+                <IteratorSort
+                  sortBy="product.DisplayName"
+                  sortOrder="1"/>
+                <AddMenuItem
+                  id="PolicyTypeItem"
+                  iterator="ProducerCodeProducts"
+                  label="product.CodeIdentifier"
+                  toCreateAndAdd="producerCode.addProduct(product)"/>
+              </AddMenuItemIterator>
+            </AddButton>
+            <RemoveButton
+              flags="any product"
+              hideIfReadOnly="true"
+              id="RemoveProduct"
+              iterator="ProducerCodeProducts"
+              label="displaykey.Web.Generic.Remove"/>
+          </Toolbar>
+          <ListViewPanel>
+            <RowIterator
+              editable="true"
+              elementName="product"
+              hasCheckBoxes="true"
+              hideCheckBoxesIfReadOnly="true"
+              id="ProducerCodeProducts"
+              pageSize="0"
+              toRemove="producerCode.removeProduct(product)"
+              value="producerCode.getProducts()">
+              <ToolbarFlag
+                name="product"/>
+              <Row>
+                <Cell
+                  id="Name"
+                  label="displaykey.Web.Admin.FormPatternDetail.ProductsLV.Product"
+                  value="product.ProductCode"/>
+                <Cell
+                  editable="true"
+                  id="EffectiveDate"
+                  label="&quot;Effective Date&quot;"
+                  required="true"
+                  value="product.EffectiveDateExt"/>
+                <Cell
+                  editable="true"
+                  id="ExpirationDate"
+                  label="&quot;Expiration Date&quot;"
+                  required="true"
+                  validationExpression="una.pageprocess.SubmissionWizardHelper.isDateRangeValid(product.ExpirationDateExt, product.EffectiveDateExt)"
+                  value="product.ExpirationDateExt"/>
+                <Cell
+                  editable="true"
+                  id="Jurisdiction"
+                  label="&quot;Jurisdiction&quot;"
+                  required="true"
+                  value="product.JurisdictionExt"/>
+              </Row>
+            </RowIterator>
+          </ListViewPanel>
+        </PanelRef>
+      </Card>
     </CardViewPanel>
   </Screen>
 </PCF>

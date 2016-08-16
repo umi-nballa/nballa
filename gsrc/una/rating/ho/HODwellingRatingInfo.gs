@@ -47,15 +47,15 @@ class HODwellingRatingInfo {
         _personalPropertyIncreasedLimit = (_personalPropertyLimit - ppLimit)
       }
     }
-    if(dwellingCov.Dwelling.HODW_SpecificOtherStructure_HOE_ExtExists){
+    if(dwellingCov.Dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists){
       _otherStructuresIncreasedOrDecreasedLimit = (_otherStructuresLimit - (_dwellingLimit*0.1)) as int
     }
 
-    if(dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_ExtExists){
+    if(dwellingCov.Dwelling?.HODW_ResidentialGlass_HOE_ExtExists){
       _isResidentialGlassCovUnscheduled = dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue
     }
 
-    if(dwellingCov.Dwelling.HODW_UnitOwnersOutbuildingCov_HOE_ExtExists){
+    if(dwellingCov.Dwelling?.HODW_UnitOwnersOutbuildingCov_HOE_ExtExists){
       if(dwellingCov.Dwelling.HODW_UnitOwnersOutbuildingCov_HOE_Ext?.HasHODW_UnitOwnersLimit_HOETerm){
         _unitOwnersOutbuildingAndOtherStructuresLimit = dwellingCov.Dwelling.HODW_UnitOwnersOutbuildingCov_HOE_Ext?.HODW_UnitOwnersLimit_HOETerm?.Value
       } else{

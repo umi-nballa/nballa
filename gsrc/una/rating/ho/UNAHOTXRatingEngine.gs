@@ -22,6 +22,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   final static var _logger = UnaLoggerCategory.UNA_RATING
   private static final var CLASS_NAME = UNAHOTXRatingEngine.Type.DisplayName
   private var _hoRatingInfo: HORatingInfo
+
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -143,16 +144,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
   }
 
-  override function ratePolicyFee(line: HomeownersLine_HOE){
-    _logger.debug("Entering " + CLASS_NAME + ":: ratePolicyFee:", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, HOCostType_Ext.TC_POLICYFEE,RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
-      addCost(costData)
-    _logger.debug("Policy fee added Successfully", this.IntrinsicType)
-  }
-
   /**
    *  Function to rate the Seasonal Or Secondary Residence Surcharge
    */
@@ -265,7 +256,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-    _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Animal Liability Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

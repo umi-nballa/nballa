@@ -22,7 +22,7 @@ uses una.rating.ho.UNAHOTXRatingEngine
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeUtil
 uses gw.api.tree.RowTreeRootNode
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
-uses una.rating.ho.group1.UNAHOAZCANVRatingEngine
+uses una.rating.ho.group1.UNAHOGroup1RatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -232,7 +232,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       if(_line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_AZ || _line.BaseState == typekey.Jurisdiction.TC_CA)
-        return new UNAHOAZCANVRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+        return new UNAHOGroup1RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)

@@ -16,8 +16,8 @@ class CoveragePopulator extends AbstractCovTermPopulator<Coverage, Coverable> {
   }
 
   override function findEntity(model: XmlElement, parent: Coverable, bundle: Bundle): Coverage {
-    var publicID = findElement(Coverage#PublicID, model).SimpleValue.GosuValue as String
-    var covPattern = ClausePatternLookup.getCoveragePatternByPublicID(publicID)
+    var patternCode = findElement(Coverage#PatternCode, model).SimpleValue.GosuValue as String
+    var covPattern = ClausePatternLookup.getCoveragePatternByCode(patternCode)
     if (covPattern == null) {
       throw new DataMigrationNonFatalException(CODE.INVALID_COVERAGE, covPattern.PublicID)
     }

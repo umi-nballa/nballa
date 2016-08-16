@@ -114,8 +114,12 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (dwelling?.BurglarAlarm){
       rateBurglarProtectiveDevicesCredit(dateRange)
     }
-    if(PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT)
+    if(PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){
       rateAgeOfHomeDiscount(dateRange)
+    }
+    if(PolicyLine.NumAddInsured > 0){
+      rateAdditionalInsuredCoverage(dateRange)
+    }
   }
 
   /**
@@ -315,18 +319,17 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
 
-  function rateAdditionalInsuredCoverage(lineVersion: HomeownersLine_HOE, dateRange: DateRange) {
-    /*_logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredCoverage to rate Additional Insured Coverage", this.IntrinsicType)
-    var lineRatingInfo = new HOLineRatingInfo(lineVersion)
-    var costData = new HomeownersCovCostData_HOE(dateRange.start, dateRange.end, lineVersion.PreferredCoverageCurrency, RateCache, lineVersion.FixedId, HOLineCostType_Ext.TC_ADDITIONALINSURED)
-    costData.init(PolicyLine)
-    costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
-    var rateRoutineParameterMap = getLineCovParameterSet(costData, lineRatingInfo)
-    Executor.execute(HORateRoutineNames.LOSS_ASSESSMENT_COV_TX_ROUTINE_NAME, lineCov, rateRoutineParameterMap, costData)
-    costData.copyStandardColumnsToActualColumns()
-    if(costData != null)
+  function rateAdditionalInsuredCoverage(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredCoverage to rate Additional Insured Coverage", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, HOCostType_Ext.TC_ADDITIONALINSURED,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.AdditionalInsuredPremium = costData?.ActualTermAmount
+    if (costData != null)
       addCost(costData)
-    _logger.debug("Loss Assessment Coverage Rated Successfully", this.IntrinsicType) */
+    _logger.debug("Additional Insured Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

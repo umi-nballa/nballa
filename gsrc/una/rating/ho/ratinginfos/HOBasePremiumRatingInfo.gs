@@ -22,6 +22,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
 
   var _replacementCostDwellingCoverage : String as ReplacementCostDwellingCoverage
   var _windOrHailExclusion : boolean as WindOrHailExclusion
+  var _isAdditionalPerilCoverageExist : boolean as IsAdditionalPerilCoverageExist
 
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
@@ -37,6 +38,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
         _replacementCostDwellingCoverage = "RCSR"
       }
     }
+    _isAdditionalPerilCoverageExist = dwelling.HODW_AdditionalPerilCov_HOE_ExtExists
+
     _county = (dwelling?.HOLocation?.PolicyLocation?.County != null)? dwelling?.HOLocation?.PolicyLocation?.County : ""
     _windOrHailExclusion = dwelling.HOLine?.HODW_WindHurricaneHailExc_HOE_ExtExists
 

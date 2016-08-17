@@ -12,7 +12,7 @@ uses java.util.Date
 class HOCommonBasePremiumRatingInfo {
 
   var _territoryCode: String as TerritoryCode
-  var _dwellingLimit: BigDecimal as DwellingLimit
+  var _dwellingLimit: int as DwellingLimit
   var _policyType: String as PolicyType
   var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
   var _creditScore: int as CreditScore

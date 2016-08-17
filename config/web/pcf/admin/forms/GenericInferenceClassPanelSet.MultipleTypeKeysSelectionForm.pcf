@@ -50,5 +50,21 @@
           value="formPattern.CoverableTypeKeyExistsOnAll"/>
       </InputColumn>
     </DetailViewPanel>
+    <DetailViewPanel>
+      <InputColumn>
+        <PickerInput
+          editable="true"
+          freeInputEnabled="false"
+          id="ClausePatternSelection"
+          label="displaykey.Web.Admin.FormPatternDetail.InferenceDV.ClausePattern"
+          onPick="gw.api.web.PebblesUtil.invalidateIterators(CurrentLocation, entity.FormPatternCovTerm)"
+          pickLocation="FormClausePatternSelectionPopup.push(formPattern)"
+          required="false"
+          value="formPattern.ClausePattern">
+          <PostOnChange
+            onChange="formPattern.clearDependentClausePatternSelections()"/>
+        </PickerInput>
+      </InputColumn>
+    </DetailViewPanel>
   </PanelSet>
 </PCF>

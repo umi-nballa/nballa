@@ -100,43 +100,45 @@ class HPXCoverageMapper {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.Deductible()
       var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
       var deductibleDesc = new wsi.schema.una.hpx.hpx_application_request.DeductibleDesc()
-      var value = 0.00
+      var value = -1.00
       if(covTerm typeis DirectCovTerm){
         value = covTerm.Value
       } else if (covTerm typeis OptionCovTerm) {
         value = covTerm.Value
       }
-      if (covTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
-        var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-        var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-        var pct = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-        amt.setText(pct)
-        limitDesc.setText(covTerm.PatternCode)
-        currentTermAmount.addChild(amt)
-        limit.addChild(currentTermAmount)
-        limit.addChild(limitDesc)
-        cov.addChild(limit)
-      } else if (covTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE) {
-        if(value <= 1) {
-          var pct = new BigDecimal(value*100.00).setScale(2, BigDecimal.ROUND_HALF_UP)
-          formatPct.setText(pct.setScale(2).asString())
-          deductible.addChild(formatPct)
-          amt.setText(0.00)
-          formatCurrencyAmt.addChild(amt)
-          deductible.addChild(formatCurrencyAmt)
-        }
-        else {
+      if (value != "" and value >= 0) {
+        if (covTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
+          var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
+          var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
           var pct = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
           amt.setText(pct)
+          limitDesc.setText(covTerm.PatternCode)
+          currentTermAmount.addChild(amt)
+          limit.addChild(currentTermAmount)
+          limit.addChild(limitDesc)
+          cov.addChild(limit)
+        } else if (covTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE) {
+          if(value <= 1) {
+            var pct = new BigDecimal(value*100.00).setScale(2, BigDecimal.ROUND_HALF_UP)
+            formatPct.setText(pct.setScale(2).asString())
+            deductible.addChild(formatPct)
+            amt.setText(0.00)
+            formatCurrencyAmt.addChild(amt)
+            deductible.addChild(formatCurrencyAmt)
+          }
+          else {
+            var pct = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
+            amt.setText(pct)
+            deductibleDesc.setText(covTerm.PatternCode)
+            formatCurrencyAmt.addChild(amt)
+            deductible.addChild(formatCurrencyAmt)
+            formatPct.setText(0.00)
+            deductible.addChild(formatPct)
+          }
           deductibleDesc.setText(covTerm.PatternCode)
-          formatCurrencyAmt.addChild(amt)
-          deductible.addChild(formatCurrencyAmt)
-          formatPct.setText(0.00)
-          deductible.addChild(formatPct)
+          deductible.addChild(deductibleDesc)
+          cov.addChild(deductible)
         }
-        deductibleDesc.setText(covTerm.PatternCode)
-        deductible.addChild(deductibleDesc)
-        cov.addChild(deductible)
       }
     }
     return cov

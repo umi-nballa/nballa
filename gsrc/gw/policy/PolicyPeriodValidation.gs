@@ -22,6 +22,7 @@ uses gw.validation.ValidationUtil
 
 uses java.util.Date
 uses java.util.Map
+uses una.integration.framework.util.CreditReportUtil
 
 @Export
 class PolicyPeriodValidation extends PCValidationBase {
@@ -133,7 +134,7 @@ class PolicyPeriodValidation extends PCValidationBase {
     modifiers.each(\ m -> new ModifierValidation(Context, m).validate() )
     checkCoverageAndSettlementCurrenciesCompatible()
     checkBaseState()
-
+    validateCreditReport()
     //****** DBA Functionality*************
     checkAllDBAsValid()
     //*************************************
@@ -626,6 +627,37 @@ class PolicyPeriodValidation extends PCValidationBase {
             Result.addError(Period, _quoteRelatedThreshold,
                 displaykey.Accelerator.DBA.Policy.PolicyPeriod.Validation.ExpiredDBAs(policyCR.AccountContactRole.AccountContact.Contact.DisplayName,
                     dba.PolicyDBARole.AccountContactRole.AccountContact.Contact.DisplayName))
+          }
+        }
+      }
+    }
+  }
+/**
+   * Checks for policies which require a current credit report.
+   */
+  private function validateCreditReport() {
+    Context.addToVisited(this, "requireCreditReport")
+    // Do we require a credit report?
+    if (CreditReportUtil.isCreditReportRequired(_policyPeriod)) {
+      var creditReport = Period.CreditInfoExt.CreditReport
+      // Confirm that we have either a credit level or credit score defined.
+      if (creditReport == null && Period.CreditInfoExt.CreditLevel == null) {
+        Result.addError(Period, "default", displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditLevelScoreRequired)
+      }
+      // If we're binding the policy, we need to confirm that the customer credit score is available.
+      if (Context.isAtLeast("bindable") ) {
+        /* This code creates validation error, based on review feedback it has been replaced by UW Issue.
+                if (creditReport == null || creditReport.CreditStatus != CreditStatusExt.TC_CREDIT_RECEIVED ) {
+                  Result.addError(Period, "default", displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding)
+                }
+        */
+        // Perhaps we have a credit report, but it has already expired?
+        if (creditReport != null) {
+          // Check credit report date to see if it has expired
+          var creditReportExpirationDate = creditReport.CreditScoreDate.addDays(CreditReportUtil.getCreditReportParameters(_policyPeriod).CreditReportDaysValid)
+          if (creditReport != null && creditReportExpirationDate <= gw.api.util.DateUtil.currentDate()  ) {
+            var errorMessage = displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreExpired(creditReport.CreditScoreDate)
+            Result.addError(Period, "default", errorMessage)
           }
         }
       }

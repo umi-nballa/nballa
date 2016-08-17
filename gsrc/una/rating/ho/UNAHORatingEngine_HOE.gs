@@ -9,6 +9,8 @@ uses gw.lob.ho.rating.HomeownersCovCostData_HOE
 uses gw.lob.ho.rating.DwellingCovCostData_HOE
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
+uses java.util.Map
+uses una.rating.util.HOCreateCostDataUtil
 
 /**
  * User: bduraiswamy
@@ -71,12 +73,18 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
 
         //Add the minimum premium adjustment, if the total premium is less than minimum premium
         rateManualPremiumAdjustment(sliceRange)
+
+        //rate policyFee
+        if(((lineVersion.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION) or
+           (lineVersion.Branch.Job.Subtype == typekey.Job.TC_RENEWAL and lineVersion.BaseState != typekey.Jurisdiction.TC_NV)) and
+           (lineVersion.BaseState != typekey.Jurisdiction.TC_AZ) and (lineVersion.BaseState != typekey.Jurisdiction.TC_CA)){
+          ratePolicyFee(sliceRange)
+        }
       }
     }
   }
 
   override protected function rateWindow(line: HomeownersLine_HOE) {
-    //ratePolicyFee(line)
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
@@ -131,5 +139,16 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   /**
    * Rate the Policy fee
    */
-  function ratePolicyFee(line: HomeownersLine_HOE){}
+  function ratePolicyFee(dateRange: DateRange){
+    _logger.debug("Entering :: ratePolicyFee:", this.IntrinsicType)
+    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_STATE -> _baseState.Code
+    }
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, HOCostType_Ext.TC_POLICYFEE,RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Policy fee added Successfully", this.IntrinsicType)
+  }
 }

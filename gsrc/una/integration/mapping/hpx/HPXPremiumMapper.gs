@@ -35,8 +35,7 @@ class HPXPremiumMapper {
       premiumAmt.addChild(amt)
       premiumInfo.addChild(premiumAmt)
       var prorateFactor = new wsi.schema.una.hpx.hpx_application_request.ProRateFactor()
-      prorateFactor.setText(1.0)     //setText(policyPeriod.Cancellation.calculateRefundCalcMethod(policyPeriod))
-      // policyPeriod.Cancellation.
+      prorateFactor.setText(transaction.HomeownersCost.Proration)
       premiumInfo.addChild(prorateFactor)
       var amountDifference = (transaction.Amount - previousMonetaryAmt).Amount
       if (amountDifference >= 0) {

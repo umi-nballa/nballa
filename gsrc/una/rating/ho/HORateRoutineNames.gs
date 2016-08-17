@@ -27,4 +27,14 @@ public final class HORateRoutineNames {
   public static final var AGE_OF_HOME_DISCOUNT_RATE_ROUTINE : String = "UNAHOAgeOfHomeDiscountRateRoutine"
   public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDevicesCreditRateRoutine"
   public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
+  public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
+
+  //group1 routines
+  public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"
+  public static final var REFRIGERATED_PERSONAL_PROPERTY_COV_ROUTINE_NAME : String = "UNAHORefrigeratedPersonalPropertyCovRateRoutine"
+  public static final var INCREASED_SECTION_II_LIMITS_GROUP1_ROUTINE_NAME : String = "UNAHOIncreasedSectionIILimitsGroup1RateRoutine"
+  public static final var SPECIAL_COMPUTER_COV_ROUTINE_NAME : String = "UNAHOSpecialComputerCovRateRoutine"
+  public static final var WATER_BACKUP_SUMP_OVERFLOW_COV_ROUTINE_NAME : String = "UNAHOWaterBackupSumpOverflowCovRateRoutine"
+  public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovGroup1RateRoutine"
+
 }

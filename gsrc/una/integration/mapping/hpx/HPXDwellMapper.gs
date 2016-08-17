@@ -49,6 +49,7 @@ class HPXDwellMapper {
   }
 
   function createDwellInspectionValuation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellInspectionValuation {
+    var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
     var dwellingInspectionValuation = new wsi.schema.una.hpx.hpx_application_request.DwellInspectionValuation()
     var estimatedReplacementCostAmt = new wsi.schema.una.hpx.hpx_application_request.EstimatedReplCostAmt()
     var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
@@ -60,27 +61,8 @@ class HPXDwellMapper {
     var numFamilies = new wsi.schema.una.hpx.hpx_application_request.NumFamilies()
     var numFamiliesDesc = new wsi.schema.una.hpx.hpx_application_request.NumFamiliesDesc()
     if(policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber != null) {
-      switch (policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber) {
-        case typekey.NumUnits_HOE.TC_ONE :
-            numFamilies.setText(1)
-            numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_ONE.Description)
-            break
-        case typekey.NumUnits_HOE.TC_TWO :
-            numFamilies.setText(2)
-            numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_TWO.Description)
-            break
-        case typekey.NumUnits_HOE.TC_THREE :
-            numFamilies.setText(3)
-            numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_THREE.Description)
-            break
-        case typekey.NumUnits_HOE.TC_FOUR :
-            numFamilies.setText(4)
-            numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_FOUR.Description)
-            break
-        default :
-          numFamilies.setText(1)
-          numFamiliesDesc.setText(typekey.NumUnits_HOE.TC_ONE.Description)
-      }
+      numFamilies.setText(typecodeMapper.getAliasByInternalCode("NumUnits_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber))
+      numFamiliesDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber)
       dwellingInspectionValuation.addChild(numFamilies)
       dwellingInspectionValuation.addChild(numFamiliesDesc)
     }

@@ -181,7 +181,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
       if(hurricaneCovTerm.Value.doubleValue() < minimum){
         Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleError(hurricaneCovTerm.Pattern.Name, territoryCodes.toList(), (minimum * 100) + "%"), "HOCoverages")
       }
-    }else if(_holine.BaseState == TC_FL and (covAValue!= null and (hurricaneCovTerm.Value * covAValue) < allOtherPerilsValue)){
+    }else if(_holine.BaseState == TC_FL and (covAValue!= null and hurricaneCovTerm.Value != null and (hurricaneCovTerm.Value * covAValue) < allOtherPerilsValue)){
       Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleHurricaneAOPError, "HOCoverages")
     }
   }

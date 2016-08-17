@@ -1,12 +1,13 @@
-package una.rating.ho
+package una.rating.ho.tx
 
-uses gw.financials.PolicyPeriodFXRateCache
-uses gw.lob.common.util.DateRange
 uses java.util.Map
 uses gw.rating.CostData
+uses una.rating.ho.common.HORateRoutineExecutor
+uses gw.financials.PolicyPeriodFXRateCache
+uses una.rating.ho.ratinginfos.HORatingInfo
+uses gw.lob.common.util.DateRange
 uses una.rating.ho.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.ratinginfos.HORatingInfo
 
 /**
  * Created with IntelliJ IDEA.

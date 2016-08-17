@@ -8,8 +8,8 @@ uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.rating.rtm.query.RatingQueryFacade
 uses gw.job.RenewalProcess
 uses una.rating.ho.UNAHORatingEngine_HOE
-uses una.rating.ho.HomeownersLineCostData_HOE
-uses una.rating.ho.HORateRoutineNames
+uses una.rating.ho.common.HomeownersLineCostData_HOE
+uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.util.HOCreateCostDataUtil
 uses java.util.Map
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo

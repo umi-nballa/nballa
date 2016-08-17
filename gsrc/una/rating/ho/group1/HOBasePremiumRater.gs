@@ -6,7 +6,7 @@ uses java.util.Map
 uses gw.rating.CostData
 uses una.rating.ho.group1.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.HORateRoutineExecutor
+uses una.rating.ho.common.HORateRoutineExecutor
 uses una.rating.ho.group1.ratinginfos.HORatingInfo
 
 /**

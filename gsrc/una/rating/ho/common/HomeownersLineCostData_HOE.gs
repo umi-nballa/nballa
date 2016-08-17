@@ -1,10 +1,10 @@
-package una.rating.ho
+package una.rating.ho.common
 
+uses gw.lob.ho.rating.HOCostData_HOE
+uses gw.financials.PolicyPeriodFXRateCache
+uses java.util.Date
 uses gw.pl.persistence.core.effdate.EffDatedVersionList
 uses entity.windowed.HomeownersLineCost_EXTVersionList
-uses java.util.Date
-uses gw.financials.PolicyPeriodFXRateCache
-uses gw.lob.ho.rating.HOCostData_HOE
 
 @Export
 class HomeownersLineCostData_HOE<T extends HomeownersLineCost_EXT> extends HOCostData_HOE<T> {

@@ -18,11 +18,11 @@ uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.ho.HOE_UnderwriterEvaluator
 uses una.rating.ho.UNAHORatingEngine_HOE
-uses una.rating.ho.UNAHOTXRatingEngine
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeUtil
 uses gw.api.tree.RowTreeRootNode
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
 uses una.rating.ho.group1.UNAHOGroup1RatingEngine
+uses una.rating.ho.tx.UNAHOTXRatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl

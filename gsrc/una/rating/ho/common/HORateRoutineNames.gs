@@ -1,4 +1,4 @@
-package una.rating.ho
+package una.rating.ho.common
 
 /**
  * User: bduraiswamy

@@ -7,8 +7,8 @@ uses gw.lob.ho.rating.DwellingCovCostData_HOE
 uses gw.lob.ho.rating.HomeownersCovCostData_HOE
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.rating.CostData
-uses una.rating.ho.HomeownersLineCostData_HOE
-uses una.rating.ho.HORateRoutineExecutor
+uses una.rating.ho.common.HomeownersLineCostData_HOE
+uses una.rating.ho.common.HORateRoutineExecutor
 
 /**
  * Created with IntelliJ IDEA.

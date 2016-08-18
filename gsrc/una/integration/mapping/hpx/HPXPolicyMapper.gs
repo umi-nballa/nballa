@@ -59,6 +59,7 @@ abstract class HPXPolicyMapper {
     var transactionMapper = new HPXJobMapper ()
     var billingInfoMapper = new HPXBillingInfoMapper()
     var paymentOptionMapper = new HPXPaymentOptionMapper()
+    var priorPoliciesMapper = new HPXPriorPolicyMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
     switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
@@ -94,6 +95,11 @@ abstract class HPXPolicyMapper {
     // user
     var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
     policyInfo.addChild(jobCreationUser)
+    // prior policies
+    var priorPoliciesInfo = priorPoliciesMapper.createPriorPoliclies(policyPeriod)
+    for (priorPolicyInfo in priorPoliciesInfo) {
+      policyInfo.addChild(priorPolicyInfo)
+    }
     // billing method
     /*
     var billingMethodInfo = billingInfoMapper.createBillingMethodInfo(policyPeriod)

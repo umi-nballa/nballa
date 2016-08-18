@@ -1,12 +1,14 @@
-package una.rating.ho
+package una.rating.ho.group1
 
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.common.util.DateRange
 uses java.util.Map
 uses gw.rating.CostData
-uses una.rating.ho.ratinginfos.HOBasePremiumRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.ratinginfos.HORatingInfo
+uses una.rating.ho.common.HORateRoutineExecutor
+uses una.rating.ho.group1.ratinginfos.HORatingInfo
+uses una.rating.ho.common.HORateRoutineNames
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,12 +16,8 @@ uses una.rating.ho.ratinginfos.HORatingInfo
  * Date: 7/11/16
  * Class which rates the base premium for the texas HO policies
  */
-class HOBasePremiumRaterTX {
+class HOBasePremiumRaterGroup1 {
 
-  private static var BASE_PREMIUM_RATE_ROUTINE = "UNAHODwellingPremRate"
-  private static var HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE = "UNAHOReplacementCostRateRoutine"
-  private static var HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE = "UNAHOReplacementCostPersonalPropertyRateRoutine"
-  private static var HOA_PLUS_COVERAGE_RATE_ROUTINE = "UNAHOAPlusCoverageRateRoutine"
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
@@ -27,7 +25,9 @@ class HOBasePremiumRaterTX {
   private var _line: HomeownersLine_HOE
 
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -43,7 +43,6 @@ class HOBasePremiumRaterTX {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    routinesToExecute.add(BASE_PREMIUM_RATE_ROUTINE)
     routinesToExecute.addAll(baseRoutinesToExecute)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
     return costs
@@ -75,27 +74,12 @@ class HOBasePremiumRaterTX {
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    if (_dwelling.HODW_Dwelling_Cov_HOEExists){
-      var dwellingValuation = _dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue
-      if(dwellingValuation == "Replacement Cost"){
-        routines.add(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
-        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
-      } else{
-        routines.add(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
-        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTCOVERAGEWITHROOFSURFACING)
-      }
-      if(_dwelling.HODW_AdditionalPerilCov_HOE_ExtExists){
-        routines.add(HOA_PLUS_COVERAGE_RATE_ROUTINE)
-        _routinesToCostTypeMapping.put(HOA_PLUS_COVERAGE_RATE_ROUTINE, HOCostType_Ext.TC_HOAPLUSCOVERAGE)
-      }
-    }
-    if(_dwelling.HODW_Personal_Property_HOEExists){
-      var personalPropertyValuation = _dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.DisplayValue
-      if(personalPropertyValuation == "Replacement Cost"){
-        routines.add(HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE)
-        _routinesToCostTypeMapping.put(HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY)
-      }
-    }
+    if(_line.BaseState.Code == "AZ")
+      routines.add(HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE)
+    else if(_line.BaseState.Code == "CA")
+      routines.add(HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE)
+    else if(_line.BaseState.Code == "NV")
+      routines.add(HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE)
     return routines
   }
 
@@ -106,7 +90,6 @@ class HOBasePremiumRaterTX {
     return {
         TC_POLICYLINE -> _line,
         TC_RATINGINFO -> _hoRatingInfo,
-        TC_DWELLING_EXT -> _dwelling,
         TC_DWELLINGRATINGINFO_EXT -> basePremiumRatingInfo,
         TC_State -> _line.BaseState.Code,
         TC_COSTDATA -> costData

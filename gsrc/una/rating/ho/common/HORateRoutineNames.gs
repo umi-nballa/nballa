@@ -1,4 +1,4 @@
-package una.rating.ho
+package una.rating.ho.common
 
 /**
  * User: bduraiswamy
@@ -7,6 +7,17 @@ package una.rating.ho
  * final class with the HO Rate Routine Names.
  */
 public final class HORateRoutineNames {
+
+  //base premium routines for TX
+  public static final var BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOBasePremiumTXRateRoutine"
+  public static final var HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE : String = "UNAHOReplacementCostRateRoutine"
+  public static final var HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHOReplacementCostPersonalPropertyRateRoutine"
+  public static final var HOA_PLUS_COVERAGE_RATE_ROUTINE : String = "UNAHOAPlusCoverageRateRoutine"
+
+  //base premium routines for group 1 states
+  public static final var BASE_PREMIUM_AZ_RATE_ROUTINE : String = "UNAHOBasePremiumAZRateRoutine"
+  public static final var BASE_PREMIUM_CA_RATE_ROUTINE : String = "UNAHOBasePremiumCARateRoutine"
+  public static final var BASE_PREMIUM_NV_RATE_ROUTINE : String = "UNAHOBasePremiumNVRateRoutine"
 
   public static final var MED_PAY_TX_ROUTINE_NAME : String = "UNAHOMedicalPaymentsTXRateRoutine"
   public static final var PERSONAL_LIABILITY_TX_ROUTINE_NAME : String = "UNAHOPersonalLiabilityTXRateRoutine"

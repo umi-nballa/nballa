@@ -59,6 +59,7 @@ abstract class HPXPolicyMapper {
     var transactionMapper = new HPXJobMapper ()
     var billingInfoMapper = new HPXBillingInfoMapper()
     var paymentOptionMapper = new HPXPaymentOptionMapper()
+    var priorPoliciesMapper = new HPXPriorPolicyMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
     switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
@@ -94,6 +95,11 @@ abstract class HPXPolicyMapper {
     // user
     var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
     policyInfo.addChild(jobCreationUser)
+    // prior policies
+    var priorPoliciesInfo = priorPoliciesMapper.createPriorPoliclies(policyPeriod)
+    for (priorPolicyInfo in priorPoliciesInfo) {
+      policyInfo.addChild(priorPolicyInfo)
+    }
     // billing method
     /*
     var billingMethodInfo = billingInfoMapper.createBillingMethodInfo(policyPeriod)
@@ -107,53 +113,5 @@ abstract class HPXPolicyMapper {
     }
    */
     return policyInfo
-  }
-
-  /******************************************************** Location ***********************************************************************/
-  function createLocation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Location {
-    var location = new wsi.schema.una.hpx.hpx_application_request.Location()
-    var address = new wsi.schema.una.hpx.hpx_application_request.Addr()
-
-    var addressTypeCode = new wsi.schema.una.hpx.hpx_application_request.AddrTypeCd()
-    //addressTypeCode.setText()
-    //address.addChild(addressTypeCode)
-
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine1 != null) {
-      var addr1 = new wsi.schema.una.hpx.hpx_application_request.Addr1()
-      addr1.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine1)
-      address.addChild(addr1)
-    }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2 != null) {
-      var addr2 = new wsi.schema.una.hpx.hpx_application_request.Addr2()
-      addr2.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2)
-      address.addChild(addr2)
-    }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine3 != null) {
-      var addr3 = new wsi.schema.una.hpx.hpx_application_request.Addr3()
-      addr3.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine3)
-      address.addChild(addr3)
-    }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City != null) {
-      var city = new wsi.schema.una.hpx.hpx_application_request.City()
-      city.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City)
-      address.addChild(city)
-    }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State != null) {
-      var state = new wsi.schema.una.hpx.hpx_application_request.StateProvCd()
-      state.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State)
-      address.addChild(state)
-    }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode != null) {
-      var postalCode = new wsi.schema.una.hpx.hpx_application_request.PostalCode()
-      postalCode.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode)
-      address.addChild(postalCode)
-    }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.CountryCode != null) {
-      var countryCode = new wsi.schema.una.hpx.hpx_application_request.CountryCd()
-      countryCode.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.CountryCode)
-      address.addChild(countryCode)
-    }
-    location.addChild(address)
-    return location
   }
 }

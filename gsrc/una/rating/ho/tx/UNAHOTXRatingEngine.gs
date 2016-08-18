@@ -1,4 +1,4 @@
-package una.rating.ho
+package una.rating.ho.tx
 
 uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
@@ -11,6 +11,10 @@ uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.rating.rtm.query.RatingQueryFacade
 uses gw.job.RenewalProcess
 uses java.util.Map
+uses una.rating.ho.common.HORateRoutineNames
+uses una.rating.ho.UNAHORatingEngine_HOE
+uses una.rating.ho.common.HomeownersLineCostData_HOE
+uses una.rating.ho.HODwellingRatingInfo
 
 /**
  * Created with IntelliJ IDEA.

@@ -8,8 +8,8 @@ uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.rating.rtm.query.RatingQueryFacade
 uses gw.job.RenewalProcess
 uses una.rating.ho.UNAHORatingEngine_HOE
-uses una.rating.ho.HomeownersLineCostData_HOE
-uses una.rating.ho.HORateRoutineNames
+uses una.rating.ho.common.HomeownersLineCostData_HOE
+uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.util.HOCreateCostDataUtil
 uses java.util.Map
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo
@@ -39,7 +39,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Rate the base premium for the Group 1 states HO
    */
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
-    var rater = new HOBasePremiumRater(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
+    var rater = new HOBasePremiumRaterGroup1(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
     addCosts(costs)
     updateTotalBasePremium()

@@ -40,6 +40,9 @@ class NewSubmissionUIHelper {
 
   function refreshProductOffers(acct : Account, selectionOfProducer: ProducerSelection)
   {
+    if(!una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)){
+      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
+    }
     if (selectionOfProducer.Account <> acct) {
       selectionOfProducer.Account = acct
       //selectionOfProducer.State =   JurisdictionMappingUtil.getJurisdiction(acct.AccountHolderContact.PrimaryAddress)
@@ -52,7 +55,10 @@ class NewSubmissionUIHelper {
   function performNameClearance(acct: Account, selectionOfProducer: ProducerSelection) : ProductSelection[]
   {
     isProducerStatesEmpty(selectionOfProducer)
-    if(selectionOfProducer.DefaultPPEffDate == null) {
+    if(!una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)){
+      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
+    }
+    if(!selectionOfProducer.New && selectionOfProducer.DefaultPPEffDate == null) {
       throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
     }
     if( canPerformNameClearance(acct, selectionOfProducer) )
@@ -71,6 +77,9 @@ class NewSubmissionUIHelper {
   }
 
   function checkActStateExistsWithProducer(theProducerSelection : ProducerSelection) : Jurisdiction {
+    if(theProducerSelection.New){
+      return null
+    }
     var whatProducerHad = theProducerSelection.State
     theProducerSelection.State = null
     for(aGrpRegion in theProducerSelection.Producer.RootGroup.Regions){
@@ -83,6 +92,9 @@ class NewSubmissionUIHelper {
   }
 
   function isProducerStatesEmpty(theProducerSelection: ProducerSelection) : boolean {
+    if(theProducerSelection.New){
+      return true
+    }
     var res = false
     var prefix = ""
     var baseState = theProducerSelection.State
@@ -116,6 +128,7 @@ class NewSubmissionUIHelper {
   {
     return acct != null && perm.Account.newSubmission(acct) &&
         selectionOfProducer.Producer != null && selectionOfProducer.ProducerCode != null
+          && una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)
   }
 
   function createMultipleSubmissions( offers : ProductSelection[] , acct: Account, selectionOfProducer: ProducerSelection, typeOfQuote: QuoteType)

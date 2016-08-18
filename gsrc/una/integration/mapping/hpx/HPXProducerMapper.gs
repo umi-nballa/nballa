@@ -25,6 +25,28 @@ class HPXProducerMapper {
     return producerRoleCode
   }
 
+  function createProducerTierInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicyInfo {
+    var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
+    var tier = new wsi.schema.una.hpx.hpx_application_request.TierCd()
+    var tierDesc = new wsi.schema.una.hpx.hpx_application_request.TierDesc()
+    var org = policyPeriod.EffectiveDatedFields.ProducerCode.Organization
+    if(org.tier != null) {
+      tier.setText(org.Tier)
+      tierDesc.setText(org.Tier.Description)
+      policyInfo.addChild(tier)
+      policyInfo.addChild(tierDesc)
+    }
+    return policyInfo
+  }
 
+  function createProducerBranchInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicyInfo {
+    var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
+    if (policyPeriod.EffectiveDatedFields.ProducerCode.Branch != null) {
+      var branch = new wsi.schema.una.hpx.hpx_application_request.BranchDesc()
+      branch.setText(policyPeriod.EffectiveDatedFields.ProducerCode.Branch)
+      policyInfo.addChild(branch)
+    }
+    return policyInfo
+  }
 
 }

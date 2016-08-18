@@ -11,6 +11,20 @@ class HPXDwellMapper {
   function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
     var buildingProtectionMapper = new HPXBuildingProtectionMapper()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.Dwell()
+    /*
+    var contractTerm = new wsi.schema.una.hpx.hpx_application_request.ContractTerm()
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.EffectiveDate != null) {
+      var effectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
+      effectiveDate.setText(policyPeriod.HomeownersLine_HOE.Dwelling.EffectiveDate)
+      contractTerm.addChild(effectiveDate)
+    }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.ExpirationDate != null) {
+      var expirationDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
+      expirationDate.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ExpirationDate)
+      contractTerm.addChild(expirationDate)
+    }
+    dwell.addChild(contractTerm)
+    */
     dwell.addChild(createDwellRating(policyPeriod))
     dwell.addChild(buildingProtectionMapper.createBuildingProtection(policyPeriod))
     if (policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null) {

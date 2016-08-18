@@ -46,7 +46,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var coverageMapper = new HPXCoverageMapper()
     var locationMapper = new HPXLocationMapper()
     var additionalInterests = additionalInterestMapper.createAdditionalInterests(policyPeriod.HomeownersLine_HOE.Dwelling.AdditionalInterestDetails)
-    var loc = locationMapper.createDwellingLocation(policyPeriod)
+    var loc = locationMapper.createLocation(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation)
     for (additionalInterest in additionalInterests) {
       loc.addChild(additionalInterest)
     }

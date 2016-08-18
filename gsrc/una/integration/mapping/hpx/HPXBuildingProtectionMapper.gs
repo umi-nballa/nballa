@@ -16,36 +16,34 @@ class HPXBuildingProtectionMapper {
       bldgProtection.addChild(protectionClassGradeCd)
     }
     if (policyPeriod.HomeownersLine_HOE.Dwelling.FireExtinguishers != null) {
-      var fireExtinguisherInd = new wsi.schema.una.hpx.hpx_application_request.FireExtinguisherInd()
-      fireExtinguisherInd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.FireExtinguishers)
+      var fireExtinguisherInd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceFireInd()
+      if (policyPeriod.HomeownersLine_HOE.Dwelling.FireExtinguishers) {
+        fireExtinguisherInd.setText(true)
+      } else {
+        fireExtinguisherInd.setText(false)
+      }
       bldgProtection.addChild(fireExtinguisherInd)
     }
     if (policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarm != null) {
-      var protectionDeviceSmokeInd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceSmokeInd()
-      var protectionDeviceFireInd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceFireInd()
-      protectionDeviceSmokeInd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarm)
-      protectionDeviceFireInd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarm)
-      bldgProtection.addChild(protectionDeviceSmokeInd)
-      bldgProtection.addChild(protectionDeviceFireInd)
+      if (policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarm) {
+        var protectionDeviceFireCd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceFireCd()
+        protectionDeviceFireCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.SMOKE)
+        bldgProtection.addChild(protectionDeviceFireCd)
+      }
     }
-    /*
+
     if (policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarmOnAllFloors != null) {
-      var protectionDeviceSmokeCd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceSmokeCd()
-      var protectionDeviceSmokeDesc = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceSmokeDesc()
+      var protectionDeviceSmokeDesc = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceFireDesc()
       switch (policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarmOnAllFloors) {
         case true :
-            protectionDeviceSmokeCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.SMOKE)
             protectionDeviceSmokeDesc.setText("Smoke alarm on all floors")
             break
         case false :
-            protectionDeviceSmokeCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.NO)
             protectionDeviceSmokeDesc.setText("Smoke alarm not on all floors")
             break
       }
-      bldgProtection.addChild(protectionDeviceSmokeCd)
       bldgProtection.addChild(protectionDeviceSmokeDesc)
     }
-    */
     if (policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarm != null) {
       var protectionDeviceBurglarInd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceBurglarInd()
       protectionDeviceBurglarInd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarm)

@@ -60,6 +60,7 @@ abstract class HPXPolicyMapper {
     var billingInfoMapper = new HPXBillingInfoMapper()
     var paymentOptionMapper = new HPXPaymentOptionMapper()
     var priorPoliciesMapper = new HPXPriorPolicyMapper()
+    var producerMapper = new HPXProducerMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
     switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
@@ -99,6 +100,16 @@ abstract class HPXPolicyMapper {
     var priorPoliciesInfo = priorPoliciesMapper.createPriorPoliclies(policyPeriod)
     for (priorPolicyInfo in priorPoliciesInfo) {
       policyInfo.addChild(priorPolicyInfo)
+    }
+    // producer org tier
+    var producerTierInfo = producerMapper.createProducerTierInfo(policyPeriod)
+    for (child in producerTierInfo.$Children) {
+      policyInfo.addChild(child)
+    }
+    // producer branch
+    var producerBranchInfo = producerMapper.createProducerBranchInfo(policyPeriod)
+    for (child in producerBranchInfo.$Children) {
+      policyInfo.addChild(child)
     }
     // billing method
     /*

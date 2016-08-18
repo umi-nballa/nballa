@@ -104,6 +104,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_ScheduledProperty_HOE:
           //rateScheduledPersonalProperty(dwellingCov, dateRange)   //Need to implement this functionality
           break
+      case HODW_SpecialLimitsPP_HOE_Ext:
+          rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -414,6 +417,19 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     _logger.debug("Residential Glass Coverage Rated Successfully", this.IntrinsicType)
   }
+
+  /**
+  * Rate the special limits personal property
+   */
+   function rateSpecialLimitsPersonalPropertyCoverage(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange){
+     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialLimitsPersonalPropertyCoverage to rate Special Limits Personal Property Coverage", this.IntrinsicType)
+     var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
+     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.INCREASED_LIMITS_JEWELRY_WATCHES_FURS, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+     if (costData != null)
+       addCost(costData)
+     _logger.debug("Special Limits Personal Property Coverage Rated Successfully", this.IntrinsicType)
+   }
 
   /**
    *  Returns the parameter set for the line level coverages

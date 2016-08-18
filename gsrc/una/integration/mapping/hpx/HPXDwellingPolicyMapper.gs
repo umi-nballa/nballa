@@ -56,14 +56,17 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     dwell.addChild(dwellConstructionMapper.createDwellConstruction(policyPeriod))
     dwell.addChild(loc)
     //dwell.addChild(coverage)
-    var covs = coverageMapper.createCoverages(policyPeriod)
+    //var covs = coverageMapper.createCoverages(policyPeriod)
+    //Good var covs = coverageMapper.createCoverages(policyPeriod)
+    var previousPeriod = getPreviousBranch(policyPeriod)
+    var covs = coverageMapper.createCoveragesInfo(getCoverages(policyPeriod), getCoverages(previousPeriod))
     for (cov in covs) {
       dwell.addChild(cov)
     }
     return dwell
   }
 
-  function createQuestionSet(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer> {
+  function createQuestionSet(policyPeriod: PolicyPeriod): List<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer> {
     var questions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer>()
     var questionAnswers = policyPeriod.PeriodAnswers
     for (q in questionAnswers) {
@@ -74,13 +77,13 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       var questionCode = new wsi.schema.una.hpx.hpx_application_request.QuestionCd()
       questionCode.setText(q.QuestionCode)
       question.addChild(questionCode)
-      if(q.BooleanAnswer != null) {
+      if (q.BooleanAnswer != null) {
         var yesNoCd = new wsi.schema.una.hpx.hpx_application_request.YesNoCd()
         switch (q.BooleanAnswer) {
-          case true :
+          case true:
               yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.YES)
               break
-          case false :
+          case false:
               yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.NO)
         }
         question.addChild(yesNoCd)
@@ -93,5 +96,9 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       questions.add(question)
     }
     return questions
+  }
+
+  override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
+    return policyPeriod.HomeownersLine_HOE.AllCoverages
   }
 }

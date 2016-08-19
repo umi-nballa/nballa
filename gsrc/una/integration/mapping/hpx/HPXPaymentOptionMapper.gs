@@ -7,38 +7,7 @@ package una.integration.mapping.hpx
  * To change this template use File | Settings | File Templates.
  */
 class HPXPaymentOptionMapper {
- /*
-  function createPaymentOptions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.PaymentOption> {
-    var paymentOptions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.PaymentOption>()
-    var invoiceNumber = new wsi.schema.una.hpx.hpx_application_request.InvoiceNumber()
-   // var paymentPlans = policyPeriod.retrievePaymentPlans()
-    var installmentPlans = policyPeriod.retrievePaymentPlans().InstallmentPlans
-      for (installmentPlan in installmentPlans) {
-      var paymentOption = new wsi.schema.una.hpx.hpx_application_request.PaymentOption()
-      var installmentInfo = new wsi.schema.una.hpx.hpx_application_request.InstallmentInfo()
-      var installmentDesc = new wsi.schema.una.hpx.hpx_application_request.InstallmentDesc()
-      installmentDesc.setText(installmentPlan.Name)
-      installmentInfo.addChild(installmentDesc)
-      var installmentDownpaymentAmount = new wsi.schema.una.hpx.hpx_application_request.InstallmentDownPaymentAmt()
-      var downpaymentAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-      downpaymentAmt.setText(installmentPlan.DownPayment.Amount)
-      installmentDownpaymentAmount.addChild(downpaymentAmt)
-      installmentInfo.addChild(installmentDownpaymentAmount)
-      var installmentAmount = new wsi.schema.una.hpx.hpx_application_request.InstallmentAmt()
-      var amount = new wsi.schema.una.hpx.hpx_application_request.Amt()
-      amount.setText(installmentPlan.Installment.Amount)
-      installmentAmount.addChild(amount)
-      installmentInfo.addChild(installmentAmount)
-      var installmentTotalAmount = new wsi.schema.una.hpx.hpx_application_request.InstallmentTotalAmt()
-      var totalAmount = new wsi.schema.una.hpx.hpx_application_request.InstallmentTotalAmt()
-      totalAmount.setText(installmentPlan.Total.Amount)
-      installmentTotalAmount.addChild(totalAmount)
-      installmentInfo.addChild(installmentTotalAmount)
-      paymentOption.addChild(installmentInfo)
-    }
-    return paymentOptions
-  }
-  */
+
   function createPaymentOptions(policyPeriod : PolicyPeriod) : java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.PaymentOption> {
     var paymentOptions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.PaymentOption>()
     var invoiceNumber = new wsi.schema.una.hpx.hpx_application_request.InvoiceNumber()

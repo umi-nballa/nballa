@@ -197,7 +197,7 @@ class HPXCoverageMapper {
     // base rate
     var baseRateAmt = new wsi.schema.una.hpx.hpx_application_request.BaseRateAmt()
     var baseRateAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var baseRatePremium = cost.ActualAdjRate
+    var baseRatePremium = cost.ActualBaseRate
     if (baseRatePremium != null) {
       baseRateAmtAmt.setText(baseRatePremium)
     }
@@ -228,6 +228,15 @@ class HPXCoverageMapper {
     }
     termPremiumAmt.addChild(termPremiumAmtAmt)
     cov.addChild(termPremiumAmt)
+    // prorate factor
+    var prorateFactor = new wsi.schema.una.hpx.hpx_application_request.ProRateFactor()
+    if (cost != null) {
+      var proration = cost.Proration
+      prorateFactor.setText(proration)
+    } else {
+      prorateFactor.setText(-99999999.99)
+    }
+    cov.addChild(prorateFactor)
     return cov
   }
 

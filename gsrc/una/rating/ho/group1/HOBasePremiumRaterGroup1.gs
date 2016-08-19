@@ -6,8 +6,9 @@ uses java.util.Map
 uses gw.rating.CostData
 uses una.rating.ho.group1.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.HORateRoutineExecutor
+uses una.rating.ho.common.HORateRoutineExecutor
 uses una.rating.ho.group1.ratinginfos.HORatingInfo
+uses una.rating.ho.common.HORateRoutineNames
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,11 +16,7 @@ uses una.rating.ho.group1.ratinginfos.HORatingInfo
  * Date: 7/11/16
  * Class which rates the base premium for the texas HO policies
  */
-class HOBasePremiumRater {
-
-  private static var BASE_PREMIUM_AZ_RATE_ROUTINE = "UNAHOBasePremiumAZRateRoutine"
-  private static var BASE_PREMIUM_CA_RATE_ROUTINE = "UNAHOBasePremiumCARateRoutine"
-  private static var BASE_PREMIUM_NV_RATE_ROUTINE = "UNAHOBasePremiumNVRateRoutine"
+class HOBasePremiumRaterGroup1 {
 
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
@@ -28,9 +25,9 @@ class HOBasePremiumRater {
   private var _line: HomeownersLine_HOE
 
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      BASE_PREMIUM_AZ_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
-      BASE_PREMIUM_CA_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
-      BASE_PREMIUM_NV_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -78,11 +75,11 @@ class HOBasePremiumRater {
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
     if(_line.BaseState.Code == "AZ")
-      routines.add(BASE_PREMIUM_AZ_RATE_ROUTINE)
+      routines.add(HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE)
     else if(_line.BaseState.Code == "CA")
-      routines.add(BASE_PREMIUM_CA_RATE_ROUTINE)
+      routines.add(HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE)
     else if(_line.BaseState.Code == "NV")
-      routines.add(BASE_PREMIUM_NV_RATE_ROUTINE)
+      routines.add(HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE)
     return routines
   }
 

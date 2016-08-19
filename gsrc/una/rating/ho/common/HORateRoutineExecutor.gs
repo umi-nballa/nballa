@@ -1,18 +1,18 @@
-package una.rating.ho
+package una.rating.ho.common
 
-uses gw.plugin.productmodel.IReferenceDatePlugin
 uses java.util.Map
-uses gw.api.productmodel.CoveragePattern
 uses gw.rating.CostData
-uses gw.job.RenewalProcess
-uses java.util.Date
-uses gw.rating.rtm.NoSuitableRateBookFoundException
-uses gw.api.rating.RatingException
-uses gw.rating.flow.util.QueryUtils
+uses gw.plugin.productmodel.IReferenceDatePlugin
+uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses java.lang.Exception
-uses gw.lob.common.util.DateRange
+uses gw.api.productmodel.CoveragePattern
+uses java.util.Date
 uses java.lang.IllegalStateException
+uses gw.job.RenewalProcess
+uses gw.rating.rtm.NoSuitableRateBookFoundException
+uses gw.rating.flow.util.QueryUtils
+uses gw.api.rating.RatingException
 
 /**
  * User: bduraiswamy

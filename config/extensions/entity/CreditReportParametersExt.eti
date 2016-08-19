@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="CreditReportParametersExt"
+  entity="CreditReportParametersExt"
+  exportable="true"
+  final="false"
+  table="CreditReportParametersExt"
+  type="retireable">
+  <column
+    desc="Credit Report Minimum Age"
+    name="CreditReportMinimumAge"
+    nullok="true"
+    type="integer"/>
+  <column
+    desc="Credit Report Days Valid"
+    name="CreditReportDaysValid"
+    nullok="true"
+    type="integer"/>
+  <column
+    desc="Line of Business code."
+    name="LOBPatternCode"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <typekey
+    desc="UW Company"
+    name="UWCompanyCode"
+    nullok="true"
+    typelist="UWCompanyCode"/>
+  <typekey
+    desc="Jurisdiction"
+    name="JurisdictionCode"
+    nullok="true"
+    typelist="Jurisdiction"/>
+  <typekey
+    desc="The credit report service to use."
+    name="CreditReportService"
+    nullok="true"
+    typelist="CreditReportServiceExt"/>
+</entity>

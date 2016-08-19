@@ -41,7 +41,9 @@ function createAdditionalInterests(additlInterests : AddlInterestDetail []) : Li
         default :  additionalInterestInfo.NatureInterestCd = wsi.schema.una.hpx.hpx_application_request.enums.Interest.OT
       }
 
-      additionalInterestInfo.Description =  (addtlInterest as HODwellingAddlInt_HOE).AddlInterestDesc
+      //additionalInterestInfo.Description =  (addtlInterest as HODwellingAddlInt_HOE).AddlInterestDesc
+      additionalInterestInfo.Description =  addtlInterest.AdditionalInterestType.Description
+
       additionalInterestInfo.ContractNumber = addtlInterest.ContractNumber
 
       additionalInterest.addChild(additionalInterestInfo)

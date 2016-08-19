@@ -104,7 +104,7 @@
                         editable="true"
                         id="Phone"
                         label="displaykey.Web.Policy.LocationContainer.Location.Phone"
-                        value="polLocation.AccountLocation.Phone"/>
+                        value="getFormattedPhone(polLocation.AccountLocation.Phone)"/>
                       <PickerInput
                         available="gw.api.domain.StateSet.get(&quot;TaxLocation&quot;).contains(polLocation.State)"
                         editable="true"
@@ -202,6 +202,10 @@
              throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
          }
      }
+  }
+  
+  function getFormattedPhone(phone : String) : String{
+    return phone != null ? (phone.substring(0, 3)+"-"+phone.substring(3, 6)+"-"+phone.substring(6, 10)) : phone
   }]]></Code>
   </CardViewPanel>
 </PCF>

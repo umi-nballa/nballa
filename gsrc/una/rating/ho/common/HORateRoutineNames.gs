@@ -39,6 +39,7 @@ public final class HORateRoutineNames {
   public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDevicesCreditRateRoutine"
   public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
   public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
+  public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
 
   //group1 routines
   public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"

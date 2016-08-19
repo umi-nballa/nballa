@@ -26,6 +26,7 @@ class HODwellingRatingInfo {
   var _unitOwnersOutbuildingAndOtherStructuresLimit : BigDecimal as UnitOwnersOutbuildingAndOtherStructuresLimit
   var _specifiedAdditionalAmount : String as SpecifiedAdditionalAmount
   var _totalBasePremium : BigDecimal as TotalBasePremium
+  var _increasedLimitsJewelryWatchesFurs : BigDecimal as IncreasedLimitsJewelryWatchesFurs
 
   construct(){}
 
@@ -66,6 +67,12 @@ class HODwellingRatingInfo {
     if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
       if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){
         _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
+      }
+    }
+
+    if(dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_ExtExists){
+      if(dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HasHODW_JewelryWatchesFursLimit_HOETerm){
+        _increasedLimitsJewelryWatchesFurs = dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.Value
       }
     }
     _territoryCode = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)

@@ -60,6 +60,7 @@ abstract class HPXPolicyMapper {
     var billingInfoMapper = new HPXBillingInfoMapper()
     var paymentOptionMapper = new HPXPaymentOptionMapper()
     var priorPoliciesMapper = new HPXPriorPolicyMapper()
+    var producerMapper = new HPXProducerMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
     switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
@@ -100,6 +101,16 @@ abstract class HPXPolicyMapper {
     for (priorPolicyInfo in priorPoliciesInfo) {
       policyInfo.addChild(priorPolicyInfo)
     }
+    // producer org tier
+    var producerTierInfo = producerMapper.createProducerTierInfo(policyPeriod)
+    for (child in producerTierInfo.$Children) {
+      policyInfo.addChild(child)
+    }
+    // producer branch
+    var producerBranchInfo = producerMapper.createProducerBranchInfo(policyPeriod)
+    for (child in producerBranchInfo.$Children) {
+      policyInfo.addChild(child)
+    }
     // billing method
     /*
     var billingMethodInfo = billingInfoMapper.createBillingMethodInfo(policyPeriod)
@@ -114,4 +125,19 @@ abstract class HPXPolicyMapper {
    */
     return policyInfo
   }
+
+  function getPreviousBranch(policyPeriod : PolicyPeriod) : PolicyPeriod {
+    var currentBranchNumber = policyPeriod.BranchNumber
+    var modelNumber = policyPeriod.ModelNumber
+    var termNumber = policyPeriod.TermNumber
+    if (modelNumber > 1) {
+      var previousBranch = policyPeriod.Policy.BoundPeriods.firstWhere( \ elt -> elt.ModelNumber == modelNumber -1)
+      return previousBranch
+    } else if (termNumber > 1) {
+        var previousBranch = policyPeriod.Policy.BoundPeriods.firstWhere( \ elt -> elt.TermNumber == termNumber -1)
+        return previousBranch
+    } else return null
+  }
+
+  abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>
 }

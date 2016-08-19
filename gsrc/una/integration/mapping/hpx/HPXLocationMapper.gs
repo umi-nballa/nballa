@@ -7,8 +7,9 @@ package una.integration.mapping.hpx
  * To change this template use File | Settings | File Templates.
  */
 class HPXLocationMapper {
-  /******************************************************** Dwelling Location ***********************************************************************/
-  function createDwellingLocation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Location {
+  /******************************************************** Location ***********************************************************************/
+
+  function createLocation(loc : PolicyLocation) : wsi.schema.una.hpx.hpx_application_request.Location {
     var location = new wsi.schema.una.hpx.hpx_application_request.Location()
     var address = new wsi.schema.una.hpx.hpx_application_request.Addr()
 
@@ -16,45 +17,44 @@ class HPXLocationMapper {
     //addressTypeCode.setText()
     //address.addChild(addressTypeCode)
 
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine1 != null) {
+    if (loc.AddressLine1 != null) {
       var addr1 = new wsi.schema.una.hpx.hpx_application_request.Addr1()
-      addr1.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine1)
+      addr1.setText(loc.AddressLine1)
       address.addChild(addr1)
     }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2 != null) {
+    if (loc.AddressLine2 != null) {
       var addr2 = new wsi.schema.una.hpx.hpx_application_request.Addr2()
-      addr2.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2)
+      addr2.setText(loc.AddressLine2)
       address.addChild(addr2)
     }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine3 != null) {
+    if (loc.AddressLine3 != null) {
       var addr3 = new wsi.schema.una.hpx.hpx_application_request.Addr3()
-      addr3.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine3)
+      addr3.setText(loc.AddressLine3)
       address.addChild(addr3)
     }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City != null) {
+    if (loc.City != null) {
       var city = new wsi.schema.una.hpx.hpx_application_request.City()
-      city.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City)
+      city.setText(loc.City)
       address.addChild(city)
     }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State != null) {
+    if (loc.State != null) {
       var state = new wsi.schema.una.hpx.hpx_application_request.StateProvCd()
-      state.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State)
+      state.setText(loc.State)
       address.addChild(state)
     }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode != null) {
+    if (loc.PostalCode != null) {
       var postalCode = new wsi.schema.una.hpx.hpx_application_request.PostalCode()
-      postalCode.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode)
+      postalCode.setText(loc.PostalCode)
       address.addChild(postalCode)
     }
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.CountryCode != null) {
+    if (loc.CountryCode != null) {
       var countryCode = new wsi.schema.una.hpx.hpx_application_request.CountryCd()
-      countryCode.setText(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.CountryCode)
+      countryCode.setText(loc.CountryCode)
       address.addChild(countryCode)
     }
     location.addChild(address)
     return location
   }
-
   /******************************************************** Dwelling Location ***********************************************************************/
   function createBillingLocation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Location {
     var billingContact = policyPeriod.BillingContact.AccountContactRole.AccountContact.Contact.PrimaryAddress

@@ -180,8 +180,10 @@ class CancellationPCFController {
     )
 
     _cancellation.CancelReasonDetails?.each( \ elt -> {
-      elt.Description = null
-      elt.remove()
+      if(!_reasonDetailRange.contains(elt.Code)){
+        elt.Description = null
+        elt.remove()
+      }
     })
   }
 

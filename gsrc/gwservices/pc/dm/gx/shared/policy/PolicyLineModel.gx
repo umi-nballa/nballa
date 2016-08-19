@@ -1,6 +1,11 @@
 <?xml version="1.0"?>
 <gx-model type="entity.PolicyLine" xmlns="http://guidewire.com/gx">
   <includes>
+    <include path="(entity-BP7BusinessOwnersLine).BusinessDesc" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="(entity-BP7BusinessOwnersLine).DateBusinessStarted" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="(entity-BP7BusinessOwnersLine).NoOfEmployees_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="(entity-BP7BusinessOwnersLine).NoOfPartEmployee_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="(entity-BP7BusinessOwnersLine).PolicyLocations[]" type="entity.PolicyLocation" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.location.policylocationmodel"/>
     <include path="(entity-HomeownersLine_HOE).Dwelling" type="entity.Dwelling_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineConditions[]" type="entity.HomeownersLineCond_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslinecond_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineCoverages[]" type="entity.HomeownersLineCov_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslinecov_hoemodel"/>

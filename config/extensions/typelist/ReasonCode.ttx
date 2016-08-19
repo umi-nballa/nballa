@@ -39,8 +39,7 @@
   <typecode
     code="nottaken"
     desc="Policy not-taken"
-    name="Policy not-taken"
-    retired="true">
+    name="Policy not-taken">
     <category
       code="insured"
       typelist="CancellationSource"/>
@@ -77,8 +76,7 @@
   <typecode
     code="noc"
     desc="Insured's request - N.O.C"
-    name="Insured's request - N.O.C"
-    retired="true">
+    name="Insured's request - N.O.C">
     <category
       code="NotTakenAck"
       typelist="LetterType"/>
@@ -245,12 +243,14 @@
     <category
       code="Declination"
       typelist="LetterType"/>
+    <category
+      code="carrier"
+      typelist="CancellationSource"/>
   </typecode>
   <typecode
     code="OpsChars"
     desc="Operations characteristics"
-    name="Operations characteristics"
-    retired="true">
+    name="Operations characteristics">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -258,8 +258,7 @@
   <typecode
     code="ProductsChars"
     desc="Products characteristics"
-    name="Products characteristics"
-    retired="true">
+    name="Products characteristics">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -267,8 +266,7 @@
   <typecode
     code="PaymentHistory"
     desc="Payment history"
-    name="Payment history"
-    retired="true">
+    name="Payment history">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -276,8 +274,7 @@
   <typecode
     code="ProdRequirements"
     desc="Does not meet program/product requirements"
-    name="Does not meet program/product requirements"
-    retired="true">
+    name="Does not meet program/product requirements">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -285,8 +282,7 @@
   <typecode
     code="CovsNotAvailable"
     desc="Requested coverages/limits not available"
-    name="Requested coverages/limits not available"
-    retired="true">
+    name="Requested coverages/limits not available">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -294,8 +290,7 @@
   <typecode
     code="InfoNotProvided"
     desc="Required information not provided"
-    name="Required information not provided"
-    retired="true">
+    name="Required information not provided">
     <category
       code="Declination"
       typelist="LetterType"/>
@@ -467,6 +462,22 @@
       code="RiskCharacteristics"/>
     <exclude
       code="nonpayment"/>
+    <exclude
+      code="nottaken"/>
+    <exclude
+      code="noc"/>
+    <exclude
+      code="OpsChars"/>
+    <exclude
+      code="ProdRequirements"/>
+    <exclude
+      code="ProductsChars"/>
+    <exclude
+      code="CovsNotAvailable"/>
+    <exclude
+      code="InfoNotProvided"/>
+    <exclude
+      code="PaymentHistory"/>
   </typefilter>
   <typefilter
     desc="Personal Lines (HO) reason codes types"
@@ -494,6 +505,22 @@
       code="UnderwritingDocNotProvided"/>
     <exclude
       code="nonpayment"/>
+    <exclude
+      code="noc"/>
+    <exclude
+      code="CovsNotAvailable"/>
+    <exclude
+      code="InfoNotProvided"/>
+    <exclude
+      code="nottaken"/>
+    <exclude
+      code="OpsChars"/>
+    <exclude
+      code="PaymentHistory"/>
+    <exclude
+      code="ProdRequirements"/>
+    <exclude
+      code="ProductsChars"/>
   </typefilter>
   <typecode
     code="RenewalNotTaken"

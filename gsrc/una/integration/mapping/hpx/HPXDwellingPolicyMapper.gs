@@ -43,8 +43,8 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   function createDwell(policyPeriod : PolicyPeriod,
                        coverage : wsi.schema.una.hpx.hpx_application_request.Coverage) : wsi.schema.una.hpx.hpx_application_request.Dwell {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
-    var coverageMapper = new HPXCoverageMapper()
     var locationMapper = new HPXLocationMapper()
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var additionalInterests = additionalInterestMapper.createAdditionalInterests(policyPeriod.HomeownersLine_HOE.Dwelling.AdditionalInterestDetails)
     var loc = locationMapper.createLocation(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation)
     for (additionalInterest in additionalInterests) {
@@ -58,8 +58,9 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     //dwell.addChild(coverage)
     //var covs = coverageMapper.createCoverages(policyPeriod)
     //Good var covs = coverageMapper.createCoverages(policyPeriod)
-    var previousPeriod = getPreviousBranch(policyPeriod)
-    var covs = coverageMapper.createCoveragesInfo(getCoverages(policyPeriod), getCoverages(previousPeriod))
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    var transactions = policyPeriod.HOTransactions
+    var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
     for (cov in covs) {
       dwell.addChild(cov)
     }
@@ -98,7 +99,28 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return questions
   }
 
+  function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
+    var coverageMapper = new HPXCoverageMapper()
+    for (cov in currentCoverages) {
+      var hoTransactions = getTransactions(policyPeriod)
+      var trxs = hoTransactions.where( \ elt -> cov.equals(elt.HomeownersCost.Coverage.PatternCode))
+      if (previousCoverages != null) {
+        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
+        coverages.add(coverageMapper.createCoverageInfo(cov, previousCoverage, trxs))
+      } else {
+        coverages.add(coverageMapper.createCoverageInfo(cov, null, trxs))
+      }
+    }
+    return coverages
+  }
+
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
     return policyPeriod.HomeownersLine_HOE.AllCoverages
+  }
+
+  override function getTransactions(policyPeriod: PolicyPeriod): List<HOTransaction_HOE> {
+    return policyPeriod.HOTransactions
   }
 }

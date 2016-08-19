@@ -7,8 +7,10 @@ package una.integration.mapping.hpx
  * To change this template use File | Settings | File Templates.
  */
 class HPXPremiumMapper {
-  function createPremiumInfo(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.PremiumInfo> {
+  function createTransactionPremiumInfo(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.PremiumInfo> {
     var premiumInfos = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.PremiumInfo>()
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     //var transactions = policyPeriod.HOTransactions
     var transactions = policyPeriod.AllTransactions
     for (transaction in transactions) {
@@ -31,14 +33,22 @@ class HPXPremiumMapper {
           premiumInfo.addChild(sequence)
         }
         // previous amount
-        var previousMonetaryAmt = transaction.getOriginalValue("Amount") as gw.pl.currency.MonetaryAmount
-        if (previousMonetaryAmt != null) {
-          var previousPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.PreviousPremiumAmt()
-          var previousAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-          previousAmt.setText(previousMonetaryAmt.Amount)
-          previousPremiumAmt.addChild(previousAmt)
-          premiumInfo.addChild(previousPremiumAmt)
+        var previousPremiumDoubleValue = 0.00
+        var previousPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.PreviousPremiumAmt()
+        var previousAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+        if (previousPeriod != null) {
+          var previousMonetaryAmt = previousPeriod.AllTransactions.firstWhere( \ elt -> elt.Cost.RateAmountType.equals(transaction.Cost.RateAmountType))
+          if (previousMonetaryAmt != null) {
+            previousPremiumDoubleValue = previousMonetaryAmt.Amount
+            previousAmt.setText(previousPremiumDoubleValue)
+          }  else {
+            previousAmt.setText(0.00)
+          }
+        } else {
+          previousAmt.setText(0.00)
         }
+        previousPremiumAmt.addChild(previousAmt)
+        premiumInfo.addChild(previousPremiumAmt)
         // premium amount
         if (transaction.Amount != null) {
           var premiumAmt = new wsi.schema.una.hpx.hpx_application_request.PremiumAmt()
@@ -53,7 +63,7 @@ class HPXPremiumMapper {
           prorateFactor.setText(transaction.Cost.Proration)
           premiumInfo.addChild(prorateFactor)
         }
-        var amountDifference = (transaction.Amount - previousMonetaryAmt).Amount
+        var amountDifference = transaction.Amount.Amount - previousPremiumDoubleValue
         if (amountDifference != null) {
           if (amountDifference >= 0) {
             var additionalPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.AdditionalPremiumAmt()
@@ -78,5 +88,69 @@ class HPXPremiumMapper {
       }
     }
     return premiumInfos
+  }
+
+  function createEndorsementPremiumInfo(policyPeriod: PolicyPeriod): wsi.schema.una.hpx.hpx_application_request.EndorsementInfo {
+    var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.EndorsementInfo()
+    var prorateFactor = new wsi.schema.una.hpx.hpx_application_request.ProRateFactor()
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    prorateFactor.setText(1.0)
+    //setText(policyPeriod.Cancellation.calculateRefundCalcMethod(policyPeriod))
+    // policyPeriod.Cancellation.
+    endorsementInfo.addChild(prorateFactor)
+    var newPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NewPremiumAmt()
+    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+    if (policyPeriod.TotalPremiumRPT.Amount != null) {
+      amt.setText(policyPeriod.TotalPremiumRPT.Amount)
+      newPremiumAmt.addChild(amt)
+      endorsementInfo.addChild(newPremiumAmt)
+    }
+    // any previous period premiums
+    var previousPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.PreviousPremiumAmt()
+    var previousAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    if (previousPeriod != null) {
+      var previousPremiumMonetaryAmt = previousPeriod.TotalPremiumRPT
+      if (previousPremiumMonetaryAmt != null) {
+        previousAmt.setText(previousPremiumMonetaryAmt.Amount)
+        previousPremiumAmt.addChild(previousAmt)
+        endorsementInfo.addChild(previousPremiumAmt)
+      } else {
+        previousAmt.setText(0.00)
+        previousPremiumAmt.addChild(previousAmt)
+        endorsementInfo.addChild(previousPremiumAmt)
+      }
+    } else {
+      previousAmt.setText(0.00)
+      previousPremiumAmt.addChild(previousAmt)
+      endorsementInfo.addChild(previousPremiumAmt)
+    }
+    // change in total premiums
+    var premiumDifference = policyPeriod.TotalPremiumRPT.Amount - previousPremiumAmt.Amt.doubleValue()
+    if (premiumDifference >= 0) {
+      // Additional Premium amt
+      var additionalPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.AdditionalPremiumAmt()
+      var additionalAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+      additionalAmt.setText(premiumDifference)
+      additionalPremiumAmt.addChild(additionalAmt)
+      endorsementInfo.addChild(additionalPremiumAmt)
+    } else {
+      var returnPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.ReturnPremiumAmt()
+      var returnAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+      returnAmt.setText(premiumDifference)
+      returnPremiumAmt.addChild(returnAmt)
+      endorsementInfo.addChild(returnPremiumAmt)
+    }
+    var netPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NetPremiumAmt()
+    var netAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+    netAmt.setText(premiumDifference)
+    netPremiumAmt.addChild(netAmt)
+    endorsementInfo.addChild(netPremiumAmt)
+
+    var premiumChanges = createTransactionPremiumInfo(policyPeriod)
+    for (premiumChange in premiumChanges) {
+      endorsementInfo.addChild(premiumChange)
+    }
+    return endorsementInfo
   }
 }

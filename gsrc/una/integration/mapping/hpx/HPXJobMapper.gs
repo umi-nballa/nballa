@@ -89,7 +89,6 @@ class HPXJobMapper {
   function createEndorsementInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.EndorsementInfo {
     var premiumMapper = new HPXPremiumMapper()
     var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.EndorsementInfo()
-    var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.PremiumInfo()
     var sequenceNumber = new wsi.schema.una.hpx.hpx_application_request.SequenceNumber()
     sequenceNumber.setText(policyPeriod.Job.JobNumber.substring(2))
     endorsementInfo.addChild(sequenceNumber)
@@ -99,51 +98,10 @@ class HPXJobMapper {
     var expirationDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
     expirationDate.setText(policyPeriod.EffectiveDatedFields.expirationDate)
     endorsementInfo.addChild(expirationDate)
-    var prorateFactor = new wsi.schema.una.hpx.hpx_application_request.ProRateFactor()
-    prorateFactor.setText(1.0)     //setText(policyPeriod.Cancellation.calculateRefundCalcMethod(policyPeriod))
-    // policyPeriod.Cancellation.
-    endorsementInfo.addChild(prorateFactor)
-    var previousPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.PreviousPremiumAmt()
-    var previousAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var previousPremiumMonetaryAmt = policyPeriod.getOriginalValue("TotalPremiumRPT") as gw.pl.currency.MonetaryAmount
-    if (previousPremiumMonetaryAmt != null) {
-      previousAmt.setText(previousPremiumMonetaryAmt.Amount)
-      previousPremiumAmt.addChild(previousAmt)
-      endorsementInfo.addChild(previousPremiumAmt)
-    }
-    var newPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NewPremiumAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    if (policyPeriod.TotalPremiumRPT.Amount != null) {
-      amt.setText(policyPeriod.TotalPremiumRPT.Amount)
-      newPremiumAmt.addChild(amt)
-      endorsementInfo.addChild(newPremiumAmt)
-    }
-    if (policyPeriod.TotalPremiumRPT.Amount != null and previousPremiumMonetaryAmt.Amount != null)
-    {
-      var premiumDifference = policyPeriod.TotalPremiumRPT.Amount - previousPremiumMonetaryAmt.Amount
-      if (premiumDifference >= 0) {
-        // Additional Premium amt
-        var additionalPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.AdditionalPremiumAmt()
-        var additionalAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-        additionalAmt.setText(premiumDifference)
-        additionalPremiumAmt.addChild(additionalAmt)
-        endorsementInfo.addChild(additionalPremiumAmt)
-      } else {
-        var returnPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.ReturnPremiumAmt()
-        var returnAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-        returnAmt.setText(premiumDifference)
-        returnPremiumAmt.addChild(returnAmt)
-        endorsementInfo.addChild(returnPremiumAmt)
-      }
-      var netPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.NetPremiumAmt()
-      var netAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-      netAmt.setText(premiumDifference)
-      netPremiumAmt.addChild(netAmt)
-      endorsementInfo.addChild(netPremiumAmt)
-    }
-    var premiumChanges = premiumMapper.createPremiumInfo(policyPeriod)
-    for (premiumChange in premiumChanges) {
-      endorsementInfo.addChild(premiumChange)
+    // premiums
+    var endorsementPremiumInfo = premiumMapper.createEndorsementPremiumInfo(policyPeriod)
+    for (child in endorsementPremiumInfo.$Children) {
+      endorsementInfo.addChild(child)
     }
     return endorsementInfo
   }

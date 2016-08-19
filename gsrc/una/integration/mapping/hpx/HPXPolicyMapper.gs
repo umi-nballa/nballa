@@ -126,18 +126,7 @@ abstract class HPXPolicyMapper {
     return policyInfo
   }
 
-  function getPreviousBranch(policyPeriod : PolicyPeriod) : PolicyPeriod {
-    var currentBranchNumber = policyPeriod.BranchNumber
-    var modelNumber = policyPeriod.ModelNumber
-    var termNumber = policyPeriod.TermNumber
-    if (modelNumber > 1) {
-      var previousBranch = policyPeriod.Policy.BoundPeriods.firstWhere( \ elt -> elt.ModelNumber == modelNumber -1)
-      return previousBranch
-    } else if (termNumber > 1) {
-        var previousBranch = policyPeriod.Policy.BoundPeriods.firstWhere( \ elt -> elt.TermNumber == termNumber -1)
-        return previousBranch
-    } else return null
-  }
-
   abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>
+
+  abstract function getTransactions(policyPeriod : PolicyPeriod) : java.util.List<Transaction>
 }

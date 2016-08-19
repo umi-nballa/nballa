@@ -12,40 +12,69 @@ uses java.math.BigDecimal
  * To change this template use File | Settings | File Templates.
  */
 class HPXCoverageMapper {
-  function createCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
-    for (cov in currentCoverages) {
-      var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
-      if (previousCoverage != null) {
-        coverages.add(createCoverageInfo(cov, previousCoverage))
-      }
-    }
-    return coverages
-  }
 
-  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.Coverage {
+  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.Coverage {
     var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
     var coverageCode = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
     coverageCode.setText(currentCoverage.PatternCode)
     cov.addChild(coverageCode)
+    var costInfo = createCoverageCostInfo(transactions)
+    for (child in costInfo.$Children) { cov.addChild(child) }
+    var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage)
+    for (child in covTermInfo.$Children) { cov.addChild(child) }
+    var effectiveDates = createEffectivePeriod(currentCoverage)
+    for (child in effectiveDates.$Children) { cov.addChild(child) }
+    return cov
+  }
+
+  function createCovTermInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.Coverage {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
     var currCovTerms = currentCoverage.CovTerms
     for (currCovTerm in currCovTerms) {
-      var prevCovTerm = previousCoverage.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
       if (currCovTerm typeis DirectCovTerm) {
-        if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT ) {
-           cov.addChild(createDirectLimitInfo(currCovTerm, prevCovTerm as DirectCovTerm))
-        } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
-          cov.addChild(createDirectDeductibleInfo(currCovTerm, prevCovTerm as DirectCovTerm))
+        if (previousCoverage != null) {
+          var prevCovTerm = previousCoverage.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
+          var covTerms = createDirectCovTermInfo(currCovTerm, prevCovTerm as DirectCovTerm)
+          for (child in covTerms.$Children) { cov.addChild(child) }
         }
-      } else if (currCovTerm typeis OptionCovTerm) {
-        if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT ) {
-          cov.addChild(createOptionLimitInfo(currCovTerm, prevCovTerm as OptionCovTerm))
-        } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
-          cov.addChild(createOptionDeductibleInfo(currCovTerm, prevCovTerm as OptionCovTerm))
+        else {
+          var covTerms = createDirectCovTermInfo(currCovTerm, null)
+          for (child in covTerms.$Children) { cov.addChild(child) }
+        }
+      }
+      else if (currCovTerm typeis OptionCovTerm) {
+        if (previousCoverage != null) {
+          var prevCovTerm = previousCoverage.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
+          var covTerms = createOptionCovTermInfo(currCovTerm, prevCovTerm as OptionCovTerm)
+          for (child in covTerms.$Children) { cov.addChild(child) }
+        }
+        else {
+          var covTerms = createOptionCovTermInfo(currCovTerm, null)
+          for (child in covTerms.$Children) { cov.addChild(child) }
         }
       }
     }
     return cov
+  }
+
+  function createDirectCovTermInfo(currCovTerm : DirectCovTerm, prevCovTerm : DirectCovTerm)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+    if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT ) {
+      cov.addChild(createDirectLimitInfo(currCovTerm, prevCovTerm as DirectCovTerm))
+    } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
+      cov.addChild(createDirectDeductibleInfo(currCovTerm, prevCovTerm as DirectCovTerm))
+    }
+    return cov
+  }
+
+  function createOptionCovTermInfo(currCovTerm : OptionCovTerm, prevCovTerm : OptionCovTerm)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+    if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT ) {
+    cov.addChild(createOptionLimitInfo(currCovTerm, prevCovTerm as OptionCovTerm))
+    } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
+        cov.addChild(createOptionDeductibleInfo(currCovTerm, prevCovTerm as OptionCovTerm))
+    }
+      return cov
   }
 
   function createDirectLimitInfo(currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm) : wsi.schema.una.hpx.hpx_application_request.Limit {
@@ -64,7 +93,10 @@ class HPXCoverageMapper {
     limit.addChild(currentTermAmount)
     limit.addChild(limitDesc)
     // net change amount
-    var orignalValue = previousCovTerm.Value
+    var orignalValue = 0.00
+    if (previousCovTerm != null) {
+      orignalValue = previousCovTerm.Value
+    }
     var changedValue = value - orignalValue
     var formattedNetChange = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
     changeAmt.setText(changedValue)
@@ -89,7 +121,10 @@ class HPXCoverageMapper {
     limit.addChild(currentTermAmount)
     limit.addChild(limitDesc)
     // net change amount
-    var orignalValue = previousCovTerm.OptionValue.Value
+    var orignalValue = 0.00
+    if (previousCovTerm != null) {
+      orignalValue = previousCovTerm.OptionValue.Value
+    }
     var changedValue = value - orignalValue
     var formattedNetChange = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
     changeAmt.setText(changedValue)
@@ -154,5 +189,60 @@ class HPXCoverageMapper {
     deductibleDesc.setText(currentCovTerm.PatternCode)
     deductible.addChild(deductibleDesc)
     return deductible
+  }
+
+  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+    var cost = transactions.first().Cost
+    // base rate
+    var baseRateAmt = new wsi.schema.una.hpx.hpx_application_request.BaseRateAmt()
+    var baseRateAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+    var baseRatePremium = cost.ActualAdjRate
+    if (baseRatePremium != null) {
+      baseRateAmtAmt.setText(baseRatePremium)
+    }
+    else {
+      baseRateAmtAmt.setText(-99999999.99)
+    }
+    baseRateAmt.addChild(baseRateAmtAmt)
+    cov.addChild(baseRateAmt)
+    // standard premium
+    var standardPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
+    var standardPremiumAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+    var standardPremium = cost.StandardBaseRate
+    if(standardPremium != null) {
+      standardPremiumAmtAmt.setText(standardPremium)
+    } else {
+      standardPremiumAmtAmt.setText(-99999999.99)
+    }
+    standardPremiumAmt.addChild(standardPremiumAmtAmt)
+    cov.addChild(standardPremiumAmt)
+    // term premium
+    var termPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.WrittenAmt()
+    var termPremiumAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
+    var termPremium = cost.ActualTermAmount
+    if (termPremium != null) {
+      termPremiumAmtAmt.setText(termPremium)
+    } else {
+      termPremiumAmtAmt.setText(-99999999.99)
+    }
+    termPremiumAmt.addChild(termPremiumAmtAmt)
+    cov.addChild(termPremiumAmt)
+    return cov
+  }
+
+  function createEffectivePeriod(coverage : Coverage)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+    var effectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
+    if (coverage.EffectiveDate != null) {
+      effectiveDate.setText(coverage.EffectiveDate)
+      cov.addChild(effectiveDate)
+    }
+    var expiryDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
+    if (coverage.ExpirationDate != null) {
+      expiryDate.setText(coverage.ExpirationDate)
+      cov.addChild(expiryDate)
+    }
+    return cov
   }
 }

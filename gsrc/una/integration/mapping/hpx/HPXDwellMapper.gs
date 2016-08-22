@@ -169,18 +169,26 @@ class HPXDwellMapper {
     for (animal in animals) {
       var animalExposureInfo = new wsi.schema.una.hpx.hpx_application_request.AnimalExposureInfo()
       var animalTypeCd = new wsi.schema.una.hpx.hpx_application_request.AnimalTypeCd()
-      animalTypeCd.setText(animal.AnimalType)
-      animalExposureInfo.addChild(animalTypeCd)
+      if (animal.AnimalType != null) {
+        animalTypeCd.setText(animal.AnimalType)
+        animalExposureInfo.addChild(animalTypeCd)
+      }
       var breedCd = new wsi.schema.una.hpx.hpx_application_request.BreedCd()
-      breedCd.setText(animal.AnimalBreed)
-      animalExposureInfo.addChild(breedCd)
+      if(animal.AnimalBreed != null) {
+        breedCd.setText(animal.AnimalBreed)
+        animalExposureInfo.addChild(breedCd)
+      }
       var breedDesc = new wsi.schema.una.hpx.hpx_application_request.BreedDesc()
-      breedDesc.setText(animal.AnimalBreed.Description)
-      animalExposureInfo.addChild(breedDesc)
+      if (animal.AnimalBreed.Description != null) {
+        breedDesc.setText(animal.AnimalBreed.Description)
+        animalExposureInfo.addChild(breedDesc)
+      }
       var biteHistory = new wsi.schema.una.hpx.hpx_application_request.BiteHistoryInd()
-      var hasAnimalBiteHistory = animal.AnimalBiteHistory
-      biteHistory.setText(animal.AnimalBiteHistory)
-      animalExposureInfo.addChild(biteHistory)
+      if (animal.AnimalBiteHistory != null) {
+        var hasAnimalBiteHistory = animal.AnimalBiteHistory
+        biteHistory.setText(animal.AnimalBiteHistory)
+        animalExposureInfo.addChild(biteHistory)
+      }
       animalExposures.add(animalExposureInfo)
     }
     return animalExposures

@@ -102,7 +102,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
-    var coverageMapper = new HPXCoverageMapper()
+    var coverageMapper = new HPXDwellingCoverageMapper()
     for (cov in currentCoverages) {
       var hoTransactions = getTransactions(policyPeriod)
       var trxs = hoTransactions.where( \ elt -> cov.equals(elt.HomeownersCost.Coverage.PatternCode))

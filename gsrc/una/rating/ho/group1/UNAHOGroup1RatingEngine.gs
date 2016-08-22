@@ -82,6 +82,15 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_SpecificAddAmt_HOE_Ext:
         rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
         break
+      case HODW_LossSettlementWindstorm_HOE_Ext:
+        rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
+        break
+      case HODW_Personal_Property_HOE:
+        rateIncreasedPersonalProperty(dwellingCov, dateRange)
+        break
+      case HODW_OrdinanceCov_HOE:
+        rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
+        break
     }
   }
 
@@ -127,6 +136,49 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Personal property - Increased limits coverage
+   */
+  function rateIncreasedPersonalProperty(dwellingCov: HODW_Personal_Property_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedPersonalProperty to rate Personal Property Increased Limit Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    if (dwellingRatingInfo.IsPersonalPropertyIncreasedLimit){
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Rrdinance Or Law Coverage
+   */
+  function rateOrdinanceOrLawCoverage(dwellingCov: HODW_OrdinanceCov_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateOrdinanceOrLawCoverage to rate Ordinance Or Law Coverage", this.IntrinsicType)
+    if(dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOEExists){
+      if(dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.DisplayValue == "25%"){
+        var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState.Code)
+        var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+        if (costData != null)
+          addCost(costData)
+      }
+    }
+    _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate ACV loss settlement on Roof surfacing for HO3 policy types
+   */
+  function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateACVLossSettlementOnRoofSurfacing to rate ACV loss settlement on roof surfacing", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ACV_LOSS_SETTLEMENT_ON_ROOF_SURFACING_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("ACV loss settlement on Roof Surfacing Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -235,6 +287,17 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     return {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode
+    }
+  }
+
+  /**
+   * Returns the parameter set for the country wide routines
+   */
+  private function getHOParameterSet(line : PolicyLine, stateCode : String) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> stateCode,
+        TC_RATINGINFO -> _hoRatingInfo
     }
   }
 

@@ -20,6 +20,8 @@ class HPXCoverageMapper {
     cov.addChild(coverageCode)
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
+    var scheduleList = createScheduleList(currentCoverage, previousCoverage)
+    for (item in scheduleList) {cov.addChild(item)}
     var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage)
     for (child in covTermInfo.$Children) { cov.addChild(child) }
     var effectiveDates = createEffectivePeriod(currentCoverage)
@@ -253,5 +255,27 @@ class HPXCoverageMapper {
       cov.addChild(expiryDate)
     }
     return cov
+  }
+
+  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit>{
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Limit>()
+    if (currentCoverage.PatternCode.equals("HODW_OtherStructuresOnPremise_HOE")) {
+      var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_OtherStructuresOnPremise_HOE.ScheduledItems
+      for (item in scheduleItems) {
+        var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
+        var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
+        var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
+        if (item.Description != null) {
+          limitDesc.setText(item.Description)
+          limit.addChild(limitDesc)
+        }
+        if(item.AdditionalLimit != null) {
+          formatPct.setText(item.AdditionalLimit.Code)
+          limit.addChild(formatPct)
+        }
+        limits.add(limit)
+      }
+    }
+    return limits
   }
 }

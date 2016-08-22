@@ -17,8 +17,8 @@ var ewsRequestMapper = new HPXRequestMapper()
 //var ewsRequestXML = ewsRequestMapper.createXMLRequestModel(messageContext.Root as PolicyPeriod)
 var period = (messageContext.Root as PolicyPeriod).LatestPeriod
 
-if (period.HomeownersLine_HOE != null and (period.HomeownersLine_HOE.HOPolicyType.equals(typekey.HOPolicyType_HOE.TC_HO3)
-                                         or period.HomeownersLine_HOE.HOPolicyType.equals(typekey.HOPolicyType_HOE.TC_HOA_EXT)))
+if (period.HomeownersLine_HOE != null /*and (period.HomeownersLine_HOE.HOPolicyType.equals(typekey.HOPolicyType_HOE.TC_HO3)
+                                         or period.HomeownersLine_HOE.HOPolicyType.equals(typekey.HOPolicyType_HOE.TC_HOA_EXT))*/)
 {
   var ewsRequestXML = ewsRequestMapper.createForms(period)
   print(ewsRequestXML)

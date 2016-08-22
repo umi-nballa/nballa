@@ -28,6 +28,9 @@
     <Variable
       initialValue="&quot;DPDW_LiabilityCoverages_HOE&quot;"
       name="covCategoryDPDWLiability"/>
+    <Variable
+      initialValue="&quot;HOSL_AdditionalSchedLiab_HOE_Ext&quot;"
+      name="covCategoryHOSLAdditional"/>
     <PanelRow>
       <PanelColumn>
         <PanelRef>
@@ -102,6 +105,34 @@
                 forceRefreshDespiteChangedEntries="true"
                 id="coveragePatternHOLI"
                 value="hoLIAddlCoveragePatterns">
+                <IteratorSort
+                  sortBy="coveragePattern"
+                  sortOrder="1"/>
+                <InputSetRef
+                  def="HOCoverageInputSet(coveragePattern, holine, openForEdit)"
+                  mode="coveragePattern.CodeIdentifier"/>
+              </InputIterator>
+            </InputColumn>
+          </DetailViewPanel>
+        </PanelRef>
+        <PanelRef
+          id="HOSLAddtionalCovPanel">
+          <TitleBar
+            title="holine.Pattern.getCoverageCategory(covCategoryHOLIAdditional).DisplayName"
+            visible="coveragePatternsExistForHOLine(covCategoryHOLIAdditional)"/>
+          <DetailViewPanel>
+            <Variable
+              initialValue="holine.Pattern.getCoverageCategory(covCategoryHOSLAdditional).coveragePatternsForEntity(entity.HomeownersLine_HOE).where(\ coveragePattern -&gt; holine.isCoverageAvailable(coveragePattern))"
+              name="hoSLAddlCoveragePatterns"
+              recalculateOnRefresh="true"
+              type="gw.api.productmodel.CoveragePattern[]"/>
+            <InputColumn
+              labelWidth="250">
+              <InputIterator
+                elementName="coveragePattern"
+                forceRefreshDespiteChangedEntries="true"
+                id="coveragePatternHOSL"
+                value="hoSLAddlCoveragePatterns">
                 <IteratorSort
                   sortBy="coveragePattern"
                   sortOrder="1"/>

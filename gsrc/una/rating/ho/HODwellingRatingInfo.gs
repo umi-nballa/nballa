@@ -27,6 +27,7 @@ class HODwellingRatingInfo {
   var _specifiedAdditionalAmount : String as SpecifiedAdditionalAmount
   var _totalBasePremium : BigDecimal as TotalBasePremium
   var _increasedLimitsJewelryWatchesFurs : BigDecimal as IncreasedLimitsJewelryWatchesFurs
+  var _lossAssessmentLimit : int as LossAssessmentLimit
 
   construct(){}
 
@@ -75,6 +76,8 @@ class HODwellingRatingInfo {
         _increasedLimitsJewelryWatchesFurs = dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.Value
       }
     }
+    _lossAssessmentLimit = (dwellingCov.Dwelling.HODW_LossAssessmentCov_HOE_ExtExists)? dwellingCov.Dwelling.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
+
     _territoryCode = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
     _county = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County != null)? dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County : ""
   }

@@ -60,9 +60,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HOLI_PersonalInjury_HOE:
           ratePersonalInjury(lineCov, dateRange)
           break
-      case HODW_LossAssessmentCov_HOE_Ext:
-          rateLossAssessmentCoverage(lineCov, dateRange)
-          break
       case HOLI_AddResidenceRentedtoOthers_HOE:
           rateAdditionalResidenceRentedToOthersCoverage(lineCov, dateRange)
           break
@@ -106,6 +103,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           break
       case HODW_SpecialLimitsPP_HOE_Ext:
           rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          break
+      case HODW_LossAssessmentCov_HOE_Ext:
+          rateLossAssessmentCoverage(dwellingCov, dateRange)
           break
     }
   }
@@ -285,12 +285,13 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
   /**
    * Rate Loss Assessment Coverage line coverage
+   * Amrita Modified to Dwelling level
    */
-  function rateLossAssessmentCoverage(lineCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
+  function rateLossAssessmentCoverage(dwellingCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
-    var lineRatingInfo = new HOLineRatingInfo(lineCov)
-    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var lineRatingInfo = new HODwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Loss Assessment Coverage Rated Successfully", this.IntrinsicType)

@@ -746,10 +746,10 @@ enhancement
   static function setSection1AggLimitDefault_Ext(_dwelling: Dwelling_HOE){
 
     if(_dwelling.Branch.BaseState == TC_CA or _dwelling.Branch.BaseState == TC_HI){
-      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.setValueFromString("5000")
+      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.setValueFromString("5000_Ext")
     }
     else{
-      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm.setValueFromString("10000")
+      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.setValueFromString("10000")
     }
 
   }

@@ -169,7 +169,7 @@ class CovTermPOCHOEInputSet {
   }
 
   private static function onCovTermOptionChange_LossAssessmentLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable){
-    if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable typeis HomeownersLine_HOE){
+    if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable typeis Dwelling_HOE){
       coverable.HODW_LossAssessmentCov_HOE_Ext.setDefaults()
     }
   }

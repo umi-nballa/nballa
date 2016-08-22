@@ -23,7 +23,7 @@ class HOAdditionalCoveragesPanelSet {
 
   private function onPickLossAssessment(coveragePattern : CoveragePattern){
     if(coveragePattern != null){
-      (_coverable.PolicyLine as HomeownersLine_HOE).HODW_LossAssessmentCov_HOE_Ext.setDefaults()
+      (_coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.setDefaults()
     }
   }
 }

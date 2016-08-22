@@ -11,11 +11,11 @@ uses java.math.BigDecimal
  * To change this template use File | Settings | File Templates.
  */
 enhancement LossAssessmentCovEnhancement_Ext : productmodel.HODW_LossAssessmentCov_HOE_Ext {
-  static function isAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+  static function isAvailable(dwelling : entity.Dwelling_HOE) : boolean{
     var result = true
 
-    if(hoLine.BaseState == TC_FL and hoLine.HOPolicyType == TC_DP3_Ext){
-      result = hoLine.DPLI_Personal_Liability_HOEExists or hoLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
+    if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
     }
 
     return result
@@ -28,8 +28,8 @@ enhancement LossAssessmentCovEnhancement_Ext : productmodel.HODW_LossAssessmentC
 
   private function setDefaultDeductibleValue(){
     if(this.HasHOPL_Deductible_HOETerm){
-      var result = ConfigParamsUtil.getBigDecimal(TC_LossAssessmentDeductibleDefault, this.HOLine.BaseState, this.HOLine.HOPolicyType)
-      if(this.HOLine.BaseState == TC_FL){
+      var result = ConfigParamsUtil.getBigDecimal(TC_LossAssessmentDeductibleDefault, this.Branch.BaseState, this.Dwelling.HOPolicyType)
+      if(this.Branch.BaseState == TC_FL){
         setDefaultDeductibleValueForFL(result)
       }else if(result != null){
         this.HOPL_Deductible_HOETerm.Value = result
@@ -41,8 +41,8 @@ enhancement LossAssessmentCovEnhancement_Ext : productmodel.HODW_LossAssessmentC
     if(this.HOPL_LossAssCovLimit_HOETerm.Value > 2000){
       if(value != null){
         this.HOPL_Deductible_HOETerm.Value = value
-      }else if(this.HOLine.HOPolicyType == TC_HO6){
-        this.HOPL_Deductible_HOETerm.Value = this.HOLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+      }else if(this.Dwelling.HOPolicyType == TC_HO6){
+        this.HOPL_Deductible_HOETerm.Value = this.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
       }
     }else{
       this.HOPL_Deductible_HOETerm.Value = null

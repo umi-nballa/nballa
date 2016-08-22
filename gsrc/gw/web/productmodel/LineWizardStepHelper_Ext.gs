@@ -53,12 +53,12 @@ class LineWizardStepHelper_Ext {
       //setAnimalLiabilityLimitDefault(hoLine)
       una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm, dwelling)
       setSpecialLimitsPersonalPropertyDefaults(dwelling)
+      dwelling.HODW_LossAssessmentCov_HOE_Ext?.setDefaults()
     }
 
     if(hoLine != null){
       setAnimalLiabilityLimitDefault(hoLine)
-      hoLine.HODW_LossAssessmentCov_HOE_Ext?.setDefaults()
-    }
+      }
   }
 
   /*private static function setFireDwellingValuationMethodDefault(dwelling : Dwelling_HOE){

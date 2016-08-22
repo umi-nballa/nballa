@@ -33,7 +33,7 @@ class CoverageTermAvailabilityUtil {
         result = isFireDwellingMedicalPaymentLimitAvailable(option, coverable as HomeownersLine_HOE)
         break
       case "HOPL_LossAssCovLimit_HOE":
-        result = isLossAssessmentLimitOptionAvailable(option, coverable as HomeownersLine_HOE)
+        result = isLossAssessmentLimitOptionAvailable(option, coverable as Dwelling_HOE)
         break
       case "HODW_JewelryWatchesFursLimit_HOE":
         result = isSpecialLimitOptionAvailable(coverable as HomeownersLine_HOE)
@@ -54,7 +54,7 @@ class CoverageTermAvailabilityUtil {
     switch(patternCode){
       case "HOPL_Deductible_HOE":
       case "HOPL_SpecialLimitDeductibleAssessment_HOE":
-        result = isLossAssessmentDeductibleAvailable(coverable as HomeownersLine_HOE)
+        result = isLossAssessmentDeductibleAvailable(coverable as Dwelling_HOE)
         break
       default:
         break
@@ -152,14 +152,14 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isLossAssessmentLimitOptionAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, hoLine : entity.HomeownersLine_HOE) : boolean{
+  private static function isLossAssessmentLimitOptionAvailable(covTermOpt : gw.api.productmodel.CovTermOpt, dwelling : entity.Dwelling_HOE) : boolean{
     var result = true
 
-    if(hoLine.BaseState == TC_FL and hoLine.HOPolicyType == TC_DP3_Ext){
-      if(hoLine.DPLI_Personal_Liability_HOEExists){
-        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, hoLine.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
-      }else if(hoLine.Dwelling.ResidenceType == TC_CONDO){
-        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, hoLine.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
+    if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
+      if(dwelling.HOLine.DPLI_Personal_Liability_HOEExists){
+        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
+      }else if(dwelling.ResidenceType == TC_CONDO){
+        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
       }
     }
 
@@ -176,11 +176,11 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isLossAssessmentDeductibleAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
+  private static function isLossAssessmentDeductibleAvailable(dwelling : entity.Dwelling_HOE) : boolean{
     var result = true
 
-    if(hoLine.BaseState == TC_FL and hoLine.HOPolicyType == TC_DP3_EXT){
-      result = hoLine.Dwelling.ResidenceType == TC_CONDO
+    if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_EXT){
+      result = dwelling.ResidenceType == TC_CONDO
     }
 
     return result

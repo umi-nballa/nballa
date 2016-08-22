@@ -32,7 +32,7 @@ class HPXRequestMapper {
 
   function createForms(policyPeriod : PolicyPeriod) : String {
     var mapper = new HPXRequestMapper()
-    var coverageMapper = new HPXCoverageMapper()
+    var coverageMapper = new HPXDwellingCoverageMapper()
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var returnString = new String()

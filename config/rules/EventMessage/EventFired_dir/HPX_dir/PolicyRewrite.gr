@@ -1,0 +1,23 @@
+package rules.EventMessage.EventFired_dir.HPX_dir
+uses una.integration.mapping.hpx.HPXRequestMapper
+@gw.rules.RuleName("Policy Rewrite")
+internal class PolicyRewrite {
+  static function doCondition(messageContext : entity.MessageContext) : boolean {
+/*start00rule*/
+return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.REWRITEPERIOD_MSG
+/*end00rule*/
+}
+
+  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+/*start00rule*/
+var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
+var ewsRequestMapper = new HPXRequestMapper()
+if (period?.HomeownersLine_HOE != null)
+{
+  var ewsRequestXML = ewsRequestMapper.createForms(period)
+  print(ewsRequestXML)
+  messageContext.createMessage(ewsRequestXML)
+}
+/*end00rule*/
+  }
+}

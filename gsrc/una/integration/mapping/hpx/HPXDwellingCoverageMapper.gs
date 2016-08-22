@@ -11,13 +11,11 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Limit>()
     if (currentCoverage.PatternCode.equals("HODW_OtherStructuresOnPremise_HOE")) {
       var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_OtherStructuresOnPremise_HOE.ScheduledItems
-      var i=0
       for (item in scheduleItems) {
-        i++
         var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
         var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
         var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-        var transactionSeqNo = new wsi.schema.una.hpx.hpx_application_request.TransactionSeqNumber()
+        var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
         if (item.Description != null) {
           limitDesc.setText(item.Description)
           limit.addChild(limitDesc)
@@ -26,21 +24,19 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           formatPct.setText(item.AdditionalLimit.Code)
           limit.addChild(formatPct)
         }
-        transactionSeqNo.setText(i)
-        limit.addChild(transactionSeqNo)
+        coverageCd.setText(currentCoverage.PatternCode)
+        limit.addChild(coverageCd)
         limits.add(limit)
       }
     } else if (currentCoverage.PatternCode.equals("HODW_ScheduledProperty_HOE")) {
-      var i=0
       var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_ScheduledProperty_HOE.ScheduledItems
       for (item in scheduleItems) {
-        i++
         var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
         var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
         var scheduleType = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
         var writtenAmt = new wsi.schema.una.hpx.hpx_application_request.WrittenAmt()
         var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-        var transactionSeqNo = new wsi.schema.una.hpx.hpx_application_request.TransactionSeqNumber()
+        var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
         if (item.ScheduleType != null) {
           scheduleType.setText(item.ScheduleType)
           limit.addChild(scheduleType)
@@ -54,8 +50,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           writtenAmt.addChild(amt)
           limit.addChild(writtenAmt)
         }
-        transactionSeqNo.setText(i)
-        limit.addChild(transactionSeqNo)
+        coverageCd.setText(currentCoverage.PatternCode)
+        limit.addChild(coverageCd)
         limits.add(limit)
       }
     }

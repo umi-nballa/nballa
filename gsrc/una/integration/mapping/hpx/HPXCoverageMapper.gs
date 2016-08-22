@@ -149,7 +149,14 @@ abstract class HPXCoverageMapper {
     var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
     var value = currentCovTerm.OptionValue.Value as double
     if (value == null || value == "") value = 0.00
-    if(value <= 1) {
+    if (value == 0.00) {
+      formatPct.setText(0)
+      deductible.addChild(formatPct)
+      amt.setText(0.00)
+      formatCurrencyAmt.addChild(amt)
+      deductible.addChild(formatCurrencyAmt)
+    }
+    else if(value <= 1) {
       var pct = new BigDecimal(value*100.00).setScale(2, BigDecimal.ROUND_HALF_UP)
       formatPct.setText(pct.setScale(2).asString())
       deductible.addChild(formatPct)
@@ -181,7 +188,14 @@ abstract class HPXCoverageMapper {
     var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
     var value = currentCovTerm.Value as double
     if (value == null || value == "") value = 0.00
-    if(value <= 1) {
+    if (value == 0.00) {
+      formatPct.setText(0)
+      deductible.addChild(formatPct)
+      amt.setText(0.00)
+      formatCurrencyAmt.addChild(amt)
+      deductible.addChild(formatCurrencyAmt)
+    }
+    else if(value <= 1) {
       var pct = new BigDecimal(value*100.00).setScale(2, BigDecimal.ROUND_HALF_UP)
       formatPct.setText(pct.setScale(2).asString())
       deductible.addChild(formatPct)

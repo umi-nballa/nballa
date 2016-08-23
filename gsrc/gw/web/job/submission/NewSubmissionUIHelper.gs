@@ -40,6 +40,9 @@ class NewSubmissionUIHelper {
 
   function refreshProductOffers(acct : Account, selectionOfProducer: ProducerSelection)
   {
+    if(!una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)){
+      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
+    }
     if (selectionOfProducer.Account <> acct) {
       selectionOfProducer.Account = acct
       //selectionOfProducer.State =   JurisdictionMappingUtil.getJurisdiction(acct.AccountHolderContact.PrimaryAddress)
@@ -52,7 +55,10 @@ class NewSubmissionUIHelper {
   function performNameClearance(acct: Account, selectionOfProducer: ProducerSelection) : ProductSelection[]
   {
     isProducerStatesEmpty(selectionOfProducer)
-    if(selectionOfProducer.DefaultPPEffDate == null) {
+    //if(!una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)){
+      //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
+    //}
+    if(selectionOfProducer.Producer != null && selectionOfProducer.DefaultPPEffDate == null) {
       throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
     }
     if( canPerformNameClearance(acct, selectionOfProducer) )
@@ -94,9 +100,9 @@ class NewSubmissionUIHelper {
     if(theProducerSelection.DefaultPPEffDate == null){
       prefix = displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired + "|"
     }
-    if(baseState == null && res == false){
+    if(theProducerSelection.Producer != null && baseState == null && res == false){
       throw new gw.api.util.DisplayableException(prefix + displaykey.Web.SubmissionManagerLV.NoActiveStates)
-    } else if(baseState == null && res == true){
+    } else if(theProducerSelection.Producer != null && baseState == null && res == true){
       throw new gw.api.util.DisplayableException(prefix + displaykey.Web.SubmissionManagerLV.DefaultBaseStateRequired)
     }
     return res
@@ -116,6 +122,7 @@ class NewSubmissionUIHelper {
   {
     return acct != null && perm.Account.newSubmission(acct) &&
         selectionOfProducer.Producer != null && selectionOfProducer.ProducerCode != null
+          && una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)
   }
 
   function createMultipleSubmissions( offers : ProductSelection[] , acct: Account, selectionOfProducer: ProducerSelection, typeOfQuote: QuoteType)
@@ -127,6 +134,13 @@ class NewSubmissionUIHelper {
       throw new DisplayableException( displaykey.Web.ProductOffers.NoSubmissionsCreated )
     }
     SubmissionManager.go( submissions[0].Policy.Account )
+  }
+
+  function isDefaultPPEffDatePopulated(producerSelection : ProducerSelection): boolean {
+    if( producerSelection.Producer != null && producerSelection.DefaultPPEffDate == null ) {
+      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
+    }
+    return true
   }
 
   static function createOneSubmission( offer : ProductSelection, producerSelection : ProducerSelection, account : Account, quoteType : QuoteType )

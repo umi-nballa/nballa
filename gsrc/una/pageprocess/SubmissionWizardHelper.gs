@@ -56,10 +56,11 @@ class SubmissionWizardHelper {
     /* It Enable submission for developer testing which is identified by a combination of
     * of environment check and script parameter to be set to true
      */
-    if (EnvironmentUtil.isLocal() && ScriptParameters.EnableMultiPolicyForLocal)
-      return true
+    if (EnvironmentUtil.isLocal() && ScriptParameters.EnableMultiPolicyForLocal){
+      //return true
+    }
 
-    return (acct.IssuedPolicies.Count == 0) ? true : false
+    return (acct!= null && acct?.IssuedPolicies?.Count == 0) ? true : false
   }
 
 

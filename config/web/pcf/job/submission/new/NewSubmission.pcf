@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Page
-    afterEnter="selectionOfProducer.DefaultPPEffDate = null;uiHelper.checkActStateExistsWithProducer(selectionOfProducer);"
+    afterEnter="selectionOfProducer.DefaultPPEffDate = null; uiHelper.checkActStateExistsWithProducer(selectionOfProducer); uiHelper.isDefaultPPEffDatePopulated(selectionOfProducer)"
     afterReturnFromPopup="uiHelper.refreshProductOffers(acct, selectionOfProducer)"
     autosaveable="false"
     beforeCommit="throw &quot;NewSubmission should never commit&quot;"
@@ -38,7 +38,6 @@
     <Variable
       initialValue="uiHelper.performNameClearance(acct, selectionOfProducer)"
       name="productOffers"
-      recalculateOnRefresh="true"
       type="ProductSelection[]"/>
     <Variable
       initialValue="true"
@@ -65,7 +64,7 @@
               id="Account"
               inputConversion="Account.checkedFindByNumber(VALUE, \ a -&gt; perm.Account.newSubmission(a))"
               label="displaykey.Web.DesktopAccounts.AccountNumber"
-              onPick="uiHelper.refreshProductOffers(acct, selectionOfProducer)"
+              onPick="//uiHelper.refreshProductOffers(acct, selectionOfProducer)"
               pickLocation="NewAccountPopup.push(true)"
               required="true"
               value="acct"
@@ -81,7 +80,8 @@
               visible="acct.AccountNumber != null"/>
           </InputSet>
           <InputSet
-            id="ProducerSelectionInputSet">
+            id="ProducerSelectionInputSet"
+            visible="una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)">
             <Label
               id="ProducerSelection"
               label="displaykey.Web.NewSubmission.ProducerSelection"/>
@@ -115,7 +115,7 @@
         </InputColumn>
       </DetailViewPanel>
       <PanelSet
-        visible="uiHelper.canPerformNameClearance(acct, selectionOfProducer)">
+        visible="una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct) &amp;&amp; uiHelper.canPerformNameClearance(acct, selectionOfProducer)">
         <DetailViewPanel
           id="ProductSettingsDV">
           <InputColumn>
@@ -169,7 +169,7 @@
           <InputColumn>
             <ListViewInput
               def="ProductSelectionLV(productOffers, acct, selectionOfProducer, createSingle, typeOfQuote)"
-              visible="uiHelper.canPerformNameClearance(acct, selectionOfProducer)">
+              visible="uiHelper.canPerformNameClearance(acct, selectionOfProducer) &amp;&amp; selectionOfProducer.DefaultPPEffDate != null">
               <Toolbar>
                 <ToolbarButton
                   action="uiHelper.createMultipleSubmissions(productOffers, acct, selectionOfProducer, typeOfQuote)"

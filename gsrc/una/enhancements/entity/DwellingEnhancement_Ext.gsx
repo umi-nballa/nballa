@@ -1,6 +1,7 @@
 package una.enhancements.entity
 
 uses gw.api.domain.covterm.DirectCovTerm
+uses gw.api.domain.covterm.OptionCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,6 +54,22 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       result = this.DPDW_Loss_Of_Use_HOE.DPDW_LossOfUseDwelLimit_HOETerm
     }else{
       result = this.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm
+    }
+
+    return result
+  }
+
+  property get IsSecondaryOrSeasonal() : boolean {
+    return this.DwellingUsage != null and DwellingUsage_HOE.TF_SECONDARYORSEASONAL.TypeKeys.contains(this.DwellingUsage)
+  }
+
+  property get AllPerilsOrAllOtherPerilsCovTerm() : OptionCovTerm{
+    var result : OptionCovTerm
+
+    if(this.HODW_SectionI_Ded_HOE.HasHODW_OtherPerils_Ded_HOETerm){
+      result = this.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm
+    }else if(this.HODW_SectionI_Ded_HOE.HasHODW_AllPeril_HOE_ExtTerm){
+      result = this.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm
     }
 
     return result

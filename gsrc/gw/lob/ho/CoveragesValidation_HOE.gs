@@ -31,6 +31,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
     _holine.HOLineCoverages.each(\ d -> checkUniqueLocation(d))
     validateSpecialLimitsDirectCovTerms()
     validateDeductibleAmounts()
+    validateDwellingLimit()
   }
   
   function checkEmptyLocations() {
@@ -157,7 +158,16 @@ class CoveragesValidation_HOE extends PCValidationBase {
     validateNamedStormDeductible()
     validateHurricaneDeductible()
     validateMinimumWindHailDeductible()
-    //TODO tlv - might need to update and add AOP validation.  Business rules and deductible type conflict so can't actually implement the business rule  until answer from BA
+    validateAllOtherPerilsDeductible()
+  }
+
+  private function validateDwellingLimit(){
+    var dwellingLimit = _holine.Dwelling.DwellingLimitCovTerm.Value
+    var limitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, _holine.BaseState, _holine.HOPolicyType)
+
+    if(dwellingLimit < limitRange.LowerBound or dwellingLimit > limitRange.UpperBound){
+      Context.Result.addError(_dwelling, "default", displaykey.una.productmodel.validation.DwellingLimitValidationMessage(dwellingLimit.asString(), _holine.Dwelling.DwellingLimitCovTerm.Pattern.Name, limitRange.LowerBound, limitRange.UpperBound), "HOCoverages")
+    }
   }
 
   private function validateNamedStormDeductible(){
@@ -177,9 +187,10 @@ class CoveragesValidation_HOE extends PCValidationBase {
                                                  var hurricaneCovTermValue = hurricaneCovTerm.Value
     if(territoriesToValidate?.intersect(territoryCodes)?.Count > 0){
       var minimum = ConfigParamsUtil.getDouble(TC_HurricaneDeductiblePerecentageMinimum, _holine.BaseState)
+      var minText = (minimum < 1) ? ((minimum * 100) + "%") : new Double(minimum)?.asMoney()
 
       if(hurricaneCovTerm.Value.doubleValue() < minimum){
-        Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleError(hurricaneCovTerm.Pattern.Name, territoryCodes.toList(), (minimum * 100) + "%"), "HOCoverages")
+        Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleError(hurricaneCovTerm.Pattern.Name, territoryCodes.toList(), minText), "HOCoverages")
       }
     }else if(_holine.BaseState == TC_FL and (covAValue!= null and hurricaneCovTerm.Value != null and (hurricaneCovTerm.Value * covAValue) < allOtherPerilsValue)){
       Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleHurricaneAOPError, "HOCoverages")
@@ -191,9 +202,22 @@ class CoveragesValidation_HOE extends PCValidationBase {
     var territoriesToValidate = ConfigParamsUtil.getList(TC_TerritoryCodesToValidateWindHail, _holine.BaseState, _holine.HOPolicyType)
     var territoryCodes =  _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code
     var minimum = ConfigParamsUtil.getDouble(TC_WindHailDeductibleMinimumPercentage, _holine.BaseState)
+    var minText = (minimum < 1) ? ((minimum * 100) + "%") : new Double(minimum)?.asMoney()
 
-    if(territoriesToValidate?.intersect(territoryCodes)?.Count > 0 and windHailCovTerm.Value < minimum){
-      Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleError(windHailCovTerm.Pattern.Name, territoryCodes.toList(), (minimum * 100) + "%"), "HOCoverages")
+    if(territoriesToValidate?.intersect(territoryCodes)?.Count > 0 and isCalculatedDeductibleLessThanCalculatedMinimum(windHailCovTerm.Value, minimum)){
+      Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleError(windHailCovTerm.Pattern.Name, territoryCodes.toList(), minText), "HOCoverages")
+    }
+  }
+
+  private function validateAllOtherPerilsDeductible(){
+    var allPerilsCovTerm = _holine.Dwelling.AllPerilsOrAllOtherPerilsCovTerm
+    var territoriesToValidate = ConfigParamsUtil.getList(TC_TerritoryCodesToValidateAllPerils, _holine.BaseState, _holine.HOPolicyType)
+    var territoryCodes =  _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code
+    var minimum = ConfigParamsUtil.getDouble(TC_AllPerilsMinimumPercentage, _holine.BaseState)
+    var minText = (minimum < 1) ? ((minimum * 100) + "%") : new Double(minimum)?.asMoney()
+
+    if(territoriesToValidate?.intersect(territoryCodes)?.Count > 0 and isCalculatedDeductibleLessThanCalculatedMinimum(allPerilsCovTerm.Value, minimum)){
+      Context.Result.addError(_dwelling, "default", displaykey.una.coverages.SectionIDeductibleError(allPerilsCovTerm.Pattern.Name, territoryCodes.toList(), minText), "HOCoverages")
     }
   }
 
@@ -203,7 +227,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
     if(policyTypesToValidate?.contains(_holine.HOPolicyType.Code)){
       var territoryCodesToValidate = ConfigParamsUtil.getList(TC_TerritoryCodesToValidateNamedStormPercentage, _holine.BaseState)
 
-      if(territoryCodesToValidate.intersect(currentTerritoryCodes).Count > 0 or shouldValidateForCounty()){
+      if(territoryCodesToValidate?.intersect(currentTerritoryCodes).Count > 0 or shouldValidateForCounty()){
         var minimum = ConfigParamsUtil.getDouble(TC_NamedStormDeductibleMinPercentage, _holine.BaseState)
 
         if(minimum > namedStormCovTerm.Value){
@@ -257,6 +281,23 @@ class CoveragesValidation_HOE extends PCValidationBase {
     }
 
     return allowedIncrements.contains(covTerm.Value.doubleValue())
+  }
+
+  private function isCalculatedDeductibleLessThanCalculatedMinimum(deductible: double, minimum: double) : boolean{
+    var result : boolean
+    var coverageAValue = _holine.Dwelling.DwellingLimitCovTerm.Value
+
+    if((minimum < 1 and deductible < 1) or (minimum > 1 and deductible > 1)){// if both are values that do not need to be converted
+      result = deductible < minimum
+    }else if(minimum < 1 and deductible > 1){//need to convert min to a dollar amount
+      var calculatedMin = coverageAValue * minimum
+      result = deductible < calculatedMin
+    }else if(minimum > 1 and deductible < 1){
+      var calculatedPercentage = deductible / coverageAValue
+      result = minimum < calculatedPercentage
+    }
+
+    return result
   }
 
   static function validateCoveragesStep(holine : HomeownersLine_HOE) {

@@ -21,10 +21,10 @@
       modelType="Limit"
       priority="100"
       public-id="HOPL_Deductible_HOE"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="other">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HOPL_SpecialLimitDeductibleAssessment_HOE", Dwelling_HOE)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HOPL_Deductible_HOE", Dwelling_HOE)]]></AvailabilityScript>
       <LimitsSet/>
     </DirectCovTermPattern>
     <OptionCovTermPattern
@@ -166,6 +166,7 @@
       required="true"
       restrictionModel="prp"
       valueType="other">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HOPL_SpecialLimitDeductibleAssessment_HOE", Dwelling_HOE)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt

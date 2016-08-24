@@ -65,14 +65,6 @@ class CovTermPOCHOEInputSet {
         break;
     }
 
-
-   /* if((_coverable as Dwelling_HOE).HODW_Dwelling_Cov_HOEExists) {
-      return dwelling.HODW_Dwelling_Cov_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
-    }
-    if((_coverable as Dwelling_HOE).DPDW_Dwelling_Cov_HOEExists) {
-      return dwelling.DPDW_Dwelling_Cov_HOE.validateDPMinMaxLimits_Ext(_coverable as Dwelling_HOE)
-    }*/
-
    roundInputValue(_coverable, _covTerm)
     return null
   }
@@ -108,7 +100,7 @@ class CovTermPOCHOEInputSet {
 
   private static function setExecutiveCoverageDefaults(dwelling : Dwelling_HOE, booleanCovTerm : BooleanCovTerm){
 
-    if(booleanCovTerm.Value == true){
+    if(booleanCovTerm.Value){
       var coveragePatternsToSelect = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTSELECTEDCOVERAGEPATTERNS, dwelling.PolicyLine.BaseState)
 
       coveragePatternsToSelect.each( \ coveragePattern -> {
@@ -119,8 +111,10 @@ class CovTermPOCHOEInputSet {
         }
       })
 
-      setExecutiveDefaultsForCoverage(dwelling.Coverages, dwelling)
-      setExecutiveDefaultsForCoverage(dwelling.HOLine.AllCoverages, dwelling.HOLine)
+      if(ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_SHOULDDEFAULTLIMITSEXECUTIVECOVERAGES, dwelling.PolicyLine.BaseState)){
+        setExecutiveDefaultsForCoverage(dwelling.Coverages, dwelling)
+        setExecutiveDefaultsForCoverage(dwelling.HOLine.AllCoverages, dwelling.HOLine)
+      }
     }
   }
 

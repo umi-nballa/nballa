@@ -57,7 +57,7 @@ class SubmissionWizardHelper {
     * of environment check and script parameter to be set to true
      */
     if (EnvironmentUtil.isLocal() && ScriptParameters.EnableMultiPolicyForLocal){
-      //return true
+      return true
     }
 
     return (acct!= null && acct?.IssuedPolicies?.Count == 0) ? true : false

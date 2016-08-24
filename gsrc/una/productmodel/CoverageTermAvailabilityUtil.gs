@@ -191,7 +191,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_EXT){
-      result = dwelling.ResidenceType == TC_CONDO
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.ResidenceType == TC_CONDO
     }
 
     return result

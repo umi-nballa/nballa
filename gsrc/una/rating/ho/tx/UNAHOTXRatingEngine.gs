@@ -7,14 +7,11 @@ uses una.rating.ho.ratinginfos.HORatingInfo
 uses una.rating.ho.ratinginfos.HOLineRatingInfo
 uses una.rating.ho.ratinginfos.HODiscountsOrSurchargesRatingInfo
 uses una.rating.util.HOCreateCostDataUtil
-uses gw.rating.rtm.query.RateBookQueryFilter
-uses gw.rating.rtm.query.RatingQueryFacade
-uses gw.job.RenewalProcess
 uses java.util.Map
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.UNAHORatingEngine_HOE
-uses una.rating.ho.common.HomeownersLineCostData_HOE
 uses una.rating.ho.HODwellingRatingInfo
+uses una.rating.ho.tx.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -96,10 +93,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange, _hoRatingInfo)
           break
       case HODW_Personal_Property_HOE:
-          rateIncreasedPersonalProperty(dwellingCov, dateRange)
+          if(dwellingCov?.Dwelling.HOLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT)
+            rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_ScheduledProperty_HOE:
-          //rateScheduledPersonalProperty(dwellingCov, dateRange)   //Need to implement this functionality
+          rateScheduledPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_SpecialLimitsPP_HOE_Ext:
           rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
@@ -129,32 +127,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     if(PolicyLine.NumAddInsured > 0){
       rateAdditionalInsuredCoverage(dateRange)
-    }
-  }
-
-  /**
-   * Function to adjust the total premium for TX HO, if it is less than minimum premium
-  */
-  override function rateManualPremiumAdjustment(dateRange: DateRange){
-    var totalPremium = CostDatas.sum( \ costData -> costData.ActualTermAmount)
-    var minimumPremium = 0
-    var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
-                {:Jurisdiction = BaseState,
-                 :MinimumRatingLevel = MinimumRatingLevel,
-                 :RenewalJob = (PolicyLine.Branch.JobProcess typeis RenewalProcess),
-                 :Offering = OfferingCode}
-    var params = {BaseState.Code, PolicyLine.HOPolicyType.Code}
-    minimumPremium = new RatingQueryFacade().getFactor(filter, "ho_minimum_premium_cost_cw", params).Factor
-    if(minimumPremium > totalPremium){
-      var premiumAdjustment = (minimumPremium - totalPremium)
-      var costData = new HomeownersLineCostData_HOE(dateRange.start, dateRange.end, PolicyLine.PreferredCoverageCurrency, RateCache, typekey.HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT)
-      costData.init(PolicyLine)
-      costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
-      costData.StandardBaseRate = premiumAdjustment
-      costData.StandardAdjRate = premiumAdjustment
-      costData.StandardTermAmount = premiumAdjustment
-      costData.copyStandardColumnsToActualColumns()
-      addCost(costData)
     }
   }
 
@@ -316,14 +288,13 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-   * Rate the Personal property - Increased limits coverage
+   * Rate the Scheduled Personal property
    */
   function rateScheduledPersonalProperty(dwellingCov: HODW_ScheduledProperty_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
-    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
     for (item in dwellingCov.ScheduledItems) {
-      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
-      var costData = HOCreateCostDataUtil.createCostDataForScheduledCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_TX_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      var rateRoutineParameterMap = getScheduledPersonalPropertyCovParameterSet(PolicyLine, item, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_TX_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)
         addCost(costData)
     }
@@ -469,6 +440,16 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Dwelling level coverages
+   */
+  private function getScheduledPersonalPropertyCovParameterSet(line : PolicyLine, item : ScheduledItem_HOE, stateCode : String) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> new HOScheduledPersonalPropertyRatingInfo(item)
     }
   }
 

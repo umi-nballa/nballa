@@ -4,11 +4,7 @@ uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses gw.financials.PolicyPeriodFXRateCache
 uses una.rating.ho.group1.ratinginfos.HORatingInfo
-uses gw.rating.rtm.query.RateBookQueryFilter
-uses gw.rating.rtm.query.RatingQueryFacade
-uses gw.job.RenewalProcess
 uses una.rating.ho.UNAHORatingEngine_HOE
-uses una.rating.ho.common.HomeownersLineCostData_HOE
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.util.HOCreateCostDataUtil
 uses java.util.Map
@@ -98,32 +94,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Function which rates the discounts and surcharges
    */
   override function rateHOLineCosts(dateRange: DateRange) {
-  }
-
-  /**
-   * Function to adjust the total premium for TX HO, if it is less than minimum premium
-  */
-  override function rateManualPremiumAdjustment(dateRange: DateRange){
-    var totalPremium = CostDatas?.sum( \ costData -> costData.ActualTermAmount)
-    var minimumPremium = 0
-    var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
-                {:Jurisdiction = BaseState,
-                 :MinimumRatingLevel = MinimumRatingLevel,
-                 :RenewalJob = (PolicyLine.Branch.JobProcess typeis RenewalProcess),
-                 :Offering = OfferingCode}
-    var params = {BaseState.Code, PolicyLine.HOPolicyType.Code}
-    minimumPremium = new RatingQueryFacade().getFactor(filter, "ho_minimum_premium_cost_cw", params).Factor
-    if(minimumPremium > totalPremium){
-      var premiumAdjustment = (minimumPremium - totalPremium)
-      var costData = new HomeownersLineCostData_HOE(dateRange.start, dateRange.end, PolicyLine.PreferredCoverageCurrency, RateCache, typekey.HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT)
-      costData.init(PolicyLine)
-      costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
-      costData.StandardBaseRate = premiumAdjustment
-      costData.StandardAdjRate = premiumAdjustment
-      costData.StandardTermAmount = premiumAdjustment
-      costData.copyStandardColumnsToActualColumns()
-      addCost(costData)
-    }
   }
 
   /**

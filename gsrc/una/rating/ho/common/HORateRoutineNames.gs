@@ -26,6 +26,7 @@ public final class HORateRoutineNames {
   public static final var MOLD_REMEDIATION_COV_TX_ROUTINE_NAME : String = "UNAHOMoldRemediationCovTXRateRoutine"
   public static final var UNIT_OWNERS_OUTBUILDINGS_AND_OTHER_STRUCTURES_COV_TX_ROUTINE_NAME : String = "UNAHOUnitOwnersOutbuildingsAndOtherStructuresCovTXRateRoutine"
   public static final var ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_TX_ROUTINE_NAME : String = "UNAHOAdditionalResidenceRentedToOthersTXRateRoutine"
+  public static final var SCHEDULED_PERSONAL_PROPERTY_COV_TX_ROUTINE_NAME : String = "UNAHOScheduledPersonalPropertyCovTXRateRoutine"
 
   public static final var PERSONAL_INJURY_ROUTINE_NAME : String = "UNAHOPersonalInjuryRateRoutine"
   public static final var EQUIPMENT_BREAKDOWN_COV_ROUTINE_NAME : String = "UNAHOEquipmentBreakdownCovRateRoutine"
@@ -40,6 +41,7 @@ public final class HORateRoutineNames {
   public static final var AGE_OF_HOME_DISCOUNT_RATE_ROUTINE : String = "UNAHOAgeOfHomeDiscountRateRoutine"
   public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDevicesCreditRateRoutine"
   public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
+  public static final var MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMinimumPremiumAdjustmentRateRoutine"
   public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
   public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
 

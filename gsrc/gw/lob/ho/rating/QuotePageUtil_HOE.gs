@@ -126,13 +126,15 @@ abstract class QuotePageUtil_HOE {
     }else if(coverage.PatternCode == "HODW_ScheduledProperty_HOE"){
       // Scheduled Personal Property Coverage
       var dwellingCov = coverage as DwellingCov_HOE
-      var type = (cost as ScheduleByTypeCovCost_HOE).ScheduleType
+      var scheduledItem = (cost as ScheduleCovCost_HOE).ScheduledItem
+      var key = scheduledItem.FixedId
+      var type = scheduledItem.ScheduleType
       var itemsPerType = dwellingCov.VersionList.ScheduledItems.flatMap(
-        \ h -> h.AllVersions).where(\ s -> s.ScheduleType == type
+        \ h -> h.AllVersions).where(\ s -> s.FixedId == key and s.ScheduleType == type
         and s.EffectiveDateRange.includes(cost.ExpDate.addDays(-1)))
       var total: BigDecimal = 0
       itemsPerType.each(\ s -> {total += s.ExposureValue})
-      result.add(new NameValueCostData_HOE(type.DisplayName, total.asString(), cost))
+      result.add(new NameValueCostData_HOE(type.DisplayName + " - " + scheduledItem.Description, total.asString(), cost))
     }else if(coverage.PatternCode == "HODW_SpecialLimitsCovC_HOE"){
       // Special Limits Personal Property Coverage
       var schedCost = cost  as ScheduleCovCost_HOE

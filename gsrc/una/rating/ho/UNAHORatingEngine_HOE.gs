@@ -14,6 +14,9 @@ uses una.rating.util.HOCreateCostDataUtil
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.common.HORateRoutineExecutor
 uses una.rating.ho.common.HomeownersLineCostData_HOE
+uses gw.rating.rtm.query.RateBookQueryFilter
+uses gw.job.RenewalProcess
+uses gw.rating.rtm.query.RatingQueryFacade
 
 /**
  * User: bduraiswamy
@@ -137,7 +140,30 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   /**
   * Rate the manual premium Adjustment
    */
-  function rateManualPremiumAdjustment(dateRange : DateRange){}
+  function rateManualPremiumAdjustment(dateRange: DateRange){
+    var totalPremium = CostDatas.sum( \ costData -> costData.ActualTermAmount)
+    var minimumPremium = 0
+    var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
+        {:Jurisdiction = BaseState,
+            :MinimumRatingLevel = MinimumRatingLevel,
+            :RenewalJob = (PolicyLine.Branch.JobProcess typeis RenewalProcess),
+            :Offering = OfferingCode}
+    var params = {BaseState.Code, PolicyLine.HOPolicyType.Code}
+    minimumPremium = new RatingQueryFacade().getFactor(filter, "ho_minimum_premium_cost_cw", params).Factor
+    if(minimumPremium > totalPremium){
+      _logger.debug("Entering :: rateManualPremiumAdjustment:", this.IntrinsicType)
+      var premiumAdjustment = (minimumPremium - totalPremium)
+      var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
+          TC_POLICYLINE -> PolicyLine,
+          TC_MINIMUMPREMIUMADJUSTMENT_EXT -> premiumAdjustment
+      }
+      var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE, HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT,RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
+      if (costData != null)
+        addCost(costData)
+      _logger.debug("Minimum Premium Adjustment added Successfully", this.IntrinsicType)
+    }
+  }
 
   /**
    * Rate the Policy fee

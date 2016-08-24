@@ -3,12 +3,13 @@
   codeIdentifier="HODW_AckNoWindstromHail_HOE_Ext"
   coverageCategory="HODW_ConditionsExclusions_HOE"
   exclusionSubtype="HomeownersLineExcl_HOE"
-  existence="Required"
   lookupTableName="HomeownersLineExcl"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="1499"
   public-id="HODW_AckNoWindstromHail_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isExclusionAvailable("HODW_AckNoWindstromHail_HOE_Ext", HomeownersLine_HOE)]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[return una.productmodel.CoveragesUtil.getExistence("HODW_AckNoWindstromHail_HOE_Ext", HomeownersLine_HOE)]]></ExistenceScript>
   <CovTerms/>
 </ExclusionPattern>

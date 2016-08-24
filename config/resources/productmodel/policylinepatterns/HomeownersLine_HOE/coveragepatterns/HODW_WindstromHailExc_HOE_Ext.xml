@@ -3,20 +3,13 @@
   codeIdentifier="HODW_WindstromHailExc_HOE_Ext"
   coverageCategory="HODW_ConditionsExclusions_HOE"
   exclusionSubtype="HomeownersLineExcl_HOE"
-  existence="Required"
+  existence="Electable"
   lookupTableName="HomeownersLineExcl"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="1199"
   public-id="HODW_WindstromHailExc_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[var result = true
-var availableForTerritoryCodes = {"7","8","48","49","52"}
-var state = HomeownersLine_HOE.BaseState
-var count =  HomeownersLine_HOE?.HOLocation?.PolicyLocation?.TerritoryCodes?.countWhere( \ tc -> (availableForTerritoryCodes.contains(tc.Code)) )
-
-if(state == typekey.Jurisdiction.TC_NC){
-  result = count>0
-}  return result]]></AvailabilityScript>
+  <AvailabilityScript/>
   <CovTerms/>
 </ExclusionPattern>

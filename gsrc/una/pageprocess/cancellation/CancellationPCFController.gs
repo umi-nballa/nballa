@@ -98,19 +98,24 @@ class CancellationPCFController {
   public function getCancelReasonCodes(reasonCodes : ReasonCode[]) : List<ReasonCode>{
     var availableCodes : List<ReasonCode> = {}
 
-    if(_policyPeriod.HomeownersLine_HOEExists){
-      availableCodes = ReasonCode.TF_PERSONALLINESREASONCODETYPES.TypeKeys.copy()
-    }else if(_policyPeriod.Lines.hasMatch( \ lob -> lob typeis BP7BusinessOwnersLine or lob typeis entity.CommercialPropertyLine)){
-      availableCodes = ReasonCode.TF_COMMERCIALLINESREASONCODES.TypeKeys.copy()
+    if(_cancellation.Source != null){
+      if(_policyPeriod.HomeownersLine_HOEExists){
+        availableCodes = ReasonCode.TF_PERSONALLINESREASONCODETYPES.TypeKeys.copy()
+      }else if(_policyPeriod.Lines.hasMatch( \ lob -> lob typeis BP7BusinessOwnersLine or lob typeis entity.CommercialPropertyLine)){
+        availableCodes = ReasonCode.TF_COMMERCIALLINESREASONCODES.TypeKeys.copy()
+      }
+      var sourceTypecodes = Reasoncode.getTypeKeys(false).where( \ elt -> elt.hasCategory(_cancellation.Source))
+
+      availableCodes = availableCodes.intersect(sourceTypecodes).toList()
+
+      if(isInUWPeriod()){
+        availableCodes?.removeWhere( \ code -> code == TC_RISKCHANGE)//risk change is the only reason code that is specific to outside the uw period
+      }else{
+        availableCodes.removeWhere( \ code -> ReasonCode.TF_DISCOVERYPERIODTYPES.TypeKeys.contains(code))//remove codes that are specific to uw period
+      }
     }
 
-    if(isInUWPeriod()){
-      availableCodes?.removeWhere( \ code -> code == TC_RISKCHANGE)//risk change is the only reason code that is specific to outside the uw period
-    }else{
-      availableCodes.removeWhere( \ code -> ReasonCode.TF_DISCOVERYPERIODTYPES.TypeKeys.contains(code))//remove codes that are specific to uw period
-    }
-
-    return availableCodes
+    return availableCodes?.sortBy(\ reasonCode -> reasonCode.DisplayName)
   }
 
   public function onChangeReasonCode(reasonCode : ReasonCode, effectiveDate : Date){
@@ -173,11 +178,13 @@ class CancellationPCFController {
   }
 
   private function removeReasonDetails(reasonCode : ReasonCode){
-    _reasonDetailRange = typekey.CancelReasonDetailType.getTypeKeys(false).where( \ elt -> elt.hasCategory(reasonCode))
+    if(reasonCode != null){
+      _reasonDetailRange = typekey.CancelReasonDetailType.getTypeKeys(false).where( \ elt -> elt.hasCategory(reasonCode))
 
-    _reasonDetailRange?.removeWhere( \ elt ->
-        elt.Categories.hasMatch( \ elt1 -> elt1.isOneOf(Jurisdiction.getTypeKeys(false))) and !elt.hasCategory(_policyPeriod.BaseState)
-    )
+      _reasonDetailRange?.removeWhere( \ elt ->
+          elt.Categories.hasMatch( \ elt1 -> elt1.isOneOf(Jurisdiction.getTypeKeys(false))) and !elt.hasCategory(_policyPeriod.BaseState)
+      )
+    }
 
     _cancellation.CancelReasonDetails?.each( \ elt -> {
       if(!_reasonDetailRange.contains(elt.Code)){

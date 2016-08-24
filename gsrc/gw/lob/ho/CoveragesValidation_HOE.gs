@@ -166,7 +166,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
     var limitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, _holine.BaseState, _holine.HOPolicyType)
 
     if(dwellingLimit < limitRange.LowerBound or dwellingLimit > limitRange.UpperBound){
-      Context.Result.addError(_dwelling, "default", displaykey.una.productmodel.validation.DwellingLimitValidationMessage(dwellingLimit.asString(), _holine.Dwelling.DwellingLimitCovTerm.Pattern.Name, limitRange.LowerBound, limitRange.UpperBound), "HOCoverages")
+      Context.Result.addError(_dwelling, "default", displaykey.una.productmodel.validation.DwellingLimitValidationMessage(new Double(dwellingLimit).asMoney(), _holine.Dwelling.DwellingLimitCovTerm.Pattern.Name, new Double(limitRange.LowerBound).asMoney(), new Double(limitRange.UpperBound).asMoney()), "HOCoverages")
     }
   }
 

@@ -43,7 +43,8 @@ class CreditReportRequestDispatcherTest extends gw.testharness.TestBase {
                .withDateOfBirth(gw.api.util.DateUtil.addYears(AccountFactory.date, -30))
              })
     dispatcher = new CreditReportRequestDispatcher(pp.PolicyContactRoles.first(), pp)
-    var resp = dispatcher.orderNewCreditReport(address, AccountFactory.FirstNameArray[rand], null, AccountFactory.LastNameArray[rand])
+    var resp = dispatcher.orderNewCreditReport(address, AccountFactory.FirstNameArray[rand], null, AccountFactory.LastNameArray[rand],
+        gw.api.util.DateUtil.addYears(AccountFactory.date, -30))
     assertNotNull(resp)
   }
   
@@ -53,7 +54,8 @@ class CreditReportRequestDispatcherTest extends gw.testharness.TestBase {
                .withCompanyName((AccountFactory.FirstNameArray[rand]))
              })
     dispatcher = new CreditReportRequestDispatcher(pp.PolicyContactRoles.first(), pp)
-    var resp = dispatcher.orderNewCreditReport(address, AccountFactory.FirstNameArray[rand], null, AccountFactory.LastNameArray[rand])
+    var resp = dispatcher.orderNewCreditReport(address, AccountFactory.FirstNameArray[rand], null, AccountFactory.LastNameArray[rand],
+        gw.api.util.DateUtil.addYears(AccountFactory.date, -30))
     assertNotNull(resp)
   }
 }

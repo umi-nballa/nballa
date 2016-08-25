@@ -7,13 +7,14 @@ uses una.integration.plugins.creditreport.CreditReportDataManagerFactory
 uses una.integration.service.creditreport.ICreditReportService
 uses una.integration.mapping.creditreport.CreditReportResponse
 uses una.integration.mapping.creditreport.CreditReportRequest
+uses una.logging.UnaLoggerCategory
 
 /**
  * Returns hardwired response 
  */
 class CreditReportServiceMock implements ICreditReportService {
 
-  private static final var _logger = Logger.forCategory("CreditReportServiceMock")
+  final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
 
   private var _creditReportDataMgr : ICreditReportDataManager
   
@@ -27,7 +28,7 @@ class CreditReportServiceMock implements ICreditReportService {
    */
   @Param("rqst", "Instance of report request")
   override function getCreditReport(rqst: CreditReportRequest): CreditReportResponse {
-    _logger.debug("Entering method getCreditReport()")
+    LOGGER.debug("Entering method getCreditReport()")
 
     var response: CreditReportResponse = null
 
@@ -62,7 +63,7 @@ class CreditReportServiceMock implements ICreditReportService {
         } else if (rqst.FirstName == "Keith") {
           response.StatusCode = CreditStatusExt.TC_ERROR
           response.StatusDescription = "Credit service is down"
-          _logger.error("Credit service not available!")
+          LOGGER.error("Credit service not available!")
         } else {
           response.Score = "555"
           response.StatusCode = CreditStatusExt.TC_CREDIT_RECEIVED
@@ -74,7 +75,7 @@ class CreditReportServiceMock implements ICreditReportService {
         }
       }
     }
-    _logger.debug("Exiting method getCreditReport()")
+    LOGGER.debug("Exiting method getCreditReport()")
 
     return response
   }

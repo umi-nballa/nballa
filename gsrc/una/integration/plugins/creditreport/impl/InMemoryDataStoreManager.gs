@@ -5,10 +5,11 @@ uses una.integration.plugins.creditreport.ICreditReportDataManager
 uses gw.api.util.Logger
 uses una.integration.mapping.creditreport.CreditReportRequest
 uses una.integration.mapping.creditreport.CreditReportResponse
+uses una.logging.UnaLoggerCategory
 
 class InMemoryDataStoreManager implements ICreditReportDataManager {
 
-  private static final var _logger = Logger.forCategory("InMemoryDataStoreManager")
+  final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
 
   // Represents a cached credit report/score in the external credit reporting service.
   static private class CachedCreditReport {
@@ -44,7 +45,7 @@ class InMemoryDataStoreManager implements ICreditReportDataManager {
     
     var foundResults : List<CachedCreditReport> = null
     if (!_localCache.Empty) {
-        _logger.debug("Querying cache for credit score for: " + rqst.FirstName + " " + rqst.LastName)
+        LOGGER.debug("Querying cache for credit score for: " + rqst.FirstName + " " + rqst.LastName)
         foundResults = _localCache.where(\ r -> 
             r.FirstName == rqst.FirstName 
             && (rqst.MiddleName == null ||  r.MiddleName == rqst.MiddleName)
@@ -54,7 +55,7 @@ class InMemoryDataStoreManager implements ICreditReportDataManager {
             && r.AddressState == rqst.AddressState
             && r.AddressZip == rqst.AddressZip
             && r.CreditDate > rqst.CacheExpireDate)
-        _logger.debug("Found " + foundResults.Count + " credit report(s) in local cache.")
+        LOGGER.debug("Found " + foundResults.Count + " credit report(s) in local cache.")
         if (foundResults.Count > 0) {
           result = foundResults.get(0)
         }
@@ -72,12 +73,12 @@ class InMemoryDataStoreManager implements ICreditReportDataManager {
        
     var cachedResponse : CreditReportResponse = null
     var cachedRecord : CachedCreditReport = null
-    _logger.debug("Local cache contains " + _localCache.size() + " scores.")
+    LOGGER.debug("Local cache contains " + _localCache.size() + " scores.")
     
     if(rqst != null) {
       cachedRecord = queryLocalCacheForCreditScore(rqst)
       if (cachedRecord != null) {
-          _logger.info("Found cached credit report for individual: " + rqst.FirstName + " " + rqst.LastName)
+          LOGGER.info("Found cached credit report for individual: " + rqst.FirstName + " " + rqst.LastName)
           cachedResponse = new CreditReportResponse()
           cachedResponse.Score = cachedRecord.CreditScore
           cachedResponse.ScoreDate = cachedRecord.CreditDate
@@ -85,7 +86,7 @@ class InMemoryDataStoreManager implements ICreditReportDataManager {
           cachedResponse.StatusDescription = cachedRecord.StatusDescription
       }
       else {
-        _logger.debug("getRecordFromLocalDataStore(): Local record is not found")
+        LOGGER.debug("getRecordFromLocalDataStore(): Local record is not found")
       }
     }
     
@@ -120,6 +121,6 @@ class InMemoryDataStoreManager implements ICreditReportDataManager {
     newCacheRecord.StatusDescription = response.StatusDescription
     _localCache.add(newCacheRecord)
     
-    _logger.info("Adding credit score to local cache: " + rqst.FirstName + " " + rqst.LastName)
+    LOGGER.info("Adding credit score to local cache: " + rqst.FirstName + " " + rqst.LastName)
   }
 }

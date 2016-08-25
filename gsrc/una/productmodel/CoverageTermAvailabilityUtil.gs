@@ -57,7 +57,6 @@ class CoverageTermAvailabilityUtil {
 
     switch(patternCode){
       case "HOPL_Deductible_HOE":
-      case "HOPL_SpecialLimitDeductibleAssessment_HOE":
         result = isLossAssessmentDeductibleAvailable(coverable as Dwelling_HOE)
         break
       case "HODW_ExecutiveCov_HOE_Ext":
@@ -190,8 +189,9 @@ class CoverageTermAvailabilityUtil {
   private static function isLossAssessmentDeductibleAvailable(dwelling : entity.Dwelling_HOE) : boolean{
     var result = true
 
-    if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_EXT){
-      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.ResidenceType == TC_CONDO
+    if(dwelling.Branch.BaseState == TC_FL){
+      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000
+          and dwelling.HOPolicyType == TC_HO6 or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO)
     }
 
     return result

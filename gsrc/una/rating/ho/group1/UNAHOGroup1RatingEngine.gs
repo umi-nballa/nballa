@@ -10,6 +10,8 @@ uses una.rating.util.HOCreateCostDataUtil
 uses java.util.Map
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -52,6 +54,12 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_AnimalLiabilityCov_HOE_Ext:
         rateAnimalLiabilityCoverage(lineCov, dateRange)
         break
+      case HOLI_FungiCov_HOE:
+        rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage(lineCov, dateRange)
+        break
+      case HOLI_PersonalInjury_HOE:
+        ratePersonalInjuryCoverage(lineCov, dateRange)
+        break
     }
   }
 
@@ -87,13 +95,42 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_OrdinanceCov_HOE:
         rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
         break
+      case HODW_BusinessProperty_HOE_Ext:
+        rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
+        break
+      case HODW_ScheduledProperty_HOE:
+        rateScheduledPersonalProperty(dwellingCov, dateRange)
+        break
+      case HODW_FungiCov_HOE:
+        rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
+        break
     }
   }
 
   /**
-   * Function which rates the discounts and surcharges
+   * Function which rates the line level costs and discounts/ surcharges
    */
   override function rateHOLineCosts(dateRange: DateRange) {
+    var dwelling = PolicyLine.Dwelling
+    if(dwelling?.HODW_Personal_Property_HOEExists){
+      if(dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm?.DisplayValue == "Replacement Cost"){
+        ratePersonalPropertyReplacementCost(dateRange)
+      }
+    }
+  }
+
+  /**
+  * Function which rates the Personal property replacement cost
+  */
+  function ratePersonalPropertyReplacementCost(dateRange: DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyReplacementCost", this.IntrinsicType)
+    var lineLevelRatingInfo = new HOGroup1LineLevelRatingInfo(PolicyLine)
+    lineLevelRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, lineLevelRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PERSONAL_PROPERTY_REPLACEMENT_COST_GROUP1_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Personal Property Replacement Cost Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -124,7 +161,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Rate the Rrdinance Or Law Coverage
+   * Rate the Ordinance Or Law Coverage
    */
   function rateOrdinanceOrLawCoverage(dwellingCov: HODW_OrdinanceCov_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateOrdinanceOrLawCoverage to rate Ordinance Or Law Coverage", this.IntrinsicType)
@@ -137,6 +174,48 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       }
     }
     _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+  *  Rate the Limited Fungi, Wet Or Dry Rot Or Bacteria Section I coverage
+   */
+  function rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov: HODW_FungiCov_HOE, dateRange: DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null and costData.ActualTermAmount != 0)
+      addCost(costData)
+    _logger.debug("Limited Fungi, Wet Or Dry Rot Or Bacteria Section I coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Business property - Increased Limits
+   */
+  function rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov : HODW_BusinessProperty_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateBusinessPropertyIncreasedLimitsCoverage to rate Business Property Increased Limits Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    if(dwellingRatingInfo.BusinessPropertyIncreasedLimit > 0){
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUSINESS_PROPERTY_INCREASED_LIMITS_COV_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Business Property Increased Limits Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Scheduled Personal property
+   */
+  function rateScheduledPersonalProperty(dwellingCov: HODW_ScheduledProperty_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
+    for (item in dwellingCov.ScheduledItems) {
+      var rateRoutineParameterMap = getScheduledPersonalPropertyCovParameterSet(PolicyLine, item)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -231,6 +310,32 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   * Rate Limited Fungi, Wet or Dry Rot or Bacteria
+   */
+  function rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage(lineCov: HOLI_FungiCov_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage", this.IntrinsicType)
+    var lineRatingInfo = new HOGroup1LineRatingInfo(lineCov)
+    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null and costData.ActualTermAmount != 0)
+      addCost(costData)
+    _logger.debug("Animal Liability Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate personal injury line coverage
+   */
+  function ratePersonalInjuryCoverage(lineCov: HOLI_PersonalInjury_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalInjury to rate Personal Injury Coverage", this.IntrinsicType)
+    var lineRatingInfo = new HOGroup1LineRatingInfo(lineCov)
+    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Personal Injury Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Rate the Increased Section II Limits
    */
   function rateIncreasedSectionIILimits(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
@@ -238,7 +343,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var lineRatingInfo = new HOGroup1LineRatingInfo (lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.INCREASED_SECTION_II_LIMITS_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
     _logger.debug("Increased Section II Limits Rated Successfully", this.IntrinsicType)
   }
@@ -261,7 +366,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Returns the parameter set for the country wide routines
+   * Returns the parameter set with a rating info
    */
   private function getHOParameterSet(line : PolicyLine, stateCode : String) : Map<CalcRoutineParamName, Object>{
     return {
@@ -290,6 +395,27 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set for the HO Line param set
+   */
+  private function getHOLineParameterSet(line : PolicyLine, hoLineLevelRatingInfo : HOGroup1LineLevelRatingInfo, stateCode : String) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> stateCode,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> hoLineLevelRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Dwelling level coverages
+   */
+  private function getScheduledPersonalPropertyCovParameterSet(line : PolicyLine, item : ScheduledItem_HOE) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> new HOScheduledPersonalPropertyRatingInfo(item)
     }
   }
 

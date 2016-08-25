@@ -12,13 +12,11 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
  */
 class HODwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
-  var _otherStructuresLimit : int as OtherStructuresLimit
   var _otherStructuresIncreasedOrDecreasedLimit : int as OtherStructuresIncreasedOrDecreasedLimit
   var _isResidentialGlassCovUnscheduled : String as IsResidentialGlassCovUnscheduled
   var _territoryCode : String as TerritoryCode
   var _county : String as County
   var _unitOwnersOutbuildingAndOtherStructuresLimit : BigDecimal as UnitOwnersOutbuildingAndOtherStructuresLimit
-  var _totalBasePremium : BigDecimal as TotalBasePremium
   var _increasedLimitsJewelryWatchesFurs : BigDecimal as IncreasedLimitsJewelryWatchesFurs
   var _lossAssessmentLimit : int as LossAssessmentLimit
   var _moldRemediationLimit : String as MoldRemediationLimit
@@ -29,10 +27,10 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
-    _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
+
 
     if(dwellingCov.Dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists){
-      _otherStructuresIncreasedOrDecreasedLimit = (_otherStructuresLimit - (this.DwellingLimit*0.1)) as int
+      _otherStructuresIncreasedOrDecreasedLimit = (this.OtherStructuresLimit - (this.DwellingLimit*0.1)) as int
     }
 
     if(dwellingCov.Dwelling?.HODW_ResidentialGlass_HOE_ExtExists){

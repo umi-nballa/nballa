@@ -1,4 +1,4 @@
-package una.rating.ho.tx.ratinginfos
+package una.rating.ho.group1.ratinginfos
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -15,10 +15,11 @@ class HOScheduledPersonalPropertyRatingInfo {
 
     _exposureValue = item.ExposureValue
     var scheduleType = item.ScheduleType
-    if(scheduleType.Description.startsWith("Silverware")){
-      _itemType = "Silverware"
+    var scheduleTypeDescription = scheduleType.Description.split("-")
+    if(scheduleType.Description.startsWith("Fine")){
+      _itemType = scheduleTypeDescription[0].trim() + " - " + scheduleTypeDescription[1].trim()
+      _usage = scheduleTypeDescription.last().trim()
     } else{
-      var scheduleTypeDescription = scheduleType.Description.split("-")
       _itemType = scheduleTypeDescription[0].trim()
       if(scheduleTypeDescription.length > 1)
         _usage = scheduleTypeDescription.last().trim()

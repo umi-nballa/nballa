@@ -17,6 +17,10 @@ class ScheduleCovCostData_HOE extends DwellingCovCostData_HOE<ScheduleCovCost_HO
     _itemID = itemID
   }
 
+  construct(cost : ScheduleCovCost_HOE, rateCache : PolicyPeriodFXRateCache){
+    super(cost, rateCache)
+  }
+
   override function setSpecificFieldsOnCost(line : HomeownersLine_HOE, cost : ScheduleCovCost_HOE) {
     super.setSpecificFieldsOnCost(line, cost)
     cost.setFieldValue("DwellingCov", _covID)

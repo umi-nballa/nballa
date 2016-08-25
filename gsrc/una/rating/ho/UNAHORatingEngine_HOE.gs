@@ -17,6 +17,7 @@ uses una.rating.ho.common.HomeownersLineCostData_HOE
 uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.job.RenewalProcess
 uses gw.rating.rtm.query.RatingQueryFacade
+uses gw.lob.ho.rating.ScheduleCovCostData_HOE
 
 /**
  * User: bduraiswamy
@@ -112,6 +113,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         break
       case HomeownersLineCost_EXT:
         cd = new HomeownersLineCostData_HOE(c, RateCache)
+        break
+      case ScheduleCovCost_HOE:
+        cd = new ScheduleCovCostData_HOE(c, RateCache)
         break
     }
     return cd

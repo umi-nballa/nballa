@@ -75,48 +75,6 @@
           id="Taxes"
           label="displaykey.Web.Quote.PremiumSummary.Taxes"
           value="policyPeriod.AllCosts.TaxSurcharges.AmountSum(policyPeriod.PreferredSettlementCurrency)"/>
-        <InputSet
-          visible="policyPeriod.CreditInfoExt.CreditLevel != null || policyPeriod.CreditInfoExt.CreditReport != null">
-          <Input
-            align="right"
-            boldLabel="true"
-            formatType="general"
-            id="CreditContact"
-            label="&quot;Credit Individual&quot;"
-            value="policyPeriod.CreditInfoExt.CreditReport.PolicyContactRole"
-            visible="policyPeriod.CreditInfoExt.CreditReport != null"/>
-          <Input
-            align="right"
-            boldLabel="true"
-            formatType="general"
-            id="CreditScore"
-            label="displaykey.Web.Quote.CreditScore"
-            value="policyPeriod.CreditInfoExt.CreditReport.CreditScore"
-            visible="policyPeriod.CreditInfoExt.CreditReport != null &amp;&amp; perm.System.viewcreditscore"/>
-          <Input
-            align="right"
-            boldLabel="true"
-            formatType="general"
-            id="CreditScoreSuppressed"
-            label="displaykey.Web.Quote.CreditScore"
-            value="&quot;&lt;Suppressed&gt;&quot;"
-            visible="policyPeriod.CreditInfoExt.CreditReport != null &amp;&amp; !perm.System.viewcreditscore"/>
-          <Input
-            align="right"
-            boldLabel="true"
-            formatType="general"
-            id="CreditLevelScore"
-            label="displaykey.Web.Quote.CreditLevelScore"
-            value="policyPeriod.CreditInfoExt.CreditLevel!=null?policyPeriod.CreditInfoExt.CreditLevel.Description:null"
-            visible="policyPeriod.CreditInfoExt.CreditReport == null"/>
-          <!-- <Input
-            align="right"
-            boldLabel="true"
-            formatType="general"
-            id="CreditStatus"
-            label="displaykey.Web.Quote.CreditStatusCode"
-            value="policyPeriod.CreditInfoExt.CreditReport.CreditStatus"/> -->
-        </InputSet>
         <MonetaryAmountInput
           align="right"
           boldLabel="true"
@@ -139,6 +97,9 @@
         labelStyleClass="warning"
         value="&quot;&quot;"
         visible="policyPeriod.JobProcess.BillingSubjectToFinalAudit"/>
+      <InputSetRef
+        def="CreditInfoInputSet(policyPeriod)"
+        id="creditInfoContainer"/>
     </InputColumn>
     <Code><![CDATA[
 property get JobNumberLabel() : String

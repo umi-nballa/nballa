@@ -8,6 +8,8 @@ uses una.integration.service.creditreport.CreditReportServiceFactory
 uses una.integration.framework.util.CreditReportUtil
 uses java.util.Map
 uses java.util.HashMap
+uses una.logging.UnaLoggerCategory
+
 
 /**
  * Validates request and delegates it to the service
@@ -16,8 +18,8 @@ uses java.util.HashMap
  * be submitted due to credit report validation errors. 
  */
 class CreditReportRequestDispatcher extends PCValidationBase {
-  
-  private static final var _logger = Logger.forCategory("CreditReportRequestDispatcher")
+
+  final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
 
   private var _policyContact : PolicyContactRole
   private var _policyPeriod : PolicyPeriod
@@ -38,9 +40,10 @@ class CreditReportRequestDispatcher extends PCValidationBase {
   @Param("address", "The address under which the credit report should be ordered")
   @Param("firstName", "The first name of the insured under which the credit report should be ordered")
   @Param("middleName", "The middle name of the insured under which the credit report should be ordered")
-  @Param("lastName", "The last name of the insured under which the credit report should be ordered")    
+  @Param("lastName", "The last name of the insured under which the credit report should be ordered")
+  @Param("dateOfBirth", "Date of birth of the insured under which the credit report should be ordered")
   @Returns("Credit report information packaged in a CreditReportResponse instance")
-  function orderNewCreditReport(address : Address, firstName : String, middleName : String, lastName : String) : CreditReportResponse {
+  function orderNewCreditReport(address : Address, firstName : String, middleName : String, lastName : String, dob : DateTime) : CreditReportResponse {
      
     // This version is limited to personal credit type    
     if(!(_policyContact.ContactDenorm typeis Person)) {
@@ -49,6 +52,7 @@ class CreditReportRequestDispatcher extends PCValidationBase {
         .withFirstName(firstName)
         .withMiddleName(middleName)
         .withLastName(lastName)
+        .withDateOfBirth(dob)
         .withAddress1(address.AddressLine1)
         .withAddress2(address.AddressLine2)
         .withAddresscity(address.City)
@@ -93,7 +97,7 @@ class CreditReportRequestDispatcher extends PCValidationBase {
     
     // Delegates request to a credit reporting service
     var service = CreditReportServiceFactory.getCreditReportService(rqst.CreditReportService)
-    _logger.debug("getCreditReportResponse(): Sending request: " + rqst.toString())
+    LOGGER.debug("getCreditReportResponse(): Sending request: " + rqst.toString())
     var creditReportResponse : CreditReportResponse = service.getCreditReport(rqst)
     
     populateCreditReportExt(creditReportExt, creditReportResponse)

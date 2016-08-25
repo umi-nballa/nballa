@@ -77,7 +77,7 @@
             trueLabel="&quot;Credit Level&quot;"
             value="creditLevelModeInd">
             <PostOnChange
-              onChange="deactiveLiveCreditReport()"/>
+              onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period)"/>
           </BooleanRadioInput>
           <InputDivider/>
           <InputSet
@@ -105,7 +105,7 @@
               value="creditReportContact"
               valueRange="period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicySecNamedInsured&quot;)">
               <PostOnChange
-                onChange="deactiveLiveCreditReport()"/>
+                onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period)"/>
             </RangeInput>
             <Input
               id="PolicyPrimaryInsured"
@@ -118,7 +118,7 @@
             <InputSet
               visible="!creditLevelModeInd">
               <BooleanRadioInput
-                available="!(creditReportContact == null) &amp;&amp; isCreditReportInputFieldAvailable()"
+                available="!(creditReportContact == null) &amp;&amp; una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AddressChangeQuestion"
                 label="displaykey.Web.SubmissionWizard.CreditReporting.AlternateAddressQuestion"
@@ -126,35 +126,35 @@
                 value="hasPrimaryNamedInsuredMoved"
                 visible="false">
                 <PostOnChange
-                  onChange="updateFormerAddressFields()"/>
+                  onChange="una.pageprocess.credit.CreditReportScreen.updateFormerAddressFields(hasPrimaryNamedInsuredMoved, aFormerAddress, creditReportContact)"/>
               </BooleanRadioInput>
               <Label
                 id="FormerAddress"
                 label="displaykey.Ext.FormerAddress"
                 visible="hasPrimaryNamedInsuredMoved"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AddressLine1"
                 label="displaykey.Web.ContactDetail.AddressDetail.AddressLine1"
                 value="aFormerAddress.AddressLine1"
                 visible="hasPrimaryNamedInsuredMoved"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AddressLine2"
                 label="displaykey.Web.ContactDetail.AddressDetail.AddressLine2"
                 value="aFormerAddress.AddressLine2"
                 visible="hasPrimaryNamedInsuredMoved"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="City"
                 label="displaykey.Web.ContactDetail.AddressDetail.City"
                 value="aFormerAddress.City"
                 visible="hasPrimaryNamedInsuredMoved"/>
               <TypeKeyInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="State"
                 label="address.AddressDisplay.getStateLabel( period.PrimaryNamedInsured.ContactDenorm.PrimaryAddress)"
@@ -166,21 +166,21 @@
                   valueRange="gw.api.contact.AddressAutocompleteUtil.getStates(period.PrimaryNamedInsured.ContactDenorm.PrimaryAddress.Country)"/>
               </TypeKeyInput>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="PostalCode"
                 label="address.AddressDisplay.getPostalCodeLabel(  period.PrimaryNamedInsured.ContactDenorm.PrimaryAddress)"
                 value="aFormerAddress.PostalCode"
                 visible="hasPrimaryNamedInsuredMoved"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="County"
                 label="displaykey.Web.ContactDetail.AddressDetail.County"
                 value="aFormerAddress.County"
                 visible="hasPrimaryNamedInsuredMoved"/>
               <TypeKeyInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="Country"
                 label="displaykey.Web.ContactDetail.AddressDetail.Country"
@@ -189,7 +189,7 @@
                 <PostOnChange/>
               </TypeKeyInput>
               <BooleanRadioInput
-                available="!(creditReportContact == null) &amp;&amp; isCreditReportInputFieldAvailable()"
+                available="!(creditReportContact == null) &amp;&amp; una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="NameChangeQuestion"
                 label="displaykey.Ext.NameQuestion"
@@ -204,35 +204,35 @@
                 label="displaykey.Ext.FormerName"
                 visible="hasPrimaryNamedInsuredNameChanged"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AltFIrstName"
                 label="displaykey.Ext.FirstName"
                 value="formerFirstName"
                 visible="hasPrimaryNamedInsuredNameChanged"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AltMiddleName"
                 label="displaykey.Ext.MidleName"
                 value="formerMiddleName"
                 visible="hasPrimaryNamedInsuredNameChanged"/>
               <TextInput
-                available="isCreditReportInputFieldAvailable()"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AltLastName"
                 label="displaykey.Ext.LastName"
                 value="formerLastName"
                 visible="hasPrimaryNamedInsuredNameChanged"/>
               <ButtonInput
-                action="orderCreditReport()"
-                available="isCreditReportInputFieldAvailable()"
+                action="una.pageprocess.credit.CreditReportScreen.orderCreditReport(creditReportContact,period,hasPrimaryNamedInsuredMoved,hasPrimaryNamedInsuredNameChanged,aFormerAddress,formerFirstName,formerMiddleName,formerLastName)"
+                available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 id="OrderCreditReportButton"
                 value="&quot;Order Credit Report&quot;"
                 visible="creditReportContact != null &amp;&amp; period.CreditInfoExt.CreditReport == null"/>
               <ButtonInput
-                action="editCreditReportDetails()"
-                available="!isCreditReportInputFieldAvailable()"
+                action="una.pageprocess.credit.CreditReportScreen.editCreditReportDetails(period)"
+                available="!una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 id="EditDetailsButton"
                 value="&quot;Edit credit report details&quot;"
                 visible="creditReportContact != null &amp;&amp; period.CreditInfoExt.CreditReport != null"/>
@@ -265,7 +265,7 @@
             <Input
               id="CreditReportAlternativeName"
               label="displaykey.Web.SubmissionWizard.CreditReporting.AlternateName"
-              value="buildCreditReportAltName()"/>
+              value="una.pageprocess.credit.CreditReportScreen.buildCreditReportAltName(period)"/>
             <Input
               id="CreditReportAlternativeAddress"
               label="displaykey.Web.SubmissionWizard.CreditReporting.AlternateAddress"
@@ -301,7 +301,7 @@
             <Input
               id="OutputCreditLevelScore"
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevelScore"
-              value="period.CreditInfoExt.CreditLevel!=null?period.CreditInfoExt.CreditLevel.Description:null"/>
+              value="period.CreditInfoExt.CreditLevel!=null ? period.CreditInfoExt.CreditLevel.Description : null"/>
           </InputSet>
         </InputColumn>
       </DetailViewPanel>
@@ -314,90 +314,32 @@
           label="displaykey.Web.SubmissionWizard.CreditReporting.NoCreditCheckRequired"/>
       </InputColumn>
     </DetailViewPanel>
-    <Code><![CDATA[/**
- * Common code to determine whether to enable/disable credit report name/address fields.
- */
- function isCreditReportInputFieldAvailable() : boolean {
-     return period.CreditInfoExt.CreditReport == null
-  }
-
-/**
- * Before editing the policy holder details used to request a credit report, we should first
- * disable the existing report.
- */
-function editCreditReportDetails() {
-   
-   period.CreditInfoExt.CreditReport = null 
-}
-
-/**
- * Build the alternative full-name that was on a credit report
- */
-function buildCreditReportAltName() : String {
-  var alternateName = ""
-  if (period.CreditInfoExt.CreditReport.AlternateFirstName != null) {alternateName += period.CreditInfoExt.CreditReport.AlternateFirstName + " "}
-  if (period.CreditInfoExt.CreditReport.AlternateMiddleName != null) {alternateName += period.CreditInfoExt.CreditReport.AlternateMiddleName + " "}
-  if (period.CreditInfoExt.CreditReport.AlternateLastName != null) {alternateName += period.CreditInfoExt.CreditReport.AlternateLastName}
-  return alternateName
-  
-}
-
-function updateFormerAddressFields() {
-
-   if (hasPrimaryNamedInsuredMoved) {
-      // Copy policy address to credit report address
-      //period.CreditReportExt.AlternateAddress = new Address()
-      aFormerAddress.AddressLine1 = creditReportContact.ContactDenorm.PrimaryAddress.AddressLine1
-      aFormerAddress.AddressLine2 = creditReportContact.ContactDenorm.PrimaryAddress.AddressLine2
-      aFormerAddress.AddressLine3 = creditReportContact.ContactDenorm.PrimaryAddress.AddressLine3
-
-      aFormerAddress.City = creditReportContact.ContactDenorm.PrimaryAddress.City
-      aFormerAddress.State = creditReportContact.ContactDenorm.PrimaryAddress.State
-      aFormerAddress.County = creditReportContact.ContactDenorm.PrimaryAddress.County
-      aFormerAddress.Country = creditReportContact.ContactDenorm.PrimaryAddress.Country
-
-   } else {
-      // Reset credit report address
-      //aFormerAddress = new Address() 
-   }
-}
-
-function updateFormerNameFields() {
-
+    <Code><![CDATA[function updateFormerNameFields() {
   period.CreditInfoExt.CreditReport = null
   if (hasPrimaryNamedInsuredNameChanged) {
-     // Copy policy name to credit report name
-      formerFirstName = (creditReportContact.ContactDenorm as Person).FirstName
-      formerMiddleName  = (creditReportContact.ContactDenorm as Person).MiddleName
-      formerLastName  = (creditReportContact.ContactDenorm as Person).LastName
+    // Copy policy name to credit report name
+    formerFirstName = (creditReportContact.ContactDenorm as Person).FirstName
+    formerMiddleName  = (creditReportContact.ContactDenorm as Person).MiddleName
+    formerLastName  = (creditReportContact.ContactDenorm as Person).LastName
   } else {
-     // Clear credit report name
-      formerFirstName = null
-      formerMiddleName  = null
-      formerLastName  = null
-    
+    // Clear credit report name
+    formerFirstName = null
+    formerMiddleName  = null
+    formerLastName  = null
   }
 }
 
-function deactiveLiveCreditReport() {
 
-  // Whenever we change screen mode or credit report parameters, we need to deactivate the active (live) credit report. 
-  // 
-  //period.CreditReportExt.ActiveOnPolicy = false
-  period.CreditInfoExt.CreditReport = null
-  period.CreditInfoExt.CreditLevel = null
- 
-}
-
-function orderCreditReport() {
+/*function orderCreditReport() {
   var dispatcher = new una.integration.mapping.creditreport.CreditReportRequestDispatcher(creditReportContact, period)
   var address = hasPrimaryNamedInsuredMoved ? aFormerAddress : creditReportContact.ContactDenorm.PrimaryAddress
   var firstName = hasPrimaryNamedInsuredNameChanged ? formerFirstName : (creditReportContact.ContactDenorm as Person).FirstName
   var middleName = hasPrimaryNamedInsuredNameChanged ? formerMiddleName : (creditReportContact.ContactDenorm as Person).MiddleName
   var lastName = hasPrimaryNamedInsuredNameChanged ? formerLastName : (creditReportContact.ContactDenorm as Person).LastName
+  var dateOfBirth = (creditReportContact.ContactDenorm as Person).DateOfBirth
 
   // Download the credit report
-  var response = dispatcher.orderNewCreditReport(address, firstName, middleName, lastName)
+  var response = dispatcher.orderNewCreditReport(address, firstName, middleName, lastName, dateOfBirth)
   
   // TO DO: The below code should not be inside the PCF.
   // At some point, we should move the below code inside the request dispatcher. 
@@ -415,6 +357,6 @@ function orderCreditReport() {
       period.CreditInfoExt.CreditReport.AlternateMiddleName = formerMiddleName
       period.CreditInfoExt.CreditReport.AlternateLastName = formerLastName
   }
-}]]></Code>
+} */]]></Code>
   </Screen>
 </PCF>

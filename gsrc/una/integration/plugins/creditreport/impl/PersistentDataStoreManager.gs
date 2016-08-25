@@ -5,6 +5,7 @@ uses gw.api.util.Logger
 uses una.integration.plugins.creditreport.ICreditReportDataManager
 uses una.integration.mapping.creditreport.CreditReportRequest
 uses una.integration.mapping.creditreport.CreditReportResponse
+uses una.logging.UnaLoggerCategory
 
 /**
  * Shows an example implementation of using a persistent data store in PC DB
@@ -12,7 +13,7 @@ uses una.integration.mapping.creditreport.CreditReportResponse
  */
 class PersistentDataStoreManager implements ICreditReportDataManager {
 
-  private static final var _logger =  Logger.forCategory("PersistentDataStoreManager")
+  final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
 
   /**
    * Queries the local cache to see if a credit score has already been retrieved
@@ -21,7 +22,7 @@ class PersistentDataStoreManager implements ICreditReportDataManager {
   @Returns("Cache credit report previously saved or null if not found in cache")
   private static function queryLocalCacheForCreditScore(rqst : CreditReportRequest) : CreditReportExt {
     
-    _logger.debug("Querying cache for credit score for: " + rqst.FirstName + " " + rqst.LastName)
+    LOGGER.debug("Querying cache for credit score for: " + rqst.FirstName + " " + rqst.LastName)
 
     var result : CreditReportExt = null    
     var q = Query.make(CreditReportExt)
@@ -37,7 +38,7 @@ class PersistentDataStoreManager implements ICreditReportDataManager {
          .compare("CreditScoreDate", GreaterThan, rqst.CacheExpireDate)
     result = q.select().FirstResult
     
-    _logger.debug("Found credit report in local store, score = "+result.CreditScore)
+    LOGGER.debug("Found credit report in local store, score = "+result.CreditScore)
     
     return result
   }
@@ -54,7 +55,7 @@ class PersistentDataStoreManager implements ICreditReportDataManager {
     persistentRecord = queryLocalCacheForCreditScore(rqst)
 
     if (persistentRecord != null) {
-        _logger.info("Found cached credit report for individual: " + rqst.FirstName + " " + rqst.LastName)
+        LOGGER.info("Found cached credit report for individual: " + rqst.FirstName + " " + rqst.LastName)
         
         cachedResponse = new CreditReportResponse
                               .Builder()
@@ -72,7 +73,7 @@ class PersistentDataStoreManager implements ICreditReportDataManager {
                               .create()       
     }
     else {
-      _logger.debug("getCreditReportResponse(): Local record is not found")
+      LOGGER.debug("getCreditReportResponse(): Local record is not found")
     }
     
     return cachedResponse

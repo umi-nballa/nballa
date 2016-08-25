@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <InputSet
+    id="CreditInfoInputSet"
+    visible="policyPeriod.CreditInfoExt.CreditLevel != null || policyPeriod.CreditInfoExt.CreditReport != null">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <InputDivider/>
+    <Input
+      align="right"
+      boldLabel="true"
+      formatType="general"
+      id="CreditContact"
+      label="&quot;Credit Individual&quot;"
+      value="policyPeriod.CreditInfoExt.CreditReport.PolicyContactRole"
+      visible="policyPeriod.CreditInfoExt.CreditReport != null"/>
+    <Input
+      align="right"
+      boldLabel="true"
+      formatType="general"
+      id="CreditScore"
+      label="displaykey.Web.Quote.CreditScore"
+      value="policyPeriod.CreditInfoExt.CreditReport.CreditScore"
+      visible="policyPeriod.CreditInfoExt.CreditReport != null &amp;&amp; perm.System.viewcreditscore"/>
+    <Input
+      align="right"
+      boldLabel="true"
+      formatType="general"
+      id="CreditScoreSuppressed"
+      label="displaykey.Web.Quote.CreditScore"
+      value="&quot;&lt;Suppressed&gt;&quot;"
+      visible="policyPeriod.CreditInfoExt.CreditReport != null &amp;&amp; !perm.System.viewcreditscore"/>
+    <Input
+      align="right"
+      boldLabel="true"
+      formatType="general"
+      id="CreditLevelScore"
+      label="displaykey.Web.Quote.CreditLevelScore"
+      value="policyPeriod.CreditInfoExt.CreditLevel!=null ? policyPeriod.CreditInfoExt.CreditLevel.Description : null"
+      visible="policyPeriod.CreditInfoExt.CreditReport == null"/>
+  </InputSet>
+</PCF>

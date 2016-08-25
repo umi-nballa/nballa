@@ -28,13 +28,14 @@ uses wsi.schema.una.inscore.cprulesorderschema.enums.SubjectAddressType_Type
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.SearchDataset_Subjects_Subject_Type
 uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.VendorDataset_Addresses_Address_DataSourceIndicator
+uses una.logging.UnaLoggerCategory
 
 /**
  * Returns hardwired response 
  */
 class NCFCreditReportService implements ICreditReportService {
-  
-  private static final var _logger = Logger.forCategory("NCFCreditReportService")
+
+  final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
 
   private var _creditReportDataMgr : ICreditReportDataManager    
     
@@ -60,13 +61,12 @@ class NCFCreditReportService implements ICreditReportService {
         var xmlRequest = getOrderXml(creditReportRequest)
         if (xmlRequest != null) {
           // Submit request to service
-          print(xmlRequest.asUTFString())
           var orderAPI = new InteractiveOrderHandler()
-          _logger.debug("Sending response to the web service...")
+          LOGGER.debug("Sending request to the web service...")
+          LOGGER.debug("Request \n"+xmlRequest.asUTFString())
           var xmlResponse = orderAPI.handleInteractiveOrder(xmlRequest.asUTFString())
-          print(xmlResponse.toString())
-          _logger.debug("Response from web service received")
- 
+          LOGGER.debug("Response from web service received")
+          LOGGER.debug("Response \n"+xmlResponse.toString())
           if (xmlResponse != null) {
             // Get the NCF report record
             var result = Result.parse(xmlResponse)
@@ -133,7 +133,7 @@ class NCFCreditReportService implements ICreditReportService {
         }
       }  
       catch(e : Exception) {
-        _logger.error("Exception occurred: " + e.Cause)
+        LOGGER.error("Exception occurred: " + e.Cause)
         
         creditReportResponse = new CreditReportResponse
                                     .Builder()

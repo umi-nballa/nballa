@@ -1,6 +1,7 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 
-uses gw.api.util.MonetaryAmounts
+
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara

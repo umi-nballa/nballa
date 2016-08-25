@@ -1,4 +1,15 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.homeowners
+
+uses java.util.List
+uses java.util.List
+uses java.util.List
+uses una.integration.mapping.hpx.common.HPXAdditionalNameInsuredMapper
+uses una.integration.mapping.hpx.common.HPXLocationMapper
+uses una.integration.mapping.hpx.common.HPXProducerMapper
+uses una.integration.mapping.hpx.common.HPXPolicyMapper
+uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
+uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -8,8 +19,7 @@ package una.integration.mapping.hpx
  */
 class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
-  function createDwellingPolicy(policyPeriod : PolicyPeriod,
-                                coverage : wsi.schema.una.hpx.hpx_application_request.Coverage) : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy
+  function createDwellingPolicy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy
   {
     var dwellingPolicy = new wsi.schema.una.hpx.hpx_application_request.DwellingPolicy()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
@@ -21,17 +31,16 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     for (additionalNamedInsured in additionalNamedInsureds) {
       dwellingPolicy.addChild(additionalNamedInsured)
     }
-    dwellingPolicy.addChild(createDwellingLineBusiness(policyPeriod, coverage))
+    dwellingPolicy.addChild(createDwellingLineBusiness(policyPeriod))
     dwellingPolicy.addChild(createPolicyDetails(policyPeriod))
     dwellingPolicy.addChild(producerMapper.createProducer(policyPeriod))
     dwellingPolicy.addChild(locationMapper.createBillingLocation(policyPeriod))
     return dwellingPolicy
   }
 
-  function createDwellingLineBusiness(policyPeriod : PolicyPeriod,
-                                      coverage : wsi.schema.una.hpx.hpx_application_request.Coverage) : wsi.schema.una.hpx.hpx_application_request.DwellingLineBusiness {
+  function createDwellingLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellingLineBusiness {
     var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.DwellingLineBusiness()
-    dwellingLineBusiness.addChild(createDwell(policyPeriod, coverage))
+    dwellingLineBusiness.addChild(createDwell(policyPeriod))
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
       dwellingLineBusiness.addChild(question)
@@ -40,8 +49,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   }
 
   /************************************** Dwell  ******************************************************/
-  function createDwell(policyPeriod : PolicyPeriod,
-                       coverage : wsi.schema.una.hpx.hpx_application_request.Coverage) : wsi.schema.una.hpx.hpx_application_request.Dwell {
+  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
     var locationMapper = new HPXLocationMapper()
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
@@ -51,13 +59,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       loc.addChild(additionalInterest)
     }
     var dwellMapper = new HPXDwellMapper()
-    var dwellConstructionMapper = new HPXDwellConstructionMapper()
+    var dwellConstructionMapper = new HPXHODwellConstructionMapper ()
     var dwell = dwellMapper.createDwell(policyPeriod)
     dwell.addChild(dwellConstructionMapper.createDwellConstruction(policyPeriod))
     dwell.addChild(loc)
-    //dwell.addChild(coverage)
-    //var covs = coverageMapper.createCoverages(policyPeriod)
-    //Good var covs = coverageMapper.createCoverages(policyPeriod)
     var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     var transactions = policyPeriod.HOTransactions
     var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
@@ -65,38 +70,6 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       dwell.addChild(cov)
     }
     return dwell
-  }
-
-  function createQuestionSet(policyPeriod: PolicyPeriod): List<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer> {
-    var questions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer>()
-    var questionAnswers = policyPeriod.PeriodAnswers
-    for (q in questionAnswers) {
-      var question = new wsi.schema.una.hpx.hpx_application_request.QuestionAnswer()
-      var questionText = new wsi.schema.una.hpx.hpx_application_request.QuestionText()
-      questionText.setText(q.Question.Text)
-      question.addChild(questionText)
-      var questionCode = new wsi.schema.una.hpx.hpx_application_request.QuestionCd()
-      questionCode.setText(q.QuestionCode)
-      question.addChild(questionCode)
-      if (q.BooleanAnswer != null) {
-        var yesNoCd = new wsi.schema.una.hpx.hpx_application_request.YesNoCd()
-        switch (q.BooleanAnswer) {
-          case true:
-              yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.YES)
-              break
-          case false:
-              yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.NO)
-        }
-        question.addChild(yesNoCd)
-      }
-      var explanation = new wsi.schema.una.hpx.hpx_application_request.Explanation()
-      if (q.Question.SupplementalTexts.atMostOne().Text != null) {
-        explanation.setText(q.Question.SupplementalTexts.atMostOne().Text)
-        question.addChild(explanation)
-      }
-      questions.add(question)
-    }
-    return questions
   }
 
   function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)

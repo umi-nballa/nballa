@@ -1,4 +1,4 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 
 uses java.util.Date
 uses wsi.schema.una.hpx.hpx_application_request.DocumentForm
@@ -64,11 +64,11 @@ class HPXCompositionUnitMapper {
     var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.DocumentForm>()
     var recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
     recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
-    /*
+  /*
     for (form in forms) {
       documentForms.add(createDocumentForm(form.FormNumber, "English", form.FormDescription, form.EffectiveDate, form.Pattern.Edition, false) )
     }
-    */
+  */
 
     var documentForm1 = compositionUnitMapper.createDocumentForm("DP04731202","English","DP04731202", new java.util.Date(),"07-02", false)
     var documentForm2 = compositionUnitMapper.createDocumentForm("DP17670788","English","DP17670788", new java.util.Date(),"07-02", false)

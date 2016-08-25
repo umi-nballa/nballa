@@ -1,30 +1,21 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.businessowners
+
+uses una.integration.mapping.hpx.homeowners.HPXHOBuildingProtectionMapper
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
- * Date: 8/4/16
- * Time: 6:42 PM
+ * Date: 8/25/16
+ * Time: 4:57 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXDwellMapper {
+class HPXBP7BuildingMapper {
+  function createBuildings(policyPeriod : PolicyPeriod) {
+    var buildings = policyPeriod.BP7Line.AllBuildings
+  }
 
-  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
-    var buildingProtectionMapper = new HPXBuildingProtectionMapper()
+  function createBuilding(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
+    var buildingProtectionMapper = new HPXHOBuildingProtectionMapper ()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.Dwell()
-    /*
-    var contractTerm = new wsi.schema.una.hpx.hpx_application_request.ContractTerm()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.EffectiveDate != null) {
-      var effectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
-      effectiveDate.setText(policyPeriod.HomeownersLine_HOE.Dwelling.EffectiveDate)
-      contractTerm.addChild(effectiveDate)
-    }
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.ExpirationDate != null) {
-      var expirationDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
-      expirationDate.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ExpirationDate)
-      contractTerm.addChild(expirationDate)
-    }
-    dwell.addChild(contractTerm)
-    */
     dwell.addChild(createDwellRating(policyPeriod))
     dwell.addChild(buildingProtectionMapper.createBuildingProtection(policyPeriod))
     if (policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null) {
@@ -43,6 +34,10 @@ class HPXDwellMapper {
     var animalExposures = createDwellAnimalExposureInfo(policyPeriod)
     for (animal in animalExposures) {
       dwell.addChild(animal)
+    }
+    var watercrafts = createOutboardMotorsAndWatercraft(policyPeriod)
+    for (watercraft in watercrafts) {
+      dwell.addChild(watercraft)
     }
     var swimmingPoolInd = new wsi.schema.una.hpx.hpx_application_request.SwimmingPoolInd()
     if (policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists != null) {
@@ -194,5 +189,62 @@ class HPXDwellMapper {
     return animalExposures
   }
 
-
+  function createOutboardMotorsAndWatercraft(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Watercraft> {
+    var watercrafts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Watercraft>()
+    var outboardMotorsAndWatercrafts = policyPeriod.HomeownersLine_HOE.HOSL_OutboardMotorsWatercraft_HOE_Ext.scheduledItem_Ext
+    for (item in outboardMotorsAndWatercrafts) {
+      var watercraft = new wsi.schema.una.hpx.hpx_application_request.Watercraft()
+      var watercraftName = new wsi.schema.una.hpx.hpx_application_request.WatercraftName()
+      if (item.watercraftName != null) {
+        watercraftName.setText(item.watercraftName)
+        watercraft.addChild(watercraftName)
+      }
+      var watercraftType = new wsi.schema.una.hpx.hpx_application_request.WatercraftType()
+      if (item.watercraftType != null) {
+        watercraftType.setText(item.watercraftType)
+        watercraft.addChild(watercraftType)
+      }
+      var watercraftDescription = new wsi.schema.una.hpx.hpx_application_request.Description()
+      if (item.watercraftDescription != null) {
+        watercraftDescription.setText(item.watercraftDescription)
+        watercraft.addChild(watercraftDescription)
+      }
+      var length = new wsi.schema.una.hpx.hpx_application_request.Length()
+      if (item.overallLength != null) {
+        length.setText(item.overallLength)
+      }
+      var horsepower = new wsi.schema.una.hpx.hpx_application_request.Horsepower()
+      var numUnits = new wsi.schema.una.hpx.hpx_application_request.NumUnits()
+      var unitMeasurementCd = new wsi.schema.una.hpx.hpx_application_request.UnitMeasurementCd()
+      if (item.horsepower != null) {
+        numUnits.setText(item.horsepower.DisplayName)
+        horsepower.addChild(numUnits)
+        unitMeasurementCd.setText("Horsepower")
+        horsepower.addChild(unitMeasurementCd)
+        watercraft.addChild(horsepower)
+      }
+      var speedRating = new wsi.schema.una.hpx.hpx_application_request.SpeedRating()
+      if (item.speedRating != null) {
+        speedRating.setText(item.speedRating)
+        watercraft.addChild(speedRating)
+      }
+      var navigationPeriod = new wsi.schema.una.hpx.hpx_application_request.NavigationPeriod()
+      if (item.navPeriodEachYear != null) {
+        navigationPeriod.setText(item.navPeriodEachYear)
+        watercraft.addChild(navigationPeriod)
+      }
+      var navigationFromDate = new wsi.schema.una.hpx.hpx_application_request.NavigationFromDt()
+      if (item.fromDate != null) {
+        navigationFromDate.setText(item.fromDate)
+        watercraft.addChild(navigationFromDate)
+      }
+      var navigationToDate = new wsi.schema.una.hpx.hpx_application_request.NavigationToDate()
+      if (item.toDate != null) {
+        navigationToDate.setText(item.toDate)
+        watercraft.addChild(navigationToDate)
+      }
+      watercrafts.add(watercraft)
+    }
+    return watercrafts
+  }
 }

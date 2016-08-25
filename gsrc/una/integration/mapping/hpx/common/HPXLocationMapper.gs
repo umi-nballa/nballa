@@ -1,4 +1,4 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -98,5 +98,13 @@ class HPXLocationMapper {
     }
     location.addChild(address)
     return location
+  }
+
+  function createLocations(locations : java.util.List<PolicyLocation>) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Location> {
+    var locs = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Location>()
+    for (location in locations) {
+      locs.add(createLocation(location))
+    }
+    return locs
   }
 }

@@ -316,6 +316,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 		<xsd:complexContent>
 			<xsd:extension base="PCLINEBUSINESS">
 				<xsd:sequence>
+                    <xsd:element ref="Dwell" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element ref="Coverage" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element ref="QuestionAnswer" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element ref="Location" minOccurs="0" maxOccurs="unbounded"/>
@@ -639,15 +640,23 @@ Point Guad, Dwelling	Start Complex Type Definition
 		<xsd:attribute name="id" type="ID"/>
 	</xsd:complexType>
 	<xsd:complexType name="Coverage_Type">
-		<xsd:complexContent>
-			<xsd:extension base="PCCOVERAGE">
-				<xsd:sequence>
-					<xsd:element ref="SelfInsuredRetentionInfo" minOccurs="0" maxOccurs="1"/>
-					<xsd:element ref="CoinsurancePct" minOccurs="0" maxOccurs="1"/>
-				</xsd:sequence>
-			</xsd:extension>
-		</xsd:complexContent>
-	</xsd:complexType>
+    <xsd:complexContent>
+        <xsd:extension base="PCCOVERAGE">
+            <xsd:sequence>
+                <xsd:element ref="SelfInsuredRetentionInfo" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="CoinsurancePct" minOccurs="0" maxOccurs="1"/>
+                <xsd:element ref="Coverable" minOccurs="0" maxOccurs="1"/>
+            </xsd:sequence>
+        </xsd:extension>
+    </xsd:complexContent>
+    </xsd:complexType>
+    <xsd:complexType name="Coverable_Type">
+        <xsd:sequence>
+            <xsd:element ref="BuildingNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="LocationNo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="ClassificationNo" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="CoverageListBO">
 		<xsd:sequence>
 			<xsd:element ref="Coverage" minOccurs="0" maxOccurs="unbounded"/>
@@ -873,6 +882,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 			<xsd:element ref="AdditionalPremiumAmt" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="MinimumAdditionalChargeAmt" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="MasterPolicyInfo" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="Watercraft" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="id" type="ID"/>
 		<xsd:attribute name="LocationRef" type="IDREF"/>
@@ -1977,6 +1987,28 @@ Point Guad, Dwelling	Start Complex Type Definition
 			</xsd:extension>
 		</xsd:complexContent>
 	</xsd:complexType>
+    <xsd:complexType name="Watercraft_Type">
+                <xsd:sequence>
+                    <xsd:element ref="WatercraftName" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="WatercraftType" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="Description" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="Length" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="Horsepower" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="NavigationFromDt" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="NavigationToDate" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="NavigationPeriod" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="OverallLength" minOccurs="0" maxOccurs="1"/>
+                    <xsd:element ref="SpeedRating" minOccurs="0" maxOccurs="1"/>
+                </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="WatercraftType">
+        <xsd:simpleContent>
+            <xsd:restriction base="OpenEnum">
+                <xsd:enumeration value="motorboat"/>
+                <xsd:enumeration value="sailboat"/>
+            </xsd:restriction>
+        </xsd:simpleContent>
+    </xsd:complexType>
 	<xsd:complexType name="PercentDecimal">
 		<xsd:simpleContent>
 			<xsd:extension base="PercentDecimal_NoID">
@@ -11006,6 +11038,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="CourseExpirationDt" type="Date"/>
 	<xsd:element name="CourseTypeCd" type="OpenEnum"/>
 	<xsd:element name="Coverage" type="Coverage_Type"/>
+    <xsd:element name="Coverable" type="Coverable_Type"/>
 	<xsd:element name="CoverageCd" type="OpenEnum"/>
 	<xsd:element name="CoverageConditionsInd" type="Boolean"/>
 	<xsd:element name="CoverageConditionsReason" type="xsd:string"/>
@@ -11014,6 +11047,9 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="CoverageDesc" type="xsd:string"/>
 	<xsd:element name="CoverageSubCd" type="xsd:string"/>
 	<xsd:element name="CoverageToWallsCd" type="CoverageOption"/>
+    <xsd:element name="BuildingNo" type="xsd:string"/>
+    <xsd:element name="LocationNo" type="xsd:string"/>
+    <xsd:element name="ClassificationNo" type="xsd:string"/>
 	<xsd:element name="CreditCardExpirationDt" type="Date"/>
 	<xsd:element name="CreditOrSurcharge" type="PCCREDITSURCHARGE"/>
 	<xsd:element name="CreditScore" type="xsd:string"/>
@@ -11102,6 +11138,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="DurationPeriod" type="MEASUREMENT"/>
 	<xsd:element name="DutiesDesc" type="xsd:string"/>
 	<xsd:element name="Dwell" type="Dwell_Type"/>
+    <xsd:element name="Watercraft" type="Watercraft_Type"/>
 	<xsd:element name="DwellAverageClause" type="xsd:string"/>
 	<xsd:element name="DwellAverageClauseCd" type="OpenEnum"/>
 	<xsd:element name="DwellingLineBusiness" type="DwellingLineBusiness_Type"/>
@@ -12235,4 +12272,17 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<!-- 
 		End BaseServicesFaultException Configuration Exclusivelly to Universal Insurance
 	-->
+    <!--
+        Start Watercraft Configuration Exclusivelly to Universal Insurance
+    -->
+    <xsd:element name="WatercraftName" type="xsd:string"/>
+    <xsd:element name="WatercraftType" type="WatercraftType"/>
+    <xsd:element name="NavigationFromDt" type="Date"/>
+    <xsd:element name="NavigationToDate" type="Date"/>
+    <xsd:element name="NavigationPeriod" type="xsd:int"/>
+    <xsd:element name="OverallLength" type="xsd:string"/>
+    <xsd:element name="SpeedRating" type="xsd:string"/>
+    <!--
+        End Watercraft Configuration Exclusivelly to Universal Insurance
+    -->
 </xsd:schema>

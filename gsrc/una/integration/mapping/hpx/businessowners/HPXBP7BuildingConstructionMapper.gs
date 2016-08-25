@@ -1,4 +1,4 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.businessowners
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -6,9 +6,9 @@ package una.integration.mapping.hpx
  * Time: 9:54 AM
  * To change this template use File | Settings | File Templates.
  */
-class HPXDwellConstructionMapper {
+class HPXBP7BuildingConstructionMapper {
 
-  function createDwellConstruction(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Construction {
+  function createBuildingConstructionInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Construction {
     var construction = new wsi.schema.una.hpx.hpx_application_request.Construction()
     var yearBuilt =  new wsi.schema.una.hpx.hpx_application_request.YearBuilt()
     if (policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt != null) {

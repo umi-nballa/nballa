@@ -1,10 +1,11 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 
 uses java.io.File
-uses java.lang.StringBuilder
-uses java.io.BufferedReader
 uses java.io.FileReader
-uses wsi.schema.una.hpx.hpx_application_request.OtherIdentifier
+uses java.io.BufferedReader
+uses java.lang.StringBuilder
+uses una.integration.mapping.hpx.homeowners.HPXDwellingCoverageMapper
+uses una.integration.mapping.hpx.homeowners.HPXDwellingPolicyMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -36,7 +37,7 @@ class HPXRequestMapper {
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var returnString = new String()
-    var dwellingPolicy = dwellingPolicyMapper.createDwellingPolicy(policyPeriod, null)
+    var dwellingPolicy = dwellingPolicyMapper.createDwellingPolicy(policyPeriod)
     var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
     returnString = createHPXDwellingPolicyRequestModel(dwellingPolicy, compositionUnit)
     return returnString

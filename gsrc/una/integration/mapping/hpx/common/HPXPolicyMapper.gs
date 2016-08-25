@@ -1,4 +1,12 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
+
+uses una.integration.mapping.hpx.common.HPXBillingInfoMapper
+uses una.integration.mapping.hpx.homeowners.HPXDwellingPolicyMapper
+uses una.integration.mapping.hpx.common.HPXGeneralPartyInfoMapper
+uses una.integration.mapping.hpx.common.HPXJobMapper
+uses una.integration.mapping.hpx.common.HPXCompositionUnitMapper
+uses una.integration.mapping.hpx.common.HPXPaymentOptionMapper
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -123,6 +131,38 @@ abstract class HPXPolicyMapper {
     }
    */
     return policyInfo
+  }
+
+  function createQuestionSet(policyPeriod: PolicyPeriod): List<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer> {
+    var questions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer>()
+    var questionAnswers = policyPeriod.PeriodAnswers
+    for (q in questionAnswers) {
+      var question = new wsi.schema.una.hpx.hpx_application_request.QuestionAnswer()
+      var questionText = new wsi.schema.una.hpx.hpx_application_request.QuestionText()
+      questionText.setText(q.Question.Text)
+      question.addChild(questionText)
+      var questionCode = new wsi.schema.una.hpx.hpx_application_request.QuestionCd()
+      questionCode.setText(q.QuestionCode)
+      question.addChild(questionCode)
+      if (q.BooleanAnswer != null) {
+        var yesNoCd = new wsi.schema.una.hpx.hpx_application_request.YesNoCd()
+        switch (q.BooleanAnswer) {
+          case true:
+              yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.YES)
+              break
+          case false:
+              yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.NO)
+        }
+        question.addChild(yesNoCd)
+      }
+      var explanation = new wsi.schema.una.hpx.hpx_application_request.Explanation()
+      if (q.Question.SupplementalTexts.atMostOne().Text != null) {
+        explanation.setText(q.Question.SupplementalTexts.atMostOne().Text)
+        question.addChild(explanation)
+      }
+      questions.add(question)
+    }
+    return questions
   }
 
   abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>

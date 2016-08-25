@@ -1,4 +1,6 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
+
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -125,8 +127,12 @@ class HPXPremiumMapper {
       previousPremiumAmt.addChild(previousAmt)
       endorsementInfo.addChild(previousPremiumAmt)
     }
+    var currentPremiumAmount = 0.00
+    if(policyPeriod.TotalPremiumRPT != null) {
+      currentPremiumAmount = policyPeriod.TotalPremiumRPT.Amount
+    }
     // change in total premiums
-    var premiumDifference = policyPeriod.TotalPremiumRPT.Amount - previousPremiumAmt.Amt.doubleValue()
+    var premiumDifference = currentPremiumAmount - previousPremiumAmt.Amt.doubleValue()
     if (premiumDifference >= 0) {
       // Additional Premium amt
       var additionalPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.AdditionalPremiumAmt()

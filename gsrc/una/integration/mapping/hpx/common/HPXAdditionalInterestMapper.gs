@@ -1,6 +1,7 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 
 uses java.util.ArrayList
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -13,14 +14,13 @@ class HPXAdditionalInterestMapper {
 function createAdditionalInterests(additlInterests : AddlInterestDetail []) : List<wsi.schema.una.hpx.hpx_application_request.AdditionalInterest>  {
 
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
-    var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var additionalInterests = new ArrayList<wsi.schema.una.hpx.hpx_application_request.AdditionalInterest>()
 
     for (addtlInterest in additlInterests) {
       var additionalInterest = new wsi.schema.una.hpx.hpx_application_request.AdditionalInterest()
       additionalInterest.addChild(generalPartyInfoMapper.createGeneralPartyInfo(addtlInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact,
           addtlInterest.PolicyAddlInterest))
-      additionalInterest.ItemIdInfo = dwellingPolicyMapper.createItemIdInfo()
+      //additionalInterest.ItemIdInfo = dwellingPolicyMapper.createItemIdInfo()
       var additionalInterestInfo = new wsi.schema.una.hpx.hpx_application_request.AdditionalInterestInfo()
 
       switch (addtlInterest.AdditionalInterestType.Code) {

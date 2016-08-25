@@ -1,8 +1,7 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 
 uses wsi.remote.una.hpx.engineservice_schema1.types.complex.EwsComposeResponse
 uses java.io.File
-uses java.util.logging.FileHandler
 
 /**
  * Created with IntelliJ IDEA.

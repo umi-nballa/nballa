@@ -9,10 +9,10 @@ uses java.io.File
 uses java.io.FileInputStream
 uses org.apache.commons.io.IOUtils
 uses una.integration.service.transport.hpx.HPXCommunicator
-uses una.integration.mapping.hpx.HPXResponseMapper
+uses una.integration.mapping.hpx.common.HPXResponseMapper
 uses java.lang.Exception
 uses org.apache.commons.codec.binary.Base64
-uses una.integration.mapping.hpx.HPXRequestMapper
+uses una.integration.mapping.hpx.common.HPXRequestMapper
 
 /**
  * Created with IntelliJ IDEA.

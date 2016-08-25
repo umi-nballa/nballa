@@ -1,4 +1,4 @@
-package una.integration.mapping.hpx
+package una.integration.mapping.hpx.common
 
 uses java.util.ArrayList
 /**
@@ -13,11 +13,11 @@ class HPXAdditionalNameInsuredMapper {
   function createAdditionalNamedInsureds(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal> {
 
   var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
-  var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
+  //var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
   var additionalNameInsureds = new ArrayList<wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal>()
   for (addtlNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)) {
     var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal()
-    insuredOrPrincipal.addChild(dwellingPolicyMapper.createItemIdInfo())
+    //insuredOrPrincipal.addChild(dwellingPolicyMapper.createItemIdInfo())
     insuredOrPrincipal.addChild(generalPartyInfoMapper.createGeneralPartyInfo(addtlNamedInsured.AccountContactRole.AccountContact.Contact,
         addtlNamedInsured))
     var insuredOrPrincipleInfo = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipalInfo()

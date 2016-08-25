@@ -4,7 +4,7 @@ uses una.integration.UnaIntTestBase
 uses una.logging.UnaLoggerCategory
 uses una.integration.plugins.hpx.HPXMessageTransportImpl
 uses gw.api.builder.MessageBuilder
-uses una.integration.mapping.hpx.HPXRequestMapper
+uses una.integration.mapping.hpx.common.HPXRequestMapper
 
 /**
  * Created with IntelliJ IDEA.

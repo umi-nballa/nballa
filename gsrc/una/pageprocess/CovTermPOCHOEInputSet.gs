@@ -56,7 +56,7 @@ class CovTermPOCHOEInputSet {
           dwelling.HODW_Personal_Property_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
           break
       case "DPDW_Dwelling_Limit_HOE" :
-          dwelling.DPDW_Dwelling_Cov_HOE.setDwellingDefaultLimits_Ext()
+          dwelling.DPDW_Dwelling_Cov_HOE.validateDPMinMaxLimits_Ext(_coverable as Dwelling_HOE)
           break
       case "HODW_ExecutiveCov_HOE_Ext":
           setExecutiveCoverageDefaults(_coverable as Dwelling_HOE, _covTerm as BooleanCovTerm)

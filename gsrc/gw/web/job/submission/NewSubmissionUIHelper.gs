@@ -122,7 +122,7 @@ class NewSubmissionUIHelper {
   {
     return acct != null && perm.Account.newSubmission(acct) &&
         selectionOfProducer.Producer != null && selectionOfProducer.ProducerCode != null
-          && una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)
+          //&& una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)
   }
 
   function createMultipleSubmissions( offers : ProductSelection[] , acct: Account, selectionOfProducer: ProducerSelection, typeOfQuote: QuoteType)

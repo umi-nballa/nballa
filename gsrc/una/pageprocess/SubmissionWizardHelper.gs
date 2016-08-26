@@ -53,6 +53,9 @@ class SubmissionWizardHelper {
    */
   public static function canAllowSubmission(acct : Account) : boolean {
 
+    if(acct == null){
+      return false
+    }
     /* It Enable submission for developer testing which is identified by a combination of
     * of environment check and script parameter to be set to true
      */
@@ -60,7 +63,7 @@ class SubmissionWizardHelper {
       return true
     }
 
-    return (acct!= null && acct?.IssuedPolicies?.Count == 0) ? true : false
+    return (acct?.IssuedPolicies?.Count == 0) ? true : false
   }
 
 

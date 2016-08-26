@@ -51,7 +51,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         limit.addChild(formatPct)
       }
       if(item.rentedtoOthers_Ext != null) {
-        rentedToOthers.setText(item.rentedtoOthers_Ext)
+        //rentedToOthers.setText(item.rentedtoOthers_Ext)
+        rentedToOthers.setText("NO")
         limit.addChild(rentedToOthers)
       }
       coverageCd.setText(currentCoverage.PatternCode)

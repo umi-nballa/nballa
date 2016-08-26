@@ -90,6 +90,7 @@ abstract class HPXCoverageMapper {
     var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
     var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
     var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
+    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
     var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
     var value = currentCovTerm.Value as double
     if (value == null || value == "") value = 0.00
@@ -109,6 +110,8 @@ abstract class HPXCoverageMapper {
     changeAmt.setText(changedValue)
     netChangeAmount.addChild(changeAmt)
     limit.addChild(netChangeAmount)
+    formatPct.setText(0)
+    limit.addChild(formatPct)
     return limit
   }
 
@@ -118,6 +121,7 @@ abstract class HPXCoverageMapper {
     var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
     var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
     var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
+    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
     var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
     var value = currentCovTerm.OptionValue.Value as double
     if (value == null || value == "") value = 0.00
@@ -137,6 +141,8 @@ abstract class HPXCoverageMapper {
     changeAmt.setText(changedValue)
     netChangeAmount.addChild(changeAmt)
     limit.addChild(netChangeAmount)
+    formatPct.setText(0)
+    limit.addChild(formatPct)
     return limit
   }
   function createOptionDeductibleInfo(currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.Deductible {

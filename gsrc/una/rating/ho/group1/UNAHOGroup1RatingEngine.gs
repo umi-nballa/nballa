@@ -12,6 +12,7 @@ uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOScheduledPersonalPropertyRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,6 +60,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HOLI_PersonalInjury_HOE:
         ratePersonalInjuryCoverage(lineCov, dateRange)
+        break
+      case HOSL_OutboardMotorsWatercraft_HOE_Ext:
+        rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)
         break
     }
   }
@@ -211,11 +215,25 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
     for (item in dwellingCov.ScheduledItems) {
       var rateRoutineParameterMap = getScheduledPersonalPropertyCovParameterSet(PolicyLine, item)
-      var costData = HOCreateCostDataUtil.createCostDataForScheduledCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)
         addCost(costData)
     }
     _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Outboard Motors and Watercraft coverage
+   */
+  function rateOutboardMotorsAndWatercraftCoverage(lineCov : HOSL_OutboardMotorsWatercraft_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateOutboardMotorsAndWatercraftCoverage", this.IntrinsicType)
+    for (item in lineCov.scheduledItem_Ext) {
+      var rateRoutineParameterMap = getOutboardMotorsAndWatercraftCovParameterSet(PolicyLine, item, lineCov)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP1_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null and costData.ActualTermAmount != 0)
+        addCost(costData)
+    }
+    _logger.debug("Outboard Motors and Watercraft Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -410,12 +428,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Returns the parameter set for the Dwelling level coverages
+   * Returns the parameter set for the Scheduled Personal Property Cov
    */
   private function getScheduledPersonalPropertyCovParameterSet(line : PolicyLine, item : ScheduledItem_HOE) : Map<CalcRoutineParamName, Object>{
     return {
         TC_POLICYLINE -> line,
         TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> new HOScheduledPersonalPropertyRatingInfo(item)
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Dwelling level coverages
+   */
+  private function getOutboardMotorsAndWatercraftCovParameterSet(line : PolicyLine, item : HOscheduleItem_HOE_Ext, lineCov : HOSL_OutboardMotorsWatercraft_HOE_Ext) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOOutboardMotorsAndWatercraftRatingInfo(item, lineCov)
     }
   }
 

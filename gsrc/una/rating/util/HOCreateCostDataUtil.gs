@@ -9,6 +9,7 @@ uses gw.financials.PolicyPeriodFXRateCache
 uses gw.rating.CostData
 uses una.rating.ho.common.HomeownersLineCostData_HOE
 uses una.rating.ho.common.HORateRoutineExecutor
+uses gw.lob.ho.rating.ScheduleLineCovCostData_HOE_Ext
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,15 +34,29 @@ class HOCreateCostDataUtil {
   }
 
   /**
-   * creates cost data for the scheduled coverages
+   * creates cost data for the scheduled dwelling coverages
    */
-  public static function createCostDataForScheduledCoverage(dwellingCov : DwellingCov_HOE, dateRange : DateRange, routineName : String, item : ScheduledItem_HOE, rateCache : PolicyPeriodFXRateCache,
+  public static function createCostDataForScheduledDwellingCoverage(dwellingCov : DwellingCov_HOE, dateRange : DateRange, routineName : String, item : ScheduledItem_HOE, rateCache : PolicyPeriodFXRateCache,
                                                       line : PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor : HORateRoutineExecutor, numDaysInCoverageRatedTerm : int) : CostData{
     var costData = new ScheduleCovCostData_HOE(dateRange.start, dateRange.end, dwellingCov.Currency, rateCache, dwellingCov.FixedId, item.FixedId)
     costData.init(line as HomeownersLine_HOE)
     costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
     rateRoutineParameterMap.put(TC_COSTDATA, costData)
     executor.execute(routineName, dwellingCov, rateRoutineParameterMap, costData)
+    costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  /**
+   * creates cost data for the scheduled line coverages
+   */
+  public static function createCostDataForScheduledLineCoverage(lineCov : HomeownersLineCov_HOE, dateRange : DateRange, routineName : String, item : HOscheduleItem_HOE_Ext, rateCache : PolicyPeriodFXRateCache,
+                                                            line : PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor : HORateRoutineExecutor, numDaysInCoverageRatedTerm : int) : CostData {
+    var costData = new ScheduleLineCovCostData_HOE_Ext(dateRange.start, dateRange.end, lineCov.Currency, rateCache, lineCov.FixedId, item.FixedId)
+    costData.init(line as HomeownersLine_HOE)
+    costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
+    rateRoutineParameterMap.put(TC_COSTDATA, costData)
+    executor.execute(routineName, lineCov, rateRoutineParameterMap, costData)
     costData.copyStandardColumnsToActualColumns()
     return costData
   }

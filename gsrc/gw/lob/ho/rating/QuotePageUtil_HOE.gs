@@ -95,6 +95,17 @@ abstract class QuotePageUtil_HOE {
       var description = displaykey.Web.Homeowners.Quote.LocationPrefix + loc.PolicyLocation.DisplayName
       var value = loc.LocationLimit.Description
       result.add(new NameValueCostData_HOE(description, value, cost))
+    }else if(coverage.PatternCode == "HOSL_OutboardMotorsWatercraft_HOE_Ext"){
+      // Outboard Motors and Watercraft Coverage
+      var lineCov = coverage as HomeownersLineCov_HOE
+      var scheduledItem = (cost as ScheduleLineCovCost_HOE_Ext).LineScheduledItem
+      var key = scheduledItem.FixedId
+      var items = lineCov.VersionList.scheduledItem_Ext.flatMap(
+          \ h -> h.AllVersions).where(\ s -> s.FixedId == key
+          and s.EffectiveDateRange.includes(cost.ExpDate.addDays(-1)))
+      var total: BigDecimal = 0
+      //items.each(\ s -> {total += s.ExposureValue})
+      result.add(new NameValueCostData_HOE(scheduledItem.DisplayName, "", cost))
     }else if(coverage.PatternCode == "HODW_OtherStructuresOffPremise_HOE"){
       // Other Structures Off The Residence Premises Coverage
     }else if(coverage.PatternCode == "HODW_PersonalPropertyOffResidence_HOE"){

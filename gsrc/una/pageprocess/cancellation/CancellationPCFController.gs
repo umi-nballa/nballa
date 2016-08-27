@@ -56,7 +56,7 @@ class CancellationPCFController {
   }
 
   property set CancellationLetterMailDate(date : Date){
-    this._cancellation.CancelLetterMailDate = date
+    this._cancellation.CancelLetterMailDate = date.orNextBusinessDay(this._policyPeriod.ProducerCodeOfRecord.Address)
   }
 
   property get CumulativeReasonDetailsDescription() : String{

@@ -105,9 +105,12 @@
   <FileDefinition Name="rtm_matchop_defs.xml" Priority="0">
     <Entity Type="RateTableMatchOpDefinition" Verifier="gw.systables.verifier.RateTableMatchOpDefinitionVerifier"/>
   </FileDefinition>
-  <FileDefinition Name="bp7_territory_codes.xml" Priority="0">
+  <!--
+  Commented out.  Moved bp7-specific codes to territory_codes
+  <FileDefinition Name="bp7_territory_codes.xml" Priority="1">
     <Entity Type="DBTerritory" Verifier="gw.systables.verifier.TerritoryCodeVerifier"/>
   </FileDefinition>
+  -->
   <FileDefinition Name="bp7_forgery_alteration_limit.xml" Priority="0">
     <Entity Type="BP7ForgeryAlterationLimit"/>
   </FileDefinition>
@@ -245,5 +248,17 @@
   </FileDefinition>
   <FileDefinition Name="bp7_collision_ded.xml" Priority="0">
     <Entity Type="BP7CollisionDed"/>
+</FileDefinition>
+<FileDefinition Name="configuration_parameter.xml" Priority="0">
+    <Entity Type="ConfigurationParameter_Ext" Verifier="gw.systables.verifier.ConfigurationParameterVerifier" />
+</FileDefinition>
+<FileDefinition Name="rpf_admin_ext.xml" Priority="0">
+      <Entity Type="RPFAdmin_Ext" Verifier="gwservices.pc.dm.util.RPFAdminVerifier"/>
+  </FileDefinition>
+  <FileDefinition Name="rpf_control_ext.xml" Priority="0">
+      <Entity Type="RPFControl_Ext" Verifier="gwservices.pc.dm.util.RPFControlVerifier"/>
+  </FileDefinition>
+  <FileDefinition Name="credit_report_params.xml" Priority="0">
+    <Entity Type="CreditReportParametersExt"/>
   </FileDefinition>
 </Systables>

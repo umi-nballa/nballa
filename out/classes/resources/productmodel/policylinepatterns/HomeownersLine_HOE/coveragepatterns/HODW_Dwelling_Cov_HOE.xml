@@ -137,7 +137,7 @@
       coverageColumn="ChoiceTerm2"
       lookupTableName="DwellingCovTerm"
       modelType="Other"
-      priority="1140"
+      priority="1115"
       public-id="HODW_DwellingValuation_HOE"
       required="true"
       restrictionModel="bld"
@@ -164,8 +164,14 @@
         <CovTermOpt
           codeIdentifier="zq3g47p61sgg5d6j8goolomqtt8"
           optionCode="Special"
-          priority="1143"
+          priority="1243"
           public-id="zq3g47p61sgg5d6j8goolomqtt8"
+          value="3.0"/>
+        <CovTermOpt
+          codeIdentifier="zptjc5kkmvubcdp432bdkrbese9"
+          optionCode="RepleacementwithRoof"
+          priority="1143"
+          public-id="zptjc5kkmvubcdp432bdkrbese9"
           value="3.0"/>
       </Options>
     </OptionCovTermPattern>
@@ -176,6 +182,8 @@
       lookupTableName="DwellingCovTerm"
       priority="1240"
       public-id="HODW_ExecutiveCov_HOE_Ext"
-      required="false"/>
+      required="false">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HODW_ExecutiveCov_HOE_Ext", Dwelling_HOE) ]]></AvailabilityScript>
+    </GenericCovTermPattern>
   </CovTerms>
 </CoveragePattern>

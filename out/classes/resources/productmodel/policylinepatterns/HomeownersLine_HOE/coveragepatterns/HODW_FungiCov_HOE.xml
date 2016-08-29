@@ -10,6 +10,7 @@
   priority="4300"
   public-id="HODW_FungiCov_HOE"
   referenceDateByType="ApplicableObject">
+  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setSection1LimitDefault_Ext(HODW_FungiCov_HOE.Dwelling);gw.lob.ho.DwellingCov_HOEEnhancement.setSection1AggLimitDefault_Ext(HODW_FungiCov_HOE.Dwelling)]]></InitializeScript>
   <ExistenceScript><![CDATA[return((Dwelling_HOE.Branch.BaseState == TC_AZ ||Dwelling_HOE.Branch.BaseState == TC_NV || Dwelling_HOE.Branch.BaseState == TC_SC)&&
         !Dwelling_HOE.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists)? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED]]></ExistenceScript>
   <CovTerms>
@@ -25,13 +26,7 @@
       required="true"
       restrictionModel="pd"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_FungiSectionILimit_HOEusd"
-          currency="usd"
-          defaultValue="10000"
-          public-id="HODW_FungiSectionILimit_HOEusd"/>
-      </DefaultsSet>
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zsah8b1p4sso8630e67tmcrhfpa"
@@ -115,28 +110,28 @@
           codeIdentifier="zh6g2b93vu03c5lp6efnnvbavk9"
           currency="usd"
           optionCode="15000"
-          priority="4322"
+          priority="4324"
           public-id="zh6g2b93vu03c5lp6efnnvbavk9"
           value="15000.0000"/>
         <CovTermOpt
           codeIdentifier="zrkgifgihsg3b56em7qn35v894a"
           currency="usd"
           optionCode="20000"
-          priority="4323"
+          priority="4325"
           public-id="zrkgifgihsg3b56em7qn35v894a"
           value="20000.0000"/>
         <CovTermOpt
           codeIdentifier="z51g0gjatqb1pf1mlbu4l763t59"
           currency="usd"
           optionCode="25000"
-          priority="4324"
+          priority="4322"
           public-id="z51g0gjatqb1pf1mlbu4l763t59"
           value="25000.0000"/>
         <CovTermOpt
           codeIdentifier="z8qgoqf679psb0ht2pokalteh4a"
           currency="usd"
           optionCode="30000"
-          priority="4325"
+          priority="4425"
           public-id="z8qgoqf679psb0ht2pokalteh4a"
           value="30000.0000"/>
         <CovTermOpt
@@ -150,7 +145,7 @@
           codeIdentifier="zephgi0mcd0u68aqmrfoqojih08"
           currency="usd"
           optionCode="5000_Ext"
-          priority="4425"
+          priority="4221"
           public-id="zephgi0mcd0u68aqmrfoqojih08"
           value="5000.0000"/>
       </Options>

@@ -28,7 +28,8 @@
     code="DP1_Ext"
     desc="Fire Dwelling (DP1)"
     name="Fire Dwelling (DP1)"
-    priority="35"/>
+    priority="35"
+    retired="true"/>
   <typecode
     code="DP3_Ext"
     desc="Fire Dwelling (DP3)"
@@ -38,32 +39,56 @@
     code="HOA_Ext"
     desc="Homeowners (HOA)"
     name="Homeowners (HOA)"
-    priority="10"/>
+    priority="10">
+    <category
+      code="UWPeriodHO"
+      typelist="NotificationActionType"/>
+  </typecode>
   <typecode
     code="HOB_Ext"
     desc="Renters (HOB)"
     name="Renters (HOB)"
-    priority="20"/>
+    priority="20">
+    <category
+      code="UWPeriodHO"
+      typelist="NotificationActionType"/>
+  </typecode>
   <typecode
     code="HCONB_Ext"
     desc="Condominium (HCONB)"
     name="Condominium (HCONB)"
-    priority="30"/>
+    priority="30">
+    <category
+      code="UWPeriodHO"
+      typelist="NotificationActionType"/>
+  </typecode>
   <typecode
     code="TDP1_Ext"
     desc="Fire Dwelling (TDP1)"
     name="Fire Dwelling (TDP1)"
-    priority="40"/>
+    priority="40">
+    <category
+      code="UWPeriodDP"
+      typelist="NotificationActionType"/>
+  </typecode>
   <typecode
     code="TDP2_Ext"
     desc="Fire Dwelling (TDP2)"
     name="Fire Dwelling (TDP2)"
-    priority="50"/>
+    priority="50">
+    <category
+      code="UWPeriodDP"
+      typelist="NotificationActionType"/>
+  </typecode>
   <typecode
     code="TDP3_Ext"
     desc="Fire Dwelling (TDP3)"
     name="Fire Dwelling (TDP3)"
-    priority="60"/>
+    priority="60">
+    <category
+      code="UWPeriodDP"
+      typelist="NotificationActionType"/>
+  </typecode>
   <typecode
     code="LPP_Ext"
     desc="Fire Dwelling (LPP3)"
@@ -71,8 +96,6 @@
   <typefilter
     desc="California State"
     name="California_Ext">
-    <include
-      code="DP1_Ext"/>
     <include
       code="DP3_Ext"/>
     <include
@@ -114,8 +137,6 @@
     desc="All States except CA TX NC"
     name="AllOtherState_Ext">
     <include
-      code="DP3_Ext"/>
-    <include
       code="HO3"/>
     <include
       code="HO4"/>
@@ -143,5 +164,37 @@
       code="HO4"/>
     <include
       code="HO6"/>
+  </typefilter>
+  <typefilter
+    desc="Policy types where medical payment options are limited based on a personal liability limit threshold"
+    name="MedicalPaymentsLimitEligible">
+    <include
+      code="HCONB_Ext"/>
+    <include
+      code="HO3"/>
+    <include
+      code="HO4"/>
+    <include
+      code="HO6"/>
+    <include
+      code="HOA_Ext"/>
+    <include
+      code="HOB_Ext"/>
+  </typefilter>
+  <typefilter
+    desc="Dwelling Fire Types"
+    name="FireTypes">
+    <include
+      code="DP1_Ext"/>
+    <include
+      code="DP3_Ext"/>
+    <include
+      code="LPP_Ext"/>
+    <include
+      code="TDP1_Ext"/>
+    <include
+      code="TDP2_Ext"/>
+    <include
+      code="TDP3_Ext"/>
   </typefilter>
 </typelist>

@@ -166,7 +166,7 @@ class NotificationPlugin implements INotificationPlugin {
     if (category == NotificationCategory.TC_CANCEL or
         category == NotificationCategory.TC_UWCANCEL) {
       // Need to add 1 to leadTime, so that we get the full number of days for cancellations
-      return config.LeadTime + 1
+      return config.LeadTime
     }
     return config.LeadTime
   }

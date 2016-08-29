@@ -284,42 +284,4 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
       this.ElectricalSystemUpgradeDate = null
     }
   }
-  
-  property get DwellingLimit() : BigDecimal {
-    var _dwellingLimit : BigDecimal
-    switch(this.HOPolicyType){
-      case HOPolicyType_HOE.TC_DP2:
-        _dwellingLimit = this.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
-        break
-      case HOPolicyType_HOE.TC_HO3:
-        _dwellingLimit = this.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-        break
-      case HOPolicyType_HOE.TC_HO6:
-        _dwellingLimit = this.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
-        break      
-      case HOPolicyType_HOE.TC_HO4:
-      default: 
-    }
-    return _dwellingLimit
-  }
-  
-  property get PersonalPropertyLimit() : BigDecimal {
-    var _personalPropertyLimit : BigDecimal
-    switch(this.HOPolicyType){
-      case HOPolicyType_HOE.TC_HO3:
-        _personalPropertyLimit = this.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value * DwellingLimit / 100
-        break
-      case HOPolicyType_HOE.TC_HO4:
-      case HOPolicyType_HOE.TC_HO6:
-        _personalPropertyLimit = this.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
-        break
-      case HOPolicyType_HOE.TC_DP2:
-      if(this.DPDW_Personal_Property_HOEExists)
-        _personalPropertyLimit = this.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value * DwellingLimit / 100
-        break
-      default:
-        break        
-    }
-    return _personalPropertyLimit
-  }  
 }

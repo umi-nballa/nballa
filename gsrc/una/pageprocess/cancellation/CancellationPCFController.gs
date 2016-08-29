@@ -56,25 +56,27 @@ class CancellationPCFController {
   }
 
   property set CancellationLetterMailDate(date : Date){
-    this._cancellation.CancelLetterMailDate = date
+    this._cancellation.CancelLetterMailDate = date.orNextBusinessDay(this._policyPeriod.ProducerCodeOfRecord.Address)
   }
 
   property get CumulativeReasonDetailsDescription() : String{
     var result = new StringBuilder()
 
-    if(this._cancellation.CancelReasonCode != null){
-      result.append(this._cancellation.CancelReasonCode)
+    if(!isReasonDescriptionEditable()){
+      if(this._cancellation.CancelReasonCode != null){
+        result.append(this._cancellation.CancelReasonCode)
             .append(System.lineSeparator())
-    }
-
-    this._cancellation.CancelReasonDetails?.each( \ elt -> {
-      if(elt.Description != null){
-        result.append(elt.Description)
-              .append(System.lineSeparator())
       }
-    })
 
-    this._cancellation.CancellationDescription = result.toString()
+      this._cancellation.CancelReasonDetails?.each( \ elt -> {
+        if(elt.Description != null){
+          result.append(elt.Description)
+              .append(System.lineSeparator())
+        }
+      })
+
+      this._cancellation.CancellationDescription = result.toString()
+    }
 
     return this._cancellation.CancellationDescription
   }

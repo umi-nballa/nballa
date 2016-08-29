@@ -4,6 +4,7 @@ uses gw.processes.BatchProcess
 uses gw.processes.PolicyRenewalClearCheckDate
 uses gw.processes.ApplyPendingAccountDataUpdates
 uses gw.processes.SolrDataImportBatchProcess
+uses una.integration.batch.outbound.lexisfirst.LexisFirstOutboundBatchProcess
 
 @Export
 class ProcessesPlugin implements IProcessesPlugin {
@@ -19,6 +20,9 @@ class ProcessesPlugin implements IProcessesPlugin {
         return new ApplyPendingAccountDataUpdates()
       case BatchProcessType.TC_SOLRDATAIMPORT:
         return new SolrDataImportBatchProcess()
+      //Lexis First
+      case BatchProcessType.TC_LEXISFIRSTOUTBOUND:
+          return new LexisFirstOutboundBatchProcess()
       default:
         return null
     }

@@ -46,10 +46,8 @@ class TunaGateway implements TunaInterface {
       resMapper = new TunaInformationCompleteResponseMapper()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
       var req = reqMapper.createRequestModel(address)
-      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformationComplete(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
       return tunaResponse
     } catch (exp: Exception) {
@@ -66,10 +64,8 @@ class TunaGateway implements TunaInterface {
       resMapper = new TunaInformationResponseMapper()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation" + "For ", this.IntrinsicType)
       var req = reqMapper.createRequestModel(policyPeriod)
-      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {
@@ -88,10 +84,8 @@ class TunaGateway implements TunaInterface {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
       resMapper = new TunaScrubOnlyResponseMapper()
       var req = reqMapper.createRequestModel(address)
-      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
       return tunaResponse
     } catch (exp: Exception) {
@@ -108,10 +102,8 @@ class TunaGateway implements TunaInterface {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationGeoLookUp" + "For ", this.IntrinsicType)
       resMapper = new TunaGeoLookupResponseMapper()
       var req = reqMapper.createRequestModel(policyPeriod)
-      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformationGeoLookUp(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationGeoLookUp" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {
@@ -128,10 +120,8 @@ class TunaGateway implements TunaInterface {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyExl" + "For ", this.IntrinsicType)
       resMapper = new TunaLookupExlResponseMapper()
       var req = reqMapper.createRequestModel(policyPeriod)
-      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation360ValueLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyExl" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {
@@ -148,10 +138,8 @@ class TunaGateway implements TunaInterface {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyInc" + "For ", this.IntrinsicType)
       resMapper = new TunaLookUpIncResponseMapper()
       var req = reqMapper.createRequestModel(policyPeriod)
-      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation360ValueLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
-      tunaResponse.print()
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyInc" + "For ", this.IntrinsicType)
       return response
     } catch (exp: Exception) {

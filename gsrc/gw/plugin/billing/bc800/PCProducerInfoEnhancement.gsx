@@ -6,6 +6,7 @@ uses wsi.remote.gw.webservice.bc.bc800.entity.types.complex.PCContactInfo
 @Export
 enhancement PCProducerInfoEnhancement : PCProducerInfo {
   function sync(organization : Organization){
+    this.ProducerNumber = organization.AgenyNumber_Ext
     this.ProducerName = organization.Name
     this.ProducerNameKanji = organization.NameKanji
     this.Currencies = organization.AgencyBillPlans*.Currency*.Code.toList()

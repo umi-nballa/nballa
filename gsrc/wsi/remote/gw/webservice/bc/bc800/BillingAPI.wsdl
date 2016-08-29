@@ -666,6 +666,30 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="getFilteredPaymentPlans">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="theTransactionDate" type="xs:dateTime" gw:type="java.util.Date" minOccurs="0"/>
+            <xs:element name="thePremium" type="xs:decimal" minOccurs="0"/>
+            <xs:element name="thePolicyTypeCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="theLObCode" type="xs:string" minOccurs="0"/>
+            <xs:element name="theJurisdictionCode" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="getFilteredPaymentPlansResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" minOccurs="0" gw:viewas="array">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element minOccurs="0" maxOccurs="unbounded" name="Entry" nillable="true" type="imported:PaymentPlanInfo"/>
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
       <xs:element name="getPaymentPlansForAccount">
         <xs:complexType>
           <xs:sequence>
@@ -869,11 +893,14 @@
       </xs:simpleType>
       <xs:simpleType name="PaymentMethod">
         <xs:restriction base="xs:string">
+          <xs:enumeration value="echeck"/>
           <xs:enumeration value="ach"/>
+          <xs:enumeration value="billPay_Ext"/>
           <xs:enumeration value="cash"/>
           <xs:enumeration value="check"/>
           <xs:enumeration value="creditcard"/>
           <xs:enumeration value="misc"/>
+          <xs:enumeration value="remoteDeposit_Ext"/>
           <xs:enumeration value="responsive"/>
           <xs:enumeration value="accountunapplied"/>
           <xs:enumeration value="producerunapplied"/>
@@ -1430,6 +1457,12 @@
     <wsdl:operation name="getAllPaymentPlans">
       <wsdl:input name="getAllPaymentPlans" message="tns:getAllPaymentPlans"/>
       <wsdl:output name="getAllPaymentPlansResponse" message="tns:getAllPaymentPlansResponse"/>
+      <wsdl:fault name="SOAPServerException" message="tns:SOAPServerException"/>
+      <wsdl:fault name="WsiAuthenticationException" message="tns:WsiAuthenticationException"/>
+    </wsdl:operation>
+    <wsdl:operation name="getFilteredPaymentPlans">
+      <wsdl:input name="getFilteredPaymentPlans" message="tns:getFilteredPaymentPlans"/>
+      <wsdl:output name="getFilteredPaymentPlansResponse" message="tns:getFilteredPaymentPlansResponse"/>
       <wsdl:fault name="SOAPServerException" message="tns:SOAPServerException"/>
       <wsdl:fault name="WsiAuthenticationException" message="tns:WsiAuthenticationException"/>
     </wsdl:operation>
@@ -2392,6 +2425,23 @@
         <soap12:header message="tns:gw-locale" part="gw-locale" use="literal"/>
       </wsdl:input>
       <wsdl:output name="getAllPaymentPlansResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SOAPServerException">
+        <soap12:fault name="SOAPServerException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="WsiAuthenticationException">
+        <soap12:fault name="WsiAuthenticationException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="getFilteredPaymentPlans">
+      <soap12:operation soapActionRequired="false" style="document"/>
+      <wsdl:input name="getFilteredPaymentPlans">
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:gw-authentication" part="gw-authentication" use="literal"/>
+        <soap12:header message="tns:gw-locale" part="gw-locale" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getFilteredPaymentPlansResponse">
         <soap12:body use="literal"/>
       </wsdl:output>
       <wsdl:fault name="SOAPServerException">
@@ -3485,6 +3535,23 @@
         <soap11:fault name="WsiAuthenticationException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="getFilteredPaymentPlans">
+      <soap11:operation style="document"/>
+      <wsdl:input name="getFilteredPaymentPlans">
+        <soap11:body use="literal"/>
+        <soap11:header message="tns:gw-authentication" part="gw-authentication" use="literal"/>
+        <soap11:header message="tns:gw-locale" part="gw-locale" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="getFilteredPaymentPlansResponse">
+        <soap11:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SOAPServerException">
+        <soap11:fault name="SOAPServerException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="WsiAuthenticationException">
+        <soap11:fault name="WsiAuthenticationException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
     <wsdl:operation name="getPaymentPlansForAccount">
       <soap11:operation style="document"/>
       <wsdl:input name="getPaymentPlansForAccount">
@@ -3931,6 +3998,12 @@
   </wsdl:message>
   <wsdl:message name="getAllPaymentPlansResponse">
     <wsdl:part name="parameters" element="tns:getAllPaymentPlansResponse"/>
+  </wsdl:message>
+  <wsdl:message name="getFilteredPaymentPlans">
+    <wsdl:part name="parameters" element="tns:getFilteredPaymentPlans"/>
+  </wsdl:message>
+  <wsdl:message name="getFilteredPaymentPlansResponse">
+    <wsdl:part name="parameters" element="tns:getFilteredPaymentPlansResponse"/>
   </wsdl:message>
   <wsdl:message name="getPaymentPlansForAccount">
     <wsdl:part name="parameters" element="tns:getPaymentPlansForAccount"/>

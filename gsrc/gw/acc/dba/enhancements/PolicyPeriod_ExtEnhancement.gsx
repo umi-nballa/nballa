@@ -16,5 +16,11 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
 
     return primaryNamedInsured
   }
-  
+
+  function getPolicyTypeCodeString(policyPeriod : PolicyPeriod) : String{
+    if(policyPeriod.HomeownersLine_HOEExists) {
+      return policyPeriod.HomeownersLine_HOE.HOPolicyType.Code
+    }
+    return null
+  }
 }

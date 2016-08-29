@@ -31,7 +31,7 @@ class TunaMockPayloadGenerator {
 
 
   public function GetPropertyInformationScrubOnly(): XmlElement {
-    var payloadPath = pathToSampleData + "/AddresValidation_Res.xml"
+    var payloadPath = pathToSampleData + "/AddressValidation_Res.xml"
     var payloadFile = new File(TunaMockPayloadGenerator.Type.TypeLoader.getResource(payloadPath).File)
     var payload = payloadFile.read()
     var xmlElement = XmlElement.parse(payload)

@@ -1,13 +1,13 @@
 package una.integration.service.gateway.tuna
 
-uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
-uses una.logging.UnaLoggerCategory
-uses una.integration.mapping.tuna.TunaScrubOnlyResponseMapper
 uses gw.api.address.AddressFillable
-uses java.lang.Exception
 uses una.integration.mapping.tuna.TunaAppResponse
-uses una.model.AddressDTO
+uses una.integration.mapping.tuna.TunaScrubOnlyResponseMapper
 uses una.integration.service.transport.tuna.TunaCommunicatorStub
+uses una.logging.UnaLoggerCategory
+uses una.model.AddressDTO
+
+uses java.lang.Exception
 
 /**
  * Author: pyerrumsetty
@@ -15,30 +15,23 @@ uses una.integration.service.transport.tuna.TunaCommunicatorStub
  * Purpose: Implementation of the TUNAGateway interface to expose a stub for PolicyCenter tests to simulate
  * consuming TUNA based services.
  */
-class TunaGatewayStub implements TunaInterface  {
-
+class TunaGatewayStub implements TunaInterface {
   final static var logger = UnaLoggerCategory.UNA_INTEGRATION
   private static final var CLASS_NAME = TunaGateway.Type.DisplayName
-  var tunaComm : TunaCommunicatorStub
-
-  var timeout:String ="500"
-
-  construct(){
-
+  var tunaComm: TunaCommunicatorStub
+  var timeout: String = "500"
+  construct() {
     tunaComm = new TunaCommunicatorStub()
-
   }
 
-  construct(ThresholdTimeout:String){
+  construct(ThresholdTimeout: String) {
     this.timeout = ThresholdTimeout
   }
-
-
 
   /**
    * The method is Stub implementation
    */
-  override function fetchPropertyInformationScrubOnly(address: AddressFillable): PropertyGeographyModel {
+  override function fetchPropertyInformationScrubOnly(address: AddressFillable): TunaAppResponse {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
       var resMapper = new TunaScrubOnlyResponseMapper()
@@ -52,7 +45,7 @@ class TunaGatewayStub implements TunaInterface  {
     }
   }
 
-  override function fetchPropertyInformationComplete(address: AddressDTO): PropertyGeographyModel {
+  override function fetchPropertyInformationComplete(address: AddressDTO): TunaAppResponse {
     return null
   }
 

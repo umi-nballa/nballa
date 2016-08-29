@@ -41,7 +41,7 @@ class TunaGateway implements TunaInterface {
    * @param address have the values from entity AccountLocation
    * @return getPropertyInformationCompleteResponse is returned
    */
-  override function fetchPropertyInformationComplete(address: AddressDTO): PropertyGeographyModel {
+  override function fetchPropertyInformationComplete(address: AddressDTO): TunaAppResponse {
     try {
       resMapper = new TunaInformationCompleteResponseMapper()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
@@ -49,7 +49,7 @@ class TunaGateway implements TunaInterface {
       var tunaResponse = tunaCommunicator.getPropertyInformationComplete(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationComplete" + "For SUBMISSION ", this.IntrinsicType)
-      return tunaResponse
+      return response
     } catch (exp: Exception) {
       logger.error(CLASS_NAME + " :: " + " fetchPropertyInformationComplete " + " : StackTrace = " + exp)
       throw exp
@@ -79,7 +79,7 @@ class TunaGateway implements TunaInterface {
    * @param address  is the Address Entity in GW
    * @return tunaResponse is the response from the TUNA Address Validation Service - getPropertyInformationScrubOnly
    */
-  override function fetchPropertyInformationScrubOnly(address: AddressFillable): PropertyGeographyModel {
+  override function fetchPropertyInformationScrubOnly(address: AddressFillable): TunaAppResponse {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
       resMapper = new TunaScrubOnlyResponseMapper()
@@ -87,7 +87,7 @@ class TunaGateway implements TunaInterface {
       var tunaResponse = tunaCommunicator.getPropertyInformationScrubOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly" + "For AddressValidation ", this.IntrinsicType)
-      return tunaResponse
+      return response
     } catch (exp: Exception) {
       logger.error(CLASS_NAME + " :: " + " fetchPropertyInformationScrubOnly " + " : StackTrace = " + exp)
       throw exp

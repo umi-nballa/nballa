@@ -5,10 +5,9 @@ uses gw.api.address.DefaultAddressAutocompletePlugin
 uses una.integration.service.gateway.plugin.GatewayPlugin
 uses una.integration.service.gateway.tuna.TunaInterface
 uses una.logging.UnaLoggerCategory
-
 uses java.lang.Exception
 uses java.util.regex.Pattern
-uses una.utils.PropertiesHolder
+
 
 /**
  * Address Service Plugin Implementation class for validating address from tuna.
@@ -48,18 +47,17 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
           var finalRes = TUNAGateway.fetchPropertyInformationScrubOnly(address)
           //Validating the response with either status code and Note
           //AddressScrubbed = 1, AddressScrubFailed = 2, AddressScrubUnknown = 3
-          if (finalRes.Status == 0 && finalRes.Address.ScrubStatus == 1) {
+          if (finalRes.Status == 0 && finalRes.ScrubStatus == 1) {
             //Populating Tuna Validated Response values to the UI if Address is Validated
             logger.debug(" populating values to the UI after validating ", this.IntrinsicType)
-            address.AddressLine1 = finalRes.Address.Street.Number + " " + finalRes.Address.Street.Name + " "
-                + finalRes.Address.Street.Type
-            address.City = finalRes.Address.City
+            address.AddressLine1 = finalRes.AddressLine1
+            address.City = finalRes.City
             //Converting String to TypeKey State
-            address.State = typekey.State.getState(address.Country, finalRes.Address.State)
-            address.PostalCode = finalRes.Address.Zipcode.Major + "-" + finalRes.Address.Zipcode.Minor
-            logger.debug("Converting String to State Type " + typekey.State.getState(address.Country, finalRes.Address.State))
+            address.State = typekey.State.getState(address.Country, finalRes.State)
+            address.PostalCode = finalRes.PostalCode
+            logger.debug("Converting String to State Type " + finalRes.State)
           } else {
-            throw new gw.api.util.DisplayableException (finalRes.Address.Note)
+            throw new gw.api.util.DisplayableException (finalRes.Note)
           }
         } else {
           throw new gw.api.util.DisplayableException (displaykey.AutoFill.Tuna.ZipCode)

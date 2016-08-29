@@ -63,14 +63,6 @@
                   value="building.Building.Description">
                   <PostOnChange/>
                 </Input>
-                <TypeKeyInput
-                  editable="true"
-                  id="PropertyType"
-                  label="displaykey.Web.Building.PredominentOccupancyType"
-                  value="building.PropertyType">
-                  <PostOnChange
-                    onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </TypeKeyInput>
                 <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
                 <TypeKeyInput
                   editable="true"
@@ -80,6 +72,14 @@
                   value="building.PredominentOccType_Ext">
                   <PostOnChange
                     onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;synchPM()"/>
+                </TypeKeyInput>
+                <TypeKeyInput
+                  editable="true"
+                  id="PropertyType"
+                  label="displaykey.Web.Building.PredominentOccupancyType"
+                  value="building.PropertyType">
+                  <PostOnChange
+                    onChange="building.updateDependentFields(null, jobWizardHelper)"/>
                 </TypeKeyInput>
                 <!-- <TypeKeyInput
                   editable="true"
@@ -372,6 +372,13 @@
                               recalculateOnRefresh="true"
                               type="typekey.BP7ClassDescription"/>
                             <InputColumn>
+                              <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
+                              <TypeKeyInput
+                                id="PreOccType"
+                                label="displaykey.Web.Building.OccupanyType"
+                                value="building.PredominentOccType_Ext">
+                                <PostOnChange/>
+                              </TypeKeyInput>
                               <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassPropertyType, selectedClassification.ClassPropertyTypeValues)"
                                 id="ClassPropertyType"
@@ -382,13 +389,6 @@
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassPropertyType.PropertyInfo, previousPropertyTypeValue), jobWizardHelper)"/>
                               </RangeInput>
-                              <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
-                              <TypeKeyInput
-                                id="PreOccType"
-                                label="displaykey.Web.Building.OccupanyType"
-                                value="building.PredominentOccType_Ext">
-                                <PostOnChange/>
-                              </TypeKeyInput>
                               <!-- <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassDescription, selectedClassification.ClassDescriptionValues)"
                                 id="ClassDescription"

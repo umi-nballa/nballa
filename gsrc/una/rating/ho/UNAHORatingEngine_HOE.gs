@@ -18,6 +18,7 @@ uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.job.RenewalProcess
 uses gw.rating.rtm.query.RatingQueryFacade
 uses gw.lob.ho.rating.ScheduleCovCostData_HOE
+uses gw.lob.ho.rating.ScheduleLineCovCostData_HOE_Ext
 
 /**
  * User: bduraiswamy
@@ -80,18 +81,18 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
 
         //Add the minimum premium adjustment, if the total premium is less than minimum premium
         rateManualPremiumAdjustment(sliceRange)
-
-        //rate policyFee
-        if(((lineVersion.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION) or
-           (lineVersion.Branch.Job.Subtype == typekey.Job.TC_RENEWAL and lineVersion.BaseState != typekey.Jurisdiction.TC_NV)) and
-           (lineVersion.BaseState != typekey.Jurisdiction.TC_AZ) and (lineVersion.BaseState != typekey.Jurisdiction.TC_CA)){
-          ratePolicyFee(sliceRange)
-        }
       }
     }
   }
 
   override protected function rateWindow(line: HomeownersLine_HOE) {
+    assertSliceMode(line) // we need to be in slice mode to create costs, but we're creating costs for the whole window
+    //rate policyFee
+    if(((line.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION) or
+        (line.Branch.Job.Subtype == typekey.Job.TC_RENEWAL and line.BaseState != typekey.Jurisdiction.TC_NV)) and
+        (line.BaseState != typekey.Jurisdiction.TC_AZ) and (line.BaseState != typekey.Jurisdiction.TC_CA)){
+      ratePolicyFee(line)
+    }
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
@@ -112,11 +113,15 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         cd = new DwellingCovCostData_HOE(c, RateCache)
         break
       case HomeownersLineCost_EXT:
-        cd = new HomeownersLineCostData_HOE(c, RateCache)
+        if(c.HOCostType != HOCostType_Ext.TC_POLICYFEE)
+          cd = new HomeownersLineCostData_HOE(c, RateCache)
         break
       case ScheduleCovCost_HOE:
         cd = new ScheduleCovCostData_HOE(c, RateCache)
         break
+      case ScheduleLineCovCost_HOE_Ext:
+          cd = new ScheduleLineCovCostData_HOE_Ext(c, RateCache)
+          break
     }
     return cd
   }
@@ -172,16 +177,18 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   /**
    * Rate the Policy fee
    */
-  function ratePolicyFee(dateRange: DateRange){
+  function ratePolicyFee(line: HomeownersLine_HOE){
     _logger.debug("Entering :: ratePolicyFee:", this.IntrinsicType)
     var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
         TC_POLICYLINE -> PolicyLine,
         TC_STATE -> _baseState.Code
     }
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, HOCostType_Ext.TC_POLICYFEE,RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
-    if (costData != null)
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, HOCostType_Ext.TC_POLICYFEE,RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod)
+    if (costData != null){
+      costData.ActualAmount = costData.ActualTermAmount
       addCost(costData)
+    }
     _logger.debug("Policy fee added Successfully", this.IntrinsicType)
   }
 }

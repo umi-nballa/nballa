@@ -14,9 +14,15 @@ class HOScheduledPersonalPropertyRatingInfo {
   construct(item : ScheduledItem_HOE){
 
     _exposureValue = item.ExposureValue
-    var scheduleType = item.ScheduleType.Description.split("-")
-    _itemType = scheduleType[0].trim()
-    if(scheduleType.length > 1)
-      _usage = scheduleType.last().trim()
+    var scheduleType = item.ScheduleType
+    if(scheduleType.Description.startsWith("Silverware")){
+      _itemType = "Silverware"
+    } else{
+      var scheduleTypeDescription = scheduleType.Description.split("-")
+      _itemType = scheduleTypeDescription[0].trim()
+      if(scheduleTypeDescription.length > 1)
+        _usage = scheduleTypeDescription.last().trim()
+    }
+
   }
 }

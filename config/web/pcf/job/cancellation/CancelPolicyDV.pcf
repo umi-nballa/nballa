@@ -115,12 +115,14 @@
         required="true"
         timeVisible="false"
         validationExpression="pcfController.validateMailDate()"
-        value="pcfController.CancellationLetterMailDate"/>
+        value="pcfController.CancellationLetterMailDate"
+        visible="cancellation.Source == TC_CARRIER"/>
       <Input
         id="NumberOfDaysNotice"
         label="displaykey.una.cancellation.NumberOfDaysNotice"
         required="false"
-        value="pcfController.NumberOfDaysNotice"/>
+        value="pcfController.NumberOfDaysNotice"
+        visible="cancellation.Source == TC_CARRIER"/>
       <CheckBoxInput
         editable="true"
         id="SuppressPrint"

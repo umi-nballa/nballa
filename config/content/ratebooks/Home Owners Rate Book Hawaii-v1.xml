@@ -13,8 +13,8 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-20 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2016-08-14 22:53:59.757</LastStatusChangeDate>
-    <LastTableRowEdit>2016-08-10 10:42:44.444</LastTableRowEdit>
+    <LastStatusChangeDate>2016-08-26 15:47:51.279</LastStatusChangeDate>
+    <LastTableRowEdit>2016-08-25 17:05:06.449</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines/>
     <RateTables>
@@ -66,6 +66,17 @@
         <BasedOnTable/>
         <Definition public-id="pc:530"/>
         <LastTableRowEdit>2016-08-10 10:42:44.445</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:406"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:4109">
+        <BasedOnTable/>
+        <Definition public-id="pc:2202"/>
+        <LastTableRowEdit>2016-08-25 17:05:06.449</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:406"/>
@@ -413,17 +424,6 @@
         <ReduceMemoryUsage>false</ReduceMemoryUsage>
         <RefTable/>
         <RowUniformityStatus>nonuniform</RowUniformityStatus>
-      </RateTable>
-      <RateTable public-id="pc:902">
-        <BasedOnTable/>
-        <Definition public-id="pc:616"/>
-        <LastTableRowEdit>2016-06-28 11:39:09.375</LastTableRowEdit>
-        <NormalizedRowCount>6</NormalizedRowCount>
-        <QueryStrategy>Memory</QueryStrategy>
-        <RateBook public-id="pc:406"/>
-        <ReduceMemoryUsage>false</ReduceMemoryUsage>
-        <RefTable/>
-        <RowUniformityStatus>uniform</RowUniformityStatus>
       </RateTable>
       <RateTable public-id="pc:903">
         <BasedOnTable/>
@@ -6149,20 +6149,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:202">
-    <CalcRoutineParameterSet public-id="pc:201"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:203">
     <CalcRoutineParameterSet public-id="pc:201"/>
     <Code>ratinginfo</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.HOLineRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:202">
+    <CalcRoutineParameterSet public-id="pc:201"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -6403,6 +6403,15 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:904">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>true</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:903">
     <CalcRoutineParameterSet public-id="pc:601"/>
     <Code>dwellingRatingInfo_Ext</Code>
@@ -6429,15 +6438,6 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:904">
-    <CalcRoutineParameterSet public-id="pc:601"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>true</Writable>
   </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pc:6015">
     <RateTable public-id="pc:634"/>
@@ -9113,145 +9113,161 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <RateTableDefinition public-id="pc:616">
+  <RateTableDefinition public-id="pc:2202">
     <ArgumentSourceSets>
-      <RateTableArgumentSourceSet public-id="pc:616">
+      <RateTableArgumentSourceSet public-id="pc:3402">
         <CalcRoutineParameterSet public-id="pc:101"/>
         <Code>DEFAULT</Code>
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:625">
+          <RateTableArgumentSource public-id="pc:3704">
             <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:616"/>
+            <ArgumentSourceSet public-id="pc:3402"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:625"/>
+            <Parameter public-id="pc:2704"/>
             <Root/>
           </RateTableArgumentSource>
-          <RateTableArgumentSource public-id="pc:626">
+          <RateTableArgumentSource public-id="pc:3705">
             <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:616"/>
+            <ArgumentSourceSet public-id="pc:3402"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:626"/>
+            <Parameter public-id="pc:2705"/>
             <Root/>
           </RateTableArgumentSource>
-          <RateTableArgumentSource public-id="pc:627">
+          <RateTableArgumentSource public-id="pc:3706">
             <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:616"/>
+            <ArgumentSourceSet public-id="pc:3402"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:627"/>
+            <Parameter public-id="pc:2706"/>
+            <Root/>
+          </RateTableArgumentSource>
+          <RateTableArgumentSource public-id="pc:3707">
+            <ArgumentSource/>
+            <ArgumentSourceSet public-id="pc:3402"/>
+            <IsModifier>false</IsModifier>
+            <Parameter public-id="pc:2707"/>
             <Root/>
           </RateTableArgumentSource>
         </RateTableArgumentSources>
-        <RateTableDefinition public-id="pc:616"/>
+        <RateTableDefinition public-id="pc:2202"/>
       </RateTableArgumentSourceSet>
     </ArgumentSourceSets>
     <EntityName>DefaultRateFactorRow</EntityName>
     <Factors>
-      <RateTableColumn public-id="pc:749">
+      <RateTableColumn public-id="pc:3605">
         <ColumnLabel>Premium</ColumnLabel>
         <ColumnLabel_L10N_ARRAY/>
         <ColumnName>premium</ColumnName>
         <ColumnScale/>
         <ColumnType>Integer</ColumnType>
-        <DefinitionForFactor public-id="pc:616"/>
+        <DefinitionForFactor public-id="pc:2202"/>
         <DefinitionForParam/>
         <DependsOn/>
         <DisplayType>Normal</DisplayType>
         <MatchOp/>
         <MultiSelect>false</MultiSelect>
-        <PhysicalColumnName>int4</PhysicalColumnName>
+        <PhysicalColumnName>int3</PhysicalColumnName>
         <SortOrder>0</SortOrder>
         <ValueProvider/>
       </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:625">
-        <Definition public-id="pc:616"/>
-        <DisplayText>Limit</DisplayText>
+      <RateTableMatchOp public-id="pc:2704">
+        <Definition public-id="pc:2202"/>
+        <DisplayText>Personal Liability Limit</DisplayText>
         <DisplayText_L10N_ARRAY/>
         <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
-        <Name>limit</Name>
+        <Name>personalLiabilityLimit</Name>
         <Params>
-          <RateTableColumn public-id="pc:745">
-            <ColumnLabel>Limit</ColumnLabel>
+          <RateTableColumn public-id="pc:3606">
+            <ColumnLabel>Personal Liability Limit</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
-            <ColumnName>limit</ColumnName>
+            <ColumnName>personalLiabilityLimit</ColumnName>
             <ColumnScale/>
-            <ColumnType>String</ColumnType>
+            <ColumnType>Integer</ColumnType>
             <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:616"/>
+            <DefinitionForParam public-id="pc:2202"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:625"/>
+            <MatchOp public-id="pc:2704"/>
             <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>str1</PhysicalColumnName>
+            <PhysicalColumnName>int1</PhysicalColumnName>
             <SortOrder>0</SortOrder>
             <ValueProvider/>
           </RateTableColumn>
         </Params>
       </RateTableMatchOp>
-      <RateTableMatchOp public-id="pc:626">
-        <Definition public-id="pc:616"/>
-        <DisplayText>Horsepower</DisplayText>
+      <RateTableMatchOp public-id="pc:2705">
+        <Definition public-id="pc:2202"/>
+        <DisplayText>Med Pay Limit</DisplayText>
         <DisplayText_L10N_ARRAY/>
-        <MatchOpDefinition public-id="rtm:LessOrEqualMatchOpDefV2"/>
-        <Name>horsepower</Name>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>medPayLimit</Name>
         <Params>
-          <RateTableColumn public-id="pc:746">
-            <ColumnLabel>Horsepower</ColumnLabel>
+          <RateTableColumn public-id="pc:3607">
+            <ColumnLabel>Med Pay Limit</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
-            <ColumnName>horsepower</ColumnName>
+            <ColumnName>medPayLimit</ColumnName>
             <ColumnScale/>
             <ColumnType>Integer</ColumnType>
             <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:616"/>
+            <DefinitionForParam public-id="pc:2202"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:626"/>
+            <MatchOp public-id="pc:2705"/>
             <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>int1</PhysicalColumnName>
+            <PhysicalColumnName>int2</PhysicalColumnName>
             <SortOrder>1</SortOrder>
             <ValueProvider/>
           </RateTableColumn>
         </Params>
       </RateTableMatchOp>
-      <RateTableMatchOp public-id="pc:627">
-        <Definition public-id="pc:616"/>
-        <DisplayText>Length</DisplayText>
+      <RateTableMatchOp public-id="pc:2706">
+        <Definition public-id="pc:2202"/>
+        <DisplayText>Horsepower</DisplayText>
         <DisplayText_L10N_ARRAY/>
-        <MatchOpDefinition public-id="rtm:RangeMatchOpDefMaxIncl"/>
-        <Name>length</Name>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>horsePower</Name>
         <Params>
-          <RateTableColumn public-id="pc:747">
-            <ColumnLabel>Min</ColumnLabel>
+          <RateTableColumn public-id="pc:3608">
+            <ColumnLabel>Horsepower</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
-            <ColumnName>min</ColumnName>
+            <ColumnName>horsePower</ColumnName>
             <ColumnScale/>
-            <ColumnType>Integer</ColumnType>
+            <ColumnType>String</ColumnType>
             <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:616"/>
+            <DefinitionForParam public-id="pc:2202"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:627"/>
+            <MatchOp public-id="pc:2706"/>
             <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>int2</PhysicalColumnName>
+            <PhysicalColumnName>str1</PhysicalColumnName>
             <SortOrder>2</SortOrder>
             <ValueProvider/>
           </RateTableColumn>
-          <RateTableColumn public-id="pc:748">
-            <ColumnLabel>Max</ColumnLabel>
+        </Params>
+      </RateTableMatchOp>
+      <RateTableMatchOp public-id="pc:2707">
+        <Definition public-id="pc:2202"/>
+        <DisplayText>Overall Length</DisplayText>
+        <DisplayText_L10N_ARRAY/>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>overallLength</Name>
+        <Params>
+          <RateTableColumn public-id="pc:3609">
+            <ColumnLabel>Overall Length</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
-            <ColumnName>Max</ColumnName>
+            <ColumnName>overallLength</ColumnName>
             <ColumnScale/>
-            <ColumnType>Integer</ColumnType>
+            <ColumnType>String</ColumnType>
             <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:616"/>
+            <DefinitionForParam public-id="pc:2202"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:627"/>
+            <MatchOp public-id="pc:2707"/>
             <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>int3</PhysicalColumnName>
+            <PhysicalColumnName>str2</PhysicalColumnName>
             <SortOrder>3</SortOrder>
             <ValueProvider/>
           </RateTableColumn>
@@ -9259,14 +9275,14 @@
       </RateTableMatchOp>
     </MatchOps>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
-    <TableCode>ho_outboard_inboard_inboardoutdrive</TableCode>
-    <TableDesc>HO Outboard Inboard Inboard-OutDrive Table</TableDesc>
+    <TableCode>ho_outboard_inboard_inboardoutdrive_motors_table</TableCode>
+    <TableDesc>HO Outboard Inboard Inboard-OutDrive Motors Table</TableDesc>
     <TableDesc_L10N_ARRAY/>
-    <TableName>HO Outboard Inboard Inboard-OutDrive Table</TableName>
+    <TableName>HO Outboard Inboard Inboard-OutDrive Motors Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
-  <DefaultRateFactorRow public-id="pc:9067">
-    <RateTable public-id="pc:902"/>
+  <DefaultRateFactorRow public-id="pc:39637">
+    <RateTable public-id="pc:4109"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9277,15 +9293,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4>19</int4>
+    <int1>100000</int1>
+    <int2>1000</int2>
+    <int3>12</int3>
+    <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1>$100,000/$1,000</str1>
+    <str1>26 - 49 HP</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -9294,8 +9310,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:9064">
-    <RateTable public-id="pc:902"/>
+  <DefaultRateFactorRow public-id="pc:39640">
+    <RateTable public-id="pc:4109"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9306,15 +9322,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1>50</int1>
-    <int2/>
-    <int3/>
-    <int4>12</int4>
+    <int1>100000</int1>
+    <int2>1000</int2>
+    <int3>19</int3>
+    <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1>$100,000/$1,000</str1>
+    <str1>50 or more HP</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -9323,8 +9339,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:9068">
-    <RateTable public-id="pc:902"/>
+  <DefaultRateFactorRow public-id="pc:39638">
+    <RateTable public-id="pc:4109"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9335,15 +9351,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4>26</int4>
+    <int1>300000</int1>
+    <int2>5000</int2>
+    <int3>17</int3>
+    <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1>$300,000/$3,000</str1>
+    <str1>26 - 49 HP</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -9352,8 +9368,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:9065">
-    <RateTable public-id="pc:902"/>
+  <DefaultRateFactorRow public-id="pc:39641">
+    <RateTable public-id="pc:4109"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9364,15 +9380,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1>50</int1>
-    <int2/>
-    <int3/>
-    <int4>17</int4>
+    <int1>300000</int1>
+    <int2>5000</int2>
+    <int3>26</int3>
+    <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1>$300,000/$3,000</str1>
+    <str1>50 or more HP</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -9381,8 +9397,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:9069">
-    <RateTable public-id="pc:902"/>
+  <DefaultRateFactorRow public-id="pc:39639">
+    <RateTable public-id="pc:4109"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9393,15 +9409,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4>34</int4>
+    <int1>500000</int1>
+    <int2>5000</int2>
+    <int3>23</int3>
+    <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1>$500,000/$5,000</str1>
+    <str1>26 - 49 HP</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -9410,8 +9426,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:9066">
-    <RateTable public-id="pc:902"/>
+  <DefaultRateFactorRow public-id="pc:39642">
+    <RateTable public-id="pc:4109"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9422,15 +9438,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1>50</int1>
-    <int2/>
-    <int3/>
-    <int4>23</int4>
+    <int1>500000</int1>
+    <int2>5000</int2>
+    <int3>34</int3>
+    <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1>$500,000/$5,000</str1>
+    <str1>50 or more HP</str1>
     <str2/>
     <str3/>
     <str4/>

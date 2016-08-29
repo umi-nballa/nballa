@@ -1,5 +1,5 @@
 package rules.EventMessage.EventFired_dir.HPX_dir
-uses una.integration.mapping.hpx.HPXRequestMapper
+uses una.integration.mapping.hpx.common.HPXRequestMapper
 @gw.rules.RuleName("Policy Change")
 internal class PolicyChange {
   static function doCondition(messageContext : entity.MessageContext) : boolean {
@@ -14,11 +14,11 @@ var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
 var ewsRequestMapper = new HPXRequestMapper()
 if (period?.HomeownersLine_HOE != null)
 {
-  if (period.NewlyAddedForms.Count > 0) {
+//  if (period.NewlyAddedForms.Count > 0) {
     var ewsRequestXML = ewsRequestMapper.createForms(period)
     print(ewsRequestXML)
     messageContext.createMessage(ewsRequestXML)
-  }
+//  }
 }
 /*end00rule*/
   }

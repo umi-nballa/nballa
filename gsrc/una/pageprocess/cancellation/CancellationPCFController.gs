@@ -56,25 +56,27 @@ class CancellationPCFController {
   }
 
   property set CancellationLetterMailDate(date : Date){
-    this._cancellation.CancelLetterMailDate = date
+    this._cancellation.CancelLetterMailDate = date.orNextBusinessDay(this._policyPeriod.ProducerCodeOfRecord.Address)
   }
 
   property get CumulativeReasonDetailsDescription() : String{
     var result = new StringBuilder()
 
-    if(this._cancellation.CancelReasonCode != null){
-      result.append(this._cancellation.CancelReasonCode)
+    if(!isReasonDescriptionEditable()){
+      if(this._cancellation.CancelReasonCode != null){
+        result.append(this._cancellation.CancelReasonCode)
             .append(System.lineSeparator())
-    }
-
-    this._cancellation.CancelReasonDetails?.each( \ elt -> {
-      if(elt.Description != null){
-        result.append(elt.Description)
-              .append(System.lineSeparator())
       }
-    })
 
-    this._cancellation.CancellationDescription = result.toString()
+      this._cancellation.CancelReasonDetails?.each( \ elt -> {
+        if(elt.Description != null){
+          result.append(elt.Description)
+              .append(System.lineSeparator())
+        }
+      })
+
+      this._cancellation.CancellationDescription = result.toString()
+    }
 
     return this._cancellation.CancellationDescription
   }
@@ -120,7 +122,7 @@ class CancellationPCFController {
 
   public function onChangeReasonCode(reasonCode : ReasonCode, effectiveDate : Date){
     if(reasonCode != null){
-      removeReasonDetails(reasonCode)
+      updateReasonDetailsRange(reasonCode)
       _effectiveDate = effectiveDate
       _cancellation.CancelReasonDetails
                    ?.where( \ elt -> !elt.Code?.hasCategory(reasonCode))
@@ -146,7 +148,7 @@ class CancellationPCFController {
       this._numberOfDaysNotice = _cancellation.CancelLetterMailDate.daysBetween(_effectiveDate)
     }
 
-    removeReasonDetails(_cancellation.CancelReasonCode)
+    updateReasonDetailsRange(_cancellation.CancelReasonCode)
   }
 
   public function onChangeReasonDetailCode(reasonDetail : CancelReasonDetail){
@@ -177,7 +179,7 @@ class CancellationPCFController {
     return result
   }
 
-  private function removeReasonDetails(reasonCode : ReasonCode){
+  private function updateReasonDetailsRange(reasonCode: ReasonCode){
     if(reasonCode != null){
       _reasonDetailRange = typekey.CancelReasonDetailType.getTypeKeys(false).where( \ elt -> elt.hasCategory(reasonCode))
 

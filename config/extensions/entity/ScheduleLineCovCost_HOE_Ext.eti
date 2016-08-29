@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Schedule line coverages"
+  entity="ScheduleLineCovCost_HOE_Ext"
+  supertype="HomeownersCovCost_HOE">
+  <implementsEntity
+    adapter="gw.lob.ho.financials.HomeownersCostAdapter_HOE"
+    name="Cost"/>
+  <implementsInterface
+    iface="gw.lob.ho.financials.HOCostMethods_HOE"
+    impl="gw.lob.ho.financials.ScheduleLineCovCostMethodsImpl_HOE_Ext"/>
+  <foreignkey
+    fkentity="HOscheduleItem_HOE_Ext"
+    name="LineScheduledItem"
+    nullok="true"/>
+</subtype>

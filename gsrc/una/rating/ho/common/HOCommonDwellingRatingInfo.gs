@@ -15,6 +15,8 @@ class HOCommonDwellingRatingInfo {
   var _isPersonalPropertyIncreasedLimit : boolean as IsPersonalPropertyIncreasedLimit
   var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit
   var _dwellingLimit : int as DwellingLimit
+  var _otherStructuresLimit : int as OtherStructuresLimit
+  var _totalBasePremium : BigDecimal as TotalBasePremium
 
   construct(lineVersion: HomeownersLine_HOE){
     if(lineVersion.Dwelling?.HODW_Personal_Property_HOEExists){
@@ -37,5 +39,6 @@ class HOCommonDwellingRatingInfo {
         _personalPropertyIncreasedLimit = (_personalPropertyLimit - ppLimit)
       }
     }
+    _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
   }
 }

@@ -39,7 +39,10 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
 
   function createBusinessOwnersLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.BusinessOwnerLineBusiness {
     var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.BusinessOwnerLineBusiness()
-    dwellingLineBusiness.addChild(createDwell(policyPeriod))
+    var buildings = createBuildings(policyPeriod)
+    for (building in buildings) {
+      dwellingLineBusiness.addChild(building)
+    }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
       dwellingLineBusiness.addChild(question)
@@ -48,30 +51,28 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
   }
 
   /************************************** Dwell  ******************************************************/
-  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
-    var additionalInterestMapper = new HPXAdditionalInterestMapper()
+
+  function createBuildings(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell> {
+    var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell>()
     var locationMapper = new HPXLocationMapper()
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var locs = locationMapper.createLocations(policyPeriod.BP7Line.BP7Locations.PolicyLocations)
-   /* var additionalInterests = additionalInterestMapper.createAdditionalInterests(policyPeriod.BP7Line.AdditionalInterestDetails)
-    for (additionalInterest in additionalInterests) {
-      loc.addChild(additionalInterest)
-    }  */
     var buildingMapper = new HPXBP7BuildingMapper()
     var buildingConstructionMapper = new HPXBP7BuildingConstructionMapper ()
-    var dwell = buildingMapper.createBuilding(policyPeriod)
-    dwell.addChild(buildingConstructionMapper.createBuildingConstructionInfo(policyPeriod))
-    for (loc in locs) {
-      dwell.addChild(loc)
+    var bldgs = policyPeriod.BP7Line.AllBuildings
+
+    for (bldg in bldgs) {
+      var building = buildingMapper.createBuilding(bldg)
+      building.addChild(buildingConstructionMapper.createBuildingConstructionInfo(bldg))
+      /*var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+      var transactions = policyPeriod.BP7Transactions
+      var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
+      var locs = locationMapper.createLocations(policyPeriod.BP7Line.BP7Locations.PolicyLocations) */
+      buildings.add(building)
     }
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    var transactions = policyPeriod.BP7Transactions
-    var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
-    for (cov in covs) {
-      dwell.addChild(cov)
-    }
-    return dwell
+    return buildings
   }
+
+
 
   function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {

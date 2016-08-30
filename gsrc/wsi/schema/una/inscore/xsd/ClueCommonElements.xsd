@@ -1,0 +1,738 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:rf="http://cp.com/rules/client" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" targetNamespace="http://cp.com/rules/client" elementFormDefault="qualified" attributeFormDefault="unqualified" jxb:version="1.0">
+
+    <xs:include schemaLocation="../CPRulesCommonElementsSchema.xsd"/>
+
+   <xs:complexType name="claimListType">
+      <xs:sequence>
+         <xs:element name="claim" type="rf:claimType" minOccurs="0" maxOccurs="unbounded">
+           <xs:annotation>
+             <xs:appinfo>
+               <jxb:property name="claimList" />
+             </xs:appinfo>
+           </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>        <!-- claimListType -->
+
+   <xs:complexType name="claimType">
+      <xs:sequence>
+         <xs:element name="scope_of_claim" minOccurs="0">
+            <xs:simpleType>
+              <xs:annotation>
+                <xs:appinfo>
+                  <jxb:typesafeEnumClass name="ScopeOfClaimEnum"/>
+                </xs:appinfo>
+              </xs:annotation>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="Full scope"/>
+                  <xs:enumeration value="Limited scope"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:choice>
+            <xs:element name="at_fault_indicator" minOccurs="0">   <!-- at_fault_indicator_auto -->
+               <xs:simpleType>
+                 <xs:annotation>
+                   <xs:appinfo>
+                     <jxb:typesafeEnumClass name="AtFaultIndicatorEnum"/>
+                   </xs:appinfo>
+                 </xs:annotation>
+                  <xs:restriction base="xs:string">
+                     <xs:enumeration value="At Fault"/>
+                     <xs:enumeration value="Not At Fault"/>
+                     <xs:enumeration value="Fault Undetermined"/>
+                     <xs:enumeration value="Partial Fault"/>
+                     <xs:enumeration value="Catastrophe Related"/>
+                     <xs:enumeration value="California At-Fault - Bodily Injury"/>
+                     <xs:enumeration value="California At-Fault - Property Damage"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+            <xs:element name="catastrophe_indicator" minOccurs="0">   <!-- at_fault_indicator_property -->
+               <xs:simpleType>
+                 <xs:annotation>
+                   <xs:appinfo>
+                     <jxb:typesafeEnumClass name="CatastropheIndicatorEnum"/>
+                   </xs:appinfo>
+                 </xs:annotation>
+                  <xs:restriction base="xs:string">
+                     <xs:enumeration value="Catastrophe Related"/>
+                     <xs:enumeration value="Not Catastrophe Related"/>
+                     <xs:enumeration value="Unknown (default)"/>
+                  </xs:restriction>
+               </xs:simpleType>
+            </xs:element>
+         </xs:choice>
+         <xs:element name="claim_date" type="rf:LenientDateType"/>
+         <xs:element name="claim_age" minOccurs="0">
+            <xs:complexType>
+               <xs:attribute name="years" type="xs:nonNegativeInteger" use="optional" />
+               <xs:attribute name="months" type="xs:nonNegativeInteger" use="optional" />
+            </xs:complexType>
+         </xs:element>
+         <xs:element name="clue_file_number" type="xs:string" minOccurs="0"/>
+         <xs:element name="dispute_clearance_date" type="rf:LenientDateType" minOccurs="0"/>
+         <xs:element name="policy" type="rf:cluePolicyType" minOccurs="0"/>
+         <xs:element name="subject" type="rf:clueSubjectType" minOccurs="0" maxOccurs="2" >
+           <xs:annotation>
+             <xs:appinfo>
+               <jxb:property name="subjectList" />
+             </xs:appinfo>
+           </xs:annotation>
+         </xs:element>
+         <xs:element name="address" type="rf:clueAddressType" minOccurs="0"/>
+         <xs:element name="telephone" type="rf:clueTelephoneType" minOccurs="0"/>
+         <xs:element name="claimPayment" type="rf:claimPaymentType" maxOccurs="30">
+           <xs:annotation>
+             <xs:appinfo>
+               <jxb:property name="claimPaymentList" />
+             </xs:appinfo>
+           </xs:annotation>
+        </xs:element>
+         <xs:element name="consumer_narrative" minOccurs="0" maxOccurs="2">
+            <xs:complexType>
+               <xs:complexContent>
+                  <xs:extension base="rf:messageListType">
+                     <xs:attribute name="relationship" type="xs:string" use="optional"/>
+                     <xs:attribute name="name" type="xs:string" use="optional"/>
+                     <xs:attribute name="date_filed" type="rf:LenientDateType" use="optional"/>
+                  </xs:extension>
+               </xs:complexContent>
+            </xs:complexType>
+         </xs:element>
+      </xs:sequence>
+
+      <xs:attribute name="vehicle_operator_indicator" use="optional">
+         <xs:simpleType>
+            <xs:annotation>
+               <xs:appinfo>
+                  <jxb:typesafeEnumClass name="VehicleOperatorIndicatorEnum"/>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="Vehicle Operator"/>
+               <xs:enumeration value="Policy Holder"/>
+            </xs:restriction>
+         </xs:simpleType>
+      </xs:attribute>
+      <xs:attribute name="number" type="xs:string"/>
+      <xs:attribute name="unit_number" type="xs:nonNegativeInteger"/> <!-- represents the unit id of the claim; cannot be idref, as the ids are in a different xml-->
+      <xs:attribute name="id" type="xs:IDREF" use="optional"/>
+      <xs:attribute name="sequence_number" use="optional" type="xs:integer"/> <!-- represents the sequence number-->
+	  <xs:attribute name="possibly_related_claim" use="optional" type="rf:yesNoType"/>
+   </xs:complexType>        <!-- claimType -->
+
+   <xs:complexType name="claimPaymentType">
+       <xs:attribute name="type" use="optional">   <!-- auto_type -->
+          <xs:simpleType>
+                <xs:annotation>
+                <xs:appinfo>
+                   <jxb:typesafeEnumClass name="ClaimPaymentTypeEnum"/>
+                </xs:appinfo>
+             </xs:annotation>
+             <xs:restriction base="xs:string">
+                <xs:enumeration value="Bodily Injury"/>
+                <xs:enumeration value="Collision"/>
+                <xs:enumeration value="Comprehensive"/>
+                <xs:enumeration value="Glass"/>
+                <xs:enumeration value="Medical Expense"/>
+                <xs:enumeration value="Medical Payment"/>
+                <xs:enumeration value="Other"/>
+                <xs:enumeration value="Physical/Property Damage"/>
+                <xs:enumeration value="Personal Injury Protection"/>
+                <xs:enumeration value="Rental Reimbursement"/>
+                <xs:enumeration value="Spousal Liability"/>
+                <xs:enumeration value="Towing and Labor"/>
+                <xs:enumeration value="Uninsured Motorist"/>
+                <xs:enumeration value="Underinsured Motorist"/>
+             </xs:restriction>
+          </xs:simpleType>
+       </xs:attribute>
+       <xs:attribute name="cause_of_loss" use="optional">   <!-- property_type -->
+          <xs:simpleType>
+                <xs:annotation>
+                <xs:appinfo>
+                   <jxb:typesafeEnumClass name="CauseOfLossEnum"/>
+                </xs:appinfo>
+             </xs:annotation>
+             <xs:restriction base="xs:string">
+				<xs:enumeration value="Accidental Discharge/leakage" /> 
+				<xs:enumeration value="Appliance Related Water" /> 
+				<xs:enumeration value="Collision, Upset, Overturn" /> 
+				<xs:enumeration value="Contamination" /> 
+				<xs:enumeration value="Watercraft" /> 
+				<xs:enumeration value="Credit Card" /> 
+				<xs:enumeration value="Damage to Property of Others" /> 
+				<xs:enumeration value="Mysterious Disappearance" /> 
+				<xs:enumeration value="Mysterious Disappearance, Scheduled Property" /> 
+				<xs:enumeration value="Dog Bite (Liability)" /> 
+				<xs:enumeration value="Extended Coverage Perils" /> 
+				<xs:enumeration value="Fire" /> 
+				<xs:enumeration value="Flood" /> 
+				<xs:enumeration value="Intake of Foreign Objects" /> 
+				<xs:enumeration value="Freezing water (including burst pipes)" /> 
+				<xs:enumeration value="Hail" /> 
+				<xs:enumeration value="Loss Adjustment Expense" /> 
+  <xs:enumeration value="Liability (All Other)" /> 
+  <xs:enumeration value="Lightning" /> 
+  <xs:enumeration value="Livestock" /> 
+  <xs:enumeration value="Medical Payments" /> 
+  <xs:enumeration value="Mold" /> 
+  <xs:enumeration value="Earth Movement" /> 
+  <xs:enumeration value="All Other" /> 
+  <xs:enumeration value="Physical Damage (All Other)" /> 
+  <xs:enumeration value="Earthquake" /> 
+  <xs:enumeration value="Sink Hole" /> 
+  <xs:enumeration value="Slip/Fall (Liability)" /> 
+  <xs:enumeration value="Smoke" /> 
+  <xs:enumeration value="Theft/Burglary" /> 
+  <xs:enumeration value="Theft Scheduled Property" /> 
+  <xs:enumeration value="Vandalism/Malicious Mischief" /> 
+  <xs:enumeration value="Water Damage" /> 
+  <xs:enumeration value="Workers' Compensation" /> 
+  <xs:enumeration value="Weather Related Water" /> 
+  <xs:enumeration value="Wind" /> 
+  <xs:enumeration value="Identity Theft" />
+            </xs:restriction>
+          </xs:simpleType>
+       </xs:attribute>
+      <xs:attribute name="amount_paid" type="rf:clueCurrencyType" use="optional" />
+      <xs:attribute name="disposition" use="optional" type="rf:DispositionEnum"/>
+    </xs:complexType>   <!-- claimPaymentType -->
+
+        <xs:simpleType name="DispositionEnum">
+           <xs:annotation>
+             <xs:appinfo>
+               <jxb:typesafeEnumClass name="DispositionEnum"/>
+             </xs:appinfo>
+           </xs:annotation>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="Open"/>
+               <xs:enumeration value="Closed"/>
+               <xs:enumeration value="Subrogation"/>
+               <xs:enumeration value="Under Deductible"/>
+               <xs:enumeration value="Peril Not Covered"/>
+               <xs:enumeration value="Withdrawn"/>
+            </xs:restriction>
+         </xs:simpleType> <!--DispositionEnum-->
+		 
+   <xs:simpleType name="clueCurrencyType">
+  <xs:restriction base='xs:string'>
+	<xs:pattern value="\d+.\d{2}"/>
+   </xs:restriction>
+   </xs:simpleType>
+
+
+   <xs:complexType name="clueSubjectListType">
+      <xs:sequence>
+         <xs:element name="subject" type="rf:clueSubjectType" maxOccurs="unbounded">
+            <xs:annotation>
+               <xs:appinfo>
+                  <jxb:property name="subjectList"/>
+               </xs:appinfo>
+            </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType> <!-- clueSubjectListType -->
+
+
+   <xs:complexType name="clueBaseSubjectType">
+      <xs:sequence>
+         <xs:element name="name" type="rf:clueNameType" >
+         </xs:element>
+
+         <xs:element name="birthdate" type="rf:LenientDateType" minOccurs="0"/>
+
+         <xs:element name="fsi_birthdate" type="rf:fsiType" minOccurs="0" />
+
+         <xs:element name="gender" minOccurs="0">
+            <xs:simpleType>
+               <xs:annotation>
+                  <xs:appinfo>
+                     <jxb:typesafeEnumClass name="GenderEnum"/>
+                  </xs:appinfo>
+               </xs:annotation>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="Female"/>
+                  <xs:enumeration value="Male"/>
+                  <xs:enumeration value="Unknown"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+
+         <xs:element name="fsi_gender" type="rf:fsiType" minOccurs="0" />
+
+         <xs:element name="ssn" minOccurs="0" >
+             <xs:simpleType>
+               <xs:restriction base="xs:string">
+                  <xs:length value='9' fixed='false'/>
+               </xs:restriction>
+             </xs:simpleType>
+         </xs:element>
+
+         <xs:element name="fsi_ssn" type="rf:fsiType" minOccurs="0" />
+
+         <xs:element name="deathdate" type="rf:LenientDateType" minOccurs="0"/>
+
+         <xs:element name="quoteback" type="xs:string" minOccurs="0" />
+
+         <xs:element name="address" type="rf:clueAddressType" minOccurs="0" maxOccurs="2">
+            <xs:annotation>
+               <xs:appinfo>
+                  <jxb:property name="addressList"/>
+               </xs:appinfo>
+            </xs:annotation>
+         </xs:element>
+
+        <xs:element name="telephone" type="rf:clueTelephoneType" minOccurs="0" />
+
+         <xs:element name="driversLicense" type="rf:clueDriversLicenseType" minOccurs="0" maxOccurs="2">
+            <xs:annotation>
+               <xs:appinfo>
+                  <jxb:property name="driversLicenseList"/>
+               </xs:appinfo>
+            </xs:annotation>
+         </xs:element>
+
+         <xs:element name="relationship" minOccurs="0" >
+            <xs:simpleType>
+               <xs:annotation>
+                  <xs:appinfo>
+                     <jxb:typesafeEnumClass name="clueSubjectRelationshipEnum"/>
+                  </xs:appinfo>
+               </xs:annotation>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="Subject"/>
+                  <xs:enumeration value="Subject's spouse"/>
+                  <xs:enumeration value="Subject's dependent"/>
+                  <xs:enumeration value="Insured"/>
+                  <xs:enumeration value="Policyholder"/>
+                  <xs:enumeration value="Claimant"/>
+                  <xs:enumeration value="Other"/>
+                  <xs:enumeration value="Surname match"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="policy" type="rf:cluePolicyType" minOccurs="0" />
+      </xs:sequence>
+      <xs:attribute name="ref" type="xs:IDREF" use="optional"/>
+      <xs:attribute name="history" type="rf:HistoryType" use="optional"/>
+      <xs:attribute name="name_association_indicator" type="rf:NameAssociationIndicatorType" use="optional"/>
+
+   </xs:complexType>   <!-- clueBaseSubjectType -->
+
+   <xs:complexType name="cluePropertySubjectType">
+       <xs:complexContent>
+           <xs:extension base="rf:clueBaseSubjectType">
+               <xs:attribute name="id" type="xs:ID" use="optional"/>
+               <xs:attribute name="unit_number" type="xs:nonNegativeInteger" use="optional"/>
+               <xs:attribute name="classification" type="rf:subjectTypeEnum" use="required"/>
+           </xs:extension>
+       </xs:complexContent>
+   </xs:complexType> <!--cluePropertySubjectType-->
+   
+   
+   <xs:complexType name="clueSubjectType">
+    <xs:complexContent>
+      <xs:extension base="rf:clueBaseSubjectType">
+        <xs:attribute name="unit_number" type="xs:nonNegativeInteger" use="optional"/>
+        <xs:attribute name="id" type="xs:IDREF" use="optional"/>
+
+        <xs:attribute name="classification" type="rf:subjectTypeEnum" use="required"/>
+
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType> <!--clueSubjectType-->
+
+          <xs:simpleType name="subjectTypeEnum">
+               <xs:annotation>
+                  <xs:appinfo>
+                     <jxb:typesafeEnumClass name="subjectTypeEnum"/>
+                  </xs:appinfo>
+               </xs:annotation>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Report Subject"/>
+              <xs:enumeration value="Reference"/>
+              <xs:enumeration value="Employee"/>
+              <xs:enumeration value="Dependent"/>
+              <xs:enumeration value="Spouse"/>
+              <xs:enumeration value="Claimant - Policyholder"/>
+              <xs:enumeration value="Claimant - Insured"/>
+              <xs:enumeration value="Claimant - Third Party"/>
+              <xs:enumeration value="Associated Policy"/>
+              <xs:enumeration value="Claimant - Vehicle Operator"/>
+              <xs:enumeration value="Claimant - Spouse"/>
+              <xs:enumeration value="Claimant - Dependent"/>
+              <xs:enumeration value="Claimant - Other"/>
+              <xs:enumeration value="Alias (A/K/A)"/>
+              <xs:enumeration value="Former Name"/>
+              <xs:enumeration value="other"/>
+              <xs:enumeration value="Policy Owner"/>
+              <xs:enumeration value="Claimant"/>
+              <xs:enumeration value="Insured"/>
+              <xs:enumeration value="Policy Holder"/>
+              <xs:enumeration value="Vehicle Operator"/>
+            </xs:restriction>
+          </xs:simpleType> <!--subjectTypeEnum-->
+
+   <xs:complexType name="clueNameType">
+      <xs:complexContent>
+        <xs:extension base="rf:nameType">
+          <xs:sequence>
+            <xs:element name="fsi_prefix" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_first" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_middle" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_last" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_suffix" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_maiden" type="rf:fsiType" minOccurs="0" />
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>   <!-- clueNameType -->
+
+   <xs:complexType name="clueAddressListType">
+      <xs:sequence>
+         <xs:element name="address" type="rf:clueAddressType" minOccurs="0" maxOccurs="unbounded">
+           <xs:annotation>
+             <xs:appinfo>
+               <jxb:property name="addressList" />
+             </xs:appinfo>
+           </xs:annotation>
+         </xs:element>
+      </xs:sequence>
+   </xs:complexType>        <!-- clueAddressListTypes -->
+
+   <xs:complexType name="clueBaseAddressType">
+        <xs:sequence>
+            <xs:element name="house" type="xs:string" minOccurs="0"/>
+            <xs:element name="street1" type="xs:string" minOccurs="0"/>
+            <xs:element name="street2" type="xs:string" minOccurs="0"/>
+            <xs:choice>
+                <xs:element name="apartment" type="xs:string" minOccurs="0"/>
+                <xs:element name="unit" type="xs:string" minOccurs="0"/>
+            </xs:choice>
+            <xs:element name="city" type="xs:string" minOccurs="0"/>
+            <xs:element name="state" type="xs:string" minOccurs="0"/>
+            <xs:element name="postalcode" type="xs:string" minOccurs="0"/>
+            <xs:element name="zip4" minOccurs="0">
+                <xs:simpleType>
+                    <xs:restriction base="xs:string">
+                        <xs:length value="4" fixed="false"/>
+                    </xs:restriction>
+                </xs:simpleType>
+            </xs:element>
+            <xs:element name="county" type="xs:string" minOccurs="0"/>
+            <xs:element name="country" type="xs:string" minOccurs="0"/>
+            <xs:element name="province" type="xs:string" minOccurs="0"/>
+            <xs:element ref="rf:parameter" minOccurs="0" maxOccurs="unbounded"/>
+        </xs:sequence>
+        <xs:attribute name="unit_number" type="xs:nonNegativeInteger" use="optional"/>
+        <xs:attribute name="id" type="xs:string" use="optional"/>                    
+	</xs:complexType> <!--ClueBaseAddressType-->
+
+
+   <xs:complexType name="clueAddressType">
+      <xs:complexContent>
+        <xs:extension base="rf:clueBaseAddressType">
+          <xs:sequence>
+            <xs:choice>
+              <xs:element name="claim_match_indicator" minOccurs="0" >   <!-- auto -->
+                <xs:simpleType>
+                  <xs:annotation>
+                    <xs:appinfo>
+                      <jxb:typesafeEnumClass name="ClaimMatchIndicatorEnum"/>
+                    </xs:appinfo>
+                  </xs:annotation>
+                  <xs:restriction base="xs:string">
+                      <xs:enumeration value="Address is part of claims record, but not necessarily the vehicle operator's address" />
+                      <xs:enumeration value="Claim resulted from address LexisNexis developed rather than originally provided address; not necessarily the vehicle operator's address" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="search_match_indicator" minOccurs="0" >   <!-- property -->
+                <xs:simpleType>
+                  <xs:annotation>
+                    <xs:appinfo>
+                      <jxb:typesafeEnumClass name="SearchMatchIndicatorEnum"/>
+                    </xs:appinfo>
+                  </xs:annotation>
+                  <xs:restriction base="xs:string">
+                      <xs:enumeration value="Address on file for the loss shown matches the mailing address in the search request" />
+                      <xs:enumeration value="Address on file for the loss shown matches the former address in the search request" />
+                      <xs:enumeration value="Address on file for the loss shown matches the risk address in the search request" />
+                      <xs:enumeration value="Address on file for the loss shown matches an address developed by IDENTITY PLUS" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+            </xs:choice>
+            <xs:element name="fsi_house" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_street1" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_street2" type="rf:fsiType" minOccurs="0" />
+            <xs:choice>
+              <xs:element name="fsi_apartment" type="rf:fsiType" minOccurs="0" />
+              <xs:element name="fsi_unit" type="rf:fsiType" minOccurs="0" />
+            </xs:choice>
+            <xs:element name="fsi_city" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_state" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_postalcode" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_zip4" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_county" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_country" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_province" type="rf:fsiType" minOccurs="0" />
+          </xs:sequence>
+          <xs:attribute name="ref" type="xs:IDREF" use="optional" />
+          <xs:attribute name="history" type="rf:HistoryType" use="optional" />
+          <xs:attribute name="type" use="optional">
+            <xs:simpleType>
+              <xs:annotation>
+                <xs:appinfo>
+                  <jxb:typesafeEnumClass name="ClueAddressReferenceTypeEnum"/>
+                </xs:appinfo>
+              </xs:annotation>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="education"/>
+                <xs:enumeration value="former"/>
+                <xs:enumeration value="mailing"/>
+                <xs:enumeration value="residence"/>
+                <xs:enumeration value="work"/>
+                <xs:enumeration value="property"/>
+                <xs:enumeration value="risk"/>
+                <xs:enumeration value="policyowner"/>
+                <xs:enumeration value="crossstreet"/>
+                <xs:enumeration value="business"/>
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:attribute>          
+        </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>   <!-- clueAddressType -->
+
+   <xs:complexType name="clueTelephoneType" >
+      <xs:simpleContent>
+        <xs:extension base="rf:telephoneType">
+          <xs:attribute name="fsi_area" type="rf:fsiType" use="optional" />
+          <xs:attribute name="fsi_exchange" type="rf:fsiType" use="optional" />
+          <xs:attribute name="fsi_number" type="rf:fsiType" use="optional" />
+        </xs:extension>
+      </xs:simpleContent>
+   </xs:complexType>   <!-- clueTelephoneType -->
+
+   <xs:complexType name="clueDriversLicenseType">
+      <xs:complexContent>
+        <xs:extension base="rf:driversLicenseType">
+          <xs:sequence>
+            <xs:element name="classification" minOccurs="0" >
+              <xs:simpleType>
+                <xs:annotation>
+                  <xs:appinfo>
+                    <jxb:typesafeEnumClass name="DriversLicenseClassificationEnum"/>
+                  </xs:appinfo>
+                </xs:annotation>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="Current personal" />
+                  <xs:enumeration value="Current learner's permit" />
+                  <xs:enumeration value="Previous commercial" />
+                  <xs:enumeration value="Current commercial" />
+                  <xs:enumeration value="Previous personal" />
+                  <xs:enumeration value="Unknown" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+            <xs:element name="restriction" type="xs:string" minOccurs="0" />
+            <xs:element name="issue_date" type="rf:LenientDateType" minOccurs="0" />
+            <xs:element name="expiration_date" type="rf:LenientDateType" minOccurs="0" />
+            <xs:element name="fsi_state" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_number" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_classification" type="rf:fsiType" minOccurs="0" />
+          </xs:sequence>
+          <xs:attribute name="license_type" type="xs:string" use="optional" />
+        </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>   <!-- clueDriversLicenseType -->
+
+   <xs:complexType name="clueMortgageType">
+      <xs:complexContent>
+        <xs:extension base="rf:mortgageType">
+          <xs:sequence>
+            <xs:element name="fsi_mortgage_number" type="rf:fsiType" minOccurs="0" />
+            <xs:element name="fsi_company" type="rf:fsiType" minOccurs="0" />
+          </xs:sequence>
+        </xs:extension>
+      </xs:complexContent>
+   </xs:complexType>   <!-- clueMortgageType -->
+
+   <xs:complexType name="clueVehicleType">
+      <xs:sequence>
+         <xs:element name="model_year" minOccurs="0">
+            <xs:simpleType>
+               <xs:annotation>
+                  <xs:appinfo>
+                     <jxb:javaType name="int" parseMethod="javax.xml.bind.DatatypeConverter.parseInt" printMethod="javax.xml.bind.DatatypeConverter.printInt"/>
+                  </xs:appinfo>
+               </xs:annotation>
+               <xs:restriction base="xs:nonNegativeInteger">
+                  <xs:maxInclusive value="2100"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="model_make" type="xs:string" minOccurs="0"/>
+         <xs:element name="vin" type="xs:string" minOccurs="0"/>
+         <xs:element name="disposition" minOccurs="0">
+            <xs:simpleType>
+               <xs:annotation>
+                  <xs:appinfo>
+                     <jxb:typesafeEnumClass name="AutoDispositionEnum"/>
+                  </xs:appinfo>
+               </xs:annotation>
+               <xs:restriction base="xs:string">
+                  <xs:enumeration value="No collision compensation"/>
+                  <xs:enumeration value="Body damage / broken glass"/>
+                  <xs:enumeration value="Repaired"/>
+                  <xs:enumeration value="Stolen"/>
+                  <xs:enumeration value="Totaled"/>
+                  <xs:enumeration value="Damaged Other"/>
+                  <xs:enumeration value="Not reported"/>
+               </xs:restriction>
+            </xs:simpleType>
+         </xs:element>
+         <xs:element name="fsi_model_year" type="rf:fsiType" minOccurs="0"/>
+         <xs:element name="fsi_model_make" type="rf:fsiType" minOccurs="0"/>
+         <xs:element name="fsi_vin" type="rf:fsiType" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="unit_number" type="xs:nonNegativeInteger" use="optional"/>
+      <xs:attribute name="id" type="xs:IDREF" use="optional"/>
+      <xs:attribute name="quoteback" type="xs:string" use="optional"/>     
+   </xs:complexType>   <!-- clueVehicleType -->
+
+   <xs:complexType name="cluePolicyType">
+      <xs:sequence>
+         <xs:element name="issuer" type="xs:string" minOccurs="0" />
+         <xs:choice minOccurs="0">
+            <xs:element name="auto_type" type="rf:clueAutoPolicyType" />
+            <xs:element name="property_type" type="rf:cluePropertyPolicyType" />
+         </xs:choice>
+         <xs:element name="classification" type="rf:HistoryType" minOccurs="0"/>
+         <xs:element name="fsi_policy_number" type="rf:fsiType" minOccurs="0"/>
+         <xs:element name="fsi_policy_type" type="rf:fsiType" minOccurs="0"/>
+         <xs:element name="fsi_issuer" type="rf:fsiType" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="number" type="xs:string" use="optional"/>
+   </xs:complexType>   <!-- cluePolicyType -->
+
+   <xs:simpleType name="clueAutoPolicyType">
+      <xs:annotation>
+         <xs:appinfo>
+            <jxb:typesafeEnumClass name="AutoPolicyTypeEnum"/>
+         </xs:appinfo>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="Personal Auto"/>
+         <xs:enumeration value="Motorcycle"/>
+         <xs:enumeration value="Motorhome"/>
+      </xs:restriction>
+   </xs:simpleType>
+
+   <xs:simpleType name="cluePropertyPolicyType">
+      <xs:annotation>
+         <xs:appinfo>
+            <jxb:typesafeEnumClass name="PropertyPolicyTypeEnum"/>
+         </xs:appinfo>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="Boat Owners"/>
+         <xs:enumeration value="Condominium"/>
+         <xs:enumeration value="Fire"/>
+		 <xs:enumeration value="Flood"/>
+         <xs:enumeration value="Homeowners"/>
+         <xs:enumeration value="Inland Marine"/>
+         <xs:enumeration value="Personal Umbrella"/>
+         <xs:enumeration value="Mobile Home"/>
+         <xs:enumeration value="Earthquake"/>
+         <xs:enumeration value="Ranch/Farm"/>
+         <xs:enumeration value="Tenant"/>
+         <xs:enumeration value="Other (Scheduled property, etc.)"/>
+      </xs:restriction>
+   </xs:simpleType>
+
+   <xs:complexType name="clueQuotebackType">
+      <xs:sequence>
+         <xs:element name="quoteback" type="xs:string"/>
+         <xs:element name="record_occurrence_a" type="xs:string" minOccurs="0"/>
+         <xs:element name="record_occurrence_b" type="xs:string" minOccurs="0"/>
+      </xs:sequence>
+      <xs:attribute name="classification">
+        <xs:simpleType>
+          <xs:annotation>
+            <xs:appinfo>
+              <jxb:typesafeEnumClass name="QuotebackTypeEnum"/>
+            </xs:appinfo>
+          </xs:annotation>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Subject"/>
+            <xs:enumeration value="Vehicle"/>
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:attribute>
+   </xs:complexType>   <!-- clueQuotebackType -->
+
+   <xs:simpleType name="fsiType">
+      <xs:annotation>
+         <xs:appinfo>
+            <jxb:typesafeEnumClass name="FSIEnum"/>
+         </xs:appinfo>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="Field absent on inquiry and report"/>
+         <xs:enumeration value="Close match"/>
+         <xs:enumeration value="Discrepancy"/>
+         <xs:enumeration value="Field absent on inquiry"/>
+         <xs:enumeration value="Field absent on report"/>
+         <xs:enumeration value="Match"/>
+      </xs:restriction>
+   </xs:simpleType>   <!-- fsiType -->
+
+   <xs:simpleType name="HistoryType">
+      <xs:annotation>
+         <xs:appinfo>
+            <jxb:typesafeEnumClass name="HistoryEnum"/>
+         </xs:appinfo>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="current"/>
+         <xs:enumeration value="prior"/>
+         <xs:enumeration value="associated"/>
+      </xs:restriction>
+   </xs:simpleType>   <!-- HistoryType -->
+   
+   <xs:simpleType name="NameAssociationIndicatorType">
+      <xs:annotation>
+         <xs:appinfo>
+            <jxb:typesafeEnumClass name="NameAssociationIndicatorEnum"/>
+         </xs:appinfo>
+      </xs:annotation>
+      <xs:restriction base="xs:string">
+         <xs:enumeration value="Policy Holder"/>
+         <xs:enumeration value="Vehicle Operator"/>
+      </xs:restriction>
+   </xs:simpleType>   <!-- NameAssociationIndicatorType -->
+
+   <xs:complexType name="attachedProductsType">
+      <xs:sequence>
+         <xs:element name="attached_product" maxOccurs="10">
+            <xs:complexType>
+               <xs:complexContent>
+                  <xs:extension base="rf:messageListType">
+                     <xs:attribute name="name" type="xs:string"/>
+                     <xs:attribute name="title" type="xs:string"/>
+                     <xs:attribute name="developed" type="rf:yesNoType"/>
+                  </xs:extension>
+               </xs:complexContent>
+            </xs:complexType>
+         </xs:element> <!-- attached_product-->
+      </xs:sequence>
+   </xs:complexType> <!-- attachedProductsType-->
+</xs:schema>
+
+

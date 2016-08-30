@@ -8,108 +8,65 @@ package una.integration.mapping.hpx.businessowners
  */
 class HPXBP7BuildingConstructionMapper {
 
-  function createBuildingConstructionInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Construction {
+  function createBuildingConstructionInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.Construction {
     var construction = new wsi.schema.una.hpx.hpx_application_request.Construction()
     var yearBuilt =  new wsi.schema.una.hpx.hpx_application_request.YearBuilt()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt != null) {
-      yearBuilt.setText(policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt)
+    if (bldg.YearBuilt_Ext != null) {
+      yearBuilt.setText(bldg.YearBuilt_Ext)
       construction.addChild(yearBuilt)
     }
-    construction.addChild(createConstructionCd(policyPeriod))
+    construction.addChild(createConstructionCd(bldg))
+
     var constructionTypeDesc = new wsi.schema.una.hpx.hpx_application_request.Description()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType != null) {
-      constructionTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType.Description)
+    if(bldg.ConstructionType != null) {
+      constructionTypeDesc.setText(bldg.ConstructionType.Description)
       construction.addChild(constructionTypeDesc)
     }
+
     var numStories = new wsi.schema.una.hpx.hpx_application_request.NumStories()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber != null) {
-      numStories.setText(policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber)
+    if (bldg.NoOfStories_Ext != null) {
+      numStories.setText(bldg.NoOfStories_Ext)
       construction.addChild(numStories)
     }
     var bldgArea = new wsi.schema.una.hpx.hpx_application_request.BldgArea()
     var numUnits = new wsi.schema.una.hpx.hpx_application_request.NumUnits()
     var unitMeasurementCd = new wsi.schema.una.hpx.hpx_application_request.UnitMeasurementCd()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.ApproxSquareFootage) {
-       numUnits.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ApproxSquareFootage)
+    if (bldg.BuildingSqFootage_Ext) {
+       numUnits.setText(bldg.BuildingSqFootage_Ext)
        unitMeasurementCd.setText("Sqft")
       bldgArea.addChild(numUnits)
       bldgArea.addChild(unitMeasurementCd)
     }
     construction.addChild(bldgArea)
-    construction.addChild(createRoofingMaterial(policyPeriod))
+
     var constructionClassCode = new wsi.schema.una.hpx.hpx_application_request.InsurerConstructionClassCd()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionCode != null) {
-      constructionClassCode.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionCode)
+    if(bldg.BuildingClassCode != null) {
+      constructionClassCode.setText(bldg.BuildingClassCode)
       construction.addChild(constructionClassCode)
     }
 
     return construction
   }
 
-  function createRoofingMaterial(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.RoofingMaterial {
-    var roofingMaterial = new wsi.schema.una.hpx.hpx_application_request.RoofingMaterial()
-    var roofingMaterialCd = new wsi.schema.una.hpx.hpx_application_request.RoofMaterialCd()
-    var roofingMaterialDesc = new wsi.schema.una.hpx.hpx_application_request.RoofMaterialDesc()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.RoofType != null) {
-      switch (policyPeriod.HomeownersLine_HOE.Dwelling.RoofType) {
-        case typekey.RoofType.TC_COMP :
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.COMP)
-            break
-        case typekey.RoofType.TC_WOOD :
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.WOODSS)
-            break
-        case typekey.RoofType.TC_TARGRAVEL :
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.TARGRB)
-            break
-        case typekey.RoofType.TC_SLATE:
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.SLAT)
-            break
-        case typekey.RoofType.TC_TILECLAY:
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.TILECLAY)
-            break
-        case typekey.RoofType.TC_TILECONCRETE:
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.TILECONCRETE)
-            break
-        case typekey.RoofType.TC_FIBERCEMENT:
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.FIBERCEMENT)
-            break
-        case typekey.RoofType.TC_FIBERALUMINUM:
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.FIBERALUMINUM)
-            break
-        case typekey.RoofType.TC_COPPER:
-            roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.OT)
-            break
-        // TODO Mapping
-        default : roofingMaterialCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoofMaterialType.OT)
-      }
-      roofingMaterialDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.RoofType.Description)
-      roofingMaterial.addChild(roofingMaterialCd)
-      roofingMaterial.addChild(roofingMaterialDesc)
-    }
-    return roofingMaterial
-  }
 
-  function createConstructionCd(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.ConstructionCd {
+  function createConstructionCd(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.ConstructionCd {
     var constructionCd = new wsi.schema.una.hpx.hpx_application_request.ConstructionCd()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType != null) {
-      switch (policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType) {
-        case typekey.ConstructionType_HOE.TC_C :
+    if(bldg.ConstructionType != null) {
+      switch (bldg.ConstructionType) {
+        case typekey.BP7ConstructionType.TC_MASONRYNONCOMBUSTIBLE :
           constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.ConPour)
           break
-        case typekey.ConstructionType_HOE.TC_F :
+        case typekey.BP7ConstructionType.TC_FRAMECONSTRUCTION :
           constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Frame)
           break
-        case typekey.ConstructionType_HOE.TC_L :
+        case typekey.BP7ConstructionType.TC_JOISTEDMASONRY :
           constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Log)
           break
-        case typekey.ConstructionType_HOE.TC_S:
+        case typekey.BP7ConstructionType.TC_JOISTEDMASONRY:
           constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Steel)
           break
-        case typekey.ConstructionType_HOE.TC_M:
+        case typekey.BP7ConstructionType.TC_MASONRYNONCOMBUSTIBLE:
           constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Masonry)
-          break
-        case typekey.ConstructionType_HOE.TC_OTHER:
-          constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.OT)
           break
         default : constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.OT)
        }

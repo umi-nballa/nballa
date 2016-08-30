@@ -70,10 +70,18 @@ abstract class HPXPolicyMapper {
     var producerMapper = new HPXProducerMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
     var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
-    switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
+   /* switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
       case "HomeownersLine_HOE" : lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.HOME)
           break
+      case "HomeownersLine_HOE" : lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.HOME)
+          break
+    }  */
+    if (policyPeriod.HomeownersLine_HOEExists != null) {
+      lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.HOME)
+    } else if (policyPeriod.BP7LineExists) {
+      lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.BOP)
     }
+
     policyInfo.addChild(lobCode)
     var policyNumber = new wsi.schema.una.hpx.hpx_application_request.PolicyNumber()
     if (policyPeriod.PolicyNumber != null) {

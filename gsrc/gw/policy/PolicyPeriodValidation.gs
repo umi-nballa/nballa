@@ -652,14 +652,15 @@ class PolicyPeriodValidation extends PCValidationBase {
                 }
         */
         // Perhaps we have a credit report, but it has already expired?
+       /** At this point no need of this block of code 
         if (creditReport != null) {
-          // Check credit report date to see if it has expired
-          var creditReportExpirationDate = creditReport.CreditScoreDate.addDays(CreditReportUtil.getCreditReportParameters(_policyPeriod).CreditReportDaysValid)
-          if (creditReport != null && creditReportExpirationDate <= gw.api.util.DateUtil.currentDate()  ) {
-            var errorMessage = displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreExpired(creditReport.CreditScoreDate)
-            Result.addError(Period, "default", errorMessage)
-          }
+        // Check credit report date to see if it has expired
+        var creditReportExpirationDate = creditReport.CreditScoreDate.addDays(CreditReportUtil.getCreditReportParameters(_policyPeriod).CreditReportDaysValid)
+        if (creditReport != null && creditReportExpirationDate <= gw.api.util.DateUtil.currentDate()  ) {
+          var errorMessage = displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreExpired(creditReport.CreditScoreDate)
+          Result.addError(Period, "default", errorMessage)
         }
+      }*/
       }
     }
   }

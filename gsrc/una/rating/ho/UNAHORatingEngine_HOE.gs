@@ -96,8 +96,8 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
-    return PolicyLine.Costs.where(\c -> c typeis HomeownersCovCost_HOE or
-        c typeis DwellingCovCost_HOE)
+    return PolicyLine.Costs//.where(\c -> c typeis HomeownersCovCost_HOE or
+        //c typeis DwellingCovCost_HOE)
   }
 
   override protected function createCostDataForCost(c: Cost): CostData {
@@ -185,7 +185,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     }
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, HOCostType_Ext.TC_POLICYFEE,RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod)
-    if (costData != null){
+    if (costData != null and costData.ActualTermAmount != 0){
       costData.ActualAmount = costData.ActualTermAmount
       addCost(costData)
     }

@@ -77,7 +77,7 @@ class HOCreateCostDataUtil {
   }
 
   /**
-   * creates the cost data for the discount or surcharges
+   * creates the cost data for the line level costs
    */
   public static function createCostDataForHOLineCosts(dateRange : DateRange, routineName : String, costType : HOCostType_Ext, rateCache : PolicyPeriodFXRateCache,
                                                                 line : PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor : HORateRoutineExecutor, numDaysInCoverageRatedTerm : int) : CostData{

@@ -255,11 +255,17 @@ abstract class AbstractRatingEngineBase<SL> {
       }
     })
     PCProfilerTag.COST_REMOVE_UNUSED.execute(\ -> {
+      var removeCost : boolean
       for (costEntity in untouchedCurrentCostEntities) {
-        costEntity.removeFromTerm()  // removes the cost entirely
+        removeCost = true
+        if(costEntity typeis HomeownersLineCost_EXT){
+          if(costEntity.HOCostType == HOCostType_Ext.TC_POLICYFEE)
+            removeCost = false
+        }
+        if(removeCost)
+          costEntity.removeFromTerm()  // removes the cost entirely
       }
     })
-
   }
 
   /**

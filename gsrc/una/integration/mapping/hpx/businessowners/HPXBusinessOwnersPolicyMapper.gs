@@ -56,7 +56,7 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell>()
     var buildingMapper = new HPXBP7BuildingMapper()
     var locationMapper = new HPXLocationMapper()
-    var classificationMapper = new HPXClassificationMapper()
+    var classificationMapper = new HPXBP7ClassificationMapper ()
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var bldgs = policyPeriod.BP7Line.AllBuildings
     for (bldg in bldgs) {

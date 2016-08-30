@@ -25,7 +25,7 @@ abstract class HPXCoverageMapper {
     }
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
-    var scheduleList = createScheduleList(currentCoverage, previousCoverage)
+    var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
     for (item in scheduleList) {cov.addChild(item)}
     var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage)
     for (child in covTermInfo.$Children) { cov.addChild(child) }
@@ -282,7 +282,8 @@ abstract class HPXCoverageMapper {
     return cov
   }
 
-  abstract function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit>
+  abstract function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+                      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit>
 
   abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.Coverable
 }

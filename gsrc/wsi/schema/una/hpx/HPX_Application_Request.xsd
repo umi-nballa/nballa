@@ -883,6 +883,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 			<xsd:element ref="MinimumAdditionalChargeAmt" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="MasterPolicyInfo" minOccurs="0" maxOccurs="1"/>
             <xsd:element ref="Watercraft" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element ref="BP7Classification" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="id" type="ID"/>
 		<xsd:attribute name="LocationRef" type="IDREF"/>
@@ -1378,6 +1379,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 			<xsd:element ref="LocationName" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="LocationDesc" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="CatastropheZoneCd" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element ref="Coverage" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="id" type="ID"/>
 		<xsd:attribute name="NameInfoRef" type="IDREF"/>
@@ -2008,6 +2010,16 @@ Point Guad, Dwelling	Start Complex Type Definition
                 <xsd:enumeration value="sailboat"/>
             </xsd:restriction>
         </xsd:simpleContent>
+    </xsd:complexType>
+    <xsd:complexType name="BP7Classification_Type">
+        <xsd:sequence>
+            <xsd:element ref="OccupancyType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="PredominantOccupancyType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="Classification" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="ClassCode" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="VacantArea" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="Coverage" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
     </xsd:complexType>
 	<xsd:complexType name="PercentDecimal">
 		<xsd:simpleContent>
@@ -11139,6 +11151,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="DutiesDesc" type="xsd:string"/>
 	<xsd:element name="Dwell" type="Dwell_Type"/>
     <xsd:element name="Watercraft" type="Watercraft_Type"/>
+    <xsd:element name="BP7Classification" type="BP7Classification_Type"/>
 	<xsd:element name="DwellAverageClause" type="xsd:string"/>
 	<xsd:element name="DwellAverageClauseCd" type="OpenEnum"/>
 	<xsd:element name="DwellingLineBusiness" type="DwellingLineBusiness_Type"/>
@@ -12231,6 +12244,11 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="WriteRequest" type="FileSystemWrite_Type"/>
 	<xsd:element name="WriteResponse" type="FileSystemWrite_Type"/>
 	<xsd:element name="YearBuild" type="xsd:long"/>
+    <xsd:element name="ClassCode" type="OccupationClass"/>
+    <xsd:element name="VacantArea" type="xsd:int"/>
+    <xsd:element name="Classification" type="LegalEntity"/>
+    <xsd:element name="PredominantOccupancyType" type="OccupancyType"/>
+    OccupancyType
 	<!--
         End Attribute Definitions are Locally defined
      -->

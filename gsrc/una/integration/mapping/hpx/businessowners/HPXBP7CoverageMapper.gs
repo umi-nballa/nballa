@@ -9,7 +9,8 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
  * To change this template use File | Settings | File Templates.
  */
 class HPXBP7CoverageMapper extends HPXCoverageMapper{
-  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
+  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
+                                                                          : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Limit>()
 
     switch (currentCoverage.PatternCode) {
@@ -30,57 +31,6 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           limits.add(glassCov)
           break
     }
-  /*  if (currentCoverage.PatternCode.equals("HODW_OtherStructuresOnPremise_HOE")) {
-      var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_OtherStructuresOnPremise_HOE.ScheduledItems
-      for (item in scheduleItems) {
-        var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-        var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-        var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-        var rentedToOthers = new wsi.schema.una.hpx.hpx_application_request.RentedYesNoCd()
-        var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-        if (item.Description != null) {
-          limitDesc.setText(item.Description)
-          limit.addChild(limitDesc)
-        }
-        if(item.AdditionalLimit != null) {
-          formatPct.setText(item.AdditionalLimit.Code)
-          limit.addChild(formatPct)
-        }
-        if(item.rentedtoOthers_Ext != null) {
-          rentedToOthers.setText(item.rentedtoOthers_Ext)
-          limit.addChild(rentedToOthers)
-        }
-        coverageCd.setText(currentCoverage.PatternCode)
-        limit.addChild(coverageCd)
-        limits.add(limit)
-      }
-    } else if (currentCoverage.PatternCode.equals("HODW_ScheduledProperty_HOE")) {
-      var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_ScheduledProperty_HOE.ScheduledItems
-      for (item in scheduleItems) {
-        var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-        var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-        var scheduleType = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-        var writtenAmt = new wsi.schema.una.hpx.hpx_application_request.WrittenAmt()
-        var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-        var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-        if (item.ScheduleType != null) {
-          scheduleType.setText(item.ScheduleType)
-          limit.addChild(scheduleType)
-        }
-        if (item.Description != null) {
-          limitDesc.setText(item.Description)
-          limit.addChild(limitDesc)
-        }
-        if(item.ExposureValue != null) {
-          amt.setText(item.ExposureValue)
-          writtenAmt.addChild(amt)
-          limit.addChild(writtenAmt)
-        }
-        coverageCd.setText(currentCoverage.PatternCode)
-        limit.addChild(coverageCd)
-        limits.add(limit)
-      }
-    }    */
     return limits
   }
 
@@ -185,23 +135,29 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
 
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.Coverable {
     var coverable = new wsi.schema.una.hpx.hpx_application_request.Coverable()
-    var building = currentCoverage.OwningCoverable as BP7Building
-    var location = currentCoverage.OwningCoverable as BP7Location
-    var classification = currentCoverage.OwningCoverable as BP7Classification
     var buildingNo = new wsi.schema.una.hpx.hpx_application_request.BuildingNo()
-    if (building?.Building?.BuildingNum != null) {
-      buildingNo.setText(building.Building.BuildingNum)
-      coverable.addChild(buildingNo)
+    if (currentCoverage.OwningCoverable typeis BP7Building) {
+      var building = currentCoverage.OwningCoverable as BP7Building
+      if (building?.Building?.BuildingNum != null) {
+        buildingNo.setText(building.Building.BuildingNum)
+        coverable.addChild(buildingNo)
+      }
     }
     var locationNo = new wsi.schema.una.hpx.hpx_application_request.LocationNo()
-    if (location?.Location?.LocationNum != null) {
-      locationNo.setText(location.Location.LocationNum)
-      coverable.addChild(locationNo)
+    if (currentCoverage.OwningCoverable typeis BP7Location) {
+      var location = currentCoverage.OwningCoverable as BP7Location
+      if (location?.Location?.LocationNum != null) {
+        locationNo.setText(location.Location.LocationNum)
+        coverable.addChild(locationNo)
+      }
     }
     var classificationNo = new wsi.schema.una.hpx.hpx_application_request.ClassificationNo()
-    if (classification?.ClassificationNumber != null) {
-      classificationNo.setText(classification?.ClassificationNumber)
-      coverable.addChild(classificationNo)
+    if (currentCoverage.OwningCoverable typeis BP7Classification) {
+      var classification = currentCoverage.OwningCoverable as BP7Classification
+      if (classification?.ClassificationNumber != null) {
+        classificationNo.setText(classification?.ClassificationNumber)
+        coverable.addChild(classificationNo)
+      }
     }
     return coverable
   }

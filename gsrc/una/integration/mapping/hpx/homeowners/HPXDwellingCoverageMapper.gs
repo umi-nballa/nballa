@@ -9,7 +9,8 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
  * To change this template use File | Settings | File Templates.
  */
 class HPXDwellingCoverageMapper extends HPXCoverageMapper{
-  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
+  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+                                                : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Limit>()
 
     switch (currentCoverage.PatternCode) {
@@ -18,7 +19,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         for (item in otherStructuresOnPremises) { limits.add(item)}
         break
       case "HODW_ScheduledProperty_HOE" :
-        var scheduledProperties = createScheduledPropertySchedule(currentCoverage, previousCoverage)
+        var scheduledProperties = createScheduledPropertySchedule(currentCoverage, previousCoverage, transactions)
         for (item in scheduledProperties) { limits.add(item)}
         break
       case "HODW_PersonalPropertyOffResidence_HOE" :
@@ -62,9 +63,11 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     return limits
   }
 
-  function createScheduledPropertySchedule(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
+  function createScheduledPropertySchedule(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
+                                                                            : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Limit>()
     var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_ScheduledProperty_HOE.ScheduledItems
+    var costs = transactions.Cost
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
       var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()

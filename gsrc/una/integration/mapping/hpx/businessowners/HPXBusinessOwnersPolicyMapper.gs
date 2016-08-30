@@ -54,33 +54,53 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
 
   function createBuildings(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell> {
     var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell>()
-    var locationMapper = new HPXLocationMapper()
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var buildingMapper = new HPXBP7BuildingMapper()
-    var buildingConstructionMapper = new HPXBP7BuildingConstructionMapper ()
+    var locationMapper = new HPXLocationMapper()
+    var classificationMapper = new HPXClassificationMapper()
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var bldgs = policyPeriod.BP7Line.AllBuildings
-
     for (bldg in bldgs) {
+      var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+      var bldgCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == bldg)
+      var bldgPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == bldg)
+      var bldgTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == bldg)
       var building = buildingMapper.createBuilding(bldg)
-      building.addChild(buildingConstructionMapper.createBuildingConstructionInfo(bldg))
-      /*var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-      var transactions = policyPeriod.BP7Transactions
-      var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
-      var locs = locationMapper.createLocations(policyPeriod.BP7Line.BP7Locations.PolicyLocations) */
+      var buildingCovs = createCoveragesInfo(bldgCoverages, bldgPreviousCoverages, bldgTrxs)
+      for (cov in buildingCovs) { building.addChild(cov)}
+      // buildling location
+      var buildingLoc = bldg.Location
+      var location = locationMapper.createLocation(bldg.Location.Location)
+      var locationCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == buildingLoc)
+      var locPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
+      var locTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
+      var locationCovs = createCoveragesInfo(locationCoverages, locPreviousCoverages, locTrxs)
+      for (loc in locationCovs) { location.addChild(loc)}
+      building.addChild(location)
+      // building classifications
+      var bldgClassifications = bldg.Classifications
+      for (bldgClassification in bldgClassifications) {
+        //var classifcation = new wsi.schema.una.hpx.hpx_application_request.BP7Classification()
+        var buildlingClassification = classificationMapper.createClassification(bldgClassification)
+        var classifcnCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == buildingLoc)
+        var classifcnPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
+        var classifcnTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
+        var classifcnCovs = createCoveragesInfo(classifcnCoverages, classifcnPreviousCoverages, classifcnTrxs)
+        for (classifcn in classifcnCovs) { buildlingClassification.addChild(classifcn)}
+        building.addChild(buildlingClassification)
+      }
+
       buildings.add(building)
     }
     return buildings
   }
 
-
-
-  function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
+  function createCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
+                               transactions : java.util.List<Transaction>)
+                                                    : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
     var coverageMapper = new HPXBP7CoverageMapper()
     for (cov in currentCoverages) {
-      var bopTransactions = getTransactions(policyPeriod)
-      var trxs = bopTransactions.where( \ elt1 -> cov.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
+      var trxs = transactions.where( \ elt1 -> cov.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
       if (previousCoverages != null) {
         var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
         coverages.add(coverageMapper.createCoverageInfo(cov, previousCoverage, trxs))

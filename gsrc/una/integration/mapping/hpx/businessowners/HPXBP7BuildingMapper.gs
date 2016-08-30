@@ -11,13 +11,15 @@ uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingProtectionMapper
 class HPXBP7BuildingMapper {
 
   function createBuilding(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.Dwell {
+    var buildingConstructionMapper = new HPXBP7BuildingConstructionMapper ()
+    var buildingMapper = new HPXBP7BuildingMapper()
     var buildingProtectionMapper = new HPXBP7BuildingProtectionMapper ()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.Dwell()
-    dwell.addChild(createDwellRating(bldg))
+    dwell.addChild(buildingMapper.createDwellRating(bldg))
+    dwell.addChild(buildingMapper.createDwellInspectionValuation(bldg))
+    dwell.addChild(buildingMapper.createDwellOccupancy(bldg))
     dwell.addChild(buildingProtectionMapper.createBuildingProtection(bldg))
-    dwell.addChild(createDwellInspectionValuation(bldg))
-    dwell.addChild(createDwellOccupancy(bldg))
-
+    dwell.addChild(buildingConstructionMapper.createBuildingConstructionInfo(bldg))
     return dwell
   }
 

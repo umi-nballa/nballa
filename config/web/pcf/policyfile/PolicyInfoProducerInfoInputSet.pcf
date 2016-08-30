@@ -16,16 +16,25 @@
     <Label
       label="displaykey.Web.ProducerSelection.ProducerOfRecordInfo"/>
     <Input
-      action="OrganizationDetail.go(policyPeriod.ProducerCodeOfRecord.Organization)"
       id="POROrganization"
       label="displaykey.Web.ProducerSelection.Producer"
       value="policyPeriod.ProducerCodeOfRecord.Organization"/>
     <Input
       id="AgencyNumberPOR_Ext"
       label="displaykey.Ext.Web.ProducerSelection.AgencyNumber"
-      required="true"
+      required="false"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
-      value="producer.AgenyNumber_Ext">
+      value="policyPeriod.ProducerCodeOfRecord.Organization.AgenyNumber_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
+      id="RecordAgencyPhoneNumber_Ext"
+      label="displaykey.Web.ContactDetail.Phone"
+      required="false"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="policyPeriod.ProducerCodeOfRecord.Organization.contact.PrimaryPhoneValue">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
@@ -35,13 +44,12 @@
       label="displaykey.Ext.Web.ProducerSelection.MasterOrganization"
       required="true"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
-      value="producer.MasterOrganization_Ext">
+      value="policyPeriod.ProducerCodeOfRecord.Organization.MasterOrganization_Ext">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
     </Input>
     <Input
-      action="AdminProducerCodeDetail.go(policyPeriod.ProducerCodeOfRecord)"
       id="ProducerCodeOfRecord"
       label="displaykey.Web.ProducerSelection.ProducerCode"
       value="displaykey.Web.ProducerSelection.ProducerCode.OptionLabel(policyPeriod.ProducerCodeOfRecord.Code, policyPeriod.ProducerCodeOfRecord.Description != null ? policyPeriod.ProducerCodeOfRecord.Description : &quot;&quot;)"/>
@@ -65,6 +73,16 @@
       required="true"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
       value="producer.AgenyNumber_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
+      id="ServiceAgencyPhoneNumber_Ext"
+      label="displaykey.Web.ContactDetail.Phone"
+      required="false"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.contact.PrimaryPhoneValue">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>

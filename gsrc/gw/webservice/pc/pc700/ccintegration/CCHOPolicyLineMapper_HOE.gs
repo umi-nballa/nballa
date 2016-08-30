@@ -284,7 +284,7 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     }
     else if(_dwellingBasisForPercentage == null){
       //should only be for HO4
-      if(_hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4){
+      if(_hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or _hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT){
         if(percent != null)
         dollarValue = _propertyBasisForPercentage * percent / 100
       } else {

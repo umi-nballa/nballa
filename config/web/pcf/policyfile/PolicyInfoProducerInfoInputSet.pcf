@@ -25,17 +25,17 @@
       label="displaykey.Ext.Web.ProducerSelection.AgencyNumber"
       required="false"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
-      value="producer.AgenyNumber_Ext">
+      value="policyPeriod.ProducerCodeOfRecord.Organization.AgenyNumber_Ext">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
     </Input>
     <Input
-      id="AgencyPhoneNumber_Ext"
+      id="RecordAgencyPhoneNumber_Ext"
       label="displaykey.Web.ContactDetail.Phone"
       required="false"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
-      value="producer.contact.PrimaryPhoneValue">
+      value="policyPeriod.ProducerCodeOfRecord.Organization.contact.PrimaryPhoneValue">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
@@ -45,7 +45,7 @@
       label="displaykey.Ext.Web.ProducerSelection.MasterOrganization"
       required="true"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
-      value="producer.MasterOrganization_Ext">
+      value="policyPeriod.ProducerCodeOfRecord.Organization.MasterOrganization_Ext">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
@@ -75,6 +75,16 @@
       required="true"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
       value="producer.AgenyNumber_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
+      id="ServiceAgencyPhoneNumber_Ext"
+      label="displaykey.Web.ContactDetail.Phone"
+      required="false"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.contact.PrimaryPhoneValue">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>

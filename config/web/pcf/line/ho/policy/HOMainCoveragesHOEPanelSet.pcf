@@ -61,6 +61,34 @@
         </PanelRef>
       </PanelColumn>
       <PanelColumn>
+        <PanelRef
+          id="HODwellingAdditionalPanel">
+          <TitleBar
+            title="holine.Pattern.getCoverageCategory(covCategoryHODWAdditional).DisplayName"
+            visible="coveragePatternsExistForDwelling(covCategoryHODWAdditional)"/>
+          <DetailViewPanel>
+            <Variable
+              initialValue="holine.Pattern.getCoverageCategory(covCategoryHODWAdditional).coveragePatternsForEntity(entity.Dwelling_HOE).where(\ coveragePattern -&gt; dwelling.isCoverageAvailable(coveragePattern))"
+              name="hoDWAddlCoveragePatterns"
+              recalculateOnRefresh="true"
+              type="gw.api.productmodel.CoveragePattern[]"/>
+            <InputColumn
+              labelWidth="250">
+              <InputIterator
+                elementName="coveragePattern"
+                forceRefreshDespiteChangedEntries="true"
+                id="coveragePatternHODW"
+                value="hoDWAddlCoveragePatterns">
+                <IteratorSort
+                  sortBy="coveragePattern"
+                  sortOrder="1"/>
+                <InputSetRef
+                  def="HOCoverageInputSet(coveragePattern, dwelling, openForEdit)"
+                  mode="coveragePattern.CodeIdentifier"/>
+              </InputIterator>
+            </InputColumn>
+          </DetailViewPanel>
+        </PanelRef>
         <PanelRef>
           <TitleBar
             title="holine.Pattern.getCoverageCategory(covCategorySectionII).DisplayName"/>
@@ -119,7 +147,7 @@
           id="HOSLAddtionalCovPanel">
           <TitleBar
             title="holine.Pattern.getCoverageCategory(covCategoryHOSLAdditional).DisplayName"
-            visible="coveragePatternsExistForHOLine(covCategoryHOLIAdditional)"/>
+            visible="coveragePatternsExistForHOLine(covCategoryHOSLAdditional)"/>
           <DetailViewPanel>
             <Variable
               initialValue="holine.Pattern.getCoverageCategory(covCategoryHOSLAdditional).coveragePatternsForEntity(entity.HomeownersLine_HOE).where(\ coveragePattern -&gt; holine.isCoverageAvailable(coveragePattern))"
@@ -138,34 +166,6 @@
                   sortOrder="1"/>
                 <InputSetRef
                   def="HOCoverageInputSet(coveragePattern, holine, openForEdit)"
-                  mode="coveragePattern.CodeIdentifier"/>
-              </InputIterator>
-            </InputColumn>
-          </DetailViewPanel>
-        </PanelRef>
-        <PanelRef
-          id="HODwellingAdditionalPanel">
-          <TitleBar
-            title="holine.Pattern.getCoverageCategory(covCategoryHODWAdditional).DisplayName"
-            visible="coveragePatternsExistForDwelling(covCategoryHODWAdditional)"/>
-          <DetailViewPanel>
-            <Variable
-              initialValue="holine.Pattern.getCoverageCategory(covCategoryHODWAdditional).coveragePatternsForEntity(entity.Dwelling_HOE).where(\ coveragePattern -&gt; dwelling.isCoverageAvailable(coveragePattern))"
-              name="hoDWAddlCoveragePatterns"
-              recalculateOnRefresh="true"
-              type="gw.api.productmodel.CoveragePattern[]"/>
-            <InputColumn
-              labelWidth="250">
-              <InputIterator
-                elementName="coveragePattern"
-                forceRefreshDespiteChangedEntries="true"
-                id="coveragePatternHODW"
-                value="hoDWAddlCoveragePatterns">
-                <IteratorSort
-                  sortBy="coveragePattern"
-                  sortOrder="1"/>
-                <InputSetRef
-                  def="HOCoverageInputSet(coveragePattern, dwelling, openForEdit)"
                   mode="coveragePattern.CodeIdentifier"/>
               </InputIterator>
             </InputColumn>

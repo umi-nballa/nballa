@@ -23,9 +23,19 @@
     <Input
       id="AgencyNumberPOR_Ext"
       label="displaykey.Ext.Web.ProducerSelection.AgencyNumber"
-      required="true"
+      required="false"
       validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
       value="producer.AgenyNumber_Ext">
+      <PostOnChange
+        onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
+        target="PolicyInfoProducerInfoInputSet"/>
+    </Input>
+    <Input
+      id="AgencyPhoneNumber_Ext"
+      label="displaykey.Web.ContactDetail.Phone"
+      required="false"
+      validationExpression="producer.ProducerStatus == &quot;active&quot; ? null : displaykey.Web.ProducerSelection.Error.SuspendedProducer(producer)"
+      value="producer.contact.PrimaryPhoneValue">
       <PostOnChange
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>

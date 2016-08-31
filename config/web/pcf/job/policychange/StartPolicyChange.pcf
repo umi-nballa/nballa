@@ -65,11 +65,56 @@
             required="true"
             timeVisible="false"
             value="effectiveDate"/>
-          <Input
+          <TextAreaInput
             editable="true"
             id="Description"
             label="displaykey.Web.Job.Description"
-            value="job.Description"/>
+            maxChars="500"
+            numCols="50"
+            numRows="6"
+            value="job.Description"
+            visible="!policyPeriod.HomeownersLine_HOEExists"/>
+          <TypeKeyInput
+            editable="true"
+            id="ReasonforChange_Ext"
+            label="displaykey.Web.Job.ReasonforChange_Ext"
+            required="true"
+            value="job.ReasonforChange_Ext"
+            visible="policyPeriod.HomeownersLine_HOEExists"/>
+          <TypeKeyInput
+            editable="true"
+            id="Reason1_Ext"
+            label="displaykey.Web.Job.Reason1_Ext"
+            value="job.Reason1_Ext"
+            visible="policyPeriod.HomeownersLine_HOEExists">
+            <PostOnChange/>
+          </TypeKeyInput>
+          <TypeKeyInput
+            editable="true"
+            id="Reason2_Ext"
+            label="displaykey.Web.Job.Reason2_Ext"
+            value="job.Reason2_Ext"
+            visible="job.Reason1_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists">
+            <PostOnChange/>
+          </TypeKeyInput>
+          <TypeKeyInput
+            editable="true"
+            id="Reason3_Ext"
+            label="displaykey.Web.Job.Reason3_Ext"
+            value="job.Reason3_Ext"
+            visible="job.Reason2_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists">
+            <PostOnChange/>
+          </TypeKeyInput>
+          <TextAreaInput
+            editable="true"
+            id="ReasonFreeForm_Ext"
+            label="&quot;&quot;"
+            maxChars="500"
+            numCols="50"
+            numRows="6"
+            required="job.ReasonforChange_Ext != null &amp;&amp; job.Reason1_Ext == null &amp;&amp; job.Reason2_Ext == null &amp;&amp; job.Reason3_Ext == null"
+            value="job.ReasonFreeForm_Ext"
+            visible="policyPeriod.HomeownersLine_HOEExists"/>
         </InputColumn>
       </DetailViewPanel>
     </Screen>

@@ -99,13 +99,13 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
                                                     : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
     var coverageMapper = new HPXBP7CoverageMapper()
-    for (cov in currentCoverages) {
-      var trxs = transactions.where( \ elt1 -> cov.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
+    for (coverage in currentCoverages) {
+      var trxs = transactions.where( \ elt1 -> coverage.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
       if (previousCoverages != null) {
-        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
-        coverages.add(coverageMapper.createCoverageInfo(cov, previousCoverage, trxs))
+        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
+        coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))
       } else {
-        coverages.add(coverageMapper.createCoverageInfo(cov, null, trxs))
+        coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs))
       }
     }
     return coverages

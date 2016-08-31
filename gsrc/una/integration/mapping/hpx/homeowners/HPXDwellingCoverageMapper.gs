@@ -42,7 +42,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
       var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
       var rentedToOthers = new wsi.schema.una.hpx.hpx_application_request.RentedYesNoCd()
-      var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
+      var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
+      var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
       if (item.Description != null) {
         limitDesc.setText(item.Description)
         limit.addChild(limitDesc)
@@ -58,7 +59,10 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       }
       coverageCd.setText(currentCoverage.PatternCode)
       limit.addChild(coverageCd)
+      formatText.setText("")
+      limit.addChild(formatText)
       limits.add(limit)
+
     }
     return limits
   }
@@ -74,7 +78,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var scheduleType = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
       var value = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
       var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-      var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
+      var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
+      var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
       if (item.ScheduleType != null) {
         scheduleType.setText(item.ScheduleType)
         limit.addChild(scheduleType)
@@ -90,6 +95,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       }
       coverageCd.setText(currentCoverage.PatternCode)
       limit.addChild(coverageCd)
+      formatText.setText("")
+      limit.addChild(formatText)
       limits.add(limit)
     }
     return limits
@@ -104,7 +111,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         var locationName = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
         var additionalLimit = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
         var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-        var coverageCd = new wsi.schema.una.hpx.hpx_application_request.FormatText()
+        var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
+        var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
         if (item.ScheduleType != null) {
           locationName.setText(item.ScheduleType)
           limit.addChild(locationName)
@@ -120,6 +128,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         }
         coverageCd.setText(currentCoverage.PatternCode)
         limit.addChild(coverageCd)
+        formatText.setText("")
+        limit.addChild(formatText)
         limits.add(limit)
       }
       return limits
@@ -127,12 +137,15 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createResidentialGlassCoverage(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.Limit {
     var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
+    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
     var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
     formatText.setText(currentCoverage.getCovTerm("HODW_Unscheduled_HOE_Ext").DisplayValue)
     limit.addChild(formatText)
     var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
     limitDesc.setText("HODW_Unscheduled_HOE_Ext")
     limit.addChild(limitDesc)
+    coverageCd.setText(currentCoverage.PatternCode)
+    limit.addChild(coverageCd)
     return limit
   }
 

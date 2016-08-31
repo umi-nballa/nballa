@@ -88,39 +88,8 @@ class HPXDwellMapper {
     var residenceTypeCode = new wsi.schema.una.hpx.hpx_application_request.ResidenceTypeCd()
     var residenceTypeDesc = new wsi.schema.una.hpx.hpx_application_request.ResidenceTypeDesc()
     if(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType != null) {
-      switch (policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType) {
-        case typekey.ResidenceType_HOE.TC_FAM1 :
-        case typekey.ResidenceType_HOE.TC_FAM2 :
-        case typekey.ResidenceType_HOE.TC_FAM3 :
-        case typekey.ResidenceType_HOE.TC_FAM4 :
-        case typekey.ResidenceType_HOE.TC_FAM5 :
-            residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.DW)
-            residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-            break
-        case typekey.ResidenceType_HOE.TC_APT :
-            residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.APT)
-            residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-            break
-        case typekey.ResidenceType_HOE.TC_CONDO :
-            residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.CD)
-            residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-            break
-        case typekey.ResidenceType_HOE.TC_COOP :
-            residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.CO)
-            residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-            break
-        case typekey.ResidenceType_HOE.TC_MOBILE :
-            residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.MH)
-            residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-            break
-        case typekey.ResidenceType_HOE.TC_TOWNROW :
-            residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.TH)
-            residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-            break
-          default :
-          residenceTypeCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.ResidenceType.OTH)
-          residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-      }
+      residenceTypeCode.setText(typecodeMapper.getAliasByInternalCode("ResidenceType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Code))
+      residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
     }
     dwellOccupancy.addChild(residenceTypeCode)
     dwellOccupancy.addChild(residenceTypeDesc)

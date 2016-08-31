@@ -131,7 +131,7 @@ enhancement CancellationEnhancement : Cancellation {
     var leadTimeCalculator = new CancellationLeadTimeCalculator(this.CancelReasonCode,
       inForcePeriod.AllPolicyLinePatternsAndJurisdictions,
       initialProcessingDate,
-      initialProcessingDate <= findUWPeriodEnd(inForcePeriod), inForcePeriod)
+      initialProcessingDate.beforeOrEqualsIgnoreTime(findUWPeriodEnd(inForcePeriod)), inForcePeriod)
     var leadTime = leadTimeCalculator.calculateMaximumLeadTime()
     if (leadTime == null) {
       // the correct behavior would be to set leadTime to 0, but to maintain backward compatibility,

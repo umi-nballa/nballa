@@ -337,7 +337,7 @@ abstract class HPXCoverageMapper {
     var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
     if (currentCovTerm?.Value != null) {
       formatText.setText(currentCovTerm.Value)
-    }
+    } else formatText.setText("")
     limit.addChild(formatText)
     amt.setText(0.00)
     currentTermAmount.addChild(amt)

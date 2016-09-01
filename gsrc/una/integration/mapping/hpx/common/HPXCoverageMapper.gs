@@ -335,7 +335,9 @@ abstract class HPXCoverageMapper {
     var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
     var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
     var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    formatText.setText(currentCovTerm.Value)
+    if (currentCovTerm?.Value != null) {
+      formatText.setText(currentCovTerm.Value)
+    }
     limit.addChild(formatText)
     amt.setText(0.00)
     currentTermAmount.addChild(amt)

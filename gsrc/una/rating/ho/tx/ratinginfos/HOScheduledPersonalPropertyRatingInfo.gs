@@ -10,13 +10,14 @@ class HOScheduledPersonalPropertyRatingInfo {
   var _itemType : String as ItemType
   var _exposureValue : int as ExposureValue
   var _usage : String as Usage = ""
+  var SILVERWARE = "Silverware"
 
   construct(item : ScheduledItem_HOE){
 
     _exposureValue = item.ExposureValue
     var scheduleType = item.ScheduleType
-    if(scheduleType.Description.startsWith("Silverware")){
-      _itemType = "Silverware"
+    if(scheduleType.Description.startsWith(SILVERWARE)){
+      _itemType = SILVERWARE
     } else{
       var scheduleTypeDescription = scheduleType.Description.split("-")
       _itemType = scheduleTypeDescription[0].trim()

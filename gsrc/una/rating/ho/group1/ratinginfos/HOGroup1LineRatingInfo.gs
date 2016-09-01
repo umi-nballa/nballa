@@ -12,6 +12,7 @@ class HOGroup1LineRatingInfo {
   var _personalLiabilityLimit : int as PersonalLiabilityLimit
   var _limitedFungiWetOrDryRotOrBacteriaSectionIILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionIILimit
   var _personalInjuryLimit : int as PersonalInjuryLimit
+  var _residenceType : String as ResidenceType
 
   construct(lineCov : HomeownersLineCov_HOE){
     _animalLiabilityLimit = ((lineCov.HOLine.HOLI_AnimalLiabilityCov_HOE_ExtExists)? lineCov.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext?.HOLI_AnimalLiabLimit_HOETerm?.Value : 0) as int
@@ -21,5 +22,6 @@ class HOGroup1LineRatingInfo {
       _limitedFungiWetOrDryRotOrBacteriaSectionIILimit = lineCov.HOLine?.HOLI_FungiCov_HOE?.HOLI_AggLimit_HOETerm?.Value.intValue()
     }
     _personalInjuryLimit = (lineCov.HOLine.HOLI_PersonalInjury_HOEExists)? lineCov.HOLine.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue() : 0
+    _residenceType = (lineCov.HOLine.Dwelling.ResidenceType.Code)
   }
 }

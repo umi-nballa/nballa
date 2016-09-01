@@ -64,6 +64,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOSL_OutboardMotorsWatercraft_HOE_Ext:
         rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)
         break
+      case HOLI_AddResidenceRentedtoOthers_HOE:
+        rateAddResidenceRentedToOthersCoverage(lineCov, dateRange)
+        break
     }
   }
 
@@ -72,6 +75,10 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   override function rateDwellingCoverages(dwellingCov: DwellingCov_HOE, dateRange: DateRange) {
     switch (typeof dwellingCov) {
+      case HODW_Dwelling_Cov_HOE:
+      if(dwellingCov.HODW_ExecutiveCov_HOE_ExtTerm.Value)
+          rateExecutiveCoverage(dwellingCov, dateRange)
+      break
       case HODW_EquipBreakdown_HOE_Ext:
         rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
         break
@@ -178,6 +185,18 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       }
     }
     _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Executive Coverage
+   */
+  function rateExecutiveCoverage(dwellingCov: HODW_Dwelling_Cov_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateExecutiveCoverage to rate Executive Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.EXECUTIVE_COVERAGE, HOCostType_Ext.TC_EXECUTIVECOVERAGE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Executive Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -341,8 +360,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Rate personal injury line coverage
-   */
+ * Rate personal injury line coverage
+ */
   function ratePersonalInjuryCoverage(lineCov: HOLI_PersonalInjury_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalInjury to rate Personal Injury Coverage", this.IntrinsicType)
     var lineRatingInfo = new HOGroup1LineRatingInfo(lineCov)
@@ -351,6 +370,18 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Personal Injury Coverage Rated Successfully", this.IntrinsicType)
+  }
+  /**
+   * Rate Additional Residence - Rented to others coverage
+   */
+  function rateAddResidenceRentedToOthersCoverage(lineCov : HOLI_AddResidenceRentedtoOthers_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAddResidenceRentedToOthers to rate Additional Residence - Rented to others Coverage", this.IntrinsicType)
+    var lineRatingInfo = new HOGroup1LineRatingInfo(lineCov)
+    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Additional Residence - Rented to others Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

@@ -258,10 +258,11 @@ abstract class AbstractRatingEngineBase<SL> {
       var removeCost : boolean
       for (costEntity in untouchedCurrentCostEntities) {
         removeCost = true
-        if(costEntity typeis HomeownersLineCost_EXT){
-          if(costEntity.HOCostType == HOCostType_Ext.TC_POLICYFEE)
-            removeCost = false
-        }
+        if(line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE or line.Branch.Job.Subtype == typekey.Job.TC_CANCELLATION)
+          if(costEntity typeis HomeownersLineCost_EXT){
+            if(costEntity.HOCostType == HOCostType_Ext.TC_POLICYFEE)
+              removeCost = false
+          }
         if(removeCost)
           costEntity.removeFromTerm()  // removes the cost entirely
       }

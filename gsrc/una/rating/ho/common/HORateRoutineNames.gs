@@ -44,6 +44,7 @@ public final class HORateRoutineNames {
   public static final var MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMinimumPremiumAdjustmentRateRoutine"
   public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
   public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
+  public static final var EXECUTIVE_COVERAGE : String = "UNAHOExecutiveCoverageRateRoutine"
 
   //group1 routines
   public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"
@@ -60,5 +61,6 @@ public final class HORateRoutineNames {
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIGroup1RateRoutine"
   public static final var PERSONAL_INJURY_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup1RateRoutine"
+  public static final var ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOAddResidenceRentedToOthersGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIGroup1RateRoutine"
 }

@@ -13,6 +13,7 @@ class HOOutboardMotorsAndWatercraftRatingInfo {
   var _medPayLimit : int as MedPayLimit
   var _personalLiabilityLimit : int as PersonalLiabilityLimit
   var _horsePower : String as HorsePower
+  var HORSEPOWER_UP_TO_50 = "Up to 50"
 
   construct(item : HOscheduleItem_HOE_Ext, lineCov : HomeownersLineCov_HOE){
     _waterCraftName = item.watercraftName
@@ -24,7 +25,7 @@ class HOOutboardMotorsAndWatercraftRatingInfo {
 
     if(item.horsepower == typekey.Horsepower_Ext.TC_UNDER25 || item.horsepower == typekey.Horsepower_Ext.TC_26TO49 ||
        item.horsepower == typekey.Horsepower_Ext.TC_26TO50){
-      _horsePower = "Up to 50"
+      _horsePower = HORSEPOWER_UP_TO_50
     }
   }
 }

@@ -19,6 +19,7 @@ uses gw.job.RenewalProcess
 uses gw.rating.rtm.query.RatingQueryFacade
 uses gw.lob.ho.rating.ScheduleCovCostData_HOE
 uses gw.lob.ho.rating.ScheduleLineCovCostData_HOE_Ext
+uses java.math.BigDecimal
 
 /**
  * User: bduraiswamy
@@ -88,10 +89,11 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   override protected function rateWindow(line: HomeownersLine_HOE) {
     assertSliceMode(line) // we need to be in slice mode to create costs, but we're creating costs for the whole window
     //rate policyFee
-    if(((line.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION) or
-        (line.Branch.Job.Subtype == typekey.Job.TC_RENEWAL and line.BaseState != typekey.Jurisdiction.TC_NV)) and
-        (line.BaseState != typekey.Jurisdiction.TC_AZ) and (line.BaseState != typekey.Jurisdiction.TC_CA)){
+    if(isPolicyFeeApplicable(line)){
       ratePolicyFee(line)
+    }
+    if(_baseState == typekey.Jurisdiction.TC_TX and line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE){
+      waiveAdditionalPremiumForPolicyChangeTX(line)
     }
   }
 
@@ -113,8 +115,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         cd = new DwellingCovCostData_HOE(c, RateCache)
         break
       case HomeownersLineCost_EXT:
-        if(c.HOCostType != HOCostType_Ext.TC_POLICYFEE)
-          cd = new HomeownersLineCostData_HOE(c, RateCache)
+        cd = new HomeownersLineCostData_HOE(c, RateCache)
         break
       case ScheduleCovCost_HOE:
         cd = new ScheduleCovCostData_HOE(c, RateCache)
@@ -190,5 +191,57 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       addCost(costData)
     }
     _logger.debug("Policy fee added Successfully", this.IntrinsicType)
+  }
+
+  /**
+  *  Additional or Return Premiums of $5. or less which arise from a Policy Change
+  *  shall be WAIVED (unless requested by Insured).
+   */
+  function waiveAdditionalPremiumForPolicyChangeTX(line: HomeownersLine_HOE){
+    var totalPremium = CostDatas.sum( \ costData -> costData.ActualTermAmount)
+    //since we don't add the policy fee for the policy change in the rate window, we add it manually here
+    totalPremium += getPolicyFeeForState()
+    var totalPremiumBeforePolicyChange : java.math.BigDecimal = 0
+    var policyPeriod = line.Dwelling?.PolicyPeriod.Policy.LatestBoundPeriod
+    totalPremiumBeforePolicyChange = policyPeriod.TotalPremiumRPT.Amount
+    var totalPremiumChange = totalPremium - totalPremiumBeforePolicyChange
+    if(totalPremiumChange >= -5 and totalPremiumChange < 0){
+      var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+      var costData = new HomeownersLineCostData_HOE(dateRange.start, dateRange.end, PolicyLine.PreferredCoverageCurrency, RateCache, typekey.HOCostType_Ext.TC_ADDITIONALPREMIUMWAIVED)
+      costData.init(PolicyLine)
+      costData.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
+      costData.StandardBaseRate = totalPremiumChange
+      costData.StandardAdjRate = totalPremiumChange
+      costData.StandardTermAmount = totalPremiumChange
+      costData.copyStandardColumnsToActualColumns()
+      addCost(costData)
+    }
+  }
+
+  /**
+  *  Function which determines whether policy fee is applicable or not.
+   */
+  private function isPolicyFeeApplicable(line : HomeownersLine_HOE) : boolean {
+    if(_baseState == typekey.Jurisdiction.TC_AZ or _baseState == typekey.Jurisdiction.TC_CA) {
+      return false
+    } else if(_baseState == typekey.Jurisdiction.TC_TX){
+      if(line.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE and line.Branch.Job.Subtype != typekey.Job.TC_CANCELLATION)
+        return true
+    } else if(_baseState == typekey.Jurisdiction.TC_NV){
+      if(line.Branch.Job.Subtype == typekey.Job.TC_RENEWAL)
+        return true
+    }
+    return false
+  }
+
+  private function getPolicyFeeForState() : BigDecimal{
+    var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
+        {:Jurisdiction = BaseState,
+          :MinimumRatingLevel = MinimumRatingLevel,
+          :RenewalJob = (PolicyLine.Branch.JobProcess typeis RenewalProcess),
+          :Offering = OfferingCode}
+    var params = {BaseState.Code}
+    var policyFee = new RatingQueryFacade().getFactor(filter, "ho_policy_fee_cw", params).Factor
+    return policyFee as BigDecimal
   }
 }

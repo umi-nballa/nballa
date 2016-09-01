@@ -50,15 +50,14 @@ class HPXBP7BuildingMapper {
     var dwellOccupancy = new wsi.schema.una.hpx.hpx_application_request.DwellOccupancy()
     var dwellOccupancyType = new wsi.schema.una.hpx.hpx_application_request.OccupancyTypeCd()
     var dwellOccupancyTypeDesc = new wsi.schema.una.hpx.hpx_application_request.OccupancyTypeDesc()
-    // TODO typecode mapping for PredominentOccType_Ext
-    /*
+
     if(bldg.PredominentOccType_Ext != null) {
-      dwellOccupancyType.setText(typecodeMapper.getAliasByInternalCode("PredominentOccType_Ext", "hpx", bldg.PredominentOccType_Ext))
+      dwellOccupancyType.setText(typecodeMapper.getAliasByInternalCode("BP7PredominentOccType_Ext", "hpx", bldg.PredominentOccType_Ext.Code))
       dwellOccupancyTypeDesc.setText(bldg.PredominentOccType_Ext.Description)
       dwellOccupancy.addChild(dwellOccupancyType)
       dwellOccupancy.addChild(dwellOccupancyTypeDesc)
     }
-    */
+
     return dwellOccupancy
   }
 

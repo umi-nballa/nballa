@@ -84,8 +84,8 @@ class HORateRoutineExecutor {
         _logger.error("No Rate Books are loaded for the HO Line")
         throw new RatingException("No Rate Books are loaded for the HO Line")
       } else {
-        _logger.error("No Rate Books for HO with " + _ratingLevel.Description + " status matches the filter criteria")
-        throw new RatingException("No Rate Books for HO with " + _ratingLevel.Description + " status matches the filter criteria")
+        _logger.error("No Rate Books for HO with " + _ratingLevel.Code + " status matches the filter criteria")
+        throw new RatingException("No Rate Books for HO with " + _ratingLevel.Code + " status matches the filter criteria")
       }
     }
   }

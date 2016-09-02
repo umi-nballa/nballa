@@ -98,8 +98,16 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   }
 
   override protected function existingSliceModeCosts(): Iterable<Cost> {
-    return PolicyLine.Costs//.where(\c -> c typeis HomeownersCovCost_HOE or
-        //c typeis DwellingCovCost_HOE)
+    var costs = PolicyLine.Costs
+    var costsWithNoWindowCosts : List<Cost> = new List<Cost>()
+    for(cost in costs){
+      if(cost typeis HomeownersLineCost_EXT){
+        if(cost.HOCostType == HOCostType_Ext.TC_POLICYFEE or cost.HOCostType == HOCostType_Ext.TC_ADDITIONALPREMIUMWAIVED)
+          continue
+      }
+      costsWithNoWindowCosts.add(cost)
+    }
+    return costsWithNoWindowCosts
   }
 
   override protected function createCostDataForCost(c: Cost): CostData {
@@ -121,8 +129,10 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         cd = new ScheduleCovCostData_HOE(c, RateCache)
         break
       case ScheduleLineCovCost_HOE_Ext:
-          cd = new ScheduleLineCovCostData_HOE_Ext(c, RateCache)
-          break
+        cd = new ScheduleLineCovCostData_HOE_Ext(c, RateCache)
+        break
+      default:
+        throw "unknown type of cost " + typeof c
     }
     return cd
   }

@@ -43,10 +43,9 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
       var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
       var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-      var rentedToOthers = new wsi.schema.una.hpx.hpx_application_request.RentedYesNoCd()
+      var rentedToOthers = new wsi.schema.una.hpx.hpx_application_request.FormatText()
       var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
       var scheduleType = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-      var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
       var currentTermAmount = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
       var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
       var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
@@ -59,15 +58,12 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         formatPct.setText(item.AdditionalLimit.Code)
         limit.addChild(formatPct)
       }
-     /* if(item.rentedtoOthers_Ext != null) {
-        //rentedToOthers.setText(item.rentedtoOthers_Ext)
-        rentedToOthers.setText("NO")
-        limit.addChild(rentedToOthers)
-      }    */
+      if(item.rentedtoOthers_Ext != null) {
+        rentedToOthers.setText(item.rentedtoOthers_Ext)
+      } else rentedToOthers.setText("")
+      limit.addChild(rentedToOthers)
       coverageCd.setText(currentCoverage.PatternCode)
       limit.addChild(coverageCd)
-      formatText.setText("")
-      limit.addChild(formatText)
       scheduleType.setText("")
       limit.addChild(scheduleType)
       //current term amount

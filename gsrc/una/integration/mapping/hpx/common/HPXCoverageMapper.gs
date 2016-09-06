@@ -230,6 +230,8 @@ abstract class HPXCoverageMapper {
     deductible.addChild(coverageCd)
     formatText.setText("")
     deductible.addChild(formatText)
+   // scheduleType.setText("")
+   // deductible.addChild(scheduleType)
     return deductible
   }
   function createDirectDeductibleInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm) : wsi.schema.una.hpx.hpx_application_request.Deductible {
@@ -273,6 +275,8 @@ abstract class HPXCoverageMapper {
     deductible.addChild(coverageCd)
     formatText.setText("")
     deductible.addChild(formatText)
+   // scheduleType.setText("")
+   // deductible.addChild(scheduleType)
     return deductible
   }
 

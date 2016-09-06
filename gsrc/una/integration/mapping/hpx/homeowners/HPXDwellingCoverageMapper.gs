@@ -132,7 +132,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (item in scheduleItems) {
         var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
         var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-        var locationName = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
+        var scheduleType = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
         var additionalLimit = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
         var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
         var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
@@ -140,17 +140,16 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
         var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
         var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-        if (item.ScheduleType != null) {
-          locationName.setText(item.ScheduleType)
-          limit.addChild(locationName)
-        }
-        if (item.Description != null) {
-          limitDesc.setText(item.Description)
+
+        scheduleType.setText("")
+        limit.addChild(scheduleType)
+
+        if (item.PolicyLocation.DisplayName != null) {
+          limitDesc.setText(item.PolicyLocation.DisplayName)
           limit.addChild(limitDesc)
         }
         if(item.AdditionalLimit != null) {
-          amt.setText(item.AdditionalLimit)
-          additionalLimit.addChild(amt)
+          additionalLimit.setText(item.AdditionalLimit)
           limit.addChild(additionalLimit)
         }
         coverageCd.setText(currentCoverage.PatternCode)

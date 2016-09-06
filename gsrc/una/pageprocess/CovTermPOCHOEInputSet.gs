@@ -48,23 +48,16 @@ class CovTermPOCHOEInputSet {
     var dwelling = _coverable as Dwelling_HOE
     dwelling.PolicyPeriod.editIfQuoted()
     ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
-    switch(_covTerm.PatternCode) {
-      case "HODW_Dwelling_Limit_HOE":
-          dwelling.HODW_Dwelling_Cov_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
-          break
-      case "HODW_PersonalPropertyLimit_HOE":
-          dwelling.HODW_Personal_Property_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
-          break
-      case "DPDW_Dwelling_Limit_HOE" :
-          dwelling.DPDW_Dwelling_Cov_HOE.validateDPMinMaxLimits_Ext(_coverable as Dwelling_HOE)
-          break
-      case "HODW_ExecutiveCov_HOE_Ext":
-          setExecutiveCoverageDefaults(_coverable as Dwelling_HOE, _covTerm as BooleanCovTerm)
-          break
-        default:
-        break;
-    }
 
+    if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null){
+      return dwelling.HODW_Dwelling_Cov_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
+    }
+    else if(!(dwelling.HODW_Dwelling_Cov_HOEExists) and dwelling.HODW_Personal_Property_HOEExists){
+      return dwelling.HODW_Personal_Property_HOE.validateHomeownersMinMaxLimits_Ext(_coverable as Dwelling_HOE)
+    }
+    else if (dwelling.DPDW_Dwelling_Cov_HOEExists and dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm != null){
+    return dwelling.DPDW_Dwelling_Cov_HOE.validateDPMinMaxLimits_Ext(_coverable as Dwelling_HOE)
+      }
    roundInputValue(_coverable, _covTerm)
     return null
   }

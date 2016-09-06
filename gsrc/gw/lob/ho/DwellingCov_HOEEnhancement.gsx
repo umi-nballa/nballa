@@ -204,7 +204,7 @@ enhancement
               }
             else
               minValue = limitA.multiply(ScriptParameters.HODwellingCovFactorCovB_min)
-            }
+              }
           break
       case HODW_Personal_Property_HOE:
           if(limitA != null and !(policyType == TC_HO4 || policyType == TC_HO6 || policyType == TC_HCONB_Ext)){
@@ -217,7 +217,7 @@ enhancement
             }
             else if(policyType == TC_HO3 or policyType == TC_HOA_Ext or policyType == TC_HOB_Ext ){
               minValue = limitA.multiply(ScriptParameters.HODwellingCovDefaultFactorCovC_default)
-            }
+               }
           }
           break
       case HODW_Loss_Of_Use_HOE:
@@ -236,7 +236,7 @@ enhancement
     }
     if(roundDown_Ext(minValue) != null) {
       minValueMap.put(roundDown_Ext(minValue), displaykey.Web.ProductModel.ValidationMessage.MinValue_Ext(minValue,cov))
-    }
+      }
     return minValueMap
   }
 
@@ -603,20 +603,19 @@ enhancement
       var maxValueMapCovC = getHOMaxValue_Ext(covC,_dwelling)
       var maxValueCovC = maxValueMapCovC.keySet()
       if(covB.HasHODW_OtherStructures_Limit_HOETerm and minValueMapCovB !=null and maxValueMapCovB != null){
-
-             if(covB.HODW_OtherStructures_Limit_HOETerm.Value < MathUtil.roundTo(minValueCovB.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covB.HODW_OtherStructures_Limit_HOETerm.PatternCode))){
+              if(covB.HODW_OtherStructures_Limit_HOETerm.Value < minValueCovB.first()){
               return minValueMapCovB.get(minValueCovB.first())
             }
-            else if(covB.HODW_OtherStructures_Limit_HOETerm.Value > MathUtil.roundTo(maxValueCovB.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covB.HODW_OtherStructures_Limit_HOETerm.PatternCode)))
+            else if(covB.HODW_OtherStructures_Limit_HOETerm.Value > maxValueCovB.first())
               {
-              return maxValueMapCovB.get(maxValueCovB.first())
+                return maxValueMapCovB.get(maxValueCovB.first())
             }
       }
       if (covC.HasHODW_PersonalPropertyLimit_HOETerm and minValueMapCovC != null and maxValueMapCovC !=null){
-          if(covC.HODW_PersonalPropertyLimit_HOETerm.Value < MathUtil.roundTo(minValueCovC.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covC.HODW_PersonalPropertyLimit_HOETerm.PatternCode))){
+          if(covC.HODW_PersonalPropertyLimit_HOETerm.Value < minValueCovC.first()){
               return minValueMapCovC.get(minValueCovC.first())
           }
-        else if (covC.HODW_PersonalPropertyLimit_HOETerm.Value > MathUtil.roundTo(maxValueCovC.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covC.HODW_PersonalPropertyLimit_HOETerm.PatternCode))){
+        else if (covC.HODW_PersonalPropertyLimit_HOETerm.Value > maxValueCovC.first()){
             return maxValueMapCovC.get(maxValueCovC.first())
           }
        }
@@ -626,10 +625,10 @@ enhancement
       var maxValueMapCovD = getHOMaxValue_Ext(covD,_dwelling)
       var maxValueCovD = maxValueMapCovD.keySet()
       if (covD.HasHODW_LossOfUseDwelLimit_HOETerm and minValueMapCovD!=null and maxValueMapCovD!=null){
-            if(covD.HODW_LossOfUseDwelLimit_HOETerm.Value < MathUtil.roundTo(minValueCovD.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covD.HODW_LossOfUseDwelLimit_HOETerm.PatternCode))){
+            if(covD.HODW_LossOfUseDwelLimit_HOETerm.Value < minValueCovD.first()){
               return minValueMapCovD.get(minValueCovD.first())
             }
-            else if (covD.HODW_LossOfUseDwelLimit_HOETerm.Value > MathUtil.roundTo(maxValueCovD.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covD.HODW_LossOfUseDwelLimit_HOETerm.PatternCode))){
+            else if (covD.HODW_LossOfUseDwelLimit_HOETerm.Value > maxValueCovD.first()){
               return maxValueMapCovD.get(maxValueCovD.first())
             }
       }
@@ -661,26 +660,26 @@ enhancement
       var maxValueCovD = maxValueMapCovD.keySet()
 
       if(covB.HasDPDW_OtherStructuresLimit_HOETerm and minValueMapCovB!=null and maxValueMapCovB!=null){
-          if(covB.DPDW_OtherStructuresLimit_HOETerm.Value < MathUtil.roundTo(minValueCovB.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covB.DPDW_OtherStructuresLimit_HOETerm.PatternCode))){
+          if(covB.DPDW_OtherStructuresLimit_HOETerm.Value < minValueCovB.first()){
             return minValueMapCovB.get(minValueCovB.first())
           }
-        else if(covB.DPDW_OtherStructuresLimit_HOETerm.Value > MathUtil.roundTo(maxValueCovB.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR,_dwelling.PolicyLine.BaseState, covB.DPDW_OtherStructuresLimit_HOETerm.PatternCode))){
+        else if(covB.DPDW_OtherStructuresLimit_HOETerm.Value > maxValueCovB.first()){
             return maxValueMapCovB.get(maxValueCovB.first())
           }
       }
       if (covC.HasDPDW_PersonalPropertyLimit_HOETerm and minValueMapCovC!=null and maxValueMapCovC!=null){
-          if(covC.DPDW_PersonalPropertyLimit_HOETerm.Value < MathUtil.roundTo(minValueCovC.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covC.DPDW_PersonalPropertyLimit_HOETerm.PatternCode))){
+          if(covC.DPDW_PersonalPropertyLimit_HOETerm.Value < minValueCovC.first()){
             return minValueMapCovC.get(minValueCovC.first())
           }
-        else if(covC.DPDW_PersonalPropertyLimit_HOETerm.Value > MathUtil.roundTo(maxValueCovC.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covC.DPDW_PersonalPropertyLimit_HOETerm.PatternCode))){
+        else if(covC.DPDW_PersonalPropertyLimit_HOETerm.Value > maxValueCovC.first()){
             return maxValueMapCovC.get(maxValueCovC.first())
           }
       }
       if (covD.HasDPDW_LossOfUseDwelLimit_HOETerm and minValueMapCovD!=null and maxValueMapCovD!= null){
-          if(covD.DPDW_LossOfUseDwelLimit_HOETerm.Value < MathUtil.roundTo(minValueCovD.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covD.DPDW_LossOfUseDwelLimit_HOETerm.PatternCode))){
+          if(covD.DPDW_LossOfUseDwelLimit_HOETerm.Value < minValueCovD.first()){
             return minValueMapCovD.get(minValueCovD.first())
           }
-        else if(covD.DPDW_LossOfUseDwelLimit_HOETerm.Value > MathUtil.roundTo(maxValueCovD.first(), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, _dwelling.PolicyLine.BaseState, covD.DPDW_LossOfUseDwelLimit_HOETerm.PatternCode))){
+        else if(covD.DPDW_LossOfUseDwelLimit_HOETerm.Value > maxValueCovD.first()){
             return maxValueMapCovD.get(maxValueCovD.first())
             }
     }

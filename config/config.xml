@@ -87,7 +87,7 @@
   -->
 
   <!-- Is clustering enabled? -->
-  <param name="ClusteringEnabled" value="false"/>
+    <param env="pc_qat" name="ClusteringEnabled" value="true"/>
 
   <!--
     Coordinator node sends a heartbeat each interval. Other nodes reset JGroups channel if they do not receive the heartbeat from their coordinator
@@ -103,7 +103,7 @@
     to live parameter. Valid IPv4 address is in the range between 224.0.0.0 and 239.255.255.255.
     Valid IPv6 address starts with "ff" (i.e. first eight bits must be "1111 1111")
   -->
-  <param name="ClusterMulticastAddress" value="228.9.9.9"/>
+    <param env="pc_qat" name="ClusterMulticastAddress" value="228.9.9.9"/>
 
   <!--   Option to not use leap year days in eff dated calculations -->
   <param name="IgnoreLeapDayForEffDatedCalc" value="true"/>
@@ -313,6 +313,7 @@
     buttons in the UI that take you to the exit points will be hidden.
   -->
   <param name="ClaimSystemURL" value="http://localhost:8080/cc"/>
+    <param name="ClaimSystemURL" value="http://gwqaticc01/cc" env="pc_qat"/>
 
 
   <!--
@@ -323,6 +324,7 @@
     buttons in the UI that take you to the exit points will be hidden.
   -->
   <param name="BillingSystemURL" value="http://localhost:8580/bc"/>
+  <param name="BillingSystemURL" value="http://gwqatibc01/bc" env="pc_qat"/>
 
   <!--
     URL to use in exit points which view items in the Payment system. If integrating with another billing system the

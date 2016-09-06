@@ -63,14 +63,6 @@
                   value="building.Building.Description">
                   <PostOnChange/>
                 </Input>
-                <TypeKeyInput
-                  editable="true"
-                  id="PropertyType"
-                  label="displaykey.Web.Building.PredominentOccupancyType"
-                  value="building.PropertyType">
-                  <PostOnChange
-                    onChange="building.updateDependentFields(null, jobWizardHelper)"/>
-                </TypeKeyInput>
                 <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
                 <TypeKeyInput
                   editable="true"
@@ -79,7 +71,15 @@
                   required="true"
                   value="building.PredominentOccType_Ext">
                   <PostOnChange
-                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;synchPM()"/>
+                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;setDefaultClassificationArea();synchPM()"/>
+                </TypeKeyInput>
+                <TypeKeyInput
+                  editable="true"
+                  id="PropertyType"
+                  label="displaykey.Web.Building.PredominentOccupancyType"
+                  value="building.PropertyType">
+                  <PostOnChange
+                    onChange="building.updateDependentFields(null, jobWizardHelper)"/>
                 </TypeKeyInput>
                 <!-- <TypeKeyInput
                   editable="true"
@@ -325,7 +325,8 @@
                       id="Area"
                       label="displaykey.Web.Policy.BP7.Classification.Area"
                       numCols="16"
-                      value="currentClassification.Area"/>
+                      value="currentClassification.Area"
+                      visible="building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT"/>
                     <Cell
                       action="BP7BlanketPopup.push(policyPeriod.BP7Line, currentClassification.AssociatedBlanket, openForEdit, jobWizardHelper)"
                       actionAvailable="currentClassification.AssociatedBlanket.BlanketNumber != null"
@@ -372,6 +373,13 @@
                               recalculateOnRefresh="true"
                               type="typekey.BP7ClassDescription"/>
                             <InputColumn>
+                              <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
+                              <TypeKeyInput
+                                id="PreOccType"
+                                label="displaykey.Web.Building.OccupanyType"
+                                value="building.PredominentOccType_Ext">
+                                <PostOnChange/>
+                              </TypeKeyInput>
                               <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassPropertyType, selectedClassification.ClassPropertyTypeValues)"
                                 id="ClassPropertyType"
@@ -382,13 +390,6 @@
                                 <PostOnChange
                                   onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassPropertyType.PropertyInfo, previousPropertyTypeValue), jobWizardHelper)"/>
                               </RangeInput>
-                              <!-- uim-svallabhapurapu : New dropdownField BOP storycard -->
-                              <TypeKeyInput
-                                id="PreOccType"
-                                label="displaykey.Web.Building.OccupanyType"
-                                value="building.PredominentOccType_Ext">
-                                <PostOnChange/>
-                              </TypeKeyInput>
                               <!-- <RangeInput
                                 editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(selectedClassification.ClassDescription, selectedClassification.ClassDescriptionValues)"
                                 id="ClassDescription"
@@ -435,7 +436,8 @@
                                 editable="true"
                                 id="Area"
                                 label="displaykey.Web.Building.VacantSqFootage"
-                                value="selectedClassification.Area">
+                                value="selectedClassification.Area"
+                                visible="building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT">
                                 <PostOnChange/>
                               </Input>
                               <!-- <BooleanRadioInput
@@ -623,6 +625,14 @@ function predominantConfirmationMessage(classification : BP7Classification) : St
   gw.web.productmodel.ProductModelSyncIssuesHandler.sync({building}, null, null, null, jobWizardHelper)
    if(building.Classifications != null and building.Classifications.length == 1)
    {gw.web.productmodel.ProductModelSyncIssuesHandler.sync({building.Classifications[0]}, null, null, null, jobWizardHelper)}  
+ }
+ //DE226 fix - Defaulting to 1 when occ type is Tenant and looks like it is being used in rating ootb, when bop rating gets implemented this can be removed 
+ function setDefaultClassificationArea(){
+   if(building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){
+     for(cl in building.Classifications){
+       cl.Area = 1
+     }
+   }
  }]]></Code>
   </CardViewPanel>
 </PCF>

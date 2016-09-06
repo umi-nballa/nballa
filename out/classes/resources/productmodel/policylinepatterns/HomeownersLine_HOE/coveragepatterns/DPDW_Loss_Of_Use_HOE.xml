@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="DPDW_Loss_Of_Use_HOE"
+  coverageCategory="HODW_SectionI_HOE"
+  coverageSubtype="DwellingCov_HOE"
+  coveredPartyType="FirstParty"
+  existence="Required"
+  lookupTableName="DwellingCov"
+  owningEntityType="Dwelling_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="1800"
+  public-id="DPDW_Loss_Of_Use_HOE"
+  rICoverageGroupType="Property"
+  referenceDateByType="ApplicableObject">
+  <AvailabilityScript><![CDATA[var result = true
+var state =Dwelling_HOE.Branch.BaseState
+if((state == TC_CA or state == TC_HI) and (Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT))
+return result]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="DPDW_LossOfUseDwelLimit_HOE"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="DPDW_LossOfUseDwelLimit_HOE"
+      required="true"
+      restrictionModel="exp"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

@@ -151,6 +151,14 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     ProtectionClassPlugin_HOE.setProtectionClassCode(this)
     
   }
+  // uim-svallabhapurapu : set Terrain on dwelling based on county change
+  function setTerrain() {
+    var flWindMitigationQuery = gw.api.database.Query.make(FLWMitigationDefaults_Ext)
+    var result =   flWindMitigationQuery.compare(FLWMitigationDefaults_Ext#County, Equals, this.HOLocation.PolicyLocation.County ).select().first()
+    if(result != null and this.Branch.BaseState.Code == typekey.State.TC_FL){
+      this.Terrain_Ext = typekey.Terrain_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.Terrain.toString().toLowerCase())
+    }
+  }
 
   /**
    * This function is called before the dwelling page is saved to the database
@@ -158,6 +166,8 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
    * It sets the protection class code, calls a validation method and does some cleaning
    */
   function beforeSavingDwellingPage(){
+    // uim-svallabhapurapu, set Terrain as per county
+    setTerrain()
     setProtectionClassCode()
     HomeownersLineValidation_HOE.validateDwellingsStep(this.PolicyPeriod.HomeownersLine_HOE)
     
@@ -284,4 +294,5 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
       this.ElectricalSystemUpgradeDate = null
     }
   }
+
 }

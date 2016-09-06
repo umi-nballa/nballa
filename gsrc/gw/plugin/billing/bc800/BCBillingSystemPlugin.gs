@@ -93,11 +93,10 @@ class BCBillingSystemPlugin implements IBillingSystemPlugin {
       }
     } else {
       PCLoggerCategory.BILLING_SYSTEM_PLUGIN.info("Getting all payment plans")
-      bcPaymentPlans = BillingAPIWithLanguage.getAllPaymentPlans().where(\ plan ->
-        plan.Currency == policyPeriod.PreferredSettlementCurrency.Code
-      )
+      //bcPaymentPlans = BillingAPIWithLanguage.getAllPaymentPlans().where(\ plan -> plan.Currency == policyPeriod.PreferredSettlementCurrency.Code)
+      // UNA Requirement : filter payment plans by state,effective date, expiration date,premium size, policy type, LOBCode
+      bcPaymentPlans = BillingAPIWithLanguage.getFilteredPaymentPlans(policyPeriod.EffectiveDatedFields.EffectiveDate,policyPeriod.TotalPremiumRPT,policyPeriod.getPolicyTypeCodeString(policyPeriod),policyPeriod.Policy.ProductCode,policyPeriod.BaseState).where(\ plan -> plan.Currency == policyPeriod.PreferredSettlementCurrency.Code)
     }
-
     return convertBCPaymentPlansToPaymentPlanSummaries(bcPaymentPlans, policyPeriod)
   }
 
@@ -122,6 +121,7 @@ class BCBillingSystemPlugin implements IBillingSystemPlugin {
       if (bcPaymentPlan.InvoiceFrequency != null) {
         installmentPlan.InvoiceFrequency = bcPaymentPlan.InvoiceFrequency
       } // else use the default value from datamodel which is 'monthly'
+      installmentPlan.Notes = bcPaymentPlan.Notes
       return {installmentPlan}
     }
   }

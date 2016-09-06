@@ -201,11 +201,14 @@
       <xs:import namespace="http://guidewire.com/bc/ws/gw/webservice/policycenter/bc801/BCPCAccountBillingSummary"/>
       <xs:simpleType name="PaymentMethod">
         <xs:restriction base="xs:string">
+          <xs:enumeration value="echeck"/>
           <xs:enumeration value="ach"/>
+          <xs:enumeration value="billPay_Ext"/>
           <xs:enumeration value="cash"/>
           <xs:enumeration value="check"/>
           <xs:enumeration value="creditcard"/>
           <xs:enumeration value="misc"/>
+          <xs:enumeration value="remoteDeposit_Ext"/>
           <xs:enumeration value="responsive"/>
           <xs:enumeration value="accountunapplied"/>
           <xs:enumeration value="producerunapplied"/>

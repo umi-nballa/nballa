@@ -1,12 +1,9 @@
 package una.pageprocess
 
 uses una.utils.EnvironmentUtil
-uses gw.api.productmodel.DirectCovTermPattern
-uses java.lang.Integer
 uses gw.api.util.DisplayableException
 uses gw.api.productmodel.Product
 uses com.guidewire.pc.system.dependency.PCDependencies
-uses java.util.ArrayList
 uses java.util.Date
 
 /**
@@ -17,32 +14,10 @@ class SubmissionWizardHelper {
   private static final var CLASS_STRING = SubmissionWizardHelper.Type.DisplayName
   private static var status = 0
 
-  @Param("polPeriod","Current policy period")
+  @Param("state","the jurisdiction for the policy types for")
+  @Returns("The filtered policy type list.")
   public static function filterHOPolicyTypes(state : Jurisdiction) : HOPolicyType_HOE[] {
-    var policyTypes : HOPolicyType_HOE[]
-    if(Jurisdiction.TC_CA == state) {
-      policyTypes = typekey.HOPolicyType_HOE.TF_CALIFORNIA_EXT.TypeKeys.toTypedArray()
-    }
-    else if (Jurisdiction.TC_TX == state)
-    {
-      policyTypes = typekey.HOPolicyType_HOE.TF_TEXAS_EXT.TypeKeys.toTypedArray()
-    }
-    else if (Jurisdiction.TC_NC == state)
-      {
-        policyTypes = typekey.HOPolicyType_HOE.TF_NORTHCAROLINA_EXT.TypeKeys.toTypedArray()
-      }
-      else if (Jurisdiction.TC_AZ == state)
-        {
-          policyTypes = typekey.HOPolicyType_HOE.TF_ARIZONA_EXT.TypeKeys.toTypedArray()
-        }
-        else if (Jurisdiction.TC_HI == state || Jurisdiction.TC_FL == state)
-          {
-            policyTypes = typekey.HOPolicyType_HOE.TF_HAWAIFLORIDA_EXT.TypeKeys.toTypedArray()
-          }
-          else {
-            policyTypes = typekey.HOPolicyType_HOE.TF_ALLOTHERSTATE_EXT.TypeKeys.toTypedArray()
-          }
-    return policyTypes
+    return HOPolicyType_HOE.getTypeKeys(false).where( \ policyType -> policyType.hasCategory(state))
   }
 
   /**

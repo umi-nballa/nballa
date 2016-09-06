@@ -27,6 +27,7 @@ uses java.util.Set
 uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.bp7.BP7_UnderwriterEvaluator
+uses una.rating.bp7.UNABP7RatingEngine
 
 @Export
 class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
@@ -267,7 +268,7 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
     /*if (RateMethod.TC_SYSTABLE == method) {
       return new BP7SysTableRatingEngine(_line as BP7Line)
     }
-    return new BP7RatingEngine(_line as BP7Line, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)*/
+    return new UNABP7RatingEngine(_line as productmodel.BP7Line, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus) */
     return new BP7SysTableRatingEngine(_line as BP7Line)
   }
 

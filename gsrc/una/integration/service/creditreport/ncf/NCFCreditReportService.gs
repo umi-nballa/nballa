@@ -162,13 +162,13 @@ class NCFCreditReportService implements ICreditReportService {
    *  Transforms request object to XML format
    */
   @Returns("Convert request object into XML format")
-  private static function getOrderXml(request : CreditReportRequest) : Order {
+  private static function getOrderXml(creditReportRequest : CreditReportRequest) : Order {
     var order = new Order()
 
     // Client node
     order.Client.Id = ScriptParameters.LexisNexisClientId
     order.Client.Quoteback_elem[0].Name = ScriptParameters.QuoteBackName
-    order.Client.Quoteback_elem[0].$Value = request.PublicID
+    order.Client.Quoteback_elem[0].$Value = creditReportRequest.PublicID
 
     // Accounting node
     order.Accounting.Pnc.Account = ScriptParameters.LexisNexisAccountNumber
@@ -182,15 +182,13 @@ class NCFCreditReportService implements ICreditReportService {
     // a) Build subject first
     order.Dataset.Subjects.Subject[0].Id = "S0"
 
-
     var subject = order.Dataset.Subjects.Subject[0]
-
-    subject.Quoteback = request.toString()
-    subject.Name[0].First = request.FirstName  
-    subject.Name[0].Last = request.LastName 
-    subject.Name[0].Middle = request.MiddleName
-    subject.Ssn = request.SocialSecurityNumber
-    subject.Birthdate = request.DateOfBirth as java.lang.String 
+    subject.Quoteback = creditReportRequest.toString()
+    subject.Name[0].First = creditReportRequest.FirstName
+    subject.Name[0].Last = creditReportRequest.LastName
+    subject.Name[0].Middle = creditReportRequest.MiddleName
+    subject.Ssn = creditReportRequest.SocialSecurityNumber
+    subject.Birthdate = creditReportRequest.DateOfBirth as java.lang.String
 
     subject.Address[0].Type = SubjectAddressType_Type.Residence
 
@@ -199,27 +197,27 @@ class NCFCreditReportService implements ICreditReportService {
     var address = order.Dataset.Addresses.Address[0]
     
     var parser = AddressParser.getInstance()
-    address.House = parser.parseStreetNumber(request.AddressLine1)
-    address.Street1 = parser.parseStreetName(request.AddressLine1, request.AddressLine2) 
-    address.City =  request.AddressCity  
-    address.State = request.AddressState as java.lang.String 
-    address.Postalcode = request.AddressZip 
+    address.House = parser.parseStreetNumber(creditReportRequest.AddressLine1)
+    address.Street1 = parser.parseStreetName(creditReportRequest.AddressLine1, creditReportRequest.AddressLine2)
+    address.City =  creditReportRequest.AddressCity
+    address.State = creditReportRequest.AddressState as java.lang.String
+    address.Postalcode = creditReportRequest.AddressZip
     
     subject.Address[0].Ref = address
     
     // former address
-    if (request.PriorAddressLine1 != null) {
-     order.Dataset.Addresses.Address[1].Id = "A1"
-     subject.Address[1].Type = SubjectAddressType_Type.Former
-     address = order.Dataset.Addresses.Address[1]
+    if (creditReportRequest.PriorAddressLine1 != null) {
+      order.Dataset.Addresses.Address[1].Id = "A1"
+      subject.Address[1].Type = SubjectAddressType_Type.Former
+      address = order.Dataset.Addresses.Address[1]
     
-     address.House = parser.parseStreetNumber(request.PriorAddressLine1)
-     address.Street1 = parser.parseStreetName(request.PriorAddressLine1, request.PriorAddressLine2)
-     address.City = request.PriorAddressCity
-     address.State = request.PriorAddressState
-     address.Postalcode = request.PriorAddressZip
-    
-     subject.Address[1].Ref = address
+      address.House = parser.parseStreetNumber(creditReportRequest.PriorAddressLine1)
+      address.Street1 = parser.parseStreetName(creditReportRequest.PriorAddressLine1, creditReportRequest.PriorAddressLine2)
+      address.City = creditReportRequest.PriorAddressCity
+      address.State = creditReportRequest.PriorAddressState
+      address.Postalcode = creditReportRequest.PriorAddressZip
+
+      subject.Address[1].Ref = address
    }
   
     order.Products.NationalCreditFile[0].PrimarySubject = subject

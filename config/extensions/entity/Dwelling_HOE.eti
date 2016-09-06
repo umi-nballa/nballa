@@ -1,124 +1,609 @@
-<?xml version="1.0" encoding="UTF-8"?><entity xmlns="http://guidewire.com/datamodel" desc="Dwelling" displayName="Dwelling" effDatedBranchType="PolicyPeriod" entity="Dwelling_HOE" loadable="false" exportable="true" final="false" platform="false" table="dwelling_hoe" type="effdated">
-  <column desc="Internal field for storing the reference date of this entity on bound policy periods." name="ReferenceDateInternal" nullok="true" type="datetime"/>
-  <typekey desc="Homeowners Policy Type" name="HOPolicyType" nullok="true" typelist="HOPolicyType_HOE"/>
-
-<!-- Dwelling Details -->
-  <column desc="Year Purchased" name="YearPurchased" nullok="true" type="year"/>
-  <column desc="Replacement Cost" name="ReplacementCost" nullok="true" type="positiveinteger"/>
-  <typekey desc="Residence Type" name="ResidenceType" nullok="true" typelist="ResidenceType_HOE">
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Dwelling"
+  displayName="Dwelling"
+  effDatedBranchType="PolicyPeriod"
+  entity="Dwelling_HOE"
+  exportable="true"
+  final="false"
+  loadable="false"
+  table="dwelling_hoe"
+  type="effdated">
+  <column
+    desc="Internal field for storing the reference date of this entity on bound policy periods."
+    name="ReferenceDateInternal"
+    nullok="true"
+    type="datetime"/>
+  <typekey
+    desc="Homeowners Policy Type"
+    name="HOPolicyType"
+    nullok="true"
+    typelist="HOPolicyType_HOE"/>
+  <!-- Dwelling Details -->
+  <column
+    desc="Year Purchased"
+    name="YearPurchased"
+    nullok="true"
+    type="year"/>
+  <column
+    desc="Replacement Cost"
+    name="ReplacementCost"
+    nullok="true"
+    type="positiveinteger"/>
+  <typekey
+    desc="Residence Type"
+    name="ResidenceType"
+    nullok="true"
+    typelist="ResidenceType_HOE">
     <keyfilters>
-      <keyfilter name="HOPolicyType"/>
+      <keyfilter
+        name="HOPolicyType"/>
     </keyfilters>
   </typekey>
-  <typekey desc="Dwelling Usage" name="DwellingUsage" nullok="true" typelist="DwellingUsage_HOE"/>
-  <column desc="Primary residence coverage in effect or being applied for with the carrier" name="DwellingUsagePrimaryCoverage" nullok="true" type="bit"/>
-  <typekey desc="How the dwelling is being occupied" name="Occupancy" nullok="true" typelist="DwellingOccupancyType_HOE"/>
-  <column desc="Construction work being done by an approved builder or not" name="OccupancyApprovedBuilder" nullok="true" type="bit"/>
-  <column desc="Anticipated occupancy date for dwelling under construction" name="OccupancyProjectedDate" nullok="true" type="datetime"/>
-  <column desc="Property vacant or unoccupied more than 3 consecutive months per year" name="OccupancyVacant" nullok="true" type="bit"/>
-  <column desc="Roomers or Boarders in dwelling?" name="RoomerBoarders" nullok="true" type="bit"/>
-  <column desc="Number of roomers or boarders" name="RoomerBoardersNumber" nullok="true" type="positiveinteger"/>
-  <typekey desc="Number of units between firewall" name="UnitsNumber" nullok="true" typelist="NumUnits_HOE">
+  <typekey
+    desc="Dwelling Usage"
+    name="DwellingUsage"
+    nullok="true"
+    typelist="DwellingUsage_HOE"/>
+  <column
+    desc="Primary residence coverage in effect or being applied for with the carrier"
+    name="DwellingUsagePrimaryCoverage"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="How the dwelling is being occupied"
+    name="Occupancy"
+    nullok="true"
+    typelist="DwellingOccupancyType_HOE"/>
+  <column
+    desc="Construction work being done by an approved builder or not"
+    name="OccupancyApprovedBuilder"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Anticipated occupancy date for dwelling under construction"
+    name="OccupancyProjectedDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Property vacant or unoccupied more than 3 consecutive months per year"
+    name="OccupancyVacant"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Roomers or Boarders in dwelling?"
+    name="RoomerBoarders"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Number of roomers or boarders"
+    name="RoomerBoardersNumber"
+    nullok="true"
+    type="positiveinteger"/>
+  <typekey
+    desc="Number of units between firewall"
+    name="UnitsNumber"
+    nullok="true"
+    typelist="NumUnits_HOE">
     <keyfilters>
-      <keyfilter name="HOPolicyType"/>
+      <keyfilter
+        name="HOPolicyType"/>
     </keyfilters>
   </typekey>
-  <column desc="Safety net exists for trampoline" name="FireplaceOrWoodStoveExists" nullok="true" type="bit"/>
-  <column desc="Number of woodstoves" name="FireplaceOrWoodStovesNumber" nullok="true" type="nonnegativeinteger"/>
-  <column desc="Is there a Swimming Pool, Jacuzzi, hot tub or spa" name="SwimmingPoolExists" nullok="true" type="bit"/>
-  <column desc="Is there a fence around the property" name="SwimmingPoolFencing" nullok="true" type="bit"/>
-  <column desc="Is there a diving board" name="SwimmingPoolDivingBoard" nullok="true" type="bit"/>
-  <column desc="Trampoline exists on property?" name="TrampolineExists" nullok="true" type="bit"/>
-  <column desc="Is there a fence around the property" name="TrampolineSafetyNet" nullok="true" type="bit"/>
-  <column desc="Any water leakage" name="KnownWaterLeakage" nullok="true" type="bit"/>
-  <column desc="Description of water leakage" name="KnownWaterLeakageDescription" nullok="true" type="varchar">
-     <columnParam name="size" value="200"/>
+  <column
+    desc="Safety net exists for trampoline"
+    name="FireplaceOrWoodStoveExists"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Number of woodstoves"
+    name="FireplaceOrWoodStovesNumber"
+    nullok="true"
+    type="nonnegativeinteger"/>
+  <column
+    desc="Is there a Swimming Pool, Jacuzzi, hot tub or spa"
+    name="SwimmingPoolExists"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is there a fence around the property"
+    name="SwimmingPoolFencing"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is there a diving board"
+    name="SwimmingPoolDivingBoard"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Trampoline exists on property?"
+    name="TrampolineExists"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is there a fence around the property"
+    name="TrampolineSafetyNet"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Any water leakage"
+    name="KnownWaterLeakage"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Description of water leakage"
+    name="KnownWaterLeakageDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="200"/>
   </column>
-  <column desc="Any animals or exotic pets on the premises?" name="AnimalsInDwelling" nullok="true" type="bit"/>
-
-<!-- Protection Details -->
-  <typekey desc="Dwelling Location Type" name="DwellingLocation" nullok="true" typelist="DwellingLocationType_HOE"/>
-  <column desc="Description of Dwelling Location for type Other" name="DwellingLocationDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <column
+    desc="Any animals or exotic pets on the premises?"
+    name="AnimalsInDwelling"
+    nullok="true"
+    type="bit"/>
+  <!-- Protection Details -->
+  <typekey
+    desc="Dwelling Location Type"
+    name="DwellingLocation"
+    nullok="true"
+    typelist="DwellingLocationType_HOE"/>
+  <column
+    desc="Description of Dwelling Location for type Other"
+    name="DwellingLocationDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <column desc="One or more fire extinguishers on premises" name="FireExtinguishers" nullok="true" type="bit"/>
-  <column desc="Burglar Alarm on premises" name="BurglarAlarm" nullok="true" type="bit"/>
-  <typekey desc="Burglar Alarm Type" name="BurglarAlarmType" nullok="true" typelist="BurglarAlarmType_HOE"/>
-  <column desc="Fire Alarm reporting to a Monitoring Center" name="FireAlarm" nullok="true" type="bit"/>
-  <column desc="Smoke Alarms on Premises" name="SmokeAlarm" nullok="true" type="bit"/>
-  <column desc="Smoke Alarms on All Floors" name="SmokeAlarmOnAllFloors" nullok="true" type="bit"/>
-  <typekey desc="Sprinkler System Type" name="SprinklerSystemType" nullok="true" typelist="SprinklerSystemType_HOE"/>
-  <column desc="Do all the doors have Deadbolts" name="Deadbolts" nullok="true" type="bit"/>
-  <column desc="Number of dead bolts" name="DeadboltsNumber" nullok="true" type="positiveinteger"/>
-  <column desc="Is the dwelling visible to neighbors" name="VisibleToNeighbors" nullok="true" type="bit"/>
-
-<!-- Construction details -->
-  <column desc="Year built" name="YearBuilt" nullok="true" type="year"/>
-  <typekey desc="Dwelling Construction Type" name="ConstructionType" nullok="true" typelist="ConstructionType_HOE"/>
-  <column desc="Description of construction for type Other" name="ConstructionTypeDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <column
+    desc="One or more fire extinguishers on premises"
+    name="FireExtinguishers"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Burglar Alarm on premises"
+    name="BurglarAlarm"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Burglar Alarm Type"
+    name="BurglarAlarmType"
+    nullok="true"
+    typelist="BurglarAlarmType_HOE"/>
+  <column
+    desc="Fire Alarm reporting to a Monitoring Center"
+    name="FireAlarm"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Smoke Alarms on Premises"
+    name="SmokeAlarm"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Smoke Alarms on All Floors"
+    name="SmokeAlarmOnAllFloors"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Sprinkler System Type"
+    name="SprinklerSystemType"
+    nullok="true"
+    typelist="SprinklerSystemType_HOE"/>
+  <column
+    desc="Do all the doors have Deadbolts"
+    name="Deadbolts"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Number of dead bolts"
+    name="DeadboltsNumber"
+    nullok="true"
+    type="positiveinteger"/>
+  <column
+    desc="Is the dwelling visible to neighbors"
+    name="VisibleToNeighbors"
+    nullok="true"
+    type="bit"/>
+  <!-- Construction details -->
+  <column
+    desc="Year built"
+    name="YearBuilt"
+    nullok="true"
+    type="year"/>
+  <typekey
+    desc="Dwelling Construction Type"
+    name="ConstructionType"
+    nullok="true"
+    typelist="ConstructionType_HOE"/>
+  <column
+    desc="Description of construction for type Other"
+    name="ConstructionTypeDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <typekey desc="Number of stories in the dwelling" name="StoriesNumber" nullok="true" typelist="NumberOfStories_HOE"/>
-  <column desc="Approximate Square Footage (Excluding any garage or basement)" name="ApproxSquareFootage" nullok="true" type="positiveinteger"/>
-  <typekey desc="Garage type in dwelling" name="Garage" nullok="true" typelist="GarageType_HOE"/>
-  <column desc="Garage Area square footage" name="GarageArea" nullok="true" type="nonnegativeinteger"/>
-  <column desc="Covered/enclosed porches, patios, breezeways" name="CoveredPorch" nullok="true" type="bit"/>
-  <column desc="Covered Porch Area square footage" name="CoveredPorchArea" nullok="true" type="nonnegativeinteger"/>
-  <typekey desc="Foundation Type" name="Foundation" nullok="true" typelist="FoundationType_HOE"/>
-  <column desc="Basement Area Finished (Sq Ft)" name="BasementFinishedArea" nullok="true" type="positiveinteger"/>
-  <column desc="Basement Area UnFinished (Sq Ft)" name="BasementUnfinishedArea" nullok="true" type="positiveinteger"/>
-  <typekey desc="Roof Material Classification" name="RoofType" nullok="true" typefilter="HOSpecific" typelist="RoofType"/>
-  <column desc="Description of Roof Type for type Other" name="RoofTypeDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <typekey
+    desc="Number of stories in the dwelling"
+    name="StoriesNumber"
+    nullok="true"
+    typelist="NumberOfStories_HOE"/>
+  <column
+    desc="Approximate Square Footage (Excluding any garage or basement)"
+    name="ApproxSquareFootage"
+    nullok="true"
+    type="positiveinteger"/>
+  <typekey
+    desc="Garage type in dwelling"
+    name="Garage"
+    nullok="true"
+    typelist="GarageType_HOE"/>
+  <column
+    desc="Garage Area square footage"
+    name="GarageArea"
+    nullok="true"
+    type="nonnegativeinteger"/>
+  <column
+    desc="Covered/enclosed porches, patios, breezeways"
+    name="CoveredPorch"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Covered Porch Area square footage"
+    name="CoveredPorchArea"
+    nullok="true"
+    type="nonnegativeinteger"/>
+  <typekey
+    desc="Foundation Type"
+    name="Foundation"
+    nullok="true"
+    typelist="FoundationType_HOE"/>
+  <column
+    desc="Basement Area Finished (Sq Ft)"
+    name="BasementFinishedArea"
+    nullok="true"
+    type="positiveinteger"/>
+  <column
+    desc="Basement Area UnFinished (Sq Ft)"
+    name="BasementUnfinishedArea"
+    nullok="true"
+    type="positiveinteger"/>
+  <typekey
+    desc="Roof Material Classification"
+    name="RoofType"
+    nullok="true"
+    typefilter="HOSpecific"
+    typelist="RoofType"/>
+  <column
+    desc="Description of Roof Type for type Other"
+    name="RoofTypeDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <typekey desc="Dwelling Heating Type" name="PrimaryHeating" nullok="true" typelist="HeatingType_HOE"/>
-  <typekey desc="Location of fuel tank for Oil based heating" name="PrimaryHeatingFuelTankLocation" nullok="true" typelist="FuelTankLocationType_HOE"/>
-  <typekey desc="Location of fuel tank for Oil based heating" name="PrimaryHeatingFuelLineLocation" nullok="true" typelist="FuelLineLocationType_HOE"/>
-  <column desc="Description of primary heating for type Other" name="PrimaryHeatingDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <typekey
+    desc="Dwelling Heating Type"
+    name="PrimaryHeating"
+    nullok="true"
+    typelist="HeatingType_HOE"/>
+  <typekey
+    desc="Location of fuel tank for Oil based heating"
+    name="PrimaryHeatingFuelTankLocation"
+    nullok="true"
+    typelist="FuelTankLocationType_HOE"/>
+  <typekey
+    desc="Location of fuel tank for Oil based heating"
+    name="PrimaryHeatingFuelLineLocation"
+    nullok="true"
+    typelist="FuelLineLocationType_HOE"/>
+  <column
+    desc="Description of primary heating for type Other"
+    name="PrimaryHeatingDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <column desc="Secondary Heating Exists" name="SecondaryHeatingExists" nullok="true" type="bit"/>
-  <typekey desc="Plumbing Type" name="PlumbingType" nullok="true" typelist="PlumbingType_HOE"/>
-  <column desc="Description of plumbing for type Other" name="PlumbingTypeDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <column
+    desc="Secondary Heating Exists"
+    name="SecondaryHeatingExists"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Plumbing Type"
+    name="PlumbingType"
+    nullok="true"
+    typelist="PlumbingType_HOE"/>
+  <column
+    desc="Description of plumbing for type Other"
+    name="PlumbingTypeDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <typekey desc="Electrical Wiring Type" name="WiringType" nullok="true" typelist="WiringType_HOE"/>
-  <column desc="Description of wiring for type Other" name="WiringTypeDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <typekey
+    desc="Electrical Wiring Type"
+    name="WiringType"
+    nullok="true"
+    typelist="WiringType_HOE"/>
+  <column
+    desc="Description of wiring for type Other"
+    name="WiringTypeDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <typekey desc="Electrical Type" name="ElectricalType" nullok="true" typelist="BreakerType_HOE"/>
-  <column desc="Description of electrical system for breaker type Other" name="ElectricalTypeDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <typekey
+    desc="Electrical Type"
+    name="ElectricalType"
+    nullok="true"
+    typelist="BreakerType_HOE"/>
+  <column
+    desc="Description of electrical system for breaker type Other"
+    name="ElectricalTypeDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <column desc="Amperage of the electrical system" name="Amperage" nullok="true" type="positiveinteger"/>
-  <typekey desc="Wind Rating for Dwelling" name="WindClass" nullok="true" typefilter="HOSpecific" typelist="WindRating"/>
-  <column desc="Description of Wind Class for type Other" name="WindClassDescription" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <column
+    desc="Amperage of the electrical system"
+    name="Amperage"
+    nullok="true"
+    type="positiveinteger"/>
+  <typekey
+    desc="Wind Rating for Dwelling"
+    name="WindClass"
+    nullok="true"
+    typefilter="HOSpecific"
+    typelist="WindRating"/>
+  <column
+    desc="Description of Wind Class for type Other"
+    name="WindClassDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <column desc="Construction classification code used for rating usually populated through external interface like MSB" name="ConstructionCode" nullok="true" type="varchar">
-      <columnParam name="size" value="100"/>
+  <column
+    desc="Construction classification code used for rating usually populated through external interface like MSB"
+    name="ConstructionCode"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <column desc="Heating Upgraded" name="HeatingUpgrade" nullok="true" type="bit"/>
-  <column desc="Date of Heating Upgrade" name="HeatingUpgradeDate" nullok="true" type="year"/>
-  <column desc="Plumbing Upgraded" name="PlumbingUpgrade" nullok="true" type="bit"/>
-  <column desc="Date of Plumbing Upgrade" name="PlumbingUpgradeDate" nullok="true" type="year"/>
-  <column desc="Electrical System Upgraded" name="ElectricalSystemUpgrade" nullok="true" type="bit"/>
-  <column desc="Date of Electrical System Upgrade" name="ElectricalSystemUpgradeDate" nullok="true" type="year"/>
-  <column desc="Roofing Upgraded" name="RoofingUpgrade" nullok="true" type="bit"/>
-  <column desc="Date of Roofing Upgrade" name="RoofingUpgradeDate" nullok="true" type="year"/>
-
-  <foreignkey desc="Location of dwelling." exportable="true" fkentity="HOLocation_HOE" name="HOLocation" nullok="true"/>
-  <foreignkey fkentity="HomeownersLine_HOE" name="HOLine" nullok="false"/>
-  <array arrayentity="DwellingAnimal_HOE" desc="Animals in the dwelling premises" name="DwellingAnimals"/>
-  <array arrayentity="DwellingCov_HOE" cascadeDelete="true" desc="All coverages that apply directly to this dwelling." name="Coverages" setterScriptability="all"/>
-  <array arrayentity="HODwellingAddlInt_HOE" cascadeDelete="true" desc="Third parties with an additional interest in the dwelling" name="AdditionalInterests" owner="false"/>
-  <array arrayentity="DwellingModifier_HOE" cascadeDelete="true" desc="Rating info for the dwelling" name="DwellingModifiers" owner="false"/>
-  <implementsEntity adapter="gw.lob.ho.DwellingCoverableAdapter_HOE" name="Coverable"/>
-  <implementsEntity adapter="gw.lob.ho.DwellingModifiableAdapter_HOE" name="Modifiable"/>
-  <implementsInterface iface="gw.api.contact.AdditionalInterestContainer" impl="gw.lob.ho.contact.DwellingAdditionalInterestContainer_HOE"/>
-
-  <implementsInterface iface="gw.api.copier.EffDatedCopyable" impl="gw.api.copier.EffDatedCopier"/>
+  <column
+    desc="Heating Upgraded"
+    name="HeatingUpgrade"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Date of Heating Upgrade"
+    name="HeatingUpgradeDate"
+    nullok="true"
+    type="year"/>
+  <column
+    desc="Plumbing Upgraded"
+    name="PlumbingUpgrade"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Date of Plumbing Upgrade"
+    name="PlumbingUpgradeDate"
+    nullok="true"
+    type="year"/>
+  <column
+    desc="Electrical System Upgraded"
+    name="ElectricalSystemUpgrade"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Date of Electrical System Upgrade"
+    name="ElectricalSystemUpgradeDate"
+    nullok="true"
+    type="year"/>
+  <column
+    desc="Roofing Upgraded"
+    name="RoofingUpgrade"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Date of Roofing Upgrade"
+    name="RoofingUpgradeDate"
+    nullok="true"
+    type="year"/>
+  <foreignkey
+    desc="Location of dwelling."
+    fkentity="HOLocation_HOE"
+    name="HOLocation"
+    nullok="true"/>
+  <foreignkey
+    fkentity="HomeownersLine_HOE"
+    name="HOLine"
+    nullok="false"/>
+  <array
+    arrayentity="DwellingAnimal_HOE"
+    desc="Animals in the dwelling premises"
+    name="DwellingAnimals"/>
+  <array
+    arrayentity="DwellingCov_HOE"
+    cascadeDelete="true"
+    desc="All coverages that apply directly to this dwelling."
+    name="Coverages"/>
+  <array
+    arrayentity="HODwellingAddlInt_HOE"
+    cascadeDelete="true"
+    desc="Third parties with an additional interest in the dwelling"
+    name="AdditionalInterests"/>
+  <array
+    arrayentity="DwellingModifier_HOE"
+    cascadeDelete="true"
+    desc="Rating info for the dwelling"
+    name="DwellingModifiers"/>
+  <implementsEntity
+    adapter="gw.lob.ho.DwellingCoverableAdapter_HOE"
+    name="Coverable"/>
+  <implementsEntity
+    adapter="gw.lob.ho.DwellingModifiableAdapter_HOE"
+    name="Modifiable"/>
+  <implementsInterface
+    iface="gw.api.contact.AdditionalInterestContainer"
+    impl="gw.lob.ho.contact.DwellingAdditionalInterestContainer_HOE"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
   <implementsInterface
     iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
     impl="gw.lob.ho.DwellingMatcher_HOE"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ExteriorWallFinish_Ext"
+    nullok="true"
+    typelist="ExteriorWallFinish_Ext"/>
+  <column
+    name="FloorLocation_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
+  </column>
+  <column
+    name="UpstairsLndrySurcharge_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="SquareFootage_Ext"
+    nullok="true"
+    type="positiveinteger"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="PanelManufacturer_Ext"
+    nullok="true"
+    typelist="PanelManufacturer_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="NumberofAmps_Ext"
+    nullok="true"
+    typelist="NumberofAmps_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="RoofDecking_Ext"
+    nullok="true"
+    typelist="RoofDecking_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="OpeningProtection_Ext"
+    nullok="true"
+    typelist="OpeningProtection_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="FBCWindSpeed_Ext"
+    nullok="true"
+    typelist="FBCWindSpeed_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="WindSpeedOfDesign_Ext"
+    nullok="true"
+    typelist="WindSpeedOfDesign_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="WindBorneDebrisRegion_Ext"
+    nullok="true"
+    typelist="WindBorneDebrisRegion_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="InternalPressureDsgn_Ext"
+    nullok="true"
+    typelist="InternalPressureDsgn_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="SecondaryWaterResis_Ext"
+    nullok="true"
+    typelist="SecondaryWaterResis_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="RoofWallConnection_Ext"
+    nullok="true"
+    typelist="RoofWallConnection_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="RoofCover_Ext"
+    nullok="true"
+    typelist="RoofCover_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="RoofDeckAttachment_Ext"
+    nullok="true"
+    typelist="RoofDeckAttachment_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="DoorStrength_Ext"
+    nullok="true"
+    typelist="DoorStrength_Ext"/>
+  <typekey
+    desc="Terrain"
+    name="Terrain_Ext"
+    nullok="true"
+    typelist="Terrain_Ext"/>
+  <typekey
+    desc="RoofShape"
+    name="RoofShape_Ext"
+    nullok="true"
+    typelist="RoofShape_Ext"/>
+  <column
+    name="PropertyCovByStateWndstorm_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="WHurricaneHailExclusion_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="WindMitigation_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="HailResistantRoofCredit_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="SubstantialBarrierDebris_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="BldgThatContainAsbestos_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="RoofSlope_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="SupplHeatingSurcharge_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Number of Roof Layers"
+    name="NumberofRoofLayers_Ext"
+    nullok="true"
+    type="nonnegativeinteger"/>
 </entity>

@@ -18,6 +18,7 @@ uses gw.xml.ws.annotation.WsiPermissions
 uses java.util.ArrayList
 uses java.util.Date
 uses java.lang.IllegalArgumentException
+uses gw.api.productmodel.CovTermPattern
 
 /**
  * Provides service API methods for modifying the PolicyCenter product model.
@@ -99,41 +100,49 @@ class ProductModelAPI {
   @Param("lookupDate", "the date to look up")
   @WsiPermissions({SystemPermissionType.TC_TOOLSPRODUCTMODELINFOVIEW})
   @Returns("the list of available clause patterns")
-  function getAvailableClausePatterns(lookupRoot : LookupRootImpl,
+  function getAvailableClausePatterns(lookupRoot : LookupRootGeneric,
                                       offeringCode : String,
                                       lookupDate : Date) : List<ClausePattern>{
+    var results : List<ClausePattern> = {}
+
     SOAPUtil.require(lookupRoot, "lookupRoot")
     SOAPUtil.require(lookupRoot.PolicyLinePatternCode, "lookupRoot.PolicyLinePatternCode")
-    SOAPUtil.require(lookupDate, "lookupDate")
-    var linePattern = PolicyLinePatternLookup.getByCode(lookupRoot.PolicyLinePatternCode)
-    if(linePattern == null){
-      throw new BadIdentifierException(displaykey.ProductModelAPI.Error.PolicyLinePatternNotFound(lookupRoot.PolicyLinePatternCode))
-    }
-    var coverableType = lookupRoot.lookupType()
-    if(coverableType == null){
-      throw new BadIdentifierException(displaykey.ProductModelAPI.Error.EntityNotFound(lookupRoot.LookupTypeName))
-    }
 
-    var allPatterns = PCDependenciesGateway.getProductModel().getClausePatternsForEntity(lookupRoot.LookupTypeName);
-    var cpCtx = PCDependenciesGateway.getProductModel().getClauseAvailabilityContext(lookupRoot, linePattern, lookupDate)
-    var offering = OfferingLookup.getByCode(offeringCode)
-    var results = new ArrayList<ClausePattern>()
-    for(pattern in allPatterns){
-      var clauseAvailabilityInfo = pattern.getAvailabilityInfo(cpCtx,lookupRoot, linePattern, offering)
+    validate(lookupRoot)
+
+    var patternsForEntity = PCDependenciesGateway.getProductModel().getClausePatternsForEntity(lookupRoot.LookupTypeName)
+    var cpCtx = PCDependenciesGateway.getProductModel().getClauseAvailabilityContext(lookupRoot, lookupRoot.ProductModelPolicyLinePattern, lookupDate)
+
+
+    patternsForEntity.each( \ pattern -> {
+      var clauseAvailabilityInfo = pattern.getAvailabilityInfo(cpCtx, lookupRoot, lookupRoot.ProductModelPolicyLinePattern, offeringCode)
+
       if(clauseAvailabilityInfo.Available){
         var result = new gw.webservice.pc.pc800.gxmodel.clausepatternmodel.ClausePattern(pattern).$TypeInstance
-        var covTermCtx = PCDependenciesGateway.getProductModel().getCovTermAvailabilityContext(lookupRoot, linePattern, lookupDate)
-        for(covTerm in pattern.CovTerms){
-          var covTermAvailabilityInfo = covTerm.getAvailabilityInfo(covTermCtx, linePattern, offering)
-          if(not covTermAvailabilityInfo.Available){
-            result.CovTerms.Entry.removeWhere(\ c -> c.Code == covTerm.Code)
-          }
-        }
+        excludeUnavailableCovTerms(lookupRoot, pattern.CovTerms, result, lookupDate)
         results.add(result)
       }
-    }
-    return results
+    })
 
+    return results
+  }
+
+  @Throws(SOAPException, "If communication fails")
+  @Throws(RequiredFieldException, "If any required field is null")
+  @Throws(BadIdentifierException, "If cannot find an instance with specified id")
+  @Param("lookupTypeName", "the entity - coverable - on which to retrieve covverages for regardless of availability context")
+  @WsiPermissions({SystemPermissionType.TC_TOOLSPRODUCTMODELINFOVIEW})
+  @Returns("the list of all clause patterns for the lookup type coverable, regardless of availability context")
+  function getAllClausePatterns(lookupTypeName : String) : List<ClausePattern>{
+    var results : List<ClausePattern> = {}
+
+    var clausePatterns = PCDependenciesGateway.getProductModel().getClausePatternsForEntity(lookupTypeName)
+
+    clausePatterns?.each( \ pattern -> {
+      results.add(new gw.webservice.pc.pc800.gxmodel.clausepatternmodel.ClausePattern(pattern).$TypeInstance)
+    })
+
+    return results
   }
 
   /**
@@ -178,5 +187,52 @@ class ProductModelAPI {
     SOAPUtil.require(productModelType, "productModelType")
     var productModelClass = productModelType.ProductModelClass
     return PCDependenciesGateway.getProductModel().getPublicIdForCodeIdentifier(codeIdentifier, productModelClass);
+  }
+
+  private function validate(lookupRoot : LookupRootGeneric){
+    validateLookupRoot(lookupRoot)
+    validatePolicyTypes(lookupRoot)
+  }
+
+  private function validateLookupRoot(lookupRoot : LookupRootGeneric){
+    if(lookupRoot.ProductModelPolicyLinePattern == null){
+      throw new BadIdentifierException(displaykey.ProductModelAPI.Error.PolicyLinePatternNotFound(lookupRoot.PolicyLinePatternCode))
+    }
+
+    if(lookupRoot.LookupTypeName == null){
+      throw new BadIdentifierException(displaykey.ProductModelAPI.Error.EntityNotFound(lookupRoot.LookupTypeName))
+    }
+  }
+
+  private function validatePolicyTypes(lookupRoot : LookupRootGeneric){
+    if(lookupRoot.PolicyType != null){
+      switch(lookupRoot.PolicyLinePatternCode){
+        case "HomeownersLine_HOE":
+          var hoPolicyType = typekey.HOPolicyType_HOE.getTypeKeys(false).firstWhere( \ policyType -> policyType.Code == lookupRoot.PolicyType)
+
+          if(hoPolicyType == null){
+            throw new BadIdentifierException("Policy type ${lookupRoot.PolicyType} not available for line '${lookupRoot.PolicyLinePatternCode}'")
+          }else if(!hoPolicyType.hasCategory(lookupRoot.State)){
+            throw new BadIdentifierException("Policy type ${lookupRoot.PolicyType} is not available for State '${lookupRoot.State}'")
+          }
+          break
+        case "BusinessAutoLine":
+          if(!typekey.BAPolicyType.getTypeKeys(false).hasMatch( \ elt1 -> elt1.Code == lookupRoot.PolicyType)){
+            throw new BadIdentifierException("Policy type ${lookupRoot.PolicyType} not available for line '${lookupRoot.PolicyLinePatternCode}'")
+          }
+          break
+      }
+    }
+  }
+
+  private function excludeUnavailableCovTerms(lookupRoot : LookupRootGeneric, covTerms : List<CovTermPattern>, clausePattern : ClausePattern, lookupDate : Date){
+    var context = PCDependenciesGateway.getProductModel().getCovTermAvailabilityContext(lookupRoot, lookupRoot.ProductModelPolicyLinePattern, lookupDate)
+
+    covTerms.each( \ covTerm -> {
+      var availabilityInfo = covTerm.getAvailabilityInfo(context, lookupRoot.ProductModelPolicyLinePattern, null)
+      if(!availabilityInfo.Available){
+        clausePattern.CovTerms.Entry.removeWhere(\ c -> c.Code == covTerm.CodeIdentifier)
+      }
+    })
   }
 }

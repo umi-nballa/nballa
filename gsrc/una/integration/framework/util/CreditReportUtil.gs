@@ -140,7 +140,7 @@ public class CreditReportUtil {
   @Returns("Returns true if the policy is a personal auto policy, the primary insured is a person and the age is less than the minimum age requirement")
   public static function isCreditReportRequired(period : PolicyPeriod) : boolean {
         
-    var result : boolean=true
+    var result : boolean = true
 
     if(period != null) {
       _logger.debug("*********** Line = " + period.LinePatterns.firstWhere( \ p -> p.Code == typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE.Code))
@@ -150,7 +150,8 @@ public class CreditReportUtil {
     
       result = period.HomeownersLine_HOEExists
           && primaryNamedInsured typeis Person
-          && (primaryNamedInsured.DateOfBirth==null || primaryNamedInsured.Age>=params.CreditReportMinimumAge)
+          && (primaryNamedInsured.DateOfBirth == null || primaryNamedInsured.Age >= params.CreditReportMinimumAge)
+          && !(primaryNamedInsured.PrimaryAddress.State.Code == "CA" || primaryNamedInsured.PrimaryAddress.State.Code == "HI")
       
       if (_logger.DebugEnabled) {
         _logger.debug("Required flag: " + result)

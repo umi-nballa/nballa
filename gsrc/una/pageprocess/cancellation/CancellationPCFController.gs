@@ -168,7 +168,7 @@ class CancellationPCFController {
     var calculatedDaysNotice = new CancellationLeadTimeCalculator(_cancellation.CancelReasonCode,
         _policyPeriod.AllPolicyLinePatternsAndJurisdictions,
         initialProcessingDate,
-        initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod, _cancellation.CancelReasonCode), _policyPeriod).calculateMaximumLeadTime()
+        initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod), _policyPeriod).calculateMaximumLeadTime()
 
     if(_cancellation.CancelLetterMailDate.beforeOrEqualsIgnoreTime(today)){
       result = displaykey.una.validation.cancellation.FutureDateOnly
@@ -197,7 +197,7 @@ class CancellationPCFController {
   }
 
   private function isInUWPeriod() : boolean{
-    var uwPeriodEnd = Cancellation.findUWPeriodEnd(_policyPeriod, _cancellation.CancelReasonCode)
+    var uwPeriodEnd = Cancellation.findUWPeriodEnd(_policyPeriod)
     var initialDate = (_cancellation.CancelLetterMailDate == null) ? java.util.Date.CurrentDate.addDays(1).orNextBusinessDay(_policyPeriod.ProducerCodeOfRecord.Address) : _cancellation.CancelLetterMailDate
     var referencePoint = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : initialDate
     return referencePoint.beforeOrEqualsIgnoreTime(uwPeriodEnd)

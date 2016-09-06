@@ -105,7 +105,7 @@
         validationExpression="cancellation.validateEffectiveDate(policyPeriod, effectiveDate, policyPeriod.RefundCalcMethod)"
         value="effectiveDate">
         <PostOnChange
-          onChange="if (effectiveDate != null) { applyCancellationDateChange() }"/>
+          onChange="if (effectiveDate != null) { applyCancellationDateChange() }; pcfController.onChangeCancelEffectiveDate(effectiveDate)"/>
       </DateInput>
       <DateTimeInput
         editable="true"

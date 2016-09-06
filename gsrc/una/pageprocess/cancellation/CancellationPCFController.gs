@@ -162,17 +162,17 @@ class CancellationPCFController {
 
   public function validateMailDate() : String{
     var result : String
+    this._numberOfDaysNotice = _cancellation.CancelLetterMailDate.daysBetween(_effectiveDate)
     var today = java.util.Date.CurrentDate
     var initialProcessingDate = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : today
     var calculatedDaysNotice = new CancellationLeadTimeCalculator(_cancellation.CancelReasonCode,
         _policyPeriod.AllPolicyLinePatternsAndJurisdictions,
         initialProcessingDate,
-        initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod), _policyPeriod).calculateMaximumLeadTime()
+        initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod, _cancellation.CancelReasonCode), _policyPeriod).calculateMaximumLeadTime()
 
     if(_cancellation.CancelLetterMailDate.beforeOrEqualsIgnoreTime(today)){
       result = displaykey.una.validation.cancellation.FutureDateOnly
-    //number of days + 1 to offset the 1 day that the plugin automatically adds to the stored lead time
-    }else if(NumberOfDaysNotice + 1 < calculatedDaysNotice and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(_cancellation.CancelReasonCode)){
+    }else if(NumberOfDaysNotice < calculatedDaysNotice and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(_cancellation.CancelReasonCode)){
       result = displaykey.una.validation.cancellation.MailDateStateMandate
     }
 
@@ -197,7 +197,7 @@ class CancellationPCFController {
   }
 
   private function isInUWPeriod() : boolean{
-    var uwPeriodEnd = Cancellation.findUWPeriodEnd(_policyPeriod)
+    var uwPeriodEnd = Cancellation.findUWPeriodEnd(_policyPeriod, _cancellation.CancelReasonCode)
     var initialDate = (_cancellation.CancelLetterMailDate == null) ? java.util.Date.CurrentDate.addDays(1).orNextBusinessDay(_policyPeriod.ProducerCodeOfRecord.Address) : _cancellation.CancelLetterMailDate
     var referencePoint = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : initialDate
     return referencePoint.beforeOrEqualsIgnoreTime(uwPeriodEnd)

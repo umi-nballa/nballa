@@ -35,7 +35,8 @@ class CoveragesUtil {
     var result = true
 
     switch(exclusionPattern){
-      case "HODW_WindstromExteriorPaintandWaterproofingExcl_HOE_Ext":
+      case "HODW_WindstromExteriorPaintandWaterproofingExcl_HOENC_Ext":
+      case "HODW_WindstromExteriorPaintandWaterproofingExcl_HOESC_Ext":
         result = isWindstormExteriorPaintExclusionAvailable(coverable as HomeownersLine_HOE)
         break
       case "HODW_AckNoWindstromHail_HOE_Ext":
@@ -112,7 +113,7 @@ class CoveragesUtil {
     result = hoLine.Dwelling.HODW_SectionI_Ded_HOE.hasCovTerm(dependentCovTerm)
          and (hoLine.Dwelling.HODW_SectionI_Ded_HOE.getCovTerm(dependentCovTerm) as OptionCovTerm).Value > 0
          and dependentCovTermTerritories.HasElements
-         and dependentCovTermTerritories.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
+         and dependentCovTermTerritories?.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
 
     return result
   }

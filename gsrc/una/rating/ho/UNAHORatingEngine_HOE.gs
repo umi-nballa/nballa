@@ -232,13 +232,13 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   *  Function which determines whether policy fee is applicable or not.
    */
   private function isPolicyFeeApplicable(line : HomeownersLine_HOE) : boolean {
-    if(_baseState == typekey.Jurisdiction.TC_AZ or _baseState == typekey.Jurisdiction.TC_CA) {
+    if(_baseState == typekey.Jurisdiction.TC_AZ) {
       return false
-    } else if(_baseState == typekey.Jurisdiction.TC_TX){
+    } else if(_baseState == typekey.Jurisdiction.TC_TX or _baseState == typekey.Jurisdiction.TC_CA){
       if(line.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE and line.Branch.Job.Subtype != typekey.Job.TC_CANCELLATION)
         return true
     } else if(_baseState == typekey.Jurisdiction.TC_NV){
-      if(line.Branch.Job.Subtype == typekey.Job.TC_RENEWAL)
+      if(line.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION)
         return true
     }
     return false

@@ -492,7 +492,7 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
         rateSpecificStructureOffPremises(cov, dwell)
         break
       case  HODW_ScheduledProperty_HOE :
-        rateScheduledPersonalProperty(cov, dwell)
+        //rateScheduledPersonalProperty(cov, dwell)
         break
       case  HODW_SpecialLimitsCovC_HOE :
         rateScheduledSpecialPersonalProperty(cov, dwell)

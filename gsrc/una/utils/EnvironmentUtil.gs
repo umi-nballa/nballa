@@ -15,6 +15,7 @@ class EnvironmentUtil {
   public static final var INT1_ENVIRONMENT: String = "pc_asm"
   public static final var QA_ENVIRONMENT: String = "pc_qa"
   public static final var UAT_ENVIRONMENT: String = "pc_uat"
+  public static final var QAT_ENVIRONMENT: String = "pc_qat"
   public static final var PROD_ENVIRONMENT: String = "prd"
   static property get PolicyCenterRuntime(): String {
     //serverutil does not work from gosuscratch pad. Default to local if this fails so unit tests can be run
@@ -41,6 +42,19 @@ class EnvironmentUtil {
     if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_ENVIRONMENT
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_ENVIRONMENT) {
+      return true
+    } else {
+      return false
+    }
+  }
+
+  /**
+   * Function to check if the environment is QAT or not
+  */
+  static function isQAT(): boolean {
+    if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty) {
+      return false
+    } else if (EnvironmentUtil.PolicyCenterRuntime == QAT_ENVIRONMENT) {
       return true
     } else {
       return false

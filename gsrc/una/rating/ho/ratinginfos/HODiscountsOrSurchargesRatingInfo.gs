@@ -13,6 +13,7 @@ class HODiscountsOrSurchargesRatingInfo {
   var _yearBuilt : int as YearBuilt
   var _ageOfHome : int as AgeOfHome
   var _burglarAlarmType : String as BurglarAlarmType
+  final var _ageOfHomeGreaterLimit : int as AgeOfHomeGreaterLimit = 14
 
   construct(lineVersion : HomeownersLine_HOE){
     _yearBuilt = lineVersion.Dwelling?.YearBuilt

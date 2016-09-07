@@ -213,9 +213,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.MED_PAY_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null){
-      if(costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
+    if (costData != null and costData.ActualTermAmount != 0){
       addCost(costData)
     }
     _logger.debug("Medical Payments Coverage Rated Successfully", this.IntrinsicType)
@@ -229,9 +227,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.PERSONAL_LIABILITY_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null){
-      if(costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
+    if (costData != null and costData.ActualTermAmount != 0){
       addCost(costData)
     }
     _logger.debug("Personal Liability Coverage Rated Successfully", this.IntrinsicType)

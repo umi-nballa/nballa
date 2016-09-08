@@ -130,7 +130,7 @@ class CoverageTermAvailabilityUtil {
       var restrictedValues = ConfigParamsUtil.getList(TC_RestrictedHurricaneDedutibleValues, state, otherPerilsValue?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
 
       if(restrictedValues.HasElements){
-        result = restrictedValues?.contains(_option.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
+        result = restrictedValues?.contains(_option.Value?.toString())
       }
     }
 

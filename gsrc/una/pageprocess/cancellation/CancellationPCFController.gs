@@ -39,7 +39,7 @@ class CancellationPCFController {
   }
 
   property get ReasonDetailRange() : java.util.List<typekey.CancelReasonDetailType> {
-    return _reasonDetailRange
+    return _reasonDetailRange?.sortBy( \ element -> element.DisplayName)
   }
 
   property get CancellationLetterMailDate() : Date{

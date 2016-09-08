@@ -5,7 +5,7 @@
   coverageCategory="CPBldgCovCategory"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
-  existence="Suggested"
+  existence="Electable"
   lookupTableName="CPBuildingCov"
   owningEntityType="CPBuilding"
   policyLinePattern="CPLine"
@@ -29,15 +29,12 @@
         <CovTermLimits
           codeIdentifier="CPBPPCovLimitusd"
           currency="usd"
-          defaultValue="10000"
-          minVal="1"
           public-id="CPBPPCovLimitusd"/>
       </LimitsSet>
     </DirectCovTermPattern>
     <TypekeyCovTermPattern
       codeIdentifier="CPBPPCovCauseOfLoss"
       coverageColumn="ChoiceTerm1"
-      defaultValue="Basic"
       lookupTableName="CPBuildingCovTerm"
       modelType="Other"
       priority="2"
@@ -53,9 +50,10 @@
       modelType="Deductible"
       priority="6"
       public-id="CPBPPCovDeductible"
-      required="false"
+      required="true"
       restrictionModel="prp"
       valueType="money">
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="rBgAPQ0vIroAAAAA"
@@ -100,13 +98,6 @@
           public-id="rBgAPY4g_lsAAAAA"
           value="25000"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBPPCovDeductibleusd"
-          currency="usd"
-          defaultValue="2500"
-          public-id="CPBPPCovDeductibleusd"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -120,6 +111,12 @@
       required="false"
       restrictionModel="prp"
       valueType="percent">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="CPBPPCovWindDeductiblenocurrency"
+          defaultValue="2"
+          public-id="CPBPPCovWindDeductiblenocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="rBgAPQ6_w9AAAAAA"
@@ -146,12 +143,6 @@
           public-id="rBgAPQNroTAAAAAA"
           value="0"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBPPCovWindDeductiblenocurrency"
-          defaultValue="2"
-          public-id="CPBPPCovWindDeductiblenocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -165,6 +156,12 @@
       required="true"
       restrictionModel="prp"
       valueType="percent">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="CPBPPCovCoinsurancenocurrency"
+          defaultValue="100"
+          public-id="CPBPPCovCoinsurancenocurrency"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="rBgAPU_cxMUAAAAA"
@@ -191,12 +188,6 @@
           public-id="rBgAPYQByxoAAAAA"
           value="0"/>
       </Options>
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="CPBPPCovCoinsurancenocurrency"
-          defaultValue="80"
-          public-id="CPBPPCovCoinsurancenocurrency"/>
-      </DefaultsSet>
     </OptionCovTermPattern>
     <TypekeyCovTermPattern
       codeIdentifier="CPBPPValuationMethod"
@@ -248,5 +239,79 @@ return CPBuilding.CPBPPCov.CPBPPCovCauseOfLossTerm.Value == "Special" as CPCause
         
       ]]></AvailabilityScript>
     </GenericCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="CPBuildingCovOpt"
+      codeIdentifier="CPBPPCovHurricaneDed_EXT"
+      coverageColumn="ChoiceTerm7"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Deductible"
+      priority="110"
+      public-id="CPBPPCovHurricaneDed_EXT"
+      required="true"
+      restrictionModel="prp"
+      valueType="percent">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zuqh60qae40ped1ujvr0ls4lml9"
+          optionCode="CPHurricaneDed5_EXT"
+          priority="87"
+          public-id="zuqh60qae40ped1ujvr0ls4lml9"
+          value="5"/>
+        <CovTermOpt
+          codeIdentifier="zrvhauqsg17o829m2qoeuls27c8"
+          optionCode="CPHurricaneDed10_EXT"
+          priority="100"
+          public-id="zrvhauqsg17o829m2qoeuls27c8"
+          value="10"/>
+        <CovTermOpt
+          codeIdentifier="zrpgc5e34httae15do5c0hdvv3b"
+          optionCode="CPHurricaneDedNA_EXT"
+          priority="0"
+          public-id="zrpgc5e34httae15do5c0hdvv3b"
+          value="0"/>
+        <CovTermOpt
+          codeIdentifier="zupjq54b8h4q4439f696rpf8gs9"
+          optionCode="CPHurricaneDed3_EXT"
+          priority="75"
+          public-id="zupjq54b8h4q4439f696rpf8gs9"
+          value="3"/>
+        <CovTermOpt
+          codeIdentifier="zm2hqdhoteuki6amutiekq578ha"
+          optionCode="CPHurricaneDed2_EXT"
+          priority="50"
+          public-id="zm2hqdhoteuki6amutiekq578ha"
+          value="2"/>
+      </Options>
+    </OptionCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="CPBuildingCovOpt"
+      codeIdentifier="CPBPPCovHurricaneDedType_EXT"
+      coverageColumn="ChoiceTerm8"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Other"
+      priority="210"
+      public-id="CPBPPCovHurricaneDedType_EXT"
+      required="true"
+      restrictionModel="per"
+      valueType="other">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zd5hqt8tqp6obcuukutltgq7peb"
+          optionCode="CPBPPPerOccurrence_EXT"
+          priority="100"
+          public-id="zd5hqt8tqp6obcuukutltgq7peb"
+          value="0"/>
+        <CovTermOpt
+          codeIdentifier="zs9gobjiq546d5ht64b89igcd98"
+          optionCode="CPBPPCalendarYear_EXT"
+          priority="100"
+          public-id="zs9gobjiq546d5ht64b89igcd98"
+          value="0"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

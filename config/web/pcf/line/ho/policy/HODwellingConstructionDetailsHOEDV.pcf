@@ -11,11 +11,6 @@
     <Require
       name="openForEdit"
       type="Boolean"/>
-    <Variable
-      initialValue="setDefaultForRating()"
-      name="default"
-      recalculateOnRefresh="true"
-      type="boolean"/>
     <InputColumn
       labelWidth="350">
       <Input
@@ -63,13 +58,13 @@
         required="true"
         value="dwelling.StoriesNumber"
         visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)">
-        <PostOnChange/>
+        <PostOnChange
+          onChange="if(dwelling.StoriesNumber == typekey.NumberOfStories_HOE.TC_ONESTORY_EXT){dwelling.FloorLocation_Ext = null}"/>
       </TypeKeyInput>
       <TextInput
         editable="true"
         id="FloorLoc"
         label="displaykey.Web.Homeowners.DwellingConstruction.FloorLocation"
-        validationExpression="dwelling.FloorLocation_Ext.length == 2 ? null : displaykey.Web.Homeowners.DwellingConstruction.FloorLocation_Ext.Validate"
         value="dwelling.FloorLocation_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isFloorLocationVisible(dwelling)">
         <PostOnChange/>
@@ -88,6 +83,7 @@
         label="displaykey.Web.Homeowners.DwellingConstruction.ApproxSqFoor"
         numCols="7"
         required="true"
+        validationExpression="dwelling.SquareFootage_Ext.toString().length &lt;= 4 ? null : displaykey.Web.Homeowners.DwellingConstruction.SquareFootage.ValidateLength"
         value="dwelling.SquareFootage_Ext"/>
       <!-- <Input
         editable="true"
@@ -576,16 +572,5 @@
         value="dwelling.ElectricalSystemUpgradeDate"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWiringReplacedVisible(dwelling)"/>
     </InputColumn>
-    <Code><![CDATA[function setDefaultForRating () : boolean {
-   /*dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
-   dwelling.ConstructionCode = "other"
-   if(dwelling.RoofType == null){
-     dwelling.RoofType = typekey.RoofType.TC_OTHER  
-   }
-   //Integration returned
-   dwelling.PropertyCovByStateWndstorm_Ext = false
-   dwelling.WHurricaneHailExclusion_Ext = false*/
-  return true
-}]]></Code>
   </DetailViewPanel>
 </PCF>

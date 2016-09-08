@@ -84,7 +84,7 @@ class HODwellingUtil_HOE {
         dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
         dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
         (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)) {
-          if(dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT ) {
+          if(dwelling.StoriesNumber != null and dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT ) {
         return true
       }
     }

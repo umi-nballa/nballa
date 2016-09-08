@@ -162,18 +162,23 @@ class CancellationPCFController {
 
   public function validateMailDate() : String{
     var result : String
-    this._numberOfDaysNotice = _cancellation.CancelLetterMailDate.daysBetween(_effectiveDate)
     var today = java.util.Date.CurrentDate
-    var initialProcessingDate = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : today
-    var calculatedDaysNotice = new CancellationLeadTimeCalculator(_cancellation.CancelReasonCode,
-        _policyPeriod.AllPolicyLinePatternsAndJurisdictions,
-        initialProcessingDate,
-        initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod), _policyPeriod).calculateMaximumLeadTime()
+
+    if(_cancellation.CancelReasonCode != null){
+      this._numberOfDaysNotice = _cancellation.CancelLetterMailDate.daysBetween(_effectiveDate)
+      var initialProcessingDate = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : today
+      var calculatedDaysNotice = new CancellationLeadTimeCalculator(_cancellation.CancelReasonCode,
+          _policyPeriod.AllPolicyLinePatternsAndJurisdictions,
+          initialProcessingDate,
+          initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod), _policyPeriod).calculateMaximumLeadTime()
+
+      if(NumberOfDaysNotice < calculatedDaysNotice and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(_cancellation.CancelReasonCode)){
+        result = displaykey.una.validation.cancellation.MailDateStateMandate
+      }
+    }
 
     if(_cancellation.CancelLetterMailDate.beforeOrEqualsIgnoreTime(today)){
       result = displaykey.una.validation.cancellation.FutureDateOnly
-    }else if(NumberOfDaysNotice < calculatedDaysNotice and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(_cancellation.CancelReasonCode)){
-      result = displaykey.una.validation.cancellation.MailDateStateMandate
     }
 
     return result

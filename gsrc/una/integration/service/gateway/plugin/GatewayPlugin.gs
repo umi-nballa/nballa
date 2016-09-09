@@ -6,6 +6,7 @@ uses gw.lang.reflect.IType
 uses una.logging.UnaLoggerCategory
 uses una.integration.service.gateway.tuna.TunaInterface
 uses una.integration.service.gateway.hpx.HPXInterface
+uses una.integration.service.gateway.clue.CluePropertyInterface
 
 /**
  * User: pyerrumsetty
@@ -63,7 +64,13 @@ class GatewayPlugin {
     var instance = makeGateway("HPX")
     return instance as HPXInterface
   }
-
+  /**
+   * Operation to return implementation of the CluePropertyInterface to the caller
+   */
+  static function makeCLUEGateway():CluePropertyInterface{
+    var instance = makeGateway("CLUE")
+    return instance as CluePropertyInterface
+  }
   static private function makeGateway(pluginName:String):Object{
 
     try{

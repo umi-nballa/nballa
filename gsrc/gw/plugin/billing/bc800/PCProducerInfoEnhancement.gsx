@@ -12,6 +12,7 @@ enhancement PCProducerInfoEnhancement : PCProducerInfo {
     this.Currencies = organization.AgencyBillPlans*.Currency*.Code.toList()
     this.AgencyBillPlanIDs = organization.AgencyBillPlans*.PlanID.toList()
     this.PublicID = organization.PublicID
+    this.MasterProducerID = organization.MasterOrganization_Ext.PublicID
     this.Tier = organization.Tier.Code
     var contactInfo = new PCContactInfo()
     contactInfo.sync( organization.Contact )

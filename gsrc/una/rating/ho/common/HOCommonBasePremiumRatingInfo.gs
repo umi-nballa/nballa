@@ -21,6 +21,7 @@ class HOCommonBasePremiumRatingInfo {
 
   construct(dwelling: Dwelling_HOE) {
     _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
+    //remove this code once the tuna integration is in place
     if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_AZ)
       _territoryCode = 40
     else if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_CA)

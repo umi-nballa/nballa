@@ -127,10 +127,10 @@ class CoverageTermAvailabilityUtil {
     if(shouldLimitHurricaneDedOptions
         and dwellingValue > dwellingLimitsRange.LowerBound
         and dwellingValue < dwellingLimitsRange.UpperBound){
-      var restrictedValues = ConfigParamsUtil.getList(TC_RestrictedHurricaneDedutibleValues, state, otherPerilsValue?.setScale(0)?.toString())
+      var restrictedValues = ConfigParamsUtil.getList(TC_RestrictedHurricaneDedutibleValues, state, otherPerilsValue?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
 
       if(restrictedValues.HasElements){
-        result = restrictedValues?.contains(_option.Value?.setScale(0)?.toString())
+        result = restrictedValues?.contains(_option.Value?.toString())
       }
     }
 
@@ -167,9 +167,9 @@ class CoverageTermAvailabilityUtil {
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
       if(dwelling.HOLine.DPLI_Personal_Liability_HOEExists){
-        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
+        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
       }else if(dwelling.ResidenceType == TC_CONDO){
-        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0)?.toString())
+        result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
       }
     }
 

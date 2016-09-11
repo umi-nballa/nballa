@@ -39,7 +39,7 @@ class CancellationPCFController {
   }
 
   property get ReasonDetailRange() : java.util.List<typekey.CancelReasonDetailType> {
-    return _reasonDetailRange
+    return _reasonDetailRange?.sortBy( \ element -> element.DisplayName)
   }
 
   property get CancellationLetterMailDate() : Date{
@@ -163,17 +163,22 @@ class CancellationPCFController {
   public function validateMailDate() : String{
     var result : String
     var today = java.util.Date.CurrentDate
-    var initialProcessingDate = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : today
-    var calculatedDaysNotice = new CancellationLeadTimeCalculator(_cancellation.CancelReasonCode,
-        _policyPeriod.AllPolicyLinePatternsAndJurisdictions,
-        initialProcessingDate,
-        initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod), _policyPeriod).calculateMaximumLeadTime()
+
+    if(_cancellation.CancelReasonCode != null){
+      this._numberOfDaysNotice = _cancellation.CancelLetterMailDate.daysBetween(_effectiveDate)
+      var initialProcessingDate = _cancellation.InitialNotificationDate != null ? _cancellation.InitialNotificationDate : today
+      var calculatedDaysNotice = new CancellationLeadTimeCalculator(_cancellation.CancelReasonCode,
+          _policyPeriod.AllPolicyLinePatternsAndJurisdictions,
+          initialProcessingDate,
+          initialProcessingDate <= _cancellation.findUWPeriodEnd(_policyPeriod), _policyPeriod).calculateMaximumLeadTime()
+
+      if(NumberOfDaysNotice < calculatedDaysNotice and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(_cancellation.CancelReasonCode)){
+        result = displaykey.una.validation.cancellation.MailDateStateMandate
+      }
+    }
 
     if(_cancellation.CancelLetterMailDate.beforeOrEqualsIgnoreTime(today)){
       result = displaykey.una.validation.cancellation.FutureDateOnly
-    //number of days + 1 to offset the 1 day that the plugin automatically adds to the stored lead time
-    }else if(NumberOfDaysNotice + 1 < calculatedDaysNotice and !ReasonCode.TF_BACKDATABLEREASONCODES.TypeKeys.contains(_cancellation.CancelReasonCode)){
-      result = displaykey.una.validation.cancellation.MailDateStateMandate
     }
 
     return result

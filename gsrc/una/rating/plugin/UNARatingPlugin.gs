@@ -66,8 +66,10 @@ class UNARatingPlugin implements IRatingPlugin, InitializablePlugin {
     }
 
     _minimumRateBookStatus = RateBookStatus.get(minimumLevel)
-    if (PCDependenciesGateway.ServerMode.Production && _minimumRateBookStatus != TC_ACTIVE){
-      throw new IllegalArgumentException(displaykey.Web.Rating.Errors.InvalidRatingLevel.ForProduction(_minimumRateBookStatus, RateBookStatus.TC_ACTIVE))
+    if(!una.utils.EnvironmentUtil.isQAT()){
+      if (PCDependenciesGateway.ServerMode.Production && _minimumRateBookStatus != TC_ACTIVE){
+        throw new IllegalArgumentException(displaykey.Web.Rating.Errors.InvalidRatingLevel.ForProduction(_minimumRateBookStatus, RateBookStatus.TC_ACTIVE))
+      }
     }
   }
 

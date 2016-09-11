@@ -28,16 +28,15 @@
         sortOrder="1"/>
       <Row>
         <Cell
+          flex="1"
           id="questionText"
           value="gw.api.web.HtmlUtil.indent(question.Text, question.Indent)"
-          width="1285"
           wrap="true"/>
         <ModalCellRef
           def="QuestionModalInput(question, answerContainer, gw.pcf.QuestionSetUIHelper.wrapOnChangeBlock(answerContainer, question, onChangeBlock, CurrentLocation))"
           editable="true"
-          flex="1"
-          mode="question.getInputSetMode(answerContainer, onChangeBlock)"
-          width="500"/>
+          flex="0"
+          mode="question.getInputSetMode(answerContainer, onChangeBlock)"/>
       </Row>
       <RowIterator
         editable="false"

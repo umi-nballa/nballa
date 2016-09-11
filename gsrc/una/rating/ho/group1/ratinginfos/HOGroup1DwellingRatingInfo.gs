@@ -14,6 +14,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _isOrdinanceOrLawCoverage : boolean as IsOrdinanceOrLawCoverage = false
   var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
+  var _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium : boolean as IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = false
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -22,6 +23,9 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo{
     }
     if(dwellingCov.Dwelling?.HODW_FungiCov_HOEExists){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.Dwelling?.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
+      var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
+      if(baseState == typekey.Jurisdiction.TC_CA || (baseState == typekey.Jurisdiction.TC_NV and _limitedFungiWetOrDryRotOrBacteriaSectionILimit == 10000))
+        _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = true
     }
   }
 }

@@ -29,7 +29,7 @@ class CovTermPOCHOEInputSet {
               dwelling.HODW_Dwelling_Cov_HOE.setHomeownersDefaultLimits_Ext()
               break
        case "HODW_PersonalPropertyLimit_HOE":
-              dwelling.HODW_Personal_Property_HOE.setHomeownersDefaultLimits_Ext()
+              dwelling.HODW_Personal_Property_HOE.setHOLOUDefaultLimits_Ext()
               break
         case "DPDW_Dwelling_Limit_HOE" :
             dwelling.DPDW_Dwelling_Cov_HOE.setDwellingDefaultLimits_Ext()

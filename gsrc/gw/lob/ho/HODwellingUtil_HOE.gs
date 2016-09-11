@@ -14,25 +14,25 @@ class HODwellingUtil_HOE {
 *  Change Log: New function for to check if policyTypes are with in allowed range
 *  HO Line of business
 */
+  private static final var DIFF_YEAR_50 : int = 50
+  private static final var DIFF_YEAR_60 : int = 60
+  private static final var DIFF_YEAR_20 : int = 20
+  private static final var DIFF_YEAR_15 : int = 15
+  private static final var DIFF_YEAR_25 : int = 25
+  private static final var YEAR_2002 : int = 2002
+  private static final var YEAR_2003 : int = 2003
+  private static final var WIND_SPEED_100 : int = 100
+  private static final var WIND_SPEED_110 : int = 110
+  private static final var WIND_SPEED_120 : int = 120
+
+
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
      if(policyType == null){
        return false
      }
-
-    if(policyType == typekey.HOPolicyType_HOE.TC_HO4 or
-       policyType == typekey.HOPolicyType_HOE.TC_HO6 or
-        policyType == typekey.HOPolicyType_HOE.TC_HO3 or
-        policyType == typekey.HOPolicyType_HOE.TC_HOA_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_HOB_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_LPP_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_DP3_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_TDP2_EXT or
-        policyType == typekey.HOPolicyType_HOE.TC_TDP3_EXT ) {
+    if(typekey.HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(policyType) or typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(policyType)){
       return true
     }
-
     return false
   }
   /*
@@ -84,7 +84,7 @@ class HODwellingUtil_HOE {
         dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
         dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
         (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)) {
-          if(dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT ) {
+          if(dwelling.StoriesNumber != null and dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT ) {
         return true
       }
     }
@@ -133,9 +133,9 @@ class HODwellingUtil_HOE {
       var  diffYears = diffInYears(dwelling.Branch?.PeriodStart?.YearOfDate, dwelling?.YearBuilt)
 
     if(isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)){
-            if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and diffYears > 50) ){
+            if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and diffYears > DIFF_YEAR_50) ){
               return true
-            } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and (diffYears != null and diffYears > 60)){
+            } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and (diffYears != null and diffYears > DIFF_YEAR_60)){
                return true
             }
      }
@@ -150,9 +150,9 @@ class HODwellingUtil_HOE {
     var baseState = {"AZ","FL","NV","NC","SC","TX"}
     var  diffYears = diffInYears(dwelling.Branch?.PeriodStart?.YearOfDate, dwelling?.YearBuilt)
     if(isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)){
-      if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and diffYears > 50)){
+      if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and diffYears > DIFF_YEAR_50)){
         return true
-      } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and (diffYears != null and diffYears > 60)){
+      } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and (diffYears != null and diffYears > DIFF_YEAR_60)){
         return true
       }
     }
@@ -169,21 +169,21 @@ class HODwellingUtil_HOE {
     var  diffYears = diffInYears(dwelling.Branch?.PeriodStart?.YearOfDate, dwelling.YearBuilt)
     // SC#1
     if(isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)){
-        if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and diffYears > 20)){
+        if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and diffYears > DIFF_YEAR_20)){
           return true
-        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_TX.Code and (diffYears != null and diffYears > 15)){
+        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_TX.Code and (diffYears != null and diffYears > DIFF_YEAR_15)){
           return true
-        } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and  (diffYears != null and diffYears > 25)) {
+        } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and  (diffYears != null and diffYears > DIFF_YEAR_25)) {
            return true
         }
     } if(dwelling.Branch.BaseState.Code == typekey.State.TC_CA.Code){
          if(dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
              dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
              dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6){
-               if(diffYears != null and diffYears  > 25){
+               if(diffYears != null and diffYears  > DIFF_YEAR_25){
                  return true
                }
-         } else if (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and (diffYears != null and diffYears > 20)) {
+         } else if (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and (diffYears != null and diffYears > DIFF_YEAR_20)) {
               return true
            }
        }
@@ -198,9 +198,9 @@ class HODwellingUtil_HOE {
     var baseState = {"AZ","FL","NV","NC","SC","TX"}
     var  diffYears = diffInYears(dwelling.Branch?.PeriodStart?.YearOfDate, dwelling.YearBuilt)
     if(isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)){
-      if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and  diffYears > 50)){
+      if(baseState.contains(dwelling.Branch.BaseState.Code) and (diffYears != null and  diffYears > DIFF_YEAR_50)){
         return true
-      } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and (diffYears != null and diffYears > 60)){
+      } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code and (diffYears != null and diffYears > DIFF_YEAR_60)){
         return true
       }
     }
@@ -260,24 +260,24 @@ class HODwellingUtil_HOE {
   }
 
   // Get typeList value based on system table
-  static function getAssociatedWindSpeedOfDesign(value : int) : typekey.WindSpeedOfDesign_Ext{
-     if(value == 100){
+  static function getAssociatedWindSpeedOfDesign(windSpeed : int) : typekey.WindSpeedOfDesign_Ext{
+     if(windSpeed == WIND_SPEED_100){
        return typekey.WindSpeedOfDesign_Ext.TC_GREATERTHANOREQUAL100
-     } else if(value == 110){
+     } else if(windSpeed == WIND_SPEED_110){
         return typekey.WindSpeedOfDesign_Ext.TC_GREATERTHANOREQUAL110
-     } else if(value == 120){
+     } else if(windSpeed == WIND_SPEED_120){
           return typekey.WindSpeedOfDesign_Ext.TC_GREATERTHANOREQUAL120
      }
     return  null
   }
 
  // Get typeList value based on system table
-  static function getAssociatedFBCWindSpeed(value : int) : typekey.FBCWindSpeed_Ext {
-     if(value == 100){
+  static function getAssociatedFBCWindSpeed(fbcWindSpeed : int) : typekey.FBCWindSpeed_Ext {
+     if(fbcWindSpeed == WIND_SPEED_100){
        return typekey.FBCWindSpeed_Ext.TC_100
-     } else if (value == 110 ){
+     } else if (fbcWindSpeed == WIND_SPEED_110 ){
        return typekey.FBCWindSpeed_Ext.TC_110
-     }  else if (value == 120){
+     }  else if (fbcWindSpeed == WIND_SPEED_120){
        return typekey.FBCWindSpeed_Ext.TC_GREATERTHANEQUALTO120
      }
     return null
@@ -345,7 +345,7 @@ class HODwellingUtil_HOE {
 */
   static function applyReset(dwelling : Dwelling_HOE){
 
-    if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and  dwelling.YearBuilt < 2002){
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and  dwelling.YearBuilt < YEAR_2002){
       if(dwelling.WindMitigation_Ext != null and dwelling.WindMitigation_Ext){
         resetDefaults(dwelling)
         // Apply Default only for FL mitigation questions
@@ -359,24 +359,24 @@ class HODwellingUtil_HOE {
       }
     }
 
-    else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and  dwelling.YearBuilt < 2002){
+    else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and  dwelling.YearBuilt < YEAR_2002){
       if(dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext){
           resetDefaults(dwelling)
       }
     }
-   else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >= 2002){
+   else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >= YEAR_2002){
       if(dwelling.WindMitigation_Ext != null and (dwelling.WindMitigation_Ext or !dwelling.WindMitigation_Ext)){
         resetDefaults(dwelling)
         applyDefaults(dwelling)
       }
     }
-    else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt < 2003) {
+    else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt < YEAR_2003) {
       if(dwelling.WindMitigation_Ext != null and dwelling.WindMitigation_Ext){
             resetDefaults(dwelling)
       }
     }
 
-    else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt >= 2003) {
+    else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt >= YEAR_2003) {
       if(dwelling.WindMitigation_Ext != null and (!dwelling.WindMitigation_Ext or dwelling.WindMitigation_Ext)){
          resetDefaults(dwelling)
          applyDefaults(dwelling)
@@ -392,22 +392,22 @@ class HODwellingUtil_HOE {
   static function isMitigationQuestionsVisible(dwelling : Dwelling_HOE) : boolean{
 
     if(isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)){
-        if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt < 2002 and (dwelling.WindMitigation_Ext != null and dwelling.WindMitigation_Ext) ){
+        if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt < YEAR_2002 and (dwelling.WindMitigation_Ext != null and dwelling.WindMitigation_Ext) ){
           return true
-        } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt < 2002 and (!dwelling.WindMitigation_Ext or dwelling.WindMitigation_Ext == null)) {
+        } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt < YEAR_2002 and (!dwelling.WindMitigation_Ext or dwelling.WindMitigation_Ext == null)) {
            return false
-        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt < 2003 and (dwelling.WindMitigation_Ext != null and dwelling.WindMitigation_Ext) ){
+        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt < YEAR_2003 and (dwelling.WindMitigation_Ext != null and dwelling.WindMitigation_Ext) ){
           return true
-        } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt < 2003 and (!dwelling.WindMitigation_Ext or dwelling.WindMitigation_Ext == null)){
+        } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt < YEAR_2003 and (!dwelling.WindMitigation_Ext or dwelling.WindMitigation_Ext == null)){
           return false
-        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >=  2002 and ( dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext) ) {
+        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >=  YEAR_2002 and ( dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext) ) {
           return true
-        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >=  2002 and (dwelling.WindMitigation_Ext)){
+        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >=  YEAR_2002 and (dwelling.WindMitigation_Ext)){
           return true
-        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt >= 2003 and (dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext  )){
+        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt >= YEAR_2003 and (dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext  )){
 
           return true
-        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code  and dwelling.YearBuilt >= 2003 and dwelling.WindMitigation_Ext){
+        } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code  and dwelling.YearBuilt >= YEAR_2003 and dwelling.WindMitigation_Ext){
 
           return true
         }
@@ -422,9 +422,9 @@ class HODwellingUtil_HOE {
 *  HO Line of business
  */
   static function isMitigationQuestionsEditable(dwelling : Dwelling_HOE) : boolean{
-       if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >=  2002 and ( dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext)){
+       if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt >=  YEAR_2002 and ( dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext)){
          return false
-       } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt >= 2003 and (dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext)){
+       } else if(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code and dwelling.YearBuilt >= YEAR_2003 and (dwelling.WindMitigation_Ext != null and !dwelling.WindMitigation_Ext)){
          return false
        }
 

@@ -16,10 +16,13 @@ class HOScheduledPersonalPropertyRatingInfo {
 
     _exposureValue = item.ExposureValue
     var scheduleType = item.ScheduleType
+    var scheduleTypeDescription = scheduleType.Description.split("-")
     if(scheduleType.Description.startsWith(SILVERWARE)){
       _itemType = SILVERWARE
+    } else if(scheduleType.Description.startsWith("Fine")){
+      _itemType = scheduleTypeDescription[0].trim() + " - " + scheduleTypeDescription[1].trim()
+      _usage = scheduleTypeDescription.last().trim()
     } else{
-      var scheduleTypeDescription = scheduleType.Description.split("-")
       _itemType = scheduleTypeDescription[0].trim()
       if(scheduleTypeDescription.length > 1)
         _usage = scheduleTypeDescription.last().trim()

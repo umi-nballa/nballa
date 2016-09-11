@@ -141,8 +141,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
   }
 
@@ -157,8 +160,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_BURGLARPROTECTIVEDEVICESCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.BurglarProtectiveDevicesCredit = costData?.ActualTermAmount
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Burglar Protective Devices Credit Rated Successfully", this.IntrinsicType)
   }
 
@@ -172,8 +178,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
   }
 
@@ -188,8 +197,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Unit Owners Rental To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -201,8 +213,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.MED_PAY_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0)
+    if (costData != null and costData.ActualTermAmount != 0){
       addCost(costData)
+    }
     _logger.debug("Medical Payments Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -214,8 +227,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.PERSONAL_LIABILITY_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0)
+    if (costData != null and costData.ActualTermAmount != 0){
       addCost(costData)
+    }
     _logger.debug("Personal Liability Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -227,8 +241,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -240,8 +257,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Animal Liability Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -253,8 +273,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Personal Injury Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -267,8 +290,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(dwellingRatingInfo.LossAssessmentLimit != 0) {
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
+      if (costData != null){
+        if(costData.ActualTermAmount == 0)
+          costData.ActualTermAmount = 1
         addCost(costData)
+      }
     }
     _logger.debug("Loss Assessment Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -282,8 +308,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.MOLD_REMEDIATION_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Mold Remediation Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -295,8 +324,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     for (item in dwellingCov.ScheduledItems) {
       var rateRoutineParameterMap = getScheduledPersonalPropertyCovParameterSet(PolicyLine, item)
       var costData = HOCreateCostDataUtil.createCostDataForScheduledDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_TX_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
+      if (costData != null){
+        if(costData.ActualTermAmount == 0)
+          costData.ActualTermAmount = 1
         addCost(costData)
+      }
     }
     _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -310,8 +342,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (dwellingRatingInfo.IsPersonalPropertyIncreasedLimit){
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
+      if (costData != null){
+        if(costData.ActualTermAmount == 0)
+          costData.ActualTermAmount = 1
         addCost(costData)
+      }
     }
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -324,8 +359,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, HOCostType_Ext.TC_ADDITIONALINSURED,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.AdditionalInsuredPremium = costData?.ActualTermAmount
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Additional Insured Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -336,8 +374,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.IDENTITY_THEFT_EXPENSE_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -348,8 +389,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.EQUIPMENT_BREAKDOWN_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -361,8 +405,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -374,8 +421,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_OUTBUILDINGS_AND_OTHER_STRUCTURES_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Unit Owners Outbuilding and Other Structures Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -388,8 +438,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     dwellingRatingInfo.TotalBasePremium = hoRatingInfo.TotalBasePremium
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
+      if(costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
       addCost(costData)
+    }
     _logger.debug("Specified Additional Amount Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -402,8 +455,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (dwellingRatingInfo.IsResidentialGlassCovUnscheduled == "Yes"){
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.RESIDENTIAL_GLASS_TX_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
+      if (costData != null){
+        if(costData.ActualTermAmount == 0)
+          costData.ActualTermAmount = 1
         addCost(costData)
+      }
     }
     _logger.debug("Residential Glass Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -416,8 +472,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
      var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.INCREASED_LIMITS_JEWELRY_WATCHES_FURS, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-     if (costData != null)
+     if (costData != null){
+       if(costData.ActualTermAmount == 0)
+         costData.ActualTermAmount = 1
        addCost(costData)
+     }
      _logger.debug("Special Limits Personal Property Coverage Rated Successfully", this.IntrinsicType)
    }
 

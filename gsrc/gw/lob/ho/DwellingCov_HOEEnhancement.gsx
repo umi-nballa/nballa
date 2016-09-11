@@ -280,7 +280,7 @@ enhancement
           if(limitA != null){
             if(policyType == TC_DP3_Ext and (occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT or occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER)){
               if(state == TC_CA){
-                minValue = limitA.multiply(ScriptParameters.HODwellingCovFactorCovC_default)
+                minValue = ScriptParameters.HODwellingCovFactorCovC_default
               }else if(state == TC_HI){
                 minValue = limitA.multiply(ScriptParameters.HODwellingCovValueFactorCovC_ZeroValue)
               }
@@ -474,7 +474,7 @@ enhancement
           if(limitA != null){
             if(policyType == TC_DP3_Ext and (occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT or occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER)){
               if(state == TC_CA){
-                defaultValue = limitA.multiply(ScriptParameters.HODwellingCovFactorCovC_default)
+                defaultValue = ScriptParameters.HODwellingCovFactorCovC_default
                 }else if(state == TC_HI){
                 defaultValue = limitA.multiply(ScriptParameters.HODwellingCovValueFactorCovC_ZeroValue)
               }
@@ -568,7 +568,7 @@ enhancement
       if(covB.HasHODW_OtherStructures_Limit_HOETerm)
         covB.HODW_OtherStructures_Limit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covB), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covB.HODW_OtherStructures_Limit_HOETerm.PatternCode))
 
-      if (covC.HasHODW_PersonalPropertyLimit_HOETerm)
+      if (covC.HasHODW_PersonalPropertyLimit_HOETerm and (this.Dwelling.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO6))
         covC.HODW_PersonalPropertyLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covC), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covC.HODW_PersonalPropertyLimit_HOETerm.PatternCode))
 
       if (covD.HasHODW_LossOfUseDwelLimit_HOETerm)
@@ -578,9 +578,18 @@ enhancement
         LineWizardStepHelper_Ext.setSpecialLimitsPersonalPropertyDefaults(this.Dwelling)
       }
     }
-    else if(this typeis HODW_Personal_Property_HOE and limitC!= null) {
-      covD.HODW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.PatternCode))
-    }}
+  }
+
+
+    function setHOLOUDefaultLimits_Ext() {
+     var limitC = roundDown_Ext(this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value)
+
+      var covC = this.Dwelling.HODW_Personal_Property_HOE
+      var covD = this.Dwelling.HODW_Loss_Of_Use_HOE
+      if(this typeis HODW_Personal_Property_HOE and limitC!= null ) {
+        covD.HODW_LossOfUseDwelLimit_HOETerm.Value = MathUtil.roundTo(getDefaultLimitValue_Ext(covD), ConfigParamsUtil.getInt(TC_ROUNDINGFACTOR, this.PolicyLine.BaseState, covD.HODW_LossOfUseDwelLimit_HOETerm.PatternCode))
+      }
+     }
 
   /**
     * Amrita Dash

@@ -12,7 +12,8 @@ uses gw.api.builder.SubmissionBuilder
 uses gw.api.databuilder.ContactBuilder
 uses una.integration.UnaIntTestBase
 uses una.integration.creditreport.testutil.AccountFactory
-uses una.integration.lexisnexis.clueproperty.ClueProperty
+uses una.integration.service.gateway.clue.CluePropertyInterface
+uses una.integration.service.gateway.plugin.GatewayPlugin
 
 uses java.lang.Exception
 
@@ -24,7 +25,7 @@ uses java.lang.Exception
  * To change this template use File | Settings | File Templates.
  */
 class CluePropertyServiceTest extends UnaIntTestBase {
-  static var clueproperty: ClueProperty
+  static var clueproperty: CluePropertyInterface
   static var policyPeriod: PolicyPeriod
   /**
    * This method is used to initialize the test data common for all the tests in this class
@@ -32,7 +33,7 @@ class CluePropertyServiceTest extends UnaIntTestBase {
   override function beforeClass() {
     super.beforeClass()
     Logger.info("Initializing ClueProperty")
-    clueproperty = new ClueProperty()
+    clueproperty = GatewayPlugin.makeCLUEGateway()
   }
 
   private static function createNamedInsured(account: Account, contact: Contact): NamedInsured {
@@ -123,12 +124,12 @@ class CluePropertyServiceTest extends UnaIntTestBase {
     Logger.info("Entering the test method 'testCluePropertyServiceFailure'")
     var ex: Exception = null
     try {
-      clueproperty.orderClueProperty(policyPeriod)
+      clueproperty.orderClueProperty(null)
     } catch (e: Exception) {
       ex = e;
       Logger.info("Error in LexisNexis CLUE webservice invocation")
     } finally {
-      assertNull(ex)
+      assertNull(ex);
     }
     Logger.info("Exiting the test method 'testCluePropertyServiceFailure'")
   }

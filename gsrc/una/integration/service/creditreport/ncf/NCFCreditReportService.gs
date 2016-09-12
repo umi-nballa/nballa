@@ -7,7 +7,6 @@ uses una.integration.plugins.creditreport.CreditReportDataManagerFactory
 uses una.integration.plugins.creditreport.ICreditReportDataManager
 uses una.integration.service.creditreport.ICreditReportService
 uses una.integration.mapping.creditreport.CreditReportRequest
-uses una.integration.mapping.creditreport.CreditReportResponse
 uses una.integration.framework.util.AddressParser
 
 

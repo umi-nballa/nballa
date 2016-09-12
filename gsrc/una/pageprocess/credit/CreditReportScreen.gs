@@ -1,4 +1,6 @@
 package una.pageprocess.credit
+
+uses java.util.ArrayList
 /**
  * User: amohammed
  * Date: 8/23/16
@@ -88,5 +90,16 @@ class CreditReportScreen {
       period.CreditInfoExt.CreditReport.AlternateLastName = formerLastName
     }
     return period
+  }
+
+  static function getPersonContactRoles(period : PolicyPeriod) : ArrayList<PolicyContactRole>{
+    var policyContactRoles = period.PolicyContactRoles.where(\ p -> p.Subtype == "PolicyPriNamedInsured" || p.Subtype == "PolicyAddlNamedInsured")
+    var personContactRoles : ArrayList<PolicyContactRole> = new List<PolicyContactRole>()
+    for (policyContactRole in policyContactRoles){
+      if(policyContactRole.CompanyName == null){
+        personContactRoles.add(policyContactRole)
+      }
+    }
+    return personContactRoles
   }
 }

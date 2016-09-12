@@ -15,17 +15,23 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium : boolean as IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = false
+  var _doesSpecialPersonalPropertyCoverageExist : boolean as SpecialPersonalPropertyCoverage = false
+
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
+    var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
     if(dwellingCov.Dwelling?.HODW_BusinessProperty_HOE_ExtExists){
       _businessPropertyIncreasedLimit = (dwellingCov.Dwelling?.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value.intValue() - 2500)
     }
     if(dwellingCov.Dwelling?.HODW_FungiCov_HOEExists){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.Dwelling?.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
-      var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
       if(baseState == typekey.Jurisdiction.TC_CA || (baseState == typekey.Jurisdiction.TC_NV and _limitedFungiWetOrDryRotOrBacteriaSectionILimit == 10000))
         _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = true
     }
+    if(dwellingCov.Dwelling?.HODW_SpecialPersonalProperty_HOE_ExtExists and baseState == Jurisdiction.TC_CA){
+      _doesSpecialPersonalPropertyCoverageExist = true
+    }
+
   }
 }

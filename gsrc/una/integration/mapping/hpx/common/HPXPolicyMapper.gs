@@ -52,10 +52,21 @@ abstract class HPXPolicyMapper {
   /************************************** Insured Or Principal ******************************************************/
   function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
+    var creditScoreMapper = new HPXCreditScoreMapper()
     var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal()
     insuredOrPrincipal.addChild(createItemIdInfo())
     insuredOrPrincipal.addChild(generalPartyInfoMapper.createGeneralPartyInfo(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact,
         policyPeriod.PrimaryNamedInsured))
+    var insuredOrPrincipalInfo = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipalInfo()
+    var personInfo = new wsi.schema.una.hpx.hpx_application_request.PersonInfo()
+    var principalInfo = new wsi.schema.una.hpx.hpx_application_request.PrincipalInfo()
+    var creditScore = creditScoreMapper.createCreditScoreInfo(policyPeriod)
+    if (creditScore != null) {
+      insuredOrPrincipalInfo.addChild(personInfo)
+      principalInfo.addChild(creditScore)
+      insuredOrPrincipalInfo.addChild(principalInfo)
+      insuredOrPrincipal.addChild(insuredOrPrincipalInfo)
+    }
     return insuredOrPrincipal
   }
 

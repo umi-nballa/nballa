@@ -17,6 +17,7 @@ class HOCommonDwellingRatingInfo {
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
   var _totalBasePremium : BigDecimal as TotalBasePremium
+  var _policyType : typekey.HOPolicyType_HOE as PolicyType
 
   construct(lineVersion: HomeownersLine_HOE){
     if(lineVersion.Dwelling?.HODW_Personal_Property_HOEExists){
@@ -26,6 +27,7 @@ class HOCommonDwellingRatingInfo {
 
   construct(dwellingCov : DwellingCov_HOE){
     _dwellingLimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
+    _policyType = dwellingCov.Dwelling?.HOPolicyType
     if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
       if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){
         _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue

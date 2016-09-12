@@ -13,6 +13,7 @@ uses una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOGroup1DiscountsOrSurchargeRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -128,8 +129,26 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         ratePersonalPropertyReplacementCost(dateRange)
       }
     }
+    if(dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3){
+      rateAgeOfHomeDiscount(dateRange)
+    }
   }
 
+  /**
+   *  Function to rate the Age of Home Discount or Surcharge
+   */
+  function rateAgeOfHomeDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAgeOfHomeDiscount", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
+  }
   /**
   * Function which rates the Personal property replacement cost
   */
@@ -460,6 +479,14 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
   }
 
+  private function getHOLineDiscountsOrSurchargesParameterSet(line : PolicyLine, discountOrSurchargeRatingInfo : HOGroup1DiscountsOrSurchargeRatingInfo, state : Jurisdiction) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> state,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
+    }
+  }
+
   /**
    * Returns the parameter set for the Scheduled Personal Property Cov
    */
@@ -481,6 +508,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium)
+    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium  + _hoRatingInfo.AgeOfHomeDiscount)
   }
 }

@@ -131,7 +131,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-   *  Function to rate the Seasonal Or Secondary Residence Surcharge
+   *  Function to rate the Age of Home Discount or Surcharge
    */
   function rateAgeOfHomeDiscount(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateAgeOfHomeDiscount", this.IntrinsicType)

@@ -2027,6 +2027,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:complexType name="BP7Classification_Type">
 		<xsd:sequence>
 			<xsd:element ref="OccupancyType" minOccurs="0" maxOccurs="1"/>
+            <xsd:element ref="ClassPropertyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="PredominantOccupancyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="Classification" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="ClassCode" minOccurs="0" maxOccurs="1"/>
@@ -12264,10 +12265,11 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="WriteRequest" type="FileSystemWrite_Type"/>
 	<xsd:element name="WriteResponse" type="FileSystemWrite_Type"/>
 	<xsd:element name="YearBuild" type="xsd:long"/>
-	<xsd:element name="ClassCode" type="OccupationClass"/>
+	<xsd:element name="ClassCode" type="xsd:string"/>
 	<xsd:element name="VacantArea" type="xsd:int"/>
-	<xsd:element name="Classification" type="LegalEntity"/>
+	<xsd:element name="Classification" type="xsd:string"/>
 	<xsd:element name="PredominantOccupancyType" type="OccupancyType"/>
+    <xsd:element name="ClassPropertyType" type="xsd:string"/>
 	<!--
         End Attribute Definitions are Locally defined
      -->

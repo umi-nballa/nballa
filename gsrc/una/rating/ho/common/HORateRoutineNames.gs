@@ -63,4 +63,5 @@ public final class HORateRoutineNames {
   public static final var PERSONAL_INJURY_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup1RateRoutine"
   public static final var ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOAddResidenceRentedToOthersGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIGroup1RateRoutine"
+  public static final var SPECIAL_PERSONAL_PROPERTY_COVERAGE_ROUTINE_NAME : String = "UNASpecialPersonalPropertyGroup1RateRoutine"
 }

@@ -29,6 +29,7 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     underwritingCompanySegmentNotValid()
     sumOfPreQuoteRiskFactor()
     producerChanged()
+    blockRewritePolicy()
   }
 
   override function onQuestion() {
@@ -230,6 +231,19 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         \ -> displaykey.UWIssue.Question.PreQualRiskPointSumDescription(sum),
         \ -> displaykey.UWIssue.Question.PreQualRiskPointSumDescription(sum),
         sum)
+    }
+  }
+
+  private function blockRewritePolicy()
+  {
+    if (_policyEvalContext.Period.Job typeis Rewrite or
+        _policyEvalContext.Period.Job typeis RewriteNewAccount )
+    {
+      var shortDescription =
+          \ -> "Underwriting review required for rewriting policy"
+      var longDescription =
+          \ -> "Policies rewritten for remainder of term require Underwriting review and approval prior to processing "
+      _policyEvalContext.addIssue("RewritePeriodDates","RewritePeriodDates",shortDescription,longDescription)
     }
   }
 

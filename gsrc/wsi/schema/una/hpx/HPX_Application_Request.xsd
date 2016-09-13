@@ -99,7 +99,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	</xsd:complexType>
 	<xsd:complexType name="AnimalExposureInfo_Type">
 		<xsd:sequence>
-		<!-- rps changed maxoccurs for sample XML file -->
+			<!-- rps changed maxoccurs for sample XML file -->
 			<!--xsd:group ref="ANIMALTYPE_CHOICE" minOccurs="0" maxOccurs="1"/-->
 			<xsd:group ref="ANIMALTYPE_CHOICE" minOccurs="0" maxOccurs="2"/>
 			<xsd:element ref="BreedCd" minOccurs="0" maxOccurs="1"/>
@@ -550,6 +550,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 					<xsd:element ref="Coverage" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element ref="QuestionAnswer" minOccurs="0" maxOccurs="unbounded"/>
 					<xsd:element ref="Location" minOccurs="0" maxOccurs="unbounded"/>
+					<xsd:element ref="Dwell" minOccurs="0" maxOccurs="unbounded"/>					
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -740,7 +741,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 					<xsd:element ref="DeductibleDesc" minOccurs="0" maxOccurs="1"/>
 					<xsd:element ref="TransactionSeqNumber" minOccurs="0" maxOccurs="1"/>
 					<xsd:element ref="CoverageCd" minOccurs="0" maxOccurs="1"/>
-                    <xsd:element ref="CoverageSubCd" minOccurs="0" maxOccurs="1"/>
+					<xsd:element ref="CoverageSubCd" minOccurs="0" maxOccurs="1"/>
 				</xsd:sequence>
 			</xsd:extension>
 		</xsd:complexContent>
@@ -892,8 +893,8 @@ Point Guad, Dwelling	Start Complex Type Definition
 			<xsd:element ref="AdditionalPremiumAmt" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="MinimumAdditionalChargeAmt" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="MasterPolicyInfo" minOccurs="0" maxOccurs="1"/>
-            <xsd:element ref="Watercraft" minOccurs="0" maxOccurs="unbounded"/>
-            <xsd:element ref="BP7Classification" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="Watercraft" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element ref="BP7Classification" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 		<xsd:attribute name="id" type="ID"/>
 		<xsd:attribute name="LocationRef" type="IDREF"/>
@@ -2014,7 +2015,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 			<xsd:element ref="NavigationPeriod" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="OverallLength" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="SpeedRating" minOccurs="0" maxOccurs="1"/>
-			</xsd:sequence>
+		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="WatercraftType">
 		<xsd:simpleContent>
@@ -2027,7 +2028,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:complexType name="BP7Classification_Type">
 		<xsd:sequence>
 			<xsd:element ref="OccupancyType" minOccurs="0" maxOccurs="1"/>
-            <xsd:element ref="ClassPropertyType" minOccurs="0" maxOccurs="1"/>
+			<xsd:element ref="ClassPropertyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="PredominantOccupancyType" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="Classification" minOccurs="0" maxOccurs="1"/>
 			<xsd:element ref="ClassCode" minOccurs="0" maxOccurs="1"/>
@@ -2336,7 +2337,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	</xsd:complexType>
 	<xsd:complexType name="PolInfo_Type">
 		<xsd:sequence>
-		<!-- rps changed for xml sample  -->
+			<!-- rps changed for xml sample  -->
 			<!--xsd:group ref="LOBENTITY"/-->
 			<xsd:group ref="LOBENTITY" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
@@ -3077,7 +3078,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 				<xsd:element ref="BusinessInfo" minOccurs="0" maxOccurs="1"/>
 				<xsd:element ref="PrincipalInfo" minOccurs="0" maxOccurs="1"/>
 			</xsd:sequence>
-				<!-- rps removed second choice occurrence -->
+			<!-- rps removed second choice occurrence -->
 			<!--xsd:sequence>
 				<xsd:element ref="BusinessInfo"/>
 				<xsd:element ref="PrincipalInfo" minOccurs="0" maxOccurs="1"/>
@@ -8696,8 +8697,8 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:complexType name="OccupancyType">
 		<xsd:simpleContent>
 			<xsd:restriction base="OpenEnum">
-                <xsd:enumeration value="CO"/>
-                <xsd:enumeration value="COA"/>
+				<xsd:enumeration value="CO"/>
+				<xsd:enumeration value="COA"/>
 				<xsd:enumeration value="COC"/>
 				<xsd:enumeration value="OCC"/>
 				<xsd:enumeration value="OT"/>
@@ -12269,7 +12270,7 @@ Point Guad, Dwelling	Start Complex Type Definition
 	<xsd:element name="VacantArea" type="xsd:int"/>
 	<xsd:element name="Classification" type="xsd:string"/>
 	<xsd:element name="PredominantOccupancyType" type="OccupancyType"/>
-    <xsd:element name="ClassPropertyType" type="xsd:string"/>
+	<xsd:element name="ClassPropertyType" type="xsd:string"/>
 	<!--
         End Attribute Definitions are Locally defined
      -->

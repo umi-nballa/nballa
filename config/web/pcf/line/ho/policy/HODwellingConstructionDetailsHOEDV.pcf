@@ -19,6 +19,7 @@
         label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
         numCols="8"
         required="true"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
         value="dwelling.YearBuilt">
         <PostOnChange
           onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"/>
@@ -164,8 +165,7 @@
         id="PrimaryHeating"
         label="displaykey.Web.Homeowners.DwellingConstruction.PrimaryHeating"
         required="false"
-        value="dwelling.PrimaryHeating"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3">
+        value="dwelling.PrimaryHeating">
         <PostOnChange/>
       </TypeKeyInput>
       <TypeKeyInput
@@ -195,15 +195,13 @@
         id="SecondaryHeatingExists"
         label="displaykey.Web.Homeowners.DwellingConstruction.SecondaryHeatingExists"
         required="false"
-        value="dwelling.SecondaryHeatingExists"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6"/>
+        value="dwelling.SecondaryHeatingExists"/>
       <TypeKeyInput
         editable="true"
         id="PlumbingSystem"
         label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingSystem"
         required="false"
-        value="dwelling.PlumbingType"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        value="dwelling.PlumbingType">
         <PostOnChange/>
       </TypeKeyInput>
       <Input
@@ -218,8 +216,7 @@
         id="Wiring"
         label="displaykey.Web.Homeowners.DwellingConstruction.Wiring"
         required="false"
-        value="dwelling.WiringType"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        value="dwelling.WiringType">
         <PostOnChange/>
       </TypeKeyInput>
       <Input
@@ -235,7 +232,7 @@
         label="displaykey.Web.Homeowners.DwellingConstruction.ElectricalSystem"
         required="true"
         value="dwelling.ElectricalType"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)">
         <PostOnChange/>
       </TypeKeyInput>
       <Input

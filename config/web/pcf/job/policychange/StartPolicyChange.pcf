@@ -72,6 +72,7 @@
             maxChars="500"
             numCols="50"
             numRows="6"
+            required="true"
             value="job.Description"
             visible="!policyPeriod.HomeownersLine_HOEExists"/>
           <TypeKeyInput
@@ -97,14 +98,15 @@
             visible="job.Reason1_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists">
             <PostOnChange/>
           </TypeKeyInput>
-          <TypeKeyInput
+          <RangeInput
             editable="true"
             id="Reason3_Ext"
             label="displaykey.Web.Job.Reason3_Ext"
             value="job.Reason3_Ext"
+            valueRange="typekey.Reason1_Ext.Type.getTypeKeysByCategories({policyPeriod.BaseState,policyPeriod.HomeownersLine_HOE.HOPolicyType})"
             visible="job.Reason2_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists">
             <PostOnChange/>
-          </TypeKeyInput>
+          </RangeInput>
           <TextAreaInput
             editable="true"
             id="ReasonFreeForm_Ext"

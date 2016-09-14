@@ -142,6 +142,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwelling.HODW_DifferenceConditions_HOE_ExtExists){
       rateDifferenceInConditions(dwelling.HODW_DifferenceConditions_HOE_Ext, dateRange)
     }
+    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+      rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
+    }
   }
 
   /**
@@ -185,6 +188,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Difference in Conditions Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Seasonal Or Secondary Residence Surcharge
+   */
+  function rateSeasonalOrSecondaryResidenceSurcharge(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateSeasonalOrSecondaryResidenceSurcharge", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null and costData.ActualTermAmount != 0){
+      addCost(costData)
+    }
+    _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
   }
 
   /**

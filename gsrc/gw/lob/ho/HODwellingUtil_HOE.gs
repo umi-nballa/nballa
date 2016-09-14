@@ -299,9 +299,15 @@ class HODwellingUtil_HOE {
        if(dwelling.RoofDecking_Ext == null){dwelling.RoofDecking_Ext = typekey.RoofDecking_Ext.TC_OTHERROOFDECK}
        if(dwelling.OpeningProtection_Ext == null){ dwelling.OpeningProtection_Ext = typekey.OpeningProtection_Ext.TC_UNKNOWN}
        if(dwelling.InternalPressureDsgn_Ext == null){dwelling.InternalPressureDsgn_Ext = typekey.InternalPressureDsgn_Ext.TC_ENCLOSED}
-       if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT){
-          if(dwelling.SecondaryWaterResis_Ext == null){dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_NOSWR}
+       //Defect De372 : set value based roof type
+       if(dwelling.SecondaryWaterResis_Ext == null){
+         if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT){
+           dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_NOSWR
+         } else {
+           dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_UNKNOWN
+         }
        }
+
        // Set default value based on county
        if(result != null){
          if(dwelling.FBCWindSpeed_Ext == null){dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())}//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
@@ -430,10 +436,14 @@ class HODwellingUtil_HOE {
 
     return true
   }
-
+  /*
+*  Author: uim-svallabhapurapu
+*  Change Log: New function for Visibility of Does roof qualify for the hail resistive roof credit?
+*  HO Line of business
+ */
   static function isHailResistantRoofCreditVisible(dwelling : Dwelling_HOE) : boolean{
     if(isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType) and dwelling.Branch.BaseState.Code == typekey.State.TC_TX.Code){
-        return false
+        return true
     }
     return false
   }

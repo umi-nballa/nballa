@@ -16,7 +16,7 @@ class HOGroup1DiscountsOrSurchargeRatingInfo {
   var _totalBasePremium : BigDecimal as TotalBasePremium
   var _ageOfHome : int as AgeOfHome
   var _maxAgeOfHome : int as MaxAgeOfHome
-  private var azMaxAgeOfHome = 30
+
 
   construct(lineCoverage : HomeownersLine_HOE){
     _ageOfHome = determineAgeOfHome(lineCoverage)

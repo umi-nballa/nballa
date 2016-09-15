@@ -46,6 +46,7 @@ public final class HORateRoutineNames {
   public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
   public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
   public static final var EXECUTIVE_COVERAGE : String = "UNAHOExecutiveCoverageRateRoutine"
+  public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
 
   //group1 routines
   public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"

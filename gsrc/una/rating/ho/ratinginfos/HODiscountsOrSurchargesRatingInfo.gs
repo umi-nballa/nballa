@@ -1,6 +1,8 @@
 package una.rating.ho.ratinginfos
 
 uses java.math.BigDecimal
+uses una.config.ConfigParamsUtil
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -13,12 +15,12 @@ class HODiscountsOrSurchargesRatingInfo {
   var _yearBuilt : int as YearBuilt
   var _ageOfHome : int as AgeOfHome
   var _burglarAlarmType : String as BurglarAlarmType
-  final var _ageOfHomeGreaterLimit : int as AgeOfHomeGreaterLimit = 14
+  final var _ageOfHomeGreaterLimit : int as AgeOfHomeGreaterLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, TC_TX)
 
   construct(lineVersion : HomeownersLine_HOE){
     _yearBuilt = lineVersion.Dwelling?.YearBuilt
-    var currentYear = lineVersion.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate
-    _ageOfHome = (currentYear - _yearBuilt)
+    var policyEffectiveDate = lineVersion.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate
+    _ageOfHome = (policyEffectiveDate - _yearBuilt)
 
     if(lineVersion.Dwelling?.BurglarAlarm){
       _burglarAlarmType = lineVersion.Dwelling?.BurglarAlarmType.DisplayName

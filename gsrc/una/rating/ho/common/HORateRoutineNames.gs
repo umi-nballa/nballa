@@ -40,11 +40,13 @@ public final class HORateRoutineNames {
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeRateRoutine"
   public static final var AGE_OF_HOME_DISCOUNT_RATE_ROUTINE : String = "UNAHOAgeOfHomeDiscountRateRoutine"
   public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDevicesCreditRateRoutine"
+  public static final var FIRE_PROTECTIVE_DEVICES_CREDIT_TX_RATE_ROUTINE : String = "UNAHOFireProtectiveDevicesCreditTXRateRoutine"
   public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
   public static final var MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMinimumPremiumAdjustmentRateRoutine"
   public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
   public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
   public static final var EXECUTIVE_COVERAGE : String = "UNAHOExecutiveCoverageRateRoutine"
+  public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
 
   //group1 routines
   public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"
@@ -63,4 +65,8 @@ public final class HORateRoutineNames {
   public static final var PERSONAL_INJURY_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup1RateRoutine"
   public static final var ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOAddResidenceRentedToOthersGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIGroup1RateRoutine"
+  public static final var SPECIAL_PERSONAL_PROPERTY_COVERAGE_ROUTINE_NAME : String = "UNASpecialPersonalPropertyGroup1RateRoutine"
+  public static final var SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecialLimitsPersonalPropertyCovGroup1RateRoutine"
+  public static final var DIFFERENCE_IN_CONDITIONS_GROUP1_RATE_ROUTINE : String = "UNAHODifferenceInConditionsGroup1RateRoutine"
+  public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeGroup1RateRoutine"
 }

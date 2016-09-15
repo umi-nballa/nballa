@@ -29,6 +29,8 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     underwritingCompanySegmentNotValid()
     sumOfPreQuoteRiskFactor()
     producerChanged()
+    blockRewritePolicy()
+    blockSpecificConstructionTypes()
   }
 
   override function onQuestion() {
@@ -231,6 +233,43 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         \ -> displaykey.UWIssue.Question.PreQualRiskPointSumDescription(sum),
         sum)
     }
+  }
+
+  private function blockRewritePolicy()
+  {
+    if (_policyEvalContext.Period.Job typeis Rewrite
+      && _policyEvalContext.Period.Rewrite.RewriteType==typekey.RewriteType.TC_REWRITEREMAINDEROFTERM)
+    {
+      var shortDescription =
+          \ -> "Underwriting review required for rewriting policy"
+      var longDescription =
+          \ -> "Policies rewritten for remainder of term require Underwriting review and approval prior to processing "
+      _policyEvalContext.addIssue("RewritePeriodDates","RewritePeriodDates",shortDescription,longDescription)
+    }
+  }
+
+  private function blockSpecificConstructionTypes()
+  {
+    var constype = _policyEvalContext.Period?.HomeownersLine_HOE?.Dwelling?.ConstructionType
+    var st = _policyEvalContext.Period?.PrimaryLocation?.State?.Code
+    if(constype != null
+       && ((st=="NV" && (constype== typekey.ConstructionType_HOE.TC_ICF_EXT
+        || constype== typekey.ConstructionType_HOE.TC_L
+        || constype== typekey.ConstructionType_HOE.TC_ICF_EXT))
+      ||
+      (st=="TX" && (constype== typekey.ConstructionType_HOE.TC_ICF_EXT
+          || constype== typekey.ConstructionType_HOE.TC_L
+          ))
+        ))
+      {
+        var shortDescription =
+            \ -> "Underwriting review required for this construction type"
+        var longDescription =
+            \ -> "Underwriting review is required for this Construction Type "
+        _policyEvalContext.addIssue("CheckConstructionType","CheckConstructionType",shortDescription,longDescription)
+
+      }
+
   }
 
   private function underwritingCompanySegmentNotValid() {

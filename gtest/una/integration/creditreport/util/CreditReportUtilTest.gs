@@ -5,10 +5,8 @@ uses typekey.UWCompanyCode
 uses typekey.State
 uses entity.PolicyContactRole
 uses entity.CreditReportParametersExt
-uses entity.PolicyContactRole
 uses entity.PolicyPeriod
 uses typekey.Jurisdiction
-uses entity.PolicyLine
 uses entity.Address
 
 uses gw.api.builder.PersonBuilder

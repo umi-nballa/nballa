@@ -103,7 +103,7 @@
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportIndividual"
               required="!creditLevelModeInd"
               value="creditReportContact"
-              valueRange="period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicySecNamedInsured&quot;)">
+              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)">
               <PostOnChange
                 onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period)"/>
             </RangeInput>
@@ -339,33 +339,6 @@
 }
 
 
-/*function orderCreditReport() {
-  var dispatcher = new una.integration.mapping.creditreport.CreditReportRequestDispatcher(creditReportContact, period)
-  var address = hasPrimaryNamedInsuredMoved ? aFormerAddress : creditReportContact.ContactDenorm.PrimaryAddress
-  var firstName = hasPrimaryNamedInsuredNameChanged ? formerFirstName : (creditReportContact.ContactDenorm as Person).FirstName
-  var middleName = hasPrimaryNamedInsuredNameChanged ? formerMiddleName : (creditReportContact.ContactDenorm as Person).MiddleName
-  var lastName = hasPrimaryNamedInsuredNameChanged ? formerLastName : (creditReportContact.ContactDenorm as Person).LastName
-  var dateOfBirth = (creditReportContact.ContactDenorm as Person).DateOfBirth
-
-  // Download the credit report
-  var response = dispatcher.orderNewCreditReport(address, firstName, middleName, lastName, dateOfBirth)
-  
-  // TO DO: The below code should not be inside the PCF.
-  // At some point, we should move the below code inside the request dispatcher. 
-  
-  // Populate former (alternative) address field
-  if ( hasPrimaryNamedInsuredMoved) {
-    period.CreditInfoExt.CreditReport.AlternateAddressInd = true
-    period.CreditInfoExt.CreditReport.AlternateAddress = aFormerAddress
-  }
-  
-  // Populate former (alternative) name field
-  if (hasPrimaryNamedInsuredNameChanged) {
-      period.CreditInfoExt.CreditReport.AlternateNameInd = true
-      period.CreditInfoExt.CreditReport.AlternateFirstName = formerFirstName 
-      period.CreditInfoExt.CreditReport.AlternateMiddleName = formerMiddleName
-      period.CreditInfoExt.CreditReport.AlternateLastName = formerLastName
-  }
-} */]]></Code>
+]]></Code>
   </Screen>
 </PCF>

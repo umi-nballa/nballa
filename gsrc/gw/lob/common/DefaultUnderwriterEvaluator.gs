@@ -237,8 +237,8 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
   private function blockRewritePolicy()
   {
-    if (_policyEvalContext.Period.Job typeis Rewrite or
-        _policyEvalContext.Period.Job typeis RewriteNewAccount )
+    if (_policyEvalContext.Period.Job typeis Rewrite
+      && _policyEvalContext.Period.Rewrite.RewriteType==typekey.RewriteType.TC_REWRITEREMAINDEROFTERM)
     {
       var shortDescription =
           \ -> "Underwriting review required for rewriting policy"

@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<xs:schema xmlns:rf="http://cp.com/rules/client" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:jxb="http://java.sun.com/xml/ns/jaxb" targetNamespace="http://cp.com/rules/client" elementFormDefault="qualified" attributeFormDefault="unqualified" jxb:version="1.0">
+
+   <xs:include schemaLocation="../ClueCommonElements.xsd"/>
+
+   <xs:element name="clue_personal_property">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="rf:admin"/>
+            <xs:element ref="rf:report"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>    <!-- clue_personal_property -->
+
+   <xs:element name="admin">
+      <xs:complexType>
+         <xs:complexContent>
+            <xs:extension base="rf:commonAdminType">
+               <xs:sequence>
+                 <xs:element name="status" >
+                   <xs:simpleType>
+                     <xs:annotation>
+                       <xs:appinfo>
+                         <jxb:typesafeEnumClass name="AdminStatusEnum"/>
+                       </xs:appinfo>
+                     </xs:annotation>
+                     <xs:restriction base="xs:string">
+                       <xs:enumeration value="processing complete, with claims"/>
+                       <xs:enumeration value="processing complete, no claims, no inquiry history"/>
+                       <xs:enumeration value="processing complete, no claims, with inquiry history"/>
+                       <xs:enumeration value="not processed: invalid LexisNexis Account Number"/>
+                       <xs:enumeration value="not processed: insufficient search data"/>
+                       <xs:enumeration value="not processed: State Limitations"/>
+                       <xs:enumeration value="not processed: product not requested"/>
+                     </xs:restriction>
+                   </xs:simpleType>
+                 </xs:element>
+                 <xs:element name="service_type" >
+                   <xs:simpleType>
+                     <xs:annotation>
+                       <xs:appinfo>
+                         <jxb:typesafeEnumClass name="ServiceTypeEnum"/>
+                       </xs:appinfo>
+                     </xs:annotation>
+                     <xs:restriction base="xs:string">
+                       <xs:enumeration value="C.L.U.E. Property and Real Property"/>
+                       <xs:enumeration value="Real Property only"/>
+                       <xs:enumeration value="C.L.U.E. Property only"/>
+                       <xs:enumeration value="Current Carrier / C.L.U.E. Property and Real Property"/>
+                       <xs:enumeration value="Current Carrier / C.L.U.E. Property Only"/>
+                       <xs:enumeration value="Current Carrier only"/>
+                     </xs:restriction>
+                   </xs:simpleType>
+                 </xs:element>
+                 <xs:element name="attachment1_processing_status" >
+                   <xs:simpleType>
+                     <xs:annotation>
+                       <xs:appinfo>
+                         <jxb:typesafeEnumClass name="Attachment1ProcessingStatusEnum"/>
+                       </xs:appinfo>
+                     </xs:annotation>
+                     <xs:restriction base="xs:string">
+                       <xs:enumeration value="processing complete with Real Property results"/>
+                       <xs:enumeration value="processing complete, no Real Property results"/>
+                       <xs:enumeration value="not processed: invalid LexisNexis Account Number"/>
+                       <xs:enumeration value="not processed: insufficient search data"/>
+                       <xs:enumeration value="not processed: State Limitations"/>
+                       <xs:enumeration value="not processed: product not requested"/>
+                       <xs:enumeration value="not processed: product unavailable"/>
+                     </xs:restriction>
+                   </xs:simpleType>
+                 </xs:element>
+                 <xs:element name="attachment2_processing_status" minOccurs="0">
+                   <xs:simpleType>
+                     <xs:annotation>
+                       <xs:appinfo>
+                         <jxb:typesafeEnumClass name="Attachment2ProcessingStatusEnum"/>
+                       </xs:appinfo>
+                     </xs:annotation>
+                     <xs:restriction base="xs:string">
+                       <xs:enumeration value="Risk Only Report Returned"/>
+                     </xs:restriction>
+                   </xs:simpleType>
+                 </xs:element>
+                 <xs:element name="report_usage">
+                   <xs:simpleType>
+                     <xs:annotation>
+                       <xs:appinfo>
+                         <jxb:typesafeEnumClass name="ReportUsageEnum"/>
+                       </xs:appinfo>
+                     </xs:annotation>
+                     <xs:restriction base="xs:string">
+                       <xs:enumeration value="Personal Property Underwriting"/>
+                       <xs:enumeration value="Personal Property Claims"/>
+                       <xs:enumeration value="Consumer Disclosure"/>
+                     </xs:restriction>
+                   </xs:simpleType>
+                 </xs:element>
+               </xs:sequence>
+            </xs:extension>
+         </xs:complexContent>
+      </xs:complexType>
+   </xs:element>   <!-- admin -->
+
+   <xs:element name="report">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element ref="rf:summary" minOccurs="0"/>
+            <xs:element name="requestor_producer_name" type="xs:string" minOccurs="0"/>
+            <xs:element name="messages" type="rf:messageListType" minOccurs="0"/>
+            <xs:element ref="rf:search_dataset" minOccurs="0"/>
+            <xs:element ref="rf:results_dataset" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>      <!-- report -->
+
+   <xs:element name="summary">
+      <xs:complexType>
+         <xs:sequence>
+            <!-- number_error -->
+            <xs:element name="total_risk_claims" type="rf:counterType" minOccurs="0"/>
+            <xs:element name="total_subject_claims" type="rf:counterType" minOccurs="0"/>
+            <xs:element name="total_prior_inquiry_history" type="rf:counterType" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>   <!-- summary -->
+
+   <xs:element name="search_dataset">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="subject" type="rf:cluePropertySubjectType" minOccurs="0" maxOccurs="2" >
+              <xs:annotation>
+                <xs:appinfo>
+                  <jxb:property name="subjectList" />
+                </xs:appinfo>
+              </xs:annotation>
+            </xs:element>
+            <xs:element name="policy" type="rf:cluePolicyType" minOccurs="0" />
+            <xs:element name="address" type="rf:clueAddressType" maxOccurs="3"/>
+            <xs:element name="mortgage" type="rf:clueMortgageType" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>   <!-- search_dataset -->
+
+   <xs:element name="results_dataset">
+      <xs:complexType>
+         <xs:sequence>
+            <xs:element name="claims_history" minOccurs="0" maxOccurs="3">
+               <xs:complexType>
+                  <xs:sequence>
+                     <xs:element name="claim" maxOccurs="50">
+                        <xs:complexType>
+                          <xs:annotation>
+                            <xs:appinfo>
+                              <jxb:property name="claimList" />
+                            </xs:appinfo>
+                          </xs:annotation>
+                           <xs:complexContent>
+                              <xs:extension base="rf:claimType">
+                                 <xs:sequence>
+                                    <xs:element name="property_claim_type" minOccurs="0">
+                                       <xs:simpleType>
+                                         <xs:annotation>
+                                           <xs:appinfo>
+                                             <jxb:typesafeEnumClass name="PropertyClaimEnum"/>
+                                           </xs:appinfo>
+                                         </xs:annotation>
+                                          <xs:restriction base="xs:string">
+                                             <xs:enumeration value="Risk"/>
+                                             <xs:enumeration value="Subject"/>
+                                          </xs:restriction>
+                                       </xs:simpleType>
+                                    </xs:element>
+                                    <xs:element name="location_of_loss" minOccurs="0">
+                                       <xs:simpleType>
+                                         <xs:annotation>
+                                           <xs:appinfo>
+                                             <jxb:typesafeEnumClass name="LocationOfLossEnum"/>
+                                           </xs:appinfo>
+                                         </xs:annotation>
+                                          <xs:restriction base="xs:string">
+                                             <xs:enumeration value="On premises"/>
+                                             <xs:enumeration value="Off premises"/>
+                                             <xs:enumeration value="Unknown"/>
+                                          </xs:restriction>
+                                       </xs:simpleType>
+                                    </xs:element>
+                                    <xs:element name="property_policy" type="rf:cluePolicyType"/>
+                                    <xs:element name="contributor_ambest" type="xs:string" minOccurs="0"/>
+                                    <xs:element name="mortgage" type="rf:clueMortgageType" minOccurs="0"/>
+									<xs:element name="disposition" type="rf:DispositionEnum" minOccurs="0"/>
+                                 </xs:sequence>
+                              </xs:extension>
+                           </xs:complexContent>
+                        </xs:complexType>
+                     </xs:element>
+                  </xs:sequence>
+                  <xs:attribute name="type" use="required">
+                     <xs:simpleType>
+                    <xs:annotation>
+                      <xs:appinfo>
+                        <jxb:typesafeEnumClass name="ResultTypeEnum"/>
+                      </xs:appinfo>
+                    </xs:annotation>
+                        <xs:restriction base="xs:string">
+                           <xs:enumeration value="Agent Section"/>
+                           <xs:enumeration value="Insured Section"/>
+                           <xs:enumeration value="Risk Section"/>
+                        </xs:restriction>
+                     </xs:simpleType>
+                  </xs:attribute>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="inquiry_history" minOccurs="0" >
+               <xs:complexType>
+                  <xs:sequence>
+                    <xs:element name="section_label" type="xs:string" minOccurs="0" />
+                    <xs:element name="is_section_developed" type="rf:yesNoType" minOccurs="0" />
+                    <xs:element name="inquiry_handling_history" minOccurs="1" maxOccurs="25" >
+                      <xs:complexType>
+                        <xs:annotation>
+                          <xs:appinfo>
+                            <jxb:property name="InquiryHandlingHistoryList" />
+                          </xs:appinfo>
+                        </xs:annotation>
+                        <xs:sequence>
+                          <xs:element name="subject" type="xs:nonNegativeInteger" minOccurs="0" />
+                          <xs:element name="date" type="rf:editsDateType" minOccurs="0" />
+                          <xs:element name="name" type="xs:string" minOccurs="0" />
+                          <xs:element name="quoteback" type="xs:string" minOccurs="0" />
+                        </xs:sequence>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:sequence>
+               </xs:complexType>
+            </xs:element>
+            <xs:element name="additional_information" type="rf:messageListType" minOccurs="0"/>
+            <xs:element name="attached_products" type="rf:attachedProductsType" minOccurs="0"/>
+         </xs:sequence>
+      </xs:complexType>
+   </xs:element>   <!-- results_dataset -->
+
+</xs:schema>
+

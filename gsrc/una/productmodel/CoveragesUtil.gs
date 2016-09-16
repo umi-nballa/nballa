@@ -2,6 +2,7 @@ package una.productmodel
 
 uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
+uses java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,6 +13,14 @@ uses gw.api.domain.covterm.OptionCovTerm
  */
 
 class CoveragesUtil {
+  public static final var DEPENDENT_LIMIT_PATTERNS_TO_DERIVING_LIMIT_PATTERNS : HashMap<String, List<String>> = {"HODW_Dwelling_Limit_HOE" -> {"HODW_OtherStructures_Limit_HOE",
+                                                                                                                                               "HODW_PersonalPropertyLimit_HOE",
+                                                                                                                                               "HODW_LossOfUseDwelLimit_HOE"},
+                                                                                                                 "HODW_PersonalPropertyLimit_HOE" -> {"HODW_LossOfUseDwelLimit_HOE"},
+                                                                                                                 "DPDW_Dwelling_Limit_HOE" -> {"DPDW_OtherStructuresLimit_HOE",
+                                                                                                                                               "DPDW_PersonalPropertyLimit_HOE",
+                                                                                                                                               "DPDW_Additional_LivingExpLimit_HOE"}}
+                                                                                                                                               //TODO tlv DE18 - Fair Market Value has wrong pattern code
   public static function isCoverageAvailable(coveragePattern : String, coverable : Coverable) : boolean{
     var result = true
 

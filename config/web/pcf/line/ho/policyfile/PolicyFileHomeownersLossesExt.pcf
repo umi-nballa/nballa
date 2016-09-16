@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Page
+    canVisit="perm.PolicyPeriod.view(policyPeriod) and perm.System.pfiledetails"
+    id="PolicyFileHomeownersLossesExt"
+    parent="PolicyFile(policyPeriod, asOfDate)"
+    title="displaykey.Accelerator.LexisNexis.Clue.Property.HOPriorLosses">
+    <LocationEntryPoint
+      signature="PolicyFileHomeownersLossesExt(policyPeriod : PolicyPeriod, asOfDate : DateTime)"/>
+    <Variable
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      name="asOfDate"
+      type="DateTime"/>
+    <Screen
+      id="PolicyFile_HO_Losses_Screen">
+      <Variable
+        initialValue="policyPeriod.HomeownersLine_HOE"
+        name="hoLine"/>
+      <TitleBar/>
+      <Toolbar/>
+      <PanelRef
+        def="HOPriorLossExtPanelSet(policyPeriod,hoLine,false)"/>
+    </Screen>
+  </Page>
+</PCF>

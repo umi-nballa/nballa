@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../../../pcf.xsd">
+  <Popup
+    afterCommit="TopLocation.commit(); TopLocation.startEditing(); "
+    afterEnter="if (thisLoss == null and startInEdit == true and openForEdit)                       { thisLoss = createNewLoss(policyPeriod); }"
+    canEdit="openForEdit"
+    id="HOPriorLossExtPopup"
+    returnType="HOPriorLoss_Ext"
+    startInEditMode="startInEdit"
+    title="displaykey.Accelerator.LexisNexis.Clue.Property.CLUEPriorLoss">
+    <LocationEntryPoint
+      signature="HOPriorLossExtPopup(thisLoss:HOPriorLoss_Ext,policyPeriod:PolicyPeriod,openForEdit: boolean,startInEdit:boolean)"/>
+    <Variable
+      name="thisLoss"
+      type="HOPriorLoss_Ext"/>
+    <Variable
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      name="startInEdit"
+      type="boolean"/>
+    <Screen
+      id="HOPriorLossPopupScreen">
+      <Toolbar>
+        <EditButtons
+          pickValue="thisLoss"/>
+      </Toolbar>
+      <PanelRef
+        def="HOPriorLossDetailsExtDV(thisLoss,openForEdit)"
+        id="lossDetails"/>
+      <PanelRef
+        def="HOPriorLossPaymentExtLV(thisLoss,openForEdit)"
+        id="PaymentDetails">
+        <TitleBar
+          title="displaykey.Accelerator.LexisNexis.Clue.Property.Payout"/>
+        <Toolbar>
+          <IteratorButtons
+            addVisible="CurrentLocation.InEditMode"
+            iterator="PaymentDetails.HOPriorLossPaymentExtLV"
+            removeVisible="CurrentLocation.InEditMode"/>
+        </Toolbar>
+      </PanelRef>
+    </Screen>
+    <Code><![CDATA[function createNewLoss(pPeriod:PolicyPeriod):HOPriorLoss_Ext
+{
+  var newLoss = new HOPriorLoss_Ext()
+  newLoss.ManuallyAddedLoss = true
+  pPeriod.HomeownersLine_HOE.addToHOPriorLosses_Ext(newLoss)
+  
+  return newLoss
+}]]></Code>
+  </Popup>
+</PCF>

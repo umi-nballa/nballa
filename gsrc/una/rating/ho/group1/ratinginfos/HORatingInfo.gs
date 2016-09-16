@@ -23,4 +23,5 @@ class HORatingInfo {
   var _ageOfHomeDiscount : BigDecimal as AgeOfHomeDiscount = 0.0
   var _differenceInConditionsDiscount : BigDecimal as DifferenceInConditionsDiscount = 0.0
   var _superiorConstructionDiscount : BigDecimal as SuperiorConstructionDiscount = 0.0
+  var _higherAllPerilDeductible : BigDecimal as HigherAllPerilDeductible = 0.0
 }

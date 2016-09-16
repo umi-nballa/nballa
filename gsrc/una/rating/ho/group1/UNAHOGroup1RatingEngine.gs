@@ -148,8 +148,26 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
       rateSuperiorConstructionDiscount(dateRange)
     }
+
+    rateHigherAllPerilDeductible(dateRange)
+
   }
 
+  /**
+   *  Function to rate the Superior Construction Discount
+   */
+  function rateHigherAllPerilDeductible(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateHigherAllPerilDeductible", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE, HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.HigherAllPerilDeductible = costData?.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Higher All Peril Deductible Rated Successfully", this.IntrinsicType)
+  }
   /**
    *  Function to rate the Superior Construction Discount
    */
@@ -607,6 +625,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium  + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.DifferenceInConditionsDiscount +_hoRatingInfo.SuperiorConstructionDiscount)
+    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium  + _hoRatingInfo.AgeOfHomeDiscount +
+                                        _hoRatingInfo.DifferenceInConditionsDiscount +_hoRatingInfo.SuperiorConstructionDiscount
+                                        + _hoRatingInfo.HigherAllPerilDeductible
+                                     )
   }
 }

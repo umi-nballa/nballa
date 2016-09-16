@@ -255,7 +255,7 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     if(constype != null
        && ((st=="NV" && (constype== typekey.ConstructionType_HOE.TC_ICF_EXT
         || constype== typekey.ConstructionType_HOE.TC_L
-        || constype== typekey.ConstructionType_HOE.TC_ICF_EXT))
+        || constype== typekey.ConstructionType_HOE.TC_EARTH_EXT))
       ||
       (st=="TX" && (constype== typekey.ConstructionType_HOE.TC_ICF_EXT
           || constype== typekey.ConstructionType_HOE.TC_L

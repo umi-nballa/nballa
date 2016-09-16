@@ -2,6 +2,7 @@ package una.enhancements.entity
 
 uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
+uses java.lang.IllegalStateException
 
 /**
  * Created with IntelliJ IDEA.
@@ -74,4 +75,23 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
     return result
   }
+
+  property get HasAllRenovations() : boolean {
+
+    return this.ElectricalSystemUpgrade and this.HeatingUpgrade and this.PlumbingUpgrade and this.RoofingUpgrade
+
+  }
+
+  property get MostRecentRenovationYear() : int {
+
+    var renovationYears = {this?.ElectricalSystemUpgradeDate, this?.RoofingUpgradeDate, this?.HeatingUpgradeDate, this?.PlumbingUpgradeDate}
+
+    try{
+      return renovationYears.min()
+    }catch(e : IllegalStateException){
+      return 0
+    }
+
+  }
+
 }

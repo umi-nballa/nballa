@@ -18,5 +18,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     super(dwelling)
     _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
     _constructionType = dwelling?.ConstructionType.DisplayName
+    //temp fix to get the base premium for now
+    _constructionType = ConstructionType_HOE.TC_FRAME_EXT.Description
   }
 }

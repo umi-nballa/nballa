@@ -214,8 +214,7 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
   function associatedClassCode() {
     this.ClassCode_Ext = ""
     var classCode = gw.api.database.Query.make(BP7ClassCode)
-    var result =   classCode.compare(BP7ClassCode#Code, Equals, this.ClassDescription ).select().AtMostOneRow
-
+    var result = classCode.compare(BP7ClassCode#Code, Equals, this.ClassDescription ).select().first()
     if(result != null){
       this.ClassCode_Ext = result.Code
     }

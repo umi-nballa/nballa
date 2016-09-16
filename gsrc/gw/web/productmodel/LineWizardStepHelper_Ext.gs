@@ -35,12 +35,7 @@ class LineWizardStepHelper_Ext {
     var covTerms = dwelling.HODW_SpecialLimitsPP_HOE_Ext.CovTerms?.whereTypeIs(DirectCovTerm)?.where( \ covTerm -> derivedSpecialLimitsCovTermPatterns?.contains(covTerm.PatternCode))
 
     covTerms?.each( \ covTerm -> {
-      var shouldDefaultLimit = dwelling.HODW_SpecialLimitsPP_HOE_Ext.hasCovTerm(covTerm.Pattern) and covTerm.Value == null
-      var defaultSpecialLimitsAmount = ConfigParamsUtil.getDouble(TC_SPECIALLIMITSDIRECTMINIMUMDEFAULT, baseState, covTerm.PatternCode)
-
-      if(shouldDefaultLimit){
-          covTerm.Value = defaultSpecialLimitsAmount
-      }
+      covTerm.setDefaultLimit(dwelling)
     })
   }
 

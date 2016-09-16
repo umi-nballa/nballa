@@ -15,25 +15,14 @@
       name="coverable_Ext"
       type="Coverable"/>
     <CovTermDirectInput
-      editable="una.pageprocess.CovTermPOCHOEInputSet.isCovTermEditable(term, coverable_Ext)"
+      editable="una.pageprocess.CovTermPOCHOEInputSet.isCovTermEditable(term as gw.api.domain.covterm.DirectCovTerm, coverable_Ext)"
       id="DirectTermInput"
       label="term.Pattern.DisplayName"
       required="term.Pattern.Required"
-      validationExpression="validateTermType()? una.pageprocess.CovTermPOCHOEInputSet.validateMinMaxValue(coverable_Ext, term): null"
+      validationExpression="una.pageprocess.CovTermPOCHOEInputSet.validate(coverable_Ext, term as gw.api.domain.covterm.DirectCovTerm)"
       value="term">
       <PostOnChange
         onChange="una.pageprocess.CovTermPOCHOEInputSet.onchange(coverable_Ext, term)"/>
     </CovTermDirectInput>
-    <Code><![CDATA[function validateTermType():boolean
-{
-  if(term.PatternCode== "HODW_OtherStructures_Limit_HOE" || term.PatternCode== "HODW_PersonalPropertyLimit_HOE" || term.PatternCode== "HODW_LossOfUseDwelLimit_HOE"){
-    return true
-  }
-  else if(term.PatternCode== "DPDW_OtherStructuresLimit_HOE" || term.PatternCode== "DPDW_PersonalPropertyLimit_HOE" || term.PatternCode== "DPDW_LossOfUseDwelLimit_HOE"){
-    return true
-  }
-    return false
-}
-]]></Code>
   </InputSet>
 </PCF>

@@ -34,6 +34,7 @@ class AddressCopier extends Copier<Address> {
     target.ValidUntil     = _address.ValidUntil
     target.SpatialPoint   = _address.SpatialPoint
     target.GeocodeStatus  = _address.GeocodeStatus
+    target.addressScrub_Ext = _address.addressScrub_Ext
   }
 
 }

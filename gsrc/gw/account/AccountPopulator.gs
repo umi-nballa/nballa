@@ -4,6 +4,7 @@ uses gw.api.system.PLDependenciesGateway
 uses gw.pl.persistence.core.Bundle
 
 uses java.util.Date
+uses java.lang.Exception
 
 /**
  * Contains the fields used to create a new Account object.
@@ -146,6 +147,18 @@ class AccountPopulator {
     address.Country = _country == null
                       ? PLDependenciesGateway.getCommonDependencies().getDefaultCountry()
                       : _country
+    //Tuna Scrubbing from search screen
+    if(null != _addressLine1 && null != _city && null != _state.DisplayName  && null != _postalCode) {
+        try{
+        gw.api.contact.AddressAutocompleteUtil.autofillAddress(address, "AddressLine1", false);
+         address.addressScrub_Ext = true
+        } catch (exp: Exception) {
+          // Status is false if address is Invalid
+            address.addressScrub_Ext = false
+
+        }
+      }
+
   }
 
 }

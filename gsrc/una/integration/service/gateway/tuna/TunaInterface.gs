@@ -18,7 +18,7 @@ interface TunaInterface {
   * @param address is of type AddressDTO
   *
   * */
-  public function fetchPropertyInformationComplete(address: AddressDTO): PropertyGeographyModel
+  public function fetchPropertyInformationComplete(address: AddressDTO): TunaAppResponse
 
   /* TBD - Yet to be Implemented*/
   public function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse
@@ -28,7 +28,7 @@ interface TunaInterface {
   * @param address is Address Entity in GW
   *
   * */
-  public function fetchPropertyInformationScrubOnly(address: AddressFillable): PropertyGeographyModel
+  public function fetchPropertyInformationScrubOnly(address: AddressFillable): TunaAppResponse
 
   /* TBD - Yet to be Implemented */
   public function fetchPropertyInformationGeoLookUp(policyPeriod: PolicyPeriod): TunaAppResponse

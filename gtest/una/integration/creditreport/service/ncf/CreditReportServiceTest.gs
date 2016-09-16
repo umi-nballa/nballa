@@ -95,7 +95,7 @@ class CreditReportServiceTest extends gw.testharness.TestBase {
    */
   function testRequestSubmit_VA_Resident_With_Address2() {
  
-    var request : CreditReportRequest
+    var creditRequest : CreditReportRequest
     var response : CreditReportResponse
 
     // Expiration date settings are maintained in CreditReportParameters system table.
@@ -114,7 +114,7 @@ class CreditReportServiceTest extends gw.testharness.TestBase {
     var service  : ICreditReportService = CreditReportServiceFactory.getCreditReportService(typekey.CreditReportServiceExt.TC_NCF)
    
     // This data was taken from LexisNexis' test data website 
-    request =  
+    creditRequest =
       new CreditReportRequest
         .Builder()
         .withFirstName(AccountFactory.FirstNameArray[3])
@@ -128,17 +128,17 @@ class CreditReportServiceTest extends gw.testharness.TestBase {
         .withCacheExpireDate(cacheExpireDate)
         .create()    
     
-    assertNotNull( request )
+    assertNotNull( creditRequest )
     
-    response = service.getCreditReport( request )
+    response = service.getCreditReport( creditRequest )
     
     assertTrue(response.Score.length==3)
     assertEquals(AccountFactory.CreditBureau,  response.CreditBureau)
     assertTrue(response.Reasons.Count > 0)
-    assertEquals(request.FirstName, response.FirstName)
-    assertEquals(request.LastName, response.LastName)
-    assertEquals(request.AddressCity, response.AddressCity)
-    assertEquals(request.AddressState, response.AddressState)
+    assertEquals(creditRequest.FirstName, response.FirstName)
+    assertEquals(creditRequest.LastName, response.LastName)
+    assertEquals(creditRequest.AddressCity, response.AddressCity)
+    assertEquals(creditRequest.AddressState, response.AddressState)
     assertTrue(response.AddressDiscrepancyInd)
   }
 }

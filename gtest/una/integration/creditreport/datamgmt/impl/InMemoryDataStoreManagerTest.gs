@@ -50,16 +50,16 @@ class InMemoryDataStoreManagerTest extends gw.testharness.TestBase {
   function testGetRecordFromLocalDataStoreFound() {
     
     initLocalCache(0)
-    var request = CreditReportFactory.createCreditReportRequest(0)
-    request.CacheExpireDate = gw.api.util.DateUtil.addDays(new java.util.Date(), -1)
-    assertNotNull(ds.getRecordFromLocalDataStore(request))
+    var creditRequest = CreditReportFactory.createCreditReportRequest(0)
+    creditRequest.CacheExpireDate = gw.api.util.DateUtil.addDays(new java.util.Date(), -1)
+    assertNotNull(ds.getRecordFromLocalDataStore(creditRequest))
   }
   
   function testGetRecordFromLocalDataStoreNotFound() {
     
     initLocalCache(0)
-    var request = CreditReportFactory.createCreditReportRequest(1)
-    assertNull(ds.getRecordFromLocalDataStore(request))
+    var creditRequest = CreditReportFactory.createCreditReportRequest(1)
+    assertNull(ds.getRecordFromLocalDataStore(creditRequest))
   }  
   
   function testGetRecordFromLocalDataStoreNull() {

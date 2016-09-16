@@ -28,6 +28,18 @@
         <PostOnChange
           onChange="billingUIHelper.resetBillingInfo(); gw.api.web.PebblesUtil.invalidateIterators(CurrentLocation, entity.PaymentPlanSummary)"/>
       </RangeInput>
+      <BooleanRadioInput
+        available="true"
+        editable="true"
+        falseLabel="displaykey.Web.Policy.Payment.BillImmediatelyYes"
+        id="BillImmediately"
+        label="displaykey.Web.Policy.Payment.BillImmediately"
+        required="true"
+        trueLabel="displaykey.Web.Policy.Payment.BillImmediatelyNo"
+        value="policyPeriod.BillImmediately_Ext">
+        <PostOnChange
+          onChange="billingUIHelper.invoicingOptionChanged() "/>
+      </BooleanRadioInput>
       <InputSetRef
         def="AccountContactBillingInputSet(policyPeriod, true, billingUIHelper)"
         visible="policyPeriod.BillingMethod != TC_AGENCYBILL"/>

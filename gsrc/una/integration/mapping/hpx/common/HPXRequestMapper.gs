@@ -7,6 +7,7 @@ uses java.lang.StringBuilder
 uses una.integration.mapping.hpx.homeowners.HPXDwellingCoverageMapper
 uses una.integration.mapping.hpx.homeowners.HPXDwellingPolicyMapper
 uses una.integration.mapping.hpx.businessowners.HPXBusinessOwnersPolicyMapper
+uses una.integration.mapping.hpx.commercialpackage.HPXCommercialPackagePolicyMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,16 +39,20 @@ class HPXRequestMapper {
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var businessOwnersPolicyMapper = new HPXBusinessOwnersPolicyMapper()
+    var commercialPackagePolicyMapper = new HPXCommercialPackagePolicyMapper()
     var returnString = new String()
     if (policyPeriod.HomeownersLine_HOEExists) {
       var dwellingPolicy = dwellingPolicyMapper.createDwellingPolicy(policyPeriod)
       var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
       returnString = createHPXDwellingPolicyRequestModel(dwellingPolicy, compositionUnit)
-    }
-    else if (policyPeriod.BP7LineExists) {
+    } else if (policyPeriod.BP7LineExists) {
       var businessOwnersPolicy = businessOwnersPolicyMapper.createBusinessOwnersPolicy(policyPeriod)
       var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
       returnString = createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy, compositionUnit)
+    } else if (policyPeriod.CPLineExists) {
+      var commercialPackagePolicy = commercialPackagePolicyMapper.createCommercialPackagePolicy(policyPeriod)
+      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
+      returnString = createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy, compositionUnit)
     }
     return returnString
   }
@@ -78,6 +83,23 @@ class HPXRequestMapper {
     var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
     transaction.setText("Policy Dwelling")
     polInfoTypeRq.addChild(businessOwnersPolicy)
+    hpxRequest.addChild(polInfoTypeRq)
+    hpxRequest.addChild(publishingEngineFileKey)
+    hpxRequest.addChild(compositionUnit)
+    hpxRequest.addChild(transaction)
+    hpxRequest.addChild(createPublishingConsumerAppKey())
+    return hpxRequest.asUTFString()
+  }
+
+  function createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy : wsi.schema.una.hpx.hpx_application_request.CommercialPackagePolicy,
+                                                     compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
+    var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
+    var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
+    var publishingEngineFileKey = new wsi.schema.una.hpx.hpx_application_request.PublishingEngineFileKey()
+    publishingEngineFileKey.setText("PolicyCenterNA.pub")
+    var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
+    transaction.setText("Policy Dwelling")
+    polInfoTypeRq.addChild(commercialPackagePolicy)
     hpxRequest.addChild(polInfoTypeRq)
     hpxRequest.addChild(publishingEngineFileKey)
     hpxRequest.addChild(compositionUnit)

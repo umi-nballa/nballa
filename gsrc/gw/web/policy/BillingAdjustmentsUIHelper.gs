@@ -29,6 +29,7 @@ class BillingAdjustmentsUIHelper {
   var _paymentMethodChoice: PaymentMethod as PaymentMethodChoice
   var _invoiceStreams: BillingInvoiceStreamInfo[] as InvoiceStreams
   var _unappliedFunds: BillingUnappliedFundInfo[] as UnappliedFunds
+  var _billImmediately: boolean as BillImmediately
 
   construct(location: Location, policyPeriod: PolicyPeriod) {
     _location = location
@@ -138,6 +139,7 @@ class BillingAdjustmentsUIHelper {
     if (_policyPeriod.BillingMethod != BillingMethod.TC_AGENCYBILL) {
       _newUnappliedFund = _newInvoicing
     }
+    _billImmediately = _policyPeriod.BillImmediately_Ext
     _newUnappliedFund = _policyPeriod.NewInvoiceStream.UnappliedFundID == null
     var paymentPlans = retrievePaymentPlans()
     _installmentsPlans = paymentPlans.InstallmentPlans

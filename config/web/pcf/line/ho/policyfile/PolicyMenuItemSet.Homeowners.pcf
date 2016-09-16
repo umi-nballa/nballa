@@ -28,6 +28,12 @@
       id="PolicyMenuItemSet_HomeownersCoverages"
       label="displaykey.Web.PolicyFile.Coverages"/>
     <MenuItem
+      action="PolicyFileHomeownersLossesExt.go(period, asOfDate)"
+      available="period.HomeownersLine_HOE.HOPolicyType == &quot;HO3&quot; or  period.HomeownersLine_HOE.HOPolicyType == &quot;DP2&quot;"
+      id="PolicyMenuItemSet_HomeownersLossesExt"
+      label="displaykey.Accelerator.LexisNexis.Clue.Property.HOPriorLosses"
+      visible="period.HomeownersLine_HOE.HOPolicyType == &quot;HO3&quot; or  period.HomeownersLine_HOE.HOPolicyType == &quot;DP2&quot;"/>
+    <MenuItem
       action="PolicyFile_Pricing.go(period, asOfDate)"
       id="PolicyMenuItemSet_Pricing"
       label="displaykey.Web.PolicyFile.Pricing"/>

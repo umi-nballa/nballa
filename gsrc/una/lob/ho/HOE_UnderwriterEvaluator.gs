@@ -31,7 +31,21 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       validteQuestions()
     }
   }
-
+  override function onPrequote() {
+    relatedPriorLossforHomeownersOrDwelling()
+  }
+  /*
+ * Creates underwriting issue if the number of PriorLosses associated with Homeowners line is one or more.
+ */
+  private function relatedPriorLossforHomeownersOrDwelling(){
+    var numberOfLosses = _policyEvalContext.Period.HomeownersLine_HOE.HOPriorLosses_Ext.length
+    var shortDescription = \ -> displaykey.Accelerator.LexisNexis.UWIssue.Homeowners.PriorLosses.shortDesc
+    var longDescription = \ -> displaykey.Accelerator.LexisNexis.UWIssue.Homeowners.PriorLosses.LongDesc(numberOfLosses)
+    if(numberOfLosses >= 1){
+      _policyEvalContext.addIssue("HOPriorLoss_Ext", "HOPriorLoss_Ext",
+          shortDescription, longDescription, numberOfLosses)
+    }
+  }
   /*
    * Validation question response is checked for being true. If true create an underwriting issue
    */

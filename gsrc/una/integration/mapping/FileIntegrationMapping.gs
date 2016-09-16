@@ -2,7 +2,7 @@ package una.integration.mapping
 
 uses una.integration.framework.file.IFileDataMapping
 uses gw.lang.reflect.gs.IGosuClass
-
+uses una.model.LexisFirstFileData
 
 /**
  * This Enum implements IFileDataMapping and provides mapping for each flat file integration.
@@ -14,15 +14,18 @@ enum FileIntegrationMapping implements IFileDataMapping {
 // Sample Mapping - this will be deleted after one actual implementation
 //  LockboxWholeSaleInbound(LockboxWholeSaleInboundData,DataTable.WholesaleLockBoxFileThree,BeanIOStream.LockboxWholeSaleInboundIntegration),
 //  LockboxRetailInbound (LockboxRetailInboundData, DataTable.RetailLockBoxFileThree, BeanIOStream.LockboxRetailInboundIntegration)
+    LexisFirstOutbound(LexisFirstFileData,DataTable.LexisFirstOutboundFileData,BeanIOStream.LexisFirstOutBoundIntegration)
 
   enum DataTable {
    RetailLockBoxFileThree ,
-   WholesaleLockBoxFileThree
+   WholesaleLockBoxFileThree,
+   LexisFirstOutboundFileData
   }
 
   enum BeanIOStream {
     LockboxRetailInboundIntegration ,
-    LockboxWholeSaleInboundIntegration
+    LockboxWholeSaleInboundIntegration,
+    LexisFirstOutBoundIntegration
   }
 
   var _dataClass: IGosuClass

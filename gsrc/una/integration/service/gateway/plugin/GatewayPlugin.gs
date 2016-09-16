@@ -6,6 +6,7 @@ uses gw.lang.reflect.IType
 uses una.logging.UnaLoggerCategory
 uses una.integration.service.gateway.tuna.TunaInterface
 uses una.integration.service.gateway.hpx.HPXInterface
+uses una.integration.service.gateway.clue.CluePropertyInterface
 
 /**
  * User: pyerrumsetty
@@ -63,7 +64,13 @@ class GatewayPlugin {
     var instance = makeGateway("HPX")
     return instance as HPXInterface
   }
-
+  /**
+   * Operation to return implementation of the CluePropertyInterface to the caller
+   */
+  static function makeCLUEGateway():CluePropertyInterface{
+    var instance = makeGateway("CLUE")
+    return instance as CluePropertyInterface
+  }
   static private function makeGateway(pluginName:String):Object{
 
     try{
@@ -116,7 +123,7 @@ class GatewayPlugin {
       //find configuration settings for the current runtime environment
       var env = una.utils.EnvironmentUtil.PolicyCenterRuntime
       var envConfig = pluginConfig.Configuration.firstWhere( \ configx -> configx.Environment.equalsIgnoreCase(env))
-      print(envConfig)
+      logger.info("envConfig:::"+envConfig)
 
       return envConfig
 

@@ -1,6 +1,7 @@
 package una.pageprocess.credit
 
 uses java.util.ArrayList
+uses una.logging.UnaLoggerCategory
 /**
  * User: amohammed
  * Date: 8/23/16
@@ -8,6 +9,9 @@ uses java.util.ArrayList
  * This class will be have the functions that will be called by HOCreditREportScreen.pcf
  */
 class CreditReportScreen {
+
+  final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
+
   /**
    * Common code to determine whether to enable/disable credit report name/address fields.
    */
@@ -75,6 +79,8 @@ class CreditReportScreen {
 
     // Download the credit report
     var response = dispatcher.orderNewCreditReport(address, firstName, middleName, lastName, dateOfBirth)
+    period.createCustomHistoryEvent(CustomHistoryType.TC_CREDIT_ORDERED, \ -> displaykey.Web.SubmissionWizard.CreditReporting.CreditOrdered)
+    LOGGER.debug("Credit Ordered for Person "+firstName +" "+lastName)
 
     // Populate former (alternative) address field
     if ( hasPrimaryNamedInsuredMoved) {

@@ -16,7 +16,6 @@ uses una.integration.framework.util.CreditReportUtil
 uses una.integration.plugins.creditreport.impl.InMemoryDataStoreManager
 uses java.util.Date
 uses gw.api.builder.SubmissionBuilder
-uses una.integration.framework.util.CreditReportUtil
 
 class CreditReportFactory {
       

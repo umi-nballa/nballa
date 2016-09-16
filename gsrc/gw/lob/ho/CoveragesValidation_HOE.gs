@@ -29,9 +29,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
     _dwelling.Coverages.each(\ d -> checkUniqueDescription(d))
     _dwelling.Coverages.each(\ d -> checkUniqueDwellingLocation(d))
     _holine.HOLineCoverages.each(\ d -> checkUniqueLocation(d))
-    validateSpecialLimitsDirectCovTerms()
     validateDeductibleAmounts()
-    validateDwellingLimit()
   }
   
   function checkEmptyLocations() {
@@ -128,46 +126,11 @@ class CoveragesValidation_HOE extends PCValidationBase {
     }
   }
 
-  private function validateSpecialLimitsDirectCovTerms(){
-    var covTermPatternsToValidate = ConfigParamsUtil.getList(TC_DERIVEDSPECIALLIMITSCOVTERMPATTERNS, _holine.BaseState)
-    var covTermsToValidate = _holine.Dwelling.HODW_SpecialLimitsPP_HOE_Ext.CovTerms?.whereTypeIs(DirectCovTerm)
-        ?.where( \ covTerm -> covTermPatternsToValidate?.contains(covTerm.PatternCode))
-
-    covTermsToValidate?.each( \ covTerm -> {
-      var minimumAllowed = determineMinimumAllowed(covTerm)
-      var maximumAllowed = determineMaximumAllowed(covTerm)
-      var incrementAmount = ConfigParamsUtil.getDouble(TC_SpecialLimitsIncrementAmount, _holine.BaseState, covTerm.PatternCode)
-      var moneyFormatter = NumberFormat.getCurrencyInstance()
-      var isAllowedValue = isAllowedValue(minimumAllowed, maximumAllowed, incrementAmount, covTerm)
-
-      if(_holine.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value and covTerm.PatternCode == "HODW_SecurityLimits_HOE"){
-        maximumAllowed = 5000
-
-        if(!isAllowedValue){ //if not already one of the allowed values, we consider 5k valid when executive coverage is true
-          isAllowedValue = covTerm.Value == 5000
-        }
-      }
-
-      if(covTerm.Value < minimumAllowed or covTerm.Value > maximumAllowed or !isAllowedValue){
-        Context.Result.addError(_dwelling, "default", displaykey.SpecialLimitErrorMessage(covTerm.Pattern.Name, moneyFormatter.format(minimumAllowed), moneyFormatter.format(maximumAllowed), moneyFormatter.format(incrementAmount)), "HOCoverages")
-      }
-    })
-  }
-
   private function validateDeductibleAmounts(){
     validateNamedStormDeductible()
     validateHurricaneDeductible()
     validateMinimumWindHailDeductible()
     validateAllOtherPerilsDeductible()
-  }
-
-  private function validateDwellingLimit(){
-    var dwellingLimit = _holine.Dwelling.DwellingLimitCovTerm.Value
-    var limitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, _holine.BaseState, _holine.HOPolicyType)
-
-    if(dwellingLimit < limitRange.LowerBound or dwellingLimit > limitRange.UpperBound){
-      Context.Result.addError(_dwelling, "default", displaykey.una.productmodel.validation.DwellingLimitValidationMessage(new Double(dwellingLimit).asMoney(), _holine.Dwelling.DwellingLimitCovTerm.Pattern.Name, new Double(limitRange.LowerBound).asMoney(), new Double(limitRange.UpperBound).asMoney()), "HOCoverages")
-    }
   }
 
   private function validateNamedStormDeductible(){
@@ -260,27 +223,6 @@ class CoveragesValidation_HOE extends PCValidationBase {
             and (_holine.Dwelling.HOLocation.PolicyLocation.PostalCode?.startsWith("29492")
                  or county?.equalsIgnoreCase("Beaufort")
                  or county?.equalsIgnoreCase("Georgetown") and _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code?.contains("14"))
-  }
-
-  private function determineMinimumAllowed(covTerm : DirectCovTerm) : double{
-    return ConfigParamsUtil.getDouble(TC_SpecialLimitsDirectMinimumDefault, _holine.BaseState, covTerm.PatternCode)
-  }
-
-  private function determineMaximumAllowed(covTerm : DirectCovTerm) : double{
-    return ConfigParamsUtil.getDouble(TC_SpecialLimitsDirectMaximum, _holine.BaseState, covTerm.PatternCode)
-  }
-
-  private function isAllowedValue(minimumAllowed : double, maximumAllowed : double, incrementValue : double, covTerm : DirectCovTerm) : boolean {
-    var baseState = _holine.BaseState
-    var allowedIncrement = minimumAllowed
-    var allowedIncrements : List<Double> = {allowedIncrement}
-
-    while(allowedIncrement <= maximumAllowed){
-      allowedIncrement += incrementValue
-      allowedIncrements.add(allowedIncrement)
-    }
-
-    return allowedIncrements.contains(covTerm.Value.doubleValue())
   }
 
   private function isCalculatedDeductibleLessThanCalculatedMinimum(deductible: double, minimum: double) : boolean{

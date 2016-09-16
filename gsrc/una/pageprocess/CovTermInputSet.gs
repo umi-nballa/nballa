@@ -29,10 +29,9 @@ class CovTermInputSet {
   private function roundValue(){
     if(_covTerm typeis DirectCovTerm){
       var roundingFactor = ConfigParamsUtil.getInt(TC_RoundingFactor, null, _covTerm.PatternCode)
-      var patternCode = _covTerm.PatternCode
 
       if(roundingFactor != null){
-        _covTerm.Value = MathUtil.roundTo(_covTerm.Value.doubleValue(), roundingFactor)
+        _covTerm.Value = MathUtil.roundTo(_covTerm.Value.doubleValue(), roundingFactor, ROUND_NEAREST)
       }
     }
   }

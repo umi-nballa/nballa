@@ -23,7 +23,7 @@ enhancement LossAssessmentCovEnhancement_Ext : productmodel.HODW_LossAssessmentC
 
   function setDefaults(){
     setDefaultDeductibleValue()
-    setDefaultLimit()
+    this.HOPL_LossAssCovLimit_HOETerm.setDefaultLimit(this.Dwelling)
   }
 
   private function setDefaultDeductibleValue(){
@@ -46,12 +46,6 @@ enhancement LossAssessmentCovEnhancement_Ext : productmodel.HODW_LossAssessmentC
       }
     }else{
       this.HOPL_Deductible_HOETerm.Value = null
-    }
-  }
-
-  private function setDefaultLimit(){
-    if(this.HasHOPL_LossAssCovLimit_HOETerm and this.HOPL_LossAssCovLimit_HOETerm.Value == null){
-      this.HOPL_LossAssCovLimit_HOETerm.setOptionValue(this.HOPL_LossAssCovLimit_HOETerm.AvailableOptions.orderBy(\ o -> o.Value).first())
     }
   }
 }

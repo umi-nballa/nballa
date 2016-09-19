@@ -42,8 +42,8 @@ class CreditReportServiceTest extends gw.testharness.TestBase {
    */
   function testRequestSubmit_VA_Resident_Multiple_Name_Entry_from_Vendor() {
 
-    var request  : CreditReportRequest
-    var response : CreditReportResponse
+    var creditReportRequest  : CreditReportRequest
+    var creditReportResponse : CreditReportResponse
 
     // Expiration date settings are maintained in CreditReportParameters system table.
     var creditReportParameters = CreditReportUtil.getCreditReportParameters(
@@ -61,7 +61,7 @@ class CreditReportServiceTest extends gw.testharness.TestBase {
     var service : ICreditReportService = CreditReportServiceFactory.getCreditReportService(typekey.CreditReportServiceExt.TC_NCF)
    
     // This data was taken from LexisNexis' test data website 
-    request =  
+    creditReportRequest =
       new CreditReportRequest
         .Builder()
         .withFirstName(AccountFactory.FirstNameArray[2])
@@ -75,19 +75,19 @@ class CreditReportServiceTest extends gw.testharness.TestBase {
         .withCacheExpireDate(cacheExpireDate)
         .create()    
     
-    assertNotNull(request)
+    assertNotNull(creditReportRequest)
     
-    response = service.getCreditReport(request)
+    creditReportResponse = service.getCreditReport(creditReportRequest)
     
-    assertTrue(response.Score.length == 3)
-    assertEquals(AccountFactory.CreditBureau,  response.CreditBureau)
-    assertTrue(response.Reasons.Count > 0)
-    assertEquals(request.FirstName, response.FirstName)
-    assertEquals(request.LastName, response.LastName)
-    assertEquals(request.AddressCity, response.AddressCity)
-    assertEquals(request.AddressState, response.AddressState)
-    assertTrue(response.AddressDiscrepancyInd)
-    assertFalse(response.StatusCode.compareTo(CreditStatusExt.TC_ERROR) == 0)
+    assertTrue(creditReportResponse.Score.length == 3)
+    assertEquals(AccountFactory.CreditBureau,  creditReportResponse.CreditBureau)
+    assertTrue(creditReportResponse.Reasons.Count > 0)
+    assertEquals(creditReportRequest.FirstName, creditReportResponse.FirstName)
+    assertEquals(creditReportRequest.LastName, creditReportResponse.LastName)
+    assertEquals(creditReportRequest.AddressCity, creditReportResponse.AddressCity)
+    assertEquals(creditReportRequest.AddressState, creditReportResponse.AddressState)
+    assertTrue(creditReportResponse.AddressDiscrepancyInd)
+    assertFalse(creditReportResponse.StatusCode.compareTo(CreditStatusExt.TC_ERROR) == 0)
   }
  
   /**

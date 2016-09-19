@@ -1,6 +1,7 @@
 package una.rating.ho.group1.ratinginfos
 
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
+uses una.rating.util.HOConstructionTypeMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,5 +21,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     _constructionType = dwelling?.ConstructionType.DisplayName
     //temp fix to get the base premium for now
     _constructionType = ConstructionType_HOE.TC_FRAME_EXT.Description
+    if(dwelling.HOLine.BaseState == typekey.Jurisdiction.TC_NV){
+      _constructionType = HOConstructionTypeMapper.constructionTypeMapperNV(dwelling.ConstructionType).Description
+    }
   }
 }

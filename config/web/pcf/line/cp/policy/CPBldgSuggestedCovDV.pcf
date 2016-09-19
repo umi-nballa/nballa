@@ -8,7 +8,7 @@
       name="building"
       type="cPBuilding"/>
     <Variable
-      initialValue="building.PolicyLine.Pattern.getCoverageCategory(&quot;CPBldgCovCategory&quot;)"
+      initialValue="building.PolicyLine.Pattern.getCoverageCategory(&quot;CPAdditionalPropCovCategory_EXT&quot;)//CPBldgCovCategory"
       name="buildingPropCategory"
       recalculateOnRefresh="true"/>
     <Require
@@ -18,7 +18,7 @@
       initialValue="building.PolicyLine.Pattern.getCoverageCategory( &quot;CPBusIncCovCategory&quot; )"
       name="incomeExpenseCategory"/>
     <Variable
-      initialValue="building == null ? null : buildingPropCategory.coveragePatternsForEntity(CPBuilding).whereSelectedOrAvailable(building, openForEdit)"
+      initialValue="building == null ? null : buildingPropCategory.coveragePatternsForEntity(CPBuilding).whereSelectedOrAvailable(building, openForEdit).concat(building.PolicyLine.Pattern.getCoverageCategory(&quot;CPBldgCovCategory&quot;).coveragePatternsForEntity(CPBuilding).whereSelectedOrAvailable(building, openForEdit)).concat(building.PolicyLine.Pattern.getCoverageCategory(&quot;CPConditions_EXT&quot;).coveragePatternsForEntity(CPBuilding).whereSelectedOrAvailable(building, openForEdit)).concat(building.PolicyLine.Pattern.getCoverageCategory(&quot;CPExclusions_EXT&quot;).coveragePatternsForEntity(CPBuilding).whereSelectedOrAvailable(building, openForEdit)).concat(building.PolicyLine.Pattern.getCoverageCategory(&quot;CPOptionalPropCovCategory_EXT&quot;).coveragePatternsForEntity(CPBuilding).whereSelectedOrAvailable(building, openForEdit))"
       name="buildingPropCategoryCoveragePatterns"
       recalculateOnRefresh="true"/>
     <Variable

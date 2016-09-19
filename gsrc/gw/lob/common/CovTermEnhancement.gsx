@@ -264,7 +264,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
   }
 
   private function isDerivedSectionILimit(dwelling: Dwelling_HOE) : boolean{
-    return ConfigParamsUtil.getList(TC_DerivedLimitsPatternCodes, dwelling.HOLine.BaseState).hasMatch( \ element -> element?.equalsIgnoreCase(this.PatternCode))
+    return ConfigParamsUtil?.getList(TC_DerivedLimitsPatternCodes, dwelling.HOLine.BaseState)?.hasMatch( \ element -> element?.equalsIgnoreCase(this.PatternCode))
   }
 
   private function isDerivedSpecialLimits(dwelling : Dwelling_HOE) : boolean{

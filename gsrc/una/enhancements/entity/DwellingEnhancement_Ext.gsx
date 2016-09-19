@@ -12,6 +12,9 @@ uses java.lang.IllegalStateException
  * To change this template use File | Settings | File Templates.
  */
 enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
+  /*
+    Returns the DwellingLimit cov term depending on whether this is a fire or HO policy
+  */
   property get DwellingLimitCovTerm() : DirectCovTerm{
     var result : DirectCovTerm
 
@@ -24,6 +27,9 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
+  /*
+    Returns the OtherStructures cov term depending on whether this is a fire or HO policy
+  */
   property get OtherStructuresLimitCovTerm() : DirectCovTerm{
     var result : DirectCovTerm
 
@@ -36,6 +42,9 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
+  /*
+    Returns the PersonalPropertyLimit cov term depending on whether this is a fire or HO policy
+  */
   property get PersonalPropertyLimitCovTerm() : DirectCovTerm{
     var result : DirectCovTerm
 
@@ -48,6 +57,9 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
+  /*
+    Returns the LossOfUseLimit cov term depending on whether this is a fire or HO policy
+  */
   property get LossOfUseLimitCovTerm() : DirectCovTerm{
     var result : DirectCovTerm
 
@@ -64,6 +76,10 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return this.DwellingUsage != null and DwellingUsage_HOE.TF_SECONDARYORSEASONAL.TypeKeys.contains(this.DwellingUsage)
   }
 
+  /*
+    Returns either the All Perils or All Other Perils Limt Cov Term.
+    Either one or the other will exist for the dwelling and never both.
+  */
   property get AllPerilsOrAllOtherPerilsCovTerm() : OptionCovTerm{
     var result : OptionCovTerm
 

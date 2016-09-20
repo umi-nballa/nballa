@@ -6,7 +6,7 @@ uses java.math.BigDecimal
 /**
  * User: bduraiswamy
  * Date: 6/16/16
- * custom implementation of a gosu class which populates the parameters for the routines for the dwelling level coverages
+ * Custom implementation of a gosu class which populates the parameters for the routines for the dwelling level coverages
  * for the homeowners policies.
  */
 class HORatingInfo {
@@ -23,6 +23,7 @@ class HORatingInfo {
 
   //discounts
   var _ageOfHomeDiscount : BigDecimal as AgeOfHomeDiscount = 0.0
-  var _burglarProtectiveDevicesCredit : BigDecimal as BurglarProtectiveDevicesCredit
-
+  var _burglarProtectiveDevicesCredit : BigDecimal as BurglarProtectiveDevicesCredit = 0.0
+  var _fireProtectiveDevicesCredit : BigDecimal as FireProtectiveDevicesCredit = 0.0
+  var _hailResistantRoofCredit : BigDecimal as HailResistantRoofCredit = 0.0
 }

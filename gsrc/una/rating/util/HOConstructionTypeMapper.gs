@@ -3,7 +3,7 @@ package una.rating.util
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 9/15/16
- * This is a mapper class which maps the construction type of dwelling construction screen to the
+ * This is a mapper class which maps the dwelling construction type to the rate tables construction types.
  */
 class HOConstructionTypeMapper {
 

@@ -47,6 +47,7 @@ public final class HORateRoutineNames {
   public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
   public static final var EXECUTIVE_COVERAGE : String = "UNAHOExecutiveCoverageRateRoutine"
   public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
+  public static final var HAIL_RESISTANT_ROOF_CREDIT_TX_RATE_ROUTINE : String = "UNAHOHailResistantRoofCreditTXRateRoutine"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE : String = "UNAHOHigherAllPerilDeductible"
 
   //group1 routines
@@ -69,5 +70,6 @@ public final class HORateRoutineNames {
   public static final var SPECIAL_PERSONAL_PROPERTY_COVERAGE_ROUTINE_NAME : String = "UNASpecialPersonalPropertyGroup1RateRoutine"
   public static final var SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecialLimitsPersonalPropertyCovGroup1RateRoutine"
   public static final var DIFFERENCE_IN_CONDITIONS_GROUP1_RATE_ROUTINE : String = "UNAHODifferenceInConditionsGroup1RateRoutine"
+  public static final var CONCRETE_TILE_ROOF_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOConcreteTileRoofDiscountGroup1RateRoutine"
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeGroup1RateRoutine"
 }

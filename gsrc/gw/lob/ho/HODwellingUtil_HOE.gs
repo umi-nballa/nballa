@@ -493,4 +493,33 @@ class HODwellingUtil_HOE {
     dwelling.WHurricaneHailExclusion_Ext = false
   }
 
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Opening protection value range based on state
+ *  HO Line of business
+  */
+
+  static function getOpeningProtectionRange(dwelling : Dwelling_HOE) :  List<typekey.OpeningProtection_Ext> {
+   if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code) {
+      return typekey.OpeningProtection_Ext.TF_FLONLY.TypeKeys
+  } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code) {
+      return typekey.OpeningProtection_Ext.TF_SCONLY.TypeKeys
+  }
+  return typekey.OpeningProtection_Ext.TF_ALLOTHERSTATES.TypeKeys
+  }
+
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Panel manufacturing value range based on state
+ *  HO Line of business
+  */
+
+  static function getPanelManufacturingRange(dwelling : Dwelling_HOE) : List<typekey.PanelManufacturer_Ext>{
+    var yearBuilt : int = 1990
+    if(dwelling.YearBuilt >= yearBuilt ) {
+      return typekey.PanelManufacturer_Ext.TF_YEARGROUP1.TypeKeys
+    }
+    return typekey.PanelManufacturer_Ext.TF_ALLOTHERYEARS.TypeKeys
+  }
+
 }// End of class

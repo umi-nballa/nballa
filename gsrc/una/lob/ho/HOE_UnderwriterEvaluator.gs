@@ -7,7 +7,6 @@ uses java.util.Set
 uses gw.lang.reflect.IType
 
 /**
- * Created with IntelliJ IDEA.
  * User: dvillapakkam
  * Date: 5/18/16
  * Time: 10:16 PM
@@ -33,6 +32,8 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
   override function onPrequote() {
     relatedPriorLossforHomeownersOrDwelling()
+    //This method will be called to check and create UW Issues related to Credit
+    createsCreditRelatedUwIssuesForHO()
   }
   /*
  * Creates underwriting issue if the number of PriorLosses associated with Homeowners line is one or more.
@@ -44,6 +45,30 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     if(numberOfLosses >= 1){
       _policyEvalContext.addIssue("HOPriorLoss_Ext", "HOPriorLoss_Ext",
           shortDescription, longDescription, numberOfLosses)
+    }
+  }
+
+  /*
+  * Creates underwriting related issues, for the below Credit Statuses
+  * TC_NO_SCORE, TC_ERROR, NULL, TC_NOT_ORDERED
+  */
+  private function createsCreditRelatedUwIssuesForHO(){
+    //var numberOfLosses = _policyEvalContext.Period.HomeownersLine_HOE.HOPriorLosses_Ext.length
+    if(_policyEvalContext.Period.HomeownersLine_HOEExists){
+      var creditStatus = _policyEvalContext.Period.CreditInfoExt.CreditReport.CreditStatus
+      if (creditStatus == CreditStatusExt.TC_NO_HIT || creditStatus == CreditStatusExt.TC_NO_SCORE){
+        //adds below UW Issue if the CreditStatus is No HIT or NO Score
+        var creditNoHitNoScore = \ ->  displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportNoHitOrNoScore(creditStatus)
+        _policyEvalContext.addIssue("CreditReportNoHit", "CreditReportNoHit", creditNoHitNoScore, creditNoHitNoScore)
+      }else if (creditStatus == CreditStatusExt.TC_ERROR){
+        //adds below UW Issue if the CreditStatus has Errors
+        var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
+        _policyEvalContext.addIssue("CreditReportError","CreditReportError", creditReportErrors,creditReportErrors)
+      }else if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+        //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
+        var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
+        _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)
+      }
     }
   }
   /*

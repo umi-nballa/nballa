@@ -3,7 +3,6 @@ package una.integration.creditreport
 uses entity.PolicyContactRole
 uses typekey.State
 uses entity.Address
-uses entity.PolicyContactRole
 uses entity.PolicyPeriod
 
 uses java.util.Random

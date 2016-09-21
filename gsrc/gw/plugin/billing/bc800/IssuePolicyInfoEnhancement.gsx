@@ -23,6 +23,7 @@ enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
   }
   
   private function commonSync(period : PolicyPeriod){
+    this.BillImmediately = period.BillImmediately_Ext
     this.AccountNumber = period.Policy.Account.AccountNumber
     this.AssignedRisk = period.AssignedRisk
     this.PaymentPlanPublicId = period.SelectedPaymentPlan.BillingId

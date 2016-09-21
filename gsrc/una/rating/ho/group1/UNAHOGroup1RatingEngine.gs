@@ -123,6 +123,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_SpecialLimitsPP_HOE_Ext:
         rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
         break
+      case HODW_LossAssessmentCov_HOE_Ext:
+        rateLossAssessmentCoverage(dwellingCov, dateRange)
+        break
     }
   }
 
@@ -312,6 +315,21 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   * Rate the Loss assessment Coverage
+   */
+  function rateLossAssessmentCoverage(dwellingCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    if(dwellingRatingInfo.LossAssessmentLimit != 1000){
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_GROUP1_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null and costData.ActualTermAmount != 0)
+        addCost(costData)
+    }
+    _logger.debug("Loss Asssessment Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    * Rate the Executive Coverage
    */
   function rateExecutiveCoverage(dwellingCov: HODW_Dwelling_Cov_HOE, dateRange: DateRange) {
@@ -349,7 +367,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_PERSONAL_PROPERTY_COVERAGE_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-
     _logger.debug("Special Personal Property Rated Successfully", this.IntrinsicType)
   }
 

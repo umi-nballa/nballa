@@ -16,7 +16,8 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium : boolean as IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = false
   var _doesSpecialPersonalPropertyCoverageExist : boolean as SpecialPersonalPropertyCoverage = false
-
+  var _lossAssessmentPolicyForm : String as LossAssessmentPolicyForm
+  var _lossAssessmentLimit : int as LossAssessmentLimit
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -32,6 +33,15 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo{
     if(dwellingCov.Dwelling?.HODW_SpecialPersonalProperty_HOE_ExtExists and baseState == Jurisdiction.TC_CA){
       _doesSpecialPersonalPropertyCoverageExist = true
     }
-
+    if(dwellingCov.Dwelling?.HODW_LossAssessmentCov_HOE_ExtExists){
+      _lossAssessmentPolicyForm = this.PolicyType.Code
+      if(baseState == Jurisdiction.TC_CA and PolicyType == HOPolicyType_HOE.TC_HO3){
+        if(dwellingCov.Dwelling?.HODW_Dwelling_Cov_HOEExists){
+          if(dwellingCov.Dwelling?.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value)
+            _lossAssessmentPolicyForm += "_ExecCov"
+        }
+      }
+      _lossAssessmentLimit = dwellingCov.Dwelling?.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
+    }
   }
 }

@@ -48,7 +48,20 @@ class PolicyChangeProcess extends JobProcess implements IPolicyChangeProcess {
     Job.assignRolesFromPolicy()
     _branch.expireNextChangeApprovals()
     _branch.expirePastDateApprovals()
-    this.Job.createCustomHistoryEvent(TC_CHANGE_CREATED, \ -> displaykey.PolicyChange.History.JobCreated)
+    //uim-svallabhapurapu : Policy History1 story, As per story append reason collected on start policy change screen.
+    var changeReason = new java.lang.StringBuffer("")
+    if(Job.Reason1_Ext != null){
+      changeReason.append(Job.Reason1_Ext.DisplayName)
+      changeReason.append(" ")
+    }
+    if(Job.Reason2_Ext != null){
+      changeReason.append(Job.Reason2_Ext.DisplayName)
+      changeReason.append(" ")
+    }
+    if(Job.Reason3_Ext != null){
+      changeReason.append(Job.Reason3_Ext?.DisplayName)
+    }
+    this.Job.createCustomHistoryEvent(TC_CHANGE_CREATED, \ -> changeReason.toString())
   }
 
   /**
@@ -297,6 +310,8 @@ class PolicyChangeProcess extends JobProcess implements IPolicyChangeProcess {
       PolicyBillingContact -> \ period -> period.BillingContact
       }, _branch.OOSSlices)
     bind()
+    //uim-vallabhapurapu : Policy History1 Story, to generate history event for suppress Print
+    Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \ -> displaykey.Job.PolicyChange.History.Issued.SuppressPrint)
   }
 
   /**

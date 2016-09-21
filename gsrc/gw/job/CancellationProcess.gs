@@ -310,6 +310,7 @@ class CancellationProcess extends JobProcess {
     }
 
     if (InitialNotificationsHaveBeenSent) {
+
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CANCEL_RESCHEDULE, \ -> displaykey.Job.Cancellation.History.Reschedule(processDate))
     }
 
@@ -473,6 +474,7 @@ class CancellationProcess extends JobProcess {
   function issueCancellation() {
     canIssueCancellation().assertOkay()
     JobProcessLogger.logInfo("Binding cancellation for branch \"${_branch}\"")
+
     try {
       TransactionUtil.runAtomically(\ bundle -> {
         _branch.ensureProducerOfService()
@@ -483,7 +485,12 @@ class CancellationProcess extends JobProcess {
       PCLoggerCategory.JOB_PROCESS.error("Unable to issueCancellation", e)
       throw e
     }
-
+    // Sunil
+    if(Job.SupressPrint){
+      Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \-> displaykey.Job.Cancellation.History.IssueNow.SuppressPrint)
+      //Job.Cancellation.History.IssueNow = Cancellation with indicator to suppress print
+    }
+    // Sunil
     // push to future depends on commit of branch promotion...
     withdrawOrCancelRenewalInFuturePeriod()
   }

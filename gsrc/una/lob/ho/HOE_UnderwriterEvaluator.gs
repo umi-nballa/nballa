@@ -35,19 +35,14 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     return allowedJobsForCredit.contains(typeof(_policyEvalContext.Period.Job))
   }
 
-  override function onDefault() {
-
-    if(_policyEvalContext.CheckingSet == UWIssueCheckingSet.TC_PREBIND) {
-      validateQuestions()
-      //This method will be called to create UW Issues related to Credit
-      createsCreditRelatedUwIssuesForHO()
-    }else if(_policyEvalContext.CheckingSet == UWIssueCheckingSet.TC_PREISSUANCE) {
-      //This method will be called to reate UW Issues related to Credit
-      createsCreditRelatedUwIssuesForHO()
-    }
-  }
   override function onPrequote() {
     relatedPriorLossforHomeownersOrDwelling()
+  }
+
+  override function onPreBind(){
+    validateQuestions()
+    //This method will be called to create UW Issues related to Credit
+    createsCreditRelatedUwIssuesForHO()
   }
   /*
  * Creates underwriting issue if the number of PriorLosses associated with Homeowners line is one or more.

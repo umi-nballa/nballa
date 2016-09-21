@@ -15,6 +15,7 @@ uses una.rating.ho.group1.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1DiscountsOrSurchargeRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOSpecialLimitsPersonalPropertyRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOWCPrivateResidenceEmployeeRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -68,6 +69,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HOLI_AddResidenceRentedtoOthers_HOE:
         rateAddResidenceRentedToOthersCoverage(lineCov, dateRange)
+        break
+      case HOLI_WC_PrivateResidenceEmployee_HOE_Ext:
+        rateWCPrivateResidenceEmployeeCoverage(lineCov, dateRange)
         break
     }
   }
@@ -555,6 +559,19 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   * Rate Workers compensation - Private Residence Employee coverage
+   */
+  function rateWCPrivateResidenceEmployeeCoverage(lineCov : HOLI_WC_PrivateResidenceEmployee_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWCPrivateResidenceEmployeeCoverage to rate Workers compensation - Private Residence Employee Coverage", this.IntrinsicType)
+    var wcPrivateResidenceEmployeeRatingInfo = new HOWCPrivateResidenceEmployeeRatingInfo(lineCov)
+    var rateRoutineParameterMap = getWCPrivateResidenceEmployeeCovParameterSet(PolicyLine, wcPrivateResidenceEmployeeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Workers compensation - Private Residence Employee Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Rate the Increased Section II Limits
    */
   function rateIncreasedSectionIILimits(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
@@ -603,6 +620,16 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_LINERATINGINFO_EXT -> lineRatingInfo
+    }
+  }
+
+  /**
+   *  Returns the parameter set for the line level coverages
+   */
+  private function getWCPrivateResidenceEmployeeCovParameterSet(line : PolicyLine, wcPrivateResidenceEmployeeRatingInfo : HOWCPrivateResidenceEmployeeRatingInfo) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_LINERATINGINFO_EXT -> wcPrivateResidenceEmployeeRatingInfo
     }
   }
 

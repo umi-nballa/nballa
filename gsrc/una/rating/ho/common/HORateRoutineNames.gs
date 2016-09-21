@@ -73,4 +73,5 @@ public final class HORateRoutineNames {
   public static final var CONCRETE_TILE_ROOF_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOConcreteTileRoofDiscountGroup1RateRoutine"
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeGroup1RateRoutine"
   public static final var LOSS_ASSESSMENT_COVERAGE_GROUP1_RATE_ROUTINE : String = "UNAHOLossAssessmentCovGroup1RateRoutine"
+  public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
 }

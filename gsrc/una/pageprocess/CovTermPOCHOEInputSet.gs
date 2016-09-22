@@ -218,4 +218,14 @@ class CovTermPOCHOEInputSet {
 
     return allowedIncrements.contains(covTerm.Value.doubleValue())
   }
+
+   public static function minValueDamageProperty(dwelling: Dwelling_HOE):boolean{
+     var minValue:BigDecimal
+     minValue = 2500
+     if(dwelling.HODW_DamagetoPropertyofOthers_HOE_ExtExists and dwelling.HODW_DamagetoPropertyofOthers_HOE_Ext.HODW_DamagePropertyLimit_HOETerm.Value < minValue){
+       return true
+      }
+     return false
+    }
+
 }

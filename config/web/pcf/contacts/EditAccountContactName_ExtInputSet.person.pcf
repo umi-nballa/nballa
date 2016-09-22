@@ -8,12 +8,24 @@
     <Require
       name="contact"
       type="Contact"/>
+    <Require
+      name="account"
+      type="Account"/>
     <Variable
       initialValue="new gw.api.name.PersonNameDelegate(contact as Person)"
       name="personNameDelegate"
       recalculateOnRefresh="true"/>
     <Label
       label="displaykey.Web.ContactDetail.Person"/>
+    <TypeKeyInput
+      available="true"
+      editable="true"
+      id="PreferredMethodOfContact"
+      label="displaykey.Web.AddressDetail.PreferredContact"
+      required="true"
+      value="account.AccountHolderContact.PreferredmethodOfContact">
+      <PostOnChange/>
+    </TypeKeyInput>
     <InputSetRef
       def="GlobalPersonNameInputSet(new una.pageprocess.account.EditAccountRequiredBasicNameOwner(personNameDelegate))"
       mode="gw.api.name.NameLocaleSettings.PCFMode"/>

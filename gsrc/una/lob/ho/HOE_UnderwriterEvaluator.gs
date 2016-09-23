@@ -26,13 +26,16 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
 
   /*
-  * Allowed jobs for Credit Reporting
+  * This method is used to determine the allowed jobs and states for Credit Reporting
   * Add the jobs we need to use for CreditReporting to Set<IType>
-  * In future if we need to include all the jobs then delete the below method and use canEvaluate() method*
+  * In future if we need to include all the jobs for CreditReporting then delete the Set allowedJobsForCredit
   */
-  private function allowedJobsForCreditReporting(): boolean{
-    var allowedJobsForCredit : Set<IType> = {Submission, Issuance}
-    return allowedJobsForCredit.contains(typeof(_policyEvalContext.Period.Job))
+  private function allowedJobsAndStatesForCreditReporting(): boolean{
+    if(!(_policyEvalContext.Period.BaseState == "CA" || _policyEvalContext.Period.BaseState == "HI")){
+      var allowedJobsForCredit : Set<IType> = {Submission, Issuance}
+      return allowedJobsForCredit.contains(typeof(_policyEvalContext.Period.Job))
+    }
+    return false
   }
 
   override function onPrequote() {
@@ -227,7 +230,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   * TC_NO_SCORE, TC_ERROR, NULL, TC_NOT_ORDERED
   */
   private function createsCreditRelatedUwIssuesForHO(){
-    if(allowedJobsForCreditReporting()){
+    if(allowedJobsAndStatesForCreditReporting()){
       var creditStatus = _policyEvalContext.Period.CreditInfoExt.CreditReport.CreditStatus
       if (creditStatus == CreditStatusExt.TC_NO_HIT || creditStatus == CreditStatusExt.TC_NO_SCORE){
         //adds below UW Issue if the CreditStatus is No HIT or NO Score

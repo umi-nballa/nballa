@@ -49,6 +49,7 @@ public final class HORateRoutineNames {
   public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
   public static final var HAIL_RESISTANT_ROOF_CREDIT_TX_RATE_ROUTINE : String = "UNAHOHailResistantRoofCreditTXRateRoutine"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE : String = "UNAHOHigherAllPerilDeductible"
+  public static final var AFFINITY_DISCOUNT_TX_RATE_ROUTINE : String = "UNAHOAffinityDiscountTXRateRoutine"
 
   //group1 routines
   public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"

@@ -26,4 +26,5 @@ class HORatingInfo {
   var _burglarProtectiveDevicesCredit : BigDecimal as BurglarProtectiveDevicesCredit = 0.0
   var _fireProtectiveDevicesCredit : BigDecimal as FireProtectiveDevicesCredit = 0.0
   var _hailResistantRoofCredit : BigDecimal as HailResistantRoofCredit = 0.0
+  var _affinityDiscount : BigDecimal as AffinityDiscount = 0.0
 }

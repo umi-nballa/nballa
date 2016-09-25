@@ -102,10 +102,17 @@ class CreditReportScreen {
     var policyContactRoles = period.PolicyContactRoles.where(\ p -> p.Subtype == "PolicyPriNamedInsured" || p.Subtype == "PolicyAddlNamedInsured")
     var personContactRoles : ArrayList<PolicyContactRole> = new List<PolicyContactRole>()
     for (policyContactRole in policyContactRoles){
-      if(policyContactRole.CompanyName == null){
+      if(policyContactRole.CompanyName == null and contactDoesNotBelongToStates(policyContactRole.ContactDenorm.PrimaryAddress.State)   ){
         personContactRoles.add(policyContactRole)
       }
     }
     return personContactRoles
+  }
+
+  private static function contactDoesNotBelongToStates(state : State): boolean{
+    if(!(state == State.TC_HI or state == State.TC_CA)){
+      return true
+    }
+    return false
   }
 }

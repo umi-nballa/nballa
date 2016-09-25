@@ -236,11 +236,13 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         //adds below UW Issue if the CreditStatus is No HIT or NO Score
         var creditNoHitNoScore = \ ->  displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportNoHitOrNoScore(creditStatus)
         _policyEvalContext.addIssue("CreditReportNoHit", "CreditReportNoHit", creditNoHitNoScore, creditNoHitNoScore)
-      }else if (creditStatus == CreditStatusExt.TC_ERROR){
+      }
+      if (creditStatus == CreditStatusExt.TC_ERROR){
         //adds below UW Issue if the CreditStatus has Errors
         var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
         _policyEvalContext.addIssue("CreditReportErrors","CreditReportErrors", creditReportErrors,creditReportErrors)
-      }else if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+      }
+      if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
         //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
         var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
         _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)

@@ -26,4 +26,6 @@ class HORatingInfo {
   var _higherAllPerilDeductible : BigDecimal as HigherAllPerilDeductible = 0.0
   var _concreteTileRoofDiscount : BigDecimal as ConcreteTileRoofDiscount = 0.0
   var _seasonalSecondaryResidenceSurcharge : BigDecimal as SeasonalSecondaryResidenceSurcharge = 0.0
+  var _gatedCommunityDiscount : BigDecimal as GatedCommunityDiscount = 0.0
+  var _privateFireCompanyDiscount : BigDecimal as PrivateFireCompanyDiscount = 0.0
 }

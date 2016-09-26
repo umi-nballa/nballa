@@ -29,7 +29,7 @@ class CancellationPCFController {
       _effectiveDate = _policyPeriod.EditEffectiveDate
     }
 
-    _reasonDetailRange = {}
+    updateReasonDetailsRange(this._cancellation.CancelReasonCode)
   }
 
   /** PCF PROPERTIES  */

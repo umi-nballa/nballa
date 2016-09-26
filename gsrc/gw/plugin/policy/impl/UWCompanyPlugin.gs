@@ -8,9 +8,9 @@ uses java.util.Set
 class UWCompanyPlugin implements IUWCompanyPlugin {
 
   override function findUWCompaniesForStates(period : PolicyPeriod, allStates : boolean) : Set<UWCompany> {
-    // This OOTB implementation goes through Guidewire's UWCompanyFinder to retrieve the UWCompanies
-    // The finder queries on the UWCompany table with a conjunctive or disjunctive reverse join through
-    // the LicensedState table per state, depending on the value of allStates.
-    return PCDependenciesGateway.getUWCompanyFinder().findUWCompaniesByStatesAndProductAndValidOnDate(period.AllCoveredStates, allStates, period.Policy.Product, period.PeriodStart).toSet()
+  // This OOTB implementation goes through Guidewire's UWCompanyFinder to retrieve the UWCompanies
+  // The finder queries on the UWCompany table with a conjunctive or disjunctive reverse join through
+  // the LicensedState table per state, depending on the value of allStates.
+  return PCDependenciesGateway.getUWCompanyFinder().findUWCompaniesByStatesAndProductAndValidOnDate(period.AllCoveredStates, allStates, period.Policy.Product, period.PeriodStart).where( \ elt -> elt.Retired==false).toSet()
   }
 }

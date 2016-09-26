@@ -23,6 +23,7 @@ uses gw.api.tree.RowTreeRootNode
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
 uses una.rating.ho.group1.UNAHOGroup1RatingEngine
 uses una.rating.ho.tx.UNAHOTXRatingEngine
+uses una.rating.ho.group2.UNAHOGroup2RatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -234,6 +235,9 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       if((_line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_AZ || _line.BaseState == typekey.Jurisdiction.TC_CA)
           and (_line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3))
         return new UNAHOGroup1RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+      if((_line.BaseState == typekey.Jurisdiction.TC_NC || _line.BaseState == typekey.Jurisdiction.TC_SC)
+          and (_line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3))
+        return new UNAHOGroup2RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)

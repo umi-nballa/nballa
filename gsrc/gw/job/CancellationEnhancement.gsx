@@ -110,7 +110,7 @@ enhancement CancellationEnhancement : Cancellation {
     // Return today's date if it's within the valid date range
     var todaysDate = DateTime.CurrentDate
     if (earliestEffDate < todaysDate and todaysDate < latestEffDate) {
-      return todaysDate
+      return todaysDate.addDays(1)
     }
 
     // Otherwise return the earliest possible effective date

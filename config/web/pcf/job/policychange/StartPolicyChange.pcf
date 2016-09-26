@@ -80,13 +80,13 @@
             id="ReasonforChange_Ext"
             label="displaykey.Web.Job.ReasonforChange_Ext"
             required="true"
-            value="job.ReasonforChange_Ext"
+            value="policyPeriod.ReasonforChange_Ext"
             visible="policyPeriod.HomeownersLine_HOEExists"/>
           <TypeKeyInput
             editable="true"
             id="Reason1_Ext"
             label="displaykey.Web.Job.Reason1_Ext"
-            value="job.Reason1_Ext"
+            value="policyPeriod.Reason1_Ext"
             visible="policyPeriod.HomeownersLine_HOEExists">
             <PostOnChange/>
           </TypeKeyInput>
@@ -94,17 +94,17 @@
             editable="true"
             id="Reason2_Ext"
             label="displaykey.Web.Job.Reason2_Ext"
-            value="job.Reason2_Ext"
-            visible="job.Reason1_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists">
+            value="policyPeriod.Reason2_Ext"
+            visible="policyPeriod.Reason1_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists">
             <PostOnChange/>
           </TypeKeyInput>
           <RangeInput
             editable="true"
             id="Reason3_Ext"
             label="displaykey.Web.Job.Reason3_Ext"
-            value="job.Reason3_Ext"
+            value="policyPeriod.Reason3_Ext"
             valueRange="typekey.Reason3_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
-            visible="job.Reason2_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists"/>
+            visible="policyPeriod.Reason2_Ext != null &amp;&amp; policyPeriod.HomeownersLine_HOEExists"/>
           <TextAreaInput
             editable="true"
             id="ReasonFreeForm_Ext"
@@ -112,8 +112,8 @@
             maxChars="500"
             numCols="50"
             numRows="6"
-            required="job.ReasonforChange_Ext != null &amp;&amp; job.Reason1_Ext == null &amp;&amp; job.Reason2_Ext == null &amp;&amp; job.Reason3_Ext == null"
-            value="job.ReasonFreeForm_Ext"
+            required="policyPeriod.ReasonforChange_Ext != null &amp;&amp; policyPeriod.Reason1_Ext == null &amp;&amp; policyPeriod.Reason2_Ext == null &amp;&amp; policyPeriod.Reason3_Ext == null"
+            value="policyPeriod.ReasonFreeForm_Ext"
             visible="policyPeriod.HomeownersLine_HOEExists"/>
         </InputColumn>
       </DetailViewPanel>

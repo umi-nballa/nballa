@@ -87,7 +87,7 @@
     fkentity="PolicyDBARole_Ext"
     name="PrimaryDBA"
     nullok="true"/>
- <!-- Credit related fields -->
+  <!-- Credit related fields -->
   <edgeForeignKey
     desc="Associated Credit Information (credit level or credit report)"
     edgeTableName="PPCreditInfoExt"
@@ -101,6 +101,7 @@
     nullok="true"
     type="bit"/>
   <column
+    default="false"
     desc="Rule 180"
     name="Rule180_Ext"
     nullok="true"
@@ -117,5 +118,10 @@
       name="precision"
       value="5"/>
   </column>
-
+  <column
+    default="false"
+    desc="Bill Immediately"
+    name="BillImmediately_Ext"
+    nullok="true"
+    type="bit"/>
 </extension>

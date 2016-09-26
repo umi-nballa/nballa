@@ -53,6 +53,7 @@
     <!-- =================================== WIZARD STEPS =================================== -->
     <JobWizardStep
       id="Entry"
+      onFirstEnter="generateHistoryEven()"
       save="openForEdit"
       screen="CancellationWizard_EntryScreen(policyPeriod, cancellation, openForEdit,jobWizardHelper)"
       title="displaykey.Web.CancellationWizardMenu.Entry"/>
@@ -73,5 +74,13 @@
       visible="policyPeriod.MultiLine"/>
     <WizardStepSetRef
       def="JobWizardToolsMenuWizardStepSet(jobWizardHelper, policyPeriod)"/>
+    <Code><![CDATA[//uim-svallabhapurapu
+function generateHistoryEven(){
+    var  originalValue : String = "No"
+    var newValue : String = "Yes"
+    if(job.SupressPrint){
+      job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SELECTEDSUPPRESS_EXT, \-> displaykey.Job.Cancellation.History.SuppressPrintFunctionality,originalValue,newValue)
+     }
+    }]]></Code>
   </JobWizard>
 </PCF>

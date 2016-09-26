@@ -48,8 +48,7 @@
                 footerLabel="displaykey.Web.Policy.BA.Subtotal"
                 id="Description"
                 label="displaykey.Web.PolicyLine.Coverages.Description"
-                value="displaykey.Web.PolicyLine.Coverage(coverage.Pattern)"
-                wrap="false"/>
+                value="gw.lob.ho.rating.QuotePageUtil_HOE.getCoverageNameForAdditionalCov(coverage.Pattern as String)"/>
               <Cell
                 align="right"
                 enableSort="false"
@@ -62,8 +61,7 @@
                 id="TermAmount"
                 label="displaykey.Web.SubmissionWizard.Quote.WC.Amount"
                 value="group.LowLevelCost ? null : group.Cost.ActualTermAmount"
-                visible="proRated"
-                wrap="false"/>
+                visible="proRated"/>
               <DateCell
                 align="right"
                 enableSort="false"
@@ -99,20 +97,18 @@
               elementName="covTerm"
               id="RegularCovTerms"
               pageSize="0"
-              value="coverage.CovTerms">
+              value="gw.lob.ho.rating.QuotePageUtil_HOE.getCovTerms(coverage)//coverage.CovTerms">
               <IteratorSort
                 sortBy="covTerm.Pattern.Priority"
                 sortOrder="1"/>
               <Row>
                 <Cell
                   id="Description"
-                  value="gw.api.web.HtmlUtil.indent(covTerm.DisplayName, ScriptParameters.HOQuoteLevel2Indent)"
-                  wrap="false"/>
+                  value="gw.api.web.HtmlUtil.indent(covTerm.DisplayName, ScriptParameters.HOQuoteLevel2Indent)"/>
                 <Cell
                   align="right"
                   id="CovTermValue"
-                  value="covTerm.DisplayValue"
-                  wrap="false"/>
+                  value="covTerm.DisplayValue"/>
                 <Cell
                   id="TermAmount"
                   visible="proRated"/>
@@ -139,13 +135,11 @@
               <Row>
                 <Cell
                   id="Description"
-                  value="gw.api.web.HtmlUtil.indent(covLine.description, ScriptParameters.HOQuoteLevel2Indent)"
-                  wrap="false"/>
+                  value="gw.api.web.HtmlUtil.indent(covLine.description, ScriptParameters.HOQuoteLevel2Indent)"/>
                 <Cell
                   align="right"
                   id="CovTermValue"
-                  value="covLine.value"
-                  wrap="false"/>
+                  value="covLine.value"/>
                 <Cell
                   id="TermAmount"
                   visible="proRated"/>
@@ -180,13 +174,11 @@
               <Row>
                 <Cell
                   id="Description"
-                  value=" gw.api.web.HtmlUtil.indent(data.description, ScriptParameters.HOQuoteLevel2Indent)"
-                  wrap="false"/>
+                  value=" gw.api.web.HtmlUtil.indent(data.description, ScriptParameters.HOQuoteLevel2Indent)"/>
                 <Cell
                   align="right"
                   id="CovTermValue"
-                  value="data.value"
-                  wrap="false"/>
+                  value="data.value"/>
                 <Cell
                   id="TermAmount"
                   value="lineCost.ActualTermAmount"
@@ -221,13 +213,11 @@
                 <Row>
                   <Cell
                     id="Description"
-                    value="gw.api.web.HtmlUtil.indent(detail.description, ScriptParameters.HOQuoteLevel3Indent)"
-                    wrap="false"/>
+                    value="gw.api.web.HtmlUtil.indent(detail.description, ScriptParameters.HOQuoteLevel3Indent)"/>
                   <Cell
                     align="right"
                     id="CovTermValue"
-                    value="detail.value"
-                    wrap="false"/>
+                    value="detail.value"/>
                   <Cell
                     id="TermAmount"
                     visible="proRated"/>

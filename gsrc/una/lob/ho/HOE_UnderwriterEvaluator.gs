@@ -25,14 +25,26 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     return allowedJobs.contains(typeof(_policyEvalContext.Period.Job))
   }
 
-  override function onDefault() {
-    if(_policyEvalContext.CheckingSet == UWIssueCheckingSet.TC_PREBIND) {
-      validteQuestions()
+  /*
+  * This method is used to determine the allowed jobs and states for Credit Reporting
+  * Add the jobs we need to use for CreditReporting to Set<IType>
+  * In future if we need to include all the jobs for CreditReporting then delete the Set allowedJobsForCredit
+  */
+  private function allowedJobsAndStatesForCreditReporting(): boolean{
+    if(!(_policyEvalContext.Period.BaseState == "CA" || _policyEvalContext.Period.BaseState == "HI")){
+      var allowedJobsForCredit : Set<IType> = {Submission, Issuance}
+      return allowedJobsForCredit.contains(typeof(_policyEvalContext.Period.Job))
     }
+    return false
   }
+
   override function onPrequote() {
     relatedPriorLossforHomeownersOrDwelling()
-    //This method will be called to check and create UW Issues related to Credit
+  }
+
+  override function onPreBind(){
+    validateQuestions()
+    //This method will be called to create UW Issues related to Credit
     createsCreditRelatedUwIssuesForHO()
   }
   /*
@@ -49,32 +61,9 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
 
   /*
-  * Creates underwriting related issues, for the below Credit Statuses
-  * TC_NO_SCORE, TC_ERROR, NULL, TC_NOT_ORDERED
-  */
-  private function createsCreditRelatedUwIssuesForHO(){
-    //var numberOfLosses = _policyEvalContext.Period.HomeownersLine_HOE.HOPriorLosses_Ext.length
-    if(_policyEvalContext.Period.HomeownersLine_HOEExists){
-      var creditStatus = _policyEvalContext.Period.CreditInfoExt.CreditReport.CreditStatus
-      if (creditStatus == CreditStatusExt.TC_NO_HIT || creditStatus == CreditStatusExt.TC_NO_SCORE){
-        //adds below UW Issue if the CreditStatus is No HIT or NO Score
-        var creditNoHitNoScore = \ ->  displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportNoHitOrNoScore(creditStatus)
-        _policyEvalContext.addIssue("CreditReportNoHit", "CreditReportNoHit", creditNoHitNoScore, creditNoHitNoScore)
-      }else if (creditStatus == CreditStatusExt.TC_ERROR){
-        //adds below UW Issue if the CreditStatus has Errors
-        var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
-        _policyEvalContext.addIssue("CreditReportError","CreditReportError", creditReportErrors,creditReportErrors)
-      }else if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
-        //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
-        var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
-        _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)
-      }
-    }
-  }
-  /*
    * Validation question response is checked for being true. If true create an underwriting issue
    */
-  private function validteQuestions() {
+  private function validateQuestions() {
 
     // Question set for HO
     var questionSet = _policyEvalContext.Period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == PREQUAL_IDENTIFIER)
@@ -234,5 +223,30 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         }
       }
     )
+  }
+
+  /*
+  * Creates underwriting related issues, for the below Credit Statuses
+  * TC_NO_SCORE, TC_ERROR, NULL, TC_NOT_ORDERED
+  */
+  private function createsCreditRelatedUwIssuesForHO(){
+    if(allowedJobsAndStatesForCreditReporting()){
+      var creditStatus = _policyEvalContext.Period.CreditInfoExt.CreditReport.CreditStatus
+      if (creditStatus == CreditStatusExt.TC_NO_HIT || creditStatus == CreditStatusExt.TC_NO_SCORE){
+        //adds below UW Issue if the CreditStatus is No HIT or NO Score
+        var creditNoHitNoScore = \ ->  displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportNoHitOrNoScore(creditStatus)
+        _policyEvalContext.addIssue("CreditReportNoHit", "CreditReportNoHit", creditNoHitNoScore, creditNoHitNoScore)
+      }
+      if (creditStatus == CreditStatusExt.TC_ERROR){
+        //adds below UW Issue if the CreditStatus has Errors
+        var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
+        _policyEvalContext.addIssue("CreditReportErrors","CreditReportErrors", creditReportErrors,creditReportErrors)
+      }
+      if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+        //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
+        var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
+        _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)
+      }
+    }
   }
 }

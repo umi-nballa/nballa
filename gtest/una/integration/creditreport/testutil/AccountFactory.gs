@@ -20,10 +20,15 @@ class AccountFactory {
   public static var AddressZipArray : String[] = {"91007", "22901", "226574917", "220333889", "95002", "96003", "97004", "98005", "99006", "96700"}
   public static var CreditScoreArray : String[] = {"300", "350", "723", "572", "500", "550", "600", "650", "700", "850"}
   public static var IsuredSocialSecurityNumberArray : String[] = {"000000000", "111111111", "222222222", "333333333", "444444444", "555555555", "666666666", "777777777", "888888888", "999999999"}
-  public static var StatusCodeArray : typekey.CreditStatusExt[] = {typekey.CreditStatusExt.TC_CREDIT_RECEIVED, typekey.CreditStatusExt.TC_CREDIT_RECEIVED_WITH_REASON_ENTRY, typekey.CreditStatusExt.TC_ERROR, typekey.CreditStatusExt.TC_NO_HIT, typekey.CreditStatusExt.TC_NO_SCORE, typekey.CreditStatusExt.TC_NOT_ORDERED}
+  public static var StatusCodeArray : typekey.CreditStatusExt[] = { typekey.CreditStatusExt.TC_CREDIT_RECEIVED,
+                                                                    typekey.CreditStatusExt.TC_CREDIT_RECEIVED_WITH_REASON_ENTRY,
+                                                                    typekey.CreditStatusExt.TC_ERROR,
+                                                                    typekey.CreditStatusExt.TC_NO_HIT,
+                                                                    typekey.CreditStatusExt.TC_NO_SCORE,
+                                                                    typekey.CreditStatusExt.TC_NOT_ORDERED}
   public static var date : Date=new Date()
   public static var lob : String='HomeownersLine'
-  public static var product : String='PersonalAuto'
+  public static var product : String='Homeowners'
   public static var uwCponpanyCode : typekey.UWCompanyCode=typekey.UWCompanyCode.TC_02
   public static var jurisdictionCode : typekey.Jurisdiction=typekey.Jurisdiction.TC_FL
   public static var StatusDescription : String="GW"

@@ -351,9 +351,13 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
     }
     return evaluators
   }
-
+  // uim:svallabhapurapu : Policy History1 Story, trigger history even for suppressPrint
   function runSubmissionIssuanceLogic() {
-    this.Job.createCustomHistoryEvent(TC_SUB_ISSUED, \ -> displaykey.Submission.History.JobIssued)
+    if(this.Job.SupressPrint){
+      this.Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \ -> displaykey.Job.Submission.History.IssueNow.SuppressPrint)
+    } else {
+      this.Job.createCustomHistoryEvent(TC_SUB_ISSUED, \ -> displaykey.Submission.History.JobIssued)
+    }
     ensureProducerOfService()
     ensureProducerOfRecord()
   }

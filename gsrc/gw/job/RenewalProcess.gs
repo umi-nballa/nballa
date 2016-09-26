@@ -617,7 +617,12 @@ class RenewalProcess extends NewTermProcess {
 
       startChecksFor("finish renewal").checkOnlyActivePeriod().assertOkay()
       FormInferenceEngine.Instance.inferPreBindForms(_branch)
-      Job.createCustomHistoryEvent(TC_RENEWAL, \ -> displaykey.Job.Renewal.History.Issued(_branch.BranchName))
+      //uim-svallabhapurapu : Policy History1 Story, add suppress print for renewal
+      if(Job.SupressPrint){
+        Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \ -> displaykey.Job.Renewal.History.Issued.SuppressPrint)
+      } else {
+        Job.createCustomHistoryEvent(TC_RENEWAL, \ -> displaykey.Job.Renewal.History.Issued(_branch.BranchName))
+      }
       prepareBranchForFinishingJob()
       if (_branch.BasedOn != null) {
         _branch.BasedOn.PolicyTerm.removePreRenewalDirection()

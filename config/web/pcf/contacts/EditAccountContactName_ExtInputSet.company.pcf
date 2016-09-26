@@ -8,17 +8,29 @@
     <Require
       name="contact"
       type="Contact"/>
+    <Require
+      name="account"
+      type="Account"/>
     <Variable
       initialValue="new gw.api.name.ContactNameDelegate(contact)"
       name="contactNameDelegate"
       recalculateOnRefresh="true"/>
     <Label
       label="displaykey.Web.ContactDetail.Company"/>
+    <TypeKeyInput
+      available="true"
+      editable="true"
+      id="PreferredMethodOfContact"
+      label="displaykey.Web.AddressDetail.PreferredContact"
+      required="true"
+      value="account.AccountHolderContact.PreferredmethodOfContact">
+      <PostOnChange/>
+    </TypeKeyInput>
     <InputSetRef
       def="GlobalContactNameInputSet(new gw.contact.ContactNameNoSummaryOwner(contactNameDelegate))"
       mode="gw.api.name.NameLocaleSettings.PCFMode"/>
     <InputSetRef
-      def="GlobalPhoneInputSet(new gw.api.phone.BasicPhoneOwner(new gw.api.phone.ContactPhoneDelegate(contact, Contact#WorkPhone),displaykey.Web.ContactDetail.Company.WorkPhone ))"
+      def="GlobalPhoneInputSet(new gw.api.phone.BusinessPhoneOwner(new gw.api.phone.ContactPhoneDelegate(contact, Contact#WorkPhone),displaykey.Web.ContactDetail.Company.WorkPhone ,account.AccountHolderContact.PreferredmethodOfContact==typekey.PreferredContact_Ext.TC_PHONE))//GlobalPhoneInputSet(new una.pageprocess.account.BasicPhoneOwner(new gw.api.phone.ContactPhoneDelegate(company, Contact#WorkPhone),displaykey.Web.ContactDetail.Company.WorkPhone ))//GlobalPhoneInputSet(new gw.api.phone.BasicPhoneOwner(new gw.api.phone.ContactPhoneDelegate(contact, Contact#WorkPhone),displaykey.Web.ContactDetail.Company.WorkPhone ))"
       editable="true"
       id="WorkPhone"/>
     <InputSetRef
@@ -29,6 +41,7 @@
       editable="true"
       id="EmailAddress1"
       label="displaykey.Web.ContactDetail.Company.EmailAddress1"
+      required="account.AccountHolderContact.PreferredmethodOfContact==typekey.PreferredContact_Ext.TC_EMAIL"
       value="(contact as Company).EmailAddress1"/>
     <Input
       editable="true"

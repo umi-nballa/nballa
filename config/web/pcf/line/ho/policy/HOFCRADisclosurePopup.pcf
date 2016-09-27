@@ -55,8 +55,13 @@
           <TextCell
             align="center"
             bold="true"
-            id="headlabel"
-            value="&quot;Third Party Reports Request&quot;"/>
+            id="headlabel"/>
+          <TextCell
+            align="left"
+            bold="true"
+            id="headlabel2"
+            value="&quot;Third Party Reports Request&quot;"
+            width="200"/>
         </Row>
       </ListViewPanel>
       <DetailViewPanel>
@@ -85,13 +90,24 @@
       <DetailViewPanel>
         <InputColumn>
           <ButtonInput
-            action="una.pageprocess.credit.CreditReportScreen.orderCreditReport(creditreportcontact,period,hasPrimaryNamedInsuredMoved,hasPrimaryNamedInsuredNameChanged,address,firstname,middlename,lastname)"
-            align="center"
+            action="una.pageprocess.credit.CreditReportScreen.orderCreditReport(creditreportcontact,period,hasPrimaryNamedInsuredMoved,hasPrimaryNamedInsuredNameChanged,address,firstname,middlename,lastname);CurrentLocation.cancel()"
+            align="right"
             available="true"
             boldLabel="true"
             boldValue="true"
             id="OrderCreditReportButton"
-            value="&quot;Order Credit Report&quot;"
+            value="&quot;Yes&quot;"
+            visible="true"/>
+        </InputColumn>
+        <InputColumn>
+          <ButtonInput
+            action="CurrentLocation.cancel()"
+            align="left"
+            available="true"
+            boldLabel="true"
+            boldValue="true"
+            id="donotagree"
+            value="&quot;No&quot;"
             visible="true"/>
         </InputColumn>
       </DetailViewPanel>

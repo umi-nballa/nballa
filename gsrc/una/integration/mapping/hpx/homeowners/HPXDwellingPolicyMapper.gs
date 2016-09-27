@@ -9,6 +9,8 @@ uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
 uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
 uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses gw.xml.XmlElement
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyCancelReinstateType
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,62 +21,64 @@ uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
  */
 class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
-  function createDwellingPolicy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy
+  function createDwellingPolicy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType
   {
-    var dwellingPolicy = new wsi.schema.una.hpx.hpx_application_request.DwellingPolicy()
+    var dwellingPolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
-    dwellingPolicy.addChild(createPolicySummaryInfo(policyPeriod))
-    dwellingPolicy.addChild(createInsuredOrPrincipal(policyPeriod))
+    dwellingPolicy.addChild(new XmlElement("PolicySummaryInfo", createPolicySummaryInfo(policyPeriod)))
+    dwellingPolicy.addChild(new XmlElement("InsuredOrPrincipal", createInsuredOrPrincipal(policyPeriod)))
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
     for (additionalNamedInsured in additionalNamedInsureds) {
-      dwellingPolicy.addChild(additionalNamedInsured)
+      dwellingPolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalNamedInsured))
     }
-    dwellingPolicy.addChild(createDwellingLineBusiness(policyPeriod))
-    dwellingPolicy.addChild(createPolicyDetails(policyPeriod))
-    dwellingPolicy.addChild(producerMapper.createProducer(policyPeriod))
-    dwellingPolicy.addChild(locationMapper.createBillingLocation(policyPeriod))
+    dwellingPolicy.addChild(new XmlElement("DwellingLineBusiness", createDwellingLineBusiness(policyPeriod)))
+    dwellingPolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
+    dwellingPolicy.addChild(new XmlElement("Producer", producerMapper.createProducer(policyPeriod)))
+    dwellingPolicy.addChild(new XmlElement("Location", locationMapper.createBillingLocation(policyPeriod)))
+    // TODO  - PolicyCancelReinstateType
+    //dwellingPolicy.addChild(new XmlElement("PolicyCancelReinstate", new PolicyCancelReinstateType()))
     return dwellingPolicy
   }
 
-  function createDwellingLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellingLineBusiness {
-    var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.DwellingLineBusiness()
-    dwellingLineBusiness.addChild(createDwell(policyPeriod))
+  function createDwellingLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingLineBusinessType {
+    var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingLineBusinessType()
+    dwellingLineBusiness.addChild(new XmlElement("Dwell", createDwell(policyPeriod)))
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
-      dwellingLineBusiness.addChild(question)
+      dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
     return dwellingLineBusiness
   }
 
   /************************************** Dwell  ******************************************************/
-  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
+  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
     var locationMapper = new HPXLocationMapper()
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var additionalInterests = additionalInterestMapper.createAdditionalInterests(policyPeriod.HomeownersLine_HOE.Dwelling.AdditionalInterestDetails)
     var loc = locationMapper.createLocation(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation)
     for (additionalInterest in additionalInterests) {
-      loc.addChild(additionalInterest)
+      loc.addChild(new XmlElement("AdditionalInterest", additionalInterest))
     }
     var dwellMapper = new HPXDwellMapper()
     var dwellConstructionMapper = new HPXHODwellConstructionMapper ()
     var dwell = dwellMapper.createDwell(policyPeriod)
-    dwell.addChild(dwellConstructionMapper.createDwellConstruction(policyPeriod))
-    dwell.addChild(loc)
+    dwell.addChild(new XmlElement("Construction", dwellConstructionMapper.createDwellConstruction(policyPeriod)))
+    dwell.addChild(new XmlElement("Location", loc))
     var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     var transactions = policyPeriod.HOTransactions
     var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
     for (cov in covs) {
-      dwell.addChild(cov)
+      dwell.addChild(new XmlElement("Coverage", cov))
     }
     return dwell
   }
 
   function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var coverageMapper = new HPXDwellingCoverageMapper()
     for (cov in currentCoverages) {
       var hoTransactions = getTransactions(policyPeriod)

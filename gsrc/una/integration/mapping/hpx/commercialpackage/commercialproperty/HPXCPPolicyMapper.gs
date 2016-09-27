@@ -4,6 +4,7 @@ uses una.integration.mapping.hpx.common.HPXPolicyMapper
 uses una.integration.mapping.hpx.common.HPXLocationMapper
 uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyMapper
+uses gw.xml.XmlElement
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,28 +15,28 @@ uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyM
  */
 class HPXCPPolicyMapper extends HPXPolicyMapper {
 
-  function createCommercialPropertyLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.CommercialPackageLineBusiness {
-    var commercialPropertyLineBusiness = new wsi.schema.una.hpx.hpx_application_request.CommercialPackageLineBusiness()
+  function createCommercialPropertyLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType {
+    var commercialPropertyLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType()
     var generalLiabilityPolicyLine = new HPXGLPolicyMapper()
 
     // If it contains General Liability Line, include the coverages
     if(policyPeriod.GLLineExists) {
       var glLine = generalLiabilityPolicyLine.createGeneralLiabilityLineBusiness(policyPeriod)
-      for (cov in glLine) { commercialPropertyLineBusiness.addChild(cov) }
+      for (cov in glLine) { commercialPropertyLineBusiness.addChild(new XmlElement(cov)) }
     }
     var buildings = createBuildings(policyPeriod)
     for (building in buildings) {
-      commercialPropertyLineBusiness.addChild(building)
+      commercialPropertyLineBusiness.addChild(new XmlElement(building))
     }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
-      commercialPropertyLineBusiness.addChild(question)
+      commercialPropertyLineBusiness.addChild(new XmlElement(question))
     }
     return commercialPropertyLineBusiness
   }
 
-  function createBuildings(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell> {
-    var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.Dwell>()
+  function createBuildings(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType> {
+    var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType>()
     var buildingMapper = new HPXCPBuildingMapper()
     var locationMapper = new HPXLocationMapper()
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
@@ -48,7 +49,7 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
         var bldgTrxs = policyPeriod.CPTransactions.where( \ elt -> elt.Cost.Coverable == bldg)
         var building = buildingMapper.createBuilding(bldg)
         var buildingCovs = createCommercialPropertyLineCoveragesInfo(bldgCoverages, bldgPreviousCoverages, bldgTrxs)
-        for (cov in buildingCovs) { building.addChild(cov)}
+        for (cov in buildingCovs) { building.addChild(new XmlElement(cov))}
         // buildling location
         var buildingLoc = bldg.CPLocation
         var location = locationMapper.createLocation(bldg.CPLocation.PolicyLocation)
@@ -56,8 +57,8 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
         var locPreviousCoverages = previousPeriod?.CPLine?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
         var locTrxs = policyPeriod.CPTransactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
         var locationCovs = createCommercialPropertyLineCoveragesInfo(locationCoverages, locPreviousCoverages, locTrxs)
-        for (loc in locationCovs) { location.addChild(loc)}
-        building.addChild(location)
+        for (loc in locationCovs) { location.addChild(new XmlElement(loc))}
+        building.addChild(new XmlElement(location))
 
         buildings.add(building)
       }
@@ -67,8 +68,8 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
 
   function createCommercialPropertyLineCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
                                                      transactions : java.util.List<Transaction>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var coverageMapper = new HPXCPCoverageMapper()
     for (coverage in currentCoverages) {
       var trxs = transactions.where( \ elt1 -> coverage.equals((elt1.Cost as CPCost).Coverage.PatternCode))

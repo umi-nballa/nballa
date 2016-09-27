@@ -1,6 +1,17 @@
 package una.integration.mapping.hpx.common
 
-
+uses gw.xml.XmlElement
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.ItemIdInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.FullTermAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.RecoveryAssessmentAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.ChangeRecoveryAssessmentAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumChangeAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.NetChangeAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.WrittenAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.BillingInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.OtherOrPriorPolicyType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.ReinstateInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.RenewalInfoType
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,94 +22,70 @@ package una.integration.mapping.hpx.common
  */
 class HPXJobMapper {
 
-  function createJobCreationUser(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.MiscParty {
+  function createJobCreationUser(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.MiscPartyType {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
-    var miscParty = new wsi.schema.una.hpx.hpx_application_request.MiscParty()
+    var miscParty = new wsi.schema.una.hpx.hpx_application_request.types.complex.MiscPartyType()
     var user = policyPeriod.Job.CreateUser
     var userRole = user.Roles.where( \ elt1 -> elt1.Role.RoleType == typekey.RoleType.TC_USER).first()
-    miscParty.addChild(generalPartyInfoMapper.createMiscPartyInfo(userRole.Role))
-    var jobCreationUserPartyInfo = generalPartyInfoMapper.createUserGeneralPartyInfo(user)
-    miscParty.addChild(jobCreationUserPartyInfo)
+    miscParty.addChild(new XmlElement("MiscPartyInfo", generalPartyInfoMapper.createMiscPartyInfo(userRole.Role)))
+    miscParty.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createUserGeneralPartyInfo(user)))
     return miscParty
   }
 
-  function createJobStatus(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo {
-    var policySummaryInfo = new wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo()
-    var policyStatusCd = new wsi.schema.una.hpx.hpx_application_request.PolicyStatusCd()
-    switch (policyPeriod.Job.Subtype) {
-      case typekey.Job.TC_ISSUANCE :
-      case typekey.Job.TC_SUBMISSION :
-          policyStatusCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.PolicyStatus.Issued)
-          break
-      case typekey.Job.TC_CANCELLATION :
-          policyStatusCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.PolicyStatus.XLC)
-          break
-      case typekey.Job.TC_AUDIT :
-          policyStatusCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.PolicyStatus.Audit)
-          break
-      case typekey.Job.TC_POLICYCHANGE :
-          policyStatusCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.PolicyStatus.XLC)
-          break
+  function createJobStatus(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryInfoType {
+    var policySummaryInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryInfoType()
+    policySummaryInfo.PolicyStatusCd = policyPeriod.Job.Subtype
+    policySummaryInfo.PolicyStatusDesc = policyPeriod.Job.Subtype.Description
+    if (policySummaryInfo.TransactionTypeDt != null) {
+      policySummaryInfo.TransactionTypeDt.Day = policyPeriod.Job.getJobDate().DayOfMonth
+      policySummaryInfo.TransactionTypeDt.Month = policyPeriod.Job.getJobDate().MonthOfYear
+      policySummaryInfo.TransactionTypeDt.Year = policyPeriod.Job.getJobDate().YearOfDate
     }
-    var policyStatusDesc = new wsi.schema.una.hpx.hpx_application_request.PolicyStatusDesc()
-    policyStatusDesc.setText(policyPeriod.Job.Subtype.Description)
-    var policyTransactionDate = new wsi.schema.una.hpx.hpx_application_request.TransactionTypeDt()
-    policyTransactionDate.setText(policyPeriod.Job.getJobDate())
-    policySummaryInfo.addChild(policyStatusCd)
-    policySummaryInfo.addChild(policyStatusDesc)
     if(policyPeriod.Cancellation != null) {
-      policySummaryInfo.addChild(createCancellationInfo(policyPeriod))
+      policySummaryInfo.addChild(new XmlElement("CancellationInfo", createCancellationInfo(policyPeriod)))
     } else if (policyPeriod.Job != null) {
-      policySummaryInfo.addChild(createEndorsementInfo(policyPeriod))
+      policySummaryInfo.addChild(new XmlElement("EndorsementInfo", createEndorsementInfo(policyPeriod)))
+    }
+    policySummaryInfo.PolicyNumber = policyPeriod.PolicyNumber != null ? policyPeriod.PolicyNumber : ""
+    if (policyPeriod.ModelDate != null) {
+      policySummaryInfo.TransactionTypeDt.Day = policyPeriod.ModelDate.DayOfMonth
+      policySummaryInfo.TransactionTypeDt.Month = policyPeriod.ModelDate.MonthOfYear
+      policySummaryInfo.TransactionTypeDt.Year = policyPeriod.ModelDate.YearOfDate
     }
     return policySummaryInfo
   }
 
-  function createCancellationInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.CancellationInfo {
-    var cancellationInfo = new wsi.schema.una.hpx.hpx_application_request.CancellationInfo()
-    var cancellationTypeCd = new wsi.schema.una.hpx.hpx_application_request.CancellationTypeCd()
-    var cancellationTypeDesc = new wsi.schema.una.hpx.hpx_application_request.CancellationTypeDesc()
+  function createCancellationInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CancellationInfoType {
+    var cancellationInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.CancellationInfoType()
     if (policyPeriod.Cancellation != null) {
-      switch (policyPeriod.Cancellation.Source) {
-        case typekey.CancellationSource.TC_CARRIER :
-            cancellationTypeCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.CancellationType.FE)
-            cancellationTypeDesc.setText("Carrier Cancellation")
-            break
-        case typekey.CancellationSource.TC_INSURED :
-            cancellationTypeCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.CancellationType.AbInitio)
-            cancellationTypeCd.setText("User Cancellation")
-            break
+      cancellationInfo.CancellationTypeCd = policyPeriod.Cancellation.Source
+      cancellationInfo.CancellationTypeDesc = policyPeriod.Cancellation.Source.Description
+      if (policyPeriod.Cancellation.CloseDate != null) {
+        cancellationInfo.EffectiveDt.Day = policyPeriod.Cancellation.CloseDate.DayOfMonth
+        cancellationInfo.EffectiveDt.Month = policyPeriod.Cancellation.CloseDate.MonthOfYear
+        cancellationInfo.EffectiveDt.Year = policyPeriod.Cancellation.CloseDate.YearOfDate
+        cancellationInfo.CancelReasonCd = policyPeriod.Cancellation.CancelReasonCode
       }
-      var cancellationDate = policyPeriod.Cancellation.CloseDate
-      var cancelEffectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
-      cancelEffectiveDate.setText(cancellationDate)
-      cancellationInfo.addChild(cancelEffectiveDate)
-      var cancelReasonCd = new wsi.schema.una.hpx.hpx_application_request.CancelReasonCd()
-      cancelReasonCd.setText(policyPeriod.Cancellation.CancelReasonCode)
-      cancellationInfo.addChild(cancelReasonCd)
-      var cancelReasonDesc = new wsi.schema.una.hpx.hpx_application_request.CancelReasonDesc()
-      cancelReasonDesc.setText(policyPeriod.Cancellation.CancelReasonCode.Description)
-      cancellationInfo.addChild(cancelReasonDesc)
-      var prorateFactor = new wsi.schema.una.hpx.hpx_application_request.ProRateFactor()
-      prorateFactor.setText(1.0)     //setText(policyPeriod.Cancellation.calculateRefundCalcMethod(policyPeriod))
-      // policyPeriod.Cancellation.
-      cancellationInfo.addChild(prorateFactor)
+      cancellationInfo.CancellationTypeDesc = policyPeriod.Cancellation.CancelReasonCode.Description
+      cancellationInfo.ProRateFactor = 1.0 // TODO revisit
     }
     return cancellationInfo
   }
 
-  function createEndorsementInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.EndorsementInfo {
+  function createEndorsementInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.EndorsementInfoType {
     var premiumMapper = new HPXPremiumMapper()
-    var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.EndorsementInfo()
-    var sequenceNumber = new wsi.schema.una.hpx.hpx_application_request.SequenceNumber()
-    sequenceNumber.setText(policyPeriod.Job.JobNumber.substring(2))
-    endorsementInfo.addChild(sequenceNumber)
-    var effectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
-    effectiveDate.setText(policyPeriod.EffectiveDatedFields.EffectiveDate)
-    endorsementInfo.addChild(effectiveDate)
-    var expirationDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
-    expirationDate.setText(policyPeriod.EffectiveDatedFields.expirationDate)
-    endorsementInfo.addChild(expirationDate)
+    var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.EndorsementInfoType()
+    endorsementInfo.SequenceNumber = policyPeriod.Job.JobNumber.substring(2)
+    if (policyPeriod.EffectiveDatedFields.EffectiveDate != null) {
+      endorsementInfo.EffectiveDt.Day = policyPeriod.EffectiveDatedFields.EffectiveDate.DayOfMonth
+      endorsementInfo.EffectiveDt.Month = policyPeriod.EffectiveDatedFields.EffectiveDate.MonthOfYear
+      endorsementInfo.EffectiveDt.Year = policyPeriod.EffectiveDatedFields.EffectiveDate.YearOfDate
+    }
+    if (policyPeriod.EffectiveDatedFields.ExpirationDate != null) {
+      endorsementInfo.ExpirationDt.Day = policyPeriod.EffectiveDatedFields.ExpirationDate.DayOfMonth
+      endorsementInfo.ExpirationDt.Month = policyPeriod.EffectiveDatedFields.ExpirationDate.MonthOfYear
+      endorsementInfo.ExpirationDt.Year = policyPeriod.EffectiveDatedFields.ExpirationDate.YearOfDate
+    }
     // premiums
     var endorsementPremiumInfo = premiumMapper.createEndorsementPremiumInfo(policyPeriod)
     for (child in endorsementPremiumInfo.$Children) {

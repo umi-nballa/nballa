@@ -1,7 +1,7 @@
 package una.integration.mapping.hpx.common
 
 uses java.util.Date
-uses wsi.schema.una.hpx.hpx_application_request.DocumentForm
+uses gw.xml.XmlElement
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,57 +11,45 @@ uses wsi.schema.una.hpx.hpx_application_request.DocumentForm
  * To change this template use File | Settings | File Templates.
  */
 class HPXCompositionUnitMapper {
-  function createRecipient(recipientId : String, recipientCode : String, recipientName : String) : wsi.schema.una.hpx.hpx_application_request.Recipient {
-    var recipient = new wsi.schema.una.hpx.hpx_application_request.Recipient()
-    var receivId = new wsi.schema.una.hpx.hpx_application_request.RecipientID()
-    receivId.setText(recipientId)
-    recipient.addChild(receivId)
-    var reciptCode = new wsi.schema.una.hpx.hpx_application_request.RecipientCode()
-    reciptCode.setText(recipientCode)
-    recipient.addChild(reciptCode)
-    var reciptName = new wsi.schema.una.hpx.hpx_application_request.RecipientName()
-    reciptName.setText(recipientName)
-    recipient.addChild(reciptName)
+  function createRecipient(recipientId : String, recipientCode : String, recipientName : String) : wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType {
+    var recipient = new wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType()
+    recipient.RecipientID = recipientId
+    recipient.RecipientCode = recipientCode
+    recipient.RecipientName = recipientName
     return recipient
   }
 
-  function createDocumentForm(formId : String, formLanguage : String, formName : String, formEffectiveDate : Date, formEdition : String, isDeclarationOrSchedule : Boolean) : wsi.schema.una.hpx.hpx_application_request.DocumentForm {
-    var documentForm = new wsi.schema.una.hpx.hpx_application_request.DocumentForm()
-    var frmId = new wsi.schema.una.hpx.hpx_application_request.FormID()
-    frmId.setText(formId)
-    documentForm.addChild(frmId)
-    var frmLanguage = new wsi.schema.una.hpx.hpx_application_request.FormLanguage()
-    frmLanguage.setText(formLanguage)
-    documentForm.addChild(frmLanguage)
-    var frmName = new wsi.schema.una.hpx.hpx_application_request.FormName()
-    frmName.setText(formName)
-    documentForm.addChild(frmName)
-    var frmEffectiveDate = new wsi.schema.una.hpx.hpx_application_request.FormEffective()
-    frmEffectiveDate.setText(formEffectiveDate.toStringWithFormat("yyyy-MM-dd"))
-    documentForm.addChild(frmEffectiveDate)
-    var frmEdition = new wsi.schema.una.hpx.hpx_application_request.FormEdition()
-    frmEdition.setText(formEdition)
-    documentForm.addChild(frmEdition)
-    var isDecOrSchedule = new wsi.schema.una.hpx.hpx_application_request.IsDeclarationOrSchedule()
-    isDecOrSchedule.setText(false)
-    documentForm.addChild(isDecOrSchedule)
+  function createDocumentForm(formId : String, formLanguage : String, formName : String, formEffectiveDate : Date, formEdition : String, isDeclarationOrSchedule : Boolean)
+                : wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType {
+    var documentForm = new wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType()
+    documentForm.FormID = formId
+    documentForm.FormLanguage = formLanguage
+    documentForm.FormName = formName
+    if (formEffectiveDate != null) {
+      documentForm.FormEffectiveDate.Day = formEffectiveDate.DayOfMonth
+      documentForm.FormEffectiveDate.Month = formEffectiveDate.MonthOfYear
+      documentForm.FormEffectiveDate.Year = formEffectiveDate.YearOfDate
+    }
+    documentForm.FormEdition = formEdition
+    documentForm.IsDeclarationOrSchedule = isDeclarationOrSchedule
     return documentForm
   }
 
-  function createCompositionUnit(recipient : wsi.schema.una.hpx.hpx_application_request.Recipient,
-                                 documentForms : List<DocumentForm>) : wsi.schema.una.hpx.hpx_application_request.CompositionUnit {
-    var documentComposition = new wsi.schema.una.hpx.hpx_application_request.CompositionUnit()
-    documentComposition.addChild(recipient)
+  function createCompositionUnit(recipient : wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType,
+                                 documentForms : List<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>)
+                                        : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
+    var documentComposition = new wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType()
+    documentComposition.addChild(new XmlElement("Recipient", recipient))
     for (form in documentForms) {
-      documentComposition.addChild(form)
+      documentComposition.addChild(new XmlElement("DocumentForm", form))
     }
     return documentComposition
   }
 
-  function createCompositionUnit(policyPeriod : PolicyPeriod)  : wsi.schema.una.hpx.hpx_application_request.CompositionUnit {
+  function createCompositionUnit(policyPeriod : PolicyPeriod)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
     var forms = policyPeriod.NewlyAddedForms
     var compositionUnitMapper = new HPXCompositionUnitMapper()
-    var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.DocumentForm>()
+    var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>()
     var recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
     recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
   /*

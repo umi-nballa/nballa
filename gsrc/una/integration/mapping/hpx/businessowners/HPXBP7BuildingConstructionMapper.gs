@@ -1,4 +1,6 @@
 package una.integration.mapping.hpx.businessowners
+
+uses gw.xml.XmlElement
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -8,69 +10,23 @@ package una.integration.mapping.hpx.businessowners
  */
 class HPXBP7BuildingConstructionMapper {
 
-  function createBuildingConstructionInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.Construction {
-    var construction = new wsi.schema.una.hpx.hpx_application_request.Construction()
-    var yearBuilt =  new wsi.schema.una.hpx.hpx_application_request.YearBuilt()
-    if (bldg.YearBuilt_Ext != null) {
-      yearBuilt.setText(bldg.YearBuilt_Ext)
-      construction.addChild(yearBuilt)
-    }
-    construction.addChild(createConstructionCd(bldg))
-
-    var constructionTypeDesc = new wsi.schema.una.hpx.hpx_application_request.Description()
-    if(bldg.ConstructionType != null) {
-      constructionTypeDesc.setText(bldg.ConstructionType.Description)
-      construction.addChild(constructionTypeDesc)
-    }
-
-    var numStories = new wsi.schema.una.hpx.hpx_application_request.NumStories()
-    if (bldg.NoOfStories_Ext != null) {
-      numStories.setText(bldg.NoOfStories_Ext)
-      construction.addChild(numStories)
-    }
-    var bldgArea = new wsi.schema.una.hpx.hpx_application_request.BldgArea()
-    var numUnits = new wsi.schema.una.hpx.hpx_application_request.NumUnits()
-    var unitMeasurementCd = new wsi.schema.una.hpx.hpx_application_request.UnitMeasurementCd()
-    if (bldg.BuildingSqFootage_Ext) {
-       numUnits.setText(bldg.BuildingSqFootage_Ext)
-       unitMeasurementCd.setText("Sqft")
-      bldgArea.addChild(numUnits)
-      bldgArea.addChild(unitMeasurementCd)
-    }
-    construction.addChild(bldgArea)
-
-    var constructionClassCode = new wsi.schema.una.hpx.hpx_application_request.InsurerConstructionClassCd()
-    if(bldg.BuildingClassCode != null) {
-      constructionClassCode.setText(bldg.BuildingClassCode)
-      construction.addChild(constructionClassCode)
-    }
-
+  function createBuildingConstructionInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType {
+    var construction = new wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType()
+    construction.YearBuilt.Year = bldg.YearBuilt_Ext != null ? bldg.YearBuilt_Ext : ""
+    //construction.addChild(new XmlElement(createConstructionCd(bldg)))
+    construction.ConstructionCd = createConstructionCd(bldg) != null ? createConstructionCd(bldg) : ""
+    construction.Description = bldg.ConstructionType != null ? bldg.ConstructionType.Description : ""
+    construction.NumStories = bldg.NoOfStories_Ext != null ? bldg.NoOfStories_Ext : 0
+    construction.BldgArea.NumUnits = bldg.BuildingSqFootage_Ext != null ? bldg.BuildingSqFootage_Ext : 0
+    construction.BldgArea.UnitMeasurementCd = "Sqft"
+    construction.InsurerConstructionClassCd = bldg.BuildingClassCode != null ? bldg.BuildingClassCode : ""
     return construction
   }
 
 
-  function createConstructionCd(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.ConstructionCd {
-    var constructionCd = new wsi.schema.una.hpx.hpx_application_request.ConstructionCd()
-    if(bldg.ConstructionType != null) {
-      switch (bldg.ConstructionType) {
-        case typekey.BP7ConstructionType.TC_MASONRYNONCOMBUSTIBLE :
-          constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.ConPour)
-          break
-        case typekey.BP7ConstructionType.TC_FRAMECONSTRUCTION :
-          constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Frame)
-          break
-        case typekey.BP7ConstructionType.TC_JOISTEDMASONRY :
-          constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Log)
-          break
-        case typekey.BP7ConstructionType.TC_JOISTEDMASONRY:
-          constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Steel)
-          break
-        case typekey.BP7ConstructionType.TC_MASONRYNONCOMBUSTIBLE:
-          constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.Masonry)
-          break
-        default : constructionCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ConstructionType.OT)
-       }
-    }
+  function createConstructionCd(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType  {
+    var constructionCd = new wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType()
+    constructionCd.ConstructionCd = bldg.ConstructionType != null ? bldg.ConstructionType : ""
     return constructionCd
   }
 }

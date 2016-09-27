@@ -210,5 +210,28 @@ enhancement PolicyContactRoleEnhancement : PolicyContactRole {
       }
     }
   }
-  
+
+  //uim-svallabhapurapu, Contact story card make DOB mandatory for specific policy Contact role
+    function isContactDobRequired() : boolean {
+      var relationSpouse : String = "spouse"
+      var relationCoInsured : String  = "co-insured"
+      var relationCoOwner : String = "co-owner"
+      if(this.AccountContactRole.AccountContact.Contact typeis Person){
+        for(pni in this.Branch.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured)){
+          if(pni == this){
+            return true
+          }
+        }
+        // Additional named insured
+        for(addlInsured in this.Branch.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)){
+          if(addlInsured == this){
+            if((addlInsured.Relationship?.toLowerCase() == relationSpouse) or (addlInsured.Relationship?.toLowerCase() == relationCoInsured) or (addlInsured.Relationship?.toLowerCase() == relationCoOwner)){
+              return true
+            }
+          }
+        }
+      }
+      return false
+    }
+
 }

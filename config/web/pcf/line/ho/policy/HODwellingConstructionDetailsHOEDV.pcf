@@ -197,14 +197,21 @@
         label="displaykey.Web.Homeowners.DwellingConstruction.SecondaryHeatingExists"
         required="false"
         value="dwelling.SecondaryHeatingExists"/>
-      <TypeKeyInput
+      <!-- <TypeKeyInput
         editable="true"
         id="PlumbingSystem"
         label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingSystem"
         required="false"
         value="dwelling.PlumbingType">
         <PostOnChange/>
-      </TypeKeyInput>
+      </TypeKeyInput> -->
+      <RangeInput
+        editable="true"
+        id="plumbing"
+        label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingSystem"
+        required="false"
+        value="dwelling.PlumbingType"
+        valueRange="gw.lob.ho.HODwellingUtil_HOE.getPlumbingRange(dwelling)"/>
       <Input
         editable="true"
         id="PlumbingTypeDesc"
@@ -212,14 +219,20 @@
         required="true"
         value="dwelling.PlumbingTypeDescription"
         visible="(dwelling.PlumbingType == PlumbingType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <TypeKeyInput
+      <!-- <TypeKeyInput
         editable="true"
         id="Wiring"
         label="displaykey.Web.Homeowners.DwellingConstruction.Wiring"
         required="false"
         value="dwelling.WiringType">
         <PostOnChange/>
-      </TypeKeyInput>
+      </TypeKeyInput> -->
+      <RangeInput
+        editable="true"
+        id="wiringRangeInput"
+        label="displaykey.Web.Homeowners.DwellingConstruction.Wiring"
+        value="dwelling.WiringType"
+        valueRange="gw.lob.ho.HODwellingUtil_HOE.getWiringRange(dwelling)"/>
       <Input
         editable="true"
         id="WiringTypeDesc"
@@ -507,17 +520,17 @@
         value="dwelling.HeatingUpgrade"
         visible="gw.lob.ho.HODwellingUtil_HOE.isHeatingReplacedVisible(dwelling)">
         <PostOnChange
-          onChange="if (dwelling.HeatingUpgrade == false) dwelling.HeatingUpgradeDate = null"/>
+          onChange="if (dwelling.HeatingUpgrade != null and !dwelling.HeatingUpgrade) {dwelling.HeatingUpgradeDate = null}"/>
       </CheckBoxInput>
       <Input
         editable="true"
         id="HeatingUpgradeDate"
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
-        required="dwelling.HeatingUpgrade"
+        required="true"
         validationExpression="(dwelling.YearBuilt != null and dwelling.HeatingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.HeatUpgradeYearErrorMsg : null"
         value="dwelling.HeatingUpgradeDate"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isHeatingReplacedVisible(dwelling)">
+        visible="gw.lob.ho.HODwellingUtil_HOE.isHeatingReplacedVisible(dwelling) and (dwelling.HeatingUpgrade != null and dwelling.HeatingUpgrade)">
         <PostOnChange/>
       </Input>
       <CheckBoxInput
@@ -526,7 +539,8 @@
         label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingReplaced"
         value="dwelling.PlumbingUpgrade"
         visible="gw.lob.ho.HODwellingUtil_HOE.isPlumbingReplacedVisible(dwelling)">
-        <PostOnChange/>
+        <PostOnChange
+          onChange="if(dwelling.PlumbingUpgrade != null and !dwelling.PlumbingUpgrade) {dwelling.PlumbingUpgradeDate = null}"/>
       </CheckBoxInput>
       <!-- <TextInput
         editable="true"
@@ -540,17 +554,18 @@
         id="PlumbingUpgradeDate"
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
-        required="dwelling.PlumbingUpgrade"
+        required="true"
         validationExpression="(dwelling.YearBuilt != null and dwelling.PlumbingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.PlumbingUpgradeYearErrorMsg : null"
         value="dwelling.PlumbingUpgradeDate"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isPlumbingReplacedVisible(dwelling)"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.isPlumbingReplacedVisible(dwelling) and (dwelling.PlumbingUpgrade != null and dwelling.PlumbingUpgrade)"/>
       <CheckBoxInput
         editable="true"
         id="RoofingUpgrade"
         label="displaykey.Web.Homeowners.DwellingConstruction.RoofingReplaced"
         value="dwelling.RoofingUpgrade"
         visible="gw.lob.ho.HODwellingUtil_HOE.isRoofingReplacedVisible(dwelling)">
-        <PostOnChange/>
+        <PostOnChange
+          onChange="if(dwelling.RoofingUpgrade != null and !dwelling.RoofingUpgrade){dwelling.RoofingUpgradeDate = null}"/>
       </CheckBoxInput>
       <!-- <TextInput
         editable="true"
@@ -563,27 +578,28 @@
         id="RoofingUpgradeDate"
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
-        required="dwelling.RoofingUpgrade"
+        required="true"
         validationExpression="(dwelling.YearBuilt != null and dwelling.RoofingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.RoofingUpgradeYearErrorMsg : null"
         value="dwelling.RoofingUpgradeDate"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isRoofingReplacedVisible(dwelling)"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.isRoofingReplacedVisible(dwelling) and (dwelling.RoofingUpgrade != null and dwelling.RoofingUpgrade)"/>
       <CheckBoxInput
         editable="true"
         id="ElectricalSystemUpgrade"
         label="displaykey.Web.Homeowners.DwellingConstruction.WiringReplaced"
         value="dwelling.ElectricalSystemUpgrade"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWiringReplacedVisible(dwelling)">
-        <PostOnChange/>
+        <PostOnChange
+          onChange="if(dwelling.ElectricalSystemUpgrade != null and !dwelling.ElectricalSystemUpgrade){dwelling.ElectricalSystemUpgradeDate = null}"/>
       </CheckBoxInput>
       <Input
         editable="true"
         id="ElectricalUpgradeDate"
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
-        required="dwelling.ElectricalSystemUpgrade"
+        required="true"
         validationExpression="(dwelling.YearBuilt != null and dwelling.ElectricalSystemUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.ElectricalUpgradeYearErrorMsg : null"
         value="dwelling.ElectricalSystemUpgradeDate"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isWiringReplacedVisible(dwelling)"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.isWiringReplacedVisible(dwelling) and (dwelling.ElectricalSystemUpgrade != null and dwelling.ElectricalSystemUpgrade)"/>
     </InputColumn>
   </DetailViewPanel>
 </PCF>

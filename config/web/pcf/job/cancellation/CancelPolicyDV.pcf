@@ -41,22 +41,27 @@
         width="50%">
         <Toolbar>
           <IteratorButtons
-            hideIfReadOnly="false"
-            iterator="CancelReasonDetailLV"/>
+            iterator="CRDetail"
+            showAddConfirmMessage="false"
+            showRemoveConfirmMessage="false"/>
         </Toolbar>
         <ListViewPanel
           id="CancelReasonDetailLV">
           <RowIterator
+            autoAdd="cancellation.CancelReasonDetails.Count == 0 "
             editable="true"
             elementName="cancelReasonDetail"
             hasCheckBoxes="true"
             hideCheckBoxesIfReadOnly="true"
+            id="CRDetail"
+            toAdd="cancellation.addToCancelReasonDetails(cancelReasonDetail)"
+            toRemove="cancellation.removeFromCancelReasonDetails(cancelReasonDetail)"
             value="cancellation.CancelReasonDetails">
             <Row>
               <RangeCell
                 editable="true"
                 id="ReasonDetailCode"
-                label="&quot;Cancel Reason Detail&quot;"
+                label="displaykey.una.cancellation.reasondetailcode"
                 required="true"
                 value="cancelReasonDetail.Code"
                 valueRange="pcfController.ReasonDetailRange">
@@ -66,12 +71,9 @@
               <TextCell
                 editable="true"
                 id="description"
-                label="&quot;Reason Description&quot;"
+                label="displaykey.una.cancellation.ReasonDetailDescription"
                 required="true"
                 value="cancelReasonDetail.Description">
-                <Reflect
-                  triggerIds="ReasonDetailCode"
-                  value="VALUE.Description"/>
                 <PostOnChange/>
               </TextCell>
             </Row>
@@ -81,6 +83,7 @@
       <TextAreaInput
         align="center"
         boldValue="true"
+        editable="pcfController.isReasonDescriptionEditable()"
         id="CumulativeDescription"
         label="displaykey.Web.CancellationWizard.ReasonDescription"
         maxChars="811"

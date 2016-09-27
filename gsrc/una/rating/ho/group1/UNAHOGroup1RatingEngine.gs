@@ -159,8 +159,14 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateConcreteTileRoofDiscount(dateRange)
     }
 
+    if(PolicyLine.BaseState == Jurisdiction.TC_AZ){
+      ratePrivateFireCompanyDiscount(dateRange)
+    }
+
     rateHigherAllPerilDeductible(dateRange)
 
+    //TODO : Need to add the condition to check for gated community discount
+    //rateGatedCommunityDiscount(dateRange)
 
     //update the total base premium with the discounts and surcharges
     updateTotalBasePremium()
@@ -199,6 +205,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Function to rate the Gated Community discount
+   */
+  function rateGatedCommunityDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateGatedCommunityDiscount", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE, HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.GatedCommunityDiscount = costData?.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Gated Community Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Function to rate the Concrete Tile Roof Discount
    */
   function rateConcreteTileRoofDiscount(dateRange: DateRange) {
@@ -212,6 +234,24 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Concrete Tile Roof Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Private Fire Company Discount
+   */
+  function ratePrivateFireCompanyDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePrivateFireCompanyDiscount", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    if(discountOrSurchargeRatingInfo.IsPrivateFireCompanyDiscountApplicable){
+      discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+      var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState)
+      var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE, HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT,
+          RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      _hoRatingInfo.PrivateFireCompanyDiscount = costData?.ActualTermAmount
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Private Fire Company Discount Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -696,7 +736,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium  + _hoRatingInfo.AgeOfHomeDiscount +
                                       _hoRatingInfo.DifferenceInConditions +_hoRatingInfo.SuperiorConstructionDiscount +
-                                      _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.ConcreteTileRoofDiscount + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge
+                                      _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.ConcreteTileRoofDiscount + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge +
+                                      _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.PrivateFireCompanyDiscount
                                      )
   }
 }

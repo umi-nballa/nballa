@@ -49,6 +49,7 @@ public final class HORateRoutineNames {
   public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
   public static final var HAIL_RESISTANT_ROOF_CREDIT_TX_RATE_ROUTINE : String = "UNAHOHailResistantRoofCreditTXRateRoutine"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE : String = "UNAHOHigherAllPerilDeductible"
+  public static final var AFFINITY_DISCOUNT_TX_RATE_ROUTINE : String = "UNAHOAffinityDiscountTXRateRoutine"
 
   //group1 routines
   public static final var ANIMAL_LIABILITY_GROUP1_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup1RateRoutine"
@@ -73,5 +74,7 @@ public final class HORateRoutineNames {
   public static final var CONCRETE_TILE_ROOF_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOConcreteTileRoofDiscountGroup1RateRoutine"
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeGroup1RateRoutine"
   public static final var LOSS_ASSESSMENT_COVERAGE_GROUP1_RATE_ROUTINE : String = "UNAHOLossAssessmentCovGroup1RateRoutine"
+  public static final var GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOGatedCommunityDiscountGroup1RateRoutine"
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
+  public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
 }

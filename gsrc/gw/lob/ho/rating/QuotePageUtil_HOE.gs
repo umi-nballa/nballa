@@ -179,4 +179,25 @@ abstract class QuotePageUtil_HOE {
     }
     return result
   }
+
+  /**
+   * Function which returns the coverage name for additional coverages
+  */
+  static function getCoverageNameForAdditionalCov(pattern : String) : String{
+    if(pattern.endsWith("Coverage")){
+      return pattern
+    } else {
+      return displaykey.Web.PolicyLine.Coverage(pattern)
+    }
+  }
+
+  /**
+   * Function which returns the cov terms of the coverage
+   */
+  static function getCovTerms(coverage : Coverage) : gw.api.domain.covterm.CovTerm[]{
+    if(!(coverage typeis HODW_EquipBreakdown_HOE_Ext)){
+      return coverage.CovTerms
+    }
+    return null
+  }
 }

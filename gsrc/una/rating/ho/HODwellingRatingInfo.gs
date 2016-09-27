@@ -13,7 +13,6 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
 class HODwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
   var _otherStructuresIncreasedOrDecreasedLimit : int as OtherStructuresIncreasedOrDecreasedLimit
-  var _isResidentialGlassCovUnscheduled : String as IsResidentialGlassCovUnscheduled
   var _territoryCode : String as TerritoryCode
   var _county : String as County
   var _unitOwnersOutbuildingAndOtherStructuresLimit : BigDecimal as UnitOwnersOutbuildingAndOtherStructuresLimit
@@ -31,10 +30,6 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
     if(dwellingCov.Dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists){
       _otherStructuresIncreasedOrDecreasedLimit = (this.OtherStructuresLimit - (this.DwellingLimit*0.1)) as int
-    }
-
-    if(dwellingCov.Dwelling?.HODW_ResidentialGlass_HOE_ExtExists){
-      _isResidentialGlassCovUnscheduled = dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue
     }
 
     if(dwellingCov.Dwelling?.HODW_UnitOwnersOutbuildingCov_HOE_ExtExists){

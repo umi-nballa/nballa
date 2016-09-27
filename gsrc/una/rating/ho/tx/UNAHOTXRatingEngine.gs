@@ -16,6 +16,7 @@ uses gw.api.domain.covterm.CovTerm
 uses java.math.BigDecimal
 uses una.rating.ho.tx.ratinginfos.HOOtherStructuresRatingInfo
 uses una.rating.ho.tx.ratinginfos.HOPersonalPropertyRatingInfo
+uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 
 /**
  * Created with IntelliJ IDEA.
@@ -442,11 +443,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateIdentityTheftExpenseCoverage(dwellingCov: HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.IDENTITY_THEFT_EXPENSE_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateIdentityTheftExpenseCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if(costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
       addCost(costData)
     }
     _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
@@ -457,11 +455,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.EQUIPMENT_BREAKDOWN_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if(costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
       addCost(costData)
     }
     _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
@@ -522,13 +517,10 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateResidentialGlassCoverage(dwellingCov: HODW_ResidentialGlass_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateResidentialGlassCoverage to rate Residential Glass Coverage", this.IntrinsicType)
-    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
-    if (dwellingRatingInfo.IsResidentialGlassCovUnscheduled == "Yes"){
-      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+    if (dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue == "Yes"){
+      var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.RESIDENTIAL_GLASS_TX_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null){
-        if(costData.ActualTermAmount == 0)
-          costData.ActualTermAmount = 1
         addCost(costData)
       }
     }

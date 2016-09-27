@@ -8,6 +8,10 @@ uses una.integration.mapping.hpx.homeowners.HPXDwellingCoverageMapper
 uses una.integration.mapping.hpx.homeowners.HPXDwellingPolicyMapper
 uses una.integration.mapping.hpx.businessowners.HPXBusinessOwnersPolicyMapper
 uses una.integration.mapping.hpx.commercialpackage.HPXCommercialPackagePolicyMapper
+uses gw.xml.XmlElement
+uses javax.xml.namespace.QName
+uses gw.xml.XmlNamespace
+uses gw.xml.XmlSimpleValue
 
 /**
  * Created with IntelliJ IDEA.
@@ -57,65 +61,61 @@ class HPXRequestMapper {
     return returnString
   }
 
-  function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.DwellingPolicy,
-                                 compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
+  function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType,
+                                 compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : String {
+    var hpxRequestType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType()
+    //var hpxRequest = new XmlElement("PublishDocumentRequest", hpxRequestType)
+
+    var ns = new XmlNamespace("http://wservices.universalpr.com/standards/pcnew/", "")
+    var hpxRequest = new XmlElement(ns.qualify("PublishDocumentRequest"), hpxRequestType)
+   // var hpxRequest = new XmlElement("PublishDocumentRequest", hpxRequestType)
+
+    var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
+    hpxRequestType.PublishingEngineFileKey = "PolicyCenterNA.pub"
+    policyDocumentPublish.addChild(new XmlElement("DwellingPolicy", dwellingPolicy))
+    hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
+    hpxRequest.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequestType.Transaction = "Policy Dwelling"
+    hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
+    for (att in hpxRequest.AttributeNames) {
+      hpxRequest.removeChildren(att)
+    }
+
+    return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
+  }
+
+  function createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerPolicyType,
+                                               compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : String {
+
     var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
-    var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
-    var publishingEngineFileKey = new wsi.schema.una.hpx.hpx_application_request.PublishingEngineFileKey()
-    publishingEngineFileKey.setText("PolicyCenterNA.pub")
-    var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
-    transaction.setText("Policy Dwelling")
-    polInfoTypeRq.addChild(dwellingPolicy)
-    hpxRequest.addChild(polInfoTypeRq)
-    hpxRequest.addChild(publishingEngineFileKey)
-    hpxRequest.addChild(compositionUnit)
-    hpxRequest.addChild(transaction)
-    hpxRequest.addChild(createPublishingConsumerAppKey())
+    var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
+    hpxRequest.PublishingEngineFileKey = "PolicyCenterNA.pub"
+    policyDocumentPublish.addChild(new XmlElement("BusinessOwnerPolicy", businessOwnersPolicy))
+    hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
+    hpxRequest.CompositionUnit.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequest.Transaction = "Policy Business Owners"
+    hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
     return hpxRequest.asUTFString()
   }
 
-  function createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy : wsi.schema.una.hpx.hpx_application_request.BusinessOwnerPolicy,
-                                               compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
+  function createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType,
+                                                     compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : String {
+
     var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
-    var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
-    var publishingEngineFileKey = new wsi.schema.una.hpx.hpx_application_request.PublishingEngineFileKey()
-    publishingEngineFileKey.setText("PolicyCenterNA.pub")
-    var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
-    transaction.setText("Policy Dwelling")
-    polInfoTypeRq.addChild(businessOwnersPolicy)
-    hpxRequest.addChild(polInfoTypeRq)
-    hpxRequest.addChild(publishingEngineFileKey)
-    hpxRequest.addChild(compositionUnit)
-    hpxRequest.addChild(transaction)
-    hpxRequest.addChild(createPublishingConsumerAppKey())
+    var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
+    hpxRequest.PublishingEngineFileKey = "PolicyCenterNA.pub"
+    policyDocumentPublish.addChild(new XmlElement(commercialPackagePolicy))
+    hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
+    hpxRequest.CompositionUnit.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequest.Transaction = "Policy Commercial Package"
+    hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
     return hpxRequest.asUTFString()
   }
 
-  function createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy : wsi.schema.una.hpx.hpx_application_request.CommercialPackagePolicy,
-                                                     compositionUnit : wsi.schema.una.hpx.hpx_application_request.CompositionUnit) : String {
-    var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
-    var polInfoTypeRq = new wsi.schema.una.hpx.hpx_application_request.PolInfoTypeRq()
-    var publishingEngineFileKey = new wsi.schema.una.hpx.hpx_application_request.PublishingEngineFileKey()
-    publishingEngineFileKey.setText("PolicyCenterNA.pub")
-    var transaction = new wsi.schema.una.hpx.hpx_application_request.Transaction()
-    transaction.setText("Policy Dwelling")
-    polInfoTypeRq.addChild(commercialPackagePolicy)
-    hpxRequest.addChild(polInfoTypeRq)
-    hpxRequest.addChild(publishingEngineFileKey)
-    hpxRequest.addChild(compositionUnit)
-    hpxRequest.addChild(transaction)
-    hpxRequest.addChild(createPublishingConsumerAppKey())
-    return hpxRequest.asUTFString()
-  }
-
-  function createPublishingConsumerAppKey() : wsi.schema.una.hpx.hpx_application_request.PublishingConsumerAppKey {
-    var publishingConsumerAppKey = new wsi.schema.una.hpx.hpx_application_request.PublishingConsumerAppKey()
-    var appKeyCode = new wsi.schema.una.hpx.hpx_application_request.AppKeyCd()
-    appKeyCode.setText("a")
-    var appKeyDesc = new wsi.schema.una.hpx.hpx_application_request.AppKeyDesc()
-    appKeyDesc.setText("String")
-    publishingConsumerAppKey.addChild(appKeyCode)
-    publishingConsumerAppKey.addChild(appKeyDesc)
+  function createPublishingConsumerAppKey() : wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingConsumerAppKeyType {
+    var publishingConsumerAppKey = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingConsumerAppKeyType()
+    publishingConsumerAppKey.AppKeyCd = "a"
+    publishingConsumerAppKey.AppKeyDesc = "String"
     return publishingConsumerAppKey
   }
 }

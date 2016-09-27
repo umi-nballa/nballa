@@ -12,7 +12,7 @@ uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
  */
 class HPXGLPolicyMapper extends HPXPolicyMapper {
 
-  function createGeneralLiabilityLineBusiness(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
+  function createGeneralLiabilityLineBusiness(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     var glCoverages = policyPeriod.GLLine.AllCoverages
@@ -24,8 +24,8 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
 
   function createGeneralLiabilityLineCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
                                                    transactions : java.util.List<Transaction>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Coverage> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Coverage>()
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var coverageMapper = new HPXGLCoverageMapper()
     for (coverage in currentCoverages) {
       var trxs = transactions.where( \ elt1 -> coverage.equals((elt1.Cost as GLCost).Coverage.PatternCode))

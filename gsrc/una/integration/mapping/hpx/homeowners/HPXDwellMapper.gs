@@ -1,4 +1,6 @@
 package una.integration.mapping.hpx.homeowners
+
+uses gw.xml.XmlElement
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -8,205 +10,105 @@ package una.integration.mapping.hpx.homeowners
  */
 class HPXDwellMapper {
 
-  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.Dwell {
+  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var buildingProtectionMapper = new HPXHOBuildingProtectionMapper ()
-    var dwell = new wsi.schema.una.hpx.hpx_application_request.Dwell()
-    dwell.addChild(createDwellRating(policyPeriod))
-    dwell.addChild(buildingProtectionMapper.createBuildingProtection(policyPeriod))
+    var dwell = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType()
+    dwell.addChild(new XmlElement("DwellRating", createDwellRating(policyPeriod)))
+    dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(policyPeriod)))
+    dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased : null
+    /*
     if (policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null) {
-      var purchaseDt = new wsi.schema.una.hpx.hpx_application_request.PurchaseDt()
-      purchaseDt.setText(policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased)
-      dwell.addChild(purchaseDt)
+      dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased
     }
-    dwell.addChild(createDwellInspectionValuation(policyPeriod))
-    dwell.addChild(createDwellOccupancy(policyPeriod))
-    dwell.addChild(createMasterPolicyInfo(policyPeriod))
-    var animalsOrExoticPetsInd = new wsi.schema.una.hpx.hpx_application_request.AnimalOrExoticPetsInd()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.AnimalsInDwelling != null) {
-      animalsOrExoticPetsInd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.AnimalsInDwelling)
-      dwell.addChild(animalsOrExoticPetsInd)
-    }
+    */
+    dwell.addChild(new XmlElement("DwellInspectionValuation", createDwellInspectionValuation(policyPeriod)))
+    dwell.addChild(new XmlElement("DwellOccupancy", createDwellOccupancy(policyPeriod)))
+    dwell.addChild(new XmlElement("MasterPolicyInfo", createMasterPolicyInfo(policyPeriod)))
+    dwell.AnimalOrExoticPetsInd = policyPeriod.HomeownersLine_HOE.Dwelling.AnimalsInDwelling != null ? policyPeriod.HomeownersLine_HOE.Dwelling.AnimalsInDwelling : false
     var animalExposures = createDwellAnimalExposureInfo(policyPeriod)
     for (animal in animalExposures) {
-      dwell.addChild(animal)
+      dwell.addChild(new XmlElement("AnimalExposureInfo", animal))
     }
     var watercrafts = createOutboardMotorsAndWatercraft(policyPeriod)
     for (watercraft in watercrafts) {
-      dwell.addChild(watercraft)
+      dwell.addChild(new XmlElement("Watercraft", watercraft))
     }
-    var swimmingPoolInd = new wsi.schema.una.hpx.hpx_application_request.SwimmingPoolInd()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists != null) {
-      swimmingPoolInd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists)
-      dwell.addChild(swimmingPoolInd)
-    }
+    dwell.SwimmingPoolInd = policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists != null ? policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists : false
     return dwell
   }
 
-  function createDwellRating(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellRating {
-    var dwellRating = new wsi.schema.una.hpx.hpx_application_request.DwellRating()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0] != null) {
-      var territoryCd = new wsi.schema.una.hpx.hpx_application_request.TerritoryCd()
-      territoryCd.setText(policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0].Code)
-      dwellRating.addChild(territoryCd)
-    }
+  function createDwellRating(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType {
+    var dwellRating = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType()
+    dwellRating.TerritoryCd = policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0] != null ?
+                                                policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0].Code : ""
     return dwellRating
   }
 
-  function createDwellInspectionValuation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellInspectionValuation {
+  function createDwellInspectionValuation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellInspectionValuationType {
     var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
-    var dwellingInspectionValuation = new wsi.schema.una.hpx.hpx_application_request.DwellInspectionValuation()
-    var estimatedReplacementCostAmt = new wsi.schema.una.hpx.hpx_application_request.EstimatedReplCostAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost != null) {
-      amt.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost)
-      estimatedReplacementCostAmt.addChild(amt)
-      dwellingInspectionValuation.addChild(estimatedReplacementCostAmt)
-    }
-    var numFamilies = new wsi.schema.una.hpx.hpx_application_request.NumFamilies()
-    var numFamiliesDesc = new wsi.schema.una.hpx.hpx_application_request.NumFamiliesDesc()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber != null) {
-      numFamilies.setText(typecodeMapper.getAliasByInternalCode("NumUnits_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber))
-      numFamiliesDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber)
-      dwellingInspectionValuation.addChild(numFamilies)
-      dwellingInspectionValuation.addChild(numFamiliesDesc)
-    }
-    var coveredPorch = new wsi.schema.una.hpx.hpx_application_request.PorchInfoInd()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.CoveredPorch != null) {
-      if(policyPeriod.HomeownersLine_HOE.Dwelling.CoveredPorch) {
-        coveredPorch.setText(true)
-      } else {
-        coveredPorch.setText(false)
-      }
-      dwellingInspectionValuation.addChild(coveredPorch)
-    }
+    var dwellingInspectionValuation = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellInspectionValuationType()
+    dwellingInspectionValuation.EstimatedReplCostAmt.Amt = policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost : 0.00
+    dwellingInspectionValuation.NumFamilies = policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber != null ?
+                                    typecodeMapper.getAliasByInternalCode("NumUnits_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber) : 0
+    dwellingInspectionValuation.NumFamiliesDesc = policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber != null ? policyPeriod.HomeownersLine_HOE.Dwelling.UnitsNumber != null : ""
+    dwellingInspectionValuation.PorchInfoInd = policyPeriod.HomeownersLine_HOE.Dwelling.CoveredPorch != null ? policyPeriod.HomeownersLine_HOE.Dwelling.CoveredPorch : false
     return dwellingInspectionValuation
   }
 
-  function createDwellOccupancy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.DwellOccupancy{
+  function createDwellOccupancy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellOccupancyType {
     var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
-    var dwellOccupancy = new wsi.schema.una.hpx.hpx_application_request.DwellOccupancy()
-    var residenceTypeCode = new wsi.schema.una.hpx.hpx_application_request.ResidenceTypeCd()
-    var residenceTypeDesc = new wsi.schema.una.hpx.hpx_application_request.ResidenceTypeDesc()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType != null) {
-      residenceTypeCode.setText(typecodeMapper.getAliasByInternalCode("ResidenceType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Code))
-      residenceTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description)
-    }
-    dwellOccupancy.addChild(residenceTypeCode)
-    dwellOccupancy.addChild(residenceTypeDesc)
-    var dwellUseCode = new wsi.schema.una.hpx.hpx_application_request.DwellUseCd()
-    var dwellUseDesc = new wsi.schema.una.hpx.hpx_application_request.DwellUseDesc()
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage != null) {
-      dwellUseCode.setText(policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage.Code)
-      dwellUseDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage.Description)
-    }
-    dwellOccupancy.addChild(dwellUseCode)
-    dwellOccupancy.addChild(dwellUseDesc)
-    var dwellOccupancyType = new wsi.schema.una.hpx.hpx_application_request.OccupancyTypeCd()
-    var dwellOccupancyTypeDesc = new wsi.schema.una.hpx.hpx_application_request.OccupancyTypeDesc()
-    if(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy != null) {
-      dwellOccupancyType.setText(typecodeMapper.getAliasByInternalCode("DwellingOccupancyType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy))
-      dwellOccupancyTypeDesc.setText(policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description)
-      dwellOccupancy.addChild(dwellOccupancyType)
-      dwellOccupancy.addChild(dwellOccupancyTypeDesc)
-    }
+    var dwellOccupancy = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellOccupancyType()
+    dwellOccupancy.ResidenceTypeCd = policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType != null ?
+                                                 typecodeMapper.getAliasByInternalCode("ResidenceType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Code) : ""
+    dwellOccupancy.ResidenceTypeDesc = policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description : ""
+    dwellOccupancy.DwellUseCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage != null ? policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage : ""
+    dwellOccupancy.DwellUseDesc = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage != null ? policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage.Description : ""
+    dwellOccupancy.OccupancyTypeCd = policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy != null ?
+                                                typecodeMapper.getAliasByInternalCode("DwellingOccupancyType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy) : ""
+    dwellOccupancy.OccupancyTypeDesc = policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy != null ? policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy.Description : ""
     return dwellOccupancy
   }
 
-  function createMasterPolicyInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.MasterPolicyInfo {
-    var masterPolicyInfo = new wsi.schema.una.hpx.hpx_application_request.MasterPolicyInfo()
-    var policyNumber = new wsi.schema.una.hpx.hpx_application_request.PolicyNumber()
-    if(policyPeriod.PolicyTerm.PolicyNumber != null) {
-      policyNumber.setText(policyPeriod.PolicyTerm.PolicyNumber)
-      masterPolicyInfo.addChild(policyNumber)
-    }
+  function createMasterPolicyInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.MasterPolicyInfoType {
+    var masterPolicyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.MasterPolicyInfoType()
+    masterPolicyInfo.PolicyNumber = policyPeriod.PolicyTerm.PolicyNumber != null ? policyPeriod.PolicyTerm.PolicyNumber : ""
     return masterPolicyInfo
   }
 
-  function createDwellAnimalExposureInfo(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.AnimalExposureInfo> {
-    var animalExposures = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.AnimalExposureInfo>()
+  function createDwellAnimalExposureInfo(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.AnimalExposureInfoType> {
+    var animalExposures = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.AnimalExposureInfoType>()
     var animals = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingAnimals
     for (animal in animals) {
-      var animalExposureInfo = new wsi.schema.una.hpx.hpx_application_request.AnimalExposureInfo()
-      var animalTypeCd = new wsi.schema.una.hpx.hpx_application_request.AnimalTypeCd()
-      if (animal.AnimalType != null) {
-        animalTypeCd.setText(animal.AnimalType)
-        animalExposureInfo.addChild(animalTypeCd)
-      }
-      var breedCd = new wsi.schema.una.hpx.hpx_application_request.BreedCd()
-      if(animal.AnimalBreed != null) {
-        breedCd.setText(animal.AnimalBreed)
-        animalExposureInfo.addChild(breedCd)
-      }
-      var breedDesc = new wsi.schema.una.hpx.hpx_application_request.BreedDesc()
-      if (animal.AnimalBreed.Description != null) {
-        breedDesc.setText(animal.AnimalBreed.Description)
-        animalExposureInfo.addChild(breedDesc)
-      }
-      var biteHistory = new wsi.schema.una.hpx.hpx_application_request.BiteHistoryInd()
-      if (animal.AnimalBiteHistory != null) {
-        var hasAnimalBiteHistory = animal.AnimalBiteHistory
-        biteHistory.setText(animal.AnimalBiteHistory)
-        animalExposureInfo.addChild(biteHistory)
-      }
+      var animalExposureInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.AnimalExposureInfoType()
+      animalExposureInfo.AnimalTypeCd = animal.AnimalType != null ? animal.AnimalType : ""
+      animalExposureInfo.BreedCd = animal.AnimalBreed != null ? animal.AnimalBreed : ""
+      animalExposureInfo.BreedDesc = animal.AnimalBreed != null ? animal.AnimalBreed.Description : ""
+      animalExposureInfo.BiteHistoryInd = animal.AnimalBiteHistory != null ? animal.AnimalBiteHistory : ""
       animalExposures.add(animalExposureInfo)
     }
     return animalExposures
   }
 
-  function createOutboardMotorsAndWatercraft(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.Watercraft> {
-    var watercrafts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.Watercraft>()
+  function createOutboardMotorsAndWatercraft(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.WatercraftType> {
+    var watercrafts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.WatercraftType>()
     var outboardMotorsAndWatercrafts = policyPeriod.HomeownersLine_HOE.HOSL_OutboardMotorsWatercraft_HOE_Ext.scheduledItem_Ext
     for (item in outboardMotorsAndWatercrafts) {
-      var watercraft = new wsi.schema.una.hpx.hpx_application_request.Watercraft()
-      var watercraftName = new wsi.schema.una.hpx.hpx_application_request.WatercraftName()
-      if (item.watercraftName != null) {
-        watercraftName.setText(item.watercraftName)
-        watercraft.addChild(watercraftName)
-      }
-      var watercraftType = new wsi.schema.una.hpx.hpx_application_request.WatercraftType()
-      if (item.watercraftType != null) {
-        watercraftType.setText(item.watercraftType)
-        watercraft.addChild(watercraftType)
-      }
-      var watercraftDescription = new wsi.schema.una.hpx.hpx_application_request.Description()
-      if (item.watercraftDescription != null) {
-        watercraftDescription.setText(item.watercraftDescription)
-        watercraft.addChild(watercraftDescription)
-      }
-      var length = new wsi.schema.una.hpx.hpx_application_request.Length()
-      if (item.overallLength != null) {
-        length.setText(item.overallLength)
-      }
-      var horsepower = new wsi.schema.una.hpx.hpx_application_request.Horsepower()
-      var numUnits = new wsi.schema.una.hpx.hpx_application_request.NumUnits()
-      var unitMeasurementCd = new wsi.schema.una.hpx.hpx_application_request.UnitMeasurementCd()
-      if (item.horsepower != null) {
-        numUnits.setText(item.horsepower.DisplayName)
-        horsepower.addChild(numUnits)
-        unitMeasurementCd.setText("Horsepower")
-        horsepower.addChild(unitMeasurementCd)
-        watercraft.addChild(horsepower)
-      }
-      var speedRating = new wsi.schema.una.hpx.hpx_application_request.SpeedRating()
-      if (item.speedRating != null) {
-        speedRating.setText(item.speedRating)
-        watercraft.addChild(speedRating)
-      }
-      var navigationPeriod = new wsi.schema.una.hpx.hpx_application_request.NavigationPeriod()
-      if (item.navPeriodEachYear != null) {
-        navigationPeriod.setText(item.navPeriodEachYear)
-        watercraft.addChild(navigationPeriod)
-      }
-      var navigationFromDate = new wsi.schema.una.hpx.hpx_application_request.NavigationFromDt()
-      if (item.fromDate != null) {
-        navigationFromDate.setText(item.fromDate)
-        watercraft.addChild(navigationFromDate)
-      }
-      var navigationToDate = new wsi.schema.una.hpx.hpx_application_request.NavigationToDate()
-      if (item.toDate != null) {
-        navigationToDate.setText(item.toDate)
-        watercraft.addChild(navigationToDate)
-      }
+      var watercraft = new wsi.schema.una.hpx.hpx_application_request.types.complex.WatercraftType()
+      watercraft.WatercraftName = item.watercraftName != null ? item.watercraftName : ""
+      watercraft.WatercraftType = item.watercraftType != null ? item.watercraftType : ""
+      watercraft.Description =  item.watercraftDescription != null ? item.watercraftDescription : ""
+      watercraft.Length.NumUnits = item.overallLength != null ? item.overallLength : ""
+      watercraft.Horsepower.NumUnits = item.horsepower != null ? item.horsepower.DisplayName : ""
+      watercraft.Horsepower.UnitMeasurementCd = "Horsepower"
+      watercraft.SpeedRating = item.speedRating != null ? item.speedRating : ""
+      watercraft.NavigationPeriod = item.navPeriodEachYear != null ? item.navPeriodEachYear : ""
+      watercraft.NavigationFromDt.Day = item.fromDate != null ? item.fromDate.DayOfMonth : ""
+      watercraft.NavigationFromDt.Month = item.fromDate != null ? item.fromDate.MonthOfYear : ""
+      watercraft.NavigationFromDt.Year = item.fromDate != null ? item.fromDate.YearOfDate : ""
+      watercraft.NavigationToDate.Day = item.fromDate != null ? item.toDate.DayOfMonth : ""
+      watercraft.NavigationToDate.Month = item.fromDate != null ? item.toDate.MonthOfYear : ""
+      watercraft.NavigationToDate.Year = item.fromDate != null ? item.toDate.YearOfDate : ""
+
       watercrafts.add(watercraft)
     }
     return watercrafts

@@ -77,9 +77,9 @@ class HPXRequestMapper {
     hpxRequest.addChild(new XmlElement("CompositionUnit", compositionUnit))
     hpxRequestType.Transaction = "Policy Dwelling"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
-    for (att in hpxRequest.AttributeNames) {
+    /*for (att in hpxRequest.AttributeNames) {
       hpxRequest.removeChildren(att)
-    }
+    }  */
 
     return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
   }
@@ -87,29 +87,34 @@ class HPXRequestMapper {
   function createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerPolicyType,
                                                compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : String {
 
-    var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
+
+    var hpxRequestType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType()
+    var ns = new XmlNamespace("http://wservices.universalpr.com/standards/pcnew/", "")
+    var hpxRequest = new XmlElement(ns.qualify("PublishDocumentRequest"), hpxRequestType)
     var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
-    hpxRequest.PublishingEngineFileKey = "PolicyCenterNA.pub"
+    hpxRequestType.PublishingEngineFileKey = "PolicyCenterNA.pub"
     policyDocumentPublish.addChild(new XmlElement("BusinessOwnerPolicy", businessOwnersPolicy))
     hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
-    hpxRequest.CompositionUnit.addChild(new XmlElement("CompositionUnit", compositionUnit))
-    hpxRequest.Transaction = "Policy Business Owners"
+    hpxRequestType.CompositionUnit.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequestType.Transaction = "Policy Business Owners"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
-    return hpxRequest.asUTFString()
+    return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
   }
 
   function createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType,
                                                      compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : String {
 
-    var hpxRequest = new wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest()
+    var hpxRequestType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType()
+    var ns = new XmlNamespace("http://wservices.universalpr.com/standards/pcnew/", "")
+    var hpxRequest = new XmlElement(ns.qualify("PublishDocumentRequest"), hpxRequestType)
     var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
-    hpxRequest.PublishingEngineFileKey = "PolicyCenterNA.pub"
+    hpxRequestType.PublishingEngineFileKey = "PolicyCenterNA.pub"
     policyDocumentPublish.addChild(new XmlElement(commercialPackagePolicy))
     hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
-    hpxRequest.CompositionUnit.addChild(new XmlElement("CompositionUnit", compositionUnit))
-    hpxRequest.Transaction = "Policy Commercial Package"
+    hpxRequestType.CompositionUnit.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequestType.Transaction = "Policy Commercial Package"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
-    return hpxRequest.asUTFString()
+    return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
   }
 
   function createPublishingConsumerAppKey() : wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingConsumerAppKeyType {

@@ -12,34 +12,103 @@
   public-id="CPOptionalOutdoorProperty_EXT"
   referenceDateByType="PolicyTerm">
   <CovTerms>
-    <PackageCovTermPattern
-      choiceLookupTableName="CPBuildingCovPack"
-      codeIdentifier="CPOptionalOutdoorPropLimit_EXT"
-      coverageColumn="ChoiceTerm1"
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="CPCoverageCLimit_EXT"
+      coverageColumn="DirectTerm3"
       lookupTableName="CPBuildingCovTerm"
       modelType="Limit"
       priority="100"
-      public-id="CPOptionalOutdoorPropLimit_EXT"
-      required="true">
+      public-id="CPCoverageCLimit_EXT"
+      required="false"
+      restrictionModel="bld"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="CPCoverageBLimit_EXT"
+      coverageColumn="DirectTerm2"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Limit"
+      priority="75"
+      public-id="CPCoverageBLimit_EXT"
+      required="false"
+      restrictionModel="bld"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="CPCoverageALimit_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Limit"
+      priority="50"
+      public-id="CPCoverageALimit_EXT"
+      required="false"
+      restrictionModel="bld"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="CPCoverageType_EXT"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Other"
+      priority="0"
+      public-id="CPCoverageType_EXT"
+      required="true"
+      typelist="CPOutdoorPropCovType_EXT"/>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="CPBuildingCovOpt"
+      codeIdentifier="CPCoverageABCCombined_EXT"
+      coverageColumn="ChoiceTerm2"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Limit"
+      priority="200"
+      public-id="CPCoverageABCCombined_EXT"
+      required="false"
+      restrictionModel="bld"
+      valueType="money">
       <DefaultsSet/>
-      <Packages>
-        <CovTermPack
-          codeIdentifier="zpti0qitoc0sr6rk2k6f477i69a"
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zb9j27955brje16qhicbevreq2a"
           currency="usd"
-          packageCode="1000/250_EXT"
+          optionCode="1000000_EXT"
           priority="100"
-          public-id="zpti0qitoc0sr6rk2k6f477i69a">
-          <PackageTerms>
-            <PackageTerm
-              aggregationModel="pi"
-              codeIdentifier="zitg2u1e2mnsp72ac559vb3coo9"
-              public-id="zitg2u1e2mnsp72ac559vb3coo9"
-              restrictionModel="prp"
-              value="1000"
-              valueType="money"/>
-          </PackageTerms>
-        </CovTermPack>
-      </Packages>
-    </PackageCovTermPattern>
+          public-id="zb9j27955brje16qhicbevreq2a"
+          value="1000000"/>
+        <CovTermOpt
+          codeIdentifier="zqgh6b6g239hk25qo7mfsffb5bb"
+          currency="usd"
+          optionCode="500000_EXT"
+          priority="100"
+          public-id="zqgh6b6g239hk25qo7mfsffb5bb"
+          value="500000"/>
+        <CovTermOpt
+          codeIdentifier="z0iimuifmeqgsap92t4l3eaakba"
+          currency="usd"
+          optionCode="250000_EXT"
+          priority="100"
+          public-id="z0iimuifmeqgsap92t4l3eaakba"
+          value="250000"/>
+      </Options>
+    </OptionCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="CPCoverageBCLimit_EXT"
+      coverageColumn="DirectTerm4"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Limit"
+      priority="87"
+      public-id="CPCoverageBCLimit_EXT"
+      required="false"
+      restrictionModel="bld"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

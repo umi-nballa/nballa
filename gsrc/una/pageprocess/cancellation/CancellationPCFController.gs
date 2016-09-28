@@ -156,7 +156,8 @@ class CancellationPCFController {
   }
 
   public function isReasonDescriptionEditable() : boolean{
-    return _policyPeriod.Lines.hasMatch( \ line -> line typeis BP7BusinessOwnersLine or line typeis CommercialPropertyLine)
+    return _cancellation.Source == TC_INSURED
+        or _policyPeriod.Lines.hasMatch( \ line -> line typeis BP7BusinessOwnersLine or line typeis CommercialPropertyLine)
         or _cancellation.CancelReasonCode == TC_OTHER
   }
 

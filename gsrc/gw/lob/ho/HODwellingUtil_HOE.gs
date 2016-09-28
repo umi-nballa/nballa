@@ -510,7 +510,7 @@ class HODwellingUtil_HOE {
 
   /*
  *  Author: uim-svallabhapurapu
- *  Change Log: Panel manufacturing value range based on state
+ *  Change Log: Panel manufacturing value range based on YOC
  *  HO Line of business
   */
 
@@ -521,5 +521,43 @@ class HODwellingUtil_HOE {
     }
     return typekey.PanelManufacturer_Ext.TF_ALLOTHERYEARS.TypeKeys
   }
+
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Plumbing value range based on YOC
+ *  HO Line of business
+  */
+
+  static function getPlumbingRange(dwelling : Dwelling_HOE) : List<typekey.PlumbingType_HOE> {
+     var yearBuilt_1975 : int = 1975
+     var yearBuilt_1990 : int = 1990
+     var yearBuilt_1995 : int = 1995
+
+    if(dwelling.YearBuilt >= yearBuilt_1975 and dwelling.YearBuilt < yearBuilt_1990) {
+       return typekey.PlumbingType_HOE.TF_YEARGRP1_EXT.TypeKeys
+    } else if (dwelling.YearBuilt >= yearBuilt_1990 and dwelling.YearBuilt < yearBuilt_1995 ) {
+        return typekey.PlumbingType_HOE.TF_YEARGRP2_EXT.TypeKeys
+      } else if(dwelling.YearBuilt >= yearBuilt_1995) {
+         return typekey.PlumbingType_HOE.TF_YEARGRP3_EXT.TypeKeys
+        }
+      return typekey.PlumbingType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
+  }
+
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Wiring value range based on YOC
+ *  HO Line of business
+  */
+  static function getWiringRange(dwelling : Dwelling_HOE) : List<typekey.WiringType_HOE> {
+    var yearBuilt_1960 : int = 1960
+    var yearBuilt_1980 : int = 1980
+
+   if(dwelling.YearBuilt >= yearBuilt_1960 and dwelling.YearBuilt < yearBuilt_1980) {
+          return  typekey.WiringType_HOE.TF_YEARGRP1_EXT.TypeKeys
+   } else if(dwelling.YearBuilt >=  yearBuilt_1980) {
+          return typekey.WiringType_HOE.TF_YEARGRP2_EXT.TypeKeys
+     }
+   return typekey.WiringType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
+ }
 
 }// End of class

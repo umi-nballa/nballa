@@ -12,13 +12,13 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
  */
 class HPXGLCoverageMapper extends HPXCoverageMapper {
   function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit> {
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     // General Liability does not have Scheduled Items
     return null
   }
 
-  override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.Coverable {
-    var coverable = new wsi.schema.una.hpx.hpx_application_request.Coverable()
+  override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+    var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
     // need to implement
     return coverable
   }

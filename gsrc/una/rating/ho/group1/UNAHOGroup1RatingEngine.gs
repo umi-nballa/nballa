@@ -16,6 +16,7 @@ uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1DiscountsOrSurchargeRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOWCPrivateResidenceEmployeeRatingInfo
+uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 
 /**
  * Created with IntelliJ IDEA.
@@ -159,8 +160,14 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateConcreteTileRoofDiscount(dateRange)
     }
 
+    if(PolicyLine.BaseState == Jurisdiction.TC_AZ){
+      ratePrivateFireCompanyDiscount(dateRange)
+    }
+
     rateHigherAllPerilDeductible(dateRange)
 
+    //TODO : Need to add the condition to check for gated community discount
+    //rateGatedCommunityDiscount(dateRange)
 
     //update the total base premium with the discounts and surcharges
     updateTotalBasePremium()
@@ -199,6 +206,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Function to rate the Gated Community discount
+   */
+  function rateGatedCommunityDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateGatedCommunityDiscount", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE, HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.GatedCommunityDiscount = costData?.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Gated Community Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Function to rate the Concrete Tile Roof Discount
    */
   function rateConcreteTileRoofDiscount(dateRange: DateRange) {
@@ -212,6 +235,24 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Concrete Tile Roof Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Private Fire Company Discount
+   */
+  function ratePrivateFireCompanyDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePrivateFireCompanyDiscount", this.IntrinsicType)
+    var discountOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine)
+    if(discountOrSurchargeRatingInfo.IsPrivateFireCompanyDiscountApplicable){
+      discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+      var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState)
+      var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE, HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT,
+          RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      _hoRatingInfo.PrivateFireCompanyDiscount = costData?.ActualTermAmount
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Private Fire Company Discount Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -280,8 +321,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.EQUIPMENT_BREAKDOWN_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
@@ -446,8 +486,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateRefrigeratedPersonalPropertyCoverage(dwellingCov: HODW_RefrigeratedPP_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateRefrigeratedPersonalPropertyCoverage to rate Refrigerated Personal Property Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.REFRIGERATED_PERSONAL_PROPERTY_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Refrigerated Personal Property Coverage Rated Successfully", this.IntrinsicType)
@@ -458,8 +497,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialComputerCoverage to rate Special Computer Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_COMPUTER_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateSpecialComputerCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Special Computer Coverage Rated Successfully", this.IntrinsicType)
@@ -470,7 +508,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateWaterBackupSumpOverflowCoverage(dwellingCov: HODW_WaterBackUpSumpOverflow_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateWaterBackupSumpOverflowCoverage to rate Water Backup Sump Overflow Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.WATER_BACKUP_SUMP_OVERFLOW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
@@ -498,8 +536,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateIdentityTheftExpenseCoverage(dwellingCov: HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOCWParameterSet(PolicyLine, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.IDENTITY_THEFT_EXPENSE_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateIdentityTheftExpenseCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
@@ -590,16 +627,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       PolicyLine.Branch.addWorksheetFor(coverage, worksheet)
     }
   }*/
-
-  /**
-   * Returns the parameter set for the country wide routines
-   */
-  private function getHOCWParameterSet(line : PolicyLine, stateCode : String) : Map<CalcRoutineParamName, Object>{
-    return {
-        TC_POLICYLINE -> line,
-        TC_STATE -> stateCode
-    }
-  }
 
   /**
    * Returns the parameter set with a rating info
@@ -696,7 +723,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium  + _hoRatingInfo.AgeOfHomeDiscount +
                                       _hoRatingInfo.DifferenceInConditions +_hoRatingInfo.SuperiorConstructionDiscount +
-                                      _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.ConcreteTileRoofDiscount + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge
+                                      _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.ConcreteTileRoofDiscount + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge +
+                                      _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.PrivateFireCompanyDiscount
                                      )
   }
 }

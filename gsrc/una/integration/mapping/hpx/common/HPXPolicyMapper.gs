@@ -6,6 +6,19 @@ uses una.integration.mapping.hpx.common.HPXGeneralPartyInfoMapper
 uses una.integration.mapping.hpx.common.HPXJobMapper
 uses una.integration.mapping.hpx.common.HPXCompositionUnitMapper
 uses una.integration.mapping.hpx.common.HPXPaymentOptionMapper
+uses gw.xml.XmlElement
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.ItemIdInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.FullTermAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.RecoveryAssessmentAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.ChangeRecoveryAssessmentAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumChangeAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.NetChangeAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.WrittenAmtType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.BillingInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.OtherOrPriorPolicyType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.ReinstateInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.RenewalInfoType
+uses wsi.schema.una.hpx.hpx_application_request.types.complex.FeeType
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,62 +29,59 @@ uses una.integration.mapping.hpx.common.HPXPaymentOptionMapper
  */
 abstract class HPXPolicyMapper {
 
-  function createItemIdInfo() : wsi.schema.una.hpx.hpx_application_request.ItemIdInfo {
-    var itemIdInfo = new wsi.schema.una.hpx.hpx_application_request.ItemIdInfo()
-    var agencyId = new wsi.schema.una.hpx.hpx_application_request.AgencyId()
-    agencyId.setText(0)
-    itemIdInfo.addChild(agencyId)
-    var insurerId = new wsi.schema.una.hpx.hpx_application_request.InsurerId()
-    insurerId.setText(0)
-    itemIdInfo.addChild(insurerId)
-    var systemId = new wsi.schema.una.hpx.hpx_application_request.SystemId()
-    systemId.setText("00000000-0000-0000-0000-000000000000")
-    itemIdInfo.addChild(systemId)
-    var otherIdentifier = new wsi.schema.una.hpx.hpx_application_request.OtherIdentifier()
-    var otherIdTypeCd = new wsi.schema.una.hpx.hpx_application_request.OtherIdTypeCd()
-    otherIdTypeCd.setText("CreditBureau")
-    var otherId = new wsi.schema.una.hpx.hpx_application_request.OtherId()
-    otherId.setText(0)
-    otherIdentifier.addChild(otherIdTypeCd)
-    otherIdentifier.addChild(otherId)
-    itemIdInfo.addChild(otherIdentifier)
+  function createItemIdInfo() : wsi.schema.una.hpx.hpx_application_request.types.complex.ItemIdInfoType {
+    var itemIdInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.ItemIdInfoType()
+    itemIdInfo.AgencyId = 0
+    itemIdInfo.InsurerId = 0
+    itemIdInfo.SystemId = "00000000-0000-0000-0000-000000000000"
+    itemIdInfo.OtherIdentifier.OtherId = 0
+    itemIdInfo.OtherIdentifier.OtherIdTypeCd = "CreditBureau"
     return itemIdInfo
   }
 
   /************************************** Policy Summary Info ******************************************************/
-  function createPolicySummaryInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicySummaryInfo {
-    var transactionMapper = new HPXJobMapper () // TODO - move to class level
+  function createPolicySummaryInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryInfoType {
+    var transactionMapper = new HPXJobMapper ()
     var billingInfoMapper = new HPXBillingInfoMapper ()
     var policySummaryInfo = transactionMapper.createJobStatus(policyPeriod)
-    policySummaryInfo.addChild(createItemIdInfo())
+    policySummaryInfo.addChild(new XmlElement("ItemIdInfo", createItemIdInfo()))
    // policySummaryInfo.addChild(billingInfoMapper.createBillingInfo(policyPeriod))
+    // TODO  - start
+    //policySummaryInfo.addChild(new XmlElement("FullTermAmt", new FullTermAmtType()))
+    //policySummaryInfo.addChild(new XmlElement("RecoveryAssessmentAmt", new RecoveryAssessmentAmtType()))
+    //policySummaryInfo.addChild(new XmlElement("ChangeRecoveryAssessmentAmt", new ChangeRecoveryAssessmentAmtType()))
+    policySummaryInfo.RecoveryAssessmentPct = 0
+    //policySummaryInfo.addChild(new XmlElement("PremiumChangeAmt", new PremiumChangeAmtType()))
+    //policySummaryInfo.addChild(new XmlElement("NetChangeAmt", new NetChangeAmtType()))
+    //policySummaryInfo.addChild(new XmlElement("WrittenAmt", new WrittenAmtType()))
+    policySummaryInfo.QuoteInd = false
+    //policySummaryInfo.addChild(new XmlElement("BillingInfo", new BillingInfoType()))
+    policySummaryInfo.FileNumber = ""
+    //policySummaryInfo.addChild(new XmlElement("OtherOrPriorPolicy", new OtherOrPriorPolicyType()))
+   // policySummaryInfo.addChild(new XmlElement("Fee", new FeeType()))
+   // policySummaryInfo.addChild(new XmlElement("ReinstateInfo", new ReinstateInfoType()))
+  //  policySummaryInfo.addChild(new XmlElement("RenewalInfo", new RenewalInfoType()))
+    // TODO - end
     return policySummaryInfo
   }
 
 
   /************************************** Insured Or Principal ******************************************************/
-  function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal {
+  function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
     var creditScoreMapper = new HPXCreditScoreMapper()
-    var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal()
-    insuredOrPrincipal.addChild(createItemIdInfo())
-    insuredOrPrincipal.addChild(generalPartyInfoMapper.createGeneralPartyInfo(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact,
-        policyPeriod.PrimaryNamedInsured))
-    var insuredOrPrincipalInfo = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipalInfo()
-    var personInfo = new wsi.schema.una.hpx.hpx_application_request.PersonInfo()
-    var principalInfo = new wsi.schema.una.hpx.hpx_application_request.PrincipalInfo()
+    var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType()
+    insuredOrPrincipal.addChild(new XmlElement("ItemIdInfo", createItemIdInfo()))
+    insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo
+                                                              (policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact,
+                                                                                   policyPeriod.PrimaryNamedInsured)))
     var creditScore = creditScoreMapper.createCreditScoreInfo(policyPeriod)
-    if (creditScore != null) {
-      insuredOrPrincipalInfo.addChild(personInfo)
-      principalInfo.addChild(creditScore)
-      insuredOrPrincipalInfo.addChild(principalInfo)
-      insuredOrPrincipal.addChild(insuredOrPrincipalInfo)
-    }
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PrincipalInfo.CreditScoreInfo.CreditScore = creditScore != null ? creditScore : 0
     return insuredOrPrincipal
   }
 
   /*************************************  Policy Detail ************************************************************/
-  function createPolicyDetails(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.PolicyInfo {
+  function createPolicyDetails(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyInfoType {
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var transactionMapper = new HPXJobMapper ()
@@ -79,64 +89,36 @@ abstract class HPXPolicyMapper {
     var paymentOptionMapper = new HPXPaymentOptionMapper()
     var priorPoliciesMapper = new HPXPriorPolicyMapper()
     var producerMapper = new HPXProducerMapper()
-    var policyInfo = new wsi.schema.una.hpx.hpx_application_request.PolicyInfo()
-    var lobCode = new wsi.schema.una.hpx.hpx_application_request.LOBCd()
-   /* switch (policyPeriod.HomeownersLine_HOE.PatternCode) {
-      case "HomeownersLine_HOE" : lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.HOME)
-          break
-      case "HomeownersLine_HOE" : lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.HOME)
-          break
-    }  */
-    if (policyPeriod.HomeownersLine_HOEExists != null) {
-      lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.HOME)
-    } else if (policyPeriod.BP7LineExists) {
-      lobCode.setText(wsi.schema.una.hpx.hpx_application_request.enums.LineOfBusiness.BOP)
-    }
-
-    policyInfo.addChild(lobCode)
-    var policyNumber = new wsi.schema.una.hpx.hpx_application_request.PolicyNumber()
-    if (policyPeriod.PolicyNumber != null) {
-      policyNumber.setText(policyPeriod.PolicyNumber)
-      policyInfo.addChild(policyNumber)
-    }
-    var accountNo = new wsi.schema.una.hpx.hpx_application_request.AccountNumberId()
-    accountNo.setText(policyPeriod.Policy.Account.AccountNumber)
-    policyInfo.addChild(accountNo)
-    var policyTermCode = new wsi.schema.una.hpx.hpx_application_request.PolicyTermCd()
-    policyTermCode.setText(policyPeriod.TermType)
-    policyInfo.addChild(policyTermCode)
-    var contractTerm = new wsi.schema.una.hpx.hpx_application_request.ContractTerm()
-    var effectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
-    effectiveDate.setText(policyPeriod.PeriodStart)
-    contractTerm.addChild(effectiveDate)
-    var expirationDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
-    expirationDate.setText(policyPeriod.PeriodEnd)
-    contractTerm.addChild(expirationDate)
-    policyInfo.addChild(contractTerm)
-    var writtenDate = new wsi.schema.una.hpx.hpx_application_request.TermProcessDt()
-    writtenDate.setText(policyPeriod.WrittenDate)
-    policyInfo.addChild(writtenDate)
-    var baseRate = new wsi.schema.una.hpx.hpx_application_request.ControllingStateProvCd()
-    baseRate.setText(policyPeriod.BaseState)
-    policyInfo.addChild(baseRate)
+    var policyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyInfoType()
+    policyInfo.LOBCd = policyPeriod.HomeownersLine_HOEExists != null ? typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE :
+                       policyPeriod.BP7LineExists != null ? typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
+                       policyPeriod.CPLineExists != null ? typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :
+                       policyPeriod.GLLineExists != null ? typekey.PolicyLine.TC_GENERALLIABILITYLINE : ""
+    policyInfo.PolicyNumber = policyPeriod.PolicyNumber != null ? policyPeriod.PolicyNumber : ""
+    policyInfo.AccountNumberId = policyPeriod.Policy.Account.AccountNumber
+    policyInfo.PolicyTermCd = policyPeriod.TermType
+    policyInfo.ContractTerm.EffectiveDt.Day = policyPeriod.PeriodStart.DayOfMonth
+    policyInfo.ContractTerm.EffectiveDt.Month = policyPeriod.PeriodStart.MonthOfYear
+    policyInfo.ContractTerm.EffectiveDt.Year = policyPeriod.PeriodStart.YearOfDate
+    policyInfo.ContractTerm.EffectiveDt.Day = policyPeriod.PeriodEnd.DayOfMonth
+    policyInfo.ContractTerm.EffectiveDt.Month = policyPeriod.PeriodEnd.MonthOfYear
+    policyInfo.ContractTerm.EffectiveDt.Year = policyPeriod.PeriodEnd.YearOfDate
+    policyInfo.TermProcessDt.Day = policyPeriod.WrittenDate.DayOfMonth
+    policyInfo.TermProcessDt.Month = policyPeriod.WrittenDate.MonthOfYear
+    policyInfo.TermProcessDt.Year = policyPeriod.WrittenDate.YearOfDate
+    policyInfo.ControllingStateProvCd = policyPeriod.BaseState
     // user
     var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
-    policyInfo.addChild(jobCreationUser)
+    policyInfo.addChild(new XmlElement("MiscParty", jobCreationUser))
     // prior policies
-    var priorPoliciesInfo = priorPoliciesMapper.createPriorPoliclies(policyPeriod)
+    var priorPoliciesInfo = priorPoliciesMapper.createPriorPolicies(policyPeriod)
     for (priorPolicyInfo in priorPoliciesInfo) {
-      policyInfo.addChild(priorPolicyInfo)
+      policyInfo.addChild(new XmlElement("OtherOrPriorPolicy", priorPolicyInfo))
     }
-    // producer org tier
-    var producerTierInfo = producerMapper.createProducerTierInfo(policyPeriod)
-    for (child in producerTierInfo.$Children) {
-      policyInfo.addChild(child)
-    }
+    policyInfo.TierCd = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier
+    policyInfo.TierDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier.Description
     // producer branch
-    var producerBranchInfo = producerMapper.createProducerBranchInfo(policyPeriod)
-    for (child in producerBranchInfo.$Children) {
-      policyInfo.addChild(child)
-    }
+    policyInfo.BranchDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Branch
     // billing method
     /*
     var billingMethodInfo = billingInfoMapper.createBillingMethodInfo(policyPeriod)
@@ -152,33 +134,15 @@ abstract class HPXPolicyMapper {
     return policyInfo
   }
 
-  function createQuestionSet(policyPeriod: PolicyPeriod): List<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer> {
-    var questions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.QuestionAnswer>()
+  function createQuestionSet(policyPeriod: PolicyPeriod): List<wsi.schema.una.hpx.hpx_application_request.types.complex.QuestionAnswerType> {
+    var questions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.QuestionAnswerType>()
     var questionAnswers = policyPeriod.PeriodAnswers
     for (q in questionAnswers) {
-      var question = new wsi.schema.una.hpx.hpx_application_request.QuestionAnswer()
-      var questionText = new wsi.schema.una.hpx.hpx_application_request.QuestionText()
-      questionText.setText(q.Question.Text)
-      question.addChild(questionText)
-      var questionCode = new wsi.schema.una.hpx.hpx_application_request.QuestionCd()
-      questionCode.setText(q.QuestionCode)
-      question.addChild(questionCode)
-      if (q.BooleanAnswer != null) {
-        var yesNoCd = new wsi.schema.una.hpx.hpx_application_request.YesNoCd()
-        switch (q.BooleanAnswer) {
-          case true:
-              yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.YES)
-              break
-          case false:
-              yesNoCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.Response.NO)
-        }
-        question.addChild(yesNoCd)
-      }
-      var explanation = new wsi.schema.una.hpx.hpx_application_request.Explanation()
-      if (q.Question.SupplementalTexts.atMostOne().Text != null) {
-        explanation.setText(q.Question.SupplementalTexts.atMostOne().Text)
-        question.addChild(explanation)
-      }
+      var question = new wsi.schema.una.hpx.hpx_application_request.types.complex.QuestionAnswerType()
+      question.QuestionText = q.Question.Text
+      question.QuestionCd = q.QuestionCode
+      question.YesNoCd = q.BooleanAnswer != null ? q.BooleanAnswer : 0
+      question.Explanation = q.Question.SupplementalTexts.atMostOne().Text != null ? q.Question.SupplementalTexts.atMostOne().Text : ""
       questions.add(question)
     }
     return questions

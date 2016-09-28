@@ -59,7 +59,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
 
       if(_baseState == typekey.Jurisdiction.TC_TX || _baseState == typekey.Jurisdiction.TC_AZ || _baseState == typekey.Jurisdiction.TC_CA
-         || _baseState == typekey.Jurisdiction.TC_NV){
+         || _baseState == typekey.Jurisdiction.TC_NV || _baseState == typekey.Jurisdiction.TC_SC || _baseState == typekey.Jurisdiction.TC_NC){
         //rate base premium
         rateHOBasePremium(lineVersion.Dwelling, RateCache, sliceRange)
 

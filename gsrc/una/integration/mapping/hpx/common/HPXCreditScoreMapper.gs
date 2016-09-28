@@ -7,31 +7,20 @@ package una.integration.mapping.hpx.common
  * To change this template use File | Settings | File Templates.
  */
 class HPXCreditScoreMapper {
-  function createCreditScoreInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.CreditScoreInfo {
-    var creditScoreInfo = new wsi.schema.una.hpx.hpx_application_request.CreditScoreInfo()
-    if (policyPeriod.CreditInfoExt.CreditReport.CreditScore != null) {
-      var creditScore = new wsi.schema.una.hpx.hpx_application_request.CreditScore()
-      creditScore.setText(policyPeriod.CreditInfoExt.CreditReport.CreditScore)
-      creditScoreInfo.addChild(creditScore)
-    }
-    if (policyPeriod.CreditInfoExt.CreditReport.ProductReferenceNumber != null) {
-      var ncfProductRef = new wsi.schema.una.hpx.hpx_application_request.ReferenceNumber()
-      ncfProductRef.setText(policyPeriod.CreditInfoExt.CreditReport.ProductReferenceNumber)
-      creditScoreInfo.addChild(ncfProductRef)
-    }
+  function createCreditScoreInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType {
+    var creditScoreInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType()
+    creditScoreInfo.CreditScore = policyPeriod.CreditInfoExt.CreditReport.CreditScore != null ? policyPeriod.CreditInfoExt.CreditReport.CreditScore : 0
+    creditScoreInfo.ReferenceNumber = policyPeriod.CreditInfoExt.CreditReport.ProductReferenceNumber != null ? policyPeriod.CreditInfoExt.CreditReport.ProductReferenceNumber : ""
     if (policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate != null) {
-      var creditScoreDate = new wsi.schema.una.hpx.hpx_application_request.ReferenceNumber()
-      creditScoreDate.setText(policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate)
-      creditScoreInfo.addChild(creditScoreDate)
+      creditScoreInfo.CreditScoreDt.Day = policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate.DayOfMonth
+      creditScoreInfo.CreditScoreDt.Month = policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate.MonthOfYear
+      creditScoreInfo.CreditScoreDt.Year = policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate.YearOfDate
     }
-    if (policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons != null) {
-      for (reason in policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons) {
-        var creditScoreReasonCd = new wsi.schema.una.hpx.hpx_application_request.CSReasonCd()
-        var creditScoreReasonDesc = new wsi.schema.una.hpx.hpx_application_request.CSReasonDesc()
-        creditScoreReasonCd.setText(reason.CreditStatusReasonCode + " - " + reason.CreditStatusReasonDesc)
-        creditScoreInfo.addChild(creditScoreReasonCd)
-      }
-    }
+    creditScoreInfo.CSReasonCd = policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons.Count > 0 and  policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0] != null ?
+                                                                                                      policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0].CreditStatusReasonCode : ""
+    creditScoreInfo.CSReasonDesc = policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons.Count > 0 and  policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0] != null ?
+                                                                                                      policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0].CreditStatusReasonCode + " - " +
+                                                                                                            policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0].CreditStatusReasonDesc  : ""
     return creditScoreInfo
   }
 }

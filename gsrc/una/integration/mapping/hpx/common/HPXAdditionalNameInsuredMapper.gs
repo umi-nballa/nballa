@@ -1,6 +1,8 @@
 package una.integration.mapping.hpx.common
 
 uses java.util.ArrayList
+uses gw.xml.XmlElement
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -10,29 +12,15 @@ uses java.util.ArrayList
  */
 class HPXAdditionalNameInsuredMapper {
 
-  function createAdditionalNamedInsureds(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal> {
+  function createAdditionalNamedInsureds(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType> {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
-    //var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
-    var additionalNameInsureds = new ArrayList<wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal>()
+    var additionalNameInsureds = new ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType>()
     for (addtlNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)) {
-      var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipal()
-      //insuredOrPrincipal.addChild(dwellingPolicyMapper.createItemIdInfo())
-      insuredOrPrincipal.addChild(generalPartyInfoMapper.createGeneralPartyInfo(addtlNamedInsured.AccountContactRole.AccountContact.Contact,
-          addtlNamedInsured))
-      var insuredOrPrincipalInfo = new wsi.schema.una.hpx.hpx_application_request.InsuredOrPrincipalInfo()
-      if (addtlNamedInsured.DescOfInterest_HOE != null) {
-        var insuredInterestDesc = new wsi.schema.una.hpx.hpx_application_request.InsuredInterestDesc()
-        insuredInterestDesc.setText(addtlNamedInsured.DescOfInterest_HOE)
-        insuredOrPrincipalInfo.addChild(insuredInterestDesc)
-      }
-      if (addtlNamedInsured.Relationship != null) {
-        var personInfo = new wsi.schema.una.hpx.hpx_application_request.PersonInfo()
-        var titleRelationshipDesc = new wsi.schema.una.hpx.hpx_application_request.TitleRelationshipDesc()
-        titleRelationshipDesc.setText(addtlNamedInsured.Relationship)
-        personInfo.addChild(titleRelationshipDesc)
-        insuredOrPrincipalInfo.addChild(personInfo)
-      }
-      insuredOrPrincipal.addChild(insuredOrPrincipalInfo)
+      var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType()
+      insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo(addtlNamedInsured.AccountContactRole.AccountContact.Contact,
+          addtlNamedInsured)))
+      insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = addtlNamedInsured.DescOfInterest_HOE != null ? addtlNamedInsured.DescOfInterest_HOE : ""
+      insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlNamedInsured.Relationship != null ? addtlNamedInsured.Relationship : ""
       additionalNameInsureds.add(insuredOrPrincipal)
   }
   return additionalNameInsureds

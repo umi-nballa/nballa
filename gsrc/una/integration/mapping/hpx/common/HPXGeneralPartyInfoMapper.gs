@@ -1,4 +1,6 @@
 package una.integration.mapping.hpx.common
+
+uses gw.xml.XmlElement
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -9,120 +11,74 @@ package una.integration.mapping.hpx.common
 class HPXGeneralPartyInfoMapper {
 
   /************************************** General Party Info ******************************************************/
-  function createGeneralPartyInfo(party : Contact, role : PolicyContactRole) : wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo {
-    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo()
-    generalPartyInfo.addChild(createNameInfo(role))
-    generalPartyInfo.addChild(createAddr(party.PrimaryAddress))
+  function createGeneralPartyInfo(party : Contact, role : PolicyContactRole) : wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType {
+    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType()
+    generalPartyInfo.addChild(new XmlElement("NameInfo", createNameInfo(role)))
+    generalPartyInfo.addChild(new XmlElement("Addr", createAddr(party.PrimaryAddress)))
     return generalPartyInfo
   }
 
   /************************************** Name Info ******************************************************/
-  function createNameInfo(role : PolicyContactRole) : wsi.schema.una.hpx.hpx_application_request.NameInfo {
-    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.NameInfo()
+  function createNameInfo(role : PolicyContactRole) : wsi.schema.una.hpx.hpx_application_request.types.complex.NameInfoType {
+    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.NameInfoType()
     if (role.FirstName != null or role.LastName != null) {
-      var personName = new wsi.schema.una.hpx.hpx_application_request.PersonName()
-      var surName = new wsi.schema.una.hpx.hpx_application_request.Surname()
-      surName.setText(role.LastName)
-      var givenName = new wsi.schema.una.hpx.hpx_application_request.GivenName()
-      givenName.setText(role.FirstName)
-      personName.addChild(surName)
-      personName.addChild(givenName)
-      nameInfo.addChild(personName)
+      nameInfo.PersonName.Surname = role.LastName
+      nameInfo.PersonName.GivenName = role.FirstName
     }
     if (role.CompanyName != null) {
-      var commlName = new wsi.schema.una.hpx.hpx_application_request.CommlName()
-      var commercialName = new wsi.schema.una.hpx.hpx_application_request.CommercialName()
-      commercialName.setText(role.CompanyName)
-      nameInfo.addChild(commlName)
+      nameInfo.CommlName.CommercialName = role.CompanyName
     }
     return nameInfo
   }
 
   /************************************** Addr ******************************************************/
-  function createAddr(address : Address) : wsi.schema.una.hpx.hpx_application_request.Addr {
-    var addr = new wsi.schema.una.hpx.hpx_application_request.Addr()
-    var addr1 = new wsi.schema.una.hpx.hpx_application_request.Addr1()
-    addr.addChild(addr1)
-    addr1.setText(address.AddressLine1)
+  function createAddr(address : Address) : wsi.schema.una.hpx.hpx_application_request.types.complex.AddrType {
+    var addr = new wsi.schema.una.hpx.hpx_application_request.types.complex.AddrType()
+    addr.Addr1 = address.AddressLine1
     if (address.AddressLine2 != null) {
-      var addr2 = new wsi.schema.una.hpx.hpx_application_request.Addr2()
-      addr.setText(address.AddressLine2)
-      addr.addChild(addr2)
+      addr.Addr2 = address.AddressLine2
     }
     if (address.AddressLine3) {
-      var addr3 = new wsi.schema.una.hpx.hpx_application_request.Addr3()
-      addr.setText(address.AddressLine3)
-      addr.addChild(addr3)
+      addr.Addr3 = address.AddressLine3
     }
-    var city = new wsi.schema.una.hpx.hpx_application_request.City()
-    city.setText(address.City)
-    addr.addChild(city)
-    var stateProvCd = new wsi.schema.una.hpx.hpx_application_request.StateProvCd()
-    stateProvCd.setText(address.State.Code)
-    addr.addChild(stateProvCd)
-    var stateProv = new wsi.schema.una.hpx.hpx_application_request.StateProv()
-    stateProv.setText(address.State.Description)
-    addr.addChild(stateProv)
-    var postalCode = new wsi.schema.una.hpx.hpx_application_request.PostalCode()
-    postalCode.setText(address.PostalCode)
-    addr.addChild(postalCode)
+    addr.City = address.City
+    addr.StateProvCd = address.State.Code
+    addr.StateProv = address.State.Description
+    addr.PostalCode = address.PostalCode
     return addr
   }
 
-  function createProducerOrganization(organization : Organization) : wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo {
-    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo()
-    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.NameInfo()
-    var commlName = new wsi.schema.una.hpx.hpx_application_request.CommlName()
-    var commercialName = new wsi.schema.una.hpx.hpx_application_request.CommercialName()
-    commercialName.setText(organization.Name)
-    commlName.addChild(commercialName)
-    nameInfo.addChild(commlName)
-    var communications = new wsi.schema.una.hpx.hpx_application_request.Communications()
+  function createProducerOrganization(organization : Organization) : wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType {
+    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType()
+    generalPartyInfo.NameInfo.CommlName.CommercialName = organization.Name
     if (organization.Contact.PrimaryPhone != null and organization.Contact.PrimaryPhoneValue != null) {
-      var phoneInfo = new wsi.schema.una.hpx.hpx_application_request.PhoneInfo()
-      var phoneTypeCd = new wsi.schema.una.hpx.hpx_application_request.PhoneTypeCd()
-      phoneTypeCd.setText(organization.Contact.PrimaryPhone)
-      phoneInfo.addChild(phoneTypeCd)
-      var phoneNumber = new wsi.schema.una.hpx.hpx_application_request.PhoneNumber()
-      phoneNumber.setText(organization.Contact.PrimaryPhoneValue)
-      phoneInfo.addChild(phoneNumber)
-      communications.addChild(phoneInfo)
+      generalPartyInfo.Communications.PhoneInfo.PhoneTypeCd = organization.Contact.PrimaryPhone
+      generalPartyInfo.Communications.PhoneInfo.PhoneNumber = organization.Contact.PrimaryPhoneValue
     }
-    generalPartyInfo.addChild(nameInfo)
-    generalPartyInfo.addChild(communications)
     return generalPartyInfo
   }
 
-  function createUserGeneralPartyInfo(user : User) : wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo {
-    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.GeneralPartyInfo()
-    generalPartyInfo.addChild(createNameInfo(user.Contact))
-    //var userRole = user.Roles.where( \ elt1 -> elt1.Role.RoleType == typekey.RoleType.TC_USER).first()
-    //generalPartyInfo.addChild(createMiscPartyInfo(userRole.Role))
+  function createUserGeneralPartyInfo(user : User) : wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType {
+    var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType()
+    generalPartyInfo.addChild(new XmlElement("NameInfo", createNameInfo(user.Contact)))
     return generalPartyInfo
   }
 
   /************************************** Name Info ******************************************************/
-  function createNameInfo(user : UserContact) : wsi.schema.una.hpx.hpx_application_request.NameInfo {
-    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.NameInfo()
+  function createNameInfo(user : UserContact) : wsi.schema.una.hpx.hpx_application_request.types.complex.NameInfoType {
+    var nameInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.NameInfoType()
     if (user.FirstName != null or user.LastName != null) {
-      var personName = new wsi.schema.una.hpx.hpx_application_request.PersonName()
-      var surName = new wsi.schema.una.hpx.hpx_application_request.Surname()
-      surName.setText(user.LastName)
-      var givenName = new wsi.schema.una.hpx.hpx_application_request.GivenName()
-      givenName.setText(user.FirstName)
-      personName.addChild(surName)
-      personName.addChild(givenName)
-      nameInfo.addChild(personName)
+      nameInfo.PersonName.Surname = user.LastName
+      nameInfo.PersonName.GivenName = user.FirstName
     }
     return nameInfo
   }
 
-  function createMiscPartyInfo(party : Role) : wsi.schema.una.hpx.hpx_application_request.MiscPartyInfo {
-    var miscPartyInfo = new wsi.schema.una.hpx.hpx_application_request.MiscPartyInfo()
-    var miscPartyRoleCd = new wsi.schema.una.hpx.hpx_application_request.MiscPartyRoleCd()
+  function createMiscPartyInfo(party : Role) : wsi.schema.una.hpx.hpx_application_request.types.complex.MiscPartyInfoType {
+    var miscPartyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.MiscPartyInfoType()
     switch (party.RoleType) {
       case typekey.RoleType.TC_USER :
-          miscPartyRoleCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.RoleType.UserLogin)
+          miscPartyInfo.MiscPartyRoleCd = "UserLogin"
           break
     }
     return miscPartyInfo

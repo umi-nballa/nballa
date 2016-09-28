@@ -5,6 +5,7 @@ uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.math.BigDecimal
 uses gw.api.domain.covterm.GenericCovTerm
+uses gw.xml.XmlElement
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,19 +16,18 @@ uses gw.api.domain.covterm.GenericCovTerm
  */
 abstract class HPXCoverageMapper {
 
-  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
-    var coverageCode = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    coverageCode.setText(currentCoverage.PatternCode)
-    cov.addChild(coverageCode)
+  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+                : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
+    cov.CoverageCd = currentCoverage.PatternCode
     var coverableInfo = createCoverableInfo(currentCoverage, previousCoverage)
     if (coverableInfo != null) {
-      cov.addChild(coverableInfo)
+      cov.addChild(new XmlElement(coverableInfo))
     }
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
-    for (item in scheduleList) {cov.addChild(item)}
+    for (item in scheduleList) {cov.addChild(new XmlElement(item))}
     if (currentCoverage.OwningCoverable typeis PolicyLine) {
       var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage)
       for (child in covTermInfo.$Children) { cov.addChild(child) }
@@ -40,8 +40,8 @@ abstract class HPXCoverageMapper {
     return cov
   }
 
-  function createCovTermInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+  function createCovTermInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     var currCovTerms = currentCoverage.CovTerms
     for (currCovTerm in currCovTerms) {
       if (currCovTerm typeis DirectCovTerm) {
@@ -80,368 +80,152 @@ abstract class HPXCoverageMapper {
     return cov
   }
 
-  function createDirectCovTermInfo(currentCoverage : Coverage, currCovTerm : DirectCovTerm, prevCovTerm : DirectCovTerm)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+  function createDirectCovTermInfo(currentCoverage : Coverage, currCovTerm : DirectCovTerm, prevCovTerm : DirectCovTerm)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
-      cov.addChild(createDirectLimitInfo(currentCoverage, currCovTerm, prevCovTerm as DirectCovTerm))
+      cov.addChild(new XmlElement("Limit", createDirectLimitInfo(currentCoverage, currCovTerm, prevCovTerm as DirectCovTerm)))
     } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
-      cov.addChild(createDirectDeductibleInfo(currentCoverage, currCovTerm, prevCovTerm as DirectCovTerm))
+      cov.addChild(new XmlElement("Deductible", createDirectDeductibleInfo(currentCoverage, currCovTerm, prevCovTerm as DirectCovTerm)))
     } else {
-      cov.addChild(createOtherDirectCovTerm(currentCoverage, currCovTerm, prevCovTerm as DirectCovTerm))
+      cov.addChild(new XmlElement("Limit", createOtherDirectCovTerm(currentCoverage, currCovTerm, prevCovTerm as DirectCovTerm)))
     }
     return cov
   }
 
-  function createOptionCovTermInfo(currentCoverage : Coverage, currCovTerm : OptionCovTerm, prevCovTerm : OptionCovTerm)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+  function createOptionCovTermInfo(currentCoverage : Coverage, currCovTerm : OptionCovTerm, prevCovTerm : OptionCovTerm)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
-    cov.addChild(createOptionLimitInfo(currentCoverage, currCovTerm, prevCovTerm as OptionCovTerm))
+      cov.addChild(new XmlElement("Limit", createOptionLimitInfo(currentCoverage, currCovTerm, prevCovTerm as OptionCovTerm)))
     } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
-        cov.addChild(createOptionDeductibleInfo(currentCoverage, currCovTerm, prevCovTerm as OptionCovTerm))
+        cov.addChild(new XmlElement("Deductible", createOptionDeductibleInfo(currentCoverage, currCovTerm, prevCovTerm as OptionCovTerm)))
     } else {
-      cov.addChild(createOtherOptionCovTerm(currentCoverage, currCovTerm, prevCovTerm as OptionCovTerm))
+      cov.addChild(new XmlElement("Limit", createOtherOptionCovTerm(currentCoverage, currCovTerm, prevCovTerm as OptionCovTerm)))
     }
       return cov
   }
 
-  function createGenericCovTermInfo(currentCoverage : Coverage, currCovTerm : GenericCovTerm, prevCovTerm : GenericCovTerm)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
-      cov.addChild(createOtherGenericCovTerm(currentCoverage, currCovTerm, prevCovTerm as GenericCovTerm))
+  function createGenericCovTermInfo(currentCoverage : Coverage, currCovTerm : GenericCovTerm, prevCovTerm : GenericCovTerm)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
+      cov.addChild(new XmlElement("Limit", createOtherGenericCovTerm(currentCoverage, currCovTerm, prevCovTerm as GenericCovTerm)))
     return cov
   }
 
-  function createDirectLimitInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm) : wsi.schema.una.hpx.hpx_application_request.Limit {
-    var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-    var currentTermAmount = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-    var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSubCd = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-    var value = currentCovTerm.Value as double
-    if (value == null || value == "") value = 0.00
-    var formattedAmt = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-    amt.setText(formattedAmt)
-    currentTermAmount.addChild(amt)
-    limit.addChild(currentTermAmount)
-    coverageSubCd.setText(currentCovTerm.PatternCode)
-    limit.addChild(coverageSubCd)
-    // net change amount
-    var orignalValue = 0.00
-    if (previousCovTerm != null) {
-      orignalValue = previousCovTerm.Value
-    }
-    var changedValue = value - orignalValue
-    var formattedNetChange = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-    changeAmt.setText(changedValue)
-    netChangeAmount.addChild(changeAmt)
-    limit.addChild(netChangeAmount)
-    formatPct.setText(0)
-    limit.addChild(formatPct)
-    coverageCd.setText(coverage.PatternCode)
-    limit.addChild(coverageCd)
-    limitDesc.setText("")
-    limit.addChild(limitDesc)
-    formatText.setText("")
-    limit.addChild(formatText)
+  function createDirectLimitInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
+    limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
+    limit.FormatPct = 0
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
+    limit.FormatText = ""
     return limit
   }
 
-  function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.Limit {
-    var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-    var currentTermAmount = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-    var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSubCd = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-    var value = currentCovTerm.OptionValue.Value as double
-    if (value == null || value == "") value = 0.00
-    var formattedAmt = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-    amt.setText(formattedAmt)
-    currentTermAmount.addChild(amt)
-    limit.addChild(currentTermAmount)
-    coverageSubCd.setText(currentCovTerm.PatternCode)
-    limit.addChild(coverageSubCd)
-    // net change amount
-    var orignalValue = 0.00
-    if (previousCovTerm != null) {
-      orignalValue = previousCovTerm.OptionValue.Value
-    }
-    var changedValue = value - orignalValue
-    var formattedNetChange = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-    changeAmt.setText(changedValue)
-    netChangeAmount.addChild(changeAmt)
-    limit.addChild(netChangeAmount)
-    formatPct.setText(0)
-    limit.addChild(formatPct)
-    coverageCd.setText(coverage.PatternCode)
-    limit.addChild(coverageCd)
-    limitDesc.setText("")
-    limit.addChild(limitDesc)
-    formatText.setText("")
-    limit.addChild(formatText)
+  function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
+    limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
+    limit.FormatPct = 0
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
+    limit.FormatText = ""
     return limit
   }
-  function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.Deductible {
-    var deductible = new wsi.schema.una.hpx.hpx_application_request.Deductible()
-    var formatCurrencyAmt = new wsi.schema.una.hpx.hpx_application_request.FormatCurrencyAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var deductibleDesc = new wsi.schema.una.hpx.hpx_application_request.DeductibleDesc()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSubCd = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
+  function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+    var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
     var value = currentCovTerm.OptionValue.Value as double
-    if (value == null || value == "") value = 0.00
-    if (value == 0.00) {
-      formatPct.setText(0)
-      deductible.addChild(formatPct)
-      amt.setText(0.00)
-      formatCurrencyAmt.addChild(amt)
-      deductible.addChild(formatCurrencyAmt)
-    }
-    else if(value <= 1) {
-      var pct = new BigDecimal(value*100.00).setScale(2, BigDecimal.ROUND_HALF_UP)
-      formatPct.setText(pct.setScale(2).asString())
-      deductible.addChild(formatPct)
-      amt.setText(0.00)
-      formatCurrencyAmt.addChild(amt)
-      deductible.addChild(formatCurrencyAmt)
-    }
-    else {
-      var formattedAmt = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-      amt.setText(formattedAmt)
-      deductibleDesc.setText(currentCovTerm.PatternCode)
-      formatCurrencyAmt.addChild(amt)
-      deductible.addChild(formatCurrencyAmt)
-      formatPct.setText(0)
-      deductible.addChild(formatPct)
-    }
-    coverageSubCd.setText(currentCovTerm.PatternCode)
-    deductible.addChild(coverageSubCd)
-    coverageCd.setText(coverage.PatternCode)
-    deductible.addChild(coverageCd)
-    formatText.setText("")
-    deductible.addChild(formatText)
-   // scheduleType.setText("")
-   // deductible.addChild(scheduleType)
+    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    deductible.FormatCurrencyAmt.Amt = value
+    deductible.FormatPct = pctValue
+    //deductible.CoverageCd = coverage.PatternCode
+    //deductible.CoverageSubCd = currentCovTerm.PatternCode
+    deductible.DeductibleDesc = currentCovTerm.PatternCode
+    deductible.FormatText = ""
     return deductible
   }
-  function createDirectDeductibleInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm) : wsi.schema.una.hpx.hpx_application_request.Deductible {
-    var deductible = new wsi.schema.una.hpx.hpx_application_request.Deductible()
-    var formatCurrencyAmt = new wsi.schema.una.hpx.hpx_application_request.FormatCurrencyAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var deductibleDesc = new wsi.schema.una.hpx.hpx_application_request.DeductibleDesc()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSub = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
+  function createDirectDeductibleInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+    var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
     var value = currentCovTerm.Value as double
-    if (value == null || value == "") value = 0.00
-    if (value == 0.00) {
-      formatPct.setText(0)
-      deductible.addChild(formatPct)
-      amt.setText(0.00)
-      formatCurrencyAmt.addChild(amt)
-      deductible.addChild(formatCurrencyAmt)
-    }
-    else if(value <= 1) {
-      var pct = new BigDecimal(value*100.00).setScale(2, BigDecimal.ROUND_HALF_UP)
-      formatPct.setText(pct.setScale(2).asString())
-      deductible.addChild(formatPct)
-      amt.setText(0.00)
-      formatCurrencyAmt.addChild(amt)
-      deductible.addChild(formatCurrencyAmt)
-    }
-    else {
-      var formattedAmt = new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP)
-      amt.setText(formattedAmt)
-      deductibleDesc.setText(currentCovTerm.PatternCode)
-      formatCurrencyAmt.addChild(amt)
-      deductible.addChild(formatCurrencyAmt)
-      formatPct.setText(0.00)
-      deductible.addChild(formatPct)
-    }
-    coverageSub.setText(currentCovTerm.PatternCode)
-    deductible.addChild(coverageSub)
-    coverageCd.setText(coverage.PatternCode)
-    deductible.addChild(coverageCd)
-    formatText.setText("")
-    deductible.addChild(formatText)
-   // scheduleType.setText("")
-   // deductible.addChild(scheduleType)
+    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    deductible.FormatCurrencyAmt.Amt = value
+    deductible.FormatPct = pctValue
+    //deductible.CoverageCd = coverage.PatternCode
+    //deductible.CoverageSubCd = currentCovTerm.PatternCode
+    deductible.DeductibleDesc = currentCovTerm.PatternCode
+    deductible.FormatText = ""
     return deductible
   }
 
-  function createOtherOptionCovTerm(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm): wsi.schema.una.hpx.hpx_application_request.Limit {
-    var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSubCd = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-    var currentTermAmount = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-    var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    if (currentCovTerm?.OptionValue?.Value != null) {
-      formatText.setText(currentCovTerm.OptionValue.Value)
-    } else formatText.setText("")
-    limit.addChild(formatText)
-    amt.setText(0.00)
-    currentTermAmount.addChild(amt)
-    limit.addChild(currentTermAmount)
-    formatPct.setText(0)
-    limit.addChild(formatPct)
-    changeAmt.setText(0.00)
-    netChangeAmount.addChild(changeAmt)
-    limit.addChild(netChangeAmount)
-    coverageSubCd.setText(currentCovTerm.PatternCode)
-    limit.addChild(coverageSubCd)
-    coverageCd.setText(coverage.PatternCode)
-    limit.addChild(coverageCd)
-    limitDesc.setText("")
-    limit.addChild(limitDesc)
+  function createOtherOptionCovTerm(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.FormatText = currentCovTerm?.OptionValue?.Value != null ? currentCovTerm.OptionValue.Value : ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.NetChangeAmt.Amt = 0.00
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
     return limit
   }
 
-  function createOtherDirectCovTerm(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm): wsi.schema.una.hpx.hpx_application_request.Limit {
-    var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSubCd = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-    var currentTermAmount = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-    var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    if (currentCovTerm?.Value != null) {
-      formatText.setText(currentCovTerm.Value)
-    } else formatText.setText("")
-    limit.addChild(formatText)
-    amt.setText(0.00)
-    currentTermAmount.addChild(amt)
-    limit.addChild(currentTermAmount)
-    formatPct.setText(0)
-    limit.addChild(formatPct)
-    changeAmt.setText(0.00)
-    netChangeAmount.addChild(changeAmt)
-    limit.addChild(netChangeAmount)
-    coverageSubCd.setText(currentCovTerm.PatternCode)
-    limit.addChild(coverageSubCd)
-    coverageCd.setText(coverage.PatternCode)
-    limit.addChild(coverageCd)
-    limitDesc.setText("")
-    limit.addChild(limitDesc)
+  function createOtherDirectCovTerm(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.NetChangeAmt.Amt = 0.00
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
     return limit
   }
 
-  function createOtherGenericCovTerm(coverage : Coverage, currentCovTerm : GenericCovTerm, previousCovTerm : GenericCovTerm): wsi.schema.una.hpx.hpx_application_request.Limit {
-    var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var coverageSubCd = new wsi.schema.una.hpx.hpx_application_request.CoverageSubCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-    var currentTermAmount = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
-    var amt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-    var netChangeAmount = new wsi.schema.una.hpx.hpx_application_request.NetChangeAmt()
-    var formatPct = new wsi.schema.una.hpx.hpx_application_request.FormatPct()
-    var changeAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    if (currentCovTerm?.Value != null) {
-      formatText.setText(currentCovTerm.Value)
-    } else formatText.setText("")
-    limit.addChild(formatText)
-    amt.setText(0.00)
-    currentTermAmount.addChild(amt)
-    limit.addChild(currentTermAmount)
-    formatPct.setText(0)
-    limit.addChild(formatPct)
-    changeAmt.setText(0.00)
-    netChangeAmount.addChild(changeAmt)
-    limit.addChild(netChangeAmount)
-    coverageSubCd.setText(currentCovTerm.PatternCode)
-    limit.addChild(coverageSubCd)
-    coverageCd.setText(coverage.PatternCode)
-    limit.addChild(coverageCd)
-    limitDesc.setText("")
-    limit.addChild(limitDesc)
-    return limit
-  }
+  function createOtherGenericCovTerm(coverage : Coverage, currentCovTerm : GenericCovTerm, previousCovTerm : GenericCovTerm): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.NetChangeAmt.Amt = 0.00
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
+    return limit  }
 
-  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
+  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     var cost = transactions.first().Cost
-    // base rate
-    var baseRateAmt = new wsi.schema.una.hpx.hpx_application_request.BaseRateAmt()
-    var baseRateAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var baseRatePremium = cost.ActualBaseRate
-    if (baseRatePremium != null) {
-      baseRateAmtAmt.setText(baseRatePremium)
-    }
-    else {
-      baseRateAmtAmt.setText(-99999999.99)
-    }
-    baseRateAmt.addChild(baseRateAmtAmt)
-    cov.addChild(baseRateAmt)
-    // standard premium
-    var standardPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.CurrentTermAmt()
-    var standardPremiumAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var standardPremium = cost.StandardBaseRate
-    if(standardPremium != null) {
-      standardPremiumAmtAmt.setText(standardPremium)
-    } else {
-      standardPremiumAmtAmt.setText(-99999999.99)
-    }
-    standardPremiumAmt.addChild(standardPremiumAmtAmt)
-    cov.addChild(standardPremiumAmt)
-    // term premium
-    var termPremiumAmt = new wsi.schema.una.hpx.hpx_application_request.WrittenAmt()
-    var termPremiumAmtAmt = new wsi.schema.una.hpx.hpx_application_request.Amt()
-    var termPremium = cost.ActualTermAmount
-    if (termPremium != null) {
-      termPremiumAmtAmt.setText(termPremium)
-    } else {
-      termPremiumAmtAmt.setText(-99999999.99)
-    }
-    termPremiumAmt.addChild(termPremiumAmtAmt)
-    cov.addChild(termPremiumAmt)
-    // prorate factor
-    var prorateFactor = new wsi.schema.una.hpx.hpx_application_request.ProRateFactor()
-    if (cost != null) {
-      var proration = cost.Proration
-      prorateFactor.setText(proration)
-    } else {
-      prorateFactor.setText(-99999999.99)
-    }
-    cov.addChild(prorateFactor)
+    cov.BaseRateAmt.Amt = cost?.ActualBaseRate != null ? cost.ActualBaseRate : -99999999.99
+    cov.CurrentTermAmt.Amt = cost?.StandardBaseRate != null ? cost.StandardBaseRate : -99999999.99
+    cov.WrittenAmt.Amt = cost?.ActualTermAmount != null ? cost.ActualTermAmount : -99999999.99
+    cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : -99999999.99
     return cov
   }
 
-  function createEffectivePeriod(coverage : Coverage)  : wsi.schema.una.hpx.hpx_application_request.Coverage {
-    var cov = new wsi.schema.una.hpx.hpx_application_request.Coverage()
-    var effectiveDate = new wsi.schema.una.hpx.hpx_application_request.EffectiveDt()
+  function createEffectivePeriod(coverage : Coverage)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (coverage.EffectiveDate != null) {
-      effectiveDate.setText(coverage.EffectiveDate)
-      cov.addChild(effectiveDate)
+      cov.EffectiveDt.Day = coverage.EffectiveDate.DayOfMonth
+      cov.EffectiveDt.Month = coverage.EffectiveDate.MonthOfYear
+      cov.EffectiveDt.Year = coverage.EffectiveDate.YearOfDate
     }
-    var expiryDate = new wsi.schema.una.hpx.hpx_application_request.ExpirationDt()
     if (coverage.ExpirationDate != null) {
-      expiryDate.setText(coverage.ExpirationDate)
-      cov.addChild(expiryDate)
+      cov.ExpirationDt.Day = coverage.ExpirationDate.DayOfMonth
+      cov.ExpirationDt.Month = coverage.ExpirationDate.MonthOfYear
+      cov.ExpirationDt.Year = coverage.ExpirationDate.YearOfDate
     }
     return cov
   }
 
   abstract function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
-                      : java.util.List<wsi.schema.una.hpx.hpx_application_request.Limit>
+                      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
 
-  abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.Coverable
+  abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
 }

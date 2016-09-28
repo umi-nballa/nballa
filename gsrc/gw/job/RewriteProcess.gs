@@ -108,6 +108,8 @@ class RewriteProcess extends NewTermProcess {
   function rewrite() {
     canRewrite().assertOkay()
     startBinding()
+    //uim-svallabhapurapu : Policy History1 Story, create history event for rewrite
+    Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \ -> displaykey.Job.Rewrite.History.Issued.SuppressPrint)
   }
 
   /**

@@ -8,27 +8,11 @@ package una.integration.mapping.hpx.commercialpackage.commercialproperty
  */
 class HPXCPBuildingProtectionMapper {
 
-  function createBuildingProtection(bldg : CPBuilding) : wsi.schema.una.hpx.hpx_application_request.BldgProtection {
-    var bldgProtection = new wsi.schema.una.hpx.hpx_application_request.BldgProtection()
-
-    if (bldg.Building.BurglarySafeguard != null) {
-      var protectionDeviceBurglarInd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceBurglarInd()
-      protectionDeviceBurglarInd.setText(1)
-      bldgProtection.addChild(protectionDeviceBurglarInd)
-      var protectionDeviceBurglarCd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceBurglarCd()
-      protectionDeviceBurglarCd.setText(wsi.schema.una.hpx.hpx_application_request.enums.ProtectionDevice.CEN)
-      bldgProtection.addChild(protectionDeviceBurglarCd)
-
-    }
-
-    if (bldg.Building.SprinklerCoverage != null) {
-      var protectionDeviceSprinklerInd = new wsi.schema.una.hpx.hpx_application_request.ProtectionDeviceSprinklerInd()
-      if(bldg.Building.SprinklerCoverage.Code != "0") { // has sprinkler coverage... might need to add the percentage
-        protectionDeviceSprinklerInd.setText(1)
-      } else {
-        protectionDeviceSprinklerInd.setText(0)
-      }
-    }
+  function createBuildingProtection(bldg : CPBuilding) : wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType {
+    var bldgProtection = new wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType()
+    bldgProtection.ProtectionDeviceBurglarInd = bldg.Building.BurglarySafeguard != null ? true : false
+    bldgProtection.ProtectionDeviceBurglarCd = bldg.Building.BurglarySafeguard != null ? "CEN" : ""
+    bldgProtection.ProtectionDeviceSprinklerInd = bldg.Building.SprinklerCoverage != null ? true : false  // has sprinkler coverage... might need to add the percentage
     return bldgProtection
   }
 }

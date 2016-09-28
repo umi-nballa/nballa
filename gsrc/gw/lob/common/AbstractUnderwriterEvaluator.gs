@@ -36,6 +36,12 @@ abstract class AbstractUnderwriterEvaluator implements UnderwriterEvaluator {
       case (UWIssueCheckingSet.TC_REINSURANCE) :
         onReinsurance()
         break
+      case (UWIssueCheckingSet.TC_PREBIND) :
+        onPreBind()
+        break
+      case (UWIssueCheckingSet.TC_PREISSUANCE) :
+        onPreIssuance()
+        break
       default :
         onDefault()
         break
@@ -48,6 +54,8 @@ abstract class AbstractUnderwriterEvaluator implements UnderwriterEvaluator {
   protected function onReferral() {}
   protected function onReinsurance() {}
   protected function onRenewal() {}
+  protected function onPreBind(){}
+  protected function onPreIssuance(){}
 
   protected function producerChanged() {
     final var period = _policyEvalContext.Period

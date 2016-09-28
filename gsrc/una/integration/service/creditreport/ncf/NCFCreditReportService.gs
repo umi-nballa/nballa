@@ -1,22 +1,11 @@
 package una.integration.service.creditreport.ncf
 
-uses gw.api.util.Logger
-
 uses una.integration.mapping.creditreport.CreditReportResponse
 uses una.integration.plugins.creditreport.CreditReportDataManagerFactory
 uses una.integration.plugins.creditreport.ICreditReportDataManager
 uses una.integration.service.creditreport.ICreditReportService
 uses una.integration.mapping.creditreport.CreditReportRequest
 uses una.integration.framework.util.AddressParser
-
-
-uses java.lang.Exception
-
-uses typekey.State
-uses typekey.CreditReportDMExt
-uses typekey.CreditStatusExt
-
-
 uses wsi.schema.una.inscore.cprulesresultschema.NationalCreditFile
 uses wsi.schema.una.inscore.cprulesresultschema.Result
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.anonymous.elements.AlertsScoring_Scoring_Score
@@ -28,6 +17,7 @@ uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.SearchDataset_Subje
 uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.VendorDataset_Addresses_Address_DataSourceIndicator
 uses una.logging.UnaLoggerCategory
+uses java.lang.Exception
 
 /**
  * Returns hardwired response 

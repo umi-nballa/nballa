@@ -493,4 +493,71 @@ class HODwellingUtil_HOE {
     dwelling.WHurricaneHailExclusion_Ext = false
   }
 
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Opening protection value range based on state
+ *  HO Line of business
+  */
+
+  static function getOpeningProtectionRange(dwelling : Dwelling_HOE) :  List<typekey.OpeningProtection_Ext> {
+   if(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code) {
+      return typekey.OpeningProtection_Ext.TF_FLONLY.TypeKeys
+  } else if (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code) {
+      return typekey.OpeningProtection_Ext.TF_SCONLY.TypeKeys
+  }
+  return typekey.OpeningProtection_Ext.TF_ALLOTHERSTATES.TypeKeys
+  }
+
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Panel manufacturing value range based on YOC
+ *  HO Line of business
+  */
+
+  static function getPanelManufacturingRange(dwelling : Dwelling_HOE) : List<typekey.PanelManufacturer_Ext>{
+    var yearBuilt : int = 1990
+    if(dwelling.YearBuilt >= yearBuilt ) {
+      return typekey.PanelManufacturer_Ext.TF_YEARGROUP1.TypeKeys
+    }
+    return typekey.PanelManufacturer_Ext.TF_ALLOTHERYEARS.TypeKeys
+  }
+
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Plumbing value range based on YOC
+ *  HO Line of business
+  */
+
+  static function getPlumbingRange(dwelling : Dwelling_HOE) : List<typekey.PlumbingType_HOE> {
+     var yearBuilt_1975 : int = 1975
+     var yearBuilt_1990 : int = 1990
+     var yearBuilt_1995 : int = 1995
+
+    if(dwelling.YearBuilt >= yearBuilt_1975 and dwelling.YearBuilt < yearBuilt_1990) {
+       return typekey.PlumbingType_HOE.TF_YEARGRP1_EXT.TypeKeys
+    } else if (dwelling.YearBuilt >= yearBuilt_1990 and dwelling.YearBuilt < yearBuilt_1995 ) {
+        return typekey.PlumbingType_HOE.TF_YEARGRP2_EXT.TypeKeys
+      } else if(dwelling.YearBuilt >= yearBuilt_1995) {
+         return typekey.PlumbingType_HOE.TF_YEARGRP3_EXT.TypeKeys
+        }
+      return typekey.PlumbingType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
+  }
+
+  /*
+ *  Author: uim-svallabhapurapu
+ *  Change Log: Wiring value range based on YOC
+ *  HO Line of business
+  */
+  static function getWiringRange(dwelling : Dwelling_HOE) : List<typekey.WiringType_HOE> {
+    var yearBuilt_1960 : int = 1960
+    var yearBuilt_1980 : int = 1980
+
+   if(dwelling.YearBuilt >= yearBuilt_1960 and dwelling.YearBuilt < yearBuilt_1980) {
+          return  typekey.WiringType_HOE.TF_YEARGRP1_EXT.TypeKeys
+   } else if(dwelling.YearBuilt >=  yearBuilt_1980) {
+          return typekey.WiringType_HOE.TF_YEARGRP2_EXT.TypeKeys
+     }
+   return typekey.WiringType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
+ }
+
 }// End of class

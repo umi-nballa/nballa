@@ -596,5 +596,16 @@ enhancement ContactEnhancement : entity.Contact {
     }
     return name
   }
+  // uim-svallabhapurapu, Contact story card hide field for AI and Ainterest roles
+  property get isDobRequired() : boolean {
+    if(this typeis Person) {
+      for(ac in this.AccountContacts.where( \ elt -> elt.hasRole(typekey.AccountContactRole.TC_ADDITIONALINTEREST) or elt.hasRole(typekey.AccountContactRole.TC_ADDITIONALINSURED))){
+        if(ac.Contact == this){
+           return false
+        }
+      }
+    }
+      return true
+  }
 
 }

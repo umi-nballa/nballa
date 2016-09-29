@@ -7,6 +7,7 @@ uses una.logging.UnaLoggerCategory
 uses una.integration.service.gateway.tuna.TunaInterface
 uses una.integration.service.gateway.hpx.HPXInterface
 uses una.integration.service.gateway.clue.CluePropertyInterface
+uses una.integration.service.gateway.ofac.OFACInterface
 
 /**
  * User: pyerrumsetty
@@ -70,6 +71,13 @@ class GatewayPlugin {
   static function makeCLUEGateway():CluePropertyInterface{
     var instance = makeGateway("CLUE")
     return instance as CluePropertyInterface
+  }
+  /**
+   * Operation to return implementation of the TunaInterface to the caller
+   */
+  static function makeOfacGateway():OFACInterface{
+    var instance = makeGateway("OFAC")
+    return instance as OFACInterface
   }
   static private function makeGateway(pluginName:String):Object{
 

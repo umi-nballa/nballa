@@ -654,7 +654,22 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
     // Get a set of available companies (independent of segment)
     var availableUWCompanies = this.getUWCompaniesForStates(true)
 
-    // If the current UWCompany is non-null and is still available, do nothing
+    /* fix for setting UWCompany on policyperiod */
+    if(this.PrimaryLocation.State==typekey.State.TC_FL)
+    {
+      availableUWCompanies.removeWhere( \ elt -> elt.Code!=typekey.UWCompanyCode.TC_02)
+      this.UWCompany = availableUWCompanies.firstWhere( \ elt -> elt.Code==typekey.UWCompanyCode.TC_02)
+
+    }
+    else
+    {
+      availableUWCompanies.removeWhere( \ elt -> elt.Code!=typekey.UWCompanyCode.TC_01)
+      this.UWCompany = availableUWCompanies.firstWhere( \ elt -> elt.Code==typekey.UWCompanyCode.TC_01)
+
+    }
+
+
+   /* // If the current UWCompany is non-null and is still available, do nothing
     if (this.UWCompany != null and availableUWCompanies.contains(this.UWCompany)) {
       return
     }
@@ -674,13 +689,17 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
       makeLicensedStateQuery(possibleBest),
       DBFunction.Min(LicensedState, "PriceFactor"))
     var bestCompanyId = qry.select().first().UWCompany.ID
-
+       */
     /* Even though we have available companies, we may not
      * have one that matches for price for the _segment_!
-     */
+
     this.UWCompany = ( bestCompanyId != null )
       ? availableUWCompanies.singleWhere(\ uwc -> uwc.ID == bestCompanyId)
       : null
+
+       */
+
+
   }
 
   private function makeLicensedStateQuery(uwCompanies : UWCompany[]) : Query<LicensedState> {

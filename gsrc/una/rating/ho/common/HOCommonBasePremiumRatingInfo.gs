@@ -2,6 +2,7 @@ package una.rating.ho.common
 
 uses java.math.BigDecimal
 uses java.util.Date
+uses una.rating.util.HOConstructionTypeMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,6 +19,9 @@ class HOCommonBasePremiumRatingInfo {
   var _creditScore: int as CreditScore = 0
   var _priorLosses: int as PriorLosses = 0
   var _noHitOrScoreIndicator: Boolean as NoHitOrScoreIndicator = false
+  var _protectionClassCode : String as ProtectionClassCode
+  var _constructionType : String as ConstructionType
+
 
   construct(dwelling: Dwelling_HOE) {
     _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
@@ -54,6 +58,11 @@ class HOCommonBasePremiumRatingInfo {
     if (policyPeriod?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_HIT or
         policyPeriod?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_SCORE){
       _noHitOrScoreIndicator = true
+    }
+    _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
+    _constructionType = ConstructionType_HOE.TC_FRAME_EXT.Description
+    if(dwelling.HOLine.BaseState == typekey.Jurisdiction.TC_NV){
+      _constructionType= HOConstructionTypeMapper.constructionTypeMapperNV(dwelling.ConstructionType).Description
     }
   }
 

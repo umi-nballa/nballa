@@ -68,7 +68,7 @@ class CovTermPOCHOEInputSet {
         }
       }else{
         if((max != null and min != null) and covTerm.Value < min or covTerm.Value > max){
-          result = displaykey.una.productmodel.validation.LimitValidationMessage(new Double(covTerm.Value as double).asMoney(), covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
+          result = displaykey.una.productmodel.validation.LimitValidationMessage(covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
         }else if(min != null and covTerm.Value < min){
           result = "Value must be no less than ${new Double(min as double).asMoney()}"
         }else if(max != null and covTerm.Value > max){

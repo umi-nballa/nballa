@@ -126,7 +126,7 @@ enhancement CancellationEnhancement : Cancellation {
     if (canCancelFromPeriodStart(inForcePeriod, refundCalcMethod)) {
       return inForcePeriod.PeriodStart
     }
-    var initialDate = (this.CancelLetterMailDate == null) ? this.CancelLetterMailDate : DateTime.CurrentDate.addDays(1).orNextBusinessDay(inForcePeriod.ProducerCodeOfRecord.Address)
+    var initialDate = (this.CancelLetterMailDate != null) ? this.CancelLetterMailDate : DateTime.CurrentDate.addDays(1).orNextBusinessDay(inForcePeriod.ProducerCodeOfRecord.Address)
     var initialProcessingDate = this.InitialNotificationDate != null ? this.InitialNotificationDate : initialDate
     var leadTimeCalculator = new CancellationLeadTimeCalculator(this.CancelReasonCode,
       inForcePeriod.AllPolicyLinePatternsAndJurisdictions,

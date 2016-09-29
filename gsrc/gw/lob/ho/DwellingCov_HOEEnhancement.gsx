@@ -233,5 +233,59 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
   }
 
+  static function setAnimalLiabDefault_Ext(dwelling:Dwelling_HOE){
+    if(dwelling.Branch.BaseState == TC_TX){
+      dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("25000")
+    }
+    else{
+      dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("50000")
+    }
+
+  }
+
+
+  static function validateScheduleType_Ext(dwelling:Dwelling_HOE):boolean{
+    var expValue1:int = 2500
+    var expValue2:int = 5000
+    var expValue3:int = 10000
+    var expValue4:int = 25000
+   for(schType in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems) {
+
+   if(dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC){
+     if((schType.ScheduleType == typekey.ScheduleType_HOE.TC_COLLECTIBLES_EXT and schType.ExposureValue > expValue1)or
+        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_GOLFEQUIPNOGOLFCARTS_EXT and schType.ExposureValue > expValue1) or
+        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_GUNSSCHEDULED and schType.ExposureValue > expValue1)or
+        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_POSTAGESTAMPS and schType.ExposureValue > expValue1) or
+        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_RARECURRENTCOINS and schType.ExposureValue > expValue1)or
+        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_SILVERWAREEXCLUDEPENPENSILS_EXT and schType.ExposureValue > expValue1)){
+        return true
+     }
+     else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_FURSGARMENTSSCHEDULED_EXT and schType.ExposureValue > expValue2){
+        return true
+     }
+     else if ((schType.ScheduleType == typekey.ScheduleType_HOE.TC_FINEARTS and schType.ExposureValue > expValue3) or
+              (schType.ScheduleType == typekey.ScheduleType_HOE.TC_MUSICALINSTRUMETSPERSONAL_EXT and schType.ExposureValue > expValue3) ){
+         return true
+       }
+       else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_JEWELRY and schType.ExposureValue > expValue4){
+           return true
+         }
+     }
+     else if((dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERASPM_EXT and schType.ExposureValue > expValue2)){
+       return true
+     }
+   else if((dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_SC) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERAPEPERSONAL_EXT and schType.ExposureValue > expValue2)){
+       return true
+     }
+    }
+    return false
+    }
+
+  /*static function calculateTotalExpValue_Ext():BigDecimal{
+
+  }*/
+
+
+
 }
 

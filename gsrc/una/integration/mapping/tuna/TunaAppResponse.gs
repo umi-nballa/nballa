@@ -2,6 +2,7 @@ package una.integration.mapping.tuna
 
 uses java.lang.Double
 uses java.lang.Integer
+uses una.model.PropertyDataModel
 
 /**
  * Created for Response mapping for TUNA.
@@ -30,7 +31,7 @@ class TunaAppResponse {
 
   /*Property Information complete*/
   var _counties: List                       as Counties
-  var _datums :List                         as Datums
+  var _datums :List<PropertyDataModel>      as Datums
   var _propertyLine:String                  as Line
   var _territoryDetails : List              as TerritoryDetails
 

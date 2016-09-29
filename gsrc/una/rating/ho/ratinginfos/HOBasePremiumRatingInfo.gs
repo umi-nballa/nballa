@@ -28,13 +28,12 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _replacementCostDwellingCoverage : String as ReplacementCostDwellingCoverage
   var _windOrHailExclusion : boolean as WindOrHailExclusion
   var _isAdditionalPerilCoverageExist : boolean as IsAdditionalPerilCoverageExist
-  var _constructionType : RateTableConstructionType_Ext as ConstructionType
 
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
     var policyPeriod = dwelling?.PolicyPeriod
     //temp fix to get the base premium for now
-    _constructionType = HOConstructionTypeMapper.constructionTypeMapperTX(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext)
+    this.ConstructionType = HOConstructionTypeMapper.constructionTypeMapperTX(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext)
     _otherStructuresLimit = ((dwelling?.HODW_Other_Structures_HOEExists)? dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
     if(dwelling?.HODW_Personal_Property_HOEExists){
       _personalPropertyLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value

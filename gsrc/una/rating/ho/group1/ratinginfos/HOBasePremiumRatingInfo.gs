@@ -12,17 +12,11 @@ uses una.rating.util.HOConstructionTypeMapper
 class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
 
 
-  var _protectionClassCode : String as ProtectionClassCode
-  var _constructionType : String as ConstructionType
 
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
-    _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
-    _constructionType = dwelling?.ConstructionType.DisplayName
+
     //temp fix to get the base premium for now
-    _constructionType = ConstructionType_HOE.TC_FRAME_EXT.Description
-    if(dwelling.HOLine.BaseState == typekey.Jurisdiction.TC_NV){
-      _constructionType = HOConstructionTypeMapper.constructionTypeMapperNV(dwelling.ConstructionType).Description
-    }
+
   }
 }

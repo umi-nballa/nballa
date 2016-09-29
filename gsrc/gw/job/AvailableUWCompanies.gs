@@ -15,18 +15,17 @@ class AvailableUWCompanies {
     if (hasPeriodStartChanged() or hasAllCoveredStatesChanged()) {
       _periodStart = _period.PeriodStart
       _allCoveredStates = _period.AllCoveredStates
-      _uwCompanies = _period.getUWCompaniesForStates(true).toTypedArray().where( \ elt -> elt.Retired==false)
+      _uwCompanies = _period.getUWCompaniesForStates(true).toTypedArray().where( \ elt -> elt.Code==typekey.UWCompanyCode.TC_02 || elt.Code==typekey.UWCompanyCode.TC_01)
     }
 
-    print("########## primary state " + _period.PrimaryLocation + "::::" + _period.UWCompanyCode)
-
     if(_period.PrimaryLocation.State==typekey.State.TC_FL)
+    {
       _uwCompanies = _uwCompanies.where( \ elt -> elt.Code==typekey.UWCompanyCode.TC_02)
+    }
     else
+    {
       _uwCompanies= _uwCompanies.where( \ elt -> elt.Code==typekey.UWCompanyCode.TC_01)
-
-      print("########### selected uwcompanies " + _uwCompanies)
-
+    }
     return _uwCompanies
   }
 

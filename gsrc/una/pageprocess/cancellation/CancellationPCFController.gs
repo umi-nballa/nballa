@@ -62,23 +62,22 @@ class CancellationPCFController {
   property get CumulativeReasonDetailsDescription() : String{
     var result = new StringBuilder()
 
-    if(!isReasonDescriptionEditable()){
-      if(this._cancellation.CancelReasonCode != null){
-        result.append(this._cancellation.CancelReasonCode)
-            .append(System.lineSeparator())
-      }
-
-      this._cancellation.CancelReasonDetails?.each( \ elt -> {
-        if(elt.Description != null){
-          result.append(elt.Description)
-              .append(System.lineSeparator())
-        }
-      })
-
-      this._cancellation.CancellationDescription = result.toString()
+    if(this._cancellation.CancelReasonCode != null){
+      result.append(this._cancellation.CancelReasonCode)
     }
 
-    return this._cancellation.CancellationDescription
+    if(!isReasonDescriptionEditable()){
+      this._cancellation.CancelReasonDetails?.each( \ elt -> {
+        if(elt.Description != null){
+          result.append(System.lineSeparator())
+                .append(elt.Description)
+        }
+      })
+    }
+
+    CumulativeReasonDetailsDescription = result.toString()
+
+    return _cancellation.CancellationDescription
   }
 
   property set CumulativeReasonDetailsDescription(value : String){
@@ -92,7 +91,8 @@ class CancellationPCFController {
   /**PCF Functions**/
 
   public function areCancelReasonDetailsVisible() : boolean{
-    return _cancellation.CancelReasonCode != null
+    return _cancellation.Source == TC_CARRIER
+       and _cancellation.CancelReasonCode != null
        and typekey.CancelReasonDetailType.getTypeKeys(false).where( \ elt -> elt.hasCategory(_cancellation.CancelReasonCode)).HasElements
        and _policyPeriod.HomeownersLine_HOEExists
   }

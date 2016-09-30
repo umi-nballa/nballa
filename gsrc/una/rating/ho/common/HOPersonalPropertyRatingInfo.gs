@@ -1,6 +1,10 @@
-package una.rating.ho.tx.ratinginfos
+package una.rating.ho.common
 
 uses java.math.BigDecimal
+
+
+
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy

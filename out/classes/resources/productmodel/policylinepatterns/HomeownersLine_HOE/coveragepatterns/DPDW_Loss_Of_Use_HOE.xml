@@ -14,8 +14,12 @@
   referenceDateByType="ApplicableObject">
   <AvailabilityScript><![CDATA[var result = true
 var state =Dwelling_HOE.Branch.BaseState
-if((state == TC_CA or state == TC_HI) and (Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT))
-return result]]></AvailabilityScript>
+if((state == TC_CA or state == TC_HI) and (Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT)){
+return result
+}
+else if (state == TC_TX or state == TC_NC){
+return result
+}]]></AvailabilityScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"

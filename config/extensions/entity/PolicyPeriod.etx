@@ -96,8 +96,8 @@
     name="CreditInfoExt"
     nullok="true"/>
   <column
-    desc="True when a consent to rate form is required and has  been received"
-    name="ConsentToRateReceived_Ext"
+    desc="Consent to rate"
+    name="ConsenttoRate_Ext"
     nullok="true"
     type="bit"/>
   <column
@@ -119,9 +119,84 @@
       value="5"/>
   </column>
   <column
+    desc="Original Inception Date"
+    name="originalInceptionDate_Ext"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Prior Legacy Policy Number"
+    name="legacyPolicynum_Ext"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="UNA Wind Mit Reinspection Date"
+    name="unaWindMitReinspDate_Ext"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Wind Mit Form Completion Date"
+    name="unaWindFormCompDate_Ext"
+    nullok="true"
+    type="datetime"/>
+  <typekey
+    desc="Source System"
+    name="sourceSystem_Ext"
+    nullok="true"
+    typelist="SourceSystem_Ext"/>
+  <typekey
+    desc="Preferred Builder"
+    name="preferredBuilder_Ext"
+    nullok="true"
+    typelist="QualifiesAffinityDisc_Ext"/>
+  <typekey
+    desc="Employer Group"
+    name="employerGroup_Ext"
+    nullok="true"
+    typelist="EmployerGrp_Ext"/>
+  <column
     default="false"
     desc="Bill Immediately"
     name="BillImmediately_Ext"
     nullok="true"
     type="bit"/>
+  <column
+    desc="Preferred Financial Institution"
+    name="PreferredFinInst_Ext"
+    nullok="true"
+    type="mediumtext"/>
+  <typekey
+    desc="Qualifies for Affinity Discount"
+    name="QualifiesAffinityDisc_Ext"
+    nullok="true"
+    typelist="QualifiesAffinityDisc_Ext"/>
+  <column
+    desc="Bankruptcy"
+    name="bankruptcy_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Reason for Change"
+    name="ReasonforChange_Ext"
+    nullok="true"
+    typelist="ReasonforChange_Ext"/>
+  <typekey
+    desc="Reason 1"
+    name="Reason1_Ext"
+    nullok="true"
+    typelist="Reason1_Ext"/>
+  <typekey
+    desc="Reason 2"
+    name="Reason2_Ext"
+    nullok="true"
+    typelist="Reason2_Ext"/>
+  <typekey
+    desc="Reason 3"
+    name="Reason3_Ext"
+    nullok="true"
+    typelist="Reason3_Ext"/>
+  <column
+    desc="Reascon for change free form text"
+    name="ReasonFreeForm_Ext"
+    nullok="true"
+    type="mediumtext"/>	
 </extension>

@@ -59,7 +59,8 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
 
       if(_baseState == typekey.Jurisdiction.TC_TX || _baseState == typekey.Jurisdiction.TC_AZ || _baseState == typekey.Jurisdiction.TC_CA
-         || _baseState == typekey.Jurisdiction.TC_NV || _baseState == typekey.Jurisdiction.TC_SC || _baseState == typekey.Jurisdiction.TC_NC){
+         || _baseState == typekey.Jurisdiction.TC_NV || _baseState == typekey.Jurisdiction.TC_SC || _baseState == typekey.Jurisdiction.TC_NC ||
+          _baseState == typekey.Jurisdiction.TC_FL){
         //rate base premium
         rateHOBasePremium(lineVersion.Dwelling, RateCache, sliceRange)
 
@@ -232,9 +233,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   *  Function which determines whether policy fee is applicable or not.
    */
   private function isPolicyFeeApplicable(line : HomeownersLine_HOE) : boolean {
-    if(_baseState == typekey.Jurisdiction.TC_AZ) {
+    if(_baseState == typekey.Jurisdiction.TC_AZ and  _baseState == typekey.Jurisdiction.TC_SC) {
       return false
-    } else if(_baseState == typekey.Jurisdiction.TC_TX or _baseState == typekey.Jurisdiction.TC_CA){
+    } else if(_baseState == typekey.Jurisdiction.TC_TX or _baseState == typekey.Jurisdiction.TC_CA or  _baseState == typekey.Jurisdiction.TC_FL){
       if(line.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE and line.Branch.Job.Subtype != typekey.Job.TC_CANCELLATION)
         return true
     } else if(_baseState == typekey.Jurisdiction.TC_NV){

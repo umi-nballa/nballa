@@ -567,7 +567,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
-    _logger.debug("Animal Liability Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Limited Fungi, Wet or Dry Rot or Bacteria Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -661,7 +661,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   *  Returns the parameter set for the line level coverages
+   *  Returns the parameter set for the Dwelling coverages
    */
   private function getDwellingCovParameterSet(line : PolicyLine, dwellingRatingInfo : HOGroup1DwellingRatingInfo, stateCode : String) : Map<CalcRoutineParamName, Object>{
     return {

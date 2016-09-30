@@ -20,7 +20,7 @@ class HOCommonBasePremiumRatingInfo {
   var _priorLosses: int as PriorLosses = 0
   var _noHitOrScoreIndicator: Boolean as NoHitOrScoreIndicator = false
   var _protectionClassCode : String as ProtectionClassCode
-  var _constructionType : String as ConstructionType
+  var _constructionType : RateTableConstructionType_Ext as ConstructionType
 
 
   construct(dwelling: Dwelling_HOE) {
@@ -60,10 +60,8 @@ class HOCommonBasePremiumRatingInfo {
       _noHitOrScoreIndicator = true
     }
     _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
-    _constructionType = ConstructionType_HOE.TC_FRAME_EXT.Description
-    if(dwelling.HOLine.BaseState == typekey.Jurisdiction.TC_NV){
-      _constructionType= HOConstructionTypeMapper.constructionTypeMapperNV(dwelling.ConstructionType).Description
-    }
+
+    _constructionType= HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
   }
 
   private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {

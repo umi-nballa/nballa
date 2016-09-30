@@ -35,7 +35,7 @@ public final class HORateRoutineNames {
   public static final var ANIMAL_LIABILITY_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovRateRoutine"
   public static final var IDENTITY_THEFT_EXPENSE_COV_ROUTINE_NAME : String = "UNAHOIdentityTheftExpenseCovRateRoutine"
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovRateRoutine"
-  public static final var PERSONAL_PROPERTY_INCREASED_LIMIT_COV_TX_ROUTINE_NAME : String = "UNAHOPersonalPropertyIncreasedLimitTXRateRoutine"
+  public static final var PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME : String = "UNAHOPersonalPropertyIncreasedLimitRateRoutine"
   public static final var UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME : String = "UNAHOUnitOwnersRentedToOthersCovRateRoutine"
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeRateRoutine"
   public static final var AGE_OF_HOME_DISCOUNT_RATE_ROUTINE : String = "UNAHOAgeOfHomeDiscountRateRoutine"
@@ -77,4 +77,9 @@ public final class HORateRoutineNames {
   public static final var GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOGatedCommunityDiscountGroup1RateRoutine"
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
   public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
+
+  //group3 routines
+  public static final var ANIMAL_LIABILITY_GROUP3_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup3RateRoutine"
+  public static final var PERSONAL_INJURY_COVERAGE_GROUP3_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup3RateRoutine"
+  public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_GROUP3_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsGroup3RateRoutine"
 }

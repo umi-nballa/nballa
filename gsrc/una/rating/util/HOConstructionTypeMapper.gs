@@ -7,7 +7,20 @@ package una.rating.util
  */
 class HOConstructionTypeMapper {
 
-  static function constructionTypeMapperTX(constructionType : ConstructionType_HOE, exteriorWallFinish : ExteriorWallFinish_Ext) : RateTableConstructionType_Ext{
+  static function setConstructionType(constructionType : ConstructionType_HOE, exteriorWallFinish : ExteriorWallFinish_Ext, state : Jurisdiction) : RateTableConstructionType_Ext{
+    switch(state){
+      case TC_TX:
+        return setConstructionTypeForTX(constructionType, exteriorWallFinish)
+      case TC_AZ:
+      case TC_CA:
+      case TC_NV:
+        return setConstructionTypeForGroup1(constructionType)
+    }
+    //we dafault to frame now
+    return RateTableConstructionType_Ext.TC_FRAME
+  }
+
+  static function setConstructionTypeForTX(constructionType : ConstructionType_HOE, exteriorWallFinish : ExteriorWallFinish_Ext) : RateTableConstructionType_Ext{
     if(constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
@@ -22,7 +35,7 @@ class HOConstructionTypeMapper {
     }
   }
 
-  static function constructionTypeMapperNV(constructionType : ConstructionType_HOE) : RateTableConstructionType_Ext{
+  static function setConstructionTypeForGroup1(constructionType : ConstructionType_HOE) : RateTableConstructionType_Ext{
     if(constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){

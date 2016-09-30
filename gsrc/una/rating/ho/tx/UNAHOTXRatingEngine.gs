@@ -14,8 +14,8 @@ uses una.rating.ho.HODwellingRatingInfo
 uses una.rating.ho.tx.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses gw.api.domain.covterm.CovTerm
 uses java.math.BigDecimal
-uses una.rating.ho.tx.ratinginfos.HOOtherStructuresRatingInfo
-uses una.rating.ho.tx.ratinginfos.HOPersonalPropertyRatingInfo
+uses una.rating.ho.common.HOOtherStructuresRatingInfo
+uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 
 /**
@@ -414,7 +414,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var personalPropertyRatingInfo = new HOPersonalPropertyRatingInfo(limitDifference)
     if (personalPropertyRatingInfo.IsPersonalPropertyIncreasedLimit){
       var rateRoutineParameterMap = getPersonalPropertyCovParameterSet(PolicyLine, personalPropertyRatingInfo)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_TX_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null){
         addCost(costData)
       }

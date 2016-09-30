@@ -33,7 +33,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     super(dwelling)
     var policyPeriod = dwelling?.PolicyPeriod
     //temp fix to get the base premium for now
-    this.ConstructionType = HOConstructionTypeMapper.constructionTypeMapperTX(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext)
+    this.ConstructionType = HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
     _otherStructuresLimit = ((dwelling?.HODW_Other_Structures_HOEExists)? dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
     if(dwelling?.HODW_Personal_Property_HOEExists){
       _personalPropertyLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value

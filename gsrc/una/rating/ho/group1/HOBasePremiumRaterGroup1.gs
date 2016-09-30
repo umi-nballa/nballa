@@ -4,11 +4,11 @@ uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.common.util.DateRange
 uses java.util.Map
 uses gw.rating.CostData
-uses una.rating.ho.group1.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
 uses una.rating.ho.common.HORateRoutineExecutor
 uses una.rating.ho.group1.ratinginfos.HORatingInfo
 uses una.rating.ho.common.HORateRoutineNames
+uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,7 +55,7 @@ class HOBasePremiumRaterGroup1 {
     var costs: List<CostData> = {}
     if (!routinesToExecute.Empty) {
       for (routine in routinesToExecute) {
-        var basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
+        var basePremiumRatingInfo = new HOCommonBasePremiumRatingInfo(_dwelling)
         var costData = new HomeownersBaseCostData_HOE(dateRange.start, dateRange.end, _line.Branch.PreferredCoverageCurrency, _rateCache, _routinesToCostTypeMapping.get(routine))
         costData.init(_line)
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
@@ -86,7 +86,7 @@ class HOBasePremiumRaterGroup1 {
   /**
    * Created parameter set to execute the base premium routines
    */
-  private function createParameterSet(costData: CostData, basePremiumRatingInfo: HOBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
+  private function createParameterSet(costData: CostData, basePremiumRatingInfo: HOCommonBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> _line,
         TC_RATINGINFO -> _hoRatingInfo,

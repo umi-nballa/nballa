@@ -88,7 +88,7 @@
  */
 function scheduleTypeRange() :List<gw.entity.TypeKey>{
  
-  var scheduleTypeValue  = ScheduleType_HOE.Type.getTypeKeysByCategory(dwelling.PolicyPeriod.BaseState)
+  var scheduleTypeValue  = ScheduleType_HOE.Type.getTypeKeysByCategory(dwelling.PolicyPeriod.BaseState).where( \ elt ->! elt.Retired)
   return scheduleTypeValue
   }]]></Code>
   </InputSet>

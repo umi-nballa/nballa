@@ -220,12 +220,44 @@ class CovTermPOCHOEInputSet {
   }
 
    public static function minValueDamageProperty(dwelling: Dwelling_HOE):boolean{
-     var minValue:BigDecimal
-     minValue = 2500
+     var minValue:BigDecimal = 2500
+
      if(dwelling.HODW_DamagetoPropertyofOthers_HOE_ExtExists and dwelling.HODW_DamagetoPropertyofOthers_HOE_Ext.HODW_DamagePropertyLimit_HOETerm.Value < minValue){
        return true
       }
      return false
     }
 
+   public static function maxValuePermitIncidLimit(dwelling:Dwelling_HOE):boolean{
+    var percentValue:BigDecimal = 0.5
+
+    if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm!=null){
+       var maxValue:BigDecimal
+       maxValue = dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.multiply(percentValue)
+      if(dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm.Value > maxValue){
+        return true
+      }
+    }
+    return false
+  }
+
+  public static function validateRequiredPIField(dwelling:Dwelling_HOE):String{
+
+     if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
+        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value == null and
+        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null) {
+         return displaykey.Web.Policy.HomeownersLine.Validation.RequiredTerm_Ext
+      }
+    return null
+  }
+
+  public static function validateDescOtherSRP(dwelling:Dwelling_HOE):String{
+
+    if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
+         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value != null and
+         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_DescriptionOtherSRP_HOETerm.Value == null){
+          return displaykey.Web.Policy.HomeownersLine.Validation.SelectBoolean_Ext
+      }
+    return null
+    }
 }

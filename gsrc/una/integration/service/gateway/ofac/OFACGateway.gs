@@ -166,7 +166,7 @@ class OFACGateway implements OFACInterface {
   {
     CLIENT_ID = PropertiesHolder.getProperty("CLIENT_ID")
     USER_ID = PropertiesHolder.getProperty("USER_ID")
-    PASSWORD = PropertiesHolder.getProperty("PASSWORD")
+    PASSWORD = PropertiesHolder.getProperty("OFAC_PASSWORD")
     GLB = PropertiesHolder.getProperty("GLB").toInt()
     //  DPPA = PropertiesHolder.getProperty("DPPA")
     PREDEFINED_SEARCH_NAME = PropertiesHolder.getProperty("PREDEFINED_SEARCH_NAME")

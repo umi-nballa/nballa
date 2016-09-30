@@ -73,7 +73,7 @@ class GatewayPlugin {
     return instance as CluePropertyInterface
   }
   /**
-   * Operation to return implementation of the TunaInterface to the caller
+   * Operation to return implementation of the OFACInterface to the caller
    */
   static function makeOfacGateway():OFACInterface{
     var instance = makeGateway("OFAC")

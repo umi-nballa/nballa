@@ -38,31 +38,6 @@
       type="Policy"/>
     <ReferencedWidget
       widget="UWCompanyInputSet"/>
-    <TypeKeyInput
-      editable="policyPeriod.Job typeis Issuance"
-      id="sourceSystem"
-      label="&quot;Source System&quot;"
-      required="true"
-      value="policyPeriod.sourceSystem_Ext"/>
-    <DateInput
-      editable="true"
-      id="UNAWindForm"
-      label="&quot;Wind Mit Form Completion Date&quot;"
-      value="policyPeriod.unaWindFormCompDate_Ext"/>
-    <DateInput
-      editable="true"
-      id="UNAWindMit"
-      label="&quot;UNA Wind Mit Reinspection Date&quot;"
-      value="policyPeriod.unaWindMitReinspDate_Ext"/>
-    <Input
-      editable="true"
-      id="legacyPolNum"
-      label="&quot;Prior Legacy Policy Number&quot;"
-      value="policyPeriod.legacyPolicynum_Ext"/>
-    <DateInput
-      id="Insdate"
-      label="&quot;Original Inception Date&quot;"
-      value="policyPeriod.originalInceptionDate_Ext"/>
     <Label
       label="displaykey.Web.SubmissionWizard.PolicyInfo.PolicyPeriod"/>
     <!-- Changing the term type updates the expiration date -->
@@ -87,7 +62,7 @@
       visible="policyPeriod.HomeownersLine_HOEExists"/>
     <!-- Changing the effective date updates the expiration date when the term type is not "short" -->
     <DateInput
-      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates and (policyPeriod.Job typeis Issuance)"
+      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates"
       id="EffectiveDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.EffectiveDate"
       required="true"
@@ -156,8 +131,7 @@
       visible="dividedSourcePolicy != null and showSplitSource"/>
     <InputDivider/>
     <Label
-      label="displaykey.Web.Admin.AffinityGroup"
-      visible="policyPeriod.HomeownersLine_HOEExists and (policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT)"/>
+      label="displaykey.Web.Admin.AffinityGroup"/>
     <PickerInput
       editable="true"
       id="AffinityGroup"
@@ -165,27 +139,6 @@
       label="displaykey.Web.Admin.AffinityGroup.Name"
       pickLocation="AffinityGroupSearchPopup.push(policyPeriod)"
       required="false"
-      value="policyPeriod.PolicyTerm.AffinityGroup"
-      visible="false"/>
-    <TypeKeyInput
-      editable="true"
-      id="PreferredBuilder"
-      label="&quot;Preferred Builder&quot;"
-      value="policyPeriod.preferredBuilder_Ext"/>
-    <Input
-      editable="true"
-      id="PreferredFinancialInstitution"
-      label="&quot;Preferred Financial Institution&quot;"
-      value="policyPeriod.PreferredFinInst_Ext"/>
-    <TypeKeyInput
-      editable="true"
-      id="EmployerGroup"
-      label="&quot;Employer Group&quot;"
-      value="policyPeriod.employerGroup_Ext"/>
-    <TypeKeyInput
-      editable="true"
-      id="QualifiesDiscount"
-      label="&quot;Qualifies for Affinity Discount&quot;"
-      value="policyPeriod.QualifiesAffinityDisc_Ext"/>
+      value="policyPeriod.PolicyTerm.AffinityGroup"/>
   </InputSet>
 </PCF>

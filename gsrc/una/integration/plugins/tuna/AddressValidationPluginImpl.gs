@@ -40,7 +40,11 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
   override function autofillAddress(address: AddressFillable, triggerField: String, alwaysOverride: boolean) {
     try {
       // Validating address against Tuna gateway if all the mandatory fields are available
-      if (null != address.AddressLine1 && null != address.City && null != address.State && null != address.PostalCode) {
+      if (null != address.AddressLine1
+          && null != address.City
+          && null != address.State
+          && null != address.PostalCode
+          && address.Country == Country.TC_US) {
         logger.debug(" Entering  " + CLASS_NAME + " :: " + " autofillAddress" + "For AddressValidation ", this.IntrinsicType)
         var matcher = _pattern.matcher(address.PostalCode)
         if (matcher.matches()) {

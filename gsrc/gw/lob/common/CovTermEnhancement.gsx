@@ -41,12 +41,12 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
     switch(typeof coverable.PolicyLine){
       case HomeownersLine_HOE:
-          if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
-            result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMaxFactor)
+          if(isDwellingOrPersonalPropertyLimit(coverable.PolicyLine.Dwelling)){
+            result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, coverable.PolicyLine.BaseState, coverable.PolicyLine.HOPolicyType).UpperBound
           }else if(isDerivedSpecialLimits(coverable.PolicyLine.Dwelling)){
             result = getSpecialLimitsMax(coverable.PolicyLine.Dwelling)
-          }else if(isDwellingLimit(coverable.PolicyLine.Dwelling)){
-            result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, coverable.PolicyLine.BaseState, coverable.PolicyLine.HOPolicyType).UpperBound
+          }else if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
+            result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMaxFactor)
           }
           break
         default:
@@ -65,12 +65,12 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
     switch(typeof coverable.PolicyLine){
       case HomeownersLine_HOE:
-          if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
+          if(isDwellingOrPersonalPropertyLimit(coverable.PolicyLine.Dwelling)){
+            result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, coverable.PolicyLine.BaseState, coverable.PolicyLine.HOPolicyType).LowerBound
+          }else if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
             result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMinFactor)
           }else if(isDerivedSpecialLimits(coverable.PolicyLine.Dwelling)){
             result = ConfigParamsUtil.getDouble(TC_SpecialLimitsDirectMinimumDefault, coverable.PolicyLine.BaseState, this.PatternCode)
-          }else if(isDwellingLimit(coverable.PolicyLine.Dwelling)){
-            result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, coverable.PolicyLine.BaseState, coverable.PolicyLine.HOPolicyType).LowerBound
           }
           break
         default:
@@ -272,7 +272,9 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
     return ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_DERIVEDSPECIALLIMITSCOVTERMPATTERNS, dwelling.PolicyLine.BaseState).contains(this.PatternCode)
   }
 
-  private function isDwellingLimit(dwelling : Dwelling_HOE) : boolean{
+  private function isDwellingOrPersonalPropertyLimit(dwelling: Dwelling_HOE) : boolean{
     return this.PatternCode.equalsIgnoreCase(dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.PatternCode)
+        or (this.PatternCode.equalsIgnoreCase(dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.PatternCode)
+       and HOPolicyType_HOE.TF_PERSONALPROPERTYVALIDATEDTYPES.TypeKeys.contains(dwelling.HOPolicyType))
   }
 }

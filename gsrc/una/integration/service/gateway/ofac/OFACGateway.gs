@@ -25,6 +25,7 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.WatchlistConfigu
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfWatchlistDataFile_WatchlistDataFile
 uses java.util.Date
 uses java.lang.Integer
+uses una.integration.service.transport.ofac.OFACCommunicator
 
 /**
  * Created with IntelliJ IDEA.
@@ -46,11 +47,13 @@ class OFACGateway implements OFACInterface {
   private static var clientContext = new ClientContext()
   private static  var searchConfiguration = new SearchConfiguration()
   private static var searchInput = new SearchInput()
+  var ofacCommunicator:OFACCommunicator
   var timeout = "500"
   static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "OFACGateway")
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     setProperties()
+    ofacCommunicator=new OFACCommunicator()
   }
 
   /**
@@ -62,13 +65,13 @@ class OFACGateway implements OFACInterface {
   override function validateOFACEntity(insuredList: List<Contact>, policyPeriod: PolicyPeriod) {
     try
     {
-      var xsService = new XGServices_BasicHttpBinding_ISearch()
+     // var xsService = new XGServices_BasicHttpBinding_ISearch()
       var entityScoreList=new List<Integer>()
       clientContext = buildClientContext()
       searchConfiguration = buildSearchConfiguration()
       var ofacDTOList = buildOFACInput(insuredList, policyPeriod)
       searchInput = buildSearchInput(ofacDTOList)
-      var result = xsService.Search(clientContext, searchConfiguration, searchInput)
+      var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
       result.print()
        //print(result.Records.ResultRecord.get(0).Watchlist.Matches.WLMatch.get(0).EntityScore)
       if(result!=null)
@@ -95,7 +98,7 @@ class OFACGateway implements OFACInterface {
     gw.transaction.Transaction.runWithNewBundle(\bundle -> {
       for (insured in insuredList)
       {
-        var ofacEntity = new OfacContact()
+        var ofacEntity = new OfacContact_Ext()
         ofacEntity.OfacTriggeringDate=new Date()
         ofacEntity.EntityScore= entityScoreList.get(0)
         ofacEntity.Contact = insured

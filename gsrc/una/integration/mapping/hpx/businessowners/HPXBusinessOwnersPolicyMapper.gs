@@ -25,16 +25,16 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
-    businessOwnersPolicy.addChild(new XmlElement(createPolicySummaryInfo(policyPeriod)))
-    businessOwnersPolicy.addChild(new XmlElement(createInsuredOrPrincipal(policyPeriod)))
+    businessOwnersPolicy.addChild(new XmlElement("PolicySummaryInfo", createPolicySummaryInfo(policyPeriod)))
+    businessOwnersPolicy.addChild(new XmlElement("InsuredOrPrincipal", createInsuredOrPrincipal(policyPeriod)))
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
     for (additionalNamedInsured in additionalNamedInsureds) {
-      businessOwnersPolicy.addChild(new XmlElement(additionalNamedInsured))
+      businessOwnersPolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalNamedInsured))
     }
-    businessOwnersPolicy.addChild(new XmlElement(createBusinessOwnersLineBusiness(policyPeriod)))
-    businessOwnersPolicy.addChild(new XmlElement(createPolicyDetails(policyPeriod)))
-    businessOwnersPolicy.addChild(new XmlElement(producerMapper.createProducer(policyPeriod)))
-    businessOwnersPolicy.addChild(new XmlElement(locationMapper.createBillingLocation(policyPeriod)))
+    businessOwnersPolicy.addChild(new XmlElement("BusinessOwnerLineBusiness", createBusinessOwnersLineBusiness(policyPeriod)))
+    businessOwnersPolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
+    businessOwnersPolicy.addChild(new XmlElement("Producer", producerMapper.createProducer(policyPeriod)))
+    businessOwnersPolicy.addChild(new XmlElement("Location", locationMapper.createBillingLocation(policyPeriod)))
     return businessOwnersPolicy
   }
 
@@ -42,11 +42,11 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerLineBusinessType()
     var buildings = createBuildings(policyPeriod)
     for (building in buildings) {
-      dwellingLineBusiness.addChild(new XmlElement(building))
+      dwellingLineBusiness.addChild(new XmlElement("Dwell", building))
     }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
-      dwellingLineBusiness.addChild(new XmlElement(question))
+      dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
     return dwellingLineBusiness
   }
@@ -67,7 +67,7 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
       var bldgTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == bldg)
       var building = buildingMapper.createBuilding(bldg)
       var buildingCovs = createCoveragesInfo(bldgCoverages, bldgPreviousCoverages, bldgTrxs)
-      for (cov in buildingCovs) { building.addChild(new XmlElement(cov))}
+      for (cov in buildingCovs) { building.addChild(new XmlElement("Coverage", cov))}
       // buildling location
       var buildingLoc = bldg.Location
       var location = locationMapper.createLocation(bldg.Location.Location)
@@ -75,8 +75,8 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
       var locPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
       var locTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
       var locationCovs = createCoveragesInfo(locationCoverages, locPreviousCoverages, locTrxs)
-      for (loc in locationCovs) { location.addChild(new XmlElement(loc))}
-      building.addChild(new XmlElement(location))
+      for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
+      building.addChild(new XmlElement("Location", location))
       // building classifications
       var bldgClassifications = bldg.Classifications
       for (bldgClassification in bldgClassifications) {
@@ -86,8 +86,8 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
         var classifcnPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
         var classifcnTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
         var classifcnCovs = createCoveragesInfo(classifcnCoverages, classifcnPreviousCoverages, classifcnTrxs)
-        for (classifcn in classifcnCovs) { buildlingClassification.addChild(new XmlElement(classifcn))}
-        building.addChild(new XmlElement(buildlingClassification))
+        for (classifcn in classifcnCovs) { buildlingClassification.addChild(new XmlElement("Coverage", classifcn))}
+        building.addChild(new XmlElement("BP7Classification", buildlingClassification))
       }
 
       buildings.add(building)

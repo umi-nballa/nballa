@@ -24,16 +24,16 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     var generalLiabilityPolicyLine = new HPXGLPolicyMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
-    commercialPackagePolicy.addChild(new XmlElement(createInsuredOrPrincipal(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("InsuredOrPrincipal", createInsuredOrPrincipal(policyPeriod)))
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
     for (additionalNamedInsured in additionalNamedInsureds) {
-      commercialPackagePolicy.addChild(new XmlElement(additionalNamedInsured))
+      commercialPackagePolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalNamedInsured))
     }
-    commercialPackagePolicy.addChild(new XmlElement(createPolicyDetails(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(producerMapper.createProducer(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(locationMapper.createBillingLocation(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(commercialPropertyPolicyLine.createPolicySummaryInfo(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(commercialPropertyPolicyLine.createCommercialPropertyLineBusiness(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("Producer", producerMapper.createProducer(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("Location", locationMapper.createBillingLocation(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("PolicySummaryInfo", commercialPropertyPolicyLine.createPolicySummaryInfo(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("CommercialPackageLineBusiness", commercialPropertyPolicyLine.createCommercialPropertyLineBusiness(policyPeriod)))
     return commercialPackagePolicy
   }
 

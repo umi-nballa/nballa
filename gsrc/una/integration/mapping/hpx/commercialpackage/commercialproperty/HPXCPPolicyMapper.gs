@@ -22,15 +22,15 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     // If it contains General Liability Line, include the coverages
     if(policyPeriod.GLLineExists) {
       var glLine = generalLiabilityPolicyLine.createGeneralLiabilityLineBusiness(policyPeriod)
-      for (cov in glLine) { commercialPropertyLineBusiness.addChild(new XmlElement(cov)) }
+      for (cov in glLine) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
     }
     var buildings = createBuildings(policyPeriod)
     for (building in buildings) {
-      commercialPropertyLineBusiness.addChild(new XmlElement(building))
+      commercialPropertyLineBusiness.addChild(new XmlElement("Dwell", building))
     }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
-      commercialPropertyLineBusiness.addChild(new XmlElement(question))
+      commercialPropertyLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
     return commercialPropertyLineBusiness
   }
@@ -49,7 +49,7 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
         var bldgTrxs = policyPeriod.CPTransactions.where( \ elt -> elt.Cost.Coverable == bldg)
         var building = buildingMapper.createBuilding(bldg)
         var buildingCovs = createCommercialPropertyLineCoveragesInfo(bldgCoverages, bldgPreviousCoverages, bldgTrxs)
-        for (cov in buildingCovs) { building.addChild(new XmlElement(cov))}
+        for (cov in buildingCovs) { building.addChild(new XmlElement("Coverage", cov))}
         // buildling location
         var buildingLoc = bldg.CPLocation
         var location = locationMapper.createLocation(bldg.CPLocation.PolicyLocation)
@@ -57,8 +57,8 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
         var locPreviousCoverages = previousPeriod?.CPLine?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
         var locTrxs = policyPeriod.CPTransactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
         var locationCovs = createCommercialPropertyLineCoveragesInfo(locationCoverages, locPreviousCoverages, locTrxs)
-        for (loc in locationCovs) { location.addChild(new XmlElement(loc))}
-        building.addChild(new XmlElement(location))
+        for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
+        building.addChild(new XmlElement("Location", location))
 
         buildings.add(building)
       }

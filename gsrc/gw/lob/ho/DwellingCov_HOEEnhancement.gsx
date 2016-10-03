@@ -234,13 +234,8 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
   }
 
   static function setAnimalLiabDefault_Ext(dwelling:Dwelling_HOE){
-    if(dwelling.Branch.BaseState == TC_TX){
-      dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("25000")
-    }
-    else{
-      dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("50000")
-    }
-
+    var availableValues = dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.AvailableOptions.sort()
+    dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setOptionValue(availableValues.first())
   }
 
 

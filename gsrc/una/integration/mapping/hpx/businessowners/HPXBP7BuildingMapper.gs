@@ -17,11 +17,11 @@ class HPXBP7BuildingMapper {
     var buildingMapper = new HPXBP7BuildingMapper()
     var buildingProtectionMapper = new HPXBP7BuildingProtectionMapper ()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType()
-    dwell.addChild(new XmlElement(buildingMapper.createDwellRating(bldg)))
-    dwell.addChild(new XmlElement(buildingMapper.createDwellInspectionValuation(bldg)))
-    dwell.addChild(new XmlElement(buildingMapper.createDwellOccupancy(bldg)))
-    dwell.addChild(new XmlElement(buildingProtectionMapper.createBuildingProtection(bldg)))
-    dwell.addChild(new XmlElement(buildingConstructionMapper.createBuildingConstructionInfo(bldg)))
+    dwell.addChild(new XmlElement("DwellRating", buildingMapper.createDwellRating(bldg)))
+    dwell.addChild(new XmlElement("DwellInspectionValuation", buildingMapper.createDwellInspectionValuation(bldg)))
+    dwell.addChild(new XmlElement("DwellOccupancy", buildingMapper.createDwellOccupancy(bldg)))
+    dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(bldg)))
+    dwell.addChild(new XmlElement("Construction", buildingConstructionMapper.createBuildingConstructionInfo(bldg)))
     return dwell
   }
 

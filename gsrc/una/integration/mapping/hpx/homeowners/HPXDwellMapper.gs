@@ -98,6 +98,7 @@ class HPXDwellMapper {
       watercraft.WatercraftType = item.watercraftType != null ? item.watercraftType : ""
       watercraft.Description =  item.watercraftDescription != null ? item.watercraftDescription : ""
       watercraft.Length.NumUnits = item.overallLength != null ? item.overallLength : ""
+      watercraft.Length.UnitMeasurementCd = "Ft"
       watercraft.Horsepower.NumUnits = item.horsepower != null ? item.horsepower.DisplayName : ""
       watercraft.Horsepower.UnitMeasurementCd = "Horsepower"
       watercraft.SpeedRating = item.speedRating != null ? item.speedRating : ""

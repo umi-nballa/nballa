@@ -22,7 +22,7 @@ abstract class HPXCoverageMapper {
     cov.CoverageCd = currentCoverage.PatternCode
     var coverableInfo = createCoverableInfo(currentCoverage, previousCoverage)
     if (coverableInfo != null) {
-      cov.addChild(new XmlElement(coverableInfo))
+      cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }

@@ -79,7 +79,7 @@ class HPXPremiumMapper {
     endorsementInfo.NetPremiumAmt.Amt = premiumDifference
     var premiumChanges = createTransactionPremiumInfo(policyPeriod)
     for (premiumChange in premiumChanges) {
-      endorsementInfo.addChild(new XmlElement(premiumChange))
+      endorsementInfo.addChild(new XmlElement("PremiumInfo", premiumChange))
     }
     return endorsementInfo
   }

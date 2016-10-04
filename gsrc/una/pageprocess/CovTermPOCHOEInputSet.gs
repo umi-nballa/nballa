@@ -10,6 +10,8 @@ uses una.productmodel.CoveragesUtil
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
 uses java.math.BigDecimal
+uses gw.pl.currency.MonetaryAmount
+uses gw.api.util.CurrencyUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,11 +66,11 @@ class CovTermPOCHOEInputSet {
         var isAllowedValue = isAllowedValue(incrementAmount, covTerm, coverable)
 
         if(covTerm.Value != null and covTerm.Value < min or covTerm.Value > max or !isAllowedValue){
-          result = displaykey.SpecialLimitErrorMessage(covTerm.Pattern.Name, new Double(min).asMoney(), new Double(max).asMoney(), incrementAmount.asMoney())
+          result = displaykey.SpecialLimitErrorMessage(covTerm.Pattern.Name, new Double(covTerm.Value).asMoney(), new Double(max).asMoney(), incrementAmount.asMoney())
         }
       }else{
         if((max != null and min != null) and covTerm.Value < min or covTerm.Value > max){
-          result = displaykey.una.productmodel.validation.LimitValidationMessage(covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
+          result = displaykey.una.productmodel.validation.LimitValidationMessage(new Double(covTerm.Value).asMoney(), covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
         }else if(min != null and covTerm.Value < min){
           result = "Value must be no less than ${new Double(min as double).asMoney()}"
         }else if(max != null and covTerm.Value > max){

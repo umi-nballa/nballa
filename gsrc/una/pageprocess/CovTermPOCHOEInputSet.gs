@@ -77,6 +77,14 @@ class CovTermPOCHOEInputSet {
           result = "Value must be no less than ${new Double(max as double).asMoney()}"
         }
       }
+      if(covTerm.PatternCode =="HODW_FloodCov_Dwelling_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+         coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
+        return displaykey.una.productmodel.validation.ValidateFlood_Ext
+      }
+      if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+          coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
+        return displaykey.una.productmodel.validation.ValidateFlood_Ext
+      }
     }
 
     return result

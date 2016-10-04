@@ -11,6 +11,8 @@
   priority="16700"
   public-id="HOLI_UnitOwnersRentedtoOthers_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.defaultValueUnitOwnersRentedDeductible(HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLine.Dwelling)
+]]></InitializeScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="pi"
@@ -29,14 +31,6 @@
           public-id="z7fi85qurhd519238pb6l3cfg79"/>
       </LimitsSet>
     </DirectCovTermPattern>
-    <GenericCovTermPattern
-      codeIdentifier="HOLI_UnitOwnersRentOthers_Deductible_HOE_Ext"
-      coverageColumn="DirectTerm3_Ext"
-      lookupTableName="HomeownersLineCovTerm"
-      modelType="Deductible"
-      priority="300"
-      public-id="HOLI_UnitOwnersRentOthers_Deductible_HOE_Ext"
-      required="true"/>
     <DirectCovTermPattern
       codeIdentifier="HOLI_AddlResidenceTwoFamily_HOE_Ext"
       coverageColumn="DirectTerm2"
@@ -51,6 +45,19 @@
           defaultValue="0"
           public-id="zbpiq92175omn9ld0uhl84gdp6b"/>
       </LimitsSet>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HOLI_UnitOwnersRentedOthers_Deductible_HOE_Ext"
+      coverageColumn="DirectTerm3"
+      lookupTableName="HomeownersLineCovTerm"
+      modelType="Deductible"
+      priority="400"
+      public-id="HOLI_UnitOwnersRentedOthers_Deductible_HOE_Ext"
+      required="true"
+      restrictionModel="pd"
+      valueType="money">
+      <LimitsSet/>
     </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

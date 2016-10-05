@@ -112,6 +112,7 @@ class CancellationAPI {
         }
         var effectiveDate = adjustEffectiveDate(cancellationDate, recalculateEffDate, cancellation, period, refundCalcMethod)
         cancellation.startJob(period.Policy, effectiveDate, refundCalcMethod)
+        cancellation.PolicyPeriod.CancellationProcess.requestQuote()
         cancellation.PolicyPeriod.CancellationProcess.scheduleCancellation( effectiveDate )
 
         return cancellation.JobNumber

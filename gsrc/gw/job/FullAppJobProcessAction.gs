@@ -25,7 +25,6 @@ class FullAppJobProcessAction implements JobProcessAction {
 
   override function process() {
     try {
-      print("before calling savedraft :" + policyPeriod.Status)
       saveDraftWithLoadSaveValidation()
       // "IgnoreValidation" in the above really means "do not throw validation exceptions to the user" 
       // but if there are validation errors, the messages will exist in the helper.   Rather than try
@@ -44,8 +43,6 @@ class FullAppJobProcessAction implements JobProcessAction {
           // helper.goDirectlyToStepWithoutWidgetValidation
           helper.Wizard.finish()
         } else {
-          print("after calling savedraft :" + policyPeriod.Status)
-
           saveDraftWithLoadSaveValidation()
         }
 
@@ -62,7 +59,7 @@ class FullAppJobProcessAction implements JobProcessAction {
             helper.addInfoWebMessage(displaykey.Web.SubmissionWizard.PolicyReview.QuoteNotVisible)
             helper.goToStep("PolicyReview")
           }
-        } else if (policyPeriod.Status == "Draft" && policyPeriod.BasedOn.Status =="Quoted") {
+        } else if (policyPeriod.Status == "Draft") {
           // Presumably we're back in Draft because the quote was invalid, so display that to the user and move on
           helper.addInfoWebMessage(displaykey.Web.SubmissionWizard.QuoteReviewMessage.InvalidQuote)
 
@@ -85,12 +82,8 @@ class FullAppJobProcessAction implements JobProcessAction {
     PCValidationContext.doWhileIgnoringPageLevelValidation( \ -> helper.Wizard.saveDraft())
   }
   function saveDraftWithLoadSaveValidation() {
-
-    print("a:" + policyPeriod.Status)
-
     PCValidationContext.doPageLevelValidation(\ context ->{
       helper.Wizard.saveDraft()
     }, typekey.ValidationLevel.TC_LOADSAVE)
-    print("b:" + policyPeriod.Status )
   }
 }

@@ -308,6 +308,29 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
    return sum
   }
 
+  /*
+*  Author: uim-svallabhapurapu
+*  Unit Owners Rented cov default value (De445)
+*  HO Line of business
+*/
+  public static function defaultValueUnitOwnersRentedDeductible(dwelling:Dwelling_HOE){
+      if(dwelling.HODW_SectionI_Ded_HOEExists and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) {
+            dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+    }
+  }
+
+  /*
+*  Author: uim-svallabhapurapu
+*  Limited earthquake cov Limit default value(De159)
+*  HO Line of business
+*/
+  public static function defaultValueLmtedEarthquakeCovALimit(dwelling:Dwelling_HOE){
+
+    if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm!=null) {
+          dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm.Value =  dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+    }
+
+  }
 
 
 }

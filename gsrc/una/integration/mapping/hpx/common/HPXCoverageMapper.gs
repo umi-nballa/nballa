@@ -27,7 +27,7 @@ abstract class HPXCoverageMapper {
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
-    for (item in scheduleList) {cov.addChild(new XmlElement(item))}
+    for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
     if (currentCoverage.OwningCoverable typeis PolicyLine) {
       var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage)
       for (child in covTermInfo.$Children) { cov.addChild(child) }

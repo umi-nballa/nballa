@@ -11,6 +11,8 @@ uses java.lang.Integer
 uses java.lang.Double
 uses una.logging.UnaLoggerCategory
 uses una.utils.EnvironmentUtil
+uses java.util.HashMap
+uses java.lang.Exception
 
 /**
  * Created with IntelliJ IDEA.
@@ -357,6 +359,36 @@ class ConfigParamsUtil {
     if(configParamType != null){
       var retrievedConfigParam = getConfigParameter(configParamType, state, configFilter)
       results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
+    }
+
+    return results
+  }
+
+  /*
+    gets a mapp config parameter
+   */
+  @Param("configParameterType", "The ConfigParameterType_Ext typekey to be retrieved.")
+  @Param("state", "The state for which to retrieve the config parameter for.")
+  @Param("configFilter", "A string that can be used to further filter a config param.")
+  @Returns("The config parameter value, converted to a List of values, that was returned for the given configParameterType and state.")
+  public static function getMap<T,E>(configParamType : ConfigParameterType_Ext, state : Jurisdiction, configFilter: String) : HashMap<T,E> {
+    var results = new HashMap<T,E>()
+
+    if(configParamType != null){
+      var retrievedConfigParam = getConfigParameter(configParamType, state, configFilter)
+
+      var mapPairs = retrievedConfigParam.Value.split(",")*.trim()
+      mapPairs?.each( \ elt -> {
+        var pair = elt.split("->")*.trim()
+
+        try{
+          var key = pair[0] as T
+          var value = pair[1] as E
+          results.put(key, value)
+        }catch(e: Exception){
+          throw e
+        }
+      })
     }
 
     return results

@@ -1,6 +1,8 @@
 package una.integration.mapping.hpx.homeowners
 
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
+uses gw.api.domain.covterm.OptionCovTerm
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -34,6 +36,22 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           */
     }
     return limits
+  }
+
+  override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    if(currentCovTerm.PatternCode == "HOPL_LossAssCovLimit_HOE") {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value : 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.FormatText = ""
+      limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true)
+      limit.CoverageCd = coverage.PatternCode
+      limit.CoverageSubCd = currentCovTerm.PatternCode
+      return limit
+    } else {
+      return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm)
+    }
   }
 
   function createOtherStructuresOnPremisesSchedule(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {

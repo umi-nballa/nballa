@@ -47,7 +47,7 @@ class CovTermPOCHOEInputSet {
       case "HODW_ExecutiveCov_HOE_Ext":
           setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
           break
-        default:
+      default:
         break;
     }
 
@@ -265,14 +265,4 @@ class CovTermPOCHOEInputSet {
      }
     return null
   }
-
-  public static function validateDescOtherSRP(dwelling:Dwelling_HOE):String{
-
-    if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
-         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value != null and
-         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_DescriptionOtherSRP_HOETerm.Value == null){
-          return displaykey.Web.Policy.HomeownersLine.Validation.SelectBoolean_Ext
-      }
-    return null
-    }
 }

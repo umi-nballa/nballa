@@ -1,6 +1,8 @@
 package una.integration.mapping.hpx.homeowners
 
 uses gw.xml.XmlElement
+uses gw.xml.date.XmlDate
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -15,7 +17,8 @@ class HPXDwellMapper {
     var dwell = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType()
     dwell.addChild(new XmlElement("DwellRating", createDwellRating(policyPeriod)))
     dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(policyPeriod)))
-    dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased : null
+    //dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased : null
+    dwell.PurchaseDt = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? new XmlDate(policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased) : null
     /*
     if (policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null) {
       dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased

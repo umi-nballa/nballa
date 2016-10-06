@@ -47,7 +47,7 @@ class CovTermPOCHOEInputSet {
       case "HODW_ExecutiveCov_HOE_Ext":
           setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
           break
-        default:
+      default:
         break;
     }
 
@@ -253,21 +253,16 @@ class CovTermPOCHOEInputSet {
 
   public static function validateRequiredPIField(dwelling:Dwelling_HOE):String{
 
-     if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
+     if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and (dwelling.HOPolicyType == TC_HO3 or dwelling.HOPolicyType == TC_HO6) and
         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value == null and
         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null) {
          return displaykey.Web.Policy.HomeownersLine.Validation.RequiredTerm_Ext
       }
+    else if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
+            dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null and
+            dwelling.HOPolicyType == TC_HO4){
+       return displaykey.Web.Policy.HomeownersLine.Validation.OSRequired_Ext
+     }
     return null
   }
-
-  public static function validateDescOtherSRP(dwelling:Dwelling_HOE):String{
-
-    if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
-         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value != null and
-         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_DescriptionOtherSRP_HOETerm.Value == null){
-          return displaykey.Web.Policy.HomeownersLine.Validation.SelectBoolean_Ext
-      }
-    return null
-    }
 }

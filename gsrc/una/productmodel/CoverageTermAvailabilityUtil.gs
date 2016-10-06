@@ -105,10 +105,9 @@ class CoverageTermAvailabilityUtil {
     var state = _hoLine.Branch.BaseState
     var isValidForMedPayLimitOption = HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(_hoLine.HOPolicyType)
     var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
-    var variantStates : java.util.List = {Jurisdiction.TC_TX, Jurisdiction.TC_HI}
 
     if(isValidForMedPayLimitOption){
-      if(variantStates.contains(state)){
+      if(state == TC_HI){
         result = isMedPayOptionAvailableVariantFilter(personalLiabilityLimit, _option, state)
       }else{
         result = isMedPayOptionAvailableStandardFilter(personalLiabilityLimit, _option, state)

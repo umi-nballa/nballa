@@ -16,6 +16,10 @@ uses gw.api.productmodel.CovTermOpt
  * To change this template use File | Settings | File Templates.
  */
 class CoverageTermAvailabilityUtil {
+  private static final var HO_FILTER = "HO"
+  private static final var DP_FILTER = "DP"
+  private static final var CONDO_RENT_FILTER = "CONDO"
+
   @Param("option", "The CovTermOpt to evaluate availability for.")
   @Param("covTerm", "The CovTerm that the option is associated with.")
   @Param("coverable", "The related Coverable entity.")
@@ -29,6 +33,7 @@ class CoverageTermAvailabilityUtil {
         break
       case "HODW_Hurricane_Ded_HOE":
         result = isHurricaneDedOptionAvailable(option, coverable as Dwelling_HOE)
+             and isOptionAvailableForSelectedAOPDeductible(option, coverable as Dwelling_HOE)
         break
       case "DPLI_MedPay_Limit_HOE":
         result = isFireDwellingMedicalPaymentLimitAvailable(option, coverable as HomeownersLine_HOE)
@@ -39,11 +44,13 @@ class CoverageTermAvailabilityUtil {
       case "HODW_JewelryWatchesFursLimit_HOE":
         result = isSpecialLimitOptionAvailable(coverable as HomeownersLine_HOE)
         break
-      case "HODW_OtherPerils_Ded_HOE":
-      case "HODW_AllPeril_HOE_Ext":
-        result = new AllPerilsAvailabilityContext((coverable as Dwelling_HOE).PolicyPeriod).isAvailable(option)
+      case "HODW_HurricaneDeductible_HOE":
+      case "HODW_WindHail_Ded_HOE":
+      case "HODW_NamedStrom_Ded_HOE_Ext":
+        result = isOptionAvailableForSelectedAOPDeductible(option, coverable as Dwelling_HOE)
         break
       default:
+        break
     }
 
     return result
@@ -62,10 +69,7 @@ class CoverageTermAvailabilityUtil {
       case "HODW_ExecutiveCov_HOE_Ext":
         result = isExecutiveCoverageAvailable(coverable as Dwelling_HOE)
         break
-      case "HODW_AllPeril_HOE_Ext":
-      case "HODW_OtherPerils_Ded_HOE":
-        result = isAllPerilsCoverageTermAvailable(coverable as Dwelling_HOE)
-        break
+
       default:
         break
     }
@@ -101,10 +105,9 @@ class CoverageTermAvailabilityUtil {
     var state = _hoLine.Branch.BaseState
     var isValidForMedPayLimitOption = HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(_hoLine.HOPolicyType)
     var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
-    var variantStates : java.util.List = {Jurisdiction.TC_TX, Jurisdiction.TC_HI}
 
     if(isValidForMedPayLimitOption){
-      if(variantStates.contains(state)){
+      if(state == TC_HI){
         result = isMedPayOptionAvailableVariantFilter(personalLiabilityLimit, _option, state)
       }else{
         result = isMedPayOptionAvailableStandardFilter(personalLiabilityLimit, _option, state)
@@ -141,6 +144,43 @@ class CoverageTermAvailabilityUtil {
       if(dwellingValue?.doubleValue() > thresholdAmount and excludedValues.HasElements){
         result = !excludedValues?.contains(_option.Value?.setScale(0, BigDecimal.ROUND_FLOOR).toString())
       }
+    }
+
+    return result
+  }
+
+  private static function isOptionAvailableForSelectedAOPDeductible(option : CovTermOpt, dwelling : Dwelling_HOE) : boolean{
+    var result = true
+    var filterPrefix = getAOPFilterPrefix(dwelling)
+    var state = dwelling.HOLine.BaseState
+    var configType = ConfigParameterType_Ext.TC_AOP_RESTRICTEDOPTIONS
+
+    if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix + option.CovTermPattern.CodeIdentifier)){
+      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value.setScale(3)
+      var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
+
+      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
+      var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
+
+      if(valueRestrictedOptions != null){
+        result = valueRestrictedOptions.contains(optionValue)
+      }else if(defaultRestrictedOptions != null){
+        result = defaultRestrictedOptions.contains(optionValue)
+      }
+    }
+
+    return result
+  }
+
+  private static function getAOPFilterPrefix(dwelling: Dwelling_HOE) : String{
+    var result : String
+
+    if(HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType)){
+      result = HO_FILTER
+    }else if(HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling.HOPolicyType)){
+      result = DP_FILTER
+    }else if(HOPolicyType_HOE.TF_CONDOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_HO4){
+      result = CONDO_RENT_FILTER
     }
 
     return result
@@ -207,18 +247,6 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isAllPerilsCoverageTermAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = true
-
-    if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_AllPeril_HOE_ExtTerm){
-      result = dwelling.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm.AvailableOptions.Count > 0
-    }else if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_OtherPerils_Ded_HOETerm){
-      result = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.AvailableOptions.Count > 0
-    }
-
-    return result
-  }
-
   private static function isMedPayOptionAvailableVariantFilter(personalLiabilityLimit : BigDecimal, _option : gw.api.productmodel.CovTermOpt, state : Jurisdiction): boolean{
     var result = true
 
@@ -246,83 +274,5 @@ class CoverageTermAvailabilityUtil {
     }
 
     return result
-  }
-
-  static class AllPerilsAvailabilityContext{
-    private var _state: Jurisdiction as State
-    private var _hoPolicyType : HOPolicyType_HOE as PolicyType
-    private var _policyPeriod : PolicyPeriod as PolicyPeriod
-
-    construct(policyPeriod : PolicyPeriod){
-      this._state = policyPeriod.BaseState
-      this._hoPolicyType = policyPeriod.HomeownersLine_HOE.HOPolicyType
-      this._policyPeriod = policyPeriod
-    }
-
-    property get CovTerms() : List<OptionCovTerm>{
-      var results : List<OptionCovTerm> = {}
-      var deriverPatterns =  ConfigParamsUtil.getList(TC_AOPDeriverCovTermPatterns, _state, FilterPrefix)
-
-      deriverPatterns?.each( \ pattern -> {
-        var sectionIDeductible = _policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.CovTerms.firstWhere( \ covTerm -> covTerm.PatternCode == pattern)
-        results.add(sectionIDeductible as OptionCovTerm)
-      })
-
-      return results
-    }
-
-    property get FilterPrefix() : String{
-      var result : String
-
-      if(HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_hoPolicyType)){
-        result = "FIRE"
-      }else if({HOPolicyType_HOE.TC_HO3, HOPolicyType_HOE.TC_HOA_EXT, HOPolicyType_HOE.TC_HOB_EXT}.contains(_hoPolicyType)){
-        result = "HO"
-      }else if({HOPolicyType_HOE.TC_HO4, HOPolicyType_HOE.TC_HO6, HOPolicyType_HOE.TC_HCONB_EXT}.contains(_hoPolicyType)){
-        result = "CONDO"
-      }
-
-      return result
-    }
-
-    function  isAvailable(covTermOption : CovTermOpt) : boolean{
-      var covTermOptionValue = covTermOption.Value.asString()
-      var availableValues = AvailableValues
-
-      return !availableValues.HasElements or availableValues?.contains(covTermOptionValue) //nothing returned means true by default / no restrictions.  Example: Texas Fire
-    }
-
-    property get AvailableValues() : List<String>{
-      var results : List<String>
-      var filter = FilterPrefix
-
-      results = ConfigParamsUtil.getList(TC_AOP_RestrictedOptions, _state, filter + ExceptionConfigFilter)//most specific.  used for exception cases
-
-      if(!results.HasElements){//specific to more generic rows
-        results = ConfigParamsUtil.getList(TC_AOP_RestrictedOptions, _state, filter + ((CovTerms?.first()?.Value == null) ? 0 : CovTerms?.first()?.Value))
-      }
-
-      if(!results.HasElements){//query for default rows for policy type if results not available
-        results = ConfigParamsUtil.getList(TC_AOP_RestrictedOptions, _state, filter)
-      }
-
-      return results
-    }
-
-    property get ExceptionConfigFilter() : String{
-      var result = new StringBuilder()
-
-      CovTerms?.each( \ covTerm -> {
-        result.append(covTerm.PatternCode)
-
-        if(covTerm.Value == null or covTerm.Value == 0){
-          result.append("0")
-        }else{
-          result.append(covTerm.Value?.asString())
-        }
-      })
-
-      return result?.toString()
-    }
   }
 }

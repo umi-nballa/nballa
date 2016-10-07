@@ -22,9 +22,6 @@ public final class HORateRoutineNames {
   //base premium routines for group 2 states
   public static final var BASE_PREMIUM_SC_RATE_ROUTINE : String = "UNAHOBasePremiumRateRoutine"
 
-
-
-
   public static final var MED_PAY_TX_ROUTINE_NAME : String = "UNAHOMedicalPaymentsTXRateRoutine"
   public static final var PERSONAL_LIABILITY_TX_ROUTINE_NAME : String = "UNAHOPersonalLiabilityTXRateRoutine"
   public static final var RESIDENTIAL_GLASS_TX_COV_ROUTINE_NAME : String = "UNAHOResidentialGlassCovTXRateRoutine"
@@ -75,7 +72,7 @@ public final class HORateRoutineNames {
   public static final var ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOAddResidenceRentedToOthersGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIGroup1RateRoutine"
   public static final var SPECIAL_PERSONAL_PROPERTY_COVERAGE_ROUTINE_NAME : String = "UNASpecialPersonalPropertyGroup1RateRoutine"
-  public static final var SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecialLimitsPersonalPropertyCovGroup1RateRoutine"
+  public static final var SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_ROUTINE_NAME : String = "UNAHOSpecialLimitsPersonalPropertyCovRateRoutine"
   public static final var DIFFERENCE_IN_CONDITIONS_GROUP1_RATE_ROUTINE : String = "UNAHODifferenceInConditionsGroup1RateRoutine"
   public static final var CONCRETE_TILE_ROOF_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOConcreteTileRoofDiscountGroup1RateRoutine"
   public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeGroup1RateRoutine"
@@ -84,8 +81,19 @@ public final class HORateRoutineNames {
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
   public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
 
+  //base premium routines for group3 states
+  public static final var BASE_PREMIUM_FL_RATE_ROUTINE : String = "UNAHOBasePremiumRateRoutine"
+  public static final var WIND_BASE_PREMIUM_FL_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"
+
   //group3 routines
-  public static final var ANIMAL_LIABILITY_GROUP3_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovGroup3RateRoutine"
-  public static final var PERSONAL_INJURY_COVERAGE_GROUP3_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup3RateRoutine"
-  public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_GROUP3_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsGroup3RateRoutine"
+  public static final var ANIMAL_LIABILITY_GROUP3_COV_ROUTINE_NAME : String = "UNAHOAnimalLiabilityCovRateRoutine"
+  public static final var PERSONAL_INJURY_COVERAGE_GROUP3_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageRateRoutine"
+  public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_GROUP3_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsRateRoutine"
+  public static final var LOSS_ASSESSMENT_COVERAGE_GROUP3_RATE_ROUTINE : String = "UNAHOLossAssessmentCovRateRoutine"
+  public static final var PERSONAL_PROPERTY_EXCLUSION_RATE_ROUTINE : String = "UNAHOPersonalPropertyExclusionRateRoutine"
+  public static final var GOLF_CART_PHYSICAL_DAMAGE_AND_LIABILITY_COVERAGE_RATE_ROUTINE : String = "UNAHOGolfCartPhysicalDamageAndLiabilityCovRateRoutine"
+  public static final var INCREASED_SECTION_II_LIMITS_GROUP3_ROUTINE_NAME : String = "UNAHOIncreasedSectionIILimitsRateRoutine"
+  public static final var SINKHOLE_LOSS_COVERAGE_RATE_ROUTINE : String = "UNAHOSinkholeLossCoverageRateRoutine"
+  public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP3_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovRateRoutine"
+  public static final var ORDINANCE_OR_LAW_COV_GROUP3_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovRateRoutine"
 }

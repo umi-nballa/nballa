@@ -19,7 +19,7 @@
       id="DirectTermInput"
       label="term.Pattern.DisplayName"
       required="term.Pattern.Required"
-      validationExpression="term.PatternCode == &quot;HODW_DamagePropertyLimit_HOE&quot; ? una.pageprocess.CovTermPOCHOEInputSet.minValueDamageProperty(term.Clause.OwningCoverable as Dwelling_HOE)?displaykey.Web.Policy.HomeownersLine.Validation.Message_Ext:null:term.PatternCode == &quot;HODW_Limit_HOE&quot;? una.pageprocess.CovTermPOCHOEInputSet.maxValuePermitIncidLimit(term.Clause.OwningCoverable as Dwelling_HOE)? displaykey.Web.Policy.HomeownersLine.Validation.MaxMessage_Ext:null:null"
+      validationExpression="una.pageprocess.CovTermPOCHOEInputSet.validateLimitValue(term.Clause.OwningCoverable as Dwelling_HOE,term)//term.PatternCode == &quot;HODW_DamagePropertyLimit_HOE&quot; ? una.pageprocess.CovTermPOCHOEInputSet.minValueDamageProperty(term.Clause.OwningCoverable as Dwelling_HOE)?displaykey.Web.Policy.HomeownersLine.Validation.Message_Ext:null:term.PatternCode == &quot;HODW_Limit_HOE&quot;? una.pageprocess.CovTermPOCHOEInputSet.maxValuePermitIncidLimit(term.Clause.OwningCoverable as Dwelling_HOE)? displaykey.Web.Policy.HomeownersLine.Validation.MaxMessage_Ext:null:null"
       value="term">
       <PostOnChange
         onChange="pcfController.onChange()"/>

@@ -277,4 +277,14 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
         or (this.PatternCode.equalsIgnoreCase(dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.PatternCode)
        and HOPolicyType_HOE.TF_PERSONALPROPERTYVALIDATEDTYPES.TypeKeys.contains(dwelling.HOPolicyType))
   }
+
+  //uim-svallabhapurapu Defect fix 159 : make non editable for Earthquake coverage - A
+  property get IsCovTermEditable() : boolean{
+     if((this.Pattern typeis gw.api.productmodel.DirectCovTermPattern) and this.PatternCode == "HODW_EQDwellingLimit_HOE_Ext"){
+          return false
+
+     }
+    return true
+  }
+
 }

@@ -19,6 +19,12 @@ public final class HORateRoutineNames {
   public static final var BASE_PREMIUM_CA_RATE_ROUTINE : String = "UNAHOBasePremiumCARateRoutine"
   public static final var BASE_PREMIUM_NV_RATE_ROUTINE : String = "UNAHOBasePremiumNVRateRoutine"
 
+  //base premium routines for group 2 states
+  public static final var BASE_PREMIUM_SC_RATE_ROUTINE : String = "UNAHOBasePremiumRateRoutine"
+
+
+
+
   public static final var MED_PAY_TX_ROUTINE_NAME : String = "UNAHOMedicalPaymentsTXRateRoutine"
   public static final var PERSONAL_LIABILITY_TX_ROUTINE_NAME : String = "UNAHOPersonalLiabilityTXRateRoutine"
   public static final var RESIDENTIAL_GLASS_TX_COV_ROUTINE_NAME : String = "UNAHOResidentialGlassCovTXRateRoutine"

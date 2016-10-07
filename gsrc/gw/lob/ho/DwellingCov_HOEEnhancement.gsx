@@ -237,13 +237,30 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     var availableValues = dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.AvailableOptions.sort()
     dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setOptionValue(availableValues.first())
   }
+   /**
+    * Amrita D Validated Individual and Total Values for Schedule Items as per the HO product Model Sheet
+    */
 
-
-  static function validateScheduleType_Ext(dwelling:Dwelling_HOE):boolean{
+  static function validateScheduleType_Ext(dwelling:Dwelling_HOE):String{
     var expValue1:int = 2500
     var expValue2:int = 5000
     var expValue3:int = 10000
     var expValue4:int = 25000
+    var TotalExpValue: int = 50000
+    var TotalExpValue1: int = 100000
+    var  Item1=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_COLLECTIBLES_EXT ))
+    var  Item2=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_GOLFEQUIPNOGOLFCARTS_EXT ))
+    var  Item3=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_GUNSSCHEDULED ))
+    var  Item4=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_POSTAGESTAMPS ))
+    var  Item5=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_RARECURRENTCOINS ))
+    var  Item6=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_SILVERWAREEXCLUDEPENPENSILS_EXT ))
+    var  Item7=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_FURSGARMENTSSCHEDULED_EXT ))
+    var  Item8=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_FINEARTS ))
+    var  Item9=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_MUSICALINSTRUMETSPERSONAL_EXT ))
+    var  Item10=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_JEWELRY ))
+    var  Item11=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERASPM_EXT ))
+    var  Item12=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERAPEPERSONAL_EXT ))
+
    for(schType in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems) {
 
    if(dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC){
@@ -253,33 +270,67 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
         (schType.ScheduleType == typekey.ScheduleType_HOE.TC_POSTAGESTAMPS and schType.ExposureValue > expValue1) or
         (schType.ScheduleType == typekey.ScheduleType_HOE.TC_RARECURRENTCOINS and schType.ExposureValue > expValue1)or
         (schType.ScheduleType == typekey.ScheduleType_HOE.TC_SILVERWAREEXCLUDEPENPENSILS_EXT and schType.ExposureValue > expValue1)){
-        return true
+        return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue1,schType.ScheduleType.DisplayName)
      }
      else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_FURSGARMENTSSCHEDULED_EXT and schType.ExposureValue > expValue2){
-        return true
+        return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
      }
      else if ((schType.ScheduleType == typekey.ScheduleType_HOE.TC_FINEARTS and schType.ExposureValue > expValue3) or
               (schType.ScheduleType == typekey.ScheduleType_HOE.TC_MUSICALINSTRUMETSPERSONAL_EXT and schType.ExposureValue > expValue3) ){
-         return true
+         return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue3,schType.ScheduleType.DisplayName)
        }
        else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_JEWELRY and schType.ExposureValue > expValue4){
-           return true
+           return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue4,schType.ScheduleType.DisplayName)
          }
      }
      else if((dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERASPM_EXT and schType.ExposureValue > expValue2)){
-       return true
+       return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
      }
    else if((dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_SC) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERAPEPERSONAL_EXT and schType.ExposureValue > expValue2)){
-       return true
+       return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
      }
     }
-    return false
+    if(Item10 > TotalExpValue1){
+      return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext
+    }
+    else if(Item1> TotalExpValue or Item2> TotalExpValue or Item3> TotalExpValue or Item4> TotalExpValue or Item5> TotalExpValue or
+        Item6> TotalExpValue or Item7> TotalExpValue or Item8> TotalExpValue or Item9> TotalExpValue or Item11> TotalExpValue or Item12> TotalExpValue) {
+      return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
+    }
+    return null
     }
 
-  /*static function calculateTotalExpValue_Ext():BigDecimal{
+  static function calculateTotalExpValue(scheduleItem : ScheduledItem_HOE[]):int {
+      var sum : int  = 0
+      for(sc in scheduleItem ) {
+       sum =  sc.ExposureValue + sum
+     }
+   return sum
+  }
 
-  }*/
+  /*
+*  Author: uim-svallabhapurapu
+*  Unit Owners Rented cov default value (De445)
+*  HO Line of business
+*/
+  public static function defaultValueUnitOwnersRentedDeductible(dwelling:Dwelling_HOE){
+      if(dwelling.HODW_SectionI_Ded_HOEExists and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) {
+            dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+    }
+  }
 
+  /*
+*  Author: uim-svallabhapurapu
+*  Limited earthquake cov Limit default value(De159)
+*  HO Line of business
+*/
+  public static function defaultValueLmtedEarthquakeCovALimit(dwelling:Dwelling_HOE){
+
+    if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm!=null) {
+          dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm.Value =  dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+    }
+
+  }
 
 
 }

@@ -15,7 +15,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
 
   var _county : String as County
   var _otherStructuresLimit : int as OtherStructuresLimit
-  var _personalPropertyLimit : BigDecimal as PersonalPropertyLimit
   var _allOtherPerils : String as AllOtherPerils
   var _windOrHailPercentage : String as WindOrHailPercentage
   var _namedStormPercentage : String as NamedStormPercentage
@@ -36,7 +35,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     this.ConstructionType = HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
     _otherStructuresLimit = ((dwelling?.HODW_Other_Structures_HOEExists)? dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
     if(dwelling?.HODW_Personal_Property_HOEExists){
-      _personalPropertyLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
+      this.PersonalPropertyLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value as int
     }
     if(dwelling.HODW_Dwelling_Cov_HOEExists){
       if(dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue == REPLACEMENT_COST){

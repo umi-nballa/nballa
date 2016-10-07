@@ -10,6 +10,7 @@ class HPXLocationMapper {
   /******************************************************** Location ***********************************************************************/
   function createLocation(loc : PolicyLocation) : wsi.schema.una.hpx.hpx_application_request.types.complex.LocationType {
     var location = new wsi.schema.una.hpx.hpx_application_request.types.complex.LocationType()
+    location.LocationName = loc.CompactName
     location.Addr.Addr1 = loc.AddressLine1 != null ? loc.AddressLine1 : ""
     location.Addr.Addr2 = loc.AddressLine2 != null ? loc.AddressLine2 : ""
     location.Addr.Addr3 = loc.AddressLine3 != null ? loc.AddressLine3 : ""

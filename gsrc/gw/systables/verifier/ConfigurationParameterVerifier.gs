@@ -164,6 +164,13 @@ class ConfigurationParameterVerifier extends VerifierBase{
             validationResults.add(VALUE_CONVERSION_ERROR + " value = ${value}; configParamType = ${configParamType}; configDataType = ${dataCategory}")
           }
           break
+        case TC_MAP:
+          var splitConfigParams = value?.split("->")*.trim()
+
+          if(splitConfigParams == null or splitConfigParams.Count != 2){
+            validationResults.add(VALUE_CONVERSION_ERROR + " value = ${value}; configParamType = ${configParamType}; configDataType = ${dataCategory}")
+          }
+          break
         default:
           LOGGER.debug("Not validating data category of ${dataCategory} for configParam row with a type of ${configParamType} and value of ${value}")
       }

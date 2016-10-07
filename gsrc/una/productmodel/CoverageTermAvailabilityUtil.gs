@@ -219,7 +219,7 @@ class CoverageTermAvailabilityUtil {
   private static function isSpecialLimitOptionAvailable(hoLine : entity.HomeownersLine_HOE) : boolean{
     var result = true
 
-    if(hoLine.BaseState == TC_FL or hoLine.BaseState == TC_CA){
+    if(hoLine.BaseState == TC_HI or hoLine.BaseState == TC_CA){
       result = hoLine.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
     }
 

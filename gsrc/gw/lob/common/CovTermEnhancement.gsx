@@ -265,7 +265,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
   private function isLimitCalculated(dwelling: Dwelling_HOE) : boolean{
     return ConfigParamsUtil?.getList(TC_DerivedLimitsPatternCodes, dwelling.HOLine.BaseState)?.hasMatch( \ element -> element?.equalsIgnoreCase(this.PatternCode))
-        or this == dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm
+        or this.PatternCode == dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm.PatternCode
   }
 
   private function isDerivedSpecialLimits(dwelling : Dwelling_HOE) : boolean{
@@ -278,13 +278,20 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
        and HOPolicyType_HOE.TF_PERSONALPROPERTYVALIDATEDTYPES.TypeKeys.contains(dwelling.HOPolicyType))
   }
 
-  //uim-svallabhapurapu Defect fix 159 : make non editable for Earthquake coverage - A
-  property get IsCovTermEditable() : boolean{
-     if((this.Pattern typeis gw.api.productmodel.DirectCovTermPattern) and this.PatternCode == "HODW_EQDwellingLimit_HOE_Ext"){
-          return false
+  public function isCovTermEditable(coverable : Coverable) : boolean{
+    var result = true
+    var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, this.PatternCode)
 
-     }
-    return true
+    if(configResult != null){
+      result = configResult
+    }else if(coverable typeis Dwelling_HOE){
+      var min = this.getMinAllowedLimitValue(coverable)
+      var max = this.getMaxAllowedLimitValue(coverable)
+
+      result = (min == null and max == null) or min != max
+    }
+
+    return result
   }
 
 }

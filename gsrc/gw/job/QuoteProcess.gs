@@ -18,6 +18,8 @@ uses gw.plugin.policyperiod.IRatingPlugin
 uses gw.web.productmodel.ProductModelSyncIssueWrapper
 
 uses java.lang.Exception
+uses una.integration.service.gateway.ofac.OFACGateway
+uses una.integration.service.gateway.ofac.OFACInterface
 
 /**
  * Encapsulates the actions taken when Quoting.  While this class is not a JobProcess, it encapsulates
@@ -67,8 +69,10 @@ class QuoteProcess {
    */
   function requestQuote(jobWizardHelper : JobWizardHelper, valLevel : ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean) {
     JobProcessLogger.logInfo("Quote requested for branch " + _branch + "(Rating style: " + ratingStyle + ")")
+    /* var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
+    ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)*/
 
-    PCProfilerTag.QUOTE_SYNC.execute(\ -> {
+       PCProfilerTag.QUOTE_SYNC.execute(\ -> {
       _oosSliceDates = _branch.OOSSliceDates
       _oosSlices = _branch.getOOSSlices(_oosSliceDates)
 

@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  entity="OfacContact_Ext"
+  table="ofaccontact"
+  type="retireable">
+  <foreignkey
+    desc="OFAC Contact Referencing to Contact Enitity "
+    fkentity="Contact"
+    name="Contact"
+    nullok="true"/>
+  <column
+    default="false"
+    desc="Boolean value to store OFAC hit "
+    name="OfacHit"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Date on which OFAC webservice get called Date on which OFAC webservice get called "
+    name="OfacTriggeringDate"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    desc="Score return in OFAC Response "
+    name="EntityScore"
+    nullok="true"
+    type="integer"/>
+</entity>

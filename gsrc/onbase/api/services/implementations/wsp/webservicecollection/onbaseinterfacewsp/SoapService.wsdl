@@ -1,0 +1,629 @@
+<?xml version="1.0"?>
+<wsdl:definitions targetNamespace="http://policycenter" name="EISClientWithConfig" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://policycenter" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsdl:types>
+    <xs:schema targetNamespace="http://policycenter" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <xs:element name="ArchiveDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DocumentArchiveData" nillable="true" type="tns:OBDocumentArchiveArchiveDocument"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OBDocumentArchiveArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FileInfo" nillable="true" type="tns:FileInfoArchiveDocument"/>
+          <xs:element minOccurs="0" name="Keywords" nillable="true" type="tns:KeywordsArchiveDocument"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="OBDocumentArchiveArchiveDocument" nillable="true" type="tns:OBDocumentArchiveArchiveDocument"/>
+      <xs:complexType name="FileInfoArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MIMEType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Base64FileStream" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FileInfoArchiveDocument" nillable="true" type="tns:FileInfoArchiveDocument"/>
+      <xs:complexType name="KeywordsArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Multi_Instance_Keyword_Group" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
+          <xs:element minOccurs="0" name="Single_Instance_Keyword_Group" nillable="true" type="tns:Single_Instance_Keyword_GroupArchiveDocument"/>
+          <xs:element minOccurs="0" name="StandAlone" nillable="true" type="tns:StandAloneArchiveDocument"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="KeywordsArchiveDocument" nillable="true" type="tns:KeywordsArchiveDocument"/>
+      <xs:complexType name="Multi_Instance_Keyword_GroupArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Exposure_Collection" nillable="true" type="tns:ArrayOfExposure"/>
+          <xs:element minOccurs="0" name="Contact_Collection" nillable="true" type="tns:ArrayOfContact"/>
+          <xs:element minOccurs="0" name="Matter_Collection" nillable="true" type="tns:ArrayOfMatter"/>
+          <xs:element minOccurs="0" name="Job_Collection" nillable="true" type="tns:ArrayOfJob"/>
+          <xs:element minOccurs="0" name="GWLink_Collection" nillable="true" type="tns:ArrayOfGWLink"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Multi_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
+      <xs:complexType name="ArrayOfExposure">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Exposure" nillable="true" type="tns:Exposure"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfExposure" nillable="true" type="tns:ArrayOfExposure"/>
+      <xs:complexType name="Exposure">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ExposureType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Coverage" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Claimant" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Adjuster" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ExposureID" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Exposure" nillable="true" type="tns:Exposure"/>
+      <xs:complexType name="ArrayOfContact">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Contact" nillable="true" type="tns:Contact"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfContact" nillable="true" type="tns:ArrayOfContact"/>
+      <xs:complexType name="Contact">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ContactName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ContactRoles" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="HomePhone" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="EmailID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PrimaryAddress" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ContactID" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Contact" nillable="true" type="tns:Contact"/>
+      <xs:complexType name="ArrayOfMatter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Matter" nillable="true" type="tns:Matter"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfMatter" nillable="true" type="tns:ArrayOfMatter"/>
+      <xs:complexType name="Matter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MatterName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="MatterType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="MatterCaseNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AssignedUser" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AssignedGroup" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Plaintiff" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Defendant" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Closed" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ClosedDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Resolution" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="MatterID" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Matter" nillable="true" type="tns:Matter"/>
+      <xs:complexType name="ArrayOfJob">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Job" nillable="true" type="tns:Job"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfJob" nillable="true" type="tns:ArrayOfJob"/>
+      <xs:complexType name="Job">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="JobNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="JobDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="JobType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="JobID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Underwriter" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Job" nillable="true" type="tns:Job"/>
+      <xs:complexType name="ArrayOfGWLink">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="GWLink" nillable="true" type="tns:GWLink"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfGWLink" nillable="true" type="tns:ArrayOfGWLink"/>
+      <xs:complexType name="GWLink">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="GWLinkID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWLinkType" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GWLink" nillable="true" type="tns:GWLink"/>
+      <xs:complexType name="Single_Instance_Keyword_GroupArchiveDocument">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:element name="Single_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Single_Instance_Keyword_GroupArchiveDocument"/>
+      <xs:complexType name="StandAloneArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DocumentType_Collection" nillable="true" type="q1:ArrayOfstring" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ClaimNumber_Collection" nillable="true" type="q2:ArrayOfstring" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="GWFileName_Collection" nillable="true" type="q3:ArrayOfstring" xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="AccountNumber_Collection" nillable="true" type="q4:ArrayOfstring" xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyNumber_Collection" nillable="true" type="q5:ArrayOfstring" xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Source_Collection" nillable="true" type="q6:ArrayOfstring" xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ProducerID_Collection" nillable="true" type="q7:ArrayOfstring" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Producer_Collection" nillable="true" type="q8:ArrayOfstring" xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="User_Collection" nillable="true" type="q9:ArrayOfstring" xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Status_Collection" nillable="true" type="q10:ArrayOfstring" xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="OnBaseDocumentType_Collection" nillable="true" type="q11:ArrayOfstring" xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="GWDescription_Collection" nillable="true" type="q12:ArrayOfstring" xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Recipient_Collection" nillable="true" type="q13:ArrayOfstring" xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ClaimSecurityRole_Collection" nillable="true" type="q14:ArrayOfstring" xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="BatchNumber_Collection" nillable="true" type="q15:ArrayOfstring" xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="AsyncDocumentID_Collection" nillable="true" type="q16:ArrayOfstring" xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="DocumentIdForRevision_Collection" nillable="true" type="q17:ArrayOfstring" xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="StandAloneArchiveDocument" nillable="true" type="tns:StandAloneArchiveDocument"/>
+      <xs:element name="ArchiveDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ArchiveDocumentResult" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDocumentContent">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DocumentData" nillable="true" type="tns:DocumentBytesInput"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="DocumentBytesInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="documentHandle" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="overlay" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DocumentBytesInput" nillable="true" type="tns:DocumentBytesInput"/>
+      <xs:element name="GetDocumentContentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetDocumentContentResult" nillable="true" type="tns:DocumentBytesOutput"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="DocumentBytesOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Base64FileStream" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="extension" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DocumentBytesOutput" nillable="true" type="tns:DocumentBytesOutput"/>
+      <xs:element name="GetDocumentInfo">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="messagePayload" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="GetDocumentInfoResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetDocumentInfoResult" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ScriptDispatcher">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="messagePayload" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="ScriptDispatcherResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ScriptDispatcherResult" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DocComp">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="messagePayload" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="DocCompResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DocCompResult" nillable="true" type="xs:string"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="PolicyDocSearch">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="CustomQueryData" nillable="true" type="tns:OBCustomQueryPolicyDocSearch"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OBCustomQueryPolicyDocSearch">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Keywords" nillable="true" type="tns:CustomQueryKeywordsPolicyDocSearch"/>
+          <xs:element minOccurs="0" name="DocumentDates" nillable="true" type="tns:CustomQueryDateRangePolicyDocSearch"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="OBCustomQueryPolicyDocSearch" nillable="true" type="tns:OBCustomQueryPolicyDocSearch"/>
+      <xs:complexType name="CustomQueryKeywordsPolicyDocSearch">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AuditID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PolicyNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="JobNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PolicyTransactionID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AsyncDocumentID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Producer" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ProducerID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Underwriter" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWLinkID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="User" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWLinkType" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CustomQueryKeywordsPolicyDocSearch" nillable="true" type="tns:CustomQueryKeywordsPolicyDocSearch"/>
+      <xs:complexType name="CustomQueryDateRangePolicyDocSearch">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FromDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ToDate" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CustomQueryDateRangePolicyDocSearch" nillable="true" type="tns:CustomQueryDateRangePolicyDocSearch"/>
+      <xs:element name="PolicyDocSearchResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="PolicyDocSearchResult" nillable="true" type="tns:CustomQueryDispColResponsePolicyDocSearch"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="CustomQueryDispColResponsePolicyDocSearch">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DocumentResults" nillable="true" type="tns:ArrayOfDocument"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="CustomQueryDispColResponsePolicyDocSearch" nillable="true" type="tns:CustomQueryDispColResponsePolicyDocSearch"/>
+      <xs:complexType name="ArrayOfDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Document" nillable="true" type="tns:Document"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfDocument" nillable="true" type="tns:ArrayOfDocument"/>
+      <xs:complexType name="Document">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="documentHandle" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="docTypeNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="docTypeName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Name" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="dateStored" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="docDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="docStatus" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="createdBy" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="DisplayColumns" nillable="true" type="tns:DisplayColumns"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Document" nillable="true" type="tns:Document"/>
+      <xs:complexType name="DisplayColumns">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PolicyNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AccountNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="User" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Status" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWFileName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWDescription" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="DocumentType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Recipient" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="JobNumber" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AsyncDocumentID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWLinkID" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="GWLinkType" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DisplayColumns" nillable="true" type="tns:DisplayColumns"/>
+      <xs:element name="UpdateKeywords">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="EformData" nillable="true" type="tns:OBEFormDataUpdateKeywords"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OBEFormDataUpdateKeywords">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Keywords" nillable="true" type="tns:KeywordsUpdateKeywords"/>
+          <xs:element minOccurs="0" name="Fields" nillable="true" type="tns:FieldsUpdateKeywords"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="OBEFormDataUpdateKeywords" nillable="true" type="tns:OBEFormDataUpdateKeywords"/>
+      <xs:complexType name="KeywordsUpdateKeywords">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Multi_Instance_Keyword_Group" nillable="true" type="tns:Multi_Instance_Keyword_GroupUpdateKeywords"/>
+          <xs:element minOccurs="0" name="Single_Instance_Keyword_Group" nillable="true" type="tns:Single_Instance_Keyword_GroupUpdateKeywords"/>
+          <xs:element minOccurs="0" name="StandAlone" nillable="true" type="tns:StandAloneUpdateKeywords"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="KeywordsUpdateKeywords" nillable="true" type="tns:KeywordsUpdateKeywords"/>
+      <xs:complexType name="Multi_Instance_Keyword_GroupUpdateKeywords">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="KeywordUpdateAction_Collection" nillable="true" type="tns:ArrayOfKeywordUpdateAction"/>
+          <xs:element minOccurs="0" name="QueryParameter_Collection" nillable="true" type="tns:ArrayOfQueryParameter"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Multi_Instance_Keyword_GroupUpdateKeywords" nillable="true" type="tns:Multi_Instance_Keyword_GroupUpdateKeywords"/>
+      <xs:complexType name="ArrayOfKeywordUpdateAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="KeywordUpdateAction" nillable="true" type="tns:KeywordUpdateAction"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfKeywordUpdateAction" nillable="true" type="tns:ArrayOfKeywordUpdateAction"/>
+      <xs:complexType name="KeywordUpdateAction">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INS_Action" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_DataType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_DataValue" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_ActionOrder" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="KeywordUpdateAction" nillable="true" type="tns:KeywordUpdateAction"/>
+      <xs:complexType name="ArrayOfQueryParameter">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="QueryParameter" nillable="true" type="tns:QueryParameter"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfQueryParameter" nillable="true" type="tns:ArrayOfQueryParameter"/>
+      <xs:complexType name="QueryParameter">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INS_QueryKeywordType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_QueryKeywordValue" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_QueryKeywordOperator" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_QueryKeywordRelation" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryParameter" nillable="true" type="tns:QueryParameter"/>
+      <xs:complexType name="Single_Instance_Keyword_GroupUpdateKeywords">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="QueryType" nillable="true" type="tns:QueryType"/>
+          <xs:element minOccurs="0" name="QueryDateRange" nillable="true" type="tns:QueryDateRange"/>
+          <xs:element minOccurs="0" name="GWKWRequestTypeAndUserName" nillable="true" type="tns:GWKWRequestTypeAndUserName"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Single_Instance_Keyword_GroupUpdateKeywords" nillable="true" type="tns:Single_Instance_Keyword_GroupUpdateKeywords"/>
+      <xs:complexType name="QueryType">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INS_CustomQuery" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryType" nillable="true" type="tns:QueryType"/>
+      <xs:complexType name="QueryDateRange">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INS_QueryStartDate" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_QueryEndDate" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="QueryDateRange" nillable="true" type="tns:QueryDateRange"/>
+      <xs:complexType name="GWKWRequestTypeAndUserName">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="INS_RequestType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="INS_Username" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="GWKWRequestTypeAndUserName" nillable="true" type="tns:GWKWRequestTypeAndUserName"/>
+      <xs:complexType name="StandAloneUpdateKeywords">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="DocumentHandle_Collection" nillable="true" type="q18:ArrayOfstring" xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="StandAloneUpdateKeywords" nillable="true" type="tns:StandAloneUpdateKeywords"/>
+      <xs:complexType name="FieldsUpdateKeywords">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="StandAlone" nillable="true" type="tns:StandAloneOBNKsUpdateKeywords"/>
+          <xs:element minOccurs="0" name="Repeated" nillable="true" type="tns:RepeatedOBNKsUpdateKeywords"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FieldsUpdateKeywords" nillable="true" type="tns:FieldsUpdateKeywords"/>
+      <xs:complexType name="StandAloneOBNKsUpdateKeywords">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:element name="StandAloneOBNKsUpdateKeywords" nillable="true" type="tns:StandAloneOBNKsUpdateKeywords"/>
+      <xs:complexType name="RepeatedOBNKsUpdateKeywords">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:element name="RepeatedOBNKsUpdateKeywords" nillable="true" type="tns:RepeatedOBNKsUpdateKeywords"/>
+      <xs:element name="UpdateKeywordsResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="UpdateKeywordsResult" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+    </xs:schema>
+    <xs:schema targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:element name="anyType" nillable="true" type="xs:anyType"/>
+      <xs:element name="anyURI" nillable="true" type="xs:anyURI"/>
+      <xs:element name="base64Binary" nillable="true" type="xs:base64Binary"/>
+      <xs:element name="boolean" nillable="true" type="xs:boolean"/>
+      <xs:element name="byte" nillable="true" type="xs:byte"/>
+      <xs:element name="dateTime" nillable="true" type="xs:dateTime"/>
+      <xs:element name="decimal" nillable="true" type="xs:decimal"/>
+      <xs:element name="double" nillable="true" type="xs:double"/>
+      <xs:element name="float" nillable="true" type="xs:float"/>
+      <xs:element name="int" nillable="true" type="xs:int"/>
+      <xs:element name="long" nillable="true" type="xs:long"/>
+      <xs:element name="QName" nillable="true" type="xs:QName"/>
+      <xs:element name="short" nillable="true" type="xs:short"/>
+      <xs:element name="string" nillable="true" type="xs:string"/>
+      <xs:element name="unsignedByte" nillable="true" type="xs:unsignedByte"/>
+      <xs:element name="unsignedInt" nillable="true" type="xs:unsignedInt"/>
+      <xs:element name="unsignedLong" nillable="true" type="xs:unsignedLong"/>
+      <xs:element name="unsignedShort" nillable="true" type="xs:unsignedShort"/>
+      <xs:element name="char" nillable="true" type="tns:char"/>
+      <xs:simpleType name="char">
+        <xs:restriction base="xs:int"/>
+      </xs:simpleType>
+      <xs:element name="duration" nillable="true" type="tns:duration"/>
+      <xs:simpleType name="duration">
+        <xs:restriction base="xs:duration">
+          <xs:pattern value="\-?P(\d*D)?(T(\d*H)?(\d*M)?(\d*(\.\d*)?S)?)?"/>
+          <xs:minInclusive value="-P10675199DT2H48M5.4775808S"/>
+          <xs:maxInclusive value="P10675199DT2H48M5.4775807S"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:element name="guid" nillable="true" type="tns:guid"/>
+      <xs:simpleType name="guid">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[\da-fA-F]{8}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{4}-[\da-fA-F]{12}"/>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:attribute name="FactoryType" type="xs:QName"/>
+      <xs:attribute name="Id" type="xs:ID"/>
+      <xs:attribute name="Ref" type="xs:IDREF"/>
+    </xs:schema>
+    <xs:schema targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays" elementFormDefault="qualified" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/Arrays" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="ArrayOfstring">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring"/>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiveDocument"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiveDocumentResponse"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_GetDocumentContent_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentContent"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_GetDocumentContent_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentContentResponse"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_GetDocumentInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentInfo"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_GetDocumentInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDocumentInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ScriptDispatcher_InputMessage">
+    <wsdl:part name="parameters" element="tns:ScriptDispatcher"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ScriptDispatcher_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ScriptDispatcherResponse"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_DocComp_InputMessage">
+    <wsdl:part name="parameters" element="tns:DocComp"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_DocComp_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DocCompResponse"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_PolicyDocSearch_InputMessage">
+    <wsdl:part name="parameters" element="tns:PolicyDocSearch"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_PolicyDocSearch_OutputMessage">
+    <wsdl:part name="parameters" element="tns:PolicyDocSearchResponse"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_UpdateKeywords_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateKeywords"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_UpdateKeywords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateKeywordsResponse"/>
+  </wsdl:message>
+  <wsdl:portType name="HylandOutBoundContract">
+    <wsdl:operation name="ArchiveDocument">
+      <wsdl:input message="tns:HylandOutBoundContract_ArchiveDocument_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/ArchiveDocument"/>
+      <wsdl:output message="tns:HylandOutBoundContract_ArchiveDocument_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/ArchiveDocument/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentContent">
+      <wsdl:input message="tns:HylandOutBoundContract_GetDocumentContent_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/GetDocumentContent"/>
+      <wsdl:output message="tns:HylandOutBoundContract_GetDocumentContent_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/GetDocumentContent/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentInfo">
+      <wsdl:input message="tns:HylandOutBoundContract_GetDocumentInfo_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/GetDocumentInfo"/>
+      <wsdl:output message="tns:HylandOutBoundContract_GetDocumentInfo_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/GetDocumentInfo/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="ScriptDispatcher">
+      <wsdl:input message="tns:HylandOutBoundContract_ScriptDispatcher_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/ScriptDispatcher"/>
+      <wsdl:output message="tns:HylandOutBoundContract_ScriptDispatcher_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/ScriptDispatcher/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="DocComp">
+      <wsdl:input message="tns:HylandOutBoundContract_DocComp_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/DocComp"/>
+      <wsdl:output message="tns:HylandOutBoundContract_DocComp_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/DocComp/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="PolicyDocSearch">
+      <wsdl:input message="tns:HylandOutBoundContract_PolicyDocSearch_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/PolicyDocSearch"/>
+      <wsdl:output message="tns:HylandOutBoundContract_PolicyDocSearch_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/PolicyDocSearch/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKeywords">
+      <wsdl:input message="tns:HylandOutBoundContract_UpdateKeywords_InputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/UpdateKeywords"/>
+      <wsdl:output message="tns:HylandOutBoundContract_UpdateKeywords_OutputMessage" wsaw:Action="WebServicePublishing/PolicyCenter/Integration/UpdateKeywords/response"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_HylandOutBoundContract" type="tns:HylandOutBoundContract">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ArchiveDocument">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/ArchiveDocument" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentContent">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/GetDocumentContent" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetDocumentInfo">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/GetDocumentInfo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ScriptDispatcher">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/ScriptDispatcher" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="DocComp">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/DocComp" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="PolicyDocSearch">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/PolicyDocSearch" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateKeywords">
+      <soap:operation soapAction="WebServicePublishing/PolicyCenter/Integration/UpdateKeywords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="EISClientWithConfig">
+    <wsdl:port name="BasicHttpBinding_HylandOutBoundContract" binding="tns:BasicHttpBinding_HylandOutBoundContract">
+      <soap:address location="http://dev-030326.onbase.net/PolicyCenter_Integration/SoapService.svc/SOAP11"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

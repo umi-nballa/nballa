@@ -75,7 +75,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     }
     if (currentCoverage.OwningCoverable typeis BP7Classification) {
       var classification = currentCoverage.OwningCoverable as BP7Classification
-      classification.ClassificationNumber = classification?.ClassificationNumber != null ?  classification.ClassificationNumber : ""
+      coverable.ClassificationNo = classification?.ClassificationNumber != null ?  classification.ClassificationNumber : ""
     }
     return coverable
   }
@@ -160,8 +160,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.AdditionalInsured.PolicyAddlInsured.DisplayName
-      limit.LimitDesc = ""
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName + "| Location:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress
       limits.add(limit)
     }
     return limits
@@ -177,8 +177,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.AdditionalInsured.PolicyAddlInsured.DisplayName
-      limit.LimitDesc = ""
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName + "| Location:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress
       limits.add(limit)
     }
     return limits
@@ -194,8 +194,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.AdditionalInsured.PolicyAddlInsured.DisplayName
-      limit.LimitDesc = ""
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName + "|Location:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress
       limits.add(limit)
     }
     return limits
@@ -211,8 +211,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.AdditionalInsured.PolicyAddlInsured.DisplayName
-      limit.LimitDesc = item.LongStringCol1
+      limit.FormatText = item.LongStringCol1 //  Desginated Part
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName + "|Location:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress
       limits.add(limit)
     }
     return limits
@@ -228,8 +228,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.AdditionalInsured.PolicyAddlInsured.DisplayName
-      limit.LimitDesc = item.LongStringCol1
+      limit.FormatText = item.LongStringCol1 //  Desginated Part
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName + "|Location:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress
       limits.add(limit)
     }
     return limits

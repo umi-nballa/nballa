@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  entity="OnBaseDocumentLink_Ext"
+  table="onbasedocumentlink_ext"
+  type="retireable">
+  <column
+    desc="Document Link Type"
+    name="LinkType"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Linked Entity PublicID"
+    name="LinkedEntity"
+    nullok="false"
+    type="publicid"/>
+  <foreignkey
+    desc="Linked Document To The Entity"
+    fkentity="Document"
+    name="Document"
+    nullok="false"/>
+  <implementsEntity
+    name="Extractable"/>
+</entity>

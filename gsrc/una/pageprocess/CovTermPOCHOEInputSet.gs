@@ -60,7 +60,7 @@ class CovTermPOCHOEInputSet {
     if(coverable typeis Dwelling_HOE){
       result = validateCalculatedLimits(covTerm, coverable)
 
-      if(result != null){
+      if(result == null){
         result = validateFloodCoverageLimits(covTerm, coverable)
       }
     }

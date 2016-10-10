@@ -48,9 +48,6 @@ class CoveragesUtil {
       case "HODW_WindstromExteriorPaintandWaterproofingExcl_HOESC_Ext":
         result = isWindstormExteriorPaintExclusionAvailable(coverable as HomeownersLine_HOE)
         break
-      case "HODW_AckNoWindstromHail_HOE_Ext":
-        result = isAcknowledgementOfNoWindstormHailExclusionAvailable(coverable as HomeownersLine_HOE)
-        break
       case "HODW_WindHurricaneHailExc_HOE_Ext":
         result = isWindHurricaneAndHailExclusionAvailable(coverable as HomeownersLine_HOE)
       default:
@@ -74,10 +71,8 @@ class CoveragesUtil {
       case "HODW_AckNoWindstromHail_HOE_Ext":
         result = getAcknowledgementOfNoWindstormHailCoverageExistence(coverable as HomeownersLine_HOE)
         break
-      case "":
-
-        break
       default:
+        break
     }
 
     return result
@@ -127,14 +122,6 @@ class CoveragesUtil {
     return result
   }
 
-  private static function isAcknowledgementOfNoWindstormHailExclusionAvailable(hoLine: HomeownersLine_HOE) : boolean{
-    var result = true
-
-    result = !hoLine.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm
-
-    return result
-  }
-
   private static function isWindHurricaneAndHailExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
@@ -143,7 +130,7 @@ class CoveragesUtil {
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
-    if(hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.OptionValue.OptionCode == "0_Excl"){
+    if(!hoLine.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm or hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value == null){
       return TC_REQUIRED
     }else{
       return TC_ELECTABLE

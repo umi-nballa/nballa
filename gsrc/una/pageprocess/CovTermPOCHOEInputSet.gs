@@ -34,6 +34,7 @@ class CovTermPOCHOEInputSet {
   private static function onChangeForDwellingCoverable(dwelling : Dwelling_HOE, covTerm : CovTerm){
     dwelling.PolicyPeriod.editIfQuoted()
     ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
+    roundInputValue(dwelling, covTerm)
 
     switch(covTerm.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
@@ -47,8 +48,6 @@ class CovTermPOCHOEInputSet {
       default:
         break;
     }
-
-    roundInputValue(dwelling, covTerm)
   }
 
   static function validate(coverable: Coverable, covTerm: gw.api.domain.covterm.DirectCovTerm):String{

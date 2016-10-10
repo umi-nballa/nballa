@@ -1,0 +1,850 @@
+<?xml version="1.0"?>
+<wsdl:definitions targetNamespace="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0" name="XGServices" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <wsp:Policy wsu:Id="BasicHttpBinding_IAccount_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="BasicHttpBinding_IListMaintenance_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="BasicHttpBinding_IResults_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsp:Policy wsu:Id="BasicHttpBinding_ISearch_policy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+        <sp:TransportBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+          <wsp:Policy>
+            <sp:TransportToken>
+              <wsp:Policy>
+                <sp:HttpsToken RequireClientCertificate="false"/>
+              </wsp:Policy>
+            </sp:TransportToken>
+            <sp:AlgorithmSuite>
+              <wsp:Policy>
+                <sp:Basic256/>
+              </wsp:Policy>
+            </sp:AlgorithmSuite>
+            <sp:Layout>
+              <wsp:Policy>
+                <sp:Strict/>
+              </wsp:Policy>
+            </sp:Layout>
+          </wsp:Policy>
+        </sp:TransportBinding>
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  <wsdl:types>
+    <xsd:schema targetNamespace="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/Imports">
+      <xsd:import namespace="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0" schemaLocation="XGServices_svc.xsd"/>
+      <xsd:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" schemaLocation="XGServices_svc3.xsd"/>
+      <xsd:import namespace="http://microsoft.com/wsdl/types/" schemaLocation="XGServices_svc2.xsd"/>
+    </xsd:schema>
+  </wsdl:types>
+  <wsdl:message name="IAccount_ChangePassword_InputMessage">
+    <wsdl:part name="parameters" element="tns:ChangePassword"/>
+  </wsdl:message>
+  <wsdl:message name="IAccount_ChangePassword_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ChangePasswordResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IAccount_ChangePassword_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IAccount_GetDaysUntilPasswordExpires_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDaysUntilPasswordExpires"/>
+  </wsdl:message>
+  <wsdl:message name="IAccount_GetDaysUntilPasswordExpires_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDaysUntilPasswordExpiresResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IAccount_GetDaysUntilPasswordExpires_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddList_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddList"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddList_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_DeleteList_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteList"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_DeleteList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_DeleteList_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_GetList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetList"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_GetList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_GetList_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_IndexList_InputMessage">
+    <wsdl:part name="parameters" element="tns:IndexList"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_IndexList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:IndexListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_IndexList_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_MergeDuplicates_InputMessage">
+    <wsdl:part name="parameters" element="tns:MergeDuplicates"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_MergeDuplicates_OutputMessage">
+    <wsdl:part name="parameters" element="tns:MergeDuplicatesResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_MergeDuplicates_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_SearchLists_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchLists"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_SearchLists_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchListsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_SearchLists_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_UpdateList_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateList"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_UpdateList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_UpdateList_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddResultRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddResultRecord"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddResultRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddResultRecordResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddResultRecord_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_AddRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_DeleteRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_DeleteRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_DeleteRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_GetRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_GetRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_GetRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_SearchListRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchListRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_SearchListRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchListRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_SearchListRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_UpdateRecord_InputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRecord"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_UpdateRecord_OutputMessage">
+    <wsdl:part name="parameters" element="tns:UpdateRecordResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IListMaintenance_UpdateRecord_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_AddAttachment_InputMessage">
+    <wsdl:part name="parameters" element="tns:AddAttachment"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_AddAttachment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:AddAttachmentResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_AddAttachment_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteAttachment_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAttachment"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteAttachment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteAttachmentResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteAttachment_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetAttachment_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetAttachment"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetAttachment_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetAttachmentResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetAttachment_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteResultRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResultRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteResultRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteResultRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteResultRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetResultRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetResultRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetResultRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetResultRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetResultRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SearchResultRecords_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResultRecords"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SearchResultRecords_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResultRecordsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SearchResultRecords_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SetRecordState_InputMessage">
+    <wsdl:part name="parameters" element="tns:SetRecordState"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SetRecordState_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SetRecordStateResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SetRecordState_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteRuns_InputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteRuns"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteRuns_OutputMessage">
+    <wsdl:part name="parameters" element="tns:DeleteRunsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_DeleteRuns_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetRunInfo_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetRunInfo"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetRunInfo_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetRunInfoResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_GetRunInfo_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SearchRuns_InputMessage">
+    <wsdl:part name="parameters" element="tns:SearchRuns"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SearchRuns_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchRunsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="IResults_SearchRuns_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="ISearch_GetDataFileList_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataFileList"/>
+  </wsdl:message>
+  <wsdl:message name="ISearch_GetDataFileList_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetDataFileListResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ISearch_GetDataFileList_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:message name="ISearch_Search_InputMessage">
+    <wsdl:part name="parameters" element="tns:Search"/>
+  </wsdl:message>
+  <wsdl:message name="ISearch_Search_OutputMessage">
+    <wsdl:part name="parameters" element="tns:SearchResponse"/>
+  </wsdl:message>
+  <wsdl:message name="ISearch_Search_ServiceFaultFault_FaultMessage">
+    <wsdl:part name="detail" element="tns:ServiceFault"/>
+  </wsdl:message>
+  <wsdl:portType name="IAccount">
+    <wsdl:operation name="ChangePassword">
+      <wsdl:input message="tns:IAccount_ChangePassword_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/ChangePassword"/>
+      <wsdl:output message="tns:IAccount_ChangePassword_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/ChangePasswordResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IAccount_ChangePassword_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/ChangePasswordServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetDaysUntilPasswordExpires">
+      <wsdl:input message="tns:IAccount_GetDaysUntilPasswordExpires_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/GetDaysUntilPasswordExpires"/>
+      <wsdl:output message="tns:IAccount_GetDaysUntilPasswordExpires_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/GetDaysUntilPasswordExpiresResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IAccount_GetDaysUntilPasswordExpires_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/GetDaysUntilPasswordExpiresServiceFaultFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IListMaintenance">
+    <wsdl:operation name="AddList">
+      <wsdl:input message="tns:IListMaintenance_AddList_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddList"/>
+      <wsdl:output message="tns:IListMaintenance_AddList_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddListResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_AddList_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddListServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteList">
+      <wsdl:input message="tns:IListMaintenance_DeleteList_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteList"/>
+      <wsdl:output message="tns:IListMaintenance_DeleteList_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteListResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_DeleteList_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteListServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetList">
+      <wsdl:input message="tns:IListMaintenance_GetList_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetList"/>
+      <wsdl:output message="tns:IListMaintenance_GetList_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetListResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_GetList_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetListServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="IndexList">
+      <wsdl:input message="tns:IListMaintenance_IndexList_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/IndexList"/>
+      <wsdl:output message="tns:IListMaintenance_IndexList_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/IndexListResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_IndexList_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/IndexListServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="MergeDuplicates">
+      <wsdl:input message="tns:IListMaintenance_MergeDuplicates_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/MergeDuplicates"/>
+      <wsdl:output message="tns:IListMaintenance_MergeDuplicates_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/MergeDuplicatesResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_MergeDuplicates_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/MergeDuplicatesServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchLists">
+      <wsdl:input message="tns:IListMaintenance_SearchLists_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchLists"/>
+      <wsdl:output message="tns:IListMaintenance_SearchLists_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchListsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_SearchLists_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchListsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateList">
+      <wsdl:input message="tns:IListMaintenance_UpdateList_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateList"/>
+      <wsdl:output message="tns:IListMaintenance_UpdateList_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateListResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_UpdateList_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateListServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddResultRecord">
+      <wsdl:input message="tns:IListMaintenance_AddResultRecord_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddResultRecord"/>
+      <wsdl:output message="tns:IListMaintenance_AddResultRecord_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddResultRecordResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_AddResultRecord_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddResultRecordServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="AddRecords">
+      <wsdl:input message="tns:IListMaintenance_AddRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddRecords"/>
+      <wsdl:output message="tns:IListMaintenance_AddRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_AddRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRecords">
+      <wsdl:input message="tns:IListMaintenance_DeleteRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteRecords"/>
+      <wsdl:output message="tns:IListMaintenance_DeleteRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_DeleteRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecords">
+      <wsdl:input message="tns:IListMaintenance_GetRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetRecords"/>
+      <wsdl:output message="tns:IListMaintenance_GetRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_GetRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchListRecords">
+      <wsdl:input message="tns:IListMaintenance_SearchListRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchListRecords"/>
+      <wsdl:output message="tns:IListMaintenance_SearchListRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchListRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_SearchListRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchListRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecord">
+      <wsdl:input message="tns:IListMaintenance_UpdateRecord_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateRecord"/>
+      <wsdl:output message="tns:IListMaintenance_UpdateRecord_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateRecordResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IListMaintenance_UpdateRecord_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateRecordServiceFaultFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="IResults">
+    <wsdl:operation name="AddAttachment">
+      <wsdl:input message="tns:IResults_AddAttachment_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/AddAttachment"/>
+      <wsdl:output message="tns:IResults_AddAttachment_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/AddAttachmentResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_AddAttachment_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/AddAttachmentServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAttachment">
+      <wsdl:input message="tns:IResults_DeleteAttachment_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteAttachment"/>
+      <wsdl:output message="tns:IResults_DeleteAttachment_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteAttachmentResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_DeleteAttachment_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteAttachmentServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetAttachment">
+      <wsdl:input message="tns:IResults_GetAttachment_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetAttachment"/>
+      <wsdl:output message="tns:IResults_GetAttachment_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetAttachmentResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_GetAttachment_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetAttachmentServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteResultRecords">
+      <wsdl:input message="tns:IResults_DeleteResultRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteResultRecords"/>
+      <wsdl:output message="tns:IResults_DeleteResultRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteResultRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_DeleteResultRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteResultRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetResultRecords">
+      <wsdl:input message="tns:IResults_GetResultRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetResultRecords"/>
+      <wsdl:output message="tns:IResults_GetResultRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetResultRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_GetResultRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetResultRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchResultRecords">
+      <wsdl:input message="tns:IResults_SearchResultRecords_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchResultRecords"/>
+      <wsdl:output message="tns:IResults_SearchResultRecords_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchResultRecordsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_SearchResultRecords_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchResultRecordsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="SetRecordState">
+      <wsdl:input message="tns:IResults_SetRecordState_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SetRecordState"/>
+      <wsdl:output message="tns:IResults_SetRecordState_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SetRecordStateResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_SetRecordState_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SetRecordStateServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRuns">
+      <wsdl:input message="tns:IResults_DeleteRuns_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteRuns"/>
+      <wsdl:output message="tns:IResults_DeleteRuns_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteRunsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_DeleteRuns_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteRunsServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunInfo">
+      <wsdl:input message="tns:IResults_GetRunInfo_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetRunInfo"/>
+      <wsdl:output message="tns:IResults_GetRunInfo_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetRunInfoResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_GetRunInfo_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetRunInfoServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRuns">
+      <wsdl:input message="tns:IResults_SearchRuns_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchRuns"/>
+      <wsdl:output message="tns:IResults_SearchRuns_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchRunsResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:IResults_SearchRuns_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchRunsServiceFaultFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:portType name="ISearch">
+    <wsdl:operation name="GetDataFileList">
+      <wsdl:input message="tns:ISearch_GetDataFileList_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/GetDataFileList"/>
+      <wsdl:output message="tns:ISearch_GetDataFileList_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/GetDataFileListResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:ISearch_GetDataFileList_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/GetDataFileListServiceFaultFault"/>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <wsdl:input message="tns:ISearch_Search_InputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/Search"/>
+      <wsdl:output message="tns:ISearch_Search_OutputMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/SearchResponse"/>
+      <wsdl:fault name="ServiceFaultFault" message="tns:ISearch_Search_ServiceFaultFault_FaultMessage" wsaw:Action="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/SearchServiceFaultFault"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="BasicHttpBinding_IAccount" type="tns:IAccount">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IAccount_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="ChangePassword">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/ChangePassword" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetDaysUntilPasswordExpires">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IAccount/GetDaysUntilPasswordExpires" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IListMaintenance" type="tns:IListMaintenance">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IListMaintenance_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="AddList">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteList">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetList">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="IndexList">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/IndexList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="MergeDuplicates">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/MergeDuplicates" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchLists">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchLists" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateList">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddResultRecord">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddResultRecord" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="AddRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/AddRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/DeleteRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/GetRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchListRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/SearchListRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="UpdateRecord">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IListMaintenance/UpdateRecord" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_IResults" type="tns:IResults">
+    <wsp:PolicyReference URI="#BasicHttpBinding_IResults_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="AddAttachment">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/AddAttachment" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteAttachment">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteAttachment" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetAttachment">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetAttachment" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteResultRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteResultRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetResultRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetResultRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchResultRecords">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchResultRecords" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SetRecordState">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SetRecordState" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="DeleteRuns">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/DeleteRuns" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="GetRunInfo">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/GetRunInfo" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="SearchRuns">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/IResults/SearchRuns" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="BasicHttpBinding_ISearch" type="tns:ISearch">
+    <wsp:PolicyReference URI="#BasicHttpBinding_ISearch_policy"/>
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="GetDataFileList">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/GetDataFileList" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="Search">
+      <soap:operation soapAction="https://bridgerinsight.lexisnexis.com/BridgerInsight.Web.Services.Interfaces.11.0/ISearch/Search" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="ServiceFaultFault">
+        <soap:fault name="ServiceFaultFault" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="XGServices">
+    <wsdl:port name="BasicHttpBinding_IAccount" binding="tns:BasicHttpBinding_IAccount">
+      <soap:address location="https://bridgerstaging.lexisnexis.com/LN.WebServices/11.0/XGServices.svc/Account"/>
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IListMaintenance" binding="tns:BasicHttpBinding_IListMaintenance">
+      <soap:address location="https://bridgerstaging.lexisnexis.com/LN.WebServices/11.0/XGServices.svc/ListMaintenance"/>
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_IResults" binding="tns:BasicHttpBinding_IResults">
+      <soap:address location="https://bridgerstaging.lexisnexis.com/LN.WebServices/11.0/XGServices.svc/Results"/>
+    </wsdl:port>
+    <wsdl:port name="BasicHttpBinding_ISearch" binding="tns:BasicHttpBinding_ISearch">
+      <soap:address location="https://bridgerstaging.lexisnexis.com/LN.WebServices/11.0/XGServices.svc/Search"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

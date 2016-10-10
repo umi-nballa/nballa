@@ -7,6 +7,7 @@ uses una.integration.mapping.hpx.common.HPXAdditionalNameInsuredMapper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyMapper
 uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses gw.xml.XmlElement
+uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,19 +22,24 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     var commercialPackagePolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType()
     var commercialPropertyPolicyLine = new HPXCPPolicyMapper()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
+    var additionalInsuredMapper = new HPXAdditionalInsuredMapper()
     var generalLiabilityPolicyLine = new HPXGLPolicyMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
-    commercialPackagePolicy.addChild(new XmlElement(createInsuredOrPrincipal(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("InsuredOrPrincipal", createInsuredOrPrincipal(policyPeriod)))
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
     for (additionalNamedInsured in additionalNamedInsureds) {
-      commercialPackagePolicy.addChild(new XmlElement(additionalNamedInsured))
+      commercialPackagePolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalNamedInsured))
     }
-    commercialPackagePolicy.addChild(new XmlElement(createPolicyDetails(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(producerMapper.createProducer(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(locationMapper.createBillingLocation(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(commercialPropertyPolicyLine.createPolicySummaryInfo(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement(commercialPropertyPolicyLine.createCommercialPropertyLineBusiness(policyPeriod)))
+    var additionalInsureds = additionalInsuredMapper.createAdditionalInsureds(policyPeriod)
+    for (additionalInsured in additionalInsureds) {
+      commercialPackagePolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalInsured))
+    }
+    commercialPackagePolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("Producer", producerMapper.createProducer(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("Location", locationMapper.createBillingLocation(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("PolicySummaryInfo", commercialPropertyPolicyLine.createPolicySummaryInfo(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("CommercialPackageLineBusiness", commercialPropertyPolicyLine.createCommercialPropertyLineBusiness(policyPeriod)))
     return commercialPackagePolicy
   }
 

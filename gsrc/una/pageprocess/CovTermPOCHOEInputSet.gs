@@ -9,7 +9,6 @@ uses una.utils.MathUtil
 uses una.productmodel.CoveragesUtil
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
-uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +34,7 @@ class CovTermPOCHOEInputSet {
   private static function onChangeForDwellingCoverable(dwelling : Dwelling_HOE, covTerm : CovTerm){
     dwelling.PolicyPeriod.editIfQuoted()
     ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
+    roundInputValue(dwelling, covTerm)
 
     switch(covTerm.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
@@ -45,35 +45,19 @@ class CovTermPOCHOEInputSet {
       case "HODW_ExecutiveCov_HOE_Ext":
           setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
           break
-        default:
+      default:
         break;
     }
-
-    roundInputValue(dwelling, covTerm)
   }
 
   static function validate(coverable: Coverable, covTerm: gw.api.domain.covterm.DirectCovTerm):String{
     var result : String
 
     if(coverable typeis Dwelling_HOE){
-      var min = covTerm.getMinAllowedLimitValue(coverable)
-      var max = covTerm.getMaxAllowedLimitValue(coverable)
+      result = validateCalculatedLimits(covTerm, coverable)
 
-      if(ConfigParamsUtil.getList(TC_DERIVEDSPECIALLIMITSCOVTERMPATTERNS, coverable.PolicyLine.BaseState).contains(covTerm.PatternCode)){
-        var incrementAmount = ConfigParamsUtil.getDouble(TC_SpecialLimitsIncrementAmount, coverable.HOLine.BaseState, covTerm.PatternCode)
-        var isAllowedValue = isAllowedValue(incrementAmount, covTerm, coverable)
-
-        if(covTerm.Value != null and covTerm.Value < min or covTerm.Value > max or !isAllowedValue){
-          result = displaykey.SpecialLimitErrorMessage(covTerm.Pattern.Name, new Double(min).asMoney(), new Double(max).asMoney(), incrementAmount.asMoney())
-        }
-      }else{
-        if((max != null and min != null) and covTerm.Value < min or covTerm.Value > max){
-          result = displaykey.una.productmodel.validation.LimitValidationMessage(covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
-        }else if(min != null and covTerm.Value < min){
-          result = "Value must be no less than ${new Double(min as double).asMoney()}"
-        }else if(max != null and covTerm.Value > max){
-          result = "Value must be no less than ${new Double(max as double).asMoney()}"
-        }
+      if(result == null){
+        result = validateFloodCoverageLimits(covTerm, coverable)
       }
     }
 
@@ -112,6 +96,47 @@ class CovTermPOCHOEInputSet {
     }
 
     return result
+  }
+
+  private static function validateCalculatedLimits(covTerm: DirectCovTerm, coverable: Dwelling_HOE) : String {
+    var result : String
+
+    var min = covTerm.getMinAllowedLimitValue(coverable)
+    var max = covTerm.getMaxAllowedLimitValue(coverable)
+
+    if(ConfigParamsUtil.getList(TC_DERIVEDSPECIALLIMITSCOVTERMPATTERNS, coverable.PolicyLine.BaseState).contains(covTerm.PatternCode)){
+      var incrementAmount = ConfigParamsUtil.getDouble(TC_SpecialLimitsIncrementAmount, coverable.HOLine.BaseState, covTerm.PatternCode)
+      var isAllowedValue = isAllowedValue(incrementAmount, covTerm, coverable)
+
+      if(covTerm.Value != null and covTerm.Value < min or covTerm.Value > max or !isAllowedValue){
+        result = displaykey.SpecialLimitErrorMessage(covTerm.Pattern.Name, new Double(min).asMoney(), new Double(max).asMoney(), incrementAmount.asMoney())
+      }
+    }else{
+      if((max != null and min != null) and (covTerm.Value < min or covTerm.Value > max)){
+        result = displaykey.una.productmodel.validation.LimitValidationMessage(new Double(covTerm.Value).asMoney(), covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
+      }else if(min != null and covTerm.Value < min){
+        result = displaykey.una.productmodel.validation.LimitMinValidationMessage(new Double(min as double).asMoney())
+      }else if(max != null and covTerm.Value > max){
+        result = displaykey.una.productmodel.validation.LimitMaxValidationMessage (new Double(max as double).asMoney())
+      }
+    }
+
+    return result
+  }
+
+  private static function validateFloodCoverageLimits(covTerm : DirectCovTerm, coverable : Dwelling_HOE) : String{
+    var result : String
+
+    if(covTerm.PatternCode =="HODW_FloodCov_Dwelling_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+        coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
+      result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+    }
+    if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+        coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
+      result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+    }
+
+    return  result
   }
 
   private static function setSectionILimitDefaults(dwelling : Dwelling_HOE, covTerm : DirectCovTerm){
@@ -219,45 +244,18 @@ class CovTermPOCHOEInputSet {
     return allowedIncrements.contains(covTerm.Value.doubleValue())
   }
 
-   public static function minValueDamageProperty(dwelling: Dwelling_HOE):boolean{
-     var minValue:BigDecimal = 2500
-
-     if(dwelling.HODW_DamagetoPropertyofOthers_HOE_ExtExists and dwelling.HODW_DamagetoPropertyofOthers_HOE_Ext.HODW_DamagePropertyLimit_HOETerm.Value < minValue){
-       return true
-      }
-     return false
-    }
-
-   public static function maxValuePermitIncidLimit(dwelling:Dwelling_HOE):boolean{
-    var percentValue:BigDecimal = 0.5
-
-    if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm!=null){
-       var maxValue:BigDecimal
-       maxValue = dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.multiply(percentValue)
-      if(dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm.Value > maxValue){
-        return true
-      }
-    }
-    return false
-  }
-
   public static function validateRequiredPIField(dwelling:Dwelling_HOE):String{
 
-     if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
+     if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and (dwelling.HOPolicyType == TC_HO3 or dwelling.HOPolicyType == TC_HO6) and
         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value == null and
         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null) {
          return displaykey.Web.Policy.HomeownersLine.Validation.RequiredTerm_Ext
       }
+    else if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
+            dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value == null and
+            dwelling.HOPolicyType == TC_HO4){
+       return displaykey.Web.Policy.HomeownersLine.Validation.OSRequired_Ext
+     }
     return null
   }
-
-  public static function validateDescOtherSRP(dwelling:Dwelling_HOE):String{
-
-    if(dwelling.HODW_PermittedIncOcp_HOE_ExtExists and
-         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value != null and
-         dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_DescriptionOtherSRP_HOETerm.Value == null){
-          return displaykey.Web.Policy.HomeownersLine.Validation.SelectBoolean_Ext
-      }
-    return null
-    }
 }

@@ -61,20 +61,6 @@ class HOInferenceFormByCoverageHOE extends FormData {
           _referenceDate = dwelling.HODW_ScheduledProperty_HOE.ReferenceDate
           _coverageExists = true
         }
-      } else if (formCode.equals("HODW_HO0366_HOE")) {
-        // HO 03 66
-        // Florida only
-        if (dwelling.HODW_FungiCovFlorida_HOEExists) {
-          _referenceDate = dwelling.HODW_FungiCovFlorida_HOE.ReferenceDate
-          _coverageExists = true
-        }
-      } else if (formCode.equals("HODW_HO0343_HOE")) {
-        // HO 03 43
-        // Florida only
-        if (dwelling.HODW_FungiCovFlorida_HOEExists) {
-          _referenceDate = dwelling.HODW_FungiCovFlorida_HOE.ReferenceDate
-          _coverageExists = true
-        }
       }
     } else { // DP policy type
       if (formCode.equals("DPDW_DP0690_HOE")) {
@@ -108,21 +94,7 @@ class HOInferenceFormByCoverageHOE extends FormData {
           _referenceDate = dwelling.HODW_ScheduledProperty_HOE.ReferenceDate
           _coverageExists = true
         }
-      } else if (formCode.equals("DPDW_DP0387_HOE")) {
-        // DP 03 87
-        // Florida only
-        if (dwelling.HODW_FungiCovFlorida_HOEExists) {
-          _referenceDate = dwelling.HODW_FungiCovFlorida_HOE.ReferenceDate
-          _coverageExists = true
-        }
-      } else if (formCode.equals("DPDW_DP0343_HOE")) {
-        // DP 03 43
-        // Florida only
-        if (dwelling.HODW_FungiCovFlorida_HOEExists) {
-          _referenceDate = dwelling.HODW_FungiCovFlorida_HOE.ReferenceDate
-          _coverageExists = true
-        }
-      } 
+      }
     }
     
     // default the reference date if one of the necessary exclusions or conditions

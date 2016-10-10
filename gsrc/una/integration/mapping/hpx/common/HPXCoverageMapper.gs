@@ -22,12 +22,12 @@ abstract class HPXCoverageMapper {
     cov.CoverageCd = currentCoverage.PatternCode
     var coverableInfo = createCoverableInfo(currentCoverage, previousCoverage)
     if (coverableInfo != null) {
-      cov.addChild(new XmlElement(coverableInfo))
+      cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
-    for (item in scheduleList) {cov.addChild(new XmlElement(item))}
+    for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
     if (currentCoverage.OwningCoverable typeis PolicyLine) {
       var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage)
       for (child in covTermInfo.$Children) { cov.addChild(child) }

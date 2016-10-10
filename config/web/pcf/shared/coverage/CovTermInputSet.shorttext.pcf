@@ -4,7 +4,8 @@
   xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
   <InputSet
     id="CovTermInputSet"
-    mode="shorttext">
+    mode="shorttext"
+    visible="(term.PatternCode == &quot;HODW_OtherStructureDescription_HOE&quot;) ? (term.Clause.OwningCoverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value : true">
     <Require
       name="term"
       type="gw.api.domain.covterm.CovTerm"/>
@@ -15,7 +16,7 @@
       editable="true"
       id="StringTermInput"
       label="term.Pattern.DisplayName"
-      required="term.Pattern.Required"
+      required="term.Pattern.Required or term.PatternCode == &quot;HODW_OtherStructureDescription_HOE&quot; and (term.Clause.OwningCoverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value"
       value="(term as gw.api.domain.covterm.GenericCovTerm&lt;String&gt;).Value"/>
   </InputSet>
 </PCF>

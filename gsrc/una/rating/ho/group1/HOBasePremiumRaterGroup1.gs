@@ -14,7 +14,7 @@ uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 7/11/16
- * Class which rates the base premium for the texas HO policies
+ * Class which rates the base premium for the Group 1 HO policies
  */
 class HOBasePremiumRaterGroup1 {
 

@@ -2,18 +2,15 @@
 <plugin
   name="IDocumentContentSource">
   <plugin-gosu
-    gosuclass="onbase.api.pluginimpl.DocumentContentSource">
+    gosuclass="gw.plugin.document.impl.AsyncDocumentContentSource">
     <param
-      name="AsyncDocumentFolder"
-      value="C:\Processing"/>
+      name="documents.path"
+      value="files/documents"/>
     <param
-      name="AsyncDocumentSize"
-      value="300KB"/>
-    <param
-      name="OnBaseClientType"
-      value="Web"/>
-    <param
-      name="OnBaseWebClientType"
-      value="HTML"/>
+      name="TrySynchedAddFirst"
+      value="true"/>
+      <param
+        name="SynchedContentSource"
+        value="gw.plugin.document.impl.LocalDocumentContentSource"/>
   </plugin-gosu>
 </plugin>

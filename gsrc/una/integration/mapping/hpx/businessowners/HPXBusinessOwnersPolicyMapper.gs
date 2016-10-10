@@ -107,7 +107,7 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var coverageMapper = new HPXBP7CoverageMapper()
     for (coverage in currentCoverages) {
-      var trxs = transactions.where( \ elt1 -> coverage.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
+      var trxs = transactions.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
       if (previousCoverages != null) {
         var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
         coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))

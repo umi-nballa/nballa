@@ -4,7 +4,6 @@ uses java.math.BigDecimal
 uses java.util.Date
 uses una.rating.util.HOConstructionTypeMapper
 uses una.config.ConfigParamsUtil
-uses java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,7 +24,8 @@ class HOCommonBasePremiumRatingInfo {
   var _protectionClassCode : String as ProtectionClassCode
   var _constructionType : RateTableConstructionType_Ext as ConstructionType
   var _keyFactorGreaterLimit : int as KeyFactorGreaterLimit
-
+  var _keyFactorLowerBound : BigDecimal as KeyFactorLowerBound
+  var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
 
   construct(dwelling: Dwelling_HOE) {
     _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
@@ -72,6 +72,11 @@ class HOCommonBasePremiumRatingInfo {
     _constructionType= HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
 
     _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOPolicyType.Code)
+    var keyFactorRange = ConfigParamsUtil.getRange(TC_KEYFACTORRANGE, dwelling.CoverableState, dwelling.HOPolicyType.Code)
+    _keyFactorLowerBound = keyFactorRange.LowerBound
+    _keyFactorUpperBound = keyFactorRange.UpperBound
+
+
   }
 
   private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {

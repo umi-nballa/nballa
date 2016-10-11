@@ -88,7 +88,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var coverageMapper = new HPXDwellingCoverageMapper()
     for (cov in currentCoverages) {
       var hoTransactions = getTransactions(policyPeriod)
-      var trxs = hoTransactions.where( \ elt -> cov.equals(elt.HomeownersCost.Coverage.PatternCode))
+      var trxs = hoTransactions.where( \ elt -> cov.PatternCode.equals(elt.HomeownersCost.Coverage.PatternCode))
       if (previousCoverages != null) {
         var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
         coverages.add(coverageMapper.createCoverageInfo(cov, previousCoverage, trxs))

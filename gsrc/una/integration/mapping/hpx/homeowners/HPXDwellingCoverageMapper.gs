@@ -17,7 +17,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
     switch (currentCoverage.PatternCode) {
       case "HODW_OtherStructuresOnPremise_HOE" :
-        var otherStructuresOnPremises = createOtherStructuresOnPremisesSchedule(currentCoverage, previousCoverage)
+        var otherStructuresOnPremises = createOtherStructuresOnPremisesSchedule(currentCoverage, previousCoverage, transactions)
         for (item in otherStructuresOnPremises) { limits.add(item)}
         break
       case "HODW_ScheduledProperty_HOE" :
@@ -25,7 +25,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         for (item in scheduledProperties) { limits.add(item)}
         break
       case "HODW_PersonalPropertyOffResidence_HOE" :
-          var scheduledProperties = createPersonalPropertyOnOtherResidences(currentCoverage, previousCoverage)
+          var scheduledProperties = createPersonalPropertyOnOtherResidences(currentCoverage, previousCoverage, transactions)
           for (item in scheduledProperties) { limits.add(item)}
           break
       /*
@@ -38,7 +38,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     return limits
   }
 
-  override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "HOPL_LossAssCovLimit_HOE") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value : 0.00
@@ -50,11 +50,11 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CoverageSubCd = currentCovTerm.PatternCode
       return limit
     } else {
-      return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm)
+      return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
     }
   }
 
-  function createOtherStructuresOnPremisesSchedule(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+  function createOtherStructuresOnPremisesSchedule(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_OtherStructuresOnPremise_HOE.ScheduledItems
     for (item in scheduleItems) {
@@ -66,6 +66,14 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = item.AdditionalLimit != null ? item.AdditionalLimit.Code : 0
       limit.FormatText = item.rentedtoOthers_Ext != null ? item.rentedtoOthers_Ext : false
       limit.LimitDesc = item.Description != null ? item.Description : ""
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
     }
     return limits
   }
@@ -84,11 +92,19 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = 0
       limit.FormatText = ""
       limit.LimitDesc = item.Description != null ? item.Description : ""
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
     }
     return limits
   }
 
-  function createPersonalPropertyOnOtherResidences(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+  function createPersonalPropertyOnOtherResidences(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_PersonalPropertyOffResidence_HOE.ScheduledItems
     for (item in scheduleItems) {
@@ -100,6 +116,14 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = item.AdditionalLimit != null ? item.AdditionalLimit : 0
       limit.FormatText = item.rentedtoOthers_Ext != null ? item.rentedtoOthers_Ext : false
       limit.LimitDesc = item.PolicyLocation.DisplayName != null ? item.PolicyLocation.DisplayName : ""
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
     }
     return limits
   }

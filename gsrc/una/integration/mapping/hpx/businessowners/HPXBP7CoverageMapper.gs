@@ -80,7 +80,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     return coverable
   }
 
-  override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "BP7OnPremisesLimit_EXT") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.CurrentTermAmt.Amt = 0.00
@@ -92,7 +92,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CoverageSubCd = currentCovTerm.PatternCode
       return limit
     } else {
-      return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm)
+      return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
     }
   }
    /*

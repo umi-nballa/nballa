@@ -20,43 +20,20 @@ class HPXPremiumMapper {
       var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
       if (transaction.Cost != null) {
         premiumInfo.ChangeDisplayNameDesc = transaction.Cost.ChargePattern
-        if (transaction.Cost.RateAmountType != null) {
-          premiumInfo.ChangeTypeDesc = transaction.Cost.RateAmountType
-        }
-        if (transaction.Cost.ID != null) {
-          premiumInfo.SequenceNumber = transaction.Cost.ID.toString().Bytes[0]
-        }
+        premiumInfo.ChangeTypeDesc = transaction.Cost.RateAmountType != null ? transaction.Cost.RateAmountType : ""
+        premiumInfo.SequenceNumber = transaction.Cost.ID != null ? transaction.Cost.ID.toString().Bytes[0] : ""
         // previous amount
+        var previousMonetaryAmt = previousPeriod != null ? previousPeriod.AllTransactions.firstWhere( \ elt -> elt.Cost.RateAmountType.equals(transaction.Cost.RateAmountType)) : null
         var previousPremiumDoubleValue = 0.00
-        if (previousPeriod != null) {
-          var previousMonetaryAmt = previousPeriod.AllTransactions.firstWhere( \ elt -> elt.Cost.RateAmountType.equals(transaction.Cost.RateAmountType))
-          if (previousMonetaryAmt != null) {
-            previousPremiumDoubleValue = previousMonetaryAmt.Amount
-            premiumInfo.PreviousPremiumAmt.Amt = previousPremiumDoubleValue
-          }  else {
-            premiumInfo.PreviousPremiumAmt.Amt = 0.00
-          }
-        } else {
-          premiumInfo.PreviousPremiumAmt.Amt = 0.00
-        }
+        previousPremiumDoubleValue = previousMonetaryAmt != null ? previousMonetaryAmt.Amount : 0.00
+        premiumInfo.PreviousPremiumAmt.Amt = previousPremiumDoubleValue
         // premium amount
-        if (transaction.Amount != null) {
-          premiumInfo.PremiumAmt.Amt = transaction.Amount.Amount
-        }
-        if (transaction.Cost.Proration != null) {
-          premiumInfo.ProRateFactor = transaction.Cost.Proration
-        }
+        premiumInfo.PremiumAmt.Amt = transaction.Amount != null ? transaction.Amount.Amount : 0.00
+        premiumInfo.ProRateFactor = transaction.Cost.Proration != null ? transaction.Cost.Proration : 0
         var amountDifference = transaction.Amount.Amount - previousPremiumDoubleValue
-        if (amountDifference != null) {
-          if (amountDifference >= 0) {
-            premiumInfo.AdditionalPremiumAmt.Amt = amountDifference
-          } else {
-            premiumInfo.ReturnPremiumAmt.Amt = amountDifference
-          }
-        }
-        if (transaction.Cost.NameOfCoverable != null) {
-          premiumInfo.RiskDesc = transaction.Cost.NameOfCoverable
-        }
+        premiumInfo.AdditionalPremiumAmt.Amt = amountDifference >= 0 ?  amountDifference : 0.00
+        premiumInfo.ReturnPremiumAmt.Amt = amountDifference < 0 ? amountDifference : 0.00
+        premiumInfo.RiskDesc = transaction.Cost.NameOfCoverable != null ? transaction.Cost.NameOfCoverable : ""
         premiumInfos.add(premiumInfo)
       }
     }

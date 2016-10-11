@@ -23,5 +23,4 @@ class HOWCPrivateResidenceEmployeeRatingInfo {
     if(_coveredFullTimeInsideEmployeesCount > 0 or _coveredFullTimeOutsideEmployeesCount > 0)
       _hasFullTimeEmployees = true
   }
-
 }

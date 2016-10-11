@@ -139,11 +139,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
-    if(dwelling?.HODW_Personal_Property_HOEExists){
-      if(dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm?.DisplayValue == "Replacement Cost"){
-        ratePersonalPropertyReplacementCost(dateRange)
-      }
-    }
     if(dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3){
       rateAgeOfHomeDiscount(dateRange)
     }
@@ -171,6 +166,12 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     //update the total base premium with the discounts and surcharges
     updateTotalBasePremium()
+
+    if(dwelling?.HODW_Personal_Property_HOEExists){
+      if(dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm?.DisplayValue == "Replacement Cost"){
+        ratePersonalPropertyReplacementCost(dateRange)
+      }
+    }
   }
 
   /**

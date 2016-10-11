@@ -55,6 +55,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     for (question in questions) {
       dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
+    var discounts = createDiscounts(policyPeriod)
+    for (discount in discounts) {
+      dwellingLineBusiness.addChild(new XmlElement("Discount", discount))
+    }
     return dwellingLineBusiness
   }
 
@@ -97,6 +101,27 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       }
     }
     return coverages
+  }
+
+  function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
+    var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
+    var allOtherCosts : List<HomeownersCost_HOE>
+    var lineLevelCosts = policyPeriod.AllCosts.where( \ elt -> elt typeis HomeownersLineCost_EXT)
+    var discnts = lineLevelCosts.where( \ elt -> (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_AFFINITYDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_CONCRETETILEROOFDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT)
+    for (cost in discnts) {
+      var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
+      discount.DiscountDescription = cost.DisplayName
+      discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
+      discounts.add(discount)
+    }
+    return discounts
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {

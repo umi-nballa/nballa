@@ -11,6 +11,7 @@ uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
 uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
 uses gw.xml.XmlElement
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyCancelReinstateType
+uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +26,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   {
     var dwellingPolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
+    var additionalInsuredMapper = new HPXAdditionalInsuredMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
     dwellingPolicy.addChild(new XmlElement("PolicySummaryInfo", createPolicySummaryInfo(policyPeriod)))
@@ -32,6 +34,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
     for (additionalNamedInsured in additionalNamedInsureds) {
       dwellingPolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalNamedInsured))
+    }
+    var additionalInsureds = additionalInsuredMapper.createAdditionalInsureds(policyPeriod)
+    for (additionalInsured in additionalInsureds) {
+      dwellingPolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalInsured))
     }
     dwellingPolicy.addChild(new XmlElement("DwellingLineBusiness", createDwellingLineBusiness(policyPeriod)))
     dwellingPolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
@@ -82,7 +88,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var coverageMapper = new HPXDwellingCoverageMapper()
     for (cov in currentCoverages) {
       var hoTransactions = getTransactions(policyPeriod)
-      var trxs = hoTransactions.where( \ elt -> cov.equals(elt.HomeownersCost.Coverage.PatternCode))
+      var trxs = hoTransactions.where( \ elt -> cov.PatternCode.equals(elt.HomeownersCost.Coverage.PatternCode))
       if (previousCoverages != null) {
         var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
         coverages.add(coverageMapper.createCoverageInfo(cov, previousCoverage, trxs))

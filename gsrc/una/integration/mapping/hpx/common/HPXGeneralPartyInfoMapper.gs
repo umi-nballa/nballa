@@ -21,6 +21,10 @@ class HPXGeneralPartyInfoMapper {
   /************************************** Name Info ******************************************************/
   function createNameInfo(role : PolicyContactRole) : wsi.schema.una.hpx.hpx_application_request.types.complex.NameInfoType {
     var nameInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.NameInfoType()
+    nameInfo.PersonName.GivenName = role.FirstName != null ? role.FirstName : ""
+    nameInfo.PersonName.Surname = role.FirstName != null ? role.LastName : ""
+    nameInfo.CommlName.CommercialName = role.CompanyName != null ? role.CompanyName : ""
+    /*
     if (role.FirstName != null or role.LastName != null) {
       nameInfo.PersonName.Surname = role.LastName
       nameInfo.PersonName.GivenName = role.FirstName
@@ -28,6 +32,7 @@ class HPXGeneralPartyInfoMapper {
     if (role.CompanyName != null) {
       nameInfo.CommlName.CommercialName = role.CompanyName
     }
+    */
     return nameInfo
   }
 

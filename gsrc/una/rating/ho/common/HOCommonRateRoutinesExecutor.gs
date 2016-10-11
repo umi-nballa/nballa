@@ -42,15 +42,6 @@ class HOCommonRateRoutinesExecutor {
   }
 
   /**
-   * Rate Special Computer coverage
-   */
-  static function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange, line : PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int) : CostData {
-    var rateRoutineParameterMap = getHOCWParameterSet(line)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_COMPUTER_COV_ROUTINE_NAME, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
-    return costData
-  }
-
-  /**
    * Returns the parameter set for the country wide routines
    */
   static function getHOCWParameterSet(line : PolicyLine) : Map<CalcRoutineParamName, Object>{

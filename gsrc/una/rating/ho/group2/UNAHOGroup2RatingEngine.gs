@@ -30,6 +30,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Rate the base premium for the Group 1 states HO
    */
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
+    var rater = new HOBasePremiumRaterGroup2(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
+    var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
+    addCosts(costs)
   }
 
   /**

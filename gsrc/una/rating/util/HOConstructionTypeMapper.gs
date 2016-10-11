@@ -14,9 +14,10 @@ class HOConstructionTypeMapper {
       case TC_AZ:
       case TC_CA:
       case TC_NV:
-        return setConstructionTypeForGroup1(constructionType)
+      case TC_FL:
+        return setConstructionType(constructionType)
     }
-    //we dafault to frame now
+    //we dafault to frame
     return RateTableConstructionType_Ext.TC_FRAME
   }
 
@@ -35,7 +36,7 @@ class HOConstructionTypeMapper {
     }
   }
 
-  static function setConstructionTypeForGroup1(constructionType : ConstructionType_HOE) : RateTableConstructionType_Ext{
+  static function setConstructionType(constructionType : ConstructionType_HOE) : RateTableConstructionType_Ext{
     if(constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){

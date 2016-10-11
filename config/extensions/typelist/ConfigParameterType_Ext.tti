@@ -318,8 +318,8 @@
   </typecode>
   <typecode
     code="AOP_RestrictedOptions"
-    desc="The available option values when AOP or AP options are to be restricted"
-    name="All Other Perils Restricted Options">
+    desc="The available options for 'Other Peril' - which varies by state - available for the selected AOP or AP Value"
+    name="Available 'Other Peril' Options based on the selected AOP or AP Value">
     <category
       code="list"
       typelist="ConfigParamDataType_Ext"/>
@@ -327,7 +327,8 @@
   <typecode
     code="IsAOPExceptionCase"
     desc="Whether a given state and configuration filter are an exception to the rule "
-    name="Is All Other Perils Exception Case">
+    name="Is All Other Perils Exception Case"
+    retired="true">
     <category
       code="boolean"
       typelist="ConfigParamDataType_Ext"/>
@@ -335,7 +336,8 @@
   <typecode
     code="AOPDeriverCovTermPatterns"
     desc="Coverage term pattern codes that help derive available all other perils or all perils values"
-    name="All Perils or All Other Perils Deriver Coverage Term Pattern Codes">
+    name="All Perils or All Other Perils Deriver Coverage Term Pattern Codes"
+    retired="true">
     <category
       code="list"
       typelist="ConfigParamDataType_Ext"/>
@@ -456,6 +458,19 @@
     code="RenewalStartLeadTime"
     desc="The lead time, in number of days, a renewal workflow should start"
     name="Renewal Start Lead Time">
+    <category
+      code="int"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="ShouldLimitDeductibleOptionsForAOP"
+    desc="Whether we should limit the available values of a given coverage term depending on the selected AOP or AP Value"
+    name="Should Limit Deductible Options Against Selected AOP or AP Values"/>
+
+  <typecode
+    code="KeyFactorGreaterLimit"
+    desc="The greatest limit used to return a factor amount from key factor table"
+    name="Key Factor Greater Limit">
     <category
       code="int"
       typelist="ConfigParamDataType_Ext"/>

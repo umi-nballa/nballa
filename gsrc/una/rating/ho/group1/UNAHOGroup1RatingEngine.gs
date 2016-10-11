@@ -14,7 +14,7 @@ uses una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1DiscountsOrSurchargeRatingInfo
-uses una.rating.ho.group1.ratinginfos.HOSpecialLimitsPersonalPropertyRatingInfo
+uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOWCPrivateResidenceEmployeeRatingInfo
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 
@@ -156,7 +156,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
       rateSuperiorConstructionDiscount(dateRange)
     }
-    if(dwelling.RoofType == typekey.RoofType.TC_TILECONCRETE){
+    if(dwelling.RoofType == typekey.RoofType.TC_TILECONCRETE and PolicyLine.BaseState != typekey.Jurisdiction.TC_NV){
       rateConcreteTileRoofDiscount(dateRange)
     }
 
@@ -449,7 +449,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateSpecialLimitsPersonalPropertyCoverage(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialLimitsPersonalPropertyCoverage to rate Special Limits Personal Property Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getSpecialLimitsPersonalPropertyCovParameterSet(PolicyLine, dwellingCov)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
     _logger.debug("Special Limits Personal Property Coverage Rated Successfully", this.IntrinsicType)
@@ -497,7 +497,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialComputerCoverage to rate Special Computer Coverage", this.IntrinsicType)
-    var costData = HOCommonRateRoutinesExecutor.rateSpecialComputerCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_COMPUTER_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Special Computer Coverage Rated Successfully", this.IntrinsicType)

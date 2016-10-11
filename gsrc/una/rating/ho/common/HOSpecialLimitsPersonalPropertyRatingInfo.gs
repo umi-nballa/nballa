@@ -1,4 +1,4 @@
-package una.rating.ho.group1.ratinginfos
+package una.rating.ho.common
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy

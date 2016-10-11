@@ -10,6 +10,7 @@ uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
 uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
 uses gw.xml.XmlElement
+uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,6 +24,7 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
   function createBusinessOwnersPolicy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerPolicyType {
     var businessOwnersPolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerPolicyType()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
+    var additionalInsuredMapper = new HPXAdditionalInsuredMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
     businessOwnersPolicy.addChild(new XmlElement("PolicySummaryInfo", createPolicySummaryInfo(policyPeriod)))
@@ -30,6 +32,10 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var additionalNamedInsureds = additionalNamedInsuredMapper.createAdditionalNamedInsureds(policyPeriod)
     for (additionalNamedInsured in additionalNamedInsureds) {
       businessOwnersPolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalNamedInsured))
+    }
+    var additionalInsureds = additionalInsuredMapper.createAdditionalInsureds(policyPeriod)
+    for (additionalInsured in additionalInsureds) {
+      businessOwnersPolicy.addChild(new XmlElement("InsuredOrPrincipal", additionalInsured))
     }
     businessOwnersPolicy.addChild(new XmlElement("BusinessOwnerLineBusiness", createBusinessOwnersLineBusiness(policyPeriod)))
     businessOwnersPolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
@@ -101,7 +107,7 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var coverageMapper = new HPXBP7CoverageMapper()
     for (coverage in currentCoverages) {
-      var trxs = transactions.where( \ elt1 -> coverage.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
+      var trxs = transactions.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
       if (previousCoverages != null) {
         var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
         coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))

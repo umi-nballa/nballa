@@ -54,6 +54,10 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     for (question in questions) {
       dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
+    var lineCoverages = createLineCoveragesInfo(policyPeriod)
+    for (coverage in lineCoverages) {
+      dwellingLineBusiness.addChild(new XmlElement("Coverage", coverage))
+    }
     return dwellingLineBusiness
   }
 
@@ -108,6 +112,28 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var coverageMapper = new HPXBP7CoverageMapper()
     for (coverage in currentCoverages) {
       var trxs = transactions.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
+      if (previousCoverages != null) {
+        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
+        coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))
+      } else {
+        coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs))
+      }
+    }
+    return coverages
+  }
+
+  function createLineCoveragesInfo(policyPeriod : PolicyPeriod)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    var line = policyPeriod.BP7Line
+    var lineCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == line)
+    var previousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == line)
+    var lineTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == line)
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    var coverageMapper = new HPXBP7CoverageMapper()
+    for (coverage in lineCoverages) {
+      var trxs = lineTrxs.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
       if (previousCoverages != null) {
         var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
         coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))

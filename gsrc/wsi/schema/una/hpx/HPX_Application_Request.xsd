@@ -2348,7 +2348,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="BP7ClassificationType">
 		<xsd:sequence>
-			<xsd:element name="OccupancyType" type="xsd:byte"/>
+			<xsd:element name="OccupancyType" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClassPropertyType" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="PredominantOccupancyType" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Classification" type="xsd:string"/>
@@ -2474,8 +2474,15 @@
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="ResidenceBusiness" type="ResidenceBusinessType" minOccurs="0"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="Discount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
+	<xsd:complexType name="DiscountType">
+		<xsd:sequence>
+			<xsd:element name="DiscountAmount" type="PremiumChangeAmtType"/>
+			<xsd:element name="DiscountDescription" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>	
 	<xsd:complexType name="FileAttachmentInfoType">
 		<xsd:sequence>
 			<xsd:element name="ItemIdInfo" type="ItemIdInfoType"/>

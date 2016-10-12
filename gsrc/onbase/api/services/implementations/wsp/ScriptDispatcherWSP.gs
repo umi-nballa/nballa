@@ -48,8 +48,8 @@ class ScriptDispatcherWSP implements ScriptDispatcherInterface {
 
     var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
     var dispatchRequest = new ScriptDispatchRequest(scriptName, params)
-
-    var response = new ScriptDispatchResponse(service.ScriptDispatcher(dispatchRequest.toString()))
+        //TODO: OnBase - commented out awaiting taxonomy
+ /*   var response = new ScriptDispatchResponse(service.ScriptDispatcher(dispatchRequest.toString()))
     if (response.HasError) {
       throw new UnityScriptErrorException("Error in Script Dispatcher with error code ${response.ErrorCode}: ${response.ErrorMessage}")
     }
@@ -58,7 +58,8 @@ class ScriptDispatcherWSP implements ScriptDispatcherInterface {
       logger.debug("Finished executing dispatchScript(${scriptName}) using WSP service.")
     }
 
-    return response.Results
+    return response.Results*/
+    return null
   }
 
   /**

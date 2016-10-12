@@ -13,8 +13,8 @@ uses java.lang.Long
 
 uses java.util.Map
 uses java.util.HashMap
-
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.Document
+//TODO: OnBase - commented out awaiting taxonomy
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.Document
 
 
 /**
@@ -79,9 +79,10 @@ class DocumentQueryResultsParser {
    * multiple entities.
    */
   private function getOnBaseDocument(doc : Document) : OnBaseDocument {
-    var obDoc = _documentResults.get(doc.DocumentHandle.toLong())
+    var obDoc = _documentResults.get(doc.DocumentIdentifier)       //TODO: OnBase - Changed to from DocuemntHandle to Document Identifier
 
-    // If the document isn't already in the map, create a new one.
+    //TODO: OnbBase - commented out until taxonomy complete
+  /*  // If the document isn't already in the map, create a new one.
     if (obDoc == null) {
       obDoc = new OnBaseDocument()
       obDoc.DocID = doc.DocumentHandle.toLong()
@@ -97,7 +98,7 @@ class DocumentQueryResultsParser {
       obDoc.SecurityType = Settings.DocumentSecurity.toString()
 
       _documentResults.put(obDoc.DocID, obDoc)
-    }
+    }*/
 
     return obDoc
   }
@@ -107,17 +108,17 @@ class DocumentQueryResultsParser {
    */
   private function getKeywordMapFromDisplayColumns(doc: Document) : Map<String, String> {
     var keywords = new HashMap<String, String>()
-
-    // Use the raw xml $Children instead of the generated types. This allows
+  //TODO: OnBase - commented out awaiting taxonomy
+/*    // Use the raw xml $Children instead of the generated types. This allows
     // the logic to remain the same if DisplayColumns are added or removed.
-    foreach (var child in doc.DisplayColumns.$Children) {
+    foreach (var child in doc DisplayColumns.$Children) {
       var key = child.QName.LocalPart
       var value = child.SimpleValue.StringValue
 
       if (value.HasContent) {
         keywords.put(key, value)
       }
-    }
+    }*/
 
     return keywords
   }

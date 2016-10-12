@@ -8,8 +8,8 @@ uses onbase.api.services.datamodels.OnBaseDocument
 uses onbase.api.services.implementations.wsp.util.DocumentQueryResultsParser
 uses onbase.api.services.implementations.wsp.util.KeywordAdaptor
 uses onbase.api.services.interfaces.QueryDocumentsInterface
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.anonymous.elements.OBCustomQueryPolicyDocSearch_Keywords
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.PolicyDocSearch
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.anonymous.elements.OBCustomQueryPolicyDocSearch_Keywords //TODO: OnBase - commented out awaiting taxonomy
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.PolicyDocSearch //TODO: OnBase - commented out awaiting taxonomy
 
 uses java.lang.UnsupportedOperationException
 
@@ -44,7 +44,8 @@ class QueryDocumentsWSP implements QueryDocumentsInterface {
    * @return A list of found OnBase documents.
    */
   public override function QueryDocuments(queryType: String, keywords: List <Keyword>): List <OnBaseDocument> {
-    logger.debug("Start executing QueryDocuments() using WSP service.")
+    //TODO: OnBase - commented out awaiting taxonomy
+/*    logger.debug("Start executing QueryDocuments() using WSP service.")
 
     // Only supporting policy queries for now.
     if (queryType != "policy") {
@@ -64,10 +65,11 @@ class QueryDocumentsWSP implements QueryDocumentsInterface {
     // Execute query
     var response = service.PolicyDocSearch(query)
 
-    return DocumentQueryResultsParser.toOnBaseDocumentList(response.PolicyDocSearchResult.DocumentResults.Document)
+    return DocumentQueryResultsParser.toOnBaseDocumentList(response.PolicyDocSearchResult.DocumentResults.Document)*/
+    return null
   }
-
-  // Map the name-value pairs in a keyword list to the appropriate fields in a keyword query
+  //TODO: OnBase - commented out awaiting taxonomy
+/*  // Map the name-value pairs in a keyword list to the appropriate fields in a keyword query
   private function mapKeywords(keywordRequest: OBCustomQueryPolicyDocSearch_Keywords, keywords: List<Keyword>) {
     var adaptor = new KeywordAdaptor(keywords)
     keywordRequest.AccountNumber = adaptor.AccountNumber
@@ -75,5 +77,5 @@ class QueryDocumentsWSP implements QueryDocumentsInterface {
     keywordRequest.JobNumber = adaptor.JobNumber
     keywordRequest.GWLinkType = adaptor.LinkType
     keywordRequest.GWLinkID= adaptor.LinkValue
-  }
+  }*/
 }

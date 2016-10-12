@@ -44,15 +44,16 @@ class DocCompTemplatesWSP implements DocCompTemplatesInterface {
       logger.error("OnBase Template Categories parameter cannot be null")
       throw new ServicesTierException("OnBase Template Categories parameter cannot be null")
     }
-
-    var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
+      //TODO: OnBase - commented out awaiting taxonomy. Also, changed to return null
+/*    var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
     var templateRequest = new DocumentTemplateRequest(templateCategories)
 
     var response = service.DocComp(templateRequest.toString())
     var templateResponse = new DocumentTemplateResponse(response)
 
     logger.debug("Finished executing getDocumentTemplates() using WSP service.")
-    return templateResponse.Templates
+    return templateResponse.Templates*/
+    return null
   }
 
   /**

@@ -35,13 +35,15 @@ class DocCompCategoriesWSP implements DocCompCategoriesInterface {
   public override function getDocumentTemplateCategories(): List<Category> {
     logger.debug("Start executing getDocumentTemplateCategories() using WSP service.")
 
-    var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
+   //TODO: OnBase - commented out awaiting taxonomy. Also, changed to return null
+ /*   var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
     var response = service.DocComp(new TemplateCategoryRequest().toString())
 
     var categoryResponse = new TemplateCategoryResponse(response)
 
     logger.debug("Finished executing getDocumentTemplateCategories() using WSP service.")
-    return categoryResponse.Categories
+    return categoryResponse.Categories*/
+    return null
   }
 
   /**

@@ -69,53 +69,55 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
 
     // Standalone Keywords
     var archiveKeywords = new KeywordsArchiveDocument_StandAlone()
-    archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"
-    archiveKeywords.GWFileName_Collection.String[0] = fileName
+//    archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"     //TODO: OnBase - commented out awaiting taxonomy
+//    archiveKeywords.GWFileName_Collection.String[0] = fileName     //TODO: OnBase - commented out awaiting taxonomy
     archiveKeywords.DocumentType_Collection.String[0] = documentType
-    archiveKeywords.AccountNumber_Collection.String[0] = adaptor.AccountNumber
+//    archiveKeywords.AccountNumber_Collection.String[0] = adaptor.AccountNumber    //TODO: OnBase - commented out awaiting taxonomy
     archiveKeywords.ClaimNumber_Collection.String[0] = adaptor.ClaimNumber
-    archiveKeywords.GWDescription_Collection.String[0] = adaptor.Description
-    archiveKeywords.DocumentIdForRevision_Collection.String[0] = adaptor.DocumentIdForRevision
+//    archiveKeywords.GWDescription_Collection.String[0] = adaptor.Description     //TODO: OnBase - commented out awaiting taxonomy
+//    archiveKeywords.DocumentIdForRevision_Collection.String[0] = adaptor.DocumentIdForRevision        //TODO: OnBase - commented out awaiting taxonomy
 
 
     archiveKeywords.PolicyNumber_Collection.String[0] = adaptor.PolicyNumber
-    archiveKeywords.ProducerID_Collection.String[0] = adaptor.ProducerID
-    archiveKeywords.Recipient_Collection.String[0] = adaptor.Recipient
-    archiveKeywords.Status_Collection.String[0] = adaptor.Status
-    archiveKeywords.User_Collection.String[0] = adaptor.User
+//    archiveKeywords.ProducerID_Collection.String[0] = adaptor.ProducerID   //TODO: OnBase - commented out awaiting taxonomy
+//    archiveKeywords.Recipient_Collection.String[0] = adaptor.Recipient //TODO: OnBase - commented out awaiting taxonomy
+//    archiveKeywords.Status_Collection.String[0] = adaptor.Status  //TODO: OnBase - commented out awaiting taxonomy
+//    archiveKeywords.User_Collection.String[0] = adaptor.User  //TODO: OnBase - commented out awaiting taxonomy
     if (adaptor.ClaimSecurityRole != null) {
       foreach (role in adaptor.ClaimSecurityRole.split(",") index i) {
-        archiveKeywords.ClaimSecurityRole_Collection.String[i] = role
+//        archiveKeywords.ClaimSecurityRole_Collection.String[i] = role //TODO: OnBase - commented out awaiting taxonomy
       }
     }
     archiveDocument.DocumentArchiveData.Keywords.StandAlone = archiveKeywords
 
     // MIKG keywords
     var archiveMIKGs = new KeywordsArchiveDocument_Multi_Instance_Keyword_Group()
-    archiveMIKGs.Contact_Collection.Contact[0].ContactID = adaptor.ContactID
+    //TODO: OnBase - commented out awaiting taxonomy
+/*    archiveMIKGs.Contact_Collection.Contact[0].ContactID = adaptor.ContactID
     archiveMIKGs.Contact_Collection.Contact[0].ContactName = adaptor.ContactName
     archiveMIKGs.Matter_Collection.Matter[0].MatterID = adaptor.MatterID
     archiveMIKGs.Matter_Collection.Matter[0].MatterName = adaptor.MatterName
-    archiveMIKGs.Job_Collection.Job[0].JobNumber = adaptor.JobNumber
+    archiveMIKGs.Job_Collection.Job[0].JobNumber = adaptor.JobNumber*/
     var index = 0
     if (adaptor.ActivityID != null) {
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.activityid.toString()
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ActivityID
+      //TODO: OnBase - commented out awaiting taxonomy
+/*      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.activityid.toString()
+      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ActivityID*/
       index++
     }
     if (adaptor.CheckID != null) {
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.checkid.toString()
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.CheckID
+//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.checkid.toString() //TODO: OnBase - commented out awaiting taxonomy
+//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.CheckID  //TODO: OnBase - commented out awaiting taxonomy
       index++
     }
     if (adaptor.ReserveID != null) {
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.reserveid.toString()
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ReserveID
+//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.reserveid.toString()   //TODO: OnBase - commented out awaiting taxonomy
+//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ReserveID    //TODO: OnBase - commented out awaiting taxonomy
       index++
     }
     if (adaptor.ExposureID != null) {
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.exposureid.toString()
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ExposureID
+//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.exposureid.toString()   //TODO: OnBase - commented out awaiting taxonomy
+//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ExposureID     //TODO: OnBase - commented out awaiting taxonomy
       index++
     }
     archiveDocument.DocumentArchiveData.Keywords.Multi_Instance_Keyword_Group = archiveMIKGs

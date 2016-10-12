@@ -38,14 +38,15 @@ class DocumentInfoWSP implements DocumentInfoInterface {
 
     var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
     var docInfoRequest = new DocumentInfoRequest(docId)
-
-    var response = service.GetDocumentInfo(docInfoRequest.toString())
-    var docInfoResponse = new DocumentInfoResponse(response)
+  //TODO: OnBase - commented out awaiting taxonomy
+/*    var response = service.GetDocumentInfo(docInfoRequest.toString())
+    var docInfoResponse = new DocumentInfoResponse(response)*/
 
     var result = new OnBaseDocument()
-    result.DocID = docId
+//TODO: OnBase - commented out awaiting taxonomy
+/*    result.DocID = docId
     result.Name = docInfoResponse.Name
-    result.MimeType = docInfoResponse.MimeType
+    result.MimeType = docInfoResponse.MimeType*/
 
     logger.debug("Finished executing getDocumentInfo() using WSP service.")
     return result

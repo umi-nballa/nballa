@@ -2,10 +2,10 @@ package onbase.api.services.implementations.wsp
 
 uses onbase.api.Settings
 uses onbase.api.services.datamodels.UpdateKeywordsRequest
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.UpdateKeywords
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.Multi_Instance_Keyword_GroupUpdateKeywords
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.Single_Instance_Keyword_GroupUpdateKeywords
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.StandAloneUpdateKeywords
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.UpdateKeywords     //TODO: OnBase - commented out awaiting taxonomy
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.Multi_Instance_Keyword_GroupUpdateKeywords           //TODO: OnBase - commented out awaiting taxonomy
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.Single_Instance_Keyword_GroupUpdateKeywords     //TODO: OnBase - commented out awaiting taxonomy
+//uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.StandAloneUpdateKeywords     //TODO: OnBase - commented out awaiting taxonomy
 uses onbase.api.services.interfaces.UpdateKeywordsInterface
 uses org.slf4j.LoggerFactory
 
@@ -26,7 +26,8 @@ class UpdateKeywordsWSP implements UpdateKeywordsInterface {
    * @param ukRequest The Bulk keyword update request object.
    */
   public override function updateKeywords(ukRequest: UpdateKeywordsRequest) {
-    logger.debug("Start executing bulkKeywordUpdate() using WSP service.")
+    //TODO: OnBase - commented out awaiting taxonomy
+    /*logger.debug("Start executing bulkKeywordUpdate() using WSP service.")
 
     var service = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()
 
@@ -53,6 +54,6 @@ class UpdateKeywordsWSP implements UpdateKeywordsInterface {
 
     //Send request
     var response = service.UpdateKeywords(requestUPD)
-    logger.debug("Finished executing bulkKeywordUpdate() using WSP service.")
+    logger.debug("Finished executing bulkKeywordUpdate() using WSP service.")*/
   }
 }

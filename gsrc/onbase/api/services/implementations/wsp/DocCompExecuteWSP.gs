@@ -47,7 +47,8 @@ class DocCompExecuteWSP implements DocCompExecuteInterface {
     executeRequest.addParameters(keywords)
     executeRequest.addData(xmlPayload)
 
-    var response = new ExecuteTemplateResponse(service.DocComp(executeRequest.toString()))
+    //TODO: OnBase - commented out awaiting taxonomy. Also, changed to return null
+  /*  var response = new ExecuteTemplateResponse(service.DocComp(executeRequest.toString()))
     if (response.HasError){
       throw new ServiceErrorCodeException(response.ErrorMessage)
     }
@@ -57,7 +58,8 @@ class DocCompExecuteWSP implements DocCompExecuteInterface {
       logger.debug("Finished executing createDocumentFromTemplate() using WSP service: ${response.DocumentID}")
     }
 
-    return response.DocumentID
+    return response.DocumentID*/
+    return null;
   }
 
   /**

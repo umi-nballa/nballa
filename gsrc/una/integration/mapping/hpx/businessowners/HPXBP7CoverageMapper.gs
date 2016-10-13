@@ -165,7 +165,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -194,7 +195,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + //item.AdditionalInsured.AdditionalInsuredType != null ?
                         "| SubLoc:" +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -221,9 +223,10 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
-                        "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + //item.AdditionalInsured.AdditionalInsuredType != null ?
+                        "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -253,6 +256,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" + item.LongStringCol1 +
                         "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -281,7 +285,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" + item.LongStringCol1 +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {

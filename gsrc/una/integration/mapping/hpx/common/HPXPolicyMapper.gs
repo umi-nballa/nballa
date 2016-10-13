@@ -147,7 +147,76 @@ abstract class HPXPolicyMapper {
     return questions
   }
 
+  function createCoveragesInfo (currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
+                                    transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)
+                                                          : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    // added or changed coverages
+    for (cov in currentCoverages) {
+      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      if (trxs?.Count > 0) {
+        if (previousCoverages != null) {
+          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
+          var prevTrxs = previousTransactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, previousCoverage, trxs, prevTrxs))
+        } else {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, trxs, null))
+        }
+      }
+    }
+    // removed coverages
+    if (previousCoverages != null) {
+      for (cov in previousCoverages) {
+        if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        if (trxs?.Count > 0) {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null, trxs))
+        }
+      }
+    }
+    return coverages
+  }
+
+  /*
+  function createCoveragesInfo(policyPeriod : PolicyPeriod, previousPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    var transactions = getTransactions(policyPeriod)
+    var previousTransactions = getTransactions(previousPeriod)
+    // added or changed coverages
+    for (cov in currentCoverages) {
+      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      if (trxs?.Count > 0) {
+        if (previousCoverages != null) {
+          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
+          var prevTrxs = previousTransactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, previousCoverage, trxs, prevTrxs))
+        } else {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, trxs, null))
+        }
+      }
+    }
+    // removed coverages
+    if (previousCoverages != null) {
+      for (cov in previousCoverages) {
+        if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        if (trxs?.Count > 0) {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null, trxs))
+        }
+      }
+    }
+    return coverages
+  }
+  */
   abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>
 
   abstract function getTransactions(policyPeriod : PolicyPeriod) : java.util.List<Transaction>
+
+  abstract function getCostCoverage(cost : Cost) : Coverage
+
+  abstract function getCoverageMapper() : HPXCoverageMapper
+
 }

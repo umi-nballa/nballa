@@ -17,15 +17,15 @@ class EnvironmentUtil {
   public static final var UAT_ENVIRONMENT: String = "pc_uat"
   public static final var QAT_ENVIRONMENT: String = "pc_qat"
   public static final var PROD_ENVIRONMENT: String = "prd"
+
   static property get PolicyCenterRuntime(): String {
     //serverutil does not work from gosuscratch pad. Default to local if this fails so unit tests can be run
     try {
       var env = gw.api.system.server.ServerUtil.getEnv()
       return env != null and !env.Empty ? env : "local"
+    } catch (e: NullPointerException) {
+      return "local"
     }
-        catch (e: NullPointerException) {
-          return "local"
-        }
   }
 
   static function isProduction(): boolean {
@@ -41,7 +41,7 @@ class EnvironmentUtil {
   static function isLocal(): boolean {
     if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_ENVIRONMENT
-        || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_ENVIRONMENT) {
+        || EnvironmentUtil.PolicyCenterRuntime.startsWith(LOCAL_DEV_ENVIRONMENT)) {
       return true
     } else {
       return false

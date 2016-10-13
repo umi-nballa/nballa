@@ -22,6 +22,15 @@ enhancement PolicyPeriodSummaryEnhancement : PolicyPeriodSummary {
     return query.select().single()
   }
 
+  function getMiddleName() : String {
+    var theInsuredContact = fetchPolicyPeriod().PNIContactDenorm
+    var theMiddleName = new String()
+    if(theInsuredContact typeis Person){
+      theMiddleName = (theInsuredContact as Person).MiddleName
+    }
+    return theMiddleName
+  }
+
   public property get PolicyNumberDisplayString(): String {
     return this.PolicyNumberAssigned ? this.PolicyNumber : displaykey.EntityName.PolicyPeriodSummary.Unassigned
   }

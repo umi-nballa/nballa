@@ -11,5 +11,25 @@
   priority="2160"
   public-id="BP7MoneyOrdersCounterfeitMoney_EXT"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BP7MoneyOrdersandCounterfeitMoneyLimit_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="BP7LineCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="BP7MoneyOrdersandCounterfeitMoneyLimit_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zq3h255rsplafd94787tecde9g9"
+          currency="usd"
+          defaultValue="1000"
+          public-id="zq3h255rsplafd94787tecde9g9"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

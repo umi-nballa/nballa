@@ -136,7 +136,7 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
         limit = lineVersion.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
         break
       case HOPolicyType_HOE.TC_HO4 :
-        limit = lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
+        limit = lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
         break
       case HOPolicyType_HOE.TC_HO6 :
         limit = 100000/*(lineVersion.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
@@ -469,12 +469,10 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
                 //theDefaultValue(cov.HODW_LossOfUsePropLimit_HOETerm.Pattern))
         }
         break
-      case DPDW_Loss_Of_Use_HOE :
+      case DPDW_FairRentalValue_Ext :
           // Change log: Sen Pitchaimuthu
-          // Modified the last parameter to use the value propoerty instead of calling theDefaultvalue function
-          rateLossOfUse(cov, cov.DPDW_LossOfUseDwelLimit_HOETerm.Value, dwell,
-            cov.DPDW_LossOfUseDwelLimit_HOETerm.Value)
-        //        theDefaultValue(cov.DPDW_LossOfUseDwelLimit_HOETerm.Pattern))
+          rateLossOfUse(cov, cov.DPDW_FairRentalValue_ExtTerm.Value, dwell,
+            cov.DPDW_FairRentalValue_ExtTerm.Value)
         break
       case HODW_OrdinanceCov_HOE : 
         rateOrdinanceOrLaw(cov, cov.HODW_OrdinanceLimit_HOETerm.Value, dwell)
@@ -757,7 +755,7 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
       }
     } else {
       var dwellingCov = dwell.Coverages.firstWhere(\ d -> d typeis HODW_Personal_Property_HOE)
-      basis = (dwellingCov as HODW_Personal_Property_HOE).HODW_PropertyHO4_6Limit_HOETerm.Value
+      basis = (dwellingCov as HODW_Personal_Property_HOE).HODW_PersonalPropertyLimit_HOETerm.Value
     }
     return basis
   }

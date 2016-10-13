@@ -31,8 +31,8 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     switch (this.PatternCode){
       case "DPDW_Dwelling_Cov_HOE":
           return dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
-      case "DPDW_Loss_Of_Use_HOE":
-          percentageOfDwellingLimit = dwelling.DPDW_Loss_Of_Use_HOE.DPDW_LossOfUseDwelLimit_HOETerm.Value
+      case "DPDW_FairRentalValue_Ext":
+          percentageOfDwellingLimit = dwelling.DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm.Value
           return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
       case "DPDW_OrdinanceCov_HOE":
           percentageOfDwellingLimit = dwelling.DPDW_OrdinanceCov_HOE.DPDW_OrdinanceLimit_HOETerm.Value
@@ -65,7 +65,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     var limit : BigDecimal
     switch(this.PatternCode){
       case "HODW_Personal_Property_HOE":
-          limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
+          limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
           break
       case "HODW_Dwelling_Cov_HOE":
           limit = this.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
@@ -315,7 +315,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 */
   public static function defaultValueUnitOwnersRentedDeductible(dwelling:Dwelling_HOE){
       if(dwelling.HODW_SectionI_Ded_HOEExists and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) {
-            dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+            //dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     }
   }
 

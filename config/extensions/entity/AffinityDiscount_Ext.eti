@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="System table to hold configurable state applicable values for Preferred Builder, Preferred Financial Inst &amp; Preferred Employers"
+  entity="AffinityDiscount_Ext"
+  table="affinitydiscount_ext"
+  type="retireable">
+  <column
+    desc="Preferred Builder Description/Code/Value"
+    name="PreferredBuilderDescription"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="80"/>
+  </column>
+  <column
+    desc="Is applicable to Arizona"
+    name="AZ"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to California"
+    name="CA"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to Florida"
+    name="FL"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to Hawaii"
+    name="HI"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to Nevada"
+    name="NV"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to North Carolina"
+    name="NC"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to South Carolina"
+    name="SC"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Is applicable to Texas"
+    name="TX"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Affinity Discount Category"
+    name="AffinityDiscountCategory"
+    nullok="true"
+    typelist="AffinityDisCategory_Ext"/>
+  <column
+    desc="Preferred Financial Institution"
+    name="PreferredFinancialInstitution"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="80"/>
+  </column>
+  <column
+    name="PreferredEmployer"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="80"/>
+  </column>
+</entity>

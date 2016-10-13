@@ -128,9 +128,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
     if(dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
-      rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium)
-      //if(!windOrHailExcluded)
-        //rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBaseClassPremium)
+      rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
+      if(!windOrHailExcluded)
+        rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBaseClassPremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTWINDPREMIUM)
     }
   }
 
@@ -370,15 +370,18 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate the Superior Construction Discount
    */
-  function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal) {
+  function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSuperiorConstructionDiscount", this.IntrinsicType)
     var discountOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine)
     discountOrSurchargeRatingInfo.BasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNT,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
       addCost(costData)
+      if(costType == HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
+        _hoRatingInfo.SuperiorConstructionDiscountForAOP = costData.ActualTermAmount
+    }
     _logger.debug("Superior Construction Discount Rated Successfully", this.IntrinsicType)
   }
 

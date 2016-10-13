@@ -1,34 +1,35 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="BP7DebrisRemoval_EXT"
-  coverageCategory="BP7LineAddlGrp"
-  coverageSubtype="BP7LineCov"
+  coverageCategory="BP7BuildingAddlGrp"
+  coverageSubtype="BP7BuildingCov"
   coveredPartyType="FirstParty"
-  existence="Electable"
-  lookupTableName="BP7LineCov"
-  owningEntityType="BP7BusinessOwnersLine"
+  existence="Required"
+  lookupTableName="BP7BuildingCov"
+  owningEntityType="BP7Building"
   policyLinePattern="BP7Line"
-  priority="2060"
+  priority="7960"
   public-id="BP7DebrisRemoval_EXT"
   referenceDateByType="PolicyTerm">
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
-      codeIdentifier="BP7DebrisRemovalAmt_EXT"
+      codeIdentifier="DebrisRemovalAmt_EXT"
       coverageColumn="DirectTerm1"
-      lookupTableName="BP7LineCovTerm"
+      lookupTableName="BP7BuildingCovTerm"
       modelType="Limit"
       priority="100"
-      public-id="BP7DebrisRemovalAmt_EXT"
+      public-id="DebrisRemovalAmt_EXT"
       required="true"
       restrictionModel="bipd"
       valueType="money">
       <LimitsSet>
         <CovTermLimits
-          codeIdentifier="z51g47m3e33t95fut28clpf9fh8"
+          codeIdentifier="zfvhigbbal682cr2vajprl9mm29"
           currency="usd"
-          minVal="25000"
-          public-id="z51g47m3e33t95fut28clpf9fh8"/>
+          defaultValue="10000"
+          minVal="10000"
+          public-id="zfvhigbbal682cr2vajprl9mm29"/>
       </LimitsSet>
     </DirectCovTermPattern>
   </CovTerms>

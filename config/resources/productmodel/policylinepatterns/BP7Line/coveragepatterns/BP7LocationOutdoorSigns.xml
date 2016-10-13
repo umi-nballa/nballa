@@ -31,5 +31,54 @@
           public-id="BP7Limit12USD"/>
       </LimitsSet>
     </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="LimitDetached"
+      coverageColumn="DirectTerm2"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Limit"
+      priority="210"
+      public-id="LimitDetached"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zg7i8bctc4c83bocpuajguf0rm9"
+          currency="usd"
+          defaultValue="2500"
+          minVal="2500"
+          public-id="zg7i8bctc4c83bocpuajguf0rm9"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7LocationCovOpt"
+      codeIdentifier="LimitAttached"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7LocationCovTerm"
+      modelType="Limit"
+      priority="110"
+      public-id="LimitAttached"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zkugav8hb74l185sgsmp2dg0608"
+          currency="usd"
+          defaultValue="1000_EXT"
+          public-id="zkugav8hb74l185sgsmp2dg0608"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zpug4t9p1ee171fi418c8m20rob"
+          currency="usd"
+          optionCode="1000_EXT"
+          priority="100"
+          public-id="zpug4t9p1ee171fi418c8m20rob"
+          value="1000"/>
+      </Options>
+    </OptionCovTermPattern>
   </CovTerms>
 </CoveragePattern>

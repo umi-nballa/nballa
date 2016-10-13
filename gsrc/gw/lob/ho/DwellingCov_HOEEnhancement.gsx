@@ -290,11 +290,18 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
        return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
      }
     }
-    if(Item10 > TotalExpValue1){
+    if(Item10 > TotalExpValue1 and (dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC)){
       return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext
     }
-    else if(Item1> TotalExpValue or Item2> TotalExpValue or Item3> TotalExpValue or Item4> TotalExpValue or Item5> TotalExpValue or
-        Item6> TotalExpValue or Item7> TotalExpValue or Item8> TotalExpValue or Item9> TotalExpValue or Item11> TotalExpValue or Item12> TotalExpValue) {
+    else if((Item1> TotalExpValue or Item2> TotalExpValue or Item3> TotalExpValue or Item4> TotalExpValue or Item5> TotalExpValue or
+        Item6> TotalExpValue or Item7> TotalExpValue or Item8> TotalExpValue or Item9> TotalExpValue) and
+        (dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC)){
+      return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
+    }
+    else if( Item11> TotalExpValue and (dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI)){
+        return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
+       }
+    else if(Item12> TotalExpValue and (dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_SC)) {
       return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
     }
     return null

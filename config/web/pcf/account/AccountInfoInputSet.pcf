@@ -175,15 +175,18 @@
         value="period.Policy.Account.BusOpsDesc"/>
     </InputSet>
     <!-- Organization Type -->
-    <InputSet
-      visible="period.Policy.Product.isContactTypeSuitableForProductAccountType(Company)">
+    <InputSet>
       <InputDivider/>
-      <TypeKeyInput
+      <RangeInput
         editable="period.Policy.Account.Editable"
         id="OrganizationType"
-        label="displaykey.Web.Policy.Account.OrganizationType"
+        label="displaykey.Web.Policy.Account.EntityType_Ext"
         required="true"
-        value="period.Policy.Account.AccountOrgType"/>
+        value="period.Policy.Account.AccountOrgType"
+        valueRange="getOrgTypes()">
+        <PostOnChange
+          target="OrganizationTypeOtherDescription"/>
+      </RangeInput>
       <Input
         editable="period.Policy.Account.Editable"
         id="OrganizationTypeOtherDescription"
@@ -192,5 +195,9 @@
         value="period.Policy.Account.OtherOrgTypeDescription"
         visible="period.Policy.Account.AccountOrgType == &quot;Other&quot;"/>
     </InputSet>
+    <Code><![CDATA[property get OrgTypes() : List<AccountOrgType> {
+  return period.Policy.Account.AccountHolderContact typeis Company ? 
+      typekey.AccountOrgType.TF_COMPANYENTITYLIST.TypeKeys : typekey.AccountOrgType.TF_PERSONENTITYLIST.TypeKeys    
+}]]></Code>
   </InputSet>
 </PCF>

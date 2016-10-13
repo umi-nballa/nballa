@@ -57,21 +57,6 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
-  /*
-    Returns the LossOfUseLimit cov term depending on whether this is a fire or HO policy
-  */
-  property get LossOfUseLimitCovTerm() : DirectCovTerm{
-    var result : DirectCovTerm
-
-    if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(this.HOPolicyType)){
-      result = this.DPDW_Loss_Of_Use_HOE.DPDW_LossOfUseDwelLimit_HOETerm
-    }else{
-      result = this.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm
-    }
-
-    return result
-  }
-
   property get IsSecondaryOrSeasonal() : boolean {
     return this.DwellingUsage != null and DwellingUsage_HOE.TF_SECONDARYORSEASONAL.TypeKeys.contains(this.DwellingUsage)
   }

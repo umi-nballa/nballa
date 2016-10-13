@@ -12,6 +12,14 @@
       flags="openUserRoleOwner"
       valueType="PolicyPeriodSummary"
       widget="PolicyPeriodSummaryIterator"/>
+    <Require
+      name="searchCriteria"
+      type="PolicySearchCriteria"/>
+    <Variable
+      initialValue="una.pageprocess.policysearch.PolicySearchResults.filteredSearchResults(searchResults,searchCriteria)"
+      name="filteredSearchResults"
+      recalculateOnRefresh="true"
+      type="List&lt;PolicyPeriodSummary&gt;"/>
     <RowIterator
       checkBoxVisible="true"
       editable="false"
@@ -19,7 +27,7 @@
       hasCheckBoxes="true"
       id="PolicyPeriodSummaryIterator"
       pickValue="policyPeriodSummary"
-      value="searchResults">
+      value="filteredSearchResults">
       <ToolbarFlag
         name="openUserRoleOwner"/>
       <Row
@@ -34,6 +42,10 @@
           id="PrimaryNamedInsured"
           label="displaykey.Web.PolicySearch.Results.PrimaryNamedInsured"
           value="policyPeriodSummary.InsuredDisplayName"/>
+        <Cell
+          id="MiddleNamedInsured"
+          label="displaykey.Web.PolicySearch.Results.MiddleNamedInsured"
+          value="policyPeriodSummary.getMiddleName()"/>
         <Cell
           action="AccountFileDoRetrievalForward.go(policyPeriodSummary.AccountNumber)"
           available="perm.System.viewaccount"

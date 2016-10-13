@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CoveragePattern
-  codeIdentifier="DPDW_Loss_Of_Use_HOE"
+  codeIdentifier="DPDW_FairRentalValue_Ext"
   coverageCategory="HODW_SectionI_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
@@ -8,27 +8,27 @@
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
-  priority="1800"
-  public-id="DPDW_Loss_Of_Use_HOE"
-  rICoverageGroupType="Property"
+  priority="19400"
+  public-id="DPDW_FairRentalValue_Ext"
   referenceDateByType="ApplicableObject">
-  <AvailabilityScript><![CDATA[var result = true
-var state =Dwelling_HOE.Branch.BaseState
-if((state == TC_CA or state == TC_HI) and (Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT)){
-return result
+  <AvailabilityScript><![CDATA[
+var state = Dwelling_HOE.HOLine.BaseState
+var result = true
+
+if(state == TC_CA or state == TC_HI){
+  result = Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT
 }
-else if (state == TC_TX or state == TC_NC){
-return result
-}]]></AvailabilityScript>
+
+return result]]></AvailabilityScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
-      codeIdentifier="DPDW_LossOfUseDwelLimit_HOE"
+      codeIdentifier="DPDW_FairRentalValue_Ext"
       coverageColumn="DirectTerm1"
       lookupTableName="DwellingCovTerm"
       modelType="Limit"
       priority="100"
-      public-id="DPDW_LossOfUseDwelLimit_HOE"
+      public-id="DPDW_FairRentalValue_Ext"
       required="true"
       restrictionModel="exp"
       valueType="money">

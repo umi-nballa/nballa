@@ -63,6 +63,17 @@
             </tablestatistics>
         </databasestatistics>
     </database>
+    <database name="PolicyCenter_DEV" dbtype="sqlserver"  autoupgrade="true" env="pc_dev02">
+        <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
+        <upgrade defer-create-nonessential-indexes="false">
+            <versiontriggers dbmsperfinfothreshold="600" />
+        </upgrade>
+        <databasestatistics>
+            <tablestatistics name="pc_jobuserroleassign">
+                <histogramstatistics name="CreateTime" numbuckets="75"/>
+            </tablestatistics>
+        </databasestatistics>
+    </database>
 
     <database name="PolicyCenter_ASM" dbtype="sqlserver"  autoupgrade="true" env="pc_asm">
         <jndi-connection-pool datasource-name="jdbc/pcDataSource" />

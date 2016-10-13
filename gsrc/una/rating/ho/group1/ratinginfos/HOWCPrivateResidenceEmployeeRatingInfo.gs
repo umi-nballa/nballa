@@ -1,4 +1,5 @@
 package una.rating.ho.group1.ratinginfos
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -6,21 +7,19 @@ package una.rating.ho.group1.ratinginfos
  * Rating info for WC Private Residence Employee Coverage
  */
 class HOWCPrivateResidenceEmployeeRatingInfo {
-
-  var _coveredOccasionalEmployeesCount : int as CoveredOccasionalEmployeesCount = 0
-  var _coveredFullTimeInsideEmployeesCount : int as CoveredFullTimeInsideEmployeesCount = 0
-  var _coveredFullTimeOutsideEmployeesCount : int as CoveredFullTimeOutsideEmployeesCount = 0
-  var _hasFullTimeEmployees : boolean as HasFullTimeEmployees
-  var _hasOccasionalEmployees : boolean as HasOccasionalEmployees
-
-  construct(lineCov : HOLI_WC_PrivateResidenceEmployee_HOE_Ext){
+  var _coveredOccasionalEmployeesCount: int as CoveredOccasionalEmployeesCount = 0
+  var _coveredFullTimeInsideEmployeesCount: int as CoveredFullTimeInsideEmployeesCount = 0
+  var _coveredFullTimeOutsideEmployeesCount: int as CoveredFullTimeOutsideEmployeesCount = 0
+  var _hasFullTimeEmployees: boolean as HasFullTimeEmployees
+  var _hasOccasionalEmployees: boolean as HasOccasionalEmployees
+  construct(lineCov: HOLI_WC_PrivateResidenceEmployee_HOE_Ext) {
     _coveredOccasionalEmployeesCount = lineCov.HOLI_WC_OccasionalEmployees_HOETerm?.Value.intValue()
     _coveredFullTimeInsideEmployeesCount = lineCov.HOLI_WC_FulltimeEmployees_HOETerm?.Value.intValue()
     _coveredFullTimeOutsideEmployeesCount = lineCov.HOLI_NumFTOutSideCovEmp_HOETerm?.Value.intValue()
 
-    if(_coveredOccasionalEmployeesCount > 0)
+    if (_coveredOccasionalEmployeesCount > 0)
       _hasOccasionalEmployees = true
-    if(_coveredFullTimeInsideEmployeesCount > 0 or _coveredFullTimeOutsideEmployeesCount > 0)
+    if (_coveredFullTimeInsideEmployeesCount > 0 or _coveredFullTimeOutsideEmployeesCount > 0)
       _hasFullTimeEmployees = true
   }
 }

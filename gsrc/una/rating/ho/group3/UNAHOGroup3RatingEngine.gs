@@ -4,7 +4,7 @@ uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses gw.financials.PolicyPeriodFXRateCache
 uses una.rating.ho.group3.ratinginfos.HORatingInfo
-uses una.rating.ho.UNAHORatingEngine_HOE
+uses una.rating.ho.common.UNAHORatingEngine_HOE
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 uses una.rating.util.HOCreateCostDataUtil
 uses una.rating.ho.common.HORateRoutineNames
@@ -375,7 +375,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSuperiorConstructionDiscount", this.IntrinsicType)
     var discountOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.BasePremium = basePremium
+    discountOrSurchargeRatingInfo.TotalBasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)

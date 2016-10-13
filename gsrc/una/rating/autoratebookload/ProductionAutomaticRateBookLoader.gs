@@ -1,11 +1,13 @@
 package una.rating.autoratebookload
 
-uses org.slf4j.Logger
 uses com.guidewire.pl.system.dependency.PLDependencies
-uses java.io.*
-uses gw.util.StreamUtil
 uses gw.api.webservice.importTools.ImportToolsImpl
+uses gw.util.StreamUtil
 uses org.apache.commons.lang.StringUtils
+uses org.slf4j.Logger
+
+uses java.io.File
+uses java.io.FileInputStream
 uses java.lang.Exception
 
 /**
@@ -14,16 +16,15 @@ uses java.lang.Exception
  * due to dependencies in the OOTB code.
  */
 class ProductionAutomaticRateBookLoader extends AbstractBaseAutomaticRateBookLoader {
-
   construct() {
     super()
   }
 
-  construct(useThisLogger : Logger) {
+  construct(useThisLogger: Logger) {
     super(useThisLogger)
   }
 
-  construct(directoryContainingRateBookXmlFilesIn : File, useThisLogger : Logger) {
+  construct(directoryContainingRateBookXmlFilesIn: File, useThisLogger: Logger) {
     super(directoryContainingRateBookXmlFilesIn, useThisLogger)
   }
 
@@ -37,7 +38,7 @@ class ProductionAutomaticRateBookLoader extends AbstractBaseAutomaticRateBookLoa
    * policy migration plugin to fail to rate if rate books are not properly loaded
    * before it runs.
    */
-  protected override function canLoadRateBooks() : boolean {
+  protected override function canLoadRateBooks(): boolean {
     return (PLDependencies.getWebController().Request.Request.Session != null)
   }
 
@@ -48,7 +49,7 @@ class ProductionAutomaticRateBookLoader extends AbstractBaseAutomaticRateBookLoa
    * The OOTB implementation will only work when a currently logged in user's web session is available.
    * (So it will not work, for example, in a web service or from a GUnit test.)
    */
-  protected override function loadRateBook(javaFile : File) : boolean{
+  protected override function loadRateBook(javaFile: File): boolean {
     var successfulLoad = true
     //Commented out code below for GuideOne as it is used just to validate the implementation of the accelerator.
     /*var is = new FileInputStream(javaFile)
@@ -64,7 +65,8 @@ class ProductionAutomaticRateBookLoader extends AbstractBaseAutomaticRateBookLoa
       gw.transaction.Transaction.runWithNewBundle(\bundle -> {
         var importResults = importer.importXmlDataAsByteArray(byteContent)
 
-        if (importResults == null) { // Importer returns null if no import data was found in the file
+        if (importResults == null) {
+          // Importer returns null if no import data was found in the file
           throw "No data found in Rate Book file: " + javaFile.Path
         }
         if (importResults.getErrorLog().length > 0) {
@@ -78,8 +80,8 @@ class ProductionAutomaticRateBookLoader extends AbstractBaseAutomaticRateBookLoa
           }
         }
       })
-    } catch (ex : Exception) {
-      _rfLogger.error("    Error occured while importing rate book : " + javaFile.Name + " : "  + ex)
+    } catch (ex: Exception) {
+      _rfLogger.error("    Error occured while importing rate book : " + javaFile.Name + " : " + ex)
       successfulLoad = false
     } finally {
       //do nothing

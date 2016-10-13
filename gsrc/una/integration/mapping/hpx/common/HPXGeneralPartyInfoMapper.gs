@@ -24,15 +24,6 @@ class HPXGeneralPartyInfoMapper {
     nameInfo.PersonName.GivenName = role.FirstName != null ? role.FirstName : ""
     nameInfo.PersonName.Surname = role.FirstName != null ? role.LastName : ""
     nameInfo.CommlName.CommercialName = role.CompanyName != null ? role.CompanyName : ""
-    /*
-    if (role.FirstName != null or role.LastName != null) {
-      nameInfo.PersonName.Surname = role.LastName
-      nameInfo.PersonName.GivenName = role.FirstName
-    }
-    if (role.CompanyName != null) {
-      nameInfo.CommlName.CommercialName = role.CompanyName
-    }
-    */
     return nameInfo
   }
 
@@ -40,12 +31,8 @@ class HPXGeneralPartyInfoMapper {
   function createAddr(address : Address) : wsi.schema.una.hpx.hpx_application_request.types.complex.AddrType {
     var addr = new wsi.schema.una.hpx.hpx_application_request.types.complex.AddrType()
     addr.Addr1 = address.AddressLine1
-    if (address.AddressLine2 != null) {
-      addr.Addr2 = address.AddressLine2
-    }
-    if (address.AddressLine3) {
-      addr.Addr3 = address.AddressLine3
-    }
+    addr.Addr2 = address.AddressLine2 != null ? address.AddressLine2 : ""
+    addr.Addr3 = address.AddressLine3 != null ? address.AddressLine3 : ""
     addr.City = address.City
     addr.StateProvCd = address.State.Code
     addr.StateProv = address.State.Description
@@ -56,10 +43,8 @@ class HPXGeneralPartyInfoMapper {
   function createProducerOrganization(organization : Organization) : wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType {
     var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType()
     generalPartyInfo.NameInfo.CommlName.CommercialName = organization.Name
-    if (organization.Contact.PrimaryPhone != null and organization.Contact.PrimaryPhoneValue != null) {
-      generalPartyInfo.Communications.PhoneInfo.PhoneTypeCd = organization.Contact.PrimaryPhone
-      generalPartyInfo.Communications.PhoneInfo.PhoneNumber = organization.Contact.PrimaryPhoneValue
-    }
+    generalPartyInfo.Communications.PhoneInfo.PhoneTypeCd = organization.Contact.PrimaryPhone != null ? organization.Contact.PrimaryPhone : null
+    generalPartyInfo.Communications.PhoneInfo.PhoneNumber = organization.Contact.PrimaryPhoneValue != null ? organization.Contact.PrimaryPhoneValue : ""
     return generalPartyInfo
   }
 

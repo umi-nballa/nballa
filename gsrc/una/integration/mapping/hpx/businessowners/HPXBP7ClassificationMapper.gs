@@ -14,9 +14,11 @@ class HPXBP7ClassificationMapper {
 
     var classification = new wsi.schema.una.hpx.hpx_application_request.types.complex.BP7ClassificationType()
     var classificationMapper = new HPXBP7ClassificationMapper()
+    /*
     if(bp7Classification.Building != null) {
       classification.addChild(new XmlElement("OccupancyType", classificationMapper.createClassPredOccupancyType(bp7Classification.Building)))
     }
+    */
     classification.ClassPropertyType = bp7Classification.ClassPropertyType != null ? bp7Classification.ClassPropertyType : ""
     classification.Classification = bp7Classification.ClassDescription != null ? bp7Classification.ClassDescription.Description : ""
     classification.ClassCode = bp7Classification.ClassCode_Ext != null ? bp7Classification.ClassCode_Ext : ""

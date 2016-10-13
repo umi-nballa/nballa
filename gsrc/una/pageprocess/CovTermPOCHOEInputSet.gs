@@ -64,22 +64,6 @@ class CovTermPOCHOEInputSet {
     return result
   }
 
-  static function isCovTermEditable(term : gw.api.domain.covterm.DirectCovTerm, coverable : Coverable) : boolean {
-    var result = true
-    var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, term.PatternCode)
-
-    if(configResult != null){
-      result = configResult
-    }else if(coverable typeis Dwelling_HOE){
-      var min = term.getMinAllowedLimitValue(coverable)
-      var max = term.getMaxAllowedLimitValue(coverable)
-
-      result = (min == null and max == null) or min != max
-    }
-
-    return result
-  }
-
   static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
     onCovTermOptionChange_OnPremisesLimit(term, coverable)
     onCovTermOptionChange_LossAssessmentLimit(term, coverable)
@@ -151,52 +135,72 @@ class CovTermPOCHOEInputSet {
   }
 
   private static function setExecutiveCoverageDefaults(dwelling : Dwelling_HOE, booleanCovTerm : BooleanCovTerm){
+    var coveragePatternsToSelect = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTSELECTEDCOVERAGEPATTERNS, dwelling.PolicyLine.BaseState)
+
+    coveragePatternsToSelect.each( \ coveragePattern -> {
+      if(dwelling.isCoverageAvailable(coveragePattern)){
+        dwelling.setCoverageConditionOrExclusionExists(coveragePattern, booleanCovTerm.Value)
+      }else if(dwelling.HOLine.isCoverageAvailable(coveragePattern)){
+        dwelling.HOLine.setCoverageConditionOrExclusionExists(coveragePattern, booleanCovTerm.Value)
+      }
+    })
+
+    if(ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_SHOULDDEFAULTLIMITSEXECUTIVECOVERAGES, dwelling.PolicyLine.BaseState)){
+      setExecutiveDefaultsForCoverage(dwelling.Coverages, dwelling, booleanCovTerm.Value)
+      setExecutiveDefaultsForCoverage(dwelling.HOLine.AllCoverages, dwelling.HOLine, booleanCovTerm.Value)
+    }
 
     if(booleanCovTerm.Value){
-      var coveragePatternsToSelect = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTSELECTEDCOVERAGEPATTERNS, dwelling.PolicyLine.BaseState)
-
-      coveragePatternsToSelect.each( \ coveragePattern -> {
-        if(dwelling.isCoverageAvailable(coveragePattern)){
-          dwelling.setCoverageConditionOrExclusionExists(coveragePattern, true)
-        }else if(dwelling.HOLine.isCoverageAvailable(coveragePattern)){
-          dwelling.HOLine.setCoverageConditionOrExclusionExists(coveragePattern, true)
-        }
-      })
-
-      if(ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_SHOULDDEFAULTLIMITSEXECUTIVECOVERAGES, dwelling.PolicyLine.BaseState)){
-        setExecutiveDefaultsForCoverage(dwelling.Coverages, dwelling)
-        setExecutiveDefaultsForCoverage(dwelling.HOLine.AllCoverages, dwelling.HOLine)
-      }
-
       if(dwelling.HOLine.BaseState == TC_CA or dwelling.HOLine.BaseState == TC_HI){
         dwelling.Coverages*.CovTerms.whereTypeIs(DirectCovTerm).each( \ covTerm -> covTerm.setDefaultLimit(dwelling))
       }
     }
   }
 
-  private static function setExecutiveDefaultsForCoverage(coverages : Coverage[], coverable : Coverable){
+  private static function setExecutiveDefaultsForCoverage(coverages : Coverage[], coverable : Coverable, isExecutiveCoverage : boolean){
     coverages.each( \ coverage -> {
       coverage.CovTerms.each( \ covTerm -> {
-        var defaultValue = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTDEFAULT, coverable.PolicyLine.BaseState, covTerm.PatternCode)
+        var defaultValue = getExecutiveCoverageDefaultDefault(isExecutiveCoverage, coverable, covTerm)
 
         if(defaultValue != null){
           setDefaultValueForExecutiveCoverage(covTerm, defaultValue, coverable)
-        }else if(covTerm.PatternCode == "HODW_PropertyValuation_HOE"){
-          covTerm.setValueFromString("Replacement")
+        }else{
+          covTerm.setDefaultLimit(covTerm.Clause.OwningCoverable)//re-set default limit if there isn't one from the product model perspective
         }
       })
     })
   }
 
-  private static function setDefaultValueForExecutiveCoverage(covTerm : gw.api.domain.covterm.CovTerm, defaultValue : double, coverable : Coverable){
-    if(coverable typeis HomeownersLine_HOE and covTerm.PatternCode == "HODW_PersonalPropertyLimit_HOE" and coverable.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null){
-      (covTerm as DirectCovTerm).Value = defaultValue * coverable.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-    }else if(covTerm typeis DirectCovTerm){
+  private static function getExecutiveCoverageDefaultDefault(isExecutiveCoverage : boolean, coverable : Coverable, covTerm : CovTerm) : String{
+    var result : String
+    var executiveEndorsementDefault = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTDEFAULT, coverable.PolicyLine.BaseState, covTerm.PatternCode)
+
+    if(executiveEndorsementDefault != null){//meaning this was a cov term that was defaulted as a result of executive coverage
+      if(isExecutiveCoverage){
+        result = executiveEndorsementDefault
+      }else{
+        result = covTerm.Pattern.getDefaultValue(null)
+      }
+    }
+
+    return result
+  }
+
+  private static function setDefaultValueForExecutiveCoverage(covTerm : gw.api.domain.covterm.CovTerm, defaultValue : String, coverable : Coverable){
+    if(shouldDefaultExecutivePersonalPropertyLimit(covTerm, coverable)){
+      (covTerm as DirectCovTerm).Value = defaultValue as double * (coverable as Dwelling_HOE).HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+    }else if(covTerm typeis DirectCovTerm and covTerm.PatternCode != "HODW_PersonalPropertyLimit_HOE"){
       (covTerm as DirectCovTerm).Value = defaultValue
     }else if(covTerm typeis OptionCovTerm){
-      var option = covTerm.AvailableOptions.atMostOneWhere( \ option -> option.Value.doubleValue() == defaultValue)
+      var option = covTerm.AvailableOptions.firstWhere( \ opt -> opt.Value == defaultValue)
       covTerm.setOptionValue(option)
     }
+  }
+
+  private static function shouldDefaultExecutivePersonalPropertyLimit(covTerm : CovTerm, coverable : Coverable) : boolean{
+    return coverable typeis Dwelling_HOE
+       and covTerm.PatternCode == "HODW_PersonalPropertyLimit_HOE"
+       and (coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value > 0)
   }
 
   private static function roundInputValue(coverable : Coverable, covTerm: gw.api.domain.covterm.CovTerm){

@@ -24,6 +24,14 @@ class PolicySearchNameAdapter extends UnsupportedPersonNameFields {
     return _searchCriteria.NameCriteria.LastName
   }
 
+  override property get MiddleName(): String {
+    return _searchCriteria.NameCriteria.MiddleName_Ext
+  }
+
+  override property set MiddleName(value: String) {
+    _searchCriteria.NameCriteria.MiddleName_Ext = value
+  }
+
   override property set LastName(value: String) {
     _searchCriteria.NameCriteria.LastName = value
   }

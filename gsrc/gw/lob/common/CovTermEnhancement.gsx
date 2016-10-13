@@ -163,8 +163,10 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
   }
 
   private function shouldDefaultLimitHO(hoLine : HomeownersLine_HOE) : boolean{
+    var isExecutiveCoverageToggledOff = !hoLine.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value and !hoLine.BasedOn.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
+
     return isLimitCalculated(hoLine.Dwelling)
-       or (isDerivedSpecialLimits(hoLine.Dwelling) and (this as DirectCovTerm).Value == null)
+       or (isDerivedSpecialLimits(hoLine.Dwelling) and (this as DirectCovTerm).Value == null or isExecutiveCoverageToggledOff)
        or this.PatternCode == "HOPL_LossAssCovLimit_HOE" and (this as OptionCovTerm).Value == null
   }
 

@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="BP7BuildingBusinessIncomeExtraExpense_EXT"
-  coverageCategory="BP7BuildingStdGrp"
+  coverageCategory="BP7BuildingDefaultsGrp"
   coverageSubtype="BP7BuildingCov"
-  coveredPartyType="FirstParty"
-  existence="Electable"
+  coveredPartyType="ThirdParty"
+  existence="Required"
   lookupTableName="BP7BuildingCov"
   owningEntityType="BP7Building"
   policyLinePattern="BP7Line"
@@ -13,13 +13,16 @@
   referenceDateByType="PolicyTerm">
   <CovTerms>
     <OptionCovTermPattern
+      aggregationModel="po"
       choiceLookupTableName="BP7BuildingCovOpt"
       codeIdentifier="BP7NumberOfMonths_EXT"
       coverageColumn="ChoiceTerm1"
       lookupTableName="BP7BuildingCovTerm"
+      modelType="Other"
       priority="200"
       public-id="BP7NumberOfMonths_EXT"
       required="true"
+      restrictionModel="bipd"
       valueType="count">
       <DefaultsSet/>
       <Options>
@@ -50,14 +53,23 @@
       </Options>
     </OptionCovTermPattern>
     <DirectCovTermPattern
+      aggregationModel="po"
       codeIdentifier="BP7AnnualBI_EXT"
       coverageColumn="DirectTerm1"
       lookupTableName="BP7BuildingCovTerm"
+      modelType="Limit"
       priority="100"
       public-id="BP7AnnualBI_EXT"
       required="true"
+      restrictionModel="bipd"
       valueType="money">
-      <LimitsSet/>
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zh9h4f0gq81ete03svmueqo48d9"
+          currency="usd"
+          maxVal="1200000"
+          public-id="zh9h4f0gq81ete03svmueqo48d9"/>
+      </LimitsSet>
     </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

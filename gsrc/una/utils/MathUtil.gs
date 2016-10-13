@@ -1,6 +1,7 @@
 package una.utils
 
-uses java.lang.Double
+uses java.math.BigInteger
+
 /**
  * Created with IntelliJ IDEA.
  * User: TVang
@@ -49,15 +50,13 @@ class MathUtil {
     var result : double
 
     if(operand != 0 and factor != 0){
+      var remainder = operand % factor
+      var halfway = factor / 2
 
-      var quotient = new Double(operand).intValue() / factor  //quotient would be 1251
-      var remainder = operand % factor  //remainder would be
-      var halfWay = factor / 2
-
-      if(remainder >= halfWay){
-        result = (quotient + 1) * factor
+      if(remainder >= halfway){
+        result = roundUpTo(operand, factor)
       }else{
-        result = quotient * factor
+        result = roundDownTo(operand, factor)
       }
     }
 
@@ -75,7 +74,7 @@ class MathUtil {
 
     if(operand != 0 and factor != 0){
       if(operand % factor != 0){
-        var division = ((operand / factor) as int) + 1
+        var division = BigInteger.valueOf(operand / factor) + 1
         result = division * factor
       }
     }
@@ -90,7 +89,7 @@ class MathUtil {
   @Param("factor", "The factor to round to")
   @Returns("The operand input rounded DOWN to the nearest factor.")
   private static function roundDownTo(operand : double, factor : int) : double{
-    var intVal = (operand as int)
+    var intVal = BigInteger.valueOf(operand)
     return intVal - intVal % factor
   }
 }

@@ -56,12 +56,6 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     for (question in questions) {
       dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
-    /*
-    var lineCoverages = createLineCoveragesInfo(policyPeriod)
-    for (coverage in lineCoverages) {
-      dwellingLineBusiness.addChild(new XmlElement("Coverage", coverage))
-    }
-    */
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     var line = policyPeriod.BP7Line
@@ -123,76 +117,6 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return buildings
   }
 
-  function createCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
-                               transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)
-                                                    : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    var coverageMapper = new HPXBP7CoverageMapper()
-    // added or changed coverages
-    for (coverage in currentCoverages) {
-      var trxs = transactions.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
-      if (trxs?.Count > 0) {
-        if (previousCoverages != null) {
-          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
-          coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs, previousTransactions))
-        } else {
-          coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs, null))
-        }
-      }
-    }
-    // removed coverages
-    if (previousCoverages != null) {
-      for (cov in previousCoverages) {
-        if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
-          continue
-        var trxs = transactions.where( \ elt -> cov.PatternCode.equals((elt.Cost as BP7Cost).Coverage.PatternCode))
-        if (trxs?.Count > 0) {
-          coverages.add(coverageMapper.createCoverageInfo(cov, null, null, trxs))
-        }
-      }
-    }
-    return coverages
-  }
-  /*
-  function createLineCoveragesInfo(policyPeriod : PolicyPeriod)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    var line = policyPeriod.BP7Line
-    var lineCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == line)
-    var previousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == line)
-    var lineTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == line)
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    var coverageMapper = new HPXBP7CoverageMapper()
-    // added or changed coverages
-    for (coverage in lineCoverages) {
-      var trxs = lineTrxs.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
-      if (trxs?.Count > 0) {
-        if (previousCoverages != null) {
-          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
-          var previousBOPTransactions = getTransactions(previousPeriod)
-          var prevTrxs = previousBOPTransactions.where( \ elt -> coverage.PatternCode.equals((elt as BP7Transaction).BP7Cost.Coverage.PatternCode))
-          coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs, prevTrxs))
-        } else {
-          coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs, null))
-        }
-      }
-    }
-    // removed coverages
-    if (previousCoverages != null) {
-      for (cov in previousCoverages) {
-        if (lineCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
-          continue
-        var bp7Transactions = getTransactions(policyPeriod)
-        var trxs = bp7Transactions.where( \ elt -> cov.PatternCode.equals((elt.Cost as BP7Cost).Coverage.PatternCode))
-        if (trxs?.Count > 0) {
-          coverages.add(coverageMapper.createCoverageInfo(cov, null, null, trxs))
-        }
-      }
-    }
-    return coverages
-  }
-  */
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
     return policyPeriod.BP7Line.AllCoverages
   }
@@ -205,10 +129,13 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     var result : Coverage
 
     switch(typeof cost){
-      case BP7Cost:
+      case BP7BuildingCovCost:
           result = cost.Coverage
           break
-      case HomeownersCost_HOE:
+      case BP7LocationCovCost:
+          result = cost.Coverage
+          break
+      case BP7LineCovCost:
           result = cost.Coverage
           break
     }

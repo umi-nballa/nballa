@@ -19,6 +19,8 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _ordinanceOrLawLimit : String as ordinanceOrLawLimit
   var _ppIncreasedLimit : BigDecimal as PPIncreasedLimit
   var _keyFactor : BigDecimal as KeyFactor
+  var _limitedScreenCovLimit : int as LimitedScreenCovLimit
+  var _hurricanePercentage : String as HurricanePercentage
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -39,6 +41,12 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
     if(dwellingCov typeis HODW_OrdinanceCov_HOE){
       _ordinanceOrLawLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.DisplayValue
+    }
+
+    if(dwellingCov typeis HODW_LimitedScreenCov_HOE_Ext){
+      _limitedScreenCovLimit = dwellingCov.HODW_LimitedScreenLimit_HOETerm?.Value.intValue()
+      var dwelling = dwellingCov.Dwelling
+      _hurricanePercentage = dwelling.HODW_SectionI_Ded_HOE?.HasHODW_Hurricane_Ded_HOETerm? dwelling.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm.DisplayValue : ""
     }
   }
 }

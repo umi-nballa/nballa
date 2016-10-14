@@ -13,8 +13,8 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-05-25 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2016-10-11 16:37:29.831</LastStatusChangeDate>
-    <LastTableRowEdit>2016-10-11 13:36:42.702</LastTableRowEdit>
+    <LastStatusChangeDate>2016-10-13 11:46:45.385</LastStatusChangeDate>
+    <LastTableRowEdit>2016-10-12 18:30:39.963</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines>
       <RateBookCalcRoutine public-id="pc:7001">
@@ -87,6 +87,10 @@
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pc:8809">
         <CalcRoutineDefinition public-id="pc:6301"/>
+        <RateBook public-id="pc:101"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pc:8901">
+        <CalcRoutineDefinition public-id="pc:6701"/>
         <RateBook public-id="pc:101"/>
       </RateBookCalcRoutine>
     </RateBookCalcRoutines>
@@ -270,7 +274,7 @@
       <RateTable public-id="pc:6506">
         <BasedOnTable/>
         <Definition public-id="pc:2501"/>
-        <LastTableRowEdit>2016-10-04 13:57:02.704</LastTableRowEdit>
+        <LastTableRowEdit>2016-10-11 17:34:20.760</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:101"/>
@@ -509,17 +513,6 @@
         <RefTable/>
         <RowUniformityStatus>nonuniform</RowUniformityStatus>
       </RateTable>
-      <RateTable public-id="pc:7401">
-        <BasedOnTable/>
-        <Definition public-id="pc:3301"/>
-        <LastTableRowEdit>2016-10-11 09:58:09.350</LastTableRowEdit>
-        <NormalizedRowCount/>
-        <QueryStrategy>Memory</QueryStrategy>
-        <RateBook public-id="pc:101"/>
-        <ReduceMemoryUsage>false</ReduceMemoryUsage>
-        <RefTable/>
-        <RowUniformityStatus>nonuniform</RowUniformityStatus>
-      </RateTable>
       <RateTable public-id="pc:7402">
         <BasedOnTable/>
         <Definition public-id="pc:3302"/>
@@ -546,6 +539,39 @@
         <BasedOnTable/>
         <Definition public-id="pc:3304"/>
         <LastTableRowEdit>2016-10-11 13:36:42.702</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:101"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:7501">
+        <BasedOnTable/>
+        <Definition public-id="pc:3401"/>
+        <LastTableRowEdit>2016-10-12 09:14:33.791</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:101"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:7502">
+        <BasedOnTable/>
+        <Definition public-id="pc:3402"/>
+        <LastTableRowEdit>2016-10-12 10:27:44.038</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:101"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pc:7601">
+        <BasedOnTable/>
+        <Definition public-id="pc:2801"/>
+        <LastTableRowEdit>2016-10-12 18:30:39.964</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:101"/>
@@ -5951,6 +5977,257 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
+  <RateTableDefinition public-id="pc:3402">
+    <ArgumentSourceSets>
+      <RateTableArgumentSourceSet public-id="pc:4802">
+        <CalcRoutineParameterSet public-id="pc:1101"/>
+        <Code>DEFAULT</Code>
+        <Name>Default</Name>
+        <Name_L10N_ARRAY/>
+        <RateTableArgumentSources>
+          <RateTableArgumentSource public-id="pc:5302">
+            <ArgumentSource/>
+            <ArgumentSourceSet public-id="pc:4802"/>
+            <IsModifier>false</IsModifier>
+            <Parameter public-id="pc:4302"/>
+            <Root/>
+          </RateTableArgumentSource>
+        </RateTableArgumentSources>
+        <RateTableDefinition public-id="pc:3402"/>
+      </RateTableArgumentSourceSet>
+    </ArgumentSourceSets>
+    <EntityName>DefaultRateFactorRow</EntityName>
+    <Factors>
+      <RateTableColumn public-id="pc:5608">
+        <ColumnLabel>factor</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY/>
+        <ColumnName>factor</ColumnName>
+        <ColumnScale>2</ColumnScale>
+        <ColumnType>Decimal</ColumnType>
+        <DefinitionForFactor public-id="pc:3402"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>dec1</PhysicalColumnName>
+        <SortOrder>0</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
+    </Factors>
+    <MatchOps>
+      <RateTableMatchOp public-id="pc:4302">
+        <Definition public-id="pc:3402"/>
+        <DisplayText>Hurricane Deductible</DisplayText>
+        <DisplayText_L10N_ARRAY/>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>hurricaneDeductible</Name>
+        <Params>
+          <RateTableColumn public-id="pc:5607">
+            <ColumnLabel>Hurricane Deductible</ColumnLabel>
+            <ColumnLabel_L10N_ARRAY/>
+            <ColumnName>hurricaneDeductible</ColumnName>
+            <ColumnScale/>
+            <ColumnType>String</ColumnType>
+            <DefinitionForFactor/>
+            <DefinitionForParam public-id="pc:3402"/>
+            <DependsOn/>
+            <DisplayType>Normal</DisplayType>
+            <MatchOp public-id="pc:4302"/>
+            <MultiSelect>false</MultiSelect>
+            <PhysicalColumnName>str1</PhysicalColumnName>
+            <SortOrder>0</SortOrder>
+            <ValueProvider/>
+          </RateTableColumn>
+        </Params>
+      </RateTableMatchOp>
+    </MatchOps>
+    <PolicyLine>HomeownersLine_HOE</PolicyLine>
+    <TableCode>ho3_hurricane_screen_enclosure_deductible_factor</TableCode>
+    <TableDesc>HO3 Hurricance Screen Enclosure Deductible Factor Table</TableDesc>
+    <TableDesc_L10N_ARRAY/>
+    <TableName>HO3 Hurricance Screen Enclosure Deductible Factor Table</TableName>
+    <TableName_L10N_ARRAY/>
+  </RateTableDefinition>
+  <CalcRoutineParameterSet public-id="pc:1101">
+    <Code>HOParamSet</Code>
+    <IncludesCost>true</IncludesCost>
+    <Name>HO Parameter Set</Name>
+    <Name_L10N_ARRAY/>
+    <Parameters>
+      <CalcRoutineParameter public-id="pc:1401">
+        <CalcRoutineParameterSet public-id="pc:1101"/>
+        <Code>policyline</Code>
+        <CoveragePattern/>
+        <ParamType>entity.PolicyLine</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:1402">
+        <CalcRoutineParameterSet public-id="pc:1101"/>
+        <Code>state</Code>
+        <CoveragePattern/>
+        <ParamType>java.lang.String</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:1403">
+        <CalcRoutineParameterSet public-id="pc:1101"/>
+        <Code>ratinginfo</Code>
+        <CoveragePattern/>
+        <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+    </Parameters>
+    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
+  </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:1402">
+    <CalcRoutineParameterSet public-id="pc:1101"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1401">
+    <CalcRoutineParameterSet public-id="pc:1101"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1403">
+    <CalcRoutineParameterSet public-id="pc:1101"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <DefaultRateFactorRow public-id="pc:77013">
+    <RateTable public-id="pc:7502"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8700000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>10%</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:77011">
+    <RateTable public-id="pc:7502"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>1.0000000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>2%</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:77012">
+    <RateTable public-id="pc:7502"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.9300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>5%</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:77010">
+    <RateTable public-id="pc:7502"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>1.2400000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>500</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
   <RateTableDefinition public-id="pc:528">
     <ArgumentSourceSets>
       <RateTableArgumentSourceSet public-id="pc:528">
@@ -7936,34 +8213,34 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <RateTableDefinition public-id="pc:3301">
+  <RateTableDefinition public-id="pc:3401">
     <ArgumentSourceSets>
-      <RateTableArgumentSourceSet public-id="pc:4701">
+      <RateTableArgumentSourceSet public-id="pc:4801">
         <CalcRoutineParameterSet public-id="pc:101"/>
         <Code>DEFAULT</Code>
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:5201">
+          <RateTableArgumentSource public-id="pc:5301">
             <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:4701"/>
+            <ArgumentSourceSet public-id="pc:4801"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:4201"/>
+            <Parameter public-id="pc:4301"/>
             <Root/>
           </RateTableArgumentSource>
         </RateTableArgumentSources>
-        <RateTableDefinition public-id="pc:3301"/>
+        <RateTableDefinition public-id="pc:3401"/>
       </RateTableArgumentSourceSet>
     </ArgumentSourceSets>
     <EntityName>DefaultRateFactorRow</EntityName>
     <Factors>
-      <RateTableColumn public-id="pc:5501">
+      <RateTableColumn public-id="pc:5601">
         <ColumnLabel>County</ColumnLabel>
         <ColumnLabel_L10N_ARRAY/>
         <ColumnName>county</ColumnName>
         <ColumnScale/>
         <ColumnType>String</ColumnType>
-        <DefinitionForFactor public-id="pc:3301"/>
+        <DefinitionForFactor public-id="pc:3401"/>
         <DefinitionForParam/>
         <DependsOn/>
         <DisplayType>Normal</DisplayType>
@@ -7973,61 +8250,13 @@
         <SortOrder>1</SortOrder>
         <ValueProvider/>
       </RateTableColumn>
-      <RateTableColumn public-id="pc:5502">
-        <ColumnLabel>Wind</ColumnLabel>
-        <ColumnLabel_L10N_ARRAY/>
-        <ColumnName>Wind</ColumnName>
-        <ColumnScale/>
-        <ColumnType>Integer</ColumnType>
-        <DefinitionForFactor public-id="pc:3301"/>
-        <DefinitionForParam/>
-        <DependsOn/>
-        <DisplayType>Normal</DisplayType>
-        <MatchOp/>
-        <MultiSelect>false</MultiSelect>
-        <PhysicalColumnName>int3</PhysicalColumnName>
-        <SortOrder>3</SortOrder>
-        <ValueProvider/>
-      </RateTableColumn>
-      <RateTableColumn public-id="pc:5503">
-        <ColumnLabel>AOP</ColumnLabel>
-        <ColumnLabel_L10N_ARRAY/>
-        <ColumnName>AOP</ColumnName>
-        <ColumnScale/>
-        <ColumnType>Integer</ColumnType>
-        <DefinitionForFactor public-id="pc:3301"/>
-        <DefinitionForParam/>
-        <DependsOn/>
-        <DisplayType>Normal</DisplayType>
-        <MatchOp/>
-        <MultiSelect>false</MultiSelect>
-        <PhysicalColumnName>int2</PhysicalColumnName>
-        <SortOrder>2</SortOrder>
-        <ValueProvider/>
-      </RateTableColumn>
-      <RateTableColumn public-id="pc:5504">
-        <ColumnLabel>Territory Name</ColumnLabel>
-        <ColumnLabel_L10N_ARRAY/>
-        <ColumnName>territoryName</ColumnName>
-        <ColumnScale/>
-        <ColumnType>String</ColumnType>
-        <DefinitionForFactor public-id="pc:3301"/>
-        <DefinitionForParam/>
-        <DependsOn/>
-        <DisplayType>Normal</DisplayType>
-        <MatchOp/>
-        <MultiSelect>false</MultiSelect>
-        <PhysicalColumnName>str2</PhysicalColumnName>
-        <SortOrder>0</SortOrder>
-        <ValueProvider/>
-      </RateTableColumn>
-      <RateTableColumn public-id="pc:5505">
+      <RateTableColumn public-id="pc:5602">
         <ColumnLabel>Hurricane</ColumnLabel>
         <ColumnLabel_L10N_ARRAY/>
         <ColumnName>Hurricane</ColumnName>
         <ColumnScale>4</ColumnScale>
         <ColumnType>Decimal</ColumnType>
-        <DefinitionForFactor public-id="pc:3301"/>
+        <DefinitionForFactor public-id="pc:3401"/>
         <DefinitionForParam/>
         <DependsOn/>
         <DisplayType>Normal</DisplayType>
@@ -8037,26 +8266,74 @@
         <SortOrder>4</SortOrder>
         <ValueProvider/>
       </RateTableColumn>
+      <RateTableColumn public-id="pc:5603">
+        <ColumnLabel>Wind</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY/>
+        <ColumnName>Wind</ColumnName>
+        <ColumnScale/>
+        <ColumnType>Integer</ColumnType>
+        <DefinitionForFactor public-id="pc:3401"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>int3</PhysicalColumnName>
+        <SortOrder>3</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
+      <RateTableColumn public-id="pc:5604">
+        <ColumnLabel>AOP</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY/>
+        <ColumnName>AOP</ColumnName>
+        <ColumnScale/>
+        <ColumnType>Integer</ColumnType>
+        <DefinitionForFactor public-id="pc:3401"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>int2</PhysicalColumnName>
+        <SortOrder>2</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
+      <RateTableColumn public-id="pc:5605">
+        <ColumnLabel>Territory Name</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY/>
+        <ColumnName>territoryName</ColumnName>
+        <ColumnScale/>
+        <ColumnType>String</ColumnType>
+        <DefinitionForFactor public-id="pc:3401"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>str2</PhysicalColumnName>
+        <SortOrder>0</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:4201">
-        <Definition public-id="pc:3301"/>
+      <RateTableMatchOp public-id="pc:4301">
+        <Definition public-id="pc:3401"/>
         <DisplayText>Territory Code</DisplayText>
         <DisplayText_L10N_ARRAY/>
         <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
         <Name>TerritoryCode</Name>
         <Params>
-          <RateTableColumn public-id="pc:5506">
+          <RateTableColumn public-id="pc:5606">
             <ColumnLabel>Territory Code</ColumnLabel>
             <ColumnLabel_L10N_ARRAY/>
             <ColumnName>TerritoryCode</ColumnName>
             <ColumnScale/>
             <ColumnType>String</ColumnType>
             <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:3301"/>
+            <DefinitionForParam public-id="pc:3401"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:4201"/>
+            <MatchOp public-id="pc:4301"/>
             <MultiSelect>false</MultiSelect>
             <PhysicalColumnName>str1</PhysicalColumnName>
             <SortOrder>0</SortOrder>
@@ -8066,14 +8343,14 @@
       </RateTableMatchOp>
     </MatchOps>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
-    <TableCode>ho4_base_class_premium_una</TableCode>
+    <TableCode>ho4_base_class_premium</TableCode>
     <TableDesc>HO4 Base Class Premiums Rate Table</TableDesc>
     <TableDesc_L10N_ARRAY/>
     <TableName>HO4 Base Class Premiums Rate Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
-  <DefaultRateFactorRow public-id="pc:76710">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76901">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8101,8 +8378,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76711">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76902">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8130,8 +8407,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76712">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76903">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8159,8 +8436,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76713">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76904">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8188,8 +8465,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76714">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76905">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8217,8 +8494,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76715">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76906">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8246,8 +8523,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76716">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76907">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8275,8 +8552,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76717">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76908">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8304,8 +8581,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76718">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76909">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8333,8 +8610,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76719">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76910">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8362,8 +8639,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76720">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76911">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8391,8 +8668,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76721">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76912">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8420,8 +8697,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76722">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76913">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8449,8 +8726,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76723">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76914">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8478,8 +8755,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76724">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76915">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8507,8 +8784,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76725">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76916">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8536,8 +8813,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76726">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76917">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8565,8 +8842,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76727">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76918">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8594,8 +8871,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76728">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76919">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8623,8 +8900,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76729">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76920">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8652,8 +8929,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76730">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76921">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8681,8 +8958,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76731">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76922">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8710,8 +8987,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76732">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76923">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8739,8 +9016,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76733">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76924">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8768,8 +9045,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76734">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76925">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8797,8 +9074,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76735">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76926">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8826,8 +9103,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76736">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76927">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8855,8 +9132,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76737">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76928">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8884,8 +9161,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76738">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76929">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8913,8 +9190,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76739">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76930">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8942,8 +9219,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76740">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76931">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -8971,8 +9248,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76741">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76932">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9000,8 +9277,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76742">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76933">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9029,8 +9306,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76743">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76934">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9058,8 +9335,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76744">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76935">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9087,8 +9364,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76745">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76936">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9116,8 +9393,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76746">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76937">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9145,8 +9422,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76747">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76938">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9174,8 +9451,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76748">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76939">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9203,8 +9480,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76749">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76940">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9232,8 +9509,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76750">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76941">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9261,8 +9538,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76751">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76942">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9290,8 +9567,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76752">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76943">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9319,8 +9596,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76753">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76944">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9348,8 +9625,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76754">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76945">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9377,8 +9654,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76755">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76946">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9406,8 +9683,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76756">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76947">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9435,8 +9712,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76757">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76948">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9464,8 +9741,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76758">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76949">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9493,8 +9770,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76759">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76950">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9522,8 +9799,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76760">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76951">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9551,8 +9828,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76761">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76952">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9580,8 +9857,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76762">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76953">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9609,8 +9886,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76763">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76954">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9638,8 +9915,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76764">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76955">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9667,8 +9944,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76765">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76956">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9696,8 +9973,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76766">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76957">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9725,8 +10002,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76767">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76958">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9754,8 +10031,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76768">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76959">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9783,8 +10060,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76769">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76960">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9812,8 +10089,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76770">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76961">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9841,8 +10118,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76771">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76962">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9870,8 +10147,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76772">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76963">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9899,8 +10176,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76773">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76964">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9928,8 +10205,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76774">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76965">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9957,8 +10234,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76775">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76966">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -9986,8 +10263,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76776">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76967">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10015,8 +10292,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76777">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76968">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10044,8 +10321,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76778">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76969">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10073,8 +10350,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76779">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76970">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10102,8 +10379,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76780">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76971">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10131,8 +10408,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76781">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76972">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10160,8 +10437,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76782">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76973">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10189,8 +10466,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76783">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76974">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10218,8 +10495,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76784">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76975">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10247,8 +10524,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76785">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76976">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10276,8 +10553,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76786">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76977">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10305,8 +10582,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76787">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76978">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10334,8 +10611,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76788">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76979">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10363,8 +10640,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76789">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76980">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10392,8 +10669,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76790">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76981">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10421,8 +10698,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76791">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76982">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10450,8 +10727,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76792">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76983">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10479,8 +10756,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76793">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76984">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10508,8 +10785,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76794">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76985">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10537,8 +10814,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76795">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76986">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10566,8 +10843,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76796">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76987">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10595,8 +10872,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76797">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76988">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10624,8 +10901,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76798">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76989">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10653,8 +10930,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76799">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76990">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10682,8 +10959,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76800">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76991">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10711,8 +10988,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76801">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76992">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10740,8 +11017,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76802">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76993">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10769,8 +11046,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76803">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76994">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10798,8 +11075,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76804">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76995">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10827,8 +11104,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76805">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76996">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10856,8 +11133,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76806">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76997">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10885,8 +11162,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76807">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76998">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10914,8 +11191,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76808">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:76999">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10943,8 +11220,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76809">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77000">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -10972,8 +11249,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76810">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77001">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11001,8 +11278,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76811">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77002">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11030,8 +11307,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76812">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77003">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11059,8 +11336,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76813">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77004">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11088,8 +11365,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76814">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77005">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11117,8 +11394,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76815">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77006">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11146,8 +11423,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76816">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77007">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11175,8 +11452,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76817">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77008">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -11204,8 +11481,8 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:76818">
-    <RateTable public-id="pc:7401"/>
+  <DefaultRateFactorRow public-id="pc:77009">
+    <RateTable public-id="pc:7501"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -17527,7 +17804,7 @@
         <CalcRoutineParameterSet public-id="pc:201"/>
         <Code>ratinginfo</Code>
         <CoveragePattern/>
-        <ParamType>una.rating.ho.HOLineRatingInfo</ParamType>
+        <ParamType>una.rating.ho.tx.ratinginfos.HOLineRatingInfo</ParamType>
         <UseWrapper>false</UseWrapper>
         <WrapperClass/>
         <Writable>false</Writable>
@@ -17535,20 +17812,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:203">
+    <CalcRoutineParameterSet public-id="pc:201"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.tx.ratinginfos.HOLineRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:202">
     <CalcRoutineParameterSet public-id="pc:201"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:203">
-    <CalcRoutineParameterSet public-id="pc:201"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.HOLineRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -32167,7 +32444,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>Jewelry Watches and Furs</str1>
+    <str1>Jewelry, Watches and Furs</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -33931,69 +34208,6 @@
     <TableName>HO Sinkhole Deductible Factor Table</TableName>
     <TableName_L10N_ARRAY/>
   </RateTableDefinition>
-  <CalcRoutineParameterSet public-id="pc:1101">
-    <Code>HOParamSet</Code>
-    <IncludesCost>true</IncludesCost>
-    <Name>HO Parameter Set</Name>
-    <Name_L10N_ARRAY/>
-    <Parameters>
-      <CalcRoutineParameter public-id="pc:1401">
-        <CalcRoutineParameterSet public-id="pc:1101"/>
-        <Code>policyline</Code>
-        <CoveragePattern/>
-        <ParamType>entity.PolicyLine</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-      <CalcRoutineParameter public-id="pc:1402">
-        <CalcRoutineParameterSet public-id="pc:1101"/>
-        <Code>state</Code>
-        <CoveragePattern/>
-        <ParamType>java.lang.String</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-      <CalcRoutineParameter public-id="pc:1403">
-        <CalcRoutineParameterSet public-id="pc:1101"/>
-        <Code>ratinginfo</Code>
-        <CoveragePattern/>
-        <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-    </Parameters>
-    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
-  </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1403">
-    <CalcRoutineParameterSet public-id="pc:1101"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:1402">
-    <CalcRoutineParameterSet public-id="pc:1101"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:1401">
-    <CalcRoutineParameterSet public-id="pc:1101"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pc:60470">
     <RateTable public-id="pc:6505"/>
     <bit1/>
@@ -37243,6 +37457,107 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
+  <RateTableDefinition public-id="pc:2801">
+    <ArgumentSourceSets>
+      <RateTableArgumentSourceSet public-id="pc:4201">
+        <CalcRoutineParameterSet public-id="pc:101"/>
+        <Code>DEFAULT</Code>
+        <Name>Default</Name>
+        <Name_L10N_ARRAY/>
+        <RateTableArgumentSources>
+          <RateTableArgumentSource public-id="pc:4601">
+            <ArgumentSource/>
+            <ArgumentSourceSet public-id="pc:4201"/>
+            <IsModifier>false</IsModifier>
+            <Parameter public-id="pc:3601"/>
+            <Root/>
+          </RateTableArgumentSource>
+        </RateTableArgumentSources>
+        <RateTableDefinition public-id="pc:2801"/>
+      </RateTableArgumentSourceSet>
+    </ArgumentSourceSets>
+    <EntityName>DefaultRateFactorRow</EntityName>
+    <Factors>
+      <RateTableColumn public-id="pc:4701">
+        <ColumnLabel>rate/1000</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY/>
+        <ColumnName>ratePer1000</ColumnName>
+        <ColumnScale/>
+        <ColumnType>Integer</ColumnType>
+        <DefinitionForFactor public-id="pc:2801"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>int1</PhysicalColumnName>
+        <SortOrder>0</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
+    </Factors>
+    <MatchOps>
+      <RateTableMatchOp public-id="pc:3601">
+        <Definition public-id="pc:2801"/>
+        <DisplayText>Parameter</DisplayText>
+        <DisplayText_L10N_ARRAY/>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>param</Name>
+        <Params>
+          <RateTableColumn public-id="pc:4702">
+            <ColumnLabel>Parameter</ColumnLabel>
+            <ColumnLabel_L10N_ARRAY/>
+            <ColumnName>param</ColumnName>
+            <ColumnScale/>
+            <ColumnType>String</ColumnType>
+            <DefinitionForFactor/>
+            <DefinitionForParam public-id="pc:2801"/>
+            <DependsOn/>
+            <DisplayType>Normal</DisplayType>
+            <MatchOp public-id="pc:3601"/>
+            <MultiSelect>false</MultiSelect>
+            <PhysicalColumnName>str1</PhysicalColumnName>
+            <SortOrder>0</SortOrder>
+            <ValueProvider/>
+          </RateTableColumn>
+        </Params>
+      </RateTableMatchOp>
+    </MatchOps>
+    <PolicyLine>HomeownersLine_HOE</PolicyLine>
+    <TableCode>ho_special_computer_cov_fl</TableCode>
+    <TableDesc>HO Special Computer Coverage Table</TableDesc>
+    <TableDesc_L10N_ARRAY/>
+    <TableName>HO Special Computer Coverage Table</TableName>
+    <TableName_L10N_ARRAY/>
+  </RateTableDefinition>
+  <DefaultRateFactorRow public-id="pc:77101">
+    <RateTable public-id="pc:7601"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1/>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1>6</int1>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Y</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
   <RateTableDefinition public-id="pc:525">
     <ArgumentSourceSets>
       <RateTableArgumentSourceSet public-id="pc:525">
@@ -38005,15 +38320,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2502">
-    <CalcRoutineParameterSet public-id="pc:2201"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2501">
     <CalcRoutineParameterSet public-id="pc:2201"/>
     <Code>policyline</Code>
@@ -38028,6 +38334,15 @@
     <Code>lineRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3LineRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2502">
+    <CalcRoutineParameterSet public-id="pc:2201"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -40522,11 +40837,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:3004">
+  <CalcRoutineParameter public-id="pc:3001">
     <CalcRoutineParameterSet public-id="pc:2701"/>
-    <Code>dwellingRatingInfo_Ext</Code>
+    <Code>policyline</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -40540,20 +40855,20 @@
     <WrapperClass/>
     <Writable>true</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3001">
-    <CalcRoutineParameterSet public-id="pc:2701"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3002">
     <CalcRoutineParameterSet public-id="pc:2701"/>
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3004">
+    <CalcRoutineParameterSet public-id="pc:2701"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -40880,15 +41195,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2703">
-    <CalcRoutineParameterSet public-id="pc:2401"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2702">
     <CalcRoutineParameterSet public-id="pc:2401"/>
     <Code>state</Code>
@@ -40903,6 +41209,15 @@
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2703">
+    <CalcRoutineParameterSet public-id="pc:2401"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -41074,6 +41389,78 @@
     <ParameterSet public-id="pc:2201"/>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
     <Steps>
+      <CalcStepDefinition public-id="pc:10602">
+        <CalcRoutineDefinition public-id="pc:5702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11402">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pc:8201">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+                <InScopeValue>PersonalLiabilityLimit</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pc:11402"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>CoverageELimit</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+              <CalcStepDefinitionArgument public-id="pc:8202">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+                <InScopeValue>MedPayLimit</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pc:11402"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>CoverageFLimit</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pc:10602"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.Integer</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pc:8101">
+                <ColumnName>PremiumAmount</ColumnName>
+                <Operand public-id="pc:11402"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>ho_incr_sec_lim</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>premium</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
       <CalcStepDefinition public-id="pc:9004">
         <CalcRoutineDefinition public-id="pc:5702"/>
         <InScopeParam/>
@@ -41107,7 +41494,7 @@
         <SectionComment/>
         <SortOrder>3</SortOrder>
         <StepType>assignment</StepType>
-        <StoreLocation>basePremium</StoreLocation>
+        <StoreLocation>premium</StoreLocation>
         <StoreType>java.math.BigDecimal</StoreType>
       </CalcStepDefinition>
       <CalcStepDefinition public-id="pc:9005">
@@ -41183,7 +41570,7 @@
             <RoundingScaleType/>
             <TableCode/>
             <VariableFieldName/>
-            <VariableName>basePremium</VariableName>
+            <VariableName>premium</VariableName>
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
@@ -41291,54 +41678,13 @@
             <RoundingScaleType/>
             <TableCode/>
             <VariableFieldName/>
-            <VariableName>basePremium</VariableName>
+            <VariableName>premium</VariableName>
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
         <SortOrder>5</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
-        <StoreType>java.math.BigDecimal</StoreType>
-      </CalcStepDefinition>
-      <CalcStepDefinition public-id="pc:9009">
-        <CalcRoutineDefinition public-id="pc:5702"/>
-        <InScopeParam/>
-        <InScopeValue/>
-        <Notes/>
-        <Operands>
-          <CalcStepDefinitionOperand public-id="pc:9611">
-            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
-            <ArgumentSources/>
-            <CalcStep public-id="pc:9009"/>
-            <ConstantValue/>
-            <CovTermCode/>
-            <FunctionName/>
-            <InScopeParam/>
-            <InScopeValue/>
-            <InScopeValueIsModifier>false</InScopeValueIsModifier>
-            <InScopeValueType>java.lang.Integer</InScopeValueType>
-            <LeftParenthesisGroup/>
-            <LogicalNot/>
-            <OperandOrder>0</OperandOrder>
-            <OperandType>ratetable</OperandType>
-            <OperatorType>store</OperatorType>
-            <ReturnFactorColumns>
-              <CalcStepDefinitionRateFactor public-id="pc:6702">
-                <ColumnName>PremiumAmount</ColumnName>
-                <Operand public-id="pc:9611"/>
-              </CalcStepDefinitionRateFactor>
-            </ReturnFactorColumns>
-            <RightParenthesisGroup/>
-            <RoundingScaleType/>
-            <TableCode>ho_incr_sec_lim</TableCode>
-            <VariableFieldName/>
-            <VariableName/>
-          </CalcStepDefinitionOperand>
-        </Operands>
-        <SectionComment/>
-        <SortOrder>1</SortOrder>
-        <StepType>assignment</StepType>
-        <StoreLocation>basePremium</StoreLocation>
         <StoreType>java.math.BigDecimal</StoreType>
       </CalcStepDefinition>
       <CalcStepDefinition public-id="pc:9010">
@@ -42390,6 +42736,867 @@
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
+  <CalcRoutineDefinition public-id="pc:6701">
+    <Code>UNAHOLimitedScreenedEnclosureAndCarportCovRateRoutine</Code>
+    <Description/>
+    <Description_L10N_ARRAY/>
+    <Jurisdiction>FL</Jurisdiction>
+    <Name>HO Limited Screened Enclosure And Carport Cov Rate Routine</Name>
+    <Name_L10N_ARRAY/>
+    <ParameterSet public-id="pc:2601"/>
+    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
+    <Steps>
+      <CalcStepDefinition public-id="pc:10501">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11301">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10501"/>
+            <ConstantValue>0.0</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>hurricaneBasePremium</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10503">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11303">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10503"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>conditional</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:11310">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10503"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>dwellingRatingInfo_Ext</InScopeParam>
+            <InScopeValue>HurricanePercentage</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.String</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>1</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:11311">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10503"/>
+            <ConstantValue>""</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.String</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>2</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>notequal</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>3</SortOrder>
+        <StepType>if</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10504">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11304">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pc:8102">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>dwellingRatingInfo_Ext</InScopeParam>
+                <InScopeValue>HurricanePercentage</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>java.lang.String</InScopeValueType>
+                <Operand public-id="pc:11304"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>hurricaneDeductible</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pc:10504"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pc:8002">
+                <ColumnName>factor</ColumnName>
+                <Operand public-id="pc:11304"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>ho3_hurricane_screen_enclosure_deductible_factor</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>4</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>screenEnclosureDeductibleFactor</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10505">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11305">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10505"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>5</SortOrder>
+        <StepType>endif</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10506">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11306">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pc:8103">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>dwellingRatingInfo_Ext</InScopeParam>
+                <InScopeValue>LimitedScreenCovLimit</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pc:11306"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>CoverageLimit</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pc:10506"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pc:8003">
+                <ColumnName>Surcharge</ColumnName>
+                <Operand public-id="pc:11306"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>ho3_optional_hurricane_screened_enclosures_and carpots_coverage_una</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>6</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>percentSurcharge</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10507">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11307">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10507"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>conditional</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:11312">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10507"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>dwellingRatingInfo_Ext</InScopeParam>
+            <InScopeValue>PolicyType</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>1</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:11313">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10507"/>
+            <ConstantValue>HO3</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>2</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>equal</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>7</SortOrder>
+        <StepType>if</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10508">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11308">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pc:8104">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>dwellingRatingInfo_Ext</InScopeParam>
+                <InScopeValue>TerritoryCode</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>java.lang.String</InScopeValueType>
+                <Operand public-id="pc:11308"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>TerritoryCode</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pc:10508"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pc:8004">
+                <ColumnName>Hurricane</ColumnName>
+                <Operand public-id="pc:11308"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>ho3_base_class_premiums_una</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>8</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>hurricaneBasePremium</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10509">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11309">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10509"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>9</SortOrder>
+        <StepType>endif</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10510">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>BaseRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11314">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10510"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>ratinginfo</InScopeParam>
+            <InScopeValue>AOPBaseClassPremium</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup>(</LeftParenthesisGroup>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>10</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10511">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11315">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10511"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>ratinginfo</InScopeParam>
+            <InScopeValue>WindBaseClassPremium</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>addition</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup>)</RightParenthesisGroup>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>11</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10512">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11316">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10512"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>localvar</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName>hurricaneBasePremium</VariableName>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>12</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10513">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11317">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10513"/>
+            <ConstantValue>3.0</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>13</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10514">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11318">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10514"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>localvar</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName>percentSurcharge</VariableName>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>14</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10515">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11319">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10515"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>localvar</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName>screenEnclosureDeductibleFactor</VariableName>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>15</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10516">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>AdjustedRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11320">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10516"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>BaseRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>16</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10517">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>TermAmount</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11321">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10517"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>AdjustedRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>17</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:10601">
+        <CalcRoutineDefinition public-id="pc:6701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:11401">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:10601"/>
+            <ConstantValue>0.0</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>2</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>screenEnclosureDeductibleFactor</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+    </Steps>
+    <Version>1</Version>
+  </CalcRoutineDefinition>
+  <CalcRoutineParameterSet public-id="pc:2601">
+    <Code>HOGroup3RatingInfoParamSet</Code>
+    <IncludesCost>true</IncludesCost>
+    <Name>Home Owners Group3 Rating Info Param Set</Name>
+    <Name_L10N_ARRAY/>
+    <Parameters>
+      <CalcRoutineParameter public-id="pc:2901">
+        <CalcRoutineParameterSet public-id="pc:2601"/>
+        <Code>policyline</Code>
+        <CoveragePattern/>
+        <ParamType>entity.PolicyLine</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:2902">
+        <CalcRoutineParameterSet public-id="pc:2601"/>
+        <Code>state</Code>
+        <CoveragePattern/>
+        <ParamType>java.lang.String</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:2903">
+        <CalcRoutineParameterSet public-id="pc:2601"/>
+        <Code>ratinginfo</Code>
+        <CoveragePattern/>
+        <ParamType>una.rating.ho.group3.ratinginfos.HORatingInfo</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pc:2904">
+        <CalcRoutineParameterSet public-id="pc:2601"/>
+        <Code>dwellingRatingInfo_Ext</Code>
+        <CoveragePattern/>
+        <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+    </Parameters>
+    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
+  </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:2901">
+    <CalcRoutineParameterSet public-id="pc:2601"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2903">
+    <CalcRoutineParameterSet public-id="pc:2601"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group3.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2902">
+    <CalcRoutineParameterSet public-id="pc:2601"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2904">
+    <CalcRoutineParameterSet public-id="pc:2601"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pc:5602">
     <Code>UNAHOLossAssessmentCovRateRoutine</Code>
     <Description/>
@@ -42987,87 +44194,6 @@
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
-  <CalcRoutineParameterSet public-id="pc:2601">
-    <Code>HOGroup3RatingInfoParamSet</Code>
-    <IncludesCost>true</IncludesCost>
-    <Name>Home Owners Group3 Rating Info Param Set</Name>
-    <Name_L10N_ARRAY/>
-    <Parameters>
-      <CalcRoutineParameter public-id="pc:2901">
-        <CalcRoutineParameterSet public-id="pc:2601"/>
-        <Code>policyline</Code>
-        <CoveragePattern/>
-        <ParamType>entity.PolicyLine</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-      <CalcRoutineParameter public-id="pc:2902">
-        <CalcRoutineParameterSet public-id="pc:2601"/>
-        <Code>state</Code>
-        <CoveragePattern/>
-        <ParamType>java.lang.String</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-      <CalcRoutineParameter public-id="pc:2903">
-        <CalcRoutineParameterSet public-id="pc:2601"/>
-        <Code>ratinginfo</Code>
-        <CoveragePattern/>
-        <ParamType>una.rating.ho.group3.ratinginfos.HORatingInfo</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-      <CalcRoutineParameter public-id="pc:2904">
-        <CalcRoutineParameterSet public-id="pc:2601"/>
-        <Code>dwellingRatingInfo_Ext</Code>
-        <CoveragePattern/>
-        <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
-        <UseWrapper>false</UseWrapper>
-        <WrapperClass/>
-        <Writable>false</Writable>
-      </CalcRoutineParameter>
-    </Parameters>
-    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
-  </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2904">
-    <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2902">
-    <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2901">
-    <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2903">
-    <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group3.ratinginfos.HORatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pc:5402">
     <Code>UNAHOPersonalInjuryCoverageRateRoutine</Code>
     <Description/>
@@ -44594,20 +45720,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1101">
-    <CalcRoutineParameterSet public-id="pc:801"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1102">
     <CalcRoutineParameterSet public-id="pc:801"/>
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1101">
+    <CalcRoutineParameterSet public-id="pc:801"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -48006,7 +49132,7 @@
             <CovTermCode/>
             <FunctionName/>
             <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
-            <InScopeValue>BasePremium</InScopeValue>
+            <InScopeValue>TotalBasePremium</InScopeValue>
             <InScopeValueIsModifier>false</InScopeValueIsModifier>
             <InScopeValueType>java.math.BigDecimal</InScopeValueType>
             <LeftParenthesisGroup/>
@@ -48196,11 +49322,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:3106">
+  <CalcRoutineParameter public-id="pc:3105">
     <CalcRoutineParameterSet public-id="pc:2803"/>
-    <Code>state</Code>
+    <Code>policyline</Code>
     <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -48214,11 +49340,11 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3105">
+  <CalcRoutineParameter public-id="pc:3106">
     <CalcRoutineParameterSet public-id="pc:2803"/>
-    <Code>policyline</Code>
+    <Code>state</Code>
     <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>

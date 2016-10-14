@@ -7,11 +7,8 @@ uses java.lang.RuntimeException
  * containing the gathered data, to exit SAX parsing long before the end of the XML file.
  */
 class SufficientRateBookDataFound extends RuntimeException {
-
-  var _rateBookProperties : RateBookProperties as readonly RateBookProperties
-
-  protected construct(rateBookPropertiesIn : RateBookProperties) {
+  var _rateBookProperties: RateBookProperties as readonly RateBookProperties
+  protected construct(rateBookPropertiesIn: RateBookProperties) {
     _rateBookProperties = rateBookPropertiesIn
   }
-
 }

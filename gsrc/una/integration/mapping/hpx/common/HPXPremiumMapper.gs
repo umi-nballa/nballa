@@ -22,17 +22,13 @@ class HPXPremiumMapper {
         premiumInfo.ChangeDisplayNameDesc = transaction.Cost.ChargePattern
         premiumInfo.ChangeTypeDesc = transaction.Cost.RateAmountType != null ? transaction.Cost.RateAmountType : ""
         premiumInfo.SequenceNumber = transaction.Cost.ID != null ? transaction.Cost.ID.toString().Bytes[0] : ""
-        // previous amount
-        var previousMonetaryAmt = previousPeriod != null ? previousPeriod.AllTransactions.firstWhere( \ elt -> elt.Cost.RateAmountType.equals(transaction.Cost.RateAmountType)) : null
-        var previousPremiumDoubleValue = 0.00
-        previousPremiumDoubleValue = previousMonetaryAmt != null ? previousMonetaryAmt.Amount : 0.00
-        premiumInfo.PreviousPremiumAmt.Amt = previousPremiumDoubleValue
+        // previous amount - will be 0.00 because this will give only deltas
+        premiumInfo.PreviousPremiumAmt.Amt =0.00
         // premium amount
         premiumInfo.PremiumAmt.Amt = transaction.Amount != null ? transaction.Amount.Amount : 0.00
         premiumInfo.ProRateFactor = transaction.Cost.Proration != null ? transaction.Cost.Proration : 0
-        var amountDifference = transaction.Amount.Amount - previousPremiumDoubleValue
-        premiumInfo.AdditionalPremiumAmt.Amt = amountDifference >= 0 ?  amountDifference : 0.00
-        premiumInfo.ReturnPremiumAmt.Amt = amountDifference < 0 ? amountDifference : 0.00
+        premiumInfo.AdditionalPremiumAmt.Amt = transaction.Amount.Amount >= 0 ?  transaction.Amount.Amount : 0.00
+        premiumInfo.ReturnPremiumAmt.Amt = transaction.Amount.Amount < 0 ? transaction.Amount.Amount : 0.00
         premiumInfo.RiskDesc = transaction.Cost.NameOfCoverable != null ? transaction.Cost.NameOfCoverable : ""
         premiumInfos.add(premiumInfo)
       }

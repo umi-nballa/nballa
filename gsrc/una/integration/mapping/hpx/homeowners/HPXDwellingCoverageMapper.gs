@@ -48,6 +48,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true)
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode
+      limit.WrittenAmt.Amt = 0.00
       return limit
     } else {
       return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
@@ -66,6 +67,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = item.AdditionalLimit != null ? item.AdditionalLimit.Code : 0
       limit.FormatText = item.rentedtoOthers_Ext != null ? item.rentedtoOthers_Ext : false
       limit.LimitDesc = item.Description != null ? item.Description : ""
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -92,6 +94,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = 0
       limit.FormatText = ""
       limit.LimitDesc = item.Description != null ? item.Description : ""
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -116,6 +119,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatPct = item.AdditionalLimit != null ? item.AdditionalLimit : 0
       limit.FormatText = item.rentedtoOthers_Ext != null ? item.rentedtoOthers_Ext : false
       limit.LimitDesc = item.PolicyLocation.DisplayName != null ? item.PolicyLocation.DisplayName : ""
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {

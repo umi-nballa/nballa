@@ -2,13 +2,14 @@ package una.rating.ho.group1
 
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.common.util.DateRange
-uses java.util.Map
-uses gw.rating.CostData
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.common.HORateRoutineExecutor
-uses una.rating.ho.group1.ratinginfos.HORatingInfo
-uses una.rating.ho.common.HORateRoutineNames
+uses gw.rating.CostData
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
+uses una.rating.ho.common.HORateRoutineExecutor
+uses una.rating.ho.common.HORateRoutineNames
+uses una.rating.ho.group1.ratinginfos.HORatingInfo
+
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,13 +18,11 @@ uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
  * Class which rates the base premium for the Group 1 HO policies
  */
 class HOBasePremiumRaterGroup1 {
-
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
-
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
       HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
       HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
@@ -74,12 +73,12 @@ class HOBasePremiumRaterGroup1 {
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    if(_line.BaseState.Code == "AZ")
+    if (_line.BaseState.Code == "AZ")
       routines.add(HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE)
-    else if(_line.BaseState.Code == "CA")
+    else if (_line.BaseState.Code == "CA")
       routines.add(HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE)
-    else if(_line.BaseState.Code == "NV")
-      routines.add(HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE)
+    else if (_line.BaseState.Code == "NV")
+        routines.add(HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE)
     return routines
   }
 

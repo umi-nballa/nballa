@@ -1,14 +1,15 @@
 package una.rating.plugin
 
-uses gw.plugin.policyperiod.IRatingPlugin
-uses gw.plugin.InitializablePlugin
-uses java.util.Map
-uses java.lang.IllegalArgumentException
-uses gw.api.system.PCDependenciesGateway
 uses gw.api.domain.financials.PCFinancialsLogger
 uses gw.api.profiler.PCProfilerTag
+uses gw.api.system.PCDependenciesGateway
+uses gw.plugin.InitializablePlugin
+uses gw.plugin.policyperiod.IRatingPlugin
 uses gw.rating.AbstractRatingEngine
 uses una.logging.UnaLoggerCategory
+
+uses java.lang.IllegalArgumentException
+uses java.util.Map
 
 /**
  * User: bduraiswamy
@@ -17,11 +18,9 @@ uses una.logging.UnaLoggerCategory
  * This is the custom UNA rating plugin implementation which rates the policy period. This rating plugin creates a
  * rating engine for each line of business and rates it accordingly.
  */
-
 class UNARatingPlugin implements IRatingPlugin, InitializablePlugin {
   public static final var MINIMUM_RATING_LEVEL: String = "RatingLevel"
   final static var _logger = UnaLoggerCategory.UNA_RATING
-
   var _minimumRateBookStatus: RateBookStatus
   override function ratePeriod(period: PolicyPeriod) {
     ratePeriod(period, null)
@@ -46,8 +45,8 @@ class UNARatingPlugin implements IRatingPlugin, InitializablePlugin {
 
       PCFinancialsLogger.logInfo(logMsg)
       _logger.info(logMsg)
-      for(line in period.RepresentativePolicyLines){
-        PCProfilerTag.RATE_LINE.execute( \-> {
+      for (line in period.RepresentativePolicyLines) {
+        PCProfilerTag.RATE_LINE.execute(\-> {
           var ratingEngine = createRatingEngine(line)
           ratingEngine.rate()
         })
@@ -66,16 +65,16 @@ class UNARatingPlugin implements IRatingPlugin, InitializablePlugin {
     }
 
     _minimumRateBookStatus = RateBookStatus.get(minimumLevel)
-    if(!una.utils.EnvironmentUtil.isQAT()){
+    if (!una.utils.EnvironmentUtil.isQAT()){
       if (PCDependenciesGateway.ServerMode.Production && _minimumRateBookStatus != TC_ACTIVE){
         throw new IllegalArgumentException(displaykey.Web.Rating.Errors.InvalidRatingLevel.ForProduction(_minimumRateBookStatus, RateBookStatus.TC_ACTIVE))
       }
     }
   }
 
-  protected function createRatingEngine(line : PolicyLine) : AbstractRatingEngine {
+  protected function createRatingEngine(line: PolicyLine): AbstractRatingEngine {
     var ratingEngine = line.createRatingEngine(RateMethod.TC_RATEFLOW, {RateEngineParameter.TC_RATEBOOKSTATUS -> _minimumRateBookStatus})
-    if(ratingEngine == null){
+    if (ratingEngine == null){
       ratingEngine = line.createRatingEngine(RateMethod.TC_SYSTABLE, null)
     }
     return ratingEngine

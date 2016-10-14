@@ -6,6 +6,7 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses java.math.BigDecimal
 uses gw.api.domain.covterm.GenericCovTerm
 uses gw.xml.XmlElement
+uses gw.xml.date.XmlDate
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +17,7 @@ uses gw.xml.XmlElement
  */
 abstract class HPXCoverageMapper {
 
-  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)
                 : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentCoverage.PatternCode
@@ -24,7 +25,7 @@ abstract class HPXCoverageMapper {
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
-    var costInfo = createCoverageCostInfo(transactions)
+    var costInfo = createCoverageCostInfo(transactions, previousTransactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
@@ -205,27 +206,35 @@ abstract class HPXCoverageMapper {
     return limit
   }
 
-  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+  function createCoverageCostInfo(transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
-    var cost = transactions.first().Cost
-    cov.BaseRateAmt.Amt = cost?.ActualBaseRate != null ? cost.ActualBaseRate : -99999999.99
-    cov.CurrentTermAmt.Amt = cost?.StandardBaseRate != null ? cost.StandardBaseRate : -99999999.99
-    cov.WrittenAmt.Amt = cost?.ActualTermAmount != null ? cost.ActualTermAmount : -99999999.99
-    cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : -99999999.99
+    if (transactions != null) {
+      var cost = transactions.first().Cost
+      cov.BaseRateAmt.Amt = cost?.ActualBaseRate != null ? cost.ActualBaseRate : -99999999.99
+      cov.CurrentTermAmt.Amt = cost?.StandardBaseRate != null ? cost.StandardBaseRate : -99999999.99
+      cov.WrittenAmt.Amt = cost?.ActualTermAmount != null ? cost.ActualTermAmount : -99999999.99
+      cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : -99999999.99
+      var previousWrittenAmt = previousTransactions?.first()?.Cost?.ActualTermAmount.Amount
+      cov.NetChangeAmt.Amt = previousWrittenAmt != null ? cost.ActualTermAmount.Amount - previousWrittenAmt : cost.ActualTermAmount != null ? cost.ActualTermAmount.Amount : -99999999.99
+    }
+    else if (previousTransactions != null) {
+      var cost = previousTransactions.first().Cost
+      cov.BaseRateAmt.Amt = cost?.ActualBaseRate != null ? -cost.ActualBaseRate : -99999999.99
+      cov.CurrentTermAmt.Amt = cost?.StandardBaseRate != null ? -cost.StandardBaseRate : -99999999.99
+      cov.WrittenAmt.Amt = cost?.ActualTermAmount != null ? -cost.ActualTermAmount : -99999999.99
+      cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : -99999999.99
+      cov.NetChangeAmt.Amt = cost.ActualTermAmount.Amount != null ? -cost.ActualTermAmount.Amount : -99999999.99
+    }
     return cov
   }
 
   function createEffectivePeriod(coverage : Coverage)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (coverage.EffectiveDate != null) {
-      cov.EffectiveDt.Day = coverage.EffectiveDate.DayOfMonth
-      cov.EffectiveDt.Month = coverage.EffectiveDate.MonthOfYear
-      cov.EffectiveDt.Year = coverage.EffectiveDate.YearOfDate
+      cov.EffectiveDt = new XmlDate(coverage.EffectiveDate)
     }
     if (coverage.ExpirationDate != null) {
-      cov.ExpirationDt.Day = coverage.ExpirationDate.DayOfMonth
-      cov.ExpirationDt.Month = coverage.ExpirationDate.MonthOfYear
-      cov.ExpirationDt.Year = coverage.ExpirationDate.YearOfDate
+      cov.ExpirationDt = new XmlDate(coverage.ExpirationDate)
     }
     return cov
   }
@@ -234,4 +243,5 @@ abstract class HPXCoverageMapper {
                       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
 
   abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
+
 }

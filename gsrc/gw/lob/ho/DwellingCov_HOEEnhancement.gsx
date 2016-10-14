@@ -361,5 +361,22 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
       }
   }
 
+  /**
+   * Amrita Dash
+   * Default value for HO Ordinance and law DE 397
+   */
+
+  static function defaultValueLimitDPAddLiving(_dwelling: Dwelling_HOE)
+  {
+
+    if (_dwelling.Branch.BaseState == TC_CA)
+    {
+      _dwelling.DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm.setValueFromString("10")
+    }
+    else{
+      _dwelling.DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm.setValueFromString("20")
+    }
+  }
+
 }
 

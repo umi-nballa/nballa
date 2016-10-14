@@ -7,6 +7,8 @@ uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyM
 uses gw.xml.XmlElement
 uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
+uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.common.HPXClassificationMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -100,5 +102,74 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
 
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXCPCoverageMapper()
+  }
+
+  override function getStructureMapper() : HPXStructureMapper {
+    return new HPXCPBuildingMapper()
+  }
+
+  override function getClassificationMapper() : HPXClassificationMapper {
+    return null
+  }
+
+  override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
+    var structures = new java.util.ArrayList<Coverable>()
+    var buildings = policyPeriod.CPLine.AllCoverables.where( \ elt -> elt typeis CPBuilding)
+    for (building in buildings) {
+      structures.add(building)
+    }
+    return structures
+  }
+
+  override function getLocation(coverable : Coverable) : PolicyLocation {
+    return (coverable as CPBuilding).Building.PolicyLocation
+  }
+
+  override function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return getCoverages(policyPeriod).where( \ elt -> elt.OwningCoverable == (coverable as CPBuilding).CPLocation as Coverable)
+  }
+
+  override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod).where( \ elt -> elt.Cost.Coverable == (coverable as CPBuilding).CPLocation as Coverable)
+    return transactions
+  }
+
+  override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return getCoverages(policyPeriod).where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod).where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
+  }
+
+  override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
+    return null
+  }
+
+  override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
+  override function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
+    return null
+  }
+
+  override function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable {
+    return policyPeriod.CPLine
+  }
+
+  override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
+    var lineCovs = (line as CPLine).CoveragesFromCoverable
+    return lineCovs
+  }
+
+  override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
   }
 }

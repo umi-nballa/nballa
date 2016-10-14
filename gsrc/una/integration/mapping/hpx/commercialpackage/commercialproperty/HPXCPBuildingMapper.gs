@@ -1,8 +1,7 @@
 package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses gw.xml.XmlElement
-
-
+uses una.integration.mapping.hpx.common.HPXStructureMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,8 +10,11 @@ uses gw.xml.XmlElement
  * Time: 12:18 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXCPBuildingMapper {
+class HPXCPBuildingMapper implements HPXStructureMapper  {
 
+  override function createStructure(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
+    return createBuilding(coverable as CPBuilding)
+  }
   function createBuilding(bldg : CPBuilding) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var buildingConstructionMapper = new HPXCPBuildingConstructionMapper ()
     var buildingMapper = new HPXCPBuildingMapper()

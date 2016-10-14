@@ -1,6 +1,9 @@
 package una.integration.mapping.hpx.businessowners
 
 uses gw.xml.XmlElement
+uses una.integration.mapping.hpx.common.HPXClassificationMapper
+uses gw.xsd.w3c.xmlschema.Any
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -8,7 +11,11 @@ uses gw.xml.XmlElement
  * Time: 4:38 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXBP7ClassificationMapper {
+class HPXBP7ClassificationMapper implements HPXClassificationMapper  {
+
+  override function createClassification(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.BP7ClassificationType {
+    return createClassification(coverable as BP7Classification)
+  }
 
   function createClassification(bp7Classification : BP7Classification) : wsi.schema.una.hpx.hpx_application_request.types.complex.BP7ClassificationType {
 

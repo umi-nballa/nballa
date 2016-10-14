@@ -8,6 +8,9 @@ uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyM
 uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
+uses una.integration.mapping.hpx.commercialpackage.commercialproperty.HPXCPCoverageMapper
+uses una.integration.mapping.hpx.common.HPXCoverageMapper
+uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLCoverageMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,4 +54,21 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+
+    switch(typeof cost){
+      case GLCost:
+          result = cost.Coverage
+          break
+      case CPCost:
+          result = cost.Coverage
+          break
+    }
+    return result
+  }
+
+  override function getCoverageMapper() : HPXCoverageMapper {
+    return new HPXGLCoverageMapper()
+  }
 }

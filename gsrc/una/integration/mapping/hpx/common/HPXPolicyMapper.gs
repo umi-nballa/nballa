@@ -19,6 +19,7 @@ uses wsi.schema.una.hpx.hpx_application_request.types.complex.OtherOrPriorPolicy
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.ReinstateInfoType
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.RenewalInfoType
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.FeeType
+uses gw.xml.date.XmlDate
 
 /**
  * Created with IntelliJ IDEA.
@@ -75,8 +76,12 @@ abstract class HPXPolicyMapper {
     insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo
                                                               (policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact,
                                                                                    policyPeriod.PrimaryNamedInsured)))
-    var creditScore = creditScoreMapper.createCreditScoreInfo(policyPeriod)
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PrincipalInfo.CreditScoreInfo.CreditScore = creditScore != null ? creditScore : 0
+    var creditScoreInfo = creditScoreMapper.createCreditScoreInfo(policyPeriod)
+    var insuredOrPrincipalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalInfoType()
+    var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
+    principalInfo.addChild(new XmlElement("CreditScoreInfo", creditScoreInfo))
+    insuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
+    insuredOrPrincipal.addChild(new XmlElement("InsuredOrPrincipalInfo" , insuredOrPrincipalInfo))
     return insuredOrPrincipal
   }
 
@@ -97,15 +102,9 @@ abstract class HPXPolicyMapper {
     policyInfo.PolicyNumber = policyPeriod.PolicyNumber != null ? policyPeriod.PolicyNumber : ""
     policyInfo.AccountNumberId = policyPeriod.Policy.Account.AccountNumber
     policyInfo.PolicyTermCd = policyPeriod.TermType
-    policyInfo.ContractTerm.EffectiveDt.Day = policyPeriod.PeriodStart.DayOfMonth
-    policyInfo.ContractTerm.EffectiveDt.Month = policyPeriod.PeriodStart.MonthOfYear
-    policyInfo.ContractTerm.EffectiveDt.Year = policyPeriod.PeriodStart.YearOfDate
-    policyInfo.ContractTerm.EffectiveDt.Day = policyPeriod.PeriodEnd.DayOfMonth
-    policyInfo.ContractTerm.EffectiveDt.Month = policyPeriod.PeriodEnd.MonthOfYear
-    policyInfo.ContractTerm.EffectiveDt.Year = policyPeriod.PeriodEnd.YearOfDate
-    policyInfo.TermProcessDt.Day = policyPeriod.WrittenDate.DayOfMonth
-    policyInfo.TermProcessDt.Month = policyPeriod.WrittenDate.MonthOfYear
-    policyInfo.TermProcessDt.Year = policyPeriod.WrittenDate.YearOfDate
+    policyInfo.ContractTerm.EffectiveDt = new XmlDate(policyPeriod.PeriodStart)
+    policyInfo.ContractTerm.ExpirationDt = new XmlDate(policyPeriod.PeriodEnd)
+    policyInfo.TermProcessDt = new XmlDate(policyPeriod.WrittenDate)
     policyInfo.ControllingStateProvCd = policyPeriod.BaseState
     // user
     var jobCreationUser = transactionMapper.createJobCreationUser(policyPeriod)
@@ -148,7 +147,43 @@ abstract class HPXPolicyMapper {
     return questions
   }
 
+  function createCoveragesInfo (currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
+                                    transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)
+                                                          : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    // added or changed coverages
+    for (cov in currentCoverages) {
+      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      if (trxs?.Count > 0) {
+        if (previousCoverages != null) {
+          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
+          var prevTrxs = previousTransactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, previousCoverage, trxs, prevTrxs))
+        } else {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, trxs, null))
+        }
+      }
+    }
+    // removed coverages
+    if (previousCoverages != null) {
+      for (cov in previousCoverages) {
+        if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        if (trxs?.Count > 0) {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null, trxs))
+        }
+      }
+    }
+    return coverages
+  }
+
   abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>
 
   abstract function getTransactions(policyPeriod : PolicyPeriod) : java.util.List<Transaction>
+
+  abstract function getCostCoverage(cost : Cost) : Coverage
+
+  abstract function getCoverageMapper() : HPXCoverageMapper
+
 }

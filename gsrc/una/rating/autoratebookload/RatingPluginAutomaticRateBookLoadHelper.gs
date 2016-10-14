@@ -1,30 +1,27 @@
 package una.rating.autoratebookload
 
-uses org.slf4j.Logger
 uses gw.api.system.PCLoggerCategory
 uses gw.plugin.policyperiod.impl.PCRatingPlugin
+uses org.slf4j.Logger
+
 uses java.util.Map
 
 class RatingPluginAutomaticRateBookLoadHelper {
-
-  public static final var AUTOMATICALLY_LOAD_RATE_BOOKS__PARAMETER_NAME : String = "AutomaticallyLoadRateBooks"
-
+  public static final var AUTOMATICALLY_LOAD_RATE_BOOKS__PARAMETER_NAME: String = "AutomaticallyLoadRateBooks"
   /**
    * Definition: This flag is true if the system (will or) has attempted to automatically load rate books.
    * Specifically, it will NOT change to 'true' if/when the user changes the script parameter to true,
    * as that change won't affect automatic rate book loading until the server restarts. After a restart,
    * the change to the script parameter will take effect, and this flag will reflect it.
    */
-  static var _automaticRateBookLoadingIsEnabled : boolean as readonly AutomaticRateBookLoadingIsEnabled = false
-
-  var _rfLogger : Logger
-  var _shouldAttemptAutomaticRateBookLoad : boolean
-
-  construct(params : Map<Object, Object>, defaultMinimumBookStatusLevel : RateBookStatus) {
+  static var _automaticRateBookLoadingIsEnabled: boolean as readonly AutomaticRateBookLoadingIsEnabled = false
+  var _rfLogger: Logger
+  var _shouldAttemptAutomaticRateBookLoad: boolean
+  construct(params: Map<Object, Object>, defaultMinimumBookStatusLevel: RateBookStatus) {
     this(params, defaultMinimumBookStatusLevel, PCLoggerCategory.RATEFLOW)
   }
 
-  construct(params : Map<Object, Object>, defaultMinimumBookStatusLevel : RateBookStatus, loggerToUse : Logger) {
+  construct(params: Map<Object, Object>, defaultMinimumBookStatusLevel: RateBookStatus, loggerToUse: Logger) {
     _rfLogger = loggerToUse
 
     /**
@@ -49,8 +46,8 @@ class RatingPluginAutomaticRateBookLoadHelper {
      */
     _shouldAttemptAutomaticRateBookLoad =
         (   ScriptParameters.AutomaticallyLoadRateBooks
-        and automaticallyLoadRateBooksParameter
-        and defaultMinimumBookStatusLevel.Priority <= RateBookStatus.TC_DRAFT.Priority)
+            and automaticallyLoadRateBooksParameter
+            and defaultMinimumBookStatusLevel.Priority <= RateBookStatus.TC_DRAFT.Priority)
 
     _automaticRateBookLoadingIsEnabled = _shouldAttemptAutomaticRateBookLoad
 
@@ -63,12 +60,12 @@ class RatingPluginAutomaticRateBookLoadHelper {
   function maybeDoAutomaticRateBookLoad() {
     // Do this once per server restart -- at the first attempt to quote:
     if (_shouldAttemptAutomaticRateBookLoad) {
-      _shouldAttemptAutomaticRateBookLoad = false  // Do this only ONCE, not once per quote. Updates while server is running require a web server restart.
+      _shouldAttemptAutomaticRateBookLoad = false
+      // Do this only ONCE, not once per quote. Updates while server is running require a web server restart.
       var rateBookLoader = new ProductionAutomaticRateBookLoader(_rfLogger)
       rateBookLoader.run()
     } else {
       _rfLogger.info("(Skipping AutomaticRateBookLoader Rate Book version check.)")
     }
   }
-
 }

@@ -1,4 +1,5 @@
 package una.rating.util
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -6,44 +7,43 @@ package una.rating.util
  * This is a mapper class which maps the dwelling construction type to the rate tables construction types.
  */
 class HOConstructionTypeMapper {
-
-  static function setConstructionType(constructionType : ConstructionType_HOE, exteriorWallFinish : ExteriorWallFinish_Ext, state : Jurisdiction) : RateTableConstructionType_Ext{
-    switch(state){
+  static function setConstructionType(constructionType: ConstructionType_HOE, exteriorWallFinish: ExteriorWallFinish_Ext, state: Jurisdiction): RateTableConstructionType_Ext {
+    switch (state) {
       case TC_TX:
-        return setConstructionTypeForTX(constructionType, exteriorWallFinish)
+          return setConstructionTypeForTX(constructionType, exteriorWallFinish)
       case TC_AZ:
       case TC_CA:
       case TC_NV:
       case TC_FL:
-        return setConstructionType(constructionType)
+          return setConstructionType(constructionType)
     }
     //we dafault to frame
     return RateTableConstructionType_Ext.TC_FRAME
   }
 
-  static function setConstructionTypeForTX(constructionType : ConstructionType_HOE, exteriorWallFinish : ExteriorWallFinish_Ext) : RateTableConstructionType_Ext{
-    if(constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
-       constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
-       constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
+  static function setConstructionTypeForTX(constructionType: ConstructionType_HOE, exteriorWallFinish: ExteriorWallFinish_Ext): RateTableConstructionType_Ext {
+    if (constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
+        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
+        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT) {
       return RateTableConstructionType_Ext.TC_BRICK
-    } else if(constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT){
-      if(exteriorWallFinish == typekey.ExteriorWallFinish_Ext.TC_BRICKSTONEMASONRY)
+    } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT) {
+      if (exteriorWallFinish == typekey.ExteriorWallFinish_Ext.TC_BRICKSTONEMASONRY)
         return RateTableConstructionType_Ext.TC_BRICKVENEER
       else
         return RateTableConstructionType_Ext.TC_FRAME
-    } else{
+    } else {
       return RateTableConstructionType_Ext.TC_NA
     }
   }
 
-  static function setConstructionType(constructionType : ConstructionType_HOE) : RateTableConstructionType_Ext{
-    if(constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
-       constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
-       constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
+  static function setConstructionType(constructionType: ConstructionType_HOE): RateTableConstructionType_Ext {
+    if (constructionType == typekey.ConstructionType_HOE.TC_CONCRETEBLOCK_EXT || constructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
+        constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
+        constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT) {
       return RateTableConstructionType_Ext.TC_MASONRY
-    } else if(constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT){
+    } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT) {
       return RateTableConstructionType_Ext.TC_FRAME
-    } else{
+    } else {
       return RateTableConstructionType_Ext.TC_NA
     }
   }

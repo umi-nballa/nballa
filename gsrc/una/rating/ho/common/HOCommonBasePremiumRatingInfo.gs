@@ -1,10 +1,10 @@
 package una.rating.ho.common
 
+uses una.config.ConfigParamsUtil
+uses una.rating.util.HOConstructionTypeMapper
+
 uses java.math.BigDecimal
 uses java.util.Date
-uses una.rating.util.HOConstructionTypeMapper
-uses una.config.ConfigParamsUtil
-uses java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +13,6 @@ uses java.util.HashMap
  * Time: 2:34 PM
  */
 class HOCommonBasePremiumRatingInfo {
-
   var _territoryCode: String as TerritoryCode
   var _dwellingLimit: int as DwellingLimit
   var _personalPropertyLimit: int as PersonalPropertyLimit
@@ -22,11 +21,11 @@ class HOCommonBasePremiumRatingInfo {
   var _creditScore: int as CreditScore = 0
   var _priorLosses: int as PriorLosses = 0
   var _noHitOrScoreIndicator: Boolean as NoHitOrScoreIndicator = false
-  var _protectionClassCode : String as ProtectionClassCode
-  var _constructionType : RateTableConstructionType_Ext as ConstructionType
-  var _keyFactorGreaterLimit : int as KeyFactorGreaterLimit
-
-
+  var _protectionClassCode: String as ProtectionClassCode
+  var _constructionType: RateTableConstructionType_Ext as ConstructionType
+  var _keyFactorGreaterLimit: int as KeyFactorGreaterLimit
+  var _keyFactorLowerBound: BigDecimal as KeyFactorLowerBound
+  var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
   construct(dwelling: Dwelling_HOE) {
     _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
     //TODO: remove this code once the tuna integration is in place
@@ -42,7 +41,7 @@ class HOCommonBasePremiumRatingInfo {
       _dwellingLimit = dwelling?.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm?.Value as int
     }
 
-    if(dwelling.HODW_Personal_Property_HOEExists){
+    if (dwelling.HODW_Personal_Property_HOEExists){
       _personalPropertyLimit = dwelling?.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm?.Value as int
     }
 
@@ -57,9 +56,9 @@ class HOCommonBasePremiumRatingInfo {
       _priorLosses = policyPeriod?.Policy?.PriorLosses.Count
     }
 
-    if(policyPeriod?.CreditInfoExt?.CreditReport?.CreditScore != null){
+    if (policyPeriod?.CreditInfoExt?.CreditReport?.CreditScore != null) {
       _creditScore = policyPeriod?.CreditInfoExt?.CreditReport?.CreditScore as int
-    } else if(policyPeriod?.CreditInfoExt?.CreditLevel != null){
+    } else if (policyPeriod?.CreditInfoExt?.CreditLevel != null){
       _creditScore = policyPeriod.CreditInfoExt.CreditLevel.Description.toInt()
     }
 
@@ -69,9 +68,12 @@ class HOCommonBasePremiumRatingInfo {
     }
     _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
 
-    _constructionType= HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
+    _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
 
     _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOPolicyType.Code)
+    var keyFactorRange = ConfigParamsUtil.getRange(TC_KEYFACTORRANGE, dwelling.CoverableState, dwelling.HOPolicyType.Code)
+    _keyFactorLowerBound = keyFactorRange.LowerBound
+    _keyFactorUpperBound = keyFactorRange.UpperBound
   }
 
   private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {

@@ -19,8 +19,8 @@ class CoveragesUtil {
                                                                                                                                                "HODW_LossOfUseDwelLimit_HOE"},
                                                                                                                  "DPDW_Dwelling_Limit_HOE" -> {"DPDW_OtherStructuresLimit_HOE",
                                                                                                                                                "DPDW_PersonalPropertyLimit_HOE",
-                                                                                                                                               "DPDW_Additional_LivingExpLimit_HOE"}}
-                                                                                                                                               //TODO tlv DE18 - Fair Market Value has wrong pattern code
+                                                                                                                                               "DPDW_Additional_LivingExpLimit_HOE",
+                                                                                                                                               "DPDW_FairRentalValue_Ext"}}
   public static function isCoverageAvailable(coveragePattern : String, coverable : Coverable) : boolean{
     var result = true
 

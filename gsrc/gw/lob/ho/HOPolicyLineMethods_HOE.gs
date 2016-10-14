@@ -17,7 +17,7 @@ uses gw.lob.ho.rating.HORatingEngine_HOE
 uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
 uses una.lob.ho.HOE_UnderwriterEvaluator
-uses una.rating.ho.UNAHORatingEngine_HOE
+uses una.rating.ho.common.UNAHORatingEngine_HOE
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeUtil
 uses gw.api.tree.RowTreeRootNode
 uses gw.rating.worksheet.treenode.WorksheetTreeNodeContainer

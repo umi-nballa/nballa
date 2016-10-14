@@ -12,6 +12,7 @@ uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
 uses gw.xml.XmlElement
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyCancelReinstateType
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
+uses una.integration.mapping.hpx.common.HPXCoverageMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -55,6 +56,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     for (question in questions) {
       dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
+    var discounts = createDiscounts(policyPeriod)
+    for (discount in discounts) {
+      dwellingLineBusiness.addChild(new XmlElement("Discount", discount))
+    }
     return dwellingLineBusiness
   }
 
@@ -75,28 +80,68 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     dwell.addChild(new XmlElement("Location", loc))
     var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     var transactions = policyPeriod.HOTransactions
-    var covs = createCoveragesInfo(policyPeriod, getCoverages(policyPeriod), getCoverages(previousPeriod))
+    var covs = createCoveragesInfo(getCoverages(policyPeriod), getCoverages(previousPeriod), getTransactions(policyPeriod), getTransactions(previousPeriod))
     for (cov in covs) {
       dwell.addChild(new XmlElement("Coverage", cov))
     }
     return dwell
   }
 
-  function createCoveragesInfo(policyPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+
+
+  /*
+  function createNewlyAddedCoverages(policyPeriod : PolicyPeriod, previousPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverageMapper = new HPXDwellingCoverageMapper()
-    for (cov in currentCoverages) {
-      var hoTransactions = getTransactions(policyPeriod)
-      var trxs = hoTransactions.where( \ elt -> cov.equals(elt.HomeownersCost.Coverage.PatternCode))
-      if (previousCoverages != null) {
-        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
-        coverages.add(coverageMapper.createCoverageInfo(cov, previousCoverage, trxs))
-      } else {
-        coverages.add(coverageMapper.createCoverageInfo(cov, null, trxs))
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    if (previousCoverages != null) {
+      for (cov in currentCoverages) {
+        var newlyAdded = !previousCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode))
+        if (newlyAdded) {
+          var hoTransactions = getTransactions(policyPeriod)
+          var trxs = hoTransactions.where( \ elt -> cov.PatternCode.equals(elt.HomeownersCost.Coverage.PatternCode))
+          coverages.add(coverageMapper.createCoverageInfo(cov, null, null, trxs))
+        }
       }
     }
     return coverages
+  }
+
+  function createRemovedCoverages(previousPeriod : PolicyPeriod, policyPeriod : PolicyPeriod, previousCoverages : java.util.List<Coverage>, currentCoverages : java.util.List<Coverage>) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverageMapper = new HPXDwellingCoverageMapper()
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    if (previousCoverages != null) {
+      for (cov in currentCoverages) {
+        var newlyAdded = !previousCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode))
+        if (newlyAdded) {
+          var hoTransactions = getTransactions(policyPeriod)
+          var trxs = hoTransactions.where( \ elt -> cov.PatternCode.equals(elt.HomeownersCost.Coverage.PatternCode))
+          coverages.add(coverageMapper.createCoverageInfo(null, cov, null, trxs))
+        }
+      }
+    }
+    return coverages
+  }
+  */
+
+  function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
+    var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
+    var allOtherCosts : List<HomeownersCost_HOE>
+    var lineLevelCosts = policyPeriod.AllCosts.where( \ elt -> elt typeis HomeownersLineCost_EXT)
+    var discnts = lineLevelCosts.where( \ elt -> (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_AFFINITYDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_CONCRETETILEROOFDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT or
+                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT)
+    for (cost in discnts) {
+      var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
+      discount.DiscountDescription = cost.DisplayName
+      discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
+      discounts.add(discount)
+    }
+    return discounts
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
@@ -105,5 +150,22 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
   override function getTransactions(policyPeriod: PolicyPeriod): List<HOTransaction_HOE> {
     return policyPeriod.HOTransactions
+  }
+
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+    switch(typeof cost){
+      case HomeownersLineCost_EXT:
+          result = cost.Coverage
+          break
+      case DwellingCovCost_HOE:
+          result = cost.Coverage
+          break
+    }
+    return result
+  }
+
+  override function getCoverageMapper() : HPXCoverageMapper {
+    return new HPXDwellingCoverageMapper()
   }
 }

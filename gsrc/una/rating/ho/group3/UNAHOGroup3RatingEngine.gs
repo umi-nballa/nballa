@@ -4,7 +4,7 @@ uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses gw.financials.PolicyPeriodFXRateCache
 uses una.rating.ho.group3.ratinginfos.HORatingInfo
-uses una.rating.ho.UNAHORatingEngine_HOE
+uses una.rating.ho.common.UNAHORatingEngine_HOE
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 uses una.rating.util.HOCreateCostDataUtil
 uses una.rating.ho.common.HORateRoutineNames
@@ -109,11 +109,13 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
         break
       case HODW_SpecialLimitsPP_HOE_Ext:
-        //rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+        rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
         break
       case HODW_OrdinanceCov_HOE:
         rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
         break
+      case HODW_LimitedScreenCov_HOE_Ext:
+        rateLimitedScreenedEnclosureAndCarportCoverage(dwellingCov, dateRange)
 
     }
   }
@@ -128,9 +130,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
     if(dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
-      rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium)
-      //if(!windOrHailExcluded)
-        //rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBaseClassPremium)
+      rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
+      if(!windOrHailExcluded)
+        rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBaseClassPremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTWINDPREMIUM)
     }
   }
 
@@ -317,7 +319,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     dwellingRatingInfo.KeyFactor = _hoRatingInfo.KeyFactor
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SINKHOLE_LOSS_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null )//and costData.ActualTermAmount != 0)
+    if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
     _logger.debug("Sinkhole Loss Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -370,15 +372,18 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate the Superior Construction Discount
    */
-  function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal) {
+  function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSuperiorConstructionDiscount", this.IntrinsicType)
     var discountOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.BasePremium = basePremium
+    discountOrSurchargeRatingInfo.TotalBasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNT,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
+    if (costData != null){
       addCost(costData)
+      if(costType == HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
+        _hoRatingInfo.SuperiorConstructionDiscountForAOP = costData.ActualTermAmount
+    }
     _logger.debug("Superior Construction Discount Rated Successfully", this.IntrinsicType)
   }
 
@@ -394,6 +399,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
     _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Limited Screened Enclosure And Carport
+   */
+  function rateLimitedScreenedEnclosureAndCarportCoverage(dwellingCov: HODW_LimitedScreenCov_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLimitedScreenedEnclosureAndCarportCoverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LIMITED_SCREENED_ENCLOSURE_AND_CARPORT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null and costData.ActualTermAmount != 0)
+      addCost(costData)
+    _logger.debug("Limited Screened Enclosure And Carport Coverage Rated Successfully", this.IntrinsicType)
   }
 
 

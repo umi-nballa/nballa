@@ -339,4 +339,13 @@ enhancement BP7BuildingEnhancement : entity.BP7Building {
     clonedBuilding.updateDependentFields(null, helper)
     return  clonedBuilding
   }
+
+  //uim-tmanickam : This function being called from product designer and make 'Damage to Premises Rented to you' coverage available
+  function isBuildingDamageToPremisesRentedCoverageAvailable() : boolean {
+    if(this.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER or
+        this.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){
+      return true
+    }
+    return false
+  }
 }

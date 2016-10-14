@@ -1,14 +1,15 @@
 package una.rating.ho.tx
 
-uses java.util.Map
+uses gw.financials.PolicyPeriodFXRateCache
+uses gw.lob.common.util.DateRange
+uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
 uses gw.rating.CostData
 uses una.rating.ho.common.HORateRoutineExecutor
-uses gw.financials.PolicyPeriodFXRateCache
-uses una.rating.ho.ratinginfos.HORatingInfo
-uses gw.lob.common.util.DateRange
-uses una.rating.ho.ratinginfos.HOBasePremiumRatingInfo
-uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
 uses una.rating.ho.common.HORateRoutineNames
+uses una.rating.ho.tx.ratinginfos.HOBasePremiumRatingInfo
+uses una.rating.ho.tx.ratinginfos.HORatingInfo
+
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,13 +18,11 @@ uses una.rating.ho.common.HORateRoutineNames
  * Class which rates the base premium for the texas HO policies
  */
 class HOBasePremiumRaterTX {
-
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
-
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
       HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
@@ -75,21 +74,21 @@ class HOBasePremiumRaterTX {
     var routines: List<String> = {}
     if (_dwelling.HODW_Dwelling_Cov_HOEExists){
       var dwellingValuation = _dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue
-      if(dwellingValuation == "Replacement Cost"){
+      if (dwellingValuation == "Replacement Cost") {
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
-      } else{
+      } else {
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTCOVERAGEWITHROOFSURFACING)
       }
-      if(_dwelling.HODW_AdditionalPerilCov_HOE_ExtExists){
+      if (_dwelling.HODW_AdditionalPerilCov_HOE_ExtExists){
         routines.add(HORateRoutineNames.HOA_PLUS_COVERAGE_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HOA_PLUS_COVERAGE_RATE_ROUTINE, HOCostType_Ext.TC_HOAPLUSCOVERAGE)
       }
     }
-    if(_dwelling.HODW_Personal_Property_HOEExists){
+    if (_dwelling.HODW_Personal_Property_HOEExists){
       var personalPropertyValuation = _dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.DisplayValue
-      if(personalPropertyValuation == "Replacement Cost"){
+      if (personalPropertyValuation == "Replacement Cost"){
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY)
       }

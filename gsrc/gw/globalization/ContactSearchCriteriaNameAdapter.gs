@@ -20,6 +20,14 @@ class ContactSearchCriteriaNameAdapter extends UnsupportedPersonNameFields {
     _criteria.FirstName = value
   }
 
+  override property get MiddleName(): java.lang.String {
+    return _criteria.MiddleName
+  }
+
+  override property set MiddleName(value: java.lang.String) {
+    _criteria.MiddleName = value
+  }
+
   override property get LastName(): java.lang.String {
     return _criteria.Keyword
   }

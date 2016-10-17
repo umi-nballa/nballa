@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.businessowners
 
 uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingProtectionMapper
 uses gw.xml.XmlElement
+uses una.integration.mapping.hpx.common.HPXStructureMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,11 @@ uses gw.xml.XmlElement
  * Time: 4:57 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXBP7BuildingMapper {
+class HPXBP7BuildingMapper implements HPXStructureMapper {
+
+  override function createStructure(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
+    return createBuilding(coverable as BP7Building)
+  }
 
   function createBuilding(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var buildingConstructionMapper = new HPXBP7BuildingConstructionMapper ()

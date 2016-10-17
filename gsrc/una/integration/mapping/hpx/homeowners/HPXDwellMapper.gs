@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.homeowners
 
 uses gw.xml.XmlElement
 uses gw.xml.date.XmlDate
+uses una.integration.mapping.hpx.common.HPXStructureMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,10 +11,15 @@ uses gw.xml.date.XmlDate
  * Time: 6:42 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXDwellMapper {
+class HPXDwellMapper implements HPXStructureMapper {
+
+  override function createStructure(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
+    return createDwell(coverable.PolicyLine.Branch.LatestPeriod)
+  }
 
   function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var buildingProtectionMapper = new HPXHOBuildingProtectionMapper ()
+    var dwellConstructionMapper = new HPXHODwellConstructionMapper ()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType()
     dwell.addChild(new XmlElement("DwellRating", createDwellRating(policyPeriod)))
     dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(policyPeriod)))
@@ -24,6 +30,7 @@ class HPXDwellMapper {
       dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased
     }
     */
+    dwell.addChild(new XmlElement("Construction", dwellConstructionMapper.createDwellConstruction(policyPeriod)))
     dwell.addChild(new XmlElement("DwellInspectionValuation", createDwellInspectionValuation(policyPeriod)))
     dwell.addChild(new XmlElement("DwellOccupancy", createDwellOccupancy(policyPeriod)))
     dwell.addChild(new XmlElement("MasterPolicyInfo", createMasterPolicyInfo(policyPeriod)))

@@ -20,6 +20,14 @@ class PolicyContactRoleNameAdapter extends UnsupportedPersonNameFields {
     _policyContactRole.FirstName = value
   }
 
+  override property get MiddleName(): String {
+    return _policyContactRole.MiddleName
+  }
+
+  override property set MiddleName(value: String) {
+    _policyContactRole.MiddleName = value
+  }
+
   override property get Particle(): String {
     return _policyContactRole.Particle
   }

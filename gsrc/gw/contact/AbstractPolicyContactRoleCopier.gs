@@ -21,6 +21,7 @@ abstract class AbstractPolicyContactRoleCopier<T extends PolicyContactRole> exte
      */  
     var firstName = PersonToPolicyContactRoleSyncedField.FirstName.getPolicyEntityFieldValue(role)
     var lastName = PersonToPolicyContactRoleSyncedField.LastName.getPolicyEntityFieldValue(role)
+    var middleName = PersonToPolicyContactRoleSyncedField.MiddleName.getPolicyEntityFieldValue(role)
     var firstNameKanji = PersonToPolicyContactRoleSyncedField.FirstNameKanji.getPolicyEntityFieldValue(role)
     var lastNameKanji = PersonToPolicyContactRoleSyncedField.LastNameKanji.getPolicyEntityFieldValue(role)
     var birthDt = PersonToPolicyContactRoleSyncedField.DateOfBirth.getPolicyEntityFieldValue(role)
@@ -29,6 +30,7 @@ abstract class AbstractPolicyContactRoleCopier<T extends PolicyContactRole> exte
     
     PersonToPolicyContactRoleSyncedField.FirstName.setPolicyEntityFieldValue(_bean, firstName)
     PersonToPolicyContactRoleSyncedField.LastName.setPolicyEntityFieldValue(_bean, lastName)
+    PersonToPolicyContactRoleSyncedField.MiddleName.setPolicyEntityFieldValue(_bean, middleName)
     PersonToPolicyContactRoleSyncedField.FirstNameKanji.setPolicyEntityFieldValue(_bean, firstNameKanji)
     PersonToPolicyContactRoleSyncedField.LastNameKanji.setPolicyEntityFieldValue(_bean, lastNameKanji)
     PersonToPolicyContactRoleSyncedField.DateOfBirth.setPolicyEntityFieldValue(_bean, birthDt)

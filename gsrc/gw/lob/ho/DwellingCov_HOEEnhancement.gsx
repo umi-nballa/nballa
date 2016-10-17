@@ -322,7 +322,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 */
   public static function defaultValueUnitOwnersRentedDeductible(dwelling:Dwelling_HOE){
       if(dwelling.HODW_SectionI_Ded_HOEExists and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) {
-            //dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+            dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     }
   }
 
@@ -330,15 +330,53 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 *  Author: uim-svallabhapurapu
 *  Limited earthquake cov Limit default value(De159)
 *  HO Line of business
+*  Amrita Dash
+*  Updated the function for dwelling fire for DE 397
 */
   public static function defaultValueLmtedEarthquakeCovALimit(dwelling:Dwelling_HOE){
 
     if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm!=null) {
           dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm.Value =  dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     }
+    else if(dwelling.DPDW_Dwelling_Cov_HOEExists and dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm!=null) {
+      dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm.Value =  dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
+    }
 
   }
 
+  /**
+   * Amrita Dash
+   * Default value for HO Ordinance and law DE 586
+   */
+
+  static function defaultValueLimitHOOrdinanceLaw(_dwelling: Dwelling_HOE)
+  {
+
+    if (_dwelling.Branch.BaseState == TC_FL)
+    {
+      _dwelling.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.setValueFromString("25")
+     }
+    else{
+      _dwelling.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.setValueFromString("10")
+      }
+  }
+
+  /**
+   * Amrita Dash
+   * Default value for HO Ordinance and law DE 397
+   */
+
+  static function defaultValueLimitDPAddLiving(_dwelling: Dwelling_HOE)
+  {
+
+    if (_dwelling.Branch.BaseState == TC_CA)
+    {
+      _dwelling.DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm.setValueFromString("10")
+    }
+    else{
+      _dwelling.DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm.setValueFromString("20")
+    }
+  }
 
 }
 

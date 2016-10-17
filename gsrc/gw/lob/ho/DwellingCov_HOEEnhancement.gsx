@@ -322,7 +322,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
 */
   public static function defaultValueUnitOwnersRentedDeductible(dwelling:Dwelling_HOE){
       if(dwelling.HODW_SectionI_Ded_HOEExists and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) {
-            //dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+            dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm.Value = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     }
   }
 

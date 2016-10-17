@@ -147,6 +147,50 @@ abstract class HPXPolicyMapper {
     return questions
   }
 
+  function createStructuresInfo(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType> {
+    var structures = new java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType>()
+    var structureMapper = getStructureMapper() //new HPXBP7BuildingMapper()
+    var locationMapper = new HPXLocationMapper()
+    var classificationMapper = getClassificationMapper ()
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    var coverableStructures = getStructures(policyPeriod)//var bldgs = policyPeriod.BP7Line.AllBuildings
+    for (coverableStructure in coverableStructures) {
+      var propertyStructure = structureMapper.createStructure(coverableStructure)  //.createBuilding(bldg)
+      var buildingCovs = createCoveragesInfo(getStructureCoverages(policyPeriod, coverableStructure), getStructureCoverages(previousPeriod, coverableStructure),
+          getStructureCoverageTransactions(policyPeriod, coverableStructure), getStructureCoverageTransactions(previousPeriod, coverableStructure)) //createCoveragesInfo(coverages, previousCoverages, trxs, previousTrxs)
+      for (cov in buildingCovs) { propertyStructure.addChild(new XmlElement("Coverage", cov))}
+      // structure location
+      var structureLoc = getLocation(coverableStructure)
+      var location = locationMapper.createLocation(structureLoc)
+      var locationCovs = createCoveragesInfo(getLocationCoverages(policyPeriod, coverableStructure), getLocationCoverages(previousPeriod, coverableStructure),
+                                             getLocationCoverageTransactions(policyPeriod, coverableStructure), getLocationCoverageTransactions(previousPeriod, coverableStructure))
+      var additionalInterests = getAdditionalInterests(coverableStructure)
+      for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
+      for (additionalInterest in additionalInterests) { location.addChild(new XmlElement("AdditionalInterest", additionalInterest))}
+      propertyStructure.addChild(new XmlElement("Location", location))
+      // building classifications
+      var structureClassifications = getClassifications(coverableStructure)
+      for (structureClassification in structureClassifications) {
+        var buildlingClassification = classificationMapper.createClassification(structureClassification)
+        var classifcnCovs = createCoveragesInfo(getClassificationCoverages(policyPeriod, structureClassification), getClassificationCoverages(previousPeriod, structureClassification),
+            getClassificationCoverageTransactions(policyPeriod, structureClassification), getClassificationCoverageTransactions(previousPeriod, structureClassification))  //createCoveragesInfo(classifcnCoverages, classifcnPreviousCoverages, classifcnTrxs, previousClassifcnTrxs)
+        for (classifcn in classifcnCovs) { buildlingClassification.addChild(new XmlElement("Coverage", classifcn))}
+        propertyStructure.addChild(new XmlElement("BP7Classification", buildlingClassification))
+      }
+
+      structures.add(propertyStructure)
+    }
+    return structures
+  }
+
+  function createLineCoverages(policyPeriod : PolicyPeriod, policyLine : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    return createCoveragesInfo(getLineCoverages(getPolicyLine(policyPeriod)), getLineCoverages(getPolicyLine(policyPeriod)),
+                               getLineCoverageTransactions(policyPeriod, policyLine), getLineCoverageTransactions(previousPeriod, policyLine))
+  }
+
   function createCoveragesInfo (currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
                                     transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)
                                                           : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
@@ -184,6 +228,36 @@ abstract class HPXPolicyMapper {
 
   abstract function getCostCoverage(cost : Cost) : Coverage
 
+  abstract function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable>
+
+  abstract function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
+
+  abstract function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
+
+  abstract function getLocation(coverable : Coverable) : PolicyLocation
+
+  abstract function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
+
+  abstract function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
+
+  abstract function getClassifications(coverable : Coverable) : java.util.List<BP7Classification>
+
+  abstract function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
+
+  abstract function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
+
+  abstract function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType>
+
+  abstract function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable
+
+  abstract function getLineCoverages(line : Coverable) : java.util.List<Coverage>
+
+  abstract function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
+
   abstract function getCoverageMapper() : HPXCoverageMapper
+
+  abstract function getStructureMapper() : HPXStructureMapper
+
+  abstract function getClassificationMapper() : HPXClassificationMapper
 
 }

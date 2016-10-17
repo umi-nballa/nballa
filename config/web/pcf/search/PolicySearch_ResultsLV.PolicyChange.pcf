@@ -12,9 +12,14 @@
       flags="openUserRoleOwner"
       valueType="PolicyPeriodSummary"
       widget="PolicyPeriodSummaryIterator"/>
-	<Require
+    <Require
       name="searchCriteria"
-      type="PolicySearchCriteria"/>	  
+      type="PolicySearchCriteria"/>
+    <Variable
+      initialValue="una.pageprocess.policysearch.PolicySearchResults.filteredSearchResults(searchResults,searchCriteria)"
+      name="filteredSearchResults"
+      recalculateOnRefresh="true"
+      type="List&lt;PolicyPeriodSummary&gt;"/>
     <RowIterator
       checkBoxVisible="true"
       editable="false"
@@ -22,7 +27,7 @@
       hasCheckBoxes="true"
       id="PolicyPeriodSummaryIterator"
       pickValue="policyPeriodSummary"
-      value="searchResults">
+      value="filteredSearchResults">
       <ToolbarFlag
         condition="policyPeriodSummary.Job.CloseDate == null"
         name="openUserRoleOwner"/>

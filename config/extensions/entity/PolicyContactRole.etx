@@ -1,41 +1,48 @@
 <?xml version="1.0"?>
-<extension xmlns="http://guidewire.com/datamodel" entityName="PolicyContactRole">
-  <!--<implementsEntity name="PolicyContactRoleKanjiIndexDelegate"/>-->
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="PolicyContactRole">
+  <!-- <implementsEntity name="PolicyContactRoleKanjiIndexDelegate"/> -->
   <column
-      name="CompanyNameKanjiInternal"
-      type="companyname"
-      nullok="true"
-      desc="Internal field for sharing and revisioning the role's company name in Kanji.  Used only for Japanese names and will be null otherwise."
-      supportsLinguisticSearch="true"
-      getterScriptability="doesNotExist"
-      setterScriptability="doesNotExist">
-      <columnParam
-        name="logicalSize"
-        value="60"/>
-  </column>
-     <column
-      name="FirstNameKanjiInternal"
-      type="firstname"
-      nullok="true"
-      desc="Internal field for sharing and revisioning the role's first name in Kanji.  Used only for Japanese names and will be null otherwise."
-      supportsLinguisticSearch="true"
-      getterScriptability="doesNotExist"
-      setterScriptability="doesNotExist"/>
-  <column
-      name="LastNameKanjiInternal"
-      type="lastname"
-      nullok="true"
-      desc="Internal field for sharing and revisioning the role's last name in Kanji.  Used only for Japanese names and will be null otherwise."
-      supportsLinguisticSearch="true"
-      getterScriptability="doesNotExist"
-      setterScriptability="doesNotExist"/>
-  <column
-    name="ParticleInternal"
-    type="shorttext"
+    desc="Internal field for sharing and revisioning the role's company name in Kanji.  Used only for Japanese names and will be null otherwise."
+    getterScriptability="doesNotExist"
+    name="CompanyNameKanjiInternal"
     nullok="true"
-    desc="Particle for (French) name" />
-<array
+    setterScriptability="doesNotExist"
+    supportsLinguisticSearch="true"
+    type="companyname">
+    <columnParam
+      name="logicalSize"
+      value="60"/>
+  </column>
+  <column
+    desc="Internal field for sharing and revisioning the role's first name in Kanji.  Used only for Japanese names and will be null otherwise."
+    getterScriptability="doesNotExist"
+    name="FirstNameKanjiInternal"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    supportsLinguisticSearch="true"
+    type="firstname"/>
+  <column
+    desc="Internal field for sharing and revisioning the role's last name in Kanji.  Used only for Japanese names and will be null otherwise."
+    getterScriptability="doesNotExist"
+    name="LastNameKanjiInternal"
+    nullok="true"
+    setterScriptability="doesNotExist"
+    supportsLinguisticSearch="true"
+    type="lastname"/>
+  <column
+    desc="Particle for (French) name"
+    name="ParticleInternal"
+    nullok="true"
+    type="shorttext"/>
+  <array
     arrayentity="CreditReportExt"
     cascadeDelete="true"
     name="CreditReportsExt"/>
+  <column
+    desc="Internal field for sharing and revisioning the role's middle name."
+    name="MiddleNameInternal"
+    nullok="true"
+    type="firstname"/>
 </extension>

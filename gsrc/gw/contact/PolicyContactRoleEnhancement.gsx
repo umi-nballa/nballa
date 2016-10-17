@@ -78,6 +78,20 @@ enhancement PolicyContactRoleEnhancement : PolicyContactRole {
   }
 
   /**
+   * Shared and revisioned last name.
+   */
+  property get MiddleName() : String {
+    return PersonToPolicyContactRoleSyncedField.MiddleName.getValue(this)
+  }
+
+  /**
+   * Shared and revisioned last name.
+   */
+  property set MiddleName(arg : String) {
+    PersonToPolicyContactRoleSyncedField.MiddleName.setValue(this, arg)
+  }
+
+  /**
    * Shared and revisioned first name kanji.
    */
   property get FirstNameKanji() : String {
@@ -233,5 +247,4 @@ enhancement PolicyContactRoleEnhancement : PolicyContactRole {
       }
       return false
     }
-
 }

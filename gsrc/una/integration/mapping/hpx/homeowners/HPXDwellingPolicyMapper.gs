@@ -13,6 +13,8 @@ uses gw.xml.XmlElement
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyCancelReinstateType
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
+uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.common.HPXClassificationMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -51,7 +53,11 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
   function createDwellingLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingLineBusinessType {
     var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingLineBusinessType()
-    dwellingLineBusiness.addChild(new XmlElement("Dwell", createDwell(policyPeriod)))
+    //dwellingLineBusiness.addChild(new XmlElement("Dwell", createDwell(policyPeriod)))
+    var structures = createStructuresInfo(policyPeriod)
+    for (struct in structures) {
+      dwellingLineBusiness.addChild(new XmlElement("Dwell", struct))
+    }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
       dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
@@ -63,7 +69,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return dwellingLineBusiness
   }
 
-  /************************************** Dwell  ******************************************************/
+  /************************************** Dwell  *****************************************************
   function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
     var locationMapper = new HPXLocationMapper()
@@ -77,7 +83,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var dwellConstructionMapper = new HPXHODwellConstructionMapper ()
     var dwell = dwellMapper.createDwell(policyPeriod)
     dwell.addChild(new XmlElement("Construction", dwellConstructionMapper.createDwellConstruction(policyPeriod)))
-    dwell.addChild(new XmlElement("Location", loc))
+    //dwell.addChild(new XmlElement("Location", loc))
     var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
     var transactions = policyPeriod.HOTransactions
     var covs = createCoveragesInfo(getCoverages(policyPeriod), getCoverages(previousPeriod), getTransactions(policyPeriod), getTransactions(previousPeriod))
@@ -86,43 +92,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     }
     return dwell
   }
-
-
-
-  /*
-  function createNewlyAddedCoverages(policyPeriod : PolicyPeriod, previousPeriod : PolicyPeriod, currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverageMapper = new HPXDwellingCoverageMapper()
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    if (previousCoverages != null) {
-      for (cov in currentCoverages) {
-        var newlyAdded = !previousCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode))
-        if (newlyAdded) {
-          var hoTransactions = getTransactions(policyPeriod)
-          var trxs = hoTransactions.where( \ elt -> cov.PatternCode.equals(elt.HomeownersCost.Coverage.PatternCode))
-          coverages.add(coverageMapper.createCoverageInfo(cov, null, null, trxs))
-        }
-      }
-    }
-    return coverages
-  }
-
-  function createRemovedCoverages(previousPeriod : PolicyPeriod, policyPeriod : PolicyPeriod, previousCoverages : java.util.List<Coverage>, currentCoverages : java.util.List<Coverage>) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverageMapper = new HPXDwellingCoverageMapper()
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    if (previousCoverages != null) {
-      for (cov in currentCoverages) {
-        var newlyAdded = !previousCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode))
-        if (newlyAdded) {
-          var hoTransactions = getTransactions(policyPeriod)
-          var trxs = hoTransactions.where( \ elt -> cov.PatternCode.equals(elt.HomeownersCost.Coverage.PatternCode))
-          coverages.add(coverageMapper.createCoverageInfo(null, cov, null, trxs))
-        }
-      }
-    }
-    return coverages
-  }
-  */
-
+  ***/
   function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
     var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
     var allOtherCosts : List<HomeownersCost_HOE>
@@ -167,5 +137,73 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXDwellingCoverageMapper()
+  }
+
+  override function getStructureMapper() : HPXStructureMapper {
+    return new HPXDwellMapper()
+  }
+
+  override function getClassificationMapper() : HPXClassificationMapper {
+    return null
+  }
+
+  override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
+    var structures = new java.util.ArrayList<Coverable>()
+    var dwelling = policyPeriod.HomeownersLine_HOE.Dwelling
+    structures.add(dwelling)
+    return structures
+  }
+
+  override function getLocation(coverable : Coverable) : PolicyLocation {
+    return (coverable as Dwelling_HOE).HOLocation.PolicyLocation
+  }
+
+  override function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
+  override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
+  }
+
+  override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
+    return null
+  }
+
+  override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
+  override function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
+    var additionalInterestMapper = new HPXAdditionalInterestMapper()
+    var additionalInterests = additionalInterestMapper.createAdditionalInterests((coverable as Dwelling_HOE).AdditionalInterestDetails)
+    return additionalInterests
+  }
+
+  override function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable {
+    return policyPeriod.HomeownersLine_HOE
+  }
+
+  override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
+    var lineCovs = (line as HomeownersLine_HOE).CoveragesFromCoverable //.where( \ elt -> (elt.OwningCoverable as HomeownersLine_HOE) == line)
+    return lineCovs
+  }
+
+  override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
   }
 }

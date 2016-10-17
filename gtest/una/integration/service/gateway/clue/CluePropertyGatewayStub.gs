@@ -1,16 +1,10 @@
-/**
- *  CLUE Property Integration, reference implementation for the LexisNexis web service.
- *
- *  Author:    Jgupta
- *  Date:      01/August/2016
- **/
 package una.integration.service.gateway.clue
 
 uses gw.api.system.logging.LoggerFactory
 uses gw.api.util.DisplayableException
 uses gw.pl.logging.LoggerCategory
 uses gw.xml.ws.WebServiceException
-uses una.integration.service.transport.clue.CluePropertyCommunicator
+uses una.integration.service.transport.clue.CluePropertyCommunicatorStub
 uses wsi.schema.una.inscore.cprulesorderschema.Order
 uses wsi.schema.una.inscore.cprulesorderschema.enums.DescriptionType_Sex
 uses wsi.schema.una.inscore.cprulesorderschema.enums.NameType_Type
@@ -18,7 +12,14 @@ uses wsi.schema.una.inscore.cprulesresultschema.anonymous.elements.MessageListTy
 
 uses java.text.SimpleDateFormat
 
-class CluePropertyGateway implements CluePropertyInterface {
+/**
+ * Created with IntelliJ IDEA.
+ * User: JGupta
+ * Date: 10/17/16
+ * Time: 7:17 AM
+ * To change this template use File | Settings | File Templates.
+ */
+class CluePropertyGatewayStub implements CluePropertyInterface {
   private static var KEY_STORE_PATH: String
   private static var LEX_CLIENT_ID: String
   private static var LEX_ACCOUNT_NUMBER: String
@@ -30,12 +31,12 @@ class CluePropertyGateway implements CluePropertyInterface {
   private static var LEX_HTTP_USERNAME: String
   private static var LEX_HTTP_PASSWORD: String
   private static var DATE_FORMAT = "MM/dd/yyyy"
-  private static var cluePropertyCommunicator: CluePropertyCommunicator
+  private static var cluePropertyCommunicator: CluePropertyCommunicatorStub
   var timeout = "500"
-  static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "ClueProperty")
+  static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "CluePropertyGatewayStub")
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
-    cluePropertyCommunicator = new CluePropertyCommunicator()
+    cluePropertyCommunicator = new CluePropertyCommunicatorStub()
     setProperties()
   }
 
@@ -348,5 +349,6 @@ class CluePropertyGateway implements CluePropertyInterface {
     }
   }
 }
+
 
 

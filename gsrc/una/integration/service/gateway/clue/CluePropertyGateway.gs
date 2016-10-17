@@ -333,11 +333,15 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Param("subject", "The subject whose sex you wish to discover")
   @Returns("The sex of the provided subject or unknown if no sex is stored")
   private function getSex(subject: PolicyPriNamedInsured): DescriptionType_Sex {
-    var gender = (subject.ContactDenorm as Person).Gender
-    if (gender == "F") {
-      return DescriptionType_Sex.Female
-    } else if (gender == "M") {
-      return DescriptionType_Sex.Male
+    if(subject.ContactDenorm typeis Person) {
+      var gender = (subject.ContactDenorm as Person).Gender
+      if (gender == "F") {
+        return DescriptionType_Sex.Female
+      } else if (gender == "M") {
+        return DescriptionType_Sex.Male
+      } else {
+        return Unknown
+      }
     } else {
       return Unknown
     }

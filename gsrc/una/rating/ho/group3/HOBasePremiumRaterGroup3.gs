@@ -24,11 +24,13 @@ class HOBasePremiumRaterGroup3 {
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
-  private final var KEY_FACTOR_RATE_ROUTINE = "UNAHOKeyFactorRateRoutine"
+  private final var AOP_KEY_FACTOR_RATE_ROUTINE = "UNAHOAOPKeyFactorRateRoutine"
+  private final var WIND_KEY_FACTOR_RATE_ROUTINE = "UNAHOWindKeyFactorRateRoutine"
   private final var PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE = "UNAHOProtectionConstructionFactorRateRoutine"
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
       HORateRoutineNames.BASE_PREMIUM_FL_RATE_ROUTINE -> HOCostType_Ext.TC_AOPBASEPREMIUM,
-      KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
+      AOP_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
+      WIND_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
       PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_PROTECTIONCONSTRUCTIONFACTORBASEPREMIUM,
       HORateRoutineNames.WIND_BASE_PREMIUM_FL_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM
   }
@@ -46,7 +48,7 @@ class HOBasePremiumRaterGroup3 {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    var nonCostRoutinesToExecute: List<String> = {KEY_FACTOR_RATE_ROUTINE, PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE}
+    var nonCostRoutinesToExecute: List<String> = {AOP_KEY_FACTOR_RATE_ROUTINE, WIND_KEY_FACTOR_RATE_ROUTINE, PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE}
     var costDatas = executeRoutines(nonCostRoutinesToExecute, dateRange, numDaysInCoverageRatedTerm)
     var wsc: List<WorksheetEntry> = {}
     for (costData in costDatas)

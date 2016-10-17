@@ -97,4 +97,6 @@ public final class HORateRoutineNames {
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP3_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovRateRoutine"
   public static final var ORDINANCE_OR_LAW_COV_GROUP3_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovRateRoutine"
   public static final var LIMITED_SCREENED_ENCLOSURE_AND_CARPORT_COV_ROUTINE_NAME : String = "UNAHOLimitedScreenedEnclosureAndCarportCovRateRoutine"
+  public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP3_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIRateRoutine"
+  public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP3_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
 }

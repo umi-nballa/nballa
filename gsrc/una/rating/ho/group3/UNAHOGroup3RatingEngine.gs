@@ -67,6 +67,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_Personal_Liability_HOE:
         rateIncreasedSectionIILimits(lineCov, dateRange)
         break
+      case HOLI_FungiCov_HOE:
+        rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage(lineCov, dateRange)
+        break
     }
   }
 
@@ -116,7 +119,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HODW_LimitedScreenCov_HOE_Ext:
         rateLimitedScreenedEnclosureAndCarportCoverage(dwellingCov, dateRange)
-
+        break
+      case HODW_FungiCov_HOE:
+        rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
+        break
     }
   }
 
@@ -222,6 +228,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   * Rate Limited Fungi Wet Or Dry Rot Or Bacteria SectionII Coverage
+   */
+  function rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage(lineCov: HOLI_FungiCov_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage to rate Limited Fungi Wet Or Dry Rot Or Bacteria SectionII Coverage", this.IntrinsicType)
+    var lineRatingInfo = new HOGroup3LineRatingInfo (lineCov)
+    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP3_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Limited Fungi Wet Or Dry Rot Or Bacteria SectionII Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Rate the Increased Section II Limits
    */
   function rateIncreasedSectionIILimits(lineCov: HOLI_Personal_Liability_HOE, dateRange: DateRange) {
@@ -316,8 +335,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateSinkholeLossCoverage(dwellingCov: HODW_SinkholeLoss_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSinkholeLossCoverage to rate Sinkhole Loss Coverage", this.IntrinsicType)
     var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
-    dwellingRatingInfo.KeyFactor = _hoRatingInfo.KeyFactor
-    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+    var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SINKHOLE_LOSS_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
@@ -412,6 +430,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null and costData.ActualTermAmount != 0)
       addCost(costData)
     _logger.debug("Limited Screened Enclosure And Carport Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Limited Fungi, Wet Or Dry Rot Or Bacteria Section I coverage
+   */
+  function rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov: HODW_FungiCov_HOE, dateRange: DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP3_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Limited Fungi, Wet Or Dry Rot Or Bacteria Section I coverage Rated Successfully", this.IntrinsicType)
   }
 
 

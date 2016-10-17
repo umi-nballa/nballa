@@ -284,6 +284,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
   private function isLimitCalculated(dwelling: Dwelling_HOE) : boolean{
     return ConfigParamsUtil?.getList(TC_DerivedLimitsPatternCodes, dwelling.HOLine.BaseState)?.hasMatch( \ element -> element?.equalsIgnoreCase(this.PatternCode))
         or this.PatternCode == dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm.PatternCode
+        or this.PatternCode == dwelling.HODW_WindstormHailBroadSpecial_HOE_Ext.HODW_WHBroadSpecialLimit_HOETerm.PatternCode
   }
 
   private function isDerivedSpecialLimits(dwelling : Dwelling_HOE) : boolean{

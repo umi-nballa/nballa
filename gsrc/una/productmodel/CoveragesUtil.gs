@@ -65,7 +65,7 @@ class CoveragesUtil {
   }
 
   public static function getExistence(pattern : String, coverable : Coverable) : ExistenceType{
-    var result : ExistenceType
+    var result : ExistenceType = null
 
     switch(pattern){
       case "HODW_AckNoWindstromHail_HOE_Ext":
@@ -130,12 +130,14 @@ class CoveragesUtil {
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
+    var result : ExistenceType = null
+
     if(!hoLine.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm
      or hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value == null
      or hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value == -1){
-      return TC_REQUIRED
-    }else{
-      return TC_ELECTABLE
+      result = TC_REQUIRED
     }
+
+    return result
   }
 }

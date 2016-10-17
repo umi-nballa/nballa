@@ -67,6 +67,10 @@ class CovTermPOCHOEInputSet {
   static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
     onCovTermOptionChange_OnPremisesLimit(term, coverable)
     onCovTermOptionChange_LossAssessmentLimit(term, coverable)
+
+    if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
+      (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
+    }
   }
 
   static function getOptionLabel(covTerm : gw.api.domain.covterm.CovTerm, coverable : Coverable) : String{

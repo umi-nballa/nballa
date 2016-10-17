@@ -21,7 +21,7 @@ interface TunaInterface {
   public function fetchPropertyInformationComplete(address: AddressDTO): TunaAppResponse
 
   /* TBD - Yet to be Implemented*/
-  public function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse
+  public function fetchPropertyInformation(address: AddressDTO): TunaAppResponse
 
   /**
   * The purpose of the method is to validate Address in GW

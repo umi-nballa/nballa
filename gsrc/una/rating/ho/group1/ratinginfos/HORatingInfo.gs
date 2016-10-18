@@ -12,7 +12,6 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo  {
   var _keyPremium: BigDecimal as KeyPremium = 0.0
   var _standardBaseClassPremium: BigDecimal as StandardBaseClassPremium = 0.0
   var _finalAdjustedBaseClassPremium: BigDecimal as FinalAdjustedBaseClassPremium = 0.0
-  var _ageOfHomeDiscount: BigDecimal as AgeOfHomeDiscount = 0.0
   var _differenceInConditions: BigDecimal as DifferenceInConditions = 0.0
   var _higherAllPerilDeductible: BigDecimal as HigherAllPerilDeductible = 0.0
   var _concreteTileRoofDiscount: BigDecimal as ConcreteTileRoofDiscount = 0.0

@@ -3,6 +3,7 @@ package una.rating.ho.group1.ratinginfos
 uses gw.api.util.DateUtil
 uses una.config.ConfigParamsUtil
 uses una.rating.ho.common.HODiscountsOrSurchargeRatingInfo
+uses java.util.Date
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,26 +13,23 @@ uses una.rating.ho.common.HODiscountsOrSurchargeRatingInfo
  */
 class HOGroup1DiscountsOrSurchargeRatingInfo extends HODiscountsOrSurchargeRatingInfo {
   var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
-  var _ageOfHome: int as AgeOfHome
-  var _maxAgeOfHome: int as MaxAgeOfHome
+
+
   construct(line: HomeownersLine_HOE) {
     super(line)
-    _ageOfHome = determineAgeOfHome(line)
-    _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
     this.CoverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     this.AllPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _isPrivateFireCompanyDiscountApplicable = isPrivateFireCompanyDiscountApplicable(line)
   }
 
-  private function determineAgeOfHome(line: HomeownersLine_HOE): int {
-    var policyEffectiveDate = line.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate
+  override function determineAgeOfHome(year : int): int {
     var yearForCalc: int
-    if (line.BaseState != Jurisdiction.TC_NV and line.Dwelling?.HasAllRenovations) {
-      yearForCalc = line.Dwelling.MostRecentRenovationYear
+    if (this.Line.BaseState != Jurisdiction.TC_NV and Line.Dwelling?.HasAllRenovations) {
+      yearForCalc = Line.Dwelling.MostRecentRenovationYear
     } else {
-      yearForCalc = line.Dwelling.YearBuilt
+      yearForCalc = Line.Dwelling.YearBuilt
     }
-    return DateUtil.currentDate().YearOfDate - yearForCalc
+    return super.determineAgeOfHome(yearForCalc)
   }
 
   private function isPrivateFireCompanyDiscountApplicable(line: HomeownersLine_HOE): boolean {

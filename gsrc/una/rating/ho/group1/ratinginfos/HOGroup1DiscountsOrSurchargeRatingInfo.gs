@@ -4,6 +4,7 @@ uses gw.api.util.DateUtil
 uses una.config.ConfigParamsUtil
 uses una.rating.ho.common.HODiscountsOrSurchargeRatingInfo
 uses java.util.Date
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,8 +16,8 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HODiscountsOrSurchargeRatin
   var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
 
 
-  construct(line: HomeownersLine_HOE) {
-    super(line)
+  construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
+    super(line, totalBasePremium)
     this.CoverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     this.AllPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _isPrivateFireCompanyDiscountApplicable = isPrivateFireCompanyDiscountApplicable(line)

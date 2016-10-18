@@ -17,6 +17,7 @@ uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
+uses una.rating.ho.group2.ratinginfos.HOGroup2DiscountsOrSurchargeRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +30,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private static final var CLASS_NAME = UNAHOGroup3RatingEngine.Type.DisplayName
   private var _hoRatingInfo: HORatingInfo
   private var _limitDifferences : Map<CovTerm, BigDecimal>
+  private var _discountsOrSurchargeRatingInfo : HOGroup3DiscountsOrSurchargeRatingInfo
 
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
@@ -132,6 +134,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     var windOrHailExcluded = dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists
+    _discountsOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
     if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
@@ -392,9 +395,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSuperiorConstructionDiscount", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = basePremium
-    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, discountOrSurchargeRatingInfo)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){

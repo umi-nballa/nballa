@@ -19,8 +19,9 @@ class HODiscountsOrSurchargeRatingInfo {
   var _ageOfHome: int as AgeOfHome
   var _maxAgeOfHome: int as MaxAgeOfHome
   var _line : HomeownersLine_HOE as Line
-  construct(line: HomeownersLine_HOE) {
+  construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line
+    _totalBasePremium = totalBasePremium
     _coverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     _allPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)

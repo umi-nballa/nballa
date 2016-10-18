@@ -29,6 +29,10 @@
       initialValue="gw.web.line.cp.policy.CoverageInputSet.CPBldgCovUIHelper.getAutoIncreaseValue(building, building.CPBldgCov.CPBldgCovValuationMethodTerm.Value)"
       name="autoIncreaseValue"
       recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="(coverable as CPBuilding).PolicyLine as CommercialPropertyLine"
+      name="cpLine"
+      type="CommercialPropertyLine"/>
     <HiddenInput
       id="CovPatternDisplayName"
       value="coveragePattern.DisplayName"/>
@@ -39,11 +43,10 @@
       label="coveragePattern.DisplayName"
       onToggle="building.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
       <InputSetRef
-        def="CovTermDirectInputSet(building.CPBldgCov.CPBldgCovLimitTerm)"
+        def="CovTermIncreasedCostDirectInputSet(building.CPBldgCov.CPBldgCovLimitTerm,building,cpLine)"
         id="CPBldgCovLimit"
         visible="building.CPBldgCov.hasCovTerm(&quot;CPBldgCovLimit&quot;)"/>
       <RangeInput
-        editable="true"
         id="CPBldgCovCauseOfLoss"
         label="building.CPBldgCov.CPBldgCovCauseOfLossTerm.DisplayName"
         required="building.CPBldgCov.CPBldgCovCauseOfLossTerm.Pattern.Required"
@@ -75,13 +78,35 @@
         value="building.CPBldgCov.CPBldgCovExcludeTheftTerm.Value"
         visible="building.CPBldgCov.hasCovTerm(&quot;CPBldgCovExcludeTheft&quot;)"/>
       <RangeInput
-        editable="openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBldgCov.CPBldgCovDeductibleTerm)"
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBldgCov.CPBldgCovDeductibleTerm)"
         id="CPBldgCovDeductible"
         label="building.CPBldgCov.CPBldgCovDeductibleTerm.DisplayName"
         required="building.CPBldgCov.CPBldgCovDeductibleTerm.Pattern.Required"
         sortValueRange="false"
         value="building.CPBldgCov.CPBldgCovDeductibleTerm.OptionValue"
         valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(building.CPBldgCov.CPBldgCovDeductibleTerm, openForEdit)"
+        visible="building.CPBldgCov.hasCovTerm(&quot;CPBldgCovDeductible&quot;)">
+        <PostOnChange/>
+      </RangeInput>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBldgCov.CPBldgCovDeductibleTerm)"
+        id="HurricanePercDed"
+        label="&quot;Hurricane %age Deductible&quot;"
+        required="building.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm.Pattern.Required"
+        sortValueRange="false"
+        value="building.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(building.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm, openForEdit)"
+        visible="building.CPBldgCov.hasCovTerm(&quot;CPBldgCovDeductible&quot;)">
+        <PostOnChange/>
+      </RangeInput>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBldgCov.CPBldgCovDeductibleTerm)"
+        id="HurricaneDedType"
+        label="&quot;Hurricane Deductible Type&quot;"
+        required="building.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.Pattern.Required"
+        sortValueRange="false"
+        value="building.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(building.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm, openForEdit)"
         visible="building.CPBldgCov.hasCovTerm(&quot;CPBldgCovDeductible&quot;)">
         <PostOnChange/>
       </RangeInput>
@@ -114,7 +139,7 @@
         valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(coinsuranceTerm, openForEdit)"
         visible="gw.web.line.cp.policy.CoverageInputSet.CPBldgCovUIHelper.isCoinsuranceAvailable(building)"/>
       <RangeInput
-        editable="openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(autoIncreaseValue)"
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(autoIncreaseValue)"
         id="CPBldgCovAutoIncrease"
         label="building.CPBldgCov.CPBldgCovAutoIncreaseTerm.DisplayName"
         required="building.CPBldgCov.CPBldgCovAutoIncreaseTerm.Pattern.Required"

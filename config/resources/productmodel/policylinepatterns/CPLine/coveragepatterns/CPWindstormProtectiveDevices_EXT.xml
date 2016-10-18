@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="CPWindstormProtectiveDevices_EXT"
-  coverageCategory="CPOptionalPropCovCategory_EXT"
+  coverageCategory="CPOptionalSchedPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
   existence="Electable"
@@ -11,5 +11,21 @@
   priority="2804"
   public-id="CPWindstormProtectiveDevices_EXT"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <AvailabilityScript><![CDATA[      if(CPBuilding.PolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_APARTMENT || CPBuilding.PolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+        return true
+      else
+       return false
+]]></AvailabilityScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      codeIdentifier="WindstormDesc_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      priority="100"
+      public-id="WindstormDesc_EXT"
+      required="false"
+      valueType="other">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

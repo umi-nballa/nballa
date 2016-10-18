@@ -11,5 +11,28 @@
   priority="2504"
   public-id="CPSinkholeLossCoverage_EXT"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <CovTerms>
+    <DirectCovTermPattern
+      codeIdentifier="SinkholeLimit_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="SinkholeLimit_EXT"
+      required="true"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      codeIdentifier="SinkholeDed_EXT"
+      coverageColumn="DirectTerm2"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Deductible"
+      priority="200"
+      public-id="SinkholeDed_EXT"
+      required="true"
+      valueType="percent">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

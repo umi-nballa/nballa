@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Popup
-    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation "
+    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding) "
     beforeCommit="gw.lob.cp.CPBuildingValidation.validateBuilding(cpBuilding)"
     canEdit="openForEdit"
     countsAsWork="false"
@@ -312,7 +312,7 @@
               </PanelColumn>
               <PanelColumn>
                 <PanelRef
-                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;}, true)"
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;,&quot;CPOptionalPropCovCategory_EXT&quot;,&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   visible="cpBuilding != null"/>
               </PanelColumn>
@@ -327,5 +327,40 @@
         </Card>
       </CardViewPanel>
     </Screen>
+    <Code><![CDATA[function setCoveragesFromDefaultScreen(cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
+{
+  if(cLine.causeofloss!=null)
+    cBuilding.CPBldgCov.CPBldgCovCauseOfLossTerm.Value = cLine.causeofloss
+
+  if(cLine.allotherperilded!=null)
+   cBuilding.CPBldgCov.CPBldgCovDeductibleTerm.OptionValue=cLine.allotherperilded.Code
+
+  if(cLine.hurricanededtype!=null)
+    cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.OptionValue=cLine.hurricanededtype.Code
+
+  if(cLine.hurricanepercded!=null)
+    cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm.OptionValue=cLine.hurricanepercded.Code
+
+  if(cLine.Inflationguard!=null)
+    cBuilding.CPBldgCov.CPBldgCovAutoIncreaseTerm.OptionValue=cLine.Inflationguard.Code
+
+
+  if(cLine.CPOrdinanceOrLawType!=null)
+    cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCoverage_EXT")?.first().setValueFromString(cLine.CPOrdinanceOrLawType.Code)
+
+  if(cLine.CPCoverageB!=null)
+    cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovB_Ext")?.first().setValueFromString(cLine.CPCoverageB.Code)
+
+  if(cLine.CPCoverageC!=null)
+    cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovC_Ext")?.first().setValueFromString(cLine.CPCoverageC.Code)
+
+  //if(cLine.EquipmentBreakdownEnhancement!=null)
+  //  cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownEnhance_EXT")?.first().
+  
+  
+                   
+   
+  
+}]]></Code>
   </Popup>
 </PCF>

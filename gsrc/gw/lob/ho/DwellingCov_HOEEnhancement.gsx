@@ -378,5 +378,27 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
   }
 
+  /*
+*  Author: Amrita dash
+*  Comprehensive earthquake cov Limit default value(DE 398)
+*  HO Line of business
+*/
+  public static function defaultComprehensiveEarthquakeCovALimit(dwelling:Dwelling_HOE){
+    var finalValue:BigDecimal = 25000
+    var perValue :BigDecimal = 0.2
+    if(dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm!=null) {
+      dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm.Value =  dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+      if(dwelling.HODW_Comp_Earthquake_CA_HOE_ExtExists){
+        var covD =  dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.multiply(perValue)
+        if(covD > finalValue){
+          dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm.Value = finalValue
+        }else {
+          dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm.Value = covD
+        }
+      }
+    }
+
+  }
+
 }
 

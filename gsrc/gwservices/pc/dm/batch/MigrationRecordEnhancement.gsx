@@ -24,7 +24,7 @@ enhancement MigrationRecordEnhancement: gwservices.pc.dm.batch.MigrationRecord {
     result.append("\nApplicationID = ${this.ApplicationID}")
     result.append("\nAutoDelete = ${this.AutoDelete}")
     result.append("\nID = ${this.ID}")
-    result.append("\nMigrationRecordEntities = ${this.MigrationEntityIDs.Count}")
+    //result.append("\nMigrationRecordEntities = ${this.MigrationEntityIDs.Count}")
     result.append("\nMigrationEntityTransactionID = ${this.MigrationEntityTransactionID}")
     result.append("\nPayloadType = ${this.PayloadType}")
     result.append("\nPolicyPeriod = ${this.PolicyPeriod}")

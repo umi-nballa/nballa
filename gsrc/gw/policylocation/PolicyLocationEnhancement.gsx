@@ -103,11 +103,11 @@ enhancement PolicyLocationEnhancement : PolicyLocation {
   }
 
   function cloneBuildingAutoNumberSequence() {
-    this.BuildingAutoNumberSeq = this.BuildingAutoNumberSeq.clone(this.Bundle)
+    this.BuildingAutoNumberSeq = this.BuildingAutoNumberSeq?.clone(this.Bundle)
   }
 
   function resetBuildingAutoNumberSequence() {
-    this.BuildingAutoNumberSeq.reset()
+    this.BuildingAutoNumberSeq?.reset()
     renumberBuilding()
   }
 
@@ -117,7 +117,7 @@ enhancement PolicyLocationEnhancement : PolicyLocation {
   }
 
   function renumberBuilding() {
-    this.BuildingAutoNumberSeq.renumber(CurrentAndFutureBuildings, entity.Building.Type.TypeInfo.getProperty( "BuildingNum" ) )
+    this.BuildingAutoNumberSeq?.renumber(CurrentAndFutureBuildings, entity.Building.Type.TypeInfo.getProperty( "BuildingNum" ) )
   }
 
   function renumberBuildingAutoNumberSequence() {

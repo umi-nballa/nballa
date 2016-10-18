@@ -16,6 +16,8 @@ class PolicyLinePopulator extends BaseEntityPopulator<PolicyLine, KeyableBean> {
       if(model.Subtype == typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE){
         return Branch.BP7Line
       }if(model.Subtype == typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE){
+        if (Branch.CPLine.CPLocations.Count > 0)
+          Branch.CPLine.CPLocations.each( \ elt -> elt.remove())
         return Branch.CPLine
       }else {
         throw new DataMigrationNonFatalException(CODE.INVALID_POLICY_LINE, model.Subtype as String)

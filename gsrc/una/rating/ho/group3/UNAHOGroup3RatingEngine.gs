@@ -17,7 +17,6 @@ uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
-uses una.rating.ho.group2.ratinginfos.HOGroup2DiscountsOrSurchargeRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,6 +123,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HODW_FungiCov_HOE:
         rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
+        break
+      case HODW_ScheduledProperty_HOE:
+        //rateScheduledPersonalProperty(dwellingCov, dateRange)
         break
     }
   }
@@ -314,7 +316,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwellingRatingInfo.LossAssessmentLimit != 1000){
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_GROUP3_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null and costData.ActualTermAmount != 0)
+      if (costData != null)
         addCost(costData)
     }
     _logger.debug("Loss Asssessment Coverage Rated Successfully", this.IntrinsicType)
@@ -322,6 +324,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
   /**
    * Rate Special Computer coverage
+   * TODO : update the special computer coverage when the limit is made available on the UI screen
    */
   function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialComputerCoverage to rate Special Computer Coverage", this.IntrinsicType)
@@ -340,7 +343,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
     var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SINKHOLE_LOSS_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0)
+    if (costData != null)
       addCost(costData)
     _logger.debug("Sinkhole Loss Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -354,7 +357,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwellingRatingInfo.SpecifiedAdditionalAmount != ""){
       var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP3_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null and costData.ActualTermAmount != 0)
+      if (costData != null)
         addCost(costData)
     }
     _logger.debug("Specified Additional Amount Coverage Rated Successfully", this.IntrinsicType)
@@ -367,7 +370,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialLimitsPersonalPropertyCoverage to rate Special Limits Personal Property Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getSpecialLimitsPersonalPropertyCovParameterSet(PolicyLine, dwellingCov)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0)
+    if (costData != null)
       addCost(costData)
     _logger.debug("Special Limits Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -415,7 +418,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     dwellingRatingInfo.PPIncreasedLimit = _limitDifferences.get(dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm)
     var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_GROUP3_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0)
+    if (costData != null)
       addCost(costData)
     _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -428,7 +431,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
     var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LIMITED_SCREENED_ENCLOSURE_AND_CARPORT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0)
+    if (costData != null)
       addCost(costData)
     _logger.debug("Limited Screened Enclosure And Carport Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -446,6 +449,20 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _logger.debug("Limited Fungi, Wet Or Dry Rot Or Bacteria Section I coverage Rated Successfully", this.IntrinsicType)
   }
 
+  /**
+   * Rate the Scheduled Personal property
+   * TODO : Update the scheduled personal property after the mapping to the item type is done
+   */
+  function rateScheduledPersonalProperty(dwellingCov: HODW_ScheduledProperty_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
+    for (item in dwellingCov.ScheduledItems) {
+      var rateRoutineParameterMap = getScheduledPersonalPropertyCovParameterSet(PolicyLine, item)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
+  }
 
   /**
    *  Returns the parameter set for the line level coverages
@@ -520,6 +537,16 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_POLICYLINE -> line,
         TC_STATE -> line.BaseState.Code,
         TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Scheduled Personal Property Cov
+   */
+  private function getScheduledPersonalPropertyCovParameterSet(line: PolicyLine, item: ScheduledItem_HOE): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> null//new HOScheduledPersonalPropertyRatingInfo(item)
     }
   }
 }

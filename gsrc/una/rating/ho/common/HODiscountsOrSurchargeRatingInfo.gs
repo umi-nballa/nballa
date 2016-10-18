@@ -31,7 +31,4 @@ class HODiscountsOrSurchargeRatingInfo {
   protected function determineAgeOfHome(year : int) : int{
     return this.Line.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate - year
   }
-
-
-
 }

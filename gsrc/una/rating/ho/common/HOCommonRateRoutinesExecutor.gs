@@ -42,11 +42,31 @@ class HOCommonRateRoutinesExecutor {
   }
 
   /**
-   * Returns the parameter set for the country wide routines
+   * Rate seasonal or secondary residence surcharge
    */
+  static function rateSeasonalOrSecondaryResidenceSurcharge(dateRange: DateRange, line: PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int, costType : HOCostType_Ext, discountOrSurchargeRatingInfo : HOCommonDiscountsOrSurchargeRatingInfo): CostData {
+    var rateRoutineParameterMap = getHOCWDiscountsAndSurchargesParameterSet(line, discountOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE, costType, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
+    return costData
+  }
+
+  /**
+ * Returns the parameter set for the country wide routines
+ */
   static function getHOCWParameterSet(line: PolicyLine): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
+        TC_STATE -> line.BaseState.Code
+    }
+  }
+
+  /**
+   * Returns the parameter set for the country wide routines for discounts and surcharges
+   */
+  static function getHOCWDiscountsAndSurchargesParameterSet(line: PolicyLine, discountOrSurchargeRatingInfo : HOCommonDiscountsOrSurchargeRatingInfo): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo,
         TC_STATE -> line.BaseState.Code
     }
   }

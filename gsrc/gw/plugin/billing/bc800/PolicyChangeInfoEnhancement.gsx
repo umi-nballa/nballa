@@ -11,6 +11,8 @@ enhancement PolicyChangeInfoEnhancement : PolicyChangeInfo
     var contactInfo = new PCContactInfo()
     contactInfo.sync( period.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact )
     this.PrimaryNamedInsuredContact.$TypeInstance = contactInfo  
+    // PC-BC Integration: Mapping Loan Number on policy change
+    this.LoanNumber = PolicyInfoUtil.getMortgageeLoanNumber(period)
   }
 
   function syncPolicyChangeForPreview(period : PolicyPeriod){

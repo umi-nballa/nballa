@@ -7,6 +7,7 @@ uses gw.plugin.billing.IBillingSystemPlugin
 uses java.lang.IllegalStateException
 uses java.lang.Exception
 uses gw.api.system.PLConfigParameters
+uses gw.plugin.billing.bc800.PolicyInfoUtil
 
 @Export
 class BillingMessageTransport implements MessageTransport {
@@ -240,11 +241,14 @@ class BillingMessageTransport implements MessageTransport {
     var basedOnPeriod = policyPeriod.BasedOn
     var newPrimaryNamedInsured = policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.PublicID
     var oldPrimaryNamedInsured = basedOnPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.PublicID
+    var newMortgageeLoanNumber = PolicyInfoUtil.getMortgageeLoanNumber(policyPeriod)
+    var oldMortgageeLoanNumber = PolicyInfoUtil.getMortgageeLoanNumber(basedOnPeriod)
     return transactions.countWhere(\ t -> t.Charged) > 0
       or policyPeriod.BaseState != basedOnPeriod.BaseState
       or policyPeriod.PeriodStart != basedOnPeriod.PeriodStart
       or policyPeriod.PeriodEnd != basedOnPeriod.PeriodEnd
       or newPrimaryNamedInsured != oldPrimaryNamedInsured
+      or newMortgageeLoanNumber != oldMortgageeLoanNumber
   }
 
   private function getTransactionId(message : Message) : String {

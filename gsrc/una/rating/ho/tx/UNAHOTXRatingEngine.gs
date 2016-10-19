@@ -29,6 +29,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private static final var CLASS_NAME = UNAHOTXRatingEngine.Type.DisplayName
   private var _hoRatingInfo: HORatingInfo
   private var _limitDifferences: Map<CovTerm, BigDecimal>
+  var _discountOrSurchargeRatingInfo : HODiscountsOrSurchargesRatingInfo
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -123,6 +124,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
+    _discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine, _hoRatingInfo.TotalBasePremium)
     if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
       rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
@@ -148,9 +150,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateAgeOfHomeDiscount(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateAgeOfHomeDiscount", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
@@ -167,9 +167,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateBurglarProtectiveDevicesCredit(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateBurglarProtectiveDevicesCredit", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_BURGLARPROTECTIVEDEVICESCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
@@ -187,9 +185,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateAffinityDiscount(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateAffinityDiscount", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AFFINITY_DISCOUNT_TX_RATE_ROUTINE, HOCostType_Ext.TC_AFFINITYDISCOUNT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
@@ -226,9 +222,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateHailResistantRoofCredit(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateHailResistantRoofCredit", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HAIL_RESISTANT_ROOF_CREDIT_TX_RATE_ROUTINE, HOCostType_Ext.TC_HAILRESISTANTROOFCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
@@ -245,11 +239,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateSeasonalOrSecondaryResidenceSurcharge(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSeasonalOrSecondaryResidenceSurcharge", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE,
-        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateSeasonalOrSecondaryResidenceSurcharge(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE, _discountOrSurchargeRatingInfo)
     if (costData != null){
       if (costData.ActualTermAmount == 0)
         costData.ActualTermAmount = 1
@@ -424,9 +414,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
   function rateAdditionalInsuredCoverage(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredCoverage to rate Additional Insured Coverage", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, HOCostType_Ext.TC_ADDITIONALINSURED,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.AdditionalInsuredPremium = costData?.ActualTermAmount

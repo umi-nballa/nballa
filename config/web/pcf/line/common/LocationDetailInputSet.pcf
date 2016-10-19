@@ -18,7 +18,7 @@
       id="NonSpecificLocation"
       label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
       value="polLocation.AccountLocation.NonSpecific"
-      visible="not polLocation.AccountLocation.New or supportsNonSpecificLocation">
+      visible="false//not polLocation.AccountLocation.New or supportsNonSpecificLocation">
       <PostOnChange/>
     </BooleanRadioInput>
     <Input
@@ -26,7 +26,7 @@
       id="LocationCode"
       label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
       value="polLocation.AccountLocation.LocationCode"
-      visible="polLocation.Branch.Policy.Product.Commercial"/>
+      visible="false//polLocation.Branch.Policy.Product.Commercial"/>
     <Input
       editable="true"
       id="LocationName"
@@ -49,6 +49,7 @@
         editable="true"
         id="UnsyncedCounty"
         label="displaykey.Web.ContactDetail.AddressDetail.County"
+        required="true"
         value="polLocation.County"/>
       <TypeKeyInput
         editable="polLocation.canChangeState()"
@@ -99,7 +100,8 @@
           pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, territoryCode)"
           required="true"
           validationExpression="territoryCode.prelimValidate()"
-          value="territoryCode.Code"/>
+          value="territoryCode.Code"
+          visible="false//polLocation.AssociatedPolicyPeriod.CPLine"/>
         <ContentInput
           hideIfReadOnly="true"
           id="AutofillButton"/>

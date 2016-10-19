@@ -67,19 +67,23 @@
           editable="true"
           id="allotherperilded"
           label="&quot;All Other Peril Deductible&quot;"
-          value="cpLine.allotherperilded"/>
-        <TypeKeyInput
-          editable="true"
-          id="hurricanededtype"
-          label="&quot;Hurricane Deductible Type&quot;"
           required="true"
-          value="cpLine.hurricanededtype"/>
+          value="cpLine.allotherperilded"/>
         <TypeKeyInput
           editable="true"
           id="hurricanepercded"
           label="&quot;Hurricane %age Deductible&quot;"
           required="true"
-          value="cpLine.hurricanepercded"/>
+          value="cpLine.hurricanepercded">
+          <PostOnChange/>
+        </TypeKeyInput>
+        <TypeKeyInput
+          editable="true"
+          id="hurricanededtype"
+          label="&quot;Hurricane Deductible Type&quot;"
+          required="cpLine.hurricanepercded!=typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT"
+          value="cpLine.hurricanededtype"
+          visible="cpLine.hurricanepercded!=typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT"/>
         <TypeKeyInput
           editable="true"
           id="inflationguard"
@@ -129,12 +133,11 @@
             visible="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT ||cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT "/>
         </InputGroup>
         <InputGroup
-          allowToggle="false//ordinancecoverage.allowToggle(coverable)"
+          allowToggle="false"
           childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
           id="CovPattern2InputGroup"
           label="&quot;Equipment Breakdown Enhancement Coverage&quot;"
           onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
-          <PostOnChange/>
           <!-- <RangeInput
             editable="true"
             id="covtypelmt"
@@ -142,7 +145,12 @@
             sortValueRange="false"
             value="(equipmentcov?.CovTerms?.where( \ elt -&gt; elt.PatternCode==&quot;CPEquipmentBreakdownTermLimit_EXT&quot;)?.first() as gw.api.domain.covterm.OptionCovTerm).OptionValue"
             valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(equipmentcov?.CovTerms?.where( \ elt -&gt; elt.PatternCode==&quot;CPEquipmentBreakdownTermLimit_EXT&quot;)?.first() as gw.api.domain.covterm.OptionCovTerm, openForEdit).orderBy(\ opt -&gt; opt.Value)"/> -->
-          <CheckBoxInput
+          <TextInput
+            editable="true"
+            id="equipmentbreakdowninput"
+            label="&quot;Limit&quot;"
+            value="cpLine.EquipmentBreakdownEnhancement"/>
+          <!-- <CheckBoxInput
             available="true"
             editable="true"
             hideChildrenIfReadOnly="false"
@@ -150,6 +158,23 @@
             label="&quot;Select if Required&quot;"
             required="false"
             value="cpLine.EquipmentBreakdownEnhancement"
+            visible="true"/> -->
+        </InputGroup>
+        <InputGroup
+          allowToggle="false"
+          childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
+          id="TerrorismInputGroup"
+          label="&quot;Terrorism&quot;"
+          onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+          <PostOnChange/>
+          <CheckBoxInput
+            available="true"
+            editable="true"
+            hideChildrenIfReadOnly="false"
+            id="equipmentbreakdownreqd"
+            label="&quot;Select if Required&quot;"
+            required="false"
+            value="cpLine.TerrorismCoverage"
             visible="true"/>
         </InputGroup>
       </InputColumn>

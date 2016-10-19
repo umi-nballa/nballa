@@ -11,6 +11,7 @@
   priority="11500"
   public-id="HODW_Comp_Earthquake_CA_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.defaultComprehensiveEarthquakeCovALimit(HODW_Comp_Earthquake_CA_HOE_Ext.Dwelling)]]></InitializeScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -51,7 +52,12 @@
       required="false"
       restrictionModel="pd"
       valueType="percent">
-      <DefaultsSet/>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="z5bhc8hbdubvi2lsodmrtqdaa0a"
+          defaultValue="10"
+          public-id="z5bhc8hbdubvi2lsodmrtqdaa0a"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zrfhi0e03kaak389bnmq9brp2g9"
@@ -73,7 +79,12 @@
       required="false"
       restrictionModel="prp"
       valueType="percent">
-      <DefaultsSet/>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="z3egkeib03tc729fpj73d2joqda"
+          defaultValue="50"
+          public-id="z3egkeib03tc729fpj73d2joqda"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zhmgk25c1rekr6f69nt6ej0h4lb"
@@ -151,28 +162,6 @@
       <LimitsSet/>
     </DirectCovTermPattern>
     <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="HODW_EQCovD_HOE"
-      coverageColumn="ChoiceTerm6"
-      lookupTableName="DwellingCovTerm"
-      modelType="Limit"
-      priority="700"
-      public-id="HODW_EQCovD_HOE"
-      required="false"
-      restrictionModel="exp"
-      valueType="percent">
-      <DefaultsSet/>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="z2hia5586on1q2ubrklj41vqufb"
-          optionCode="20"
-          priority="100"
-          public-id="z2hia5586on1q2ubrklj41vqufb"
-          value="20.0000"/>
-      </Options>
-    </OptionCovTermPattern>
-    <OptionCovTermPattern
       choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_Retrofitted_HOE"
       coverageColumn="ChoiceTerm7"
@@ -181,6 +170,7 @@
       public-id="HODW_Retrofitted_HOE"
       required="true"
       valueType="other">
+      <AvailabilityScript><![CDATA[return(Dwelling_HOE.YearBuilt >= 1937 and Dwelling_HOE.YearBuilt<= 1954)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -197,5 +187,18 @@
           value="1.0"/>
       </Options>
     </OptionCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_EQCovD_HOE_Ext"
+      coverageColumn="DirectTerm2"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="800"
+      public-id="HODW_EQCovD_HOE_Ext"
+      required="false"
+      restrictionModel="exp"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

@@ -22,7 +22,7 @@ enhancement ProducerCodeEnhancement : entity.ProducerCode {
    * Returns the list of products that can be added to the list of products this producer code can see
    */
   property get RemainingProducts() : Product[] {
-    return PCDependencies.getProductModel().getAllInstances(Product).toTypedArray()
+    return PCDependencies.getProductModel().getAllInstances(Product).where( \ elt -> elt.CodeIdentifier=="CommercialPackage" || elt.CodeIdentifier=="BP7BusinessOwners" || elt.CodeIdentifier=="Homeowners").toTypedArray()
     //var addedProductCodes =  this.AvailableProductsExt.map(\ f -> f.ProductCode).toSet()
     //var remainingProductCodes =  PCDependencies.getProductModel().getAllInstances(Product).where(\ p -> not addedProductCodes.contains(p.Code)).toTypedArray()
     /*

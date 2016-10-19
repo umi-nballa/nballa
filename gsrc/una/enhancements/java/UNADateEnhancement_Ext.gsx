@@ -3,6 +3,7 @@ package una.enhancements.java
 uses java.util.Date
 uses java.lang.IllegalStateException
 uses gw.api.util.DateUtil
+uses java.lang.Integer
 
 /**
  * Created with IntelliJ IDEA.
@@ -82,7 +83,21 @@ enhancement UNADateEnhancement_Ext : java.util.Date {
     while(!DateUtil.isBusinessDay(result, location)){
       result = result.addDays(1)
     }
-
     return result
   }
+
+  /*
+  * Date comparison
+  * @param dateEnd the date used to compare to this date
+  * @return the difference in years between the dates.
+  *         negative if the comparison date is in the future
+  *
+  * */
+
+  public function differenceInYears(dateEnd : Date) : int{
+
+    return this.YearOfDate - dateEnd.YearOfDate
+
+  }
+
 }

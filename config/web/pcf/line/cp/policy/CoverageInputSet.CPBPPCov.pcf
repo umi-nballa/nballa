@@ -29,13 +29,13 @@
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
       id="CovPatternInputGroup"
       label="coveragePattern.DisplayName"
-      onToggle="building.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+      onToggle="building.setCoverageConditionOrExclusionExists(coveragePattern, VALUE);una.productmodel.CPAutoPopulateUtil.setCoveragesOnToggle(null,building)">
       <InputSetRef
         def="CovTermDirectInputSet(building.CPBPPCov.CPBPPCovLimitTerm)"
         id="CPBPPCovLimit"
         visible="building.CPBPPCov.hasCovTerm(&quot;CPBPPCovLimit&quot;)"/>
       <RangeInput
-        editable="true"
+        editable="false//true"
         id="CPBPPCovCauseOfLoss"
         label="building.CPBPPCov.CPBPPCovCauseOfLossTerm.DisplayName"
         required="building.CPBPPCov.CPBPPCovCauseOfLossTerm.Pattern.Required"
@@ -67,13 +67,31 @@
         value="building.CPBPPCov.CPBPPCovExcludeTheftTerm.Value"
         visible="building.CPBPPCov.hasCovTerm(&quot;CPBPPCovExcludeTheft&quot;) and building.CPBPPCov.CovTerms*.Pattern.contains( &quot;CPBPPCovExcludeTheft&quot; as gw.api.productmodel.CovTermPattern )"/>
       <RangeInput
-        editable="openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBPPCov.CPBPPCovDeductibleTerm)"
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBPPCov.CPBPPCovDeductibleTerm)"
         id="CPBPPCovDeductible"
         label="building.CPBPPCov.CPBPPCovDeductibleTerm.DisplayName"
         required="building.CPBPPCov.CPBPPCovDeductibleTerm.Pattern.Required"
         sortValueRange="false"
         value="building.CPBPPCov.CPBPPCovDeductibleTerm.OptionValue"
         valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(building.CPBPPCov.CPBPPCovDeductibleTerm, openForEdit)"
+        visible="building.CPBPPCov.hasCovTerm(&quot;CPBPPCovDeductible&quot;)"/>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBPPCov.CPBPPCovDeductibleTerm)"
+        id="CPBPPCovHurricaneDed"
+        label="building.CPBPPCov.CPBPPCovHurricaneDed_EXTTerm.DisplayName"
+        required="building.CPBPPCov.CPBPPCovHurricaneDed_EXTTerm.Pattern.Required"
+        sortValueRange="false"
+        value="building.CPBPPCov.CPBPPCovHurricaneDed_EXTTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(building.CPBPPCov.CPBPPCovHurricaneDed_EXTTerm, openForEdit)"
+        visible="building.CPBPPCov.hasCovTerm(&quot;CPBPPCovDeductible&quot;)"/>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBPPCov.CPBPPCovDeductibleTerm)"
+        id="CPBPPCovHurricaneDedType"
+        label="building.CPBPPCov.CPBPPCovHurricaneDedType_EXTTerm.DisplayName"
+        required="building.CPBPPCov.CPBPPCovHurricaneDedType_EXTTerm.Pattern.Required"
+        sortValueRange="false"
+        value="building.CPBPPCov.CPBPPCovHurricaneDedType_EXTTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(building.CPBPPCov.CPBPPCovHurricaneDedType_EXTTerm, openForEdit)"
         visible="building.CPBPPCov.hasCovTerm(&quot;CPBPPCovDeductible&quot;)"/>
       <RangeInput
         editable="openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(building.CPBPPCov.CPBPPCovWindDeductibleTerm)"

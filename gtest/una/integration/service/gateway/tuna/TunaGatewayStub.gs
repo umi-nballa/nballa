@@ -49,7 +49,7 @@ class TunaGatewayStub implements TunaInterface {
     return null
   }
 
-  override function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformation(address: AddressDTO): TunaAppResponse {
     return null
   }
 

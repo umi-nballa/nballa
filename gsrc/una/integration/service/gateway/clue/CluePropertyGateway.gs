@@ -10,7 +10,7 @@ uses gw.api.system.logging.LoggerFactory
 uses gw.api.util.DisplayableException
 uses gw.pl.logging.LoggerCategory
 uses gw.xml.ws.WebServiceException
-uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
+uses una.integration.service.transport.clue.CluePropertyCommunicator
 uses wsi.schema.una.inscore.cprulesorderschema.Order
 uses wsi.schema.una.inscore.cprulesorderschema.enums.DescriptionType_Sex
 uses wsi.schema.una.inscore.cprulesorderschema.enums.NameType_Type
@@ -30,10 +30,12 @@ class CluePropertyGateway implements CluePropertyInterface {
   private static var LEX_HTTP_USERNAME: String
   private static var LEX_HTTP_PASSWORD: String
   private static var DATE_FORMAT = "MM/dd/yyyy"
+  private static var cluePropertyCommunicator: CluePropertyCommunicator
   var timeout = "500"
   static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "ClueProperty")
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
+    cluePropertyCommunicator = new CluePropertyCommunicator()
     setProperties()
   }
 
@@ -50,8 +52,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     var result: String
     _logger.debug("sending order " + orderXml)
     try {
-      var clueAPI = new InteractiveOrderHandler()
-      result = clueAPI.handleInteractiveOrder(orderXml)
+      result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       _logger.debug("received result " + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
@@ -333,11 +334,15 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Param("subject", "The subject whose sex you wish to discover")
   @Returns("The sex of the provided subject or unknown if no sex is stored")
   private function getSex(subject: PolicyPriNamedInsured): DescriptionType_Sex {
-    var gender = (subject.ContactDenorm as Person).Gender
-    if (gender == "F") {
-      return DescriptionType_Sex.Female
-    } else if (gender == "M") {
-      return DescriptionType_Sex.Male
+    if (subject.ContactDenorm typeis Person) {
+      var gender = (subject.ContactDenorm as Person).Gender
+      if (gender == "F") {
+        return DescriptionType_Sex.Female
+      } else if (gender == "M") {
+        return DescriptionType_Sex.Male
+      } else {
+        return Unknown
+      }
     } else {
       return Unknown
     }

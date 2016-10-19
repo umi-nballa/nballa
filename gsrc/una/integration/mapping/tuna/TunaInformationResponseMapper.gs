@@ -52,13 +52,13 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
       }
       response.Counties = countyList
       response.Line = (tunaResponse.Lines.PropertyLine.Line) as String
-      var territoryLine = tunaResponse.Lines.PropertyLine.Territories
+      var territoryLine = tunaResponse.Lines.PropertyLine.Territories.PropertyTerritory
       var territoryList = new ArrayList<PropertyTerritoryModel>()
-      for (details in territoryList) {
+      for (details in territoryLine) {
         var propertyTerritoryResponse= new PropertyTerritoryModel()
-        propertyTerritoryResponse.Code = details.Code
-        propertyTerritoryResponse.Name = details.Name
-        propertyTerritoryResponse.PercentTerritory = details.PercentTerritory
+        propertyTerritoryResponse.Code = details.Code.first()
+        propertyTerritoryResponse.Name = details.Name.first()
+        //propertyTerritoryResponse.PercentTerritory = details.PercentTerritory
         territoryList.add(propertyTerritoryResponse)
       }
       response.TerritoryDetails = territoryList

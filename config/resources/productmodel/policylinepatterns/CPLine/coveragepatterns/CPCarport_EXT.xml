@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="CPCarport_EXT"
+  coverageCategory="CPOptionalPropCovCategory_EXT"
+  coverageSubtype="CPBuildingCov"
+  coveredPartyType="FirstParty"
+  existence="Electable"
+  lookupTableName="CPBuildingCov"
+  owningEntityType="CPBuilding"
+  policyLinePattern="CPLine"
+  priority="3304"
+  public-id="CPCarport_EXT"
+  referenceDateByType="PolicyTerm">
+  <CovTerms>
+    <DirectCovTermPattern
+      codeIdentifier="CPCarportLimit_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      priority="100"
+      public-id="CPCarportLimit_EXT"
+      required="true"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="CPCarportConsType_EXT"
+      coverageColumn="ChoiceTerm2"
+      lookupTableName="CPBuildingCovTerm"
+      priority="300"
+      public-id="CPCarportConsType_EXT"
+      required="false"
+      typelist="ConstructionType_CP"/>
+  </CovTerms>
+</CoveragePattern>

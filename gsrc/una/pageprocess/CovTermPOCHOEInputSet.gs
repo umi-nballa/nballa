@@ -64,9 +64,29 @@ class CovTermPOCHOEInputSet {
     return result
   }
 
+  static function isCovTermEditable(term : gw.api.domain.covterm.DirectCovTerm, coverable : Coverable) : boolean {
+    var result = true
+    var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, term.PatternCode)
+
+    if(configResult != null){
+      result = configResult
+    }else if(coverable typeis Dwelling_HOE){
+      var min = term.getMinAllowedLimitValue(coverable)
+      var max = term.getMaxAllowedLimitValue(coverable)
+
+      result = (min == null and max == null) or min != max
+    }
+
+    return result
+  }
+
   static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
     onCovTermOptionChange_OnPremisesLimit(term, coverable)
     onCovTermOptionChange_LossAssessmentLimit(term, coverable)
+
+    if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
+      (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
+    }
   }
 
   static function getOptionLabel(covTerm : gw.api.domain.covterm.CovTerm, coverable : Coverable) : String{

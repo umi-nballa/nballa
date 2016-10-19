@@ -59,11 +59,12 @@ class TunaGateway implements TunaInterface {
   /**
    * TBD -  No Implementation Available
    */
-  override function fetchPropertyInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformation(address: AddressDTO): TunaAppResponse {
     try {
       resMapper = new TunaInformationResponseMapper()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation" + "For ", this.IntrinsicType)
-      var req = reqMapper.createRequestModel(policyPeriod)
+      var req = reqMapper.createRequestModel(address)
+      req.print()
       var tunaResponse = tunaCommunicator.getPropertyInformation(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation" + "For ", this.IntrinsicType)

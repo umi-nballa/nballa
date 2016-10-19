@@ -92,6 +92,9 @@ class TunaRequestMapper {
       message.Address.State = address.State
       message.Address.ZipCode = address.PostalCode
       message.Address.Country = address.Country
+      if(address.YearBuilt != null){
+        message.YearBuild = address.YearBuilt
+      }
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For propertyinformationComplete ", this.IntrinsicType)
       return message
     } catch (exp: Exception) {

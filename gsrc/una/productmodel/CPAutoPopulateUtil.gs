@@ -104,22 +104,22 @@ class CPAutoPopulateUtil {
     if(cLine==null)
       cLine = cBuilding.PolicyLine as CommercialPropertyLine
 
-    if(cLine?.causeofloss!=null)
+    if(cLine?.causeofloss!=null && cBuilding.CPBPPCovExists)
     {
       cBuilding?.CPBPPCov?.CPBPPCovCauseOfLossTerm?.Value = cLine?.causeofloss
     }
 
-    if(cLine?.allotherperilded!=null)
+    if(cLine?.allotherperilded!=null && cBuilding.CPBPPCovExists)
     {
       cBuilding?.CPBPPCov?.CPBPPCovDeductibleTerm?.OptionValue=cLine?.allotherperilded.Code
     }
 
-    if(cLine.hurricanededtype!=null)
+    if(cLine.hurricanededtype!=null && cBuilding.CPBPPCovExists)
     {
       cBuilding?.CPBPPCov?.CPBPPCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
     }
 
-    if(cLine.hurricanepercded!=null)
+    if(cLine.hurricanepercded!=null && cBuilding.CPBPPCovExists)
     {
       cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
     }

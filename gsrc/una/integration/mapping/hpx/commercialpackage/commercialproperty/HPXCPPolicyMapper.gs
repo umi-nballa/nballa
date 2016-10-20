@@ -28,7 +28,8 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
       var glLine = generalLiabilityPolicyLine.createGeneralLiabilityLineBusiness(policyPeriod)
       for (cov in glLine) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
     }
-    var buildings = createBuildings(policyPeriod)
+
+    var buildings = createStructuresInfo(policyPeriod)
     for (building in buildings) {
       commercialPropertyLineBusiness.addChild(new XmlElement("Dwell", building))
     }
@@ -37,39 +38,6 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
       commercialPropertyLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
     return commercialPropertyLineBusiness
-  }
-
-  function createBuildings(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType> {
-    var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType>()
-    var buildingMapper = new HPXCPBuildingMapper()
-    var locationMapper = new HPXLocationMapper()
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var bldgs = policyPeriod.CPLine.AllCoverables
-    for (bldg in bldgs) {
-      if(bldg typeis CPBuilding){
-        var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-        var bldgCoverages = policyPeriod.CPLine.AllCoverages.where( \ elt -> elt.OwningCoverable == bldg)
-        var bldgPreviousCoverages = previousPeriod?.CPLine?.AllCoverages?.where( \ elt -> elt.OwningCoverable == bldg)
-        var bldgTrxs = policyPeriod.CPTransactions.where( \ elt -> elt.Cost.Coverable == bldg)
-        var PreviousBldTrxs = previousPeriod?.CPTransactions?.where( \ elt -> elt.Cost.Coverable == bldg)
-        var building = buildingMapper.createBuilding(bldg)
-        var buildingCovs = createCoveragesInfo(bldgCoverages, bldgPreviousCoverages, bldgTrxs, PreviousBldTrxs)
-        for (cov in buildingCovs) { building.addChild(new XmlElement("Coverage", cov))}
-        // buildling location
-        var buildingLoc = bldg.CPLocation
-        var location = locationMapper.createLocation(bldg.CPLocation.PolicyLocation)
-        var locationCoverages = policyPeriod.CPLine.AllCoverages.where( \ elt -> elt.OwningCoverable == buildingLoc)
-        var locPreviousCoverages = previousPeriod?.CPLine?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
-        var locTrxs = policyPeriod.CPTransactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
-        var PreviousLocTrxs = previousPeriod?.CPTransactions?.where( \ elt -> elt.Cost.Coverable == buildingLoc)
-        var locationCovs = createCoveragesInfo(locationCoverages, locPreviousCoverages, locTrxs, PreviousLocTrxs)
-        for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
-        building.addChild(new XmlElement("Location", location))
-
-        buildings.add(building)
-      }
-    }
-    return buildings
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
@@ -100,6 +68,7 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return result
   }
 
+
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXCPCoverageMapper()
   }
@@ -126,20 +95,20 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
-    return getCoverages(policyPeriod).where( \ elt -> elt.OwningCoverable == (coverable as CPBuilding).CPLocation as Coverable)
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as CPBuilding).CPLocation as Coverable)
   }
 
   override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
-    var transactions = getTransactions(policyPeriod).where( \ elt -> elt.Cost.Coverable == (coverable as CPBuilding).CPLocation as Coverable)
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == (coverable as CPBuilding).CPLocation as Coverable)
     return transactions
   }
 
   override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
-    return getCoverages(policyPeriod).where( \ elt -> elt.OwningCoverable == coverable)
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
   }
 
   override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
-    var transactions = getTransactions(policyPeriod).where( \ elt -> elt.Cost.Coverable == coverable)
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
     return transactions
   }
 
@@ -171,5 +140,13 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
     return transactions
+  }
+
+  override function getCostType(cost : Cost) :  String {
+    return null
+  }
+
+  override function getDiscountCostTypes() : String[] {
+    return null
   }
 }

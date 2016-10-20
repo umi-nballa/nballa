@@ -21,11 +21,11 @@ class HPXHOBuildingProtectionMapper {
     bldgProtection.ProtectionDeviceBurglarInd = policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarm != null ?
                                                   policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarm : false
     bldgProtection.ProtectionDeviceBurglarCd = policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType != null ?
-                                                  policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType : ""
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType : null
     bldgProtection.ProtectionDeviceBurglarDesc = policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType != null ?
                                                   policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType.Description : ""
     bldgProtection.ProtectionDeviceSprinklerCd = policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType != null ?
-                                                  policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType : ""
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType : null
     bldgProtection.ProtectionDeviceSprinklerDesc = policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType != null ?
                                                     policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType.Description : ""
     bldgProtection.ProtectionDeviceSprinklerInd = policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType != typekey.SprinklerSystemType_HOE.TC_NONE ?

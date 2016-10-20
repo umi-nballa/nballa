@@ -15,6 +15,7 @@ uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
 uses una.integration.mapping.hpx.common.HPXClassificationMapper
+uses una.integration.mapping.hpx.common.HPXPrimaryNamedInsuredMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,6 +31,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var dwellingPolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
     var additionalInsuredMapper = new HPXAdditionalInsuredMapper()
+    var primaryNamedInsuredMapper = new HPXPrimaryNamedInsuredMapper()
     var locationMapper = new HPXLocationMapper()
     var producerMapper = new HPXProducerMapper()
     dwellingPolicy.addChild(new XmlElement("PolicySummaryInfo", createPolicySummaryInfo(policyPeriod)))
@@ -53,10 +55,13 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
   function createDwellingLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingLineBusinessType {
     var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingLineBusinessType()
-    //dwellingLineBusiness.addChild(new XmlElement("Dwell", createDwell(policyPeriod)))
     var structures = createStructuresInfo(policyPeriod)
     for (struct in structures) {
       dwellingLineBusiness.addChild(new XmlElement("Dwell", struct))
+    }
+    var lineCovs = createLineCoverages(policyPeriod, policyPeriod.HomeownersLine_HOE)
+    for (lineCov in lineCovs) {
+      dwellingLineBusiness.addChild(new XmlElement("Coverage", lineCov))
     }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
@@ -67,51 +72,6 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       dwellingLineBusiness.addChild(new XmlElement("Discount", discount))
     }
     return dwellingLineBusiness
-  }
-
-  /************************************** Dwell  *****************************************************
-  function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
-    var additionalInterestMapper = new HPXAdditionalInterestMapper()
-    var locationMapper = new HPXLocationMapper()
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var additionalInterests = additionalInterestMapper.createAdditionalInterests(policyPeriod.HomeownersLine_HOE.Dwelling.AdditionalInterestDetails)
-    var loc = locationMapper.createLocation(policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation)
-    for (additionalInterest in additionalInterests) {
-      loc.addChild(new XmlElement("AdditionalInterest", additionalInterest))
-    }
-    var dwellMapper = new HPXDwellMapper()
-    var dwellConstructionMapper = new HPXHODwellConstructionMapper ()
-    var dwell = dwellMapper.createDwell(policyPeriod)
-    dwell.addChild(new XmlElement("Construction", dwellConstructionMapper.createDwellConstruction(policyPeriod)))
-    //dwell.addChild(new XmlElement("Location", loc))
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    var transactions = policyPeriod.HOTransactions
-    var covs = createCoveragesInfo(getCoverages(policyPeriod), getCoverages(previousPeriod), getTransactions(policyPeriod), getTransactions(previousPeriod))
-    for (cov in covs) {
-      dwell.addChild(new XmlElement("Coverage", cov))
-    }
-    return dwell
-  }
-  ***/
-  function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
-    var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
-    var allOtherCosts : List<HomeownersCost_HOE>
-    var lineLevelCosts = policyPeriod.AllCosts.where( \ elt -> elt typeis HomeownersLineCost_EXT)
-    var discnts = lineLevelCosts.where( \ elt -> (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_AFFINITYDISCOUNT or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNT or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_CONCRETETILEROOFDISCOUNT or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT or
-                                                        (elt as HomeownersLineCost_EXT).HOCostType == typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT)
-    for (cost in discnts) {
-      var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
-      discount.DiscountDescription = cost.DisplayName
-      discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
-      discounts.add(discount)
-    }
-    return discounts
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
@@ -128,7 +88,13 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
       case HomeownersLineCost_EXT:
           result = cost.Coverage
           break
+      case HomeownersCovCost_HOE:
+          result = cost.Coverage
+          break
       case DwellingCovCost_HOE:
+          result = cost.Coverage
+          break
+      case ScheduleCovCost_HOE:
           result = cost.Coverage
           break
     }
@@ -167,11 +133,11 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   }
 
   override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
-    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable.FixedId == coverable.FixedId)
   }
 
   override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
-    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable.FixedId == coverable.FixedId)
     return transactions
   }
 
@@ -203,7 +169,28 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
-    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable.FixedId == coverable.FixedId)
     return transactions
+  }
+
+  override function getCostType(cost : Cost) :  String {
+    var costType : String = null
+    if (cost typeis HomeownersLineCost_EXT) {
+      costType = (cost as HomeownersLineCost_EXT).HOCostType
+    }
+    return costType
+  }
+
+  override function getDiscountCostTypes() : String[] {
+    var discountTypeKeys = {
+        typekey.HOCostType_Ext.TC_AFFINITYDISCOUNT,
+        typekey.HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNT,
+        typekey.HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE,
+        typekey.HOCostType_Ext.TC_CONCRETETILEROOFDISCOUNT,
+        typekey.HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE,
+        typekey.HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT,
+        typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT
+    }
+    return discountTypeKeys
   }
 }

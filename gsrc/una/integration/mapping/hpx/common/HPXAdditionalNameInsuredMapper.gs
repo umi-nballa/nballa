@@ -14,16 +14,23 @@ class HPXAdditionalNameInsuredMapper {
 
   function createAdditionalNamedInsureds(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType> {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
+    var creditScoreMapper = new HPXCreditScoreMapper()
     var additionalNameInsureds = new ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType>()
     for (addtlNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)) {
-    var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType()
-    insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo(addtlNamedInsured.AccountContactRole.AccountContact.Contact,
-    addtlNamedInsured)))
-    insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = addtlNamedInsured.DescOfInterest_HOE != null ? addtlNamedInsured.DescOfInterest_HOE : ""
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = ""
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlNamedInsured.Relationship != null ? addtlNamedInsured.Relationship : ""
-    insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYADDLNAMEDINSURED
-    additionalNameInsureds.add(insuredOrPrincipal)
+      var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType()
+      insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo(addtlNamedInsured.AccountContactRole.AccountContact.Contact,
+      addtlNamedInsured)))
+      insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = addtlNamedInsured.DescOfInterest_HOE != null ? addtlNamedInsured.DescOfInterest_HOE : ""
+      insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = ""
+      insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlNamedInsured.Relationship != null ? addtlNamedInsured.Relationship : ""
+      insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYADDLNAMEDINSURED
+      var creditScores = creditScoreMapper.createCreditScoreInfo(addtlNamedInsured.CreditReportsExt)
+      var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
+      for (score in creditScores) {
+        principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+      }
+      insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
+      additionalNameInsureds.add(insuredOrPrincipal)
     }
     return additionalNameInsureds
 }

@@ -133,4 +133,12 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     return null
   }
+
+  override function getCostType(cost : Cost) :  String {
+    return null
+  }
+
+  override function getDiscountCostTypes() : String[] {
+    return null
+  }
 }

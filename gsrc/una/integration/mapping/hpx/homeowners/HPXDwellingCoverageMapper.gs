@@ -72,6 +72,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
             limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            limits.add(limit)
             break
           }
         }
@@ -99,6 +100,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
             limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            limits.add(limit)
             break
           }
         }
@@ -124,6 +126,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
             limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            limits.add(limit)
             break
           }
         }

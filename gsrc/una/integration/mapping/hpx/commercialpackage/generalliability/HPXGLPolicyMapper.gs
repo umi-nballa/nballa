@@ -17,14 +17,7 @@ uses una.integration.mapping.hpx.common.HPXClassificationMapper
 class HPXGLPolicyMapper extends HPXPolicyMapper {
 
   function createGeneralLiabilityLineBusiness(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    var glCoverages = policyPeriod.GLLine.AllCoverages
-    var glPreviousCoverages = previousPeriod.GLLine.AllCoverages
-    var glTrxs = policyPeriod.GLTransactions
-    var previousGLTransactions = getTransactions(previousPeriod)
-    return createCoveragesInfo(glCoverages, glPreviousCoverages, glTrxs, previousGLTransactions)
-
+    return createLineCoverages(policyPeriod, policyPeriod.GLLine)
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
@@ -124,5 +117,13 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
     return transactions
+  }
+
+  override function getCostType(cost : Cost) :  String {
+    return null
+  }
+
+  override function getDiscountCostTypes() : String[] {
+    return null
   }
 }

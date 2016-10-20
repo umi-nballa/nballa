@@ -12,7 +12,7 @@
       name="openForEdit"
       type="boolean"/>
     <RangeInput
-      editable="openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(term)"
+      editable="return openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(term) and term.isCovTermEditable(term.Clause.OwningCoverable)"
       id="OptionTermInput"
       label="term.Pattern.DisplayName"
       required="term.Pattern.Required"

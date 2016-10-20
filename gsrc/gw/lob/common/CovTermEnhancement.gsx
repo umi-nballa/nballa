@@ -300,9 +300,33 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
   public function isCovTermEditable(coverable : Coverable) : boolean{
     var result = true
-    var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, this.PatternCode)
+    var uneditableCovTerms = ConfigParamsUtil.getList(TC_UneditableCoverageTerms, coverable.PolicyLine.BaseState)
 
-    if(configResult != null){
+    uneditableCovTerms.each( \ elt ->
+    print("covterm is " + elt))
+
+   var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, this.PatternCode)
+
+    print("pattern code " + this.PatternCode)
+    if(uneditableCovTerms.contains(this.PatternCode))
+    {
+      if((this.PatternCode.equals("CPOrdinanceorLawCovBLimit_EXT") && coverable typeis CPBuilding
+      && !coverable.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue?.OptionCode?.matches("code11"))
+        ||
+      (this.PatternCode.equals("CPOrdinanceorLawCovCLimit_EXT") && coverable typeis CPBuilding
+       && !coverable.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue?.OptionCode?.matches("code11"))
+      ||
+      (this.PatternCode.equals("CPOrdinanceorLawCovBCLimit_EXT") && coverable typeis CPBuilding
+       && !coverable.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.OptionValue?.OptionCode?.matches("code11"))
+       ||
+       (!this.PatternCode.equals("CPOrdinanceorLawCovBLimit_EXT")
+           && !this.PatternCode.equals("CPOrdinanceorLawCovCLimit_EXT")
+            && !this.PatternCode.equals("CPOrdinanceorLawCovBCLimit_EXT")))
+            result = false
+
+
+
+    }else if(configResult != null){
       result = configResult
     }else if(coverable typeis Dwelling_HOE){
       var min = this.getMinAllowedLimitValue(coverable)

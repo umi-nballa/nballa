@@ -5,6 +5,7 @@ uses una.rating.util.HOConstructionTypeMapper
 
 uses java.math.BigDecimal
 uses java.util.Date
+uses gw.api.util.DateUtil
 
 /**
  * Created with IntelliJ IDEA.

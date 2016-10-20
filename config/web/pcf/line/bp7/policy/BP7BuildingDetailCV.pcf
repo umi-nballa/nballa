@@ -28,6 +28,9 @@
       name="isLandscapeGarden"
       recalculateOnRefresh="true"
       type="boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
+      name="propertyInformationCompletePluginImpl"/>
     <Card
       id="GeneralInfoCard"
       title="displaykey.Web.Policy.LocationContainer.Location.Building.Details">
@@ -94,7 +97,10 @@
                   id="yearBuilt"
                   label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
                   required="true"
-                  value="building.YearBuilt_Ext"/>
+                  value="building.YearBuilt_Ext">
+                  <PostOnChange
+                    onChange="propertyInformationCompletePluginImpl.getBOPInformation(policyPeriod,building)"/>
+                </TextInput>
                 <TextInput
                   editable="true"
                   id="noOfStories"

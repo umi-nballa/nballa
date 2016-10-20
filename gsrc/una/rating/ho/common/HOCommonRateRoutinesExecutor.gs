@@ -6,6 +6,7 @@ uses gw.rating.CostData
 uses una.rating.util.HOCreateCostDataUtil
 
 uses java.util.Map
+uses com.ibm.db2.jcc.am.ho
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,12 +43,51 @@ class HOCommonRateRoutinesExecutor {
   }
 
   /**
-   * Returns the parameter set for the country wide routines
+   * Rate seasonal or secondary residence surcharge
    */
+  static function rateSeasonalOrSecondaryResidenceSurcharge(dateRange: DateRange, line: PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int, costType : HOCostType_Ext, discountOrSurchargeRatingInfo : HOCommonDiscountsOrSurchargeRatingInfo): CostData {
+    var rateRoutineParameterMap = getHOCWDiscountsAndSurchargesParameterSet(line, discountOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_RATE_ROUTINE, costType, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
+    return costData
+  }
+
+  /**
+   * Rate ACV loss settlement on Roof surfacing for HO3 policy types
+   */
+  static function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange, line : PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int, hoRatingInfo : HORatingInfo) : CostData{
+    var rateRoutineParameterMap = getHOCommonRatingInfoParameterSet(line, hoRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ACV_LOSS_SETTLEMENT_ON_ROOF_SURFACING_ROUTINE_NAME, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
+    return costData
+  }
+
+  /**
+ * Returns the parameter set for the country wide routines
+ */
   static function getHOCWParameterSet(line: PolicyLine): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
         TC_STATE -> line.BaseState.Code
+    }
+  }
+
+  /**
+   * Returns the parameter set for the country wide routines for discounts and surcharges
+   */
+  static function getHOCWDiscountsAndSurchargesParameterSet(line: PolicyLine, discountOrSurchargeRatingInfo : HOCommonDiscountsOrSurchargeRatingInfo): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo,
+        TC_STATE -> line.BaseState.Code
+    }
+  }
+
+  /**
+   * Returns the parameter set with a rating info
+   */
+  static function getHOCommonRatingInfoParameterSet(line: PolicyLine, hoRatingInfo : HORatingInfo): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_RATINGINFO -> hoRatingInfo
     }
   }
 }

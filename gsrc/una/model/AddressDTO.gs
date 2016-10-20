@@ -14,4 +14,5 @@ class AddressDTO {
   var _city: String           as City
   var _state: String          as State
   var _country: String        as Country
+  var _yearBuilt : String     as YearBuilt
 }

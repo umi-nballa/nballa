@@ -75,7 +75,6 @@ public final class HORateRoutineNames {
   public static final var SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_ROUTINE_NAME : String = "UNAHOSpecialLimitsPersonalPropertyCovRateRoutine"
   public static final var DIFFERENCE_IN_CONDITIONS_GROUP1_RATE_ROUTINE : String = "UNAHODifferenceInConditionsGroup1RateRoutine"
   public static final var CONCRETE_TILE_ROOF_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOConcreteTileRoofDiscountGroup1RateRoutine"
-  public static final var SEASONAL_OR_SECONDARY_RESIDENCE_SURCHARGE_GROUP1_RATE_ROUTINE : String = "UNAHOSeasonalOrSecondaryResidenceSurchargeGroup1RateRoutine"
   public static final var LOSS_ASSESSMENT_COVERAGE_GROUP1_RATE_ROUTINE : String = "UNAHOLossAssessmentCovGroup1RateRoutine"
   public static final var GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOGatedCommunityDiscountGroup1RateRoutine"
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
@@ -97,4 +96,6 @@ public final class HORateRoutineNames {
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP3_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovRateRoutine"
   public static final var ORDINANCE_OR_LAW_COV_GROUP3_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovRateRoutine"
   public static final var LIMITED_SCREENED_ENCLOSURE_AND_CARPORT_COV_ROUTINE_NAME : String = "UNAHOLimitedScreenedEnclosureAndCarportCovRateRoutine"
+  public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP3_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIRateRoutine"
+  public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP3_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
 }

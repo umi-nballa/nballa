@@ -12,6 +12,5 @@ class HORatingInfo {
   var _totalBasePremium: BigDecimal as TotalBasePremium = 0.0
   var _adjustedBaseClassPremium: BigDecimal as AdjustedBaseClassPremium = 0.0
   var _superiorConstructionDiscount: BigDecimal as SuperiorConstructionDiscount = 0.0
-
-
+  var _ageOfHomeDiscount: BigDecimal as AgeOfHomeDiscount = 0.0
 }

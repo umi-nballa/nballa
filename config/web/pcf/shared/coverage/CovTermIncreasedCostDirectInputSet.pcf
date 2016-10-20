@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="CovTermIncreasedCostDirectInputSet">
+    <Require
+      name="directCovTerm"
+      type="gw.api.domain.covterm.DirectCovTerm"/>
+    <Require
+      name="cpBuilding"
+      type="CPBuilding"/>
+    <Require
+      name="cpLine"
+      type="CommercialPropertyLine"/>
+    <TextInput
+      editable="directCovTerm.isCovTermEditable(directCovTerm.Clause.OwningCoverable)"
+      id="DirectTermInput"
+      inputConversion="gw.pcf.coverage.CovTermDirectInputSetHelper.convertFromString(VALUE)"
+      label="directCovTerm.Pattern.DisplayName"
+      outputConversion="gw.pcf.coverage.CovTermDirectInputSetHelper.convertToString(VALUE)"
+      required="directCovTerm.Pattern.Required"
+      value="directCovTerm.Value">
+      <PostOnChange
+        onChange="una.productmodel.CPAutoPopulateUtil.setIncreasedCostLimit(cpLine,cpBuilding)"/>
+    </TextInput>
+  </InputSet>
+</PCF>

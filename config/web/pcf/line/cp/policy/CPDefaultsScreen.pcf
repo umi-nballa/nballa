@@ -27,6 +27,22 @@
       initialValue="false"
       name="allChecked"
       type="boolean"/>
+    <Variable
+      initialValue="cpLine.Branch"
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      initialValue="policyPeriod.CPLine.AllCoverages.where( \ elt -&gt; elt.PatternCode==&quot;CPBldgCov&quot;).first()"
+      name="buildingcoverage"
+      type="Coverage"/>
+    <Variable
+      initialValue="policyPeriod.CPLine.AllCoverages.where( \ elt -&gt; elt.PatternCode==&quot;CPOrdinanceorLaw_EXT&quot;)?.first()"
+      name="ordinancecoverage"
+      type="Coverage"/>
+    <Variable
+      initialValue="policyPeriod.CPLine.AllCoverages.where( \ elt -&gt; elt.PatternCode==&quot;CPEquipmentBreakdownEnhance_EXT&quot;)?.first()"
+      name="equipmentcov"
+      type="Coverage"/>
     <Toolbar>
       <WizardButtons/>
       <ToolbarButtonSetRef
@@ -35,5 +51,138 @@
     </Toolbar>
     <PanelRef
       def="OOSEPanelSet(cpLine.Branch, jobWizardHelper)"/>
+    <DetailViewPanel
+      id="LocationDetailDV">
+      <InputColumn>
+        <Label
+          label="&quot;Policy Defaults&quot;"/>
+        <InputDivider/>
+        <TypeKeyInput
+          editable="true"
+          id="causeofloss"
+          label="&quot;Cause of Loss&quot;"
+          required="true"
+          value="cpLine.causeofloss"/>
+        <TypeKeyInput
+          editable="true"
+          id="allotherperilded"
+          label="&quot;All Other Peril Deductible&quot;"
+          required="true"
+          value="cpLine.allotherperilded"/>
+        <TypeKeyInput
+          editable="true"
+          id="hurricanepercded"
+          label="&quot;Hurricane %age Deductible&quot;"
+          required="true"
+          value="cpLine.hurricanepercded">
+          <PostOnChange/>
+        </TypeKeyInput>
+        <TypeKeyInput
+          editable="true"
+          id="hurricanededtype"
+          label="&quot;Hurricane Deductible Type&quot;"
+          required="cpLine.hurricanepercded!=typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT"
+          value="cpLine.hurricanededtype"
+          visible="cpLine.hurricanepercded!=typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT"/>
+        <TypeKeyInput
+          editable="true"
+          id="inflationguard"
+          label="&quot;Inflation Guard&quot;"
+          required="true"
+          value="cpLine.Inflationguard"/>
+      </InputColumn>
+      <InputColumn>
+        <Label
+          label="&quot;Coverages&quot;"/>
+        <InputDivider/>
+        <InputGroup
+          allowToggle="false//ordinancecoverage.allowToggle(coverable)"
+          childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
+          id="CovPatternInputGroup"
+          label="&quot;Ordinance or Law Coverages&quot;"
+          onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+          <PostOnChange/>
+          <TypeKeyInput
+            editable="true"
+            id="coveragetype"
+            label="&quot;Coverage type&quot;"
+            required="true"
+            value="cpLine.CPOrdinanceOrLawType">
+            <PostOnChange/>
+          </TypeKeyInput>
+          <TypeKeyInput
+            editable="true"
+            id="coverageb"
+            label="&quot;Coverage B&quot;"
+            required="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT"
+            value="cpLine.CPCoverageB"
+            visible="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT"/>
+          <TypeKeyInput
+            editable="true"
+            id="coveragec"
+            label="&quot;Coverage C&quot;"
+            required="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT || cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT || cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT"
+            value="cpLine.CPCoverageC"
+            visible="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT || cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT || cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT"/>
+          <TypeKeyInput
+            editable="true"
+            id="coveragebccombined"
+            label="&quot;Coverage B&amp;C Combined&quot;"
+            required="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT ||cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT "
+            value="cpLine.CPCoverageBC"
+            visible="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT ||cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT "/>
+        </InputGroup>
+        <InputGroup
+          allowToggle="false"
+          childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
+          id="CovPattern2InputGroup"
+          label="&quot;Equipment Breakdown Enhancement Coverage&quot;"
+          onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+          <!-- <RangeInput
+            editable="true"
+            id="covtypelmt"
+            label="&quot;Limit&quot;"
+            sortValueRange="false"
+            value="(equipmentcov?.CovTerms?.where( \ elt -&gt; elt.PatternCode==&quot;CPEquipmentBreakdownTermLimit_EXT&quot;)?.first() as gw.api.domain.covterm.OptionCovTerm).OptionValue"
+            valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(equipmentcov?.CovTerms?.where( \ elt -&gt; elt.PatternCode==&quot;CPEquipmentBreakdownTermLimit_EXT&quot;)?.first() as gw.api.domain.covterm.OptionCovTerm, openForEdit).orderBy(\ opt -&gt; opt.Value)"/> -->
+          <TextInput
+            editable="true"
+            id="equipmentbreakdowninput"
+            label="&quot;Limit&quot;"
+            value="cpLine.EquipmentBreakdownEnhancement"/>
+          <!-- <CheckBoxInput
+            available="true"
+            editable="true"
+            hideChildrenIfReadOnly="false"
+            id="equipmentbreakdownreqd"
+            label="&quot;Select if Required&quot;"
+            required="false"
+            value="cpLine.EquipmentBreakdownEnhancement"
+            visible="true"/> -->
+        </InputGroup>
+        <InputGroup
+          allowToggle="false"
+          childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
+          id="TerrorismInputGroup"
+          label="&quot;Terrorism&quot;"
+          onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+          <PostOnChange/>
+          <CheckBoxInput
+            available="true"
+            editable="true"
+            hideChildrenIfReadOnly="false"
+            id="equipmentbreakdownreqd"
+            label="&quot;Select if Required&quot;"
+            required="false"
+            value="cpLine.TerrorismCoverage"
+            visible="true"/>
+        </InputGroup>
+      </InputColumn>
+    </DetailViewPanel>
+    <Code><![CDATA[function getCauseofloss(period:PolicyPeriod):String
+{
+  var causeofloss =period.CPLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPBldgCov").CovTerms.where( \ elt -> elt.PatternCode=="CPBldgCovCauseOfLoss").first().ValueAsString 
+  return causeofloss 
+}]]></Code>
   </Screen>
 </PCF>

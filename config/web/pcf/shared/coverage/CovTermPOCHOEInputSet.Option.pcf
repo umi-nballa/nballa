@@ -23,7 +23,7 @@
       value="(term as gw.api.domain.covterm.OptionCovTerm).OptionValue"
       valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term as gw.api.domain.covterm.OptionCovTerm, openForEdit).orderBy(\ elt -&gt; elt, new una.productmodel.CovTermOptComparator())">
       <PostOnChange
-        onChange="gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({term.Clause.OwningCoverable}, null); una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(term, coverable_Ext)"/>
+        onChange="gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({term.Clause.OwningCoverable}, null); una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(term, coverable_Ext);gw.lob.ho.DwellingCov_HOEEnhancement.defaultValueHOCov(coverable_Ext,term)"/>
     </RangeInput>
   </InputSet>
 </PCF>

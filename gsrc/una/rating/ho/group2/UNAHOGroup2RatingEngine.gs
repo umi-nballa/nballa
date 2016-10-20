@@ -11,7 +11,6 @@ uses una.rating.ho.group2.ratinginfos.HORatingInfo
 uses una.rating.util.HOCreateCostDataUtil
 
 uses java.util.Map
-uses una.rating.ho.common.HODiscountsOrSurchargeRatingInfo
 
 /**
  * Created with IntelliJ IDEA.

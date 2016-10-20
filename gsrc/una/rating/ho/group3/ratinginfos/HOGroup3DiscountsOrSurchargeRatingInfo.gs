@@ -10,7 +10,13 @@ uses java.math.BigDecimal
  */
 class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo {
 
+  var _isMatureHomeOwnerDiscountApplicable : boolean as IsMatureHomeOwnerDiscountApplicable
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
+  }
+
+  function abc(){
+
   }
 }

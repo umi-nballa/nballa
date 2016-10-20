@@ -103,7 +103,10 @@ uses gwservices.pc.dm.gx.shared.covereditem.CPBuildingClassCodePopulator
 uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_CPLocation
 uses gwservices.pc.dm.gx.shared.covereditem.CPBuildingLocationPopulator
 uses gwservices.pc.dm.gx.shared.covereditem.buildingmodel.anonymous.elements.Building_PolicyLocation
-uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_EstimatedPremium
+uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_Coverages_Entry
+uses gwservices.pc.dm.gx.lob.cpp.cpbuildingcovmodel.anonymous.elements.CPBuildingCov_CovTerms_Entry
+uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AdditionalInterests_Entry
+uses gwservices.pc.dm.gx.lob.CPP.CPBldngAddlPopulator
 
 /**
  * Entity populator registry
@@ -176,6 +179,8 @@ class Registry {
       Account_IndustryCode -> getConstructor(IndustryCodePopulator),
       PolicyLine_Entity_HomeownersLine_HOE_HOLineCoverages_Entry -> getConstructor(CoveragePopulator),
       Dwelling_HOE_Coverages_Entry -> getConstructor(CoveragePopulator),
+      CPBuilding_AdditionalInterests_Entry -> getConstructor(CPBldngAddlPopulator),
+      CPBuilding_Coverages_Entry -> getConstructor(CoveragePopulator),
       PolicyLine_Entity_CommercialPropertyLine_CPLocations_Entry -> getConstructor(CPLocationPopluator),
       CPLocation_Buildings_Entry -> getConstructor(CPBuildingPopulator),
       CPBuilding_Building -> getConstructor(BuildingPopulator),
@@ -191,6 +196,7 @@ class Registry {
       UWIssue_IssueType,
       Policy_Account,
       DwellingCov_HOE_CovTerms_Entry,
+      CPBuildingCov_CovTerms_Entry,
       HomeownersLineCov_HOE_CovTerms_Entry
   }
   /**

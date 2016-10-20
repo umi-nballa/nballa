@@ -16,7 +16,10 @@ class CPLocationPopluator extends BaseEntityPopulator<CPLocation, KeyableBean> {
 
    override function findEntity(model: XmlElement, parent: KeyableBean, bundle: Bundle) : CPLocation{
        if (model typeis PolicyLine_Entity_CommercialPropertyLine_CPLocations_Entry) {
-          return new CPLocation(Branch)
+            var cploc = new CPLocation(Branch)
+            if(parent typeis CommercialPropertyLine)
+               cploc.CPLine = parent
+            return cploc
        }
      return null
    }

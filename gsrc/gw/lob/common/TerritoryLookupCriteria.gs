@@ -28,9 +28,9 @@ class TerritoryLookupCriteria extends EntitySearchCriteria<DBTerritory> {
     if (_policyLinePatternCode.NotBlank and _state != null and _effectiveOnDate != null) {
       return null
     }
-    if(_policyLinePatternCode.NotBlank and _state == null and _effectiveOnDate != null){
-      return displaykey.TerritoryLookupCriteria.Error.MinimumCriteriaState
-    }
+    //if(_policyLinePatternCode.NotBlank and _state == null and _effectiveOnDate != null){
+    //  return displaykey.TerritoryLookupCriteria.Error.MinimumCriteriaState
+    //}
     return displaykey.TerritoryLookupCriteria.Error.MinimumCriteria
   }
 

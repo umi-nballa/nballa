@@ -248,6 +248,7 @@ class BillingMessageTransport implements MessageTransport {
       or policyPeriod.PeriodStart != basedOnPeriod.PeriodStart
       or policyPeriod.PeriodEnd != basedOnPeriod.PeriodEnd
       or newPrimaryNamedInsured != oldPrimaryNamedInsured
+      or policyPeriod.BillingContact.ContactDenorm.AddressBookUID != basedOnPeriod.BillingContact.ContactDenorm.AddressBookUID
       or newMortgageeLoanNumber != oldMortgageeLoanNumber
   }
 

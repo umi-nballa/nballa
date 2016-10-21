@@ -64,6 +64,8 @@ class PolicyLocationValidation extends PCValidationBase {
   function validateRequiredTerritoryCode(code : TerritoryCode) {
     if (Location.Country.UsesTerritoryCodes and code.Code == null) {
       var line = Location.Branch.Lines.singleWhere(\ p -> p.PatternCode == code.PolicyLinePatternCode)
+      if(line.PatternCode!="GLLine")
+        {
       var locs = line.AllCoverables*.PolicyLocations
       
       if (locs.contains(Location)) {
@@ -71,6 +73,7 @@ class PolicyLocationValidation extends PCValidationBase {
           Location.LocationNum, code.PolicyLinePattern.DisplayName))
       }
     }
+      }
   }
 
   function checkAnswers() {

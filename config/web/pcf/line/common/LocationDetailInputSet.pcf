@@ -79,7 +79,7 @@
     <InputSet
       editable="true"
       id="TerritoryCodeInputSet"
-      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes// &amp;&amp; line!=null &amp;&amp; line.equals(&quot;cpline&quot;)">
+      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null //&amp;&amp; !line.equals(&quot;cpline&quot;)">
       <ContentInput>
         <Link
           action="polLocation.TerritoryCodes.each(\ c -&gt; c.fillWithFirst())"
@@ -90,7 +90,7 @@
       </ContentInput>
       <InputIterator
         elementName="territoryCode"
-        value="polLocation.TerritoryCodes.where( \ elt -&gt; elt.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;)">
+        value="polLocation.TerritoryCodes.where( \ elt -&gt; elt.PolicyLinePattern.CodeIdentifier!=&quot;GLLine&quot;)">
         <IteratorSort
           sortBy="territoryCode.PolicyLinePattern.Priority"
           sortOrder="1"/>

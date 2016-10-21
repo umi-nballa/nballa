@@ -317,17 +317,48 @@
                   def="CPBldgSuggestedCovDV(cpBuilding, openForEdit)"/>
               </PanelColumn>
               <PanelColumn>
+                <DetailViewPanel>
+                  <InputColumn>
+                    <Label
+                      label="&quot;Additional &amp; Optional Coverages&quot;"/>
+                  </InputColumn>
+                </DetailViewPanel>
                 <PanelRef
-                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;,&quot;CPOptionalPropCovCategory_EXT&quot;,&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;,&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
                   editable="true"
+                  id="cpaddlcov"
                   visible="cpBuilding != null"/>
+                <DetailViewPanel>
+                  <InputColumn>
+                    <Label
+                      label="&quot;Optional Line Level Coverages&quot;"/>
+                  </InputColumn>
+                </DetailViewPanel>
                 <PanelRef
                   def="AdditionalLineCoveragesPanelSet(cpBuilding.PolicyLine as CommercialPropertyLine, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
                   editable="true"
+                  id="cpoptionalcov"
+                  visible="cpBuilding != null"/>
+                <DetailViewPanel>
+                  <InputColumn>
+                    <Label
+                      label="&quot;Optional Scheduled Coverages&quot;"/>
+                  </InputColumn>
+                </DetailViewPanel>
+                <PanelRef
+                  def="AdditionalLineCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
+                  editable="true"
+                  id="cpschedcov"
                   visible="cpBuilding != null"/>
               </PanelColumn>
             </PanelRow>
           </PanelRef>
+        </Card>
+        <Card
+          id="BuildingExclusionsConditions"
+          title="&quot;Exclusions and Conditions&quot;">
+          <PanelRef
+            def="AdditionalExclusionsAndConditionsPanelSet(cpLine, new String[]{&quot;CPExclusions_EXT&quot;,&quot;CPConditions_EXT&quot;} , true)"/>
         </Card>
         <Card
           id="BuildingAddlInterest"

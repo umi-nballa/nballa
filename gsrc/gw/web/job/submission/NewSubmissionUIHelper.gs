@@ -100,10 +100,19 @@ class NewSubmissionUIHelper {
     if(theProducerSelection.DefaultPPEffDate == null){
       prefix = displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired + "|"
     }
-    if(theProducerSelection.Producer != null && baseState == null && res == false){
+    if(theProducerSelection.Producer != null && (!isForeignCountry(theProducerSelection) && baseState == null) && res == false){
       throw new gw.api.util.DisplayableException(prefix + displaykey.Web.SubmissionManagerLV.NoActiveStates)
-    } else if(theProducerSelection.Producer != null && baseState == null && res == true){
+    } else if(theProducerSelection.Producer != null && (!isForeignCountry(theProducerSelection) && baseState == null) && res == true){
       throw new gw.api.util.DisplayableException(prefix + displaykey.Web.SubmissionManagerLV.DefaultBaseStateRequired)
+    }
+    return res
+  }
+
+  function isForeignCountry(theProducerSelection: ProducerSelection) : boolean {
+    var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code, typekey.Country.TC_AU.Code,typekey.Country.TC_CA.Code}
+    var res = false
+    if(!theExcludeList.hasMatch( \ elt1 -> elt1.equalsIgnoreCase(theProducerSelection.Account.AccountHolderContact.Country.Code))){
+      res = true
     }
     return res
   }

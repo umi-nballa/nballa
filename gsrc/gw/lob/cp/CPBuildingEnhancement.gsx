@@ -4,6 +4,8 @@ uses gw.api.util.JurisdictionMappingUtil
 uses gw.api.util.NumberUtil
 uses gw.api.util.StateJurisdictionMappingUtil
 uses gw.coverage.AllCoverageCopier
+uses gw.api.web.job.JobWizardHelper
+
 
 
 enhancement CPBuildingEnhancement : CPBuilding {
@@ -93,4 +95,130 @@ enhancement CPBuildingEnhancement : CPBuilding {
   property get Jurisdiction() : Jurisdiction {
     return StateJurisdictionMappingUtil.getJurisdictionMappingForState(this.CPLocation.Location.State)
   }
+
+  function copyBuilding(helper : JobWizardHelper = null) : CPBuilding {
+
+    var clonedBuilding = this.CPLocation.createAndAddBuilding(helper)
+
+    clonedBuilding.Coverages.each( \ elt -> elt.remove())
+    //clonedBuilding.Exclusions.each( \ elt -> elt.remove())
+    //clonedBuilding.Conditions.each( \ elt -> elt.remove())
+    clonedBuilding.InitialCoveragesCreated = this.InitialCoveragesCreated
+    clonedBuilding.InitialExclusionsCreated = this.InitialExclusionsCreated
+    clonedBuilding.InitialConditionsCreated = this.InitialConditionsCreated
+    clonedBuilding.PreferredCoverageCurrency = this.PreferredCoverageCurrency
+    for (ai in this.AdditionalInterests)
+    {
+      clonedBuilding.addToAdditionalInterests(ai)
+    }
+
+    for (var coverage in this.Coverages) {
+      var clonedCoverage = coverage.copyCoverage() as CPBuildingCov
+      clonedCoverage.setEffectiveWindow(clonedBuilding.SliceDate, this.Branch.PeriodEnd)
+      clonedBuilding.addToCoverages(clonedCoverage)
+    }
+    /*for (var exclusion in this.Exclusions) {
+      var clonedExclusion = exclusion.copyExclusion() as CPBuildingExcl
+      clonedExclusion.setEffectiveWindow(clonedBuilding.SliceDate, this.Branch.PeriodEnd)
+      clonedBuilding.addToExclusions(clonedExclusion)
+    }
+    for (var condition in this.Conditions) {
+      var clonedCondition = condition.copyCondition() as CPBuildingCond
+      clonedCondition.setEffectiveWindow(clonedBuilding.SliceDate, this.Branch.PeriodEnd)
+      clonedBuilding.addToConditions(clonedCondition)
+    } */
+    // Add classification to cloneBuilding by creating new object
+    /*for(cl in this.Classifications){
+
+      var newClassification = clonedBuilding.createAndAddClassification(helper)
+      newClassification.Coverages.each( \ elt -> elt.remove())
+      newClassification.Exclusions.each( \ elt -> elt.remove())
+      newClassification.Conditions.each( \ elt -> elt.remove())
+
+      newClassification.InitialCoveragesCreated  = cl.InitialCoveragesCreated
+      newClassification.InitialExclusionsCreated = cl.InitialExclusionsCreated
+      newClassification.InitialConditionsCreated = cl.InitialConditionsCreated
+
+      for(clCov in cl.Coverages){
+        var clonedClCov = clCov.copyCoverage() as BP7ClassificationCov
+        clonedClCov.setEffectiveWindow(newClassification.SliceDate,this.Branch.PeriodEnd)
+        newClassification.addToCoverages(clonedClCov)
+      }
+      for(clCov in cl.Exclusions){
+        var clonedClExcl = clCov.copyExclusion() as BP7ClassificationExcl
+        clonedClExcl.setEffectiveWindow(newClassification.SliceDate,this.Branch.PeriodEnd)
+        newClassification.addToExclusions(clonedClExcl)
+      }
+      for(clCov in cl.Conditions){
+        var clonedClCond = clCov.copyCondition() as BP7ClassificationCond
+        clonedClCond.setEffectiveWindow(newClassification.SliceDate,this.Branch.PeriodEnd)
+        newClassification.addToConditions(clonedClCond)
+      }
+
+      newClassification.ClassDescription = cl.ClassDescription
+      newClassification.ClassCode_Ext = cl.ClassCode_Ext
+      newClassification.ClassPropertyType = cl.ClassPropertyType
+      newClassification.Area = cl.Area
+    }  // end of classification
+    */
+    //Add building units
+    /*for(bldgUnit in this.BldgUnits){
+      var cloneBldUnit = clonedBuilding.createAndAddNewBuildingUnits()
+      cloneBldUnit.OccupantName = bldgUnit.OccupantName
+      cloneBldUnit.TotalSqFootage = bldgUnit.TotalSqFootage
+      cloneBldUnit.Description = bldgUnit.Description
+    } */
+    // End of Building Units
+    /*clonedBuilding.PropertyType = this.PropertyType
+    clonedBuilding.Building.Description = this.Building.Description
+    clonedBuilding.PredominentOccType_Ext = this.PredominentOccType_Ext
+    clonedBuilding.YearBuilt_Ext = this.YearBuilt_Ext
+    clonedBuilding.NoOfStories_Ext = this.NoOfStories_Ext
+    clonedBuilding.NoOfUnits_Ext = this.NoOfUnits_Ext
+    clonedBuilding.BuildingSqFootage_Ext = this.BuildingSqFootage_Ext
+    clonedBuilding.Caged_Ext  = this.Caged_Ext
+    clonedBuilding.Alarmed_Ext  = this.Alarmed_Ext
+    clonedBuilding.Monitored_Ext = this.Monitored_Ext
+
+    if(this.UnitNumber != null){
+      clonedBuilding.UnitNumber = this.UnitNumber
+    }
+    if(this.RABOPWanted != null){
+      clonedBuilding.RABOPWanted = this.RABOPWanted
+    }
+    if(this.RABOPType != null){
+      clonedBuilding.RABOPType = this.RABOPType
+    }
+    if(this.RABOPTypeLiabilityLess != null){
+      clonedBuilding.RABOPTypeLiabilityLess = this.RABOPTypeLiabilityLess
+    }
+    if(this.BldgCodeEffGradeClass != null){
+      clonedBuilding.BldgCodeEffGradeClass = this.BldgCodeEffGradeClass
+    }
+    if(this.BldgCodeEffGrade != null){
+      clonedBuilding.BldgCodeEffGrade = this.BldgCodeEffGrade
+    }
+    if(this.ConstructionType != null){
+      clonedBuilding.ConstructionType = this.ConstructionType
+    }
+    if(this.Sprinklered != null){
+      clonedBuilding.Sprinklered = this.Sprinklered
+    }
+    if(this.TotalCondoBldgSquareFo != null){
+      clonedBuilding.TotalCondoBldgSquareFo = this.TotalCondoBldgSquareFo
+    }
+    if(this.CentralBurglarAlarm_Ext != null){
+      clonedBuilding.CentralBurglarAlarm_Ext = this.CentralBurglarAlarm_Ext
+    }
+    if(this.CentralFireAlarmSystem_Ext != null){
+      clonedBuilding.CentralFireAlarmSystem_Ext = this.CentralFireAlarmSystem_Ext
+    }
+    if(this.FireDepartmentDistance_Ext != null) {
+      clonedBuilding.FireDepartmentDistance_Ext = this.FireDepartmentDistance_Ext
+    } */
+
+    //clonedBuilding.updateDependentFields(null, helper)
+    return  clonedBuilding
+  }
+
 }

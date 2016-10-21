@@ -79,7 +79,7 @@
     <InputSet
       editable="true"
       id="TerritoryCodeInputSet"
-      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null &amp;&amp; line.equals(&quot;cpline&quot;)">
+      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes// &amp;&amp; line!=null &amp;&amp; line.equals(&quot;cpline&quot;)">
       <ContentInput>
         <Link
           action="polLocation.TerritoryCodes.each(\ c -&gt; c.fillWithFirst())"
@@ -90,7 +90,7 @@
       </ContentInput>
       <InputIterator
         elementName="territoryCode"
-        value="polLocation.TerritoryCodes">
+        value="polLocation.TerritoryCodes.where( \ elt -&gt; elt.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;)">
         <IteratorSort
           sortBy="territoryCode.PolicyLinePattern.Priority"
           sortOrder="1"/>
@@ -100,7 +100,7 @@
           id="TerritoryCode"
           label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(territoryCode.PolicyLinePattern.DisplayName)"
           pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, territoryCode)"
-          required="true"
+          required="una.config.Locationutil.isTerritoryCodeRequired(territoryCode, line)//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"
           validationExpression="territoryCode.prelimValidate()"
           value="territoryCode.Code"
           visible="line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>

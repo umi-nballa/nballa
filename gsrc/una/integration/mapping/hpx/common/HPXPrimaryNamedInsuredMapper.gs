@@ -9,7 +9,7 @@ uses gw.xml.XmlElement
  * To change this template use File | Settings | File Templates.
  */
 class HPXPrimaryNamedInsuredMapper {
-  function createPrimaryNamedInsured(contact : Contact, policyContactRole : PolicyContactRole) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {
+  function createPrimaryNamedInsured(contact : Contact, policyContactRole : PolicyContactRole, entityType : AccountOrgType) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
     var creditScoreMapper = new HPXCreditScoreMapper()
     var role = policyContactRole.Subtype
@@ -17,17 +17,15 @@ class HPXPrimaryNamedInsuredMapper {
     insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo(contact,
         policyContactRole)))
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = ""
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = policyContactRole.Subtype
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = ""
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = entityType
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = entityType.Description
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYPRINAMEDINSURED
     var creditScores = creditScoreMapper.createCreditScoreInfo(policyContactRole.CreditReportsExt)
-   // var insuredOrPrincipalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalInfoType()
     var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
     for (score in creditScores) {
       principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
     }
     insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
-   // insuredOrPrincipal.addChild(new XmlElement("InsuredOrPrincipalInfo" , insuredOrPrincipalInfo))
     return insuredOrPrincipal
   }
 }

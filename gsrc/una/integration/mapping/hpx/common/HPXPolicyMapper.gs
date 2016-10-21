@@ -71,7 +71,7 @@ abstract class HPXPolicyMapper {
   function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {
     var primaryNamedInsuredMapper = new HPXPrimaryNamedInsuredMapper()
     return primaryNamedInsuredMapper.createPrimaryNamedInsured(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact,
-                                                               policyPeriod.PrimaryNamedInsured)
+                                                               policyPeriod.PrimaryNamedInsured, policyPeriod.Policy.Account.AccountOrgType)
   }
 
   /*************************************  Policy Detail ************************************************************/
@@ -217,6 +217,7 @@ abstract class HPXPolicyMapper {
     var discnts = policyPeriod.AllCosts.where( \ elt -> getDiscountCostTypes().contains(getCostType(elt)) )
     for (cost in discnts) {
       var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
+      discount.DiscountCd = getCostType(cost)
       discount.DiscountDescription = cost.DisplayName
       discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
       discounts.add(discount)

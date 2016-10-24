@@ -10,7 +10,7 @@
   priority="4300"
   public-id="HODW_FungiCov_HOE"
   referenceDateByType="ApplicableObject">
-  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setSection1LimitDefault_Ext(HODW_FungiCov_HOE.Dwelling);gw.lob.ho.DwellingCov_HOEEnhancement.setSection1AggLimitDefault_Ext(HODW_FungiCov_HOE.Dwelling)]]></InitializeScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_FungiCov_HOE.PatternCode, HODW_FungiCov_HOE.Dwelling)]]></InitializeScript>
   <ExistenceScript><![CDATA[return((Dwelling_HOE.Branch.BaseState == TC_AZ ||Dwelling_HOE.Branch.BaseState == TC_NV || Dwelling_HOE.Branch.BaseState == TC_SC)&&
         !Dwelling_HOE.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists)? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED]]></ExistenceScript>
   <CovTerms>
@@ -91,13 +91,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_FungiSectionII_HOEusd"
-          currency="usd"
-          defaultValue="10000"
-          public-id="HODW_FungiSectionII_HOEusd"/>
-      </DefaultsSet>
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zjki47j02aob4ev1kregl971l0a"

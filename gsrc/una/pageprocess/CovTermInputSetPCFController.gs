@@ -5,10 +5,10 @@ uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.BooleanCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
-uses una.utils.MathUtil
-uses una.productmodel.CoveragesUtil
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
+uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController
+uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,14 +17,14 @@ uses java.lang.Double
  * Time: 8:55 AM
  * To change this template use File | Settings | File Templates.
  */
-class CovTermPOCHOEInputSet {
+class CovTermInputSetPCFController {
 
   // Sen Pitchaimuthu: Added onchange function to calculate the Other Structure, Personal Property and Loss of use
   // coverages based on Dwelling Coverage
   static function onchange(coverable: Coverable, _covTerm: gw.api.domain.covterm.CovTerm){
     switch(typeof coverable){
       case Dwelling_HOE:
-          onChangeForDwellingCoverable(coverable as Dwelling_HOE, _covTerm)
+          onChangeForDwellingCoverable(coverable, _covTerm)
           break
         default:
         break
@@ -34,17 +34,30 @@ class CovTermPOCHOEInputSet {
   private static function onChangeForDwellingCoverable(dwelling : Dwelling_HOE, covTerm : CovTerm){
     dwelling.PolicyPeriod.editIfQuoted()
     ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
-    roundInputValue(dwelling, covTerm)
+
+    if(covTerm typeis DirectCovTerm){
+      covTerm.round(ROUND_NEAREST)
+    }
 
     switch(covTerm.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
+        dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm?.onInit()
+        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
+        break
       case "DPDW_Dwelling_Limit_HOE":
+        dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
+        break
       case "HODW_PersonalPropertyLimit_HOE":
-          setSectionILimitDefaults(dwelling, covTerm as DirectCovTerm)
-          break
+        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
+        break
       case "HODW_ExecutiveCov_HOE_Ext":
-          setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
-          break
+        setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
+        break
+      case "HODW_OtherPerils_Ded_HOE":
+        dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
+        break
       default:
         break;
     }
@@ -82,7 +95,6 @@ class CovTermPOCHOEInputSet {
 
   static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
     onCovTermOptionChange_OnPremisesLimit(term, coverable)
-    onCovTermOptionChange_LossAssessmentLimit(term, coverable)
 
     if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
       (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
@@ -142,20 +154,9 @@ class CovTermPOCHOEInputSet {
 
     return  result
   }
-
-  private static function setSectionILimitDefaults(dwelling : Dwelling_HOE, covTerm : DirectCovTerm){
-    var patternsToDefault = CoveragesUtil.DEPENDENT_LIMIT_PATTERNS_TO_DERIVING_LIMIT_PATTERNS.get(covTerm.PatternCode)
-
-    if(covTerm.PatternCode == "HODW_PersonalPropertyLimit_HOE" and dwelling.HOPolicyType == TC_HO3){//exclude from re-defaulting when personal property changes
-      patternsToDefault.removeWhere( \ pattern -> pattern.equalsIgnoreCase("HODW_LossOfUseDwelLimit_HOE"))
-    }
-
-    var limitsToDefault = dwelling.Coverages*.CovTerms.whereTypeIs(DirectCovTerm).where( \ coverageTerm -> patternsToDefault.contains(coverageTerm.PatternCode))
-    limitsToDefault.each( \ limit -> limit.setDefaultLimit(dwelling))
-  }
-
   private static function setExecutiveCoverageDefaults(dwelling : Dwelling_HOE, booleanCovTerm : BooleanCovTerm){
     var coveragePatternsToSelect = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTSELECTEDCOVERAGEPATTERNS, dwelling.PolicyLine.BaseState)
+
 
     coveragePatternsToSelect.each( \ coveragePattern -> {
       if(dwelling.isCoverageAvailable(coveragePattern)){
@@ -165,45 +166,16 @@ class CovTermPOCHOEInputSet {
       }
     })
 
-    if(ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_SHOULDDEFAULTLIMITSEXECUTIVECOVERAGES, dwelling.PolicyLine.BaseState)){
-      setExecutiveDefaultsForCoverage(dwelling.Coverages, dwelling, booleanCovTerm.Value)
-      setExecutiveDefaultsForCoverage(dwelling.HOLine.AllCoverages, dwelling.HOLine, booleanCovTerm.Value)
-    }
-
     if(booleanCovTerm.Value){
-      if(dwelling.HOLine.BaseState == TC_CA or dwelling.HOLine.BaseState == TC_HI){
-        dwelling.Coverages*.CovTerms.whereTypeIs(DirectCovTerm).each( \ covTerm -> covTerm.setDefaultLimit(dwelling))
-      }
+      CoverageTermsRuntimeDefaultController.setDefaults(new CovTermDefaultContext(EXECUTIVE_COVERAGE, dwelling))
+    }else{//reset defaults to non-executive coverage
+      var executiveCoverageDefaultPatterns = ConfigParamsUtil.getList(TC_DefaultedExecutiveCoveragePatterns, dwelling.PolicyLine.BaseState)
+      var executiveCoverageCovTerms = dwelling.PolicyLine.AllCoverables*.CoveragesFromCoverable*.CovTerms.where( \ covTerm -> executiveCoverageDefaultPatterns?.contains(covTerm.PatternCode))
+
+      executiveCoverageCovTerms.each( \ covTerm -> covTerm.setValueFromString(covTerm.Pattern.getDefaultValue(null)))
+      executiveCoverageCovTerms.each( \ covTerm -> covTerm.onInit())
+      CoverageTermsRuntimeDefaultController.setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, {"HODW_PersonalPropertyLimit_HOE"}))
     }
-  }
-
-  private static function setExecutiveDefaultsForCoverage(coverages : Coverage[], coverable : Coverable, isExecutiveCoverage : boolean){
-    coverages.each( \ coverage -> {
-      coverage.CovTerms.each( \ covTerm -> {
-        var defaultValue = getExecutiveCoverageDefaultDefault(isExecutiveCoverage, coverable, covTerm)
-
-        if(defaultValue != null){
-          setDefaultValueForExecutiveCoverage(covTerm, defaultValue, coverable)
-        }else{
-          covTerm.setDefaultLimit(covTerm.Clause.OwningCoverable)//re-set default limit if there isn't one from the product model perspective
-        }
-      })
-    })
-  }
-
-  private static function getExecutiveCoverageDefaultDefault(isExecutiveCoverage : boolean, coverable : Coverable, covTerm : CovTerm) : String{
-    var result : String
-    var executiveEndorsementDefault = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTDEFAULT, coverable.PolicyLine.BaseState, covTerm.PatternCode)
-
-    if(executiveEndorsementDefault != null){//meaning this was a cov term that was defaulted as a result of executive coverage
-      if(isExecutiveCoverage){
-        result = executiveEndorsementDefault
-      }else{
-        result = covTerm.Pattern.getDefaultValue(null)
-      }
-    }
-
-    return result
   }
 
   private static function setDefaultValueForExecutiveCoverage(covTerm : gw.api.domain.covterm.CovTerm, defaultValue : String, coverable : Coverable){
@@ -223,28 +195,12 @@ class CovTermPOCHOEInputSet {
        and (coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value > 0)
   }
 
-  private static function roundInputValue(coverable : Coverable, covTerm: gw.api.domain.covterm.CovTerm){
-    var roundingFactor = ConfigParamsUtil.getInt(ConfigParameterType_Ext.TC_ROUNDINGFACTOR, coverable.PolicyLine.BaseState, covTerm.PatternCode)
-
-    if(covTerm.ValueAsString != null and roundingFactor != null){
-      var doubleVal = (covTerm as DirectCovTerm).Value.doubleValue()
-      var roundedNumber = MathUtil.roundTo(doubleVal, roundingFactor, ROUND_NEAREST)
-      (covTerm as DirectCovTerm).Value = roundedNumber
-    }
-  }
-
   private static function onCovTermOptionChange_OnPremisesLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable ){
     if(term.PatternCode == "HODW_OnPremises_Limit_HOE" and coverable typeis Dwelling_HOE){
       var onPremisesValue = coverable.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value
       var factor = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_OFFPREMISESLIMITFACTOR, coverable.PolicyLine.BaseState)
 
       coverable.HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm.Value = onPremisesValue * factor
-    }
-  }
-
-  private static function onCovTermOptionChange_LossAssessmentLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable){
-    if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable typeis Dwelling_HOE){
-      coverable.HODW_LossAssessmentCov_HOE_Ext.setDefaults()
     }
   }
 

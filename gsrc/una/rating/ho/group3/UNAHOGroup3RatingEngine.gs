@@ -387,7 +387,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function ratePersonalPropertyExclusion(personalPropertyExcl : HODW_PersonalPropertyExc_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyExclusion", this.IntrinsicType)
     var dwelling = personalPropertyExcl.HOLine.Dwelling
-    var personalPropertyBaseLimit = dwelling.PolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.getDefaultLimit(dwelling)
+    var personalPropertyBaseLimit = dwelling.PolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.RuntimeDefault
     var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
         TC_POLICYLINE -> PolicyLine,
         TC_PERSONALPROPERTYEXCLUSIONBASELIMIT_EXT -> personalPropertyBaseLimit

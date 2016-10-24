@@ -57,6 +57,18 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
+  property get DwellingValuationMethodCovTerm() : OptionCovTerm{
+    var result : OptionCovTerm
+
+    if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(this.HOPolicyType)){
+      result = this.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm
+    }else{
+      result = this.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm
+    }
+
+    return result
+  }
+
   property get IsSecondaryOrSeasonal() : boolean {
     return this.DwellingUsage != null and DwellingUsage_HOE.TF_SECONDARYORSEASONAL.TypeKeys.contains(this.DwellingUsage)
   }

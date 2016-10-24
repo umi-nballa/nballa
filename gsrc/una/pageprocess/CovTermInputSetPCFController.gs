@@ -160,9 +160,9 @@ class CovTermInputSetPCFController {
 
     coveragePatternsToSelect.each( \ coveragePattern -> {
       if(dwelling.isCoverageAvailable(coveragePattern)){
-        dwelling.setCoverageConditionOrExclusionExists(coveragePattern, booleanCovTerm.Value)
+        toggleCoveragesExistenceForExecutiveCoverage(dwelling, booleanCovTerm.Value, coveragePattern)
       }else if(dwelling.HOLine.isCoverageAvailable(coveragePattern)){
-        dwelling.HOLine.setCoverageConditionOrExclusionExists(coveragePattern, booleanCovTerm.Value)
+        toggleCoveragesExistenceForExecutiveCoverage(dwelling.HOLine, booleanCovTerm.Value, coveragePattern)
       }
     })
 
@@ -175,6 +175,17 @@ class CovTermInputSetPCFController {
       executiveCoverageCovTerms.each( \ covTerm -> covTerm.setValueFromString(covTerm.Pattern.getDefaultValue(null)))
       executiveCoverageCovTerms.each( \ covTerm -> covTerm.onInit())
       CoverageTermsRuntimeDefaultController.setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, {"HODW_PersonalPropertyLimit_HOE"}))
+    }
+  }
+
+  private static function toggleCoveragesExistenceForExecutiveCoverage(coverable : Coverable, isExecutiveCoverage : boolean, patternCode : String){
+    if(isExecutiveCoverage){
+      coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+    }else{
+      var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
+      if(coverageExistence == TC_ELECTABLE){
+        coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+      }
     }
   }
 

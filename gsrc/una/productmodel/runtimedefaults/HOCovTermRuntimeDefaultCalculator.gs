@@ -1,7 +1,7 @@
-package una.enhancements.productmodel
+package una.productmodel.runtimedefaults
 
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.domain.covterm.CovTerm
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.

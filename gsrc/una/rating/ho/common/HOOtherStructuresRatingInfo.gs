@@ -12,7 +12,8 @@ uses java.math.BigDecimal
 class HOOtherStructuresRatingInfo {
   var _otherStructuresIncreasedOrDecreasedLimit: BigDecimal as OtherStructuresIncreasedOrDecreasedLimit
   var _isOtherStructuresIncreasedOrDecreasedLimit: boolean as IsOtherStructuresIncreasedOrDecreasedLimit
-  construct(limitDifference: BigDecimal) {
+  construct(dwellingCov: HODW_Other_Structures_HOE) {
+    var limitDifference = dwellingCov.HODW_OtherStructures_Limit_HOETerm.LimitDifference
     if (limitDifference != 0){
       _isOtherStructuresIncreasedOrDecreasedLimit = true
     }

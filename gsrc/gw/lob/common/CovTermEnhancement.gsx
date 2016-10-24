@@ -82,11 +82,13 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
   private function getDwellingLimitRange(hoLine : HomeownersLine_HOE) : Range{
     var result : Range
 
-    var isCondo =  hoLine.Dwelling.ResidenceType == TC_CONDO
-    var condoUnitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + isCondo)
+    var condoUnitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.ResidenceType.Code)
+    var seasonSecondaryRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.IsSecondaryOrSeasonal)
 
     if(condoUnitRange != null){
       result = condoUnitRange
+    }else if(seasonSecondaryRange != null){
+      result = seasonSecondaryRange
     }else{
       result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType)
     }

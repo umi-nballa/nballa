@@ -3,9 +3,9 @@ package una.enhancements.productmodel
 uses java.math.BigDecimal
 uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.DirectCovTerm
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses una.config.ConfigParamsUtil
-uses java.lang.NumberFormatException
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.

@@ -34,6 +34,7 @@ class HOCommonDwellingRatingInfo {
         _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
+    //TODO
     if(dwellingCov.Dwelling?.HODW_Personal_Property_HOEExists){
       _personalPropertyLimit = dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
       var ppLimit = _dwellingLimit * 0.5

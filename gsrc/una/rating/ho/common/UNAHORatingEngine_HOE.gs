@@ -69,13 +69,15 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
 
         //rate line level coverages
         _logger.info("Rating Line Level HO Coverages")
-        lineVersion.HOLineCoverages?.each(\lineCov -> rateLineCoverages(lineCov, sliceRange))
+        var covs = lineVersion.CoveragesFromCoverable.where( \ elt -> lineVersion.hasCoverageConditionOrExclusion(elt.PatternCode))
+        covs.each( \ elt -> rateLineCoverages(elt as HomeownersLineCov_HOE, sliceRange ))
         _logger.info("Done rating Line Level HO Coverages")
 
         //rate dwelling level coverages
         _logger.info("Rating Dwelling Level HO Coverages")
         if (lineVersion.Dwelling != null){
-          lineVersion.Dwelling.Coverages?.each(\dwellingCov -> rateDwellingCoverages(dwellingCov, sliceRange))
+          var existingCov =  lineVersion.Dwelling.CoveragesFromCoverable.where( \ elt -> lineVersion.Dwelling.hasCoverageConditionOrExclusion(elt.PatternCode) )
+          existingCov.each( \ elt -> rateDwellingCoverages(elt  as DwellingCov_HOE, sliceRange))
         }
         _logger.info("Done rating Dwelling Level HO Coverages")
 

@@ -2,6 +2,7 @@ package una.integration.framework.file.outbound.batch
 
 uses una.integration.framework.file.IFileIntegration
 uses una.integration.framework.file.outbound.persistence.OutboundFileData
+uses una.integration.framework.file.outbound.persistence.OutboundFileProcess
 
 uses java.util.Date
 
@@ -38,10 +39,14 @@ interface IFileCreationBatch extends IFileIntegration {
 
   /**
    * If this batch is not using BeanIO for file creation, write code to create file in this function.
-   * @param fileName - the name of the file
+   * @param outboundFileProcess - the file process instance
    * @param fileRecords - the list of records to be written to the file.
-   * @param startTime - the date and time when the file creation process is started.
    */
-  function createFile(fileName: String, fileRecords: List<Object>, startTime: DateTime)
+  function createFile(outboundFileProcess: OutboundFileProcess, fileRecords: List<Object>)
 
+  /**
+   * Custom processing after the file creation.
+   * @param processedEntities - the list of records written to the file
+   */
+  function afterFileCreation(processedEntities: List<OutboundFileData>)
 }

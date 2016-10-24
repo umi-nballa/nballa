@@ -120,10 +120,16 @@ class CoveragesUtil {
 
   private static function initDwelling_Cov_HOE(coverable : Coverable){
     var valuationCovTerm = (coverable as Dwelling_HOE).DwellingValuationMethodCovTerm
-    var stringVal = ((coverable as Dwelling_HOE).HOLine.BaseState == TC_TX) ? "Actual" : "Replacement"
 
-    //using setValueFromString right now.  may eventually be changed to a typekey cov term.  also might move from
-    valuationCovTerm.setValueFromString(stringVal)
+    if(valuationCovTerm.AvailableOptions.Count == 1){
+      valuationCovTerm.setOptionValue(valuationCovTerm.AvailableOptions.single())
+    }else{
+      var stringVal = ((coverable as Dwelling_HOE).HOLine.BaseState == TC_TX) ? "Actual" : "Replacement"
+      //using setValueFromString right now.  may eventually be changed to a typekey cov term.  also might move from
+      valuationCovTerm.setValueFromString(stringVal)
+
+
+    }
   }
 
   private static function isWorkersCompForEmployeesAvailable(hoLine: HomeownersLine_HOE) : boolean{

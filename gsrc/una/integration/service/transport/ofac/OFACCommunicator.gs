@@ -13,7 +13,7 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchResults
  * User: JGupta
  * Date: 10/3/16
  * Time: 2:01 AM
- * To change this template use File | Settings | File Templates.
+ * This Class communicates with OFAC
  */
 class OFACCommunicator {
   private final static var WS_NOT_AVAILABLE: String = "Failed to connect to the OFAC web service."

@@ -7,8 +7,8 @@ uses gw.api.domain.covterm.BooleanCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.

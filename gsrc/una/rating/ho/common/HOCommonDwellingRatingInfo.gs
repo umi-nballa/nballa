@@ -34,13 +34,11 @@ class HOCommonDwellingRatingInfo {
         _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
-    //TODO
     if(dwellingCov.Dwelling?.HODW_Personal_Property_HOEExists){
-      _personalPropertyLimit = dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
-      var ppLimit = _dwellingLimit * 0.5
-      _isPersonalPropertyIncreasedLimit = (_personalPropertyLimit > ppLimit)
-      if(_isPersonalPropertyIncreasedLimit){
-        _personalPropertyIncreasedLimit = (_personalPropertyLimit - ppLimit)
+      var limitDifference = dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
+      if(limitDifference > 0){
+        _isPersonalPropertyIncreasedLimit = true
+        _personalPropertyIncreasedLimit = limitDifference
       }
     }
     _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int

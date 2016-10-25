@@ -1,4 +1,4 @@
-package una.enhancements.productmodel
+package una.productmodel.runtimedefaults
 
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double

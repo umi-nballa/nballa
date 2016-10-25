@@ -1,10 +1,10 @@
-package una.enhancements.productmodel
+package una.productmodel.runtimedefaults
 
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.domain.covterm.CovTerm
+uses una.productmodel.CoveragesUtil
 uses java.lang.Double
 uses una.config.ConfigParamsUtil
-uses una.productmodel.CoveragesUtil
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.

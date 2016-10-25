@@ -28,11 +28,11 @@ class HOBasePremiumRaterGroup3 {
   private final var WIND_KEY_FACTOR_RATE_ROUTINE = "UNAHOWindKeyFactorRateRoutine"
   private final var PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE = "UNAHOProtectionConstructionFactorRateRoutine"
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_FL_RATE_ROUTINE -> HOCostType_Ext.TC_AOPBASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_AOPBASEPREMIUM,
       AOP_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
       WIND_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
       PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_PROTECTIONCONSTRUCTIONFACTORBASEPREMIUM,
-      HORateRoutineNames.WIND_BASE_PREMIUM_FL_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM
+      HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -87,9 +87,9 @@ class HOBasePremiumRaterGroup3 {
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
     if (_line.BaseState == typekey.Jurisdiction.TC_FL){
-      routines.add(HORateRoutineNames.BASE_PREMIUM_FL_RATE_ROUTINE)
+      routines.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
       if (!_dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists){
-        routines.add(HORateRoutineNames.WIND_BASE_PREMIUM_FL_RATE_ROUTINE)
+        routines.add(HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE)
       }
     }
     return routines

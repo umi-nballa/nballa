@@ -24,9 +24,7 @@ class HOBasePremiumRaterGroup1 {
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
-      HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
-      HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -42,7 +40,7 @@ class HOBasePremiumRaterGroup1 {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    routinesToExecute.addAll(baseRoutinesToExecute)
+    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
     return costs
   }
@@ -66,20 +64,6 @@ class HOBasePremiumRaterGroup1 {
       }
     }
     return costs
-  }
-
-  /**
-   *  returns the list of routines to execute
-   */
-  private property get baseRoutinesToExecute(): List<String> {
-    var routines: List<String> = {}
-    if (_line.BaseState.Code == "AZ")
-      routines.add(HORateRoutineNames.BASE_PREMIUM_AZ_RATE_ROUTINE)
-    else if (_line.BaseState.Code == "CA")
-      routines.add(HORateRoutineNames.BASE_PREMIUM_CA_RATE_ROUTINE)
-    else if (_line.BaseState.Code == "NV")
-        routines.add(HORateRoutineNames.BASE_PREMIUM_NV_RATE_ROUTINE)
-    return routines
   }
 
   /**

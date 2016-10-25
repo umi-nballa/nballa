@@ -66,15 +66,15 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.DwellingProtectionDetails.SmokeAlarm == null) {
       addErrorOrWarning("SmokeAlarm", displaykey.Web.Policy.HomeownersLine.Validation.SmokeAlarm, "HomeownersDwelling")
     }
-    if (HODwelling.DwellingProtectionDetails.SprinklerSystemType == null) {
+    /*if (HODwelling.DwellingProtectionDetails.SprinklerSystemType == null) {
       addErrorOrWarning("SprinklerSystemType", displaykey.Web.Policy.HomeownersLine.Validation.SprinklerSystemType, "HomeownersDwelling")
-    }
+    }*/
     if (HODwelling.DwellingProtectionDetails.Deadbolts == null) {
       addErrorOrWarning("Deadbolts", displaykey.Web.Policy.HomeownersLine.Validation.Deadbolt, "HomeownersDwelling")
     }
-    if (HODwelling.DwellingProtectionDetails.VisibleToNeighbors == null) {
+    /*if (HODwelling.DwellingProtectionDetails.VisibleToNeighbors == null) {
       addErrorOrWarning("VisibleToNeighbors", displaykey.Web.Policy.HomeownersLine.Validation.VisiblToNeighbors, "HomeownersDwelling")
-    }
+    }*/
     // check garage type only for applicable policy types
     if ((HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
          HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)

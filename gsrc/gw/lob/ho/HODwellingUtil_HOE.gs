@@ -1,6 +1,9 @@
 package gw.lob.ho
 
 uses java.lang.Integer
+uses java.util.ArrayList
+uses java.util.Calendar
+
 /**
  * Created with IntelliJ IDEA.
  * User: svallabhapurapu
@@ -24,6 +27,10 @@ class HODwellingUtil_HOE {
   private static final var WIND_SPEED_100 : int = 100
   private static final var WIND_SPEED_110 : int = 110
   private static final var WIND_SPEED_120 : int = 120
+  private static final var PROTECTION_CLASSCODE_4 = "04"
+  private static final var PROTECTION_CLASSCODE_2 = "02"
+  private static final var PROTECTION_CLASSCODE_3 = "03"
+  private static final var PROTECTION_CLASSCODE_5 = "05"
 
 
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
@@ -559,5 +566,114 @@ class HODwellingUtil_HOE {
      }
    return typekey.WiringType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
  }
+
+  /**
+  * Method to get the SubdivisionNames based on the Jurisdiction
+   */
+  static function getSubdivisionNames(jurisdiction : Jurisdiction) : List<typekey.SubdivisionName_Ext> {
+    var subDivNames : List<typekey.SubdivisionName_Ext>
+    switch(jurisdiction){
+      case Jurisdiction.TC_CA :
+          subDivNames = SubdivisionName_Ext.TF_CA.TypeKeys
+          break
+      case Jurisdiction.TC_FL :
+          subDivNames = SubdivisionName_Ext.TF_FL.TypeKeys
+          break
+      case Jurisdiction.TC_SC :
+          subDivNames = SubdivisionName_Ext.TF_SC.TypeKeys
+          break
+      case Jurisdiction.TC_TX :
+          subDivNames = SubdivisionName_Ext.TF_TX.TypeKeys
+          break
+        default :
+    }
+    return subDivNames
+  }
+
+  /**
+  * Method to reset Protection Class Codes based on the Jurisdiction
+   */
+  static function resetProtectionClassCode(jurisdiction : Jurisdiction, dwellingHOLocation : HOLocation_HOE) {
+    switch(jurisdiction){
+      case Jurisdiction.TC_CA :
+          if(SubdivisionName_Ext.TC_VERONA == dwellingHOLocation.SubdivisionName_Ext) {
+            dwellingHOLocation.DwellingProtectionClassCode = PROTECTION_CLASSCODE_4
+          }
+          break
+      case Jurisdiction.TC_FL :
+          if(SubdivisionName_Ext.TC_FISHHAWKRANCH == dwellingHOLocation.SubdivisionName_Ext) {
+            dwellingHOLocation.DwellingProtectionClassCode = PROTECTION_CLASSCODE_3
+          } else if(dwellingHOLocation.SubdivisionName_Ext != null) {
+            dwellingHOLocation.DwellingProtectionClassCode = PROTECTION_CLASSCODE_5
+          }
+          break
+      case Jurisdiction.TC_SC :
+          if(SubdivisionName_Ext.TC_CAROLINAPARK == dwellingHOLocation.SubdivisionName_Ext) {
+            dwellingHOLocation.DwellingProtectionClassCode = PROTECTION_CLASSCODE_3
+          } else if(dwellingHOLocation.SubdivisionName_Ext != null) {
+            dwellingHOLocation.DwellingProtectionClassCode = PROTECTION_CLASSCODE_5
+          }
+          break
+      case Jurisdiction.TC_TX :
+          if(dwellingHOLocation.SubdivisionName_Ext != null) {
+            dwellingHOLocation.DwellingProtectionClassCode = PROTECTION_CLASSCODE_2
+          }
+          break
+        default :
+    }
+  }
+
+  /**
+  * Method to determine Protection Sub Division Availability
+   */
+  static function isProtectedSubDivisionVisible(polPeriod : PolicyPeriod, dwelling : Dwelling_HOE) : boolean {
+    var protectedSubDivAvailable = false
+    switch(polPeriod.BaseState){
+      case Jurisdiction.TC_CA :
+          protectedSubDivAvailable = dwelling.isPolicyHOTypes ? true : false
+          break
+      case Jurisdiction.TC_FL :
+          protectedSubDivAvailable = (dwelling.isPolicyHOTypes or dwelling.isPolicyDPTypes) ? true : false
+          break
+      case Jurisdiction.TC_SC :
+          protectedSubDivAvailable = true
+          break
+      case Jurisdiction.TC_TX :
+          protectedSubDivAvailable = (dwelling.isPolicyHOTypes or dwelling.isPolicyTDPTypes) ? true : false
+          break
+        default :
+    }
+    return protectedSubDivAvailable
+  }
+
+  /**
+  * Method to determine First Time Deeded visibility
+   */
+  static function isFirstTimeDeededVisible(dwelling : Dwelling_HOE) : boolean {
+    var applicableJurisdiction  = getFirstTimeDeededStates()
+    var yearBuilt = dwelling.YearBuilt
+    var currentYear = Calendar.getInstance().get(Calendar.YEAR);
+    var validYearOfPurchase = (yearBuilt == currentYear or
+        yearBuilt == currentYear+1 or yearBuilt == currentYear-1) ? true : false
+    if(HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
+        && applicableJurisdiction.contains(dwelling.PolicyPeriod.BaseState)
+        && validYearOfPurchase) {
+      return true
+    }
+    return false
+  }
+
+  /**
+   * Static list of Jurisdictions applicable for First Time Deed
+  */
+  private static function getFirstTimeDeededStates() : List<Jurisdiction> {
+    var applicableJurisdiction = new ArrayList<Jurisdiction>()
+    applicableJurisdiction.add(Jurisdiction.TC_FL)
+    applicableJurisdiction.add(Jurisdiction.TC_NC)
+    applicableJurisdiction.add(Jurisdiction.TC_SC)
+    applicableJurisdiction.add(Jurisdiction.TC_TX)
+    applicableJurisdiction.add(Jurisdiction.TC_NV)
+    return applicableJurisdiction
+  }
 
 }// End of class

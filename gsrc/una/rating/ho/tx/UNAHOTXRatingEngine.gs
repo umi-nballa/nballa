@@ -128,7 +128,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
       rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
-    if (dwelling?.BurglarAlarm){
+    if (dwelling?.DwellingProtectionDetails?.BurglarAlarm){
       rateBurglarProtectiveDevicesCredit(dateRange)
     }
     if (PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){

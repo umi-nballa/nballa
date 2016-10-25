@@ -7,6 +7,7 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchInput
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchResults
 
 uses java.lang.Exception
+uses una.logging.UnaLoggerCategory
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +17,7 @@ uses java.lang.Exception
  * This Class communicates with OFAC
  */
 class OFACCommunicatorStub {
+  static var _logger = UnaLoggerCategory.UNA_INTEGRATION
    /**
    *
    * The method hits the OFAC - search Service
@@ -25,14 +27,18 @@ class OFACCommunicatorStub {
    */
   function returnOFACSearchResults(clientContext: ClientContext, searchConfiguration: SearchConfiguration, searchInput: SearchInput): SearchResults
   {
+    _logger.debug("Entering inside method returnOFACSearchResults ")
     try
     {
       var xsService = new XGServices_BasicHttpBinding_ISearch()
       var result = xsService.Search(clientContext, searchConfiguration, searchInput)
+      _logger.debug("Exiting from method returnOFACSearchResults ")
       return result
     } catch (e: Exception) {
+      _logger.debug("Issue with webservice ")
       return null
     }
+
   }
 
 }

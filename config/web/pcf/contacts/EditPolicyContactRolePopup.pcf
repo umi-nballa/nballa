@@ -12,12 +12,17 @@
     title="displaykey.Web.EditPolicyContactRolePopup.Title((typeof policyContactRole).TypeInfo.DisplayName, policyContactRole)">
     <LocationEntryPoint
       signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean)"/>
+    <LocationEntryPoint
+      signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean, additionalInterestDetails : AddlInterestDetail)"/>
     <Variable
       name="policyContactRole"
       type="PolicyContactRole"/>
     <Variable
       name="canEdit"
       type="Boolean"/>
+    <Variable
+      name="additionalInterestDetails"
+      type="AddlInterestDetail"/>
     <Screen
       editable="true"
       id="ContactDetailScreen">
@@ -25,6 +30,12 @@
         <EditButtons
           pickValue="policyContactRole"/>
       </Toolbar>
+      <DetailViewPanel>
+        <InputColumn>
+          <InputSetRef
+            def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, ContactType.get((policyContactRole.ContactDenorm.Subtype) as String))"/>
+        </InputColumn>
+      </DetailViewPanel>
       <PanelRef
         def="PolicyContactRoleDetailsCV(policyContactRole, canEdit)"/>
     </Screen>

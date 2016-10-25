@@ -21,8 +21,15 @@
       initialValue="dwelling.HOLocation.PolicyLocation"
       name="polLocation"
       recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.isProtectedSubDivisionVisible(policyPeriod, dwelling)"
+      name="isProtectedSubDivisonVisible"
+      recalculateOnRefresh="true"
+      type="boolean"/>
     <InputColumn
       labelWidth="250">
+      <Label
+        label="displaykey.Web.Homeowners.HOLocation.LocationInfo_Ext"/>
       <InputSetRef
         def="HODwellingLocationHOEInputSet(dwelling, policyPeriod, openForEdit, jobWizardHelper )"/>
       <InputSet
@@ -48,7 +55,7 @@
       </InputSet>
       <InputSet
         visible="dwelling.HOLocation.PolicyLocation != null">
-        <PickerInput
+        <!-- <PickerInput
           editable="true"
           id="LocalTaxJurisdictionId"
           inputConversion="searchTaxLocation(VALUE)"
@@ -56,7 +63,7 @@
           pickLocation="TaxLocationSearchPopup.push(dwelling.HOLine.Branch, gw.api.util.JurisdictionMappingUtil.getJurisdiction(dwelling.HOLocation.PolicyLocation))"
           required="true"
           value="dwelling.HOLocation.PolicyLocation.TaxLocation"
-          visible="gw.api.domain.StateSet.get(&quot;TaxLocation&quot;).contains(dwelling.HOLocation.PolicyLocation.State)"/>
+          visible="gw.api.domain.StateSet.get(&quot;TaxLocation&quot;).contains(dwelling.HOLocation.PolicyLocation.State)"/> -->
         <Input
           editable="true"
           id="DistToFireHydrant"
@@ -77,18 +84,27 @@
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"
             target="DATA_ONLY"/>
         </Input>
-        <BooleanRadioInput
+        <Input
+          id="respondingFireDept_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
+          value="dwelling.HOLocation.RespondingFireDept_Ext"/>
+        <TypeKeyInput
+          editable="true"
+          id="FireDeptMLvlsss"
+          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDeptMatchLevel_Ext"
+          value="dwelling.HOLocation.FireDeptMatchLevel_Ext"/>
+        <!-- <BooleanRadioInput
           editable="true"
           id="FloodFireHazard"
           label="displaykey.Web.Homeowners.HOLocation.FloodingFireHazard"
           required="true"
-          value="dwelling.HOLocation.FloodingHazard"/>
-        <BooleanRadioInput
+          value="dwelling.HOLocation.FloodingHazard"/> -->
+        <!-- <BooleanRadioInput
           editable="true"
           id="WithinCommericalProperty"
           label="displaykey.Web.Homeowners.HOLocation.WithinCommercialProperty"
           required="true"
-          value="dwelling.HOLocation.NearCommercial"/>
+          value="dwelling.HOLocation.NearCommercial"/> -->
         <Input
           boldValue="true"
           id="ProtectionClassCode"
@@ -103,39 +119,185 @@
             label="displaykey.Web.Homeowners.Dwelling.Autofill"
             styleClass="miniButton"/>
         </ContentInput>
+        <BooleanRadioInput
+          editable="true"
+          id="protectedSubdivision"
+          label="displaykey.Web.Homeowners.HOLocation.ProtectedSubdivision_Ext"
+          value="dwelling.HOLocation.ProtectedSubDivision_Ext"
+          visible="isProtectedSubDivisonVisible">
+          <PostOnChange
+            onChange="if(!dwelling.HOLocation.ProtectedSubDivision_Ext &amp;&amp; dwelling.HOLocation.SubdivisionName_Ext != null) {dwelling.HOLocation.SubdivisionName_Ext = null dwelling.HOLocation.DwellingProtectionClassCode = null}"
+            target="subDivisionName_Ext"/>
+        </BooleanRadioInput>
+        <RangeInput
+          editable="true"
+          id="subDivisionName_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.SubDivisionName_Ext"
+          value="dwelling.HOLocation.SubdivisionName_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getSubdivisionNames(policyPeriod.BaseState)"
+          visible="dwelling.HOLocation.ProtectedSubDivision_Ext">
+          <PostOnChange
+            onChange="gw.lob.ho.HODwellingUtil_HOE.resetProtectionClassCode(policyPeriod.BaseState, dwelling.HOLocation)"/>
+        </RangeInput>
+        <TextInput
+          id="bceg_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BCEG_Ext"
+          value="dwelling.HOLocation.BCEG_Ext"/>
       </InputSet>
+      <Input
+        id="distanceToCoast"
+        label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
+        value="dwelling.HOLocation.DistanceToCoast_Ext"/>
+      <Input
+        editable="true"
+        id="latitude_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.Latitude_Ext"
+        value="dwelling.HOLocation.PolicyLocation.Latitude_Ext"/>
+      <Input
+        editable="true"
+        id="Longitude_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.Longitude_Ext"
+        value="dwelling.HOLocation.PolicyLocation.Longitude_Ext"/>
+      <Input
+        id="iso360ValueID_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ISO360ValueID_Ext"
+        value="dwelling.HOLocation.ISO360ValueID_Ext"/>
       <InputDivider/>
       <InputSet>
+        <Label
+          label="displaykey.Web.Homeowners.Dwelling.OccupancyInfo_Ext"/>
         <Input
+          id="DwellingReplacement"
+          label="displaykey.Web.Homeowners.Dwelling.EstReplacementCost"
+          numCols="10"
+          required="false"
+          value="dwelling.ReplacementCost"/>
+        <TypeKeyInput
+          editable="true"
+          id="ResidenceType"
+          label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
+          value="dwelling.ResidenceType"/>
+        <RangeInput
+          editable="true"
+          id="DwellingUse"
+          label="displaykey.Web.Homeowners.Dwelling.DwellingUsage_Ext"
+          value="dwelling.DwellingUsage"
+          valueRange="return (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO4) ? DwellingUsage_HOE.TF_ALLEXCEPTRENTAL.TypeKeys : typekey.DwellingUsage_HOE.TF_ALL.TypeKeys ">
+          <PostOnChange
+            onChange="if(dwelling.NumOfMonthsConsUnOccupancy_Ext != null &amp;&amp; (dwelling.DwellingUsage != TC_SEC or dwelling.DwellingUsage != TC_SEC)) dwelling.NumOfMonthsConsUnOccupancy_Ext = null"
+            target="numberOfMonthsConsUnOccupancy_Ext"/>
+        </RangeInput>
+        <Input
+          editable="true"
+          id="numberOfMonthsConsUnOccupancy_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.NumOfMonthsConsUnOccupancy_Ext"
+          numCols="2"
+          required="false"
+          value="dwelling.NumOfMonthsConsUnOccupancy_Ext"
+          visible="DwellingUsage_HOE.TC_SEAS == dwelling.DwellingUsage or DwellingUsage_HOE.TC_SEC == dwelling.DwellingUsage "/>
+        <Input
+          editable="true"
+          id="dwellingPrimarilyOccupied_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.DwellingPrimarilyOccupied_Ext"
+          required="false"
+          value="dwelling.Occupancy"/>
+        <!-- <Input
           editable="openForEdit"
           id="DwellingYear"
           label="displaykey.Web.Homeowners.Dwelling.YearPurchased"
           numCols="8"
           required="false"
           value="dwelling.YearPurchased"
-          visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)"/>
+          visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)">
+          <PostOnChange
+            target="firstTimeDeeded_Ext"/>
+        </Input> -->
+        <InputDivider/>
+        <Label
+          label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>
+        <InputSet
+          id="dwellingRentedInputSet_ext"
+          visible="HOpolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_HO3 or dwelling.HOPolicyType == TC_HO6 or dwelling.HOPolicyType == TC_HCONB_EXT">
+          <BooleanRadioInput
+            editable="true"
+            id="everRentedToOthers_Ext"
+            label="displaykey.Web.Homeowners.HODwelling.DwellingEverRentedToOthers_Ext"
+            value="dwelling.DwellingRentedEverToOthers_Ext">
+            <PostOnChange
+              onChange="if(!dwelling.DwellingRentedEverToOthers_Ext &amp;&amp; dwelling.ShortestRentalPeriod_Ext != null ) dwelling.ShortestRentalPeriod_Ext = null"/>
+          </BooleanRadioInput>
+          <TypeKeyInput
+            editable="true"
+            id="shortestRentalPeriod_Ext"
+            label="displaykey.Web.Homeowners.HODwelling.ShortestRentalPeriod_Ext"
+            value="dwelling.ShortestRentalPeriod_Ext"
+            visible="dwelling.DwellingRentedEverToOthers_Ext"/>
+        </InputSet>
+        <InputSet
+          visible="dwelling.HOPolicyType != TC_HO4">
+          <BooleanRadioInput
+            editable="true"
+            id="isHomeNewPurchase_Ext"
+            label="displaykey.Web.Homeowners.HODwelling.IsHomeNewPurchase_Ext"
+            value="dwelling.HomeNewPurchase_Ext">
+            <PostOnChange
+              onChange="if(!dwelling.HomeNewPurchase_Ext &amp;&amp; (dwelling.HomePurchaseDate_Ext != null or dwelling.NewPurchaseMoveInDate_Ext != null)) {dwelling.HomePurchaseDate_Ext = null; dwelling.NewPurchaseMoveInDate_Ext = null} else if(dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HomePurchaseMMYYYY_Ext != null) {dwelling.HomePurchaseMMYYYY_Ext = null}"/>
+          </BooleanRadioInput>
+          <DateInput
+            editable="true"
+            id="homePurchaseDate_Ext"
+            label="displaykey.Web.Homeowners.HODwelling.HomePurchaseDate_Ext"
+            value="dwelling.HomePurchaseDate_Ext"
+            visible="dwelling.HomeNewPurchase_Ext"/>
+          <Input
+            editable="true"
+            id="homePurchaseMMYYYY_Ext"
+            label="displaykey.Web.Homeowners.HODwelling.HomePurchaseMMYYYY_Ext"
+            value="dwelling.HomePurchaseMMYYYY_Ext"
+            visible="!dwelling.HomeNewPurchase_Ext"/>
+          <DateInput
+            editable="true"
+            id="newPurchaseMoveInDate_Ext"
+            label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
+            value="dwelling.NewPurchaseMoveInDate_Ext"
+            visible="dwelling.HomeNewPurchase_Ext"/>
+        </InputSet>
         <Input
-          editable="openForEdit"
-          id="DwellingReplacement"
-          label="displaykey.Web.Homeowners.Dwelling.EstReplacementCost"
-          numCols="10"
-          required="false"
-          value="dwelling.ReplacementCost"
-          visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)"/>
-        <TypeKeyInput
           editable="true"
-          id="ResidenceType"
-          label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
-          required="true"
-          value="dwelling.ResidenceType"/>
-        <TypeKeyInput
+          id="rentalMoveInMMYYYY_Ext"
+          label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
+          value="dwelling.RentalMoveInMMYYYY_Ext"
+          visible="dwelling.HOPolicyType == TC_HO4"/>
+        <Input
           editable="true"
-          id="DwellingUse"
-          label="displaykey.Web.Homeowners.Dwelling.DwellingUsage"
+          id="YearBuilt"
+          label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
+          numCols="8"
           required="true"
-          value="dwelling.DwellingUsage">
-          <PostOnChange/>
-        </TypeKeyInput>
+          validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
+          value="dwelling.YearBuilt">
+          <PostOnChange
+            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"
+            target="deedInfo_Ext"/>
+        </Input>
+        <InputSet
+          id="deedInfo_Ext"
+          visible="dwelling.YearBuilt!= null &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.isFirstTimeDeededVisible(dwelling)">
+          <Input
+            editable="true"
+            id="firstTimeDeeded_Ext"
+            label="displaykey.Web.Homeowners.Dwelling.FirstTimeDeeded_Ext"
+            value="dwelling.FirstTimeDeededHome_Ext">
+            <PostOnChange
+              target="builderWarranty_Ext"/>
+          </Input>
+          <Input
+            editable="true"
+            id="builderWarranty_Ext"
+            label="displaykey.Web.Homeowners.Dwelling.BuilderWarranty_Ext"
+            value="dwelling.BuilderWarranty_Ext"
+            visible="dwelling.FirstTimeDeededHome_Ext"/>
+        </InputSet>
         <BooleanRadioInput
           editable="true"
           id="DwellingCoverageInEffect"
@@ -143,14 +305,14 @@
           required="true"
           value="dwelling.DwellingUsagePrimaryCoverage"
           visible="(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS)"/>
-        <TypeKeyInput
+        <!-- <TypeKeyInput
           editable="true"
           id="DwellingOccupancy"
           label="displaykey.Web.Homeowners.Dwelling.DwellingOccupancy"
           required="true"
           value="dwelling.Occupancy">
           <PostOnChange/>
-        </TypeKeyInput>
+        </TypeKeyInput> -->
         <BooleanRadioInput
           editable="true"
           id="ApprovedBuilder"
@@ -176,105 +338,107 @@
     </InputColumn>
     <InputColumn
       labelWidth="350">
-      <BooleanRadioInput
-        editable="true"
-        id="RoomersBoarders"
-        label="displaykey.Web.Homeowners.Dwelling.AnyRoomersBoarders"
-        required="false"
-        value="dwelling.RoomerBoarders">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <Input
-        editable="true"
-        id="NumRoomersBoarders"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.NumRoomersBoarders, ScriptParameters.HOChildQuestionIndent)"
-        numCols="5"
-        required="true"
-        value="dwelling.RoomerBoardersNumber"
-        visible="dwelling.RoomerBoarders"/>
-      <TypeKeyInput
-        editable="true"
-        id="NumUnits"
-        label="displaykey.Web.Homeowners.Dwelling.NumUnits"
-        required="false"
-        value="dwelling.UnitsNumber"/>
-      <BooleanRadioInput
-        editable="true"
-        id="FireWoodStove"
-        label="displaykey.Web.Homeowners.Dwelling.FireWoodStove"
-        required="false"
-        value="dwelling.FireplaceOrWoodStoveExists"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <Input
-        editable="true"
-        id="NumFireWoodStove"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.NumFireWoodStove, ScriptParameters.HOChildQuestionIndent)"
-        numCols="5"
-        required="true"
-        value="dwelling.FireplaceOrWoodStovesNumber"
-        visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) and dwelling.FireplaceOrWoodStoveExists"/>
-      <BooleanRadioInput
-        editable="true"
-        id="SwimmingPool"
-        label="displaykey.Web.Homeowners.Dwelling.SwimmingPool"
-        required="false"
-        value="dwelling.SwimmingPoolExists"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <BooleanRadioInput
-        editable="true"
-        id="PropertyFenced"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.PropertyFenced, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.SwimmingPoolFencing"
-        visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) and dwelling.SwimmingPoolExists"/>
-      <BooleanRadioInput
-        editable="true"
-        id="DivingBoard"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DivingBoard, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.SwimmingPoolDivingBoard"
-        visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) and dwelling.SwimmingPoolExists"/>
-      <BooleanRadioInput
-        editable="true"
-        id="Trampoline"
-        label="displaykey.Web.Homeowners.Dwelling.TrampolineExists"
-        required="false"
-        value="dwelling.TrampolineExists">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <BooleanRadioInput
-        editable="true"
-        id="SafetyNet"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.SafetyNet, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.TrampolineSafetyNet"
-        visible="dwelling.TrampolineExists"/>
-      <BooleanRadioInput
-        editable="true"
-        id="WaterLeakage"
-        label="displaykey.Web.Homeowners.Dwelling.WaterLeakage"
-        required="false"
-        value="dwelling.KnownWaterLeakage"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <TextAreaInput
-        editable="true"
-        id="WaterLeakageDesc"
-        label="displaykey.Web.Homeowners.Dwelling.WaterLeakageDesc"
-        labelAbove="true"
-        maxChars="200"
-        numCols="60"
-        numRows="4"
-        required="true"
-        value="dwelling.KnownWaterLeakageDescription"
-        visible="dwelling.KnownWaterLeakage and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)"/>
-      <InputDivider/>
-      <InputSet>
+      <!-- <InputSet>
+        <BooleanRadioInput
+          editable="true"
+          id="RoomersBoarders"
+          label="displaykey.Web.Homeowners.Dwelling.AnyRoomersBoarders"
+          required="false"
+          value="dwelling.RoomerBoarders">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <Input
+          editable="true"
+          id="NumRoomersBoarders"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.NumRoomersBoarders, ScriptParameters.HOChildQuestionIndent)"
+          numCols="5"
+          required="true"
+          value="dwelling.RoomerBoardersNumber"
+          visible="dwelling.RoomerBoarders"/>
+        <TypeKeyInput
+          editable="true"
+          id="NumUnits"
+          label="displaykey.Web.Homeowners.Dwelling.NumUnits"
+          required="false"
+          value="dwelling.UnitsNumber"/>
+        <BooleanRadioInput
+          editable="true"
+          id="FireWoodStove"
+          label="displaykey.Web.Homeowners.Dwelling.FireWoodStove"
+          required="false"
+          value="dwelling.FireplaceOrWoodStoveExists"
+          visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <Input
+          editable="true"
+          id="NumFireWoodStove"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.NumFireWoodStove, ScriptParameters.HOChildQuestionIndent)"
+          numCols="5"
+          required="true"
+          value="dwelling.FireplaceOrWoodStovesNumber"
+          visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) and dwelling.FireplaceOrWoodStoveExists"/>
+        <BooleanRadioInput
+          editable="true"
+          id="SwimmingPool"
+          label="displaykey.Web.Homeowners.Dwelling.SwimmingPool"
+          required="false"
+          value="dwelling.SwimmingPoolExists"
+          visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <BooleanRadioInput
+          editable="true"
+          id="PropertyFenced"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.PropertyFenced, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.SwimmingPoolFencing"
+          visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) and dwelling.SwimmingPoolExists"/>
+        <BooleanRadioInput
+          editable="true"
+          id="DivingBoard"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DivingBoard, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.SwimmingPoolDivingBoard"
+          visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) and dwelling.SwimmingPoolExists"/>
+        <BooleanRadioInput
+          editable="true"
+          id="Trampoline"
+          label="displaykey.Web.Homeowners.Dwelling.TrampolineExists"
+          required="false"
+          value="dwelling.TrampolineExists">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <BooleanRadioInput
+          editable="true"
+          id="SafetyNet"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.SafetyNet, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.TrampolineSafetyNet"
+          visible="dwelling.TrampolineExists"/>
+        <BooleanRadioInput
+          editable="true"
+          id="WaterLeakage"
+          label="displaykey.Web.Homeowners.Dwelling.WaterLeakage"
+          required="false"
+          value="dwelling.KnownWaterLeakage"
+          visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <TextAreaInput
+          editable="true"
+          id="WaterLeakageDesc"
+          label="displaykey.Web.Homeowners.Dwelling.WaterLeakageDesc"
+          labelAbove="true"
+          maxChars="200"
+          numCols="60"
+          numRows="4"
+          required="true"
+          value="dwelling.KnownWaterLeakageDescription"
+          visible="dwelling.KnownWaterLeakage and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_DP2 or dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)"/>
+      </InputSet> -->
+      <!-- <InputDivider/> -->
+      <!-- <InputSet>
         <BooleanRadioInput
           editable="true"
           id="AnyAnimals"
@@ -329,6 +493,67 @@
             </RowIterator>
           </ListViewPanel>
         </ListViewInput>
+      </InputSet> -->
+      <InputSet
+        id="CAFirelineOInfo_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext) ">
+        <Label
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.Info_Ext"/>
+        <Input
+          editable="true"
+          id="adjustedHazardScore_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.AdjHazardScore_Ext"
+          value="dwelling.CAFirelineInfo.AdjustedHazardScore"/>
+        <Input
+          editable="true"
+          id="overrideAdjHazardScore_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.OverrideAdjHazardScore_Ext"
+          value="dwelling.CAFirelineInfo.OverrideAdjHarardScore"/>
+        <Input
+          editable="true"
+          id="overriddenAdjHazardScore_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.OverriddenAdjHazardScore_Ext"
+          value="dwelling.CAFirelineInfo.OverriddenHarardScore_Ext"/>
+        <Input
+          editable="true"
+          id="splHazardIntArea_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.SplHazardIntArea_Ext"
+          value="dwelling.CAFirelineInfo.SplHazardIntArea"/>
+        <Input
+          editable="true"
+          id="overrideSHIA_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.OverrideSHIA_Ext"
+          value="dwelling.CAFirelineInfo.OverrideSHIA"/>
+        <Input
+          editable="true"
+          id="overrideSHIAScore_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.OverrideSHIAScore_Ext"
+          value="dwelling.CAFirelineInfo.OverrideSHIAScore"/>
+        <Input
+          editable="true"
+          id="fuel_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.Fuel_Ext"
+          value="dwelling.CAFirelineInfo.Fuel"/>
+        <Input
+          editable="true"
+          id="slope_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.Slope_Ext"
+          value="dwelling.CAFirelineInfo.Fuel"/>
+        <Input
+          editable="true"
+          id="access_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.Access_Ext"
+          value="dwelling.CAFirelineInfo.Access"/>
+        <Input
+          editable="true"
+          id="matchIndicator_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.MatchIndicator_Ext"
+          value="dwelling.CAFirelineInfo.MatchIndicator"/>
+        <Input
+          editable="true"
+          id="firelineInfoFileDate_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.FireLineInfoFileDate_Ext"
+          value="dwelling.CAFirelineInfo.FirelineInfoFileDate"/>
       </InputSet>
     </InputColumn>
     <Code><![CDATA[uses gw.api.util.DisplayableException

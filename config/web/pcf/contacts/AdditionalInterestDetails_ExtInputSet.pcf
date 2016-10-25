@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <InputSet
+    id="AdditionalInterestDetails_ExtInputSet">
+    <Require
+      name="addlInterestDetail"
+      type="AddlInterestDetail"/>
+    <Require
+      name="contactType"
+      type="ContactType"/>
+    <Label
+      label="&quot;Additional Interest Details&quot;"/>
+    <RangeInput
+      editable="true"
+      id="Type"
+      label="displaykey.Web.Policy.AdditionalInterest.Type"
+      required="true"
+      value="addlInterestDetail.AdditionalInterestType"
+      valueRange="getAdditionalInterestTypes()">
+      <PostOnChange/>
+    </RangeInput>
+    <Input
+      editable="true"
+      id="interestTypeIfOther_Ext"
+      label="displaykey.Web.Policy.AdditionalInterest.InterestTypeIfOther_Ext"
+      required="addlInterestDetail.AdditionalInterestType == tc_other_Ext"
+      value="addlInterestDetail.InterestTypeIfOther_Ext"
+      visible="addlInterestDetail.AdditionalInterestType == tc_other_Ext"/>
+    <Input
+      editable="true"
+      id="ContractNumber"
+      label="displaykey.Web.Policy.AdditionalInterest.ContractNumber"
+      required="addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext"
+      value="addlInterestDetail.ContractNumber"
+      visible="contactType == TC_company"/>
+    <BooleanRadioInput
+      editable="true"
+      id="vestingInfoRequired_Ext"
+      label="displaykey.Web.Policy.AdditionalInterest.VestingInfoRequired_Ext"
+      value="addlInterestDetail.VestingInfoRequired_Ext"
+      visible="contactType == TC_company &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)">
+      <PostOnChange
+        target="vestingInfo_Ext"/>
+    </BooleanRadioInput>
+    <Input
+      editable="true"
+      id="vestingInfo_Ext"
+      label="displaykey.Web.Policy.AdditionalInterest.VestingInfo_Ext"
+      required="addlInterestDetail.VestingInfoRequired_Ext"
+      value="addlInterestDetail.VestingInfo_Ext"
+      visible="contactType == TC_company &amp;&amp; addlInterestDetail.VestingInfoRequired_Ext &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)"/>
+    <Code><![CDATA[function getAdditionalInterestTypes() : List {
+  var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(contactType)
+  if(addlInterestDetail.Branch.BaseState != TC_SC) {
+    addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")   
+  }
+  return addnlInterestTypes
+}]]></Code>
+  </InputSet>
+</PCF>

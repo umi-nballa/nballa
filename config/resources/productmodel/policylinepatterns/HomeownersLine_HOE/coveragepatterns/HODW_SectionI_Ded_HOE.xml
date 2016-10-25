@@ -23,13 +23,13 @@
       public-id="HODW_OtherPerils_Ded_HOE"
       required="true"
       restrictionModel="prp"
-      valueType="other">
+      valueType="count">
       <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HODW_OtherPerils_Ded_HOE", Dwelling_HOE)]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
-          codeIdentifier="zmbgecuus9mrbblovi525c3o378"
+          codeIdentifier="z1mgccft1vvag0hukqpkinhnpea"
           defaultValue="1000"
-          public-id="zmbgecuus9mrbblovi525c3o378"/>
+          public-id="z1mgccft1vvag0hukqpkinhnpea"/>
       </DefaultsSet>
       <Options>
         <CovTermOpt
@@ -147,7 +147,7 @@
       public-id="HODW_Hurricane_Ded_HOE"
       required="true"
       restrictionModel="pd"
-      valueType="other">
+      valueType="percent">
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -226,12 +226,12 @@
       priority="1030"
       public-id="HODW_WindHail_Ded_HOE"
       required="false"
-      restrictionModel="pd"
+      restrictionModel="prp"
       valueType="other">
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="HODW_WindHail_Ded_HOEnocurrency"
-          defaultValue="0_Excl"
+          defaultValue="0"
           public-id="HODW_WindHail_Ded_HOEnocurrency"/>
       </DefaultsSet>
       <Options>
@@ -378,9 +378,7 @@ and una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTe
           optionCode="0"
           priority="188"
           public-id="z5uj213vf2lg455ats7ri3fb9u8"
-          value="-1">
-          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling)]]></AvailabilityScript>
-        </CovTermOpt>
+          value="-1"/>
         <CovTermOpt
           codeIdentifier="zjag0215fsvq2alvg264pivr358"
           optionCode="10"
@@ -395,6 +393,14 @@ and una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTe
           priority="87"
           public-id="zbejmanhfublbf8p0v4a3542lsb"
           value="0.05">
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling)]]></AvailabilityScript>
+        </CovTermOpt>
+        <CovTermOpt
+          codeIdentifier="zbeh6mvvmg1sf084mksepl65jtb"
+          optionCode="Exclude"
+          priority="288"
+          public-id="zbeh6mvvmg1sf084mksepl65jtb"
+          value="0.0">
           <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_SectionI_Ded_HOE).Dwelling)]]></AvailabilityScript>
         </CovTermOpt>
       </Options>

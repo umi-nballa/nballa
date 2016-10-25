@@ -8,7 +8,9 @@
   loadable="false"
   table="holocation_hoe"
   type="effdated">
-  <implementsInterface iface="gw.api.copier.EffDatedCopyable" impl="gw.api.copier.EffDatedCopier"/>
+  <implementsInterface
+    iface="gw.api.copier.EffDatedCopyable"
+    impl="gw.api.copier.EffDatedCopier"/>
   <implementsInterface
     iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
     impl="gw.lob.ho.HOLocationMatcher_HOE"/>
@@ -50,4 +52,49 @@
     fkentity="HomeownersLine_HOE"
     name="HOLine"
     nullok="false"/>
+  <column
+    name="ProtectedSubDivision_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="BCEG Grade"
+    name="BCEG_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
+  </column>
+  <column
+    name="DistanceToCoast_Ext"
+    nullok="true"
+    type="positiveinteger"/>
+  <column
+    desc="Responding Fire Department"
+    name="RespondingFireDept_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="30"/>
+  </column>
+  <typekey
+    desc="Fire Department Match Level"
+    name="FireDeptMatchLevel_Ext"
+    nullok="true"
+    typelist="FireDeptMatchLevel_Ext"/>
+  <typekey
+    desc="Protected Subdivision Name"
+    name="SubdivisionName_Ext"
+    nullok="true"
+    typelist="SubdivisionName_Ext"/>
+  <column
+    desc="ISO 360 Value ID"
+    name="ISO360ValueID_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="7"/>
+  </column>
 </entity>

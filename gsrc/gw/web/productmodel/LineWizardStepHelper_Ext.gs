@@ -3,8 +3,6 @@ package gw.web.productmodel
 uses gw.api.web.job.JobWizardHelper
 uses gw.api.util.LocationUtil
 uses java.lang.Throwable
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.

@@ -12,24 +12,24 @@ class HPXHOBuildingProtectionMapper {
     var bldgProtection = new wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType()
     bldgProtection.ProtectionClassGradeCd = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode != null ?
                                                 policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode : ""
-    bldgProtection.ProtectionDeviceFireInd = policyPeriod.HomeownersLine_HOE.Dwelling.FireExtinguishers != null ?
-                                                policyPeriod.HomeownersLine_HOE.Dwelling.FireExtinguishers : false
-    bldgProtection.ProtectionDeviceFireCd = policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarm != null ?
+    bldgProtection.ProtectionDeviceFireInd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireExtinguishers != null ?
+                                                policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireExtinguishers : false
+    bldgProtection.ProtectionDeviceFireCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SmokeAlarm != null ?
                                                 "SMOKE" : ""
-    bldgProtection.ProtectionDeviceFireDesc = policyPeriod.HomeownersLine_HOE.Dwelling.SmokeAlarmOnAllFloors != null ?
+    bldgProtection.ProtectionDeviceFireDesc = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SmokeAlarmOnAllFloors != null ?
                                                 "Smoke alarm on all floors" : "Smoke alarm not on all floors"
-    bldgProtection.ProtectionDeviceBurglarInd = policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarm != null ?
-                                                  policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarm : false
-    bldgProtection.ProtectionDeviceBurglarCd = policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType != null ?
-                                                  policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType : null
-    bldgProtection.ProtectionDeviceBurglarDesc = policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType != null ?
-                                                  policyPeriod.HomeownersLine_HOE.Dwelling.BurglarAlarmType.Description : ""
-    bldgProtection.ProtectionDeviceSprinklerCd = policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType != null ?
-                                                  policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType : null
-    bldgProtection.ProtectionDeviceSprinklerDesc = policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType != null ?
-                                                    policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType.Description : ""
-    bldgProtection.ProtectionDeviceSprinklerInd = policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType != typekey.SprinklerSystemType_HOE.TC_NONE ?
-                                                    policyPeriod.HomeownersLine_HOE.Dwelling.SprinklerSystemType : false
+    bldgProtection.ProtectionDeviceBurglarInd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarm != null ?
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarm : false
+    bldgProtection.ProtectionDeviceBurglarCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarmType != null ?
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarmType : null
+    bldgProtection.ProtectionDeviceBurglarDesc = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarmType != null ?
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarmType.Description : ""
+    bldgProtection.ProtectionDeviceSprinklerCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType != null ?
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType : null
+    bldgProtection.ProtectionDeviceSprinklerDesc = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType != null ?
+                                                    policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType.Description : ""
+    bldgProtection.ProtectionDeviceSprinklerInd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType != typekey.SprinklerSystemType_HOE.TC_NONE ?
+                                                    policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType : false
     return bldgProtection
   }
 }

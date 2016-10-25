@@ -1,13 +1,14 @@
-package una.enhancements.productmodel
+package una.productmodel.runtimedefaults
 
+uses java.util.List
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.domain.covterm.CovTerm
-uses gw.api.domain.covterm.DirectCovTerm
-uses gw.api.domain.covterm.OptionCovTerm
 uses java.lang.Double
+uses gw.api.domain.covterm.OptionCovTerm
+uses gw.api.domain.covterm.DirectCovTerm
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses una.utils.MathUtil
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.

@@ -123,17 +123,21 @@
               sortOrder="3"/>
             <Row>
               <Cell
-                action="EditPolicyContactRolePopup.push(addlInterestDetail.PolicyAddlInterest, openForEdit != null and openForEdit)"
+                action="EditPolicyContactRolePopup.push(addlInterestDetail.PolicyAddlInterest, openForEdit != null and openForEdit, addlInterestDetail)"
                 id="Name"
                 label="displaykey.Web.Policy.AdditionalInterest.Name"
                 required="false"
                 value="addlInterestDetail.PolicyAddlInterest"/>
-              <Cell
-                editable="true"
+              <RangeCell
                 id="Type"
                 label="displaykey.Web.Policy.AdditionalInterest.Type"
                 required="true"
-                value="addlInterestDetail.AdditionalInterestType"/>
+                value="addlInterestDetail.AdditionalInterestType"
+                valueRange="getAdditionalInterestTypes(addlInterestDetail)"/>
+              <Cell
+                id="TypeOther"
+                label="displaykey.Web.Policy.AdditionalInterest.InterestTypeIfOther_Ext"
+                value="addlInterestDetail.InterestTypeIfOther_Ext"/>
               <Cell
                 editable="true"
                 id="EffectiveDate"
@@ -146,20 +150,34 @@
                 label="displaykey.Web.Policy.AdditionalInterest.HOAddlInterestDesc"
                 required="true"
                 value="(addlInterestDetail as HODwellingAddlInt_HOE).AddlInterestDesc"/>
-              <Cell
+              <!-- <Cell
                 editable="true"
                 id="CertRequired"
                 label="displaykey.Web.Policy.AdditionalInterest.CertificateRequired"
-                value="addlInterestDetail.CertRequired"/>
+                value="addlInterestDetail.CertRequired"/> -->
               <Cell
-                editable="true"
                 id="ContractNumber"
                 label="displaykey.Web.Policy.AdditionalInterest.ContractNumber"
                 value="addlInterestDetail.ContractNumber"/>
+              <Cell
+                id="vestingInfoRequired_ext"
+                label="displaykey.Web.Policy.AdditionalInterest.VestingInfoRequired_Ext"
+                value="addlInterestDetail.VestingInfoRequired_Ext"/>
+              <Cell
+                id="vestingInfo_Ext"
+                label="displaykey.Web.Policy.AdditionalInterest.VestingInfo_Ext"
+                value="addlInterestDetail.VestingInfo_Ext"/>
             </Row>
           </RowIterator>
         </ListViewPanel>
       </ListViewInput>
     </InputColumn>
+    <Code><![CDATA[function getAdditionalInterestTypes(addInterest : AddlInterestDetail) : List {
+  var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(ContactType.get((addInterest.PolicyAddlInterest.ContactDenorm.Subtype) as String))
+  if(interestContainer.PolicyPeriod.BaseState != TC_SC) {
+    addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")   
+  }
+  return addnlInterestTypes
+}]]></Code>
   </DetailViewPanel>
 </PCF>

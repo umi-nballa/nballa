@@ -107,4 +107,16 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   }
 
+  property get isPolicyHOTypes() : boolean {
+    return typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
+  }
+
+  property get isPolicyDPTypes() : boolean {
+    return typekey.HOPolicyType_HOE.TC_DP3_EXT == this.HOPolicyType ? true : false
+  }
+
+  property get isPolicyTDPTypes() : boolean {
+    return typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
+  }
+
 }

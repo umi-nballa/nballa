@@ -7,8 +7,8 @@ uses gw.api.domain.covterm.BooleanCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController
-uses una.enhancements.productmodel.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
+uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 
 /**
  * Created with IntelliJ IDEA.
@@ -72,22 +72,6 @@ class CovTermInputSetPCFController {
       if(result == null){
         result = validateFloodCoverageLimits(covTerm, coverable)
       }
-    }
-
-    return result
-  }
-
-  static function isCovTermEditable(term : gw.api.domain.covterm.DirectCovTerm, coverable : Coverable) : boolean {
-    var result = true
-    var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, term.PatternCode)
-
-    if(configResult != null){
-      result = configResult
-    }else if(coverable typeis Dwelling_HOE){
-      var min = term.getMinAllowedLimitValue(coverable)
-      var max = term.getMaxAllowedLimitValue(coverable)
-
-      result = (min == null and max == null) or min != max
     }
 
     return result

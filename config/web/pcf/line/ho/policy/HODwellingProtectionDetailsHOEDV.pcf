@@ -11,6 +11,10 @@
     <Require
       name="openForEdit"
       type="Boolean"/>
+    <Variable
+      initialValue="dwelling.PolicyPeriod.BaseState"
+      name="baseState"
+      type="Jurisdiction"/>
     <InputColumn
       labelWidth="300">
       <Label
@@ -23,86 +27,153 @@
         value="dwelling.DwellingLocation">
         <PostOnChange/>
       </TypeKeyInput>
-      <Input
+      <!-- <Input
         editable="true"
         id="DwellingLocationDesc"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
-        value="dwelling.DwellingLocationDescription"
-        visible="dwelling.DwellingLocation == DwellingLocationType_HOE.TC_OTHER"/>
-      <BooleanRadioInput
-        editable="true"
-        id="FireExtinguisher"
-        label="displaykey.Web.Homeowners.DwellingProtection.FireExtinguisher"
-        required="false"
-        value="dwelling.FireExtinguishers"/>
-      <BooleanRadioInput
-        editable="true"
-        id="BurglarAlarm"
-        label="displaykey.Web.Homeowners.DwellingProtection.BurglarAlarm"
-        required="false"
-        value="dwelling.BurglarAlarm">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <TypeKeyInput
+        value="dwelling.DwellingProtectionDetails.DwellingLocationDescription"
+        visible="dwelling.DwellingLocation == DwellingLocationType_HOE.TC_OTHER"/> -->
+      <!-- <TypeKeyInput
         editable="true"
         id="BurglarAlarmType"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingProtection.BurglarAlarmType, ScriptParameters.HOChildQuestionIndent)"
         required="true"
-        value="dwelling.BurglarAlarmType"
-        visible="dwelling.BurglarAlarm"/>
-      <BooleanRadioInput
+        value="dwelling.DwellingProtectionDetails.BurglarAlarmType"
+        visible="dwelling.DwellingProtectionDetails.BurglarAlarm"/> -->
+      <CheckBoxInput
         editable="true"
-        id="FireAlarmReportingStn"
-        label="displaykey.Web.Homeowners.DwellingProtection.FireAlarReportingStn"
-        required="false"
-        value="dwelling.FireAlarm"/>
-      <BooleanRadioInput
-        editable="true"
-        id="SmokeAlarm"
+        id="smokeAlarm_Ext"
         label="displaykey.Web.Homeowners.DwellingProtection.SmokeAlarm"
         required="false"
-        value="dwelling.SmokeAlarm">
+        value="dwelling.DwellingProtectionDetails.SmokeAlarm"
+        visible="baseState == TC_SC or (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_NV or baseState == TC_NC)) ">
         <PostOnChange/>
-      </BooleanRadioInput>
-      <BooleanRadioInput
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="fireAlarm"
+        label="displaykey.Web.Homeowners.DwellingProtection.FireAlarm_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.FireAlarm"
+        visible="baseState == TC_SC or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_FL or baseState == TC_HI or baseState == TC_NV or baseState == TC_NC))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_FL or baseState == TC_HI)) "/>
+      <CheckBoxInput
+        editable="true"
+        id="completeLocalBurglarAlarm_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.BurglarAlarm_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.BurglarAlarm"
+        visible="baseState == TC_SC or (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_FL or baseState == TC_HI or baseState == TC_NV or baseState == TC_NC or baseState == TC_TX)) ">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="fireExtinguisher_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.FireExtinguisher_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.FireExtinguishers"
+        visible="baseState == TC_SC or (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_NV))"/>
+      <CheckBoxInput
+        editable="true"
+        id="deadbolts_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.Deadbolt_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.Deadbolts"
+        visible="baseState == TC_SC or (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_NV))">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="fireAlarmReportingCtrl_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.FireAlarmReportingCentralStation_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.FireAlarmReportCntlStn"
+        visible="baseState == TC_SC or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_FL or baseState == TC_HI or baseState == TC_NV or baseState == TC_NC or baseState == TC_TX))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_CA or baseState == TC_FL or baseState == TC_HI))"/>
+      <CheckBoxInput
+        editable="true"
+        id="burglarAlarmReportingCtrl_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.BurglarAlarmReportingCentralStation_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.BurglarAlarmReportCntlStn"
+        visible="baseState == TC_SC or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_FL or baseState == TC_HI or baseState == TC_NV or baseState == TC_NC or baseState == TC_TX))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_FL))"/>
+      <CheckBoxInput
+        editable="true"
+        id="burglarAlarmReportingPoliceStn_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.BurglarAlarmReportingPoliceStation_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.BurglarAlarmReportPoliceStn"
+        visible="HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_FL or baseState == TC_TX)"/>
+      <CheckBoxInput
+        editable="true"
+        id="fireAlarmReportingFireStn_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.FireAlarmReportingFireStation_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.FireAlarmReportFireStn"
+        visible="(HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_FL or baseState == TC_NC)) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; baseState == TC_CA)"/>
+      <CheckBoxInput
+        editable="true"
+        id="fireAlarmReportingPoliceStn_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.FireAlarmReportingPoliceStation_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.FireAlarmReportPoliceStn"
+        visible="HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; baseState == TC_NC"/>
+      <CheckBoxInput
+        editable="true"
+        id="sprinklerSystemAllAreas_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.SprinklerSystemAllAreas_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.SprinklerSystemAllAreas"
+        visible="baseState == TC_SC or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_FL or baseState == TC_NV or baseState == TC_NC or baseState == TC_TX))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_CA or baseState == TC_FL or baseState == TC_HI or baseState == TC_TX))"/>
+      <CheckBoxInput
+        editable="true"
+        id="autoSprinklerSystem_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.AutoSprinklerSystemDesignatedAreas_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.AutomaticSprinkler"
+        visible="(HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_FL or baseState == TC_HI or baseState == TC_NC)) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_CA or baseState == TC_FL))"/>
+      <CheckBoxInput
+        editable="true"
+        id="gatedCommunity_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.GatedCommunity_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.GatedCommunity"
+        visible="baseState == TC_SC or (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_HI or baseState == TC_NV))"/>
+      <Input
+        editable="true"
+        id="dateAlarmMonitored_Ext"
+        label="displaykey.Web.Homeowners.DwellingProtection.DateRecentAlarmMonitored_Ext"
+        required="false"
+        value="dwelling.DwellingProtectionDetails.DateRecentAlarmMonitored"/>
+      <!-- <BooleanRadioInput
         editable="true"
         id="SmokeAlarmOnAllFloors"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingProtection.SmokeAlarmOnAllFloors, ScriptParameters.HOChildQuestionIndent)"
         required="true"
-        value="dwelling.SmokeAlarmOnAllFloors"
-        visible="dwelling.SmokeAlarm"/>
+        value="dwelling.DwellingProtectionDetails.SmokeAlarmOnAllFloors"
+        visible="dwelling.DwellingProtectionDetails.SmokeAlarm"/> -->
     </InputColumn>
-    <InputColumn
+    <!-- <InputColumn
       labelWidth="225">
       <TypeKeyInput
         editable="true"
         id="SprinklerSystemType"
         label="displaykey.Web.Homeowners.DwellingProtection.SprinklerSystemType"
         required="false"
-        value="dwelling.SprinklerSystemType"/>
-      <BooleanRadioInput
-        editable="true"
-        id="Deadbolt"
-        label="displaykey.Web.Homeowners.DwellingProtection.Deadbolt"
-        required="false"
-        value="dwelling.Deadbolts">
-        <PostOnChange/>
-      </BooleanRadioInput>
+        value="dwelling.DwellingProtectionDetails.SprinklerSystemType"/>
       <Input
         editable="true"
         id="NumberOfDeadbolt"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingProtection.NumberOfDeadbolts, ScriptParameters.HOChildQuestionIndent)"
         numCols="5"
         required="true"
-        value="dwelling.DeadboltsNumber"
-        visible="dwelling.Deadbolts"/>
+        value="dwelling.DwellingProtectionDetails.DeadboltsNumber"
+        visible="dwelling.DwellingProtectionDetails.Deadbolts"/>
       <BooleanRadioInput
         editable="true"
         id="ResidenceVisible"
         label="displaykey.Web.Homeowners.DwellingProtection.ResidenceVisible"
         required="false"
-        value="dwelling.VisibleToNeighbors"/>
-    </InputColumn>
+        value="dwelling.DwellingProtectionDetails.VisibleToNeighbors"/>
+    </InputColumn> -->
   </DetailViewPanel>
 </PCF>

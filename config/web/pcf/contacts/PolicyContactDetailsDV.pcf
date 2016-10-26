@@ -61,13 +61,17 @@
         def="LicenseInputSet(policyContactRole, primaryAddress)"
         mode="policyContactRole.Subtype.Code"
         visible="contact typeis Person"/>
-      <InputDivider/>
+      <InputDivider
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/>
       <Label
-        label="displaykey.Web.AccountFile.Summary.OfficialIDs"/>
+        label="displaykey.Web.AccountFile.Summary.OfficialIDs"
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/>
       <InputSetRef
         def="OfficialIDInputSet(contact)"
-        mode="contact.Subtype"/>
-      <InputDivider/>
+        mode="contact.Subtype"
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/>
+      <InputDivider
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/>
     </InputColumn>
   </DetailViewPanel>
 </PCF>

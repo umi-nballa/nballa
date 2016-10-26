@@ -151,65 +151,6 @@
     name="DwellingLocation"
     nullok="true"
     typelist="DwellingLocationType_HOE"/>
-  <column
-    desc="Description of Dwelling Location for type Other"
-    name="DwellingLocationDescription"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
-  <column
-    desc="One or more fire extinguishers on premises"
-    name="FireExtinguishers"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Burglar Alarm on premises"
-    name="BurglarAlarm"
-    nullok="true"
-    type="bit"/>
-  <typekey
-    desc="Burglar Alarm Type"
-    name="BurglarAlarmType"
-    nullok="true"
-    typelist="BurglarAlarmType_HOE"/>
-  <column
-    desc="Fire Alarm reporting to a Monitoring Center"
-    name="FireAlarm"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Smoke Alarms on Premises"
-    name="SmokeAlarm"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Smoke Alarms on All Floors"
-    name="SmokeAlarmOnAllFloors"
-    nullok="true"
-    type="bit"/>
-  <typekey
-    desc="Sprinkler System Type"
-    name="SprinklerSystemType"
-    nullok="true"
-    typelist="SprinklerSystemType_HOE"/>
-  <column
-    desc="Do all the doors have Deadbolts"
-    name="Deadbolts"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Number of dead bolts"
-    name="DeadboltsNumber"
-    nullok="true"
-    type="positiveinteger"/>
-  <column
-    desc="Is the dwelling visible to neighbors"
-    name="VisibleToNeighbors"
-    nullok="true"
-    type="bit"/>
   <!-- Construction details -->
   <column
     desc="Year built"
@@ -606,4 +547,94 @@
     name="NumberofRoofLayers_Ext"
     nullok="true"
     type="nonnegativeinteger"/>
+  <column
+    name="DwellingRentedEverToOthers_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ShortestRentalPeriod_Ext"
+    nullok="true"
+    typelist="ShortestRentalPeriod_Ext"/>
+  <column
+    name="HomeNewPurchase_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Number of months of Consecutive Unoccupancy"
+    name="NumOfMonthsConsUnOccupancy_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
+    <columnParam
+      name="validator"
+      value="NumOfMonthsConsUnOccupancy_Ext"/>
+  </column>
+  <column
+    desc="Exact Date of Purchase of Home"
+    name="HomePurchaseDate_Ext"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Month and Year of Purchase if home is not new"
+    name="HomePurchaseMMYYYY_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="7"/>
+    <columnParam
+      name="validator"
+      value="MMYYYY_Ext"/>
+  </column>
+  <column
+    desc="Number Of Months Rental property UnOccupied"
+    name="NumOfMonthsRntlUnOccupancy_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
+    <columnParam
+      name="validator"
+      value="NumOfMonthsConsUnOccupancy_Ext"/>
+  </column>
+  <column
+    desc="New Home Purchase Move in Date"
+    name="NewPurchaseMoveInDate_Ext"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    desc="Month and Year of Rental Move In"
+    name="RentalMoveInMMYYYY_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="7"/>
+    <columnParam
+      name="validator"
+      value="MMYYYY_Ext"/>
+  </column>
+  <column
+    desc="First Time Deeded Home?"
+    name="FirstTimeDeededHome_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Builder Warranty"
+    name="BuilderWarranty_Ext"
+    nullok="true"
+    type="bit"/>
+  <foreignkey
+    desc="CA Fireline Info"
+    fkentity="CAFireLineInfo_Ext"
+    name="CAFirelineInfo"
+    nullok="true"/>
+  <foreignkey
+    fkentity="HODwellingProtDetails_Ext"
+    name="DwellingProtectionDetails"
+    nullok="true"/>
 </entity>

@@ -138,6 +138,12 @@ enhancement PolicyPeriodBillingEnhancement : entity.PolicyPeriod {
       case TC_TWICEPERMONTH: return TC_TWICEPERMONTH
       case TC_EVERYWEEK: return TC_EVERYWEEK
       case TC_EVERYOTHERWEEK: return TC_EVERYOTHERWEEK
+      // CR:US10003: 23 BC CR23_S5 - New 6 Payment Plan with Custom dates
+      // BC.08.06.13 Set Due Date_Automatically (refactored)
+      case TC_EVERY30DAYS : return TC_EVERY30DAYS
+      case TC_EVERY60DAYS: return TC_EVERY60DAYS
+      case TC_EVERY90DAYS: return TC_EVERY90DAYS
+      case TC_EVERY45DAYSWITHFIRST35DAYS: return TC_EVERY45DAYSWITHFIRST35DAYS
       default: return TC_MONTHLY
     }
   }

@@ -14,8 +14,8 @@ class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDis
   var _burglarAlarmType: String as BurglarAlarmType
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
-    if (line.Dwelling?.BurglarAlarm){
-      _burglarAlarmType = line.Dwelling?.BurglarAlarmType.DisplayName
+    if (line.Dwelling?.DwellingProtectionDetails?.BurglarAlarm){
+      _burglarAlarmType = line.Dwelling?.DwellingProtectionDetails?.BurglarAlarmType.DisplayName
     }
   }
 }

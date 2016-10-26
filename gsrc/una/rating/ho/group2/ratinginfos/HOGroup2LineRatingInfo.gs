@@ -9,7 +9,7 @@ uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo
  * Rating info for all HO line coverages for group 2 states
  */
 class HOGroup2LineRatingInfo extends HOGroup1LineRatingInfo {
-  construct(line: HomeownersLineCov_HOE) {
+  construct(line: HomeownersLine_HOE) {
     super(line)
   }
 }

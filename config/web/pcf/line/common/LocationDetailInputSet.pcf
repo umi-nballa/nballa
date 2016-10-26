@@ -13,12 +13,15 @@
     <Require
       name="openForEdit"
       type="boolean"/>
+    <Require
+      name="line"
+      type="String"/>
     <BooleanRadioInput
       editable="polLocation.AccountLocation.New"
       id="NonSpecificLocation"
       label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
       value="polLocation.AccountLocation.NonSpecific"
-      visible="not polLocation.AccountLocation.New or supportsNonSpecificLocation">
+      visible="false//not polLocation.AccountLocation.New or supportsNonSpecificLocation">
       <PostOnChange/>
     </BooleanRadioInput>
     <Input
@@ -26,7 +29,7 @@
       id="LocationCode"
       label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
       value="polLocation.AccountLocation.LocationCode"
-      visible="polLocation.Branch.Policy.Product.Commercial"/>
+      visible="false//polLocation.Branch.Policy.Product.Commercial"/>
     <Input
       editable="true"
       id="LocationName"
@@ -76,7 +79,7 @@
     <InputSet
       editable="true"
       id="TerritoryCodeInputSet"
-      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes">
+      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null //&amp;&amp; !line.equals(&quot;cpline&quot;)">
       <ContentInput>
         <Link
           action="polLocation.TerritoryCodes.each(\ c -&gt; c.fillWithFirst())"
@@ -87,7 +90,7 @@
       </ContentInput>
       <InputIterator
         elementName="territoryCode"
-        value="polLocation.TerritoryCodes">
+        value="polLocation.TerritoryCodes.where( \ elt -&gt; elt.PolicyLinePattern.CodeIdentifier!=&quot;GLLine&quot;)">
         <IteratorSort
           sortBy="territoryCode.PolicyLinePattern.Priority"
           sortOrder="1"/>
@@ -97,14 +100,25 @@
           id="TerritoryCode"
           label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(territoryCode.PolicyLinePattern.DisplayName)"
           pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, territoryCode)"
-          required="true"
+          required="una.config.Locationutil.isTerritoryCodeRequired(territoryCode, line)//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"
           validationExpression="territoryCode.prelimValidate()"
-          value="territoryCode.Code"/>
+          value="territoryCode.Code"
+          visible="line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>
         <ContentInput
           hideIfReadOnly="true"
           id="AutofillButton"/>
       </InputIterator>
     </InputSet>
+    <TextInput
+      editable="true"
+      id="locationlatitude"
+      label="&quot;Latitude&quot;"
+      value="polLocation.AddressLine3"/>
+    <TextInput
+      editable="true"
+      id="locationlongitude"
+      label="&quot;Longitude&quot;"
+      value="polLocation.AddressLine3"/>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 
 function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLocation {

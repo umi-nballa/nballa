@@ -12,6 +12,7 @@ uses gw.xml.XmlElement
 uses javax.xml.namespace.QName
 uses gw.xml.XmlNamespace
 uses gw.xml.XmlSimpleValue
+uses javax.xml.bind.annotation.XmlAttribute
 
 /**
  * Created with IntelliJ IDEA.
@@ -67,6 +68,7 @@ class HPXRequestMapper {
     //var hpxRequest = new XmlElement("PublishDocumentRequest", hpxRequestType)
 
     var ns = new XmlNamespace("http://wservices.universalpr.com/standards/pcnew/", "")
+    var noNameSpace = new XmlAttribute()
     var hpxRequest = new XmlElement(ns.qualify("PublishDocumentRequest"), hpxRequestType)
    // var hpxRequest = new XmlElement("PublishDocumentRequest", hpxRequestType)
 
@@ -81,7 +83,7 @@ class HPXRequestMapper {
       hpxRequest.removeChildren(att)
     }  */
 
-    return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
+    return hpxRequest.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"", "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
   }
 
   function createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerPolicyType,
@@ -98,7 +100,7 @@ class HPXRequestMapper {
     hpxRequestType.addChild(new XmlElement("CompositionUnit", compositionUnit))
     hpxRequestType.Transaction = "Policy Business Owners"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
-    return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
+    return hpxRequest.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"", "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
   }
 
   function createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType,
@@ -114,7 +116,7 @@ class HPXRequestMapper {
     hpxRequestType.addChild(new XmlElement("CompositionUnit", compositionUnit))
     hpxRequestType.Transaction = "Policy Commercial Package"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
-    return hpxRequest.asUTFString().replace("ns0:", "" ).replace(":ns0", "")
+    return hpxRequest.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"", "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
   }
 
   function createPublishingConsumerAppKey() : wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingConsumerAppKeyType {

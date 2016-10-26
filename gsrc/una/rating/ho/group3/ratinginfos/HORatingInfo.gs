@@ -14,6 +14,8 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _aopKeyFactor: BigDecimal as AOPKeyFactor = 0.0
   var _windKeyFactor: BigDecimal as WindKeyFactor = 0.0
   var _protectionConstructionFactor: BigDecimal as ProtectionConstructionFactor = 0.0
+
   //discounts and surcharges
   var _superiorConstructionDiscountForAOP: BigDecimal as SuperiorConstructionDiscountForAOP = 0.0
+  var _seasonalSecondaryResidenceSurchargeForAOP: BigDecimal as SeasonalSecondaryResidenceSurchargeForAOP = 0.0
 }

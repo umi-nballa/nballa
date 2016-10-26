@@ -165,8 +165,16 @@ class CPAutoPopulateUtil {
   {
       _logger.info("Equipment brkdown " + cLine.EquipmentBreakdownEnhancement)
 
-      if(cLine.EquipmentBreakdownEnhancement)
+      if(cLine.EquipmentBreakdownEnhancement!=null && cLine.EquipmentBreakdownEnhancement.trim()!="")
+        {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
+        cBuilding.CPEquipmentBreakdownEnhance_EXT.CovTerms.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
+          }
+
+    print("### terrorism cov "+ cLine.TerrorismCoverage + ":" +cLine.TerrorismCoverage==true)
+    if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)
+      cLine.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
+
 
     //setIncreasedCostLimit(cLine,cBuilding)
 

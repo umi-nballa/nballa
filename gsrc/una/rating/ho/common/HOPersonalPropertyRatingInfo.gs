@@ -11,7 +11,8 @@ uses java.math.BigDecimal
 class HOPersonalPropertyRatingInfo {
   var _isPersonalPropertyIncreasedLimit: boolean as IsPersonalPropertyIncreasedLimit
   var _personalPropertyIncreasedLimit: BigDecimal as PersonalPropertyIncreasedLimit
-  construct(limitDifference: BigDecimal) {
+  construct(dwellingCov: HODW_Personal_Property_HOE) {
+    var limitDifference = dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
     if (limitDifference > 0){
       _isPersonalPropertyIncreasedLimit = true
     }

@@ -17,7 +17,7 @@ uses gw.xml.date.XmlDate
  */
 abstract class HPXCoverageMapper {
 
-  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)
+  function createCoverageInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
                 : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentCoverage.PatternCode
@@ -25,7 +25,7 @@ abstract class HPXCoverageMapper {
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
-    var costInfo = createCoverageCostInfo(transactions, previousTransactions)
+    var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
@@ -147,9 +147,9 @@ abstract class HPXCoverageMapper {
     value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
     deductible.FormatCurrencyAmt.Amt = value
     deductible.FormatPct = pctValue
-    //deductible.CoverageCd = coverage.PatternCode
-    //deductible.CoverageSubCd = currentCovTerm.PatternCode
-    deductible.DeductibleDesc = currentCovTerm.PatternCode
+    deductible.CoverageCd = coverage.PatternCode
+    deductible.CoverageSubCd = currentCovTerm.PatternCode
+    deductible.DeductibleDesc = ""
     deductible.FormatText = ""
     return deductible
   }
@@ -160,9 +160,9 @@ abstract class HPXCoverageMapper {
     value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
     deductible.FormatCurrencyAmt.Amt = value
     deductible.FormatPct = pctValue
-    //deductible.CoverageCd = coverage.PatternCode
-    //deductible.CoverageSubCd = currentCovTerm.PatternCode
-    deductible.DeductibleDesc = currentCovTerm.PatternCode
+    deductible.CoverageCd = coverage.PatternCode
+    deductible.CoverageSubCd = currentCovTerm.PatternCode
+    deductible.DeductibleDesc = ""
     deductible.FormatText = ""
     return deductible
   }
@@ -206,24 +206,15 @@ abstract class HPXCoverageMapper {
     return limit
   }
 
-  function createCoverageCostInfo(transactions : java.util.List<Transaction>, previousTransactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (transactions != null) {
-      var cost = transactions.first().Cost
-      cov.BaseRateAmt.Amt = cost?.ActualBaseRate != null ? cost.ActualBaseRate : -99999999.99
-      cov.CurrentTermAmt.Amt = cost?.StandardBaseRate != null ? cost.StandardBaseRate : -99999999.99
-      cov.WrittenAmt.Amt = cost?.ActualTermAmount != null ? cost.ActualTermAmount : -99999999.99
-      cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : -99999999.99
-      var previousWrittenAmt = previousTransactions?.first()?.Cost?.ActualTermAmount.Amount
-      cov.NetChangeAmt.Amt = previousWrittenAmt != null ? cost.ActualTermAmount.Amount - previousWrittenAmt : cost.ActualTermAmount != null ? cost.ActualTermAmount.Amount : -99999999.99
-    }
-    else if (previousTransactions != null) {
-      var cost = previousTransactions.first().Cost
-      cov.BaseRateAmt.Amt = cost?.ActualBaseRate != null ? -cost.ActualBaseRate : -99999999.99
-      cov.CurrentTermAmt.Amt = cost?.StandardBaseRate != null ? -cost.StandardBaseRate : -99999999.99
-      cov.WrittenAmt.Amt = cost?.ActualTermAmount != null ? -cost.ActualTermAmount : -99999999.99
-      cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : -99999999.99
-      cov.NetChangeAmt.Amt = cost.ActualTermAmount.Amount != null ? -cost.ActualTermAmount.Amount : -99999999.99
+      var cost = transactions.first()
+      cov.BaseRateAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
+      cov.CurrentTermAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
+      cov.WrittenAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
+      cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
+      cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
     }
     return cov
   }

@@ -53,8 +53,9 @@
   </typecode>
   <typecode
     code="SpecialLimitsDirectMinimumDefault"
-    desc="The minimum and default amount allowed for a given special limit"
-    name="Special  Limits Direct Minimum and Default">
+    desc="Deprecated. Now using CovTermRuntimeDefault"
+    name="Special  Limits Direct Minimum and Default"
+    retired="true">
     <category
       code="double"
       typelist="ConfigParamDataType_Ext"/>
@@ -482,7 +483,7 @@
       code="range"
       typelist="ConfigParamDataType_Ext"/>
   </typecode>
-    <typecode
+  <typecode
     code="UneditableCoverageTerms"
     desc="Coverage terms that are uneditable"
     name="Uneditable Coverage Terms">
@@ -498,12 +499,28 @@
       code="int"
       typelist="ConfigParamDataType_Ext"/>
   </typecode>
-    <typecode
+  <typecode
     code="LimitedFungiWetOrDryRotOrBacteriaSectionIBaseLimit"
     desc="Limited Fungi Wet Or Dry Rot Or Bacteria SectionI Base Limit"
     name="Limited Fungi Wet Or Dry Rot Or Bacteria SectionI Base Limit">
     <category
       code="int"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="DefaultedExecutiveCoveragePatterns"
+    desc="Coverage patterns that have a default value upon selecting of Executive Coverage"
+    name="Defaulted Executive Coverage Patterns">
+    <category
+      code="list"
+      typelist="ConfigParamDataType_Ext"/>
+  </typecode>
+  <typecode
+    code="CovTermRuntimeDefault"
+    desc="The default value for a specific coverage term.  Used for straight state-specific defaulting."
+    name="CovTerm Runtime Default">
+    <category
+      code="double"
       typelist="ConfigParamDataType_Ext"/>
   </typecode>
 </typelist>

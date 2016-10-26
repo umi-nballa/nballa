@@ -3,8 +3,6 @@ package gw.web.productmodel
 uses gw.api.web.job.JobWizardHelper
 uses gw.api.util.LocationUtil
 uses java.lang.Throwable
-uses una.config.ConfigParamsUtil
-uses gw.api.domain.covterm.DirectCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,60 +21,6 @@ class LineWizardStepHelper_Ext {
       ProductModelSyncIssuesHandler.syncExclusions(_coverables, wizard)
     } catch(err : Throwable) {
       LocationUtil.addRequestScopedErrorMessage("Error entering the Coverages screen: ${err}")
-    }
-
-    setDefaults(_coverables)
-  }
-
-
-  public static function setSpecialLimitsPersonalPropertyDefaults(dwelling : Dwelling_HOE){
-    var baseState = dwelling.PolicyLine.BaseState
-    var derivedSpecialLimitsCovTermPatterns = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_DERIVEDSPECIALLIMITSCOVTERMPATTERNS, baseState)
-    var covTerms = dwelling.HODW_SpecialLimitsPP_HOE_Ext.CovTerms?.whereTypeIs(DirectCovTerm)?.where( \ covTerm -> derivedSpecialLimitsCovTermPatterns?.contains(covTerm.PatternCode))
-
-    covTerms?.each( \ covTerm -> {
-      covTerm.setDefaultLimit(dwelling)
-    })
-  }
-
-  private static function setDefaults(coverables : Coverable[]){
-    var dwelling = coverables?.toList().whereTypeIs(Dwelling_HOE).atMostOne()
-    var hoLine = coverables?.toList().whereTypeIs(HomeownersLine_HOE).atMostOne()
-
-    if(dwelling != null){
-      //setFireDwellingValuationMethodDefault(dwelling)
-      //setAnimalLiabilityLimitDefault(hoLine)
-      una.pageprocess.CovTermPOCHOEInputSet.onCovTermOptionChange(dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm, dwelling)
-      setSpecialLimitsPersonalPropertyDefaults(dwelling)
-      dwelling.HODW_LossAssessmentCov_HOE_Ext?.setDefaults()
-    }
-
-    if(hoLine != null){
-      setAnimalLiabilityLimitDefault(hoLine)
-      }
-  }
-
-  /*private static function setFireDwellingValuationMethodDefault(dwelling : Dwelling_HOE){
-    var actualValueDefaultPolicyTypes : List<HOPolicyType_HOE> = {TC_TDP1_Ext, TC_TDP2_Ext}
-    var shouldDefaultValuationMethod = dwelling.DPDW_Dwelling_Cov_HOEExists
-        and dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOETerm.Value == null
-
-    if(shouldDefaultValuationMethod){
-      if(actualValueDefaultPolicyTypes.contains(dwelling.HOPolicyType)){
-        dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOETerm.Value = TC_HOACTUAL_HOE
-      }else{
-        dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOETerm.Value = TC_HOREPLACEMENT_HOE
-      }
-    }
-  }*/
-
-  private static function setAnimalLiabilityLimitDefault(holine : HomeownersLine_HOE){
-    var limitCoverageTerm = holine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm
-    var shouldDefaultLimit = holine.HOLI_AnimalLiabilityCov_HOE_ExtExists
-        and limitCoverageTerm.Value == null
-
-    if(shouldDefaultLimit){
-      limitCoverageTerm.setOptionValue(limitCoverageTerm.AvailableOptions.orderBy( \ elt -> elt.Value).first())
     }
   }
 }

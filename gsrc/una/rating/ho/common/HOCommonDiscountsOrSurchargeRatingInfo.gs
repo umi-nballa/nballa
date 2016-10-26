@@ -10,9 +10,8 @@ uses java.util.Date
  * User: ssok
  * Date: 10/12/16
  * Time: 9:56 AM
- * To change this template use File | Settings | File Templates.
  */
-class HODiscountsOrSurchargeRatingInfo {
+class HOCommonDiscountsOrSurchargeRatingInfo {
   var _totalBasePremium: BigDecimal as TotalBasePremium
   var _coverageALimit: BigDecimal as CoverageALimit
   var _allPerilDeductible: BigDecimal as AllPerilDeductible

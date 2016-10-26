@@ -80,7 +80,7 @@ enhancement CoverableEnhancement : entity.Coverable {
     if(covTerm typeis OptionCovTerm){
       result = covTerm.Pattern.getDefaultValue(this.PolicyLine.Branch.Offering)
     }else if(covTerm typeis DirectCovTerm){
-      var calculatedDefault = covTerm.getDefaultLimit(this)
+      var calculatedDefault = covTerm.RuntimeDefault
 
       if(covTerm.Pattern.getDefaultValue(this.PolicyLine.Branch.Offering) != null){
         result = covTerm.Pattern.getDefaultValue(this.PolicyLine.Branch.Offering)

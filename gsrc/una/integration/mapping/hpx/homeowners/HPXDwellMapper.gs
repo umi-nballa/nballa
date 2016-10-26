@@ -71,7 +71,7 @@ class HPXDwellMapper implements HPXStructureMapper {
     dwellOccupancy.ResidenceTypeCd = policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType != null ?
                                                  typecodeMapper.getAliasByInternalCode("ResidenceType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Code) : ""
     dwellOccupancy.ResidenceTypeDesc = policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ResidenceType.Description : ""
-    dwellOccupancy.DwellUseCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage != null ? policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage : ""
+    dwellOccupancy.DwellUseCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage != null ? policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage : null
     dwellOccupancy.DwellUseDesc = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage != null ? policyPeriod.HomeownersLine_HOE.Dwelling.DwellingUsage.Description : ""
     dwellOccupancy.OccupancyTypeCd = policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy != null ?
                                                 typecodeMapper.getAliasByInternalCode("DwellingOccupancyType_HOE", "hpx", policyPeriod.HomeownersLine_HOE.Dwelling.Occupancy) : ""

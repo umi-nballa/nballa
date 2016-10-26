@@ -11,6 +11,13 @@ enhancement PolicyChangeInfoEnhancement : PolicyChangeInfo
     var contactInfo = new PCContactInfo()
     contactInfo.sync( period.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact )
     this.PrimaryNamedInsuredContact.$TypeInstance = contactInfo  
+    // PC-BC Integration: Mapping Alternate BillingContact and Mortgagee Loan Number
+    if (period.BillingContact != null) {
+      var altBillingContact = new PCContactInfo()
+      altBillingContact.sync( period.BillingContact.AccountContactRole.AccountContact.Contact )
+      this.AltBillingContact.$TypeInstance = altBillingContact
+      this.MortgageeLoanNumber = PolicyInfoUtil.getMortgageeLoanNumber(period)
+    }
   }
 
   function syncPolicyChangeForPreview(period : PolicyPeriod){

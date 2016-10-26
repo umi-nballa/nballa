@@ -11,19 +11,16 @@
   priority="17900"
   public-id="HODW_SpecialLimitsPP_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setSpecialLimitOptionCovTermDefault_Ext(HODW_SpecialLimitsPP_HOE_Ext.Dwelling)]]></InitializeScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_SpecialLimitsPP_HOE_Ext.PatternCode, HODW_SpecialLimitsPP_HOE_Ext.Dwelling)]]></InitializeScript>
   <CovTerms>
     <OptionCovTermPattern
-      aggregationModel="po"
       choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_ElectronicApparatusLimit_HOE"
       coverageColumn="ChoiceTerm6"
       lookupTableName="DwellingCovTerm"
-      modelType="Limit"
       priority="802"
       public-id="HODW_ElectronicApparatusLimit_HOE"
       required="true"
-      restrictionModel="prp"
       valueType="money">
       <DefaultsSet>
         <CovTermDefault
@@ -135,7 +132,7 @@
         <CovTermDefault
           codeIdentifier="ztii6n7t7a14v93fmj2sjjnd129"
           currency="usd"
-          defaultValue="1000"
+          defaultValue="1500"
           public-id="ztii6n7t7a14v93fmj2sjjnd129"/>
       </DefaultsSet>
       <Options>
@@ -235,16 +232,13 @@
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern
-      aggregationModel="po"
       choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_MoneyLimit_HOE"
       coverageColumn="ChoiceTerm2"
       lookupTableName="DwellingCovTerm"
-      modelType="Limit"
       priority="200"
       public-id="HODW_MoneyLimit_HOE"
       required="true"
-      restrictionModel="prp"
       valueType="money">
       <DefaultsSet>
         <CovTermDefault

@@ -2,7 +2,7 @@ package una.rating.ho.group1.ratinginfos
 
 uses gw.api.util.DateUtil
 uses una.config.ConfigParamsUtil
-uses una.rating.ho.common.HODiscountsOrSurchargeRatingInfo
+uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.util.Date
 uses java.math.BigDecimal
 
@@ -12,7 +12,7 @@ uses java.math.BigDecimal
  * Date: 9/1/16
  * Rating info for discounts and surcharges of group1 states for HO policies
  */
-class HOGroup1DiscountsOrSurchargeRatingInfo extends HODiscountsOrSurchargeRatingInfo {
+class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo {
   var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
 
 

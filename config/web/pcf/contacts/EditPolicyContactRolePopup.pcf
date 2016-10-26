@@ -33,7 +33,8 @@
       <DetailViewPanel>
         <InputColumn>
           <InputSetRef
-            def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, ContactType.get((policyContactRole.ContactDenorm.Subtype) as String))"/>
+            def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, ContactType.get((policyContactRole.ContactDenorm.Subtype) as String))"
+            visible="policyContactRole.Subtype == TC_PolicyAddlInterest"/>
         </InputColumn>
       </DetailViewPanel>
       <PanelRef

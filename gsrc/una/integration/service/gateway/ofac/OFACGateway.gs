@@ -1,10 +1,13 @@
 package una.integration.service.gateway.ofac
 
 uses una.integration.framework.util.PropertiesHolder
+uses una.integration.service.transport.ofac.OFACCommunicator
+uses una.logging.UnaLoggerCategory
 uses una.model.OfacDTO
-uses wsi.remote.una.ofac.ofac.xgservices.ports.XGServices_BasicHttpBinding_ISearch
+uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfInputAddress_InputAddress
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfInputRecord_InputRecord
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.AssignmentInfo_RolesOrUsers
+uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.InputEntity_Addresses
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.InputEntity_Name
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.InputRecord_Entity
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.SearchConfiguration_AssignResultTo
@@ -15,24 +18,18 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.enums.InputEntityType
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.ClientContext
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchConfiguration
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchInput
-uses gw.pl.logging.LoggerCategory
-uses gw.pl.logging.LoggerFactory
-uses gw.xml.ws.WebServiceException
-uses gw.api.util.DisplayableException
-uses java.util.ArrayList
-uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.SearchConfiguration_Watchlist
-uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.WatchlistConfiguration_DataFiles
-uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfWatchlistDataFile_WatchlistDataFile
-uses java.util.Date
+
 uses java.lang.Integer
-uses una.integration.service.transport.ofac.OFACCommunicator
+uses java.util.ArrayList
+uses java.util.Date
+uses java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
  * User: JGupta
  * Date: 9/22/16
  * Time: 9:46 AM
- * To change this template use File | Settings | File Templates.
+ * This class provides Implementation to OFACInterface methods
  */
 class OFACGateway implements OFACInterface {
   private final static var DISPLAY_ERROR_MESSAGE: String = "Failed to retrieve OFAC, please contact help desk."
@@ -47,143 +44,218 @@ class OFACGateway implements OFACInterface {
   private static var clientContext = new ClientContext()
   private static  var searchConfiguration = new SearchConfiguration()
   private static var searchInput = new SearchInput()
-  var ofacCommunicator:OFACCommunicator
+  var ofacCommunicator: OFACCommunicator
   var timeout = "500"
-  static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "OFACGateway")
+  static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     setProperties()
-    ofacCommunicator=new OFACCommunicator()
+    ofacCommunicator = new OFACCommunicator()
   }
 
   /**
    *  Function to Validate List of Insured against OFAC and if listed ,persist in OfacContact Entity in GW
    */
   @Param("insuredList", "List of insured need to be checked Against OFAC")
-  @Param("policyPeriod","Policy Period")
-  @Throws(DisplayableException, "If the web service is not available")
+  @Param("policyPeriod", "Policy Period")
   override function validateOFACEntity(insuredList: List<Contact>, policyPeriod: PolicyPeriod) {
-    try
-    {
-     // var xsService = new XGServices_BasicHttpBinding_ISearch()
-      var entityScoreList=new List<Integer>()
-      clientContext = buildClientContext()
-      searchConfiguration = buildSearchConfiguration()
-      var ofacDTOList = buildOFACInput(insuredList, policyPeriod)
-      searchInput = buildSearchInput(ofacDTOList)
-      var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
-      result.print()
-       //print(result.Records.ResultRecord.get(0).Watchlist.Matches.WLMatch.get(0).EntityScore)
-      if(result!=null)
-        if(result.Records!=null)
-          if(result.Records.ResultRecord!=null)
-      if (result.Records.ResultRecord.size() > 0)  {
-        for(resultRecord in result.Records.ResultRecord)
-        {
-          entityScoreList.add(resultRecord.Watchlist.Matches.WLMatch.get(0).EntityScore)
-        }
-        persistOFACResult(insuredList,entityScoreList)
+    _logger.debug("Entering Inside method validateOFACEntity")
+    var contactScoreMap = new HashMap<Contact, Integer>()
+    var isFalsePositiveRule = false
+    clientContext = buildClientContext()
+    searchConfiguration = buildSearchConfiguration()
+    var ofacDTOList = buildOFACInput(insuredList, policyPeriod)
+    searchInput = buildSearchInput(ofacDTOList)
+    var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
+    _logger.info("result:" + result)
+    var personList = new ArrayList<entity.Person>()
+    var companyList = new ArrayList<Company>()
+    var insuredItr = insuredList.iterator()
+    while (insuredItr.hasNext()) {
+      var contact = insuredItr.next()
+      if (contact typeis Person) {
+        personList.add(contact)
       }
-
-     // throw new DisplayableException("OFAC HIT Underwriter Issue Created")
-      //  print(result.Records.ResultRecord.get(1).Watchlist.Matches.WLMatch.get(6).EntityScore)
-    } catch (wse: WebServiceException) {
-      throw new DisplayableException(WS_NOT_AVAILABLE, wse)
+      if (contact typeis Company){
+        companyList.add(contact)
+      }
     }
-  }
-
-  @Param("insuredList","Insured Listed in OFAC SDN")
-  private function persistOFACResult(insuredList: List<Contact>,entityScoreList:List<Integer>)
-  {
-    gw.transaction.Transaction.runWithNewBundle(\bundle -> {
-      for (insured in insuredList)
+    if (result != null && result.Records != null && result.Records.ResultRecord != null && result.Records.ResultRecord.size() > 0)  {
+      for (resultRecord in result.Records.ResultRecord)
       {
-        var ofacEntity = new OfacContact_Ext()
-        ofacEntity.OfacTriggeringDate=new Date()
-        ofacEntity.EntityScore= entityScoreList.get(0)
-        ofacEntity.Contact = insured
-        ofacEntity.OfacHit = true
+        var ofacContact: Contact
+        if (resultRecord.RecordDetails != null) {
+          if (resultRecord.RecordDetails.Name != null) {
+            if (personList.size() > 0) {
+              if (resultRecord.RecordDetails.Name.First != null && resultRecord.RecordDetails.Name.Last != null)
+              {
+                var person = personList.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase(resultRecord.RecordDetails.Name.First) && elt.LastName.equalsIgnoreCase(resultRecord.RecordDetails.Name.Last))
+                ofacContact = person
+              }
+            }
+            if (companyList.size() > 0)
+            {
+              var company = companyList.firstWhere(\elt -> elt.Name.equalsIgnoreCase(resultRecord.RecordDetails.Name.Full))
+              ofacContact = company
+            }
+            if (ofacContact != null)
+              contactScoreMap.put(ofacContact, resultRecord.Watchlist.Matches.WLMatch.get(0).EntityScore)
+          }
+          //Check for Accept List
+          if (resultRecord.RecordDetails.RecordState != null && resultRecord.RecordDetails.RecordState.Status != null) {
+            if (resultRecord.RecordDetails.RecordState.Status.equalsIgnoreCase("Automatic False Positive"))
+            {
+              isFalsePositiveRule = true
+            }
+            else
+            {
+              isFalsePositiveRule = false
+            }
+          }
+          else {
+            isFalsePositiveRule = false
+          }
+        }
       }
-    })
+    }
+    if (isFalsePositiveRule == false)  {
+      persistOFACResult(contactScoreMap,policyPeriod)
+    }
+    _logger.debug("Exting from the method validateOFACEntity")
   }
 
-  private function buildClientContext(): ClientContext
+  /**
+   * This Method persist OFAC Listed entities and Create Activity in GW
+   */
+  @Param("contactScoreMap", "Contact-Entity Score Map ,Listed in OFAC SDN")
+  @Param("policyPeriod","Policy Period")
+  private static function persistOFACResult(contactScoreMap: HashMap<Contact, Integer>,policyPeriod:PolicyPeriod)
   {
-    clientContext.ClientID = CLIENT_ID;
-    clientContext.UserID = USER_ID;
-    clientContext.Password = PASSWORD;
-    //clientContext.ClientReference = "GUID here Please";
+    _logger.debug("Entering Inside method persistOFACResult")
+    var contactScoreEntry = contactScoreMap.entrySet().iterator()
+    while (contactScoreEntry.hasNext()) {
+      var contact = contactScoreEntry.next()
+      if (contact.Value > PropertiesHolder.getProperty("ENTITY_SCORE").toInt()){
+        gw.transaction.Transaction.runWithNewBundle(\bundle -> {
+          //Create Activity             //TBD For Activity Creation
+         /* var activityPattern = ActivityPattern.finder.getActivityPatternByCode("OFAC")
+          var pol = bundle.add(policyPeriod.Policy)
+          activityPattern.createPolicyActivity(bundle, pol, activityPattern.Subject, activityPattern.Description,null, activityPattern.Priority, null, null, null)*/
+          //Persist ofac entity in GW
+          var ofacEntity = new OfacContact_Ext()
+          ofacEntity.OfacTriggeringDate = new Date()
+          ofacEntity.EntityScore = contact.Value
+          ofacEntity.Contact = contact.Key
+          ofacEntity.OfacHit = true
+        })
+      }
+    }
+    _logger.debug("Exting from the method persistOFACResult")
+  }
+
+  /**
+   *  This Method creates and returns ClientContext
+   */
+  @Returns("ClientContext")
+  private static function buildClientContext(): ClientContext
+  {
+    _logger.debug("Entering Inside method buildClientContext")
+    clientContext.ClientID = CLIENT_ID
+    clientContext.UserID = USER_ID
+    clientContext.Password = PASSWORD
     clientContext.GLB = GLB
     clientContext.DPPA = DPPA
-    clientContext.print()
+    _logger.debug("Exting from the method buildClientContext")
     return clientContext
   }
 
-  private function buildSearchConfiguration(): SearchConfiguration
+  /**
+   *  This Method sets required configurational inputs and returns SearchConfiguration Instance
+   */
+  @Returns("SearchConfiguration")
+  private static function buildSearchConfiguration(): SearchConfiguration
   {
-    searchConfiguration.PredefinedSearchName = PREDEFINED_SEARCH_NAME;
-    //print(searchConfiguration)
-    searchConfiguration.AssignResultTo = new SearchConfiguration_AssignResultTo();
-   // print(searchConfiguration)
-    searchConfiguration.AssignResultTo.RolesOrUsers = new AssignmentInfo_RolesOrUsers();
-    searchConfiguration.AssignResultTo.Type = AssignmentType.Role;
+    _logger.debug("Entering Inside method buildSearchConfiguration")
+    searchConfiguration.PredefinedSearchName = PREDEFINED_SEARCH_NAME
+    searchConfiguration.AssignResultTo = new SearchConfiguration_AssignResultTo()
+    searchConfiguration.AssignResultTo.RolesOrUsers = new AssignmentInfo_RolesOrUsers()
+    searchConfiguration.AssignResultTo.Type = AssignmentType.Role
     var list = new List<String>()
     list.add(ROLES_OR_USER)
     searchConfiguration.AssignResultTo.RolesOrUsers.String = list
-    searchConfiguration.WriteResultsToDatabase = true;
-    searchConfiguration.Watchlist = new SearchConfiguration_Watchlist();
-    searchConfiguration.Watchlist.DataFiles = new WatchlistConfiguration_DataFiles()
-    searchConfiguration.Watchlist.DataFiles.WatchlistDataFile[0] = new ArrayOfWatchlistDataFile_WatchlistDataFile()
-    searchConfiguration.Watchlist.DataFiles.WatchlistDataFile[0].IgnoreWeakAKAs=true
-    searchConfiguration.Watchlist.DataFiles.WatchlistDataFile[0].MinScore = 80
-    searchConfiguration.Watchlist.DataFiles.WatchlistDataFile[0].Name = "OFAC SDN"
-    //print("Search Conf**************************************")
-       searchConfiguration.print()
+    searchConfiguration.WriteResultsToDatabase = true
+    _logger.debug("Exting from the method buildSearchConfiguration")
     return searchConfiguration
   }
 
+  /**
+   *  This Method sets search input and returns SearchInput Instance
+   */
+  @Returns("SearchInput")
   @Param("ofacDTOList", "List of insured need  to be checked Against OFAC")
-  private function buildSearchInput(ofacDTOList: List<OfacDTO>): SearchInput
+  private  static function buildSearchInput(ofacDTOList: List<OfacDTO>): SearchInput
   {
-    searchInput.Records = new SearchInput_Records();
-    //print(searchInput)
-    for (i in 0..ofacDTOList.size() - 1) {
-      searchInput.Records.InputRecord[i] = new ArrayOfInputRecord_InputRecord();
-      searchInput.Records.InputRecord[i].Entity = new InputRecord_Entity();
-      searchInput.Records.InputRecord[i].Entity.EntityType = InputEntityType.Individual;
-      searchInput.Records.InputRecord[i].Entity.Name = new InputEntity_Name();
-      if(ofacDTOList[i].FirstName!=null &&ofacDTOList[i].LastName!=null)
-      {searchInput.Records.InputRecord[i].Entity.Name.First = ofacDTOList[i].FirstName;
-        searchInput.Records.InputRecord[i].Entity.Name.Last = ofacDTOList[i].LastName;}
+    _logger.debug("Entering Inside method buildSearchInput")
+    searchInput.Records = new SearchInput_Records()
+    for(i in 0..ofacDTOList.size() - 1) {
+      searchInput.Records.InputRecord[i] = new ArrayOfInputRecord_InputRecord()
+      searchInput.Records.InputRecord[i].Entity = new InputRecord_Entity()
+      searchInput.Records.InputRecord[i].Entity.EntityType = InputEntityType.Individual
+      searchInput.Records.InputRecord[i].Entity.Name = new InputEntity_Name()
+      if (ofacDTOList[i].FirstName != null && ofacDTOList[i].LastName != null)
+      {
+        searchInput.Records.InputRecord[i].Entity.Name.First = ofacDTOList[i].FirstName
+        searchInput.Records.InputRecord[i].Entity.Name.Last = ofacDTOList[i].LastName
+      }
       else
 
-      searchInput.Records.InputRecord[i].Entity.Name.Last = ofacDTOList[i].InsuredName;
-
+        searchInput.Records.InputRecord[i].Entity.Name.Last = ofacDTOList[i].LastName
+      searchInput.Records.InputRecord[i].Entity.Addresses = new InputEntity_Addresses()
+      searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0] = new ArrayOfInputAddress_InputAddress()
+      if (ofacDTOList[i].City != null)
+        searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].City = ofacDTOList[i].City
+      if (ofacDTOList[i].Country != null)
+        searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].Country = ofacDTOList[i].Country
+      if (ofacDTOList[i].AddressStreet1 != null)
+        searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].Street1 = ofacDTOList[i].AddressStreet1
+      if (ofacDTOList[i].AddressStreet2 != null)
+        searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].Street2 = ofacDTOList[i].AddressStreet2
+      if (ofacDTOList[i].PostalCode != null)
+        searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].PostalCode = ofacDTOList[i].PostalCode
+      searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].Type = wsi.remote.una.ofac.ofac.xgservices_svc.enums.AddressType.Mailing
     }
-    //print("Search Input**************************************")
-    searchInput.print()
+    _logger.debug("Exting from the method buildSearchInput")
     return searchInput
   }
 
-  private function setProperties()
+  /**
+   * This is static method to load basic ofac properties
+   */
+  private static function setProperties()
   {
+    _logger.debug("Entering Inside method setProperties")
     CLIENT_ID = PropertiesHolder.getProperty("CLIENT_ID")
     USER_ID = PropertiesHolder.getProperty("USER_ID")
     PASSWORD = PropertiesHolder.getProperty("OFAC_PASSWORD")
     GLB = PropertiesHolder.getProperty("GLB").toInt()
-    //  DPPA = PropertiesHolder.getProperty("DPPA")
     PREDEFINED_SEARCH_NAME = PropertiesHolder.getProperty("PREDEFINED_SEARCH_NAME")
     ROLES_OR_USER = PropertiesHolder.getProperty("ROLES_OR_USER")
+    _logger.debug("Exting from the method setProperties")
   }
 
-  @Param("insuredList","List of insured to be checked against OFAC")
-  @Param("policyPeriod","PolicyPeriod")
-  function buildOFACInput(insuredList: List<Contact>, policyPeriod: PolicyPeriod): List<OfacDTO>
+  /**
+   * This method is to create List of OfacDTO
+   */
+  @Param("insuredList", "List of insured to be checked against OFAC")
+  @Param("policyPeriod", "PolicyPeriod")
+  @Returns("List of OfcaDTO instance")
+  static function buildOFACInput(insuredList: List<Contact>, policyPeriod: PolicyPeriod): List<OfacDTO>
   {
+    _logger.debug("Entering Inside method buildOFACInput")
     var ofacDTOList = new ArrayList<OfacDTO> ()
     for (insured in insuredList)
     {
-      var ofacDTO = new OfacDTO();
+      var ofacDTO = new OfacDTO()
       if (insured typeis Person){
         if (null != insured.FirstName){
           ofacDTO.FirstName = insured.FirstName
@@ -194,69 +266,29 @@ class OFACGateway implements OFACInterface {
         if (null != insured.LastName){
           ofacDTO.LastName = insured.LastName
         }
+        if (insured typeis Company){
 
-        ofacDTO.InsuredName = ((ofacDTO.FirstName != null) ? ofacDTO.FirstName : "") + " " +
-            ((ofacDTO.MiddleName != null) ? ofacDTO.MiddleName : "") + " " +
-            ((ofacDTO.LastName != null) ? ofacDTO.LastName : "")
-      }
-
-      if (insured typeis Company){
-
-        if (null != insured.Name){
-          ofacDTO.InsuredName = insured.Name
+          if (null != insured.Name)
+            ofacDTO.LastName = insured.Name
         }
       }
-
-      if (null != insured.PrimaryAddress) {
+      if (null != insured.PrimaryAddress)
         var primAddress = insured.PrimaryAddress
-        var addr: String
-        if (null != primAddress.AddressLine1){
-          addr = primAddress.AddressLine1
-        }
 
-        if (null != primAddress.AddressLine2){
-          if (null != addr) {
-            addr = addr + ", " + primAddress.AddressLine2
-          } else {
-            addr = primAddress.AddressLine2
-          }
-        }
+      if (null != insured.PrimaryAddress.AddressLine1)
+        ofacDTO.AddressStreet1 = insured.PrimaryAddress.AddressLine1
+      if (null != insured.PrimaryAddress.AddressLine2)
+        ofacDTO.AddressStreet2 = insured.PrimaryAddress.AddressLine2
+      if (null != insured.PrimaryAddress.City)
+        ofacDTO.City = insured.PrimaryAddress.City
+      if (null != insured.PrimaryAddress.Country)
+        ofacDTO.Country = insured.PrimaryAddress.Country.Code
+      if (null != insured.PrimaryAddress.PostalCode)
+        ofacDTO.PostalCode = insured.PrimaryAddress.PostalCode
 
-        if (null != primAddress.AddressLine3){
-          if (null != addr) {
-            addr = addr + ", " + primAddress.AddressLine3
-          } else {
-            addr = primAddress.AddressLine3
-          }
-        }
-
-        ofacDTO.InsuredAddress = addr
-
-        if (null != primAddress.City)
-        {
-          ofacDTO.City = primAddress.City
-        }
-        if (null != primAddress.State)
-        {
-          ofacDTO.State = primAddress.State.DisplayName
-        }
-        if (null != primAddress.Country)
-        {
-          ofacDTO.Country = primAddress.Country.Code
-        }
-        if (null != primAddress.PostalCode)
-        {
-          ofacDTO.PostalCode = primAddress.PostalCode
-        }
-      }
-
-      if (null != policyPeriod){
-        if (null != policyPeriod.PolicyNumber){
-          ofacDTO.PolicyNumber = policyPeriod.PolicyNumber
-        }
-      }
       ofacDTOList.add(ofacDTO)
     }
+    _logger.debug("Exting from the method buildOFACInput")
     return ofacDTOList
   }
 }

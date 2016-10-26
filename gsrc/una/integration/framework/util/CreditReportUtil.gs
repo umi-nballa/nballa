@@ -1,19 +1,5 @@
 package una.integration.framework.util
 
-uses typekey.CreditReportServiceExt
-uses entity.PolicyPriNamedInsured
-uses typekey.UWCompanyCode
-uses typekey.State
-uses entity.Contact
-uses entity.Person
-uses entity.Address
-uses entity.PolicyPeriod
-uses typekey.PolicyLine
-uses typekey.Jurisdiction
-uses gw.lang.Returns
-uses gw.lang.Param
-uses entity.CreditReportParametersExt
-uses entity.PolicyContactRole
 uses gw.api.database.Query
 uses gw.api.util.Logger
 uses una.integration.mapping.creditreport.CreditReportRequest

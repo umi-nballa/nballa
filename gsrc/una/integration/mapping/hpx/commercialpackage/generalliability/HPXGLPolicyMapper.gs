@@ -6,6 +6,8 @@ uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
 uses una.integration.mapping.hpx.common.HPXClassificationMapper
+uses una.integration.mapping.hpx.common.HPXExclusionMapper
+uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,12 +18,28 @@ uses una.integration.mapping.hpx.common.HPXClassificationMapper
  */
 class HPXGLPolicyMapper extends HPXPolicyMapper {
 
-  function createGeneralLiabilityLineBusiness(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+  function createGeneralLiabilityLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     return createLineCoverages(policyPeriod, policyPeriod.GLLine)
+  }
+
+  function createGeneralLiabilityLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineExclusions(policyPeriod, policyPeriod.GLLine)
+  }
+
+  function createGeneralLiabilityLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLinePolicyConditions(policyPeriod, policyPeriod.GLLine)
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
       return policyPeriod.GLLine.AllCoverages
+  }
+
+  override function getExclusions(policyPeriod: PolicyPeriod): List<Exclusion> {
+    return policyPeriod.GLLine.AllExclusions
+  }
+
+  override function getPolicyConditions(policyPeriod: PolicyPeriod): List<PolicyCondition> {
+    return policyPeriod.GLLine.AllConditions
   }
 
   override function getTransactions(policyPeriod: PolicyPeriod): List<Transaction> {
@@ -65,6 +83,14 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getExclusionMapper() : HPXExclusionMapper {
+    return new HPXGLExclusionMapper()
+  }
+
+  override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
+    return new HPXGLPolicyConditionMapper()
+  }
+
   override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
     return null
   }
@@ -77,11 +103,27 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getLocationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getLocationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return null
+  }
+
   override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     return null
   }
 
   override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override  function getStructureExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override  function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
     return null
   }
 
@@ -94,6 +136,14 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getClassificationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getClassificationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
     return null
   }
 
@@ -112,6 +162,16 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
   override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
     var lineCovs = (line as GLLine).CoveragesFromCoverable
     return lineCovs
+  }
+
+  override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
+    var lineExcls = (line as GLLine).ExclusionsFromCoverable
+    return lineExcls
+  }
+
+  override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {
+    var lineConds = (line as GLLine).ConditionsFromCoverable
+    return lineConds
   }
 
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {

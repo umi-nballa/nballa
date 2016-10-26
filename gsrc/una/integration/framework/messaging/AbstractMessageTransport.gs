@@ -1,8 +1,8 @@
 package una.integration.framework.messaging
 
-uses una.logging.UnaLoggerCategory
 uses gw.api.admin.DestinationMessageStatisticsUtil
 uses gw.plugin.messaging.MessageTransport
+uses una.logging.UnaLoggerCategory
 
 uses java.lang.Integer
 

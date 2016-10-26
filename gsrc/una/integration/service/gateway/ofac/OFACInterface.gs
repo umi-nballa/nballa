@@ -4,8 +4,11 @@ package una.integration.service.gateway.ofac
  * User: JGupta
  * Date: 9/22/16
  * Time: 9:47 AM
- * To change this template use File | Settings | File Templates.
+ * This Interface provides Ability to check Contact against OFAC SDN
  */
 interface OFACInterface {
+  /*
+  *  This Methid is to validate contact against OFAC SDN
+  * */
   function validateOFACEntity(insuredList: List<Contact>, policyPeriod: PolicyPeriod)
 }

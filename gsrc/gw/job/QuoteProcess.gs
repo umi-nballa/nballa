@@ -69,8 +69,8 @@ class QuoteProcess {
    */
   function requestQuote(jobWizardHelper : JobWizardHelper, valLevel : ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean) {
     JobProcessLogger.logInfo("Quote requested for branch " + _branch + "(Rating style: " + ratingStyle + ")")
-    /* var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
-    ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)*/
+     var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
+    ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
 
        PCProfilerTag.QUOTE_SYNC.execute(\ -> {
       _oosSliceDates = _branch.OOSSliceDates

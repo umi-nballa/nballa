@@ -60,7 +60,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HODW_EQCovD_HOE_Ext":
         result = getEarthquakeCompCovDLimitDefault(line)
         break
-      case "HODW_EQDwellingLimit_HOE_Ext":
+      case "HODW_EQCovA_HOE":
         result = line.Dwelling.DwellingLimitCovTerm.Value
         break
       case "HOLI_UnitOwnersRentedOthers_Deductible_HOE_Ext":

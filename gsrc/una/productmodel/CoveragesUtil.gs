@@ -106,6 +106,7 @@ class CoveragesUtil {
         break
       case "HODW_Comp_Earthquake_CA_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm)
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm)
         break
       case "HODW_LossAssessmentCov_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm)
@@ -127,14 +128,17 @@ class CoveragesUtil {
       var stringVal = ((coverable as Dwelling_HOE).HOLine.BaseState == TC_TX) ? "Actual" : "Replacement"
       //using setValueFromString right now.  may eventually be changed to a typekey cov term.  also might move from
       valuationCovTerm.setValueFromString(stringVal)
-
-
     }
   }
 
   private static function isWorkersCompForEmployeesAvailable(hoLine: HomeownersLine_HOE) : boolean{
-    return hoLine.BaseState == TC_CA
-       and hoLine.DPLI_Personal_Liability_HOEExists
+    var result = true
+
+    if(hoLine.HOPolicyType == TC_DP3_Ext){
+      result =  hoLine.DPLI_Personal_Liability_HOEExists
+    }
+
+    return result
   }
 
   private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{

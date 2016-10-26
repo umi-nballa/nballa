@@ -185,7 +185,7 @@ class NewSubmissionUIHelper {
     //Commented right now -start  - Tuns Property information complete
     var tunaComplete = new una.pageprocess.PropertyInformationCompletePluginImpl()
     //Calling Tuna address PropertyInformationComplete
-    tunaComplete.getPropertyInformationComplete(offer,account,policyPeriod)
+    tunaComplete.getPropertyInformationComplete(offer,account,policyPeriod,producerSelection)
     //Commented right now -start
 
     JobForward.go(submission, policyPeriod)

@@ -28,18 +28,20 @@ class PropertyInformationCompletePluginImpl {
   final static var FIRE_LINE_MATCH_LEVEL = "FirelineMatchLevel"
   final static var DISTANCE_TO_COAST = "DistanceToCoast"
   final static var PROTECTION_CLASS = "ProtectionClass"
+  final static var EXTERIOR_WALL_FINISH = "ExteriorWallFinish"
   private var _TUNAGateway = GatewayPlugin.makeTunaGateway()
   var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
-
+  var baseState = {"CA", "FL", "NV", "NC", "HI", "TX"}
   construct() {
   }
 
   //Instance call for TUNAGATEWAY
+
   property get TUNAGateway(): TunaInterface {
     return _TUNAGateway
   }
 
-  public function getPropertyInformationComplete(productSelection: ProductSelection, account: Account, policyPeriod: PolicyPeriod)
+  public function getPropertyInformationComplete(productSelection: ProductSelection, account: Account, policyPeriod: PolicyPeriod, producerSelection: ProducerSelection)
   {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For DwellingLocation ", this.IntrinsicType)
@@ -68,22 +70,43 @@ class PropertyInformationCompletePluginImpl {
                     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = (dwell.Value) as Integer
 
                   else if (dwell.ID == STORIES_NUMBER)
-                    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber = typecodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dwell.Value)
+                    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber = typecodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
 
-                  else if (dwell.ID == CONSTRUCTION_TYPE)
-                      policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dwell.Value)
+                  else if (dwell.ID == CONSTRUCTION_TYPE) {
+                      if (baseState.contains(producerSelection.State.Code))
+                        policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                      else
+                        policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dwell.Value)
+                    }
+                    else if (dwell.ID == EXTERIOR_WALL_FINISH) {
+                        if (baseState.contains(producerSelection.State.Code))
+                          policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                        else
+                          policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dwell.Value)
+                      }
 
-                    else if (dwell.ID == SQUARE_FOOTAGE)
-                        policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = (dwell.Value) as Integer
+                      else if (dwell.ID == SQUARE_FOOTAGE)
+                          policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = (dwell.Value) as Integer
 
-                      else if (dwell.ID == ROOF_TYPE)
-                          policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dwell.Value)
 
-                        else if (dwell.ID == ROOF_COVER)  //mapping to material
-                              policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna", dwell.Value)
+                        else if (dwell.ID == ROOF_TYPE) {
+                            if (baseState.contains(producerSelection.State.Code))
+                              policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                            else
+                              policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dwell.Value)
+                          }
+                          else if (dwell.ID == ROOF_COVER) {
+                              //mapping to material
+                              if (baseState.contains(producerSelection.State.Code))
+                                policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                              else
+                                policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna", dwell.Value)
+                            }
+                            else if (dwell.ID == WIND_POOL)
+                                policyPeriod.HomeownersLine_HOE.Dwelling.PropertyCovByStateWndstorm_Ext = (dwell.Value) as Boolean
 
-                          else if (dwell.ID == WIND_POOL)
-                              policyPeriod.HomeownersLine_HOE.Dwelling.PropertyCovByStateWndstorm_Ext = (dwell.Value) as Boolean
+                              else if (dwell.ID == PROTECTION_CLASS)
+                                  policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode = dwell.Value
                 }
               }
             })
@@ -102,14 +125,13 @@ class PropertyInformationCompletePluginImpl {
     var _address = new AddressDTO()
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " getBOPInformation" + "For BuildingLocation ", this.IntrinsicType)
+      logger.info("Location Details..." + policyPeriod.BP7Line.BP7Locations.sortBy(\loc -> loc.PolicyLocation.LocationNum))
       _address.AddressLine1 = policyPeriod.BP7Line.BP7Locations.PolicyLocation.AddressLine1.first()
       _address.City = policyPeriod.BP7Line.BP7Locations.PolicyLocation.City.first()
       _address.State = policyPeriod.BP7Line.BP7Locations.PolicyLocation.State.first()
       _address.PostalCode = policyPeriod.BP7Line.BP7Locations.PolicyLocation.PostalCode.first()
       _address.YearBuilt = building.YearBuilt_Ext
-
       var propertyInformation = TUNAGateway.fetchPropertyInformation(_address)
-
       logger.info("Response Print:" + propertyInformation.ScrubStatus)
       if (null != propertyInformation.Datums && propertyInformation.Datums.size() > 0) {
         for (buildingDetails in propertyInformation.Datums) {
@@ -133,7 +155,6 @@ class PropertyInformationCompletePluginImpl {
           building.Location.TerritoryCode.Code = territoryCodes.Code
         }
       }
-      //logger.info("test..." + policyPeriod.BP7Line.BP7Locations.sortBy(\loc -> loc.PolicyLocation.LocationNum))
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " getBOPInformation" + "For BuildingLocation ", this.IntrinsicType)
     } catch (exp: Exception)
     {

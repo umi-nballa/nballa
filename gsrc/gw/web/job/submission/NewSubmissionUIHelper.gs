@@ -109,7 +109,8 @@ class NewSubmissionUIHelper {
   }
 
   function isForeignCountry(theProducerSelection: ProducerSelection) : boolean {
-    var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code, typekey.Country.TC_AU.Code,typekey.Country.TC_CA.Code}
+    //var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code, typekey.Country.TC_AU.Code,typekey.Country.TC_CA.Code}
+    var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code}
     var res = false
     if(!theExcludeList.hasMatch( \ elt1 -> elt1.equalsIgnoreCase(theProducerSelection.Account.AccountHolderContact.Country.Code))){
       res = true

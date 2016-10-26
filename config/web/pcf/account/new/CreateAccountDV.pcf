@@ -39,11 +39,11 @@
       <InputSetRef
         def="LinkedAddressInputSet(selectedAddress, account.AccountHolderContact, null, account, CurrentLocation.InEditMode)"/>
       <InputSetRef
-        def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(selectedAddress, false, true))"
+        def="AddressInputSet(new una.extensions.UnaAddressInputSetAddressOwner(selectedAddress, false, true))"
         editable="selectedAddress.LinkedAddress == null"/>
       <TypeKeyInput
         available="true"
-        editable="false // selectedAddress.LinkedAddress == null Updated for UNA PC.10.03.30 Create New Account"
+        editable="selectedAddress.LinkedAddress == null"
         id="AddressType"
         label="displaykey.Web.AddressDetail.AddressType"
         required="true"

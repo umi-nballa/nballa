@@ -18,6 +18,8 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _ageOfHome: int as AgeOfHome
   var _maxAgeOfHome: int as MaxAgeOfHome
   var _line : HomeownersLine_HOE as Line
+  var _policyType : HOPolicyType_HOE as PolicyType
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line
     _totalBasePremium = totalBasePremium
@@ -25,12 +27,10 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _allPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
     _ageOfHome = determineAgeOfHome(Line.Dwelling.YearBuilt)
+    _policyType = line.HOPolicyType
   }
 
-  protected function determineAgeOfHome(year : int) : int{
+  protected function determineAgeOfHome(year : int) : int {
     return this.Line.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate - year
   }
-
-
-
 }

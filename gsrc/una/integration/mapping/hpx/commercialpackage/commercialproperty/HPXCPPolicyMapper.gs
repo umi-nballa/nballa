@@ -117,7 +117,7 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
-    return new HPXGLPolicyConditionMapper()
+    return new HPXCPPolicyConditionMapper()
   }
 
   override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {

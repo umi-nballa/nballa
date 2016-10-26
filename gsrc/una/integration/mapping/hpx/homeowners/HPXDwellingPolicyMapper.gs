@@ -178,9 +178,14 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable.FixedId == coverable.FixedId)
   }
 
-  override function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+  override function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<HOTransaction_HOE> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable.FixedId == coverable.FixedId)
+    transactions.addAll((getScheduleTransactions(policyPeriod, coverable).toList()))
     return transactions
+  }
+
+  function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<HOTransaction_HOE> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
   }
 
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {

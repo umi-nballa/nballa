@@ -16,6 +16,8 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
 uses una.integration.mapping.hpx.common.HPXClassificationMapper
 uses una.integration.mapping.hpx.common.HPXPrimaryNamedInsuredMapper
+uses una.integration.mapping.hpx.common.HPXExclusionMapper
+uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -63,6 +65,14 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     for (lineCov in lineCovs) {
       dwellingLineBusiness.addChild(new XmlElement("Coverage", lineCov))
     }
+    var lineExcls = createLineExclusions(policyPeriod, policyPeriod.HomeownersLine_HOE)
+    for (lineExcl in lineExcls) {
+      dwellingLineBusiness.addChild(new XmlElement("Coverage", lineExcl))
+    }
+    var lineConds = createLinePolicyConditions(policyPeriod, policyPeriod.HomeownersLine_HOE)
+    for (lineCond in lineConds) {
+      dwellingLineBusiness.addChild(new XmlElement("Coverage", lineCond))
+    }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
       dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
@@ -76,6 +86,14 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
     return policyPeriod.HomeownersLine_HOE.AllCoverages
+  }
+
+  override function getExclusions(policyPeriod: PolicyPeriod): List<Exclusion> {
+    return policyPeriod.HomeownersLine_HOE.AllExclusions
+  }
+
+  override function getPolicyConditions(policyPeriod: PolicyPeriod): List<PolicyCondition> {
+    return policyPeriod.HomeownersLine_HOE.AllConditions
   }
 
   override function getTransactions(policyPeriod: PolicyPeriod): List<HOTransaction_HOE> {
@@ -113,6 +131,14 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getExclusionMapper() : HPXExclusionMapper {
+    return new HPXDwelllingExclusionMapper()
+  }
+
+  override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
+    return new HPXDwelllingPolicyConditionMapper()
+  }
+
   override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
     var structures = new java.util.ArrayList<Coverable>()
     var dwelling = policyPeriod.HomeownersLine_HOE.Dwelling
@@ -128,15 +154,31 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getLocationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getLocationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return null
+  }
+
   override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     return null
   }
 
-  override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+  override function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
     return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable.FixedId == coverable.FixedId)
   }
 
-  override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+  override function getStructureExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return getExclusions(policyPeriod)?.where( \ elt -> elt.OwningCoverable.FixedId == coverable.FixedId)
+  }
+
+  override function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable.FixedId == coverable.FixedId)
+  }
+
+  override function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable.FixedId == coverable.FixedId)
     return transactions
   }
@@ -146,6 +188,14 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getClassificationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getClassificationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
     return null
   }
 
@@ -164,8 +214,18 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
-    var lineCovs = (line as HomeownersLine_HOE).CoveragesFromCoverable //.where( \ elt -> (elt.OwningCoverable as HomeownersLine_HOE) == line)
+    var lineCovs = (line as HomeownersLine_HOE).CoveragesFromCoverable
     return lineCovs
+  }
+
+  override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
+    var lineExcls = (line as HomeownersLine_HOE).ExclusionsFromCoverable
+    return lineExcls
+  }
+
+  override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {
+    var lineConds = (line as HomeownersLine_HOE).AllConditions
+    return lineConds
   }
 
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {

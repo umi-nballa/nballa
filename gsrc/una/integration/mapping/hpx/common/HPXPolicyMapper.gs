@@ -148,16 +148,28 @@ abstract class HPXPolicyMapper {
     var coverableStructures = getStructures(policyPeriod)
     for (coverableStructure in coverableStructures) {
       var propertyStructure = structureMapper.createStructure(coverableStructure)  //.createBuilding(bldg)
-      var buildingCovs = createCoveragesInfo(getStructureCoverages(policyPeriod, coverableStructure), getStructureCoverages(previousPeriod, coverableStructure),
+      var strucureCovs = createCoveragesInfo(getStructureCoverages(policyPeriod, coverableStructure), getStructureCoverages(previousPeriod, coverableStructure),
           getStructureCoverageTransactions(policyPeriod, coverableStructure))
-      for (cov in buildingCovs) { propertyStructure.addChild(new XmlElement("Coverage", cov))}
+      for (cov in strucureCovs) { propertyStructure.addChild(new XmlElement("Coverage", cov))}
+      var structureExclusions = createExclusionsInfo(getStructureExclusions(policyPeriod, coverableStructure), getStructureExclusions(previousPeriod, coverableStructure),
+          getStructureCoverageTransactions(policyPeriod, coverableStructure))
+      for (excl in structureExclusions) { propertyStructure.addChild(new XmlElement("Coverage", excl))}
+      var structurePolicyConditions = createPolicyConditionsInfo(getStructurePolicyConditions(policyPeriod, coverableStructure), getStructurePolicyConditions(previousPeriod, coverableStructure),
+          getStructureCoverageTransactions(policyPeriod, coverableStructure))
+      for (cond in structureExclusions) { propertyStructure.addChild(new XmlElement("Coverage", cond))}
       // structure location
       var structureLoc = getLocation(coverableStructure)
       var location = locationMapper.createLocation(structureLoc)
       var locationCovs = createCoveragesInfo(getLocationCoverages(policyPeriod, coverableStructure), getLocationCoverages(previousPeriod, coverableStructure),
                                              getLocationCoverageTransactions(policyPeriod, coverableStructure))
+      var locationExclusions = createExclusionsInfo(getLocationExclusions(policyPeriod, coverableStructure), getLocationExclusions(previousPeriod, coverableStructure),
+          getLocationCoverageTransactions(policyPeriod, coverableStructure))
+      var locationPolicyConditions = createPolicyConditionsInfo(getLocationPolicyConditions(policyPeriod, coverableStructure), getLocationPolicyConditions(previousPeriod, coverableStructure),
+          getLocationCoverageTransactions(policyPeriod, coverableStructure))
       var additionalInterests = getAdditionalInterests(coverableStructure)
       for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
+      for (locExcl in locationExclusions) { location.addChild(new XmlElement("Coverage", locExcl))}
+      for (locCond in locationPolicyConditions) { location.addChild(new XmlElement("Coverage", locCond))}
       for (additionalInterest in additionalInterests) { location.addChild(new XmlElement("AdditionalInterest", additionalInterest))}
       propertyStructure.addChild(new XmlElement("Location", location))
       // building classifications
@@ -167,6 +179,12 @@ abstract class HPXPolicyMapper {
         var classifcnCovs = createCoveragesInfo(getClassificationCoverages(policyPeriod, structureClassification), getClassificationCoverages(previousPeriod, structureClassification),
             getClassificationCoverageTransactions(policyPeriod, structureClassification))
         for (classifcn in classifcnCovs) { buildlingClassification.addChild(new XmlElement("Coverage", classifcn))}
+        var classifcnExclusions = createExclusionsInfo(getClassificationExclusions(policyPeriod, structureClassification), getClassificationExclusions(previousPeriod, structureClassification),
+            getClassificationCoverageTransactions(policyPeriod, structureClassification))
+        for (classifcnExclusion in classifcnExclusions) { buildlingClassification.addChild(new XmlElement("Coverage", classifcnExclusion))}
+        var classifcnPolicyConditions = createPolicyConditionsInfo(getClassificationPolicyConditions(policyPeriod, structureClassification), getClassificationPolicyConditions(previousPeriod, structureClassification),
+            getClassificationCoverageTransactions(policyPeriod, structureClassification))
+        for (classifcnCond in classifcnExclusions) { buildlingClassification.addChild(new XmlElement("Coverage", classifcnCond))}
         propertyStructure.addChild(new XmlElement("BP7Classification", buildlingClassification))
       }
 
@@ -189,14 +207,14 @@ abstract class HPXPolicyMapper {
     // added or changed coverages
     for (cov in currentCoverages) {
       var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
-      if (trxs?.Count > 0) {
+     // if (trxs?.Count > 0) {
         if (previousCoverages != null) {
           var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
           coverages.add(getCoverageMapper().createCoverageInfo(cov, previousCoverage, trxs))
         } else {
           coverages.add(getCoverageMapper().createCoverageInfo(cov, null, trxs))
         }
-      }
+     // }
     }
     // removed coverages
     if (previousCoverages != null) {
@@ -204,12 +222,86 @@ abstract class HPXPolicyMapper {
         if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
           continue
         var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
-        if (trxs?.Count > 0) {
+      //  if (trxs?.Count > 0) {
           coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null))
-        }
+      //  }
       }
     }
     return coverages
+  }
+
+  function createExclusionsInfo (currentExclusions : java.util.List<Exclusion>, previousExclusions : java.util.List<Exclusion>,
+                                transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    // added or changed coverages
+    for (excl in currentExclusions) {
+      var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+    //  if (trxs?.Count > 0) {
+        if (previousExclusions != null) {
+          var previousExclusion = previousExclusions.firstWhere( \ elt -> elt.PatternCode.equals(excl.PatternCode))
+          coverages.add(getExclusionMapper().createExclusionInfo(excl, previousExclusion, trxs))
+        } else {
+          coverages.add(getExclusionMapper().createExclusionInfo(excl, null, trxs))
+        }
+     // }
+    }
+    // removed coverages
+    if (previousExclusions != null) {
+      for (excl in previousExclusions) {
+        if (currentExclusions.hasMatch( \ elt1 -> elt1.PatternCode.equals(excl.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+       // if (trxs?.Count > 0) {
+          coverages.add(getExclusionMapper().createExclusionInfo(excl, null, null))
+        //}
+      }
+    }
+    return coverages
+  }
+
+  function createLineExclusions(policyPeriod : PolicyPeriod, policyLine : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    return createExclusionsInfo(getLineExclusions(getPolicyLine(policyPeriod)), getLineExclusions(getPolicyLine(previousPeriod)),
+        getLineCoverageTransactions(policyPeriod, policyLine))
+  }
+
+  function createPolicyConditionsInfo (currentPolicyConditions : java.util.List<PolicyCondition>, previousPolicyConditions : java.util.List<PolicyCondition>,
+                                 transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    // added or changed coverages
+    for (cond in currentPolicyConditions) {
+      var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      //  if (trxs?.Count > 0) {
+      if (previousPolicyConditions != null) {
+        var previousPolicyCondition = previousPolicyConditions.firstWhere( \ elt -> elt.PatternCode.equals(cond.PatternCode))
+        coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, previousPolicyCondition, trxs))
+      } else {
+        coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, null, trxs))
+      }
+      // }
+    }
+    // removed coverages
+    if (previousPolicyConditions != null) {
+      for (cond in previousPolicyConditions) {
+        if (currentPolicyConditions.hasMatch( \ elt1 -> elt1.PatternCode.equals(cond.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        // if (trxs?.Count > 0) {
+        coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, null, null))
+        //}
+      }
+    }
+    return coverages
+  }
+
+  function createLinePolicyConditions(policyPeriod : PolicyPeriod, policyLine : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    return createPolicyConditionsInfo(getLinePolicyConditions(getPolicyLine(policyPeriod)), getLinePolicyConditions(getPolicyLine(previousPeriod)),
+        getLineCoverageTransactions(policyPeriod, policyLine))
   }
 
   function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
@@ -227,6 +319,10 @@ abstract class HPXPolicyMapper {
 
   abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>
 
+  abstract function getExclusions(policyPeriod : PolicyPeriod) : java.util.List<Exclusion>
+
+  abstract function getPolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<PolicyCondition>
+
   abstract function getTransactions(policyPeriod : PolicyPeriod) : java.util.List<Transaction>
 
   abstract function getCostCoverage(cost : Cost) : Coverage
@@ -235,17 +331,29 @@ abstract class HPXPolicyMapper {
 
   abstract function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
 
+  abstract function getStructureExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion>
+
+  abstract function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition>
+
   abstract function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
   abstract function getLocation(coverable : Coverable) : PolicyLocation
 
   abstract function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
 
+  abstract function getLocationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion>
+
+  abstract function getLocationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition>
+
   abstract function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
   abstract function getClassifications(coverable : Coverable) : java.util.List<BP7Classification>
 
   abstract function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
+
+  abstract function getClassificationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion>
+
+  abstract function getClassificationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition>
 
   abstract function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
@@ -254,6 +362,10 @@ abstract class HPXPolicyMapper {
   abstract function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable
 
   abstract function getLineCoverages(line : Coverable) : java.util.List<Coverage>
+
+  abstract function getLineExclusions(line : Coverable) : java.util.List<Exclusion>
+
+  abstract function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition>
 
   abstract function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
@@ -266,5 +378,9 @@ abstract class HPXPolicyMapper {
   abstract function getStructureMapper() : HPXStructureMapper
 
   abstract function getClassificationMapper() : HPXClassificationMapper
+
+  abstract function getExclusionMapper() : HPXExclusionMapper
+
+  abstract function getPolicyConditionMapper() : HPXPolicyConditionMapper
 
 }

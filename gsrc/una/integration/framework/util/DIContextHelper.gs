@@ -1,13 +1,13 @@
 package una.integration.framework.util
 
+uses gw.api.util.ConfigAccess
+uses org.springframework.context.support.GenericXmlApplicationContext
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.framework.exception.FieldErrorInformation
 uses una.logging.UnaLoggerCategory
-uses org.springframework.context.support.GenericXmlApplicationContext
 
 uses java.lang.Exception
 uses java.util.concurrent.locks.ReentrantLock
-uses gw.api.util.ConfigAccess
 
 /**
  * This class manages a singleton Application Context, loads configured beans into the context and retrieves the required beans from the context.
@@ -18,7 +18,6 @@ class DIContextHelper {
   final static var DB_DATA_SOURCE_TYPE_KEY = "db_datasourcetype"
   final static var PERSISTENCE_CONTEXT_FILE = "una/integration/framework/persistence/di_config/integrationDatabase-persistence.xml"
   final static var PERSISTENCE_FILE_PATH = "file:" + ConfigAccess.getModuleRoot("configuration").Path + "/gsrc/" + PERSISTENCE_CONTEXT_FILE
-
 
   static var _applicationContext: GenericXmlApplicationContext
   static var _lock = new ReentrantLock()
@@ -48,7 +47,7 @@ class DIContextHelper {
    * @param configFileLocation the location of the bean configuration file.
    */
   static function loadBeansIntoContext(beanLocationPattern: String) {
-    _logger.debug("Entry into 'loadBeansIntoContext' of DIContextHelper.")
+    _logger.debug("Entering the function 'loadBeansIntoContext' of DIContextHelper.")
     if (beanLocationPattern != null && !beanLocationPattern.Empty) {
       try {
         Context.load(new String[]{beanLocationPattern})
@@ -56,7 +55,7 @@ class DIContextHelper {
         ExceptionUtil.throwException(ErrorCode.UNEXPECTED_EXCEPTION, null, ex)
       }
     }
-    _logger.debug("Exit from 'loadBeansIntoContext' of DIContextHelper.")
+    _logger.debug("Exiting the function 'loadBeansIntoContext' of DIContextHelper.")
   }
 
   /**

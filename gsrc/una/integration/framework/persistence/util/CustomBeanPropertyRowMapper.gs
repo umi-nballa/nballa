@@ -1,8 +1,8 @@
 package una.integration.framework.persistence.util
 
-uses una.integration.framework.exception.ErrorTypeInfo
 uses org.springframework.beans.BeanWrapper
 uses org.springframework.jdbc.core.BeanPropertyRowMapper
+uses una.integration.framework.exception.ErrorTypeInfo
 
 uses java.lang.Class
 

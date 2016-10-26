@@ -10,14 +10,13 @@ uses una.rating.util.HOCreateCostDataUtil
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.group3.ratinginfos.HOGroup3LineRatingInfo
 uses java.util.Map
-uses gw.api.domain.covterm.CovTerm
 uses java.math.BigDecimal
 uses una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo
 uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
-uses una.rating.ho.tx.ratinginfos.HODiscountsOrSurchargesRatingInfo
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,7 +37,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   construct(line: HomeownersLine_HOE, minimumRatingLevel: RateBookStatus) {
     super(line, minimumRatingLevel)
     _hoRatingInfo = new HORatingInfo()
-    var period = line.Dwelling?.PolicyPeriod
   }
 
   /**
@@ -149,6 +147,13 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       if(!windOrHailExcluded)
         rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEWINDPREMIUM)
     }
+    if(isMatureHomeOwnerDiscountApplicable(PolicyLine)){
+      rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
+    }
+    rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+    if((!windOrHailExcluded) and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3))
+      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
+
   }
 
   /**
@@ -413,6 +418,38 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Function to rate the Mature Homeowner Discount
+   */
+  function rateMatureHomeOwnerDiscount(dateRange: DateRange, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateMatureHomeOwnerDiscount", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedAOPBasePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.MatureHomeOwnerDiscount = costData.ActualTermAmount
+    }
+    _logger.debug("Mature Home owner Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Age of Home Discount or Surcharge
+   */
+  function rateAgeOfHomeDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, routineName : String) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAgeOfHomeDiscount", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, routineName, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
+    }
+    _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Function to rate the Seasonal Or Secondary Residence Surcharge
    */
   function rateSeasonalOrSecondaryResidenceSurcharge(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
@@ -567,4 +604,31 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> null//new HOScheduledPersonalPropertyRatingInfo(item)
     }
   }
+
+  /**
+   * Return true if the primary named insured or additional named insured age is greater than or equal to 60yrs.
+  */
+  private function isMatureHomeOwnerDiscountApplicable(line: HomeownersLine_HOE) : boolean {
+    var period = line.Dwelling.PolicyPeriod
+    var dateOfBirth : java.util.Date = null
+    var minAgeLimit = ConfigParamsUtil.getInt(TC_MATUREHOMEOWNERMINIMUMAGE, line.Dwelling.CoverableState, line.HOPolicyType.Code)
+    var primaryNamedInsured = period.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured).first()
+    if(primaryNamedInsured != null){
+      dateOfBirth = primaryNamedInsured.DateOfBirth
+      if(dateOfBirth != null and (determineAge(dateOfBirth?.YearOfDate) >= minAgeLimit))
+        return true
+    }
+    var additionalNamedInsured = period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+    for(addlInsured in additionalNamedInsured){
+      dateOfBirth = addlInsured.DateOfBirth
+      if(dateOfBirth != null and (determineAge(dateOfBirth?.YearOfDate) >= minAgeLimit))
+        return true
+    }
+    return false
+  }
+
+  private function determineAge(year : int) : int{
+    return PolicyLine.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate - year
+  }
+
 }

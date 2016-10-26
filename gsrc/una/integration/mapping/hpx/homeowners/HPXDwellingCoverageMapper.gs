@@ -135,22 +135,6 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     return limits
   }
 
-  /*
-  function createResidentialGlassCoverage(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.Limit {
-    var limit = new wsi.schema.una.hpx.hpx_application_request.Limit()
-    var coverageCd = new wsi.schema.una.hpx.hpx_application_request.CoverageCd()
-    var formatText = new wsi.schema.una.hpx.hpx_application_request.FormatText()
-    formatText.setText(currentCoverage.getCovTerm("HODW_Unscheduled_HOE_Ext").DisplayValue)
-    limit.addChild(formatText)
-    var limitDesc = new wsi.schema.una.hpx.hpx_application_request.LimitDesc()
-    limitDesc.setText("HODW_Unscheduled_HOE_Ext")
-    limit.addChild(limitDesc)
-    coverageCd.setText(currentCoverage.PatternCode)
-    limit.addChild(coverageCd)
-    return limit
-  }
-  */
-
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     return null
   }

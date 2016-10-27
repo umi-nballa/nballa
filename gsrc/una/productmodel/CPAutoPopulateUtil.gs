@@ -165,6 +165,8 @@ class CPAutoPopulateUtil {
   {
       _logger.info("Equipment brkdown " + cLine.EquipmentBreakdownEnhancement)
 
+    cBuilding.CoverageForm=cLine.CoverageForm
+
       if(cLine.EquipmentBreakdownEnhancement!=null && cLine.EquipmentBreakdownEnhancement.trim()!="")
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true

@@ -1,0 +1,118 @@
+<?xml version="1.0"?>
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="CPBuilding">
+  <column
+    name="NumUnits"
+    nullok="true"
+    type="integer"/>
+  <typekey
+    columnName="OccupancyType"
+    desc="Occupancy Type"
+    name="OccupancyType"
+    nullok="true"
+    typelist="CPOccupancyType_Ext"/>
+  <foreignkey
+    columnName="ProtectionDetails"
+    desc="Protection Details"
+    fkentity="CPProtDetails_Ext"
+    name="ProtectionDetails"
+    nullok="true"/>
+  <typekey
+    columnName="RoofShape"
+    desc="Roof Shape"
+    name="RoofShape"
+    nullok="true"
+    typelist="CPRoofShape_Ext"/>
+  <typekey
+    columnName="FlatRoofDesc"
+    desc="Flat Roof Description"
+    name="FlatRoofDesc"
+    nullok="true"
+    typelist="CPFlatRoofDesc_Ext"/>
+  <column
+    columnName="FireProtClass"
+    desc="Fire Protection Class"
+    name="fireprotectionclass"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="BCEG"
+    desc="BCEG"
+    name="bceg"
+    nullok="true"
+    type="text"/>
+  <foreignkey
+    columnName="ResQuestions"
+    desc="ResidentialQuestions"
+    fkentity="CPResQuest_Ext"
+    name="ResQuestions"
+    nullok="true"/>
+  <foreignkey
+    columnName="AirCondProt"
+    desc="Air Cond Protection"
+    fkentity="CPAirCondProt_Ext"
+    name="AirCondProt"
+    nullok="true"/>
+  <column
+    columnName="DistFireHyd"
+    desc="Distance to Fire hydrant"
+    name="DistFireHyd"
+    nullok="true"
+    type="integer"/>
+  <column
+    columnName="DistFireStn"
+    desc="Distance to Fire Station"
+    name="DistFireStn"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="RespFireDept"
+    desc="Responding Fire Department"
+    name="RespFireDept"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="DistToNext"
+    desc="Distance from building to next building"
+    name="DistToNext"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="BldgHt"
+    default="10"
+    desc="Building Height"
+    name="BldgHt"
+    nullok="true"
+    type="nonnegativeinteger"/>
+  <column
+    columnName="NumPlaygrounds"
+    desc="Number of Playgrounds"
+    name="NumPlaygrounds"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="NumFitness"
+    desc="Number of Fitness"
+    name="NumFitness"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="NumSwim"
+    desc="Number of Swimming pools"
+    name="NumSwim"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="NumDock"
+    desc="Number of Dock"
+    name="NumDock"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="NumOther"
+    desc="Number of Other Facilities"
+    name="NumOther"
+    nullok="true"
+    type="text"/>
+</extension>

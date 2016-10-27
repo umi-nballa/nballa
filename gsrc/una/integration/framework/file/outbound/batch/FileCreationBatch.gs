@@ -1,18 +1,18 @@
 package una.integration.framework.file.outbound.batch
 
+uses gw.api.util.DateUtil
+uses gw.processes.BatchProcessBase
 uses una.integration.framework.exception.ErrorTypeInfo
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.framework.file.outbound.persistence.OutboundFileData
 uses una.integration.framework.file.outbound.persistence.OutboundFileException
 uses una.integration.framework.file.outbound.persistence.OutboundFileProcess
-uses una.logging.UnaLoggerCategory
 uses una.integration.framework.persistence.context.PersistenceContext
 uses una.integration.framework.persistence.dao.IntegrationBaseDAO
 uses una.integration.framework.persistence.util.ProcessStatus
 uses una.integration.framework.util.BeanIOHelper
 uses una.integration.framework.util.ErrorCode
-uses gw.api.util.DateUtil
-uses gw.processes.BatchProcessBase
+uses una.logging.UnaLoggerCategory
 
 uses java.lang.Exception
 uses java.lang.Integer
@@ -26,10 +26,10 @@ uses java.util.Date
 abstract class FileCreationBatch extends BatchProcessBase implements IFileCreationBatch {
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
 
-  var _userName: String
-  var _outboundFileProcessDAO: IntegrationBaseDAO
-  var _outboundFileExceptionDAO: IntegrationBaseDAO
-  var _dataEntityDAO: IntegrationBaseDAO
+  protected var _userName: String
+  protected var _outboundFileProcessDAO: IntegrationBaseDAO
+  protected var _outboundFileExceptionDAO: IntegrationBaseDAO
+  protected var _dataEntityDAO: IntegrationBaseDAO
 
   /**
    * Construct to call the super class construct
@@ -52,8 +52,6 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
     var outboundFileProcess = createOutboundFileProcess()
 
     try {
-      outboundFileProcess.FileName = getFileName(outboundFileProcess.CreateTime)
-
       var entities = prepareDataForProcessing()
       this.OperationsExpected = entities.Count
       outboundFileProcess.TotalRecordCount = entities.Count
@@ -83,13 +81,11 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
           }
         })
         var fileOutObjects = prepareDataForFile(processedEntities)
-        if (FileDataMapping.BeanIOStreamName != null) {
-          BeanIOHelper.writeFile(FileDataMapping.BeanIOStreamName, outboundFileProcess.FileName, fileOutObjects)
-        } else {
-          createFile(outboundFileProcess.FileName, fileOutObjects, outboundFileProcess.CreateTime)
-        }
+        createFile(outboundFileProcess, fileOutObjects)
         outboundFileProcess.Status = Processed
+        afterFileCreation(processedEntities)
       })
+
     } catch (ex: Exception) {
       createProcessException(outboundFileProcess.ID, null, Technical, ex)
       outboundFileProcess.Status = ProcessStatus.Error
@@ -110,10 +106,10 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
 
   /**
    * Indicates whether the batch process should continue processing other records when there is an error for a record.
-   * This should be overridden and return false if batch should exit on record level error.
+   * This should be overridden and return true if batch should continue processing other records.
    */
   override property get ContinueBatchOnError(): Boolean {
-    return true
+    return false
   }
 
   /**
@@ -134,14 +130,33 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
   }
 
   /**
-   * This function needs to be implemented by the subclasses.
-   * The default implementation here throws an exception indicating that.
+   * This function should be implemented by subclasses if the BeanIOStreamName is not configured
    */
-  override function createFile(fileName: String, fileRecords: List<Object>, startTime: DateTime) {
-    ExceptionUtil.throwException(ErrorCode.INCOMPLETE_FILE_CREATION)
+  override function createFile(outboundFileProcess: OutboundFileProcess, fileRecords: List<Object>) {
+    if (FileDataMapping.BeanIOStreamName != null) {
+      outboundFileProcess.FileName = getFileName(outboundFileProcess.CreateTime)
+      BeanIOHelper.writeFile(FileDataMapping.BeanIOStreamName, outboundFileProcess.FileName, fileRecords)
+    } else {
+      ExceptionUtil.throwException(ErrorCode.INCOMPLETE_FILE_CREATION)
+    }
   }
 
-  private function createOutboundFileProcess(): OutboundFileProcess {
+  /**
+   * Function to create name of the file.
+   * @param startTime - the current time of creating the file.
+   */
+  override function getFileName(startTime: DateTime): String {
+    ExceptionUtil.throwException(ErrorCode.NO_FILE_NAME)
+    return null
+  }
+
+  /**
+   * Overridden by the sub classes with custom processing after the file creation.
+   * @param processedEntities - the list of records written to the file
+   */
+  override function afterFileCreation(processedEntities: List<OutboundFileData>) { }
+
+  protected function createOutboundFileProcess(): OutboundFileProcess {
     var fileProcess: OutboundFileProcess = new()
     fileProcess.BatchName = this.Type
     fileProcess.StartTime = fileProcess.CreateTime
@@ -152,7 +167,7 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
     return fileProcess
   }
 
-  private function createProcessException(processID: Integer, dataID: Integer, errorType: ErrorTypeInfo, ex: Exception) {
+  protected function createProcessException(processID: Integer, dataID: Integer, errorType: ErrorTypeInfo, ex: Exception) {
     var exceptionEntity: OutboundFileException = new()
     exceptionEntity.OutboundFileProcessID = processID
     exceptionEntity.DataID = dataID
@@ -164,7 +179,7 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
     _outboundFileExceptionDAO.insert(exceptionEntity)
   }
 
-  private function updateEntity(fileProcessID: Integer, entity: OutboundFileData, status: ProcessStatus, updateTime: DateTime) {
+  protected function updateEntity(fileProcessID: Integer, entity: OutboundFileData, status: ProcessStatus, updateTime: DateTime) {
     entity.OutboundFileProcessID = fileProcessID
     entity.Status = status
     if (status == ProcessStatus.Error) {

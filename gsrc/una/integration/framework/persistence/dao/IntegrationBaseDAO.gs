@@ -1,15 +1,15 @@
 package una.integration.framework.persistence.dao
 
+uses gw.lang.reflect.gs.IGosuClass
+uses org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
+uses org.springframework.jdbc.support.GeneratedKeyHolder
 uses una.integration.framework.file.IFileDataMapping
-uses una.logging.UnaLoggerCategory
 uses una.integration.framework.persistence.entity.BaseEntity
 uses una.integration.framework.persistence.util.CustomBeanPropertyRowMapper
 uses una.integration.framework.persistence.util.CustomBeanPropertySqlParameterSource
 uses una.integration.framework.persistence.util.ProcessStatus
 uses una.integration.framework.util.DIContextHelper
-uses gw.lang.reflect.gs.IGosuClass
-uses org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate
-uses org.springframework.jdbc.support.GeneratedKeyHolder
+uses una.logging.UnaLoggerCategory
 
 uses javax.sql.DataSource
 uses java.lang.StringBuffer

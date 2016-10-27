@@ -7,15 +7,14 @@ package una.model
  * To change this template use File | Settings | File Templates.
  */
 class OfacDTO {
-  var _firstName:String as FirstName
-  var _lastName:String as LastName
-  var _middleName:String as MiddleName
-  var _insuredName:String as InsuredName
-  var _insuredaddress:String as InsuredAddress
-  var _city:String as City
-  var _state:String as State
-  var _country:String as Country
-  var _postalCode:String as PostalCode
-  var policyNumber:String as PolicyNumber
+  var _firstName: String as FirstName
+  var _lastName: String as LastName
+  var _middleName: String as MiddleName
+  var _AddressStreet1: String as AddressStreet1
+  var _AddressStreet2: String as AddressStreet2
+  var _city: String as City
+  var _country: String as Country
+  var _postalCode: String as PostalCode
+  var _addressType: String as AddressType
 
 }

@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.homeowners
 
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses gw.api.domain.covterm.OptionCovTerm
+uses gw.api.domain.covterm.DirectCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,12 +29,6 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           var scheduledProperties = createPersonalPropertyOnOtherResidences(currentCoverage, previousCoverage, transactions)
           for (item in scheduledProperties) { limits.add(item)}
           break
-      /*
-      case "HODW_ResidentialGlass_HOE_Ext" :
-          var glassCov = createResidentialGlassCoverage(currentCoverage, previousCoverage)
-          limits.add(glassCov)
-          break
-          */
     }
     return limits
   }
@@ -71,12 +66,21 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
-            limits.add(limit)
+            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }
       }
+      var allCosts = currentCoverage.PolicyLine.Costs
+      for (cost in allCosts) {
+        if(cost typeis ScheduleCovCost_HOE){
+          if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
     }
     return limits
   }
@@ -99,12 +103,21 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
-            limits.add(limit)
+            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }
       }
+      var allCosts = currentCoverage.PolicyLine.Costs
+      for (cost in allCosts) {
+        if(cost typeis ScheduleCovCost_HOE){
+          if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
     }
     return limits
   }
@@ -125,12 +138,21 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
-            limits.add(limit)
+            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }
       }
+      var allCosts = currentCoverage.PolicyLine.Costs
+      for (cost in allCosts) {
+        if(cost typeis ScheduleCovCost_HOE){
+          if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
     }
     return limits
   }

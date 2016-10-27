@@ -172,11 +172,13 @@
           numCols="10"
           required="false"
           value="dwelling.ReplacementCost"/>
-        <TypeKeyInput
+        <RangeInput
+          action="ResidenceType_HOE.Type.getTypeKeysByCategory(dwelling.HOPolicyType)"
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
-          value="dwelling.ResidenceType"/>
+          value="dwelling.ResidenceType"
+          valueRange="ResidenceType_HOE.Type.getTypeKeysByCategory(dwelling.HOPolicyType)"/>
         <RangeInput
           editable="true"
           id="DwellingUse"
@@ -184,8 +186,7 @@
           value="dwelling.DwellingUsage"
           valueRange="return (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO4) ? DwellingUsage_HOE.TF_ALLEXCEPTRENTAL.TypeKeys : typekey.DwellingUsage_HOE.TF_ALL.TypeKeys ">
           <PostOnChange
-            onChange="if(dwelling.NumOfMonthsConsUnOccupancy_Ext != null &amp;&amp; (dwelling.DwellingUsage != TC_SEC or dwelling.DwellingUsage != TC_SEC)) dwelling.NumOfMonthsConsUnOccupancy_Ext = null"
-            target="numberOfMonthsConsUnOccupancy_Ext"/>
+            onChange="if(dwelling.NumOfMonthsConsUnOccupancy_Ext != null &amp;&amp; (dwelling.DwellingUsage != TC_SEC or dwelling.DwellingUsage != TC_SEC)) dwelling.NumOfMonthsConsUnOccupancy_Ext = null"/>
         </RangeInput>
         <Input
           editable="true"
@@ -195,12 +196,35 @@
           required="false"
           value="dwelling.NumOfMonthsConsUnOccupancy_Ext"
           visible="DwellingUsage_HOE.TC_SEAS == dwelling.DwellingUsage or DwellingUsage_HOE.TC_SEC == dwelling.DwellingUsage "/>
+        <BooleanRadioInput
+          editable="true"
+          id="DwellingCoverageInEffect"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DwellingCoverage, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.DwellingUsagePrimaryCoverage"
+          visible="(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS)"/>
         <Input
           editable="true"
           id="dwellingPrimarilyOccupied_Ext"
           label="displaykey.Web.Homeowners.Dwelling.DwellingPrimarilyOccupied_Ext"
           required="false"
-          value="dwelling.Occupancy"/>
+          value="dwelling.Occupancy">
+          <PostOnChange/>
+        </Input>
+        <BooleanRadioInput
+          editable="true"
+          id="ApprovedBuilder"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.ApprovedBuilder, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.OccupancyApprovedBuilder"
+          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/>
+        <DateInput
+          editable="true"
+          id="AnticipatedOccupancy"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.AnticipatedOccupancy, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.OccupancyProjectedDate"
+          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/>
         <!-- <Input
           editable="openForEdit"
           id="DwellingYear"
@@ -212,6 +236,13 @@
           <PostOnChange
             target="firstTimeDeeded_Ext"/>
         </Input> -->
+        <BooleanRadioInput
+          editable="true"
+          id="DwellingVacant"
+          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DwellingVacant, ScriptParameters.HOChildQuestionIndent)"
+          required="true"
+          value="dwelling.OccupancyVacant"
+          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>
@@ -298,13 +329,6 @@
             value="dwelling.BuilderWarranty_Ext"
             visible="dwelling.FirstTimeDeededHome_Ext"/>
         </InputSet>
-        <BooleanRadioInput
-          editable="true"
-          id="DwellingCoverageInEffect"
-          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DwellingCoverage, ScriptParameters.HOChildQuestionIndent)"
-          required="true"
-          value="dwelling.DwellingUsagePrimaryCoverage"
-          visible="(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS)"/>
         <!-- <TypeKeyInput
           editable="true"
           id="DwellingOccupancy"
@@ -313,27 +337,6 @@
           value="dwelling.Occupancy">
           <PostOnChange/>
         </TypeKeyInput> -->
-        <BooleanRadioInput
-          editable="true"
-          id="ApprovedBuilder"
-          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.ApprovedBuilder, ScriptParameters.HOChildQuestionIndent)"
-          required="true"
-          value="dwelling.OccupancyApprovedBuilder"
-          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/>
-        <DateInput
-          editable="true"
-          id="AnticipatedOccupancy"
-          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.AnticipatedOccupancy, ScriptParameters.HOChildQuestionIndent)"
-          required="true"
-          value="dwelling.OccupancyProjectedDate"
-          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/>
-        <BooleanRadioInput
-          editable="true"
-          id="DwellingVacant"
-          label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DwellingVacant, ScriptParameters.HOChildQuestionIndent)"
-          required="true"
-          value="dwelling.OccupancyVacant"
-          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/>
       </InputSet>
     </InputColumn>
     <InputColumn

@@ -15,9 +15,6 @@ enhancement ContactSearchCriteriaEnhancement : entity.ContactSearchCriteria {
     var waningMsg : String
     while (iter.hasNext()){
       var contact = iter.next()
-      if(this.MiddleName != null && this.MiddleName.trim() != "" && !contact.getMiddleName().trim().startsWith(this.MiddleName.trim())){
-         continue
-      }
       results.add(new ContactResultInternal(contact))
       if(contact.AddressBookUID != null){
         uids.add(contact.AddressBookUID)

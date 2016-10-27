@@ -172,11 +172,13 @@
           numCols="10"
           required="false"
           value="dwelling.ReplacementCost"/>
-        <TypeKeyInput
+        <RangeInput
+          action="ResidenceType_HOE.Type.getTypeKeysByCategory(dwelling.HOPolicyType)"
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
-          value="dwelling.ResidenceType"/>
+          value="dwelling.ResidenceType"
+          valueRange="ResidenceType_HOE.Type.getTypeKeysByCategory(dwelling.HOPolicyType)"/>
         <RangeInput
           editable="true"
           id="DwellingUse"

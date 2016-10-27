@@ -42,6 +42,7 @@ class CovTermInputSetPCFController {
     switch(covTerm.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm?.onInit()
         dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
         break
@@ -171,23 +172,6 @@ class CovTermInputSetPCFController {
         coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
       }
     }
-  }
-
-  private static function setDefaultValueForExecutiveCoverage(covTerm : gw.api.domain.covterm.CovTerm, defaultValue : String, coverable : Coverable){
-    if(shouldDefaultExecutivePersonalPropertyLimit(covTerm, coverable)){
-      (covTerm as DirectCovTerm).Value = defaultValue as double * (coverable as Dwelling_HOE).HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-    }else if(covTerm typeis DirectCovTerm and covTerm.PatternCode != "HODW_PersonalPropertyLimit_HOE"){
-      (covTerm as DirectCovTerm).Value = defaultValue
-    }else if(covTerm typeis OptionCovTerm){
-      var option = covTerm.AvailableOptions.firstWhere( \ opt -> opt.Value == defaultValue)
-      covTerm.setOptionValue(option)
-    }
-  }
-
-  private static function shouldDefaultExecutivePersonalPropertyLimit(covTerm : CovTerm, coverable : Coverable) : boolean{
-    return coverable typeis Dwelling_HOE
-       and covTerm.PatternCode == "HODW_PersonalPropertyLimit_HOE"
-       and (coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value > 0)
   }
 
   private static function onCovTermOptionChange_OnPremisesLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable ){

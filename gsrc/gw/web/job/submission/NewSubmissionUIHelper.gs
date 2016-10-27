@@ -109,7 +109,8 @@ class NewSubmissionUIHelper {
   }
 
   function isForeignCountry(theProducerSelection: ProducerSelection) : boolean {
-    var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code, typekey.Country.TC_AU.Code,typekey.Country.TC_CA.Code}
+    //var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code, typekey.Country.TC_AU.Code,typekey.Country.TC_CA.Code}
+    var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code}
     var res = false
     if(!theExcludeList.hasMatch( \ elt1 -> elt1.equalsIgnoreCase(theProducerSelection.Account.AccountHolderContact.Country.Code))){
       res = true
@@ -185,7 +186,7 @@ class NewSubmissionUIHelper {
     //Commented right now -start  - Tuns Property information complete
     var tunaComplete = new una.pageprocess.PropertyInformationCompletePluginImpl()
     //Calling Tuna address PropertyInformationComplete
-    tunaComplete.getPropertyInformationComplete(offer,account,policyPeriod)
+    tunaComplete.getPropertyInformationComplete(offer,account,policyPeriod,producerSelection)
     //Commented right now -start
 
     JobForward.go(submission, policyPeriod)

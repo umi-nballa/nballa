@@ -48,6 +48,7 @@ public final class HORateRoutineNames {
   public static final var HAIL_RESISTANT_ROOF_CREDIT_RATE_ROUTINE : String = "UNAHOHailResistantRoofCreditRateRoutine"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE : String = "UNAHOHigherAllPerilDeductible"
   public static final var AFFINITY_DISCOUNT_RATE_ROUTINE : String = "UNAHOAffinityDiscountRateRoutine"
+  public static final var AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE : String = "UNAHOAgeOfHomePremiumModifierRateRoutine"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -87,4 +88,5 @@ public final class HORateRoutineNames {
   public static final var LIMITED_SCREENED_ENCLOSURE_AND_CARPORT_COV_ROUTINE_NAME : String = "UNAHOLimitedScreenedEnclosureAndCarportCovRateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIRateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
+  public static final var MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE : String = "UNAHOMatureHomeOwnerDiscountRateRoutine"
 }

@@ -17,7 +17,7 @@ class HOCommonDwellingRatingInfo {
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
   var _totalBasePremium : BigDecimal as TotalBasePremium
-  var _policyType : typekey.HOPolicyType_HOE as PolicyType
+  var _policyType : HOPolicyType_HOE as PolicyType
   var _territoryCode : String as TerritoryCode
 
   construct(lineVersion: HomeownersLine_HOE){

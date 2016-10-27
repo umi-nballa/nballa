@@ -9,6 +9,10 @@ uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
 uses una.integration.mapping.hpx.common.HPXClassificationMapper
+uses una.integration.mapping.hpx.common.HPXExclusionMapper
+uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusionMapper
+uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyConditionMapper
+uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,10 +29,29 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
 
     // If it contains General Liability Line, include the coverages
     if(policyPeriod.GLLineExists) {
-      var glLine = generalLiabilityPolicyLine.createGeneralLiabilityLineBusiness(policyPeriod)
-      for (cov in glLine) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
+      var glLineCovs = generalLiabilityPolicyLine.createGeneralLiabilityLineCoverages(policyPeriod)
+      for (cov in glLineCovs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
     }
-
+    if(policyPeriod.GLLineExists) {
+      var glLineExlcs = generalLiabilityPolicyLine.createGeneralLiabilityLineExclusions(policyPeriod)
+      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineExlc)) }
+    }
+    if(policyPeriod.GLLineExists) {
+      var glLineConds = generalLiabilityPolicyLine.createGeneralLiabilityLinePolicyConditions(policyPeriod)
+      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineCond)) }
+    }
+    if(policyPeriod.CPLineExists) {
+      var glLineCovs = createCommericalPropertyLineCoverages(policyPeriod)
+      for (cov in glLineCovs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
+    }
+    if(policyPeriod.CPLineExists) {
+      var glLineExlcs = createCommericalPropertyLineExclusions(policyPeriod)
+      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineExlc)) }
+    }
+    if(policyPeriod.CPLineExists) {
+      var glLineConds = createCommericalPropertyLinePolicyConditions(policyPeriod)
+      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineCond)) }
+    }
     var buildings = createStructuresInfo(policyPeriod)
     for (building in buildings) {
       commercialPropertyLineBusiness.addChild(new XmlElement("Dwell", building))
@@ -42,6 +65,14 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
       return policyPeriod.CPLine.AllCoverages
+  }
+
+  override function getExclusions(policyPeriod: PolicyPeriod): List<Exclusion> {
+    return policyPeriod.CPLine.AllExclusions
+  }
+
+  override function getPolicyConditions(policyPeriod: PolicyPeriod): List<PolicyCondition> {
+    return policyPeriod.CPLine.AllConditions
   }
 
   override function getTransactions(policyPeriod: PolicyPeriod): List<Transaction> {
@@ -81,6 +112,14 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getExclusionMapper() : HPXExclusionMapper {
+    return new HPXGLExclusionMapper()
+  }
+
+  override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
+    return new HPXCPPolicyConditionMapper()
+  }
+
   override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
     var structures = new java.util.ArrayList<Coverable>()
     var buildings = policyPeriod.CPLine.AllCoverables.where( \ elt -> elt typeis CPBuilding)
@@ -88,6 +127,18 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
       structures.add(building)
     }
     return structures
+  }
+
+  function createCommericalPropertyLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineCoverages(policyPeriod, policyPeriod.GLLine)
+  }
+
+  function createCommericalPropertyLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineExclusions(policyPeriod, policyPeriod.GLLine)
+  }
+
+  function createCommericalPropertyLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLinePolicyConditions(policyPeriod, policyPeriod.GLLine)
   }
 
   override function getLocation(coverable : Coverable) : PolicyLocation {
@@ -98,6 +149,14 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as CPBuilding).CPLocation as Coverable)
   }
 
+  override function getLocationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return getExclusions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as CPBuilding).CPLocation as Coverable)
+  }
+
+  override function getLocationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as CPBuilding).CPLocation as Coverable)
+  }
+
   override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == (coverable as CPBuilding).CPLocation as Coverable)
     return transactions
@@ -105,6 +164,14 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
 
   override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
     return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructureExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return getExclusions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
   }
 
   override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
@@ -117,6 +184,14 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getClassificationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getClassificationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
     return null
   }
 
@@ -135,6 +210,16 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
     var lineCovs = (line as CPLine).CoveragesFromCoverable
     return lineCovs
+  }
+
+  override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
+    var lineExcls = (line as CPLine).ExclusionsFromCoverable
+    return lineExcls
+  }
+
+  override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {
+    var lineConds = (line as CPLine).ConditionsFromCoverable
+    return lineConds
   }
 
   override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {

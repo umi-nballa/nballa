@@ -38,6 +38,9 @@ class CPBuildingPopupUIHelper {
   }
 
   public static function findFirstMatchingClassCode(cpBuilding : entity.CPBuilding, code : String) : CPClassCode{
+
+    if(code!=null && code.trim()=="")
+      return null
     var classCode = cpBuilding.firstMatchingClassCode(code)
     if (classCode == null) {
       gw.api.util.LocationUtil.addRequestScopedErrorMessage(displaykey.Java.ClassCodePickerWidget.InvalidCode(code))

@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="HODW_FireSpecificOtherStructure_HOE_Ext"
-  coverageCategory="HODW_Additional_HOE"
+  coverageCategory="HODW_AdditionalScheduled_HOE_Ext"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
   existence="Electable"
@@ -11,6 +11,23 @@
   priority="13900"
   public-id="HODW_FireSpecificOtherStructure_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript/>
-  <CovTerms/>
+  <CovTerms>
+    <GenericCovTermPattern
+      codeIdentifier="HODW_FireSpecStrucDescription_HOE"
+      coverageColumn="StringTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="100"
+      public-id="HODW_FireSpecStrucDescription_HOE"
+      required="false"/>
+    <DirectCovTermPattern
+      codeIdentifier="HODW_FireSpecStrucIncreasedLimit_HOE"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="200"
+      public-id="HODW_FireSpecStrucIncreasedLimit_HOE"
+      required="false"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

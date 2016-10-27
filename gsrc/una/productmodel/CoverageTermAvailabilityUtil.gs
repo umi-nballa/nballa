@@ -63,11 +63,8 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  @Param("covTerm", "The CovTerm to evaluate availability for.")
-  @Param("coverable", "The related Coverable entity.")
-  @Returns("Availability of the given option.")
-  public static function isCoverageTermAvailable(patternCode : String, coverable : Coverable) : boolean{
-
+  private static function setTermValuesBeforeCheckingAvailability(coverable:Coverable):void
+  {
     if(coverable typeis CPBuilding)
     {
       var cLine = coverable.PolicyLine as CommercialPropertyLine
@@ -95,6 +92,15 @@ class CoverageTermAvailabilityUtil {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue = cLine?.CPCoverageC?.Code
       }
     }
+
+  }
+
+  @Param("covTerm", "The CovTerm to evaluate availability for.")
+  @Param("coverable", "The related Coverable entity.")
+  @Returns("Availability of the given option.")
+  public static function isCoverageTermAvailable(patternCode : String, coverable : Coverable) : boolean{
+
+    setTermValuesBeforeCheckingAvailability(coverable)
 
     var result = true
       _logger.info("iscoveragetermavailable " + patternCode + " coverable type is cpbuilding ? " + coverable typeis CPBuilding )

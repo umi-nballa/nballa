@@ -52,11 +52,19 @@
       value="addlInterestDetail.VestingInfo_Ext"
       visible="contactType == TC_company &amp;&amp; addlInterestDetail.VestingInfoRequired_Ext &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)"/>
     <Code><![CDATA[function getAdditionalInterestTypes() : List {
-  var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(contactType)
-  if(addlInterestDetail.Branch.BaseState != TC_SC) {
-    addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")   
+  if(addlInterestDetail.Branch.CPLineExists)
+  {
+    var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(typekey.AddlInterestDetail.TC_CPBLDGADDLINTEREST)
+    return addnlInterestTypes.where( \ elt -> elt.Categories.contains(typekey.AddlInterestDetail.TC_CPBLDGADDLINTEREST)).toList()
   }
-  return addnlInterestTypes
+  else
+  {
+    var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(contactType)
+    if(addlInterestDetail.Branch.BaseState != TC_SC) {
+      addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")
+    }
+    return addnlInterestTypes
+  }
 }]]></Code>
   </InputSet>
 </PCF>

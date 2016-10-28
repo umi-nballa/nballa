@@ -50,7 +50,7 @@
         label="displaykey.Web.ContactDetail.AddressDetail.AddressType"
         required="true"
         value="primaryAddress.AddressType"
-        visible="period.CPLineExists==false"/>
+        visible="period.CPLineExists==false or period.HomeownersLine_HOEExists"/>
       <Input
         editable="primaryAddress.LinkedAddress == null"
         id="AddressDescription"
@@ -80,7 +80,7 @@
     </InputColumn>
     <Code><![CDATA[function setCPDefaultAddressType():boolean
 {
-  if(period.CPLineExists)
+  if(period.CPLineExists or period.HomeownersLine_HOEExists)
     primaryAddress.AddressType=typekey.AddressType.TC_BILLING
   return false
 }]]></Code>

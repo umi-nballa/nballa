@@ -51,11 +51,6 @@ class CPBuildingUtil {
 
   public static function isVisible(bldg:CPBuilding):boolean
   {
-    print("### windstorm " + bldg.ResQuestions.windstormexcl)
-    print("### occup" + bldg.OccupancyType.Code + ":" + typekey.CPOccupancyType_Ext.TC_RESIDENTIAL.Code)
-
-    print("### yearbuilt<2002 " + bldg.Building.YearBuilt<2002 + ":" + bldg.ResQuestions.windmiti5)
-
     if((bldg.ResQuestions.windstormexcl==false && bldg.OccupancyType.Code==typekey.CPOccupancyType_Ext.TC_RESIDENTIAL.Code) || (bldg.ResQuestions.windmiti5==true))
       {
       return true

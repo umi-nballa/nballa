@@ -173,7 +173,6 @@ class CPAutoPopulateUtil {
         cBuilding.CPEquipmentBreakdownEnhance_EXT.CovTerms.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
           }
 
-    print("### terrorism cov "+ cLine.TerrorismCoverage + ":" +cLine.TerrorismCoverage==true)
     if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)
       cLine.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
 

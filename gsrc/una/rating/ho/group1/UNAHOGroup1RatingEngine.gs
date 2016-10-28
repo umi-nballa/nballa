@@ -113,7 +113,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-          rateIncreasedPersonalProperty(dwellingCov, dateRange)
+          if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+            rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_OrdinanceCov_HOE:
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
@@ -170,19 +171,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     //TODO : Need to add the condition to check for gated community discount
     //rateGatedCommunityDiscount(dateRange)
 
-    //update the total base premium with the discounts and surcharges
-    updateTotalBasePremium()
-
     //TODO fix coding
     if (dwelling?.HODW_Personal_Property_HOEExists){
       if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm?.DisplayValue == "Replacement Cost"){
         ratePersonalPropertyReplacementCost(dateRange)
       }
     }
+
+    if(PolicyLine.BaseState == Jurisdiction.TC_CA and dwelling.Occupancy == DwellingOccupancyType_HOE.TC_VACANT)
+      rateVacantDwellings(dateRange)
+
+    //update the total base premium with the discounts and surcharges
+    updateTotalBasePremium()
   }
 
   /**
-   *  Function to rate the Superior Construction Discount
+   *  Function to rate the Deductible Factor
    */
   function rateHigherAllPerilDeductible(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateHigherAllPerilDeductible", this.IntrinsicType)
@@ -251,6 +255,21 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         addCost(costData)
     }
     _logger.debug("Private Fire Company Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Vacant Dwellings
+   */
+  function rateVacantDwellings(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateVacantDwellings", this.IntrinsicType)
+      var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+      var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.VACANT_DWELLINGS_RATE_ROUTINE, HOCostType_Ext.TC_VACANCYSURCHARGE,
+          RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null){
+        addCost(costData)
+        _hoRatingInfo.VacancySurcharge = costData?.ActualTermAmount
+      }
+    _logger.debug("Vacant Dwellings Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -326,12 +345,10 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateIncreasedPersonalProperty(dwellingCov: HODW_Personal_Property_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedPersonalProperty to rate Personal Property Increased Limit Coverage", this.IntrinsicType)
     var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
-    if (dwellingRatingInfo.IsPersonalPropertyIncreasedLimit){
-      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
-        addCost(costData)
-    }
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -355,7 +372,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateLossAssessmentCoverage(dwellingCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
     var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
-    if (dwellingRatingInfo.LossAssessmentLimit != 1000){
+    if (dwellingRatingInfo.LossAssessmentLimit != dwellingCov.HOPL_LossAssCovLimit_HOETerm.RuntimeDefault){
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_GROUP1_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null and costData.ActualTermAmount != 0)

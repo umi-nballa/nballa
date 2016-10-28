@@ -184,7 +184,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return transactions
   }
 
-  function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<HOTransaction_HOE> {
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<HOTransaction_HOE> {
     return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
   }
 

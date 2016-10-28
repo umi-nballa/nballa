@@ -72,7 +72,8 @@ class CluePropertyGateway implements CluePropertyInterface {
     var clueResponseXml = wsi.schema.una.inscore.cprulesresultschema.Result.parse(responseXml)
     var messages = clueResponseXml.Messages.Message_elem
     var clueProductReports = clueResponseXml.ProductResults.CluePersonalProperty
-
+    // code for Clue Check for Ofac ,Uncomment once data Governance is approved
+    // pPeriod.HomeownersLine_HOE.ClueHit_Ext=true
     if (clueProductReports.HasElements){
       for (clueProductReport in clueProductReports) {
         _logger.debug("Clue Product Report found")

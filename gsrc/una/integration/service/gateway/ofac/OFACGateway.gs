@@ -136,6 +136,7 @@ class OFACGateway implements OFACInterface {
     while (contactScoreEntry.hasNext()) {
       var contact = contactScoreEntry.next()
       if (contact.Value > PropertiesHolder.getProperty("ENTITY_SCORE").toInt()){
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_OFAC_CHECK_FAILED, \ -> displaykey.Account.History.OfacCheckFailed)
         gw.transaction.Transaction.runWithNewBundle(\bundle -> {
           //Create Activity             //TBD For Activity Creation
          /* var activityPattern = ActivityPattern.finder.getActivityPatternByCode("OFAC")
@@ -149,6 +150,10 @@ class OFACGateway implements OFACInterface {
           ofacEntity.OfacHit = true
         })
       }
+      /*   //           TBD Later after History Typelist Approval
+      else{
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_OFAC_CHECK_PASSED, \ -> displaykey.Account.History.OfacCheckPassed)
+      }*/
     }
     _logger.debug("Exting from the method persistOFACResult")
   }

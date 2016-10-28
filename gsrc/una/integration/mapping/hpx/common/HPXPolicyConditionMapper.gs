@@ -6,6 +6,8 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses java.math.BigDecimal
 uses gw.xml.XmlElement
 uses gw.xml.date.XmlDate
+uses gw.api.domain.covterm.TypekeyCovTerm
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -73,6 +75,16 @@ abstract class HPXPolicyConditionMapper {
           var covTerms = createGenericCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
           for (child in covTerms.$Children) { cov.addChild(child) }
         }
+      } else if (currCovTerm typeis TypekeyCovTerm) {
+        if (previousPolicyCondition != null) {
+          var prevCovTerm = previousPolicyCondition.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
+          var covTerms = createTypekeyCovTermInfo(currentPolicyCondition, currCovTerm, prevCovTerm as TypekeyCovTerm, transactions)
+          for (child in covTerms.$Children) { cov.addChild(child) }
+        }
+        else {
+          var covTerms = createTypekeyCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
+          for (child in covTerms.$Children) { cov.addChild(child) }
+        }
       }
     }
     return cov
@@ -105,6 +117,12 @@ abstract class HPXPolicyConditionMapper {
   function createGenericCovTermInfo(currentPolicyCondition : PolicyCondition, currCovTerm : GenericCovTerm, prevCovTerm : GenericCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.addChild(new XmlElement("Limit", createOtherGenericCovTerm(currentPolicyCondition, currCovTerm, prevCovTerm as GenericCovTerm, transactions)))
+    return cov
+  }
+
+  function createTypekeyCovTermInfo(currentPolicyCondition : PolicyCondition, currCovTerm : TypekeyCovTerm, prevCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
+    cov.addChild(new XmlElement("Limit", createTypekeyCovTerm(currentPolicyCondition, currCovTerm, prevCovTerm, transactions)))
     return cov
   }
 
@@ -197,6 +215,19 @@ abstract class HPXPolicyConditionMapper {
     limit.FormatPct = 0
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = currentPolicyCondition.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
+    limit.WrittenAmt.Amt = 0.00
+    return limit
+  }
+
+  function createTypekeyCovTerm(condition : PolicyCondition, currentCovTerm : TypekeyCovTerm, previousCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.NetChangeAmt.Amt = 0.00
+    limit.CoverageCd = condition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.WrittenAmt.Amt = 0.00

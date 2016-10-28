@@ -99,7 +99,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange, _hoRatingInfo)
           break
       case HODW_Personal_Property_HOE:
-          if (dwellingCov?.Dwelling.HOLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT)
+          if (dwellingCov?.Dwelling.HOLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT and
+              dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
             rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_ScheduledProperty_HOE:
@@ -398,13 +399,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateIncreasedPersonalProperty(dwellingCov: HODW_Personal_Property_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedPersonalProperty to rate Personal Property Increased Limit Coverage", this.IntrinsicType)
-    var personalPropertyRatingInfo = new HOPersonalPropertyRatingInfo(dwellingCov)
-    if (personalPropertyRatingInfo.IsPersonalPropertyIncreasedLimit){
-      var rateRoutineParameterMap = getPersonalPropertyCovParameterSet(PolicyLine, personalPropertyRatingInfo)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null){
-        addCost(costData)
-      }
+    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
     }
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -557,16 +556,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_DWELLINGRATINGINFO_EXT -> otherStructuresRatingInfo
-    }
-  }
-
-  /**
-   * Returns the parameter set for the Personal Property
-   */
-  private function getPersonalPropertyCovParameterSet(line: PolicyLine, personalPropertyRatingInfo: HOPersonalPropertyRatingInfo): Map<CalcRoutineParamName, Object> {
-    return {
-        TC_POLICYLINE -> line,
-        TC_DWELLINGRATINGINFO_EXT -> personalPropertyRatingInfo
     }
   }
 

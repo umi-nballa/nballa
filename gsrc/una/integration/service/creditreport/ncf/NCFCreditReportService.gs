@@ -18,6 +18,8 @@ uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.VendorDataset_Addresses_Address_DataSourceIndicator
 uses una.logging.UnaLoggerCategory
 uses java.lang.Exception
+uses java.util.Date
+uses java.text.SimpleDateFormat
 
 /**
  * Returns hardwired response 
@@ -177,7 +179,13 @@ class NCFCreditReportService implements ICreditReportService {
     subject.Name[0].Last = creditReportRequest.LastName
     subject.Name[0].Middle = creditReportRequest.MiddleName
     subject.Ssn = creditReportRequest.SocialSecurityNumber
-    subject.Birthdate = creditReportRequest.DateOfBirth as java.lang.String
+
+    if(creditReportRequest.DateOfBirth != null){
+      var dateFormat = new SimpleDateFormat("mm/dd/yyyy")
+      var dobString = dateFormat.format(creditReportRequest.DateOfBirth)
+      //assign date of birth as String with above format to Birthdate
+      subject.Birthdate = dobString
+     }
 
     subject.Address[0].Type = SubjectAddressType_Type.Residence
 

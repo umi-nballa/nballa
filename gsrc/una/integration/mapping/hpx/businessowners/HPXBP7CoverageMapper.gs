@@ -95,6 +95,24 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
     }
   }
+
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+
+    switch(typeof cost){
+      case BP7BuildingCovCost:
+          result = cost.Coverage
+          break
+      case BP7LocationCovCost:
+          result = cost.Coverage
+          break
+      case BP7LineCovCost:
+          result = cost.Coverage
+          break
+    }
+    return result
+  }
+
    /*
   function createBP7AddlInsdBldgOwnersSchedule(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()

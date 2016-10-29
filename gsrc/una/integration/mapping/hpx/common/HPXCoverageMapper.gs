@@ -26,7 +26,7 @@ abstract class HPXCoverageMapper {
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
-    var costInfo = createCoverageCostInfo(transactions)
+    var costInfo = createCoverageCostInfo(currentCoverage, previousCoverage, transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
@@ -236,13 +236,22 @@ abstract class HPXCoverageMapper {
     return limit
   }
 
-  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+  function createCoverageCostInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (transactions != null) {
       var cost = transactions.first()
       cov.BaseRateAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
       cov.CurrentTermAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
-      cov.WrittenAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
+      var allCosts = currentCoverage.PolicyLine.Costs
+      var currentPremium = 0.00
+      for (covCost in allCosts) {
+       // if(covCost typeis HomeownersCovCost_HOE){
+          if(getCostCoverage(covCost)?.PatternCode?.equals(currentCoverage.PatternCode)) {
+            currentPremium = currentPremium + covCost.ActualAmount.Amount
+          }
+      //  }
+      }
+      cov.WrittenAmt.Amt = currentPremium
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
       cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
     }
@@ -264,5 +273,7 @@ abstract class HPXCoverageMapper {
                       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
 
   abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
+
+  abstract function getCostCoverage(cost : Cost) : Coverage
 
 }

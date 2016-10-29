@@ -141,6 +141,10 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
     return null
   }

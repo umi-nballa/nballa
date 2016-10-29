@@ -23,4 +23,27 @@ class HPXGLCoverageMapper extends HPXCoverageMapper {
     return coverable
   }
 
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+
+    switch(typeof cost){
+      case GLCost:
+          result = cost.Coverage
+          break
+      case GLCovCost:
+          result = cost.Coverage
+          break
+      case GLCovExposureCost:
+          result = cost.Coverage
+          break
+      case GLAddlInsuredCost:
+          result = cost.Coverage
+          break
+      case GLStateCost:
+          result = cost.Coverage
+          break
+    }
+
+    return result
+  }
 }

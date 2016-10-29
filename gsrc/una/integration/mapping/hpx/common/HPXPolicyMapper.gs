@@ -337,6 +337,8 @@ abstract class HPXPolicyMapper {
 
   abstract function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
+  abstract function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
+
   abstract function getLocation(coverable : Coverable) : PolicyLocation
 
   abstract function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>

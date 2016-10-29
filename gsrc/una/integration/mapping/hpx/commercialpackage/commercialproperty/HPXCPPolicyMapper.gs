@@ -179,6 +179,10 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return transactions
   }
 
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
+  }
+
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
     return null
   }

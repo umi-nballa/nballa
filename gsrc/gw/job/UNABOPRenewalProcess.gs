@@ -12,7 +12,6 @@ class UNABOPRenewalProcess extends UNARenewalProcess{
   }
 
   override function pendingRenewalFirstCheck(){
-    print("hit this first check.")
     //Intentionally override and do nothing.  BOP does not do anything for the "first check".  By still hitting the step but
     //intentionally doing nothing, we bypass having to use different workflows which just complicates things
   }

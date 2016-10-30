@@ -6,7 +6,6 @@ uses gw.util.concurrent.LockingLazyVar
 uses java.util.HashSet
 uses java.util.Date
 uses gw.api.database.Query
-uses java.lang.IllegalStateException
 uses java.lang.Integer
 uses java.lang.Double
 uses una.logging.UnaLoggerCategory

@@ -366,10 +366,12 @@ class CoverageTermAvailabilityUtil {
     var restrictiveOptions = {"BP76Months_EXT","BP712Months_EXT"}
 
     if(restrictiveOptions.contains(option.OptionCode)){
-      if(option.OptionCode == "BP712Months_EXT"){
-        result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=300000
-      }else if(option.OptionCode == "BP76Months_EXT"){
-        result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=600000
+      if(bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value!=null){
+        if(option.OptionCode == "BP712Months_EXT"){
+          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=30000
+        }else if(option.OptionCode == "BP76Months_EXT"){
+          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=600000
+        }
       }
     }
     return result

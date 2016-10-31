@@ -92,23 +92,6 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return policyPeriod.BP7Transactions
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-
-    switch(typeof cost){
-      case BP7BuildingCovCost:
-          result = cost.Coverage
-          break
-      case BP7LocationCovCost:
-          result = cost.Coverage
-          break
-      case BP7LineCovCost:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXBP7CoverageMapper()
   }

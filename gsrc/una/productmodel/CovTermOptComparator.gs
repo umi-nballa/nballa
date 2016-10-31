@@ -13,8 +13,30 @@ uses gw.api.productmodel.CovTermOpt
  * and default sorts do not account for excluded and decimals are less than whole numbers, which is the opposite of how we want to display.
  */
 class CovTermOptComparator implements Comparator<gw.api.productmodel.CovTermOpt> {
+  private var _overrideLogic : block(option1 : CovTermOpt, option2 : CovTermOpt):int
+
+  construct(){
+
+  }
+
+  construct(overrideLogic : block(option1 : CovTermOpt, option2 : CovTermOpt) : int){
+    _overrideLogic = overrideLogic
+  }
+
   override function compare(option1 : CovTermOpt, option2 : CovTermOpt): int {
-    var result = 0
+    var result : int
+
+    if(_overrideLogic != null){
+      result = _overrideLogic(option1, option2)
+    }else{
+      result = standardCompare(option1, option2)
+    }
+
+    return result
+  }
+
+  private function standardCompare(option1 : CovTermOpt, option2 : CovTermOpt) : int{
+    var result : int
 
     if(option1.Value < 0 or option1.Value < 1 and option2.Value > 1){//option 1 is 'special - excluded or not applicable', or option 1 is a percentage value and option 2 isn't
       result = 1

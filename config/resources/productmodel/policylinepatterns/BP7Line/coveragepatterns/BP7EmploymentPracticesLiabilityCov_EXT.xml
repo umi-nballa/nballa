@@ -67,7 +67,9 @@
           optionCode="25000_EXT"
           priority="400"
           public-id="zt9jc4ij438sqfabba779ti6pla"
-          value="25000"/>
+          value="25000">
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as BP7EmploymentPracticesLiabilityCov_EXT).BP7Line)]]></AvailabilityScript>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="z4vh2sbkdgca62e4jvqqpmrq0kb"
           currency="usd"
@@ -136,6 +138,7 @@
       public-id="NumbOfEmployees_EXT"
       required="true"
       valueType="count">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("NumbOfEmployees_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
       <LimitsSet/>
     </DirectCovTermPattern>
   </CovTerms>

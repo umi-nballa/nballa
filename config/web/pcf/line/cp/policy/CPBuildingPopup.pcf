@@ -79,6 +79,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Description"
                 value="cpBuilding.Building.Description"/>
               <PickerInput
+                editable="true"
                 id="ClassCode"
                 inputConversion="gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding))//VALUE)"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ClassCode"
@@ -664,18 +665,29 @@
                 <DetailViewPanel>
                   <InputColumn>
                     <Label
-                      label="&quot;Additional &amp; Optional Coverages&quot;"/>
+                      label="&quot;Additional Coverages&quot;"/>
                   </InputColumn>
                 </DetailViewPanel>
                 <PanelRef
-                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;,&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpaddlcov"
                   visible="cpBuilding != null"/>
                 <DetailViewPanel>
                   <InputColumn>
                     <Label
-                      label="&quot;Optional Line Level Coverages&quot;"/>
+                      label="&quot;Optional Coverages&quot;"/>
+                  </InputColumn>
+                </DetailViewPanel>
+                <PanelRef
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  editable="true"
+                  id="cpoptcov"
+                  visible="cpBuilding != null"/>
+                <DetailViewPanel>
+                  <InputColumn>
+                    <Label
+                      label="&quot;Line Level Coverages&quot;"/>
                   </InputColumn>
                 </DetailViewPanel>
                 <PanelRef

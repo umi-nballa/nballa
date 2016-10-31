@@ -62,6 +62,11 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     return limits
   }
 
+  override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    return null
+  }
+
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
     if (currentCoverage.OwningCoverable typeis BP7Building) {

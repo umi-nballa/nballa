@@ -2,6 +2,15 @@ package gw.lob.bp7
 
 uses gw.api.domain.covterm.CovTerm
 uses gw.entity.IEntityType
+uses gw.web.productmodel.ProductModelSyncIssuesHandler
+uses una.config.ConfigParamsUtil
+uses gw.api.domain.covterm.DirectCovTerm
+uses gw.api.domain.covterm.BooleanCovTerm
+uses gw.api.domain.covterm.OptionCovTerm
+uses una.utils.MathUtil
+uses una.productmodel.CoveragesUtil
+uses java.lang.Double
+
 
 uses java.math.BigDecimal
 
@@ -39,5 +48,50 @@ class BP7DirectCovTermValidation {
     }
 
     return null
+  }
+
+  public static function validateCalculatedLimits(covTerm: DirectCovTerm, coverable: Coverable) : String {
+    var result : String
+    if(coverable typeis BusinessOwnersLine){
+      var min = covTerm.getMinAllowedLimitValue(coverable)
+      var max = covTerm.getMaxAllowedLimitValue(coverable)
+
+      if(ConfigParamsUtil.getList(TC_DERIVEDSPECIALLIMITSCOVTERMPATTERNS, coverable.PolicyLine.BaseState).contains(covTerm.PatternCode)){
+        var incrementAmount = ConfigParamsUtil.getDouble(TC_SpecialLimitsIncrementAmount, coverable.BaseState, covTerm.PatternCode)
+        var isAllowedValue = isAllowedValue(incrementAmount, covTerm, coverable)
+
+        if(covTerm.Value != null and covTerm.Value < min or covTerm.Value > max or !isAllowedValue){
+          result = displaykey.SpecialLimitErrorMessage(covTerm.Pattern.Name, new Double(min).asMoney(), new Double(max).asMoney(), incrementAmount.asMoney())
+        }
+      }else{
+        if((max != null and min != null) and (covTerm.Value < min or covTerm.Value > max)){
+          result = displaykey.una.productmodel.validation.LimitValidationMessage(new Double(covTerm.Value).asMoney(), covTerm.Pattern.Name, new Double(min as double).asMoney(), new Double(max as double).asMoney())
+        }else if(min != null and covTerm.Value < min){
+          result = displaykey.una.productmodel.validation.LimitMinValidationMessage(new Double(min as double).asMoney())
+        }else if(max != null and covTerm.Value > max){
+          result = displaykey.una.productmodel.validation.LimitMaxValidationMessage (new Double(max as double).asMoney())
+        }
+      }
+    }
+    return result
+  }
+
+  private static function isAllowedValue(incrementValue : double, covTerm : DirectCovTerm, bp7line : BusinessOwnersLine) : boolean {
+    var baseState = bp7line.PolicyLine.BaseState
+    var minimumAllowed = covTerm.getMinAllowedLimitValue(bp7line)
+    var maximumAllowed = covTerm.getMaxAllowedLimitValue(bp7line)
+
+    var allowedIncrement = minimumAllowed
+    var allowedIncrements : List<Double> = {allowedIncrement}
+
+    while(allowedIncrement <= maximumAllowed){
+      allowedIncrement += incrementValue
+      allowedIncrements.add(allowedIncrement)
+    }
+    if(covTerm.PatternCode=="BP7LimitatDescribedPremises_EXTTerm" || covTerm.PatternCode=="BP7LimitDescribedPremises_EXT" ||
+        covTerm.PatternCode=="BP7Limit38")
+          allowedIncrements.add(1000)
+
+    return allowedIncrements.contains(covTerm.Value.doubleValue())
   }
 }

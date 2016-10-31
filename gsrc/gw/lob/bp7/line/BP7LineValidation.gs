@@ -38,7 +38,6 @@ class BP7LineValidation extends PolicyLineValidation<entity.BP7BusinessOwnersLin
     validateEmployeeDishonestNamedEmployeesSchedule()
     validateDiscretionaryPayrollExpenseSchedule()
     validateComputerFraudFundsTransferFraudLimit()
-    validateEmployeeDishonestyLimit()
     validateFunctionalBuildingValuationWaitingPeriod()
     validateApartmentBuildingsTenantsAutosSchedule()
     validateRestaurantsLossOrDamageToCustomersAutosSchedule()
@@ -206,19 +205,6 @@ class BP7LineValidation extends PolicyLineValidation<entity.BP7BusinessOwnersLin
       var value = values?.firstWhere( \ val -> val != null)
       if (value != null and values.hasMatch(\val -> val != null and val != value)) {
         Result.addError(BP7Line, ValidationLevel.TC_QUOTABLE, displaykey.Web.Policy.BP7.Validation.Building.FunctionalBuildingValuationEndorsementMustHaveTheSameWaitingPeriod)
-      }
-    }
-  }
-
-  private function validateEmployeeDishonestyLimit() {
-    Context.addToVisited(this, "validateEmployeeDishonestyLimit")
-
-    if (Context.isAtLeast(ValidationLevel.TC_QUOTABLE) && BP7Line.BP7EmployeeDishtyExists
-        && BP7Line.BP7EmployeeDishty.BP7Limit6Term.OptionValue.Description != "No Coverage") {
-      if (!BP7Line.BP7Locations.hasMatch(\loc -> loc.BP7LocationEmployeeDishtyExists
-          && loc.BP7LocationEmployeeDishty.BP7EmployeeDishtyApplyTerm.OptionValue.Description == "Yes")) {
-        Result.addError(BP7Line, ValidationLevel.TC_QUOTABLE,
-            displaykey.Web.Policy.BP7.Validation.Line.EmployeeDishonestyNoLocationElectingCoverage)
       }
     }
   }

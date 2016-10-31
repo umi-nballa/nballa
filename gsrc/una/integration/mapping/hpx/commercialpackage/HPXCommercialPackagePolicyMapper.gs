@@ -67,20 +67,6 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-
-    switch(typeof cost){
-      case GLCost:
-          result = cost.Coverage
-          break
-      case CPCost:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return null
   }

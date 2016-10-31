@@ -669,7 +669,7 @@
                   </InputColumn>
                 </DetailViewPanel>
                 <PanelRef
-                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;,&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPContentsCategory&quot;,&quot;CPAdditionalPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpaddlcov"
                   visible="cpBuilding != null"/>
@@ -677,6 +677,17 @@
                   <InputColumn>
                     <Label
                       label="&quot;Optional Coverages&quot;"/>
+                  </InputColumn>
+                </DetailViewPanel>
+                <PanelRef
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  editable="true"
+                  id="cpoptcov"
+                  visible="cpBuilding != null"/>
+                <DetailViewPanel>
+                  <InputColumn>
+                    <Label
+                      label="&quot;Line Level Coverages&quot;"/>
                   </InputColumn>
                 </DetailViewPanel>
                 <PanelRef

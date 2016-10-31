@@ -18,8 +18,38 @@ class HPXGLPolicyConditionMapper extends HPXPolicyConditionMapper {
     return null
   }
 
-  function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
-     return null
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+
+    switch (currentPolicyCondition.PatternCode) {
+      case "LimitationofCovDesignatedPremises_EXT" :
+          var limitationOfCovToDesigPremisesOrProject = createlimitationOfCovToDesigPremisesOrProjectSchedule(currentPolicyCondition, previousPolicyCondition, transactions)
+          for (item in limitationOfCovToDesigPremisesOrProject) { limits.add(item)}
+          break
+    }
+    return limits
+  }
+
+  override function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    return null
+  }
+
+  function createlimitationOfCovToDesigPremisesOrProjectSchedule(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.CoverageCd = currentPolicyCondition.PatternCode
+    limit.CoverageSubCd = ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.FormatText = ""
+    limit.LimitDesc = "Premises: " + currentPolicyCondition.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
+                      "| Project: " + (currentPolicyCondition.OwningCoverable as GLLine).Exposures.first().ClassCode + " - " +
+                                      (currentPolicyCondition.OwningCoverable as GLLine).Exposures.first().ClassCode.Classification
+    limit.WrittenAmt.Amt = 0.00
+    limits.add(limit)
+    return limits
   }
 }

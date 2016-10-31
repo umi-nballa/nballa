@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CoveragePattern
-  codeIdentifier="CPCarport_EXT"
+  codeIdentifier="CPGazebo_Ext"
   coverageCategory="CPOptionalPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
@@ -8,31 +8,32 @@
   lookupTableName="CPBuildingCov"
   owningEntityType="CPBuilding"
   policyLinePattern="CPLine"
-  priority="3304"
-  public-id="CPCarport_EXT"
+  priority="3804"
+  public-id="CPGazebo_Ext"
   referenceDateByType="PolicyTerm">
   <CovTerms>
+    <TypekeyCovTermPattern
+      codeIdentifier="CPGazeboConst_Ext"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      modelType="Other"
+      priority="200"
+      public-id="CPGazeboConst_Ext"
+      required="true"
+      typefilter="filter2"
+      typelist="ConstructionType_CP"/>
     <DirectCovTermPattern
       aggregationModel="po"
-      codeIdentifier="CPCarportLimit_EXT"
+      codeIdentifier="CPGazeboLimit_Ext"
       coverageColumn="DirectTerm1"
       lookupTableName="CPBuildingCovTerm"
       modelType="Limit"
       priority="100"
-      public-id="CPCarportLimit_EXT"
+      public-id="CPGazeboLimit_Ext"
       required="true"
       restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
-    <TypekeyCovTermPattern
-      codeIdentifier="CPCarportConsType_EXT"
-      coverageColumn="ChoiceTerm2"
-      lookupTableName="CPBuildingCovTerm"
-      modelType="Other"
-      priority="300"
-      public-id="CPCarportConsType_EXT"
-      required="true"
-      typelist="ConstructionType_CP"/>
   </CovTerms>
 </CoveragePattern>

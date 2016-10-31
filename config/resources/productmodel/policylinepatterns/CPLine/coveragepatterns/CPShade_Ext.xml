@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <CoveragePattern
-  codeIdentifier="CPCarport_EXT"
+  codeIdentifier="CPShade_Ext"
   coverageCategory="CPOptionalPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
@@ -8,31 +8,32 @@
   lookupTableName="CPBuildingCov"
   owningEntityType="CPBuilding"
   policyLinePattern="CPLine"
-  priority="3304"
-  public-id="CPCarport_EXT"
+  priority="4204"
+  public-id="CPShade_Ext"
   referenceDateByType="PolicyTerm">
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
-      codeIdentifier="CPCarportLimit_EXT"
+      codeIdentifier="CPShadeLimit_Ext"
       coverageColumn="DirectTerm1"
       lookupTableName="CPBuildingCovTerm"
       modelType="Limit"
       priority="100"
-      public-id="CPCarportLimit_EXT"
+      public-id="CPShadeLimit_Ext"
       required="true"
       restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
     <TypekeyCovTermPattern
-      codeIdentifier="CPCarportConsType_EXT"
-      coverageColumn="ChoiceTerm2"
+      codeIdentifier="CPShadeConst_Ext"
+      coverageColumn="ChoiceTerm1"
       lookupTableName="CPBuildingCovTerm"
       modelType="Other"
-      priority="300"
-      public-id="CPCarportConsType_EXT"
+      priority="200"
+      public-id="CPShadeConst_Ext"
       required="true"
+      typefilter="filter2"
       typelist="ConstructionType_CP"/>
   </CovTerms>
 </CoveragePattern>

@@ -15,58 +15,60 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
     return null
   }
 
-  function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
-    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var deductibles = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>()
+    return null
+  }
+
+  override function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    var deductibles = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>()
 
     switch (currentPolicyCondition.PatternCode) {
       case "CPFloridaHurricanePercentCondition_EXT" :
           var calendarYearHurricaneDeductible = createCalendarYearHurricaneDeductible(currentPolicyCondition, previousPolicyCondition, transactions)
-          for (item in calendarYearHurricaneDeductible) { limits.add(item)}
+          for (item in calendarYearHurricaneDeductible) { deductibles.add(item)}
           break
       case "CPFloridaEachHurricanePerctCondition_EXT" :
           var perOccurenceHurricaneDeductible = createPerOccurenceHurricaneDeductible(currentPolicyCondition, previousPolicyCondition, transactions)
-          for (item in perOccurenceHurricaneDeductible) { limits.add(item)}
+          for (item in perOccurenceHurricaneDeductible) { deductibles.add(item)}
           break
     }
-    return limits
+    return deductibles
   }
 
-  function createCalendarYearHurricaneDeductible(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
-    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+  function createCalendarYearHurricaneDeductible(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    var deductibles = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>()
     var deductibleType = (currentPolicyCondition.PolicyLine as CommercialPropertyLine).hurricanededtype
     if (deductibleType == typekey.CPHurricaneDedType_Ext.TC_CPBLDGCALENDARYEAR_EXT) {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
       var deductiblePercentage = (currentPolicyCondition.PolicyLine as CommercialPropertyLine).hurricanepercded
-      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      limit.CoverageCd = currentPolicyCondition.PatternCode
-      limit.CoverageSubCd = deductibleType
-      limit.CurrentTermAmt.Amt = 0.00
-      limit.NetChangeAmt.Amt = 0.00
-      limit.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 : 0 : 0
-      limit.FormatText = ""
-      limit.LimitDesc = ""
-      limit.WrittenAmt.Amt = 0.00
-      limits.add(limit)
+      deductible.FormatCurrencyAmt.Amt = 0.00
+      deductible.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 : 0 : 0
+      deductible.CoverageCd = currentPolicyCondition.PatternCode
+      deductible.CoverageSubCd = deductibleType
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductibles.add(deductible)
     }
-    return limits
+    return deductibles
   }
 
-  function createPerOccurenceHurricaneDeductible(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
-    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+  function createPerOccurenceHurricaneDeductible(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    var deductibles = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>()
     var deductibleType = (currentPolicyCondition.PolicyLine as CommercialPropertyLine).hurricanededtype
     if (deductibleType == typekey.CPHurricaneDedType_Ext.TC_CPBLDGPEROCCURRENCE_EXT) {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
       var deductiblePercentage = (currentPolicyCondition.PolicyLine as CommercialPropertyLine).hurricanepercded
-      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      limit.CoverageCd = currentPolicyCondition.PatternCode
-      limit.CoverageSubCd = deductibleType
-      limit.CurrentTermAmt.Amt = 0.00
-      limit.NetChangeAmt.Amt = 0.00
-      limit.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 : 0 : 0
-      limit.FormatText = ""
-      limit.LimitDesc = ""
-      limit.WrittenAmt.Amt = 0.00
-      limits.add(limit)
+      deductible.FormatCurrencyAmt.Amt = 0.00
+      deductible.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 : 0 : 0
+      deductible.CoverageCd = currentPolicyCondition.PatternCode
+      deductible.CoverageSubCd = deductibleType
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductibles.add(deductible)
     }
-    return limits
+    return deductibles
   }
 }

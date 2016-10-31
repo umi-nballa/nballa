@@ -29,6 +29,8 @@ abstract class HPXExclusionMapper {
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentExclusion, previousExclusion, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
+    var deductibleScheduleList = createDeductibleScheduleList(currentExclusion, previousExclusion, transactions)
+    for (item in deductibleScheduleList) {cov.addChild(new XmlElement("Deductible", item))}
     if (currentExclusion.OwningCoverable typeis PolicyLine) {
       var covTermInfo = createCovTermInfo(currentExclusion, previousExclusion, transactions)
       for (child in covTermInfo.$Children) { cov.addChild(child) }
@@ -261,6 +263,9 @@ abstract class HPXExclusionMapper {
 
   abstract function createScheduleList(currentExclusion : Exclusion, previousExclusion : Exclusion, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
+
+  abstract function createDeductibleScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>
 
   abstract function createCoverableInfo(currentExclusion : Exclusion, previousExclusion : Exclusion) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
 

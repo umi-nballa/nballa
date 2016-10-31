@@ -122,7 +122,7 @@ class BP7PostOnChangeHandler {
   static function updateProdComplOpsAggrLimit(line : BP7BusinessOwnersLine){
     var liabilityCov = line.BP7BusinessLiability
     var aggrLimitTerm = liabilityCov.BP7ProdCompldOpsAggregateLimitTerm
-    if (aggrLimitTerm.Value == null and aggrLimitTerm.AvailableOptions.Count > 0) {
+    if (aggrLimitTerm != null and aggrLimitTerm.Value == null and aggrLimitTerm.AvailableOptions.Count > 0) {
       aggrLimitTerm.OptionValue = aggrLimitTerm.AvailableOptions.sortBy(\ option -> option.Value).first()
     }
   }

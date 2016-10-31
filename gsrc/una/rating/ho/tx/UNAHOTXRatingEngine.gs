@@ -107,7 +107,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           rateScheduledPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_SpecialLimitsPP_HOE_Ext:
-          rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          rateIncreasedLimitsJewelryWatchesFurs(dwellingCov, dateRange)
           break
       case HODW_LossAssessmentCov_HOE_Ext:
           rateLossAssessmentCoverage(dwellingCov, dateRange)
@@ -133,7 +133,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){
       rateAgeOfHomeDiscount(dateRange)
     }
-    if (PolicyLine.NumAddInsured > 0){
+    if (hasAdditionalNamedInsureds()){
       rateAdditionalInsuredCoverage(dateRange)
     }
     if (dwelling?.HailResistantRoofCredit_Ext){
@@ -408,17 +408,16 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
 
+  /**
+   * Rate the Addition insured
+   */
   function rateAdditionalInsuredCoverage(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredCoverage to rate Additional Insured Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, HOCostType_Ext.TC_ADDITIONALINSURED,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    _hoRatingInfo.AdditionalInsuredPremium = costData?.ActualTermAmount
-    if (costData != null){
-      if (costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
+    if (costData != null)
       addCost(costData)
-    }
     _logger.debug("Additional Insured Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -511,19 +510,17 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-   * Rate the special limits personal property
+   * Rate the Increased Limits Jewelry Watches Furs
    */
-  function rateSpecialLimitsPersonalPropertyCoverage(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange) {
-    _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialLimitsPersonalPropertyCoverage to rate Special Limits Personal Property Coverage", this.IntrinsicType)
+  function rateIncreasedLimitsJewelryWatchesFurs(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedLimitsJewelryWatchesFurs to rate Increased Limits Jewelry Watches Furs", this.IntrinsicType)
     var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.INCREASED_LIMITS_JEWELRY_WATCHES_FURS, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null){
-      if (costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
+    if (costData != null and costData.ActualTermAmount > 0){
       addCost(costData)
     }
-    _logger.debug("Special Limits Personal Property Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Increased Limits Jewelry Watches Furs Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -580,16 +577,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
   }
 
-  /**
-   * Returns the parameter set for the discounts or surcharges
-   */
-  private function getHOCWParameterSet(line: PolicyLine, stateCode: String): Map<CalcRoutineParamName, Object> {
-    return {
-        TC_POLICYLINE -> line,
-        TC_STATE -> stateCode
-    }
-  }
-
   /*private function addWorksheetForCoverage(coverage : EffDated, costData : HOCostData_HOE){
     if(Plugins.get(IRateRoutinePlugin).worksheetsEnabledForLine(PolicyLine.PatternCode)){
       var worksheet = new Worksheet(){ :WorksheetEntries = costData.WorksheetEntries }
@@ -600,5 +587,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium += (_hoRatingInfo.FinalAdjustedBaseClassPremium + _hoRatingInfo.ReplacementCostDwellingPremium +
         _hoRatingInfo.ReplacementCostPersonalPropertyPremium)
+  }
+
+  private function hasAdditionalNamedInsureds() : boolean{
+    var period = PolicyLine.Dwelling.PolicyPeriod
+    var additionalNamedInsureds = period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+    return additionalNamedInsureds?.HasElements
   }
 }

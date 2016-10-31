@@ -79,27 +79,6 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
       return policyPeriod.CPTransactions
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-
-    switch(typeof cost){
-      case CPCost:
-          result = cost.Coverage
-          break
-      case CPBuildingCovCost:
-          result = cost.Coverage
-          break
-      case CPBuildingCovGrp1Cost:
-          result = cost.Coverage
-          break
-      case CPBuildingCovGrp2Cost:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXCPCoverageMapper()
   }

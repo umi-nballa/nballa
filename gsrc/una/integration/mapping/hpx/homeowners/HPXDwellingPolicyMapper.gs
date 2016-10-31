@@ -100,25 +100,6 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return policyPeriod.HOTransactions
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-    switch(typeof cost){
-      case HomeownersLineCost_EXT:
-          result = cost.Coverage
-          break
-      case HomeownersCovCost_HOE:
-          result = cost.Coverage
-          break
-      case DwellingCovCost_HOE:
-          result = cost.Coverage
-          break
-      case ScheduleCovCost_HOE:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXDwellingCoverageMapper()
   }

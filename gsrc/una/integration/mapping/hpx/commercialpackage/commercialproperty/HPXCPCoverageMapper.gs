@@ -12,9 +12,14 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
  * To change this template use File | Settings | File Templates.
  */
 class HPXCPCoverageMapper extends HPXCoverageMapper{
-  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     // Businessowners Line does not have Scheduled Items
+    return null
+  }
+
+  override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
     return null
   }
 

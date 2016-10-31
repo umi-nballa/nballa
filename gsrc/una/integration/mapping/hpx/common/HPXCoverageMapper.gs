@@ -30,6 +30,8 @@ abstract class HPXCoverageMapper {
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
+    var deductibleScheduleList = createDeductibleScheduleList(currentCoverage, previousCoverage, transactions)
+    for (item in deductibleScheduleList) {cov.addChild(new XmlElement("Deductible", item))}
     if (currentCoverage.OwningCoverable typeis PolicyLine) {
       var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage, transactions)
       for (child in covTermInfo.$Children) { cov.addChild(child) }
@@ -245,11 +247,9 @@ abstract class HPXCoverageMapper {
       var allCosts = currentCoverage.PolicyLine.Costs
       var currentPremium = 0.00
       for (covCost in allCosts) {
-       // if(covCost typeis HomeownersCovCost_HOE){
-          if(getCostCoverage(covCost)?.PatternCode?.equals(currentCoverage.PatternCode)) {
-            currentPremium = currentPremium + covCost.ActualAmount.Amount
-          }
-      //  }
+        if(getCostCoverage(covCost)?.PatternCode?.equals(currentCoverage.PatternCode)) {
+          currentPremium = currentPremium + covCost.ActualAmount.Amount
+        }
       }
       cov.WrittenAmt.Amt = currentPremium
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
@@ -271,6 +271,9 @@ abstract class HPXCoverageMapper {
 
   abstract function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
                       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
+
+  abstract function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>
 
   abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
 

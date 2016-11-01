@@ -12,4 +12,9 @@ class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   construct(lineVersion: HomeownersLine_HOE) {
     super(lineVersion)
   }
+
+  construct(dwellingCov: DwellingCov_HOE){
+    super(dwellingCov)
+  }
+
 }

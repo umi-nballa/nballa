@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Reference table for accounts to be used by Guidewire portals."
+  entity="PortalAccount_Ext"
+  table="portalaccount_ext"
+  type="retireable">
+  <foreignkey
+    columnName="Account"
+    desc="Reference to Account."
+    fkentity="Account"
+    name="Account"
+    nullok="false"/>
+  <foreignkey
+    columnName="PortalRecentlyViewed"
+    desc="Reference to PortalRecentlyViewed_Ext entity. Allows array of PortalAccount_Ext to exist on PortalRecentlyViewed_Ext."
+    fkentity="PortalRecentlyViewed_Ext"
+    name="PortalRecentlyViewed"
+    nullok="true"/>
+  <column
+    desc="The date the account was last viewed in the Guidewire portal."
+    name="ViewedDate"
+    nullok="false"
+    type="datetime"/>
+</entity>

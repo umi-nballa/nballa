@@ -37,6 +37,20 @@ class CoveragesUtil {
         break
       case "HODW_LossAssessmentCov_HOE":
         result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
+	case "BP7ForgeryAlteration":
+          result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7BuildingMoneySecurities_EXT":
+          result = isBuildingMoneySecuritiesCoverageAvailable(coverable as BP7Building)
+          break
+      case "BP7OrdinanceOrLawCov_EXT":
+        result = isOrdinanceOrLawCovAvailable(coverable as BP7BusinessOwnersLine)
+          break
+      case "BP7InterruptionComputerOps":
+        result = isInterruptionComputerOpsCovAvailable(coverable as BP7BusinessOwnersLine)
+          break
+      case "BP7CapLossesFromCertfdActsTerrsm":
+        result = isBP7CapLossesFromCertfdActsTerrsmCovAvailable(coverable as BP7BusinessOwnersLine)
         break
       default:
     }
@@ -207,5 +221,33 @@ class CoveragesUtil {
     }
 
     return result
+  }
+  
+  private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
+    return  bp7Line.BP7EmployeeDishtyExists
+  }
+
+  private static function isInterruptionComputerOpsCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    return  bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXTExists
+  }
+
+  private static function isBP7CapLossesFromCertfdActsTerrsmCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    return !bp7Line.BP7ExclOfTerrorismExists
+  }
+
+  private static function isBuildingMoneySecuritiesCoverageAvailable(bp7Building :BP7Building) : boolean {
+    return !(bp7Building.PolicyLine as BP7Line).BP7NamedPerilsExists
+  }
+
+  private static function isOrdinanceOrLawCovAvailable(bp7Line:BP7BusinessOwnersLine) : boolean {
+      //return not this.BP7FunctlBldgValtnExists - written in OOTB BP7BuildingEnhancement
+    for(building in bp7Line.AllBuildings){
+      if(building.BP7FunctlBldgValtnExists){
+        return false
+      }else{
+       return true
+      }
+    }
+    return false
   }
 }

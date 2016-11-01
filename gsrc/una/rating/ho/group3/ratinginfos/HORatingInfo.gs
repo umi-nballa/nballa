@@ -19,4 +19,5 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _superiorConstructionDiscountForAOP: BigDecimal as SuperiorConstructionDiscountForAOP = 0.0
   var _seasonalSecondaryResidenceSurchargeForAOP: BigDecimal as SeasonalSecondaryResidenceSurchargeForAOP = 0.0
   var _matureHomeOwnerDiscount : BigDecimal as MatureHomeOwnerDiscount = 0.0
+  var _higherAllPerilDeductible : BigDecimal as HigherAllPerilDeductible = 0.0
 }

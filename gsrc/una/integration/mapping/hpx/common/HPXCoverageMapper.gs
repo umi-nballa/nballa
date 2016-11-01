@@ -7,6 +7,7 @@ uses java.math.BigDecimal
 uses gw.api.domain.covterm.GenericCovTerm
 uses gw.xml.XmlElement
 uses gw.xml.date.XmlDate
+uses gw.api.domain.covterm.TypekeyCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,10 +26,12 @@ abstract class HPXCoverageMapper {
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
-    var costInfo = createCoverageCostInfo(transactions)
+    var costInfo = createCoverageCostInfo(currentCoverage, previousCoverage, transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
     var scheduleList = createScheduleList(currentCoverage, previousCoverage, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
+    var deductibleScheduleList = createDeductibleScheduleList(currentCoverage, previousCoverage, transactions)
+    for (item in deductibleScheduleList) {cov.addChild(new XmlElement("Deductible", item))}
     if (currentCoverage.OwningCoverable typeis PolicyLine) {
       var covTermInfo = createCovTermInfo(currentCoverage, previousCoverage, transactions)
       for (child in covTermInfo.$Children) { cov.addChild(child) }
@@ -76,6 +79,16 @@ abstract class HPXCoverageMapper {
           var covTerms = createGenericCovTermInfo(currentCoverage, currCovTerm, null, transactions)
           for (child in covTerms.$Children) { cov.addChild(child) }
         }
+      } else if (currCovTerm typeis TypekeyCovTerm) {
+        if (previousCoverage != null) {
+          var prevCovTerm = previousCoverage.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
+          var covTerms = createTypekeyCovTermInfo(currentCoverage, currCovTerm, prevCovTerm as TypekeyCovTerm, transactions)
+          for (child in covTerms.$Children) { cov.addChild(child) }
+        }
+        else {
+          var covTerms = createTypekeyCovTermInfo(currentCoverage, currCovTerm, null, transactions)
+          for (child in covTerms.$Children) { cov.addChild(child) }
+        }
       }
     }
     return cov
@@ -107,7 +120,13 @@ abstract class HPXCoverageMapper {
 
   function createGenericCovTermInfo(currentCoverage : Coverage, currCovTerm : GenericCovTerm, prevCovTerm : GenericCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
-      cov.addChild(new XmlElement("Limit", createOtherGenericCovTerm(currentCoverage, currCovTerm, prevCovTerm as GenericCovTerm, transactions)))
+      cov.addChild(new XmlElement("Limit", createOtherGenericCovTerm(currentCoverage, currCovTerm, prevCovTerm, transactions)))
+    return cov
+  }
+
+  function createTypekeyCovTermInfo(currentCoverage : Coverage, currCovTerm : TypekeyCovTerm, prevCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+    var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
+    cov.addChild(new XmlElement("Limit", createTypekeyCovTerm(currentCoverage, currCovTerm, prevCovTerm, transactions)))
     return cov
   }
 
@@ -206,13 +225,33 @@ abstract class HPXCoverageMapper {
     return limit
   }
 
-  function createCoverageCostInfo(transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+  function createTypekeyCovTerm(coverage : Coverage, currentCovTerm : TypekeyCovTerm, previousCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.NetChangeAmt.Amt = 0.00
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.LimitDesc = ""
+    limit.WrittenAmt.Amt = 0.00
+    return limit
+  }
+
+  function createCoverageCostInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (transactions != null) {
       var cost = transactions.first()
       cov.BaseRateAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
       cov.CurrentTermAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
-      cov.WrittenAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
+      var allCosts = currentCoverage.PolicyLine.Costs
+      var currentPremium = 0.00
+      for (covCost in allCosts) {
+        if(getCostCoverage(covCost)?.PatternCode?.equals(currentCoverage.PatternCode)) {
+          currentPremium = currentPremium + covCost.ActualAmount.Amount
+        }
+      }
+      cov.WrittenAmt.Amt = currentPremium
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
       cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
     }
@@ -233,6 +272,11 @@ abstract class HPXCoverageMapper {
   abstract function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
                       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
 
+  abstract function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>
+
   abstract function createCoverableInfo(currentCoverage : Coverage, previousCoverage : Coverage) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
+
+  abstract function getCostCoverage(cost : Cost) : Coverage
 
 }

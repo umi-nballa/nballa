@@ -12,10 +12,13 @@ uses una.config.ConfigParamsUtil
 class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo {
 
   var _burglarAlarmType: String as BurglarAlarmType
+  var _propertyCovByStateWindstorm : boolean as PropertyCovByStateWindstorm
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
     if (line.Dwelling?.DwellingProtectionDetails?.BurglarAlarm){
       _burglarAlarmType = line.Dwelling?.DwellingProtectionDetails?.BurglarAlarmType.DisplayName
     }
+    _propertyCovByStateWindstorm = line.Dwelling?.PropertyCovByStateWndstorm_Ext
   }
 }

@@ -90,4 +90,5 @@ public final class HORateRoutineNames {
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIRateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
   public static final var MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE : String = "UNAHOMatureHomeOwnerDiscountRateRoutine"
+  public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
 }

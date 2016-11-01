@@ -15,9 +15,17 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _windKeyFactor: BigDecimal as WindKeyFactor = 0.0
   var _protectionConstructionFactor: BigDecimal as ProtectionConstructionFactor = 0.0
 
-  //discounts and surcharges
+  //discounts and surcharges for AOP
   var _superiorConstructionDiscountForAOP: BigDecimal as SuperiorConstructionDiscountForAOP = 0.0
   var _seasonalSecondaryResidenceSurchargeForAOP: BigDecimal as SeasonalSecondaryResidenceSurchargeForAOP = 0.0
-  var _matureHomeOwnerDiscount : BigDecimal as MatureHomeOwnerDiscount = 0.0
-  var _higherAllPerilDeductible : BigDecimal as HigherAllPerilDeductible = 0.0
+  var _matureHomeOwnerDiscountAOP : BigDecimal as MatureHomeOwnerDiscountAOP = 0.0
+  var _higherAllPerilDeductibleAOP : BigDecimal as HigherAllPerilDeductibleAOP = 0.0
+  var _ageOfHomeDiscountAOP: BigDecimal as AgeOfHomeDiscountAOP = 0.0
+
+  //discounts and surcharges for Wind
+  var _ageOfHomeDiscountWind: BigDecimal as AgeOfHomeDiscountWind = 0.0
+  var _higherAllPerilDeductibleWind : BigDecimal as HigherAllPerilDeductibleWind = 0.0
+  var _superiorConstructionDiscountForWind: BigDecimal as SuperiorConstructionDiscountForWind = 0.0
+  var _seasonalSecondaryResidenceSurchargeForWind: BigDecimal as SeasonalSecondaryResidenceSurchargeForWind = 0.0
+  var _buildingCodeNonParticipatingRisksSurcharge : BigDecimal as BuildingCodeNonParticipatingRisksSurcharge = 0.0
 }

@@ -8,11 +8,6 @@ uses java.lang.StringBuilder
 uses java.util.HashMap
 uses gw.api.productmodel.CovTermOpt
 uses una.logging.UnaLoggerCategory
-uses gw.lob.bp7.building.BP7OrdinanceOrLawCovEnhancement
-uses gw.lob.common.util.BigDecimalRange
-uses java.lang.Double
-uses com.ibm.db2.jcc.am.bp
-uses gw.api.web.job.JobWizardHelper
 
 /**
  * Created with IntelliJ IDEA.

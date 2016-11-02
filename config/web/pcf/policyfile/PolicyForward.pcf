@@ -4,14 +4,8 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Forward
     canVisit="perm.System.viewpolicyfile"
-    id="PolicyForward"
-    onBeforeForward="setPortalSession()">
+    id="PolicyForward">
     <ForwardCondition
       action="web.policy.PolicyForwardUtil.getPolicyDestination().go()"/>
-    <Code><![CDATA[function setPortalSession() {
-  //print("teest")
-  var _logger = org.slf4j.LoggerFactory.getLogger("PortalEntry")
-  _logger.info("test")
-}]]></Code>
   </Forward>
 </PCF>

@@ -1,15 +1,15 @@
 package gw.plugin.job.impl
 
 uses gw.plugin.job.IPolicyRenewalPlugin
-uses gw.api.productmodel.Product
 uses gw.util.DateRange
 uses gw.plugin.notification.INotificationPlugin
 uses gw.plugin.Plugins
 uses gw.api.database.Query
 uses gw.util.concurrent.LocklessLazyVar
-uses gw.api.util.StateJurisdictionMappingUtil
 uses gw.api.archive.PolicyTermInArchiveException
 uses gw.api.system.PCLoggerCategory
+uses una.config.ConfigParamsUtil
+uses java.util.Date
 
 @Export
 class PolicyRenewalPlugin implements IPolicyRenewalPlugin
@@ -53,19 +53,18 @@ class PolicyRenewalPlugin implements IPolicyRenewalPlugin
    * would be created for this PolicyPeriod.  The {@link #shouldStartRenewal} calls this method to
    * help determine when to start a Renewal.  This method is additionally useful to get the date
    * a Renewal should start, whether for display or for testing purposes.
-   * 
-   * This implementation gets a notification date for the <code>PolicyPeriod</code> from the 
-   * {@Link INotificationPlugin}, and then adds further lead time based on the Product and PeriodEndDate 
-   * of the PolicyPeriod.  The date returned is always truncated to Midnight so that any date comparison
-   * to the Date returned by this plugin will be reduced to a Day comparison (ignoring the time of day)
+   *
+   * Changed by TLV to query for a static amount of days for renewal start date.
    */
-  override function getRenewalStartDate( periodToRenew: PolicyPeriod ) : DateTime
-  {
-    var renewalMailDate = getRenewalMailDate(periodToRenew)    
-    var daysOutToStartRenewal = getLeadTimeByProduct(periodToRenew.Policy.Product) + getLeadTimeByExpirationDate(periodToRenew.PeriodEnd)
-    
-    // we want the renewal to start daysOutToStartRenewal days earlier than the renewalMailDate
-    return renewalMailDate.addDays(-1 * daysOutToStartRenewal).trimToMidnight()
+  override function getRenewalStartDate( periodToRenew: PolicyPeriod ) : DateTime{
+    var result : Date
+
+    var consentToRateRenewalLeadTime = ConfigParamsUtil.getInt(TC_RenewalStartLeadTime, periodToRenew.BaseState, periodToRenew.Policy.ProductCode + periodToRenew.ConsentToRateReceived_Ext?.booleanValue())
+    var renewalStartLeadTime = ConfigParamsUtil.getInt(TC_RenewalStartLeadTime, periodToRenew.BaseState, periodToRenew.Policy.ProductCode)
+
+    result = consentToRateRenewalLeadTime != null ? periodToRenew.PeriodEnd.addDays(-consentToRateRenewalLeadTime) : periodToRenew.PeriodEnd.addDays(-renewalStartLeadTime)
+
+    return result
   }
 
   private var _renewalUser = LocklessLazyVar.make(\-> findUserByCredential("renewal_daemon"))
@@ -79,27 +78,6 @@ class PolicyRenewalPlugin implements IPolicyRenewalPlugin
     q.join("Credential").compare("UserName", Equals, userName)
     var results = q.select()
     return results.AtMostOneRow  
-  }
-  
-  /**
-   * This method will return an offset based on <code>Product</code>, given the different lead
-   * times to process a Renewal based on the Product of the <code>PolicyPeriod</code>
-   */
-   function getLeadTimeByProduct(product : Product) : int {
-    switch (product) {
-      case "BusinessOwners" : return 90
-      case "BusinessAuto" : return 30
-      case "CommercialProperty" : return 60
-      case "CommercialPackage" : return 90
-      case "GeneralLiability" : return 60
-      //case "HomeOwners" : return 30
-      case "InlandMarine" : return 60
-      case "PersonalAuto" : return 30
-      case "WorkersComp" : return 60
-      default : {
-        return 60
-      }
-    }
   }
   
   /**
@@ -151,5 +129,4 @@ class PolicyRenewalPlugin implements IPolicyRenewalPlugin
   override function doesRenewalRequireConfirmation( periodToRenew : PolicyPeriod) : boolean {
     return false
   }
-
 }

@@ -33,6 +33,11 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     return limits
   }
 
+  override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    return null
+  }
+
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "HOPL_LossAssCovLimit_HOE") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
@@ -159,5 +164,24 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     return null
+  }
+
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+    switch(typeof cost){
+      case HomeownersLineCost_EXT:
+          result = cost.Coverage
+          break
+      case HomeownersCovCost_HOE:
+          result = cost.Coverage
+          break
+      case DwellingCovCost_HOE:
+          result = cost.Coverage
+          break
+      case ScheduleCovCost_HOE:
+          result = cost.Coverage
+          break
+    }
+    return result
   }
 }

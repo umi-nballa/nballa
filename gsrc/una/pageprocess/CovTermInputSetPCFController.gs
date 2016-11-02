@@ -9,6 +9,7 @@ uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
+uses gw.api.productmodel.CovTermOpt
 
 /**
  * Created with IntelliJ IDEA.
@@ -98,6 +99,45 @@ class CovTermInputSetPCFController {
 
     return result
   }
+
+  public static function getOrderedOptions(term : OptionCovTerm, openForEdit : boolean) : List<CovTermOpt>{
+    var results = gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term, openForEdit)
+
+    var specialLogic = getSpecialOrderLogic(term)
+
+    if(specialLogic != null){
+      results = results.orderBy(\ elt -> elt, new una.productmodel.CovTermOptComparator(specialLogic))
+    }else{
+      results = results.orderBy(\ elt -> elt, new una.productmodel.CovTermOptComparator())
+    }
+
+    return results
+  }
+
+  private static function getSpecialOrderLogic(term : OptionCovTerm) : block(option1 : CovTermOpt, option2 : CovTermOpt) : int{
+    var result : block(option1 : CovTermOpt, option2 : CovTermOpt) : int
+
+    switch(term.PatternCode){
+      case "HOPL_SpecialLimitDeductibleAssessment_HOE":
+        result = getLossAssessmentSpecialDeductibleOrderLogic()
+      default:
+        //do nothing because no special order case exists.  defer to default ordering for CovTermOpt Comparator
+    }
+
+    return result
+  }
+
+  private static function getLossAssessmentSpecialDeductibleOrderLogic() : block(option1 : CovTermOpt, option2 : CovTermOpt) : int{
+    return \ option1 : CovTermOpt, option2 : CovTermOpt ->
+    {
+      var equals = 0
+      if(option1.OptionCode.equalsIgnoreCase("2000Section1") and option2.OptionCode.equalsIgnoreCase("1000Section2")){
+        equals = -1
+      }
+      return equals
+    }
+  }
+
 
   private static function validateCalculatedLimits(covTerm: DirectCovTerm, coverable: Dwelling_HOE) : String {
     var result : String

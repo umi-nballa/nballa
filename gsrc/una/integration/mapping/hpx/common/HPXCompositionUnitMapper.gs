@@ -52,11 +52,15 @@ class HPXCompositionUnitMapper {
     var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>()
     var recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
     recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")
-  /*
+
+    /*
     for (form in forms) {
-      documentForms.add(createDocumentForm(form.FormNumber, "English", form.FormDescription, form.EffectiveDate, form.Pattern.Edition, false) )
+      var formNumber = form.FormNumber.replace(" ", "") + form.Pattern.Edition.replace(" ", "")
+      documentForms.add(createDocumentForm(formNumber, "English", form.FormDescription, form.EffectiveDate, form.Pattern.Edition, false) )
     }
-  */
+    */
+
+
 
     var documentForm1 = compositionUnitMapper.createDocumentForm("DP04731202","English","DP04731202", new java.util.Date(),"07-02", false)
     var documentForm2 = compositionUnitMapper.createDocumentForm("DP17670788","English","DP17670788", new java.util.Date(),"07-02", false)
@@ -79,6 +83,7 @@ class HPXCompositionUnitMapper {
     var documentForm19 = compositionUnitMapper.createDocumentForm("UIHOXC0607","English","UIHOXC0607", new java.util.Date(),"07-02", false)
     var documentForm20 = compositionUnitMapper.createDocumentForm("HO04481000","English","HO04481000", new java.util.Date(),"07-02", false)
     var documentForm21 = compositionUnitMapper.createDocumentForm("HO04610511","English","HO04610511", new java.util.Date(),"07-02", false)
+
     var documentForm22 = compositionUnitMapper.createDocumentForm("HO04651000","English","HO04651000", new java.util.Date(),"07-02", false)
     var documentForm23 = compositionUnitMapper.createDocumentForm("NOCPDP0110","English","NOCPDP0110", new java.util.Date(),"07-02", false)
     var documentForm24 = compositionUnitMapper.createDocumentForm("OIRB116550210","English","OIRB116550210", new java.util.Date(),"07-02", false)
@@ -123,6 +128,7 @@ class HPXCompositionUnitMapper {
     var documentForm84 = compositionUnitMapper.createDocumentForm("HO04531000","English","HO04531000", new java.util.Date(),"07-02", false)
     var documentForm85 = compositionUnitMapper.createDocumentForm("TDP_026_ICT","English","TDP_026_ICT", new java.util.Date(),"07-02", false)
     var documentForm86 = compositionUnitMapper.createDocumentForm("TDP_027_ICT","English","TDP_027_ICT", new java.util.Date(),"07-02", false)
+    var documentForm87 = compositionUnitMapper.createDocumentForm("BP04040106","English","BP04040106", new java.util.Date(),"07-02", false)
 
 
 
@@ -147,6 +153,7 @@ class HPXCompositionUnitMapper {
     documentForms.add(documentForm19)
     documentForms.add(documentForm20)
     documentForms.add(documentForm21)
+
     documentForms.add(documentForm22)
     documentForms.add(documentForm23)
     documentForms.add(documentForm24)
@@ -191,6 +198,7 @@ class HPXCompositionUnitMapper {
     documentForms.add(documentForm84)
     documentForms.add(documentForm85)
     documentForms.add(documentForm86)
+    documentForms.add(documentForm87)
 
     var compositionUnit = createCompositionUnit(recipient, documentForms)
     return compositionUnit

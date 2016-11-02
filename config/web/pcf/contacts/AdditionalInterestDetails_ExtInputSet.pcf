@@ -44,17 +44,28 @@
       <PostOnChange
         target="vestingInfo_Ext"/>
     </BooleanRadioInput>
-    <Input
+    <TextInput
       editable="true"
       id="vestingInfo_Ext"
       label="displaykey.Web.Policy.AdditionalInterest.VestingInfo_Ext"
+      maxChars="75"
+      numCols="52"
       required="addlInterestDetail.VestingInfoRequired_Ext"
       value="addlInterestDetail.VestingInfo_Ext"
       visible="contactType == TC_company &amp;&amp; addlInterestDetail.VestingInfoRequired_Ext &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)"/>
-    <Code><![CDATA[function getAdditionalInterestTypes() : List {
-  var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(contactType)
-  if(addlInterestDetail.Branch.BaseState != TC_SC) {
-    addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")   
+    <Code><![CDATA[uses gw.entity.TypeKey
+
+function getAdditionalInterestTypes() : List {
+  var addnlInterestTypes : List<TypeKey>
+  if(addlInterestDetail.Branch.CPLineExists) {
+    addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(typekey.AddlInterestDetail.TC_CPBLDGADDLINTEREST)
+    return addnlInterestTypes.where( \ elt -> elt.Categories.contains(typekey.AddlInterestDetail.TC_CPBLDGADDLINTEREST)).toList()
+  }
+  else if(addlInterestDetail.Branch.HomeownersLine_HOEExists){
+    addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategories({contactType, typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE})
+    if(addlInterestDetail.Branch.BaseState != TC_SC) {
+      addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")
+    }
   }
   return addnlInterestTypes
 }]]></Code>

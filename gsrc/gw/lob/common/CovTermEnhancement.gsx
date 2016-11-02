@@ -76,7 +76,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
         break
     }
 
-    return result
+    return (result == null) ? 0bd : result
   }
 
   private function getDwellingLimitRange(hoLine : HomeownersLine_HOE) : Range{

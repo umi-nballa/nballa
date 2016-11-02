@@ -1,4 +1,6 @@
 package una.config
+
+uses gw.api.domain.covterm.CovTerm
 /**
  * Created with IntelliJ IDEA.
  * User: skashyap
@@ -208,5 +210,10 @@ Default response to B if Building Address county = All Other Counties
 
 
     return false
+  }
+
+  public static function getCovTermsForSchedule(coverable:Coverable,coveragePattern : gw.api.productmodel.ClausePattern):CovTerm[]
+  {
+    return coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -> term.Pattern.Priority ).where( \ elt -> elt.PatternCode!="CPOptionalOutdoorProperty_EXT")
   }
 }

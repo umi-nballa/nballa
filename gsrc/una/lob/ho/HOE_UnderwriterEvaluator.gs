@@ -235,15 +235,18 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       if (creditStatus == CreditStatusExt.TC_NO_HIT || creditStatus == CreditStatusExt.TC_NO_SCORE){
         //adds below UW Issue if the CreditStatus is No HIT or NO Score
         var creditNoHitNoScore = \ ->  displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportNoHitOrNoScore(creditStatus)
+        _policyEvalContext.removeOrphanedIssues()
         _policyEvalContext.addIssue("CreditReportNoHit", "CreditReportNoHit", creditNoHitNoScore, creditNoHitNoScore)
       }
-      if (creditStatus == CreditStatusExt.TC_ERROR){
+      else if (creditStatus == CreditStatusExt.TC_ERROR){
         //adds below UW Issue if the CreditStatus has Errors
+        _policyEvalContext.removeOrphanedIssues()
         var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
         _policyEvalContext.addIssue("CreditReportErrors","CreditReportErrors", creditReportErrors,creditReportErrors)
       }
-      if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+      else if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
         //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
+        _policyEvalContext.removeOrphanedIssues()
         var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
         _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)
       }

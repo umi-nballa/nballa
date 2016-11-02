@@ -41,8 +41,8 @@ public final class HORateRoutineNames {
   public static final var FIRE_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOFireProtectiveDevicesCreditRateRoutine"
   public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
   public static final var MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMinimumPremiumAdjustmentRateRoutine"
-  public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAAdditionalInsuredRateRoutine"
-  public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAIncreasedLimitsJewelryWatchesFurs"
+  public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAHOAdditionalInsuredRateRoutine"
+  public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAHOIncreasedLimitsJewelryWatchesFursRateRoutine"
   public static final var EXECUTIVE_COVERAGE_RATE_ROUTINE : String = "UNAHOExecutiveCoverageRateRoutine"
   public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
   public static final var HAIL_RESISTANT_ROOF_CREDIT_RATE_ROUTINE : String = "UNAHOHailResistantRoofCreditRateRoutine"
@@ -76,6 +76,7 @@ public final class HORateRoutineNames {
   public static final var GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOGatedCommunityDiscountGroup1RateRoutine"
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
   public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
+  public static final var VACANT_DWELLINGS_RATE_ROUTINE : String = "UNAHOVacantDwellingsRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"
@@ -84,9 +85,10 @@ public final class HORateRoutineNames {
   public static final var GOLF_CART_PHYSICAL_DAMAGE_AND_LIABILITY_COVERAGE_RATE_ROUTINE : String = "UNAHOGolfCartPhysicalDamageAndLiabilityCovRateRoutine"
   public static final var INCREASED_SECTION_II_LIMITS_ROUTINE_NAME : String = "UNAHOIncreasedSectionIILimitsRateRoutine"
   public static final var SINKHOLE_LOSS_COVERAGE_RATE_ROUTINE : String = "UNAHOSinkholeLossCoverageRateRoutine"
-  public static final var ORDINANCE_OR_LAW_COV_GROUP3_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovRateRoutine"
+  public static final var ORDINANCE_OR_LAW_COV_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovRateRoutine"
   public static final var LIMITED_SCREENED_ENCLOSURE_AND_CARPORT_COV_ROUTINE_NAME : String = "UNAHOLimitedScreenedEnclosureAndCarportCovRateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIRateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
   public static final var MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE : String = "UNAHOMatureHomeOwnerDiscountRateRoutine"
+  public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
 }

@@ -127,6 +127,7 @@ class CPAutoPopulateUtil {
 
   public static function setIncreasedCostLimit (cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
   {
+
     //Increased cost of construction limit to 5% of building coverage or 10000 whichever is minimum
     if(cBuilding?.CPBldgCov?.CPBldgCovLimitTerm!=null && 0.05*cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value<(new BigDecimal(10000)))
     {
@@ -165,39 +166,48 @@ class CPAutoPopulateUtil {
   {
       _logger.info("Equipment brkdown " + cLine.EquipmentBreakdownEnhancement)
 
+    cBuilding.CoverageForm=cLine.CoverageForm
+
       if(cLine.EquipmentBreakdownEnhancement!=null && cLine.EquipmentBreakdownEnhancement.trim()!="")
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
         cBuilding.CPEquipmentBreakdownEnhance_EXT.CovTerms.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
           }
 
-    print("### terrorism cov "+ cLine.TerrorismCoverage + ":" +cLine.TerrorismCoverage==true)
     if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)
       cLine.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
 
 
     //setIncreasedCostLimit(cLine,cBuilding)
 
-
-
     if(cLine.causeofloss!=null)
     {
       cBuilding?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value = cLine.causeofloss
-     }
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovCauseOfLossTerm?.Value = cLine?.causeofloss
+    }
 
     if(cLine.allotherperilded!=null)
     {
       cBuilding?.CPBldgCov?.CPBldgCovDeductibleTerm?.OptionValue=cLine.allotherperilded.Code
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovDeductibleTerm?.OptionValue=cLine?.allotherperilded.Code
       }
 
     if(cLine.hurricanededtype!=null)
     {
       cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+
     }
 
     if(cLine.hurricanepercded!=null)
     {
       cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+
   }
 
     if(cLine.Inflationguard!=null)

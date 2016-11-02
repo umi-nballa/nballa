@@ -13,10 +13,10 @@ uses java.util.Map
 uses java.math.BigDecimal
 uses una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo
 uses una.rating.ho.common.HOOtherStructuresRatingInfo
-uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
 uses una.config.ConfigParamsUtil
+uses com.sun.java.swing.plaf.windows.resources.windows
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,6 +29,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private static final var CLASS_NAME = UNAHOGroup3RatingEngine.Type.DisplayName
   private var _hoRatingInfo: HORatingInfo
   private var _discountsOrSurchargeRatingInfo : HOGroup3DiscountsOrSurchargeRatingInfo
+  private final var BCEG_CODE_FOR_NON_PARTICIPATION = "98"
 
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
@@ -89,7 +90,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
         break
       case HODW_Personal_Property_HOE:
-        rateIncreasedPersonalProperty(dwellingCov, dateRange)
+        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+          rateIncreasedPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_BusinessProperty_HOE_Ext:
         rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
@@ -132,8 +134,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
-    var windOrHailExcluded = dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists
     _discountsOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
+    var windOrHailExcluded = _discountsOrSurchargeRatingInfo.WindOrHailExcluded
+
     if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
@@ -154,6 +157,12 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if((!windOrHailExcluded) and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3))
       rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
 
+    rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
+    if(!windOrHailExcluded)
+      rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
+
+    if(!windOrHailExcluded and (dwelling?.HOLocation?.BCEG_Ext == BCEG_CODE_FOR_NON_PARTICIPATION))
+      rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)
   }
 
   /**
@@ -272,13 +281,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateIncreasedPersonalProperty(dwellingCov: HODW_Personal_Property_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedPersonalProperty to rate Personal Property Increased Limit Coverage", this.IntrinsicType)
-    var personalPropertyRatingInfo = new HOPersonalPropertyRatingInfo(dwellingCov)
-    if (personalPropertyRatingInfo.IsPersonalPropertyIncreasedLimit){
-      var rateRoutineParameterMap = getPersonalPropertyCovParameterSet(PolicyLine, personalPropertyRatingInfo)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null){
-        addCost(costData)
-      }
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
     }
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -411,8 +418,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
-      if(costType == HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
-        _hoRatingInfo.SuperiorConstructionDiscountForAOP = costData.ActualTermAmount
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.SuperiorConstructionDiscountForAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.SuperiorConstructionDiscountForWind = costData?.ActualTermAmount
     }
     _logger.debug("Superior Construction Discount Rated Successfully", this.IntrinsicType)
   }
@@ -428,7 +437,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
-      _hoRatingInfo.MatureHomeOwnerDiscount = costData.ActualTermAmount
+      _hoRatingInfo.MatureHomeOwnerDiscountAOP = costData.ActualTermAmount
     }
     _logger.debug("Mature Home owner Discount Rated Successfully", this.IntrinsicType)
   }
@@ -444,9 +453,47 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
-      _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.AgeOfHomeDiscountAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.AgeOfHomeDiscountWind = costData?.ActualTermAmount
     }
     _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Deductible Factor
+   */
+  function rateHigherAllPerilDeductible(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateHigherAllPerilDeductible", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.HigherAllPerilDeductibleAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.HigherAllPerilDeductibleWind = costData?.ActualTermAmount
+      addCost(costData)
+    }
+    _logger.debug("Higher All Peril Deductible Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Building Code Non Participating Risks
+   */
+  function rateBuildingCodeNonParticipatingRisks(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingCodeNonParticipatingRisks", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      _hoRatingInfo.BuildingCodeNonParticipatingRisksSurcharge = costData?.ActualTermAmount
+      addCost(costData)
+    }
+    _logger.debug("Building Code Non Participating Risks Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -458,8 +505,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCommonRateRoutinesExecutor.rateSeasonalOrSecondaryResidenceSurcharge(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, costType, _discountsOrSurchargeRatingInfo)
     if (costData != null){
       addCost(costData)
-      if(costType == HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
-        _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP = costData.ActualTermAmount
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForWind = costData?.ActualTermAmount
     }
     _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
   }
@@ -472,7 +521,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
     dwellingRatingInfo.PPIncreasedLimit = dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
     var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_GROUP3_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
@@ -542,17 +591,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Returns the parameter set for the Personal Property
-   */
-  private function getPersonalPropertyCovParameterSet(line : PolicyLine, personalPropertyRatingInfo : HOPersonalPropertyRatingInfo) : Map<CalcRoutineParamName, Object>{
-    return {
-        TC_POLICYLINE -> line,
-        TC_DWELLINGRATINGINFO_EXT -> personalPropertyRatingInfo
-    }
-  }
-
-  /**
-  *  Returns the parameter set for the Specified Additional Amount of Insurance for Cov A
+  *  Returns the parameter set with rating info and dwelling rating info
   */
   private function getRatingInfoParameterSet(line : PolicyLine, dwellingRatingInfo : HOGroup3DwellingRatingInfo) : Map<CalcRoutineParamName, Object>{
     return {

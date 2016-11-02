@@ -13,9 +13,9 @@ class HOWCPrivateResidenceEmployeeRatingInfo {
   var _hasFullTimeEmployees: boolean as HasFullTimeEmployees
   var _hasOccasionalEmployees: boolean as HasOccasionalEmployees
   construct(lineCov: HOLI_WC_PrivateResidenceEmployee_HOE_Ext) {
-    _coveredOccasionalEmployeesCount = lineCov.HOLI_WC_OccasionalEmployees_HOETerm?.Value.intValue()
-    _coveredFullTimeInsideEmployeesCount = lineCov.HOLI_WC_FulltimeEmployees_HOETerm?.Value.intValue()
-    _coveredFullTimeOutsideEmployeesCount = lineCov.HOLI_NumFTOutSideCovEmp_HOETerm?.Value.intValue()
+    _coveredOccasionalEmployeesCount = lineCov.HOLI_WC_OccasionalEmployees_HOETerm?.Value?.intValue()
+    _coveredFullTimeInsideEmployeesCount = lineCov.HOLI_WC_FulltimeEmployees_HOETerm?.Value?.intValue()
+    _coveredFullTimeOutsideEmployeesCount = lineCov.HOLI_NumFTOutSideCovEmp_HOETerm?.Value?.intValue()
 
     if (_coveredOccasionalEmployeesCount > 0)
       _hasOccasionalEmployees = true

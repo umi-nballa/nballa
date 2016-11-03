@@ -39,7 +39,12 @@ abstract class StaticEntityPopulator<C extends KeyableBean, P extends KeyableBea
     if (entityType == null or entityProperty == null or entityKey == null) {
       throw new DataMigrationNonFatalException(CODE.GENERAL, "unexpected model type ${typeof(model)}")
     }
-    return (Query.make(entityType).compare(entityProperty, Equals, entityKey).select().AtMostOneRow) as C
+    var lookUpRecord = (Query.make(entityType).compare(entityProperty, Equals, entityKey).select().AtMostOneRow) as C
+    var policy = this.Branch
+    if( lookUpRecord typeis OfferingLookup){
+      policy.Offering = gw.api.productmodel.OfferingLookup.getByCode(lookUpRecord.OfferingCode)
+    }
+    return lookUpRecord as C
   }
 
   override function create(model: XmlElement, parent: P, bundle: Bundle): C {

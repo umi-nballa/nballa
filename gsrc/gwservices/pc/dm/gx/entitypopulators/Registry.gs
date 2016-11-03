@@ -122,6 +122,8 @@ uses gwservices.pc.dm.gx.lob.bop.BP7classificationPopulator
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_HomeownersLine_HOE_HOLineExclusions_Entry
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_HomeownersLine_HOE_HOLineConditions_Entry
 uses gwservices.pc.dm.gx.lob.bop.bp7classificationmodel.anonymous.elements.BP7Classification_Coverages_Entry
+uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_Offering
+uses gwservices.pc.dm.gx.base.policy.PolicyPeriodOfferingPopulator
 
 /**
  * Entity populator registry
@@ -210,7 +212,8 @@ class Registry {
       BP7Building_Classifications_Entry  -> getConstructor(BP7classificationPopulator),
       BP7Classification_Coverages_Entry -> getConstructor(CoveragePopulator),
       //PolicyLine_Entity_HomeownersLine_HOE_HOLineConditions_Entry -> getConstructor(),
-      PolicyLine_Entity_HomeownersLine_HOE_HOLineExclusions_Entry -> getConstructor(ExclusionPopulator)
+      PolicyLine_Entity_HomeownersLine_HOE_HOLineExclusions_Entry -> getConstructor(ExclusionPopulator),
+      PolicyPeriod_Offering -> getConstructor(PolicyPeriodOfferingPopulator)
   }
   /** Items that should not be populated */
   private var _doNotPopulate: List<IType> as DoNotPopulate = {

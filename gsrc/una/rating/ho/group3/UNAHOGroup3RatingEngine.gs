@@ -16,6 +16,7 @@ uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
 uses una.config.ConfigParamsUtil
+uses com.sun.java.swing.plaf.windows.resources.windows
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +29,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private static final var CLASS_NAME = UNAHOGroup3RatingEngine.Type.DisplayName
   private var _hoRatingInfo: HORatingInfo
   private var _discountsOrSurchargeRatingInfo : HOGroup3DiscountsOrSurchargeRatingInfo
+  private final var BCEG_CODE_FOR_NON_PARTICIPATION = "98"
 
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
@@ -158,6 +160,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
     if(!windOrHailExcluded)
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
+
+    if(!windOrHailExcluded and (dwelling?.HOLocation?.BCEG_Ext == BCEG_CODE_FOR_NON_PARTICIPATION))
+      rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)
   }
 
   /**
@@ -413,8 +418,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
-      if(costType == HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
-        _hoRatingInfo.SuperiorConstructionDiscountForAOP = costData.ActualTermAmount
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.SuperiorConstructionDiscountForAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.SuperiorConstructionDiscountForWind = costData?.ActualTermAmount
     }
     _logger.debug("Superior Construction Discount Rated Successfully", this.IntrinsicType)
   }
@@ -430,7 +437,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
-      _hoRatingInfo.MatureHomeOwnerDiscount = costData.ActualTermAmount
+      _hoRatingInfo.MatureHomeOwnerDiscountAOP = costData.ActualTermAmount
     }
     _logger.debug("Mature Home owner Discount Rated Successfully", this.IntrinsicType)
   }
@@ -446,7 +453,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
-      _hoRatingInfo.AgeOfHomeDiscount = costData?.ActualTermAmount
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.AgeOfHomeDiscountAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.AgeOfHomeDiscountWind = costData?.ActualTermAmount
     }
     _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
   }
@@ -460,10 +470,30 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    _hoRatingInfo.HigherAllPerilDeductible = costData?.ActualTermAmount
-    if (costData != null)
+    if (costData != null){
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.HigherAllPerilDeductibleAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.HigherAllPerilDeductibleWind = costData?.ActualTermAmount
       addCost(costData)
+    }
     _logger.debug("Higher All Peril Deductible Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Building Code Non Participating Risks
+   */
+  function rateBuildingCodeNonParticipatingRisks(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingCodeNonParticipatingRisks", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      _hoRatingInfo.BuildingCodeNonParticipatingRisksSurcharge = costData?.ActualTermAmount
+      addCost(costData)
+    }
+    _logger.debug("Building Code Non Participating Risks Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -475,8 +505,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCommonRateRoutinesExecutor.rateSeasonalOrSecondaryResidenceSurcharge(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, costType, _discountsOrSurchargeRatingInfo)
     if (costData != null){
       addCost(costData)
-      if(costType == HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
-        _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP = costData.ActualTermAmount
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForWind = costData?.ActualTermAmount
     }
     _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
   }
@@ -559,7 +591,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-  *  Returns the parameter set for the Specified Additional Amount of Insurance for Cov A
+  *  Returns the parameter set with rating info and dwelling rating info
   */
   private function getRatingInfoParameterSet(line : PolicyLine, dwellingRatingInfo : HOGroup3DwellingRatingInfo) : Map<CalcRoutineParamName, Object>{
     return {

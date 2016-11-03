@@ -58,10 +58,8 @@ public final class HORateRoutineNames {
   public static final var SPECIAL_COMPUTER_COV_ROUTINE_NAME : String = "UNAHOSpecialComputerCovRateRoutine"
   public static final var WATER_BACKUP_SUMP_OVERFLOW_COV_ROUTINE_NAME : String = "UNAHOWaterBackupSumpOverflowCovRateRoutine"
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovGroup1RateRoutine"
-  public static final var PERSONAL_PROPERTY_INCREASED_LIMIT_GROUP1_COV_ROUTINE_NAME : String = "UNAHOPersonalPropertyIncreasedLimitGroup1RateRoutine"
   public static final var ORDINANCE_OR_LAW_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovGroup1RateRoutine"
   public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_COV_GROUP1_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsCovGroup1RateRoutine"
-  public static final var PERSONAL_PROPERTY_REPLACEMENT_COST_GROUP1_RATE_ROUTINE : String = "UNAHOPersonalPropertyReplacementCostGroup1RateRoutine"
   public static final var SCHEDULED_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME : String = "UNAHOScheduledPersonalPropertyCovGroup1RateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIGroup1RateRoutine"
@@ -90,4 +88,5 @@ public final class HORateRoutineNames {
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIRateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
   public static final var MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE : String = "UNAHOMatureHomeOwnerDiscountRateRoutine"
+  public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
 }

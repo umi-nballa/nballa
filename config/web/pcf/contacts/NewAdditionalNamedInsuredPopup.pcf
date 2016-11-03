@@ -53,14 +53,22 @@
       <DetailViewPanel
         id="AdditionalNamedInsuredInfoDV">
         <InputColumn>
-          <TextInput
+          <!-- <TextInput
             editable="true"
             id="Relationship"
             label="displaykey.Web.Policy.NamedInsured.Relationship"
             required="true"
             value="policyAddlNamedInsured.Relationship">
             <PostOnChange/>
-          </TextInput>
+          </TextInput> -->
+          <TypeKeyInput
+            editable="true"
+            id="RelationshipTypekey"
+            label="displaykey.Web.Policy.NamedInsured.Relationship"
+            required="true"
+            value="policyAddlNamedInsured.ContactRelationship_Ext">
+            <PostOnChange/>
+          </TypeKeyInput>
           <IndustryCodeInput
             domain="&quot;SIC&quot; as IndustryCodeType"
             editable="true"
@@ -70,7 +78,7 @@
             previousCode="previousIndustryCode.Code"
             referenceDate="ReferenceDate"
             value="(policyAddlNamedInsured.AccountContactRole as NamedInsured).IndustryCode"
-            visible="policyAddlNamedInsured.AccountContactRole.AccountContact.Company"/>
+            visible="policyAddlNamedInsured.AccountContactRole.AccountContact.Company &amp;&amp; period.BP7LineExists"/>
         </InputColumn>
       </DetailViewPanel>
       <PanelRef

@@ -137,7 +137,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       rateAdditionalInsuredCoverage(dateRange)
     }
     if (dwelling?.HailResistantRoofCredit_Ext){
-      //rateHailResistantRoofCredit(dateRange)
+      rateHailResistantRoofCredit(dateRange)
     }
 
     //TODO : Need to add the condition to check for affinity discount flag
@@ -225,8 +225,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HAIL_RESISTANT_ROOF_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_HAILRESISTANTROOFCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if (costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
       addCost(costData)
       _hoRatingInfo.HailResistantRoofCredit = costData?.ActualTermAmount
     }

@@ -45,9 +45,10 @@
       label="displaykey.Web.SubmissionWizard.PolicyInfo.OriginalInceptionDate_Ext"
       value="policyPeriod.originalInceptionDate_Ext"/>
     <Input
-      editable="true"
+      editable="policyPeriod.Job typeis Submission"
       id="legacyPolicyNumber_Ext"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.PriorLegacyPolicyNumber_Ext"
+      required="policyPeriod.SourceSystem_Ext == TC_LEGACY"
       value="policyPeriod.LegacyPolicyNumber_Ext"/>
     <!-- <DateInput
       editable="true"
@@ -65,11 +66,14 @@
       label="displaykey.Web.SubmissionWizard.PolicyInfo.UNAWindMitFormCompletionDate_Ext"
       value="policyPeriod.UNAWindMitFormCompDate_Ext"/>
     <TypeKeyInput
-      editable="policyPeriod.Job typeis Issuance"
+      editable="policyPeriod.Job typeis Submission"
       id="sourceSystem"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.SourceSystem_Ext"
       required="true"
-      value="policyPeriod.SourceSystem_Ext"/>
+      value="policyPeriod.SourceSystem_Ext">
+      <PostOnChange
+        target="legacyPolicyNumber_Ext"/>
+    </TypeKeyInput>
     <!-- Changing the term type updates the expiration date -->
     <RangeInput
       editable="policyPeriod.CanUpdatePeriodDates"
@@ -160,13 +164,18 @@
       label="displaykey.Web.PolicyFile.Summary.DividedSourcePolicy"
       value="displaykey.Web.PolicyFile.Summary.PolicyNumOnAccount(dividedSourcePolicy.LatestBoundPeriod.PolicyNumberDisplayString, dividedSourcePolicy.Account.AccountNumber)"
       visible="dividedSourcePolicy != null and showSplitSource"/>
-    <InputDivider/>
     <InputSet
       id="affinityGroupInputSet"
       visible="policyPeriod.HomeownersLine_HOEExists and (policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT)">
+      <Variable
+        initialValue="una.config.AffinityGroupUtil.setAffinityDiscountEligibility(policyPeriod)"
+        name="affinityDiscount"
+        recalculateOnRefresh="true"
+        type="boolean"/>
+      <InputDivider/>
       <Label
         label="displaykey.Web.Admin.AffinityGroup"/>
-      <PickerInput
+      <!-- <PickerInput
         editable="true"
         id="AffinityGroup"
         inputConversion="gw.web.policy.PolicyInfoUIHelper.performAffinityGroupSearch(VALUE, policyPeriod)"
@@ -174,30 +183,43 @@
         pickLocation="AffinityGroupSearchPopup.push(policyPeriod)"
         required="false"
         value="policyPeriod.PolicyTerm.AffinityGroup"
-        visible="false"/>
+        visible="false"/> -->
       <RangeInput
         editable="true"
         id="PreferredBuilder"
         label="displaykey.Web.Admin.AffinityGroup.PreferredBuilder_Ext"
         value="policyPeriod.PreferredBuilder_Ext"
-        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDBUILDER, policyPeriod.BaseState)"/>
+        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDBUILDER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)">
+        <PostOnChange
+          target="affinityGroupInputSet"/>
+      </RangeInput>
       <RangeInput
         editable="true"
         id="PreferredFinancialInstitution"
         label="displaykey.Web.Admin.AffinityGroup.PreferredFinInst_Ext"
         value="policyPeriod.PreferredFinInst_Ext"
-        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDFININST, policyPeriod.BaseState)"/>
+        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDFININST, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
+        visible="policyPeriod.BaseState != TC_AZ or policyPeriod.BaseState != TC_NC or policyPeriod.BaseState != TC_SC">
+        <PostOnChange
+          target="affinityGroupInputSet"/>
+      </RangeInput>
       <RangeInput
         editable="true"
         id="EmployerGroup"
         label="displaykey.Web.Admin.AffinityGroup.PreferredEmployerGroup_Ext"
         value="policyPeriod.PreferredEmpGroup_Ext"
-        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER, policyPeriod.BaseState)"/>
-      <TypeKeyInput
-        editable="true"
+        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)">
+        <PostOnChange
+          target="affinityGroupInputSet"/>
+      </RangeInput>
+      <Input
         id="QualifiesDiscount"
-        label="&quot;Qualifies for Affinity Discount&quot;"
+        label="displaykey.Web.Admin.AffinityGroup.AffinityDiscount_Ext"
         value="policyPeriod.QualifiesAffinityDisc_Ext"/>
     </InputSet>
+    <Code><![CDATA[function printVal() : boolean{
+  print("Job Type : "+typeof policyPeriod.Job)
+  return true
+}]]></Code>
   </InputSet>
 </PCF>

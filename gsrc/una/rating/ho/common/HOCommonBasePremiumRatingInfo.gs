@@ -27,6 +27,7 @@ class HOCommonBasePremiumRatingInfo {
   var _keyFactorGreaterLimit: int as KeyFactorGreaterLimit
   var _keyFactorLowerBound: BigDecimal as KeyFactorLowerBound
   var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
+
   construct(dwelling: Dwelling_HOE) {
     _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
     //TODO: remove this code once the tuna integration is in place

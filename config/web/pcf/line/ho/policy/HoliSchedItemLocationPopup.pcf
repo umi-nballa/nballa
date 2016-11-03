@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Popup
+    canEdit="editMode"
+    id="HoliSchedItemLocationPopup"
+    returnType="HOscheduleItem_HOE_Ext"
+    startInEditMode="editMode"
+    title="covPattern.Name">
+    <LocationEntryPoint
+      signature="HoliSchedItemLocationPopup(hoLine: HomeownersLine_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <LocationEntryPoint
+      signature="HoliSchedItemLocationPopup(hoLine: HomeownersLine_HOE, schedItem : HOscheduleItem_HOE_Ext, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <Variable
+      initialValue="hoLine.createAndAddHOScheduledItem(covPattern.CodeIdentifier)"
+      name="schedItem"
+      type="HOscheduleItem_HOE_Ext"/>
+    <Variable
+      name="hoLine"
+      type="HomeownersLine_HOE"/>
+    <Variable
+      name="covPattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Variable
+      name="locFilter"
+      type="boolean"/>
+    <Variable
+      name="editMode"
+      type="boolean"/>
+    <Screen
+      editable="editMode">
+      <Toolbar>
+        <EditButtons
+          pickValue="schedItem"/>
+      </Toolbar>
+      <DetailViewPanel
+        editable="editMode">
+        <InputColumn>
+          <InputSetRef
+            def="HoliSchedItemLocInputSet(schedItem, hoLine, hoLine.Branch, covPattern.CodeIdentifier, locFilter,  editMode)"/>
+          <Input
+            editable="editMode"
+            id="OtheStructuresOffPremisesDesc"
+            label="displaykey.Web.Homeowners.HOCoveragesScreen.Numfamilies_Ext"
+            required="true"
+            value="schedItem.numFamilies"
+            visible="covPattern.CodeIdentifier &lt;&gt; &quot;HOLI_OtherInsuredResidence_HOE&quot;"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </Screen>
+  </Popup>
+</PCF>

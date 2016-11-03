@@ -11,6 +11,7 @@ uses java.math.BigDecimal
 class HOGroup1LineLevelRatingInfo {
   var _policyType: String as PolicyType
   var _totalBasePremium: BigDecimal as TotalBasePremium
+  var _adjustedBaseClassPremium: BigDecimal as AdjustedBaseClassPremium
   construct(lineVersion: HomeownersLine_HOE) {
     _policyType = lineVersion.HOPolicyType.Code
   }

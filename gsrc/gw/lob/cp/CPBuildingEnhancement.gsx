@@ -96,6 +96,33 @@ enhancement CPBuildingEnhancement : CPBuilding {
     return StateJurisdictionMappingUtil.getJurisdictionMappingForState(this.CPLocation.Location.State)
   }
 
+
+  /**
+   * The createAndAddScheduledItem adds a scheduled item entity and associates it to the owning coverage that covers
+   * scheduled items.    The function has been designed with the coverage pattern as an input so that
+   * the function can be resused for any other coverage at homeownersline level that also have an array of scheduled items
+   */
+  function createAndAddCPScheduledItem(covPattern : String) : CPscheduleItem_CP_Ext {
+
+    var schedItem = new CPscheduleItem_CP_Ext(this.Branch)
+
+    if (covPattern.matches("CPOptionalOutdoorProperty_EXT") and this.CPOptionalOutdoorProperty_EXTExists) {
+      this.CPOptionalOutdoorProperty_EXT.addScheduledItem(schedItem)
+
+    } else if (covPattern.matches("CPWindstormProtectiveDevices_EXT") and this.CPWindstormProtectiveDevices_EXTExists) {
+      this.CPWindstormProtectiveDevices_EXT.addScheduledItem(schedItem)
+    }
+    else if (covPattern.matches("CPProtectiveSafeguards_EXT") and this.CPProtectiveSafeguards_EXTExists) {
+     this.CPProtectiveSafeguards_EXT.addScheduledItem(schedItem)
+    }
+    else
+  {
+      throw "Unsupported cov pattern in CPBuildingEnhancement.gsx"
+    }
+
+    return schedItem
+  }
+
   function copyBuilding(helper : JobWizardHelper = null) : CPBuilding {
 
     var clonedBuilding = this.CPLocation.createAndAddBuilding(helper)

@@ -22,7 +22,7 @@ class HPXAdditionalNameInsuredMapper {
       addtlNamedInsured)))
       insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = addtlNamedInsured.DescOfInterest_HOE != null ? addtlNamedInsured.DescOfInterest_HOE : ""
       insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = ""
-      insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlNamedInsured.Relationship != null ? addtlNamedInsured.Relationship : ""
+      insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlNamedInsured.ContactRelationship_Ext != null ? addtlNamedInsured.ContactRelationship_Ext.DisplayName : ""
       insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYADDLNAMEDINSURED
       var creditScores = creditScoreMapper.createCreditScoreInfo(addtlNamedInsured.CreditReportsExt)
       var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()

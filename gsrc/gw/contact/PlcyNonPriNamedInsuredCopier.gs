@@ -9,6 +9,8 @@ class PlcyNonPriNamedInsuredCopier extends AbstractPolicyContactRoleCopier<PlcyN
   
   override function copyRoleSpecificFields(namedInsured : PlcyNonPriNamedInsured) {
     _bean.Relationship = namedInsured.Relationship
+     // uim-svallabhapurapu : Relationship changed to typelist
+    _bean.ContactRelationship_Ext = namedInsured.ContactRelationship_Ext
   }
 
 }

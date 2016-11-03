@@ -136,7 +136,7 @@ class OFACGateway implements OFACInterface {
     while (contactScoreEntry.hasNext()) {
       var contact = contactScoreEntry.next()
       if (contact.Value > PropertiesHolder.getProperty("ENTITY_SCORE").toInt()){
-        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_OFAC_CHECK_FAILED, \ -> displaykey.Account.History.OfacCheckFailed)
+        //policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_OFAC_CHECK_FAILED, \ -> displaykey.Account.History.OfacCheckFailed)
         gw.transaction.Transaction.runWithNewBundle(\bundle -> {
           //Create Activity             //TBD For Activity Creation
          /* var activityPattern = ActivityPattern.finder.getActivityPatternByCode("OFAC")

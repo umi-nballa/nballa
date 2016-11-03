@@ -26,7 +26,7 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
     super(dwellingCov)
     _covALimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
     if(dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
-      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.Value.intValue())
+      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.LimitDifference.intValue())
     }
 
     if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){

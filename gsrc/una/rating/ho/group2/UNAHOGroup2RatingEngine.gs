@@ -82,6 +82,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_FungiCov_HOE:
           rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
           break
+      case HODW_RefrigeratedPP_HOE_Ext:
+            rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
+          break
+      case HODW_SpecialComp_HOE_Ext:
+            rateSpecialComputerCoverage(dwellingCov, dateRange)
+          break
 
     }
   }
@@ -112,6 +118,29 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
 
     updateTotalBasePremium()
+  }
+
+  /**
+   * Rate Refrigerated Personal Property coverage
+   */
+  function rateRefrigeratedPersonalPropertyCoverage(dwellingCov: HODW_RefrigeratedPP_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateRefrigeratedPersonalPropertyCoverage to rate Refrigerated Personal Property Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Refrigerated Personal Property Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Special Computer coverage
+   */
+  function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialComputerCoverage to rate Special Computer Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_COMPUTER_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Special Computer Coverage Rated Successfully", this.IntrinsicType)
   }
 
 

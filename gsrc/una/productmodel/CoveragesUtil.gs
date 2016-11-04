@@ -126,6 +126,9 @@ class CoveragesUtil {
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm)
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm)
         break
+      case "HODW_BuildingAdditions_HOE_Ext":
+          covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm)
+          break
       default:
         break
     }

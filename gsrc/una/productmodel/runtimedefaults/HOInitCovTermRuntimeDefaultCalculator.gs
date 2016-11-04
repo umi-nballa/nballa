@@ -69,6 +69,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HOPL_Deductible_HOE":
         result = getLossAssessmentDefaultDeductible(covTerm, line)
         break
+      case "HODW_BuildAddInc_HOE":
+          result = getBuildingAddAltLimitDefault(line)
+          break
       default:
         break
     }
@@ -116,6 +119,17 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     }else{
       result = calculatedAmount
     }
+
+    return result
+  }
+
+  private static function getBuildingAddAltLimitDefault(line: entity.HomeownersLine_HOE) : Double{
+    var result : Double
+    var factor : Double = 0.1
+
+    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value?.multiply(factor)
+
+    result = calculatedAmount
 
     return result
   }

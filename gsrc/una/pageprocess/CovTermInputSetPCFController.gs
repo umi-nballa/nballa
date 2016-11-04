@@ -10,6 +10,8 @@ uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.productmodel.CovTermOpt
+uses java.math.BigDecimal
+uses org.apache.commons.math.stat.descriptive.rank.Percentile
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,6 +55,7 @@ class CovTermInputSetPCFController {
         break
       case "HODW_PersonalPropertyLimit_HOE":
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
+        dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.onInit()
         break
       case "HODW_ExecutiveCov_HOE_Ext":
         setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
@@ -73,6 +76,7 @@ class CovTermInputSetPCFController {
 
       if(result == null){
         result = validateFloodCoverageLimits(covTerm, coverable)
+        result = validateBuildAddAltLimits(covTerm, coverable)
       }
     }
 
@@ -253,4 +257,23 @@ class CovTermInputSetPCFController {
      }
     return null
   }
+
+  private static function validateBuildAddAltLimits(covTerm : DirectCovTerm, coverable : Dwelling_HOE) : String{
+    var result : String
+    var factor : BigDecimal = 0.1
+    var value : BigDecimal = 10
+
+    if(covTerm.PatternCode == "HODW_BuildAddInc_HOE" and coverable.HODW_Personal_Property_HOEExists and
+       coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm != null and
+       coverable.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm.Value< coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)) {
+      result = displaykey.una.productmodel.validation.MinValidateBuildAlt_Ext(value)
+    }else if (covTerm.PatternCode == "HODW_BuildAddInc_HOE" and coverable.HODW_Personal_Property_HOEExists and
+        coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm != null and
+        coverable.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm.Value > coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value) {
+      result = displaykey.una.productmodel.validation.MaxValidateBuilAlt_Ext
+    }
+
+    return  result
+  }
+
 }

@@ -11,6 +11,7 @@
     <include path="Cancellation.Description" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="Cancellation.Source" type="typekey.CancellationSource" propertyInclusionType="NORMAL"/>
     <include path="CancellationDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="ConsentToRateReceived_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="CPLine" type="productmodel.CPLine" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.commercialpropertylinemodel"/>
     <include path="DepositAmount" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
     <include path="DepositCollected" type="gw.pl.currency.MonetaryAmount" propertyInclusionType="NORMAL"/>
@@ -21,7 +22,8 @@
     <include path="LegacyPolicyNumber_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="Lines[]" type="entity.PolicyLine" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.policy.policylinemodel"/>
     <include path="Notes[]" type="entity.Note" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.notemodel"/>
-    <include path="Offering.Code" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Offering" type="gw.api.productmodel.Offering" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.base.policy.offeringmodel"/>
+    <include path="OriginalInceptionDate_Ext" type="java.util.Date" propertyInclusionType="NORMAL"/>
     <include path="PeriodAnswers[]" type="entity.PeriodAnswer" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.periodanswermodel"/>
     <include path="Policy" type="entity.Policy" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.policy.policymodel"/>
     <include path="PolicyAddress" type="entity.PolicyAddress" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.location.policyaddressmodel"/>
@@ -35,10 +37,13 @@
     <include path="PublicID" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="RateAsOfDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
     <include path="RefundCalcMethod" type="typekey.CalculationMethod" propertyInclusionType="NORMAL"/>
+    <include path="Rule180_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="SelectedPaymentPlan" type="entity.PaymentPlanSummary" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.plan.paymentplansummarymodel"/>
     <include path="SourceSystem_Ext" type="typekey.SourceSystem_Ext" propertyInclusionType="NORMAL"/>
     <include path="TermNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="TermType" type="typekey.TermType" propertyInclusionType="NORMAL"/>
+    <include path="UNAWindMitFormCompDate_Ext" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="UNAWindMitReinspectionDate_Ext" type="java.util.Date" propertyInclusionType="NORMAL"/>
     <include path="UWCompany" type="entity.UWCompany" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.uwcompanymodel"/>
     <include path="UWIssuesIncludingSoftDeleted[]" type="entity.UWIssue" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.uwissuemodel"/>
   </includes>

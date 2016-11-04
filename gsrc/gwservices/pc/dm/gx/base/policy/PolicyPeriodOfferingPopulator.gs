@@ -17,7 +17,7 @@ uses gw.api.productmodel.Offering
  * Time: 8:44 AM
  * To change this template use File | Settings | File Templates.
  */
-class PolicyPeriodOfferingPopulator extends StaticEntityPopulator<OfferingLookup , KeyableBean>{
+class PolicyPeriodOfferingPopulator extends StaticEntityPopulator {
 
   override function getLookupEntityType(modelType: IType): IType {
     return OfferingLookup

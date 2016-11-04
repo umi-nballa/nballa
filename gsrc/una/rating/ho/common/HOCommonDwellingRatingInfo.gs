@@ -18,6 +18,7 @@ class HOCommonDwellingRatingInfo {
   var _totalBasePremium : BigDecimal as TotalBasePremium
   var _policyType : HOPolicyType_HOE as PolicyType
   var _territoryCode : String as TerritoryCode
+  var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit
 
   construct(lineVersion: HomeownersLine_HOE){
     if(lineVersion.Dwelling?.HODW_Personal_Property_HOEExists){
@@ -36,6 +37,12 @@ class HOCommonDwellingRatingInfo {
     if(dwellingCov.Dwelling.HODW_Personal_Property_HOEExists){
       _personalPropertyIncreasedLimit = dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
     }
+
+    if (dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
+      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.LimitDifference.intValue())
+    }
+
+
     _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
     _territoryCode = dwellingCov.Dwelling.HOLocation.PolicyLocation?.TerritoryCodes.single().Code
   }

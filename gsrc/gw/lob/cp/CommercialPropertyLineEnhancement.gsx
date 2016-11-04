@@ -100,4 +100,6 @@ enhancement CommercialPropertyLineEnhancement : entity.CommercialPropertyLine {
     return branch.getProductModifierFactor()
   }
 
+
+
 }

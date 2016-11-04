@@ -13,12 +13,15 @@
   referenceDateByType="PolicyTerm">
   <CovTerms>
     <DirectCovTermPattern
+      aggregationModel="po"
       codeIdentifier="CPCarportLimit_EXT"
       coverageColumn="DirectTerm1"
       lookupTableName="CPBuildingCovTerm"
+      modelType="Limit"
       priority="100"
       public-id="CPCarportLimit_EXT"
       required="true"
+      restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
@@ -26,9 +29,11 @@
       codeIdentifier="CPCarportConsType_EXT"
       coverageColumn="ChoiceTerm2"
       lookupTableName="CPBuildingCovTerm"
+      modelType="Other"
       priority="300"
       public-id="CPCarportConsType_EXT"
-      required="false"
+      required="true"
+      typefilter="filter1"
       typelist="ConstructionType_CP"/>
   </CovTerms>
 </CoveragePattern>

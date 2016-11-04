@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.homeowners
 
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses gw.api.domain.covterm.OptionCovTerm
+uses gw.api.domain.covterm.DirectCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,14 +29,13 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           var scheduledProperties = createPersonalPropertyOnOtherResidences(currentCoverage, previousCoverage, transactions)
           for (item in scheduledProperties) { limits.add(item)}
           break
-      /*
-      case "HODW_ResidentialGlass_HOE_Ext" :
-          var glassCov = createResidentialGlassCoverage(currentCoverage, previousCoverage)
-          limits.add(glassCov)
-          break
-          */
     }
     return limits
+  }
+
+  override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    return null
   }
 
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
@@ -71,12 +71,21 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
-            limits.add(limit)
+            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }
       }
+      var allCosts = currentCoverage.PolicyLine.Costs
+      for (cost in allCosts) {
+        if(cost typeis ScheduleCovCost_HOE){
+          if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
     }
     return limits
   }
@@ -99,12 +108,21 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
-            limits.add(limit)
+            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }
       }
+      var allCosts = currentCoverage.PolicyLine.Costs
+      for (cost in allCosts) {
+        if(cost typeis ScheduleCovCost_HOE){
+          if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
     }
     return limits
   }
@@ -125,17 +143,45 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
-            limits.add(limit)
+            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }
       }
+      var allCosts = currentCoverage.PolicyLine.Costs
+      for (cost in allCosts) {
+        if(cost typeis ScheduleCovCost_HOE){
+          if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
     }
     return limits
   }
 
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     return null
+  }
+
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+    switch(typeof cost){
+      case HomeownersLineCost_EXT:
+          result = cost.Coverage
+          break
+      case HomeownersCovCost_HOE:
+          result = cost.Coverage
+          break
+      case DwellingCovCost_HOE:
+          result = cost.Coverage
+          break
+      case ScheduleCovCost_HOE:
+          result = cost.Coverage
+          break
+    }
+    return result
   }
 }

@@ -92,23 +92,6 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return policyPeriod.BP7Transactions
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-
-    switch(typeof cost){
-      case BP7BuildingCovCost:
-          result = cost.Coverage
-          break
-      case BP7LocationCovCost:
-          result = cost.Coverage
-          break
-      case BP7LineCovCost:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXBP7CoverageMapper()
   }
@@ -174,6 +157,10 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
   override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
     return transactions
+  }
+
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
   }
 
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {

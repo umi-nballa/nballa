@@ -17,7 +17,6 @@ class HORatingInfo {
   var _replacementCostDwellingPremium: BigDecimal as ReplacementCostDwellingPremium = 0.0
   var _replacementCostPersonalPropertyPremium: BigDecimal as ReplacementCostPersonalPropertyPremium = 0.0
   var _hoaPlusCoveragePremium: BigDecimal as HOAPlusCoveragePremium = 0.0
-  var _additionalInsuredPremium: BigDecimal as AdditionalInsuredPremium = 0.0
   var _totalBasePremium: BigDecimal as TotalBasePremium = 0.0
   //discounts
   var _ageOfHomeDiscount: BigDecimal as AgeOfHomeDiscount = 0.0

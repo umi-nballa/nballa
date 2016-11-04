@@ -16,6 +16,7 @@
     <CardViewPanel>
       <Card
         id="Details"
+        onSelect="una.pageprocess.BP7PCFController.setTheftLimitationValue(line);una.pageprocess.BP7PCFController.prodsCompletedOpsCovTermActions(line);una.pageprocess.BP7PCFController.infoMessage(line,jobWizardHelper)"
         title="displaykey.Web.Policy.BP7.Line.Details">
         <PanelSet
           id="BP7LineCoveragesPanelSet">
@@ -55,6 +56,7 @@
       </Card>
       <Card
         id="AdditionalCoverages"
+        onSelect="una.pageprocess.SubmissionWizardHelper.populateNumberOfEmployeesForAllCovTerms(line.BP7EmployeeDishty.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm, line)"
         title="displaykey.Ext.Web.LineWizard.AdditionalAndOptionalCoverages">
         <PanelRef
           def="BP7AdditionalCoveragesPanelSet(line, additionalCoverageCategories().toTypedArray(), true, jobWizardHelper)">

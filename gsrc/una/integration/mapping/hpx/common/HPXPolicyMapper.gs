@@ -206,7 +206,7 @@ abstract class HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     // added or changed coverages
     for (cov in currentCoverages) {
-      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
      // if (trxs?.Count > 0) {
         if (previousCoverages != null) {
           var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
@@ -221,7 +221,7 @@ abstract class HPXPolicyMapper {
       for (cov in previousCoverages) {
         if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
           continue
-        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
       //  if (trxs?.Count > 0) {
           coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null))
       //  }
@@ -236,7 +236,7 @@ abstract class HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     // added or changed coverages
     for (excl in currentExclusions) {
-      var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
     //  if (trxs?.Count > 0) {
         if (previousExclusions != null) {
           var previousExclusion = previousExclusions.firstWhere( \ elt -> elt.PatternCode.equals(excl.PatternCode))
@@ -251,7 +251,7 @@ abstract class HPXPolicyMapper {
       for (excl in previousExclusions) {
         if (currentExclusions.hasMatch( \ elt1 -> elt1.PatternCode.equals(excl.PatternCode)))
           continue
-        var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
        // if (trxs?.Count > 0) {
           coverages.add(getExclusionMapper().createExclusionInfo(excl, null, null))
         //}
@@ -273,7 +273,7 @@ abstract class HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     // added or changed coverages
     for (cond in currentPolicyConditions) {
-      var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+      var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
       //  if (trxs?.Count > 0) {
       if (previousPolicyConditions != null) {
         var previousPolicyCondition = previousPolicyConditions.firstWhere( \ elt -> elt.PatternCode.equals(cond.PatternCode))
@@ -288,7 +288,7 @@ abstract class HPXPolicyMapper {
       for (cond in previousPolicyConditions) {
         if (currentPolicyConditions.hasMatch( \ elt1 -> elt1.PatternCode.equals(cond.PatternCode)))
           continue
-        var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCostCoverage(elt.Cost).PatternCode))
+        var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
         // if (trxs?.Count > 0) {
         coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, null, null))
         //}
@@ -325,8 +325,6 @@ abstract class HPXPolicyMapper {
 
   abstract function getTransactions(policyPeriod : PolicyPeriod) : java.util.List<Transaction>
 
-  abstract function getCostCoverage(cost : Cost) : Coverage
-
   abstract function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable>
 
   abstract function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage>
@@ -336,6 +334,8 @@ abstract class HPXPolicyMapper {
   abstract function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition>
 
   abstract function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
+
+  abstract function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
   abstract function getLocation(coverable : Coverable) : PolicyLocation
 

@@ -14,8 +14,13 @@ class HPXDwelllingExclusionMapper extends HPXExclusionMapper {
     return null
   }
 
-  function createScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
      return null
+  }
+
+  override function createDeductibleScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    return null
   }
 }

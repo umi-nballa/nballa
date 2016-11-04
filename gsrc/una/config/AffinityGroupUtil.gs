@@ -15,6 +15,8 @@ uses una.logging.UnaLoggerCategory
 uses una.utils.EnvironmentUtil
 uses java.util.HashMap
 uses java.util.ArrayList
+uses java.util.Map
+uses java.util.Calendar
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,23 +27,24 @@ uses java.util.ArrayList
  */
 class AffinityGroupUtil {
   private static var _lazyJurisdictionParam = LockingLazyVar.make(\ -> new HashSet<Jurisdiction>())
-  private static var _lazyPreferredBuilder = LockingLazyVar.make(\ -> new HashMap<Jurisdiction, List<String>>())
-  private static var _lazyPreferredFinInst = LockingLazyVar.make(\ -> new HashMap<Jurisdiction, List<String>>())
-  private static var _lazyPreferredEmployer = LockingLazyVar.make(\ -> new HashMap<Jurisdiction, List<String>>())
+  private static var _lazyPreferredBuilder = LockingLazyVar.make(\ -> new HashMap<Jurisdiction, Map<String, Date>>())
+  private static var _lazyPreferredFinInst = LockingLazyVar.make(\ -> new HashMap<Jurisdiction, Map<String, Date>>())
+  private static var _lazyPreferredEmployer = LockingLazyVar.make(\ -> new HashMap<Jurisdiction, Map<String, Date>>())
+  private static final var START_DATE = "StartDate"
 
 
   public static function getAffinityDiscountByCategory(affinityDiscountCategory : AffinityDisCategory_Ext,
-                                              jurisdiction : Jurisdiction) : List<String>{
+                                              jurisdiction : Jurisdiction, effectiveDate : Date) : List<String>{
     var result : List<String>
     var currentDate = Date.CurrentDate
 
     loadConfigurationParameters(jurisdiction)
     if(affinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDBUILDER){
-      result = _lazyPreferredBuilder.get().get(jurisdiction)
+      result = getValidPreferredList(_lazyPreferredBuilder.get().get(jurisdiction), effectiveDate)
     } else if(affinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDFININST) {
-      result = _lazyPreferredFinInst.get().get(jurisdiction)
+      result = getValidPreferredList(_lazyPreferredFinInst.get().get(jurisdiction), effectiveDate)
     } else {
-      result = _lazyPreferredEmployer.get().get(jurisdiction)
+      result = getValidPreferredList(_lazyPreferredEmployer.get().get(jurisdiction), effectiveDate)
     }
     return result
   }
@@ -54,26 +57,125 @@ class AffinityGroupUtil {
           .compare(jurisdiction.Code, Equals, true)
       var queryResults = query.select()?.toList()
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDBUILDER)) {
-        var preferredBuilderList = new ArrayList<String>()
-        queryResults.each( \ elt -> preferredBuilderList.add(elt.PreferredBuilderDescription))
-        _lazyPreferredBuilder.get().put(jurisdiction, preferredBuilderList)
+        var preferredBuilderMap = new HashMap<String, Date>()
+        queryResults.each( \ elt -> {
+          if(elt.PreferredBuilderDescription != null && elt.getFieldValue(jurisdiction.Code+START_DATE) != null)
+          preferredBuilderMap.put(elt.PreferredBuilderDescription,
+              elt.getFieldValue(jurisdiction.Code+START_DATE) as java.util.Date)
+        })
+        _lazyPreferredBuilder.get().put(jurisdiction, preferredBuilderMap)
       }
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDFININST)) {
-        var preferredFinInst = new ArrayList<String>()
-        queryResults.each( \ elt -> preferredFinInst.add(elt.PreferredFinancialInstitution))
-        _lazyPreferredFinInst.get().put(jurisdiction, preferredFinInst)
+        var preferredFinInstMap = new HashMap<String, Date>()
+        queryResults.each( \ elt -> {
+          if(elt.PreferredFinancialInstitution != null && elt.getFieldValue(jurisdiction.Code+START_DATE) != null) {
+            preferredFinInstMap.put(elt.PreferredFinancialInstitution,
+                elt.getFieldValue(jurisdiction.Code+START_DATE) as java.util.Date)
+          }
+        })
+        _lazyPreferredFinInst.get().put(jurisdiction, preferredFinInstMap)
       }
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER)) {
-        var preferredEmployer = new ArrayList<String>()
-        queryResults.each( \ elt -> preferredEmployer.add(elt.PreferredFinancialInstitution))
-        _lazyPreferredEmployer.get().put(jurisdiction, preferredEmployer)
+        var preferredEmployerMap = new HashMap<String, Date>()
+        queryResults.each( \ elt -> {
+          if(elt.PreferredEmployer != null && elt.getFieldValue(jurisdiction.Code+START_DATE) != null) {
+            preferredEmployerMap.put(elt.PreferredEmployer,
+                elt.getFieldValue(jurisdiction.Code+START_DATE) as java.util.Date)
+          }
+        })
+        _lazyPreferredEmployer.get().put(jurisdiction, preferredEmployerMap)
       }
+      _lazyJurisdictionParam.get().add(jurisdiction)
     }
   }
 
   private static function shouldLoadConfigParameter(jurisdiction : Jurisdiction) : boolean {
-    return !_lazyJurisdictionParam.get().contains(jurisdiction)
+    var load = !_lazyJurisdictionParam.get().contains(jurisdiction)
+    return load
   }
 
+  private static function getValidPreferredList(preferredMap : Map<String, Date>, effectiveDate : Date): List<String> {
+    var preferredList = new ArrayList<String>()
+    preferredMap?.eachKey( \ key -> {
+      if(preferredMap.get(key) != null && preferredMap.get(key)?.before(effectiveDate)) {
+        preferredList.add(key)
+      }
+    })
+    return preferredList
+  }
+
+  /**
+  * Method to set the Affinity Discount Eligibility based on the Jurisdiction
+  */
+  public static function setAffinityDiscountEligibility(polPeriod : PolicyPeriod) : boolean {
+    var yearBuilt = polPeriod.HomeownersLine_HOE?.Dwelling?.YearBuilt != null ? polPeriod.HomeownersLine_HOE?.Dwelling?.YearBuilt : 0
+    var ageOfHome = Calendar.getInstance().get(Calendar.YEAR) - yearBuilt
+    var affinityDiscount = false
+    switch(polPeriod.BaseState){
+      case Jurisdiction.TC_AZ :
+          if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
+                and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
+                  or polPeriod.PreferredFinInst_Ext != null or polPeriod.PreferredEmpGroup_Ext != null)) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+      break
+      case Jurisdiction.TC_CA :
+          if(ageOfHome < 11 or polPeriod.PreferredBuilder_Ext != null or polPeriod.PreferredFinInst_Ext != null ) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+      break
+      case Jurisdiction.TC_FL :
+          polPeriod.QualifiesAffinityDisc_Ext = TC_NO
+      break
+      case Jurisdiction.TC_HI :
+          if(polPeriod.PreferredFinInst_Ext != null ) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+      break
+      case Jurisdiction.TC_NV :
+          if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
+              and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
+                  or polPeriod.PreferredFinInst_Ext != null)) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+      break
+      case Jurisdiction.TC_NC :
+          if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6
+                or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_DP3_EXT)
+                  and ((ageOfHome < 5 and polPeriod.PreferredBuilder_Ext != null)
+                  or polPeriod.PreferredFinInst_Ext != null)) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+      break
+      case Jurisdiction.TC_SC :
+          if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
+              and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
+                  or polPeriod.PreferredFinInst_Ext != null)) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+      break
+      case Jurisdiction.TC_TX :
+          if(polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HOB_EXT && polPeriod.PreferredEmpGroup_Ext != null ) {
+            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
+            affinityDiscount = true
+          }
+       break
+      default :
+    }
+    if(!affinityDiscount) {
+      polPeriod.QualifiesAffinityDisc_Ext = TC_NO
+    }
+    return affinityDiscount
+  }
 
 }

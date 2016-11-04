@@ -13,6 +13,10 @@ uses gw.job.RewriteProcess
 uses java.lang.IllegalArgumentException
 uses gw.job.RewriteNewAccountProcess
 uses gw.api.util.DisplayableException
+uses gw.job.UNARenewalProcess
+uses gw.job.UNABOPRenewalProcess
+uses gw.job.UNACPPRenewalProcess
+uses gw.job.UNAHORenewalProcess
 
 /**
  * Use this plug-in to substitute alternative JobProcess classes.
@@ -48,7 +52,7 @@ class JobProcessCreationPlugin implements IJobProcessCreationPlugin {
       case Issuance:          return new IssuanceProcess(period)
       case PolicyChange:      return new PolicyChangeProcess(period)
       case Reinstatement:     return new ReinstatementProcess(period)
-      case Renewal:           return new RenewalProcess(period)
+      case Renewal:           return getRenewalProcess(period)
       case Rewrite:           return new RewriteProcess(period)
       case RewriteNewAccount: return new RewriteNewAccountProcess(period)
       case Submission:        return new SubmissionProcess(period)
@@ -56,4 +60,21 @@ class JobProcessCreationPlugin implements IJobProcessCreationPlugin {
     }
   }
 
+  private function getRenewalProcess(period : PolicyPeriod) : RenewalProcess{
+    var result : RenewalProcess
+
+    switch(period.Policy.ProductCode){
+      case "Homeowners":
+        result = new UNAHORenewalProcess (period)
+        break
+      case "BP7BusinessOwners":
+        result = new UNABOPRenewalProcess(period)
+        break
+      case "CommercialPackage":
+        result = new UNACPPRenewalProcess (period)
+        break
+    }
+
+    return result
+  }
 }

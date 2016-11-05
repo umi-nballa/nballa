@@ -196,13 +196,17 @@ enhancement CPBuildingEnhancement : CPBuilding {
       cloneBldUnit.Description = bldgUnit.Description
     } */
     // End of Building Units
-    /*clonedBuilding.PropertyType = this.PropertyType
     clonedBuilding.Building.Description = this.Building.Description
+    clonedBuilding.ClassCode =  this.ClassCode
+    clonedBuilding.CoverageForm =  this.CoverageForm
+
+    /*clonedBuilding.PropertyType = this.PropertyType
+
     clonedBuilding.PredominentOccType_Ext = this.PredominentOccType_Ext
-    clonedBuilding.YearBuilt_Ext = this.YearBuilt_Ext
-    clonedBuilding.NoOfStories_Ext = this.NoOfStories_Ext
-    clonedBuilding.NoOfUnits_Ext = this.NoOfUnits_Ext
-    clonedBuilding.BuildingSqFootage_Ext = this.BuildingSqFootage_Ext
+    clonedBuilding.YearBuilt_Ext = this.YearBuilt_Ext*/
+    clonedBuilding.Building.NumStories = this.Building.NumStories//NoOfStories_Ext
+    clonedBuilding.NumUnits = this.NumUnits
+    /*clonedBuilding.BuildingSqFootage_Ext = this.BuildingSqFootage_Ext
     clonedBuilding.Caged_Ext  = this.Caged_Ext
     clonedBuilding.Alarmed_Ext  = this.Alarmed_Ext
     clonedBuilding.Monitored_Ext = this.Monitored_Ext
@@ -242,7 +246,7 @@ enhancement CPBuildingEnhancement : CPBuilding {
     }
     if(this.FireDepartmentDistance_Ext != null) {
       clonedBuilding.FireDepartmentDistance_Ext = this.FireDepartmentDistance_Ext
-    } */
+    }*/
 
     //clonedBuilding.updateDependentFields(null, helper)
     return  clonedBuilding

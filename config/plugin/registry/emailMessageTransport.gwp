@@ -1,20 +1,8 @@
-<?xml version="1.0"?>
-<plugin
-  interface="MessageTransport"
-  name="emailMessageTransport">
-  <plugin-gosu
-    gosuclass="una.integration.plugins.email.EmailMessageTransportImpl">
-    <param
-      name="defaultSenderAddress"
-      value="akreci@unagw.com"/>
-    <param
-      name="defaultSenderName"
-      value="Anthony"/>
-    <param
-      name="smtpHost"
-      value="uimgwexchange01.uicna.local"/>
-    <param
-      name="smtpPort"
-      value="25"/>
-  </plugin-gosu>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><plugin interface="MessageTransport" name="emailMessageTransport">
+  <plugin-java javaclass="com.guidewire.pl.plugin.email.internal.EmailMessageTransport" plugindir="">
+    <param name="smtpPort" value="25"/>
+    <param name="smtpHost" value="localhost"/>
+    <param name="defaultSenderName" value="Example Name"/>
+    <param name="defaultSenderAddress" value="example@example.com"/>
+  </plugin-java>
 </plugin>

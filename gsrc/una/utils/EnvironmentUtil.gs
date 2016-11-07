@@ -41,7 +41,7 @@ class EnvironmentUtil {
   static function isLocal(): boolean {
     if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_ENVIRONMENT
-        || EnvironmentUtil.PolicyCenterRuntime.startsWith(LOCAL_DEV_ENVIRONMENT)) {
+        || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_ENVIRONMENT) {
       return true
     } else {
       return false

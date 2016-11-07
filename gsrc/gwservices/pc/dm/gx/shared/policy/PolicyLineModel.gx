@@ -1,8 +1,12 @@
 <?xml version="1.0"?>
 <gx-model type="entity.PolicyLine" xmlns="http://guidewire.com/gx">
   <includes>
+    <include path="(entity-BP7BusinessOwnersLine).AllClassifications[]" type="entity.BP7Classification" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7classificationmodel"/>
+    <include path="(entity-BP7BusinessOwnersLine).Blankets[]" type="entity.BP7Blanket" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7blanketmodel"/>
     <include path="(entity-BP7BusinessOwnersLine).BP7LineBusinessType" type="typekey.BP7PropertyType" propertyInclusionType="NORMAL"/>
+    <include path="(entity-BP7BusinessOwnersLine).BP7LineConditions[]" type="entity.BP7LineCond" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7linecondmodel"/>
     <include path="(entity-BP7BusinessOwnersLine).BP7LineCoverages[]" type="entity.BP7LineCov" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7linecovmodel"/>
+    <include path="(entity-BP7BusinessOwnersLine).BP7LineExclusions[]" type="entity.BP7LineExcl" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7lineexclmodel"/>
     <include path="(entity-BP7BusinessOwnersLine).BP7Locations[]" type="entity.BP7Location" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7locationmodel"/>
     <include path="(entity-BP7BusinessOwnersLine).BusinessDesc" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="(entity-BP7BusinessOwnersLine).DateBusinessStarted" type="java.util.Date" propertyInclusionType="NORMAL"/>

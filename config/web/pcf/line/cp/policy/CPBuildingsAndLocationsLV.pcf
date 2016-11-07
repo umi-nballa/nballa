@@ -147,8 +147,13 @@
         <ToolbarFlag
           name="removeAvailable"/>
         <Row>
-          <Cell
-            id="spacerCellForActionsCell"/>
+          <ButtonCell
+            action="cloneBuilding(building)//jobWizardHelper.Wizard.refreshCurrentStep();CheckedValue.createAndAddBuilding(jobWizardHelper)//;cloneBuilding(CheckedValue.build);//building.clone()"
+            enableSort="true"
+            hideChildrenIfReadOnly="true"
+            id="spacerCellForActionsCell"
+            value="&quot;Clone&quot;"
+            visible="true"/>
           <TextCell
             action="CPBuildingPopup.push(cpLine, building, openForEdit, jobWizardHelper)"
             align="left"
@@ -188,6 +193,12 @@
     sortedBuildings = sortedBuildings.subList(0, numBuildings)
   }
   return sortedBuildings.toTypedArray()
+}
+
+function cloneBuilding(bldg : CPBuilding) : CPBuilding
+{
+  var cloneBldg = bldg.copyBuilding(jobWizardHelper)
+  return cloneBldg
 }]]></Code>
   </ListViewPanel>
 </PCF>

@@ -2,13 +2,27 @@
 <gx-model type="entity.PolicyLine" xmlns="http://guidewire.com/gx">
   <includes>
     <include path="(entity-BP7BusinessOwnersLine).BP7LineBusinessType" type="typekey.BP7PropertyType" propertyInclusionType="NORMAL"/>
+    <include path="(entity-BP7BusinessOwnersLine).BP7LineCoverages[]" type="entity.BP7LineCov" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7linecovmodel"/>
     <include path="(entity-BP7BusinessOwnersLine).BP7Locations[]" type="entity.BP7Location" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.bop.bp7locationmodel"/>
     <include path="(entity-BP7BusinessOwnersLine).BusinessDesc" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="(entity-BP7BusinessOwnersLine).DateBusinessStarted" type="java.util.Date" propertyInclusionType="NORMAL"/>
     <include path="(entity-BP7BusinessOwnersLine).NoOfEmployees_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="(entity-BP7BusinessOwnersLine).NoOfPartEmployee_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="(entity-BP7BusinessOwnersLine).PolicyLocations[]" type="entity.PolicyLocation" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.location.policylocationmodel"/>
+    <include path="(entity-CommercialPropertyLine).allotherperilded" type="typekey.CPAllotherPerilDed_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).causeofloss" type="typekey.CPCauseOfLoss" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).CoverageForm" type="typekey.CoverageForm" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).CPCoverageB" type="typekey.CPCoverageBC_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).CPCoverageBC" type="typekey.CPCoverageBC_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).CPCoverageC" type="typekey.CPCoverageBC_Ext" propertyInclusionType="NORMAL"/>
     <include path="(entity-CommercialPropertyLine).CPLocations[]" type="entity.CPLocation" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cplocationmodel"/>
+    <include path="(entity-CommercialPropertyLine).CPOrdinanceOrLawType" type="typekey.CPOutdoorPropCovType_EXT" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).hurricanededtype" type="typekey.CPHurricaneDedType_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).hurricanepercded" type="typekey.CPHurricanePercDed_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-CommercialPropertyLine).Inflationguard" type="typekey.CPInflationGuard_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-GeneralLiabilityLine).GLExposuresWM[]" type="entity.GLExposure" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.glexposuremodel"/>
+    <include path="(entity-GeneralLiabilityLine).GLLineCoverages[]" type="entity.GeneralLiabilityCov" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.generalliabilitycovmodel"/>
+    <include path="(entity-GeneralLiabilityLine).GLModifiers[]" type="entity.GLModifier" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.glmodifiermodel"/>
     <include path="(entity-HomeownersLine_HOE).Dwelling" type="entity.Dwelling_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineConditions[]" type="entity.HomeownersLineCond_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslinecond_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineCoverages[]" type="entity.HomeownersLineCov_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslinecov_hoemodel"/>

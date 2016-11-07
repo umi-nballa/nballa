@@ -13,7 +13,7 @@ enhancement CPLocationEnhancement : entity.CPLocation {
   function createAndAddBuilding(helper : JobWizardHelper = null) : CPBuilding {
     var building = this.addNewLineSpecificBuilding() as CPBuilding
 
-    building.createCoveragesConditionsAndExclusions()
+    //building.createCoveragesConditionsAndExclusions()
     //building.initializeAutoNumberSequences()
     //building.defaultPropertyType()
 

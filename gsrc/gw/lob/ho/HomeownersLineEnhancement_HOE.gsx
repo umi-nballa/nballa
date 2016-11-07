@@ -62,6 +62,8 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
       this.HOSL_WatercraftLiabilityCov_HOE_Ext.addScheduledItem(schedItem)
     } else if (covPattern.matches("HOLI_AddResidenceRentedtoOthers_HOE") and this.HOLI_AddResidenceRentedtoOthers_HOEExists) {
       this.HOLI_AddResidenceRentedtoOthers_HOE.addScheduledItem(schedItem)
+    } else if (covPattern.matches("HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext") and this.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_ExtExists) {
+      this.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.addScheduledItem(schedItem)
     }else {
       throw "Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx"
     }

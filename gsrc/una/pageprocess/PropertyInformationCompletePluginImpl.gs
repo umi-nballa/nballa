@@ -29,6 +29,10 @@ class PropertyInformationCompletePluginImpl {
   final static var DISTANCE_TO_COAST = "DistanceToCoast"
   final static var PROTECTION_CLASS = "ProtectionClass"
   final static var EXTERIOR_WALL_FINISH = "ExteriorWallFinish"
+  final static var ISO_360_VALUE = "ISO360ValuationId"
+  final static var ESTIMATED_REPLACEMENT_COST = "CondoReplacementCost"
+  final static var FIRE_DEPT_MATCH_LEVEL ="DistanceToMajorBOW"
+  final static var FIRE_LINE_ADJUSTED_HAZARD ="FirelineAdjustedHazardScore"
   private var _TUNAGateway = GatewayPlugin.makeTunaGateway()
   var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
   var baseState = {"CA", "FL", "NV", "NC", "HI", "TX"}
@@ -63,50 +67,60 @@ class PropertyInformationCompletePluginImpl {
             gw.transaction.Transaction.runWithNewBundle(\bun -> {
 
               policyPeriod = bun.add(policyPeriod)
+
+              policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Longitude_Ext = dwellingDetails.Longitude
+              policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Latitude_Ext = dwellingDetails.Latitude
+
               if (null != dwellingDetails.Datums && dwellingDetails.Datums.size() > 0) {
                 for (dwell in dwellingDetails.Datums) {
 
-                  if (dwell.ID == YEAR_BUILT)
+                  if (dwell.ID == YEAR_BUILT && ("" != dwell.Value && null != dwell.Value ))
                     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = (dwell.Value) as Integer
-
-                  else if (dwell.ID == STORIES_NUMBER)
-                    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber = typecodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-
-                  else if (dwell.ID == CONSTRUCTION_TYPE) {
+                  else if (dwell.ID == STORIES_NUMBER && ("" != dwell.Value && null != dwell.Value )  )
+                    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber = typecodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dwell.Value)
+                  else if (dwell.ID == CONSTRUCTION_TYPE && ("" != dwell.Value && null != dwell.Value ) ) {
                       if (baseState.contains(producerSelection.State.Code))
                         policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
                       else
                         policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dwell.Value)
-                    }
-                    else if (dwell.ID == EXTERIOR_WALL_FINISH) {
-                        if (baseState.contains(producerSelection.State.Code))
-                          policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                        else
-                          policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dwell.Value)
-                      }
+                  }
+                  else if (dwell.ID == EXTERIOR_WALL_FINISH && ("" != dwell.Value && null != dwell.Value ) ) {
+                    if (baseState.contains(producerSelection.State.Code))
+                       policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                    else
+                       policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dwell.Value)
+                   }
+                  else if (dwell.ID == SQUARE_FOOTAGE && ("" != dwell.Value && null != dwell.Value )  )
+                     policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = (dwell.Value) as Integer
+                  else if (dwell.ID == ROOF_TYPE && "" != dwell.Value  ) {
+                    if (baseState.contains(producerSelection.State.Code))
+                      policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                    else
+                      policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dwell.Value)
+                  }
+                  else if (dwell.ID == ROOF_COVER && ("" != dwell.Value && null != dwell.Value )  ) {    //mapping to material
+                    if (baseState.contains(producerSelection.State.Code))
+                      policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
+                    else
+                       policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna", dwell.Value)
+                  }
+                  else if (dwell.ID == WIND_POOL && ("" != dwell.Value && null != dwell.Value )  )
+                     policyPeriod.HomeownersLine_HOE.Dwelling.PropertyCovByStateWndstorm_Ext = (dwell.Value) as Boolean
 
-                      else if (dwell.ID == SQUARE_FOOTAGE)
-                          policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = (dwell.Value) as Integer
-
-
-                        else if (dwell.ID == ROOF_TYPE) {
-                            if (baseState.contains(producerSelection.State.Code))
-                              policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                            else
-                              policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dwell.Value)
-                          }
-                          else if (dwell.ID == ROOF_COVER) {
-                              //mapping to material
-                              if (baseState.contains(producerSelection.State.Code))
-                                policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                              else
-                                policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna", dwell.Value)
-                            }
-                            else if (dwell.ID == WIND_POOL)
-                                policyPeriod.HomeownersLine_HOE.Dwelling.PropertyCovByStateWndstorm_Ext = (dwell.Value) as Boolean
-
-                              else if (dwell.ID == PROTECTION_CLASS)
-                                  policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode = dwell.Value
+                  else if (dwell.ID == PROTECTION_CLASS && ("" != dwell.Value && null != dwell.Value )  )
+                     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode = dwell.Value
+                  else if (dwell.ID == ISO_360_VALUE && ("" != dwell.Value && null != dwell.Value )  )
+                     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360ValueID_Ext = dwell.Value
+                  else if (dwell.ID == ESTIMATED_REPLACEMENT_COST && ("" != dwell.Value && null != dwell.Value ) )
+                     policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost = dwell.Value
+                  else if (dwell.ID == DISTANCE_TO_COAST &&  ("" != dwell.Value && null != dwell.Value )  )
+                      policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistanceToCoast_Ext = dwell.Value
+                  else if (dwell.ID == BCEG && ("" != dwell.Value && null != dwell.Value ) )
+                     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEG_Ext = dwell.Value
+                  else if(dwell.ID ==  FIRE_DEPT_MATCH_LEVEL && ("" != dwell.Value && null != dwell.Value )  )
+                      policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireDeptMatchLevel_Ext = typekey.FireDeptMatchLevel_Ext.TC_EXACT
+                  else if(dwell.ID ==  FIRE_LINE_ADJUSTED_HAZARD && ("" != dwell.Value && null != dwell.Value )  )
+                      policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = typekey.FireDeptMatchLevel_Ext.TC_EXACT
                 }
               }
             })
@@ -117,7 +131,7 @@ class PropertyInformationCompletePluginImpl {
     } catch (exp: Exception)
     {
       logger.error("TunaGateway : Dwelling Construction Information " + " : StackTrace = ", exp)
-      //throw new gw.api.util.DisplayableException ("Scrubb the address Properly")
+      throw exp
     }
   }
 
@@ -135,17 +149,17 @@ class PropertyInformationCompletePluginImpl {
       logger.info("Response Print:" + propertyInformation.ScrubStatus)
       if (null != propertyInformation.Datums && propertyInformation.Datums.size() > 0) {
         for (buildingDetails in propertyInformation.Datums) {
-          if (buildingDetails.ID == FIRE_LINE_MATCH_LEVEL) {
+          if (buildingDetails.ID == FIRE_LINE_MATCH_LEVEL && ("" != buildingDetails.Value && null != buildingDetails.Value )) {
             building.FireDepartmentDistance_Ext = buildingDetails.Value
             building.Location.FireDepartment_Ext = buildingDetails.Value
           }
-          else if (buildingDetails.ID == BCEG)
+          else if (buildingDetails.ID == BCEG && ("" != buildingDetails.Value && null != buildingDetails.Value ))
             building.BldgCodeEffGrade = typecodeMapper.getInternalCodeByAlias("BP7BldgCodeEffectivenessGrade", "tuna", buildingDetails.Value)
-          else if (buildingDetails.ID == PROTECTION_CLASS)
+          else if (buildingDetails.ID == PROTECTION_CLASS && ("" != buildingDetails.Value && null != buildingDetails.Value ))
               building.Location.FireProtectionClassPPC = typecodeMapper.getInternalCodeByAlias("BP7FireProtectionClassPPC", "tuna", buildingDetails.Value)
                 /*else if (buildingDetails.ID == FIRE_LINE_MATCH_LEVEL)
                     building.Location.FireDepartment_Ext = false */
-            else  if (buildingDetails.ID == WIND_POOL)
+            else  if (buildingDetails.ID == WIND_POOL && ("" != buildingDetails.Value && null != buildingDetails.Value ))
                 building.Location.WindpoolEligibility_Ext = (buildingDetails.Value) as Boolean
         }
       }

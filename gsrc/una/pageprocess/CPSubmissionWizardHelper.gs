@@ -1,4 +1,6 @@
 package una.pageprocess
+
+uses java.util.ArrayList
 /**
  * Created with IntelliJ IDEA.
  * User: dvillapakkam
@@ -17,4 +19,27 @@ class CPSubmissionWizardHelper {
       var accountLocation =  polLocation.AccountLocation.cloneLocation()
       return  polLocation.Branch.newLocation(accountLocation)
     }
+
+    public static function cloneBuildingsFromLocation(cploc:CPLocation):CPBuilding[]
+    {
+      var bldglist = new ArrayList<CPBuilding>()
+      foreach(building in cploc.Buildings)
+        {
+          building.clone()
+          bldglist.add(building)
+        }
+      return bldglist.toTypedArray()
+    }
+
+
+  public static function cloneBuildingsFromLocn(cploc:CPLocation, bldg:CPBuilding):boolean
+  {
+    cploc.addToBuildings(bldg)
+    return true
+  }
+
+  public static function cloneBuilding(bldg:Building):Building
+  {
+      return bldg.clone()
+  }
   }

@@ -127,7 +127,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
       rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
-    if (dwelling?.DwellingProtectionDetails?.BurglarAlarm){
+    if (_discountOrSurchargeRatingInfo.BurglarAlarmReportPoliceStn || _discountOrSurchargeRatingInfo.BurglarAlarmReportCntlStn || _discountOrSurchargeRatingInfo.CompleteLocalBurglarAlarm){
       rateBurglarProtectiveDevicesCredit(dateRange)
     }
     if (PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){
@@ -140,8 +140,11 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       rateHailResistantRoofCredit(dateRange)
     }
 
+    if(_discountOrSurchargeRatingInfo.FireAlarmReportFireStn || _discountOrSurchargeRatingInfo.FireAlarmReportCntlStn || _discountOrSurchargeRatingInfo.SprinklerSystemAllAreas)
+      rateFireProtectiveDevicesCredit(dateRange)
+
     //TODO : Need to add the condition to check for affinity discount flag
-    //rateAffinityDiscount(dateRange)
+    rateAffinityDiscount(dateRange)
   }
 
   /**
@@ -170,10 +173,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_BURGLARPROTECTIVEDEVICESCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if (costData.ActualTermAmount == 0){
-        costData.ActualTermAmount = 1
-        _hoRatingInfo.BurglarProtectiveDevicesCredit = costData?.ActualTermAmount
-      }
+      _hoRatingInfo.BurglarProtectiveDevicesCredit = costData?.ActualTermAmount
       addCost(costData)
     }
     _logger.debug("Burglar Protective Devices Credit Rated Successfully", this.IntrinsicType)
@@ -200,21 +200,18 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   /**
    *  Function to rate the Fire Protective Devices Credit
    */
-  /*function rateFireProtectiveDevicesCredit(dateRange: DateRange) {
+  function rateFireProtectiveDevicesCredit(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateFireProtectiveDevicesCredit", this.IntrinsicType)
-    var discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine)
-    discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.FIRE_PROTECTIVE_DEVICES_CREDIT_TX_RATE_ROUTINE, HOCostType_Ext.TC_FIREPROTECTIVEDEVICESCREDIT,
+    _discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.FIRE_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_FIREPROTECTIVEDEVICESCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if(costData.ActualTermAmount == 0)
-        costData.ActualTermAmount = 1
       addCost(costData)
       _hoRatingInfo.FireProtectiveDevicesCredit = costData?.ActualTermAmount
     }
     _logger.debug("Fire Protective Devices Credit Rated Successfully", this.IntrinsicType)
-  }*/
+  }
 
   /**
    *  Function to rate the Hail Resistant Roof Credit

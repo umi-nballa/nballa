@@ -71,7 +71,7 @@ public final class HORateRoutineNames {
   public static final var DIFFERENCE_IN_CONDITIONS_GROUP1_RATE_ROUTINE : String = "UNAHODifferenceInConditionsGroup1RateRoutine"
   public static final var CONCRETE_TILE_ROOF_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOConcreteTileRoofDiscountGroup1RateRoutine"
   public static final var LOSS_ASSESSMENT_COVERAGE_GROUP1_RATE_ROUTINE : String = "UNAHOLossAssessmentCovGroup1RateRoutine"
-  public static final var GATED_COMMUNITY_DISCOUNT_GROUP1_RATE_ROUTINE : String = "UNAHOGatedCommunityDiscountGroup1RateRoutine"
+  public static final var GATED_COMMUNITY_DISCOUNT_RATE_ROUTINE : String = "UNAHOGatedCommunityDiscountRateRoutine"
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
   public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
   public static final var VACANT_DWELLINGS_RATE_ROUTINE : String = "UNAHOVacantDwellingsRateRoutine"
@@ -89,4 +89,5 @@ public final class HORateRoutineNames {
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIIRateRoutine"
   public static final var MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE : String = "UNAHOMatureHomeOwnerDiscountRateRoutine"
   public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
+  public static final var BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeComplianceGradingCreditRateRoutine"
 }

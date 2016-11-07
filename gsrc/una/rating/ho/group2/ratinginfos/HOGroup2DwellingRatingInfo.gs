@@ -9,12 +9,17 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
  * rating info for the dwelling level coverages for group 2 states
  */
 class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
+  var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
+
   construct(lineVersion: HomeownersLine_HOE) {
     super(lineVersion)
   }
 
   construct(dwellingCov: DwellingCov_HOE){
     super(dwellingCov)
+    if(dwellingCov typeis HODW_FungiCov_HOE){
+      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
+    }
   }
 
 }

@@ -10,7 +10,6 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
  */
 class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isOrdinanceOrLawCoverage: boolean as IsOrdinanceOrLawCoverage = false
-  var _businessPropertyIncreasedLimit: int as BusinessPropertyIncreasedLimit
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit: int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium: boolean as IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = false
   var _doesSpecialPersonalPropertyCoverageExist: boolean as SpecialPersonalPropertyCoverage = false
@@ -19,9 +18,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   construct(dwellingCov: DwellingCov_HOE) {
     super(dwellingCov)
     var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
-    if (dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
-      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.LimitDifference.intValue())
-    }
+
     if (dwellingCov typeis HODW_FungiCov_HOE){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
       if (baseState == typekey.Jurisdiction.TC_CA || (baseState == typekey.Jurisdiction.TC_NV and _limitedFungiWetOrDryRotOrBacteriaSectionILimit == dwellingCov.HODW_FungiSectionILimit_HOETerm.RuntimeDefault))

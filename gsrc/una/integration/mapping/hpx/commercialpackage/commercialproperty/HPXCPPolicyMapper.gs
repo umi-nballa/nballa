@@ -109,15 +109,15 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   function createCommericalPropertyLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLineCoverages(policyPeriod, policyPeriod.GLLine)
+    return createLineCoverages(policyPeriod, policyPeriod.CPLine)
   }
 
   function createCommericalPropertyLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLineExclusions(policyPeriod, policyPeriod.GLLine)
+    return createLineExclusions(policyPeriod, policyPeriod.CPLine)
   }
 
   function createCommericalPropertyLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLinePolicyConditions(policyPeriod, policyPeriod.GLLine)
+    return createLinePolicyConditions(policyPeriod, policyPeriod.CPLine)
   }
 
   override function getLocation(coverable : Coverable) : PolicyLocation {

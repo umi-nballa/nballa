@@ -81,6 +81,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     if (currentCoverage.OwningCoverable typeis BP7Classification) {
       var classification = currentCoverage.OwningCoverable as BP7Classification
       coverable.ClassificationNo = classification?.ClassificationNumber != null ?  classification.ClassificationNumber : ""
+      coverable.BuildingNo =  classification?.Building?.Building?.BuildingNum != null ? classification?.Building?.Building?.BuildingNum : ""
+      coverable.LocationNo = classification?.Building?.Location?.Location?.LocationNum != null ? classification?.Building?.Location?.Location?.LocationNum : ""
     }
     return coverable
   }

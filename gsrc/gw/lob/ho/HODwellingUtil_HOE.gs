@@ -567,6 +567,15 @@ class HODwellingUtil_HOE {
    return typekey.WiringType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
  }
 
+  // De728, Req update to exclude Fuse box
+  static function getElectricalSystemRange(dwelling : Dwelling_HOE) : List<typekey.BreakerType_HOE>{
+    var yearBuilt : int = 1990
+     if(dwelling.YearBuilt >= yearBuilt) {
+       return typekey.BreakerType_HOE.TF_YEARGRP1_EXT.TypeKeys
+     }
+   return  typekey.BreakerType_HOE.getTypeKeys(false)
+  }
+
   /**
   * Method to get the SubdivisionNames based on the Jurisdiction
    */

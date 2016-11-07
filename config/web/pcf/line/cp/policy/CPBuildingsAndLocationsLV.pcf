@@ -147,13 +147,21 @@
         <ToolbarFlag
           name="removeAvailable"/>
         <Row>
-          <ButtonCell
+          <!-- ButtonCell
             action="cloneBuilding(building)//jobWizardHelper.Wizard.refreshCurrentStep();CheckedValue.createAndAddBuilding(jobWizardHelper)//;cloneBuilding(CheckedValue.build);//building.clone()"
-            enableSort="true"
-            hideChildrenIfReadOnly="true"
-            id="spacerCellForActionsCell"
-            value="&quot;Clone&quot;"
-            visible="true"/>
+            id="clonebtn"
+            value="&quot;Clone&quot;"/ -->
+          <LinkCell
+            id="Select"
+            visible="true">
+            <Link
+              action="cloneBuilding(building)"
+              id="cloneButton"
+              label="&quot;Clone&quot;"
+              shortcut="e"
+              styleClass="miniButton"
+              visible="true"/>
+          </LinkCell>
           <TextCell
             action="CPBuildingPopup.push(cpLine, building, openForEdit, jobWizardHelper)"
             align="left"

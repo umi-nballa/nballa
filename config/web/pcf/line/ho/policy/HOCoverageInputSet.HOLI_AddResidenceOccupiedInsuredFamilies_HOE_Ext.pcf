@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <InputSet
     id="HOCoverageInputSet"
-    mode="HOLI_AddResidenceRentedtoOthers_HOE">
+    mode="HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext">
     <Require
       name="coveragePattern"
       type="gw.api.productmodel.ClausePattern"/>
@@ -45,8 +45,8 @@
             elementName="schedItem"
             hideCheckBoxesIfReadOnly="true"
             pickLocation="HoliSchedItemLocationPopup.push(hoLine, coveragePattern , false, openForEdit)"
-            toRemove="hoLine.HOLI_AddResidenceRentedtoOthers_HOE.removeScheduledItem(schedItem)"
-            value="hoLine.HOLI_AddResidenceRentedtoOthers_HOE.scheduledItem_Ext">
+            toRemove="hoLine.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.removeScheduledItem(schedItem)"
+            value="hoLine.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.scheduledItem_Ext">
             <IteratorSort
               sortBy="schedItem.ItemNum"
               sortOrder="1"/>
@@ -56,12 +56,6 @@
                 id="LocationID"
                 label="displaykey.Web.AddressBook.AddressInputSet.Name"
                 value="schedItem.policyLocation.CompactName"/>
-              <Cell
-                editable="true"
-                id="DescitptionId"
-                label="displaykey.Web.Homeowners.HOCoveragesScreen.Numfamilies_Ext"
-                required="true"
-                value="schedItem.numFamilies"/>
             </Row>
           </RowIterator>
         </ListViewPanel>

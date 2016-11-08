@@ -20,6 +20,7 @@ class HPXCPBuildingMapper implements HPXStructureMapper  {
     var buildingMapper = new HPXCPBuildingMapper()
     var buildingProtectionMapper = new HPXCPBuildingProtectionMapper ()
     var dwell = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType()
+    dwell.Description = bldg.Building.Description
     dwell.addChild(new XmlElement("DwellRating", buildingMapper.createDwellRating(bldg)))
 //    dwell.addChild(buildingMapper.createDwellInspectionValuation(bldg))
 //    dwell.addChild(buildingMapper.createDwellOccupancy(bldg))

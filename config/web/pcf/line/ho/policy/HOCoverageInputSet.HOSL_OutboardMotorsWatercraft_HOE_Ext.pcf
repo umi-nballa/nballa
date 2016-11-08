@@ -56,7 +56,9 @@
                 id="watercraftType"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.WatercraftType_Ext"
                 required="true"
-                value="schedItem.watercraftType"/>
+                value="schedItem.watercraftType">
+                <PostOnChange/>
+              </TypeKeyCell>
               <Cell
                 editable="true"
                 id="WatercraftDesc"
@@ -68,12 +70,14 @@
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.OverallLength_Ext"
                 required="true"
                 value="schedItem.overallLength"/>
-              <TypeKeyCell
+              <RangeCell
                 editable="true"
                 id="Horsepower"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.Horsepower_Ext"
-                required="true"
-                value="schedItem.horsepower"/>
+                required="hpRequired()"
+                value="schedItem.horsepower"
+                valueRange="schedItem.Branch.BaseState == typekey.Jurisdiction.TC_NC ? typekey.Horsepower_Ext.TF_NCSTATE.TypeKeys:typekey.Horsepower_Ext.TF_OTHERTHANNC.TypeKeys"
+                valueVisible="schedItem.watercraftType == typekey.WatercraftType_Ext.TC_MOTORBOAT"/>
               <TypeKeyCell
                 editable="true"
                 id="SpeedRating"
@@ -104,5 +108,12 @@
       </ListViewInput>
       <PostOnChange/>
     </InputGroup>
+    <Code><![CDATA[function hpRequired():boolean{
+  for (scItem in holine.HOSL_OutboardMotorsWatercraft_HOE_Ext.scheduledItem_Ext)
+    if(scItem.watercraftType == typekey.WatercraftType_Ext.TC_MOTORBOAT){
+      return true
+    }
+  return false
+}]]></Code>
   </InputSet>
 </PCF>

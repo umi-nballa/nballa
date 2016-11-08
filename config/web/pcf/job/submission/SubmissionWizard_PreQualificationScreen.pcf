@@ -51,8 +51,7 @@
       id="PreQualQuestionSetsDV"
       visible="true"/>
     <Code><![CDATA[function changePolicyType(period : PolicyPeriod) {
-  //Commenting the default logic as not needed after 12.02.03
-  //PolicyPeriod.HomeownersLine_HOE.Dwelling.setPolicyTypeAndDefaults()
+  PolicyPeriod.HomeownersLine_HOE.Dwelling.setPolicyTypeAndDefaults()
   if (PolicyPeriod.OpenForEdit) {
     gw.web.productmodel.ProductModelSyncIssuesHandler.syncQuestions({PolicyPeriod}, jobWizardHelper)
     

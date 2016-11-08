@@ -83,7 +83,8 @@ class RateBookMatcher {
       // Otherwise (normal case) we select ratebooks by dates and status.          
       return QueryUtils.getRateBooksForLine(filter.PolicyLine)
         .where(\ b -> effDate(filter, b) <= filter.QueryRefDate
-                  and b.LastStatusChangeDate <= filter.OriginalRateDate
+                  //TODO this code is commented out to fix local developers seeing missing routines etc on existing policy quotes
+                  //and b.LastStatusChangeDate <= filter.OriginalRateDate
                   and (not filter.MatchGroup or b.BookGroup == filter.BookGroup)
                   and statusLevelsAbove(filter.MinimumRatingLevel).contains(b.Status)
                   and (b.ExpirationDate > filter.QueryRefDate or b.ExpirationDate == null))

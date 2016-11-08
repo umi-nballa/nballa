@@ -169,8 +169,9 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
-    var lineExcls = (line as GLLine).ExclusionsFromCoverable
-    return lineExcls
+    var glLineExcls = (line as GLLine).ExclusionsFromCoverable
+    var cpLineExcls = line?.PolicyLine?.AssociatedPolicyPeriod.CPLine.ExclusionsFromCoverable
+    return glLineExcls?.union(cpLineExcls)?.toList()
   }
 
   override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {

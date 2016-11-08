@@ -12,6 +12,7 @@ uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.Policy
 uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_PolicyTerm
 uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_UWCompany
 uses gwservices.pc.dm.gx.entitypopulators.BaseEntityPopulator
+uses gw.pl.currency.MonetaryAmount
 
 class PolicyPeriodPopulator extends BaseEntityPopulator<PolicyPeriod, KeyableBean> {
   /* Logging prefix */
@@ -78,6 +79,12 @@ class PolicyPeriodPopulator extends BaseEntityPopulator<PolicyPeriod, KeyableBea
       notes.Job = child.Job
       notes.Policy = child.Policy
       _logger.debug("assigning account [${child.Policy.Account.AccountNumber}] to notes [${notes.PublicID}]")
+    }
+    //Populate Estimated Premium for Policy
+    if(child.EstimatedPremium_amt != 0){
+      var estimatedAmount = child.EstimatedPremium_amt
+      var EstimatedPremium = new MonetaryAmount(estimatedAmount, Currency.TC_USD)
+      child.EstimatedPremium = EstimatedPremium
     }
   }
 }

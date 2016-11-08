@@ -28,6 +28,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
     if (currentCoverage.OwningCoverable typeis CPBuilding) {
       var building = currentCoverage.OwningCoverable as CPBuilding
       coverable.BuildingNo = building?.Building?.BuildingNum != null ? building.Building.BuildingNum : ""
+      coverable.LocationNo = building?.CPLocation?.Location?.LocationNum
     }
     else if (currentCoverage.OwningCoverable typeis CPLocation) {
       var location = currentCoverage.OwningCoverable as CPLocation

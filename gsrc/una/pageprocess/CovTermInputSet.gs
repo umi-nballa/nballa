@@ -30,7 +30,7 @@ class CovTermInputSet {
     if(_covTerm typeis DirectCovTerm){
       var roundingFactor = ConfigParamsUtil.getInt(TC_RoundingFactor, null, _covTerm.PatternCode)
 
-      if(roundingFactor != null){
+      if(roundingFactor != null and _covTerm.Value != null){
         _covTerm.Value = MathUtil.roundTo(_covTerm.Value.doubleValue(), roundingFactor, ROUND_NEAREST)
       }
     }

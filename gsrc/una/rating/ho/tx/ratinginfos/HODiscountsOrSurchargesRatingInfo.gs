@@ -11,11 +11,23 @@ uses una.config.ConfigParamsUtil
  */
 class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo {
 
-  var _burglarAlarmType: String as BurglarAlarmType
+  var _propertyCovByStateWindstorm : boolean as PropertyCovByStateWindstorm
+  var _sprinklerSystemAllAreas : boolean as SprinklerSystemAllAreas
+  var _fireAlarmReportCntlStn : boolean as FireAlarmReportCntlStn
+  var _fireAlarmReportFireStn : boolean as FireAlarmReportFireStn
+  var _completeLocalBurglarAlarm : boolean as CompleteLocalBurglarAlarm
+  var _burglarAlarmReportCntlStn : boolean as BurglarAlarmReportCntlStn
+  var _burglarAlarmReportPoliceStn : boolean as BurglarAlarmReportPoliceStn
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
-    if (line.Dwelling?.DwellingProtectionDetails?.BurglarAlarm){
-      _burglarAlarmType = line.Dwelling?.DwellingProtectionDetails?.BurglarAlarmType.DisplayName
-    }
+    var dwelling = line.Dwelling
+    _propertyCovByStateWindstorm = dwelling.PropertyCovByStateWndstorm_Ext
+    _fireAlarmReportCntlStn = dwelling.DwellingProtectionDetails.FireAlarmReportCntlStn
+    _fireAlarmReportFireStn = dwelling.DwellingProtectionDetails.FireAlarmReportFireStn
+    _sprinklerSystemAllAreas = dwelling.DwellingProtectionDetails.SprinklerSystemAllAreas
+    _completeLocalBurglarAlarm = dwelling.DwellingProtectionDetails.BurglarAlarm
+    _burglarAlarmReportCntlStn = dwelling.DwellingProtectionDetails.BurglarAlarmReportCntlStn
+    _burglarAlarmReportPoliceStn = dwelling.DwellingProtectionDetails.BurglarAlarmReportPoliceStn
   }
 }

@@ -14,7 +14,7 @@ uses una.integration.mapping.hpx.common.HPXStructureMapper
 class HPXDwellMapper implements HPXStructureMapper {
 
   override function createStructure(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
-    return createDwell(coverable.PolicyLine.Branch.LatestPeriod)
+    return createDwell(coverable.PolicyLine.Branch)
   }
 
   function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {

@@ -27,7 +27,19 @@ class HPXBP7BuildingMapper implements HPXStructureMapper {
     dwell.addChild(new XmlElement("DwellOccupancy", buildingMapper.createDwellOccupancy(bldg)))
     dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(bldg)))
     dwell.addChild(new XmlElement("Construction", buildingConstructionMapper.createBuildingConstructionInfo(bldg)))
+    dwell.addChild(new XmlElement("BuildingKey", createCoverableInfo(bldg)))
     return dwell
+  }
+
+  function createCoverableInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+    var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
+    if (bldg typeis BP7Building) {
+      var building = bldg as BP7Building
+      coverable.BuildingNo = building?.Building?.BuildingNum != null ? building.Building.BuildingNum : ""
+      coverable.LocationNo = building?.Location?.Location.LocationNum != null ? building?.Location?.Location.LocationNum : ""
+      coverable.Description = building?.Building?.Description
+    }
+    return coverable
   }
 
   function createDwellRating(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType {

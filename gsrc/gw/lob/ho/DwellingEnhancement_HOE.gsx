@@ -84,14 +84,14 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
    * for the policy type is set
    */  
   function setPolicyTypeAndDefaults() {
+
+    this.HOPolicyType = this.HOLine.HOPolicyType
     //Set the default for Garage to No Garage
     if (this.Garage == null) {
       this.Garage = "None"
     }
     //Commenting the default logic as not needed after 12.02.03
     /*
-    this.HOPolicyType = this.HOLine.HOPolicyType
-    
     var validType = false
     if(this.ResidenceType != null)
     {

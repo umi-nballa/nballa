@@ -205,7 +205,26 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.PredominentOccType_Ext = this.PredominentOccType_Ext
     clonedBuilding.YearBuilt_Ext = this.YearBuilt_Ext*/
     clonedBuilding.Building.NumStories = this.Building.NumStories//NoOfStories_Ext
-    clonedBuilding.NumUnits = this.NumUnits
+    clonedBuilding.Building.NumUnits = this.Building.NumUnits
+    clonedBuilding.fireprotectionclass = this.fireprotectionclass
+    clonedBuilding.bceg=this.bceg
+
+    clonedBuilding.Building.ConstructionType = this.Building.ConstructionType
+    clonedBuilding.SqFootExt=this.SqFootExt
+    clonedBuilding.RoofTypeCP=this.RoofTypeCP
+    clonedBuilding.RoofShape=this.RoofShape
+    clonedBuilding.FlatRoofDesc=this.FlatRoofDesc
+
+    clonedBuilding.Building.Sprinklered = this.Building.Sprinklered
+
+    clonedBuilding.Building.TimesRented = this.Building.TimesRented
+
+    clonedBuilding.ResQuestions.windmiti5=this.ResQuestions.windmiti5
+    clonedBuilding.ResQuestions.windstorm=this.ResQuestions.windstorm
+    clonedBuilding.ResQuestions.windstormexcl=this.ResQuestions.windstormexcl
+    clonedBuilding.ResQuestions.windmitidate=this.ResQuestions.windmitidate
+
+
     /*clonedBuilding.BuildingSqFootage_Ext = this.BuildingSqFootage_Ext
     clonedBuilding.Caged_Ext  = this.Caged_Ext
     clonedBuilding.Alarmed_Ext  = this.Alarmed_Ext

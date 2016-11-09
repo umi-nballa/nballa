@@ -20,7 +20,8 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     //Set the necessary defaults for Dwelling Construction
     
     //Set the necessary defaults for Dwelling Details
-    newdwelling.DwellingUsage = DwellingUsage_HOE.TC_PRIM
+    //Commenting the below as not needed after 12.02.03 Dwelling Information
+    //newdwelling.DwellingUsage = DwellingUsage_HOE.TC_PRIM
    
     
     //dwelling.createCoverages()

@@ -205,7 +205,70 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.PredominentOccType_Ext = this.PredominentOccType_Ext
     clonedBuilding.YearBuilt_Ext = this.YearBuilt_Ext*/
     clonedBuilding.Building.NumStories = this.Building.NumStories//NoOfStories_Ext
-    clonedBuilding.NumUnits = this.NumUnits
+    clonedBuilding.Building.NumUnits = this.Building.NumUnits
+    clonedBuilding.fireprotectionclass = this.fireprotectionclass
+    clonedBuilding.bceg=this.bceg
+
+    clonedBuilding.Building.ConstructionType = this.Building.ConstructionType
+    clonedBuilding.SqFootExt=this.SqFootExt
+    clonedBuilding.RoofTypeCP=this.RoofTypeCP
+    clonedBuilding.RoofShape=this.RoofShape
+    clonedBuilding.FlatRoofDesc=this.FlatRoofDesc
+
+    clonedBuilding.OccupancyType=this.OccupancyType
+
+
+    clonedBuilding.Building.Sprinklered = this.Building.Sprinklered
+    clonedBuilding.Building.YearBuilt = this.Building.YearBuilt
+    clonedBuilding.Building.TimesRented = this.Building.TimesRented
+
+    clonedBuilding.ResQuestions.windmiti5=this.ResQuestions.windmiti5
+    clonedBuilding.ResQuestions.windstorm=this.ResQuestions.windstorm
+    clonedBuilding.ResQuestions.windstormexcl=this.ResQuestions.windstormexcl
+    clonedBuilding.ResQuestions.windmitidate=this.ResQuestions.windmitidate
+
+    clonedBuilding.numot=this.numot
+    clonedBuilding.numpg=this.numpg
+    clonedBuilding.numdocks=this.numdocks
+    clonedBuilding.numfit=this.numfit
+    clonedBuilding.numsw=this.numsw
+
+    clonedBuilding.ProtectionDetails.ActiveMonitoringVideo=this.ProtectionDetails.ActiveMonitoringVideo
+    clonedBuilding.ProtectionDetails.AutomaticFireSuppress=this.ProtectionDetails.AutomaticFireSuppress
+        clonedBuilding.ProtectionDetails.CentralBurglarAlarm=this.ProtectionDetails.CentralBurglarAlarm
+        clonedBuilding.ProtectionDetails.CentralFireAlarm=this.ProtectionDetails.CentralFireAlarm
+        clonedBuilding.ProtectionDetails.ContinuousRecVideo=this.ProtectionDetails.ContinuousRecVideo
+        clonedBuilding.ProtectionDetails.ExteriorMotionLighting=this.ProtectionDetails.ExteriorMotionLighting
+        clonedBuilding.ProtectionDetails.GuardWatchmen=this.ProtectionDetails.GuardWatchmen
+        clonedBuilding.ProtectionDetails.GatedAccess=this.ProtectionDetails.GatedAccess
+        clonedBuilding.ProtectionDetails.GuardDogs=this.ProtectionDetails.GuardDogs
+        clonedBuilding.ProtectionDetails.LocalBurglarAlarm=this.ProtectionDetails.LocalBurglarAlarm
+        clonedBuilding.ProtectionDetails.LocalFireAlarm=this.ProtectionDetails.LocalFireAlarm
+        clonedBuilding.ProtectionDetails.MotionActivatedVideo=this.ProtectionDetails.MotionActivatedVideo
+    clonedBuilding.AirCondProt.alarmed=this.AirCondProt.alarmed
+    clonedBuilding.AirCondProt.caged=this.AirCondProt.caged
+    clonedBuilding.AirCondProt.monitored=this.AirCondProt.monitored
+
+
+    clonedBuilding.DistFireHyd=this.DistFireHyd
+    clonedBuilding.DistFireStn=this.DistFireStn
+    clonedBuilding.DistToNext=this.DistToNext
+    clonedBuilding.RespFireDept=this.RespFireDept
+    clonedBuilding.BldgHt=this.BldgHt
+    clonedBuilding?.CPLocation?.Location?.FireProtectClass   = this.CPLocation?.Location?.FireProtectClass
+
+    clonedBuilding.Building.Heating.YearAdded = this.Building.Heating.YearAdded
+    clonedBuilding.Building.Plumbing.YearAdded = this.Building.Plumbing.YearAdded
+    clonedBuilding.Building.Wiring.YearAdded = this.Building.Wiring.YearAdded
+    clonedBuilding.Building.Roofing.YearAdded = this.Building.Roofing.YearAdded
+
+    clonedBuilding.Building.InterestType = this.Building.InterestType
+    clonedBuilding.Building.RentedOthers = this.Building.RentedOthers
+    clonedBuilding.Building.PercentVacant = this.Building.PercentVacant
+
+
+
+
     /*clonedBuilding.BuildingSqFootage_Ext = this.BuildingSqFootage_Ext
     clonedBuilding.Caged_Ext  = this.Caged_Ext
     clonedBuilding.Alarmed_Ext  = this.Alarmed_Ext

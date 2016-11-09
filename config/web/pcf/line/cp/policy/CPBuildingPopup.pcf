@@ -739,6 +739,11 @@
               <PanelColumn>
                 <PanelRef
                   def="CPBldgSuggestedCovDV(cpBuilding, openForEdit)"/>
+                <PanelRef
+                  def="AdditionalLineCoveragesPanelSet(cpBuilding.PolicyLine as CommercialPropertyLine, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  editable="true"
+                  id="cpoptionalcov"
+                  visible="cpBuilding != null"/>
               </PanelColumn>
               <PanelColumn>
                 <DetailViewPanel>
@@ -759,32 +764,32 @@
                   </InputColumn>
                 </DetailViewPanel>
                 <PanelRef
-                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;,&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpoptcov"
                   visible="cpBuilding != null"/>
-                <DetailViewPanel>
+                <!-- <DetailViewPanel>
                   <InputColumn>
                     <Label
                       label="&quot;Line Level Coverages&quot;"/>
                   </InputColumn>
-                </DetailViewPanel>
-                <PanelRef
+                </DetailViewPanel> -->
+                <!-- <PanelRef
                   def="AdditionalLineCoveragesPanelSet(cpBuilding.PolicyLine as CommercialPropertyLine, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpoptionalcov"
-                  visible="cpBuilding != null"/>
-                <DetailViewPanel>
+                  visible="cpBuilding != null"/> -->
+                <!-- <DetailViewPanel>
                   <InputColumn>
                     <Label
                       label="&quot;Optional Scheduled Coverages&quot;"/>
                   </InputColumn>
-                </DetailViewPanel>
-                <PanelRef
+                </DetailViewPanel> -->
+                <!-- <PanelRef
                   def="AdditionalLineCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpschedcov"
-                  visible="cpBuilding != null"/>
+                  visible="cpBuilding != null"/> -->
               </PanelColumn>
             </PanelRow>
           </PanelRef>

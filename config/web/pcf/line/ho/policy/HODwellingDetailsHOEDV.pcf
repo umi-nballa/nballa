@@ -32,6 +32,18 @@
         label="displaykey.Web.Homeowners.HOLocation.LocationInfo_Ext"/>
       <InputSetRef
         def="HODwellingLocationHOEInputSet(dwelling, policyPeriod, openForEdit, jobWizardHelper )"/>
+      <Input
+        editable="true"
+        id="YearBuilt"
+        label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
+        numCols="8"
+        required="true"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
+        value="dwelling.YearBuilt">
+        <PostOnChange
+          onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"
+          target="deedInfo_Ext"/>
+      </Input>
       <InputSet
         editable="true"
         id="TerritoryCodeInputSet"
@@ -173,12 +185,11 @@
         <Label
           label="displaykey.Web.Homeowners.Dwelling.OccupancyInfo_Ext"/>
         <RangeInput
-          action="ResidenceType_HOE.Type.getTypeKeysByCategory(dwelling.HOPolicyType)"
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
           value="dwelling.ResidenceType"
-          valueRange="ResidenceType_HOE.Type.getTypeKeysByCategory(dwelling.HOPolicyType)"/>
+          valueRange="getResidenceType()"/>
         <RangeInput
           editable="true"
           id="DwellingUse"
@@ -299,18 +310,6 @@
           label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
           value="dwelling.RentalMoveInMMYYYY_Ext"
           visible="dwelling.HOPolicyType == TC_HO4"/>
-        <Input
-          editable="true"
-          id="YearBuilt"
-          label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
-          numCols="8"
-          required="true"
-          validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
-          value="dwelling.YearBuilt">
-          <PostOnChange
-            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"
-            target="deedInfo_Ext"/>
-        </Input>
         <InputSet
           id="deedInfo_Ext"
           visible="dwelling.YearBuilt!= null &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.isFirstTimeDeededVisible(dwelling)">
@@ -561,6 +560,7 @@
     </InputColumn>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
+uses java.util.ArrayList
 
 function searchTaxLocation(code: String): TaxLocation {
   try{
@@ -589,6 +589,17 @@ function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLoc
       throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
     }
   }
+}
+
+function getResidenceType() : List<ResidenceType_HOE>{
+  var residenceType = new ArrayList<ResidenceType_HOE>()
+  var values = ResidenceType_HOE.getTypeKeys(false)
+  values.each( \ elt -> {
+    if(elt.Categories.contains(dwelling.HOPolicyType)) {
+      residenceType.add(elt)  
+    }
+  })
+  return residenceType
 }]]></Code>
   </DetailViewPanel>
 </PCF>

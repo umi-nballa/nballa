@@ -124,6 +124,22 @@ uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.Policy
 uses gwservices.pc.dm.gx.lob.bop.bp7classificationmodel.anonymous.elements.BP7Classification_Coverages_Entry
 uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_Offering
 uses gwservices.pc.dm.gx.base.policy.PolicyPeriodOfferingPopulator
+uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_GeneralLiabilityLine_GLExposuresWM_Entry
+uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_GeneralLiabilityLine_GLLineCoverages_Entry
+uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ProtectionDetails
+uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ResQuestions
+uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AirCondProt
+uses gwservices.pc.dm.gx.shared.product.GLExposurePopulator
+uses gwservices.pc.dm.gx.lob.CPP.CPBuildingPrtcnDetailsPopulator
+uses gwservices.pc.dm.gx.lob.CPP.CPBuildingResQuestionsPopulator
+uses gwservices.pc.dm.gx.lob.CPP.CPBuildingAirConPopulator
+uses gwservices.pc.dm.gx.lob.cpp.glexposuremodel.anonymous.elements.GLExposure_ClassCode
+uses gwservices.pc.dm.gx.lob.CPP.GLExposClassCodePopulator
+uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_BP7BusinessOwnersLine_AllClassifications_Entry
+uses gwservices.pc.dm.gx.lob.bop.BP7AllClassificationPopulator
+uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_BP7BusinessOwnersLine_BP7LineCoverages_Entry
+uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_BP7BusinessOwnersLine_Blankets_Entry
+uses gwservices.pc.dm.gx.lob.bop.BP7BlanketPopulators
 
 /**
  * Entity populator registry
@@ -213,7 +229,18 @@ class Registry {
       BP7Classification_Coverages_Entry -> getConstructor(CoveragePopulator),
       //PolicyLine_Entity_HomeownersLine_HOE_HOLineConditions_Entry -> getConstructor(),
       PolicyLine_Entity_HomeownersLine_HOE_HOLineExclusions_Entry -> getConstructor(ExclusionPopulator),
-      PolicyPeriod_Offering -> getConstructor(PolicyPeriodOfferingPopulator)
+      PolicyPeriod_Offering -> getConstructor(PolicyPeriodOfferingPopulator),
+      PolicyLine_Entity_GeneralLiabilityLine_GLExposuresWM_Entry -> getConstructor(GLExposurePopulator),
+      PolicyLine_Entity_GeneralLiabilityLine_GLLineCoverages_Entry -> getConstructor(CoveragePopulator),
+      CPBuilding_ProtectionDetails -> getConstructor(CPBuildingPrtcnDetailsPopulator),
+      CPBuilding_ResQuestions -> getConstructor(CPBuildingResQuestionsPopulator),
+      CPBuilding_AirCondProt -> getConstructor(CPBuildingAirConPopulator),
+      GLExposure_ClassCode -> getConstructor(GLExposClassCodePopulator),
+      PolicyLine_Entity_BP7BusinessOwnersLine_AllClassifications_Entry -> getConstructor(BP7AllClassificationPopulator),
+      PolicyLine_Entity_BP7BusinessOwnersLine_Blankets_Entry -> getConstructor(BP7BlanketPopulators),
+      PolicyLine_Entity_BP7BusinessOwnersLine_BP7LineCoverages_Entry -> getConstructor(CoveragePopulator)
+
+
   }
   /** Items that should not be populated */
   private var _doNotPopulate: List<IType> as DoNotPopulate = {

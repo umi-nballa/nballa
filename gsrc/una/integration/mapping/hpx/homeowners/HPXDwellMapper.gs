@@ -17,6 +17,10 @@ class HPXDwellMapper implements HPXStructureMapper {
     return createDwell(coverable.PolicyLine.Branch)
   }
 
+  function createCoverableInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+    return null
+  }
+
   function createDwell(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var buildingProtectionMapper = new HPXHOBuildingProtectionMapper ()
     var dwellConstructionMapper = new HPXHODwellConstructionMapper ()

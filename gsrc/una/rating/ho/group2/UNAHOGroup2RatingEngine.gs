@@ -57,6 +57,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_FungiCov_HOE:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
+      case HOLI_Personal_Liability_HOE:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.INCREASED_SECTION_II_LIMITS_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
+      case HOLI_AnimalLiabilityCov_HOE_Ext:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
 
     }
   }

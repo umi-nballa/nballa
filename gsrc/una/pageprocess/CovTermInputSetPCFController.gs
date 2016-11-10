@@ -171,11 +171,21 @@ class CovTermInputSetPCFController {
 
   private static function validateFloodCoverageLimits(covTerm : DirectCovTerm, coverable : Dwelling_HOE) : String{
     var result : String
-
-     if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
-        coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
-      result = displaykey.una.productmodel.validation.ValidateFlood_Ext
-    }
+    var maxValue: BigDecimal=250000
+      if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE") {
+        if(coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+        coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm?.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
+       result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+       }else if (!coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_FloodCoverage_HOE_ExtExists and coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm?.Value > maxValue) {
+        result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(maxValue)
+      }}
+     else if(covTerm.PatternCode == "HODW_DebrisRemoval_HOE"){
+     if(coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+         coverable.HODW_FloodCoverage_HOE_Ext.HODW_DebrisRemoval_HOETerm?.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
+       result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+     }else if(!coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_FloodCoverage_HOE_ExtExists and coverable.HODW_FloodCoverage_HOE_Ext.HODW_DebrisRemoval_HOETerm?.Value > maxValue){
+       result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(maxValue)
+     }}
 
     return  result
   }

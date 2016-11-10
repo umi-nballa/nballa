@@ -63,6 +63,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_AnimalLiabilityCov_HOE_Ext:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
+      case HOLI_PersonalInjury_HOE:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
 
     }
   }
@@ -103,6 +106,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_EquipBreakdown_HOE_Ext:
           rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
           break
+      case HODW_SpecificAddAmt_HOE_Ext:
+            rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
+          break
 
     }
   }
@@ -134,6 +140,21 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     updateTotalBasePremium()
   }
+
+  /**
+   * Rate the specified additional amount for coverage A
+   */
+  function rateSpecifiedAdditionalAmountCoverage(dwellingCov: HODW_SpecificAddAmt_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateSpecifiedAdditionalAmountCoverage to rate Specified Additional Amount Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup2DwellingRatingInfo(dwellingCov)
+    dwellingRatingInfo.TotalBasePremium =  _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Specified Additional Amount Coverage Rated Successfully", this.IntrinsicType)
+  }
+
 
   /**
    * Rate Equipment breakdown coverage
@@ -377,6 +398,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_LINERATINGINFO_EXT -> lineRatingInfo
     }
   }
+
+
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.SuperiorConstructionDiscount
         + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge

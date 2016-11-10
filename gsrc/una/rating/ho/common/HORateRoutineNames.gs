@@ -75,6 +75,7 @@ public final class HORateRoutineNames {
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
   public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
   public static final var VACANT_DWELLINGS_RATE_ROUTINE : String = "UNAHOVacantDwellingsRateRoutine"
+  public static final var BUILDING_CODE_EFFECTIVENESS_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeEffectivenessGradingCreditRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"

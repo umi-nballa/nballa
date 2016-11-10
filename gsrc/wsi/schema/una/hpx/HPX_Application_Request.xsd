@@ -525,6 +525,7 @@
 			<xsd:element name="BuildingNo" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="LocationNo" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClassificationNo" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="CoverageType">
@@ -1775,6 +1776,7 @@
 			<xsd:element name="LocationDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CatastropheZoneCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Coverable" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="AuditPeriodType">
@@ -2355,6 +2357,7 @@
 			<xsd:element name="ClassCode" type="xsd:string"/>
 			<xsd:element name="VacantArea" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="ClassificationKey" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="DwellType">
@@ -2406,7 +2409,8 @@
 			<xsd:element name="MinimumAdditionalChargeAmt" type="MinimumAdditionalChargeAmtType" minOccurs="0"/>
 			<xsd:element name="MasterPolicyInfo" type="MasterPolicyInfoType" minOccurs="0"/>
 			<xsd:element name="Watercraft" type="WatercraftType" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="BP7Classification" type="BP7ClassificationType" minOccurs="0"/>
+			<xsd:element name="BP7Classification" type="BP7ClassificationType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="BuildingKey" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="BusinessAreaType">

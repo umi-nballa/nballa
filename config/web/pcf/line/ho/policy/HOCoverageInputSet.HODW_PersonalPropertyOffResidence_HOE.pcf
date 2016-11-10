@@ -17,10 +17,34 @@
     <Variable
       initialValue="(coverable as Dwelling_HOE)"
       name="dwelling"/>
+    <Variable
+      initialValue="new una.pageprocess.HOCoverageInputSet(coveragePattern, coverable, openForEdit)"
+      name="pcfController"/>
     <HiddenInput
       id="CovPatternCode"
       value="coveragePattern.CodeIdentifier"/>
     <InputGroup
+      allowToggle="coveragePattern.allowToggle(coverable)"
+      childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
+      id="CovPatternInputGroup"
+      label="coveragePattern.DisplayName"
+      onToggle="pcfController.onToggle(VALUE)">
+      <InputIterator
+        elementName="term"
+        forceRefreshDespiteChangedEntries="true"
+        id="CovTermIterator"
+        type="gw.api.domain.covterm.CovTerm"
+        value="coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -&gt; term.Pattern.Priority )">
+        <InputSetRef
+          def="CovTermInputSet(term, openForEdit)"
+          mode="term.ValueTypeName"/>
+      </InputIterator>
+      <InputSetRef
+        def="ScheduleInputSet(coverable.getCoverageConditionOrExclusion(coveragePattern), openForEdit)"
+        mode="coverable.getCoverageConditionOrExclusion(coveragePattern) typeis gw.api.productmodel.Schedule"/>
+      <PostOnChange/>
+    </InputGroup>
+    <!-- <InputGroup
       allowToggle="coveragePattern.allowToggle(coverable)"
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
       id="CovLocationInputGroup"
@@ -72,7 +96,7 @@
         </ListViewPanel>
       </ListViewInput>
       <PostOnChange/>
-    </InputGroup>
+    </InputGroup> -->
     <Code><![CDATA[function getTotalIncreasedLimit() : String {
   var total = new java.math.BigInteger("0")
   for (schedItem in dwelling.HODW_PersonalPropertyOffResidence_HOE.ScheduledItems) {

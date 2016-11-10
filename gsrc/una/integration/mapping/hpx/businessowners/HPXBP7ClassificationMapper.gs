@@ -30,7 +30,20 @@ class HPXBP7ClassificationMapper implements HPXClassificationMapper  {
     classification.Classification = bp7Classification.ClassDescription != null ? bp7Classification.ClassDescription.Description : ""
     classification.ClassCode = bp7Classification.ClassCode_Ext != null ? bp7Classification.ClassCode_Ext : ""
     classification.VacantArea = bp7Classification.Area != null ? bp7Classification.Area : 0
+    classification.addChild(new XmlElement("ClassificationKey", createCoverableInfo(bp7Classification)))
     return classification
+  }
+
+  function createCoverableInfo(bp7Classification : BP7Classification) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+    var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
+    if (bp7Classification typeis BP7Classification) {
+      var classification = bp7Classification as BP7Classification
+      coverable.ClassificationNo = classification?.ClassificationNumber != null ?  classification.ClassificationNumber : ""
+      coverable.BuildingNo =  classification?.Building?.Building?.BuildingNum != null ? classification?.Building?.Building?.BuildingNum : ""
+      coverable.LocationNo = classification?.Building?.Location?.Location?.LocationNum != null ? classification?.Building?.Location?.Location?.LocationNum : ""
+      coverable.Description = classification?.ClassDescription.Description
+    }
+    return coverable
   }
 
   function createClassPredOccupancyType(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.OccupancyTypeType {

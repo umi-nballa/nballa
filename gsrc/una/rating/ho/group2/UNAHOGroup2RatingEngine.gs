@@ -57,6 +57,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_FungiCov_HOE:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
+      case HOLI_Personal_Liability_HOE:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.INCREASED_SECTION_II_LIMITS_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
+      case HOLI_AnimalLiabilityCov_HOE_Ext:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
 
     }
   }
@@ -73,9 +79,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
-          rateIncreasedPersonalProperty(dwellingCov, dateRange)
-        break
+          if (dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+            rateIncreasedPersonalProperty(dwellingCov, dateRange)
+          break
       case HODW_BusinessProperty_HOE_Ext:
           rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
@@ -83,10 +89,19 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
           break
       case HODW_RefrigeratedPP_HOE_Ext:
-            rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
+          rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
           break
       case HODW_SpecialComp_HOE_Ext:
-            rateSpecialComputerCoverage(dwellingCov, dateRange)
+          rateSpecialComputerCoverage(dwellingCov, dateRange)
+          break
+      case HODW_WaterBackUpSumpOverflow_HOE_Ext:
+          rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
+          break
+      case HODW_IdentityTheftExpenseCov_HOE_Ext:
+          rateIdentityTheftExpenseCoverage(dwellingCov, dateRange)
+          break
+      case HODW_EquipBreakdown_HOE_Ext:
+          rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
           break
 
     }
@@ -118,6 +133,40 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
 
     updateTotalBasePremium()
+  }
+
+  /**
+   * Rate Equipment breakdown coverage
+   */
+  function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Identity Theft Expense Coverage coverage
+   */
+  function rateIdentityTheftExpenseCoverage(dwellingCov: HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateIdentityTheftExpenseCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Water backup Sump Overflow coverage
+   */
+  function rateWaterBackupSumpOverflowCoverage(dwellingCov: HODW_WaterBackUpSumpOverflow_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWaterBackupSumpOverflowCoverage to rate Water Backup Sump Overflow Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.WATER_BACKUP_SUMP_OVERFLOW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

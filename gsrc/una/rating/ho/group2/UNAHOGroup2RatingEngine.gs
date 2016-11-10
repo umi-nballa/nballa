@@ -97,6 +97,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_WaterBackUpSumpOverflow_HOE_Ext:
           rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
           break
+      case HODW_IdentityTheftExpenseCov_HOE_Ext:
+          rateIdentityTheftExpenseCoverage(dwellingCov, dateRange)
+          break
+      case HODW_EquipBreakdown_HOE_Ext:
+          rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
+          break
 
     }
   }
@@ -129,7 +135,27 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     updateTotalBasePremium()
   }
 
+  /**
+   * Rate Equipment breakdown coverage
+   */
+  function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
+  }
 
+  /**
+   * Rate Identity Theft Expense Coverage coverage
+   */
+  function rateIdentityTheftExpenseCoverage(dwellingCov: HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateIdentityTheftExpenseCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
+  }
 
   /**
    * Rate Water backup Sump Overflow coverage

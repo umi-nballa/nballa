@@ -19,12 +19,16 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-05-25 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2016-11-09 19:16:39.825</LastStatusChangeDate>
-    <LastTableRowEdit>2016-11-09 17:05:16.859</LastTableRowEdit>
+    <LastStatusChangeDate>2016-11-10 13:18:11.261</LastStatusChangeDate>
+    <LastTableRowEdit>2016-11-10 11:01:11.590</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines>
       <RateBookCalcRoutine public-id="pc:10603">
         <CalcRoutineDefinition public-id="pc:8103"/>
+        <RateBook public-id="pc:101"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pc:12701">
+        <CalcRoutineDefinition public-id="pc:8201"/>
         <RateBook public-id="pc:101"/>
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pc:7001">
@@ -258,6 +262,17 @@
         <RefTable/>
         <RowUniformityStatus>nonuniform</RowUniformityStatus>
       </RateTable>
+      <RateTable public-id="pc:11601">
+        <BasedOnTable/>
+        <Definition public-id="pc:5101"/>
+        <LastTableRowEdit>2016-11-10 11:01:11.591</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pc:101"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
       <RateTable public-id="pc:122">
         <BasedOnTable/>
         <Definition public-id="pc:120"/>
@@ -471,17 +486,6 @@
         <BasedOnTable/>
         <Definition public-id="pc:527"/>
         <LastTableRowEdit>2016-06-20 15:18:29.844</LastTableRowEdit>
-        <NormalizedRowCount/>
-        <QueryStrategy>Memory</QueryStrategy>
-        <RateBook public-id="pc:101"/>
-        <ReduceMemoryUsage>false</ReduceMemoryUsage>
-        <RefTable/>
-        <RowUniformityStatus>nonuniform</RowUniformityStatus>
-      </RateTable>
-      <RateTable public-id="pc:668">
-        <BasedOnTable/>
-        <Definition public-id="pc:520"/>
-        <LastTableRowEdit>2016-06-20 15:18:39.896</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:101"/>
@@ -37973,20 +37977,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1402">
-    <CalcRoutineParameterSet public-id="pc:1101"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1403">
     <CalcRoutineParameterSet public-id="pc:1101"/>
     <Code>ratinginfo</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1402">
+    <CalcRoutineParameterSet public-id="pc:1101"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -69888,65 +69892,83 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
-  <RateTableDefinition public-id="pc:520">
+  <RateTableDefinition public-id="pc:5101">
     <ArgumentSourceSets>
-      <RateTableArgumentSourceSet public-id="pc:520">
+      <RateTableArgumentSourceSet public-id="pc:6601">
         <CalcRoutineParameterSet public-id="pc:101"/>
         <Code>DEFAULT</Code>
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:525">
+          <RateTableArgumentSource public-id="pc:7301">
             <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:520"/>
+            <ArgumentSourceSet public-id="pc:6601"/>
             <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:525"/>
+            <Parameter public-id="pc:6201"/>
             <Root/>
           </RateTableArgumentSource>
         </RateTableArgumentSources>
-        <RateTableDefinition public-id="pc:520"/>
+        <RateTableDefinition public-id="pc:5101"/>
       </RateTableArgumentSourceSet>
     </ArgumentSourceSets>
     <EntityName>DefaultRateFactorRow</EntityName>
     <Factors>
-      <RateTableColumn public-id="pc:553">
+      <RateTableColumn public-id="pc:8101">
         <ColumnLabel>Premium</ColumnLabel>
-        <ColumnLabel_L10N_ARRAY/>
+        <ColumnLabel_L10N_ARRAY>
+          <RateTableColumn_ColumnLabel_L10N public-id="pc:501">
+            <Language>en_US_edg</Language>
+            <Owner public-id="pc:8101"/>
+            <Value>Premium</Value>
+          </RateTableColumn_ColumnLabel_L10N>
+        </ColumnLabel_L10N_ARRAY>
         <ColumnName>Premium</ColumnName>
         <ColumnScale/>
         <ColumnType>Integer</ColumnType>
-        <DefinitionForFactor public-id="pc:520"/>
+        <DefinitionForFactor public-id="pc:5101"/>
         <DefinitionForParam/>
         <DependsOn/>
         <DisplayType>Normal</DisplayType>
         <MatchOp/>
         <MultiSelect>false</MultiSelect>
-        <PhysicalColumnName>int2</PhysicalColumnName>
+        <PhysicalColumnName>int1</PhysicalColumnName>
         <SortOrder>0</SortOrder>
         <ValueProvider/>
       </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:525">
-        <Definition public-id="pc:520"/>
-        <DisplayText>Limit</DisplayText>
-        <DisplayText_L10N_ARRAY/>
+      <RateTableMatchOp public-id="pc:6201">
+        <Definition public-id="pc:5101"/>
+        <DisplayText>Coverage</DisplayText>
+        <DisplayText_L10N_ARRAY>
+          <RateTableMatchOp_DisplayText_L10N public-id="pc:401">
+            <Language>en_US_edg</Language>
+            <Owner public-id="pc:6201"/>
+            <Value>Coverage</Value>
+          </RateTableMatchOp_DisplayText_L10N>
+        </DisplayText_L10N_ARRAY>
         <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
-        <Name>Limit</Name>
+        <Name>coverage</Name>
         <Params>
-          <RateTableColumn public-id="pc:554">
-            <ColumnLabel>Limit</ColumnLabel>
-            <ColumnLabel_L10N_ARRAY/>
-            <ColumnName>Limit</ColumnName>
+          <RateTableColumn public-id="pc:8102">
+            <ColumnLabel>Coverage</ColumnLabel>
+            <ColumnLabel_L10N_ARRAY>
+              <RateTableColumn_ColumnLabel_L10N public-id="pc:502">
+                <Language>en_US_edg</Language>
+                <Owner public-id="pc:8102"/>
+                <Value>Coverage</Value>
+              </RateTableColumn_ColumnLabel_L10N>
+            </ColumnLabel_L10N_ARRAY>
+            <ColumnName>coverage</ColumnName>
             <ColumnScale/>
-            <ColumnType>Integer</ColumnType>
+            <ColumnType>String</ColumnType>
             <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:520"/>
+            <DefinitionForParam public-id="pc:5101"/>
             <DependsOn/>
             <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:525"/>
+            <MatchOp public-id="pc:6201"/>
             <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>int1</PhysicalColumnName>
+            <PhysicalColumnName>str1</PhysicalColumnName>
             <SortOrder>0</SortOrder>
             <ValueProvider/>
           </RateTableColumn>
@@ -69954,14 +69976,26 @@
       </RateTableMatchOp>
     </MatchOps>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
-    <TableCode>ho_personal_injury</TableCode>
-    <TableDesc>HO Personal Injury Table</TableDesc>
-    <TableDesc_L10N_ARRAY/>
-    <TableName>HO Personal Injury Table</TableName>
-    <TableName_L10N_ARRAY/>
+    <TableCode>ho_personal_injury_fl_table</TableCode>
+    <TableDesc>HO Personal Injury FL Table</TableDesc>
+    <TableDesc_L10N_ARRAY>
+      <RateTableDefinition_TableDesc_L10N public-id="pc:401">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pc:5101"/>
+        <Value>HO Personal Injury FL Table</Value>
+      </RateTableDefinition_TableDesc_L10N>
+    </TableDesc_L10N_ARRAY>
+    <TableName>HO Personal Injury FL Table</TableName>
+    <TableName_L10N_ARRAY>
+      <RateTableDefinition_TableName_L10N public-id="pc:401">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pc:5101"/>
+        <Value>HO Personal Injury FL Table</Value>
+      </RateTableDefinition_TableName_L10N>
+    </TableName_L10N_ARRAY>
   </RateTableDefinition>
-  <DefaultRateFactorRow public-id="pc:6243">
-    <RateTable public-id="pc:668"/>
+  <DefaultRateFactorRow public-id="pc:124101">
+    <RateTable public-id="pc:11601"/>
     <bit1/>
     <bit2/>
     <date1/>
@@ -69972,15 +70006,15 @@
     <dec4/>
     <dec5/>
     <dec6/>
-    <int1/>
-    <int2>15</int2>
+    <int1>15</int1>
+    <int2/>
     <int3/>
     <int4/>
     <int5/>
     <int6/>
     <int7/>
     <int8/>
-    <str1/>
+    <str1>Y</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -78989,20 +79023,6 @@
         <Name>Default</Name>
         <Name_L10N_ARRAY/>
         <RateTableArgumentSources>
-          <RateTableArgumentSource public-id="pc:7001">
-            <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:6301"/>
-            <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:5901"/>
-            <Root/>
-          </RateTableArgumentSource>
-          <RateTableArgumentSource public-id="pc:7002">
-            <ArgumentSource/>
-            <ArgumentSourceSet public-id="pc:6301"/>
-            <IsModifier>false</IsModifier>
-            <Parameter public-id="pc:5902"/>
-            <Root/>
-          </RateTableArgumentSource>
           <RateTableArgumentSource public-id="pc:7003">
             <ArgumentSource/>
             <ArgumentSourceSet public-id="pc:6301"/>
@@ -79075,80 +79095,6 @@
       </RateTableColumn>
     </Factors>
     <MatchOps>
-      <RateTableMatchOp public-id="pc:5901">
-        <Definition public-id="pc:4801"/>
-        <DisplayText>Roof Deck</DisplayText>
-        <DisplayText_L10N_ARRAY>
-          <RateTableMatchOp_DisplayText_L10N public-id="pc:101">
-            <Language>en_US_edg</Language>
-            <Owner public-id="pc:5901"/>
-            <Value>Roof Deck</Value>
-          </RateTableMatchOp_DisplayText_L10N>
-        </DisplayText_L10N_ARRAY>
-        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
-        <Name>roofDeck</Name>
-        <Params>
-          <RateTableColumn public-id="pc:7801">
-            <ColumnLabel>Roof Deck</ColumnLabel>
-            <ColumnLabel_L10N_ARRAY>
-              <RateTableColumn_ColumnLabel_L10N public-id="pc:201">
-                <Language>en_US_edg</Language>
-                <Owner public-id="pc:7801"/>
-                <Value>Roof Deck</Value>
-              </RateTableColumn_ColumnLabel_L10N>
-            </ColumnLabel_L10N_ARRAY>
-            <ColumnName>roofDeck</ColumnName>
-            <ColumnScale/>
-            <ColumnType>String</ColumnType>
-            <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:4801"/>
-            <DependsOn/>
-            <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:5901"/>
-            <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>str1</PhysicalColumnName>
-            <SortOrder>0</SortOrder>
-            <ValueProvider/>
-          </RateTableColumn>
-        </Params>
-      </RateTableMatchOp>
-      <RateTableMatchOp public-id="pc:5902">
-        <Definition public-id="pc:4801"/>
-        <DisplayText>Terrain Exposure</DisplayText>
-        <DisplayText_L10N_ARRAY>
-          <RateTableMatchOp_DisplayText_L10N public-id="pc:102">
-            <Language>en_US_edg</Language>
-            <Owner public-id="pc:5902"/>
-            <Value>Terrain Exposure</Value>
-          </RateTableMatchOp_DisplayText_L10N>
-        </DisplayText_L10N_ARRAY>
-        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
-        <Name>terrainExposure</Name>
-        <Params>
-          <RateTableColumn public-id="pc:7802">
-            <ColumnLabel>Terrain Exposure</ColumnLabel>
-            <ColumnLabel_L10N_ARRAY>
-              <RateTableColumn_ColumnLabel_L10N public-id="pc:202">
-                <Language>en_US_edg</Language>
-                <Owner public-id="pc:7802"/>
-                <Value>Terrain Exposure</Value>
-              </RateTableColumn_ColumnLabel_L10N>
-            </ColumnLabel_L10N_ARRAY>
-            <ColumnName>terrainExposure</ColumnName>
-            <ColumnScale/>
-            <ColumnType>String</ColumnType>
-            <DefinitionForFactor/>
-            <DefinitionForParam public-id="pc:4801"/>
-            <DependsOn/>
-            <DisplayType>Normal</DisplayType>
-            <MatchOp public-id="pc:5902"/>
-            <MultiSelect>false</MultiSelect>
-            <PhysicalColumnName>str2</PhysicalColumnName>
-            <SortOrder>1</SortOrder>
-            <ValueProvider/>
-          </RateTableColumn>
-        </Params>
-      </RateTableMatchOp>
       <RateTableMatchOp public-id="pc:5903">
         <Definition public-id="pc:4801"/>
         <DisplayText>FBC Wind Speed</DisplayText>
@@ -79391,6 +79337,35 @@
       </RateTableDefinition_TableName_L10N>
     </TableName_L10N_ARRAY>
   </RateTableDefinition>
+  <DefaultRateFactorRow public-id="pc:120696">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>100</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120738">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -79419,6 +79394,35 @@
     <str6>NO</str6>
     <str7>NO SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120689">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>100</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120731">
     <RateTable public-id="pc:11202"/>
@@ -79449,6 +79453,35 @@
     <str7>NO SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120675">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>100</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120717">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -79477,6 +79510,35 @@
     <str6>NO</str6>
     <str7>No SWR</str7>
     <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120710">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>100</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120752">
     <RateTable public-id="pc:11202"/>
@@ -79507,6 +79569,35 @@
     <str7>SWR</str7>
     <str8>ALL</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120682">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>100</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120724">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -79536,6 +79627,35 @@
     <str7>SWR</str7>
     <str8>None</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120703">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>100</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120745">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -79562,1050 +79682,6 @@
     <str4>Greater Than Or Equal to 110</str4>
     <str5>Enclosed</str5>
     <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120739">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120732">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120718">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120753">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120725">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120746">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120740">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120733">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120719">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120754">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120726">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120747">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120741">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120734">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120720">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120755">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120727">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120748">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120743">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120736">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120722">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120757">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120729">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120750">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120742">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120735">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120721">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120756">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120728">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120749">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120744">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120737">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120723">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120758">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120730">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120751">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Dimensional Lumber Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
     <str7>SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
@@ -80812,6 +79888,64 @@
     <str7>NO SWR</str7>
     <str8>ALL</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120828">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120768">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120762">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -80870,6 +80004,35 @@
     <str7>NO SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120798">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120837">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -80898,6 +80061,64 @@
     <str6>YES</str6>
     <str7>SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120843">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120783">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120777">
     <RateTable public-id="pc:11202"/>
@@ -80957,6 +80178,35 @@
     <str7>SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120813">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120825">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -80985,6 +80235,64 @@
     <str6>YES</str6>
     <str7>NO SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120831">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120771">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>None</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120765">
     <RateTable public-id="pc:11202"/>
@@ -81044,6 +80352,35 @@
     <str7>NO SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120801">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120840">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -81072,6 +80409,64 @@
     <str6>YES</str6>
     <str7>SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120846">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120786">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120780">
     <RateTable public-id="pc:11202"/>
@@ -81128,6 +80523,383 @@
     <str4>null</str4>
     <str5>Partially Enclosed</str5>
     <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120816">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>100</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120697">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120739">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120690">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120732">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120676">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120718">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120711">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120753">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120683">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120725">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120704">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120746">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>110</str3>
+    <str4>Greater Than Or Equal to 110</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
     <str7>SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
@@ -81334,6 +81106,64 @@
     <str7>NO SWR</str7>
     <str8>ALL</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120829">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120769">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120763">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -81392,6 +81222,35 @@
     <str7>NO SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120799">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120838">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -81420,6 +81279,64 @@
     <str6>YES</str6>
     <str7>SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120844">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120784">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120778">
     <RateTable public-id="pc:11202"/>
@@ -81479,6 +81396,35 @@
     <str7>SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120814">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120826">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -81507,6 +81453,64 @@
     <str6>YES</str6>
     <str7>NO SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120832">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120772">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>None</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120766">
     <RateTable public-id="pc:11202"/>
@@ -81566,6 +81570,35 @@
     <str7>NO SWR</str7>
     <str8>Windows</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120802">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120841">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -81594,6 +81627,64 @@
     <str6>YES</str6>
     <str7>SWR</str7>
     <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120847">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120787">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120781">
     <RateTable public-id="pc:11202"/>
@@ -81648,6 +81739,1775 @@
     <str2>Terrain B</str2>
     <str3>110</str3>
     <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120817">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8900000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>110</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120698">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120740">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120691">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120733">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120677">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120719">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120712">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120754">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120684">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120726">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.7800000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120705">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120747">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>NO</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120699">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120700">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120741">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120742">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120692">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120693">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120734">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120735">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120678">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120679">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120720">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120721">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120713">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120714">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120755">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120756">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120685">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120686">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120727">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120728">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120706">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120707">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120748">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120749">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120701">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120702">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120743">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120744">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120694">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120695">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120736">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120737">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120680">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120681">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120722">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120723">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8100000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>No SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120715">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120716">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120757">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120758">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120687">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120688">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120729">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120730">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8300000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120708">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120709">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>other roof deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120750">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120751">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8600000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Dimensional Lumber Deck</str1>
+    <str2>Terrain C</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>Greater Than Or Equal to 120</str4>
     <str5>Partially Enclosed</str5>
     <str6>YES</str6>
     <str7>SWR</str7>
@@ -81856,1021 +83716,6 @@
     <str7>NO SWR</str7>
     <str8>ALL</str8>
   </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120764">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120794">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120839">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120779">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120809">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120827">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120767">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120797">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120842">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120782">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120812">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120828">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120768">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120798">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120843">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120783">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120813">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120831">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120771">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120801">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120846">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120786">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120816">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>100</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120829">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120769">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120799">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120844">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120784">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120814">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120832">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120772">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120802">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120847">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120787">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120817">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>Reinforced Concrete Roof Deck</str1>
-    <str2>Terrain C</str2>
-    <str3>110</str3>
-    <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120830">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -82929,6 +83774,64 @@
     <str7>NO SWR</str7>
     <str8>None</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120764">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120794">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120800">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -82957,6 +83860,35 @@
     <str6>YES</str6>
     <str7>NO SWR</str7>
     <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120839">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120845">
     <RateTable public-id="pc:11202"/>
@@ -83016,6 +83948,64 @@
     <str7>SWR</str7>
     <str8>None</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120779">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120809">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120815">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -83044,6 +84034,35 @@
     <str6>YES</str6>
     <str7>SWR</str7>
     <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120827">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>ALL</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120833">
     <RateTable public-id="pc:11202"/>
@@ -83103,6 +84122,64 @@
     <str7>NO SWR</str7>
     <str8>None</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120767">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120797">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>NO SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120803">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -83131,6 +84208,35 @@
     <str6>YES</str6>
     <str7>NO SWR</str7>
     <str8>Windows</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120842">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>ALL</str8>
   </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120848">
     <RateTable public-id="pc:11202"/>
@@ -83190,6 +84296,64 @@
     <str7>SWR</str7>
     <str8>None</str8>
   </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120782">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8200000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>None</str8>
+  </DefaultRateFactorRow>
+  <DefaultRateFactorRow public-id="pc:120812">
+    <RateTable public-id="pc:11202"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1>0.8500000</dec1>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1/>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Reinforced Concrete Roof Deck</str1>
+    <str2>Terrain B</str2>
+    <str3>Greater Than Or Equal to 120</str3>
+    <str4>null</str4>
+    <str5>Partially Enclosed</str5>
+    <str6>YES</str6>
+    <str7>SWR</str7>
+    <str8>Windows</str8>
+  </DefaultRateFactorRow>
   <DefaultRateFactorRow public-id="pc:120818">
     <RateTable public-id="pc:11202"/>
     <bit1/>
@@ -83214,1224 +84378,6 @@
     <str2>Terrain C</str2>
     <str3>Greater Than Or Equal to 120</str3>
     <str4>null</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120696">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>100</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120689">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>100</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120675">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>100</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120710">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>100</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120682">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>100</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120703">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>100</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120697">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120690">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120676">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120711">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120683">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7900000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120704">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>110</str3>
-    <str4>Greater Than Or Equal to 110</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120698">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120691">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120677">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120712">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120684">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.7800000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120705">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8200000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>NO</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120699">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120692">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120678">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120713">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120685">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120706">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120701">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120694">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120680">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120715">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120687">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120708">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain B</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120700">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120693">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120679">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120714">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120686">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120707">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120702">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120695">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8500000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>NO SWR</str7>
-    <str8>Windows</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120681">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8100000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>No SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120716">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>ALL</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120688">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8300000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
-    <str5>Partially Enclosed</str5>
-    <str6>YES</str6>
-    <str7>SWR</str7>
-    <str8>None</str8>
-  </DefaultRateFactorRow>
-  <DefaultRateFactorRow public-id="pc:120709">
-    <RateTable public-id="pc:11202"/>
-    <bit1/>
-    <bit2/>
-    <date1/>
-    <date2/>
-    <dec1>0.8600000</dec1>
-    <dec2/>
-    <dec3/>
-    <dec4/>
-    <dec5/>
-    <dec6/>
-    <int1/>
-    <int2/>
-    <int3/>
-    <int4/>
-    <int5/>
-    <int6/>
-    <int7/>
-    <int8/>
-    <str1>other roof deck</str1>
-    <str2>Terrain C</str2>
-    <str3>Greater Than Or Equal to 120</str3>
-    <str4>Greater Than Or Equal to 120</str4>
     <str5>Partially Enclosed</str5>
     <str6>YES</str6>
     <str7>SWR</str7>
@@ -85378,13 +85324,7 @@
       <RateTableMatchOp public-id="pc:6001">
         <Definition public-id="pc:4901"/>
         <DisplayText>WBDR</DisplayText>
-        <DisplayText_L10N_ARRAY>
-          <RateTableMatchOp_DisplayText_L10N public-id="pc:201">
-            <Language>en_US_edg</Language>
-            <Owner public-id="pc:6001"/>
-            <Value>WBDR</Value>
-          </RateTableMatchOp_DisplayText_L10N>
-        </DisplayText_L10N_ARRAY>
+        <DisplayText_L10N_ARRAY/>
         <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
         <Name>wbdr</Name>
         <Params>
@@ -85415,13 +85355,7 @@
       <RateTableMatchOp public-id="pc:6002">
         <Definition public-id="pc:4901"/>
         <DisplayText>Internal Pressure Design</DisplayText>
-        <DisplayText_L10N_ARRAY>
-          <RateTableMatchOp_DisplayText_L10N public-id="pc:202">
-            <Language>en_US_edg</Language>
-            <Owner public-id="pc:6002"/>
-            <Value>Internal Pressure Design</Value>
-          </RateTableMatchOp_DisplayText_L10N>
-        </DisplayText_L10N_ARRAY>
+        <DisplayText_L10N_ARRAY/>
         <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
         <Name>internalPressureDesign</Name>
         <Params>
@@ -91792,15 +91726,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:3004">
-    <CalcRoutineParameterSet public-id="pc:2701"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3001">
     <CalcRoutineParameterSet public-id="pc:2701"/>
     <Code>policyline</Code>
@@ -91827,6 +91752,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>true</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3004">
+    <CalcRoutineParameterSet public-id="pc:2701"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pc:7501">
     <Code>UNAHOAgeOfHomeDiscountRateRoutine</Code>
@@ -92848,20 +92782,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3106">
-    <CalcRoutineParameterSet public-id="pc:2803"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3107">
     <CalcRoutineParameterSet public-id="pc:2803"/>
     <Code>discountOrSurchargeRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3106">
+    <CalcRoutineParameterSet public-id="pc:2803"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -93653,20 +93587,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2502">
-    <CalcRoutineParameterSet public-id="pc:2201"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2501">
     <CalcRoutineParameterSet public-id="pc:2201"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2502">
+    <CalcRoutineParameterSet public-id="pc:2201"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -96116,6 +96050,543 @@
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
+  <CalcRoutineDefinition public-id="pc:8201">
+    <Code>UNAHOBuildingCodeComplianceGradingCreditRateRoutine</Code>
+    <Description/>
+    <Description_L10N_ARRAY/>
+    <Jurisdiction>FL</Jurisdiction>
+    <Name>HO Building Code Compliance Grading Credit Rate Routine</Name>
+    <Name_L10N_ARRAY/>
+    <ParameterSet public-id="pc:2803"/>
+    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
+    <Steps>
+      <CalcStepDefinition public-id="pc:13201">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14501">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pc:9901">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+                <InScopeValue>TerritoryCode</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pc:14501"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>territory</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+              <CalcStepDefinitionArgument public-id="pc:9902">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+                <InScopeValue>BCEGGrade</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pc:14501"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>grade</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pc:13201"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pc:9801">
+                <ColumnName>factors</ColumnName>
+                <Operand public-id="pc:14501"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>ho3_building_code_effectiveness_grading_fl</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>3</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>rateFactor</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13202">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14502">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13202"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>4</SortOrder>
+        <StepType>endif</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13203">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14503">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13203"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>conditional</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:14510">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13203"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>1</OperandOrder>
+            <OperandType>localvar</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName>rateFactor</VariableName>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:14511">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13203"/>
+            <ConstantValue>null</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>2</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>equal</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>5</SortOrder>
+        <StepType>if</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13204">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14504">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13204"/>
+            <ConstantValue>0.0</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>rateFactor</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13205">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14505">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13205"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>conditional</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:14506">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13205"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+            <InScopeValue>PolicyType</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>1</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:14507">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13205"/>
+            <ConstantValue>HO3</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>2</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>equal</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>2</SortOrder>
+        <StepType>if</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13206">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14508">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13206"/>
+            <ConstantValue>0.0</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>6</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>rateFactor</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13207">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14509">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13207"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>7</SortOrder>
+        <StepType>endif</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13208">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>BaseRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14512">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13208"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>localvar</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName>rateFactor</VariableName>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>8</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13209">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>AdjustedRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14513">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13209"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>BaseRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>9</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13210">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14514">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13210"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+            <InScopeValue>TotalBasePremium</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>10</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:13211">
+        <CalcRoutineDefinition public-id="pc:8201"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>TermAmount</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:14515">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:13211"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>AdjustedRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>11</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+    </Steps>
+    <Version>1</Version>
+  </CalcRoutineDefinition>
   <CalcRoutineDefinition public-id="pc:8103">
     <Code>UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine</Code>
     <Description/>
@@ -96616,11 +97087,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2701">
+  <CalcRoutineParameter public-id="pc:2703">
     <CalcRoutineParameterSet public-id="pc:2401"/>
-    <Code>policyline</Code>
+    <Code>dwellingRatingInfo_Ext</Code>
     <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
+    <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -96634,11 +97105,11 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2703">
+  <CalcRoutineParameter public-id="pc:2701">
     <CalcRoutineParameterSet public-id="pc:2401"/>
-    <Code>dwellingRatingInfo_Ext</Code>
+    <Code>policyline</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.ho.group3.ratinginfos.HOGroup3DwellingRatingInfo</ParamType>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -98792,20 +99263,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2902">
+  <CalcRoutineParameter public-id="pc:2901">
     <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>state</Code>
+    <Code>policyline</Code>
     <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2903">
-    <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group3.ratinginfos.HORatingInfo</ParamType>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -98819,11 +99281,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2901">
+  <CalcRoutineParameter public-id="pc:2903">
     <CalcRoutineParameterSet public-id="pc:2601"/>
-    <Code>policyline</Code>
+    <Code>ratinginfo</Code>
     <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
+    <ParamType>una.rating.ho.group3.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2902">
+    <CalcRoutineParameterSet public-id="pc:2601"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -99961,11 +100432,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2203">
+  <CalcRoutineParameter public-id="pc:2201">
     <CalcRoutineParameterSet public-id="pc:1901"/>
-    <Code>state</Code>
+    <Code>policyline</Code>
     <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -99979,11 +100450,11 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2201">
+  <CalcRoutineParameter public-id="pc:2203">
     <CalcRoutineParameterSet public-id="pc:1901"/>
-    <Code>policyline</Code>
+    <Code>state</Code>
     <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -99994,7 +100465,13 @@
     <Description_L10N_ARRAY/>
     <Jurisdiction>FL</Jurisdiction>
     <Name>HO Personal Injury Coverage Rate Routine</Name>
-    <Name_L10N_ARRAY/>
+    <Name_L10N_ARRAY>
+      <CalcRoutineDefinition_Name_L10N public-id="pc:401">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pc:5402"/>
+        <Value>HO Personal Injury Coverage Rate Routine</Value>
+      </CalcRoutineDefinition_Name_L10N>
+    </Name_L10N_ARRAY>
     <ParameterSet public-id="pc:2201"/>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
     <Steps>
@@ -100007,17 +100484,17 @@
           <CalcStepDefinitionOperand public-id="pc:9204">
             <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
             <ArgumentSources>
-              <CalcStepDefinitionArgument public-id="pc:6502">
-                <ConstantValue/>
+              <CalcStepDefinitionArgument public-id="pc:11601">
+                <ConstantValue>"Y"</ConstantValue>
                 <CovTermCode/>
                 <InScopeParam/>
                 <InScopeValue/>
                 <InScopeValueIsModifier>false</InScopeValueIsModifier>
-                <InScopeValueType/>
+                <InScopeValueType>java.lang.String</InScopeValueType>
                 <Operand public-id="pc:9204"/>
                 <OperandType>constant</OperandType>
                 <OverrideSource>true</OverrideSource>
-                <Parameter>Limit</Parameter>
+                <Parameter>coverage</Parameter>
                 <ParameterType/>
                 <VariableFieldName/>
                 <VariableName/>
@@ -100037,14 +100514,14 @@
             <OperandType>ratetable</OperandType>
             <OperatorType>store</OperatorType>
             <ReturnFactorColumns>
-              <CalcStepDefinitionRateFactor public-id="pc:6402">
+              <CalcStepDefinitionRateFactor public-id="pc:11501">
                 <ColumnName>Premium</ColumnName>
                 <Operand public-id="pc:9204"/>
               </CalcStepDefinitionRateFactor>
             </ReturnFactorColumns>
             <RightParenthesisGroup/>
             <RoundingScaleType/>
-            <TableCode>ho_personal_injury</TableCode>
+            <TableCode>ho_personal_injury_fl_table</TableCode>
             <VariableFieldName/>
             <VariableName/>
           </CalcStepDefinitionOperand>

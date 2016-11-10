@@ -8,7 +8,7 @@
       name="searchCriteria"
       type="gw.forms.FormPatternSearchCriteria"/>
     <Variable
-      initialValue="gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product) as gw.api.productmodel.Product[]"
+      initialValue="getProducts()//gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product) as gw.api.productmodel.Product[]"
       name="products"/>
     <Variable
       initialValue="new gw.pcf.ProductSearchHelper(products)"
@@ -41,5 +41,13 @@
       <InputSetRef
         def="SearchAndResetInputSet()"/>
     </InputFooterSection>
+    <Code><![CDATA[uses gw.api.productmodel.Product
+
+function getProducts():Product[]
+{
+  var prod:Product[] = gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product) as gw.api.productmodel.Product[]
+  prod = prod.where( \ elt -> elt.CodeIdentifier=="CommercialPackage" || elt.CodeIdentifier=="Homeowners" || elt.CodeIdentifier=="BP7BusinessOwners")
+  return prod
+}]]></Code>
   </DetailViewPanel>
 </PCF>

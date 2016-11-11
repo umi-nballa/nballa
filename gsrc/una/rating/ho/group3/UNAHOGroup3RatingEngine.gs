@@ -383,12 +383,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateSpecifiedAdditionalAmountCoverage(dwellingCov: HODW_SpecificAddAmt_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecifiedAdditionalAmountCoverage to rate Specified Additional Amount Coverage", this.IntrinsicType)
     var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
-    if(dwellingRatingInfo.SpecifiedAdditionalAmount != ""){
-      var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
-        addCost(costData)
-    }
+    var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIFIED_ADDITIONAL_AMOUNT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
     _logger.debug("Specified Additional Amount Coverage Rated Successfully", this.IntrinsicType)
   }
 

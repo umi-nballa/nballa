@@ -14,7 +14,7 @@ class HOGroup3LineRatingInfo {
 
   construct(lineCov : HomeownersLineCov_HOE){
     if(lineCov typeis HOLI_AnimalLiabilityCov_HOE_Ext){
-      _animalLiabilityLimit = lineCov.HOLI_AnimalLiabLimit_HOETerm?.Value.intValue()
+      _animalLiabilityLimit = lineCov.HOLI_AnimalLiabLimit_HOETerm?.Value?.intValue()
     }
     if((lineCov typeis HOPS_GolfCartPD_HOE_Ext) || (lineCov typeis HOLI_Personal_Liability_HOE)){
       _medPayLimit = (lineCov.HOLine.HOLI_Med_Pay_HOEExists)? lineCov.HOLine.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.Value?.intValue() : 0

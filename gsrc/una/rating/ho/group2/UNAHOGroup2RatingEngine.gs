@@ -14,6 +14,7 @@ uses java.util.Map
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 uses una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo
 uses una.rating.ho.group2.ratinginfos.HOGroup2LineRatingInfo
+uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -109,6 +110,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_SpecificAddAmt_HOE_Ext:
             rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
           break
+      case HODW_SpecialLimitsPP_HOE_Ext:
+          rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          break
 
     }
   }
@@ -139,6 +143,20 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
 
     updateTotalBasePremium()
+  }
+
+
+
+  /**
+   * Rate the Special Limits Personal property coverage
+   */
+  function rateSpecialLimitsPersonalPropertyCoverage(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialLimitsPersonalPropertyCoverage to rate Special Limits Personal Property Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getSpecialLimitsPersonalPropertyCovParameterSet(PolicyLine, dwellingCov)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_LIMITS_PERSONAL_PROPERTY_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Special Limits Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -396,6 +414,16 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_LINERATINGINFO_EXT -> lineRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Special Limits Personal Property Cov
+   */
+  private function getSpecialLimitsPersonalPropertyCovParameterSet(line : PolicyLine, dwellingCov : HODW_SpecialLimitsPP_HOE_Ext) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_SPECIALLIMITSPERSONALPROPERTYRATINGINFO_Ext -> new HOSpecialLimitsPersonalPropertyRatingInfo(dwellingCov)
     }
   }
 

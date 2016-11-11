@@ -93,7 +93,8 @@
                 id="AddressType"
                 label="displaykey.Web.ContactDetail.AddressDetail.AddressType"
                 required="true"
-                value="selectedAddress.AddressType"/>
+                value="selectedAddress.AddressType"
+                visible="!period.CPLineExists"/>
               <Input
                 editable="selectedAddress.LinkedAddress == null"
                 id="Description"
@@ -136,5 +137,11 @@
         </Card>
       </CardViewPanel>
     </ListDetailPanel>
+    <Code><![CDATA[function setDefaultAddresstype(selectedAddress:Address):boolean
+{
+  if(selectedAddress!=null)
+    selectedAddress.AddressType=typekey.AddressType.TC_BUSINESS
+  return true
+}]]></Code>
   </PanelSet>
 </PCF>

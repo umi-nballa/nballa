@@ -142,7 +142,9 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.YearBuilt"
                 maxChars="4"
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
-                value="cpBuilding.Building.YearBuilt"/>
+                value="cpBuilding.Building.YearBuilt">
+                <PostOnChange/>
+              </TextInput>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Construction"/>
               <TextInput
@@ -220,11 +222,12 @@
                 value="cpBuilding.RoofShape">
                 <PostOnChange/>
               </TypeKeyInput>
-              <TextInput
+              <TextAreaInput
                 align="left"
                 editable="true"
                 id="roofothdes"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofShapeOthDes"
+                required="true"
                 value="cpBuilding.RoofShapeOtherDes"/>
               <TypeKeyInput
                 editable="true"
@@ -585,7 +588,7 @@
                 maxChars="4"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Roofing.YearAdded)"
                 value="cpBuilding.Building.Roofing.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  //&amp;&amp; (cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT)"/>
+                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  &amp;&amp; (cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT)"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -594,7 +597,7 @@
                 maxChars="4"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Wiring.YearAdded)"
                 value="cpBuilding.Building.Wiring.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  //&amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
+                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50) &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
               <InputDivider/>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Other"/>
@@ -642,6 +645,7 @@
                 editable="true"
                 id="DistBldg"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.DistanceBldg"
+                maxChars="5"
                 required="true"
                 value="cpBuilding.DistToNext"/>
               <TextInput

@@ -144,6 +144,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
     //TODO : Need to add the condition to check for affinity discount flag
     rateAffinityDiscount(dateRange)
+
+    if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
+      ratePreferredBuilderCredit(dateRange)
   }
 
   /**
@@ -187,13 +190,25 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AFFINITY_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AFFINITYDISCOUNT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if (costData.ActualTermAmount == 0){
-        costData.ActualTermAmount = 1
-        _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
-      }
       addCost(costData)
+      _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
     }
     _logger.debug("Affinity Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Preferred Builder Credit
+   */
+  function ratePreferredBuilderCredit(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePreferredBuilderCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PREFERRED_BUILDER_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_PREFERREDBUILDERCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.PreferredBuilderCredit = costData?.ActualTermAmount
+    }
+    _logger.debug("Preferred Builder Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**

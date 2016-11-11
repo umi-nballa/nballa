@@ -143,7 +143,8 @@
                 maxChars="4"
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
                 value="cpBuilding.Building.YearBuilt">
-                <PostOnChange/>
+                <PostOnChange
+                  onChange="una.config.CPBuildingUtil.setYearBasedDefaults(cpBuilding)"/>
               </TextInput>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Construction"/>
@@ -154,7 +155,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.NumStories"
                 value="cpBuilding.Building.NumStories">
                 <PostOnChange
-                  onChange="cpBuilding.BldgHt=cpBuilding.Building.NumStories*10"/>
+                  onChange="cpBuilding.BldgHt=cpBuilding.Building.NumStories*10;una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
               </TextInput>
               <TextInput
                 align="left"
@@ -213,7 +214,9 @@
                 editable="true"
                 id="RoofType"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofType"
-                value="cpBuilding.RoofTypeCP "/>
+                value="cpBuilding.RoofTypeCP ">
+                <PostOnChange/>
+              </TypeKeyInput>
               <TypeKeyInput
                 editable="true"
                 id="RoofShape"
@@ -389,7 +392,7 @@
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&lt;=3//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
                 <TypeKeyInput
                   align="left"
-                  editable="cpBuilding.ResQuestions.windmiti5==true"
+                  editable="cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002"
                   id="swr"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Swr"
                   required="cpBuilding.ResQuestions.windstormexcl==false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
@@ -588,7 +591,7 @@
                 maxChars="4"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Roofing.YearAdded)"
                 value="cpBuilding.Building.Roofing.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  &amp;&amp; (cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT)"/>
+                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  &amp;&amp; (cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT)"/>
               <TextInput
                 align="left"
                 editable="true"

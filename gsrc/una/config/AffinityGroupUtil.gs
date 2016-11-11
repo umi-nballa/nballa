@@ -117,22 +117,18 @@ class AffinityGroupUtil {
               or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
                 and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
                   or polPeriod.PreferredFinInst_Ext != null or polPeriod.PreferredEmpGroup_Ext != null)) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
       break
       case Jurisdiction.TC_CA :
           if(ageOfHome < 11 or polPeriod.PreferredBuilder_Ext != null or polPeriod.PreferredFinInst_Ext != null ) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
       break
       case Jurisdiction.TC_FL :
-          polPeriod.QualifiesAffinityDisc_Ext = TC_NO
       break
       case Jurisdiction.TC_HI :
           if(polPeriod.PreferredFinInst_Ext != null ) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
       break
@@ -141,7 +137,6 @@ class AffinityGroupUtil {
               or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
               and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
                   or polPeriod.PreferredFinInst_Ext != null)) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
       break
@@ -151,7 +146,6 @@ class AffinityGroupUtil {
                 or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_DP3_EXT)
                   and ((ageOfHome < 5 and polPeriod.PreferredBuilder_Ext != null)
                   or polPeriod.PreferredFinInst_Ext != null)) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
       break
@@ -160,20 +154,20 @@ class AffinityGroupUtil {
               or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
               and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
                   or polPeriod.PreferredFinInst_Ext != null)) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
       break
       case Jurisdiction.TC_TX :
           if(polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HOB_EXT && polPeriod.PreferredEmpGroup_Ext != null ) {
-            polPeriod.QualifiesAffinityDisc_Ext = TC_YES
             affinityDiscount = true
           }
        break
       default :
     }
     if(!affinityDiscount) {
-      polPeriod.QualifiesAffinityDisc_Ext = TC_NO
+      polPeriod.QualifiesAffinityDisc_Ext = false
+    } else {
+      polPeriod.QualifiesAffinityDisc_Ext = true
     }
     return affinityDiscount
   }

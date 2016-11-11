@@ -1,6 +1,8 @@
 package gw.lob.ho
 uses java.math.BigDecimal
 uses gw.pl.persistence.core.Bundle
+uses una.config.ConfigParamsUtil
+uses java.lang.Double
 
 enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
   function addScheduledItem(item: ScheduledItem_HOE){
@@ -142,77 +144,30 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     */
 
   static function validateScheduleType_Ext(dwelling:Dwelling_HOE):String{
-    var expValue1:int = 2500
-    var expValue2:int = 5000
-    var expValue3:int = 10000
-    var expValue4:int = 25000
-    var TotalExpValue: int = 50000
-    var TotalExpValue1: int = 100000
-    var  Item1=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_COLLECTIBLES_EXT ))
-    var  Item2=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_GOLFEQUIPNOGOLFCARTS_EXT ))
-    var  Item3=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_GUNSSCHEDULED ))
-    var  Item4=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_POSTAGESTAMPS ))
-    var  Item5=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_RARECURRENTCOINS ))
-    var  Item6=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_SILVERWAREEXCLUDEPENPENSILS_EXT ))
-    var  Item7=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_FURSGARMENTSSCHEDULED_EXT ))
-    var  Item8=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_FINEARTS ))
-    var  Item9=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_MUSICALINSTRUMETSPERSONAL_EXT ))
-    var  Item10=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_JEWELRY ))
-    var  Item11=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERASPM_EXT ))
-    var  Item12=  calculateTotalExpValue(dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.where( \ elt -> elt.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERAPEPERSONAL_EXT ))
+    var result : String
 
-   for(schType in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems) {
+    for(scheduleItem in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems ) {
+      var exposureValue = scheduleItem.ExposureValue
+      var maxValidExposureValue = ConfigParamsUtil.getInt(TC_scheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleItem.ScheduleType.Code)
+      var minValidExposureValue = ConfigParamsUtil.getInt(TC_scheduleExposureMinValue, dwelling.HOLine.BaseState,scheduleItem.ScheduleType.Code)
+      if(exposureValue> maxValidExposureValue) {
+        result = displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName)
+      }
+      else if(exposureValue < minValidExposureValue){
+        result = displaykey.Web.Policy.HomeownersLine.Validation.ScheduleItemMin_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName)
+      }
+    }
+    var exposureMap = dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.partition( \ schItem -> schItem.ScheduleType )
+    exposureMap.eachKey( \ scheduleType -> {
+      var totalCalculateExpValue = exposureMap.get(scheduleType).sum( \ schItem -> schItem.ExposureValue )
+      var maxValidTotalExposureValue = ConfigParamsUtil.getInt(TC_totalscheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleType.Code)
+      if(totalCalculateExpValue> maxValidTotalExposureValue){
+        result = displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext(scheduleType.DisplayName,new Double(maxValidTotalExposureValue as double).asMoney())
+      }
+      })
 
-   if(dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC){
-     if((schType.ScheduleType == typekey.ScheduleType_HOE.TC_COLLECTIBLES_EXT and schType.ExposureValue > expValue1)or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_GOLFEQUIPNOGOLFCARTS_EXT and schType.ExposureValue > expValue1) or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_GUNSSCHEDULED and schType.ExposureValue > expValue1)or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_POSTAGESTAMPS and schType.ExposureValue > expValue1) or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_RARECURRENTCOINS and schType.ExposureValue > expValue1)or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_SILVERWAREEXCLUDEPENPENSILS_EXT and schType.ExposureValue > expValue1)){
-        return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue1,schType.ScheduleType.DisplayName)
-     }
-     else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_FURSGARMENTSSCHEDULED_EXT and schType.ExposureValue > expValue2){
-        return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
-     }
-     else if ((schType.ScheduleType == typekey.ScheduleType_HOE.TC_FINEARTS and schType.ExposureValue > expValue3) or
-              (schType.ScheduleType == typekey.ScheduleType_HOE.TC_MUSICALINSTRUMETSPERSONAL_EXT and schType.ExposureValue > expValue3) ){
-         return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue3,schType.ScheduleType.DisplayName)
-       }
-       else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_JEWELRY and schType.ExposureValue > expValue4){
-           return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue4,schType.ScheduleType.DisplayName)
-         }
-     }
-     else if((dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERASPM_EXT and schType.ExposureValue > expValue2)){
-       return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
-     }
-   else if((dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_SC) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERAPEPERSONAL_EXT and schType.ExposureValue > expValue2)){
-       return displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(expValue2,schType.ScheduleType.DisplayName)
-     }
-    }
-    if(Item10 > TotalExpValue1 and (dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC)){
-      return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext
-    }
-    else if((Item1> TotalExpValue or Item2> TotalExpValue or Item3> TotalExpValue or Item4> TotalExpValue or Item5> TotalExpValue or
-        Item6> TotalExpValue or Item7> TotalExpValue or Item8> TotalExpValue or Item9> TotalExpValue) and
-        (dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC)){
-      return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
-    }
-    else if( Item11> TotalExpValue and (dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI)){
-        return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
-       }
-    else if(Item12> TotalExpValue and (dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_SC)) {
-      return displaykey.Web.Policy.HomeownersLine.Validation.TotalSchValue1_Ext
-    }
-    return null
+    return result
   }
 
-  static function calculateTotalExpValue(scheduleItem : ScheduledItem_HOE[]):int {
-      var sum : int  = 0
-      for(sc in scheduleItem ) {
-       sum =  sc.ExposureValue + sum
-     }
-   return sum
-  }
 }
 

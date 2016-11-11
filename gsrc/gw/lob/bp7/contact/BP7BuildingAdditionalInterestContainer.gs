@@ -9,9 +9,7 @@ class BP7BuildingAdditionalInterestContainer extends AbstractAdditionalInterestC
   }
 
   override function createNewAdditionalInterestDetail(): AddlInterestDetail {
-    return new BP7BldgAddlInterest(this.PolicyPeriod) {
-        :AdditionalInterestType = typekey.AdditionalInterestType.TC_LOSSPAY
-    }
+    return new BP7BldgAddlInterest(this.PolicyPeriod)
   }
 
   override property get ContainerIsValid(): boolean {

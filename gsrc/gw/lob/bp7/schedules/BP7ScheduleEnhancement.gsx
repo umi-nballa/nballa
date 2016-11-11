@@ -17,7 +17,7 @@ enhancement BP7ScheduleEnhancement : gw.api.productmodel.Schedule {
 
   function addNewScheduledItem(policyAddlInterest : AddlInterestDetail): ScheduledItem {
     var scheduledItem = this.createAndAddScheduledItem()
-    policyAddlInterest.AdditionalInterestType = typekey.AdditionalInterestType.TC_LOSSPAY
+    policyAddlInterest.AdditionalInterestType = policyAddlInterest.AdditionalInterestType
     scheduledItem.setAdditionalInterestColumn("AdditionalInterest", policyAddlInterest)
     return scheduledItem
   }
@@ -40,7 +40,7 @@ enhancement BP7ScheduleEnhancement : gw.api.productmodel.Schedule {
   }
 
   property get IsAdditionalInterestSchedule() : boolean {
-    return (this as gw.api.domain.Clause).Pattern == "BP7LossPayable"
+	return {gw.lob.bp7.BP7Categories.BP7BuildingAddlInterestGrp_EXT.Code}.contains((this as Clause).Pattern.CoverageCategory.Code)
   }
 
   property get AdditionalInterestContainer() : AbstractAdditionalInterestContainer {
@@ -48,7 +48,6 @@ enhancement BP7ScheduleEnhancement : gw.api.productmodel.Schedule {
     if ((coverable typeis BP7Building) and IsAdditionalInterestSchedule) {
       return new BP7BuildingAdditionalInterestContainer(coverable)
     }
-
     return null
   }
 
@@ -62,6 +61,11 @@ enhancement BP7ScheduleEnhancement : gw.api.productmodel.Schedule {
         "BP7AddlInsdStatePoliticalSubdivisions" -> typekey.AdditionalInsuredType.TC_GOVPREM,
         "BP7AddlInsdStatePoliticalSubdivisionsPermits" -> typekey.AdditionalInsuredType.TC_GOVPERM,
         "BP7AddlInsdVendors" -> typekey.AdditionalInsuredType.TC_VENDOR,
+        "BP7AddlInsdOwnersLandLeasedToInsuredLine_EXT" -> typekey.AdditionalInsuredType.TC_OWNLANDINS_EXT,
+        "BP7AddlInsdGrantorOfFranchiseLine_EXT" -> typekey.AdditionalInsuredType.TC_GRANTFRAN,
+        "BP7AddlInsdMortgageeAsigneeReceiverLine_EXT" -> typekey.AdditionalInsuredType.TC_MORT,
+        "BP7AddlInsdCoOwnerInsdPremisesLine_EXT" -> typekey.AdditionalInsuredType.TC_COOWN,
+        "BP7AddlInsdManagersLessorsPremisesLine_EXT" -> typekey.AdditionalInsuredType.TC_MGRPREM,
 
         //Location level
         "BP7AddlInsdBldgOwners" -> typekey.AdditionalInsuredType.TC_BLDGOWN,
@@ -71,7 +75,12 @@ enhancement BP7ScheduleEnhancement : gw.api.productmodel.Schedule {
         "BP7AddlInsdCoOwnerInsdPremises" -> typekey.AdditionalInsuredType.TC_COOWN,
         "BP7AddlInsdLessorsLeasedEquipmt" -> typekey.AdditionalInsuredType.TC_LESSEQUIP,
         "BP7AddlInsdManagersLessorsPremises" -> typekey.AdditionalInsuredType.TC_MGRPREM,
-        "BP7AddlInsdLandLeased" -> typekey.AdditionalInsuredType.TC_OWNLAND
+        "BP7AddlInsdLandLeased" -> typekey.AdditionalInsuredType.TC_OWNLAND,
+        "BP7AddlInsdControllingInterestLocation_EXT" -> typekey.AdditionalInsuredType.TC_CONTROL,
+        "BP7AddlInsdDesignatedPersonOrgLocation_EXT" -> typekey.AdditionalInsuredType.TC_DESIG,
+        "BP7AddlInsdOwnersLandLeasedToInsuredLocation_EXT" -> typekey.AdditionalInsuredType.TC_OWNLANDINS_EXT,
+        "BP7AddlInsdGrantorOfFranchiseEndorsement" -> typekey.AdditionalInsuredType.TC_GRANTFRAN,
+        "BP7AddlInsdCoOwnerInsdPremises" -> typekey.AdditionalInsuredType.TC_COOWN
     }
 
     return addlInsuredTypes.get((this as Clause).Pattern)

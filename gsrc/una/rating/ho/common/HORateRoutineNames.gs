@@ -49,6 +49,7 @@ public final class HORateRoutineNames {
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE : String = "UNAHOHigherAllPerilDeductible"
   public static final var AFFINITY_DISCOUNT_RATE_ROUTINE : String = "UNAHOAffinityDiscountRateRoutine"
   public static final var AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE : String = "UNAHOAgeOfHomePremiumModifierRateRoutine"
+  public static final var PREFERRED_BUILDER_CREDIT_RATE_ROUTINE : String = "UNAHOPreferredBuilderCreditRateRoutine"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -75,6 +76,8 @@ public final class HORateRoutineNames {
   public static final var WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE : String = "UNAHOWCPrivateResidenceEmployeesCARateRoutine"
   public static final var PRIVATE_FIRE_COMPANY_DISCOUNT_AZ_RATE_ROUTINE : String = "UNAHOPrivateFireCompanyDiscountAZRateRoutine"
   public static final var VACANT_DWELLINGS_RATE_ROUTINE : String = "UNAHOVacantDwellingsRateRoutine"
+  public static final var BUILDING_CODE_EFFECTIVENESS_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeEffectivenessGradingCreditRateRoutine"
+  public static final var ADDITIONAL_RESIDENCES_OCCUPIED_BY_INSURED_RATE_ROUTINE : String ="UNAHOAdditionalResidenceOccupiedByInsuredRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"

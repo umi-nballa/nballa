@@ -7,7 +7,6 @@ uses una.logging.UnaLoggerCategory
 uses una.rating.ho.tx.ratinginfos.HODwellingRatingInfo
 uses una.rating.ho.common.UNAHORatingEngine_HOE
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
-uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.tx.ratinginfos.HODiscountsOrSurchargesRatingInfo
@@ -145,6 +144,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
     //TODO : Need to add the condition to check for affinity discount flag
     rateAffinityDiscount(dateRange)
+
+    if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
+      ratePreferredBuilderCredit(dateRange)
   }
 
   /**
@@ -188,13 +190,25 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AFFINITY_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AFFINITYDISCOUNT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
-      if (costData.ActualTermAmount == 0){
-        costData.ActualTermAmount = 1
-        _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
-      }
       addCost(costData)
+      _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
     }
     _logger.debug("Affinity Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Preferred Builder Credit
+   */
+  function ratePreferredBuilderCredit(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePreferredBuilderCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PREFERRED_BUILDER_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_PREFERREDBUILDERCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.PreferredBuilderCredit = costData?.ActualTermAmount
+    }
+    _logger.debug("Preferred Builder Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -445,9 +459,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
-    var otherStructuresRatingInfo = new HOOtherStructuresRatingInfo(dwellingCov)
-    if (otherStructuresRatingInfo.IsOtherStructuresIncreasedOrDecreasedLimit){
-      var rateRoutineParameterMap = getOtherStructuresCovParameterSet(PolicyLine, otherStructuresRatingInfo, PolicyLine.BaseState)
+    var dwellingRatingInfo = new HODwellingRatingInfo(dwellingCov)
+    if (dwellingRatingInfo.OtherStructuresIncreasedLimit != 0){
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null){
         addCost(costData)
@@ -537,17 +551,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
-    }
-  }
-
-  /**
-   * Returns the parameter set for the Other structures
-   */
-  private function getOtherStructuresCovParameterSet(line: PolicyLine, otherStructuresRatingInfo: HOOtherStructuresRatingInfo, stateCode: String): Map<CalcRoutineParamName, Object> {
-    return {
-        TC_POLICYLINE -> line,
-        TC_STATE -> stateCode,
-        TC_DWELLINGRATINGINFO_EXT -> otherStructuresRatingInfo
     }
   }
 

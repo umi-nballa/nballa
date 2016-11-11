@@ -21,6 +21,7 @@ enum BP7Categories{
   BP7BuildingDefaultsGrp,
   BP7BuildingCondGrp,
   BP7BuildingExclGrp,
+  BP7BuildingAddlInterestGrp_EXT,
   
   BP7ClassificationStdGrp,
   BP7ClassificationAddlGrp,

@@ -6,8 +6,6 @@ uses gw.rating.CostData
 uses una.rating.util.HOCreateCostDataUtil
 
 uses java.util.Map
-uses com.ibm.db2.jcc.am.ho
-
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy

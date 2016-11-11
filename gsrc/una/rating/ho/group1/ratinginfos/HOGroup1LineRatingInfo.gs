@@ -13,6 +13,7 @@ class HOGroup1LineRatingInfo {
   var _limitedFungiWetOrDryRotOrBacteriaSectionIILimit: int as LimitedFungiWetOrDryRotOrBacteriaSectionIILimit
   var _personalInjuryLimit: int as PersonalInjuryLimit
   var _residenceType: String as ResidenceType
+  var _numberOfAddtlResidences : int as NumberOfAddtlResidences
   construct(line: HomeownersLine_HOE) {
     _animalLiabilityLimit = ((line.HOLI_AnimalLiabilityCov_HOE_ExtExists) ? line.HOLI_AnimalLiabilityCov_HOE_Ext?.HOLI_AnimalLiabLimit_HOETerm?.Value : 0) as int
     _medPayLimit = (line.HOLI_Med_Pay_HOEExists) ? line.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.Value?.intValue() : 0
@@ -20,6 +21,9 @@ class HOGroup1LineRatingInfo {
     if (line?.HOLI_FungiCov_HOEExists){
       _limitedFungiWetOrDryRotOrBacteriaSectionIILimit = line?.HOLI_FungiCov_HOE?.HOLI_AggLimit_HOETerm?.Value.intValue()
     }
+    if(line.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_ExtExists)
+      _numberOfAddtlResidences = line.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext?.scheduledItem_Ext?.Count
+
     _personalInjuryLimit = (line.HOLI_PersonalInjury_HOEExists) ? line.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue() : 0
     _residenceType = (line.Dwelling.ResidenceType.Code)
   }

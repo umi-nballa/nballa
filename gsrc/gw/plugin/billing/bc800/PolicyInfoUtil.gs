@@ -22,10 +22,13 @@ class PolicyInfoUtil {
         var building = period.BOPLine.getDefaultContainerForAddlInterest()
         loanNumber = retrieveLoanNumber(building?.AdditionalInterests, period.BillingContact)
       } else if (period.BP7LineExists) {
-        var building = period.BP7Line.AllBuildings?.firstWhere( \ building -> {
-          return building.AdditionalInterests?.hasMatch( \ addlInt -> addlInt.AdditionalInterestType == AdditionalInterestType.TC_MORTGAGEE)
+        var addlInterests : List<AddlInterestDetail> = {}
+        period.BP7Line.AllBuildings?.each( \ building -> {
+          if (building.AdditionalInterests?.HasElements) {
+            addlInterests.addAll(building.AdditionalInterests.toList())
+          }
         })
-        loanNumber = retrieveLoanNumber(building?.AdditionalInterests, period.BillingContact)
+        loanNumber = retrieveLoanNumber(addlInterests?.toArray() as AddlInterestDetail[], period.BillingContact)
       }
     }
     return loanNumber
@@ -36,7 +39,7 @@ class PolicyInfoUtil {
    */
   private static function retrieveLoanNumber(addlInterests: AddlInterestDetail[], billingContact: PolicyBillingContact) : String {
     var loanNumber = addlInterests?.firstWhere( \ addlInt -> {
-      return addlInt.AdditionalInterestType == AdditionalInterestType.TC_MORTGAGEE
+      return addlInt.ContractNumber.NotBlank
           && addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == billingContact.ContactDenorm.AddressBookUID
     })?.ContractNumber
     return loanNumber

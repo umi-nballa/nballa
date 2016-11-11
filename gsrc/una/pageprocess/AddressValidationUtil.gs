@@ -21,21 +21,19 @@ class AddressValidationUtil {
    * @param alwaysOverride boolean value
    */
   static function autofillAddress(addressOwner: AddressOwner, triggerField: String, alwaysOverride: boolean) {
-    if (addressOwner.AutofillEnabled) {
+    if (addressOwner.AutofillEnabled && null != addressOwner.Address) {
       try {
         logger.debug(" Entering  " + CLASS_NAME + " :: " + " autofillAddress" + "For ScrubStatus ")
-        // validating Address from Tuna
         gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false);
-        // Status is true if address is valid
-        if(null != addressOwner.Address )
-        addressOwner.Address.addressScrub_Ext = true
+        if(null != addressOwner.Address.AddressLine1 && null != addressOwner.Address.City && null != addressOwner.Address.State &&null != addressOwner.Address.PostalCode )
+         addressOwner.Address.addressScrub_Ext = true
         logger.debug(" Leaving  " + CLASS_NAME + " :: " + " autofillAddress" + "For ScrubStatus ")
       } catch (exp: Exception) {
-        // Status is false if address is Invalid
-        if(null != addressOwner.Address )
         addressOwner.Address.addressScrub_Ext = false
         throw exp
       }
+    }  else{
+      gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false);
     }
   }
 }

@@ -37,6 +37,9 @@
       initialValue="gw.plugin.Plugins.get(gw.plugin.contact.IContactConfigPlugin)"
       name="contactConfigPlugin"
       recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="schedule.AdditionalInterestContainer"
+      name="additionalInterestContainer"/>
     <ListViewInput
       boldLabel="true"
       def="BP7ScheduledItemsLV(schedule, openForEdit)"
@@ -53,7 +56,7 @@
           visible="schedule.isSimpleSchedule and {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code}.contains(category.Code)">
           <AddMenuItemIterator
             elementName="contactType"
-            value="contactConfigPlugin.getAllowedContactTypesForPolicyContactRoleType(typekey.PolicyContactRole.TC_POLICYADDLINSURED)">
+            value="contactConfigPlugin.getAllowedContactTypesForPolicyContactRoleType(typekey.PolicyContactRole.TC_POLICYADDLINTEREST)">
             <IteratorSort
               sortBy="contactType.DisplayName"
               sortOrder="1"/>
@@ -109,8 +112,54 @@
             </AddMenuItemIterator>
           </AddMenuItem>
         </AddButton>
+        <AddButton
+          hideIfReadOnly="true"
+          id="AddAdditionalInterestButton"
+          iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+          label="displaykey.Web.Contact.Add"
+          subMenuOnDemand="true"
+          visible="schedule.isSimpleSchedule and {gw.lob.bp7.BP7Categories.BP7BuildingAddlInterestGrp_EXT.Code}.contains(category.Code)">
+          <AddMenuItemIterator
+            elementName="contactType"
+            value="contactConfigPlugin.getAllowedContactTypesForPolicyContactRoleType(typekey.PolicyContactRole.TC_POLICYADDLINTEREST)">
+            <IteratorSort
+              sortBy="contactType.DisplayName"
+              sortOrder="1"/>
+            <AddMenuItem
+              conversionExpression="schedule.addNewScheduledItem(PickedValue)"
+              id="ContactType"
+              iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+              label="displaykey.Web.Contact.AddNewOfType(contactType)"
+              pickLocation="NewAdditionalInterestPopup.push(additionalInterestContainer, contactType)"/>
+          </AddMenuItemIterator>
+          <AddMenuItem
+            conversionExpression="schedule.addNewScheduledItem(additionalInterestContainer.addAdditionalInterestDetail(PickedValue))"
+            id="AddFromSearch"
+            iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+            label="displaykey.Web.Policy.Contact.FromAddressBook"
+            pickLocation="ContactSearchPopup.push(&quot;AdditionalInterest&quot;)"/>
+          <AddMenuItem
+            id="AddOtherContact"
+            iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+            label="displaykey.Web.Policy.Contact.AddOtherContacts"
+            visible="getOtherContacts().Count &gt; 0">
+            <AddMenuItemIterator
+              elementName="otherContact"
+              id="ContactOfOtherType"
+              value="additionalInterestContainer.AdditionalInterestOtherCandidates">
+              <IteratorSort
+                sortBy="otherContact.DisplayName"
+                sortOrder="1"/>
+              <AddMenuItem
+                id="OtherContact"
+                iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
+                label="otherContact"
+                toCreateAndAdd="schedule.addNewScheduledItem(additionalInterestContainer.addAdditionalInterestDetail(otherContact.Contact))"/>
+            </AddMenuItemIterator>
+          </AddMenuItem>
+        </AddButton>
         <IteratorButtons
-          addVisible="schedule.isSimpleSchedule and not {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code}.contains(category.Code)"
+          addVisible="schedule.isSimpleSchedule and not {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code,gw.lob.bp7.BP7Categories.BP7BuildingAddlInterestGrp_EXT.Code}.contains(category.Code)"
           id="ScheduledItemsAddRemoveButtons"
           iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"/>
         <ToolbarButton

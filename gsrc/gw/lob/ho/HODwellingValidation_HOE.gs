@@ -38,9 +38,9 @@ class HODwellingValidation_HOE extends PCValidationBase {
 
   function validateDwellingMainFields() {
     Context.addToVisited(this, "validateDwellingMainFields")
-    if (HODwelling.ResidenceType == null) {
+    /*if (HODwelling.ResidenceType == null) {
       addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeRequired, "HomeownersDwelling")
-    }
+    }*/
     if (HODwelling.DwellingUsage == null) {
       addErrorOrWarning("DwellingUsage", displaykey.Web.Policy.HomeownersLine.Validation.DwellingUsageRequired, "HomeownersDwelling")
     }

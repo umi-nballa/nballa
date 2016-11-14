@@ -214,6 +214,7 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.RoofTypeCP=this.RoofTypeCP
     clonedBuilding.RoofShape=this.RoofShape
     clonedBuilding.FlatRoofDesc=this.FlatRoofDesc
+    clonedBuilding.RoofShapeOtherDes = this.RoofShapeOtherDes
 
     clonedBuilding.OccupancyType=this.OccupancyType
 
@@ -226,6 +227,20 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.ResQuestions.windstorm=this.ResQuestions.windstorm
     clonedBuilding.ResQuestions.windstormexcl=this.ResQuestions.windstormexcl
     clonedBuilding.ResQuestions.windmitidate=this.ResQuestions.windmitidate
+
+    clonedBuilding.ResQuestions.desgr3=this.ResQuestions.desgr3
+    clonedBuilding.ResQuestions.guswind=this.ResQuestions.guswind
+    clonedBuilding.ResQuestions.terexp=this.ResQuestions.terexp
+    clonedBuilding.ResQuestions.swrr=this.ResQuestions.swrr
+    clonedBuilding.ResQuestions.guswindloc=this.ResQuestions.guswindloc
+    clonedBuilding.ResQuestions.intpredes=this.ResQuestions.intpredes
+    clonedBuilding.ResQuestions.roofdecat=this.ResQuestions.roofdecat
+    clonedBuilding.ResQuestions.roofwl=this.ResQuestions.roofwl
+    clonedBuilding.ResQuestions.roofdk=this.ResQuestions.roofdk
+    clonedBuilding.ResQuestions.roofcv=this.ResQuestions.roofcv
+    clonedBuilding.ResQuestions.openprt=this.ResQuestions.openprt
+
+
 
     clonedBuilding.numot=this.numot
     clonedBuilding.numpg=this.numpg

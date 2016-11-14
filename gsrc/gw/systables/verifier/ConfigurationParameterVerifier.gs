@@ -19,7 +19,7 @@ uses una.logging.UnaLoggerCategory
  * To change this template use File | Settings | File Templates.
  */
 class ConfigurationParameterVerifier extends VerifierBase{
-  private final static var LOGGER = UnaLoggerCategory.UNA_CONFIG_PARAMS
+  private final static var LOGGER = UnaLoggerCategory.UNA_SYS_TABLES
   private var _loadedList : List<ConfigParamBean> = {}
   private final var TABLE_NAME = "ConfigurationParameter_Ext"
   private final var EFFECTIVE_DATE = "EffectiveDate"

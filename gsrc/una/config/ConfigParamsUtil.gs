@@ -22,7 +22,7 @@ uses java.lang.Exception
  */
 class ConfigParamsUtil {
   private static var _lazyConfigParams = LockingLazyVar.make(\ -> new HashSet<ConfigurationParameter_Ext>())
-  private static final var _logger = UnaLoggerCategory.UNA_CONFIG_PARAMS
+  private static final var _logger = UnaLoggerCategory.UNA_SYS_TABLES
 
   /*
     gets a BigDecimal config parameter

@@ -1,11 +1,41 @@
 package gw.lob.ho
 uses java.math.BigDecimal
-uses gw.web.productmodel.LineWizardStepHelper_Ext
-uses una.utils.MathUtil
+uses gw.pl.persistence.core.Bundle
 uses una.config.ConfigParamsUtil
-uses java.util.HashMap
+uses java.lang.Double
 
 enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
+  function addScheduledItem(item: ScheduledItem_HOE){
+    this.addToScheduledItems(item)
+    this.ScheduledItemAutoNumberSeq.number(item, this.ScheduledItems, ScheduledItem_HOE.Type.TypeInfo.getProperty("ItemNumber"))
+  }
+
+  function removeScheduledItem(item: ScheduledItem_HOE) {
+    this.removeFromScheduledItems(item)
+    renumberScheduledItems()
+  }
+
+  function cloneScheduledItemAutoNumberSequence() {
+    this.ScheduledItemAutoNumberSeq = this.ScheduledItemAutoNumberSeq.clone( this.Bundle )
+  }
+
+  function resetScheduledItemAutoNumberSequence() {
+    this.ScheduledItemAutoNumberSeq.reset()
+    renumberScheduledItems()
+  }
+
+  function bindScheduledItemAutoNumberSequence() {
+    renumberScheduledItems()
+    this.ScheduledItemAutoNumberSeq.bind( this.ScheduledItems, ScheduledItem_HOE.Type.TypeInfo.getProperty("ItemNumber"))
+  }
+
+  function initializeScheduledItemAutoNumberSequence(bundle : Bundle) {
+    this.ScheduledItemAutoNumberSeq = new AutoNumberSequence(bundle)
+  }
+
+  private function renumberScheduledItems() {
+    this.ScheduledItemAutoNumberSeq.renumber(this.ScheduledItems, ScheduledItem_HOE.Type.TypeInfo.getProperty("ItemNumber") )
+  }
 
   property get TotalCovLimit() : BigDecimal {
     var limit : BigDecimal
@@ -31,8 +61,8 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     switch (this.PatternCode){
       case "DPDW_Dwelling_Cov_HOE":
           return dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value
-      case "DPDW_Loss_Of_Use_HOE":
-          percentageOfDwellingLimit = dwelling.DPDW_Loss_Of_Use_HOE.DPDW_LossOfUseDwelLimit_HOETerm.Value
+      case "DPDW_FairRentalValue_Ext":
+          percentageOfDwellingLimit = dwelling.DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm.Value
           return calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
       case "DPDW_OrdinanceCov_HOE":
           percentageOfDwellingLimit = dwelling.DPDW_OrdinanceCov_HOE.DPDW_OrdinanceLimit_HOETerm.Value
@@ -65,7 +95,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     var limit : BigDecimal
     switch(this.PatternCode){
       case "HODW_Personal_Property_HOE":
-          limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PropertyHO4_6Limit_HOETerm.Value
+          limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
           break
       case "HODW_Dwelling_Cov_HOE":
           limit = this.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
@@ -109,183 +139,35 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
     return dollarValue
   }
-
-  /*
-*  Author: Sen Pitchaimuthu
-*  Change Log: Added the new function roundown coverages based on the rounding logic
- */
-  private static function roundDown_Ext(number: BigDecimal) : BigDecimal {
-    return number?.setScale(0, java.math.RoundingMode.DOWN)
-  }
-
-  /*
-     *  Author: Sen Pitchaimuthu
-     *  Change Log: Added the new function setAllOtherPerilDefault to default the All other Peril value
-     */
-
-  static function setAllOtherPerilDefault(_dwelling: Dwelling_HOE)
-  {
-
-    if (_dwelling.HOPolicyType == TC_HO3 and _dwelling.Branch.BaseState != TC_AZ)
-    {
-      _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("1000")
-    }
-    else
-    {
-      _dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.setValueFromString("500")
-    }
-  }
-  /*
-    *  Author: Sen Pitchaimuthu
-    *  Change Log: Added the new function setValutaionMethodDefault to default the Valuation Method
+   /**
+    * Amrita D Validated Individual and Total Values for Schedule Items as per the HO product Model Sheet
     */
 
+  static function validateScheduleType_Ext(dwelling:Dwelling_HOE):String{
+    var result : String
 
-  static function setValuationMethodDefault(_dwelling: Dwelling_HOE)
-  {
-
-    if (_dwelling.Branch.BaseState == TC_TX)
-    {
-      _dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.setValueFromString("Actual")
-    }
-    else
-    {
-      _dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.setValueFromString("Replacement")
-    }
-  }
-
-  static function setSection1LimitDefault_Ext(_dwelling: Dwelling_HOE){
-
-    if(_dwelling.Branch.BaseState == TC_CA or _dwelling.Branch.BaseState == TC_HI){
-      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm.setValueFromString("5000")
-    }
-    else{
-      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm.setValueFromString("10000")
-    }
-
-  }
-
-  static function setSection1AggLimitDefault_Ext(_dwelling: Dwelling_HOE){
-
-    if(_dwelling.Branch.BaseState == TC_CA or _dwelling.Branch.BaseState == TC_HI){
-      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.setValueFromString("5000_Ext")
-    }
-    else{
-      _dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.setValueFromString("10000")
-    }
-
-  }
-
-  static function setVMFireDwellingDefault_Ext(_dwelling: Dwelling_HOE)
-  {
-
-    if (_dwelling.Branch.BaseState == TC_TX)
-    {
-      _dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.setValueFromString("Actual")
-    }
-    else
-    {
-      _dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.setValueFromString("Replacement")
-    }
-  }
-
-  function setAddLivingLimitDefault_Ext(cov: DwellingCov_HOE){
-
-    var limitA = roundDown_Ext(this.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value)
-    var policyType = this.Dwelling.HOPolicyType
-    var state = this.Branch.BaseState
-    var defaultValue : BigDecimal
-    var occupancy = this.Dwelling.Occupancy
-
-    if (limitA != null and policyType == TC_DP3_Ext and occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER){
-      if(state == TC_CA){
-        this.Dwelling.DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm.setValueFromString("10")
+    for(scheduleItem in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems ) {
+      var exposureValue = scheduleItem.ExposureValue
+      var maxValidExposureValue = ConfigParamsUtil.getInt(TC_scheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleItem.ScheduleType.Code)
+      var minValidExposureValue = ConfigParamsUtil.getInt(TC_scheduleExposureMinValue, dwelling.HOLine.BaseState,scheduleItem.ScheduleType.Code)
+      if(exposureValue> maxValidExposureValue) {
+        result = displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName)
       }
-      else if(state == TC_HI){
-        this.Dwelling.DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm.setValueFromString("20")
+      else if(exposureValue < minValidExposureValue){
+        result = displaykey.Web.Policy.HomeownersLine.Validation.ScheduleItemMin_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName)
       }
     }
-  }
-
-  static function setSpecialLimitOptionCovTermDefault_Ext(_dwelling: Dwelling_HOE)
-  {
-
-    if (_dwelling.Branch.BaseState == TC_TX)
-    {
-      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("500")
-      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_MoneyLimit_HOETerm.setValueFromString("100")
-    }
-    else if(_dwelling.Branch.BaseState == TC_FL){
-      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_ElectronicApparatusLimit_HOETerm.setValueFromString("1000")
-      _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("1000")
-    }
-    else if(_dwelling.Branch.BaseState != TC_FL or _dwelling.Branch.BaseState != TC_TX )
-      {
-        _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_JewelryWatchesFursLimit_HOETerm.setValueFromString("1500")
-        _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_MoneyLimit_HOETerm.setValueFromString("200")
-        _dwelling.HODW_SpecialLimitsPP_HOE_Ext.HODW_ElectronicApparatusLimit_HOETerm.setValueFromString("1500")
-
+    var exposureMap = dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.partition( \ schItem -> schItem.ScheduleType )
+    exposureMap.eachKey( \ scheduleType -> {
+      var totalCalculateExpValue = exposureMap.get(scheduleType).sum( \ schItem -> schItem.ExposureValue )
+      var maxValidTotalExposureValue = ConfigParamsUtil.getInt(TC_totalscheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleType.Code)
+      if(totalCalculateExpValue> maxValidTotalExposureValue){
+        result = displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext(scheduleType.DisplayName,new Double(maxValidTotalExposureValue as double).asMoney())
       }
+      })
+
+    return result
   }
-  static function setBusinessProp_Ext(_dwelling:Dwelling_HOE){
-    if(_dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value) {
-      _dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.setValueFromString("10000")
-    }
-  }
-
-  static function setAnimalLiabDefault_Ext(dwelling:Dwelling_HOE){
-    if(dwelling.Branch.BaseState == TC_TX){
-      dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("25000")
-    }
-    else{
-      dwelling.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setValueFromString("50000")
-    }
-
-  }
-
-
-  static function validateScheduleType_Ext(dwelling:Dwelling_HOE):boolean{
-    var expValue1:int = 2500
-    var expValue2:int = 5000
-    var expValue3:int = 10000
-    var expValue4:int = 25000
-   for(schType in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems) {
-
-   if(dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI or dwelling.Branch.BaseState == TC_SC){
-     if((schType.ScheduleType == typekey.ScheduleType_HOE.TC_COLLECTIBLES_EXT and schType.ExposureValue > expValue1)or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_GOLFEQUIPNOGOLFCARTS_EXT and schType.ExposureValue > expValue1) or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_GUNSSCHEDULED and schType.ExposureValue > expValue1)or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_POSTAGESTAMPS and schType.ExposureValue > expValue1) or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_RARECURRENTCOINS and schType.ExposureValue > expValue1)or
-        (schType.ScheduleType == typekey.ScheduleType_HOE.TC_SILVERWAREEXCLUDEPENPENSILS_EXT and schType.ExposureValue > expValue1)){
-        return true
-     }
-     else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_FURSGARMENTSSCHEDULED_EXT and schType.ExposureValue > expValue2){
-        return true
-     }
-     else if ((schType.ScheduleType == typekey.ScheduleType_HOE.TC_FINEARTS and schType.ExposureValue > expValue3) or
-              (schType.ScheduleType == typekey.ScheduleType_HOE.TC_MUSICALINSTRUMETSPERSONAL_EXT and schType.ExposureValue > expValue3) ){
-         return true
-       }
-       else if (schType.ScheduleType == typekey.ScheduleType_HOE.TC_JEWELRY and schType.ExposureValue > expValue4){
-           return true
-         }
-     }
-     else if((dwelling.Branch.BaseState == TC_FL or dwelling.Branch.BaseState == TC_HI) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERASPM_EXT and schType.ExposureValue > expValue2)){
-       return true
-     }
-   else if((dwelling.Branch.BaseState == TC_CA or dwelling.Branch.BaseState == TC_SC) and (schType.ScheduleType == typekey.ScheduleType_HOE.TC_CAMERAPEPERSONAL_EXT and schType.ExposureValue > expValue2)){
-       return true
-     }
-    }
-    return false
-    }
-
-  /*static function calculateTotalExpValue_Ext():BigDecimal{
-
-  }*/
-
-
 
 }
 

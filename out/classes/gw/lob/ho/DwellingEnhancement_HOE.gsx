@@ -84,9 +84,14 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
    * for the policy type is set
    */  
   function setPolicyTypeAndDefaults() {
-    
+
     this.HOPolicyType = this.HOLine.HOPolicyType
-    
+    //Set the default for Garage to No Garage
+    if (this.Garage == null) {
+      this.Garage = "None"
+    }
+    //Commenting the default logic as not needed after 12.02.03
+    /*
     var validType = false
     if(this.ResidenceType != null)
     {
@@ -133,11 +138,7 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
         this.Occupancy = DwellingOccupancyType_HOE.TC_NONOWN
       }
     }
-
-    //Set the default for Garage to No Garage
-    if (this.Garage == null) {
-      this.Garage = "None"
-    }
+   */
   }
 
   /**
@@ -206,19 +207,19 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     // for protection details
     if(this.DwellingLocation == null or this.DwellingLocation != DwellingLocationType_HOE.TC_OTHER)
     {
-      this.DwellingLocationDescription = null
+      this.DwellingProtectionDetails.DwellingLocationDescription = null
     }
-    if(this.BurglarAlarm == null or not this.BurglarAlarm)
+    if(this.DwellingProtectionDetails.BurglarAlarm == null or not this.DwellingProtectionDetails.BurglarAlarm)
     {
-      this.BurglarAlarmType = null
+      this.DwellingProtectionDetails.BurglarAlarmType = null
     }
-    if(this.SmokeAlarm == null or not this.SmokeAlarm)
+    if(this.DwellingProtectionDetails.SmokeAlarm == null or not this.DwellingProtectionDetails.SmokeAlarm)
     {
-      this.SmokeAlarmOnAllFloors = null
+      this.DwellingProtectionDetails.SmokeAlarmOnAllFloors = null
     }
-    if(this.Deadbolts == null or not this.Deadbolts)
+    if(this.DwellingProtectionDetails.Deadbolts == null or not this.DwellingProtectionDetails.Deadbolts)
     {
-      this.DeadboltsNumber = null
+      this.DwellingProtectionDetails.DeadboltsNumber = null
     }
   }
   

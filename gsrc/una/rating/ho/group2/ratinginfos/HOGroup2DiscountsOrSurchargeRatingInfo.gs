@@ -10,7 +10,12 @@ uses java.math.BigDecimal
  * Rating info for the discounts and surcharges for the group2 states
  */
 class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo {
+  var _namedStormDeductible : BigDecimal as NamedStormDeductible
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
+    if(line.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
+      _namedStormDeductible = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
+    }
   }
 }

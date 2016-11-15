@@ -22,7 +22,9 @@ class UnaLoggerCategory extends PCLoggerCategory {
   public static final var UNA_TESTFRAMEWORK : Logger = createLogger("UniversalTestFramework");
   public static final var UNA_METRICS : Logger = createLogger("UniversalMetrics");
   public static final var UNA_RATING : Logger = createLogger("UniversalRating");
-  public static final var UNA_CONFIG_PARAMS : ILogger = createLogger("UniversalConfigParameters")
+  public static final var UNA_SYS_TABLES : ILogger = createLogger("UniversalSysTables")
+  public static final var UNA_BATCH_PROCESS : ILogger = createLogger("UniversalBatchProcess")
+  public static final var UNA_FORMS : ILogger = createLogger("UniversalForms")
   public static function load() : void {
   }
 }

@@ -283,7 +283,7 @@
             label="displaykey.Web.Homeowners.HODwelling.IsHomeNewPurchase_Ext"
             value="dwelling.HomeNewPurchase_Ext">
             <PostOnChange
-              onChange="if(!dwelling.HomeNewPurchase_Ext &amp;&amp; (dwelling.HomePurchaseDate_Ext != null or dwelling.NewPurchaseMoveInDate_Ext != null)) {dwelling.HomePurchaseDate_Ext = null; dwelling.NewPurchaseMoveInDate_Ext = null} else if(dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HomePurchaseMMYYYY_Ext != null) {dwelling.HomePurchaseMMYYYY_Ext = null}"/>
+              onChange="if(!dwelling.HomeNewPurchase_Ext &amp;&amp; (dwelling.HomePurchaseDate_Ext != null)) {dwelling.HomePurchaseDate_Ext = null; } else if(dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HomePurchaseMMYYYY_Ext != null) {dwelling.HomePurchaseMMYYYY_Ext = null}"/>
           </BooleanRadioInput>
           <DateInput
             editable="true"
@@ -297,19 +297,13 @@
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseMMYYYY_Ext"
             value="dwelling.HomePurchaseMMYYYY_Ext"
             visible="!dwelling.HomeNewPurchase_Ext"/>
-          <DateInput
-            editable="true"
-            id="newPurchaseMoveInDate_Ext"
-            label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
-            value="dwelling.NewPurchaseMoveInDate_Ext"
-            visible="dwelling.HomeNewPurchase_Ext"/>
         </InputSet>
         <Input
           editable="true"
-          id="rentalMoveInMMYYYY_Ext"
+          id="moveInDate_Ext"
           label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
-          value="dwelling.RentalMoveInMMYYYY_Ext"
-          visible="dwelling.HOPolicyType == TC_HO4"/>
+          value="dwelling.MoveInDate_Ext"
+          visible="dwelling.HomeNewPurchase_Ext or dwelling.HOPolicyType == TC_HO4"/>
         <InputSet
           id="deedInfo_Ext"
           visible="dwelling.YearBuilt!= null &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.isFirstTimeDeededVisible(dwelling)">

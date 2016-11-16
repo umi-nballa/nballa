@@ -106,13 +106,10 @@
       </Card>
     </CardViewPanel>
     <Code><![CDATA[function additionalCoverageCategories() : List<String>{
-  print("SERP Endorsed : "+jobWizardHelper.PolicyPeriod.SERPEndorsed_Ext)
-  
   var categories = {gw.lob.bp7.BP7Categories.BP7LineAddlGrp.Code}
   if(line.BP7LineBusinessType != BP7PropertyType.TC_CONTRACTOR){
     categories.add(gw.lob.bp7.BP7Categories.BP7LineContractorBusGrp.Code)
   }
-  //categories.add(gw.lob.bp7.BP7Categories.BP7SerpGrp_EXT.Code)
   return categories
 }
 

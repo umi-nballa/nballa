@@ -658,22 +658,22 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
 
   function createBP7AddlIntrstLossPayable(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
-    var scheduleItems = (currentCoverage.OwningCoverable as coverable as BP7Building).BP7AddlIntrstLosspyblprovi_EXT.AdditionalInterestContainer.AdditionalInterestDetails
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as BP7Building).BP7AddlIntrstLosspyblprovi_EXT.ScheduledItems   //AdditionalInterestContainer.AdditionalInterestDetails
     for (item in scheduleItems) {
       //var item = it as BP7ScheduledItem
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.CoverageCd = currentCoverage.PatternCode
-      limit.CoverageSubCd = item.AdditionalInterestType != null ? item.AdditionalInterestType : ""
+      limit.CoverageSubCd = item.AdditionalInterest.AdditionalInterestType != null ? item.AdditionalInterest.AdditionalInterestType : ""
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
       limit.FormatText = ""
-      limit.LimitDesc = "Name:" + item.PolicyAddlInterest.DisplayName  +
-          "| Address:" + item.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress +
+      limit.LimitDesc = "Name:" + item.AdditionalInterest.PolicyAddlInterest.DisplayName  +
+          "| Address:" + item.AdditionalInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress +
           "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true)  +
-          "| Type:" + item.AdditionalInterestType.Description +
-          "| Description: " + (currentCoverage.OwningCoverable as BP7Building).Building.Description +
-          "| LoanLeaseNo: " + item.ContractNumber
+          "| Type:" + item.AdditionalInterest.AdditionalInterestType.Description +
+          "| PropertyDescription: " + (currentCoverage.OwningCoverable as BP7Building).Building.Description +
+          "| Description: " + item.LongStringCol1
       limit.WrittenAmt.Amt = 0.00
       /*
       for (trx in transactions) {

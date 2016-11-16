@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="BP7Serp_ExtDV">
+    <Require
+      name="policyLine"
+      type="PolicyLine"/>
+    <Variable
+      initialValue="policyLine as BP7Line"
+      name="bopLine"/>
+    <Variable
+      initialValue="bopLine.Pattern.getCoverageCategory(&quot;BP7SerpGrp_EXT&quot;)"
+      name="bopSerpCat"/>
+    <Variable
+      initialValue="bopSerpCat.coveragePatternsForEntity(BP7BusinessOwnersLine).whereSelectedOrAvailable(bopLine, CurrentLocation.InEditMode)"
+      name="bopSerpCatCoveragePatterns"/>
+    <InputColumn>
+      <InputIterator
+        elementName="coveragePattern"
+        value="bopSerpCatCoveragePatterns">
+        <InputSetRef
+          def="CoverageInputSet(coveragePattern, bopLine, true)"
+          mode="coveragePattern.Code"/>
+      </InputIterator>
+    </InputColumn>
+  </DetailViewPanel>
+</PCF>

@@ -92,6 +92,8 @@ class CPBuildingUtil {
 
       bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
     }
+    else
+      bldg.ResQuestions.roofdecat = null
 
     return true
   }

@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <PanelSet
+    id="BP7SerpCoverage_ExtPanelSet">
+    <Require
+      name="policyLine"
+      type="PolicyLine"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="gw.api.web.job.JobWizardHelper"/>
+    <Variable
+      initialValue="policyLine as BP7Line"
+      name="bopLine"/>
+    <PanelRow>
+      <PanelColumn>
+        <PanelRef
+          def="BP7Serp_ExtDV(bopLine)"/>
+      </PanelColumn>
+    </PanelRow>
+  </PanelSet>
+</PCF>

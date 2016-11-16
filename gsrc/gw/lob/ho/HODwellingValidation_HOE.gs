@@ -38,9 +38,9 @@ class HODwellingValidation_HOE extends PCValidationBase {
 
   function validateDwellingMainFields() {
     Context.addToVisited(this, "validateDwellingMainFields")
-    if (HODwelling.ResidenceType == null) {
+    /*if (HODwelling.ResidenceType == null) {
       addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeRequired, "HomeownersDwelling")
-    }
+    }*/
     if (HODwelling.DwellingUsage == null) {
       addErrorOrWarning("DwellingUsage", displaykey.Web.Policy.HomeownersLine.Validation.DwellingUsageRequired, "HomeownersDwelling")
     }
@@ -51,30 +51,30 @@ class HODwellingValidation_HOE extends PCValidationBase {
 
   function validateDwellingProtectionFields() {
     Context.addToVisited(this, "validateDwellingProtectionFields")
-    if (HODwelling.DwellingLocation == null) {
+    /*if (HODwelling.DwellingLocation == null) {
       addErrorOrWarning("DwellingLocation", displaykey.Web.Policy.HomeownersLine.Validation.DwellingLocationType, "HomeownersDwelling")
     }
-    if (HODwelling.FireExtinguishers == null) {
+    if (HODwelling.DwellingProtectionDetails.FireExtinguishers == null) {
       addErrorOrWarning("FireExtinguishers", displaykey.Web.Policy.HomeownersLine.Validation.FireExtinguishers, "HomeownersDwelling")
     }
-    if (HODwelling.BurglarAlarm == null) {
+    if (HODwelling.DwellingProtectionDetails.BurglarAlarm == null) {
       addErrorOrWarning("BurglarAlarm", displaykey.Web.Policy.HomeownersLine.Validation.BurglarAlarm, "HomeownersDwelling")
     }
-    if (HODwelling.FireAlarm == null) {
+    if (HODwelling.DwellingProtectionDetails.FireAlarm == null) {
       addErrorOrWarning("FireAlarm", displaykey.Web.Policy.HomeownersLine.Validation.FireAlarm, "HomeownersDwelling")
     }
-    if (HODwelling.SmokeAlarm == null) {
+    if (HODwelling.DwellingProtectionDetails.SmokeAlarm == null) {
       addErrorOrWarning("SmokeAlarm", displaykey.Web.Policy.HomeownersLine.Validation.SmokeAlarm, "HomeownersDwelling")
     }
-    if (HODwelling.SprinklerSystemType == null) {
+    if (HODwelling.DwellingProtectionDetails.SprinklerSystemType == null) {
       addErrorOrWarning("SprinklerSystemType", displaykey.Web.Policy.HomeownersLine.Validation.SprinklerSystemType, "HomeownersDwelling")
     }
-    if (HODwelling.Deadbolts == null) {
+    if (HODwelling.DwellingProtectionDetails.Deadbolts == null) {
       addErrorOrWarning("Deadbolts", displaykey.Web.Policy.HomeownersLine.Validation.Deadbolt, "HomeownersDwelling")
     }
-    if (HODwelling.VisibleToNeighbors == null) {
+    if (HODwelling.DwellingProtectionDetails.VisibleToNeighbors == null) {
       addErrorOrWarning("VisibleToNeighbors", displaykey.Web.Policy.HomeownersLine.Validation.VisiblToNeighbors, "HomeownersDwelling")
-    }
+    }*/
     // check garage type only for applicable policy types
     if ((HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
          HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)
@@ -145,9 +145,6 @@ class HODwellingValidation_HOE extends PCValidationBase {
   }
   
   function validateFieldsForHO3DP2(policyType : HOPolicyType_HOE) {
-    if (HODwelling.ResidenceType != ResidenceType_HOE.TC_FAM1 and HODwelling.ResidenceType != ResidenceType_HOE.TC_FAM2
-        and HODwelling.ResidenceType != ResidenceType_HOE.TC_TOWNROW and HODwelling.ResidenceType != ResidenceType_HOE.TC_MOBILE)
-      addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeInValid(policyType), "HomeownersDwelling")
     if (HODwelling.SwimmingPoolExists and HODwelling.SwimmingPoolDivingBoard == null)
       addErrorOrWarning("SwimmingPoolDivingBoard", displaykey.Web.Policy.HomeownersLine.Validation.DivingBoardExists, "HomeownersDwelling")
     if (HODwelling.SwimmingPoolExists and HODwelling.SwimmingPoolFencing == null)
@@ -187,12 +184,12 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.AnimalsInDwelling == true and HODwelling.DwellingAnimals.length == 0)
       addErrorOrWarning("DwellingAnimals", displaykey.Web.Policy.HomeownersLine.Validation.DwellingAnimals, "HomeownersDwelling")
     // Validate common fields for policy types in Dwelling Protection
-    if (HODwelling.BurglarAlarm == true and HODwelling.BurglarAlarmType == null)
-      addErrorOrWarning("BurglarAlarmType", displaykey.Web.Policy.HomeownersLine.Validation.BurglarAlarmType, "HomeownersDwelling")
-    if (HODwelling.SmokeAlarm == true and HODwelling.SmokeAlarmOnAllFloors == null)
+    /*if (HODwelling.DwellingProtectionDetails.BurglarAlarm == true and HODwelling.DwellingProtectionDetails.BurglarAlarmType == null)
+      addErrorOrWarning("BurglarAlarmType", displaykey.Web.Policy.HomeownersLine.Validation.BurglarAlarmType, "HomeownersDwelling")*/
+    if (HODwelling.DwellingProtectionDetails.SmokeAlarm == true and HODwelling.DwellingProtectionDetails.SmokeAlarmOnAllFloors == null)
       addErrorOrWarning("SmokeAlarmOnAllFloors", displaykey.Web.Policy.HomeownersLine.Validation.SmokeAlarmOnAllFloors, "HomeownersDwelling")
-    if (HODwelling.Deadbolts == true and HODwelling.DeadboltsNumber == null)
-      addErrorOrWarning("DeadboltsNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumDeadBolts, "HomeownersDwelling")
+    /*if (HODwelling.DwellingProtectionDetails.Deadbolts == true and HODwelling.DwellingProtectionDetails.DeadboltsNumber == null)
+      addErrorOrWarning("DeadboltsNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumDeadBolts, "HomeownersDwelling")*/
     if (HODwelling.RoofType == RoofType.TC_OTHER and HODwelling.RoofTypeDescription == null)
       addErrorOrWarning("RoofTypeDescription", displaykey.Web.Policy.HomeownersLine.Validation.RoofTypeDesc, "HomeownersDwellingConstruction")
     

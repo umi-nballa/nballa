@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="CoverageInputSet"
+    mode="CPWindstormProtectiveDevices_EXT">
+    <Require
+      name="coveragePattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Require
+      name="coverable"
+      type="Coverable"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      initialValue="(coverable as CPBuilding)"
+      name="cpbuilding"/>
+    <HiddenInput
+      id="CovPatternCode"
+      value="coveragePattern.CodeIdentifier"/>
+    <InputGroup
+      allowToggle="coveragePattern.allowToggle(coverable)"
+      childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
+      id="CovInputGroup"
+      label="coveragePattern.DisplayName"
+      onToggle="cpbuilding.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+      <ListViewInput
+        boldLabel="true"
+        editable="true"
+        id="WindstormProtectiveDevicesLV"
+        label="displaykey.Web.Homeowners.HOCoveragesScreen.ScheduledProperty">
+        <Toolbar>
+          <IteratorButtons
+            iterator="ItemsLV"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="openForEdit"
+          id="ItemsLV">
+          <RowIterator
+            editable="true"
+            elementName="schedItem"
+            toCreateAndAdd="cpbuilding.createAndAddCPScheduledItem(coveragePattern.CodeIdentifier)"
+            toRemove="cpbuilding.CPOptionalOutdoorProperty_EXT.removeScheduledItem(schedItem)"
+            value="cpbuilding.CPOptionalOutdoorProperty_EXT.scheduleItem">
+            <Row>
+              <Cell
+                editable="true"
+                id="desc"
+                label="&quot;Description&quot;"
+                required="true"
+                value="schedItem.WindstormDesc_EXT"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
+      <PostOnChange/>
+    </InputGroup>
+  </InputSet>
+</PCF>

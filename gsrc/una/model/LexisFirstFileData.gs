@@ -11,58 +11,41 @@ uses una.integration.framework.file.outbound.persistence.OutboundFileData
  */
 class LexisFirstFileData extends OutboundFileData {
 
-  /*
-  var customerTransactionID: String as CustomerTransactionID
-  */
+
   var recordTypeIndicator: String as RecordTypeIndicator
+  var customerTransactionID: String as CustomerTransactionID
+  var transactionCreationDate: String as TransactionCreationDate
   var actionEffectiveDate: String as ActionEffectiveDate
   var policyEffectiveFromDate: String as PolicyEffectiveFromDate
   var policyExpirationDate: String as PolicyExpirationDate
   var policyNumber: String as PolicyNumber
-  var transactionCreationDate: String as TransactionCreationDate
-  var insuranceCarrier: String as InsuranceCarrier
-  var insuranceCarrierNAIC: String as InsuranceCarrierNAIC
-  var producerName: String as ProducerName
-  var producerCode: String as ProducerCode
-  var producerStreet: String as ProducerStreet
-  var producerCity: String as ProducerCity
-  var producerState: String as ProducerState
-  var producerZip: String as ProducerZip
-  var producerCountry: String as ProducerCountry
+  var commercialPolicy: String as CommercialPolicy
+  var actionCode: String as ActionCode
+  var policyTypeCode: String as PolicyTypeCode
   var insuredName1Type: String as InsuredName1Type
+  var insuredName1LastName: String as InsuredName1LastName
   var insuredName1FirstName: String as InsuredName1FirstName
+  var insuredName2Type: String as InsuredName2Type
+  var insuredName2LastName: String as InsuredName2LastName
+  var insuredName2FirstName: String as InsuredName2FirstName
   var insuredStreet: String as InsuredStreet
   var insuredCity: String as InsuredCity
   var insuredState: String as InsuredState
   var insuredZip: String as InsuredZip
   var insuredCountry: String as InsuredCountry
-  var mortgagee: String as Mortgagee
-  var mortgageeStreet: String as MortgageeStreet
-  var mortgageeCity: String as MortgageeCity
-  var mortgageeState: String as MortgageeState
-  var mortgageeZip: String as MortgageeZip
-  var mortgageeCountry: String as MortgageeCountry
-  var mortgageeInterestType: String as MortgageeInterestType
-  var propertyStreet: String as PropertyStreet
-  var propertyCity: String as PropertyCity
-  var propertyState: String as PropertyState
-  var propertyZip: String as PropertyZip
-  var propertyCountry: String as PropertyCountry
-
-  //var producerPhone: String as ProducerPhone
-  /*var commercialPolicy: String as CommercialPolicy
-  var actionCode: String as ActionCode
-  var policyTypeCode: String as PolicyTypeCode
   var propertyStreet: String as PropertyStreet
   var propertyCity: String as PropertyCity
   var propertyState: String as PropertyState
   var propertyZip: String as PropertyZip
   var propertyCountry: String as PropertyCountry
   var loanNumber: String as LoanNumber
-  var insuredName1LastName: String as InsuredName1LastName
-  var insuredName2Type: String as InsuredName2Type
-  var insuredName2LastName: String as InsuredName2LastName
-  var insuredName2FirstName: String as InsuredName2FirstName
+  var mortgageeName: String as MortgageeName
+  var mortgageeStreet: String as MortgageeStreet
+  var mortgageeCity: String as MortgageeCity
+  var mortgageeState: String as MortgageeState
+  var mortgageeZip: String as MortgageeZip
+  var mortgageeCountry: String as MortgageeCountry
+  var mortgageeInterestType: String as MortgageeInterestType
   var coverageTypeCode1: String as CoverageTypeCode1
   var coverageAmount1: String as CoverageAmount1
   var deductible1: String as Deductible1
@@ -94,6 +77,16 @@ class LexisFirstFileData extends OutboundFileData {
   var coverageAmount10: String as CoverageAmount10
   var deductible10: String as Deductible10
   var legalDescription: String as LegalDescription
+  var insuranceCarrier: String as InsuranceCarrier
+  var insuranceCarrierNAIC: String as InsuranceCarrierNAIC
+  var producerName: String as ProducerName
+  var producerCode: String as ProducerCode
+  var producerStreet: String as ProducerStreet
+  var producerCity: String as ProducerCity
+  var producerState: String as ProducerState
+  var producerZip: String as ProducerZip
+  var producerCountry: String as ProducerCountry
+  var producerPhone: String as ProducerPhone
   var endorsementState1: String as EndorsementState1
   var endorsement1: String as Endorsement1
   var endorsementState2: String as EndorsementState2
@@ -127,5 +120,8 @@ class LexisFirstFileData extends OutboundFileData {
   var policyInceptionDate: String as PolicyInceptionDate
   var dateofBirth: String as DateofBirth
   var propertyType: String as PropertyType
-  var contributingAMBestNumber: String as ContributingAMBestNumber*/
+  var contributingAMBestNumber: String as ContributingAMBestNumber
+
+
+
 }

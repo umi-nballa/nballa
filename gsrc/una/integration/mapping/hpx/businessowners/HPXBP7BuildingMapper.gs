@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.businessowners
 
 uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingProtectionMapper
 uses gw.xml.XmlElement
+uses una.integration.mapping.hpx.common.HPXStructureMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,11 @@ uses gw.xml.XmlElement
  * Time: 4:57 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXBP7BuildingMapper {
+class HPXBP7BuildingMapper implements HPXStructureMapper {
+
+  override function createStructure(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
+    return createBuilding(coverable as BP7Building)
+  }
 
   function createBuilding(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType {
     var buildingConstructionMapper = new HPXBP7BuildingConstructionMapper ()
@@ -22,7 +27,19 @@ class HPXBP7BuildingMapper {
     dwell.addChild(new XmlElement("DwellOccupancy", buildingMapper.createDwellOccupancy(bldg)))
     dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(bldg)))
     dwell.addChild(new XmlElement("Construction", buildingConstructionMapper.createBuildingConstructionInfo(bldg)))
+    dwell.addChild(new XmlElement("BuildingKey", createCoverableInfo(bldg)))
     return dwell
+  }
+
+  function createCoverableInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+    var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
+    if (bldg typeis BP7Building) {
+      var building = bldg as BP7Building
+      coverable.BuildingNo = building?.Building?.BuildingNum != null ? building.Building.BuildingNum : ""
+      coverable.LocationNo = building?.Location?.Location.LocationNum != null ? building?.Location?.Location.LocationNum : ""
+      coverable.Description = building?.Building?.Description
+    }
+    return coverable
   }
 
   function createDwellRating(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType {

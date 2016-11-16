@@ -54,7 +54,7 @@
           <Label
             label="displaykey.Web.PolicySearch.PrimaryInsured.Title"/>
           <InputSetRef
-            def="GlobalPersonNameInputSet(new gw.search.BasicNameOwner(policyNameAdapter))"
+            def="GlobalPersonNameInputSet(new una.extensions.UnaBasicNameOwner(policyNameAdapter))"
             mode="gw.api.name.NameLocaleSettings.PCFMode"/>
           <CheckBoxInput
             editable="true"
@@ -155,7 +155,16 @@
             label="displaykey.Web.PolicySearch.ProductName"
             optionLabel="helper.getUniqueProductDisplayName(VALUE)"
             value="searchCriteria.Product"
-            valueRange="products"/>
+            valueRange="products">
+            <PostOnChange
+              target="HOPolicyType_Ext"/>
+          </RangeInput>
+          <TypeKeyInput
+            editable="true"
+            id="HOPolicyType_Ext"
+            label="displaykey.Web.PolicySearch.HOPolicyType_Ext"
+            value="searchCriteria.HOPolicyType"
+            visible="searchCriteria.Product.DisplayName == &quot;Homeowners&quot;"/>
           <Input
             editable="true"
             id="State"

@@ -2,6 +2,7 @@ package gw.api.address
 uses java.util.Set
 uses gw.api.admin.BaseAdminUtil
 uses gw.api.util.CountryConfig
+uses java.util.ArrayList
 
 @Export
 /** 
@@ -10,8 +11,10 @@ uses gw.api.util.CountryConfig
 class AddressCountrySettings {
   private static final var validPCFModes : Set<String> = { "default", "BigToSmall", "PostCodeBeforeCity", "", null }
   private var _countryConfig : CountryConfig as CountryConfig
+  private var _theCountry : Country  as TheCountry
 
   private construct(aCountry : Country) {
+    TheCountry = aCountry
     var effectiveCountry = aCountry != null ? aCountry : BaseAdminUtil.getDefaultCountry()
     CountryConfig = CountryConfig.getCountryConfig(effectiveCountry)
     init(effectiveCountry)
@@ -57,7 +60,16 @@ class AddressCountrySettings {
    */
   public property get CityLabel() : String {
     var label = _countryConfig.CityLabel
-    return label.HasContent ? label : displaykey.Web.AddressBook.AddressInputSet.City
+    return label.HasContent ? label : (shouldChangeCityLabel() ? displaykey.Web.AddressBook.AddressInputSet.CityState : displaykey.Web.AddressBook.AddressInputSet.City)
+  }
+
+  private function shouldChangeCityLabel(): boolean{
+    var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code}
+    var res = false
+    if(TheCountry.Code!= null && !typekey.Country.TC_US.Code.equalsIgnoreCase(TheCountry.Code)){
+      res = true
+    }
+    return res
   }
 
   /**

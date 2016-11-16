@@ -94,7 +94,24 @@
             label="displaykey.Web.ExcelExport.ImportMenu"
             visible="openForEdit"/>
         </ToolbarButton>
+        <!-- <CheckedValuesToolbarButton
+          available="true"
+          checkedRowAction="jobWizardHelper.Wizard.refreshCurrentStep();CheckedValue.createAndAddBuilding(jobWizardHelper)//;cloneBuilding(CheckedValue.build);"
+          id="clonebldg"
+          iterator="CPBuildingsAndLocationsLV.CPBuildingsAndLocationsLV"
+          label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
+          visible="true"/> -->
+        <!-- <ToolbarButton
+          action="jobWizardHelper.validateAndSaveDraft();//CheckedValue.createAndAddBuilding(jobWizardHelper)// CopyBuildingCoveragesPopup.push(cpLine.Branch)"
+          id="clonebuildingbutton"
+          label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
+          visible="openForEdit and cpLine.Branch.CanCopyCoverages and cpLine.CPLocations*.Buildings.Count &gt; 1"/> -->
       </Toolbar>
     </PanelRef>
+    <Code><![CDATA[function cloneBuilding(bldg : CPBuilding) : CPBuilding
+{
+  var cloneBldg = bldg.copyBuilding(jobWizardHelper)
+ return cloneBldg
+}]]></Code>
   </Screen>
 </PCF>

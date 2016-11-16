@@ -98,7 +98,7 @@ enhancement TerritoryCodeEnhancement : TerritoryCode {
   function prelimValidate() : String {
     var territories = getTerritoryCodes(MatchingLookupCriteria)
     
-    return territories.hasMatch( \ t -> t.Code == this.Code )  // require exact match
+    return territories.where( \ elt -> elt.PolicyLinePattern.CodeIdentifier!="GLLine").hasMatch( \ t -> t.Code == this.Code )  // require exact match
         ? null
         : displaykey.Web.Policy.LocationContainer.Location.Validation.TerritoryCodeMismatch(this.Code)
     }

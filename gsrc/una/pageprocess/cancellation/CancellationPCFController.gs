@@ -63,7 +63,7 @@ class CancellationPCFController {
     var result = new StringBuilder()
 
     if(this._cancellation.CancelReasonCode != null){
-      result.append(this._cancellation.CancelReasonCode)
+      result.append(this._cancellation.CancelReasonCode.Description)
     }
 
     if(!isReasonDescriptionEditable()){

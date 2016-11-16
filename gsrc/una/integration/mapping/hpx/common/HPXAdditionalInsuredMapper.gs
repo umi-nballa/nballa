@@ -12,6 +12,7 @@ uses gw.xml.XmlElement
 class HPXAdditionalInsuredMapper {
   function createAdditionalInsureds(policyPeriod : PolicyPeriod) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType> {
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
+    var creditScoreMapper = new HPXCreditScoreMapper()
     var additionalInsureds = new ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType>()
     for (addtlInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlInsured).PolicyAdditionalInsuredDetails) {
       var insuredOrPrincipal = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType()
@@ -21,6 +22,12 @@ class HPXAdditionalInsuredMapper {
       insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = addtlInsured.AdditionalInsuredType
       insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlInsured.AdditionalInsuredType.Description
       insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYADDLINSURED
+      var creditScores = creditScoreMapper.createCreditScoreInfo(addtlInsured.PolicyAddlInsured.CreditReportsExt)
+      var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
+      for (score in creditScores) {
+        principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+      }
+      insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
       additionalInsureds.add(insuredOrPrincipal)
     }
     return additionalInsureds

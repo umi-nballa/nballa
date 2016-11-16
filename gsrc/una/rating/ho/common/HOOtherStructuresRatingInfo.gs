@@ -10,11 +10,11 @@ uses java.math.BigDecimal
  * Rating info for Other structures Increased or decreased limits
  */
 class HOOtherStructuresRatingInfo {
-  var _otherStructuresIncreasedOrDecreasedLimit : BigDecimal as OtherStructuresIncreasedOrDecreasedLimit
-  var _isOtherStructuresIncreasedOrDecreasedLimit : boolean as IsOtherStructuresIncreasedOrDecreasedLimit
-
-  construct(limitDifference : BigDecimal){
-    if(limitDifference != 0){
+  var _otherStructuresIncreasedOrDecreasedLimit: BigDecimal as OtherStructuresIncreasedOrDecreasedLimit
+  var _isOtherStructuresIncreasedOrDecreasedLimit: boolean as IsOtherStructuresIncreasedOrDecreasedLimit
+  construct(dwellingCov: HODW_Other_Structures_HOE) {
+    var limitDifference = dwellingCov.HODW_OtherStructures_Limit_HOETerm.LimitDifference
+    if (limitDifference != 0){
       _isOtherStructuresIncreasedOrDecreasedLimit = true
     }
     _otherStructuresIncreasedOrDecreasedLimit = limitDifference

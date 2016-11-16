@@ -2,14 +2,15 @@ package una.rating.ho.group3
 
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.common.util.DateRange
-uses java.util.Map
-uses gw.rating.CostData
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.common.HORateRoutineExecutor
-uses una.rating.ho.group3.ratinginfos.HORatingInfo
-uses una.rating.ho.common.HORateRoutineNames
-uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
+uses gw.rating.CostData
 uses gw.rating.worksheet.domain.WorksheetEntry
+uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
+uses una.rating.ho.common.HORateRoutineExecutor
+uses una.rating.ho.common.HORateRoutineNames
+uses una.rating.ho.group3.ratinginfos.HORatingInfo
+
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,20 +19,20 @@ uses gw.rating.worksheet.domain.WorksheetEntry
  * Class which rates the base premium for the Group 3 HO policies
  */
 class HOBasePremiumRaterGroup3 {
-
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
-  private final var KEY_FACTOR_RATE_ROUTINE = "UNAHOKeyFactorRateRoutine"
+  private final var AOP_KEY_FACTOR_RATE_ROUTINE = "UNAHOAOPKeyFactorRateRoutine"
+  private final var WIND_KEY_FACTOR_RATE_ROUTINE = "UNAHOWindKeyFactorRateRoutine"
   private final var PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE = "UNAHOProtectionConstructionFactorRateRoutine"
-
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_FL_RATE_ROUTINE -> HOCostType_Ext.TC_AOPBASEPREMIUM,
-      KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_AOPBASEPREMIUM,
+      AOP_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
+      WIND_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
       PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_PROTECTIONCONSTRUCTIONFACTORBASEPREMIUM,
-      HORateRoutineNames.WIND_BASE_PREMIUM_FL_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM
+      HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -47,15 +48,15 @@ class HOBasePremiumRaterGroup3 {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    var nonCostRoutinesToExecute : List<String> = {KEY_FACTOR_RATE_ROUTINE, PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE}
+    var nonCostRoutinesToExecute: List<String> = {AOP_KEY_FACTOR_RATE_ROUTINE, WIND_KEY_FACTOR_RATE_ROUTINE, PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE}
     var costDatas = executeRoutines(nonCostRoutinesToExecute, dateRange, numDaysInCoverageRatedTerm)
     var wsc: List<WorksheetEntry> = {}
-    for(costData in costDatas)
-      if(costData.WorksheetEntries.Count>0)
+    for (costData in costDatas)
+      if (costData.WorksheetEntries.Count > 0)
         wsc.add(costData.WorksheetEntries.first())
     routinesToExecute.addAll(baseRoutinesToExecute)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
-    costs.each( \ cost -> cost.addWorksheetEntries(wsc))
+    costs.each(\cost -> cost.addWorksheetEntries(wsc))
     return costs
   }
 
@@ -85,10 +86,10 @@ class HOBasePremiumRaterGroup3 {
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    if(_line.BaseState == typekey.Jurisdiction.TC_FL){
-      routines.add(HORateRoutineNames.BASE_PREMIUM_FL_RATE_ROUTINE)
-      if(!_dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists){
-        routines.add(HORateRoutineNames.WIND_BASE_PREMIUM_FL_RATE_ROUTINE)
+    if (_line.BaseState == typekey.Jurisdiction.TC_FL){
+      routines.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
+      if (!_dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists){
+        routines.add(HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE)
       }
     }
     return routines

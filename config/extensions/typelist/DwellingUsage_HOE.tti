@@ -5,19 +5,19 @@
   name="DwellingUsage_HOE">
   <typecode
     code="prim"
-    desc="Primary"
-    name="Primary"
+    desc="Primary Residence"
+    name="Primary Residence"
     priority="10"/>
   <typecode
     code="sec"
-    desc="Secondary"
-    name="Secondary"
-    priority="20"/>
+    desc="Secondary Residence"
+    name="Secondary Residence"
+    priority="30"/>
   <typecode
     code="seas"
-    desc="Seasonal"
-    name="Seasonal"
-    priority="30"/>
+    desc="Seasonal Residence"
+    name="Seasonal Residence"
+    priority="20"/>
   <typecode
     code="rent"
     desc="Rental Property"
@@ -26,6 +26,28 @@
   <typefilter
     desc="Secondary or Seasonal"
     name="SecondaryOrSeasonal">
+    <include
+      code="seas"/>
+    <include
+      code="sec"/>
+  </typefilter>
+  <typefilter
+    desc="All Except Rental - Primary/Secondary\Seasonal"
+    name="AllExceptRental">
+    <include
+      code="prim"/>
+    <include
+      code="seas"/>
+    <include
+      code="sec"/>
+  </typefilter>
+  <typefilter
+    desc="All Dwelling Usage"
+    name="All">
+    <include
+      code="prim"/>
+    <include
+      code="rent"/>
     <include
       code="seas"/>
     <include

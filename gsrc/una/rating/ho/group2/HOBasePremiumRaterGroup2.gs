@@ -1,14 +1,15 @@
 package una.rating.ho.group2
 
-uses una.rating.ho.common.HORateRoutineExecutor
 uses gw.financials.PolicyPeriodFXRateCache
-uses una.rating.ho.group2.ratinginfos.HORatingInfo
-uses una.rating.ho.common.HORateRoutineNames
-uses java.util.Map
 uses gw.lob.common.util.DateRange
-uses gw.rating.CostData
-uses una.rating.ho.group2.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
+uses gw.rating.CostData
+uses una.rating.ho.common.HORateRoutineExecutor
+uses una.rating.ho.common.HORateRoutineNames
+uses una.rating.ho.group2.ratinginfos.HOBasePremiumRatingInfo
+uses una.rating.ho.group2.ratinginfos.HORatingInfo
+
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,7 +24,6 @@ class HOBasePremiumRaterGroup2 {
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
-
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
       HORateRoutineNames.BASE_PREMIUM_SC_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
 
@@ -73,7 +73,7 @@ class HOBasePremiumRaterGroup2 {
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    if(_line.BaseState.Code == "SC")
+    if (_line.BaseState.Code == "SC")
       routines.add(HORateRoutineNames.BASE_PREMIUM_SC_RATE_ROUTINE)
     return routines
   }

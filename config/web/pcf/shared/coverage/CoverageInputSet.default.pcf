@@ -18,17 +18,17 @@
       id="CovPatternDisplayName"
       value="coveragePattern.DisplayName"/>
     <InputGroup
-      allowToggle="coveragePattern.allowToggle(coverable)"
+      allowToggle="!(coverable typeis CPBuilding &amp;&amp; (coverable.PolicyLine as CommercialPropertyLine).TerrorismCoverage==true) &amp;&amp; coveragePattern.allowToggle(coverable)"
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
       id="CovPatternInputGroup"
       label="coveragePattern.DisplayName"
-      onToggle="coverable.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+      onToggle="coverable.setCoverageConditionOrExclusionExists(coveragePattern, VALUE);una.productmodel.CPAutoPopulateUtil.setCoveragesOnToggle(coveragePattern,coverable)">
       <InputIterator
         elementName="term"
         forceRefreshDespiteChangedEntries="true"
         id="CovTermIterator"
         type="gw.api.domain.covterm.CovTerm"
-        value="coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -&gt; term.Pattern.Priority )">
+        value="coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -&gt; term.Pattern.Priority )//.where( \ elt -&gt; elt.PatternCode!=&quot;CPOptionalOutdoorProperty_EXT&quot;)">
         <InputSetRef
           def="CovTermInputSet(term, openForEdit)"
           mode="term.ValueTypeName"/>

@@ -15,14 +15,14 @@
       initialValue="new una.pageprocess.CovTermInputSet(term, openForEdit)"
       name="pcfController"/>
     <CovTermDirectInput
-      editable="term.isCovTermEditable(term.Clause.OwningCoverable)"
+      editable="term.IsEditable"
       id="DirectTermInput"
       label="term.Pattern.DisplayName"
       required="term.Pattern.Required"
-      validationExpression="una.pageprocess.CovTermPOCHOEInputSet.validate(term.Clause.OwningCoverable, term as gw.api.domain.covterm.DirectCovTerm)"
+      validationExpression="coverable typeis Dwelling_HOE?una.pageprocess.CovTermInputSetPCFController.validate(term.Clause.OwningCoverable, term as gw.api.domain.covterm.DirectCovTerm):null"
       value="term">
       <PostOnChange
-        onChange="pcfController.onChange()"/>
+        onChange="pcfController.onChange();una.productmodel.CPAutoPopulateUtil.setTermValue(term)"/>
     </CovTermDirectInput>
   </InputSet>
 </PCF>

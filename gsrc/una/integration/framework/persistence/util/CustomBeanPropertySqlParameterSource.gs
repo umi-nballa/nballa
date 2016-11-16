@@ -1,9 +1,9 @@
 package una.integration.framework.persistence.util
 
-uses una.integration.framework.exception.ErrorTypeInfo
 uses org.springframework.beans.BeanWrapper
 uses org.springframework.beans.PropertyAccessorFactory
 uses org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource
+uses una.integration.framework.exception.ErrorTypeInfo
 
 /**
  * Defines mapping from custom bean property values to database table column values.

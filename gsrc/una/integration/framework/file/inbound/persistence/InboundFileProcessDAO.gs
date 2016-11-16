@@ -1,8 +1,8 @@
 package una.integration.framework.file.inbound.persistence
 
-uses una.logging.UnaLoggerCategory
 uses una.integration.framework.persistence.dao.IntegrationBaseDAO
 uses una.integration.framework.persistence.util.ProcessStatus
+uses una.logging.UnaLoggerCategory
 
 uses java.util.HashMap
 
@@ -24,12 +24,12 @@ class InboundFileProcessDAO extends IntegrationBaseDAO {
    * @returns Boolean indicates whether there is a duplicate process with the same name and status.
    */
   function isDuplicateProcess(fileName: String, processStatus: ProcessStatus): Boolean {
-    _logger.debug("Entry into method 'isDuplicateProcess' of InboundFileProcessDAO")
+    _logger.debug("Entering the function 'isDuplicateProcess' of InboundFileProcessDAO")
     var whereClause = "FILENAME = :FILENAME and STATUS = :STATUS"
     var valueMap = new HashMap<String, String>()
     valueMap.put("FILENAME", fileName)
     valueMap.put("STATUS", processStatus.Code)
-    _logger.debug("Exit from method 'isDuplicateProcess' of InboundFileProcessDAO")
+    _logger.debug("Exiting the function 'isDuplicateProcess' of InboundFileProcessDAO")
     return select(whereClause, valueMap).Count > 0
   }
 

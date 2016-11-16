@@ -1,16 +1,17 @@
 package una.rating.autoratebookload
 
+uses gw.api.productmodel.PolicyLinePatternLookup
+uses org.xml.sax.Attributes
+uses org.xml.sax.helpers.DefaultHandler
+
 uses java.io.File
 uses java.lang.StringBuilder
 uses java.text.SimpleDateFormat
 uses java.util.Date
-uses org.xml.sax.Attributes
-uses org.xml.sax.helpers.DefaultHandler
-uses gw.api.productmodel.PolicyLinePatternLookup
 
 /**
  * Parse Exported Rate Book XML, expected to be in roughly this format:
- * 
+ *
  * <pre>
  * &lt;?xml version="1.0"?&gt;
  * &lt;import xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.guidewire.com/cc/import/cc_import.xsd"&gt;
@@ -44,17 +45,17 @@ uses gw.api.productmodel.PolicyLinePatternLookup
  * </pre>
  */
 class RateBookXmlSaxContentHandler extends DefaultHandler {
-
-  public static final var RATE_BOOK_DATE_TIME_FORMAT : String = "yyyy-MM-dd HH:mm:ss.SSS"
-
-  var _parsingState         = 0    // See switch statement, below, for the states.
-  var _rateBookNestingLevel = 0    // We have to parse all the way to the end of the *FIRST* <RateBook> Element we find.
-  var _elementContents      = new StringBuilder()       // Text contents of the current XML Element.
-  var _properties           = new RateBookProperties()  // Results of file parsing are accumulated in this object.
-
+  public static final var RATE_BOOK_DATE_TIME_FORMAT: String = "yyyy-MM-dd HH:mm:ss.SSS"
+  var _parsingState = 0
+  // See switch statement, below, for the states.
+  var _rateBookNestingLevel = 0
+  // We have to parse all the way to the end of the *FIRST* <RateBook> Element we find.
+  var _elementContents = new StringBuilder()
+  // Text contents of the current XML Element.
+  var _properties = new RateBookProperties()
+  // Results of file parsing are accumulated in this object.
   final var dateParser = new SimpleDateFormat(RATE_BOOK_DATE_TIME_FORMAT)
-
-  protected construct(fileIn : File) {
+  protected construct(fileIn: File) {
     _properties.JavaFile = fileIn
   }
 
@@ -65,34 +66,36 @@ class RateBookXmlSaxContentHandler extends DefaultHandler {
    * XML processing, and to indicate to the calling function (above) that this is <b>not</b>
    * an <ERROR> XML document.
    */
-  override function startElement(namespaceURI : String, localName : String, qualifiedName : String, atts : Attributes)
+  override function startElement(namespaceURI: String, localName: String, qualifiedName: String, atts: Attributes)
   {
     switch (_parsingState) {
 
       case 0:
-        if (localName == "import") {
-          _parsingState = 1  // Saw "<import ...>" element.
-        } else {
-          throw "Unexpected root element: " + localName
-        }
-        break
+          if (localName == "import") {
+            _parsingState = 1
+            // Saw "<import ...>" element.
+          } else {
+            throw "Unexpected root element: " + localName
+          }
+          break
 
       case 1:
-        if (localName == "RateBook") {
-          _parsingState = 2  // Saw "<RateBook ...>" element.
-          _rateBookNestingLevel = 1
-        } else {
-          throw new NonRateBookGuidewireImportFileException("Unexpected first element after root: " + localName)
-        }
-        break
+          if (localName == "RateBook") {
+            _parsingState = 2
+            // Saw "<RateBook ...>" element.
+            _rateBookNestingLevel = 1
+          } else {
+            throw new NonRateBookGuidewireImportFileException("Unexpected first element after root: " + localName)
+          }
+          break
 
       case 2:
-        if (localName == "RateBook") {
-          _rateBookNestingLevel++
-        }
-        break
+          if (localName == "RateBook") {
+            _rateBookNestingLevel++
+          }
+          break
 
-      default:
+        default:
         throw "Not expecting to get into state " + _parsingState + " while parsing Rate Book XML."
     }
 
@@ -105,7 +108,7 @@ class RateBookXmlSaxContentHandler extends DefaultHandler {
    * RatabaseJavaAdaptorErrorException.  At the final "</ERROR>" end Element, build and throw the
    * exception.
    */
-  override function endElement(namespaceURI : String, localName : String, qualifiedName : String)
+  override function endElement(namespaceURI: String, localName: String, qualifiedName: String)
   {
     if (localName == "RateBook") {
       // When we get to the end of the first RateBook Element...
@@ -118,22 +121,22 @@ class RateBookXmlSaxContentHandler extends DefaultHandler {
       // At the end of each of these property Elements, capture the appropriate property value:
       var elementContents = _elementContents.toString()
       switch (localName) {
-        case "BookCode":              _properties.BookCode             = elementContents;                              break
-        case "BookName":              _properties.BookName             = elementContents;                              break
-        case "BookDesc":              _properties.BookDesc             = elementContents;                              break
-        case "BookEdition":           _properties.BookEdition          = elementContents as int;                       break
-        case "PolicyLine":            _properties.PolicyLine           = PolicyLinePatternLookup.getByCode(elementContents);break
-        case "Status":                _properties.Status               = RateBookStatus.get(elementContents);          break
-        case "EffectiveDate":         _properties.EffectiveDate        = parseDate(elementContents);                   break
-        case "ExpirationDate":        _properties.ExpirationDate       = parseDate(elementContents);                   break
-        case "LastStatusChangeDate":  _properties.LastStatusChangeDate = parseDate(elementContents);                   break
-        case "RenewalEffectiveDate":  _properties.RenewalEffectiveDate = parseDate(elementContents);                   break
+        case "BookCode": _properties.BookCode = elementContents;                              break
+        case "BookName": _properties.BookName = elementContents;                              break
+        case "BookDesc": _properties.BookDesc = elementContents;                              break
+        case "BookEdition": _properties.BookEdition = elementContents as int;                       break
+        case "PolicyLine": _properties.PolicyLine = PolicyLinePatternLookup.getByCode(elementContents);break
+        case "Status": _properties.Status = RateBookStatus.get(elementContents);          break
+        case "EffectiveDate": _properties.EffectiveDate = parseDate(elementContents);                   break
+        case "ExpirationDate": _properties.ExpirationDate = parseDate(elementContents);                   break
+        case "LastStatusChangeDate": _properties.LastStatusChangeDate = parseDate(elementContents);                   break
+        case "RenewalEffectiveDate": _properties.RenewalEffectiveDate = parseDate(elementContents);                   break
       }
       _elementContents.setLength(0)
     }
   }
 
-  private function parseDate(dateString : String) : Date {
+  private function parseDate(dateString: String): Date {
     if (dateString == "") {
       return null
     } else {
@@ -144,8 +147,7 @@ class RateBookXmlSaxContentHandler extends DefaultHandler {
   /**
    * Accumulate text until we get to the end XML Element.
    */
-  override function characters(ch : char[], start : int, len : int) {
+  override function characters(ch: char[], start: int, len: int) {
     _elementContents.append(ch, start, len)
   }
-
 }

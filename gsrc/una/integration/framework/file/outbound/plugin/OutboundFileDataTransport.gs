@@ -1,12 +1,12 @@
 package una.integration.framework.file.outbound.plugin
 
 uses una.integration.framework.exception.ExceptionUtil
-uses una.logging.UnaLoggerCategory
 uses una.integration.framework.messaging.AbstractMessageTransport
 uses una.integration.framework.persistence.context.PersistenceContext
 uses una.integration.framework.persistence.dao.IntegrationBaseDAO
 uses una.integration.framework.persistence.util.ProcessStatus
 uses una.integration.framework.util.ErrorCode
+uses una.logging.UnaLoggerCategory
 
 uses java.lang.Exception
 
@@ -21,7 +21,7 @@ abstract class OutboundFileDataTransport extends AbstractMessageTransport implem
    * This function takes care of inserting an outbound file record created based on the given payload into the integration database.
    */
   override function send(message: Message, payload: String) {
-    _logger.debug("Entry into the method 'send' of OutboundFileDataTransport'")
+    _logger.debug("Entering the function 'send' of OutboundFileDataTransport'")
     var outboundEntityDAO = new IntegrationBaseDAO(FileDataMapping)
     try {
       if (payload != null && payload.trim().NotBlank) {
@@ -44,7 +44,7 @@ abstract class OutboundFileDataTransport extends AbstractMessageTransport implem
       message.reportError()
       ExceptionUtil.suppressException(ErrorCode.ERROR_INSERTING_OUTBOUND_RECORD, null, ex)
     }
-    _logger.debug("Exit from the method 'send' of OutboundFileDataTransport'")
+    _logger.debug("Exiting the function 'send' of OutboundFileDataTransport'")
   }
 
 

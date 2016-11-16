@@ -30,6 +30,10 @@
       initialValue="openForEditOverride or openForEditInit.get()"
       name="openForEdit"
       recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="setCPDefaultAddressType()"
+      name="cpdefaultaddresstype"
+      recalculateOnRefresh="true"/>
     <InputColumn>
       <InputSetRef
         def="PolicyContactRoleNameInputSet(policyContactRole)"
@@ -45,7 +49,8 @@
         id="AddressType"
         label="displaykey.Web.ContactDetail.AddressDetail.AddressType"
         required="true"
-        value="primaryAddress.AddressType"/>
+        value="primaryAddress.AddressType"
+        visible="(period.CPLineExists==false or period.HomeownersLine_HOEExists) and policyContactRole.Subtype != TC_PolicyAddlInterest"/>
       <Input
         editable="primaryAddress.LinkedAddress == null"
         id="AddressDescription"
@@ -61,13 +66,23 @@
         def="LicenseInputSet(policyContactRole, primaryAddress)"
         mode="policyContactRole.Subtype.Code"
         visible="contact typeis Person"/>
-      <InputDivider/>
-      <Label
-        label="displaykey.Web.AccountFile.Summary.OfficialIDs"/>
-      <InputSetRef
+      <InputDivider
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/>
+      <!-- <Label
+        label="displaykey.Web.AccountFile.Summary.OfficialIDs"
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/> -->
+      <!-- <InputSetRef
         def="OfficialIDInputSet(contact)"
-        mode="contact.Subtype"/>
-      <InputDivider/>
+        mode="contact.Subtype"
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/> -->
+      <!-- <InputDivider
+        visible="policyContactRole.Subtype != TC_PolicyAddlInterest"/> -->
     </InputColumn>
+    <Code><![CDATA[function setCPDefaultAddressType():boolean
+{
+  if(period.CPLineExists or period.HomeownersLine_HOEExists)
+    primaryAddress.AddressType=typekey.AddressType.TC_BILLING
+  return false
+}]]></Code>
   </DetailViewPanel>
 </PCF>

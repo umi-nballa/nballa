@@ -13,6 +13,7 @@ package gw.account
 @Export
 class PersonToPolicyContactRoleSyncedField<S extends PolicyContactRole, T> extends ContactToPolicyContactRoleSyncedField<S, T> {
   public static final var FirstName       : PersonToPolicyContactRoleSyncedField<PolicyContactRole, String> = new PersonToPolicyContactRoleSyncedField<PolicyContactRole, String>("FirstName")
+  public static final var MiddleName      : PersonToPolicyContactRoleSyncedField<PolicyContactRole, String> = new PersonToPolicyContactRoleSyncedField<PolicyContactRole, String>("MiddleName")
   public static final var LastName        : PersonToPolicyContactRoleSyncedField<PolicyContactRole, String> = new PersonToPolicyContactRoleSyncedField<PolicyContactRole, String>("LastName")
   public static final var FirstNameKanji  : PersonToPolicyContactRoleSyncedField<PolicyContactRole, String> = new PersonToPolicyContactRoleSyncedField<PolicyContactRole, String>("FirstNameKanji")
   public static final var LastNameKanji   : PersonToPolicyContactRoleSyncedField<PolicyContactRole, String> = new PersonToPolicyContactRoleSyncedField<PolicyContactRole, String>("LastNameKanji")

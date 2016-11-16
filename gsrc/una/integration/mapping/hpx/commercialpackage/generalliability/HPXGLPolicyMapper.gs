@@ -2,6 +2,12 @@ package una.integration.mapping.hpx.commercialpackage.generalliability
 
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
 uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses gw.lang.reflect.IType
+uses una.integration.mapping.hpx.common.HPXCoverageMapper
+uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.common.HPXClassificationMapper
+uses una.integration.mapping.hpx.common.HPXExclusionMapper
+uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,39 +18,177 @@ uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
  */
 class HPXGLPolicyMapper extends HPXPolicyMapper {
 
-  function createGeneralLiabilityLineBusiness(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    var glCoverages = policyPeriod.GLLine.AllCoverages
-    var glPreviousCoverages = previousPeriod.GLLine.AllCoverages
-    var glTrxs = policyPeriod.GLTransactions
-    return createGeneralLiabilityLineCoveragesInfo(glCoverages, glPreviousCoverages, glTrxs)
-
+  function createGeneralLiabilityLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineCoverages(policyPeriod, policyPeriod.GLLine)
   }
 
-  function createGeneralLiabilityLineCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
-                                                   transactions : java.util.List<Transaction>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    var coverageMapper = new HPXGLCoverageMapper()
-    for (coverage in currentCoverages) {
-      var trxs = transactions.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as GLCost).Coverage.PatternCode))
-      if (previousCoverages != null) {
-        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
-        coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))
-      } else {
-        coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs))
-      }
-    }
-    return coverages
+  function createGeneralLiabilityLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineExclusions(policyPeriod, policyPeriod.GLLine)
+  }
+
+  function createGeneralLiabilityLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLinePolicyConditions(policyPeriod, policyPeriod.GLLine)
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
       return policyPeriod.GLLine.AllCoverages
   }
 
+  override function getExclusions(policyPeriod: PolicyPeriod): List<Exclusion> {
+    return policyPeriod.GLLine.AllExclusions
+  }
+
+  override function getPolicyConditions(policyPeriod: PolicyPeriod): List<PolicyCondition> {
+    return policyPeriod.GLLine.AllConditions
+  }
+
   override function getTransactions(policyPeriod: PolicyPeriod): List<Transaction> {
       return policyPeriod.GLTransactions
   }
 
+
+  function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+
+    switch(typeof cost){
+      case GLCost:
+        result = cost.Coverage
+        break
+      case GLCovCost:
+          result = cost.Coverage
+          break
+      case GLCovExposureCost:
+          result = cost.Coverage
+          break
+      case GLAddlInsuredCost:
+          result = cost.Coverage
+          break
+      case GLStateCost:
+          result = cost.Coverage
+          break
+    }
+
+    return result
+  }
+
+  override function getCoverageMapper() : HPXCoverageMapper {
+    return new HPXGLCoverageMapper()
+  }
+
+  override function getStructureMapper() : HPXStructureMapper {
+    return null
+  }
+
+  override function getClassificationMapper() : HPXClassificationMapper {
+    return null
+  }
+
+  override function getExclusionMapper() : HPXExclusionMapper {
+    return new HPXGLExclusionMapper()
+  }
+
+  override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
+    return new HPXGLPolicyConditionMapper()
+  }
+
+  override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
+    return null
+  }
+
+  override function getLocation(coverable : Coverable) : PolicyLocation {
+    return null
+  }
+
+  override function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getLocationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getLocationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return null
+  }
+
+  override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
+  override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override  function getStructureExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override  function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return null
+  }
+
+  override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
+  }
+
+  override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
+    return null
+  }
+
+  override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return null
+  }
+
+  override function getClassificationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return null
+  }
+
+  override function getClassificationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return null
+  }
+
+  override function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return null
+  }
+
+  override function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
+    return null
+  }
+
+  override function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable {
+    return policyPeriod.GLLine
+  }
+
+  override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
+    var lineCovs = (line as GLLine).CoveragesFromCoverable
+    return lineCovs
+  }
+
+  override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
+    var glLineExcls = (line as GLLine).ExclusionsFromCoverable
+    var cpLineExcls = line?.PolicyLine?.AssociatedPolicyPeriod.CPLine.ExclusionsFromCoverable
+    return glLineExcls?.union(cpLineExcls)?.toList()
+  }
+
+  override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {
+    var lineConds = (line as GLLine).ConditionsFromCoverable
+    return lineConds
+  }
+
+  override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
+  }
+
+  override function getCostType(cost : Cost) :  String {
+    return null
+  }
+
+  override function getDiscountCostTypes() : String[] {
+    return null
+  }
 }

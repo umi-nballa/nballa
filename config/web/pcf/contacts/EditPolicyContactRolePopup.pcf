@@ -12,12 +12,17 @@
     title="displaykey.Web.EditPolicyContactRolePopup.Title((typeof policyContactRole).TypeInfo.DisplayName, policyContactRole)">
     <LocationEntryPoint
       signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean)"/>
+    <LocationEntryPoint
+      signature="EditPolicyContactRolePopup(policyContactRole:PolicyContactRole, canEdit: Boolean, additionalInterestDetails : AddlInterestDetail)"/>
     <Variable
       name="policyContactRole"
       type="PolicyContactRole"/>
     <Variable
       name="canEdit"
       type="Boolean"/>
+    <Variable
+      name="additionalInterestDetails"
+      type="AddlInterestDetail"/>
     <Screen
       editable="true"
       id="ContactDetailScreen">
@@ -25,6 +30,13 @@
         <EditButtons
           pickValue="policyContactRole"/>
       </Toolbar>
+      <DetailViewPanel>
+        <InputColumn>
+          <InputSetRef
+            def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, ContactType.get((policyContactRole.ContactDenorm.Subtype) as String))"
+            visible="policyContactRole.Subtype == TC_PolicyAddlInterest"/>
+        </InputColumn>
+      </DetailViewPanel>
       <PanelRef
         def="PolicyContactRoleDetailsCV(policyContactRole, canEdit)"/>
     </Screen>
@@ -43,6 +55,18 @@
     validator.checkPolicyAddress()
   })
   
+}
+
+function printline(additionalInterestDet:AddlInterestDetail):String
+{
+  print(" in calling function  cpline is " + additionalInterestDet.Branch.CPLineExists)
+
+  print(" in calling function  cpline basedon is " + additionalInterestDet.Branch.BasedOn.CPLineExists)
+
+  print(" in calling function  policyaddnlitnerest branch cpline is " + additionalInterestDet.PolicyAddlInterest.Branch.CPLineExists)
+
+
+  return "true"
 }]]></Code>
   </Popup>
 </PCF>

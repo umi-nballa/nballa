@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="CPProtectiveSafeguards_EXT"
-  coverageCategory="CPOptionalPropCovCategory_EXT"
+  coverageCategory="CPOptionalSchedPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
   existence="Electable"
@@ -11,5 +11,21 @@
   priority="2904"
   public-id="CPProtectiveSafeguards_EXT"
   referenceDateByType="PolicyTerm">
-  <CovTerms/>
+  <AvailabilityScript><![CDATA[if(CPBuilding.Building.Sprinklered!=null && CPBuilding.Building.Sprinklered==true)
+ return true
+else
+ return false
+      ]]></AvailabilityScript>
+  <!--CovTerms>
+    <DirectCovTermPattern
+      codeIdentifier="CPProtectiveSafeguard_EXT"
+      coverageColumn="DirectTerm1"
+      lookupTableName="CPBuildingCovTerm"
+      priority="100"
+      public-id="CPProtectiveSafeguard_EXT"
+      required="true"
+      valueType="other">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+  </CovTerms-->
 </CoveragePattern>

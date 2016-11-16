@@ -2,6 +2,7 @@ package una.rating.autoratebookload
 
 uses una.logging.UnaLoggerCategory
 uses una.utils.EnvironmentUtil
+
 uses java.lang.Exception
 
 /**
@@ -11,9 +12,7 @@ uses java.lang.Exception
  * This is the custom UNA Rate book loader which calls and implements the Automatic rate book loader accelerator in preload
  */
 class UNARateBookLoader {
-
   private static var _logger = UnaLoggerCategory.UNA_RATING
-
   construct() {
   }
 

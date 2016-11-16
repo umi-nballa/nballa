@@ -121,39 +121,38 @@
         visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3">
         <PostOnChange/>
       </BooleanRadioInput> -->
-      <Input
+      <!-- <Input
         editable="true"
         id="PorchArea"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.PorchArea, ScriptParameters.HOChildQuestionIndent)"
         numCols="7"
         required="false"
         value="dwelling.CoveredPorchArea"
-        visible="(dwelling.CoveredPorch and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) )"/>
+        visible="(dwelling.CoveredPorch and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) )"/> -->
       <TypeKeyInput
         editable="true"
         id="FoundationType"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationType"
         required="false"
-        value="dwelling.Foundation"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3">
+        value="dwelling.Foundation">
         <PostOnChange/>
       </TypeKeyInput>
-      <Input
+      <!-- <Input
         editable="true"
         id="BasementAreaFinished"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.BasementAreaFinished, ScriptParameters.HOChildQuestionIndent)"
         numCols="7"
         required="false"
         value="dwelling.BasementFinishedArea"
-        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <Input
+        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
+      <!-- <Input
         editable="true"
         id="BasementAreaUnFinished"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.BasementAreaUnFinished, ScriptParameters.HOChildQuestionIndent)"
         numCols="7"
         required="false"
         value="dwelling.BasementUnfinishedArea"
-        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and  (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 ))"/>
+        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and  (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 ))"/> -->
       <Input
         editable="true"
         id="RoofTypeDesc"
@@ -169,21 +168,21 @@
         value="dwelling.PrimaryHeating">
         <PostOnChange/>
       </TypeKeyInput>
-      <TypeKeyInput
+      <!-- <TypeKeyInput
         editable="true"
         id="FuelStorageTankLocation"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.FuelStorageTankLocation, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.PrimaryHeatingFuelTankLocation"
-        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <TypeKeyInput
+        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
+      <!-- <TypeKeyInput
         actionAvailable="false"
         editable="true"
         id="FuelLineLocation"
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.FuelLineLocation, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.PrimaryHeatingFuelLineLocation"
-        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
+        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
       <Input
         editable="true"
         id="PrimaryHeatingTypeDesc"
@@ -240,7 +239,7 @@
         required="true"
         value="dwelling.WiringTypeDescription"
         visible="(dwelling.WiringType == typekey.WiringType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <TypeKeyInput
+      <!-- <TypeKeyInput
         editable="true"
         id="ElectricalSystem"
         label="displaykey.Web.Homeowners.DwellingConstruction.ElectricalSystem"
@@ -248,7 +247,14 @@
         value="dwelling.ElectricalType"
         visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)">
         <PostOnChange/>
-      </TypeKeyInput>
+      </TypeKeyInput> -->
+      <RangeInput
+        editable="true"
+        id="electricalsysRange"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ElectricalSystem"
+        value="dwelling.ElectricalType"
+        valueRange="gw.lob.ho.HODwellingUtil_HOE.getElectricalSystemRange(dwelling)"
+        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/>
       <Input
         editable="true"
         id="ElectricalTypeDesc"

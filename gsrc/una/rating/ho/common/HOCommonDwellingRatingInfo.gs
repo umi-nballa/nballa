@@ -12,12 +12,14 @@ class HOCommonDwellingRatingInfo {
 
   var _specifiedAdditionalAmount : String as SpecifiedAdditionalAmount
   var _personalPropertyLimit : BigDecimal as PersonalPropertyLimit
-  var _isPersonalPropertyIncreasedLimit : boolean as IsPersonalPropertyIncreasedLimit
   var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
   var _totalBasePremium : BigDecimal as TotalBasePremium
-  var _policyType : typekey.HOPolicyType_HOE as PolicyType
+  var _policyType : HOPolicyType_HOE as PolicyType
+  var _territoryCode : String as TerritoryCode
+  var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit
+  var _otherStructuresIncreasedLimit: BigDecimal as OtherStructuresIncreasedLimit
 
   construct(lineVersion: HomeownersLine_HOE){
     if(lineVersion.Dwelling?.HODW_Personal_Property_HOEExists){
@@ -27,20 +29,25 @@ class HOCommonDwellingRatingInfo {
 
   construct(dwellingCov : DwellingCov_HOE){
     _dwellingLimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
-    _policyType = dwellingCov.Dwelling?.HOPolicyType
+    _policyType = dwellingCov.Dwelling?.HOLine.HOPolicyType
     if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
       if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){
         _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
-    if(dwellingCov.Dwelling?.HODW_Personal_Property_HOEExists){
-      _personalPropertyLimit = dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
-      var ppLimit = _dwellingLimit * 0.5
-      _isPersonalPropertyIncreasedLimit = (_personalPropertyLimit > ppLimit)
-      if(_isPersonalPropertyIncreasedLimit){
-        _personalPropertyIncreasedLimit = (_personalPropertyLimit - ppLimit)
-      }
+    if(dwellingCov.Dwelling.HODW_Personal_Property_HOEExists){
+      _personalPropertyIncreasedLimit = dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
     }
+    if(dwellingCov.Dwelling.HODW_Other_Structures_HOEExists){
+      _otherStructuresIncreasedLimit = dwellingCov.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
+    }
+
+    if (dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
+      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.LimitDifference.intValue())
+    }
+
+
     _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
+    _territoryCode = dwellingCov.Dwelling.HOLocation.PolicyLocation?.TerritoryCodes.single().Code
   }
 }

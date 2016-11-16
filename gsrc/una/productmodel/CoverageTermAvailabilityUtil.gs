@@ -7,6 +7,7 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses java.lang.StringBuilder
 uses java.util.HashMap
 uses gw.api.productmodel.CovTermOpt
+uses una.logging.UnaLoggerCategory
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,6 +17,9 @@ uses gw.api.productmodel.CovTermOpt
  * To change this template use File | Settings | File Templates.
  */
 class CoverageTermAvailabilityUtil {
+
+  final static var _logger = UnaLoggerCategory.PRODUCT_MODEL
+
   private static final var HO_FILTER = "HO"
   private static final var DP_FILTER = "DP"
   private static final var CONDO_RENT_FILTER = "CONDO"
@@ -28,6 +32,9 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     switch(covTerm.PatternCode){
+      case "GLCGLAggLimit":
+        result = isAggLimitOptionAvailable (option, coverable as GLLine)
+        break
       case "HOLI_MedPay_Limit_HOE":
         result = isMedPayOptionAvailable(option, coverable as entity.HomeownersLine_HOE)
         break
@@ -49,6 +56,24 @@ class CoverageTermAvailabilityUtil {
       case "HODW_NamedStrom_Ded_HOE_Ext":
         result = isOptionAvailableForSelectedAOPDeductible(option, coverable as Dwelling_HOE)
         break
+      case "EmployPracLiabCovDeduc_EXT":
+        result = isOptionAvailableForSelectedEmployPracLiabCovDeduc(coverable as BP7BusinessOwnersLine)
+        break
+      case "ComputerAttackLimit_EXT":
+        result = isOptionAvailableForComputerAttackLimit(option, coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7NumberOfMonths_EXT":
+        result = isOptionAvailableForNumberOfMonths(option,coverable as BP7BusinessOwnersLine)
+        break
+      case "Deductible_EXT":
+        result = isOptionAvailableForCyberOneCovDeduct(option, coverable as BP7BusinessOwnersLine)
+        break
+      case "DfnseLiabForensicITLegalRvwSublimits_EXT":
+        result = isOptionAvailableForDfnseForensicITLegalRvwSublimits(option, coverable as BP7BusinessOwnersLine)
+        break
+      case "ForensicITLegalRvwSublimits_EXT":
+        result = isOptionAvailableForForensicITLegalRvwSublimits(option, coverable as BP7BusinessOwnersLine)
+        break
       default:
         break
     }
@@ -56,12 +81,47 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
+  private static function setTermValuesBeforeCheckingAvailability(coverable:Coverable):void
+  {
+    if(coverable typeis CPBuilding)
+    {
+      var cLine = coverable.PolicyLine as CommercialPropertyLine
+      var cBuilding = coverable as CPBuilding
+      if(cLine.CPOrdinanceOrLawType!=null)
+      {
+        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm?.Value = cLine?.CPOrdinanceOrLawType.Code
+      }
+
+      _logger.info("hasnoavailableoptions  b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
+      if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
+      {
+        _logger.info("1 " + cBuilding)
+        _logger.info("2 " + cBuilding?.CPOrdinanceorLaw_EXT)
+        _logger.info("3 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm)
+        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.AvailableOptions)
+        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue)
+
+        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue = cLine?.CPCoverageB?.Code
+      }
+
+      _logger.info("hasnoavailableoptions c "+ cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
+      if(cLine.CPCoverageC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
+      {
+        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue = cLine?.CPCoverageC?.Code
+      }
+    }
+
+  }
+
   @Param("covTerm", "The CovTerm to evaluate availability for.")
   @Param("coverable", "The related Coverable entity.")
   @Returns("Availability of the given option.")
   public static function isCoverageTermAvailable(patternCode : String, coverable : Coverable) : boolean{
-    var result = true
 
+    setTermValuesBeforeCheckingAvailability(coverable)
+
+    var result = true
+      _logger.info("iscoveragetermavailable " + patternCode + " coverable type is cpbuilding ? " + coverable typeis CPBuilding )
     switch(patternCode){
       case "HOPL_Deductible_HOE":
         result = isLossAssessmentDeductibleAvailable(coverable as Dwelling_HOE)
@@ -69,11 +129,57 @@ class CoverageTermAvailabilityUtil {
       case "HODW_ExecutiveCov_HOE_Ext":
         result = isExecutiveCoverageAvailable(coverable as Dwelling_HOE)
         break
-
-      default:
+      case "CPOrdinanceorLawCovALimit_EXT":
+       result = isOrdinanceCovALimitAvailable(coverable as CPBuilding)
+      break
+      case "CPOrdinanceorLawCovB_Ext":
+          result = isOrdinanceCovBAvailable(coverable as CPBuilding)
+          break
+      case "CPOrdinanceorLawCovBLimit_EXT":
+          result = isOrdinanceCovBLimitAvailable(coverable as CPBuilding)
+          break
+      case "CPOrdinanceorLawCovBC_Ext":
+          result = isOrdinanceCovBCCombinedAvailable(coverable as CPBuilding)
+          break
+      case "CPOrdinanceorLawCovCLimit_EXT":
+          result = isOrdinanceCovCLimitAvailable(coverable as CPBuilding)
+          break
+      case "CPOrdinanceorLawCovC_Ext":
+          result = isOrdinanceCovCAvailable(coverable as CPBuilding)
+          break
+      case "CPOrdinanceorLawCovBCLimit_EXT":
+          result = isOrdinanceCovBCCombinedLimitAvailable(coverable as CPBuilding)
+          break
+      case "CPOrdinanceorLawCovABCLimit_EXT":
+          result = isOrdinanceCovABCCombinedLimitAvailable(coverable as CPBuilding)
+          break
+      case "NumbOfEmployees_EXT":
+          result = isNumberOfEmployeesCovTermAvailable(coverable as BP7BusinessOwnersLine)
+          break
+      case "BP7ProdCompldOpsAggregateLimit":
+          result = isProductsCompletedOpsAggrLimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
+          break
+        default:
         break
     }
+    if( patternCode.equalsIgnoreCase("FursandFurGarments_EXT")|| patternCode.equalsIgnoreCase("JewerlyWatchesetc_EXT") ||
+        patternCode.equalsIgnoreCase("PatternsDiesMoldsandForms") ){
+          result = isTheftCoverageAvailable(coverable as BP7Classification)
+    }
 
+    if( patternCode.equalsIgnoreCase("DataRestorationCosts_EXT") || patternCode.equalsIgnoreCase("SysRestorationCosts_EXT") ){
+          result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
+    }
+
+    if( patternCode.equalsIgnoreCase("NetworkSecuLimit_EXT") || patternCode.equalsIgnoreCase("MalwareTransmission_EXT") ||
+        patternCode.equalsIgnoreCase("DenialofSvcCompAttackTriggers_EXT") ){
+      result = isCyberOneCoverageTermAvailable(coverable as BP7BusinessOwnersLine)
+    }
+
+    if(patternCode.equalsIgnoreCase("DataRecreationCosts_EXT")|| patternCode.equalsIgnoreCase("LossofBusiness_EXT") ||
+        patternCode.equalsIgnoreCase("PublicRelationsSvcs_EXT")){
+      result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
+    }
     return result
   }
 
@@ -117,6 +223,14 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
+  private static function isAggLimitOptionAvailable (option: gw.api.productmodel.CovTermOpt, _glline:GLLine):boolean
+  {
+     if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+       return true
+    else
+      return false
+  }
+
   private static function isHurricaneDedOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _dwelling: entity.Dwelling_HOE) : boolean {
     var result = true
 
@@ -147,8 +261,126 @@ class CoverageTermAvailabilityUtil {
     }
 
     return result
+    }
+    private static function isNumberOfEmployeesCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue!=null){
+      if(bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue.OptionCode.matches("250000_EXT") ){
+        return true
+      }
+    }
+      return false
   }
 
+  private static function isOptionAvailableForComputerAttackLimit(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+    var result = true
+    var limitMap : HashMap<typekey.BP7CoverageOptions_Ext, String> = {TC_Limited -> "50000_EXT",
+                                                                        TC_Full -> "100000_EXT"
+                                                                       }
+
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value != null){
+      result = limitMap.get(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value).contains(option.OptionCode)
+    }
+    return result
+  }
+
+  private static function isOptionAvailableForCyberOneCovDeduct(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+    var result = true
+
+    var deductMap : HashMap<typekey.BP7CoverageOptions_Ext, String> = {TC_Limited -> "5000_EXT",
+                                                                      TC_Full -> "10000_EXT"
+    }
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value != null){
+      result = deductMap.get(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value).contains(option.OptionCode)
+    }
+    return result
+  }
+
+  private static function isOptionAvailableForDfnseForensicITLegalRvwSublimits(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+    var result = true
+    var multiplier:BigDecimal = 0.10
+    var restrictiveOptions = {"5000/5000_EXT","10000/10000","25000/25000"}
+    if(restrictiveOptions.contains(option.OptionCode)){
+      if(option.OptionCode == "5000/5000_EXT"){
+        result = (bp7Line.BP7DataCompromiseDfnseandLiabCov_EXT.DataCompromiseDfnseandLiabCovLimit_EXTTerm.Value)*multiplier==5000
+      }else if(option.OptionCode == "10000/10000"){
+        result = (bp7Line.BP7DataCompromiseDfnseandLiabCov_EXT.DataCompromiseDfnseandLiabCovLimit_EXTTerm.Value)*multiplier==10000
+      }else if(option.OptionCode == "25000/25000"){
+        result = (bp7Line.BP7DataCompromiseDfnseandLiabCov_EXT.DataCompromiseDfnseandLiabCovLimit_EXTTerm.Value)*multiplier==25000
+      }
+    }
+     return result
+  }
+
+  private static function isOptionAvailableForForensicITLegalRvwSublimits(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+    var result = true
+    var multiplier:BigDecimal = 0.10
+    var restrictiveOptions = {"5000/5000_EXT","10000/10000_EXT","25000/25000_EXT"}
+    if(restrictiveOptions.contains(option.OptionCode)){
+      if(option.OptionCode == "5000/5000_EXT"){
+        result = (bp7Line.DataCmprmiseRspnseExpns_EXT.DataCmprmseRspnseExpnsLimit_EXTTerm.Value)*multiplier==5000
+      }else if(option.OptionCode == "10000/10000_EXT"){
+        result = (bp7Line.DataCmprmiseRspnseExpns_EXT.DataCmprmseRspnseExpnsLimit_EXTTerm.Value)*multiplier==10000
+      }else if(option.OptionCode == "25000/25000_EXT"){
+        result = (bp7Line.DataCmprmiseRspnseExpns_EXT.DataCmprmseRspnseExpnsLimit_EXTTerm.Value)*multiplier==25000
+      }
+    }
+    return result
+  }
+
+  private static function isProductsCompletedOpsAggrLimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    return !bp7Line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists
+  }
+
+  private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
+        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
+      return true
+    }
+    return false
+  }
+
+  private static function isCyberOneCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
+        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
+      return true
+    }
+    return false
+  }
+
+  private static function isCyberOneCovTermsAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_EXT.TC_FULL and
+        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
+        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
+      return true
+    }
+    return false
+  }
+
+  private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+    var result = true
+    var restrictiveOptions = {"BP76Months_EXT","BP712Months_EXT"}
+
+    if(restrictiveOptions.contains(option.OptionCode)){
+      if(bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value!=null){
+        if(option.OptionCode == "BP712Months_EXT"){
+          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=30000
+        }else if(option.OptionCode == "BP76Months_EXT"){
+          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=600000
+        }
+      }
+    }
+    return result
+  }
+
+  private static function isOptionAvailableForSelectedEmployPracLiabCovDeduc(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue!=null){
+      if( bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue.OptionCode.matches("100000_EXT")||
+          bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue.OptionCode.matches("250000_EXT") ){
+        return true
+     }
+    }
+    return false
+  }
   private static function isOptionAvailableForSelectedAOPDeductible(option : CovTermOpt, dwelling : Dwelling_HOE) : boolean{
     var result = true
     var filterPrefix = getAOPFilterPrefix(dwelling)
@@ -236,6 +468,167 @@ class CoverageTermAvailabilityUtil {
 
     return result
   }
+
+  private static function isOrdinanceCovALimitAvailable(building : CPBuilding):boolean
+  {
+
+    _logger.info("Entered isOrdinanceCovALimitAvailable "+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
+    + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
+        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+
+
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code ||
+        building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
+        building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code ||
+        building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+      {
+        _logger.info("returning true")
+      return true
+      }
+  {
+    _logger.info("returning false")
+    return false
+  }
+
+  }
+
+  private static function isOrdinanceCovBLimitAvailable(building : CPBuilding):boolean
+  {
+    _logger.info("Entered isOrdinanceCovBLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
+        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+
+
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT)
+    {
+      _logger.info("returning true")
+      return true
+    }
+  {
+    _logger.info("returning false")
+    return false
+  }
+
+
+  }
+
+  private static function isOrdinanceCovCLimitAvailable(building : CPBuilding):boolean
+  {
+    _logger.info("Entered isOrdinanceCovCLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
+        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
+        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT.Code ||
+        building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
+        building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+    {
+      _logger.info("returning true")
+      return true
+    }
+  {
+    _logger.info("returning false")
+    return false
+  }
+
+
+  }
+
+    private static function isOrdinanceCovBCCombinedLimitAvailable(building : CPBuilding):boolean
+    {
+      _logger.info("Entered isOrdinanceCovBCCombinedLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value+":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+
+      if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+      {
+        _logger.info("returning true")
+        return true
+      }
+    {
+      _logger.info("returning false")
+      return false
+    }
+         }
+
+  private static function isOrdinanceCovABCCombinedLimitAvailable(building : CPBuilding):boolean
+  {
+    _logger.info("Entered isOrdinanceCovABCCombinedLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value+":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDBCCOMBINED_EXT.Code)
+
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDBCCOMBINED_EXT.Code)
+    {
+      _logger.info("returning true")
+      return true
+    }
+  {
+    _logger.info("returning false")
+    return false
+  }
+  }
+
+  private static function isOrdinanceCovCAvailable(building : CPBuilding):boolean
+  {
+    _logger.info("Entered isOrdinanceCovCAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value+":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+
+
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+    {
+      _logger.info("returning true")
+      return true
+    }
+  {
+    _logger.info("returning false")
+    return false
+  }
+
+
+  }
+
+
+  private static function isOrdinanceCovBAvailable(building : CPBuilding):boolean
+{
+
+  _logger.info("Entered isOrdinanceCovBAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
+  +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+
+  if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+  {
+    _logger.info("returning true")
+    return true
+  }
+{
+  _logger.info("returning false")
+  return false
+}
+
+}
+
+  private static function isOrdinanceCovBCCombinedAvailable(building : CPBuilding):boolean
+  {
+    _logger.info("Entered isOrdinanceCovBCCombinedAvailable " + building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
+    +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+
+
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code
+    || building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+    {
+      _logger.info("returning true")
+      return true
+    }
+    else
+    {
+      _logger.info("returning false")
+      return false
+      }
+
+  }
+  
+  private static function isTheftCoverageAvailable(bp7Classification:BP7Classification):boolean{
+    if(bp7Classification.BP7TheftLimitations!=null and bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm!=null and
+        bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue!=null){
+          if(bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7TheftIncluded_EXT")){
+            return true
+          }
+     }
+    return false
+  }
+
 
   private static function isExecutiveCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
     var result = true

@@ -6,24 +6,14 @@
   tableName="horsepower_Ext">
   <typecode
     code="under25"
-    desc="Under 25 hp"
-    name="Under 25 hp"
+    desc="Less than 26 hp"
+    name="Less than 26 hp"
     priority="1"/>
-  <typecode
-    code="26To49"
-    desc="26 - 49 HP"
-    name="26 - 49 HP"
-    priority="2"/>
   <typecode
     code="26To50"
     desc="26 - 50 HP"
     name="26 - 50 HP"
     priority="3"/>
-  <typecode
-    code="50More"
-    desc="50 or more HP"
-    name="50 or more HP"
-    priority="4"/>
   <typecode
     code="51To100"
     desc=" 51 - 100 HP"
@@ -41,7 +31,21 @@
     priority="7"/>
   <typecode
     code="Over200"
-    desc="Over 200 HP"
-    name="Over 200 HP"
+    desc="More than 200 hp"
+    name="More than 200 hp"
     priority="8"/>
+  <typefilter
+    desc="HorsePower for NC State"
+    includeAll="true"
+    name="NCState"/>
+  <typefilter
+    desc="HorsePower for Other than NC State"
+    name="OtherThanNC">
+    <include
+      code="26To50"/>
+    <include
+      code="Over200"/>
+    <include
+      code="under25"/>
+  </typefilter>
 </typelist>

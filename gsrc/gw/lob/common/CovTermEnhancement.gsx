@@ -4,8 +4,6 @@ uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses java.lang.Double
 uses gw.api.domain.covterm.DirectCovTerm
-uses java.lang.IllegalStateException
-uses gw.api.domain.covterm.OptionCovTerm
 uses una.utils.MathUtil.ROUNDING_MODE
 uses una.utils.MathUtil
 uses una.config.Range
@@ -42,15 +40,15 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
     switch(typeof coverable.PolicyLine){
       case HomeownersLine_HOE:
-          if(isDwellingOrPersonalPropertyLimit(coverable.PolicyLine.Dwelling)){
-            result = getDwellingLimitRange(coverable.PolicyLine).UpperBound
-          }else if(isDerivedSpecialLimits(coverable.PolicyLine.Dwelling)){
-            result = getSpecialLimitsMax(coverable.PolicyLine.Dwelling)
-          }else if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
-            result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMaxFactor)
-          }
-          break
-        default:
+        if(isDwellingOrPersonalPropertyLimit(coverable.PolicyLine.Dwelling)){
+          result = getDwellingLimitRange(coverable.PolicyLine).UpperBound
+        }else if(isDerivedSpecialLimits(coverable.PolicyLine.Dwelling)){
+          result = getSpecialLimitsMax(coverable.PolicyLine.Dwelling)
+        }else if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
+          result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMaxFactor)
+        }
+        break
+      default:
         break
     }
 
@@ -66,29 +64,31 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
     switch(typeof coverable.PolicyLine){
       case HomeownersLine_HOE:
-          if(isDwellingOrPersonalPropertyLimit(coverable.PolicyLine.Dwelling)){
-            result =  getDwellingLimitRange(coverable.PolicyLine).LowerBound
-          }else if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
-            result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMinFactor)
-          }else if(isDerivedSpecialLimits(coverable.PolicyLine.Dwelling)){
-            result = ConfigParamsUtil.getDouble(TC_SpecialLimitsDirectMinimumDefault, coverable.PolicyLine.BaseState, this.PatternCode)
-          }
-          break
-        default:
+        if(isDwellingOrPersonalPropertyLimit(coverable.PolicyLine.Dwelling)){
+          result =  getDwellingLimitRange(coverable.PolicyLine).LowerBound
+        }else if(isLimitCalculated(coverable.PolicyLine.Dwelling)){
+          result = getAllowedLimitValueHO(coverable.PolicyLine.Dwelling, TC_LimitMinFactor)
+        }else if(isDerivedSpecialLimits(coverable.PolicyLine.Dwelling)){
+          result = ConfigParamsUtil.getDouble(TC_CovTermRuntimeDefault, coverable.PolicyLine.BaseState, this.PatternCode)
+        }
+        break
+      default:
         break
     }
 
-    return result
+    return (result == null) ? 0bd : result
   }
 
   private function getDwellingLimitRange(hoLine : HomeownersLine_HOE) : Range{
     var result : Range
 
-    var isCondo =  hoLine.Dwelling.ResidenceType == TC_CONDO
-    var condoUnitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + isCondo)
+    var condoUnitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.ResidenceType.Code)
+    var seasonSecondaryRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.IsSecondaryOrSeasonal)
 
     if(condoUnitRange != null){
       result = condoUnitRange
+    }else if(seasonSecondaryRange != null){
+      result = seasonSecondaryRange
     }else{
       result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType)
     }
@@ -106,110 +106,6 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
       result = factor
     }else{
       result = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
-    }
-
-    return result
-  }
-
-  /*
-    Sets the limit default for this DirectCovTerm
-    CovTerms do not contain a reference to a coverage or coverable.
-    Placing the default function here allows code to individually set defaults
-  */
-  public function setDefaultLimit(coverable : Coverable){
-    if(shouldDefaultLimit(coverable)){
-      var defaultValue = getDefaultLimit(coverable)
-
-      if(defaultValue != null){
-        if(this typeis DirectCovTerm){
-          this.Value = defaultValue
-        }else if(this typeis OptionCovTerm){
-          this.setOptionValue(this.AvailableOptions.firstWhere( \ option -> option.Value.doubleValue() == defaultValue.doubleValue()))
-        }
-      }
-    }
-  }
-
-  public function getDefaultLimit(coverable : Coverable) : BigDecimal{
-    if(!coverable.CoveragesFromCoverable*.CovTerms.hasMatch( \ covTerm -> covTerm.PatternCode.equalsIgnoreCase(this.PatternCode))){
-      throw new IllegalStateException("Coverage term with pattern code ${this.PatternCode} is not assignable to a coverage belonging to coverable type of ${coverable.IntrinsicType}")
-    }
-
-    var result : BigDecimal
-
-    switch(typeof coverable.PolicyLine){
-      case HomeownersLine_HOE:
-          result = getDefaultLimitHO(coverable.PolicyLine)
-          break
-        default:
-        break
-    }
-
-    return result
-  }
-
-  private function shouldDefaultLimit(coverable : Coverable) : boolean{
-    var result : boolean
-
-    switch(typeof coverable.PolicyLine){
-      case HomeownersLine_HOE:
-          result = shouldDefaultLimitHO(coverable.PolicyLine)
-          break
-        default:
-        break
-    }
-
-    return result
-  }
-
-  private function shouldDefaultLimitHO(hoLine : HomeownersLine_HOE) : boolean{
-    var isExecutiveCoverageToggledOff = !hoLine.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value and !hoLine.BasedOn.Dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
-
-    return isLimitCalculated(hoLine.Dwelling)
-       or (isDerivedSpecialLimits(hoLine.Dwelling) and (this as DirectCovTerm).Value == null or isExecutiveCoverageToggledOff)
-       or this.PatternCode == "HOPL_LossAssCovLimit_HOE" and (this as OptionCovTerm).Value == null
-  }
-
-  private function getDefaultLimitHO(hoLine : HomeownersLine_HOE) : BigDecimal{
-    var result : BigDecimal
-    var dwelling = hoLine.Dwelling
-
-    var defaultSectionIValueBasedOnLimit = getDefaultSectionIValueBasedOnLimit(dwelling)
-    var specialLimitsDefault = getSpecialLimitDefault(dwelling)
-
-    if(defaultSectionIValueBasedOnLimit != null){
-      result = defaultSectionIValueBasedOnLimit
-    }else if(specialLimitsDefault != null){
-      result = specialLimitsDefault
-    }else if(this.PatternCode == "HOPL_LossAssCovLimit_HOE"){
-      result = this.AvailableOptions.orderBy( \ option -> option.Value).first().Value
-    }
-
-    return result
-  }
-
-  public function getDefaultSectionIValueBasedOnLimit(dwelling : Dwelling_HOE) : BigDecimal{
-    var result : BigDecimal
-
-    if(isLimitCalculated(dwelling)){
-      var sourceLimitValue = getSourceLimitValue(dwelling)
-      var factor = determineFactor(dwelling, TC_LimitDefaultFactor)
-
-      if(factor > 1 or this typeis OptionCovTerm){ //sometimes, "factor' can be a hard-set dollar amount or, for option cov terms, a percentage selection
-        result = factor
-      }else{
-        result = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
-      }
-    }
-
-    return result
-  }
-
-  public function getSpecialLimitDefault(dwelling : Dwelling_HOE) : BigDecimal{
-    var result : BigDecimal
-
-    if(isDerivedSpecialLimits(dwelling)){
-      result = ConfigParamsUtil.getDouble(TC_SPECIALLIMITSDIRECTMINIMUMDEFAULT, dwelling.PolicyLine.BaseState, this.PatternCode)
     }
 
     return result
@@ -284,6 +180,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
   private function isLimitCalculated(dwelling: Dwelling_HOE) : boolean{
     return ConfigParamsUtil?.getList(TC_DerivedLimitsPatternCodes, dwelling.HOLine.BaseState)?.hasMatch( \ element -> element?.equalsIgnoreCase(this.PatternCode))
         or this.PatternCode == dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm.PatternCode
+        or this.PatternCode == dwelling.HODW_WindstormHailBroadSpecial_HOE_Ext.HODW_WHBroadSpecialLimit_HOETerm.PatternCode
   }
 
   private function isDerivedSpecialLimits(dwelling : Dwelling_HOE) : boolean{
@@ -296,21 +193,4 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
         or (this.PatternCode.equalsIgnoreCase(dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.PatternCode)
        and HOPolicyType_HOE.TF_PERSONALPROPERTYVALIDATEDTYPES.TypeKeys.contains(dwelling.HOPolicyType))
   }
-
-  public function isCovTermEditable(coverable : Coverable) : boolean{
-    var result = true
-    var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, this.PatternCode)
-
-    if(configResult != null){
-      result = configResult
-    }else if(coverable typeis Dwelling_HOE){
-      var min = this.getMinAllowedLimitValue(coverable)
-      var max = this.getMaxAllowedLimitValue(coverable)
-
-      result = (min == null and max == null) or min != max
-    }
-
-    return result
-  }
-
 }

@@ -1,6 +1,7 @@
 package gw.search
 uses gw.api.database.IQueryBeanResult
 uses gw.api.util.DisplayableException
+uses gw.api.database.Query
 
 enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
 
@@ -28,6 +29,17 @@ enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
     // If no additional criteria are required, this method will construct the query and execute 
     // the select as above.
     if (!meetsMinimumSearchCriteria()) throw new DisplayableException(displaykey.Web.Policy.MinimumSearchCriteria);
+
+    // Adding HO Policy Type to the Policy Search Criteria - PC.24.01.20
+    if(this.HOPolicyType != null) {
+      var query = this.SummaryQuery
+      var subQuery = new Query<PolicyPeriodSummary>(PolicyPeriodSummary)
+      var dwellingTable = subQuery.subselect("ID", CompareIn, Dwelling_HOE, "BranchValue")
+      dwellingTable.compare("HOPolicyType", Equals, this.HOPolicyType)
+      query = query.intersect(subQuery)
+      var result = query.select()
+      return result
+    }
     var result = this.performSearch()
     return result
   }

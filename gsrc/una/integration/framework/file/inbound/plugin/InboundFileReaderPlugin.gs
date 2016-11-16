@@ -1,21 +1,22 @@
 package una.integration.framework.file.inbound.plugin
 
+uses gw.api.util.DateUtil
+uses gw.plugin.integration.inbound.InboundIntegrationHandlerPlugin
 uses una.integration.framework.exception.ErrorTypeInfo
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.framework.exception.FieldErrorInformation
 uses una.integration.framework.file.inbound.model.FileRecordInfo
+uses una.integration.framework.file.inbound.model.FileRecords
 uses una.integration.framework.file.inbound.persistence.InboundFileData
 uses una.integration.framework.file.inbound.persistence.InboundFileException
 uses una.integration.framework.file.inbound.persistence.InboundFileProcess
 uses una.integration.framework.file.inbound.persistence.InboundFileProcessDAO
-uses una.logging.UnaLoggerCategory
 uses una.integration.framework.persistence.context.PersistenceContext
 uses una.integration.framework.persistence.dao.IntegrationBaseDAO
 uses una.integration.framework.persistence.util.ProcessStatus
 uses una.integration.framework.util.BeanIOHelper
 uses una.integration.framework.util.ErrorCode
-uses gw.api.util.DateUtil
-uses gw.plugin.integration.inbound.InboundIntegrationHandlerPlugin
+uses una.logging.UnaLoggerCategory
 
 uses java.lang.Exception
 uses java.lang.Integer
@@ -46,7 +47,7 @@ abstract class InboundFileReaderPlugin implements InboundIntegrationHandlerPlugi
    * @param data the file to be processed.
    */
   override function process(data: Object) {
-    _logger.debug("Entry into the method 'process' of 'InboundFileReaderPlugin'")
+    _logger.debug("Entering the function 'process' of 'InboundFileReaderPlugin'")
     var filePath = (data as java.nio.file.Path ).toAbsolutePath() as String
     _fileProcessDAO = _fileProcessDAO?: new()
     _fileExceptionDAO = _fileExceptionDAO?: new(InboundFileException)
@@ -62,25 +63,47 @@ abstract class InboundFileReaderPlugin implements InboundIntegrationHandlerPlugi
         ExceptionUtil.throwException(ErrorCode.DUPLICATE_FILE, {fieldError})
       }
       var fileRecords = readFile(filePath)
-      fileProcess.TotalRecordCount = fileRecords.Count
+      fileProcess.TotalRecordCount = 0
+      fileRecords.Batches.each( \ batch -> {
+        fileProcess.TotalRecordCount += batch.DetailRecords.Count
+      })
+
+      var containsHeader = fileRecords.HeaderRecord != null
+      var containsBatchHeader = fileRecords.Batches*.BatchHeaderRecord.first() != null
+      if (containsHeader && fileRecords.HeaderRecord.Failed) {
+        var fieldError1 = new FieldErrorInformation() {:FieldName = "File Path", :FieldValue = filePath}
+        var fieldError2 = fileRecords.HeaderRecord.FieldErrorInfo
+        ExceptionUtil.throwException(ErrorCode.INVALID_HEADER_RECORD, {fieldError1, fieldError2})
+      }
+      if (containsBatchHeader && fileRecords.Batches*.BatchHeaderRecord.hasMatch( \ batchHeader -> batchHeader.Failed)) {
+        var fieldError1 = new FieldErrorInformation() {:FieldName = "File Path", :FieldValue = filePath}
+        var fieldError2 = fileRecords.Batches*.BatchHeaderRecord.firstWhere( \ batchHeader -> batchHeader.Failed).FieldErrorInfo
+        ExceptionUtil.throwException(ErrorCode.INVALID_BATCH_HEADER_RECORD, {fieldError1, fieldError2})
+      }
 
       PersistenceContext.runWithNewTransaction( \-> {
-        var processedRecords = fileRecords.where( \ record -> !record.Failed)*.RecordObject
-        processedRecords.whereTypeIs(InboundFileData).each( \ inboundData -> {
-          inboundData.UpdateUser = _userName
-          inboundData.CreateUser = _userName
-          inboundData.Status = ProcessStatus.UnProcessed
-          inboundData.InboundFileProcessID = fileProcess.ID
-          inboundData.RetryCount = 0
-          _dataEntityDAO.insert(inboundData)
-        })
-        fileProcess.ProcessedRecordCount = processedRecords.Count
-
-        fileRecords.where( \ record -> record.Failed).each( \ failedRecord -> {
-          var errorDesc = "Line number: ${failedRecord.RecordLineNumber} \n Field Errors: ${failedRecord.FieldErrors} \n Record Errors: ${failedRecord.RecordErrors}"
-          var errorType = failedRecord.FieldErrors.Count > 0 ? ErrorTypeInfo.Business : ErrorTypeInfo.Technical
-          createInboundFileDataException(fileProcess.ID, failedRecord.RecordText, errorType, errorDesc)
-          fileProcess.FailedRecordCount++
+        fileRecords.Batches.each( \ batch -> {
+          batch.DetailRecords.each( \ detailRecord -> {
+            if (!detailRecord.Failed) {
+              var inboundData = detailRecord.RecordObject as InboundFileData
+              inboundData.UpdateUser = _userName
+              inboundData.CreateUser = _userName
+              inboundData.Status = ProcessStatus.UnProcessed
+              inboundData.InboundFileProcessID = fileProcess.ID
+              inboundData.RetryCount = 0
+              if (containsHeader || containsBatchHeader) {
+                // call subclass method for retrieving data from header and batch header and copy it to detail record
+                loadHeaderData(fileRecords.HeaderRecord, batch.BatchHeaderRecord, inboundData)
+              }
+              _dataEntityDAO.insert(inboundData)
+              fileProcess.ProcessedRecordCount++
+            } else {
+              var errorDesc = "Line number: ${detailRecord.RecordLineNumber} \n Field Errors: ${detailRecord.FieldErrors} \n Record Errors: ${detailRecord.RecordErrors}"
+              var errorType = detailRecord.FieldErrors.Count > 0 ? ErrorTypeInfo.Business : ErrorTypeInfo.Technical
+              createInboundFileDataException(fileProcess.ID, detailRecord.RecordText, errorType, errorDesc)
+              fileProcess.FailedRecordCount++
+            }
+          })
         })
       })
       fileProcess.Status = ProcessStatus.Processed
@@ -95,15 +118,24 @@ abstract class InboundFileReaderPlugin implements InboundIntegrationHandlerPlugi
       _fileProcessDAO.update(fileProcess)
       _logger.info("Completed the ${FileDataMapping.BeanIOStreamName} process with the inbound file process id - ${fileProcess.ID}")
     }
-    _logger.debug("Exit from the method 'process' of 'InboundFileReaderPlugin'")
+    _logger.debug("Exiting the function 'process' of 'InboundFileReaderPlugin'")
+  }
+
+  /**
+   * Loads integration specific custom data from header records to detail records to be inserted in database.
+   * @param headerRecord
+   * @param batchHeaderRecord
+   * @param inboundData
+   */
+  override function loadHeaderData(headerRecord: FileRecordInfo, batchHeaderRecord: FileRecordInfo, inboundData: InboundFileData) {
   }
 
   /**
    * Reads the file data from the given path and creates and returns list of records of type FileRecordInfo.
    * @param filePath
-   * @returns List<FileRecordInfo>
+   * @returns FileRecords
    */
-  override function readFile(filePath: String): List<FileRecordInfo> {
+  override function readFile(filePath: String): FileRecords {
     if (FileDataMapping.BeanIOStreamName == null) {
       ExceptionUtil.throwException(ErrorCode.MISSING_READ_FILE_IMPLEMENTATION)
     }

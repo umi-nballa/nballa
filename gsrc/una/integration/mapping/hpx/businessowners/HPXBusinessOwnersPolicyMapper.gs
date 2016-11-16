@@ -11,6 +11,13 @@ uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
 uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
+uses una.integration.mapping.hpx.commercialpackage.commercialproperty.HPXCPCoverageMapper
+uses una.integration.mapping.hpx.common.HPXCoverageMapper
+uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.common.HPXClassificationMapper
+uses una.integration.mapping.hpx.common.HPXExclusionMapper
+uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusionMapper
+uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,112 +52,171 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
   }
 
   function createBusinessOwnersLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerLineBusinessType {
-    var dwellingLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerLineBusinessType()
-    var buildings = createBuildings(policyPeriod)
+    var bopLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerLineBusinessType()
+    var buildings = createStructuresInfo(policyPeriod) //createBuildings(policyPeriod)
     for (building in buildings) {
-      dwellingLineBusiness.addChild(new XmlElement("Dwell", building))
+      bopLineBusiness.addChild(new XmlElement("Dwell", building))
     }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {
-      dwellingLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
+      bopLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
-    var lineCoverages = createLineCoveragesInfo(policyPeriod)
-    for (coverage in lineCoverages) {
-      dwellingLineBusiness.addChild(new XmlElement("Coverage", coverage))
+    var lineCovs = createLineCoverages(policyPeriod, policyPeriod.BP7Line)
+    for (lineCov in lineCovs) {
+      bopLineBusiness.addChild(new XmlElement("Coverage", lineCov))
     }
-    return dwellingLineBusiness
-  }
-
-  /************************************** Dwell  ******************************************************/
-
-  function createBuildings(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType> {
-    var buildings = new java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType>()
-    var buildingMapper = new HPXBP7BuildingMapper()
-    var locationMapper = new HPXLocationMapper()
-    var classificationMapper = new HPXBP7ClassificationMapper ()
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var bldgs = policyPeriod.BP7Line.AllBuildings
-    for (bldg in bldgs) {
-      var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-      var bldgCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == bldg)
-      var bldgPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == bldg)
-      var bldgTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == bldg)
-      var building = buildingMapper.createBuilding(bldg)
-      var buildingCovs = createCoveragesInfo(bldgCoverages, bldgPreviousCoverages, bldgTrxs)
-      for (cov in buildingCovs) { building.addChild(new XmlElement("Coverage", cov))}
-      // buildling location
-      var buildingLoc = bldg.Location
-      var location = locationMapper.createLocation(bldg.Location.Location)
-      var locationCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == buildingLoc)
-      var locPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
-      var locTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
-      var locationCovs = createCoveragesInfo(locationCoverages, locPreviousCoverages, locTrxs)
-      for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
-      building.addChild(new XmlElement("Location", location))
-      // building classifications
-      var bldgClassifications = bldg.Classifications
-      for (bldgClassification in bldgClassifications) {
-        //var classifcation = new wsi.schema.una.hpx.hpx_application_request.BP7Classification()
-        var buildlingClassification = classificationMapper.createClassification(bldgClassification)
-        var classifcnCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == buildingLoc)
-        var classifcnPreviousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == buildingLoc)
-        var classifcnTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == buildingLoc)
-        var classifcnCovs = createCoveragesInfo(classifcnCoverages, classifcnPreviousCoverages, classifcnTrxs)
-        for (classifcn in classifcnCovs) { buildlingClassification.addChild(new XmlElement("Coverage", classifcn))}
-        building.addChild(new XmlElement("BP7Classification", buildlingClassification))
-      }
-
-      buildings.add(building)
+    var lineExcls = createLineExclusions(policyPeriod, policyPeriod.BP7Line)
+    for (lineExcl in lineExcls) {
+      bopLineBusiness.addChild(new XmlElement("Coverage", lineExcl))
     }
-    return buildings
-  }
-
-  function createCoveragesInfo(currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
-                               transactions : java.util.List<Transaction>)
-                                                    : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    var coverageMapper = new HPXBP7CoverageMapper()
-    for (coverage in currentCoverages) {
-      var trxs = transactions.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
-      if (previousCoverages != null) {
-        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
-        coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))
-      } else {
-        coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs))
-      }
+    var lineConds = createLinePolicyConditions(policyPeriod, policyPeriod.BP7Line)
+    for (lineCond in lineConds) {
+      bopLineBusiness.addChild(new XmlElement("Coverage", lineCond))
     }
-    return coverages
-  }
-
-  function createLineCoveragesInfo(policyPeriod : PolicyPeriod)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    var line = policyPeriod.BP7Line
-    var lineCoverages = policyPeriod.BP7Line.AllCoverages.where( \ elt -> elt.OwningCoverable == line)
-    var previousCoverages = previousPeriod?.BP7Line?.AllCoverages?.where( \ elt -> elt.OwningCoverable == line)
-    var lineTrxs = policyPeriod.BP7Transactions.where( \ elt -> elt.Cost.Coverable == line)
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    var coverageMapper = new HPXBP7CoverageMapper()
-    for (coverage in lineCoverages) {
-      var trxs = lineTrxs.where( \ elt1 -> coverage.PatternCode.equals((elt1.Cost as BP7Cost).Coverage.PatternCode))
-      if (previousCoverages != null) {
-        var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(coverage.PatternCode))
-        coverages.add(coverageMapper.createCoverageInfo(coverage, previousCoverage, trxs))
-      } else {
-        coverages.add(coverageMapper.createCoverageInfo(coverage, null, trxs))
-      }
-    }
-    return coverages
+    return bopLineBusiness
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {
     return policyPeriod.BP7Line.AllCoverages
   }
 
+  override function getExclusions(policyPeriod: PolicyPeriod): List<Exclusion> {
+    return policyPeriod.BP7Line.AllExclusions
+  }
+
+  override function getPolicyConditions(policyPeriod: PolicyPeriod): List<PolicyCondition> {
+    return policyPeriod.BP7Line.AllConditions
+  }
+
   override function getTransactions(policyPeriod: PolicyPeriod): List<Transaction> {
     return policyPeriod.BP7Transactions
   }
 
+  override function getCoverageMapper() : HPXCoverageMapper {
+    return new HPXBP7CoverageMapper()
+  }
 
+  override function getStructureMapper() : HPXStructureMapper {
+    return new HPXBP7BuildingMapper()
+  }
+
+  override function getClassificationMapper() : HPXClassificationMapper {
+    return new HPXBP7ClassificationMapper()
+  }
+
+  override function getExclusionMapper() : HPXExclusionMapper {
+    return new HPXBP7ExclusionMapper()
+  }
+
+  override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
+    return new HPXBP7PolicyConditionMapper()
+  }
+
+  override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
+    var structures = new java.util.ArrayList<Coverable>()
+    var buildings = policyPeriod.BP7Line.AllBuildings
+    for (building in buildings) {
+      structures.add(building)
+    }
+    return structures
+  }
+
+  override function getLocation(coverable : Coverable) : PolicyLocation {
+    return (coverable as BP7Building).Location.PolicyLocation
+  }
+
+  override function getLocationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as BP7Building).Location as Coverable)
+  }
+
+  override function getLocationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return getExclusions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as BP7Building).Location as Coverable)
+  }
+
+  override function getLocationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == (coverable as BP7Building).Location as Coverable)
+  }
+
+  override function getLocationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == (coverable as BP7Building).Location as Coverable)
+    return transactions
+  }
+
+  override  function getStructureCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructureExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return getExclusions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructurePolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
+  }
+
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
+  }
+
+  override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
+    return (coverable as BP7Building).Classifications
+  }
+
+  override function getClassificationCoverages(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Coverage> {
+    return getCoverages(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override function getClassificationExclusions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Exclusion> {
+    return getExclusions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override function getClassificationPolicyConditions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<PolicyCondition> {
+    return getPolicyConditions(policyPeriod)?.where( \ elt -> elt.OwningCoverable == coverable)
+  }
+
+  override function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
+  }
+
+  override function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
+    return null
+  }
+
+  override function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable {
+    return policyPeriod.BP7Line
+  }
+
+  override function getLineCoverages(line : Coverable) : java.util.List<Coverage> {
+    var lineCovs = (line as BP7Line).CoveragesFromCoverable
+    return lineCovs
+  }
+
+  override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
+    var lineExcls = (line as BP7Line).ExclusionsFromCoverable
+    return lineExcls
+  }
+
+  override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {
+    var lineConds = (line as BP7Line).AllConditions
+    return lineConds
+  }
+
+  override function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
+    return transactions
+  }
+
+  override function getCostType(cost : Cost) :  String {
+    return null
+  }
+
+  override function getDiscountCostTypes() : String[] {
+    return null
+  }
 }

@@ -27,14 +27,14 @@
       <PostOnChange/>
     </TypeKeyInput>
     <InputSetRef
-      def="GlobalPersonNameInputSet(new una.pageprocess.account.EditAccountRequiredBasicNameOwner(personNameDelegate))"
+      def="GlobalPersonNameInputSet(new una.extensions.UnaRequiredBasicNameOwner(personNameDelegate))"
       mode="gw.api.name.NameLocaleSettings.PCFMode"/>
     <DateInput
       editable="true"
       id="DateOfBirth"
       label="displaykey.Web.ContactDetail.Person.DateOfBirth"
       value="(contact as Person).DateOfBirth"
-      visible="contact.isDobRequired"/>
+      visible="contact.IsDobVisible"/>
     <Input
       editable="true"
       id="MaritalStatus"

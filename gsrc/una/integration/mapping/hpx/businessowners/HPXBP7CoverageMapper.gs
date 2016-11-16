@@ -62,6 +62,11 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     return limits
   }
 
+  override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
+    return null
+  }
+
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
     if (currentCoverage.OwningCoverable typeis BP7Building) {
@@ -76,6 +81,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     if (currentCoverage.OwningCoverable typeis BP7Classification) {
       var classification = currentCoverage.OwningCoverable as BP7Classification
       coverable.ClassificationNo = classification?.ClassificationNumber != null ?  classification.ClassificationNumber : ""
+      coverable.BuildingNo =  classification?.Building?.Building?.BuildingNum != null ? classification?.Building?.Building?.BuildingNum : ""
+      coverable.LocationNo = classification?.Building?.Location?.Location?.LocationNum != null ? classification?.Building?.Location?.Location?.LocationNum : ""
     }
     return coverable
   }
@@ -95,6 +102,24 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
     }
   }
+
+  override function getCostCoverage(cost : Cost) : Coverage {
+    var result : Coverage
+
+    switch(typeof cost){
+      case BP7BuildingCovCost:
+          result = cost.Coverage
+          break
+      case BP7LocationCovCost:
+          result = cost.Coverage
+          break
+      case BP7LineCovCost:
+          result = cost.Coverage
+          break
+    }
+    return result
+  }
+
    /*
   function createBP7AddlInsdBldgOwnersSchedule(currentCoverage : Coverage, previousCoverage : Coverage)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
@@ -165,7 +190,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -194,7 +220,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + //item.AdditionalInsured.AdditionalInsuredType != null ?
                         "| SubLoc:" +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -221,9 +248,10 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
-                        "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + //item.AdditionalInsured.AdditionalInsuredType != null ?
+                        "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -253,6 +281,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" + item.LongStringCol1 +
                         "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -281,7 +310,8 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
                         "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                         "| SubLoc:" + item.LongStringCol1 +
-                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description //: ""
+                        "| Interest: " + item.AdditionalInsured.AdditionalInsuredType.Description
+      limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {

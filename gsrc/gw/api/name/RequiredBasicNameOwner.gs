@@ -15,6 +15,6 @@ class RequiredBasicNameOwner extends BasicNameOwner {
   }
 
   override property get HiddenFields() : Set<NameOwnerFieldId> {
-    return {NameOwnerFieldId.PREFIX, NameOwnerFieldId.MIDDLENAME}.freeze()
+    return {NameOwnerFieldId.PREFIX, NameOwnerFieldId.SUFFIX, NameOwnerFieldId.MIDDLENAME}.freeze()
   }
 }

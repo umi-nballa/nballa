@@ -78,6 +78,20 @@ enhancement PolicyContactRoleEnhancement : PolicyContactRole {
   }
 
   /**
+   * Shared and revisioned last name.
+   */
+  property get MiddleName() : String {
+    return PersonToPolicyContactRoleSyncedField.MiddleName.getValue(this)
+  }
+
+  /**
+   * Shared and revisioned last name.
+   */
+  property set MiddleName(arg : String) {
+    PersonToPolicyContactRoleSyncedField.MiddleName.setValue(this, arg)
+  }
+
+  /**
    * Shared and revisioned first name kanji.
    */
   property get FirstNameKanji() : String {
@@ -211,27 +225,17 @@ enhancement PolicyContactRoleEnhancement : PolicyContactRole {
     }
   }
 
-  //uim-svallabhapurapu, Contact story card make DOB mandatory for specific policy Contact role
-    function isContactDobRequired() : boolean {
-      var relationSpouse : String = "spouse"
-      var relationCoInsured : String  = "co-insured"
-      var relationCoOwner : String = "co-owner"
-      if(this.AccountContactRole.AccountContact.Contact typeis Person){
-        for(pni in this.Branch.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured)){
-          if(pni == this){
-            return true
-          }
-        }
-        // Additional named insured
-        for(addlInsured in this.Branch.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)){
-          if(addlInsured == this){
-            if((addlInsured.Relationship?.toLowerCase() == relationSpouse) or (addlInsured.Relationship?.toLowerCase() == relationCoInsured) or (addlInsured.Relationship?.toLowerCase() == relationCoOwner)){
-              return true
-            }
-          }
-        }
+ //uim-svallabhapurapu, Contact story card make DOB mandatory for specific policy Contact role, relationship changed to typelist
+  function isContactDobVisible() : boolean {
+    if(this.AccountContactRole.AccountContact.Contact typeis Person){
+      if((this typeis PolicyAddlNamedInsured) and (typekey.ContactRelationship_Ext.getTypeKeys(false).contains(this.ContactRelationship_Ext))){
+        return true
+      } else if(this typeis PolicyPriNamedInsured) {
+        return true
       }
-      return false
     }
+    return false
+  }
+
 
 }

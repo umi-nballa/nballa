@@ -9,16 +9,20 @@ uses gw.xml.date.XmlDate
  * To change this template use File | Settings | File Templates.
  */
 class HPXCreditScoreMapper {
-  function createCreditScoreInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType {
-    var creditScoreInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType()
-    creditScoreInfo.CreditScore = policyPeriod.CreditInfoExt.CreditReport.CreditScore != null ? policyPeriod.CreditInfoExt.CreditReport.CreditScore : ""
-    creditScoreInfo.ReferenceNumber = policyPeriod.CreditInfoExt.CreditReport.ProductReferenceNumber != null ? policyPeriod.CreditInfoExt.CreditReport.ProductReferenceNumber : ""
-    creditScoreInfo.CreditScoreDt = policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate != null ? new XmlDate(policyPeriod.CreditInfoExt.CreditReport.CreditScoreDate) : null
-    creditScoreInfo.CSReasonCd = policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons.Count > 0 and  policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0] != null ?
-                                                                                                      policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0].CreditStatusReasonCode : ""
-    creditScoreInfo.CSReasonDesc = policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons.Count > 0 and  policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0] != null ?
-                                                                                                      policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0].CreditStatusReasonCode + " - " +
-                                                                                                            policyPeriod.CreditInfoExt.CreditReport.CreditStatusReasons[0].CreditStatusReasonDesc  : ""
-    return creditScoreInfo
+  function createCreditScoreInfo(creditReports : CreditReportExt[]) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType> {
+    var creditScores = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType>()
+    for (report in creditReports) {
+      var creditScoreInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType()
+      creditScoreInfo.CreditScore = report.CreditScore != null ? report.CreditScore : ""
+      creditScoreInfo.ReferenceNumber = report.ProductReferenceNumber != null ? report.ProductReferenceNumber : ""
+      creditScoreInfo.CreditScoreDt = report.CreditScoreDate != null ? new XmlDate(report.CreditScoreDate) : null
+      creditScoreInfo.CSReasonCd = report.CreditStatusReasons.Count > 0 and  report.CreditStatusReasons[0] != null ?
+                                                                                                        report.CreditStatusReasons[0].CreditStatusReasonCode : ""
+      creditScoreInfo.CSReasonDesc = report.CreditStatusReasons.Count > 0 and  report.CreditStatusReasons[0] != null ?
+                                                                                                        report.CreditStatusReasons[0].CreditStatusReasonCode + " - " +
+                                                                                                            report.CreditStatusReasons[0].CreditStatusReasonDesc  : ""
+      creditScores.add(creditScoreInfo)
+    }
+    return creditScores
   }
 }

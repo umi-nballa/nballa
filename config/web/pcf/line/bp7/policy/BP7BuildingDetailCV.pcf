@@ -28,6 +28,9 @@
       name="isLandscapeGarden"
       recalculateOnRefresh="true"
       type="boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
+      name="propertyInformationCompletePluginImpl"/>
     <Card
       id="GeneralInfoCard"
       title="displaykey.Web.Policy.LocationContainer.Location.Building.Details">
@@ -94,7 +97,10 @@
                   id="yearBuilt"
                   label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
                   required="true"
-                  value="building.YearBuilt_Ext"/>
+                  value="building.YearBuilt_Ext">
+                  <PostOnChange
+                    onChange="propertyInformationCompletePluginImpl.getBOPInformation(policyPeriod,building)"/>
+                </TextInput>
                 <TextInput
                   editable="true"
                   id="noOfStories"
@@ -408,7 +414,7 @@
                                 value="selectedClassification.ClassDescription"
                                 valueRange="getAssociatedClassification(selectedClassification.ClassPropertyType)">
                                 <PostOnChange
-                                  onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue));selectedClassification.associatedClassCode()"/>
+                                  onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue));selectedClassification.associatedClassCode();una.pageprocess.BP7PCFController.isBarbAndBeautiProfLiabCoverageAvailable(selectedClassification)"/>
                               </RangeInput>
                               <Input
                                 id="classcode"
@@ -575,6 +581,17 @@
       <PanelRef
         def="AdditionalExclusionsAndConditionsPanelSet(building, {gw.lob.bp7.BP7Categories.BP7BuildingExclGrp.Code, gw.lob.bp7.BP7Categories.BP7BuildingCondGrp.Code}, true)"
         id="policyLevelExclusionsAndConditions"/>
+    </Card>
+    <Card
+      id="AdditionalInterestCoverages"
+      title="displaykey.Web.LineWizard.AdditionalInterestCoverages">
+      <PanelRef
+        def="BP7AdditionalCoveragesPanelSet(building, {gw.lob.bp7.BP7Categories.BP7BuildingAddlInterestGrp_EXT.Code}, true, jobWizardHelper)"
+        id="BuildingAdditionalInterestCoverages">
+        <TitleBar
+          title="displaykey.Web.LineWizard.AdditionalInterestCoverages"/>
+        <Toolbar/>
+      </PanelRef>
     </Card>
     <Code><![CDATA[function getCategories(category : String) : gw.api.productmodel.CoverageCategory {
   if (building <> null) {

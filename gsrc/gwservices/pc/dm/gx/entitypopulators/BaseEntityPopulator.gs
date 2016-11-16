@@ -16,6 +16,7 @@ uses org.slf4j.Logger
 
 uses java.lang.IllegalArgumentException
 uses java.util.Map
+uses gw.api.productmodel.Offering
 
 /**                                                                              n
  * This is the default populator, which all entity specific implementations extend

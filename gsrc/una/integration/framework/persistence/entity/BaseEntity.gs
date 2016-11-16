@@ -1,7 +1,7 @@
 package una.integration.framework.persistence.entity
 
-uses una.integration.framework.persistence.util.ProcessStatus
 uses gw.api.util.DateUtil
+uses una.integration.framework.persistence.util.ProcessStatus
 
 uses java.lang.Integer
 uses java.util.Date

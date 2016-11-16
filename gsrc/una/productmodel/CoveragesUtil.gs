@@ -3,6 +3,7 @@ package una.productmodel
 uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
+uses gw.api.domain.covterm.CovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -34,6 +35,23 @@ class CoveragesUtil {
       case "HODW_SpecialPersonalProperty_HOE_Ext":
         result = isSpecialPersonalPropertyAvailable(coverable as Dwelling_HOE)
         break
+      case "HODW_LossAssessmentCov_HOE":
+        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
+	case "BP7ForgeryAlteration":
+          result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7BuildingMoneySecurities_EXT":
+          result = isBuildingMoneySecuritiesCoverageAvailable(coverable as BP7Building)
+          break
+      case "BP7OrdinanceOrLawCov_EXT":
+        result = isOrdinanceOrLawCovAvailable(coverable as BP7BusinessOwnersLine)
+          break
+      case "BP7InterruptionComputerOps":
+        result = isInterruptionComputerOpsCovAvailable(coverable as BP7BusinessOwnersLine)
+          break
+      case "BP7CapLossesFromCertfdActsTerrsm":
+        result = isBP7CapLossesFromCertfdActsTerrsmCovAvailable(coverable as BP7BusinessOwnersLine)
+        break
       default:
     }
 
@@ -56,16 +74,8 @@ class CoveragesUtil {
     return result
   }
 
-  public static function isConditionAvailable() : boolean{
-    var result = true
-
-
-
-    return result
-  }
-
   public static function getExistence(pattern : String, coverable : Coverable) : ExistenceType{
-    var result : ExistenceType
+    var result : ExistenceType = null
 
     switch(pattern){
       case "HODW_AckNoWindstromHail_HOE_Ext":
@@ -78,9 +88,74 @@ class CoveragesUtil {
     return result
   }
 
+  public static function initCoverage(coveragePattern : String, coverable : Coverable){
+    var covTermsToInitialize : List<CovTerm> = {}
+
+    switch(coveragePattern){
+      case "HODW_Dwelling_Cov_HOE":
+      case "DPDW_Dwelling_Cov_HOE":
+        initDwelling_Cov_HOE(coverable)
+        break
+      case "DPDW_Additional_Living_Exp_HOE":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).DPDW_Additional_Living_Exp_HOE.DPDW_Additional_LivingExpLimit_HOETerm)
+        break
+      case "HODW_FungiCov_HOE":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm)
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm)
+        break
+      case "HODW_OrdinanceCov_HOE":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm)
+        break
+      case "HODW_SpecialLimitsPP_HOE_Ext":
+        covTermsToInitialize.addAll((coverable as Dwelling_HOE).HODW_SpecialLimitsPP_HOE_Ext.CovTerms)
+        break
+      case "HOLI_AnimalLiabilityCov_HOE_Ext":
+        covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm)
+        break
+      case "HOLI_UnitOwnersRentedtoOthers_HOE_Ext":
+        covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm)
+        break
+      case "HODW_Limited_Earthquake_CA_HOE":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm)
+        break
+      case "HODW_Comp_Earthquake_CA_HOE_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm)
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm)
+        break
+      case "HODW_LossAssessmentCov_HOE_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm)
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm)
+        break
+      case "HODW_BuildingAdditions_HOE_Ext":
+          covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm)
+          break
+      default:
+        break
+    }
+
+    covTermsToInitialize.each( \ covTerm -> covTerm?.onInit())
+  }
+
+  private static function initDwelling_Cov_HOE(coverable : Coverable){
+    var valuationCovTerm = (coverable as Dwelling_HOE).DwellingValuationMethodCovTerm
+
+    if(valuationCovTerm.AvailableOptions.Count == 1){
+      valuationCovTerm.setOptionValue(valuationCovTerm.AvailableOptions.single())
+    }else{
+      var stringVal = ((coverable as Dwelling_HOE).HOLine.BaseState == TC_TX) ? "Actual" : "Replacement"
+      //using setValueFromString right now.  may eventually be changed to a typekey cov term.  also might move from
+      valuationCovTerm.setValueFromString(stringVal)
+    }
+  }
+
   private static function isWorkersCompForEmployeesAvailable(hoLine: HomeownersLine_HOE) : boolean{
-    return hoLine.BaseState == TC_CA
-       and hoLine.DPLI_Personal_Liability_HOEExists
+    var result = true
+
+    if(hoLine.HOPolicyType == TC_DP3_Ext){
+      result =  hoLine.DPLI_Personal_Liability_HOEExists
+    }
+
+    return result
   }
 
   private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
@@ -109,6 +184,16 @@ class CoveragesUtil {
     return result
   }
 
+  private static function isLossAssessmentCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
+    var result = true
+
+    if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
+    }
+
+    return result
+  }
+
   private static function isWindstormExteriorPaintExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var result = true
     var dependentCovTerm = ConfigParamsUtil.getString(TC_WindHailExclusionCoverageTermPair, hoLine.BaseState)
@@ -130,12 +215,42 @@ class CoveragesUtil {
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
+    var result : ExistenceType = null
+
     if(!hoLine.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm
      or hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value == null
      or hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value == -1){
-      return TC_REQUIRED
-    }else{
-      return TC_ELECTABLE
+      result = TC_REQUIRED
     }
+
+    return result
+  }
+  
+  private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
+    return  bp7Line.BP7EmployeeDishtyExists
+  }
+
+  private static function isInterruptionComputerOpsCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    return  bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXTExists
+  }
+
+  private static function isBP7CapLossesFromCertfdActsTerrsmCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    return !bp7Line.BP7ExclOfTerrorismExists
+  }
+
+  private static function isBuildingMoneySecuritiesCoverageAvailable(bp7Building :BP7Building) : boolean {
+    return !(bp7Building.PolicyLine as BP7Line).BP7NamedPerilsExists
+  }
+
+  private static function isOrdinanceOrLawCovAvailable(bp7Line:BP7BusinessOwnersLine) : boolean {
+      //return not this.BP7FunctlBldgValtnExists - written in OOTB BP7BuildingEnhancement
+    for(building in bp7Line.AllBuildings){
+      if(building.BP7FunctlBldgValtnExists){
+        return false
+      }else{
+       return true
+      }
+    }
+    return false
   }
 }

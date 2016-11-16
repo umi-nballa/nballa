@@ -11,6 +11,7 @@
   priority="15500"
   public-id="DPDW_Alteration_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return(Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT)]]></AvailabilityScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -25,7 +26,12 @@
       restrictionModel="prp"
       valueType="percent">
       <AvailabilityScript><![CDATA[return(Dwelling_HOE.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT)]]></AvailabilityScript>
-      <DefaultsSet/>
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="z6ajil4vumlov2bqjqm35ci7gbb"
+          defaultValue="10"
+          public-id="z6ajil4vumlov2bqjqm35ci7gbb"/>
+      </DefaultsSet>
       <Options>
         <CovTermOpt
           codeIdentifier="zfjisag1e1udf6gc6fm49vjm3r8"

@@ -4,18 +4,18 @@
   coverageCategory="HODW_Additional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
+  existence="Required"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
   priority="4300"
   public-id="HODW_FungiCov_HOE"
   referenceDateByType="ApplicableObject">
-  <InitializeScript><![CDATA[gw.lob.ho.DwellingCov_HOEEnhancement.setSection1LimitDefault_Ext(HODW_FungiCov_HOE.Dwelling);gw.lob.ho.DwellingCov_HOEEnhancement.setSection1AggLimitDefault_Ext(HODW_FungiCov_HOE.Dwelling)]]></InitializeScript>
-  <ExistenceScript><![CDATA[return((Dwelling_HOE.Branch.BaseState == TC_AZ ||Dwelling_HOE.Branch.BaseState == TC_NV || Dwelling_HOE.Branch.BaseState == TC_SC)&&
-        !Dwelling_HOE.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists)? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED]]></ExistenceScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_FungiCov_HOE.PatternCode, HODW_FungiCov_HOE.Dwelling)]]></InitializeScript>
+  <ExistenceScript/>
   <CovTerms>
     <OptionCovTermPattern
-      aggregationModel="ag"
+      aggregationModel="po"
       choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_FungiSectionILimit_HOE"
       coverageColumn="ChoiceTerm1"
@@ -24,7 +24,7 @@
       priority="4310"
       public-id="HODW_FungiSectionILimit_HOE"
       required="true"
-      restrictionModel="pd"
+      restrictionModel="prp"
       valueType="money">
       <DefaultsSet/>
       <Options>
@@ -89,15 +89,9 @@
       priority="4320"
       public-id="HODW_FungiSectionII_HOE"
       required="true"
-      restrictionModel="bipd"
+      restrictionModel="prp"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_FungiSectionII_HOEusd"
-          currency="usd"
-          defaultValue="10000"
-          public-id="HODW_FungiSectionII_HOEusd"/>
-      </DefaultsSet>
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zjki47j02aob4ev1kregl971l0a"

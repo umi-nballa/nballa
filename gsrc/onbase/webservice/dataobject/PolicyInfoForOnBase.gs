@@ -23,7 +23,7 @@ uses java.util.Date
  * Guidewire will be handled in a later phase of the project.
  */
 @WsiExportable("http://onbase.net/onbase/webservice/dataobject")
-final class PolicyInfoForOnBase {
+public final class PolicyInfoForOnBase {
   /** The policy public id. */
   var _publicId: String as PublicID
   /** The policy number. */
@@ -36,4 +36,33 @@ final class PolicyInfoForOnBase {
   var _underwriter: String as Underwriter
   /** The jobs information in this policy. */
   var _jobs: JobInfoForOnBase[] as PolicyJobs
+
+  /** The primary named insured*/
+  var _primaryNamedInsured : ContactInfoForOnBase as PrimaryNamedInsured
+
+ // var _primaryFirstName : String as PrimaryFirstName
+  //var _primaryLastName : String as PrimaryLastName
+
+//  var _secondaryFirstName  : String as SecondaryFirstName
+//  var _secondaryLastName : String as SecondaryLastName
+
+  /** The additional named insured*/
+  var _additionalNamedInsureds : ContactInfoForOnBase[] as AdditionalNamedInsured
+  /** The name of the product */
+  var _productName : String as ProductName
+  /** The effective date of the policy */
+  var _policyEffectiveDate : Date as PolicyEffectiveDate
+  /** The expiration date of the policy */
+  var _policyExpirationDate : Date as PolicyExpirationDate
+  /** The term of the policy */
+  var _term : String as Term
+  /** The agency code/producer code */
+  var _agencyCode : String as AgencyCode
+  /** The legacy policy number */
+  var _legacyPolicyNumber: String as LegacyPolicyNumber
+  /** The transaction effective date */
+  var _transactionEffectiveDate: Date as TransactionEffectiveDate
+  /** The customer service representative */
+  var _csr: String as CSR
+
 }

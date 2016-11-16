@@ -130,7 +130,7 @@ class DocumentQueryResultsParser {
   private function setKeywordsFromMap(obDoc : OnBaseDocument, keyMap : Map<String, String>) {
     keyMap.eachKeyAndValue( \ k, val -> obDoc.Keywords.add(new Keyword(k, val)))
 
-    // Add any links in the map.
+   /* // Add any links in the map.
     if (keyMap.containsKey(KeywordMap.linktype.OnBaseColumnName)) {
       var linkTypeName = keyMap.get(KeywordMap.linktype.OnBaseColumnName)
       var linkValue = keyMap.get(KeywordMap.linkvalue.OnBaseColumnName)
@@ -179,6 +179,6 @@ class DocumentQueryResultsParser {
     var asyncDocID = keyMap.get(KeywordMap.asyncdocumentid.OnBaseColumnName)
     if (asyncDocID.HasContent) {
       obDoc.AsyncDocumentID = asyncDocID
-    }
+    }*/
   }
 }

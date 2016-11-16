@@ -7,6 +7,8 @@ uses gw.xml.ws.annotation.WsiWebService
 uses onbase.webservice.dataobject.AccountInfoForOnBase
 uses onbase.webservice.dataobject.JobInfoForOnBase
 uses onbase.webservice.dataobject.PolicyInfoForOnBase
+uses onbase.webservice.dataobject.ContactInfoForOnBase
+uses java.util.ArrayList
 
 /**
  *
@@ -26,6 +28,9 @@ uses onbase.webservice.dataobject.PolicyInfoForOnBase
  *
  *  03/20/2014 - Daniel Q. Yu.
  *     * Modified to improve performance according to GW recommendations.
+ *
+ *  11/03/2016 - Chris Mattox
+ *     * Modified for UIHNA
  *
  *
  */
@@ -177,10 +182,34 @@ class QueryPolicyAPI {
    */
   private function populatePolicyInformation(policy: Policy, job: Job, info: PolicyInfoForOnBase) {
     info.PublicID = policy.PublicID
-    info.PolicyNumber = policy.Periods[0].PolicyNumber
-    info.PolicyType = policy.Product.DisplayName
+    var policyPeriod = policy.MostRecentBoundPeriodOnMostRecentTerm //policy.Periods[0]
+
+    info.PolicyNumber = policyPeriod.PolicyNumber
+    info.PolicyType = policy.Product.Abbreviation
     info.IssuedDate = policy.IssueDate
     info.Underwriter = policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_UNDERWRITER).AssignedUser.DisplayName
+
+    info.PrimaryNamedInsured = new ContactInfoForOnBase(policyPeriod.PrimaryNamedInsured.FirstName,  policyPeriod.PrimaryNamedInsured.LastName)
+
+    var additionalNamedInsureds : List<ContactInfoForOnBase> = null
+    var additionalNamedInsuredContacts = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+    if(additionalNamedInsuredContacts.Count > 0) {
+      additionalNamedInsureds = new ArrayList<ContactInfoForOnBase>()
+      additionalNamedInsuredContacts.each( \ contact -> additionalNamedInsureds.add(new ContactInfoForOnBase(contact.FirstName, contact.LastName)))
+    }
+
+    logger.debug("Additional Named insured: " + additionalNamedInsureds.join("\nAdditional Named insured: "))
+    info.AdditionalNamedInsured = additionalNamedInsureds
+
+    info.ProductName =  policy.Product.DisplayName
+    info.PolicyEffectiveDate =  policyPeriod.PeriodStart
+    info.PolicyExpirationDate =  policyPeriod.PeriodEnd
+    info.Term = policyPeriod.TermType.Code
+    info.AgencyCode = policyPeriod.ProducerCodeOfRecord.Organization.AgenyNumber_Ext
+    info.LegacyPolicyNumber = policyPeriod.LegacyPolicyNumber_Ext
+    info.TransactionEffectiveDate = policyPeriod.PeriodStart
+    info.CSR = policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_CUSTOMERREP).AssignedUser.DisplayName
+
     if (job != null) {
       info.PolicyJobs = new JobInfoForOnBase[1]
       info.PolicyJobs[0] = new JobInfoForOnBase()

@@ -1,8 +1,36 @@
 <?xml version="1.0"?>
-<wsdl:definitions targetNamespace="http://GWStockServices" name="EISClientWithConfig" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://GWStockServices" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+<wsdl:definitions targetNamespace="http://GWStockServicesV1" name="EISClientWithConfig" xmlns:msc="http://schemas.microsoft.com/ws/2005/12/wsdl/contract" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tns="http://GWStockServicesV1" xmlns:wsa="http://schemas.xmlsoap.org/ws/2004/08/addressing" xmlns:wsa10="http://www.w3.org/2005/08/addressing" xmlns:wsam="http://www.w3.org/2007/05/addressing/metadata" xmlns:wsap="http://schemas.xmlsoap.org/ws/2004/08/addressing/policy" xmlns:wsaw="http://www.w3.org/2006/05/addressing/wsdl" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy" xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" xmlns:wsx="http://schemas.xmlsoap.org/ws/2004/09/mex" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <wsdl:types>
-    <xs:schema targetNamespace="http://GWStockServices" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:schema targetNamespace="http://GWStockServicesV1" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+      <xs:element name="GetDocumentContent">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DocumentData" nillable="true" type="tns:DocumentBytesInput"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="DocumentBytesInput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="documentHandle" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="overlay" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DocumentBytesInput" nillable="true" type="tns:DocumentBytesInput"/>
+      <xs:element name="GetDocumentContentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="GetDocumentContentResult" nillable="true" type="tns:DocumentBytesOutput"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="DocumentBytesOutput">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Base64FileStream" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="extension" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="DocumentBytesOutput" nillable="true" type="tns:DocumentBytesOutput"/>
       <xs:element name="ArchiveDocument">
         <xs:complexType>
           <xs:sequence>
@@ -33,9 +61,40 @@
       </xs:complexType>
       <xs:element name="KeywordsArchiveDocument" nillable="true" type="tns:KeywordsArchiveDocument"/>
       <xs:complexType name="Multi_Instance_Keyword_GroupArchiveDocument">
-        <xs:sequence/>
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrimaryInsured_Collection" nillable="true" type="tns:ArrayOfPrimaryInsured"/>
+          <xs:element minOccurs="0" name="AdditionalInsured_Collection" nillable="true" type="tns:ArrayOfAdditionalInsured"/>
+        </xs:sequence>
       </xs:complexType>
       <xs:element name="Multi_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
+      <xs:complexType name="ArrayOfPrimaryInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PrimaryInsured" nillable="true" type="tns:PrimaryInsured"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfPrimaryInsured" nillable="true" type="tns:ArrayOfPrimaryInsured"/>
+      <xs:complexType name="PrimaryInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrimaryInsuredName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PrimaryMiddleName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PrimaryLastName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="PrimaryInsured" nillable="true" type="tns:PrimaryInsured"/>
+      <xs:complexType name="ArrayOfAdditionalInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AdditionalInsured" nillable="true" type="tns:AdditionalInsured"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAdditionalInsured" nillable="true" type="tns:ArrayOfAdditionalInsured"/>
+      <xs:complexType name="AdditionalInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AdditionalFirstName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AdditionalMiddleName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AdditionalLastName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AdditionalInsured" nillable="true" type="tns:AdditionalInsured"/>
       <xs:complexType name="Single_Instance_Keyword_GroupArchiveDocument">
         <xs:sequence/>
       </xs:complexType>
@@ -43,13 +102,20 @@
       <xs:complexType name="StandAloneArchiveDocument">
         <xs:sequence>
           <xs:element minOccurs="0" name="PolicyNumber_Collection" nillable="true" type="q1:ArrayOfstring" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="ClaimNumber_Collection" nillable="true" type="q2:ArrayOfstring" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Description_Collection" nillable="true" type="q3:ArrayOfstring" xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Account_Collection" nillable="true" type="q4:ArrayOfstring" xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="DocumentType_Collection" nillable="true" type="q5:ArrayOfstring" xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="FileName_Collection" nillable="true" type="q6:ArrayOfstring" xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Author_Collection" nillable="true" type="q7:ArrayOfstring" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="GWDocID_Collection" nillable="true" type="q8:ArrayOfstring" xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Description_Collection" nillable="true" type="q2:ArrayOfstring" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="OnBaseDocumentType_Collection" nillable="true" type="q3:ArrayOfstring" xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Subtype_Collection" nillable="true" type="q4:ArrayOfstring" xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ProductName_Collection" nillable="true" type="q5:ArrayOfstring" xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyType_Collection" nillable="true" type="q6:ArrayOfstring" xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyEffectiveDate_Collection" nillable="true" type="q7:ArrayOfstring" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyExpirationDate_Collection" nillable="true" type="q8:ArrayOfstring" xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Term_Collection" nillable="true" type="q9:ArrayOfstring" xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="AgencyCode_Collection" nillable="true" type="q10:ArrayOfstring" xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="LegacyPolicyNumber_Collection" nillable="true" type="q11:ArrayOfstring" xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Underwriter_Collection" nillable="true" type="q12:ArrayOfstring" xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="CSR_Collection" nillable="true" type="q13:ArrayOfstring" xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ReceivedDate_Collection" nillable="true" type="q14:ArrayOfstring" xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="source_Collection" nillable="true" type="q15:ArrayOfstring" xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
         </xs:sequence>
       </xs:complexType>
       <xs:element name="StandAloneArchiveDocument" nillable="true" type="tns:StandAloneArchiveDocument"/>
@@ -60,34 +126,6 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
-      <xs:element name="GetDocumentContent">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element minOccurs="0" name="DocumentData" nillable="true" type="tns:DocumentBytesInput"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:complexType name="DocumentBytesInput">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="documentHandle" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="overlay" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="DocumentBytesInput" nillable="true" type="tns:DocumentBytesInput"/>
-      <xs:element name="GetDocumentContentResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element minOccurs="0" name="GetDocumentContentResult" nillable="true" type="tns:DocumentBytesOutput"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:complexType name="DocumentBytesOutput">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Base64FileStream" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="extension" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="DocumentBytesOutput" nillable="true" type="tns:DocumentBytesOutput"/>
     </xs:schema>
     <xs:schema targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="anyType" nillable="true" type="xs:anyType"/>
@@ -139,32 +177,32 @@
       <xs:element name="ArrayOfstring" nillable="true" type="tns:ArrayOfstring"/>
     </xs:schema>
   </wsdl:types>
-  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_InputMessage">
-    <wsdl:part name="parameters" element="tns:ArchiveDocument"/>
-  </wsdl:message>
-  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ArchiveDocumentResponse"/>
-  </wsdl:message>
   <wsdl:message name="HylandOutBoundContract_GetDocumentContent_InputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentContent"/>
   </wsdl:message>
   <wsdl:message name="HylandOutBoundContract_GetDocumentContent_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentContentResponse"/>
   </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiveDocument"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiveDocumentResponse"/>
+  </wsdl:message>
   <wsdl:portType name="HylandOutBoundContract">
-    <wsdl:operation name="ArchiveDocument">
-      <wsdl:input message="tns:HylandOutBoundContract_ArchiveDocument_InputMessage" wsaw:Action="WebServicePublishing/GWStockServices/Integration/ArchiveDocument"/>
-      <wsdl:output message="tns:HylandOutBoundContract_ArchiveDocument_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServices/Integration/ArchiveDocument/response"/>
-    </wsdl:operation>
     <wsdl:operation name="GetDocumentContent">
-      <wsdl:input message="tns:HylandOutBoundContract_GetDocumentContent_InputMessage" wsaw:Action="WebServicePublishing/GWStockServices/Integration/GetDocumentContent"/>
-      <wsdl:output message="tns:HylandOutBoundContract_GetDocumentContent_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServices/Integration/GetDocumentContent/response"/>
+      <wsdl:input message="tns:HylandOutBoundContract_GetDocumentContent_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/GetDocumentContent"/>
+      <wsdl:output message="tns:HylandOutBoundContract_GetDocumentContent_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/GetDocumentContent/response"/>
+    </wsdl:operation>
+    <wsdl:operation name="ArchiveDocument">
+      <wsdl:input message="tns:HylandOutBoundContract_ArchiveDocument_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument"/>
+      <wsdl:output message="tns:HylandOutBoundContract_ArchiveDocument_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument/response"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_HylandOutBoundContract" type="tns:HylandOutBoundContract">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="ArchiveDocument">
-      <soap:operation soapAction="WebServicePublishing/GWStockServices/Integration/ArchiveDocument" style="document"/>
+    <wsdl:operation name="GetDocumentContent">
+      <soap:operation soapAction="WebServicePublishing/GWStockServicesV1/Integration/GetDocumentContent" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
@@ -172,8 +210,8 @@
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetDocumentContent">
-      <soap:operation soapAction="WebServicePublishing/GWStockServices/Integration/GetDocumentContent" style="document"/>
+    <wsdl:operation name="ArchiveDocument">
+      <soap:operation soapAction="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
@@ -184,7 +222,7 @@
   </wsdl:binding>
   <wsdl:service name="EISClientWithConfig">
     <wsdl:port name="BasicHttpBinding_HylandOutBoundContract" binding="tns:BasicHttpBinding_HylandOutBoundContract">
-      <soap:address location="http://unaobebsrv01d.uicna.local/GWStockServices_Integration/SoapService.svc/SOAP11"/>
+      <soap:address location="http://unaobebsrv01d.uicna.local/GWStockServicesV1_Integration/SoapService.svc/SOAP11"/>
     </wsdl:port>
   </wsdl:service>
 </wsdl:definitions>

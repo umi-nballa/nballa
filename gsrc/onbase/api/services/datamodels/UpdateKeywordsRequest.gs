@@ -25,13 +25,13 @@ class UpdateKeywordsRequest {
   }
 
   private static final var _documentFieldsToCheck = {
-    'Name' -> KeywordMap.filename,
+   // 'Name' -> KeywordMap.filename,
     'Description' -> KeywordMap.description,
-    'MimeType' -> KeywordMap.mimetype,
-    'Author' -> KeywordMap.user,
-    'Recipient' -> KeywordMap.recipient,
-    'Status' -> KeywordMap.status,
-    'Type' -> KeywordMap.documenttype
+    //'MimeType' -> KeywordMap.mimetype,
+    'Author' -> KeywordMap.user//,
+    //'Recipient' -> KeywordMap.recipient,
+   // 'Status' -> KeywordMap.status,
+    //'Type' -> KeywordMap.documenttype
   }
 
 

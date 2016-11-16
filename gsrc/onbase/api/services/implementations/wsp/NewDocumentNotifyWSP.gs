@@ -44,7 +44,7 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
     }
 
     logger.debug("Polling for messages with maximum count of ${count}.")
-    var messageResults = service.DequeueNewDocumentMessage(pollRequest)
+    var messageResults = service.DequeuePCDocument(pollRequest)
     //TODO: OnBase - changed from DequeueNewDocuemntMessagePC to DequeueNewDocumentMessage
     logger.debug("Found ${messageResults.MessageData.Count} messages.")
 
@@ -60,149 +60,152 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
     if (message.MessageXml typeis MessageData_MessageContent) {
 
       //TODO: OnBase - commented out awaiting taxonomy
-      /*
+
+      // Read relevant keywords out of the message.
+
+      var keywords = message.MessageXml.DequeuePCDocumentMessage.Keywords
+      var properties = message.MessageXml.DequeuePCDocumentMessage.DocumentProperties
 
 
-        // Read relevant keywords out of the message.
+      var date_stored = properties.DateStored
 
-        var keywords = message.MessageXml. NewDocNotifyPC.Keywords
-        var properties = message.MessageXml.NewDocNotifyPC.DocumentProperties
+      var temp_date = date_stored.replaceAll("Z$", "+0000")
+      var df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
+      var date = df.parse(temp_date);
 
+      var existingDocs = Query.make(Document).compare('DocUID', Relop.Equals, properties.DocumentHandle)
+      if (existingDocs.select().Count > 0){
+        response.complete("")
+        return response
+      }
 
-        var date_stored = properties.DateStored
+      /* //match pending doc id with the asyncdocid
+       var asyncdocid = keywords.StandAlone.AsyncDocumentID_Collection.AsyncDocumentID.first()
 
-        var temp_date = date_stored.replaceAll("Z$", "+0000")
-        var df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
-        var date = df.parse(temp_date);
+       if (asyncdocid.HasContent)
+       {
 
-        var existingDocs = Query.make(Document).compare('DocUID', Relop.Equals, properties.DocumentHandle)
-        if (existingDocs.select().Count > 0){
-          response.complete("")
+         var asyncarchivequery = Query.make(Document).compare('PendingDocUID', Relop.Equals, asyncdocid)
+
+         var asyncdoc = asyncarchivequery.select().AtMostOneRow
+         if (asyncdoc != null)
+         {
+           Transaction.runWithNewBundle(\bundle -> {
+             asyncdoc = bundle.add(asyncdoc)
+             asyncdoc.DocUID = properties.DocumentHandle
+             asyncdoc.PendingDocUID = null
+             asyncdoc.DateModified = date
+           }, User.util.UnrestrictedUser)
+           response.complete("")
+           return response
+         }
+         else
+         {
+           logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnknownPendingID(asyncdocid))
+           response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnknownPendingID(asyncdocid))
+           return response
+         }
+       }
+*/
+      /*        var accountNumber = null// keywords.StandAlone. AccountNumber_Collection.AccountNumber.first()
+              var account: Account = null
+              if (accountNumber == null) {    //accountNumber.HasContent
+                account = Account.finder.findAccountByAccountNumber(accountNumber)
+                if (account == null) {
+                  logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidAccountNumber(accountNumber))
+                  response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidAccountNumber(accountNumber))
+                  return response
+                }
+              }*/
+
+      var policyNumber = keywords.StandAlone.PolicyNumber_Collection.PolicyNumber.first()
+      var policy: Policy = null
+      if (policyNumber.HasContent) {
+        policy = Policy.finder.findPolicyByPolicyNumber(policyNumber)
+        if (policy == null) {
+          logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidPolicyNumber(policyNumber))
+          response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidPolicyNumber(policyNumber))
           return response
         }
+      }
 
-        //match pending doc id with the asyncdocid
-        var asyncdocid = keywords.StandAlone.AsyncDocumentID_Collection.AsyncDocumentID.first()
 
-        if (asyncdocid.HasContent)
-        {
-
-          var asyncarchivequery = Query.make(Document).compare('PendingDocUID', Relop.Equals, asyncdocid)
-
-          var asyncdoc = asyncarchivequery.select().AtMostOneRow
-          if (asyncdoc != null)
-          {
-            Transaction.runWithNewBundle(\bundle -> {
-              asyncdoc = bundle.add(asyncdoc)
-              asyncdoc.DocUID = properties.DocumentHandle
-              asyncdoc.PendingDocUID = null
-              asyncdoc.DateModified = date
-            }, User.util.UnrestrictedUser)
-            response.complete("")
+      //        var docName = keywords.StandAlone.GWFileName_Collection.GWFileName.first()
+      /*   if (account == null && policy == null) {
+            logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NoAccountOrPolicy)
+            response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NoAccountOrPolicy)
             return response
           }
-          else
-          {
-            logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnknownPendingID(asyncdocid))
-            response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnknownPendingID(asyncdocid))
-            return response
+          else if (account == null && policy != null) {
+            //find the account linked to the policy
+            //account = policy.Account
           }
-        }
-
-        var accountNumber = keywords.StandAlone.AccountNumber_Collection.AccountNumber.first()
-        var account: Account = null
-        if (accountNumber.HasContent) {
-          account = Account.finder.findAccountByAccountNumber(accountNumber)
-          if (account == null) {
-            logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidAccountNumber(accountNumber))
-            response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidAccountNumber(accountNumber))
-            return response
-          }
-        }
-
-        var policyNumber = keywords.StandAlone.PolicyNumber_Collection.PolicyNumber.first()
-        var policy: Policy = null
-        if (policyNumber.HasContent) {
-          policy = Policy.finder.findPolicyByPolicyNumber(policyNumber)
-          if (policy == null) {
-            logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidPolicyNumber(policyNumber))
-            response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidPolicyNumber(policyNumber))
-            return response
-          }
-        }
-
-        if (account == null && policy == null) {
-          logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NoAccountOrPolicy)
-          response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NoAccountOrPolicy)
-          return response
-        }
-        else if (account == null && policy != null) {
-          //find the account linked to the policy
-          account = policy.Account
-        }
-        else if (account != null && policy != null)     //both account and policy has content
-          {
-            if (policy.Account != account)
+          else if (account != null && policy != null)     //both account and policy has content
             {
-              logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrelatedAccountAndPolicy(accountNumber, policyNumber))
-              response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrelatedAccountAndPolicy(accountNumber, policyNumber))
-              return response
-            }
-          }
+              if (policy.Account != account)
+              {
+                logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrelatedAccountAndPolicy(accountNumber, policyNumber))
+                response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrelatedAccountAndPolicy(accountNumber, policyNumber))
+                return response
+              }
+            }*/
+      //        if (!docName.HasContent)
+      //        {
+      //          docName = properties.DocName
+      //        }
+      var description = keywords.StandAlone.Description_Collection.Description.first()
+      var onbaseDocumentType = keywords.StandAlone.OnBaseDocumentType_Collection.OnBaseDocumentType.first()
+      var user = keywords.StandAlone.Underwriter_Collection.Underwriter.first()//keywords.StandAlone.User_Collection.User.first()
+      //var recipient = keywords.StandAlone.Recipient_Collection.Recipient.first()
+      //var status_temp = keywords.StandAlone.Status_Collection.Status.first()
+      /*        var status: DocumentStatusType = null
+              if (status_temp.HasContent)
+              {
+                status = DocumentStatusType.get(status_temp)
+                if (status == null)           // invalid status entered
+                {
+                  logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidStatus(status_temp))
+                  response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidStatus(status_temp))
+                  return response
+                }
+              }
+              var doc_type_temp = keywords.StandAlone.DocumentType_Collection.DocumentType.first()
+              var doc_type: DocumentType = null
+              if (doc_type_temp.HasContent)
+              {
+                doc_type = DocumentType.get(doc_type_temp)
+                if (doc_type == null)                //invalid doc type entered.
+                {
+                  logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidDocumentType(doc_type_temp))
+                  response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidDocumentType(doc_type_temp))
+                  return response
+                }
+              }*/
+      // note that a user must be provided as the inbound-integration does not have a user context.
 
-        var docName = keywords.StandAlone.GWFileName_Collection.GWFileName.first()
-        if (!docName.HasContent)
-        {
-          docName = properties.DocName
-        }
-        var description = keywords.StandAlone.GWDescription_Collection.GWDescription.first()
-        var user = keywords.StandAlone.User_Collection.User.first()
-        var recipient = keywords.StandAlone.Recipient_Collection.Recipient.first()
-        var status_temp = keywords.StandAlone.Status_Collection.Status.first()
-        var status: DocumentStatusType = null
-        if (status_temp.HasContent)
-        {
-          status = DocumentStatusType.get(status_temp)
-          if (status == null)           // invalid status entered
-          {
-            logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidStatus(status_temp))
-            response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidStatus(status_temp))
-            return response
-          }
-        }
-        var doc_type_temp = keywords.StandAlone.DocumentType_Collection.DocumentType.first()
-        var doc_type: DocumentType = null
-        if (doc_type_temp.HasContent)
-        {
-          doc_type = DocumentType.get(doc_type_temp)
-          if (doc_type == null)                //invalid doc type entered.
-          {
-            logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidDocumentType(doc_type_temp))
-            response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidDocumentType(doc_type_temp))
-            return response
-          }
-        }
-        // note that a user must be provided as the inbound-integration does not have a user context.
+      Transaction.runWithNewBundle(\bundle -> {
 
-        Transaction.runWithNewBundle(\bundle -> {
+        var doc = new Document()
+        doc.DocUID = properties.DocumentHandle
+        doc.DateCreated = date//properties.DocDate
+        doc.OnBaseDocumentType = onbaseDocumentType
 
-          var doc = new Document()
-          doc.DocUID = properties.DocumentHandle
-          doc.Account = account
-          doc.Name = docName
-          doc.Description = description
-          doc.Author = user
-          doc.Recipient = recipient
-          doc.Status = status
-          doc.Type = doc_type
-          doc.MimeType = properties.MimeType
-          doc.DateModified = date
-          doc.Policy = policy
-          doc.DMS = true
-        }, User.util.UnrestrictedUser)
+        doc.Account = policy.Account
+        //doc.Account = account
+        doc.Name = properties.DocName // docName
+        doc.Description = description
+        doc.Author = user
+        //doc.Recipient = recipient
+        doc.Status = typekey.DocumentStatusType.TC_FINAL // Hard-coding this status, it might be needed. cmattox 11/10/16
+        doc.Type = typekey.DocumentType.TC_ONBASE // Hard-coding this status, it might be needed. cmattox 11/10/16
+        doc.MimeType = properties.MimeType
+        doc.DateModified = date
+        doc.Policy = policy
+        doc.DMS = true
+      }, User.util.UnrestrictedUser)
 
 
-        response.complete("")*/
+      response.complete("")
       return response
     } else {
       logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrecognizedMessageContent(message.MessageXml.QName))

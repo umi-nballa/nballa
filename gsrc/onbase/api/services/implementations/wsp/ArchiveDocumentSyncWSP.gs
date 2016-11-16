@@ -69,25 +69,33 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
 
     // Standalone Keywords
     var archiveKeywords = new KeywordsArchiveDocument_StandAlone()
-//    archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"     //TODO: OnBase - commented out awaiting taxonomy
-//    archiveKeywords.GWFileName_Collection.String[0] = fileName     //TODO: OnBase - commented out awaiting taxonomy
-    archiveKeywords.DocumentType_Collection.String[0] = documentType
-//    archiveKeywords.AccountNumber_Collection.String[0] = adaptor.AccountNumber    //TODO: OnBase - commented out awaiting taxonomy
-    archiveKeywords.ClaimNumber_Collection.String[0] = adaptor.ClaimNumber
-//    archiveKeywords.GWDescription_Collection.String[0] = adaptor.Description     //TODO: OnBase - commented out awaiting taxonomy
-//    archiveKeywords.DocumentIdForRevision_Collection.String[0] = adaptor.DocumentIdForRevision        //TODO: OnBase - commented out awaiting taxonomy
 
-
+    //archiveKeywords.GWFileName_Collection.String[0] = fileName     //TODO: OnBase - commented out awaiting taxonomy
+    //archiveKeywords.DocumentType_Collection.String[0] = documentType
+    //archiveKeywords.Account_Collection.String[0] = adaptor.AccountNumber //TODO: OnBase - commented out awaiting taxonomy//What happened to Account Number?
+    //archiveKeywords.AccountNumber_Collection.String[0] = adaptor.AccountNumber    //TODO: OnBase - commented out awaiting taxonomy
+    //archiveKeywords.ClaimNumber_Collection.String[0] = adaptor.ClaimNumber         //TODO: OnBase - commented out awaiting taxonomy
+    archiveKeywords.AgencyCode_Collection.String[0] = adaptor.AgencyCode
+    archiveKeywords.CSR_Collection.String[0] = adaptor.CSR
+    archiveKeywords.Description_Collection.String[0] = adaptor.Description
+    archiveKeywords.LegacyPolicyNumber_Collection.String[0] = adaptor.LegacyPolicyNumber
+    archiveKeywords.OnBaseDocumentType_Collection.String[0] = documentType
+    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = adaptor.PolicyEffectiveDate
+    archiveKeywords.PolicyExpirationDate_Collection.String[0] = adaptor.PolicyExpirationDate
     archiveKeywords.PolicyNumber_Collection.String[0] = adaptor.PolicyNumber
-//    archiveKeywords.ProducerID_Collection.String[0] = adaptor.ProducerID   //TODO: OnBase - commented out awaiting taxonomy
-//    archiveKeywords.Recipient_Collection.String[0] = adaptor.Recipient //TODO: OnBase - commented out awaiting taxonomy
-//    archiveKeywords.Status_Collection.String[0] = adaptor.Status  //TODO: OnBase - commented out awaiting taxonomy
-//    archiveKeywords.User_Collection.String[0] = adaptor.User  //TODO: OnBase - commented out awaiting taxonomy
-    if (adaptor.ClaimSecurityRole != null) {
+    archiveKeywords.PolicyType_Collection.String[0] = adaptor.PolicyType
+    archiveKeywords.ProductName_Collection.String[0] = adaptor.ProductName
+    archiveKeywords.ReceivedDate_Collection.String[0] = adaptor.ReceivedDate
+    archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"
+    archiveKeywords.Subtype_Collection.String[0] = adaptor.Subtype
+    archiveKeywords.Term_Collection.String[0] = adaptor.Term
+    archiveKeywords.Underwriter_Collection.String[0] = adaptor.Underwriter
+
+    /*if (adaptor.ClaimSecurityRole != null) {           //TODO: OnBase - commented out awaiting taxonomy
       foreach (role in adaptor.ClaimSecurityRole.split(",") index i) {
-//        archiveKeywords.ClaimSecurityRole_Collection.String[i] = role //TODO: OnBase - commented out awaiting taxonomy
+        archiveKeywords.ClaimSecurityRole_Collection.String[i] = role
       }
-    }
+    }*/
     archiveDocument.DocumentArchiveData.Keywords.StandAlone = archiveKeywords
 
     // MIKG keywords
@@ -98,11 +106,11 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     archiveMIKGs.Matter_Collection.Matter[0].MatterID = adaptor.MatterID
     archiveMIKGs.Matter_Collection.Matter[0].MatterName = adaptor.MatterName
     archiveMIKGs.Job_Collection.Job[0].JobNumber = adaptor.JobNumber*/
-    var index = 0
+/*    var index = 0
     if (adaptor.ActivityID != null) {
       //TODO: OnBase - commented out awaiting taxonomy
-/*      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.activityid.toString()
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ActivityID*/
+*//*      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.activityid.toString()
+      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ActivityID*//*
       index++
     }
     if (adaptor.CheckID != null) {
@@ -119,12 +127,12 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
 //      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.exposureid.toString()   //TODO: OnBase - commented out awaiting taxonomy
 //      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ExposureID     //TODO: OnBase - commented out awaiting taxonomy
       index++
-    }
+    }*/
     archiveDocument.DocumentArchiveData.Keywords.Multi_Instance_Keyword_Group = archiveMIKGs
-
 
     // Make request
     var response = service.ArchiveDocument(archiveDocument)
+
     if (logger.isDebugEnabled()) {
       logger.debug("Finished executing archiveDocument() using WSP service with document ID: ${response}")
     }

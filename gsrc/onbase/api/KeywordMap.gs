@@ -27,6 +27,8 @@ package onbase.api
  *          * Added documentidforrevision keyword
  *          * Removed relateddocumenthandle keyword
  *
+ *   11/10/2016 - Chris Mattox
+ *          * Changed all of the keywords
  *
  */
 /**
@@ -34,33 +36,40 @@ package onbase.api
  */
 public enum KeywordMap {
   accountid("Account Number"),
-  claimid("Claim Number"),
-  policyid("Policy Number"),
-  contactid("Contact ID"),
-  contactname("Contact Name"),
-  insured("Insured Name"),
-  exposureid("Exposure ID"),
-  exposurename("Exposure Name"),
-  matterid("Matter ID"),
-  mattername("Matter Name"),
-  activityid("Activity ID"),
-  checkid("Check ID"),
-  reserveid("Reserve ID"),
-  jobnumber("Job Number"),
-  producerid("Producer ID"),
-  linktype("GW Link Type"),
-  linkvalue("GW Link ID"),
-  status("Status"),
-  filename("GW File Name"),
-  mimetype("Mime Type"),
-  description("GW Description"),
-  documenttype("Document Type"),
-  documentidforrevision("Document Id For Revision"),
-  recipient("Recipient"),
   user("User"),
-  claimsecurityrole("Claim Security Role"),
-  asyncdocumentid("Async Document ID"),
-  source("Source");
+  source("Source"),
+  activitycode("Activity Code"),
+  additionalfirstname("Additional First Name"),
+  additionalmiddlename("Additional Middle Name"),
+  additionallastname("Additional Last Name"),
+  agencycode("Agency Code"),
+  csr("CSR"),
+  description("Description"),
+  issuedate("Issue Date"),
+  jobdisplayname("Job Display Name"),
+  jobid("Job ID"),
+  jobnumber("Job Number"),
+  legacypolicynumber("Legacy Policy Number"),
+  maildate("MAIL date"),
+  mailfromaddress("MAIL from address"),
+  mailsubject("MAIL subject"),
+  mailtoaddress("MAIL to address"),
+  namedinsured("Named Insured"),
+  onbasedocumenttype("OnBase Document Type"),
+  policyeffectivedate("Policy Effective Date"),
+  policyexpirationdate("Policy Expiration Date"),
+  policynumber("Policy Number"),
+  policytype("Policy Type"),
+  primaryfirstname("Primary First Name"),
+  primarymiddlename("Primary Middle Name"),
+  primarylastname("Primary Last Name"),
+  productname("Product Name"),
+  receiveddate("Received Date"),
+  subtype("Subtype"),
+  supressactivity("Supress Activity"),
+  term("Term"),
+  transactioneffectivedate("Transaction Effective Date"),
+  underwriter("Underwriter");
 
   private construct(kwName : String) {
     obName = kwName

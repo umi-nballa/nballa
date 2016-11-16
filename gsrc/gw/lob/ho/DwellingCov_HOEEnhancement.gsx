@@ -3,6 +3,7 @@ uses java.math.BigDecimal
 uses gw.pl.persistence.core.Bundle
 uses una.config.ConfigParamsUtil
 uses java.lang.Double
+uses java.lang.StringBuffer
 
 enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
   function addScheduledItem(item: ScheduledItem_HOE){
@@ -143,18 +144,22 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     * Amrita D Validated Individual and Total Values for Schedule Items as per the HO product Model Sheet
     */
 
-  static function validateScheduleType_Ext(dwelling:Dwelling_HOE):String{
-    var result : String
+  static function validateScheduleType_Ext(dwelling:Dwelling_HOE): String{
+
+    var resultBuffer = new StringBuffer()
 
     for(scheduleItem in dwelling.HODW_ScheduledProperty_HOE.ScheduledItems ) {
       var exposureValue = scheduleItem.ExposureValue
       var maxValidExposureValue = ConfigParamsUtil.getInt(TC_scheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleItem.ScheduleType.Code)
       var minValidExposureValue = ConfigParamsUtil.getInt(TC_scheduleExposureMinValue, dwelling.HOLine.BaseState,scheduleItem.ScheduleType.Code)
+
       if(exposureValue> maxValidExposureValue) {
-        result = displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName)
+        resultBuffer.append(displaykey.Web.Policy.HomeownersLine.Validation.ScheduleValue_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName))
+        resultBuffer.append("\n")
       }
-      else if(exposureValue < minValidExposureValue){
-        result = displaykey.Web.Policy.HomeownersLine.Validation.ScheduleItemMin_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName)
+      else if(exposureValue != null and exposureValue < minValidExposureValue){
+        resultBuffer.append(displaykey.Web.Policy.HomeownersLine.Validation.ScheduleItemMin_Ext(new Double(maxValidExposureValue as double).asMoney(),scheduleItem.ScheduleType.DisplayName))
+        resultBuffer.append("\n")
       }
     }
     var exposureMap = dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.partition( \ schItem -> schItem.ScheduleType )
@@ -162,11 +167,10 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
       var totalCalculateExpValue = exposureMap.get(scheduleType).sum( \ schItem -> schItem.ExposureValue )
       var maxValidTotalExposureValue = ConfigParamsUtil.getInt(TC_totalscheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleType.Code)
       if(totalCalculateExpValue> maxValidTotalExposureValue){
-        result = displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext(scheduleType.DisplayName,new Double(maxValidTotalExposureValue as double).asMoney())
+        resultBuffer.append(displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext(scheduleType.DisplayName,new Double(maxValidTotalExposureValue as double).asMoney()))
       }
       })
-
-    return result
+    return  resultBuffer.toString()
   }
 
 }

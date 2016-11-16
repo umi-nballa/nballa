@@ -19,5 +19,6 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo  {
   var _privateFireCompanyDiscount: BigDecimal as PrivateFireCompanyDiscount = 0.0
   var _vacanySurcharge : BigDecimal as VacancySurcharge = 0.0
   var _buildingCodeEffectivenessGradingCredit : BigDecimal as BuildingCodeEffectivenessGradingCredit = 0.0
+  var _affinityDiscount : BigDecimal as AffinityDiscount = 0.0
 
 }

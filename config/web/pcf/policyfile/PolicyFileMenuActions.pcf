@@ -109,9 +109,15 @@
         label="displaykey.Web.PolicyFile.IssuePolicy"
         visible="perm.PolicyPeriod.issue(policyPeriod) and policyPeriod.Policy.canStartIssuance() == null"/>
       <MenuItem
-        action="StartPolicyChange.go(policyPeriod)"
+        action="StartPolicyChange.go(policyPeriod, false)"
         id="PolicyFileMenuActions_ChangePolicy"
         label="displaykey.Web.PolicyFile.ChangePolicy"
+        shortcut="G"
+        visible="perm.PolicyPeriod.change(policyPeriod) and policyPeriod.Policy.Issued"/>
+      <MenuItem
+        action="StartPolicyChange.go(policyPeriod, true)"
+        id="PolicyFileMenuActions_AddSerp"
+        label="&quot;Endorse SERP&quot;"
         shortcut="G"
         visible="perm.PolicyPeriod.change(policyPeriod) and policyPeriod.Policy.Issued"/>
       <MenuItem

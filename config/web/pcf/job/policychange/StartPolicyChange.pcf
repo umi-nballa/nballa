@@ -13,12 +13,12 @@
     startInEditMode="true"
     title="displaykey.Web.PolicyChange.StartPolicyChange">
     <LocationEntryPoint
-      signature="StartPolicyChange(policyPeriod : PolicyPeriod)"/>
+      signature="StartPolicyChange(policyPeriod : PolicyPeriod, initiateSERP : boolean)"/>
     <Variable
       name="policyPeriod"
       type="PolicyPeriod"/>
     <Variable
-      initialValue="gw.web.job.policychange.StartPolicyChangeUIHelper.applyEffectiveTimePluginForPolicyChange( policyPeriod, job, policyPeriod.EditEffectiveDate )"
+      initialValue="initiateSERP ? policyPeriod.PeriodEnd.addDays(-1) : gw.web.job.policychange.StartPolicyChangeUIHelper.applyEffectiveTimePluginForPolicyChange( policyPeriod, job, policyPeriod.EditEffectiveDate )"
       name="effectiveDate"
       type="java.util.Date"/>
     <Variable
@@ -30,11 +30,15 @@
       name="inForcePeriod"
       recalculateOnRefresh="true"
       type="PolicyPeriod"/>
+    <Variable
+      initialValue="false"
+      name="initiateSERP"
+      type="boolean"/>
     <Screen
       id="StartPolicyChangeScreen">
       <Toolbar>
         <ToolbarButton
-          action="if (gw.web.job.policychange.StartPolicyChangeUIHelper.refreshAndStartJobAndCommit(job, policyPeriod, effectiveDate, CurrentLocation)) { PolicyChangeWizard.go(job, job.LatestPeriod) }"
+          action="if (gw.web.job.policychange.StartPolicyChangeUIHelper.refreshAndStartJobAndCommit(job, policyPeriod, effectiveDate, CurrentLocation)) {setSERPIndicator();PolicyChangeWizard.go(job, job.LatestPeriod) }"
           available="policyPeriod.Policy.canStartPolicyChange(effectiveDate) == null"
           confirmMessage="gw.web.job.policychange.StartPolicyChangeUIHelper.getConfirmMessage(inForcePeriod, effectiveDate)"
           id="NewPolicyChange"
@@ -59,6 +63,7 @@
         id="StartPolicyChangeDV">
         <InputColumn>
           <DateTimeInput
+            available="!initiateSERP"
             editable="true"
             id="EffectiveDate"
             label="displaykey.Web.Job.EffectiveDate"
@@ -118,5 +123,13 @@
         </InputColumn>
       </DetailViewPanel>
     </Screen>
+    <Code><![CDATA[function setSERPIndicator()  {
+  if(initiateSERP) {
+    gw.transaction.Transaction.runWithNewBundle(\bundle -> {
+      var localPolicyPeriod = bundle.add(job.LatestPeriod)
+      localPolicyPeriod.SERPEndorsed_Ext = true
+    })  
+  }
+}]]></Code>
   </Page>
 </PCF>

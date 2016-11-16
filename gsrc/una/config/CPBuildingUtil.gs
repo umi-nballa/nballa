@@ -208,6 +208,8 @@ Make response editable.
       bldg.ResQuestions.swrr=typekey.CPSwr_Ext.TC_NOSWR//"No SWR"
       bldg.ResQuestions.openprt=typekey.CPOpenProt_Ext.TC_NOOPENINGPROT//"No Opening Protection"
     }
+    else
+      bldg.ResQuestions.swrr=null
     /*
     Terrain exposure
     When Year Built => 2002

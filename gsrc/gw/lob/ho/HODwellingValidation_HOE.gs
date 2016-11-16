@@ -38,6 +38,9 @@ class HODwellingValidation_HOE extends PCValidationBase {
 
   function validateDwellingMainFields() {
     Context.addToVisited(this, "validateDwellingMainFields")
+    if(HODwelling.HomePurchaseDate_Ext != null && (HODwelling.PolicyPeriod.PeriodStart.differenceInYears(HODwelling.HomePurchaseDate_Ext) < 5) ) {
+      Result.addWarning(HODwelling,  "default", displaykey.Web.Policy.HomeownersLine.Validation.FiveYearsPriorResidenceRequired)
+    }
     /*if (HODwelling.ResidenceType == null) {
       addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeRequired, "HomeownersDwelling")
     }*/

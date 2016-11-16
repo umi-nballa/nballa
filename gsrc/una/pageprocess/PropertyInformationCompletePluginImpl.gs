@@ -1,9 +1,12 @@
 package una.pageprocess
 
+uses una.integration.mapping.tuna.TunaAppResponse
 uses una.integration.service.gateway.plugin.GatewayPlugin
 uses una.integration.service.gateway.tuna.TunaInterface
 uses una.logging.UnaLoggerCategory
 uses una.model.AddressDTO
+uses una.model.PropertyDataModel
+
 uses java.lang.Exception
 uses java.lang.Integer
 
@@ -42,6 +45,8 @@ class PropertyInformationCompletePluginImpl {
   var baseState = {"CA", "FL", "NV", "NC", "HI", "TX"}
   var exteriorWallFinish_HI = {"AL","ASB","BAB","BPIN","BRED","CMP","COP","CTG","FCEM","FCEMS","LOG","RC","RMP","SHN","STU_FRM","T111","TPIN","TRED","VL","VLS","W","WSS"}
   var exteriorWallFinish_TX = {"FCEM","FCEMS","SBC","SBR","STU_FRM"}
+  var constructionType_HI ={"FRP","FRW","SIP"}
+
   construct() {
   }
 
@@ -51,104 +56,341 @@ class PropertyInformationCompletePluginImpl {
     return _TUNAGateway
   }
 
+
+  /**
+   * This function is to call GetPropertyInformationComplete Service when user select HO Product
+   */
   public function getPropertyInformationComplete(productSelection: ProductSelection, account: Account, policyPeriod: PolicyPeriod, producerSelection: ProducerSelection)
   {
-    try {
-      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For DwellingLocation ", this.IntrinsicType)
       if (productSelection.ProductCode == HO_LOB){
+        logger.debug(" Entering  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For DwellingLocation ", this.IntrinsicType)
         var _address = new AddressDTO()
         logger.info("Account Number..." + account.AccountNumber)
         for (location in account.AccountLocations) {
-          logger.info("Primary Location:" + location.Primary + "Address Scrubbed: " + location.AddressScrub_Ext)
-          if (location.Primary && location.AddressScrub_Ext){
+        logger.info("Primary Location:" + location.Primary + "Address Scrubbed: " + location.AddressScrub_Ext)
+        if (location.Primary && location.AddressScrub_Ext){
             logger.info("Address.." + location.AddressLine1 + ".. " + location.City + " .." + location.State.DisplayName + " .." + location.PostalCode + " ...." + location.Primary)
             _address.AddressLine1 = location.AddressLine1
             _address.State = location.State.DisplayName
             _address.City = location.City
             _address.PostalCode = location.PostalCode
             _address.Country = location.Country.DisplayName
-
-            var dwellingDetails = TUNAGateway.fetchPropertyInformationComplete(_address)
-
+            try {
+            var tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
             gw.transaction.Transaction.runWithNewBundle(\bun -> {
-
               policyPeriod = bun.add(policyPeriod)
-
-              policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Longitude_Ext = dwellingDetails.Longitude
-              policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Latitude_Ext = dwellingDetails.Latitude
-
-              if (null != dwellingDetails.Datums && dwellingDetails.Datums.size() > 0) {
-                for (dwell in dwellingDetails.Datums) {
-
-                  if (dwell.ID == YEAR_BUILT && ("" != dwell.Value && null != dwell.Value ))
-                    policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = (dwell.Value) as Integer
-                  else if (dwell.ID == STORIES_NUMBER && ("" != dwell.Value && null != dwell.Value )  )
-                    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber = typecodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dwell.Value)
-                  else if (dwell.ID == CONSTRUCTION_TYPE && ("" != dwell.Value && null != dwell.Value ) ) {
-                      if (producerSelection.State.Code == "HI" && (dwell.Value =="FRP" || dwell.Value == "FRW" || dwell.Value =="SIP"))
-                        policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                      else
-                        policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dwell.Value)
-                  }
-                  else if (dwell.ID == EXTERIOR_WALL_FINISH && ("" != dwell.Value && null != dwell.Value ) ) {
-                    if (producerSelection.State.Code == "HI"  && exteriorWallFinish_HI.contains(dwell.Value))
-                       policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                    else if(producerSelection.State.Code == "TX"  && exteriorWallFinish_TX.contains(dwell.Value))
-                      policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                    else
-                       policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dwell.Value)
-                   }
-                  else if (dwell.ID == SQUARE_FOOTAGE && ("" != dwell.Value && null != dwell.Value )  )
-                     policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = (dwell.Value) as Integer
-                  else if (dwell.ID == ROOF_TYPE && ("" != dwell.Value && null != dwell.Value )) {
-                    if (producerSelection.State.Code == "CA" && dwell.Value == "G")
-                      policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                    else
-                      policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dwell.Value)
-                  }
-                  else if (dwell.ID == ROOF_COVER && ("" != dwell.Value && null != dwell.Value )  ) {    //mapping to material
-                    if (baseState.contains(producerSelection.State.Code))
-                      policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna" + "_" + producerSelection.State.Code, dwell.Value)
-                    else
-                       policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna", dwell.Value)
-                  }
-                  else if (dwell.ID == WIND_POOL && ("" != dwell.Value && null != dwell.Value )  )
-                     policyPeriod.HomeownersLine_HOE.Dwelling.PropertyCovByStateWndstorm_Ext = (dwell.Value) as Boolean
-
-                  else if (dwell.ID == PROTECTION_CLASS && ("" != dwell.Value && null != dwell.Value )  )
-                     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode = dwell.Value
-                  else if (dwell.ID == ISO_360_VALUE && ("" != dwell.Value && null != dwell.Value )  )
-                     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360ValueID_Ext = dwell.Value
-                  else if (dwell.ID == ESTIMATED_REPLACEMENT_COST && ("" != dwell.Value && null != dwell.Value ) )
-                     policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost = dwell.Value
-                  else if (dwell.ID == DISTANCE_TO_COAST &&  ("" != dwell.Value && null != dwell.Value )  )
-                      policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistanceToCoast_Ext = dwell.Value
-                  else if (dwell.ID == BCEG && ("" != dwell.Value && null != dwell.Value ) )
-                     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEG_Ext = dwell.Value
-                  else if(dwell.ID ==  FIRE_DEPT_MATCH_LEVEL && ("" != dwell.Value && null != dwell.Value )  )
-                      policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireDeptMatchLevel_Ext = typekey.FireDeptMatchLevel_Ext.TC_EXACT
-                  else if(dwell.ID ==  FIRE_LINE_ADJUSTED_HAZARD && ("" != dwell.Value && null != dwell.Value )  )
-                      policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = dwell.Value
-                  else if(dwell.ID ==  FIRE_LINE_FUEL && ("" != dwell.Value && null != dwell.Value )  )
-                      policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Fuel = dwell.Value
-                  else if(dwell.ID ==  FIRE_LINE_ACCESS && ("" != dwell.Value && null != dwell.Value )  )
-                      policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Slope = dwell.Value
-                  else if(dwell.ID ==  FIRE_LINE_SLOPE && ("" != dwell.Value && null != dwell.Value )  )
-                      policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Access = dwell.Value
+              tunaLongitudeDetail(policyPeriod,tunaResponse)
+              tunaLatitudeDetail(policyPeriod,tunaResponse)
+              if (null != tunaResponse.Datums && tunaResponse.Datums.size() > 0) {
+                for (dwell in tunaResponse.Datums) {
+                  if (dwell.ID == YEAR_BUILT)
+                    tunaYearBuiltDetail(policyPeriod,dwell)
+                  else if (dwell.ID == STORIES_NUMBER)
+                    tunaStoryNumDetail(policyPeriod,dwell)
+                  else if (dwell.ID == CONSTRUCTION_TYPE)
+                    tunaConstructionTypeDetail(policyPeriod,dwell,producerSelection)
+                  else if (dwell.ID == EXTERIOR_WALL_FINISH)
+                     tunaExteriorWallDetail(policyPeriod,dwell,producerSelection)
+                  else if (dwell.ID == SQUARE_FOOTAGE)
+                     tunaSquareFootDetail(policyPeriod,dwell)
+                  else if (dwell.ID == ROOF_TYPE )
+                     tunaRoofTypeDetail(policyPeriod,dwell,producerSelection)
+                  //else if (dwell.ID == ROOF_COVER)  //mapping to material
+                    // tunaRoofMaterialDetail(policyPeriod,dwell,producerSelection)
+                  else if (dwell.ID == WIND_POOL)
+                     tunaWindPoolDetail(policyPeriod,dwell)
+                  else if (dwell.ID == PROTECTION_CLASS)
+                     tunaProtectionClassDetail(policyPeriod,dwell)
+                  else if (dwell.ID == ISO_360_VALUE )
+                     tunaISO360Detail(policyPeriod,dwell)
+                  else if (dwell.ID == ESTIMATED_REPLACEMENT_COST )
+                     tunaEstReplacementCostDetail(policyPeriod,dwell)
+                  else if (dwell.ID == DISTANCE_TO_COAST )
+                      tunaDistToCoastDetail(policyPeriod,dwell)
+                  else if (dwell.ID == BCEG)
+                     tunaBCEGDetail(policyPeriod,dwell)
+                  else if(dwell.ID ==  FIRE_DEPT_MATCH_LEVEL)
+                     tunaFireDeptMatchLineLevelDetail(policyPeriod,dwell)
+                  else if(dwell.ID ==  FIRE_LINE_ADJUSTED_HAZARD )
+                     tunaFireHazardDetail(policyPeriod,dwell)
+                  else if(dwell.ID ==  FIRE_LINE_FUEL)
+                      tunaFireFuelDetail(policyPeriod,dwell)
+                  else if(dwell.ID ==  FIRE_LINE_ACCESS )
+                      tunaFireAccessDetail(policyPeriod,dwell)
+                  else if(dwell.ID ==  FIRE_LINE_SLOPE )
+                      tunaFireSlopeDetail(policyPeriod,dwell)
                 }
               }
             })
-          }
+          }catch (exp: Exception) {
+              logger.error("TunaGateway : Dwelling Construction Information " + " : StackTrace = ", exp)
+            }
         }
       }
-      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For DwellingLocation ", this.IntrinsicType)
-    } catch (exp: Exception)
-    {
-      logger.error("TunaGateway : Dwelling Construction Information " + " : StackTrace = ", exp)
-      //throw exp
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getPropertyInformationComplete" + "For DwellingLocation Details ", this.IntrinsicType)
     }
   }
 
+  /**
+   * This function is to map Longitude in dwelling screen
+   */
+  private function tunaLongitudeDetail(policyPeriod: PolicyPeriod,tunaResponse : TunaAppResponse){
+    try{
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Longitude_Ext = tunaResponse.Longitude
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaLongitudeDetails " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Latitude in dwelling screen
+   */
+  private function tunaLatitudeDetail(policyPeriod: PolicyPeriod,tunaResponse : TunaAppResponse){
+    try{
+      policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Latitude_Ext = tunaResponse.Latitude
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaLatitudeDetails " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Year Build in dwelling Construction screen
+   */
+  private function tunaYearBuiltDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+      policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = (propertyDataModel.Value) as Integer
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaYearBuiltDetails " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Stories Number details in dwelling Construction screen
+   */
+  private function tunaStoryNumDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber = typecodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", propertyDataModel.Value)
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaStoryNumDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Construction Type  in dwelling Construction screen
+   */
+  private function tunaConstructionTypeDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel,producerSelection: ProducerSelection){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value){
+        if (producerSelection.State.Code == "HI" && constructionType_HI.contains(propertyDataModel.Value))
+          policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna" + "_" + producerSelection.State.Code, propertyDataModel.Value)
+        else
+          policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = typecodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", propertyDataModel.Value)
+      }
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaConstructionTypeDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Exterior wall Details in dwelling Construction screen
+   */
+  private function tunaExteriorWallDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel,producerSelection: ProducerSelection){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value ) {
+        if (producerSelection.State.Code == "HI"  && exteriorWallFinish_HI.contains(propertyDataModel.Value))
+          policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, propertyDataModel.Value)
+        else if(producerSelection.State.Code == "TX"  && exteriorWallFinish_TX.contains(propertyDataModel.Value))
+          policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna" + "_" + producerSelection.State.Code, propertyDataModel.Value)
+        else
+          policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = typecodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", propertyDataModel.Value)
+      }
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaExteriorWallDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Roof Type in dwelling Construction screen
+   */
+  private function tunaRoofTypeDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel,producerSelection: ProducerSelection){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value ){
+        if (producerSelection.State.Code == "CA" && propertyDataModel.Value == "G")
+          policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna" + "_" + producerSelection.State.Code, propertyDataModel.Value)
+        else
+          policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext = typecodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", propertyDataModel.Value)
+      }
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaRoofTypeDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Roof Material in dwelling Construction screen
+   */
+  private function tunaRoofMaterialDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel,producerSelection: ProducerSelection){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value){
+        if (baseState.contains(producerSelection.State.Code))
+          policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna" + "_" + producerSelection.State.Code, propertyDataModel.Value)
+        else
+          policyPeriod.HomeownersLine_HOE.Dwelling.RoofType = typecodeMapper.getInternalCodeByAlias("RoofType", "tuna", propertyDataModel.Value)
+      }
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaRoofMaterialDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Square Footage details in dwelling Construction screen
+   */
+  private function tunaSquareFootDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = (propertyDataModel.Value) as Integer
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaSquareFootDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map wind pool value in dwelling screen
+   */
+  private function tunaWindPoolDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.PropertyCovByStateWndstorm_Ext = (propertyDataModel.Value) as Boolean
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaWindPoolDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Protection Class details in dwelling screen
+   */
+  private function tunaProtectionClassDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaProtectionClassDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map ISO360 Value in dwelling screen
+   */
+  private function tunaISO360Detail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360ValueID_Ext = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaISO360Detail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Estimated Replacement Cost value in dwelling screen
+   */
+  private function tunaEstReplacementCostDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.ReplacementCost = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaEstReplacementCostDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Distance To Coast in dwelling screen
+   */
+  private function tunaDistToCoastDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistanceToCoast_Ext = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaDistToCoastDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map BCEG value in dwelling screen
+   */
+  private function tunaBCEGDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEG_Ext = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaBCEGDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map FireLine Match Level in dwelling screen
+   */
+  private function tunaFireDeptMatchLineLevelDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireDeptMatchLevel_Ext = typekey.FireDeptMatchLevel_Ext.TC_USERENTERED
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaFireDeptMatchLineLevelDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Adjust Hazard Score info in dwelling screen for California
+   */
+  private function tunaFireHazardDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+  try{
+    if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+      policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = propertyDataModel.Value
+  }catch(exp :Exception){
+    logger.error("GetPropertyInformationComplete : tunaFireHazardDetail " + " : StackTrace = ", exp)
+  }
+ }
+
+  /**
+   * This function is to map Access info in dwelling screen for California
+   */
+  private function tunaFireAccessDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Access = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaFireAccessDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Slope info in dwelling screen for California
+   */
+  private function tunaFireSlopeDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Slope = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaFireSlopeDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to map Fuel info in dwelling screen for California
+   */
+  private function tunaFireFuelDetail(policyPeriod: PolicyPeriod,propertyDataModel : PropertyDataModel){
+    try{
+      if("" != propertyDataModel.Value && null != propertyDataModel.Value )
+        policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Fuel = propertyDataModel.Value
+    }catch(exp :Exception){
+      logger.error("GetPropertyInformationComplete : tunaFireFuelDetail " + " : StackTrace = ", exp)
+    }
+  }
+
+  /**
+   * This function is to call GetPropertyInformation Service which is for BOP Product
+   * Below method is a Post On Change when user enters value in YearBuilt field
+   */
   public function getBOPInformation(policyPeriod: PolicyPeriod, building: BP7Building) {
     var _address = new AddressDTO()
     try {

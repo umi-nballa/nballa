@@ -46,8 +46,10 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "HOPL_LossAssCovLimit_HOE") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+      var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
       limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value : 0.00
-      limit.NetChangeAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = value - orignalValue
       limit.FormatPct = 0
       limit.FormatText = ""
       limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true)

@@ -45,7 +45,11 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
       var deductiblePercentage = (currentPolicyCondition.PolicyLine as CommercialPropertyLine).hurricanepercded
       deductible.FormatCurrencyAmt.Amt = 0.00
-      deductible.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 : 0 : 0
+      deductible.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED3PERCENT_EXT ? 3 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED5PERCENT_EXT ? 5 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED10PERCENT_EXT ? 10 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT ? 0 : 0 : 0
       deductible.CoverageCd = currentPolicyCondition.PatternCode
       deductible.CoverageSubCd = deductibleType
       deductible.DeductibleDesc = ""
@@ -62,7 +66,11 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
       var deductiblePercentage = (currentPolicyCondition.PolicyLine as CommercialPropertyLine).hurricanepercded
       deductible.FormatCurrencyAmt.Amt = 0.00
-      deductible.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 : 0 : 0
+      deductible.FormatPct = deductiblePercentage != null ? deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED2PERCENT_EXT ? 2 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED3PERCENT_EXT ? 3 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED5PERCENT_EXT ? 5 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDED10PERCENT_EXT ? 10 :
+                                                            deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT ? 0 : 0 : 0
       deductible.CoverageCd = currentPolicyCondition.PatternCode
       deductible.CoverageSubCd = deductibleType
       deductible.DeductibleDesc = ""

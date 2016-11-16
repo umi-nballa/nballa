@@ -105,6 +105,10 @@ If Roof Covering does not = Reinforced Concrete then no default response.
 
       bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
     }
+
+    if(bldg?.Building?.NumStories<=3)
+      bldg.ResQuestions.intpresdes="Enclosed"
+
     return true
   }
 
@@ -175,6 +179,13 @@ Default response to B if Building Address county = All Other Counties
     {
       bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_TERRAINB//"B"
     }
+
+
+    /*Only display when Windstorm, when # stories = 1  OR = 2 OR = 3
+    Only display when Year Built =>2002.*/
+
+    if(bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.intpresdes="Enclosed"
 
     return true
   }

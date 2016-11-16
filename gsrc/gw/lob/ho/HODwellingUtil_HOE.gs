@@ -664,7 +664,7 @@ class HODwellingUtil_HOE {
     var currentYear = Calendar.getInstance().get(Calendar.YEAR);
     var validYearOfPurchase = (yearBuilt == currentYear or
         yearBuilt == currentYear+1 or yearBuilt == currentYear-1) ? true : false
-    if(HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
+    if(HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
         && applicableJurisdiction.contains(dwelling.PolicyPeriod.BaseState)
         && validYearOfPurchase) {
       return true

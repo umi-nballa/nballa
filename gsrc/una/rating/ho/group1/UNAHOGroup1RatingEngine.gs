@@ -181,6 +181,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       ratePrivateFireCompanyDiscount(dateRange)
     }
 
+    //TODO : Need to add the condition to check for affinity discount flag
+    rateAffinityDiscount(dateRange)
+
     if(PolicyLine.BaseState != Jurisdiction.TC_CA)
       rateBuildingCodeEffectivenessGradingCredit(dateRange)
 
@@ -258,6 +261,21 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Concrete Tile Roof Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Affinity discount
+   */
+  function rateAffinityDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAffinityDiscount", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AFFINITY_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AFFINITYDISCOUNT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
+    }
+    _logger.debug("Affinity Discount Rated Successfully", this.IntrinsicType)
   }
 
   /**

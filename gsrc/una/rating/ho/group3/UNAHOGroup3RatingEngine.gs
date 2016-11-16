@@ -130,6 +130,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         if (dwellingCov.HODW_ExecutiveCov_HOE_ExtTerm.Value)
           rateExecutiveCoverage(dwellingCov, dateRange)
         break
+      case HODW_SpecificOtherStructure_HOE_Ext:
+        rateOtherStructuresRentedToOthersCoverage(dwellingCov, dateRange)
+        break
     }
   }
 
@@ -152,6 +155,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
     rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
     rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
+    if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountsOrSurchargeRatingInfo.AgeOfHome < 10)
+      ratePreferredBuilderCredit(dateRange)
 
     //rating all wind hail included, credit and discounts
     if(!windOrHailExcluded){
@@ -492,6 +497,22 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Function to rate the Preferred Builder Credit
+   */
+  function ratePreferredBuilderCredit(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: ratePreferredBuilderCredit", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedAOPBasePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PREFERRED_BUILDER_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_PREFERREDBUILDERCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.PreferredBuilderCredit = costData?.ActualTermAmount
+    }
+    _logger.debug("Preferred Builder Credit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Function to rate the Building Code Non Participating Risks
    */
   function rateBuildingCodeNonParticipatingRisks(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
@@ -578,6 +599,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Limited Fungi, Wet Or Dry Rot Or Bacteria Section I coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Other Structures Rented To Others Coverage
+   */
+  function rateOtherStructuresRentedToOthersCoverage(dwellingCov: HODW_SpecificOtherStructure_HOE_Ext, dateRange: DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresRentedToOthersCoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_RENTED_TO_OTHERS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Other Structures Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

@@ -18,9 +18,10 @@ uses wsi.remote.una.ncfwsc.guidewire.InteractiveOrderHandler
 uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.enums.VendorDataset_Addresses_Address_DataSourceIndicator
 uses una.logging.UnaLoggerCategory
 uses java.lang.Exception
-uses java.util.Date
 uses java.text.SimpleDateFormat
-
+uses java.io.FileNotFoundException
+uses gw.api.util.DisplayableException
+uses gw.xml.ws.WebServiceException
 /**
  * Returns hardwired response 
  */
@@ -28,8 +29,9 @@ class NCFCreditReportService implements ICreditReportService {
 
   final static var LOGGER = UnaLoggerCategory.UNA_INTEGRATION
 
-  private var _creditReportDataMgr : ICreditReportDataManager    
-    
+  private var _creditReportDataMgr : ICreditReportDataManager
+  private final static var WS_NOT_AVAILABLE: String = "Failed to connect to the LexisNexis web service."
+  private final static var PAGE_NOT_FOUND : String = "404 Not Found"
   construct() {
     
     _creditReportDataMgr = CreditReportDataManagerFactory.getCreditReportDataManager(typekey.CreditReportDMExt.TC_PERSISTENT)
@@ -98,47 +100,48 @@ class NCFCreditReportService implements ICreditReportService {
                 }
             }              
             creditReportResponse = new CreditReportResponse
-                                      .Builder()
-                                      .withFirstName(subject.Subject.Name.First)
-                                      .withMiddleName(subject.Subject.Name.Middle)
-                                      .withLastName(subject.Subject.Name.Last)
-                                      .withAddress1(address.House + " " + address.Street1)
-                                      .withAddresscity(address.City)
-                                      .withAddressState(address.State)
-                                      .withAddressZip(address.Postalcode)
-                                      .withStatusCode(statusCode)
-                                      .withStatusDescription(statusDescription)
-                                      .withScore(score.Score as java.lang.String)
-                                      .withCreditBureau(ncfReport.Admin.Vendor.Name as java.lang.String)
-                                      .withScoreDate(ncfReport.Admin.DateRequestCompleted as java.util.Date)
-                                      .withFolderId("100")
-                                      .withDateOfBirth(subject.Subject.BirthDate as java.util.Date)
-                                      .withSocialSecurityNumber(subject.Subject.Ssn)
-                                      .withGender(subject.Subject.Gender as java.lang.String)
-                                      .withScoreDate(ncfReport.Admin.DateRequestCompleted as java.util.Date)
-                                      .withReferenceNumber(ncfReport.Admin.ProductReference)
-                                      .withAddressDiscrepancyInd( isOrderCurrentAddressDiffThanVendors )                                                                                                                                                                             
-                                      .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
-                                      .create()
+                .Builder()
+                .withFirstName(subject.Subject.Name.First)
+                .withMiddleName(subject.Subject.Name.Middle)
+                .withLastName(subject.Subject.Name.Last)
+                .withAddress1(address.House + " " + address.Street1)
+                .withAddresscity(address.City)
+                .withAddressState(address.State)
+                .withAddressZip(address.Postalcode)
+                .withStatusCode(statusCode)
+                .withStatusDescription(statusDescription)
+                .withScore(score.Score as java.lang.String)
+                .withCreditBureau(ncfReport.Admin.Vendor.Name as java.lang.String)
+                .withScoreDate(ncfReport.Admin.DateRequestCompleted as java.util.Date)
+                .withFolderId("100")
+                .withDateOfBirth(subject.Subject.BirthDate as java.util.Date)
+                .withSocialSecurityNumber(subject.Subject.Ssn)
+                .withGender(subject.Subject.Gender as java.lang.String)
+                .withScoreDate(ncfReport.Admin.DateRequestCompleted as java.util.Date)
+                .withReferenceNumber(ncfReport.Admin.ProductReference)
+                .withAddressDiscrepancyInd( isOrderCurrentAddressDiffThanVendors )
+                .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
+                .create()
           }
         }
-      }  
-      catch(e : Exception) {
-        LOGGER.error("Exception occurred: " + e.Cause)
-        
-        creditReportResponse = new CreditReportResponse
-                                    .Builder()
-                                    .withFirstName(creditReportRequest.FirstName)
-                                    .withMiddleName(creditReportRequest.MiddleName)
-                                    .withLastName(creditReportRequest.LastName)
-                                    .withAddress1(creditReportRequest.AddressLine1)
-                                    .withAddresscity(creditReportRequest.AddressCity)
-                                    .withAddressState(creditReportRequest.AddressState as java.lang.String)
-                                    .withAddressZip(creditReportRequest.AddressZip)
-                                    .withStatusCode(CreditStatusExt.TC_ERROR)
-                                    .withStatusDescription("Error obtaining credit report.")
-                                    .create() 
-       }
+      } catch(wse : Exception) {
+          LOGGER.error("Exception occurred: " + wse.Cause)
+          if(wse typeis FileNotFoundException || wse typeis WebServiceException || wse.Message.containsIgnoreCase(PAGE_NOT_FOUND)){
+            throw new DisplayableException(WS_NOT_AVAILABLE, wse)
+          }
+          creditReportResponse = new CreditReportResponse
+            .Builder()
+            .withFirstName(creditReportRequest.FirstName)
+            .withMiddleName(creditReportRequest.MiddleName)
+            .withLastName(creditReportRequest.LastName)
+            .withAddress1(creditReportRequest.AddressLine1)
+            .withAddresscity(creditReportRequest.AddressCity)
+            .withAddressState(creditReportRequest.AddressState as java.lang.String)
+            .withAddressZip(creditReportRequest.AddressZip)
+            .withStatusCode(CreditStatusExt.TC_ERROR)
+            .withStatusDescription("Error obtaining credit report.")
+            .create()
+        }
     }
             
     // Add new record to cache

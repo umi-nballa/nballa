@@ -65,6 +65,26 @@ class CPBuildingUtil {
       return false
   }
 
+  public static function setRoofDeckDefaults(bldg:CPBuilding):boolean
+  {
+    if(bldg?.Building?.YearBuilt>=2002)
+    {
+      if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+      else
+      {
+        if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+        else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+        else if(bldg.Building.NumStories>6)
+            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+      }
+    }
+
+    return true
+  }
+
   public static function setStoryBasedDefaults(bldg:CPBuilding):boolean
   {
     /*
@@ -105,6 +125,25 @@ If Roof Covering does not = Reinforced Concrete then no default response.
 
       bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
     }
+
+    if(bldg?.Building?.NumStories<=3)
+      bldg.ResQuestions.intpresdes="Enclosed"
+
+    if(bldg?.Building?.YearBuilt>=2002)
+    {
+      if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+      else
+      {
+        if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+        else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+        else if(bldg.Building.NumStories>6)
+            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+      }
+    }
+
     return true
   }
 
@@ -135,7 +174,7 @@ Make response editable.
 
     if(bldg?.Building?.YearBuilt>=2002)
     {
-      if(bldg.Building.RoofType==typekey.RoofType.TC_REINFORCEDCONCRETE_EXT)
+      if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
         bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
       else
       {
@@ -147,6 +186,9 @@ Make response editable.
             bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
       }
     }
+    else
+      bldg.ResQuestions.roofdk = null;
+
 
     if(bldg.Building.YearBuilt>=2002)
     {
@@ -175,6 +217,13 @@ Default response to B if Building Address county = All Other Counties
     {
       bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_TERRAINB//"B"
     }
+
+
+    /*Only display when Windstorm, when # stories = 1  OR = 2 OR = 3
+    Only display when Year Built =>2002.*/
+
+    if(bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.intpresdes="Enclosed"
 
     return true
   }

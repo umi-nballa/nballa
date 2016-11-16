@@ -82,6 +82,17 @@ class CPBuildingUtil {
       }
     }
 
+
+    if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+    {
+      if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      if(bldg.Building.NumStories>=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+
+      bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+    }
+
     return true
   }
 

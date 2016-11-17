@@ -136,8 +136,9 @@ public class CreditReportUtil {
     
       result = period.HomeownersLine_HOEExists
           && primaryNamedInsured typeis Person
-          && (primaryNamedInsured.DateOfBirth == null || primaryNamedInsured.Age >= params.CreditReportMinimumAge)
-          && !(primaryNamedInsured.PrimaryAddress.State.Code == "CA" || primaryNamedInsured.PrimaryAddress.State.Code == "HI")
+          //&& (primaryNamedInsured.DateOfBirth == null || primaryNamedInsured.Age >= params.CreditReportMinimumAge)
+          && !(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State.Code == "CA" ||
+              period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State.Code == "HI")
       
       if (_logger.DebugEnabled) {
         _logger.debug("Required flag: " + result)

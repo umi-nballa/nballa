@@ -8,7 +8,7 @@
     <LocationEntryPoint
       signature="HOFCRADisclosurePopup()"/>
     <LocationEntryPoint
-      signature="HOFCRADisclosurePopup(firstname:String,lastname:String,middlename:String,submissionnumber:String,effectivedate:java.util.Date,period:PolicyPeriod,creditreportcontact:PolicyContactRole,address:Address,hasPrimaryNamedInsuredMoved:boolean,hasPrimaryNamedInsuredNameChanged:boolean)"/>
+      signature="HOFCRADisclosurePopup(firstname:String,lastname:String,middlename:String,submissionnumber:String,effectivedate:java.util.Date,period:PolicyPeriod,creditreportcontact:PolicyContactRole,address:Address,hasPrimaryNamedInsuredMoved:boolean,hasPrimaryNamedInsuredNameChanged:boolean,ClueProperty:una.integration.service.gateway.clue.CluePropertyInterface)"/>
     <Variable
       initialValue="firstname"
       name="firstname"
@@ -49,6 +49,10 @@
       initialValue="period"
       name="period"
       type="PolicyPeriod"/>
+    <Variable
+      initialValue="una.integration.service.gateway.plugin.GatewayPlugin.makeCLUEGateway()"
+      name="ClueProperty"
+      type="una.integration.service.gateway.clue.CluePropertyInterface"/>
     <Screen>
       <ListViewPanel>
         <Row>
@@ -90,7 +94,7 @@
       <DetailViewPanel>
         <InputColumn>
           <ButtonInput
-            action="una.pageprocess.credit.CreditReportScreen.orderCreditReport(creditreportcontact,period,hasPrimaryNamedInsuredMoved,hasPrimaryNamedInsuredNameChanged,address,firstname,middlename,lastname);CurrentLocation.cancel()"
+            action="performcall(ClueProperty)//ClueProperty!=null?ClueProperty.orderClueProperty(period);CurrentLocation.commit():una.pageprocess.credit.CreditReportScreen.orderCreditReport(creditreportcontact,period,hasPrimaryNamedInsuredMoved,hasPrimaryNamedInsuredNameChanged,address,firstname,middlename,lastname);CurrentLocation.cancel()"
             align="right"
             available="true"
             boldLabel="true"
@@ -112,5 +116,17 @@
         </InputColumn>
       </DetailViewPanel>
     </Screen>
+    <Code><![CDATA[function performcall(clue:una.integration.service.gateway.clue.CluePropertyInterface):void
+{
+  if(clue!=null)
+    {
+    ClueProperty.orderClueProperty(period);CurrentLocation.commit()
+    }
+  else
+   {
+     una.pageprocess.credit.CreditReportScreen.orderCreditReport(creditreportcontact,period,hasPrimaryNamedInsuredMoved,hasPrimaryNamedInsuredNameChanged,address,firstname,middlename,lastname);
+   CurrentLocation.cancel()
+}  
+}]]></Code>
   </Popup>
 </PCF>

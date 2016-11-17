@@ -14,6 +14,9 @@
             <workmanagerjndi>default</workmanagerjndi>
             <gwthreadpooltype>COMMONJ</gwthreadpooltype>
         </threadpool>
+        <threadpool name="propertyinspections" disabled="false">
+            <gwthreadpooltype>FORKJOIN</gwthreadpooltype>
+        </threadpool>
     </threadpools>
     <integrations>
         <!--<cii:file-integration name="exampleFileIntegration" disabled="true">-->
@@ -88,7 +91,96 @@
         <!--<value>v3</value>-->
         <!--</parameters>-->
         <!--</cii:custom-integration>-->
-        <cii:custom-integration name="OnBaseMessageBroker" disabled="false" >
+        <cii:file-integration name="PropertyInspectionsInbound" disabled="false">
+            <pluginhandler>PropertyInspectionsFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspections</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>/tmp/FileIntegrations/propertyinspections/inbound/incoming</incoming>
+            <processing>/tmp/FileIntegrations/propertyinspections/inbound/processing</processing>
+            <error>/tmp/FileIntegrations/propertyinspections/inbound/error</error>
+            <done>/tmp/FileIntegrations/propertyinspections/inbound/done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsInboundDev" disabled="false">
+            <pluginhandler>PropertyInspectionsFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspections</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\PropertyInspectionsInbound\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\PropertyInspectionsInbound\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\PropertyInspectionsInbound\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\PropertyInspectionsInbound\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsInboundDev02" disabled="false">
+            <pluginhandler>PropertyInspectionsFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspections</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\PropertyInspectionsInbound\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\PropertyInspectionsInbound\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\PropertyInspectionsInbound\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\PropertyInspectionsInbound\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsInboundASM" disabled="false">
+            <pluginhandler>PropertyInspectionsFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspections</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\PropertyInspectionsInbound\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\PropertyInspectionsInbound\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\PropertyInspectionsInbound\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\PropertyInspectionsInbound\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsInboundQAT" disabled="false">
+            <pluginhandler>PropertyInspectionsFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspections</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\PropertyInspectionsInbound\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\PropertyInspectionsInbound\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\PropertyInspectionsInbound\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\PropertyInspectionsInbound\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+	<cii:custom-integration name="OnBaseMessageBroker" disabled="false" >
             <workagentimpl>onbase.plugin.messagebroker.MessageBrokerInboundMessageReceiver.gs</workagentimpl>
             <pollinginterval>15</pollinginterval>
             <throttleinterval>5</throttleinterval>
@@ -102,5 +194,5 @@
                 <value>2</value>
              </parameters>
         </cii:custom-integration>
-        </integrations>
-        </cii:integration>
+    </integrations>
+</cii:integration>

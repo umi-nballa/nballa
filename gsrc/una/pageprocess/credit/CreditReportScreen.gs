@@ -102,7 +102,10 @@ class CreditReportScreen {
     var policyContactRoles = period.PolicyContactRoles.where(\ p -> p.Subtype == "PolicyPriNamedInsured" || p.Subtype == "PolicyAddlNamedInsured")
     var personContactRoles : ArrayList<PolicyContactRole> = new List<PolicyContactRole>()
     for (policyContactRole in policyContactRoles){
-      if(policyContactRole.CompanyName == null and contactDoesNotBelongToStates(policyContactRole.ContactDenorm.PrimaryAddress.State)   ){
+      if(policyContactRole.CompanyName == null){
+          //Commenting below condition as per below defect 
+		  // DE671 # Credit reporting should be available based on Risk state not Policy Mailing Address
+          //and contactDoesNotBelongToStates(policyContactRole.ContactDenorm.PrimaryAddress.State)   ){
         personContactRoles.add(policyContactRole)
       }
     }

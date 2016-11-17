@@ -20,6 +20,7 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _limitedScreenCovLimit : int as LimitedScreenCovLimit
   var _hurricanePercentage : String as HurricanePercentage
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
+  var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -46,6 +47,10 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
     if(dwellingCov typeis HODW_FungiCov_HOE){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
+    }
+
+    if(dwellingCov typeis HODW_SpecificOtherStructure_HOE_Ext){
+      _otherStructuresRentedToOthersLimit = dwellingCov.HODW_IncreasedLimit_HOETerm?.Value
     }
   }
 }

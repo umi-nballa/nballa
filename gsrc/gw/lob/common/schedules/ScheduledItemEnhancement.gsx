@@ -76,12 +76,12 @@ enhancement ScheduledItemEnhancement : entity.ScheduledItem {
     var amendedClause = ServiceLocator.get(ScheduleConfigSource).getAmendedClause(schedule, pattern)
     var whenClause = ServiceLocator.get(ScheduleConfigSource).getWhenClause(schedule, pattern)
 
-    print("## pattern is " + pattern)
+    /*print("## pattern is " + pattern)
     print("## this.ScheduleParent.ScheduledItemMultiPatterns?.contains(pattern) " + this.ScheduleParent.ScheduledItemMultiPatterns?.contains(pattern))
       print("## amendedClause " + amendedClause)
     print("## (this as Coverable).getCoverageConditionOrExclusion(amendedClause) " + (this as Coverable).getCoverageConditionOrExclusion(amendedClause))
     print("## whenClause " + whenClause)
-    print("## schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause) " + schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause))
+    print("## schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause) " + schedule.OwningCoverable.getCoverageConditionOrExclusion(whenClause))*/
 
     return this.ScheduleParent.ScheduledItemMultiPatterns?.contains(pattern)
         and (amendedClause == null or (this as Coverable).getCoverageConditionOrExclusion(amendedClause) != null)

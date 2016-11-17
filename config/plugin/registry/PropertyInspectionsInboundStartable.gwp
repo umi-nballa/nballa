@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<plugin
+  interface="InboundIntegrationStartablePlugin"
+  name="PropertyInspectionsInboundStartable">
+  <plugin-gosu
+    gosuclass="com.guidewire.pl.integration.inbound.file.DefaultFileInboundIntegrationPlugin">
+    <param
+      name="integrationservice"
+      value="PropertyInspectionsInbound"/>
+    <param
+      env="bc_dev"
+      name="integrationservice"
+      value="PropertyInspectionsInboundDev"/>
+    <param
+      env="bc_dev02"
+      name="integrationservice"
+      value="PropertyInspectionsInboundDev02"/>
+    <param
+      env="bc_asm"
+      name="integrationservice"
+      value="PropertyInspectionsInboundASM"/>
+    <param
+      env="bc_qat"
+      name="integrationservice"
+      value="PropertyInspectionsInboundQAT"/>
+  </plugin-gosu>
+</plugin>

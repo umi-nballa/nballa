@@ -140,13 +140,41 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       }
     }
 
+    if(dwelling.DwellingProtectionDetails.GatedCommunity){
+      rateGatedCommunityDiscount(dateRange)
+    }
 
+    rateHigherAllPerilDeductible(dateRange)
 
     updateTotalBasePremium()
   }
 
+  /**
+   *  Function to rate the Deductible Factor
+   */
+  function rateHigherAllPerilDeductible(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateHigherAllPerilDeductible", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE, HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Higher All Peril Deductible Rated Successfully", this.IntrinsicType)
+  }
 
-
+  /**
+   *  Function to rate the Gated Community discount
+   */
+  function rateGatedCommunityDiscount(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateGatedCommunityDiscount", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.GATED_COMMUNITY_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    _logger.debug("Gated Community Discount Rated Successfully", this.IntrinsicType)
+  }
   /**
    * Rate the Special Limits Personal property coverage
    */

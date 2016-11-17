@@ -155,7 +155,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.NumStories"
                 value="cpBuilding.Building.NumStories">
                 <PostOnChange
-                  onChange="cpBuilding.BldgHt=cpBuilding.Building.NumStories*10;una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
+                  onChange="cpBuilding?.BldgHt=cpBuilding?.Building?.NumStories*10;una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
               </TextInput>
               <TextInput
                 align="left"
@@ -216,7 +216,8 @@
                 id="RoofType"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofType"
                 value="cpBuilding.RoofTypeCP ">
-                <PostOnChange/>
+                <PostOnChange
+                  onChange="una.config.CPBuildingUtil.setRoofDeckDefaults(cpBuilding)"/>
               </TypeKeyInput>
               <TypeKeyInput
                 editable="true"
@@ -334,7 +335,7 @@
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Gustwind"
                   required="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.ResQuestions.guswind"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
+                  visible="cpBuilding.ResQuestions.windstormexcl==false// || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
                   <PostOnChange/>
                 </TypeKeyInput>
                 <TypeKeyInput
@@ -682,15 +683,15 @@
               <TypeKeyInput
                 align="left"
                 editable="true"
-                id="numsw"
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numsw"
-                value="cpBuilding.numsw"/>
-              <TypeKeyInput
-                align="left"
-                editable="true"
                 id="numfit"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Numfit"
                 value="cpBuilding.numfit"/>
+              <TypeKeyInput
+                align="left"
+                editable="true"
+                id="numsw"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numsw"
+                value="cpBuilding.numsw"/>
               <TypeKeyInput
                 align="left"
                 editable="true"

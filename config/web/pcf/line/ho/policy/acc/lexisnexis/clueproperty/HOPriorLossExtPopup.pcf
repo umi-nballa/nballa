@@ -34,15 +34,24 @@
         def="HOPriorLossDetailsExtDV(thisLoss,openForEdit)"
         id="lossDetails"/>
       <PanelRef
-        def="HOPriorLossPaymentExtLV(thisLoss,openForEdit)"
+        def="HOPriorLossPaymentExtLV(thisLoss,openForEdit,policyPeriod)"
         id="PaymentDetails">
         <TitleBar
           title="displaykey.Accelerator.LexisNexis.Clue.Property.Payout"/>
         <Toolbar>
-          <IteratorButtons
+          <!-- <IteratorButtons
             addVisible="CurrentLocation.InEditMode"
             iterator="PaymentDetails.HOPriorLossPaymentExtLV"
-            removeVisible="CurrentLocation.InEditMode"/>
+            removeVisible="CurrentLocation.InEditMode"/> -->
+          <AddButton
+            id="add"
+            iterator="PaymentDetails.HOPriorLossPaymentExtLV"
+            label="&quot;Add&quot;"/>
+          <RemoveButton
+            id="remove"
+            iterator="PaymentDetails.HOPriorLossPaymentExtLV"
+            label="&quot;Delete Loss&quot;"
+            visible="deleteLossVisible()"/>
         </Toolbar>
       </PanelRef>
     </Screen>
@@ -53,6 +62,11 @@
   pPeriod.HomeownersLine_HOE.addToHOPriorLosses_Ext(newLoss)
   
   return newLoss
+}
+
+function deleteLossVisible() : boolean{
+   if(thisLoss.OriginLoss.Code == typekey.OriginOfLoss_Ext.TC_OTHER.Code or thisLoss.OriginLoss.Code == typekey.OriginOfLoss_Ext.TC_AGENT){ return true}
+  return false
 }]]></Code>
   </Popup>
 </PCF>

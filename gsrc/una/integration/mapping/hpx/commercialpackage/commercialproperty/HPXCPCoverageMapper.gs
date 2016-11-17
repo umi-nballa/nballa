@@ -14,8 +14,14 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
 class HPXCPCoverageMapper extends HPXCoverageMapper{
   override function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
-    // Businessowners Line does not have Scheduled Items
-    return null
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    switch (currentCoverage.PatternCode) {
+      case "CPWindstormProtectiveDevices_EXT" :
+          var cpWindstormProtectiveDevices = createCPWindstormProtectiveDevices(currentCoverage, previousCoverage, transactions)
+          for (item in cpWindstormProtectiveDevices) { limits.add(item)}
+          break
+    }
+    return limits
   }
 
   override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
@@ -57,4 +63,19 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
     return result
   }
 
+  function createCPWindstormProtectiveDevices(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.CoverageCd = currentCoverage.PatternCode
+    limit.CoverageSubCd = ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.FormatText = ""
+    limit.LimitDesc = "PropertyDescription:" + (currentCoverage.OwningCoverable as CPBuilding).Building.Description +
+                      "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + " |"
+    limit.WrittenAmt.Amt = 0.00
+    limits.add(limit)
+    return limits
+  }
 }

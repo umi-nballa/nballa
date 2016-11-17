@@ -198,7 +198,6 @@ class QueryPolicyAPI {
       additionalNamedInsuredContacts.each( \ contact -> additionalNamedInsureds.add(new ContactInfoForOnBase(contact.FirstName, contact.LastName)))
     }
 
-    logger.debug("Additional Named insured: " + additionalNamedInsureds.join("\nAdditional Named insured: "))
     info.AdditionalNamedInsured = additionalNamedInsureds
 
     info.ProductName =  policy.Product.DisplayName

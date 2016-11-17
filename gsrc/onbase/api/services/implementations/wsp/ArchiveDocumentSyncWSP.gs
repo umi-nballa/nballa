@@ -9,6 +9,8 @@ uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfac
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.anonymous.elements.KeywordsArchiveDocument_StandAlone
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.ArchiveDocument
 uses org.apache.commons.codec.binary.Base64
+uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.PrimaryInsured
+uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.KeywordsArchiveDocument
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -91,6 +93,7 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     archiveKeywords.Term_Collection.String[0] = adaptor.Term
     archiveKeywords.Underwriter_Collection.String[0] = adaptor.Underwriter
 
+
     /*if (adaptor.ClaimSecurityRole != null) {           //TODO: OnBase - commented out awaiting taxonomy
       foreach (role in adaptor.ClaimSecurityRole.split(",") index i) {
         archiveKeywords.ClaimSecurityRole_Collection.String[i] = role
@@ -100,7 +103,18 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
 
     // MIKG keywords
     var archiveMIKGs = new KeywordsArchiveDocument_Multi_Instance_Keyword_Group()
+
+//    for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
+//      var addNamedInsured = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.AdditionalInsured()
+//      addNamedInsured.AdditionalFirstName = ""
+//      addNamedInsured.AdditionalMiddleName = ""
+//      addNamedInsured.AdditionalLastName = ""
+//      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured.add(addNamedInsured)
+//    }
+
+
     //TODO: OnBase - commented out awaiting taxonomy
+    //archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured[0] = adaptor.AdditionalNamedInsureds
 /*    archiveMIKGs.Contact_Collection.Contact[0].ContactID = adaptor.ContactID
     archiveMIKGs.Contact_Collection.Contact[0].ContactName = adaptor.ContactName
     archiveMIKGs.Matter_Collection.Matter[0].MatterID = adaptor.MatterID
@@ -128,8 +142,8 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
 //      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ExposureID     //TODO: OnBase - commented out awaiting taxonomy
       index++
     }*/
+   // archiveMIKGs.PrimaryInsured_Collection = adaptor.PrimaryFirstName
     archiveDocument.DocumentArchiveData.Keywords.Multi_Instance_Keyword_Group = archiveMIKGs
-
     // Make request
     var response = service.ArchiveDocument(archiveDocument)
 

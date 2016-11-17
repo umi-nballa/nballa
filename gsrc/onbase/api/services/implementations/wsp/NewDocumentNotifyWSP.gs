@@ -197,7 +197,7 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
         doc.Author = user
         //doc.Recipient = recipient
         doc.Status = typekey.DocumentStatusType.TC_FINAL // Hard-coding this status, it might be needed. cmattox 11/10/16
-        doc.Type = typekey.DocumentType.TC_ONBASE // Hard-coding this status, it might be needed. cmattox 11/10/16
+        doc.Type = typekey.DocumentType.TC_ONBASE // Hard-coding this it might be needed. cmattox 11/10/16
         doc.MimeType = properties.MimeType
         doc.DateModified = date
         doc.Policy = policy

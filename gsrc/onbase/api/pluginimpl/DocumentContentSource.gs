@@ -169,7 +169,7 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     keywords.add(new Keyword("description", document.Description))
     keywords.add(new Keyword("status", document.Status.Code))
     keywords.add(new Keyword("recipient", document.Recipient))
-
+    //TODO: Need to AUTOFILL KEYWORDS
     // Add policy information.
     if (document.PolicyPeriod != null) {
       keywords.add(new Keyword("policyid", document.PolicyPeriod.PolicyNumber))

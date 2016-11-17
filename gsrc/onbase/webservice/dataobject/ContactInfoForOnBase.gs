@@ -22,4 +22,5 @@ final class ContactInfoForOnBase {
     _firstName = firstName
     _lastName = lastName
   }
+
 }

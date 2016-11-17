@@ -42,6 +42,7 @@ public enum KeywordMap {
   additionalfirstname("Additional First Name"),
   additionalmiddlename("Additional Middle Name"),
   additionallastname("Additional Last Name"),
+  additionalnamedinsureds("Additional Named Insureds"),
   agencycode("Agency Code"),
   csr("CSR"),
   description("Description"),
@@ -69,7 +70,33 @@ public enum KeywordMap {
   supressactivity("Supress Activity"),
   term("Term"),
   transactioneffectivedate("Transaction Effective Date"),
-  underwriter("Underwriter");
+  underwriter("Underwriter"),
+  /*Previous values */
+
+  claimid("Claim Number"),
+  policyid("Policy Number"),
+  contactid("Contact ID"),
+  contactname("Contact Name"),
+  insured("Insured Name"),
+  exposureid("Exposure ID"),
+  exposurename("Exposure Name"),
+  matterid("Matter ID"),
+  mattername("Matter Name"),
+  activityid("Activity ID"),
+  checkid("Check ID"),
+  reserveid("Reserve ID"),
+  producerid("Producer ID"),
+  linktype("GW Link Type"),
+  linkvalue("GW Link ID"),
+  status("Status"),
+  filename("GW File Name"),
+  mimetype("Mime Type"),
+  documenttype("Document Type"),
+  documentidforrevision("Document Id For Revision"),
+  recipient("Recipient"),
+  claimsecurityrole("Claim Security Role"),
+  asyncdocumentid("Async Document ID");
+
 
   private construct(kwName : String) {
     obName = kwName

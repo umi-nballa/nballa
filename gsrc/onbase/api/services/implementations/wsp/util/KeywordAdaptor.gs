@@ -42,7 +42,7 @@ uses onbase.api.services.datamodels.OnBaseDocument
  */
 class KeywordAdaptor {
 
-  private var _keywordMap = new HashMap<KeywordMap, String>();
+  private var _keywordMap = new HashMap<KeywordMap, Object>();
 
   /**
    * @param keywords List of keywords to convert
@@ -77,6 +77,9 @@ class KeywordAdaptor {
    * Value for keyword AdditionalLastName or null if unset.
    */
   property get AdditionalLastName() : String { return _keywordMap.get(KeywordMap.additionalmiddlename) }
+
+  //TODO: are we using this?
+  property get AdditionalNamedInsureds() : String[] { return _keywordMap.get(KeywordMap.additionalnamedinsureds) as String[]}
 
   /**
    * Value for keyword AgencyCode or null if unset.

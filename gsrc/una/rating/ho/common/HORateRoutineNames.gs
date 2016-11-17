@@ -46,7 +46,7 @@ public final class HORateRoutineNames {
   public static final var EXECUTIVE_COVERAGE_RATE_ROUTINE : String = "UNAHOExecutiveCoverageRateRoutine"
   public static final var SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE : String = "UNAHOSuperiorConstructionDiscount"
   public static final var HAIL_RESISTANT_ROOF_CREDIT_RATE_ROUTINE : String = "UNAHOHailResistantRoofCreditRateRoutine"
-  public static final var HIGHER_ALL_PERIL_DEDUCTIBLE : String = "UNAHOHigherAllPerilDeductible"
+  public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE : String = "UNAHOHigherAllPerilDeductible"
   public static final var AFFINITY_DISCOUNT_RATE_ROUTINE : String = "UNAHOAffinityDiscountRateRoutine"
   public static final var AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE : String = "UNAHOAgeOfHomePremiumModifierRateRoutine"
   public static final var PREFERRED_BUILDER_CREDIT_RATE_ROUTINE : String = "UNAHOPreferredBuilderCreditRateRoutine"
@@ -61,7 +61,6 @@ public final class HORateRoutineNames {
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovGroup1RateRoutine"
   public static final var ORDINANCE_OR_LAW_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovGroup1RateRoutine"
   public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_COV_GROUP1_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsCovGroup1RateRoutine"
-  public static final var SCHEDULED_PERSONAL_PROPERTY_COV_GROUP1_ROUTINE_NAME : String = "UNAHOScheduledPersonalPropertyCovGroup1RateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIGroup1RateRoutine"
   public static final var PERSONAL_INJURY_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup1RateRoutine"
@@ -78,6 +77,7 @@ public final class HORateRoutineNames {
   public static final var VACANT_DWELLINGS_RATE_ROUTINE : String = "UNAHOVacantDwellingsRateRoutine"
   public static final var BUILDING_CODE_EFFECTIVENESS_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeEffectivenessGradingCreditRateRoutine"
   public static final var ADDITIONAL_RESIDENCES_OCCUPIED_BY_INSURED_RATE_ROUTINE : String ="UNAHOAdditionalResidenceOccupiedByInsuredRateRoutine"
+  public static final var PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE : String = "UNAHOPermittedIncidentalOccupanciesRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"

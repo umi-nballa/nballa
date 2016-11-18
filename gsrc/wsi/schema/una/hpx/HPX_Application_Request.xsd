@@ -9,7 +9,7 @@
 	<xsd:complexType name="OtherIdentifierType">
 		<xsd:sequence>
 			<xsd:element name="OtherIdTypeCd" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="OtherId" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="OtherId" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ItemIdInfoType">
@@ -426,6 +426,7 @@
 			<xsd:element name="BaseRateAmt" type="BaseRateAmtType" minOccurs="0"/>
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageCd" type="xsd:string"/>
+            <xsd:element name="Coverable" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="DeductibleType">
@@ -443,6 +444,7 @@
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CoverageSubCd" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Coverable" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="OptionType">

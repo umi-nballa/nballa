@@ -78,7 +78,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var effectiveDate = gw.web.job.policychange.StartPolicyChangeUIHelper.applyEffectiveTimePluginForPolicyChange( policyPeriod, policyChange, policyPeriod.PeriodStart)
       policyChange.startJob(policyPeriod.Policy, effectiveDate)
       var policyChangePeriod = policyChange.Periods.length == 1 ? policyChange.Periods[0] : null
-      policyChangePeriod.LastInspectionDate_Ext= lastInspectionDate
+      policyChangePeriod.DateLastInspection_Ext= lastInspectionDate
       policyChangePeriod.addNote(NoteTopicType.TC_GENERAL, NOTES_SUBJECT,policyRecord.Notes)
       policyChangePeriod.PolicyChangeProcess.requestQuote()
       policyChangePeriod.markValidQuote()

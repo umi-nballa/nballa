@@ -28,10 +28,11 @@ class PropertyInspection {
       policyPeriod = Query.make(PolicyPeriod).compare(PolicyPeriod#PolicyNumber, Equals, policyNumber).select().AtMostOneRow;
     }
 
-    policyPeriod = policyPeriod.getSlice(policyPeriod.EditEffectiveDate)
-    var  propertyInspectionData= new PropertyInspectionData()
 
     if(policyPeriod!=null && policyPeriod.TermNumber==1){
+      policyPeriod = policyPeriod.getSlice(policyPeriod.EditEffectiveDate)
+      var  propertyInspectionData= new PropertyInspectionData()
+
       propertyInspectionData.Retrieve_Date=""
       propertyInspectionData.A00_Pnum=policyPeriod.PolicyNumber
       propertyInspectionData.A06_Edition=policyPeriod.PolicyTerm.DisplayName

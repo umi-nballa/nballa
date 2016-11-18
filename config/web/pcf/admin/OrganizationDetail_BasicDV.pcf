@@ -111,6 +111,12 @@
         value="organization.PrintOnDec_Ext"/>
       <BooleanRadioInput
         editable="perm.Organization.editagency(organization)"
+        id="CommissionOnMaster"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.CommissionOnMaster_Ext"
+        value="organization.CommissionOnMaster_Ext"
+        visible="organization?.Type == typekey.BusinessType.TC_AGENCY"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
         id="SendCommission"
         label="displaykey.Web.Admin.OrganizationDetail.BasicDV.SendCommission_Ext"
         value="organization.SendCommission_Ext"/>
@@ -119,6 +125,31 @@
         id="SuppressPrint"
         label="displaykey.Web.Admin.OrganizationDetail.BasicDV.SuppressPrint_Ext"
         value="organization.SuppressPrint_Ext"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="EligibleforAffinity"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.EligibleForAffinity_Ext"
+        value="organization.EligibleForAffinity_Ext"/>
+      <TypeKeyInput
+        editable="perm.Organization.editagency(organization)"
+        id="UWCategory_Ext"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.UWCategory_Ext"
+        required="false"
+        value="organization.UWCategory_Ext"
+        visible="true">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
+      <TypeKeyInput
+        editable="perm.Organization.editagency(organization)"
+        id="RewardLevel_Ext"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.RewardLevel_Ext"
+        required="false"
+        value="organization.RewardLevel_Ext"
+        visible="true">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
       <InputDivider/>
       <Input
         boldLabel="true"

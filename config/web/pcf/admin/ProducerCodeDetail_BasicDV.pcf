@@ -13,8 +13,23 @@
       name="commissionPlans"
       recalculateOnRefresh="true"/>
     <Variable
+      initialValue="producerCode.Organization"
+      name="organization"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="new gw.web.admin.OrganizationUIHelper(organization)"
+      name="orgHelper"
+      recalculateOnRefresh="true"/>
+    <Variable
       initialValue="new gw.pcf.contacts.AddressAutoFillSearchOwner(producerCode.Address, true)"
       name="addrAutoFillSearchOwner"/>
+    <Variable
+      initialValue="orgHelper.getAllOrganizationUsers()"
+      name="organizationUsers"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="organizationUsers.where(\u -&gt; u.Contact != organization.Contact).map(\u -&gt; u.Contact).toTypedArray()"
+      name="userContacts"/>
     <InputColumn>
       <Input
         editable="true"
@@ -84,12 +99,57 @@
         visible="producerCode.ProducerStatus == &quot;Terminating&quot; ||                             producerCode.ProducerStatus == &quot;Terminated&quot;"/>
       <InputSetRef
         def="AddressOwnerAddressInputSet(addrAutoFillSearchOwner)"/>
-      <InputDivider/>
       <TypeKeyInput
         id="Currency"
         label="displaykey.Web.Admin.ProducerCodeDetail.Currency"
         value="producerCode.SingleCurrencyCommissionPlanCurrency"
         visible="not gw.api.util.CurrencyUtil.isMultiCurrencyMode()"/>
+      <BooleanRadioInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="UseDirectDeposit"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.UseDirectDeposit_Ext"
+        value="producerCode.UseDirectDeposit_Ext"/>
+      <BooleanRadioInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="PrintOnDec"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.PrintOnDec_Ext"
+        value="producerCode.PrintOnDec_Ext"/>
+      <BooleanRadioInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="SendCommission"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.SendCommission_Ext"
+        value="producerCode.SendCommission_Ext"/>
+      <BooleanRadioInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="SuppressPrint"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.SuppressPrint_Ext"
+        value="producerCode.SuppressPrint_Ext"/>
+      <BooleanRadioInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="EligibleforAffinity"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.EligibleForAffinity_Ext"
+        value="producerCode.EligibleForAffinity_Ext"/>
+      <TypeKeyInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="UWCategory_Ext"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.UWCategory_Ext"
+        required="false"
+        value="producerCode.UWCategory_Ext"
+        visible="true">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
+      <TypeKeyInput
+        editable="true //perm.Organization.editagency(producerCode)"
+        id="RewardLevel_Ext"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.RewardLevel_Ext"
+        required="false"
+        value="producerCode.RewardLevel_Ext"
+        visible="true">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
+      <InputDivider/>
       <Label
         label="displaykey.Web.Admin.ProducerCodeDetail.ParticipantsAssignmentLogic"/>
       <Input
@@ -111,6 +171,84 @@
         value="producerCode.Branch">
         <PostOnChange/>
       </PickerInput>
+      <InputDivider/>
+      <Input
+        boldLabel="true"
+        id="PrimaryContactLabel"
+        label="displaykey.Web.Admin.ProducerCodeDetail.PrimaryContact"
+        value="producerCode.Contact_Ext"
+        visible="not CurrentLocation.InEditMode"/>
+      <Input
+        boldLabel="true"
+        hideChildrenIfReadOnly="false"
+        id="ChangePrimaryContactButton"
+        label="displaykey.Web.Admin.ProducerCode.PrimaryContact"
+        value="displaykey.Web.Policy.Account.PrimaryInsured.ChangeTo"
+        visible="CurrentLocation.InEditMode">
+        <MenuItem
+          id="OtherExistingContact"
+          label="displaykey.Web.Policy.Contact.ExistingContact">
+          <MenuItemIterator
+            elementName="contact"
+            id="UnassignedContactIterator"
+            value="userContacts">
+            <IteratorSort
+              sortBy="contact.DisplayName"
+              sortOrder="1"/>
+            <MenuItem
+              action="producerCode.Contact_Ext = contact"
+              id="UnassignedContact"
+              label="contact.DisplayName"/>
+          </MenuItemIterator>
+          <PickerMenuItem
+            action="UserSearchPopup.push(producerCode.Organization)"
+            id="MoreUser"
+            label="displaykey.Web.ContactDetail.MoreUser"
+            onPick="producerCode.Contact_Ext = PickedValue.Contact"
+            visible="producerCode.AllUsers.Count &gt; 10"/>
+        </MenuItem>
+        <MenuItem
+          action="NewOrganizationUserPopup.push(producerCode.Organization)"
+          id="NewUser"
+          label="displaykey.Web.ContactDetail.NewUser"
+          visible="perm.User.create"/>
+        <PickerMenuItem
+          action="NewContactPopup.push(typekey.ContactType.TC_COMPANY)"
+          id="NewCompany"
+          label="displaykey.Web.ContactDetail.NewCompany"
+          onPick="organization.Contact = PickedValue"/>
+        <PickerMenuItem
+          action="NewContactPopup.push(typekey.ContactType.TC_PERSON)"
+          id="NewPerson"
+          label="displaykey.Web.ContactDetail.NewPerson"
+          onPick="organization.Contact = PickedValue"/>
+      </Input>
+      <InputSet>
+        <Input
+          action="OrganizationContactForward.push( producerCode.Contact_Ext )"
+          id="ContactName"
+          label="displaykey.Web.Policy.Account.Applicant.Name"
+          value="producerCode.Contact_Ext"/>
+        <InputSetRef
+          def="GlobalPhoneInputSet(new gw.api.phone.BasicPhoneOwner(new gw.api.phone.ContactPhoneDelegate(producerCode.Contact_Ext, Contact#WorkPhone), displaykey.Web.ContactDetail.Phone))"
+          editable="true"
+          id="WorkPhone"/>
+        <Label
+          label="displaykey.Web.ContactDetail.Location"/>
+        <InputSetRef
+          def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(producerCode.Contact_Ext.PrimaryAddress, false, true))"/>
+      </InputSet>
+      <Input
+        editable="true"
+        id="AddressType"
+        label="displaykey.Web.AddressDetail.AddressType"
+        required="true"
+        value="producerCode.Contact_Ext.PrimaryAddress.AddressType"/>
+      <Input
+        editable="true"
+        id="AddressDescription"
+        label="displaykey.Web.AddressDetail.Description"
+        value="producerCode.Contact_Ext.PrimaryAddress.Description"/>
     </InputColumn>
   </DetailViewPanel>
 </PCF>

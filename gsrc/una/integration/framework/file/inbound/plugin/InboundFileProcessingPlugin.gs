@@ -8,6 +8,7 @@ uses una.integration.framework.file.inbound.model.FileRecords
 uses una.integration.framework.persistence.context.PersistenceContext
 uses una.integration.framework.util.BeanIOHelper
 uses una.integration.framework.util.ErrorCode
+uses una.integration.framework.util.PropertiesHolder
 uses una.logging.UnaLoggerCategory
 
 /**
@@ -17,7 +18,7 @@ uses una.logging.UnaLoggerCategory
  */
 abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerPlugin, IFileProcessingPlugin {
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
-  final static var USER = "su"
+  final static var INTEGRATION_USER = PropertiesHolder.getProperty("INTEGRATION_USER")
 
   /**
    * Validates the batch header record for mandatory information to process the detail records.
@@ -29,8 +30,8 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
   /**
    * Validates the file header record for mandatory information to process the detail records.
    */
-  override function validateFileHeader(headerRecord: FileRecordInfo) {
-    _logger.debug("Header Record validation is not implemented for the Stream: " + BeanIOStream)
+  override function validateFile(fileName: String, fileRecords: FileRecords) {
+    _logger.debug("File basic validation is not implemented for the Stream: " + BeanIOStream)
   }
 
   /**
@@ -51,9 +52,7 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
     var fileName = (data as java.nio.file.Path ).toAbsolutePath().getFileName() as String
     var containsHeader = fileRecords.HeaderRecord != null
     var containsBatchHeader = fileRecords.Batches*.BatchHeaderRecord.first() != null
-    if (containsHeader && !fileRecords.HeaderRecord.Failed) {
-      validateFileHeader(fileRecords.HeaderRecord)
-    }
+    validateFile(fileName, fileRecords)
     if (containsHeader && fileRecords.HeaderRecord.Failed) {
       var fieldError1 = new FieldErrorInformation() {:FieldName = "File Path", :FieldValue = filePath}
       var fieldError2 = fileRecords.HeaderRecord.FieldErrorInfo
@@ -62,10 +61,7 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
     PersistenceContext.runWithNewTransaction( \-> {
       gw.transaction.Transaction.runWithNewBundle(\bundle -> {
         fileRecords.Batches.each( \ batch -> {
-          if (containsBatchHeader && !batch.BatchHeaderRecord.Failed) {
-            validateBatchHeader(batch.BatchHeaderRecord)
-          }
-          if (!containsBatchHeader or (!batch.BatchHeaderRecord?.Failed)) {
+          if (!(batch.BatchHeaderRecord.Failed?:false)) {
             batch.DetailRecords.each( \ detailRecord -> {
               if (!detailRecord.Failed) {
                 processDetailRecord(fileName, fileRecords.HeaderRecord, batch.BatchHeaderRecord, detailRecord, bundle)
@@ -75,7 +71,7 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
         })
         // Failed records processing
         processFailedRecords(fileRecords, data as java.nio.file.Path)
-      }, USER)
+      }, INTEGRATION_USER)
     })
   }
 

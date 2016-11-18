@@ -189,7 +189,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     var pHolderType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
     var policyHolder = claim.Subject.firstWhere(\c -> c.Classification == pHolderType)
     if (policyHolder != null){
-      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + policyHolder.Name.Middle
+      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + (policyHolder.Name.Middle!=null? policyHolder.Name.Middle:"")
       var phAddress = policyHolder.Address.first()
       priorLoss.AddressType = phAddress.Type as String
       priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")

@@ -1,29 +1,25 @@
 <?xml version="1.0"?>
 <CoveragePattern
   codeIdentifier="SupplExtendedReportingPeriodEndrsmnt_EXT"
-  coverageCategory="BP7LineOptionalGrp_EXT"
+  coverageCategory="BP7SerpGrp_EXT"
   coverageSubtype="BP7LineCov"
-  coveredPartyType="ThirdParty"
+  coveredPartyType="FirstParty"
   existence="Electable"
   lookupTableName="BP7LineCov"
   owningEntityType="BP7BusinessOwnersLine"
   policyLinePattern="BP7Line"
-  priority="6460"
+  priority="9560"
   public-id="SupplExtendedReportingPeriodEndrsmnt_EXT"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return BP7BusinessOwnersLine.BP7CyberOneCov_EXTExists]]></AvailabilityScript>
   <CovTerms>
-    <DirectCovTermPattern
-      aggregationModel="po"
+    <GenericCovTermPattern
       codeIdentifier="ExtendedPeriodReportingDate_EXT"
-      coverageColumn="DirectTerm1"
+      coverageColumn="DateTerm1"
       lookupTableName="BP7LineCovTerm"
-      modelType="Limit"
+      modelType="Other"
       priority="100"
       public-id="ExtendedPeriodReportingDate_EXT"
-      required="true"
-      restrictionModel="bipd"
-      valueType="count">
-      <LimitsSet/>
-    </DirectCovTermPattern>
+      required="true"/>
   </CovTerms>
 </CoveragePattern>

@@ -66,7 +66,7 @@ class AddressCountrySettings {
   private function shouldChangeCityLabel(): boolean{
     var theExcludeList = new ArrayList<String>() {typekey.Country.TC_US.Code}
     var res = false
-    if(!typekey.Country.TC_US.Code.equalsIgnoreCase(TheCountry.Code)){
+    if(TheCountry.Code!= null && !typekey.Country.TC_US.Code.equalsIgnoreCase(TheCountry.Code)){
       res = true
     }
     return res

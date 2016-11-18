@@ -94,13 +94,18 @@
             label="displaykey.Web.ExcelExport.ImportMenu"
             visible="openForEdit"/>
         </ToolbarButton>
-        <CheckedValuesToolbarButton
+        <!-- <CheckedValuesToolbarButton
           available="true"
-          checkedRowAction="cloneBuilding(CheckedValue.Buildings[0]);jobWizardHelper.Wizard.refreshCurrentStep()"
+          checkedRowAction="jobWizardHelper.Wizard.refreshCurrentStep();CheckedValue.createAndAddBuilding(jobWizardHelper)//;cloneBuilding(CheckedValue.build);"
           id="clonebldg"
           iterator="CPBuildingsAndLocationsLV.CPBuildingsAndLocationsLV"
           label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
-          visible="cpLine.AssociatedPolicyPeriod.Status == &quot;Draft&quot;"/>
+          visible="true"/> -->
+        <!-- <ToolbarButton
+          action="jobWizardHelper.validateAndSaveDraft();//CheckedValue.createAndAddBuilding(jobWizardHelper)// CopyBuildingCoveragesPopup.push(cpLine.Branch)"
+          id="clonebuildingbutton"
+          label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
+          visible="openForEdit and cpLine.Branch.CanCopyCoverages and cpLine.CPLocations*.Buildings.Count &gt; 1"/> -->
       </Toolbar>
     </PanelRef>
     <Code><![CDATA[function cloneBuilding(bldg : CPBuilding) : CPBuilding

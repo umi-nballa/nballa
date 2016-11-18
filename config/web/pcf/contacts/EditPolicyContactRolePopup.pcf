@@ -33,7 +33,8 @@
       <DetailViewPanel>
         <InputColumn>
           <InputSetRef
-            def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, ContactType.get((policyContactRole.ContactDenorm.Subtype) as String))"/>
+            def="AdditionalInterestDetails_ExtInputSet(additionalInterestDetails, ContactType.get((policyContactRole.ContactDenorm.Subtype) as String))"
+            visible="policyContactRole.Subtype == TC_PolicyAddlInterest"/>
         </InputColumn>
       </DetailViewPanel>
       <PanelRef
@@ -54,6 +55,18 @@
     validator.checkPolicyAddress()
   })
   
+}
+
+function printline(additionalInterestDet:AddlInterestDetail):String
+{
+  print(" in calling function  cpline is " + additionalInterestDet.Branch.CPLineExists)
+
+  print(" in calling function  cpline basedon is " + additionalInterestDet.Branch.BasedOn.CPLineExists)
+
+  print(" in calling function  policyaddnlitnerest branch cpline is " + additionalInterestDet.PolicyAddlInterest.Branch.CPLineExists)
+
+
+  return "true"
 }]]></Code>
   </Popup>
 </PCF>

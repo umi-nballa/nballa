@@ -92,23 +92,6 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return policyPeriod.BP7Transactions
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-
-    switch(typeof cost){
-      case BP7BuildingCovCost:
-          result = cost.Coverage
-          break
-      case BP7LocationCovCost:
-          result = cost.Coverage
-          break
-      case BP7LineCovCost:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXBP7CoverageMapper()
   }
@@ -176,6 +159,10 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return transactions
   }
 
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
+  }
+
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
     return (coverable as BP7Building).Classifications
   }
@@ -198,7 +185,9 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
-    return null
+    var additionalInterestMapper = new HPXAdditionalInterestMapper()
+    var additionalInterests = additionalInterestMapper.createAdditionalInterests((coverable as BP7Building).AdditionalInterests)// AdditionalInterestDetails)
+    return additionalInterests
   }
 
   override function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable {

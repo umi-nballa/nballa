@@ -20,7 +20,8 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     //Set the necessary defaults for Dwelling Construction
     
     //Set the necessary defaults for Dwelling Details
-    newdwelling.DwellingUsage = DwellingUsage_HOE.TC_PRIM
+    //Commenting the below as not needed after 12.02.03 Dwelling Information
+    //newdwelling.DwellingUsage = DwellingUsage_HOE.TC_PRIM
    
     
     //dwelling.createCoverages()
@@ -60,7 +61,11 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
       this.HOSL_OutboardMotorsWatercraft_HOE_Ext.addScheduledItem(schedItem)
     } else if (covPattern.matches("HOSL_WatercraftLiabilityCov_HOE_Ext") and this.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
       this.HOSL_WatercraftLiabilityCov_HOE_Ext.addScheduledItem(schedItem)
-    } else {
+    } else if (covPattern.matches("HOLI_AddResidenceRentedtoOthers_HOE") and this.HOLI_AddResidenceRentedtoOthers_HOEExists) {
+      this.HOLI_AddResidenceRentedtoOthers_HOE.addScheduledItem(schedItem)
+    } else if (covPattern.matches("HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext") and this.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_ExtExists) {
+      this.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.addScheduledItem(schedItem)
+    }else {
       throw "Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx"
     }
 
@@ -86,6 +91,16 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
                   polLocs.where(\ p -> p.FixedId == pl.FixedId ).Count == 0) {
               polLocs.add(pl)
             }
+          }
+          else if (covPattern.matches("HOLI_AddResidenceRentedtoOthers_HOE")) {
+            for (covLoc in this.HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations)
+              //The if statement checks that Policy Location is not already on one of the scheduled items and
+                // also ensures that we are not adding duplicate entries to the return list
+                if (this.HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations.
+                    where(\ cl -> cl.PolicyLocation.FixedId == pl.FixedId ).length == 0 and
+                    polLocs.where(\ p -> p.FixedId == pl.FixedId ).Count == 0) {
+                  polLocs.add(pl)
+                }
           }
         }
         else { // if locFilter is false, include location even it is already on the coverage                

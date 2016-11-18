@@ -4,6 +4,7 @@
   coverageCategory="HODW_Additional_HOE"
   coverageSubtype="DwellingCov_HOE"
   coveredPartyType="FirstParty"
+  existence="Required"
   lookupTableName="DwellingCov"
   owningEntityType="Dwelling_HOE"
   policyLinePattern="HomeownersLine_HOE"
@@ -11,8 +12,7 @@
   public-id="HODW_FungiCov_HOE"
   referenceDateByType="ApplicableObject">
   <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_FungiCov_HOE.PatternCode, HODW_FungiCov_HOE.Dwelling)]]></InitializeScript>
-  <ExistenceScript><![CDATA[return((Dwelling_HOE.Branch.BaseState == TC_AZ ||Dwelling_HOE.Branch.BaseState == TC_NV || Dwelling_HOE.Branch.BaseState == TC_SC)&&
-        !Dwelling_HOE.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists)? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED]]></ExistenceScript>
+  <ExistenceScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"

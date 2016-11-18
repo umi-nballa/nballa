@@ -255,6 +255,9 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA" ){
+return true
+}else return false]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="znpgke2dn9c9b8u2f3p58mu7cs8"
@@ -350,7 +353,6 @@ return true
         <CovTermLimits
           codeIdentifier="z8bggasaqu2u0f09acvb90o89q9"
           currency="usd"
-          maxVal="250000"
           public-id="z8bggasaqu2u0f09acvb90o89q9"/>
       </LimitsSet>
     </DirectCovTermPattern>

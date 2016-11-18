@@ -567,6 +567,15 @@ class HODwellingUtil_HOE {
    return typekey.WiringType_HOE.TF_ALLOTHERYEARS_EXT.TypeKeys
  }
 
+  // De728, Req update to exclude Fuse box
+  static function getElectricalSystemRange(dwelling : Dwelling_HOE) : List<typekey.BreakerType_HOE>{
+    var yearBuilt : int = 1990
+     if(dwelling.YearBuilt >= yearBuilt) {
+       return typekey.BreakerType_HOE.TF_YEARGRP1_EXT.TypeKeys
+     }
+   return  typekey.BreakerType_HOE.getTypeKeys(false)
+  }
+
   /**
   * Method to get the SubdivisionNames based on the Jurisdiction
    */
@@ -655,7 +664,7 @@ class HODwellingUtil_HOE {
     var currentYear = Calendar.getInstance().get(Calendar.YEAR);
     var validYearOfPurchase = (yearBuilt == currentYear or
         yearBuilt == currentYear+1 or yearBuilt == currentYear-1) ? true : false
-    if(HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
+    if(HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
         && applicableJurisdiction.contains(dwelling.PolicyPeriod.BaseState)
         && validYearOfPurchase) {
       return true

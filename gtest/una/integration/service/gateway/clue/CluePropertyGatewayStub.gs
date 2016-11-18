@@ -73,6 +73,8 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     var clueResponseXml = wsi.schema.una.inscore.cprulesresultschema.Result.parse(responseXml)
     var messages = clueResponseXml.Messages.Message_elem
     var clueProductReports = clueResponseXml.ProductResults.CluePersonalProperty
+   // code for Clue Check for Ofac ,Uncomment once data Governance is approved
+   // pPeriod.HomeownersLine_HOE.ClueHit_Ext=true
 
     if (clueProductReports.HasElements){
       for (clueProductReport in clueProductReports) {
@@ -187,7 +189,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     var pHolderType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
     var policyHolder = claim.Subject.firstWhere(\c -> c.Classification == pHolderType)
     if (policyHolder != null){
-      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + policyHolder.Name.Middle
+      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + (policyHolder.Name.Middle!=null? policyHolder.Name.Middle:"")
       var phAddress = policyHolder.Address.first()
       priorLoss.AddressType = phAddress.Type as String
       priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")

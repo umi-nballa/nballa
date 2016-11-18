@@ -6,6 +6,7 @@ uses java.lang.StringBuilder
 uses java.util.Date
 uses java.util.Random
 uses gw.api.productmodel.ProductLookup
+uses gw.plugin.util.SequenceUtil
 
 @Export
 class AccountPlugin implements IAccountPlugin {
@@ -172,15 +173,17 @@ class AccountPlugin implements IAccountPlugin {
   /**
    * Returns a random string of 10 digits.
    */
+  /**
+   * Returns a random string of 10 digits.
+   */
   override function generateAccountNumber(account: Account): String {
-    var accountNumber = new StringBuilder()
-    var rand = new Random()
-    for (i in 0..9) {
-      var digit = rand.nextInt(10)
-      accountNumber.append(digit)
-    }
-    return accountNumber.toString()
+    return genSeqNumber()
   }
+
+
+  //Generates Sequential number for Account
+  function genSeqNumber(): String {
+    return  String.format("%011d" , {SequenceUtil.getSequenceUtil().next(00000000001, "Acc")})  }
 
   /**
    * Returns true if risk is reserved for an account and a product. More

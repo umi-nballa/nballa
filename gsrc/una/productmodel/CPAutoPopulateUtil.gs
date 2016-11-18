@@ -18,7 +18,7 @@ class CPAutoPopulateUtil {
   final static var _logger = UnaLoggerCategory.PRODUCT_MODEL
 
 
-  public static function setSinkholeDeductible(term:CovTerm):void
+  public static function setTermValue(term:CovTerm):void
   {
     /*_logger.info("1" + term.checkCovTermValue())
     _logger.info("2" + term.Clause.Pattern)
@@ -37,6 +37,14 @@ class CPAutoPopulateUtil {
       var cBuilding = term.Clause.OwningCoverable as CPBuilding
       cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm?.Value = cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm?.Value * 0.10
     }
+
+    if(term!=null && term.Clause.Pattern=="GLCGLCov" && term.PatternCode=="GLCGLOccLimit")//cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm!=null)
+    {
+      var gline = term.Clause.OwningCoverable as GLLine
+          gline.GLCGLCov.GLCGLAggLimitTerm.OptionValue=gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue
+    }
+
+
   }
 
   public static function setCoveragesOnToggle(covpattern:gw.api.productmodel.ClausePattern, coverable:Coverable):void
@@ -62,13 +70,13 @@ class CPAutoPopulateUtil {
         _logger.info(" 8 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBLimit_EXTTerm)
         _logger.info(" 9 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm)
 
-        if(cLine.CPOrdinanceOrLawType!=null)
+        if(cLine.CPOrdinanceOrLawType!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCoverage_EXTTerm)
         {
          cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm?.Value = cLine?.CPOrdinanceOrLawType.Code
         }
 
         //_logger.info("hasnoavailableoptions  b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
-        if(cLine.CPCoverageB!=null)// && !cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm.hasNoAvailableOptionsOrNotApplicableOptionOnly())
+        if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovB_ExtTerm)// && !cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm.hasNoAvailableOptionsOrNotApplicableOptionOnly())
         {
           _logger.info("1 b " + cBuilding)
           _logger.info("2 b " + cBuilding?.CPOrdinanceorLaw_EXT)
@@ -80,7 +88,7 @@ class CPAutoPopulateUtil {
         }
 
         //_logger.info("hasnoavailableoptions c "+ cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
-        if(cLine.CPCoverageC!=null)// && !cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
+        if(cLine.CPCoverageC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovC_ExtTerm)// && !cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
         {
           _logger.info("1 c " + cBuilding)
           _logger.info("2 c " + cBuilding?.CPOrdinanceorLaw_EXT)
@@ -127,6 +135,7 @@ class CPAutoPopulateUtil {
 
   public static function setIncreasedCostLimit (cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
   {
+
     //Increased cost of construction limit to 5% of building coverage or 10000 whichever is minimum
     if(cBuilding?.CPBldgCov?.CPBldgCovLimitTerm!=null && 0.05*cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value<(new BigDecimal(10000)))
     {
@@ -165,39 +174,48 @@ class CPAutoPopulateUtil {
   {
       _logger.info("Equipment brkdown " + cLine.EquipmentBreakdownEnhancement)
 
+    cBuilding.CoverageForm=cLine.CoverageForm
+
       if(cLine.EquipmentBreakdownEnhancement!=null && cLine.EquipmentBreakdownEnhancement.trim()!="")
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
         cBuilding.CPEquipmentBreakdownEnhance_EXT.CovTerms.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
           }
 
-    print("### terrorism cov "+ cLine.TerrorismCoverage + ":" +cLine.TerrorismCoverage==true)
     if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)
       cLine.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
 
 
     //setIncreasedCostLimit(cLine,cBuilding)
 
-
-
     if(cLine.causeofloss!=null)
     {
       cBuilding?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value = cLine.causeofloss
-     }
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovCauseOfLossTerm?.Value = cLine?.causeofloss
+    }
 
     if(cLine.allotherperilded!=null)
     {
       cBuilding?.CPBldgCov?.CPBldgCovDeductibleTerm?.OptionValue=cLine.allotherperilded.Code
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovDeductibleTerm?.OptionValue=cLine?.allotherperilded.Code
       }
 
     if(cLine.hurricanededtype!=null)
     {
       cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+
     }
 
     if(cLine.hurricanepercded!=null)
     {
       cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+
   }
 
     if(cLine.Inflationguard!=null)
@@ -245,6 +263,7 @@ class CPAutoPopulateUtil {
 
       if(cLine.CPCoverageC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovCLimit_EXTTerm && cLine.CPCoverageC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
         cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm?.Value= Double.parseDouble(cLine.CPCoverageC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
+
 
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value)
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT " + cBuilding?.CPOrdinanceorLaw_EXT)

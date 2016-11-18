@@ -21,6 +21,7 @@ enum BP7Categories{
   BP7BuildingDefaultsGrp,
   BP7BuildingCondGrp,
   BP7BuildingExclGrp,
+  BP7BuildingAddlInterestGrp_EXT,
   
   BP7ClassificationStdGrp,
   BP7ClassificationAddlGrp,
@@ -34,5 +35,6 @@ enum BP7Categories{
   BP7BuildingOptionalGrp_EXT,
   BP7LocationOptionalGrp_EXT,
   BP7LineOptionalGrp_EXT,
-  BP7ClassificationOptionalGrp_EXT
+  BP7ClassificationOptionalGrp_EXT,
+  BP7SerpGrp_EXT
 }

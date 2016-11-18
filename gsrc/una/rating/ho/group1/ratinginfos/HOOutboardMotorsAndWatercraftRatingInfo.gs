@@ -22,7 +22,7 @@ class HOOutboardMotorsAndWatercraftRatingInfo {
     _medPayLimit = (lineCov.HOLine.HOLI_Med_Pay_HOEExists) ? lineCov.HOLine.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.Value?.intValue() : 0
     _personalLiabilityLimit = (lineCov.HOLine.HOLI_Personal_Liability_HOEExists) ? lineCov.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.Value?.intValue() : 0
 
-    if (item.horsepower == typekey.Horsepower_Ext.TC_UNDER25 || item.horsepower == typekey.Horsepower_Ext.TC_26TO49 ||
+    if (item.horsepower == typekey.Horsepower_Ext.TC_UNDER25 ||
         item.horsepower == typekey.Horsepower_Ext.TC_26TO50){
       _horsePower = HORSEPOWER_UP_TO_50
     }

@@ -88,6 +88,36 @@
           sortBy="activity.Job.Policy.ProductCode"
           value="activity.Job.Policy.Product"/>
         <Cell
+          id="Transaction"
+          label="displaykey.Web.DesktopActivitiesLV.Txn"
+          sortBy="activity.Job.Policy.ProductCode"
+          value="activity.Job.Subtype"/>
+        <Cell
+          id="Policytype"
+          label="displaykey.Web.DesktopActivitiesLV.Pty"
+          sortBy="activity.Job.Policy.ProductCode"
+          value="getPolicyType(activity.PolicyPeriod)"/>
+        <Cell
+          id="Organization"
+          label="displaykey.Web.DesktopActivitiesLV.Org"
+          sortBy="activity.Job.Policy.ProductCode"
+          value="activity.PolicyPeriod.ProducerOfRecord"/>
+        <Cell
+          id="Producercode"
+          label="displaykey.Web.DesktopActivitiesLV.Prd"
+          sortBy="activity.Job.Policy.ProductCode"
+          value="activity.PolicyPeriod.EffectiveDatedFields.ProducerCode"/>
+        <Cell
+          id="Substatus"
+          label="displaykey.Web.DesktopActivitiesLV.Sub"
+          sortBy="activity.Job.Policy.ProductCode"
+          value="activity.Job.Subtype"/>
+        <Cell
+          id="Description"
+          label="displaykey.Web.DesktopActivitiesLV.Des"
+          sortBy="activity.Job.Policy.ProductCode"
+          value="activity.Job.Description"/>
+        <Cell
           id="AssignedBy"
           label="displaykey.Web.DesktopActivitiesLV.AssignedBy"
           value="activity.AssignedByUser"/>
@@ -106,6 +136,18 @@
           retValue.add(i)
         }
         return retValue as AssignableQueue[]
+      }
+      
+      function getPolicyType(period:PolicyPeriod):String
+      {
+        if(period.HomeownersLine_HOEExists)
+          return period.HomeownersLine_HOE.HOPolicyType.DisplayName
+        if(period.BOPLineExists)
+          return "Business Owners"
+        if(period.CPLineExists || period.GLLineExists)
+          return "Commercial Package"
+        return "None"
+
       }]]></Code>
   </ListViewPanel>
 </PCF>

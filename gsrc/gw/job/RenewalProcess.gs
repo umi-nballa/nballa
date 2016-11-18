@@ -20,6 +20,7 @@ uses java.util.Date
 uses gw.api.web.job.JobWizardHelper
 uses gw.api.web.util.TransactionUtil
 uses gw.api.system.PCLoggerCategory
+uses java.lang.Integer
 
 /**
  * Encapsulates the actions taken within a Renewal job.  The renewal process is
@@ -507,12 +508,22 @@ class RenewalProcess extends NewTermProcess {
     if (escalationReasonChecker.ShouldEscalate) {
       escalate(escalationReasonChecker.ActivitySubject, escalationReasonChecker.ActivityDescription)
     } else {
-      _timeoutHandler.scheduleTimeoutOperation(_branch, PendingRenewalFinalCheckDate, "pendingRenewalFinalCheck", false)
+      _timeoutHandler.scheduleTimeoutOperation(_branch, IssueAutomatedRenewalDate, "issueAutomatedRenewal", false)
     }
   }
 
   protected property get PendingRenewalFinalCheckDate() : Date {
     return _branch.PeriodStart.addDays(-75)
+  }
+
+  protected property get NonRenewLeadTime() : Integer{
+    var result : Integer
+    var notificationPlugin = Plugins.get(INotificationPlugin)
+    var lineToJurisdictions = _branch.AllPolicyLinePatternsAndJurisdictions
+
+    result =  notificationPlugin.getMinimumLeadTime(_branch.BasedOn.PeriodEnd, lineToJurisdictions, TC_NONRENEWMIN)
+
+    return result
   }
 
   /**
@@ -536,8 +547,8 @@ class RenewalProcess extends NewTermProcess {
     }
   }
 
-  protected property get IssueAutomatedRenewalDate() : Date {
-    return _branch.PeriodStart.addDays(-35)
+  public property get IssueAutomatedRenewalDate() : Date {
+    return null //refer to overridden function below
   }
 
   /**
@@ -579,6 +590,11 @@ class RenewalProcess extends NewTermProcess {
     try {
       canIssueAutomatedRenewal().assertOkay()
       _branch.onBeginIssueJob()
+
+      if (Job.RenewalNotifDate == null) {
+        sendRenewalDocuments()
+      }
+
       unconditionalIssueRenewal()
     } catch (e : EntityValidationException) {
       var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
@@ -802,11 +818,8 @@ class RenewalProcess extends NewTermProcess {
       return true
     }
     try {
-      var notificationPlugin = Plugins.get(INotificationPlugin)
       var periodEnd = _branch.BasedOn.PeriodEnd
-      var lineToJurisdictions = _branch.AllPolicyLinePatternsAndJurisdictions
-      var leadTime = notificationPlugin.getMinimumLeadTime(periodEnd, lineToJurisdictions, TC_NONRENEWMIN)
-      return Date.CurrentDate < periodEnd.addDays(-leadTime)
+      return Date.CurrentDate < periodEnd.addDays(-NonRenewLeadTime)
     } catch (e : Exception) {
       return false
     }

@@ -27,6 +27,7 @@ class HOCommonBasePremiumRatingInfo {
   var _keyFactorGreaterLimit: int as KeyFactorGreaterLimit
   var _keyFactorLowerBound: BigDecimal as KeyFactorLowerBound
   var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
+
   construct(dwelling: Dwelling_HOE) {
     _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
     //TODO: remove this code once the tuna integration is in place
@@ -39,7 +40,7 @@ class HOCommonBasePremiumRatingInfo {
 
     _policyType = dwelling?.HOLine.HOPolicyType.Code
     if (dwelling.HODW_Dwelling_Cov_HOEExists){
-      _dwellingLimit = dwelling?.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm?.Value as int
+      _dwellingLimit = dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value as int
     }
 
     if (dwelling.HODW_Personal_Property_HOEExists){
@@ -71,8 +72,8 @@ class HOCommonBasePremiumRatingInfo {
 
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
 
-    _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOPolicyType.Code)
-    var keyFactorRange = ConfigParamsUtil.getRange(TC_KEYFACTORRANGE, dwelling.CoverableState, dwelling.HOPolicyType.Code)
+    _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)
+    var keyFactorRange = ConfigParamsUtil.getRange(TC_KEYFACTORRANGE, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)
     _keyFactorLowerBound = keyFactorRange.LowerBound
     _keyFactorUpperBound = keyFactorRange.UpperBound
   }

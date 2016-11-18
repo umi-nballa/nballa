@@ -18,7 +18,7 @@
       label="displaykey.Web.Policy.AdditionalInterest.Type"
       required="true"
       value="addlInterestDetail.AdditionalInterestType"
-      valueRange="getAdditionalInterestTypes()">
+      valueRange="una.enhancements.entity.AdditionalInterestEnhancement.getAdditionalInterestTypes(addlInterestDetail,contactType)">
       <PostOnChange/>
     </RangeInput>
     <Input
@@ -34,29 +34,24 @@
       label="displaykey.Web.Policy.AdditionalInterest.ContractNumber"
       required="addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext"
       value="addlInterestDetail.ContractNumber"
-      visible="contactType == TC_company"/>
+      visible="addlInterestDetail.Branch.CPLineExists==true //&amp;&amp; contactType == TC_company"/>
     <BooleanRadioInput
       editable="true"
       id="vestingInfoRequired_Ext"
       label="displaykey.Web.Policy.AdditionalInterest.VestingInfoRequired_Ext"
       value="addlInterestDetail.VestingInfoRequired_Ext"
-      visible="contactType == TC_company &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)">
+      visible="contactType == TC_company &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)">
       <PostOnChange
         target="vestingInfo_Ext"/>
     </BooleanRadioInput>
-    <Input
+    <TextInput
       editable="true"
       id="vestingInfo_Ext"
       label="displaykey.Web.Policy.AdditionalInterest.VestingInfo_Ext"
+      maxChars="75"
+      numCols="52"
       required="addlInterestDetail.VestingInfoRequired_Ext"
       value="addlInterestDetail.VestingInfo_Ext"
       visible="contactType == TC_company &amp;&amp; addlInterestDetail.VestingInfoRequired_Ext &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)"/>
-    <Code><![CDATA[function getAdditionalInterestTypes() : List {
-  var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(contactType)
-  if(addlInterestDetail.Branch.BaseState != TC_SC) {
-    addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")   
-  }
-  return addnlInterestTypes
-}]]></Code>
   </InputSet>
 </PCF>

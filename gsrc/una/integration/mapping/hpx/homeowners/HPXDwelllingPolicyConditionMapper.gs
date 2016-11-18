@@ -16,8 +16,13 @@ class HPXDwelllingPolicyConditionMapper extends HPXPolicyConditionMapper {
     return null
   }
 
-  function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+     return null
+  }
+
+  override function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+        : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
      return null
   }
 }

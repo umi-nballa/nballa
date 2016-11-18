@@ -43,26 +43,24 @@ class SubmissionWizardHelper {
 
 
   /**
-   * Function to copy number of employees into coverage term. Should be caleed all places where such copy is required.
+   * Function to copy number of employees into coverage term. Should be called all places where such copy is required.
    * Eg: BP7EmployeeDishty
    * @param covTerm: gw.api.domain.covterm.DirectCovTerm
    * @param noOfEmployees : int
    * @return void
    */
-  /*public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
-    covTerm.setValue(noOfEmployees)
-  }*/
-
-  public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int, noOfPartialEmp : int) : void {
-
+  public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, line : BP7BusinessOwnersLine) {
     var partialEmp : int
-
-    if(noOfPartialEmp % 2 == 0){
-      partialEmp = noOfPartialEmp/2
-    } else {
-      partialEmp = noOfPartialEmp/2 + 1
+    var noOfPartialEmp : int = line.NoOfPartEmployee_Ext
+    var fullTimeEmployees : int = line.NoOfEmployees_Ext
+    if(covTerm!=null){
+      if(noOfPartialEmp % 2 == 0){
+        partialEmp = noOfPartialEmp/2
+      } else {
+        partialEmp = noOfPartialEmp/2 + 1
+      }
+      covTerm.setValue(fullTimeEmployees + partialEmp)
     }
-    covTerm.setValue(noOfEmployees + partialEmp)
   }
 
   /**

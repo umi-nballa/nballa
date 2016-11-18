@@ -55,7 +55,7 @@
       id="LocationDetailDV">
       <InputColumn>
         <Label
-          label="&quot;Policy Defaults&quot;"/>
+          label="&quot;Property Defaults&quot;"/>
         <InputDivider/>
         <TypeKeyInput
           editable="true"
@@ -90,13 +90,19 @@
           label="&quot;Inflation Guard&quot;"
           required="true"
           value="cpLine.Inflationguard"/>
+        <TypeKeyInput
+          editable="true"
+          id="coverageform"
+          label="&quot;Coverage Form&quot;"
+          required="true"
+          value="cpLine.CoverageForm"/>
       </InputColumn>
       <InputColumn>
         <Label
           label="&quot;Coverages&quot;"/>
         <InputDivider/>
         <InputGroup
-          allowToggle="false//ordinancecoverage.allowToggle(coverable)"
+          allowToggle="true//ordinancecoverage.allowToggle(coverable)"
           childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
           id="CovPatternInputGroup"
           label="&quot;Ordinance or Law Coverages&quot;"
@@ -133,7 +139,7 @@
             visible="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT ||cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT "/>
         </InputGroup>
         <InputGroup
-          allowToggle="false"
+          allowToggle="true//false"
           childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
           id="CovPattern2InputGroup"
           label="&quot;Equipment Breakdown Enhancement Coverage&quot;"

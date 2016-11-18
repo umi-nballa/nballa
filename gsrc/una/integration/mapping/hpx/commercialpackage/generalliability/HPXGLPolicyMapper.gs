@@ -131,6 +131,10 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
+  }
+
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {
     return null
   }
@@ -165,8 +169,9 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getLineExclusions(line : Coverable) : java.util.List<Exclusion> {
-    var lineExcls = (line as GLLine).ExclusionsFromCoverable
-    return lineExcls
+    var glLineExcls = (line as GLLine).ExclusionsFromCoverable
+    var cpLineExcls = line?.PolicyLine?.AssociatedPolicyPeriod.CPLine.ExclusionsFromCoverable
+    return glLineExcls?.union(cpLineExcls)?.toList()
   }
 
   override function getLinePolicyConditions(line : Coverable) : java.util.List<PolicyCondition> {

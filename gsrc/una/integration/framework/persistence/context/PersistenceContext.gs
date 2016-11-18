@@ -1,12 +1,12 @@
 package una.integration.framework.persistence.context
 
-uses una.logging.UnaLoggerCategory
-uses una.integration.framework.util.DIContextHelper
 uses org.springframework.jdbc.datasource.DataSourceTransactionManager
 uses org.springframework.transaction.TransactionStatus
 uses org.springframework.transaction.support.DefaultTransactionDefinition
 uses org.springframework.transaction.support.TransactionCallbackWithoutResult
 uses org.springframework.transaction.support.TransactionTemplate
+uses una.integration.framework.util.DIContextHelper
+uses una.logging.UnaLoggerCategory
 
 /**
  * This class provides transaction capabilities for a block of code to be executed in a database transaction.
@@ -31,14 +31,14 @@ class PersistenceContext {
    * This function enables executing a block of code with in a new database transaction.
    */
   static function runWithNewTransaction(myCallBack():void){
-    _logger.debug("Entry into the method 'runWithNewTransaction' of PersistenceContext")
+    _logger.debug("Entering the function 'runWithNewTransaction' of PersistenceContext")
     var context = new PersistenceContext()
     context.transactionTemplate.execute(new TransactionCallbackWithoutResult(){
       override function doInTransactionWithoutResult(status: TransactionStatus) {
         myCallBack()
       }
     })
-    _logger.debug("Exit from the method 'runWithNewTransaction' of PersistenceContext")
+    _logger.debug("Exiting the function 'runWithNewTransaction' of PersistenceContext")
   }
 
 }

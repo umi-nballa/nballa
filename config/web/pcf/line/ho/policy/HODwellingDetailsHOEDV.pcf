@@ -32,6 +32,18 @@
         label="displaykey.Web.Homeowners.HOLocation.LocationInfo_Ext"/>
       <InputSetRef
         def="HODwellingLocationHOEInputSet(dwelling, policyPeriod, openForEdit, jobWizardHelper )"/>
+      <Input
+        editable="true"
+        id="YearBuilt"
+        label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
+        numCols="8"
+        required="true"
+        validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
+        value="dwelling.YearBuilt">
+        <PostOnChange
+          onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"
+          target="deedInfo_Ext"/>
+      </Input>
       <InputSet
         editable="true"
         id="TerritoryCodeInputSet"
@@ -159,6 +171,12 @@
         label="displaykey.Web.Homeowners.HOLocation.Longitude_Ext"
         value="dwelling.HOLocation.PolicyLocation.Longitude_Ext"/>
       <Input
+        id="DwellingReplacement"
+        label="displaykey.Web.Homeowners.Dwelling.EstReplacementCost"
+        numCols="10"
+        required="false"
+        value="dwelling.ReplacementCost"/>
+      <Input
         id="iso360ValueID_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ISO360ValueID_Ext"
         value="dwelling.HOLocation.ISO360ValueID_Ext"/>
@@ -166,17 +184,12 @@
       <InputSet>
         <Label
           label="displaykey.Web.Homeowners.Dwelling.OccupancyInfo_Ext"/>
-        <Input
-          id="DwellingReplacement"
-          label="displaykey.Web.Homeowners.Dwelling.EstReplacementCost"
-          numCols="10"
-          required="false"
-          value="dwelling.ReplacementCost"/>
-        <TypeKeyInput
+        <RangeInput
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
-          value="dwelling.ResidenceType"/>
+          value="dwelling.ResidenceType"
+          valueRange="getResidenceType()"/>
         <RangeInput
           editable="true"
           id="DwellingUse"
@@ -194,13 +207,13 @@
           required="false"
           value="dwelling.NumOfMonthsConsUnOccupancy_Ext"
           visible="DwellingUsage_HOE.TC_SEAS == dwelling.DwellingUsage or DwellingUsage_HOE.TC_SEC == dwelling.DwellingUsage "/>
-        <BooleanRadioInput
+        <!-- <BooleanRadioInput
           editable="true"
           id="DwellingCoverageInEffect"
           label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DwellingCoverage, ScriptParameters.HOChildQuestionIndent)"
           required="true"
           value="dwelling.DwellingUsagePrimaryCoverage"
-          visible="(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS)"/>
+          visible="(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS)"/> -->
         <Input
           editable="true"
           id="dwellingPrimarilyOccupied_Ext"
@@ -209,20 +222,20 @@
           value="dwelling.Occupancy">
           <PostOnChange/>
         </Input>
-        <BooleanRadioInput
+        <!-- <BooleanRadioInput
           editable="true"
           id="ApprovedBuilder"
           label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.ApprovedBuilder, ScriptParameters.HOChildQuestionIndent)"
           required="true"
           value="dwelling.OccupancyApprovedBuilder"
-          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/>
-        <DateInput
+          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/> -->
+        <!-- <DateInput
           editable="true"
           id="AnticipatedOccupancy"
           label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.AnticipatedOccupancy, ScriptParameters.HOChildQuestionIndent)"
           required="true"
           value="dwelling.OccupancyProjectedDate"
-          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/>
+          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_INCONST"/> -->
         <!-- <Input
           editable="openForEdit"
           id="DwellingYear"
@@ -234,13 +247,34 @@
           <PostOnChange
             target="firstTimeDeeded_Ext"/>
         </Input> -->
-        <BooleanRadioInput
+        <!-- <BooleanRadioInput
           editable="true"
           id="DwellingVacant"
           label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.Dwelling.DwellingVacant, ScriptParameters.HOChildQuestionIndent)"
           required="true"
           value="dwelling.OccupancyVacant"
-          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/>
+          visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/> -->
+        <BooleanRadioInput
+          editable="true"
+          id="MultiPolicyDiscount_Ext"
+          label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
+          value="dwelling.DwellingRentedEverToOthers_Ext">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <TypeKeyInput
+          editable="true"
+          id="HOPolicyType"
+          label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
+          required="true"
+          value="dwelling.TypeofPolicy_Ext"
+          visible="dwelling.DwellingRentedEverToOthers_Ext == true">
+          <PostOnChange/>
+        </TypeKeyInput>
+        <Input
+          editable="true"
+          id="PolicyNumber_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
+          value="dwelling.PolicyNumber_Ext"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>
@@ -270,7 +304,7 @@
             label="displaykey.Web.Homeowners.HODwelling.IsHomeNewPurchase_Ext"
             value="dwelling.HomeNewPurchase_Ext">
             <PostOnChange
-              onChange="if(!dwelling.HomeNewPurchase_Ext &amp;&amp; (dwelling.HomePurchaseDate_Ext != null or dwelling.NewPurchaseMoveInDate_Ext != null)) {dwelling.HomePurchaseDate_Ext = null; dwelling.NewPurchaseMoveInDate_Ext = null} else if(dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HomePurchaseMMYYYY_Ext != null) {dwelling.HomePurchaseMMYYYY_Ext = null}"/>
+              onChange="if(!dwelling.HomeNewPurchase_Ext &amp;&amp; (dwelling.HomePurchaseDate_Ext != null)) {dwelling.HomePurchaseDate_Ext = null; } else if(dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HomePurchaseMMYYYY_Ext != null) {dwelling.HomePurchaseMMYYYY_Ext = null}"/>
           </BooleanRadioInput>
           <DateInput
             editable="true"
@@ -284,31 +318,13 @@
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseMMYYYY_Ext"
             value="dwelling.HomePurchaseMMYYYY_Ext"
             visible="!dwelling.HomeNewPurchase_Ext"/>
-          <DateInput
-            editable="true"
-            id="newPurchaseMoveInDate_Ext"
-            label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
-            value="dwelling.NewPurchaseMoveInDate_Ext"
-            visible="dwelling.HomeNewPurchase_Ext"/>
         </InputSet>
         <Input
           editable="true"
-          id="rentalMoveInMMYYYY_Ext"
+          id="moveInDate_Ext"
           label="displaykey.Web.Homeowners.HODwelling.NewPurchase_Rental_MoveInDate_Ext"
-          value="dwelling.RentalMoveInMMYYYY_Ext"
-          visible="dwelling.HOPolicyType == TC_HO4"/>
-        <Input
-          editable="true"
-          id="YearBuilt"
-          label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
-          numCols="8"
-          required="true"
-          validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
-          value="dwelling.YearBuilt">
-          <PostOnChange
-            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"
-            target="deedInfo_Ext"/>
-        </Input>
+          value="dwelling.MoveInDate_Ext"
+          visible="dwelling.HomeNewPurchase_Ext or dwelling.HOPolicyType == TC_HO4"/>
         <InputSet
           id="deedInfo_Ext"
           visible="dwelling.YearBuilt!= null &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.isFirstTimeDeededVisible(dwelling)">
@@ -559,6 +575,7 @@
     </InputColumn>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
+uses java.util.ArrayList
 
 function searchTaxLocation(code: String): TaxLocation {
   try{
@@ -587,6 +604,18 @@ function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLoc
       throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
     }
   }
+}
+
+function getResidenceType() : List<ResidenceType_HOE>{
+  var residenceType = new ArrayList<ResidenceType_HOE>()
+  var values = ResidenceType_HOE.getTypeKeys(false)
+  values.each( \ elt -> {
+    if(elt.Categories.contains(dwelling.HOPolicyType)) {
+      residenceType.add(elt)  
+    }
+  })
+  residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
+  return residenceType
 }]]></Code>
   </DetailViewPanel>
 </PCF>

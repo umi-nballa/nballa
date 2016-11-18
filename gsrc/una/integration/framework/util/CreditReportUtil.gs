@@ -1,19 +1,5 @@
 package una.integration.framework.util
 
-uses typekey.CreditReportServiceExt
-uses entity.PolicyPriNamedInsured
-uses typekey.UWCompanyCode
-uses typekey.State
-uses entity.Contact
-uses entity.Person
-uses entity.Address
-uses entity.PolicyPeriod
-uses typekey.PolicyLine
-uses typekey.Jurisdiction
-uses gw.lang.Returns
-uses gw.lang.Param
-uses entity.CreditReportParametersExt
-uses entity.PolicyContactRole
 uses gw.api.database.Query
 uses gw.api.util.Logger
 uses una.integration.mapping.creditreport.CreditReportRequest
@@ -150,8 +136,9 @@ public class CreditReportUtil {
     
       result = period.HomeownersLine_HOEExists
           && primaryNamedInsured typeis Person
-          && (primaryNamedInsured.DateOfBirth == null || primaryNamedInsured.Age >= params.CreditReportMinimumAge)
-          && !(primaryNamedInsured.PrimaryAddress.State.Code == "CA" || primaryNamedInsured.PrimaryAddress.State.Code == "HI")
+          //&& (primaryNamedInsured.DateOfBirth == null || primaryNamedInsured.Age >= params.CreditReportMinimumAge)
+          && !(period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State.Code == "CA" ||
+              period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State.Code == "HI")
       
       if (_logger.DebugEnabled) {
         _logger.debug("Required flag: " + result)

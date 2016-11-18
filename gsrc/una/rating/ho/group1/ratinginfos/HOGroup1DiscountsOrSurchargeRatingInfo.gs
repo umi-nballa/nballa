@@ -13,14 +13,27 @@ uses java.math.BigDecimal
  * Rating info for discounts and surcharges of group1 states for HO policies
  */
 class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo {
-  var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
 
+  var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
+  var _territoryCode : int as TerritoryCode
+  var _bcegFactor : int as BCEGFactor
+  var _preferredBuilderExists : boolean as PreferredBuilderExists
+  var _preferredFinancialInstitutionExists : boolean as PreferredFinancialInstitutionExists
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
     this.CoverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     this.AllPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _isPrivateFireCompanyDiscountApplicable = isPrivateFireCompanyDiscountApplicable(line)
+    _territoryCode = (line.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code.toInt())
+    _bcegFactor = line.Dwelling?.HOLocation?.BCEG_Ext?.Numeric ? line.Dwelling?.HOLocation?.BCEG_Ext?.toInt() : null
+
+    if(line.BaseState == Jurisdiction.TC_CA){
+      if(line.Branch.PreferredBuilder_Ext != null)
+        _preferredBuilderExists = true
+      if(line.Branch.PreferredFinInst_Ext != null)
+        _preferredFinancialInstitutionExists = true
+    }
   }
 
   override function determineAgeOfHome(year : int): int {

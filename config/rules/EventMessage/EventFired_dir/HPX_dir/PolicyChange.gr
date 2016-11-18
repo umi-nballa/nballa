@@ -12,14 +12,12 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
 /*start00rule*/
 var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
 var ewsRequestMapper = new HPXRequestMapper()
-if (period?.HomeownersLine_HOE != null)
-{
-//  if (period.NewlyAddedForms.Count > 0) {
+  if (period.NewlyAddedForms.Count > 0) {
     var ewsRequestXML = ewsRequestMapper.createForms(period)
     print(ewsRequestXML)
     messageContext.createMessage(ewsRequestXML)
-//  }
-}
+  }
+
 /*end00rule*/
   }
 }

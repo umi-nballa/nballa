@@ -1,16 +1,16 @@
 package una.integration.framework.file.inbound.batch
 
+uses gw.api.util.DateUtil
+uses gw.processes.BatchProcessBase
 uses una.integration.framework.exception.ErrorTypeInfo
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.framework.file.inbound.persistence.InboundFileData
 uses una.integration.framework.file.inbound.persistence.InboundFileException
-uses una.logging.UnaLoggerCategory
 uses una.integration.framework.persistence.context.PersistenceContext
 uses una.integration.framework.persistence.dao.IntegrationBaseDAO
 uses una.integration.framework.persistence.util.ProcessStatus
 uses una.integration.framework.util.ErrorCode
-uses gw.api.util.DateUtil
-uses gw.processes.BatchProcessBase
+uses una.logging.UnaLoggerCategory
 
 uses java.lang.Exception
 
@@ -38,7 +38,7 @@ abstract class InboundDataProcessingBatch extends BatchProcessBase implements ID
    * and updates the process status of each record.
    */
   override function doWork() {
-    _logger.debug("Entry into the method doWork of InboundDataProcessingBatch")
+    _logger.debug("Entering the function doWork() of InboundDataProcessingBatch")
     _dataEntityDAO = _dataEntityDAO?: new(FileDataMapping)
     _fileExceptionDAO = _fileExceptionDAO?: new(InboundFileException)
 
@@ -68,7 +68,7 @@ abstract class InboundDataProcessingBatch extends BatchProcessBase implements ID
         })
       }
     })
-    _logger.debug("Exit from method doWork of InboundDataProcessingBatch")
+    _logger.debug("Exiting the function doWork() of InboundDataProcessingBatch")
   }
 
   /**

@@ -14,16 +14,11 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
   static function doAction(messageContext  :  entity.MessageContext, actions : gw.rules.Action) {
 /*start00rule*/
 var ewsRequestMapper = new HPXRequestMapper()
-//var ewsRequestXML = ewsRequestMapper.createXMLRequestModel(messageContext.Root as PolicyPeriod)
 var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
-if (period?.HomeownersLine_HOE != null)
-{
   if (period.NewlyAddedForms.Count > 0) {
     var ewsRequestXML = ewsRequestMapper.createForms(period)
-    print(ewsRequestXML)
     messageContext.createMessage(ewsRequestXML)
   }
-}
 /*end00rule*/
   }
 }

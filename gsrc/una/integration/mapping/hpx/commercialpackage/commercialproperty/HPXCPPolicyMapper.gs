@@ -79,27 +79,6 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
       return policyPeriod.CPTransactions
   }
 
-  override function getCostCoverage(cost : Cost) : Coverage {
-    var result : Coverage
-
-    switch(typeof cost){
-      case CPCost:
-          result = cost.Coverage
-          break
-      case CPBuildingCovCost:
-          result = cost.Coverage
-          break
-      case CPBuildingCovGrp1Cost:
-          result = cost.Coverage
-          break
-      case CPBuildingCovGrp2Cost:
-          result = cost.Coverage
-          break
-    }
-    return result
-  }
-
-
   override function getCoverageMapper() : HPXCoverageMapper {
     return new HPXCPCoverageMapper()
   }
@@ -117,7 +96,7 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getPolicyConditionMapper() : HPXPolicyConditionMapper {
-    return new HPXGLPolicyConditionMapper()
+    return new HPXCPPolicyConditionMapper()
   }
 
   override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
@@ -130,15 +109,15 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   function createCommericalPropertyLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLineCoverages(policyPeriod, policyPeriod.GLLine)
+    return createLineCoverages(policyPeriod, policyPeriod.CPLine)
   }
 
   function createCommericalPropertyLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLineExclusions(policyPeriod, policyPeriod.GLLine)
+    return createLineExclusions(policyPeriod, policyPeriod.CPLine)
   }
 
   function createCommericalPropertyLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLinePolicyConditions(policyPeriod, policyPeriod.GLLine)
+    return createLinePolicyConditions(policyPeriod, policyPeriod.CPLine)
   }
 
   override function getLocation(coverable : Coverable) : PolicyLocation {
@@ -177,6 +156,10 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   override  function getStructureCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
     var transactions = getTransactions(policyPeriod)?.where( \ elt -> elt.Cost.Coverable == coverable)
     return transactions
+  }
+
+  override function getScheduleTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction> {
+    return getTransactions(policyPeriod)?.where( \ elt -> elt.Cost typeis ScheduleCovCost_HOE)
   }
 
   override function getClassifications(coverable : Coverable) : java.util.List<BP7Classification> {

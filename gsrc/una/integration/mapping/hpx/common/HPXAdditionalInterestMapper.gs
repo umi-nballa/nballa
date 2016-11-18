@@ -21,9 +21,11 @@ function createAdditionalInterests(additlInterests : AddlInterestDetail []) : Li
       var additionalInterest = new wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType()
       additionalInterest.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo(addtlInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact,
           addtlInterest.PolicyAddlInterest)))
-      additionalInterest.AdditionalInterestInfo.NatureInterestCd = addtlInterest.AdditionalInterestType
-      additionalInterest.AdditionalInterestInfo.Description = addtlInterest.AdditionalInterestType.Description
-      additionalInterest.AdditionalInterestInfo.ContractNumber = addtlInterest.ContractNumber
+      var additionalInterestInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestInfoType()
+      additionalInterestInfo.NatureInterestCd = addtlInterest.AdditionalInterestType.Code
+      additionalInterestInfo.Description = addtlInterest.AdditionalInterestType.Description
+      additionalInterestInfo.ContractNumber = addtlInterest.ContractNumber
+      additionalInterest.addChild(new XmlElement("AdditionalInterestInfo", additionalInterestInfo))
       additionalInterests.add(additionalInterest)
     }
     return additionalInterests

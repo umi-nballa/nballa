@@ -9,6 +9,9 @@ uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
+uses gw.api.productmodel.CovTermOpt
+uses java.math.BigDecimal
+uses org.apache.commons.math.stat.descriptive.rank.Percentile
 
 /**
  * Created with IntelliJ IDEA.
@@ -42,6 +45,7 @@ class CovTermInputSetPCFController {
     switch(covTerm.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm?.onInit()
         dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
         break
@@ -51,6 +55,7 @@ class CovTermInputSetPCFController {
         break
       case "HODW_PersonalPropertyLimit_HOE":
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
+        dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.onInit()
         break
       case "HODW_ExecutiveCov_HOE_Ext":
         setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
@@ -71,6 +76,7 @@ class CovTermInputSetPCFController {
 
       if(result == null){
         result = validateFloodCoverageLimits(covTerm, coverable)
+        result = validateBuildAddAltLimits(covTerm, coverable)
       }
     }
 
@@ -97,6 +103,45 @@ class CovTermInputSetPCFController {
 
     return result
   }
+
+  public static function getOrderedOptions(term : OptionCovTerm, openForEdit : boolean) : List<CovTermOpt>{
+    var results = gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term, openForEdit)
+
+    var specialLogic = getSpecialOrderLogic(term)
+
+    if(specialLogic != null){
+      results = results.orderBy(\ elt -> elt, new una.productmodel.CovTermOptComparator(specialLogic))
+    }else{
+      results = results.orderBy(\ elt -> elt, new una.productmodel.CovTermOptComparator())
+    }
+
+    return results
+  }
+
+  private static function getSpecialOrderLogic(term : OptionCovTerm) : block(option1 : CovTermOpt, option2 : CovTermOpt) : int{
+    var result : block(option1 : CovTermOpt, option2 : CovTermOpt) : int
+
+    switch(term.PatternCode){
+      case "HOPL_SpecialLimitDeductibleAssessment_HOE":
+        result = getLossAssessmentSpecialDeductibleOrderLogic()
+      default:
+        //do nothing because no special order case exists.  defer to default ordering for CovTermOpt Comparator
+    }
+
+    return result
+  }
+
+  private static function getLossAssessmentSpecialDeductibleOrderLogic() : block(option1 : CovTermOpt, option2 : CovTermOpt) : int{
+    return \ option1 : CovTermOpt, option2 : CovTermOpt ->
+    {
+      var equals = 0
+      if(option1.OptionCode.equalsIgnoreCase("2000Section1") and option2.OptionCode.equalsIgnoreCase("1000Section2")){
+        equals = -1
+      }
+      return equals
+    }
+  }
+
 
   private static function validateCalculatedLimits(covTerm: DirectCovTerm, coverable: Dwelling_HOE) : String {
     var result : String
@@ -126,15 +171,21 @@ class CovTermInputSetPCFController {
 
   private static function validateFloodCoverageLimits(covTerm : DirectCovTerm, coverable : Dwelling_HOE) : String{
     var result : String
-
-    if(covTerm.PatternCode =="HODW_FloodCov_Dwelling_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
-        coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
-      result = displaykey.una.productmodel.validation.ValidateFlood_Ext
-    }
-    if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE" and coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
-        coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
-      result = displaykey.una.productmodel.validation.ValidateFlood_Ext
-    }
+    var maxValue: BigDecimal=250000
+      if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE") {
+        if(coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+        coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm?.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
+       result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+       }else if (!coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_FloodCoverage_HOE_ExtExists and coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm?.Value > maxValue) {
+        result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(new Double(maxValue as double).asMoney())
+      }}
+     else if(covTerm.PatternCode == "HODW_DebrisRemoval_HOE"){
+     if(coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
+         coverable.HODW_FloodCoverage_HOE_Ext.HODW_DebrisRemoval_HOETerm?.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
+       result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+     }else if(!coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_FloodCoverage_HOE_ExtExists and coverable.HODW_FloodCoverage_HOE_Ext.HODW_DebrisRemoval_HOETerm?.Value > maxValue){
+       result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(new Double(maxValue as double).asMoney())
+     }}
 
     return  result
   }
@@ -171,23 +222,6 @@ class CovTermInputSetPCFController {
         coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
       }
     }
-  }
-
-  private static function setDefaultValueForExecutiveCoverage(covTerm : gw.api.domain.covterm.CovTerm, defaultValue : String, coverable : Coverable){
-    if(shouldDefaultExecutivePersonalPropertyLimit(covTerm, coverable)){
-      (covTerm as DirectCovTerm).Value = defaultValue as double * (coverable as Dwelling_HOE).HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-    }else if(covTerm typeis DirectCovTerm and covTerm.PatternCode != "HODW_PersonalPropertyLimit_HOE"){
-      (covTerm as DirectCovTerm).Value = defaultValue
-    }else if(covTerm typeis OptionCovTerm){
-      var option = covTerm.AvailableOptions.firstWhere( \ opt -> opt.Value == defaultValue)
-      covTerm.setOptionValue(option)
-    }
-  }
-
-  private static function shouldDefaultExecutivePersonalPropertyLimit(covTerm : CovTerm, coverable : Coverable) : boolean{
-    return coverable typeis Dwelling_HOE
-       and covTerm.PatternCode == "HODW_PersonalPropertyLimit_HOE"
-       and (coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value > 0)
   }
 
   private static function onCovTermOptionChange_OnPremisesLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable ){
@@ -233,4 +267,23 @@ class CovTermInputSetPCFController {
      }
     return null
   }
+
+  private static function validateBuildAddAltLimits(covTerm : DirectCovTerm, coverable : Dwelling_HOE) : String{
+    var result : String
+    var factor : BigDecimal = 0.1
+    var value : BigDecimal = 10
+
+    if(covTerm.PatternCode == "HODW_BuildAddInc_HOE" and coverable.HODW_Personal_Property_HOEExists and
+       coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm != null and
+       coverable.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm.Value< coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)) {
+      result = displaykey.una.productmodel.validation.MinValidateBuildAlt_Ext(value)
+    }else if (covTerm.PatternCode == "HODW_BuildAddInc_HOE" and coverable.HODW_Personal_Property_HOEExists and
+        coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm != null and
+        coverable.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm.Value > coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value) {
+      result = displaykey.una.productmodel.validation.MaxValidateBuilAlt_Ext
+    }
+
+    return  result
+  }
+
 }

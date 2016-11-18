@@ -14,11 +14,14 @@
     <Require
       name="jobWizardHelper"
       type="gw.api.web.job.JobWizardHelper"/>
+    <Require
+      name="coverable_Ext"
+      type="Coverable"/>
     <CovTermDirectInput
-      editable="true"
+      editable="term.IsEditable"
       id="DirectTermInput"
       label="term.Pattern.DisplayName"
-      requestValidationExpression="gw.lob.bp7.BP7DirectCovTermValidation.validate(term, VALUE)"
+      requestValidationExpression="gw.lob.bp7.BP7DirectCovTermValidation.validate(term, VALUE);return gw.lob.bp7.BP7DirectCovTermValidation.validateCalculatedLimits(term as gw.api.domain.covterm.DirectCovTerm,coverable_Ext)"
       required="term.Pattern.Required"
       value="term">
       <PostOnChange

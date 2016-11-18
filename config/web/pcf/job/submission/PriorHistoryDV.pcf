@@ -27,24 +27,38 @@
             toRemove="policyPeriod.Policy.removeFromPriorPolicies(priorPolicy)"
             value="policyPeriod.Policy.PriorPolicies">
             <Row>
-              <TextCell
+              <RangeCell
                 editable="true"
-                footerLabel="displaykey.Web.Policy.PriorPolicy.Sum"
-                id="Carrier"
-                label="displaykey.Web.Policy.PriorPolicy.Carrier"
-                numCols="20"
-                value="priorPolicy.Carrier"/>
+                id="CarrierTypenew"
+                label="displaykey.Web.Policy.PriorPolicy.CarrierType "
+                value="priorPolicy.CarrierType"
+                valueRange="CarrierType_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState) "
+                visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;"/>
+              <RangeCell
+                editable="true"
+                id="CarrierTypeCL"
+                label="displaykey.Web.Policy.PriorPolicy.CarrierType "
+                value="priorPolicy.CarrierType"
+                valueRange="CarrierType_Ext.Type.getTypeKeysByFilterName(&quot;CommercialLines&quot;)"
+                visible="PolicyPeriod.Policy.Product.CodeIdentifier != &quot;Homeowners&quot;"/>
+              <Cell
+                editable="true"
+                id="carrierOther"
+                label="&quot;If Other,enter&quot;"
+                value="priorPolicy.Carrier"
+                visible="otherReq()"/>
               <TextCell
                 editable="true"
                 id="PolicyNumber"
                 label="displaykey.Web.Policy.PriorPolicy.PolicyNumber"
                 numCols="15"
+                required="CarrierReq()"
                 value="priorPolicy.PolicyNumber"/>
               <DateCell
                 editable="true"
                 id="EffectiveDate"
                 label="displaykey.Web.Policy.PriorPolicy.EffectiveDate"
-                required="true"
+                required="CarrierReq()"
                 value="priorPolicy.EffectiveDate"/>
               <DateCell
                 editable="true"
@@ -93,5 +107,23 @@
         </ListViewPanel>
       </ListViewInput>
     </InputColumn>
+    <Code><![CDATA[function CarrierReq() : boolean{
+  for(pp in policyPeriod.Policy.PriorPolicies.CarrierType )   {
+     if(pp == typekey.CarrierType_Ext.TC_UNA)
+       return true
+   }
+   return false 
+                      
+}
+
+
+function otherReq() : boolean{
+  
+  for(p in policyPeriod.Policy.PriorPolicies.CarrierType){
+    if(p == typekey.CarrierType_Ext.TC_OTHER or p == typekey.CarrierType_Ext.TC_OTHERCL)
+      return true
+  }
+  return false
+}]]></Code>
   </DetailViewPanel>
 </PCF>

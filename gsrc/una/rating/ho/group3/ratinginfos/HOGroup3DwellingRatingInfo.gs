@@ -21,8 +21,6 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _hurricanePercentage : String as HurricanePercentage
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
-  var _isMedPayLimitIncreased : boolean as IsMedPayLimitIncreased
-  var _isPersonalLiabilityLimitIncreased : boolean as IsPersonalLiabilityLimitIncreased
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -53,10 +51,6 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
     if(dwellingCov typeis HODW_SpecificOtherStructure_HOE_Ext){
       _otherStructuresRentedToOthersLimit = dwellingCov.HODW_IncreasedLimit_HOETerm?.Value
-      if(dwellingCov.Dwelling.HOLine.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.RuntimeDefault != dwellingCov.Dwelling.HOLine.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.Value)
-        _isMedPayLimitIncreased = true
-      if(dwellingCov.Dwelling.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.RuntimeDefault != dwellingCov.Dwelling.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.Value)
-        _isPersonalLiabilityLimitIncreased = true
     }
   }
 }

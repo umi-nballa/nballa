@@ -26,9 +26,9 @@ interface IFileProcessingPlugin {
   function validateBatchHeader(batchHeaderRecord: FileRecordInfo)
 
   /**
-   * Validates the file header record for mandatory information to process the detail records.
+   * Validates the file for mandatory information to process the detail records.
    */
-  function validateFileHeader(headerRecord: FileRecordInfo)
+  function validateFile(fileName: String, fileRecords: FileRecords)
 
   /**
    * Creates the error file with all the records which can't be processed due to business/technical errors.

@@ -53,9 +53,10 @@
             removeVisible="perm.System.cluepropertyedit_ext &amp;&amp; openForEdit"/>
           <ToolbarButton
             action="HOFCRADisclosurePopup.push(null,null,null,policyPeriod.Submission.JobNumber,policyPeriod.PeriodStart,policyPeriod,null,null,null,null,ClueProperty)//ClueProperty.orderClueProperty(policyPeriod); CurrentLocation.commit(); CurrentLocation.startEditing();"
-            available="CurrentLocation.InEditMode &amp;&amp; openForEdit"
+            available="CurrentLocation.InEditMode &amp;&amp; openForEdit "
             id="ClueButton"
-            label="displaykey.Accelerator.LexisNexis.Clue.Property.RetrieveClueLabel"/>
+            label="displaykey.Accelerator.LexisNexis.Clue.Property.RetrieveClueLabel"
+            visible="policyPeriod.Submission?.QuoteType == typekey.QuoteType.TC_FULL"/>
         </Toolbar>
         <ListViewPanel
           id="LossesLV">
@@ -108,7 +109,7 @@
             def="HOPriorLossDetailsExtDV(selectedLoss,false)"
             visible="true"/>
           <PanelRef
-            def="HOPriorLossPaymentExtLV(selectedLoss,false)"
+            def="HOPriorLossPaymentExtLV(selectedLoss,false,policyPeriod)"
             editable="openForEdit"
             visible="true">
             <TitleBar

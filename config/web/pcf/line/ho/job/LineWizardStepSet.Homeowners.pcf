@@ -20,13 +20,14 @@
     <JobWizardStep
       beforeSave="policyPeriod.HomeownersLine_HOE.Dwelling.beforeSavingDwellingPage()"
       id="HomeownersDwelling"
+      onEnter="new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingInformation(policyPeriod)"
       save="true"
       screen="HODwellingHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
       title="displaykey.Web.Homeowners.Dwelling.DwellingTitle"/>
     <JobWizardStep
       beforeSave="policyPeriod.HomeownersLine_HOE.Dwelling.beforeSavingDwellingConstructionPage()"
       id="HomeownersDwellingConstruction"
-      onEnter="gw.lob.ho.HODwellingUtil_HOE.setDefault(policyPeriod.HomeownersLine_HOE.Dwelling)"
+      onEnter="gw.lob.ho.HODwellingUtil_HOE.setDefault(policyPeriod.HomeownersLine_HOE.Dwelling);new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingConstructionInformation(policyPeriod)"
       save="true"
       screen="HODwellingConstructionHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
       title="displaykey.Web.Homeowners.DwellingConstruction.DwellingConstruction"/>

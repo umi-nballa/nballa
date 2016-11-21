@@ -21,6 +21,7 @@ uses gw.api.web.job.JobWizardHelper
 uses gw.api.web.util.TransactionUtil
 uses gw.api.system.PCLoggerCategory
 uses java.lang.Integer
+uses gw.acc.bulkproducerchange.BPCProcessCtrl
 
 /**
  * Encapsulates the actions taken within a Renewal job.  The renewal process is
@@ -117,9 +118,13 @@ class RenewalProcess extends NewTermProcess {
    */
   function initialize() {
     var producerCode = Job.Policy.ProducerCodeOfService
-    if (producerCode != null) {
+    if (producerCode != null && _branch.Policy.NewProducerCode_Ext == null) {
       _branch.EffectiveDatedFields.ProducerCode = producerCode
       _branch.ProducerCodeOfRecord = producerCode
+      //BPC Accelerator Addition
+      //If a new producer code has been specified through the BPC batch process, then update the producer of record and EffectiveDatedFields.ProducerCode for the policy period
+    } else if (_branch.Policy.NewProducerCode_Ext != null) {
+      BPCProcessCtrl.updateProducerOfRecord(_branch, _branch.Policy.NewProducerCode_Ext)
     }
     _branch.PolicyNumber = _branch.genNewPeriodPolicyNumber()
     _branch.cloneAutoNumberSequences()

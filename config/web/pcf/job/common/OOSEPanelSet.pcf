@@ -39,6 +39,11 @@
     <PanelDivider
       visible="policyPeriod.Job.OOSJob and policyPeriod.FailedOOSEValidation"/>
     <Code><![CDATA[function showSliceSelector() : Boolean {
+
+  if(jobWizardHelper.Wizard.CurrentLocation typeis pcf.RenewalWizard){
+    return true
+  }
+
   if (not policyPeriod.Job.OOSJob) {
     return false  // never show unless it's an OOS job
   }

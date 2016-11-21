@@ -254,6 +254,27 @@
           required="true"
           value="dwelling.OccupancyVacant"
           visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/> -->
+        <BooleanRadioInput
+          editable="true"
+          id="MultiPolicyDiscount_Ext"
+          label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
+          value="dwelling.DwellingRentedEverToOthers_Ext">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <TypeKeyInput
+          editable="true"
+          id="HOPolicyType"
+          label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
+          required="true"
+          value="dwelling.TypeofPolicy_Ext"
+          visible="dwelling.DwellingRentedEverToOthers_Ext == true">
+          <PostOnChange/>
+        </TypeKeyInput>
+        <Input
+          editable="true"
+          id="PolicyNumber_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
+          value="dwelling.PolicyNumber_Ext"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>

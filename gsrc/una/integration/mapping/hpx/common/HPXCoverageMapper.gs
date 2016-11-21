@@ -142,6 +142,7 @@ abstract class HPXCoverageMapper {
     limit.LimitDesc = ""
     limit.FormatText = ""
     limit.WrittenAmt.Amt = 0.00
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return limit
   }
 
@@ -157,6 +158,7 @@ abstract class HPXCoverageMapper {
     limit.LimitDesc = ""
     limit.FormatText = ""
     limit.WrittenAmt.Amt = 0.00
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return limit
   }
   function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
@@ -170,6 +172,7 @@ abstract class HPXCoverageMapper {
     deductible.CoverageSubCd = currentCovTerm.PatternCode
     deductible.DeductibleDesc = ""
     deductible.FormatText = ""
+    deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return deductible
   }
   function createDirectDeductibleInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
@@ -183,6 +186,7 @@ abstract class HPXCoverageMapper {
     deductible.CoverageSubCd = currentCovTerm.PatternCode
     deductible.DeductibleDesc = ""
     deductible.FormatText = ""
+    deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return deductible
   }
 
@@ -196,6 +200,7 @@ abstract class HPXCoverageMapper {
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.WrittenAmt.Amt = 0.00
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return limit
   }
 
@@ -209,6 +214,7 @@ abstract class HPXCoverageMapper {
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.WrittenAmt.Amt = 0.00
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return limit
   }
 
@@ -222,6 +228,7 @@ abstract class HPXCoverageMapper {
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.WrittenAmt.Amt = 0.00
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
     return limit
   }
 

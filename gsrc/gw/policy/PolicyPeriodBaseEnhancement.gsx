@@ -172,11 +172,12 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
 
     // No editing in the wrong OOSE slice unless you are trying to fix failed oose validation or
     // you're Side-by-Side
-    var wrongSlice = this.SliceDate == null or not this.FirstOOSSliceDateRange.includes(this.SliceDate)
+    //This has been commented to make the draft renewal editable in slice mode for FDC accelerator
+    /*var wrongSlice = this.SliceDate == null or not this.FirstOOSSliceDateRange.includes(this.SliceDate)
     if (wrongSlice and not this.FailedOOSEValidation) {
       PCLoggerCategory.JOB_PROCESS.debug("checkBaseEditability() - FALSE: wrong slice and not a Failed OOS validation")
       return false
-    }
+    }*/
     return true
   }
 
@@ -1743,7 +1744,37 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
       var pattern = this.Policy.Product.LinePatterns.firstWhere( \ elt -> elt.DisplayName == displaykey.Web.PolicyLine_GLLine.Name)
       CPPLineSelectionScreenHelper.createOrRemoveLine(this, pattern, false)
     }
+  }
 
+  /**
+   * Checks if the future change can be started at an effective date
+   */
+  @Param("effectiveDate", "Effective date of future changes")
+  @Returns("true if a future change can be started, otherwise false")
+  public function canStartFutureChangeOnDate_Ext(effectiveDate : Date):boolean{
+    var lastBoundedPeriod = Policy.finder.findMostRecentBoundPeriodByPolicyNumber(this.PolicyNumber)
+    if(lastBoundedPeriod == null)
+    {
+      return false
+    }
+
+    effectiveDate = effectiveDate.addDays(1)
+    if(lastBoundedPeriod.TermType == typekey.TermType.TC_ANNUAL){
+      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext))
+    }
+    else{
+      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext))
+    }
+  }
+
+  /**
+   * Checks if a policy term exist on a specific date
+   */
+  @Param("asOfDate","The effective date of policy change")
+  @Returns("true if the policy exist on the specified date, otherwise false")
+  public  function existOnDate_Ext( asOfDate : java.util.Date) : boolean{
+    var pp = entity.Policy.finder.findPolicyPeriodByPolicyNumberAndAsOfDate(this.PolicyNumber, asOfDate)
+    return pp != null
   }
 }
 

@@ -34,8 +34,14 @@
       <Toolbar>
         <EditButtons
           editVisible="false"
-          updateLabel="displaykey.Button.EffectiveDateChange"/>
+          updateLabel="displaykey.Button.EffectiveDateChange"
+          updateVisible="effectiveDate.before(policyPeriod.PeriodEnd)"/>
       </Toolbar>
+      <Verbatim
+        id="EditEffDateForFutureChangeID"
+        label="displaykey.Accelerator.FutureDatedChanges.CannotStartFutureChange"
+        visible="effectiveDate.after(policyPeriod.PeriodEnd)"
+        warning="true"/>
       <DetailViewPanel
         id="EffectiveDateChangeDV">
         <InputColumn>
@@ -51,7 +57,10 @@
             editable="true"
             id="Description"
             label="displaykey.Web.Job.Description"
-            value="policyChange.Description"/>
+            value="policyChange.Description">
+            <PostOnChange
+              target="DATA_ONLY"/>
+          </Input>
         </InputColumn>
       </DetailViewPanel>
     </Screen>

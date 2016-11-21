@@ -30,9 +30,9 @@
       <Row>
         <DocumentIconCell
           action="DocumentDetailsPopup.push(Document, viewOnly)"
+          document="document"
           id="Icon"
           value="true"
-          document="document"
           visible="not viewOnly"/>
         <Cell
           action="DocumentDetailsPopup.push(Document, viewOnly)"
@@ -42,8 +42,8 @@
           value="document.Name"/>
         <LinkCell
           id="Actions"
-          width="156"
-          label="displaykey.Web.DocumentsLV.Actions">
+          label="displaykey.Web.DocumentsLV.Actions"
+          width="156">
           <DocumentLink
             document="Document"
             documentAction="viewRepositoryVersion"
@@ -80,10 +80,10 @@
             styleClass="miniButton"
             visible="not viewOnly and ( web.document.DocumentsHelper.showEditButtons() and document.DMS) and perm.document.edit(Document)"/>
         </LinkCell>
-        <TypeKeyCell
+        <Cell
           id="Type"
           label="displaykey.Web.DocumentsLV.Type"
-          value="document.Type"/>
+          value="document.OnBaseDocumentType"/>
         <TypeKeyCell
           id="Status"
           label="displaykey.Web.DocumentsLV.Status"

@@ -23,6 +23,10 @@
         id="RequestRestoreButton"
         label="displaykey.Web.Archive.RequestRestoreButton"
         visible="policyPeriod.Archived and perm.PolicyPeriod.restorefromarchive"/>
+      <ToolbarButton
+        action="OnBaseWebClientExitPoint.push(constructUploadUrl())"
+        id="EasyButtonTest"
+        label="&quot;View Documents in OnBase&quot;"/>
     </Toolbar>
     <AlertBar
       allowDismiss="false"
@@ -138,5 +142,16 @@
         </PanelRef>
       </PanelColumn>
     </PanelRow>
+    <Code><![CDATA[uses onbase.api.DocPopUtils
+
+function constructUploadUrl() : String {
+  var dataMap = {
+      "KT114_0_0_0" -> policyPeriod.PolicyNumber
+      //"KT51_0_0_0" -> "6782227604"
+      //"Account #" -> account.AccountNumber
+  }
+  var customQueryId = "101"
+  return DocPopUtils.generateCustomQueryURL(dataMap, customQueryId)
+}]]></Code>
   </Screen>
 </PCF>

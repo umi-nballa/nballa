@@ -26,7 +26,7 @@
     <JobWizardStep
       beforeSave="policyPeriod.HomeownersLine_HOE.Dwelling.beforeSavingDwellingConstructionPage()"
       id="HomeownersDwellingConstruction"
-      onEnter="gw.lob.ho.HODwellingUtil_HOE.setDefault(policyPeriod.HomeownersLine_HOE.Dwelling)"
+      onEnter="gw.lob.ho.HODwellingUtil_HOE.setDefault(policyPeriod.HomeownersLine_HOE.Dwelling);new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingConstructionInformation(policyPeriod)"
       save="true"
       screen="HODwellingConstructionHOEScreen(policyPeriod, policyPeriod.OpenForEdit, job, jobWizardHelper)"
       title="displaykey.Web.Homeowners.DwellingConstruction.DwellingConstruction"/>
@@ -48,6 +48,6 @@
       save="true"
       screen="HOPriorLossExtScreen(policyPeriod, policyPeriod.OpenForEdit, jobWizardHelper)"
       title="displaykey.Accelerator.LexisNexis.Clue.Property.LossHistory"
-      visible="policyPeriod.HomeownersLine_HOE.HOPolicyType == &quot;HO3&quot; or  policyPeriod.HomeownersLine_HOE.HOPolicyType == &quot;DP2&quot;"/>
+      visible="policyPeriod.HomeownersLine_HOE.HOPolicyType == &quot;HO3&quot; or  policyPeriod.HomeownersLine_HOE.HOPolicyType == &quot;DP2&quot; or policyPeriod.HomeownersLine_HOE.HOPolicyType == &quot;HO4&quot; or policyPeriod.HomeownersLine_HOE.HOPolicyType == &quot;HO6&quot;"/>
   </WizardStepSet>
 </PCF>

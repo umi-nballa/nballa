@@ -16,6 +16,6 @@ class PropertyDataModel {
   var percent:Double      as Percent
   var levelRecord:String  as LevelRecord
   var namedValue: String  as NamedValue
-  var listValue: PropertyDataModel as ListValue
+  var listValue: List<PropertyDataModel> as ListValue
 
 }

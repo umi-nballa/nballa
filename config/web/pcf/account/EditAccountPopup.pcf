@@ -100,6 +100,45 @@
               value="account.BusOpsDesc"/>
           </InputSet>
         </InputColumn>
+        <InputColumn>
+          <ListViewInput
+            labelAbove="true">
+            <Toolbar>
+              <AddButton
+                conversionExpression="PickedValue.toAccountProducerCode(account)"
+                id="AddProducer"
+                iterator="accountProducers"
+                label="displaykey.Button.Add"
+                pickLocation="ProducerCodeSearchPopup.push()"
+                visible="true"/>
+              <RemoveButton
+                id="RemoveProducer"
+                iterator="accountProducers"
+                label="displaykey.Button.Remove"
+                visible="true"/>
+            </Toolbar>
+            <ListViewPanel
+              id="AccountPCsLV">
+              <RowIterator
+                editable="false"
+                elementName="apc"
+                id="accountProducers"
+                toRemove="account.removeAccountProducerCode_Ext(apc)"
+                value="account.ProducerCodes">
+                <Row>
+                  <Cell
+                    id="code"
+                    label="displaykey.Web.ProducerSelection.ProducerCode"
+                    value="apc.ProducerCode.Code"/>
+                  <Cell
+                    id="desc"
+                    label="displaykey.Web.ProducerSelection.ProducerCodeDescription"
+                    value="apc.ProducerCode.Description"/>
+                </Row>
+              </RowIterator>
+            </ListViewPanel>
+          </ListViewInput>
+        </InputColumn>
       </DetailViewPanel>
     </Screen>
   </Popup>

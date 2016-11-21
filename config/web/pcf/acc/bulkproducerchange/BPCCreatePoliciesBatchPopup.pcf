@@ -1,0 +1,162 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <Popup
+    beforeCommit="helper.beforeCommit(oldProducerCode, oldProducerGroup, newProducerCode, batch, policyList, oldProducerPolicies, invalidPolicies)"
+    canEdit="true"
+    canVisit="perm.System.editbulkproducerchange_ext"
+    id="BPCCreatePoliciesBatchPopup"
+    parent="BPCPoliciesMainPage()"
+    startInEditMode="true"
+    title="displaykey.Accelerator.BulkProducerChange.GenerateBatch">
+    <LocationEntryPoint
+      signature="BPCCreatePoliciesBatchPopup(helper:gw.acc.bulkproducerchange.BPCAdminHelper)"/>
+    <Variable
+      initialValue="var bc=new BPCBatch_Ext() bc.TargetDate=gw.api.util.DateUtil.currentDate().addDays(1) return bc"
+      name="batch"/>
+    <Variable
+      initialValue="new java.util.ArrayList&lt;Policy&gt;()"
+      name="policyList"
+      type="java.util.ArrayList&lt;Policy&gt;"/>
+    <Variable
+      name="helper"
+      type="gw.acc.bulkproducerchange.BPCAdminHelper"/>
+    <Variable
+      name="newProducerCode"
+      type="ProducerCode"/>
+    <Variable
+      name="oldProducerCode"
+      type="ProducerCode"/>
+    <Variable
+      name="oldProducerGroup"
+      type="Group"/>
+    <Variable
+      initialValue="batch.checkHasSource(oldProducerCode, oldProducerGroup, policyList)"
+      name="hasSource"
+      recalculateOnRefresh="true"
+      type="boolean"/>
+    <Variable
+      initialValue="helper.displayPolicies(policyList as entity.Policy[])"
+      name="policyListString"
+      type="String"/>
+    <Variable
+      initialValue="new java.util.ArrayList&lt;gw.acc.bulkproducerchange.BPCOldProducerPolicy&gt;()"
+      name="oldProducerPolicies"
+      type="java.util.ArrayList&lt;gw.acc.bulkproducerchange.BPCOldProducerPolicy&gt;"/>
+    <Variable
+      initialValue="new java.util.ArrayList&lt;String&gt;()"
+      name="invalidPolicies"
+      type="java.util.ArrayList&lt;String&gt;"/>
+    <Screen>
+      <Toolbar>
+        <EditButtons
+          updateLabel="displaykey.Accelerator.BulkProducerChange.SubmitBatch"/>
+      </Toolbar>
+      <DetailViewPanel>
+        <InputColumn>
+          <TypeKeyInput
+            editable="true"
+            id="batchType"
+            label="displaykey.Accelerator.BulkProducerChange.Accounts"
+            required="true"
+            value="batch.Type">
+            <PostOnChange/>
+          </TypeKeyInput>
+          <DateInput
+            editable="true"
+            id="targetDate"
+            label="displaykey.Accelerator.BulkProducerChange.TargetDate"
+            required="true"
+            validationExpression="batch.TargetDate.before(gw.api.util.DateUtil.currentDate().addDays(1).trimToMidnight()) ? displaykey.Accelerator.BulkProducerChange.BatchMustBeInTheFuture : null"
+            value="batch.TargetDate"
+            visible="batch.Type==&quot;Date&quot;"/>
+          <TypeKeyInput
+            editable="true"
+            id="batchSource"
+            label="displaykey.Accelerator.BulkProducerChange.Source"
+            required="true"
+            value="batch.Source">
+            <PostOnChange
+              onChange="oldProducerCode=null oldProducerGroup=null newProducerCode=null oldProducerPolicies=null"/>
+          </TypeKeyInput>
+          <TextAreaInput
+            editable="true"
+            id="policylist"
+            label="displaykey.Accelerator.BulkProducerChange.PolicyList"
+            numRows="20"
+            required="true"
+            value="policyListString"
+            visible="batch.Source == typekey.BPCSource_Ext.TC_POLICYLIST">
+            <PostOnChange
+              onChange="helper.getInputPolicies(policyListString, policyList, invalidPolicies)"/>
+          </TextAreaInput>
+          <PickerInput
+            editable="true"
+            freeInputEnabled="false"
+            id="Branch"
+            label="displaykey.Web.Admin.ProducerCodeDetail.Branch"
+            pickLocation="GroupSearchPopup.push()"
+            required="true"
+            value="oldProducerGroup"
+            visible="batch.Source == typekey.BPCSource_Ext.TC_OFFICE"/>
+          <PickerInput
+            clearEnabled="false"
+            editable="true"
+            freeInputEnabled="false"
+            id="oldProducerCode"
+            label="displaykey.Accelerator.BulkProducerChange.OldProducerCode"
+            onPick="oldProducerPolicies = helper.getOldProducerPolicies(oldProducerCode); gw.api.web.PebblesUtil.invalidateIterators(CurrentLocation, gw.acc.bulkproducerchange.BPCOldProducerPolicy)"
+            pickLocation="ProducerCodeSearchPopup.push()"
+            required="true"
+            value="oldProducerCode"
+            visible="batch.Source == typekey.BPCSource_Ext.TC_PRODUCERCODE">
+            <PostOnChange/>
+          </PickerInput>
+          <PickerInput
+            clearEnabled="false"
+            editable="true"
+            freeInputEnabled="false"
+            id="newProducerCode"
+            label="displaykey.Accelerator.BulkProducerChange.NewProducerCode"
+            pickLocation="ProducerCodeSearchPopup.push()"
+            required="true"
+            value="newProducerCode"
+            visible="batch.Source != null"/>
+        </InputColumn>
+      </DetailViewPanel>
+      <ListViewPanel
+        visible="batch.Source == typekey.BPCSource_Ext.TC_PRODUCERCODE">
+        <RowIterator
+          editable="true"
+          elementName="result"
+          id="PoliciesRowIterator"
+          value="oldProducerPolicies">
+          <Row>
+            <CheckBoxCell
+              editable="true"
+              id="Checked"
+              value="result.Checked"/>
+            <Cell
+              id="PolicyNumber"
+              label="displaykey.Accelerator.BulkProducerChange.PolicyNumber"
+              value="result.Policy.Periods.first().PolicyNumberDisplayString"/>
+            <Cell
+              id="PolicyAddress"
+              label="displaykey.Web.PolicySearch.Solr.Result.Product"
+              value="result.Policy.Product"
+              wrap="true"/>
+            <Cell
+              id="Status"
+              label="displaykey.Accelerator.BulkProducerChange.LastPeriodStatus"
+              value="result.Policy.findLastCoveredPeriod().PeriodDisplayStatus"/>
+            <Cell
+              id="EffectiveDate"
+              label="displaykey.Accelerator.BulkProducerChange.IssueDate"
+              value="result.Policy.OriginalEffectiveDate"/>
+          </Row>
+        </RowIterator>
+      </ListViewPanel>
+    </Screen>
+  </Popup>
+</PCF>

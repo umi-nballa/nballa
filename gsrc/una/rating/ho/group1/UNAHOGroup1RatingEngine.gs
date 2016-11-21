@@ -126,7 +126,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0 and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
           rateIncreasedPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_OrdinanceCov_HOE:
@@ -482,6 +482,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.DisplayValue == "25%"){
       var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
       dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+      if(dwellingRatingInfo.PolicyType == HOPolicyType_HOE.TC_HO4)
+        dwellingRatingInfo.BuildingAdditionsAndAlterationsLimit = dwellingCov.Dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
       var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_ROUTINE_NAME , RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)

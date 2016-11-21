@@ -37,10 +37,16 @@
         id="NewNoteWorksheet_UseTemplateButton"
         label="displaykey.Web.Note.UseTemplate"
         onPick="note.useTemplate( PickedValue, symbolTable )"/>
+      <PickerToolbarButton
+        action="PickExistingDocumentPopup.push(note.Policy != null ? note.Policy : note.Account)"
+        id="linkDocsPickerButton"
+        label="displaykey.Accelerator.OnBase.Notes.STR_GW_LinkDocumentToNote"
+        onPick="onbase.api.application.NotesUtil.linkDocumentToNote(PickedValue, note)"/>
     </Toolbar>
     <PanelRef
       def="NewNoteDV(account, policy, job, note)"/>
-    <Code><![CDATA[function createSearchCriteria() : NoteTemplateSearchCriteria {
+    <Code>
+      <![CDATA[function createSearchCriteria() : NoteTemplateSearchCriteria {
   var rtn = new NoteTemplateSearchCriteria()
   // rtn.Language = Account.AccountHolder.Language 
   rtn.AvailableSymbols = symbolTable.Keys.join( "," )
@@ -48,6 +54,7 @@
     rtn.LOB = policy.Product.Code
   }
   return rtn  
-}]]></Code>
+}]]>
+    </Code>
   </Screen>
 </PCF>

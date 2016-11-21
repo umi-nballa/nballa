@@ -32,6 +32,8 @@ class NCFCreditReportService implements ICreditReportService {
   private var _creditReportDataMgr : ICreditReportDataManager
   private final static var WS_NOT_AVAILABLE: String = "Failed to connect to the LexisNexis web service."
   private final static var PAGE_NOT_FOUND : String = "404 Not Found"
+  private final static var DECEASED_EXCLUSION_CODE = "010"
+
   construct() {
     
     _creditReportDataMgr = CreditReportDataManagerFactory.getCreditReportDataManager(typekey.CreditReportDMExt.TC_PERSISTENT)
@@ -55,11 +57,9 @@ class NCFCreditReportService implements ICreditReportService {
         if (xmlRequest != null) {
           // Submit request to service
           var orderAPI = new InteractiveOrderHandler()
-          LOGGER.debug("Sending request to the web service...")
-          LOGGER.debug("Request \n"+xmlRequest.asUTFString())
+          LOGGER.debug("InScore Request \n"+xmlRequest.asUTFString())
           var xmlResponse = orderAPI.handleInteractiveOrder(xmlRequest.asUTFString())
-          LOGGER.debug("Response from web service received")
-          LOGGER.debug("Response \n"+xmlResponse.toString())
+          LOGGER.debug("InScore Response \n"+xmlResponse.toString())
           if (xmlResponse != null) {
             // Get the NCF report record
             var result = Result.parse(xmlResponse)
@@ -91,13 +91,17 @@ class NCFCreditReportService implements ICreditReportService {
                 statusDescription = "No credit found."
             }
             else {
+              if(score.ExclusionCode == DECEASED_EXCLUSION_CODE ) {
+                statusCode = CreditStatusExt.TC_NO_SCORE
+                statusDescription = score.ExclusionMsg
+              }else{
                 statusCode = CreditStatusExt.TC_CREDIT_RECEIVED
                 statusDescription = "Credit report found. "
                 if(countReasonCode > 0) {
-                  statusDescription += countReasonCode + " reason code(s) found."  
+                  statusDescription += countReasonCode + " reason code(s) found."
                   statusCode =  CreditStatusExt.TC_CREDIT_RECEIVED_WITH_REASON_ENTRY
-
                 }
+              }
             }              
             creditReportResponse = new CreditReportResponse
                 .Builder()
@@ -184,8 +188,9 @@ class NCFCreditReportService implements ICreditReportService {
     subject.Ssn = creditReportRequest.SocialSecurityNumber
 
     if(creditReportRequest.DateOfBirth != null){
-      var dateFormat = new SimpleDateFormat("mm/dd/yyyy")
+      var dateFormat = new SimpleDateFormat("MM/dd/yyy")
       var dobString = dateFormat.format(creditReportRequest.DateOfBirth)
+
       //assign date of birth as String with above format to Birthdate
       subject.Birthdate = dobString
      }
@@ -222,7 +227,7 @@ class NCFCreditReportService implements ICreditReportService {
   
     order.Products.NationalCreditFile[0].PrimarySubject = subject
     order.Products.NationalCreditFile[0].ReportCode ="1337"
-    order.Products.NationalCreditFile[0].Vendor = Equifax
+    //order.Products.NationalCreditFile[0].Vendor = Equifax
     order.Products.NationalCreditFile[0].Format = CP_XML
     //order.Products.NationalCreditFile[0]. = "C1"
 
@@ -245,6 +250,9 @@ class NCFCreditReportService implements ICreditReportService {
     if (ncfReport != null) {
       foreach (item in ncfReport.Report.AlertsScoring.Scoring.Score) {
         if (item.Status == ScoreStatus.Scored) {
+          result = item
+          break
+        }else if(item.Status == ScoreStatus.No_Score and item.ExclusionCode == DECEASED_EXCLUSION_CODE and item.ExclusionMsg.containsIgnoreCase("DECEASED")) {
           result = item
           break
         }

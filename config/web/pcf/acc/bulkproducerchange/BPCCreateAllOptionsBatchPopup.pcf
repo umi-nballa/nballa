@@ -1,0 +1,86 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <Popup
+    beforeCommit="helper.beforeCommit(oldProducerCode, newProducerCode, batch)"
+    canEdit="true"
+    canVisit="perm.System.editbulkproducerchange_ext"
+    id="BPCCreateAllOptionsBatchPopup"
+    parent="BPCAllMainPage()"
+    startInEditMode="true"
+    title="displaykey.Accelerator.BulkProducerChange.GenerateBatch">
+    <LocationEntryPoint
+      signature="BPCCreateAllOptionsBatchPopup(helper : gw.acc.bulkproducerchange.BPCAdminHelper)"/>
+    <Variable
+      initialValue="var bc = new BPCBatch_Ext(); bc.TargetDate = gw.api.util.DateUtil.currentDate().addDays(1); return bc"
+      name="batch"
+      type="entity.BPCBatch_Ext"/>
+    <Variable
+      initialValue="new gw.acc.bulkproducerchange.BPCAdminHelper()"
+      name="helper"
+      type="gw.acc.bulkproducerchange.BPCAdminHelper"/>
+    <Variable
+      name="oldProducerCode"
+      type="entity.ProducerCode"/>
+    <Variable
+      name="newProducerCode"
+      type="entity.ProducerCode"/>
+    <Screen>
+      <Toolbar>
+        <EditButtons
+          updateLabel="displaykey.Accelerator.BulkProducerChange.SubmitBatch"/>
+      </Toolbar>
+      <DetailViewPanel>
+        <InputColumn>
+          <DateInput
+            editable="true"
+            id="targetDate"
+            label="displaykey.Accelerator.BulkProducerChange.TargetDate"
+            required="true"
+            validationExpression="batch.TargetDate.before(gw.api.util.DateUtil.currentDate().addDays(1).trimToMidnight())? displaykey.Accelerator.BulkProducerChange.BatchMustBeInTheFuture :null"
+            value="batch.TargetDate"/>
+          <PickerInput
+            clearEnabled="false"
+            editable="true"
+            freeInputEnabled="false"
+            id="oldProducerCode"
+            label="displaykey.Accelerator.BulkProducerChange.OldProducerCode"
+            pickLocation="ProducerCodeSearchPopup.push()"
+            required="true"
+            value="oldProducerCode"/>
+          <PickerInput
+            clearEnabled="false"
+            editable="true"
+            freeInputEnabled="false"
+            id="newProducerCode"
+            label="displaykey.Accelerator.BulkProducerChange.NewProducerCode"
+            pickLocation="ProducerCodeSearchPopup.push()"
+            required="true"
+            value="newProducerCode"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </Screen>
+    <Code><![CDATA[function beforeCommit(){ 
+  if (newProducerCode == oldProducerCode) {
+    throw new gw.api.util.DisplayableException("Producer codes have to be different")
+  }
+  
+  batch.BatchCode= gw.api.system.database.SequenceUtil.next(1, BPCBatch_Ext as java.lang.String) as java.lang.Integer  
+  
+  if(batch.TargetDate == null) {
+    batch.TargetDate = gw.api.util.DateUtil.currentDate().addDays(1)
+  }
+  
+  batch.TargetDate=batch.TargetDate.trimToMidnight().addMinutes(1)
+  batch.Targets = BPCTargets_Ext.TC_ALL
+
+  batch.generateBatchRecords(newProducerCode, oldProducerCode)
+  batch.Bundle.commit() 
+  
+  helper.batchNum=batch.BatchCode
+  helper.batchDate=null  
+  helper.searchBPCRecords(BPCTargets_Ext.TC_ALL.Code) 
+}]]></Code>
+  </Popup>
+</PCF>

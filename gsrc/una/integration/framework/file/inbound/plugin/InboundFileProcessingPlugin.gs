@@ -11,6 +11,8 @@ uses una.integration.framework.util.ErrorCode
 uses una.integration.framework.util.PropertiesHolder
 uses una.logging.UnaLoggerCategory
 
+uses java.io.File
+
 /**
  * The inbound file handler plugin base class to read and process the file directly without using Integration Database.
  * The sub classes can use the integration database based on the requirement.
@@ -19,6 +21,8 @@ uses una.logging.UnaLoggerCategory
 abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerPlugin, IFileProcessingPlugin {
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   final static var INTEGRATION_USER = PropertiesHolder.getProperty("INTEGRATION_USER")
+  final static var PATH_SEPARATOR = "\\"
+  final static var DONE_FOLDER_NAME = "done"
 
   /**
    * Validates the batch header record for mandatory information to process the detail records.
@@ -47,9 +51,11 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
    * @param data the inbound file path
    */
   override function process(data: Object) {
+    // Validates if the file with the same name is already processed.
+    validateDuplicateFile(data)
     var filePath = (data as java.nio.file.Path ).toAbsolutePath() as String
-    var fileRecords = BeanIOHelper.readFile(BeanIOStream, filePath)
     var fileName = (data as java.nio.file.Path ).toAbsolutePath().getFileName() as String
+    var fileRecords = BeanIOHelper.readFile(BeanIOStream, filePath)
     var containsHeader = fileRecords.HeaderRecord != null
     var containsBatchHeader = fileRecords.Batches*.BatchHeaderRecord.first() != null
     validateFile(fileName, fileRecords)
@@ -73,6 +79,25 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
         processFailedRecords(fileRecords, data as java.nio.file.Path)
       }, INTEGRATION_USER)
     })
+  }
+
+  /**
+   * Validates if the file with the same name is already processed.
+   */
+  private function validateDuplicateFile(data : Object){
+    _logger.debug("Entering validateDuplicateFile() ")
+    var fileName = (data as java.nio.file.Path ).toAbsolutePath().getFileName() as String
+    var fieldError : FieldErrorInformation
+    var doneDirPath= (data as java.nio.file.Path ).Parent.Parent.toAbsolutePath()+PATH_SEPARATOR+DONE_FOLDER_NAME
+    if(!(new File(doneDirPath)).exists()){
+      fieldError = new(){:FieldName = "Folder Structure", :FieldValue = fileName, :ErrorMessage = "Folder Structure is not proper. Done folder not present"}
+      ExceptionUtil.throwException(ErrorCode.IMPROPER_FOLDER_STRUCTURE, {fieldError})
+    }
+    if((new File(doneDirPath+PATH_SEPARATOR+fileName)).exists()) {
+      fieldError = new(){:FieldName = "File", :FieldValue = fileName, :ErrorMessage = "File is already present in the target folder"}
+      ExceptionUtil.throwException(ErrorCode.FILE_IS_PRESENT, {fieldError})
+    }
+    _logger.debug("Exiting the validateDuplicateFile()")
   }
 
 }

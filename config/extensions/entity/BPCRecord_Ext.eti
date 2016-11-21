@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Record Details for Bulk Agent Change Batch Process."
+  entity="BPCRecord_Ext"
+  final="false"
+  table="BPCRecord_Ext"
+  type="retireable">
+  <column
+    desc="Date to process record"
+    name="ProcessDate"
+    nullok="true"
+    type="datetime"/>
+  <typekey
+    desc="The reason this transaction failed"
+    name="Reason"
+    nullok="true"
+    typelist="BPCReason_Ext"/>
+  <column
+    desc="Details of processing errors for record"
+    name="Message"
+    nullok="true"
+    type="mediumtext"/>
+  <typekey
+    desc="Type of job for updating ProducerCode"
+    name="Jobtype"
+    nullok="true"
+    typelist="Job"/>
+  <typekey
+    desc="Record status"
+    name="Status"
+    nullok="true"
+    typelist="BPCRecordStatus_Ext"/>
+  <foreignkey
+    fkentity="ProducerCode"
+    name="NewProducerCode"
+    nullok="false"/>
+  <foreignkey
+    fkentity="ProducerCode"
+    name="OldProducerCode"
+    nullok="false"/>
+  <foreignkey
+    fkentity="BPCBatch_Ext"
+    name="Batch"
+    nullok="false"/>
+</entity>

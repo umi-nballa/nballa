@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  entity="OnBaseMessageBrokerMessage_Ext"
+  table="obmessagebrokermsg"
+  type="retireable">
+  <column
+    name="MessageInstanceNumber"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    name="MessageBody"
+    nullok="false"
+    type="longtext"/>
+  <typekey
+    default="pending"
+    name="MessageStatus"
+    nullok="false"
+    typelist="OnBaseMessageBrokerStatus_Ext"/>
+  <column
+    name="MessageResponse"
+    nullok="true"
+    type="longtext"/>
+  <column
+    name="MessageError"
+    nullok="true"
+    type="shorttext"/>
+  <events>
+    <event
+      description="Used to indicate that message handling is finished."
+      name="MessageComplete"/>
+  </events>
+  <typekey
+    default="activity"
+    name="MessageType"
+    nullok="false"
+    typelist="OnBaseMessageBrokerType_Ext"/>
+</entity>

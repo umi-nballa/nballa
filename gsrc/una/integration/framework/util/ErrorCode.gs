@@ -16,6 +16,8 @@ enum ErrorCode implements IErrorCode {
   INVALID_HEADER_RECORD ("ERR-INBOUND-005", "Failed to read the header record as per the layout"),
   INVALID_BATCH_HEADER_RECORD ("ERR-INBOUND-006", "Failed to read the batch header record as per the layout"),
   INVALID_RECORD_NAME("ERR-INBOUND-007", "Invalid record name configured in the BeanIOFileMapping xml file."),
+  IMPROPER_FOLDER_STRUCTURE("ERR-INBOUND-008","Folder Structure is not proper"),
+  FILE_IS_PRESENT("ERR-INBOUND-009","File is already present in the target folder"),
 
   // Outbound File Integration error codes
   OUTBOUND_PAYLOAD_EMPTY ("ERR-OUTBOUND-001", "Outbound Integration Payload is empty"),

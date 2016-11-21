@@ -60,7 +60,6 @@ public final class HORateRoutineNames {
   public static final var WATER_BACKUP_SUMP_OVERFLOW_COV_ROUTINE_NAME : String = "UNAHOWaterBackupSumpOverflowCovRateRoutine"
   public static final var SPECIFIED_ADDITIONAL_AMOUNT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOSpecifiedAdditionalAmountCovGroup1RateRoutine"
   public static final var ORDINANCE_OR_LAW_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOrdinanceOrLawCovGroup1RateRoutine"
-  public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_COV_GROUP1_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsCovGroup1RateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP1_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovGroup1RateRoutine"
   public static final var LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP1_COV_ROUTINE_NAME : String = "UNAHOLimitedFungiWetOrDryRotOrBacteriaSectionIGroup1RateRoutine"
   public static final var PERSONAL_INJURY_COVERAGE_GROUP1_ROUTINE_NAME : String = "UNAHOPersonalInjuryCoverageGroup1RateRoutine"
@@ -78,10 +77,11 @@ public final class HORateRoutineNames {
   public static final var BUILDING_CODE_EFFECTIVENESS_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeEffectivenessGradingCreditRateRoutine"
   public static final var ADDITIONAL_RESIDENCES_OCCUPIED_BY_INSURED_RATE_ROUTINE : String ="UNAHOAdditionalResidenceOccupiedByInsuredRateRoutine"
   public static final var PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE : String = "UNAHOPermittedIncidentalOccupanciesRateRoutine"
+  public static final var BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE : String = "UNAHOBuildingAdditionsAndAlterationsIncreasedLimitsRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"
-  public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_ROUTINE_NAME : String = "UNAHOBusinessPropertyIncreasedLimitsRateRoutine"
+  public static final var BUSINESS_PROPERTY_INCREASED_LIMITS_RATE_ROUTINE : String = "UNAHOBusinessPropertyIncreasedLimitsRateRoutine"
   public static final var PERSONAL_PROPERTY_EXCLUSION_RATE_ROUTINE : String = "UNAHOPersonalPropertyExclusionRateRoutine"
   public static final var GOLF_CART_PHYSICAL_DAMAGE_AND_LIABILITY_COVERAGE_RATE_ROUTINE : String = "UNAHOGolfCartPhysicalDamageAndLiabilityCovRateRoutine"
   public static final var INCREASED_SECTION_II_LIMITS_ROUTINE_NAME : String = "UNAHOIncreasedSectionIILimitsRateRoutine"

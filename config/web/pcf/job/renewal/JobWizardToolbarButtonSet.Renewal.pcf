@@ -47,9 +47,15 @@
       shortcut="K"
       visible="renewalProcess.canReleaseLock()"/>
     <ToolbarButton
-      action="jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod))"
+      action="jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod));"
       id="RenewalQuote"
       label="displaykey.Job.Operation.Quote"
+      shortcut="Q"
+      visible="renewalProcess.canManuallyQuote().Okay"/>
+    <ToolbarButton
+      action="jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod)); jobWizardHelper.requestRenewRenewal(policyPeriod) "
+      id="RenewalQuoteAndRenew"
+      label="&quot;Quote and Renew&quot;"
       shortcut="Q"
       visible="renewalProcess.canManuallyQuote().Okay"/>
     <ToolbarButton

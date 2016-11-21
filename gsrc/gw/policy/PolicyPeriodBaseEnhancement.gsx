@@ -54,13 +54,7 @@ uses gw.lob.common.SegmentEvaluator
 uses gw.plugin.reinsurance.IReinsuranceConfigPlugin
 uses java.text.DateFormat
 uses gw.api.system.PCLoggerCategory
-uses org.apache.commons.lang.ObjectUtils
 uses gw.lob.cpp.ui.CPPLineSelectionScreenHelper
-uses gw.job.UNARenewalProcess
-uses gw.job.UNACPPRenewalProcess
-uses gw.job.UNABOPRenewalProcess
-uses java.lang.UnsupportedOperationException
-uses gw.job.UNAHORenewalProcess
 
 enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
   /**

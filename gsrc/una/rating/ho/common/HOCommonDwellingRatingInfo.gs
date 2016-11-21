@@ -44,7 +44,7 @@ class HOCommonDwellingRatingInfo {
     }
 
     if (dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
-      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.LimitDifference.intValue())
+      _businessPropertyIncreasedLimit = (dwellingCov?.HODW_OnPremises_Limit_HOETerm?.LimitDifference?.intValue())
     }
     if(dwellingCov.Dwelling.HOLine?.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.LimitDifference > 0)
       _isPersonalLiabilityLimitIncreased = true

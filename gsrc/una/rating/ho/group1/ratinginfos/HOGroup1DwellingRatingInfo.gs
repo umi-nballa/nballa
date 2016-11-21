@@ -21,6 +21,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures
   var _permittedIncidentalOccupancyOtherStructuresLimit : BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage : boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage
+  var _buildingAdditionsAndAlterationsLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
 
   construct(dwellingCov: DwellingCov_HOE) {
     super(dwellingCov)
@@ -52,6 +53,9 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
       _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
       _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
+    }
+    if(dwellingCov typeis HODW_BuildingAdditions_HOE_Ext){
+
     }
   }
 }

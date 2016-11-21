@@ -17,7 +17,7 @@
       name="organization"
       recalculateOnRefresh="true"/>
     <Variable
-      initialValue="new gw.web.admin.OrganizationUIHelper(organization)"
+      initialValue="organization!=null?new gw.web.admin.OrganizationUIHelper(organization):null"
       name="orgHelper"
       recalculateOnRefresh="true"/>
     <Variable
@@ -28,7 +28,7 @@
       name="organizationUsers"
       recalculateOnRefresh="true"/>
     <Variable
-      initialValue="organizationUsers.where(\u -&gt; u.Contact != organization.Contact).map(\u -&gt; u.Contact).toTypedArray()"
+      initialValue="getcontactlist(organizationUsers, organization)//organizationUsers?.where(\u -&gt; u != null &amp;&amp; u?.Contact != organization?.Contact).map(\u -&gt; u.Contact).toTypedArray()"
       name="userContacts"/>
     <InputColumn>
       <Input
@@ -191,7 +191,8 @@
           <MenuItemIterator
             elementName="contact"
             id="UnassignedContactIterator"
-            value="userContacts">
+            value="userContacts"
+            visible="userContacts!=null &amp;&amp; userContacts.length&gt;0">
             <IteratorSort
               sortBy="contact.DisplayName"
               sortOrder="1"/>
@@ -250,5 +251,12 @@
         label="displaykey.Web.AddressDetail.Description"
         value="producerCode.Contact_Ext.PrimaryAddress.Description"/>
     </InputColumn>
+    <Code><![CDATA[function getcontactlist(organizationUser:List<User>, organizatio:Organization):UserContact[]
+{
+  if(organizationUser!=null && organizationUser.size()>0)
+  return organizationUser?.where(\u -> u != null && u?.Contact != organizatio?.Contact).map(\u -> u.Contact).toTypedArray()
+  else
+  return null
+}]]></Code>
   </DetailViewPanel>
 </PCF>

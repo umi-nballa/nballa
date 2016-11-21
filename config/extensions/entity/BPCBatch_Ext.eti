@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Batch input parameters for Bulk Agent Change."
+  entity="BPCBatch_Ext"
+  exportable="true"
+  table="BPCBatch_Ext"
+  type="retireable">
+  <column
+    default="false"
+    desc="Denotes if the batch has been run"
+    name="Completed"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Sequential Batch Code"
+    name="BatchCode"
+    nullok="true"
+    type="integer"/>
+  <column
+    desc="Date to call within batch"
+    name="TargetDate"
+    nullok="true"
+    type="datetime"/>
+  <typekey
+    desc="The type of batch to run."
+    name="Type"
+    nullok="true"
+    typelist="BPCType_Ext"/>
+  <typekey
+    desc="The type of source data for this batch."
+    name="Source"
+    nullok="true"
+    typelist="BPCSource_Ext"/>
+  <typekey
+    desc="The targets for producer change for this batch."
+    name="Targets"
+    nullok="true"
+    typelist="BPCTargets_Ext"/>
+  <array
+    arrayentity="BPCPolicyRecord_Ext"
+    cascadeDelete="true"
+    desc="Policy records for this batch."
+    exportable="false"
+    name="PolicyRecords"/>
+  <array
+    arrayentity="BPCAccountRecord_Ext"
+    cascadeDelete="true"
+    desc="Account records for this batch."
+    exportable="false"
+    name="AccountRecords"/>
+</entity>

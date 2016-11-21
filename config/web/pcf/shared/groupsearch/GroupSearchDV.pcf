@@ -10,6 +10,7 @@
     <Variable
       initialValue="searchCriteria.Organization != null"
       name="orgFixed"
+      recalculateOnRefresh="true"
       type="boolean"/>
     <Variable
       initialValue="new gw.globalization.GroupNameToGroupSearchAdapter(searchCriteria)"
@@ -18,6 +19,7 @@
     <InputColumn>
       <InputSetRef
         def="GlobalContactNameInputSet(new gw.search.GroupNameOwner(groupNameAdapter))"
+        id="InputSetRefContactName"
         mode="gw.api.name.NameLocaleSettings.PCFMode"/>
       <Input
         editable="true"

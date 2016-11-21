@@ -475,8 +475,10 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
     var account = this.Policy.Account
     for (accountCode in account.ProducerCodes) {
       if (not desiredCodes.remove(accountCode.ProducerCode)) {
+        if (not accountCode.ManuallyAdded_Ext) { // Never delete producer codes added manually to the account - Bulk Producer Change Accelerator
         account.removeFromProducerCodes(accountCode)
       }
+    }
     }
 
     // Add desired producer codes that are not already on the account

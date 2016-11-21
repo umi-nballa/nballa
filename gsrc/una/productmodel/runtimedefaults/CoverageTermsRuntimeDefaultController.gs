@@ -64,7 +64,7 @@ class CoverageTermsRuntimeDefaultController {
     do{
       result = getRuntimeDefaultCalculator(new CovTermDefaultContext(sortedContextsForProduct[i], coverable, {covTerm.PatternCode})).getRuntimeDefault(covTerm)
       i++
-    }while(result == null and i < sortedContextsForProduct.Count -1)
+    }while(result == null and i < sortedContextsForProduct.Count)
 
     return result
   }

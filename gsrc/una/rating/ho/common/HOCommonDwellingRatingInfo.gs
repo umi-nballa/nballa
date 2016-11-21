@@ -30,6 +30,7 @@ class HOCommonDwellingRatingInfo {
 
   construct(dwellingCov : DwellingCov_HOE){
     _dwellingLimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
+    _personalPropertyLimit = (dwellingCov.Dwelling.HODW_Personal_Property_HOEExists)? dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0
     _policyType = dwellingCov.Dwelling?.HOLine.HOPolicyType
     if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
       if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){

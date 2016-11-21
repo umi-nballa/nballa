@@ -10,17 +10,16 @@ uses java.math.BigDecimal
  * Time: 10:50 AM
  */
 class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
-  var _isOrdinanceOrLawCoverage: boolean as IsOrdinanceOrLawCoverage = false
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit: int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium: boolean as IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = false
   var _doesSpecialPersonalPropertyCoverageExist: boolean as SpecialPersonalPropertyCoverage = false
   var _lossAssessmentPolicyForm: String as LossAssessmentPolicyForm
   var _lossAssessmentLimit: int as LossAssessmentLimit
   var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
-  var _isPermittedIncidentalOccupancyInDwelling : boolean as IsPermittedIncidentalOccupancyInDwelling
-  var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures
+  var _isPermittedIncidentalOccupancyInDwelling : boolean as IsPermittedIncidentalOccupancyInDwelling = false
+  var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures = false
   var _permittedIncidentalOccupancyOtherStructuresLimit : BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
-  var _isPermittedIncidentalOccupancyExtendSectionIICoverage : boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage
+  var _isPermittedIncidentalOccupancyExtendSectionIICoverage : boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _buildingAdditionsAndAlterationsLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
 
   construct(dwellingCov: DwellingCov_HOE) {
@@ -55,7 +54,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
     }
     if(dwellingCov typeis HODW_BuildingAdditions_HOE_Ext){
-
+      _buildingAdditionsAndAlterationsLimit = dwellingCov.HODW_BuildAddInc_HOETerm?.Value
     }
   }
 }

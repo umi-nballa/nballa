@@ -60,7 +60,7 @@ class TunaResponseHelper {
             var proClassList = dynamicListMapper(propDetail)
             response.ProtectionClass = proClassList
             break
-
+         //TODO complete the other datum mappings
 
       }
     }

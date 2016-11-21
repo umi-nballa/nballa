@@ -50,6 +50,8 @@ class PropertyInformationCompletePluginImpl {
 
 
 
+
+
   //Instance call for TUNAGATEWAY
 
   property get TUNAGateway(): TunaInterface {
@@ -61,69 +63,67 @@ class PropertyInformationCompletePluginImpl {
   /**
    * This function is to call getDwellingInformation Service to map dwelling screen
    */
-  public function getDwellingInformation(policyPeriod: PolicyPeriod) {
+  public function getDwellingInformation(policyPeriod: PolicyPeriod): TunaAppResponse  {
 
-    logger.debug(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
+    logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     var _address = new AddressDTO()
-    logger.info("Account Number..." + policyPeriod.BaseState.Code)
-    var producerSelection = policyPeriod.BaseState.Code
-    for (location in policyPeriod.Policy.Account.AccountLocations) {
-      logger.info("Primary Location:" + location.Primary + "Address Scrubbed: " + location.AddressScrub_Ext)
-      if (location.Primary && location.AddressScrub_Ext){
-        logger.info("Address.." + location.AddressLine1 + ".. " + location.City + " .." + location.State.DisplayName + " .." + location.PostalCode + " ...." + location.Primary)
+    var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
         _address.AddressLine1 = location.AddressLine1
         _address.State = location.State.DisplayName
         _address.City = location.City
         _address.PostalCode = location.PostalCode
         _address.Country = location.Country.DisplayName
-        try {
-          var tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
-          gw.transaction.Transaction.runWithNewBundle(\bun -> {
-          policyPeriod = bun.add(policyPeriod)
-          tunaLongitudeDetail(policyPeriod,tunaResponse)
-          tunaLatitudeDetail(policyPeriod,tunaResponse)
-          if (tunaResponse.TerritoryDetails != null){
-             for (territoryCode in tunaResponse.TerritoryDetails index i) {
-                logger.info("territoryCode value:" + territoryCode.Code)
-                policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[i].TerritoryCodes[i].Code = territoryCode.Code
-              }
-            }
-            if (null != tunaResponse.Datums && tunaResponse.Datums.size() > 0) {
-              for (dwell in tunaResponse.Datums) {
-                if (dwell.ID == YEAR_BUILT)
-                  tunaYearBuiltDetail(policyPeriod,dwell)
-                else if (dwell.ID == PROTECTION_CLASS)
-                  tunaProtectionClassDetail(policyPeriod,dwell)
-                else if (dwell.ID == ISO_360_VALUE )
-                  tunaISO360Detail(policyPeriod,dwell)
-                else if (dwell.ID == ESTIMATED_REPLACEMENT_COST )
-                  tunaEstReplacementCostDetail(policyPeriod,dwell)
-                else if (dwell.ID == DISTANCE_TO_COAST )
-                  tunaDistToCoastDetail(policyPeriod,dwell)
-                else if (dwell.ID == BCEG)
-                  tunaBCEGDetail(policyPeriod,dwell)
-                else if(dwell.ID ==  FIRE_DEPT_MATCH_LEVEL)
-                  tunaFireDeptMatchLineLevelDetail(policyPeriod,dwell)
-                else if(dwell.ID ==  FIRE_LINE_ADJUSTED_HAZARD )
-                  tunaFireHazardDetail(policyPeriod,dwell)
-                else if(dwell.ID ==  FIRE_LINE_FUEL)
-                  tunaFireFuelDetail(policyPeriod,dwell)
-                else if(dwell.ID ==  FIRE_LINE_ACCESS )
-                  tunaFireAccessDetail(policyPeriod,dwell)
-                else if(dwell.ID ==  FIRE_LINE_SLOPE )
-                  tunaFireSlopeDetail(policyPeriod,dwell)
+//        try {
+         var tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
 
-              }
-            }
-          })
-        }catch (exp: Exception) {
-          logger.error("TunaGateway : Dwelling  Information " + " : StackTrace = ", exp)
-        }
-      }
-    }
-    logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
 
-  }
+        //  gw.transaction.Transaction.runWithNewBundle(\bun -> {
+        //  policyPeriod = bun.add(policyPeriod)
+//          tunaLongitudeDetail(policyPeriod,tunaResponse)
+//          tunaLatitudeDetail(policyPeriod,tunaResponse)
+//          if (tunaResponse.TerritoryDetails != null){
+//             for (territoryCode in tunaResponse.TerritoryDetails index i) {
+//                logger.debug("territoryCode value:" + territoryCode.Code)
+//                policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[i].TerritoryCodes[i].Code = territoryCode.Code
+//              }
+//            }
+//            if (null != tunaResponse.Datums && tunaResponse.Datums.size() > 0) {
+//              for (dwell in tunaResponse.Datums) {
+//                if (dwell.ID == YEAR_BUILT)
+//                  tunaYearBuiltDetail(policyPeriod,dwell)
+//                else if (dwell.ID == PROTECTION_CLASS)
+//                  tunaProtectionClassDetail(policyPeriod,dwell)
+//                else if (dwell.ID == ISO_360_VALUE )
+//                  tunaISO360Detail(policyPeriod,dwell)
+//                else if (dwell.ID == ESTIMATED_REPLACEMENT_COST )
+//                  tunaEstReplacementCostDetail(policyPeriod,dwell)
+//                else if (dwell.ID == DISTANCE_TO_COAST )
+//                  tunaDistToCoastDetail(policyPeriod,dwell)
+//                else if (dwell.ID == BCEG)
+//                  tunaBCEGDetail(policyPeriod,dwell)
+//                else if(dwell.ID ==  FIRE_DEPT_MATCH_LEVEL)
+//                  tunaFireDeptMatchLineLevelDetail(policyPeriod,dwell)
+//                else if(dwell.ID ==  FIRE_LINE_ADJUSTED_HAZARD )
+//                  tunaFireHazardDetail(policyPeriod,dwell)
+//                else if(dwell.ID ==  FIRE_LINE_FUEL)
+//                  tunaFireFuelDetail(policyPeriod,dwell)
+//                else if(dwell.ID ==  FIRE_LINE_ACCESS )
+//                  tunaFireAccessDetail(policyPeriod,dwell)
+//                else if(dwell.ID ==  FIRE_LINE_SLOPE )
+//                  tunaFireSlopeDetail(policyPeriod,dwell)
+//
+//              }
+//            }
+
+      //    })
+//        }catch (exp: Exception) {
+//          logger.error("TunaGateway : Dwelling  Information " + " : StackTrace = ", exp)
+//        }
+//      }
+
+    logger.info(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
+    return tunaResponse
+ }
 
 /**
  * This function is to call GetPropertyInformationComplete Service to map dwelling construction screen
@@ -145,9 +145,9 @@ class PropertyInformationCompletePluginImpl {
         _address.Country = location.Country.DisplayName
         try {
         var tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
-        gw.transaction.Transaction.runWithNewBundle(\bun -> {
-        policyPeriod = bun.add(policyPeriod)
-        if (null != tunaResponse.Datums && tunaResponse.Datums.size() > 0) {
+      //  gw.transaction.Transaction.runWithNewBundle(\bun -> {
+      //  policyPeriod = bun.add(policyPeriod)
+        if (null != tunaResponse.Datums && tunaResponse.Datums.size() > 0 && policyPeriod.Status == PolicyPeriodStatus.TC_DRAFT) {
             for (dwell in tunaResponse.Datums) {
               if (dwell.ID == STORIES_NUMBER)
               tunaStoryNumDetail(policyPeriod,dwell)
@@ -165,7 +165,7 @@ class PropertyInformationCompletePluginImpl {
               tunaWindPoolDetail(policyPeriod,dwell)
              }
           }
-        })
+       // })
       }catch (exp: Exception) {
         logger.error("TunaGateway : Dwelling Construction Information " + " : StackTrace = ", exp)
        }

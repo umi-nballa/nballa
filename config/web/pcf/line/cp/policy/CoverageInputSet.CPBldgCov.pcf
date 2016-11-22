@@ -33,6 +33,10 @@
       initialValue="(coverable as CPBuilding).PolicyLine as CommercialPropertyLine"
       name="cpLine"
       type="CommercialPropertyLine"/>
+    <Variable
+      initialValue="setDefault(building)"
+      name="defval"
+      type="boolean"/>
     <HiddenInput
       id="CovPatternDisplayName"
       value="coveragePattern.DisplayName"/>
@@ -151,5 +155,10 @@
     </InputGroup>
     <InputDivider
       visible="openForEdit or coverable.getCoverageConditionOrExclusion(coveragePattern) != null"/>
+    <Code><![CDATA[function setDefault(build:CPBuilding):boolean
+{
+  build.CPBldgCov.CPBldgCovValuationMethodTerm.Value=null
+  return true
+}]]></Code>
   </InputSet>
 </PCF>

@@ -6,6 +6,7 @@ uses una.config.ConfigParamsUtil
 uses una.logging.UnaLoggerCategory
 uses una.systables.UNASystemTableQueryUtil
 uses java.util.Map
+uses gw.api.domain.covterm.OptionCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -22,12 +23,42 @@ enhancement InflationFactorCoverableEnhancement_Ext: entity.Coverable {
     if(inflationFactor != null){
       InflationFactorEligibleCovTerms?.each( \ covTerm -> {
         covTerm.Value *= inflationFactor
+        covTerm.round(ROUND_NEAREST)
       })
     }
   }
 
   private property get InflationFactor() : BigDecimal{
     var result : String
+
+    switch(this.PolicyLine.Branch.Policy.ProductCode){
+      case "CommercialPackage":
+        result = (this.getCoverage("CPBldgCov").getCovTerm("CPBldgCovAutoIncrease") as OptionCovTerm).Value
+        break
+      case "Homeowners":
+        result = getInflationFactorFromTable()
+        break
+      case "BP7BusinessOwners":
+        result = (this.getCoverage("BP7Structure").getCovTerm("BP7AutomaticIncreasePct1") as OptionCovTerm).Value
+        break
+      default:
+        break
+    }
+
+    return result?.toBigDecimal()
+  }
+
+  private property get InflationFactorEligibleCovTerms() : List<DirectCovTerm>{
+    var covTermPatterns = ConfigParamsUtil.getList(TC_InflationFactorApplicableCovTerms, this.PolicyLine.BaseState, InflationFactorFilter)
+    return this.CoveragesFromCoverable*.CovTerms.whereTypeIs(DirectCovTerm)?.where( \ covTerm -> covTermPatterns.contains(covTerm.PatternCode))
+  }
+
+  private function getFactor(argumentMap : Map<String, Object>) : String{
+    return UNASystemTableQueryUtil.query(InflationFactorLookup_Ext, argumentMap).atMostOne()
+  }
+
+  private function getInflationFactorFromTable() : BigDecimal{
+    var result : BigDecimal
 
     var inflationLocation = InflationLocation
     var stateProperty = "State"
@@ -51,16 +82,7 @@ enhancement InflationFactorCoverableEnhancement_Ext: entity.Coverable {
       }
     }
 
-    return result?.toBigDecimal()
-  }
-
-  private property get InflationFactorEligibleCovTerms() : List<DirectCovTerm>{
-    var covTermPatterns = ConfigParamsUtil.getList(TC_InflationFactorApplicableCovTerms, this.PolicyLine.BaseState, InflationFactorFilter)
-    return this.CoveragesFromCoverable*.CovTerms.whereTypeIs(DirectCovTerm)?.where( \ covTerm -> covTermPatterns.contains(covTerm.PatternCode))
-  }
-
-  private function getFactor(argumentMap : Map<String, Object>) : String{
-    return UNASystemTableQueryUtil.query(InflationFactorLookup_Ext, argumentMap).atMostOne()
+    return result
   }
 
   private property get InflationFactorFilter() : String{

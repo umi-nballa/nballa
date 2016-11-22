@@ -12,24 +12,24 @@
       initialValue="gw.web.admin.ProducerCodeUIHelper.getCommissionPlans(producerCode.Organization.Tier)"
       name="commissionPlans"
       recalculateOnRefresh="true"/>
-    <Variable
+    <!-- Variable
       initialValue="producerCode.Organization"
       name="organization"
       recalculateOnRefresh="true"/>
     <Variable
       initialValue="organization!=null?new gw.web.admin.OrganizationUIHelper(organization):null"
       name="orgHelper"
-      recalculateOnRefresh="true"/>
+      recalculateOnRefresh="true"/ -->
     <Variable
       initialValue="new gw.pcf.contacts.AddressAutoFillSearchOwner(producerCode.Address, true)"
       name="addrAutoFillSearchOwner"/>
-    <Variable
+    <!-- Variable
       initialValue="orgHelper.getAllOrganizationUsers()"
       name="organizationUsers"
       recalculateOnRefresh="true"/>
     <Variable
       initialValue="getcontactlist(organizationUsers, organization)//organizationUsers?.where(\u -&gt; u != null &amp;&amp; u?.Contact != organization?.Contact).map(\u -&gt; u.Contact).toTypedArray()"
-      name="userContacts"/>
+      name="userContacts"/ -->
     <InputColumn>
       <Input
         editable="true"
@@ -171,7 +171,7 @@
         value="producerCode.Branch">
         <PostOnChange/>
       </PickerInput>
-      <InputDivider/>
+      <!--InputDivider/>
       <Input
         boldLabel="true"
         id="PrimaryContactLabel"
@@ -249,14 +249,14 @@
         editable="true"
         id="AddressDescription"
         label="displaykey.Web.AddressDetail.Description"
-        value="producerCode.Contact_Ext.PrimaryAddress.Description"/>
+        value="producerCode.Contact_Ext.PrimaryAddress.Description"/-->
     </InputColumn>
     <Code><![CDATA[function getcontactlist(organizationUser:List<User>, organizatio:Organization):UserContact[]
 {
-  if(organizationUser!=null && organizationUser.size()>0)
+  //if(organizationUser!=null && organizationUser.size()>0)
   return organizationUser?.where(\u -> u != null && u?.Contact != organizatio?.Contact).map(\u -> u.Contact).toTypedArray()
-  else
-  return null
+  //else
+  //return null
 }]]></Code>
   </DetailViewPanel>
 </PCF>

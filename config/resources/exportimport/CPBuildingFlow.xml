@@ -29,14 +29,6 @@
   <ColumnInfo Path="CPBldgExtraExpenseCov.CPBldgExtraExpenseCovLimit"
     Header="Export.CPBuilding.ExtraExpenseCoverageLimit"
     ColumnType="gw.api.domain.covterm.CovTerm"/>
-  <ColumnInfo Path="CoverageForm"
-    Header="Export.CPBuilding.CoverageForm"
-    ColumnType="typekey.CoverageForm"
-    RequiredForImport="true" />
-  <ColumnInfo Path="RateType"
-    Header="Export.CPBuilding.RateType"
-    ColumnType="typekey.RateType"
-    RequiredForImport="true" />
   <Parent>
       <ColumnInfo Path="CPLocation.PublicID"
         Header="Export.CPBuilding.LocationID"
@@ -83,5 +75,128 @@
     ColumnType="entity.CPClassCode"
     RequiredForImport="true" >
     <Dependent purpose="State">stateColumn</Dependent>
-  </ColumnInfo>
-</EntityInfo>
+  </ColumnInfo>	
+   <ColumnInfo Path="ClassCodeDesc"
+    Header="ClassCode Description"
+    ColumnType="java.lang.String"
+    RequiredForImport="false"/>
+<ColumnInfo Path="OccupancyType"
+    Header="OccupancyType"
+    ColumnType="typekey.CPOccupancyType_Ext"
+    RequiredForImport="false" /> 
+	<ColumnInfo Path="CoverageForm"
+    Header="CoverageForm"
+    ColumnType="typekey.CoverageForm"
+    RequiredForImport="true" />
+    <ColumnInfo Path="RateType"
+    Header="RateType"
+    ColumnType="typekey.RateType"
+    RequiredForImport="true" />
+ <ColumnInfo Path="Building.ConstructionType"
+    Header="ConstructionType"
+    ColumnType="typekey.ConstructionType"
+    RequiredForImport="false" />
+	<ColumnInfo Path="RoofTypeCP"
+    Header="RoofType"
+    ColumnType="typekey.RoofType_CP"
+    RequiredForImport="false" />
+  <ColumnInfo Path="RoofShape"
+    Header="RoofShape"
+    ColumnType="typekey.CPRoofShape_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="FlatRoofDesc"
+    Header="FlatRoof Description"
+    ColumnType="typekey.CPFlatRoofDesc_Ext"
+    RequiredForImport="false" />	
+<ColumnInfo Path="Building.Description"
+    Header="Building Description"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+<ColumnInfo Path="Building.InterestType"
+    Header="Export.CPBuilding.Building.InterestType"
+	ColumnType="typekey.InterestType"
+    RequiredForImport="false" />
+	<ColumnInfo Path="Building.PercentVacant"
+    Header="Export.CPBuilding.Building.PercentVacant"
+	ColumnType="typekey.PercentByTens"
+    RequiredForImport="false" />
+	<ColumnInfo Path="Building.RentedOthers"
+    Header="Export.CPBuilding.Building.RentedOthers"
+	ColumnType="typekey.PercentByTens"
+    RequiredForImport="false" />	
+	
+	<ColumnInfo Path="CPLocation.Location.FireProtectClass"
+    Header="FireProtectClass"
+	ColumnType="typekey.FireProtectClass"
+    RequiredForImport="false" />  
+  <ColumnInfo Path="numot"
+    Header="numot"
+    ColumnType="typekey.CPNoOtherFacilities_Ext"
+    RequiredForImport="false" />
+  <ColumnInfo Path="numpg"
+    Header="numpg"
+    ColumnType="typekey.CPNoPlaygrounds_Ext"
+    RequiredForImport="false" />
+  <ColumnInfo Path="numdocks"
+    Header="numdocks"
+    ColumnType="typekey.CPNoDockBoat_Ext"
+    RequiredForImport="false" />
+  <ColumnInfo Path="numfit"
+    Header="numfit"
+    ColumnType="typekey.CPNoFitnessFacilities_Ext"
+    RequiredForImport="false" />
+  <ColumnInfo Path="numsw"
+    Header="numsw"
+    ColumnType="typekey.CPNoSwimmingPools_Ext"
+    RequiredForImport="false" />	
+
+	<ColumnInfo Path="DistFirHyd"
+    Header="Export.CPBuilding.DistFireHyd"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+	<ColumnInfo Path="DistFireStn"
+    Header="Export.CPBuilding.DistFireStn"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+	<ColumnInfo Path="RespFireDept"
+    Header="Export.CPBuilding.RespFireDept"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+	<ColumnInfo Path="DistToNext"
+    Header="Export.CPBuilding.DistToNext"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+	<ColumnInfo Path="BldHt"
+    Header="Export.CPBuilding.BldgHt"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+
+<ColumnInfo Path="Building.TimesRent"
+    Header="TimesRented"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+
+ <ColumnInfo Path="FireProtectionClass"
+    Header="Fireprotectionclass"
+    ColumnType="java.lang.String"
+    RequiredForImport="false" />
+  <ColumnInfo Path="BCEG"
+    Header="BCEG"
+    ColumnType="java.lang.String"
+    RequiredForImport="false" />
+  <ColumnInfo Path="SqFtExt"
+    Header="SqFoot"
+    ColumnType="java.lang.String"
+    RequiredForImport="false" />	
+  <ColumnInfo Path="RoofShapeOtherDes"
+    Header="RoofShapeDescription"
+    ColumnType="java.lang.String"
+    RequiredForImport="true" />
+
+	<ColumnInfo Path="ResQuestions.wbdr"
+    Header="Export.CPBuilding.ResQuestions.wbdr"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" />
+
+		
+  </EntityInfo>

@@ -59,7 +59,7 @@ class NewSubmissionUIHelper {
       //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
     //}
     if(selectionOfProducer.Producer != null && selectionOfProducer.DefaultPPEffDate == null) {
-      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
+      //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
     }
     if( canPerformNameClearance(acct, selectionOfProducer) )
     {

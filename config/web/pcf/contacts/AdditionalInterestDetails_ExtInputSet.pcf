@@ -8,8 +8,8 @@
       name="addlInterestDetail"
       type="AddlInterestDetail"/>
     <Require
-      name="contactType"
-      type="ContactType"/>
+      name="contact"
+      type="Contact"/>
     <Label
       label="&quot;Additional Interest Details&quot;"/>
     <RangeInput
@@ -18,7 +18,7 @@
       label="displaykey.Web.Policy.AdditionalInterest.Type"
       required="true"
       value="addlInterestDetail.AdditionalInterestType"
-      valueRange="una.enhancements.entity.AdditionalInterestEnhancement.getAdditionalInterestTypes(addlInterestDetail,contactType)">
+      valueRange="una.enhancements.entity.AdditionalInterestEnhancement.getAdditionalInterestTypes(addlInterestDetail,contact)">
       <PostOnChange/>
     </RangeInput>
     <Input
@@ -39,7 +39,7 @@
       id="vestingInfoRequired_Ext"
       label="displaykey.Web.Policy.AdditionalInterest.VestingInfoRequired_Ext"
       value="addlInterestDetail.VestingInfoRequired_Ext"
-      visible="contactType == TC_company &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)">
+      visible="contact.Subtype == TC_company &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)">
       <PostOnChange
         target="vestingInfo_Ext"/>
     </BooleanRadioInput>
@@ -51,6 +51,6 @@
       numCols="52"
       required="addlInterestDetail.VestingInfoRequired_Ext"
       value="addlInterestDetail.VestingInfo_Ext"
-      visible="contactType == TC_company &amp;&amp; addlInterestDetail.VestingInfoRequired_Ext &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)"/>
+      visible="contact.Subtype == TC_company &amp;&amp; addlInterestDetail.VestingInfoRequired_Ext &amp;&amp; (addlInterestDetail.AdditionalInterestType == TC_firstMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_secondMortgagee_Ext or addlInterestDetail.AdditionalInterestType == TC_thirdMortgagee_Ext)"/>
   </InputSet>
 </PCF>

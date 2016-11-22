@@ -1756,10 +1756,10 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
 
     effectiveDate = effectiveDate.addDays(1)
     if(lastBoundedPeriod.TermType == typekey.TermType.TC_ANNUAL){
-      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext))
+      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext).addDays(ScriptParameters.FutureChangesPermissibleDaysOverSetMonths_Ext))
     }
     else{
-      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext))
+      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext).addDays(ScriptParameters.FutureChangesPermissibleDaysOverSetMonths_Ext))
     }
   }
 

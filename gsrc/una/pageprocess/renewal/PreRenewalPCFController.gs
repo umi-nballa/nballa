@@ -32,11 +32,7 @@ class PreRenewalPCFController {
   }
 
   function isAdditionalTextRequired(nonRenewReason : NonRenewalCode) : boolean{
-    var additionalTextRequiredCodes : List<NonRenewalCode> = {tc_insuredrequest, tc_policyrewritten, tc_changeinrisk,
-                                                              tc_ineligibleops, tc_ineligibletenant, tc_failureuwdocs,
-                                                              tc_failurecomplyuwreq, tc_othercarrier}
-
-    return additionalTextRequiredCodes.contains(nonRenewReason)
+    return NonRenewalCode.TF_ADDITIONALTEXTREQUIREDTYPES.TypeKeys.contains(nonRenewReason)
   }
 
   function isAdditionalTextVisible() : boolean{

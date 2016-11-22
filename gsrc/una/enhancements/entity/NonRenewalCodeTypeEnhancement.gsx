@@ -32,6 +32,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
         break
       case TC_Other:
         results = allPatternCodes.where( \ pattern -> OtherExplanationCodes.contains(pattern.Code))
+        break
       case TC_BusinessClosed:
         results = allPatternCodes.where( \ pattern -> OtherExplanationCodes.contains(pattern.Code))
         break
@@ -76,9 +77,12 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
         break
       case TC_OtherCarrier:
         results = allPatternCodes.where( \ pattern -> NonRenewCarrierOtherExplanationCodes.contains(pattern.Code))
+        break
+      default:
+        break
     }
 
-    return results
+    return results?.toList()?.orderByDescending( \ pattern -> pattern.Body)
   }
 
   private property get RiskCharacteristicExplanationCodes() : List<String>{

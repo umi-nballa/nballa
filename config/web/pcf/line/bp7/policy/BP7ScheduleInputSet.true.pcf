@@ -40,6 +40,10 @@
     <Variable
       initialValue="schedule.AdditionalInterestContainer"
       name="additionalInterestContainer"/>
+    <Variable
+      initialValue="additionalInterestContainer.AdditionalInterestOtherCandidates"
+      name="otherAdditionalInterestContacts"
+      recalculateOnRefresh="true"/>
     <ListViewInput
       boldLabel="true"
       def="BP7ScheduledItemsLV(schedule, openForEdit)"
@@ -142,16 +146,16 @@
             id="AddOtherContact"
             iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
             label="displaykey.Web.Policy.Contact.AddOtherContacts"
-            visible="getOtherContacts().Count &gt; 0">
+            visible="otherAdditionalInterestContacts.Count &gt; 0">
             <AddMenuItemIterator
               elementName="otherContact"
-              id="ContactOfOtherType"
-              value="additionalInterestContainer.AdditionalInterestOtherCandidates">
+              id="AdditionalInterestContactOfOtherType"
+              value="otherAdditionalInterestContacts">
               <IteratorSort
                 sortBy="otherContact.DisplayName"
                 sortOrder="1"/>
               <AddMenuItem
-                id="OtherContact"
+                id="OtherAdditionalInterestContact"
                 iterator="BP7ScheduledItemsLV.ScheduledItemsIterator"
                 label="otherContact"
                 toCreateAndAdd="schedule.addNewScheduledItem(additionalInterestContainer.addAdditionalInterestDetail(otherContact.Contact))"/>

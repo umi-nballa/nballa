@@ -100,6 +100,9 @@ class CPBuildingUtil {
 
   public static function setStoryBasedDefaults(bldg:CPBuilding):boolean
   {
+
+    if(bldg.Building.NumStories!=null)
+      bldg?.BldHt=bldg?.Building?.NumStories*10;
     /*
 Gust wind speed of design
 When Year Built => 2002

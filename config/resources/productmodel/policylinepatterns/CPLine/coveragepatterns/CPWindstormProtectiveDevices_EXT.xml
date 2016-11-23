@@ -11,21 +11,11 @@
   priority="2804"
   public-id="CPWindstormProtectiveDevices_EXT"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[      if(CPBuilding.PolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_APARTMENT || CPBuilding.PolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+  <AvailabilityScript><![CDATA[      if((CPBuilding.PolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_APARTMENT || CPBuilding.PolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+&& CPBuilding.ResQuestions.windstormexcl==false)
         return true
       else
        return false
 ]]></AvailabilityScript>
-  <!--CovTerms>
-    <DirectCovTermPattern
-      codeIdentifier="WindstormDesc_EXT"
-      coverageColumn="DirectTerm1"
-      lookupTableName="CPBuildingCovTerm"
-      priority="100"
-      public-id="WindstormDesc_EXT"
-      required="false"
-      valueType="other">
-      <LimitsSet/>
-    </DirectCovTermPattern>
-  </CovTerms-->
+  <CovTerms/>
 </CoveragePattern>

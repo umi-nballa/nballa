@@ -58,7 +58,7 @@
       <DetailViewPanel>
         <InputColumn>
           <InputSetRef
-            def="AdditionalInterestDetails_ExtInputSet(addlInterestDetail, contactType)"/>
+            def="AdditionalInterestDetails_ExtInputSet(addlInterestDetail, policyAddlInterest.AccountContactRole.AccountContact.Contact)"/>
         </InputColumn>
       </DetailViewPanel>
       <!-- <DetailViewPanel
@@ -113,12 +113,5 @@
       <PanelRef
         def="NewPolicyContactRoleDetailsCV(policyAddlInterest, false)"/>
     </Screen>
-    <Code><![CDATA[function getAdditionalInterestTypes() : List {
-  var addnlInterestTypes = AdditionalInterestType.Type.getTypeKeysByCategory(contactType)
-  if(interestContainer.PolicyPeriod.BaseState != TC_SC) {
-    addnlInterestTypes.removeWhere( \ elt -> elt.Code == "premiumFinanceCompany_Ext")   
-  }
-  return addnlInterestTypes
-}]]></Code>
   </Popup>
 </PCF>

@@ -126,7 +126,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0 and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
           rateIncreasedPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_OrdinanceCov_HOE:
@@ -157,6 +157,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_PermittedIncOcp_HOE_Ext:
           ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
+          break
+      case HODW_BuildingAdditions_HOE_Ext:
+          rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
     }
   }
@@ -216,11 +219,12 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     //update the total base premium with the discounts and surcharges
     updateTotalBasePremium()
 
-    if (dwelling?.HODW_Personal_Property_HOEExists and (!HasExecutiveCoverage)){
-      if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm?.DisplayValue == "Replacement Cost"){
-        ratePersonalPropertyReplacementCost(dateRange)
+    if(_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4)
+      if (dwelling?.HODW_Personal_Property_HOEExists and (!HasExecutiveCoverage)){
+        if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm?.DisplayValue == "Replacement Cost"){
+          ratePersonalPropertyReplacementCost(dateRange)
+        }
       }
-    }
   }
 
   /**
@@ -478,6 +482,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.DisplayValue == "25%"){
       var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
       dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+      if(dwellingRatingInfo.PolicyType == HOPolicyType_HOE.TC_HO4)
+        dwellingRatingInfo.BuildingAdditionsAndAlterationsLimit = dwellingCov.Dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
       var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_ROUTINE_NAME , RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)
@@ -532,6 +538,21 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     if(_logger.DebugEnabled)
       _logger.debug("Permitted Incidental Occupancies Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Building Additions And Alterations Increased Limits Coverage
+   */
+  function rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov: HODW_BuildingAdditions_HOE_Ext, dateRange: DateRange){
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState.Code, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if(_logger.DebugEnabled)
+      _logger.debug("Building Additions And Alterations Increased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -590,7 +611,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
     if (dwellingRatingInfo.BusinessPropertyIncreasedLimit > 0){
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUSINESS_PROPERTY_INCREASED_LIMITS_COV_GROUP1_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUSINESS_PROPERTY_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)
         addCost(costData)
     }

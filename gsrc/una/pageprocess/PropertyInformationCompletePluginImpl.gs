@@ -426,7 +426,7 @@ class PropertyInformationCompletePluginImpl {
         if(propertyDataModel.ListValue != null && propertyDataModel.ListValue.size() > 0) {
           //TODO
         } else{
-        policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEG_Ext = propertyDataModel.Value
+        //policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEG_Ext = propertyDataModel.Value
         }
       }
     }catch(exp :Exception){

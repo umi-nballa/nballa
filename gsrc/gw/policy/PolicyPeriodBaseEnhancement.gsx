@@ -54,13 +54,7 @@ uses gw.lob.common.SegmentEvaluator
 uses gw.plugin.reinsurance.IReinsuranceConfigPlugin
 uses java.text.DateFormat
 uses gw.api.system.PCLoggerCategory
-uses org.apache.commons.lang.ObjectUtils
 uses gw.lob.cpp.ui.CPPLineSelectionScreenHelper
-uses gw.job.UNARenewalProcess
-uses gw.job.UNACPPRenewalProcess
-uses gw.job.UNABOPRenewalProcess
-uses java.lang.UnsupportedOperationException
-uses gw.job.UNAHORenewalProcess
 
 enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
   /**
@@ -1762,10 +1756,10 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
 
     effectiveDate = effectiveDate.addDays(1)
     if(lastBoundedPeriod.TermType == typekey.TermType.TC_ANNUAL){
-      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext))
+      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext).addDays(ScriptParameters.FutureChangesPermissibleDaysOverSetMonths_Ext))
     }
     else{
-      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext))
+      return effectiveDate.after(lastBoundedPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext).addDays(ScriptParameters.FutureChangesPermissibleDaysOverSetMonths_Ext))
     }
   }
 

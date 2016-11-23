@@ -13,7 +13,7 @@ uses gw.job.RewriteProcess
 uses java.lang.IllegalArgumentException
 uses gw.job.RewriteNewAccountProcess
 uses gw.api.util.DisplayableException
-uses gw.job.UNARenewalProcess
+uses gw.job.AbstractUNARenewalProcess
 uses gw.job.UNABOPRenewalProcess
 uses gw.job.UNACPPRenewalProcess
 uses gw.job.UNAHORenewalProcess

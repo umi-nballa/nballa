@@ -42,6 +42,10 @@
       initialValue="createPreRenewalNote()"
       name="note"
       type="Note"/>
+    <Variable
+      initialValue="new una.pageprocess.renewal.PreRenewalPCFController(policyTerm) "
+      name="pcfController"
+      type="una.pageprocess.renewal.PreRenewalPCFController"/>
     <Screen
       id="PreRenewalDirectionScreen">
       <TitleBar
@@ -95,24 +99,24 @@
                 <PostOnChange
                   onChange="descriptions[0] = descriptions[0] + policyTerm.createPreRenewalAssignmentHistoryDescription(policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_PRERENEWALOWNER)) + &quot; &quot;"/>
               </RangeInput>
-              <Input
+              <RangeInput
                 editable="true"
                 id="NonRenewReason"
                 label="displaykey.Web.PreRenewalDirection.NonRenewReason"
                 required="true"
                 value="policyTerm.NonRenewReason"
-                visible="policyTerm.PreRenewalDirection==&quot;nonrenew&quot; or policyTerm.PreRenewalDirection==&quot;nonrenewrefer&quot;">
-                <PostOnChange
-                  onChange="descriptions[0] = descriptions[0] + policyTerm.createNonRenewalReasonHistoryDescription(originalNonRenewReason) + &quot; &quot;"/>
-              </Input>
+                valueRange="pcfController.NonRenewReasons"
+                visible="policyTerm.PreRenewalDirection==&quot;nonrenew&quot;">
+                <PostOnChange/>
+              </RangeInput>
               <TextAreaInput
                 editable="true"
                 id="NonRenewAddExpl"
                 label="displaykey.Web.PreRenewalDirection.NonRenewAddExplanation"
                 numRows="5"
-                required="false"
+                required="pcfController.isAdditionalTextRequired(policyTerm.NonRenewReason)"
                 value="policyTerm.NonRenewAddExplanation"
-                visible="policyTerm.PreRenewalDirection==&quot;nonrenew&quot; or policyTerm.PreRenewalDirection==&quot;nonrenewrefer&quot;">
+                visible="pcfController.isAdditionalTextVisible()">
                 <PostOnChange
                   onChange="descriptions[0] = descriptions[0] + policyTerm.createNonRenewalAdditionalExplanationHistoryDescription() + &quot; &quot;"/>
               </TextAreaInput>

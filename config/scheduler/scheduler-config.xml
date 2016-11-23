@@ -163,4 +163,15 @@
     <ProcessSchedule process="BulkProducerChange_EXT">
         <CronSchedule hours="3"/>
     </ProcessSchedule>
+    <ProcessSchedule process="TenantInspection">
+        <CronSchedule hours="1" />  <!--12:00 a.m. every day-->
+    </ProcessSchedule>
+
+    <!--Renewals-->
+    <ProcessSchedule process="RenewalAutoComplete">
+        <CronSchedule hours="1" />  <!--1:00 a.m. every day-->
+    </ProcessSchedule>
+    <ProcessSchedule process="OpenRenewalsAutomation">
+        <CronSchedule hours="1" />  <!--1:00 a.m. every day-->
+    </ProcessSchedule>
 </Schedule>

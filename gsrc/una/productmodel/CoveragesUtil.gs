@@ -38,17 +38,17 @@ class CoveragesUtil {
       case "HODW_LossAssessmentCov_HOE":
         result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
 	case "BP7ForgeryAlteration":
-          result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
       case "BP7BuildingMoneySecurities_EXT":
-          result = isBuildingMoneySecuritiesCoverageAvailable(coverable as BP7Building)
-          break
+        result = isBuildingMoneySecuritiesCoverageAvailable(coverable as BP7Building)
+        break
       case "BP7OrdinanceOrLawCov_EXT":
         result = isOrdinanceOrLawCovAvailable(coverable as BP7BusinessOwnersLine)
-          break
+        break
       case "BP7InterruptionComputerOps":
         result = isInterruptionComputerOpsCovAvailable(coverable as BP7BusinessOwnersLine)
-          break
+        break
       case "BP7CapLossesFromCertfdActsTerrsm":
         result = isBP7CapLossesFromCertfdActsTerrsmCovAvailable(coverable as BP7BusinessOwnersLine)
         break
@@ -68,6 +68,7 @@ class CoveragesUtil {
         break
       case "HODW_WindHurricaneHailExc_HOE_Ext":
         result = isWindHurricaneAndHailExclusionAvailable(coverable as HomeownersLine_HOE)
+        break
       default:
     }
 

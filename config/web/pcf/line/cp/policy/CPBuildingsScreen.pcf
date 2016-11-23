@@ -27,6 +27,9 @@
       initialValue="false"
       name="allChecked"
       type="boolean"/>
+    <Variable
+      name="fileLocation"
+      type="gw.api.web.WebFile"/>
     <Toolbar>
       <WizardButtons/>
       <ToolbarButtonSetRef
@@ -34,7 +37,20 @@
         toolbarButtonSet="JobWizardToolbarButtonSet(cpLine.Branch, cpLine.Branch.Job, jobWizardHelper)"/>
     </Toolbar>
     <PanelRef
-      def="OOSEPanelSet(cpLine.Branch, jobWizardHelper)"/>
+      def="OOSEPanelSet(cpLine.Branch, jobWizardHelper)">
+      <!-- <DetailViewPanel>
+        <InputColumn>
+          <Input
+            editable="true"
+            id="path"
+            label="displaykey.CoverableImport.Web.Policy.LocationContainer.FileLocation"
+            value="fileLocation"
+            visible="openForEdit">
+            <PostOnChange/>
+          </Input>
+        </InputColumn>
+      </DetailViewPanel> -->
+    </PanelRef>
     <PanelRef
       def="CPBuildingsAndLocationsLV(cpLine, openForEdit, jobWizardHelper)">
       <Toolbar>
@@ -75,11 +91,11 @@
           iterator="CPBuildingsAndLocationsLV.CPBuildingsAndLocationsLV"
           removeFlags="all removeAvailable"
           removeLabel="displaykey.Web.Policy.LocationContainer.Location.RemoveBuildings"/>
-        <ToolbarButton
+        <!-- <ToolbarButton
           action="jobWizardHelper.validateAndSaveDraft(); CopyBuildingCoveragesPopup.push(cpLine.Branch)"
           id="CopyBuildingCoveragesButton"
           label="displaykey.Web.CopyPolicyData.CommercialProperty.Buildings.CopyCoverages"
-          visible="openForEdit and cpLine.Branch.CanCopyCoverages and cpLine.CPLocations*.Buildings.Count &gt; 1"/>
+          visible="openForEdit and cpLine.Branch.CanCopyCoverages and cpLine.CPLocations*.Buildings.Count &gt; 1"/> -->
         <ToolbarButton
           id="Spreadsheet"
           label="displaykey.Web.Policy.LocationContainer.Spreadsheet"
@@ -94,24 +110,31 @@
             label="displaykey.Web.ExcelExport.ImportMenu"
             visible="openForEdit"/>
         </ToolbarButton>
-        <!-- <CheckedValuesToolbarButton
-          available="true"
-          checkedRowAction="jobWizardHelper.Wizard.refreshCurrentStep();CheckedValue.createAndAddBuilding(jobWizardHelper)//;cloneBuilding(CheckedValue.build);"
-          id="clonebldg"
-          iterator="CPBuildingsAndLocationsLV.CPBuildingsAndLocationsLV"
-          label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
-          visible="true"/> -->
         <!-- <ToolbarButton
-          action="jobWizardHelper.validateAndSaveDraft();//CheckedValue.createAndAddBuilding(jobWizardHelper)// CopyBuildingCoveragesPopup.push(cpLine.Branch)"
-          id="clonebuildingbutton"
-          label="displaykey.Web.Policy.BP7.Building.CloneBuilding"
-          visible="openForEdit and cpLine.Branch.CanCopyCoverages and cpLine.CPLocations*.Buildings.Count &gt; 1"/> -->
+          action="if (fileLocation != null &amp;&amp; !fileLocation.Name.Empty) importLocations(fileLocation.Name, fileLocation.InputStream)"
+          available="fileLocation.Name!=&quot;&quot;"
+          id="ToolbarButton"
+          label="displaykey.CoverableImport.Web.Policy.LocationContainer.Upload"
+          visible="openForEdit"/> -->
       </Toolbar>
     </PanelRef>
     <Code><![CDATA[function cloneBuilding(bldg : CPBuilding) : CPBuilding
 {
   var cloneBldg = bldg.copyBuilding(jobWizardHelper)
  return cloneBldg
-}]]></Code>
+}
+function getLimitedNumberOfSortedUnusedLocations(locs : AccountLocation[], numberOfLocations : int) : AccountLocation[] {
+  var sortedLocs = locs.toList().sortBy(\acctLoc -> acctLoc.LocationNum)
+  if (sortedLocs.Count > numberOfLocations) {
+    sortedLocs = sortedLocs.subList(0, numberOfLocations)
+  }
+  return sortedLocs.toTypedArray()
+}
+
+//function importLocations(fileName : String, inputStream : java.io.InputStream)
+//{
+//  var xcLocationImport = new gwservices.CoverableImporter.Impl.ExcelCoverableImport(fileName, inputStream) 
+//  xcLocationImport.importLocationsAndBuildings(cpLine.Branch)
+//}]]></Code>
   </Screen>
 </PCF>

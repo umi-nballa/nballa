@@ -35,6 +35,10 @@ class TunaAppResponse {
   var _datums :List<PropertyDataModel>      as Datums
   var _propertyLine:String                  as Line
   var _territoryDetails : List<PropertyTerritoryModel>  as TerritoryDetails
+  var _territoryCodes:List                  as TerritoryCodes
+  var _yearBuilt : List                     as YearBuilt
+  var _protectionClass : List               as ProtectionClass
+  var _distanceToCoast : List               as DistanceToCoast
 
 
 }

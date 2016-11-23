@@ -47,9 +47,15 @@
       shortcut="K"
       visible="renewalProcess.canReleaseLock()"/>
     <ToolbarButton
-      action="jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod))"
+      action="jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod));"
       id="RenewalQuote"
       label="displaykey.Job.Operation.Quote"
+      shortcut="Q"
+      visible="renewalProcess.canManuallyQuote().Okay"/>
+    <ToolbarButton
+      action="jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod)); jobWizardHelper.requestRenewRenewal(policyPeriod) "
+      id="RenewalQuoteAndRenew"
+      label="&quot;Quote and Renew&quot;"
       shortcut="Q"
       visible="renewalProcess.canManuallyQuote().Okay"/>
     <ToolbarButton
@@ -107,26 +113,26 @@
         label="displaykey.Job.Operation.SendToRenewal"
         shortcut="R"
         visible="renewalProcess.canPendingRenew().Okay"/>
-      <MenuItem
+      <!-- <MenuItem
         action="jobWizardHelper.requestIssueJob(policyPeriod)"
         confirmMessage="displaykey.Job.Operation.IssueNow.Confirm"
         id="IssueNow"
         label="displaykey.Job.Operation.IssueNow"
         shortcut="I"
-        visible="renewalProcess.canIssueNow().Okay"/>
+        visible="renewalProcess.canIssueNow().Okay"/> -->
     </ToolbarButton>
     <ToolbarButton
       id="CloseOptions"
       label="displaykey.Job.Operation.CloseOptions"
       shortcut="C"
       visible="renewalProcess.canWithdrawJob().Okay or renewalProcess.canPendingNonRenew().Okay or renewalProcess.canPendingNotTaken().Okay">
-      <MenuItem
+      <!-- <MenuItem
         action="jobWizardHelper.withdraw(policyPeriod); PolicyFileForward.go(policyPeriod.BasedOn, policyPeriod.BasedOn.PeriodStart);"
         confirmMessage="displaykey.Job.Operation.Withdraw.Confirm"
         id="Withdraw"
         label="displaykey.Job.Operation.Withdraw"
         shortcut="W"
-        visible="renewalProcess.canWithdraw().Okay"/>
+        visible="renewalProcess.canWithdraw().Okay"/> -->
       <MenuItem
         action="renewalProcess.assertNonRenewLeadTime(); RenewalWizard_NonRenewPopup.push(renewal, policyPeriod)"
         id="SendToNonRenewal"

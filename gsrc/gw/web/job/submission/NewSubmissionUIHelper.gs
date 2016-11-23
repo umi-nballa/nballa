@@ -59,7 +59,7 @@ class NewSubmissionUIHelper {
       //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
     //}
     if(selectionOfProducer.Producer != null && selectionOfProducer.DefaultPPEffDate == null) {
-      throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
+      //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
     }
     if( canPerformNameClearance(acct, selectionOfProducer) )
     {
@@ -183,11 +183,6 @@ class NewSubmissionUIHelper {
       //removed the GL Line from main menu at the initial view for Commercial Package
       policyPeriod.removeGlLine()
     } )
-    //Commented right now -start  - Tuns Property information complete
-    var tunaComplete = new una.pageprocess.PropertyInformationCompletePluginImpl()
-    //Calling Tuna address PropertyInformationComplete
-    tunaComplete.getPropertyInformationComplete(offer,account,policyPeriod,producerSelection)
-    //Commented right now -start
 
     JobForward.go(submission, policyPeriod)
   }

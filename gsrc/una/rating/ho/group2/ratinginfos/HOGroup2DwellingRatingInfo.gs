@@ -1,6 +1,7 @@
 package una.rating.ho.group2.ratinginfos
 
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,7 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
  */
 class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
-
+  var buildingAdditionsAndAlterationsIncreasedLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
   construct(lineVersion: HomeownersLine_HOE) {
     super(lineVersion)
   }

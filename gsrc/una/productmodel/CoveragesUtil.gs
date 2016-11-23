@@ -37,7 +37,8 @@ class CoveragesUtil {
         break
       case "HODW_LossAssessmentCov_HOE":
         result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
-	case "BP7ForgeryAlteration":
+        break
+	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
       case "BP7BuildingMoneySecurities_EXT":
@@ -189,7 +190,7 @@ class CoveragesUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
-      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO_EXT
     }
 
     return result
@@ -244,7 +245,6 @@ class CoveragesUtil {
   }
 
   private static function isOrdinanceOrLawCovAvailable(bp7Line:BP7BusinessOwnersLine) : boolean {
-      //return not this.BP7FunctlBldgValtnExists - written in OOTB BP7BuildingEnhancement
     for(building in bp7Line.AllBuildings){
       if(building.BP7FunctlBldgValtnExists){
         return false

@@ -57,13 +57,13 @@
     nullok="true"
     type="bit"/>
   <column
-    desc="BCEG Grade"
-    name="BCEG_Ext"
+    desc="BCEG Grade Returned by Tuna"
+    name="BCEGTunaReturned_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="2"/>
+      value="10"/>
   </column>
   <column
     name="DistanceToCoast_Ext"
@@ -96,5 +96,24 @@
     <columnParam
       name="size"
       value="7"/>
+  </column>
+  <column
+    desc="User Override BCEG "
+    name="OverrideBCEG_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="BCEG Match Level"
+    name="BCEGMatchLevel_Ext"
+    nullok="true"
+    typelist="BCEGMatchLevel_Ext"/>
+  <column
+    desc="BCEG Grade Entered by User"
+    name="BCEGUserEntered_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="10"/>
   </column>
 </entity>

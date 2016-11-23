@@ -21,7 +21,7 @@ class ImportStrategyRegistry {
    * Map of {@link EntityImportStrategy}'s by Entity <code>Type</code>.
    */
   static final var TYPE_STRATEGY_MAP : Map<Type, EntityImportStrategy> = {
-    CPBuilding -> new CPBuildingImportStrategy(),
+    CPBuilding -> new CPBuildingImportStrategy (),
     CPLocation -> new CPLocationImportStrategy()
   }
 

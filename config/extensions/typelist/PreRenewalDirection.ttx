@@ -4,11 +4,43 @@
   desc="Pre-renewal direction"
   name="PreRenewalDirection">
   <typecode
+    code="underwriter"
+    desc="Refer to Underwriter"
+    name="Refer to Underwriter"
+    priority="3"/>
+  <typecode
+    code="assistant"
+    desc="Refer to Underwriter Assistant"
+    name="Refer to Underwriter Assistant"
+    retired="true"/>
+  <typecode
+    code="custrep"
+    desc="Refer to Customer Service Representative"
+    name="Refer to Customer Service Representative"
+    retired="true"/>
+  <typecode
+    code="nonrenewrefer"
+    desc="Non-Renew and Refer to Underwriter"
+    name="Non-Renew and Refer to Underwriter"
+    retired="true"/>
+  <typecode
     code="nonrenew"
     desc="Non-Renew"
-    name="Non-Renew"/>
+    name="Non-Renew"
+    priority="1"/>
   <typecode
     code="nottaken"
     desc="Not-Taken"
-    name="Not-Taken"/>
+    name="Not-Taken"
+    priority="2"/>
+  <typefilter
+    desc="UNA Direction Types"
+    name="UNADirectionTypes">
+    <include
+      code="nonrenew"/>
+    <include
+      code="nottaken"/>
+    <include
+      code="underwriter"/>
+  </typefilter>
 </typelistextension>

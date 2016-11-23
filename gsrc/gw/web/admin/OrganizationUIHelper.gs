@@ -49,7 +49,7 @@ class OrganizationUIHelper {
   }
 
   property get AllOrganizationUsers() : List<User>{
-    var users = _organization.AllUsers.toList()
+    var users = _organization?.AllUsers?.toList()
     users = users.Count > 10 ? users.subList(0, 10) : users
     var newUsers = _organization.Bundle.InsertedBeans.toCollection().whereTypeIs( User ).toList()
     users.addAll( newUsers )

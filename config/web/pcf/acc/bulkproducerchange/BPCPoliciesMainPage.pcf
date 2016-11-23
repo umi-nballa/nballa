@@ -1,0 +1,169 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <Page
+    canEdit="true"
+    canVisit="perm.System.viewbulkproducerchange_ext"
+    id="BPCPoliciesMainPage"
+    startInEditMode="true"
+    title="displaykey.Accelerator.BulkProducerChange.Policies">
+    <LocationEntryPoint
+      signature="BPCPoliciesMainPage()"/>
+    <Variable
+      initialValue="new gw.acc.bulkproducerchange.BPCAdminHelper()"
+      name="batchHelper"
+      type="gw.acc.bulkproducerchange.BPCAdminHelper"/>
+    <Screen>
+      <DetailViewPanel>
+        <InputColumn>
+          <Input
+            editable="true"
+            id="searchBPCBatch"
+            label="displaykey.Accelerator.BulkProducerChange.BatchID"
+            value="batchHelper.batchNum">
+            <PostOnChange
+              onChange="batchHelper.batchDate=null"/>
+          </Input>
+          <DateInput
+            editable="true"
+            id="searchBPCDate"
+            label="displaykey.Accelerator.BulkProducerChange.CreateDate"
+            value="batchHelper.batchDate">
+            <PostOnChange
+              onChange="batchHelper.batchNum=null"/>
+          </DateInput>
+          <ButtonInput
+            action="batchHelper.searchBPCRecords(BPCTargets_Ext.TC_POLICIES.Code)"
+            default="true"
+            id="search"
+            shortcut="S"
+            value="displaykey.Accelerator.BulkProducerChange.SearchRecords"/>
+        </InputColumn>
+        <InputColumn>
+          <ButtonInput
+            action="BPCCreatePoliciesBatchPopup.push(batchHelper)"
+            id="create"
+            shortcut="C"
+            value="displaykey.Accelerator.BulkProducerChange.CreateNewBatch"
+            visible="perm.System.editbulkproducerchange_ext"/>
+        </InputColumn>
+      </DetailViewPanel>
+      <PanelDivider/>
+      <PanelRef>
+        <Toolbar>
+          <ToolbarFilter
+            iterator="batchRecords"
+            name="testFilter">
+            <ToolbarFilterOption
+              filter="gw.api.util.CoreFilters.ALL"
+              label="displaykey.Accelerator.BulkProducerChange.All"
+              selectOnEnter="true"/>
+            <ToolbarFilterOption
+              filter="new filters.StandardBeanFilter(typekey.BPCRecordStatus_Ext.TC_UNPROCESSED.DisplayName, \rec -&gt; (rec as BPCRecord_Ext).Status == typekey.BPCRecordStatus_Ext.TC_UNPROCESSED)"/>
+            <ToolbarFilterOption
+              filter="new filters.StandardBeanFilter(typekey.BPCRecordStatus_Ext.TC_PROCESSED.DisplayName, \rec -&gt; (rec as BPCRecord_Ext).Status == typekey.BPCRecordStatus_Ext.TC_PROCESSED)"
+              label="typekey.BPCRecordStatus_Ext.TC_PROCESSED.DisplayName"/>
+            <ToolbarFilterOption
+              filter="new filters.StandardBeanFilter(typekey.BPCRecordStatus_Ext.TC_FAILED.DisplayName, \rec -&gt; (rec as BPCRecord_Ext).Status == typekey.BPCRecordStatus_Ext.TC_FAILED)"
+              label="typekey.BPCRecordStatus_Ext.TC_FAILED.DisplayName"/>
+            <ToolbarFilterOption
+              filter="new filters.StandardBeanFilter(typekey.BPCRecordStatus_Ext.TC_SKIPPED.DisplayName, \rec -&gt; (rec as BPCRecord_Ext).Status == typekey.BPCRecordStatus_Ext.TC_SKIPPED)"
+              label="typekey.BPCRecordStatus_Ext.TC_SKIPPED.DisplayName"/>
+            <ToolbarFilterOption
+              filter="new filters.StandardBeanFilter(typekey.BPCRecordStatus_Ext.TC_PENDINGRENEWAL.DisplayName, \rec -&gt; (rec as BPCRecord_Ext).Status == typekey.BPCRecordStatus_Ext.TC_PENDINGRENEWAL)"
+              label="typekey.BPCRecordStatus_Ext.TC_PENDINGRENEWAL.DisplayName"/>
+          </ToolbarFilter>
+          <ToolbarDivider/>
+          <ToolbarButton
+            action="gw.api.print.ListViewPrintOptionPopupAction.printListViewOnlyWithOptions( &quot;BatchLV&quot; )"
+            id="PrintMe"
+            label="displaykey.Web.PolicySearch.Export"
+            shortcut="E"/>
+          <ToolbarButton
+            action="if (batchHelper.Batch.Completed == false) batchHelper.cancelBatch() else batchHelper.reOpenBatch()"
+            id="CancelReopenBatch"
+            label="(batchHelper.Batch.Completed == false)?displaykey.Accelerator.BulkProducerChange.CancelBatch:displaykey.Accelerator.BulkProducerChange.Reopen"
+            visible="batchHelper.Batch != null"/>
+          <ToolbarButton
+            action="gw.transaction.Transaction.getCurrent().commit()"
+            id="SaveChanges"
+            label="displaykey.Accelerator.BulkProducerChange.SaveChanges"
+            visible="gw.transaction.Transaction.getCurrent().UpdatedBeans.Count &gt; 0"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="false"
+          id="BatchLV">
+          <Row
+            renderAsSmartHeader="true">
+            <Cell
+              id="BatchStatus"
+              label="displaykey.Accelerator.BulkProducerChange.BatchStatus"
+              value="(batchHelper.Batch.Completed)?displaykey.Accelerator.BulkProducerChange.Completed:displaykey.Accelerator.BulkProducerChange.Open"
+              visible="batchHelper.Batch != null"/>
+          </Row>
+          <RowIterator
+            canPick="false"
+            editable="false"
+            elementName="record"
+            id="batchRecords"
+            value="batchHelper.PolicyRecords">
+            <Row>
+              <Cell
+                id="recordbatch"
+                label="displaykey.Accelerator.BulkProducerChange.BatchID"
+                value="record.Batch.BatchCode"/>
+              <Cell
+                id="status"
+                label="displaykey.Accelerator.BulkProducerChange.Status"
+                value="record.Status"/>
+              <Cell
+                id="recordtype"
+                label="displaykey.Accelerator.BulkProducerChange.BatchType"
+                value="record.Batch.Type"/>
+              <Cell
+                id="recordcreatedate"
+                label="displaykey.Accelerator.BulkProducerChange.CreateDate"
+                value="record.CreateTime"/>
+              <Cell
+                id="recordcreateuser"
+                label="displaykey.Web.UWIssue.UWIssueHistoryLV.ResponsibleUser"
+                value="record.CreateUser"/>
+              <Cell
+                enableSort="false"
+                id="target"
+                label="displaykey.Accelerator.BulkProducerChange.ProcessDate"
+                value="record.ProcessDate"/>
+              <Cell
+                enableSort="false"
+                id="recordpolicy"
+                label="displaykey.Accelerator.BulkProducerChange.PolicyNumber"
+                value="record.Policy.Periods[0].PolicyNumber"/>
+              <Cell
+                id="recordnewcode"
+                label="displaykey.Accelerator.BulkProducerChange.NewProducerCode"
+                value="record.NewProducerCode"/>
+              <Cell
+                id="recordoldcode"
+                label="displaykey.Accelerator.BulkProducerChange.OldProducerCode"
+                value="record.OldProducerCode"/>
+              <Cell
+                enableSort="false"
+                id="recordreason"
+                label="displaykey.Accelerator.BulkProducerChange.Reason"
+                value="record.Reason"/>
+              <ButtonCell
+                action="if (record.Status == BPCRecordStatus_Ext.TC_UNPROCESSED) batchHelper.cancelRecord(record) else if (record.Status == BPCRecordStatus_Ext.TC_CANCELED) batchHelper.uncancelRecord(record)"
+                available="(record.Status == BPCRecordStatus_Ext.TC_CANCELED or record.Status == BPCRecordStatus_Ext.TC_UNPROCESSED) and not record.Batch.Completed"
+                hideChildrenIfReadOnly="true"
+                id="cancelrecord"
+                label="displaykey.Accelerator.BulkProducerChange.CancelRecord"
+                value="(record.Status != BPCRecordStatus_Ext.TC_CANCELED) ? displaykey.Accelerator.BulkProducerChange.Cancel : displaykey.Accelerator.BulkProducerChange.Reopen"
+                visible="batchHelper.Batch != null"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </PanelRef>
+    </Screen>
+  </Page>
+</PCF>

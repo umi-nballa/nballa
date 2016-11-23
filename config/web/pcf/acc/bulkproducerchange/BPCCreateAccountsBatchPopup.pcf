@@ -1,0 +1,89 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <Popup
+    beforeCommit="helper.beforeCommit(oldProducerCode, newProducerCode, batch, accountList, invalidAccountListString)"
+    canEdit="true"
+    canVisit="perm.System.editbulkproducerchange_ext"
+    id="BPCCreateAccountsBatchPopup"
+    parent="BPCPoliciesMainPage()"
+    startInEditMode="true"
+    title="displaykey.Accelerator.BulkProducerChange.GenerateBatch">
+    <LocationEntryPoint
+      signature="BPCCreateAccountsBatchPopup (helper : gw.acc.bulkproducerchange.BPCAdminHelper)"/>
+    <Variable
+      initialValue="var bc = new BPCBatch_Ext() bc.TargetDate = gw.api.util.DateUtil.currentDate().addDays(1) return bc"
+      name="batch"
+      type="BPCBatch_Ext"/>
+    <Variable
+      initialValue="new java.util.ArrayList&lt;Account&gt;()"
+      name="accountList"
+      type="java.util.ArrayList&lt;Account&gt;"/>
+    <Variable
+      name="helper"
+      type="gw.acc.bulkproducerchange.BPCAdminHelper"/>
+    <Variable
+      name="newProducerCode"
+      type="ProducerCode"/>
+    <Variable
+      name="oldProducerCode"
+      type="ProducerCode"/>
+    <Variable
+      name="oldProducerGroup"
+      type="Group"/>
+    <Variable
+      initialValue="helper.displayAccounts(accountList as entity.Account[])"
+      name="accountListString"
+      type="String"/>
+    <Variable
+      initialValue="new java.util.ArrayList&lt;String&gt;()"
+      name="invalidAccountListString"
+      type="java.util.ArrayList&lt;String&gt;"/>
+    <Screen>
+      <Toolbar>
+        <EditButtons
+          updateLabel="displaykey.Accelerator.BulkProducerChange.SubmitBatch"/>
+      </Toolbar>
+      <DetailViewPanel>
+        <InputColumn>
+          <DateInput
+            editable="true"
+            id="targetDate"
+            label="displaykey.Accelerator.BulkProducerChange.TargetDate"
+            required="true"
+            validationExpression="batch.TargetDate.before(gw.api.util.DateUtil.currentDate().addDays(1).trimToMidnight()) ? displaykey.Accelerator.BulkProducerChange.BatchMustBeInTheFuture : null"
+            value="batch.TargetDate"/>
+          <TextAreaInput
+            editable="true"
+            id="accountList"
+            label="displaykey.Accelerator.BulkProducerChange.AccountList"
+            numRows="20"
+            required="true"
+            value="accountListString">
+            <PostOnChange
+              onChange="helper.getInputAccounts(accountListString, accountList, invalidAccountListString)"/>
+          </TextAreaInput>
+          <PickerInput
+            clearEnabled="false"
+            editable="true"
+            freeInputEnabled="false"
+            id="oldProducerCode"
+            label="displaykey.Accelerator.BulkProducerChange.OldProducerCode"
+            pickLocation="ProducerCodeSearchPopup.push()"
+            required="true"
+            value="oldProducerCode"/>
+          <PickerInput
+            clearEnabled="false"
+            editable="true"
+            freeInputEnabled="false"
+            id="newProducerCode"
+            label="displaykey.Accelerator.BulkProducerChange.NewProducerCode"
+            pickLocation="ProducerCodeSearchPopup.push()"
+            required="true"
+            value="newProducerCode"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </Screen>
+  </Popup>
+</PCF>

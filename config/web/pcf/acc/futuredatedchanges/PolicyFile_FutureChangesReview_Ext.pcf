@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <!-- canVisit="perm.PolicyPeriod.view(PolicyPeriod)" -->
+  <Page
+    afterEnter="gw.api.web.PebblesUtil.addWebMessages(CurrentLocation, policyPeriod.PolicyFileMessages);"
+    canEdit="false"
+    canVisit="policyPeriod.policy.OpenRenewalJob != null"
+    id="PolicyFile_FutureChangesReview_Ext"
+    title="displaykey.Accelerator.FutureDatedChanges.FutureDatedChangesReview">
+    <LocationEntryPoint
+      signature="PolicyFile_FutureChangesReview_Ext(policyPeriod : PolicyPeriod, asOfDate : DateTime, errorMessage : String)"/>
+    <LocationEntryPoint
+      signature="PolicyFile_FutureChangesReview_Ext(policyPeriod : PolicyPeriod, asOfDate : DateTime)"/>
+    <Variable
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      name="asOfDate"
+      type="DateTime"/>
+    <Variable
+      name="errorMessage"
+      type="String"/>
+    <Variable
+      initialValue="new gw.pcf.policysummary.PolicySummaryHelper(policyPeriod, asOfDate)"
+      name="policySummaryHelper"/>
+    <ScreenRef
+      def="Policy_FutureChangesReview_ExtScreen(policyPeriod.Policy)"/>
+  </Page>
+</PCF>

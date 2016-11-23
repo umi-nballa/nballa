@@ -879,6 +879,10 @@
       </xs:simpleType>
       <xs:simpleType name="Periodicity">
         <xs:restriction base="xs:string">
+          <xs:enumeration value="every30Days"/>
+          <xs:enumeration value="every60Days"/>
+          <xs:enumeration value="every90Days"/>
+          <xs:enumeration value="every45daysWithFirst35Days"/>
           <xs:enumeration value="monthly"/>
           <xs:enumeration value="everyweek"/>
           <xs:enumeration value="everyotherweek"/>
@@ -894,6 +898,7 @@
       <xs:simpleType name="PaymentMethod">
         <xs:restriction base="xs:string">
           <xs:enumeration value="echeck"/>
+          <xs:enumeration value="achOnly_Ext"/>
           <xs:enumeration value="ach"/>
           <xs:enumeration value="billPay_Ext"/>
           <xs:enumeration value="cash"/>

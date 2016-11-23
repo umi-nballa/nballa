@@ -7,41 +7,34 @@ package gw.plugin.billing.bc800
 class PolicyInfoUtil {
 
   /**
-   * Retrieves the loan number from the Mortgagee additional interest that is selected as billing contact on the policy period.
-   * @param period the PolicyPeriod
+   * Checks for any new additional interests added or existing additional interests updated on the given PolicyPeriod.
+   * @param period
    */
-  static function getMortgageeLoanNumber(period: PolicyPeriod): String {
-    var loanNumber: String = null
-    if (period.BillingContact != null) {
-      if (period.HomeownersLine_HOEExists) {
-        loanNumber = retrieveLoanNumber(period.HomeownersLine_HOE.Dwelling?.AdditionalInterests, period.BillingContact)
-      } else if (period.CPLineExists) {
-        var building = period.CPLine.getDefaultContainerForAddlInterest()
-        loanNumber = retrieveLoanNumber(building?.AdditionalInterests, period.BillingContact)
-      } else if (period.BOPLineExists) {
-        var building = period.BOPLine.getDefaultContainerForAddlInterest()
-        loanNumber = retrieveLoanNumber(building?.AdditionalInterests, period.BillingContact)
-      } else if (period.BP7LineExists) {
-        var addlInterests : List<AddlInterestDetail> = {}
-        period.BP7Line.AllBuildings?.each( \ building -> {
-          if (building.AdditionalInterests?.HasElements) {
-            addlInterests.addAll(building.AdditionalInterests.toList())
-          }
-        })
-        loanNumber = retrieveLoanNumber(addlInterests?.toArray() as AddlInterestDetail[], period.BillingContact)
-      }
+  static function hasAddlInterestsUpdated(period: PolicyPeriod) : boolean {
+    var isUpdated = false
+    var addlInterests = retrieveAdditionalInterests(period)
+    if (addlInterests != null) {
+      isUpdated = addlInterests.hasMatch( \ addlInt -> (addlInt.BasedOn == null or (addlInt.ContractNumber != addlInt.BasedOn.ContractNumber)))
     }
-    return loanNumber
+    return isUpdated
   }
 
   /**
-   * Retrieves the loan number from the additional interest of type Mortgagee and selected as the policy billing contact
+   * Retrieves the additional interest detail objects associated to the given Policy Period.
+   * @param period
    */
-  private static function retrieveLoanNumber(addlInterests: AddlInterestDetail[], billingContact: PolicyBillingContact) : String {
-    var loanNumber = addlInterests?.firstWhere( \ addlInt -> {
-      return addlInt.ContractNumber.NotBlank
-          && addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == billingContact.ContactDenorm.AddressBookUID
-    })?.ContractNumber
-    return loanNumber
+  static function retrieveAdditionalInterests(period: PolicyPeriod): AddlInterestDetail[] {
+    if (period.HomeownersLine_HOEExists) {
+      return period.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
+    } else if (period.CPLineExists) {
+      return period.CPLine.getDefaultContainerForAddlInterest()?.AdditionalInterestDetails
+    } else if (period.BOPLineExists) {
+      return period.BOPLine.getDefaultContainerForAddlInterest()?.AdditionalInterestDetails
+    } else if (period.BP7LineExists) {
+      return period.BP7Line.AllBuildings*.AdditionalInterests
+    } else {
+      return null
+    }
   }
+
 }

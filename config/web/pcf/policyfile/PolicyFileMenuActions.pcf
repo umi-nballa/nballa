@@ -153,6 +153,12 @@
         id="PolicyFileMenuActions_RenewPolicy"
         label="displaykey.Web.PolicyFile.RenewPolicy"
         visible="perm.PolicyPeriod.renew(policyPeriod) and policyPeriod.Policy.canStartRenewal() == null"/>
+      <MenuItem
+        action="RenewalWizard.go(policyPeriod.Policy.OpenRenewalJob, policyPeriod.Policy.OpenRenewalJob.LatestPeriod)"
+        id="PolicyFileMenuActions_ViewRenewal"
+        label="displaykey.Accelerator.FutureDatedChanges.PolicyFile.ViewRenewal"
+        showConfirmMessage="false"
+        visible="policyPeriod.Policy.OpenRenewalJob != null"/>
     </MenuItem>
     <MenuItemDivider/>
     <MenuItem

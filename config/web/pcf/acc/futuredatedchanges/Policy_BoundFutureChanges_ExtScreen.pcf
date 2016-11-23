@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <Screen
+    id="Policy_BoundFutureChanges_ExtScreen">
+    <Require
+      name="policy"
+      type="entity.Policy"/>
+    <ListDetailPanel
+      id="ChangesDetailPanel"
+      selectionName="FutureSelectedSlice"
+      selectionType="String[]">
+      <PanelRef>
+        <Toolbar/>
+        <ListViewPanel
+          id="FutureSlicesLV">
+          <RowIterator
+            editable="false"
+            elementName="FutureSliceEntry"
+            value="gw.acc.futuredatedchanges.FutureChange_Ext.getSlicesInBoundRenewal(policy)">
+            <Row>
+              <LinkCell
+                label="displaykey.Accelerator.FutureDatedChanges.SelectSliceButton">
+                <Link
+                  action="RenewalWizard.go(Job.finder.findJobByJobNumber(FutureSliceEntry[2]) as Renewal, Job.finder.findJobByJobNumber(FutureSliceEntry[2]).LatestPeriod.getSlice(new java.util.Date(java.lang.Long.parseLong(FutureSliceEntry[0]))))"
+                  id="SelectSliceButtonID"
+                  label="displaykey.Accelerator.FutureDatedChanges.Select"/>
+              </LinkCell>
+              <Cell
+                id="SliceDateID"
+                label="displaykey.Accelerator.FutureDatedChanges.ChangeEffectiveDate"
+                value="new java.util.Date(java.lang.Long.parseLong(FutureSliceEntry[0]))"/>
+              <Cell
+                id="TypeID"
+                label="displaykey.Accelerator.FutureDatedChanges.ChangeType"
+                value="FutureSliceEntry[1]"/>
+              <Cell
+                id="TransationNoID"
+                label="displaykey.Accelerator.FutureDatedChanges.ChangeTransactionNo"
+                value="FutureSliceEntry[2]"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </PanelRef>
+      <CardViewPanel>
+        <Card
+          id="FutureDiffID"
+          title="displaykey.Accelerator.FutureDatedChanges.DiffCardTitle">
+          <PanelRef
+            def="DifferencesPanelSet(DiffReason.TC_POLICYREVIEW, policy.LatestBoundPeriod, policy.MostRecentBoundPeriodOnMostRecentTerm.getSlice(new java.util.Date(java.lang.Long.parseLong(FutureSelectedSlice[0]))), gw.diff.tree.DiffTree.recalculateRootNode(policy.LatestBoundPeriod, policy.MostRecentBoundPeriodOnMostRecentTerm.getSlice(new java.util.Date(java.lang.Long.parseLong(FutureSelectedSlice[0]))), DiffReason.TC_COMPAREJOBS), policy.Product.DiffTreeConfig)"
+            visible="policy.MostRecentBoundPeriodOnMostRecentTerm.FutureSliceDatesInPeriod.Count &gt; 0"/>
+        </Card>
+      </CardViewPanel>
+    </ListDetailPanel>
+  </Screen>
+</PCF>

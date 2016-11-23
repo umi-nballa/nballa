@@ -35,8 +35,8 @@ abstract class HPXPolicyMapper {
     itemIdInfo.AgencyId = 0
     itemIdInfo.InsurerId = 0
     itemIdInfo.SystemId = "00000000-0000-0000-0000-000000000000"
-    itemIdInfo.OtherIdentifier.OtherId = 0
-    itemIdInfo.OtherIdentifier.OtherIdTypeCd = "CreditBureau"
+    itemIdInfo.OtherIdentifier.OtherId = java.util.UUID.randomUUID().toString()
+    itemIdInfo.OtherIdentifier.OtherIdTypeCd = "DocID"
     return itemIdInfo
   }
 

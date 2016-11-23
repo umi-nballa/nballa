@@ -1,10 +1,9 @@
 package una.integration.service.gateway.clue
 
-uses gw.api.system.logging.LoggerFactory
 uses gw.api.util.DisplayableException
-uses gw.pl.logging.LoggerCategory
 uses gw.xml.ws.WebServiceException
 uses una.integration.service.transport.clue.CluePropertyCommunicatorStub
+uses una.logging.UnaLoggerCategory
 uses wsi.schema.una.inscore.cprulesorderschema.Order
 uses wsi.schema.una.inscore.cprulesorderschema.enums.DescriptionType_Sex
 uses wsi.schema.una.inscore.cprulesorderschema.enums.NameType_Type
@@ -33,7 +32,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
   private static var DATE_FORMAT = "MM/dd/yyyy"
   private static var cluePropertyCommunicator: CluePropertyCommunicatorStub
   var timeout = "500"
-  static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "CluePropertyGatewayStub")
+  static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     cluePropertyCommunicator = new CluePropertyCommunicatorStub()
@@ -51,10 +50,10 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     //attempt to create the order xml
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.debug("sending order " + orderXml)
+    _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
-      _logger.debug("received result " + result)
+      _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.debug("finished ordering CLUE")
@@ -202,6 +201,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
+    priorLoss.Source="C"
 
     return priorLoss
   }

@@ -35,10 +35,27 @@ class TunaAppResponse {
   var _datums :List<PropertyDataModel>      as Datums
   var _propertyLine:String                  as Line
   var _territoryDetails : List<PropertyTerritoryModel>  as TerritoryDetails
-  var _territoryCodes:List                  as TerritoryCodes
-  var _yearBuilt : List                     as YearBuilt
-  var _protectionClass : List               as ProtectionClass
-  var _distanceToCoast : List               as DistanceToCoast
+  var _territoryCodes:List                 as TerritoryCodes
+  var _yearBuilt : List<PropertyDataModel>                     as YearBuilt
+  var _protectionClass : List<PropertyDataModel>               as ProtectionClass
+  var _distanceToCoast : List<PropertyDataModel>               as DistanceToCoast
+  var _bcegGrade : List<PropertyDataModel>                     as BCEGGrade
+  var _fireDeptMatchLevel : List<PropertyDataModel>            as FireDepartmentMatchLevel
+  var _estimatedReplacementCost : List<PropertyDataModel>      as EstimatedReplacementCost
+  var _iso360Value : List<PropertyDataModel>                   as ISO360Value
+  var _adjustedHazard : List<PropertyDataModel>                as AdjustedHazard
+  var _fireLineFuel : List<PropertyDataModel>                  as FireLineFuel
+  var _fireLineSlope : List<PropertyDataModel>                 as FireLineSlope
+  var _fireLineAccess : List<PropertyDataModel>                as FireLineAccess
+  var _storiesNumber : List<PropertyDataModel>                 as  StoryNumber
+  var _constructionType : List<PropertyDataModel>              as ConstructionType
+  var _wallFinish : List<PropertyDataModel>                    as WallFinish
+  var _roofCover : List<PropertyDataModel>                     as RoofCover
+  var _roofType : List<PropertyDataModel>                      as RoofType
+  var _squareFootage : List<PropertyDataModel>                 as SquareFootage
+  var _windPool :List<PropertyDataModel>                       as WindPool
+
+
 
 
 }

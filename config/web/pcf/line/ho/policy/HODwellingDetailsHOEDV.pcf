@@ -292,7 +292,7 @@
           editable="true"
           id="MultiPolicyDiscount_Ext"
           label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
-          value="dwelling.DwellingRentedEverToOthers_Ext">
+          value="(dwelling.PolicyLine as HomeOwnersLine_HOE).MultiPolicyDiscount_Ext">
           <PostOnChange/>
         </BooleanRadioInput>
         <TypeKeyInput
@@ -300,15 +300,15 @@
           id="HOPolicyType"
           label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
           required="true"
-          value="dwelling.TypeofPolicy_Ext"
-          visible="dwelling.DwellingRentedEverToOthers_Ext == true">
+          value="(dwelling.PolicyLine as HomeOwnersLine_HOE).TypeofPolicy_Ext">
           <PostOnChange/>
         </TypeKeyInput>
         <Input
           editable="true"
           id="PolicyNumber_Ext"
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
-          value="dwelling.PolicyNumber_Ext"/>
+          value="(dwelling.PolicyLine as HomeOwnersLine_HOE).PolicyNumber_Ext"
+          visible="(dwelling.PolicyLine as HomeOwnersLine_HOE).MultiPolicyDiscount_Ext == true"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>

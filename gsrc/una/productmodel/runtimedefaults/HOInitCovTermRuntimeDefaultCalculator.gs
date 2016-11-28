@@ -64,7 +64,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
         result = line.Dwelling.DwellingLimitCovTerm.Value
         break
       case "HOLI_UnitOwnersRentedOthers_Deductible_HOE_Ext":
-        result = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+        result = getUnitRentedToOthersDeductibleDefault(line)
         break
       case "HOPL_Deductible_HOE":
         result = getLossAssessmentDefaultDeductible(covTerm, line)
@@ -133,6 +133,18 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value?.multiply(factor)
 
     result = calculatedAmount
+
+    return result
+  }
+
+  private static function getUnitRentedToOthersDeductibleDefault(line : entity.HomeownersLine_HOE) : Double{
+    var result : Double
+
+    if((line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm.Value != null){
+      result = line.Dwelling.DwellingLimitCovTerm.Value.multiply(0.10)
+    }else{
+      result = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
+    }
 
     return result
   }

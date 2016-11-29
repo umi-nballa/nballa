@@ -436,7 +436,7 @@
           id="HOPolicyType"
           label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
           required="true"
-          value="dwelling.TypeofPolicy_Ext"
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
           visible="dwelling.DwellingRentedEverToOthers_Ext == true">
           <PostOnChange/>
         </TypeKeyInput>
@@ -444,7 +444,7 @@
           editable="true"
           id="PolicyNumber_Ext"
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
-          value="dwelling.PolicyNumber_Ext"/>
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>

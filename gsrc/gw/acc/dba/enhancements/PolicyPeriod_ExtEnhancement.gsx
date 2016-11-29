@@ -57,7 +57,9 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
   static function setSERPIndicator(job:Job,initiateSERP:boolean)  {
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       job = bundle.add(job)
-      job.LatestPeriod.SERPEndorsed_Ext = initiateSERP
+      if(job.LatestPeriod!=null){
+        job.LatestPeriod.SERPEndorsed_Ext = initiateSERP
+      }
     })
   }
 }

@@ -11,13 +11,6 @@
   priority="16600"
   public-id="HODW_PremisesLiability_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[ var result = true
-if((HomeownersLine_HOE.HOPolicyType ==typekey.HOPolicyType_HOE.TC_HO3 or HomeownersLine_HOE.HOPolicyType ==typekey.HOPolicyType_HOE.TC_DP3_EXT)and 
-   (HomeownersLine_HOE.Dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS or HomeownersLine_HOE.Dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)){
-   return result  
-}
-else if(HomeownersLine_HOE.HOPolicyType ==typekey.HOPolicyType_HOE.TC_HO6 and HomeownersLine_HOE.Dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_TENANT) {
-  return result
-}]]></AvailabilityScript>
+  <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isCoverageAvailable("HODW_PremisesLiability_HOE_Ext", HomeownersLine_HOE)]]></AvailabilityScript>
   <CovTerms/>
 </CoveragePattern>

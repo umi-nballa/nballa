@@ -31,7 +31,7 @@ enhancement UNADirectCovTermEnhancement_Ext: gw.api.domain.covterm.DirectCovTerm
     var roundingFactor = ConfigParamsUtil.getInt(ConfigParameterType_Ext.TC_ROUNDINGFACTOR, baseState, this.PatternCode)
 
     if(this.Value != null and roundingFactor != null){
-      this.Value = MathUtil.roundTo(this.Value.doubleValue(), roundingFactor, ROUND_NEAREST)
+      this.Value = MathUtil.roundTo(this.Value.doubleValue(), roundingFactor, roundingMode)
     }
   }
 

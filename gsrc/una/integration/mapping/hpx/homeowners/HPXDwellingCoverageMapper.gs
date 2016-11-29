@@ -62,11 +62,11 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
       var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
       var period = coverage.PolicyLine.AssociatedPolicyPeriod
-      var maxDwelling = period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.getMaxAllowedLimitValue(period.HomeownersLine_HOE.Dwelling)
-      var maxOrdinance = currentCovTerm.getMaxAllowedLimitValue(period.HomeownersLine_HOE.Dwelling)
-      limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value * getDwellingCovLimit(coverage): 0.00
+      var maxDwelling = period.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOEExists ? period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.getMaxAllowedLimitValue(period.HomeownersLine_HOE.Dwelling) : 0.00
+      var dwellingLimit = period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ? period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value : 0.00
+      limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value * dwellingLimit: 0.00
       limit.NetChangeAmt.Amt = (value - orignalValue)* getDwellingCovLimit(coverage)
-      limit.FormatPct = 0
+      limit.FormatPct = value
       limit.FormatText = ""
       limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
                         " | Max : " + maxDwelling * 0.25
@@ -125,7 +125,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.FormatText = ""
       limit.LimitDesc = currentCovTerm.PatternCode == "HOLI_NumClercEmp_HOE_Ext" and value > 0 ? "Clerical Employees" :
                         currentCovTerm.PatternCode == "HOLI_NumSCMIDSOP_HOE_Ext" and value > 0  ?  "Salesperson, Collector or Messenger, Installation, Demonstration or Servicing Operation" :
-                        currentCovTerm.PatternCode == "HOLI_NumTeachers_HOE_Ext" and value > 0  ?  "Teachers a. Laboratory, athletic, manual or physical training" :
+                        currentCovTerm.PatternCode == "HOLI_NumTeachers_HOE_Ext" and value > 0  ?  "Teachers - Laboratory, athletic, manual or physical training" :
                         currentCovTerm.PatternCode == "HOLI_NotOtherwiseclassified_HOE_Ext" and value > 0  ?  "Unclassified" : ""
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode

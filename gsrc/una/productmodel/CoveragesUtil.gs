@@ -53,6 +53,9 @@ class CoveragesUtil {
       case "BP7CapLossesFromCertfdActsTerrsm":
         result = isBP7CapLossesFromCertfdActsTerrsmCovAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_PremisesLiability_HOE_Ext":
+        result = isPremiseLiabilityCoverageAvailable(coverable as HomeownersLine_HOE)
+        break
       default:
     }
 
@@ -253,5 +256,23 @@ class CoveragesUtil {
       }
     }
     return false
+  }
+
+  private static function isPremiseLiabilityCoverageAvailable(line: HomeownersLine_HOE) : boolean {
+    var result : boolean
+
+    switch(line.HOPolicyType){
+      case TC_HO3:
+      case TC_DP3_Ext:
+        result = line.Dwelling.IsSecondaryOrSeasonal
+        break
+      case TC_HO6:
+        result = line.Dwelling.Occupancy == TC_NonOwn  //the description for this code is (don't ask me why) is tenant / non owner  Had to do this because someone retired the original code :/
+        break
+      default:
+        break
+    }
+
+    return result
   }
 }

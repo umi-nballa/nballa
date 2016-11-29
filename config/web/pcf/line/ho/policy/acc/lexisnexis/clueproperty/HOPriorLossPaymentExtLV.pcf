@@ -13,6 +13,9 @@
     <Require
       name="openForEdit"
       type="Boolean"/>
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
     <Variable
       initialValue="priorLoss.ClaimPayment"
       name="claimPayments"
@@ -21,6 +24,7 @@
       canPick="false"
       editable="openForEdit"
       elementName="claimPayment"
+      hasCheckBoxes="true"
       hideCheckBoxesIfReadOnly="true"
       toAdd="priorLoss.addToClaimPayment(claimPayment)"
       toRemove="priorLoss.removeFromClaimPayment(claimPayment)"
@@ -41,6 +45,23 @@
           id="pAmount"
           label="displaykey.Accelerator.LexisNexis.Clue.Property.PaymentAmount"
           value="claimPayment.ClaimAmount"/>
+        <Cell
+          editable="openForEdit"
+          id="creporteddate"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.ReportedDate"
+          value="claimPayment.ReportedDate"/>
+        <Cell
+          editable="openForEdit"
+          id="chargeable"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.Chargeable"
+          value="claimPayment.Chargeable"
+          visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;"/>
+        <Cell
+          editable="openForEdit"
+          id="ignoreuw"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.IgnoreUW"
+          value="claimPayment.IgnoreUW"
+          visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;"/>
       </Row>
     </RowIterator>
   </ListViewPanel>

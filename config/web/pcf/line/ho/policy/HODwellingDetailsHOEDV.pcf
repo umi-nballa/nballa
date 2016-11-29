@@ -26,6 +26,10 @@
       name="isProtectedSubDivisonVisible"
       recalculateOnRefresh="true"
       type="boolean"/>
+    <Variable
+      initialValue="initializeTunaCodes()"
+      name="tunaCodesAppResponseObj"
+      type="una.config.TunaCodesBO"/>
     <InputColumn
       labelWidth="250">
       <Label
@@ -151,15 +155,11 @@
           <PostOnChange
             onChange="gw.lob.ho.HODwellingUtil_HOE.resetProtectionClassCode(policyPeriod.BaseState, dwelling.HOLocation)"/>
         </RangeInput>
-        <TextInput
-          id="bceg_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.BCEG_Ext"
-          value="dwelling.HOLocation.BCEG_Ext"/>
       </InputSet>
       <Input
         id="distanceToCoast"
         label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
-        value="dwelling.HOLocation.DistanceToCoast_Ext"/>
+        value="dwelling.HOLocation.DistToCoastTunaReturned_Ext"/>
       <Input
         editable="true"
         id="latitude_Ext"
@@ -180,6 +180,176 @@
         id="iso360ValueID_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ISO360ValueID_Ext"
         value="dwelling.HOLocation.ISO360ValueID_Ext"/>
+      <InputDivider/>
+      <InputSet
+        id="bceg_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideBCEG_Ext"
+          editable="true"
+          id="BCEGTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BCEGTunaReturned_Ext"
+          value="dwelling.HOLocation.BCEGTunaReturned_Ext"
+          valueRange="getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          <PostOnChange
+            onChange="if(getTunaCodes(&quot;bceg&quot;)?.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_USERENTERED}"
+            target="bceg_Ext"/>
+        </RangeInput>
+        <Input
+          available="!dwelling.HOLocation.OverrideBCEG_Ext"
+          id="BCEGMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BCEGMatchlevel_Ext"
+          value="dwelling.HOLocation.BCEGMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideTunaBCEG_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BCEGOverride_Ext"
+          value="dwelling.HOLocation.OverrideBCEG_Ext">
+          <PostOnChange
+            target="bceg_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideBCEG_Ext"
+          editable="true"
+          id="BCEGUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BCEGUserEntered_Ext"
+          value="dwelling.HOLocation.BCEGUserEntered_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="PCCode_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+          editable="true"
+          id="PCCodeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
+          value="dwelling.HOLocation.DwellingPCCodeTunaReturned_Ext"
+          valueRange="getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          <PostOnChange
+            onChange="if(getTunaCodes(&quot;bceg&quot;)?.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_USERENTERED}"
+            target="bceg_Ext"/>
+        </RangeInput>
+        <Input
+          available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+          id="PCCodeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
+          value="dwelling.HOLocation.BCEGMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideTunaBCEG_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PCCodeOverride_Ext"
+          value="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
+          <PostOnChange
+            target="PCCode_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+          editable="true"
+          id="PCCodeUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PCCodeUserEntered_Ext"
+          value="dwelling.HOLocation.DwellingProtectionClassCode"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="WindPool_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideWindPool_Ext"
+          editable="true"
+          id="WindPoolTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolTunaReturned_Ext"
+          value="dwelling.HOLocation.WindPoolTunaReturned_Ext"
+          valueRange="getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          <PostOnChange
+            onChange="if(getTunaCodes(&quot;bceg&quot;)?.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_USERENTERED}"
+            target="WindPool_Ext"/>
+        </RangeInput>
+        <Input
+          available="!dwelling.HOLocation.OverrideWindPool_Ext"
+          id="WindPoolMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolMatchlevel_Ext"
+          value="dwelling.HOLocation.WindPoolMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideTunaWindPool_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolOverride_Ext"
+          value="dwelling.HOLocation.OverrideWindPool_Ext">
+          <PostOnChange
+            target="WindPool_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideWindPool_Ext"
+          editable="true"
+          id="bcegUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolUserEntered_Ext"
+          value="dwelling.HOLocation.WindPoolUserEntered_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="DistToCoast_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
+          editable="true"
+          id="DistToCoastTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
+          value="dwelling.HOLocation.DistToCoastTunaReturned_Ext"
+          valueRange="getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          <PostOnChange
+            onChange="if(getTunaCodes(&quot;bceg&quot;)?.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_USERENTERED}"
+            target="WindPool_Ext"/>
+        </RangeInput>
+        <Input
+          available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
+          id="DistToCoastMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistanceToCoastMatchLevel_Ext"
+          value="dwelling.HOLocation.DistToCoastMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideDistToCoast_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistToCoastOverride_Ext"
+          value="dwelling.HOLocation.OverrideDistToCoast_Ext">
+          <PostOnChange
+            target="DistToCoast_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideDistToCoast_Ext"
+          editable="true"
+          id="DistToCoastUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistanceToCoastUserEntered_Ext"
+          value="dwelling.HOLocation.DistToCoastUserEntered_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="DistToMajorBOW_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideDistBOW_Ext"
+          editable="true"
+          id="DistBOWTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
+          value="dwelling.HOLocation.DistBOWTunaReturned_Ext"
+          valueRange="getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          <PostOnChange
+            onChange="if(getTunaCodes(&quot;bceg&quot;)?.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_USERENTERED}"
+            target="WindPool_Ext"/>
+        </RangeInput>
+        <Input
+          available="!dwelling.HOLocation.OverrideDistBOW_Ext"
+          id="DistBOWMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWtMatchLevel_Ext"
+          value="dwelling.HOLocation.DistBOWMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideDistToCoast_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWOverride_Ext"
+          value="dwelling.HOLocation.OverrideDistBOW_Ext">
+          <PostOnChange
+            target="DistToMajorBOW_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideDistBOW_Ext"
+          editable="true"
+          id="DistToCoastUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWUserEntered_Ext"
+          value="dwelling.HOLocation.DistBOWUserEntered_Ext"/>
+      </InputSet>
       <InputDivider/>
       <InputSet>
         <Label
@@ -254,6 +424,27 @@
           required="true"
           value="dwelling.OccupancyVacant"
           visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/> -->
+        <BooleanRadioInput
+          editable="true"
+          id="MultiPolicyDiscount_Ext"
+          label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
+          <PostOnChange/>
+        </BooleanRadioInput>
+        <TypeKeyInput
+          editable="true"
+          id="HOPolicyType"
+          label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
+          required="true"
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
+          visible="dwelling.DwellingRentedEverToOthers_Ext == true">
+          <PostOnChange/>
+        </TypeKeyInput>
+        <Input
+          editable="true"
+          id="PolicyNumber_Ext"
+          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>
@@ -332,6 +523,7 @@
         </TypeKeyInput> -->
       </InputSet>
     </InputColumn>
+    <InputColumn/>
     <InputColumn
       labelWidth="350">
       <!-- <InputSet>
@@ -555,6 +747,8 @@
     <Code><![CDATA[uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
 uses java.util.ArrayList
+uses una.config.TunaCodesBO
+uses una.config.TunaCodesDTO
 
 function searchTaxLocation(code: String): TaxLocation {
   try{
@@ -595,6 +789,43 @@ function getResidenceType() : List<ResidenceType_HOE>{
   })
   residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
   return residenceType
+}
+
+function getTunaCodes(category : String) : List<String> {
+  var tuneCodes = new ArrayList<String>()
+  var tunaCodesByCategory = getTunaCodesByCategory(category)
+
+  tunaCodesByCategory?.each( \ tunaCode -> {
+    tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
+  })
+  return tuneCodes
+}
+
+function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
+  switch(category) {
+    case "bceg" :
+        return tunaCodesAppResponseObj.BCEGValues
+  }
+  return null
+} 
+
+function initializeTunaCodes() : TunaCodesBO {
+  var initialTunaCodesBO = new TunaCodesBO()
+
+  var bcegCode1 = new TunaCodesDTO()
+  bcegCode1.Code = "2"
+  bcegCode1.MatchPercentage = "5%"
+      
+  var bcegCode2 = new TunaCodesDTO()
+  bcegCode2.Code = "5"
+  bcegCode2.MatchPercentage = "10%"
+  
+  var bcegCodes = new ArrayList<TunaCodesDTO>()
+  bcegCodes.add(bcegCode1)
+  bcegCodes.add(bcegCode2)
+  
+  initialTunaCodesBO.BCEGValues = bcegCodes
+  return initialTunaCodesBO
 }]]></Code>
   </DetailViewPanel>
 </PCF>

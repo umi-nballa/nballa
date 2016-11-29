@@ -10,6 +10,10 @@
     <Require
       name="viewOnly"
       type="boolean"/>
+    <Variable
+      initialValue="new String[]{&quot;&quot;}"
+      name="ScrapeXml"
+      type="String[]"/>
     <SearchPanel
       criteriaName="searchCriteria"
       resultCachingEnabled="false"
@@ -45,11 +49,13 @@
         </Toolbar>
       </PanelRef>
     </SearchPanel>
-    <Code><![CDATA[function createCriteria() : DocumentSearchCriteria {
+    <Code><![CDATA[
+function createCriteria() : DocumentSearchCriteria {
   var criteria = new DocumentSearchCriteria()
   criteria.setFixedContextWith(account)
   criteria.IncludeObsoletes = false
   return criteria
-}]]></Code>
+}
+]]></Code>
   </Screen>
 </PCF>

@@ -21,6 +21,7 @@ uses gw.api.web.job.JobWizardHelper
 uses gw.api.web.util.TransactionUtil
 uses gw.api.system.PCLoggerCategory
 uses java.lang.Integer
+uses gw.acc.bulkproducerchange.BPCProcessCtrl
 
 /**
  * Encapsulates the actions taken within a Renewal job.  The renewal process is
@@ -33,7 +34,7 @@ uses java.lang.Integer
  */
 @Export
 class RenewalProcess extends NewTermProcess {
-  private var _timeoutHandler : RenewalProcessTimeoutHandler
+  protected var _timeoutHandler : RenewalProcessTimeoutHandler
 
   construct(period : PolicyPeriod) {
     this(period, RenewalProcessTimeoutHandler.STANDARD_INSTANCE)
@@ -117,9 +118,13 @@ class RenewalProcess extends NewTermProcess {
    */
   function initialize() {
     var producerCode = Job.Policy.ProducerCodeOfService
-    if (producerCode != null) {
+    if (producerCode != null && _branch.Policy.NewProducerCode_Ext == null) {
       _branch.EffectiveDatedFields.ProducerCode = producerCode
       _branch.ProducerCodeOfRecord = producerCode
+      //BPC Accelerator Addition
+      //If a new producer code has been specified through the BPC batch process, then update the producer of record and EffectiveDatedFields.ProducerCode for the policy period
+    } else if (_branch.Policy.NewProducerCode_Ext != null) {
+      BPCProcessCtrl.updateProducerOfRecord(_branch, _branch.Policy.NewProducerCode_Ext)
     }
     _branch.PolicyNumber = _branch.genNewPeriodPolicyNumber()
     _branch.cloneAutoNumberSequences()
@@ -365,6 +370,11 @@ class RenewalProcess extends NewTermProcess {
    */
   function assertNonRenewLeadTime() {
     if (not this.canNonRenew()) {
+      var periodEnd = _branch.BasedOn.PeriodEnd
+      var date = periodEnd.addDays(-NonRenewLeadTime)
+      var currentDate = Date.CurrentDate
+      print(periodEnd.addDays(-NonRenewLeadTime))
+      print(NonRenewLeadTime)
       throw new DisplayableException(displaykey.Web.Renewal.Warning.NonRenewLeadTime)
     }
   }
@@ -508,7 +518,12 @@ class RenewalProcess extends NewTermProcess {
     if (escalationReasonChecker.ShouldEscalate) {
       escalate(escalationReasonChecker.ActivitySubject, escalationReasonChecker.ActivityDescription)
     } else {
-      _timeoutHandler.scheduleTimeoutOperation(_branch, IssueAutomatedRenewalDate, "issueAutomatedRenewal", false)
+      var plugin = Plugins.get(IPolicyRenewalPlugin)
+      if(plugin.isRenewalOffered(_branch)){
+        _timeoutHandler.scheduleTimeoutOperation(_branch, SendNotTakenDate, "sendNotTakenForRenewalOffer", true)
+      }else{
+        _timeoutHandler.scheduleTimeoutOperation(_branch, IssueAutomatedRenewalDate, "issueAutomatedRenewal", false)
+      }
     }
   }
 
@@ -696,7 +711,7 @@ class RenewalProcess extends NewTermProcess {
            preRenewalDirection == TC_NONRENEWREFER
   }
 
-  protected function preSchedulePendingRenewal() {
+  function preSchedulePendingRenewal() {
     assertNoOpenCancellations()
     _branch.onBeginIssueJob()
     JobProcessValidator.validatePeriodForUI(_branch, TC_READYFORISSUE, false)
@@ -771,7 +786,7 @@ class RenewalProcess extends NewTermProcess {
     canSendNonRenewalDocuments().assertOkay()
     JobProcessLogger.logInfo("Sending non-renewal documents for renewal branch: " + _branch)
     Job.NonRenewalNotifDate = Date.CurrentDate
-    _branch.addEvent("SendNonRenewalDocuments")
+    _branch.addEvent(FormsEventType.TC_SENDNONRENEWALDOCUMENTS.Code)
   }
 
   /**
@@ -819,7 +834,7 @@ class RenewalProcess extends NewTermProcess {
     }
     try {
       var periodEnd = _branch.BasedOn.PeriodEnd
-      return Date.CurrentDate < periodEnd.addDays(-NonRenewLeadTime)
+      return Date.CurrentDate.beforeOrEqualsIgnoreTime(periodEnd.addDays(-NonRenewLeadTime))
     } catch (e : Exception) {
       return false
     }
@@ -958,7 +973,7 @@ class RenewalProcess extends NewTermProcess {
    * Inner class that encapsulates methods for determining when an underwriter should get involved
    * with a renewal.
    */
-  private class EscalationReasonChecker {
+  protected class EscalationReasonChecker {
     private var _messages = new ArrayList<String>()
     private var _state : PolicyPeriodStatus
 
@@ -1049,5 +1064,9 @@ class RenewalProcess extends NewTermProcess {
     assertNoOpenCancellations()
     _branch.onBeginIssueJob()
     issueNow()
+  }
+
+  override public function requestQuote(jobWizardHelper : JobWizardHelper, valLevel: ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean){
+    super.requestQuote(jobWizardHelper, valLevel, ratingStyle, warningsThrowException)
   }
 }

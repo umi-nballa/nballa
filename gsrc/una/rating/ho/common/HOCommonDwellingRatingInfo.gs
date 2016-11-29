@@ -20,6 +20,7 @@ class HOCommonDwellingRatingInfo {
   var _territoryCode : String as TerritoryCode
   var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit
   var _otherStructuresIncreasedLimit: BigDecimal as OtherStructuresIncreasedLimit
+  var _isPersonalLiabilityLimitIncreased : boolean as IsPersonalLiabilityLimitIncreased
 
   construct(lineVersion: HomeownersLine_HOE){
     if(lineVersion.Dwelling?.HODW_Personal_Property_HOEExists){
@@ -29,7 +30,11 @@ class HOCommonDwellingRatingInfo {
 
   construct(dwellingCov : DwellingCov_HOE){
     _dwellingLimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
+    _personalPropertyLimit = (dwellingCov.Dwelling.HODW_Personal_Property_HOEExists)? dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0
     _policyType = dwellingCov.Dwelling?.HOLine.HOPolicyType
+    if(dwellingCov.Dwelling?.HODW_Personal_Property_HOEExists){
+      _personalPropertyLimit = dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
+    }
     if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
       if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){
         _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
@@ -43,9 +48,10 @@ class HOCommonDwellingRatingInfo {
     }
 
     if (dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
-      _businessPropertyIncreasedLimit = (dwellingCov.HODW_OnPremises_Limit_HOETerm.LimitDifference.intValue())
+      _businessPropertyIncreasedLimit = (dwellingCov?.HODW_OnPremises_Limit_HOETerm?.LimitDifference?.intValue())
     }
-
+    if(dwellingCov.Dwelling.HOLine?.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.LimitDifference > 0)
+      _isPersonalLiabilityLimitIncreased = true
 
     _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
     _territoryCode = dwellingCov.Dwelling.HOLocation.PolicyLocation?.TerritoryCodes.single().Code

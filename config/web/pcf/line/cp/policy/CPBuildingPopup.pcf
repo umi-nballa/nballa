@@ -100,7 +100,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ClassDescription"
                 numCols="40"
                 numRows="2"
-                value="cpBuilding.ClassCode.Classification"/>
+                value="cpBuilding.ClassCodeDesc"/>
               <TypeKeyInput
                 editable="true"
                 id="OccupancyType"
@@ -153,9 +153,10 @@
                 editable="true"
                 id="NumStories"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.NumStories"
+                required="true"
                 value="cpBuilding.Building.NumStories">
                 <PostOnChange
-                  onChange="cpBuilding.BldgHt=cpBuilding.Building.NumStories*10;una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
+                  onChange="una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
               </TextInput>
               <TextInput
                 align="left"
@@ -198,7 +199,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.TotalArea"
                 maxChars="5"
                 required="true"
-                value="cpBuilding.SqFootExt"/>
+                value="cpBuilding.SqFtExt"/>
               <!-- <TextInput
                 align="left"
                 editable="true"
@@ -215,8 +216,10 @@
                 editable="true"
                 id="RoofType"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofType"
+                required="true"
                 value="cpBuilding.RoofTypeCP ">
-                <PostOnChange/>
+                <PostOnChange
+                  onChange="una.config.CPBuildingUtil.setRoofDeckDefaults(cpBuilding)"/>
               </TypeKeyInput>
               <TypeKeyInput
                 editable="true"
@@ -245,7 +248,7 @@
                 id="Sprinklered"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Sprinklered"
                 value="cpBuilding.Building.Sprinklered"
-                visible="false">
+                visible="true">
                 <PostOnChange
                   onChange="//cpBuilding.Building.HeatingBoilerElsewhere = gw.web.line.cp.policy.CPBuildingPopupUIHelper.getBoilerInsuredValue(cpBuilding, cpBuilding.Building.HeatingBoilerOnPremises)"/>
               </BooleanRadioInput>
@@ -287,7 +290,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.TimesRented"
                 maxChars="3"
                 required="true"
-                value="cpBuilding.Building.TimesRented"/>
+                value="cpBuilding.Building.TimesRent"/>
               <InputGroup
                 childrenVisible="showResidentialQues"
                 id="ResQuesInputGroup"
@@ -297,7 +300,7 @@
                   editable="true"
                   id="statewindstorm"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.StateWindstorm"
-                  required="false"
+                  required="true"
                   value="cpBuilding.ResQuestions.windstorm">
                   <PostOnChange
                     onChange="cpBuilding.ResQuestions.windstormexcl=cpBuilding.ResQuestions.windstorm"/>
@@ -316,7 +319,7 @@
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Wind5Years"
                   required="cpBuilding.ResQuestions.windstormexcl==false"
                   value="cpBuilding.ResQuestions.windmiti5"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false">
+                  visible="cpBuilding.ResQuestions.windstormexcl==false ">
                   <PostOnChange/>
                 </BooleanRadioInput>
                 <TypeKeyInput
@@ -334,7 +337,7 @@
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Gustwind"
                   required="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.ResQuestions.guswind"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
+                  visible="cpBuilding.ResQuestions.windstormexcl==false// || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
                   <PostOnChange/>
                 </TypeKeyInput>
                 <TypeKeyInput
@@ -400,7 +403,7 @@
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Swr"
                   required="cpBuilding.ResQuestions.windstormexcl==false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.ResQuestions.swrr"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                  visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
                 <TypeKeyInput
                   align="left"
                   editable="true"
@@ -574,6 +577,7 @@
                 id="LastUpdateHeating"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateHeating"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Heating.YearAdded)"
                 value="cpBuilding.Building.Heating.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
@@ -583,6 +587,7 @@
                 id="LastUpdatePlumbing"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdatePlumbing"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Plumbing.YearAdded)"
                 value="cpBuilding.Building.Plumbing.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
@@ -592,6 +597,7 @@
                 id="LastUpdateRoofing"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateRoofing"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Roofing.YearAdded)"
                 value="cpBuilding.Building.Roofing.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  &amp;&amp; (cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT)"/>
@@ -601,6 +607,7 @@
                 id="LastUpdateWiring"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateWiring"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Wiring.YearAdded)"
                 value="cpBuilding.Building.Wiring.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50) &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
@@ -632,7 +639,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireHyd"
                 maxChars="4"
                 required="true"
-                value="cpBuilding.DistFireHyd"/>
+                value="cpBuilding.DistFirHyd"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -661,13 +668,13 @@
                 align="left"
                 id="BldgHt"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.BldgHt"
+                maxChars="4"
                 required="true"
-                value="cpBuilding.BldgHt"/>
+                value="cpBuilding.BldHt"/>
               <Input
                 editable="true"
                 id="FireProtectionClass"
                 label="displaykey.Web.Policy.PolicyLocation.FireProtectionClass"
-                labelAbove="true"
                 value="cpBuilding?.CPLocation?.Location?.FireProtectClass"/>
               <InputDivider/>
               <Label

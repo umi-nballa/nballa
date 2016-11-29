@@ -51,6 +51,7 @@ class CovTermInputSetPCFController {
         break
       case "DPDW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
         break
       case "HODW_PersonalPropertyLimit_HOE":
@@ -59,9 +60,6 @@ class CovTermInputSetPCFController {
         break
       case "HODW_ExecutiveCov_HOE_Ext":
         setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
-        break
-      case "HODW_OtherPerils_Ded_HOE":
-        dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
         break
       default:
         break;
@@ -88,6 +86,10 @@ class CovTermInputSetPCFController {
 
     if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
       (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
+    }
+
+    if({"HODW_OtherPerils_Ded_HOE", "HODW_AllPeril_HOE_Ext"}.contains(term.PatternCode)){
+      (coverable as Dwelling_HOE).HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
     }
   }
 

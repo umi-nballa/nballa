@@ -1,6 +1,7 @@
 package una.rating.ho.group1.ratinginfos
 
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,12 +10,18 @@ uses una.rating.ho.common.HOCommonDwellingRatingInfo
  * Time: 10:50 AM
  */
 class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
-  var _isOrdinanceOrLawCoverage: boolean as IsOrdinanceOrLawCoverage = false
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit: int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _isLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium: boolean as IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium = false
   var _doesSpecialPersonalPropertyCoverageExist: boolean as SpecialPersonalPropertyCoverage = false
   var _lossAssessmentPolicyForm: String as LossAssessmentPolicyForm
   var _lossAssessmentLimit: int as LossAssessmentLimit
+  var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
+  var _isPermittedIncidentalOccupancyInDwelling : boolean as IsPermittedIncidentalOccupancyInDwelling = false
+  var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures = false
+  var _permittedIncidentalOccupancyOtherStructuresLimit : BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
+  var _isPermittedIncidentalOccupancyExtendSectionIICoverage : boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
+  var _buildingAdditionsAndAlterationsLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
+
   construct(dwellingCov: DwellingCov_HOE) {
     super(dwellingCov)
     var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
@@ -36,6 +43,18 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
         }
       }
       _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
+    }
+    if(dwellingCov typeis HODW_SpecificOtherStructure_HOE_Ext){
+      _otherStructuresRentedToOthersLimit = dwellingCov.HODW_IncreasedLimit_HOETerm?.Value
+    }
+    if(dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
+      _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value
+      _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
+      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
+      _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
+    }
+    if(dwellingCov typeis HODW_BuildingAdditions_HOE_Ext){
+      _buildingAdditionsAndAlterationsLimit = dwellingCov.HODW_BuildAddInc_HOETerm?.Value
     }
   }
 }

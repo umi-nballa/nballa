@@ -37,20 +37,24 @@ class CoveragesUtil {
         break
       case "HODW_LossAssessmentCov_HOE":
         result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
-	case "BP7ForgeryAlteration":
-          result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break
+	    case "BP7ForgeryAlteration":
+        result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
       case "BP7BuildingMoneySecurities_EXT":
-          result = isBuildingMoneySecuritiesCoverageAvailable(coverable as BP7Building)
-          break
+        result = isBuildingMoneySecuritiesCoverageAvailable(coverable as BP7Building)
+        break
       case "BP7OrdinanceOrLawCov_EXT":
         result = isOrdinanceOrLawCovAvailable(coverable as BP7BusinessOwnersLine)
-          break
+        break
       case "BP7InterruptionComputerOps":
         result = isInterruptionComputerOpsCovAvailable(coverable as BP7BusinessOwnersLine)
-          break
+        break
       case "BP7CapLossesFromCertfdActsTerrsm":
         result = isBP7CapLossesFromCertfdActsTerrsmCovAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "HODW_PremisesLiability_HOE_Ext":
+        result = isPremiseLiabilityCoverageAvailable(coverable as HomeownersLine_HOE)
         break
       default:
     }
@@ -68,6 +72,7 @@ class CoveragesUtil {
         break
       case "HODW_WindHurricaneHailExc_HOE_Ext":
         result = isWindHurricaneAndHailExclusionAvailable(coverable as HomeownersLine_HOE)
+        break
       default:
     }
 
@@ -188,7 +193,7 @@ class CoveragesUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
-      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO_EXT
     }
 
     return result
@@ -243,7 +248,6 @@ class CoveragesUtil {
   }
 
   private static function isOrdinanceOrLawCovAvailable(bp7Line:BP7BusinessOwnersLine) : boolean {
-      //return not this.BP7FunctlBldgValtnExists - written in OOTB BP7BuildingEnhancement
     for(building in bp7Line.AllBuildings){
       if(building.BP7FunctlBldgValtnExists){
         return false
@@ -252,5 +256,23 @@ class CoveragesUtil {
       }
     }
     return false
+  }
+
+  private static function isPremiseLiabilityCoverageAvailable(line: HomeownersLine_HOE) : boolean {
+    var result : boolean
+
+    switch(line.HOPolicyType){
+      case TC_HO3:
+      case TC_DP3_Ext:
+        result = line.Dwelling.IsSecondaryOrSeasonal
+        break
+      case TC_HO6:
+        result = line.Dwelling.Occupancy == TC_NonOwn  //the description for this code is (don't ask me why) is tenant / non owner  Had to do this because someone retired the original code :/
+        break
+      default:
+        break
+    }
+
+    return result
   }
 }

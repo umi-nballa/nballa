@@ -9,7 +9,7 @@ uses java.math.BigDecimal
  * for the homeowners policies.
  */
 class HORatingInfo extends una.rating.ho.common.HORatingInfo  {
-  var _keyPremium: BigDecimal as KeyPremium = 0.0
+  var _keyFactor : BigDecimal as KeyFactor = 0.0
   var _standardBaseClassPremium: BigDecimal as StandardBaseClassPremium = 0.0
   var _finalAdjustedBaseClassPremium: BigDecimal as FinalAdjustedBaseClassPremium = 0.0
   var _differenceInConditions: BigDecimal as DifferenceInConditions = 0.0
@@ -19,5 +19,6 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo  {
   var _privateFireCompanyDiscount: BigDecimal as PrivateFireCompanyDiscount = 0.0
   var _vacanySurcharge : BigDecimal as VacancySurcharge = 0.0
   var _buildingCodeEffectivenessGradingCredit : BigDecimal as BuildingCodeEffectivenessGradingCredit = 0.0
+  var _affinityDiscount : BigDecimal as AffinityDiscount = 0.0
 
 }

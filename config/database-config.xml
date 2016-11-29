@@ -43,8 +43,8 @@
     -->
 
     <!-- SQL Server -->
-    <database name="ananayakkara_gwpc" dbtype="sqlserver" autoupgrade="true" env="LOCAL">
-        <dbcp-connection-pool jdbc-url="jdbc:sqlserver://UIMDEVGWDB01:1433;DatabaseName=ananayakkara_gwpc;User=ananayakkara_gwdbuser;Password=anilnpw"/>
+    <database name="sgopal_gwpc" dbtype="sqlserver" autoupgrade="true" env="LOCAL">
+        <dbcp-connection-pool jdbc-url="jdbc:sqlserver://UIMDEVGWDB01:1433;DatabaseName=sgopal_gwpc;User=sgopal_gwdbuser;Password=gwSQL1!"/>
         <upgrade defer-create-nonessential-indexes="false">
             <versiontriggers dbmsperfinfothreshold="600" />
         </upgrade>
@@ -53,6 +53,17 @@
 
     <!-- SQL Server PC JNDI-->
     <database name="PolicyCenter_DEV" dbtype="sqlserver"  autoupgrade="true" env="pc_dev">
+        <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
+        <upgrade defer-create-nonessential-indexes="false">
+            <versiontriggers dbmsperfinfothreshold="600" />
+        </upgrade>
+        <databasestatistics>
+            <tablestatistics name="pc_jobuserroleassign">
+                <histogramstatistics name="CreateTime" numbuckets="75"/>
+            </tablestatistics>
+        </databasestatistics>
+    </database>
+    <database name="PolicyCenter_DEV" dbtype="sqlserver"  autoupgrade="true" env="pc_devint">
         <jndi-connection-pool datasource-name="jdbc/pcDataSource" />
         <upgrade defer-create-nonessential-indexes="false">
             <versiontriggers dbmsperfinfothreshold="600" />

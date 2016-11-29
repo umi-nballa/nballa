@@ -3,12 +3,21 @@
   codeIdentifier="CPFloridaHurricanePercentCondition_EXT"
   conditionSubtype="CommercialPropertyCond"
   coverageCategory="CPConditions_EXT"
-  existence="Required"
   lookupTableName="CPCond"
   owningEntityType="CommercialPropertyLine"
   policyLinePattern="CPLine"
   priority="400"
   public-id="CPFloridaHurricanePercentCondition_EXT"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[if(CommercialPropertyLine.hurricanededtype==typekey.CPHurricaneDedType_Ext.TC_CPBLDGCALENDARYEAR_EXT)
+ return true]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[if(CommercialPropertyLine.hurricanededtype==typekey.CPHurricaneDedType_Ext.TC_CPBLDGCALENDARYEAR_EXT)
+{
+    return typekey.ExistenceType.TC_REQUIRED
+}
+else
+{
+   return typekey.ExistenceType.TC_SUGGESTED
+}]]></ExistenceScript>
   <CovTerms/>
 </ConditionPattern>

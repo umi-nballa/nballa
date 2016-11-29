@@ -1,9 +1,16 @@
 package gw.plugin.processing
+
+uses edge.capabilities.document.DocumentSessionCleanupBatchProcess
+uses edge.capabilities.quote.session.QuoteSessionCleanupBatchProcess
+uses gw.acc.bulkproducerchange.BPCBatchProcess
+uses gw.processes.ApplyPendingAccountDataUpdates
 uses gw.processes.BatchProcess
 uses gw.processes.PolicyRenewalClearCheckDate
-uses gw.processes.ApplyPendingAccountDataUpdates
-uses edge.capabilities.quote.session.QuoteSessionCleanupBatchProcess
-uses edge.capabilities.document.DocumentSessionCleanupBatchProcess
+uses gw.processes.SolrDataImportBatchProcess
+uses una.integration.batch.TenantInspectionBatchProcess
+uses una.integration.batch.outbound.lexisfirst.LexisFirstOutboundBatchProcess
+uses una.integration.batch.renewal.OpenRenewalsAutomationBatchProcess
+uses una.integration.batch.renewal.RenewalAutoCompleteBatchProcess
 
 @Export
 class ProcessesPlugin implements IProcessesPlugin {
@@ -20,10 +27,23 @@ class ProcessesPlugin implements IProcessesPlugin {
       case BatchProcessType.TC_PORTALQUOTESESSION_MPEXT:
         return new QuoteSessionCleanupBatchProcess()
       case BatchProcessType.TC_PORTALDOCUMENTSESSION_MPEXT:
-          return new DocumentSessionCleanupBatchProcess()
-      default:
+        return new DocumentSessionCleanupBatchProcess()
+      case BatchProcessType.TC_SOLRDATAIMPORT:
+        return new SolrDataImportBatchProcess()
+      //Lexis First
+      case BatchProcessType.TC_LEXISFIRSTOUTBOUND:
+        return new LexisFirstOutboundBatchProcess()
+      //Bulk Producer Change Accelerator -- Batch Process addition
+      case BatchProcessType.TC_BULKPRODUCERCHANGE_EXT:
+        return new BPCBatchProcess()
+      case BatchProcessType.TC_RENEWALAUTOCOMPLETE:
+        return new RenewalAutoCompleteBatchProcess()
+      case BatchProcessType.TC_TENANTINSPECTION:
+        return new TenantInspectionBatchProcess()
+      case BatchProcessType.TC_OPENRENEWALSAUTOMATION:
+        return new OpenRenewalsAutomationBatchProcess()
+        default:
         return null
     }
   }
-
 }

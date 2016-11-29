@@ -81,7 +81,9 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
           }
         })
         var fileOutObjects = prepareDataForFile(processedEntities)
-        createFile(outboundFileProcess, fileOutObjects)
+        if (fileOutObjects.HasElements) {
+          createFile(outboundFileProcess, fileOutObjects)
+        }
         outboundFileProcess.Status = Processed
         afterFileCreation(processedEntities)
       })

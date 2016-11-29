@@ -19,6 +19,7 @@
         onSelect="una.pageprocess.BP7PCFController.setTheftLimitationValue(line);una.pageprocess.BP7PCFController.prodsCompletedOpsCovTermActions(line);una.pageprocess.BP7PCFController.infoMessage(line,jobWizardHelper)"
         title="displaykey.Web.Policy.BP7.Line.Details">
         <PanelSet
+          available="!line.AssociatedPolicyPeriod.SERPEndorsed_Ext"
           id="BP7LineCoveragesPanelSet">
           <PanelRow>
             <PanelColumn>
@@ -59,12 +60,14 @@
         onSelect="una.pageprocess.SubmissionWizardHelper.populateNumberOfEmployeesForAllCovTerms(line.BP7EmployeeDishty.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm, line)"
         title="displaykey.Ext.Web.LineWizard.AdditionalAndOptionalCoverages">
         <PanelRef
+          available="!line.AssociatedPolicyPeriod.SERPEndorsed_Ext"
           def="BP7AdditionalCoveragesPanelSet(line, additionalCoverageCategories().toTypedArray(), true, jobWizardHelper)">
           <TitleBar
             title="displaykey.Web.LineWizard.AdditionalCoverages"/>
           <Toolbar/>
         </PanelRef>
         <PanelRef
+          available="!line.AssociatedPolicyPeriod.SERPEndorsed_Ext"
           def="BP7LineOptionalCoverages_ExtPanelSet(line, lineOptionalCoverageCategories().toTypedArray(), true, jobWizardHelper)">
           <TitleBar
             title="displaykey.Ext.Web.LineWizard.OptionalCoverages"/>
@@ -72,9 +75,20 @@
         </PanelRef>
       </Card>
       <Card
+        id="serpCoverages"
+        title="&quot;SERP Coverages&quot;"
+        visible="line.AssociatedPolicyPeriod.SERPEndorsed_Ext">
+        <PanelRef
+          def="BP7SerpCoverage_ExtPanelSet(line, true, jobWizardHelper)">
+          <TitleBar
+            title="&quot;SERP Coverages&quot;"/>
+        </PanelRef>
+      </Card>
+      <Card
         id="ExclusionsAndConditionsCard"
         title="displaykey.Web.LineWizard.ExclusionsAndConditions">
         <PanelRef
+          available="!line.AssociatedPolicyPeriod.SERPEndorsed_Ext"
           def="BP7AdditionalExclusionsAndConditionsPanelSet(line, {gw.lob.bp7.BP7Categories.BP7LineExclGrp.Code, gw.lob.bp7.BP7Categories.BP7LineCondGrp.Code}, true, jobWizardHelper)"
           id="PolicyLevelExclusionsAndConditions"/>
       </Card>
@@ -82,6 +96,7 @@
         id="AdditionalInsuredCoverages"
         title="displaykey.Web.LineWizard.AdditionalInsuredCoverages">
         <PanelRef
+          available="!line.AssociatedPolicyPeriod.SERPEndorsed_Ext"
           def="BP7AdditionalCoveragesPanelSet(line, {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code}, true, jobWizardHelper)"
           id="LineAdditionalInsuredsCoverages">
           <TitleBar
@@ -101,6 +116,11 @@
 function lineOptionalCoverageCategories() : List<String>{
   var categories = {gw.lob.bp7.BP7Categories.BP7LineOptionalGrp_EXT.Code}
   return categories
+}
+
+function serpCoverageCategories() : List<String> {
+  var serpCategories = {gw.lob.bp7.BP7Categories.BP7SerpGrp_EXT.Code}
+  return serpCategories  
 }]]></Code>
   </PanelSet>
 </PCF>

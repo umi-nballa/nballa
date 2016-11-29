@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <PanelSet
+    id="OnBaseAePopFramePanelSet">
+    <Require
+      name="scrapeXml"
+      type="String[]"/>
+    <TemplatePanel><![CDATA[
+    <!-- Clear scrapeXml after setting the iframe source so that Unity only
+         pops once. Otherwise the frame would pop again on page refresh. -->
+		<iframe src="<%=scrapeXml[0]%>" style="display:none"></iframe>
+		<%scrapeXml[0] = ""%>
+	]]></TemplatePanel>
+  </PanelSet>
+</PCF>

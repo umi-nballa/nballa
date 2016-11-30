@@ -87,13 +87,16 @@ class CPBuildingUtil {
     {
       if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
         bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
-      if(bldg.Building.NumStories>=3)
+      if(bldg.Building.NumStories>3)
         bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
 
       bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
     }
     else
+    {
+      bldg.ResQuestions.roofcv=null
       bldg.ResQuestions.roofdecat = null
+     }
 
     return true
   }
@@ -115,8 +118,11 @@ Default to 100 for all other counties.
 
 When Year Built <2002
 No default response applies
+
  */
-    if(bldg.PolicyPeriod?.PrimaryLocation.County=="Miami Dade" || bldg.PolicyPeriod.PrimaryLocation.County=="Broward")
+   if(bldg?.Building?.YearBuilt>=2002)
+   {
+    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
       bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
     else
     {
@@ -125,6 +131,9 @@ No default response applies
       else
         bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
     }
+    }
+    else
+     bldg?.ResQuestions?.guswind=null
 
     /*
     Roof Cover
@@ -141,9 +150,14 @@ If Roof Covering does not = Reinforced Concrete then no default response.
 
       bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
     }
+    else
+    {
+      bldg.ResQuestions.roofcv=null
+      bldg.ResQuestions.roofdecat = null
+    }
 
-    if(bldg?.Building?.NumStories<=3)
-      bldg.ResQuestions.intpresdes="Enclosed"
+    if(bldg?.Building?.NumStories<=3 && bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
     if(bldg?.Building?.YearBuilt>=2002)
     {
@@ -160,11 +174,44 @@ If Roof Covering does not = Reinforced Concrete then no default response.
       }
     }
 
+    if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
+      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+
     return true
   }
 
   public static function setYearBasedDefaults(bldg:CPBuilding):boolean
   {
+
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.wbdr="Yes"
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.ResQuestions.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)
+      bldg.ResQuestions.wbdr="No"
+
+
+    if(bldg?.Building?.YearBuilt<2002 && bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+    {
+      if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      if(bldg.Building.NumStories>=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+    }
+
+    if(bldg?.Building?.YearBuilt>=2002)
+    {
+      if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
+      else
+      {
+        if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
+          bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
+        else
+          bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
+      }
+    }
+    else
+      bldg?.ResQuestions?.guswind=null
+
     /*
   Roof Deck
   "Only display when Windstorm, hurricane & hail exclusion = No.
@@ -212,7 +259,10 @@ Make response editable.
       bldg.ResQuestions.openprt=typekey.CPOpenProt_Ext.TC_NOOPENINGPROT//"No Opening Protection"
     }
     else
+      {
       bldg.ResQuestions.swrr=null
+      bldg.ResQuestions.openprt=null
+       }
     /*
     Terrain exposure
     When Year Built => 2002
@@ -226,7 +276,7 @@ Default response to HVHZ if Building Address county = Miami-Dade or Broward
 Default response to B if Building Address county = All Other Counties
      */
 
-    if(bldg.ResQuestions?.windmiti5!=null && bldg.PolicyPeriod?.PrimaryLocation.County=="Miami Dade" || bldg.PolicyPeriod.PrimaryLocation.County=="Broward")
+    if(bldg.ResQuestions?.windmiti5!=null && bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
     {
       if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.ResQuestions.windmiti5==true))
         bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_HVHZ//"HVHZ"
@@ -240,8 +290,8 @@ Default response to B if Building Address county = All Other Counties
     /*Only display when Windstorm, when # stories = 1  OR = 2 OR = 3
     Only display when Year Built =>2002.*/
 
-    if(bldg.Building.YearBuilt>=2002)
-      bldg.ResQuestions.intpresdes="Enclosed"
+    if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
+      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
     return true
   }
@@ -258,8 +308,14 @@ Default response to B if Building Address county = All Other Counties
       Default to 110 for all other counties.
        When # stories = 7 or more: Default the response to => 120 if county = Miami Dade or Broward.
       Default to 100 for all other counties.
+      "Only display when Windstorm, hurricane & hail exclusion = No.
+
+"
+
+
+
      */
-    if(bldg.PolicyPeriod?.PrimaryLocation.County=="Miami Dade" || bldg.PolicyPeriod.PrimaryLocation.County=="Broward")
+    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
       bldg?.ResQuestions?.gustwindloc="120"
     else
       {
@@ -273,8 +329,9 @@ Default response to B if Building Address county = All Other Counties
       Internal pressure design
       Default the response to Enclosed.
        */
-
-    bldg.ResQuestions.intpresdes="Enclosed"
+    if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
+      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+   // bldg.ResQuestions.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
 
 
@@ -283,7 +340,7 @@ Default response to B if Building Address county = All Other Counties
 Default the response to Yes if Gust Wind Speed of Design =>120
 Default response to No if Gust Wind Speed of Design = 100 OR = 110
      */
-    if(bldg.ResQuestions.gustwind>=120)
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
       bldg.ResQuestions.wbdr="Yes"
     if(bldg.ResQuestions.gustwind==100 || bldg.ResQuestions.gustwind>=110)
       bldg.ResQuestions.wbdr="No"

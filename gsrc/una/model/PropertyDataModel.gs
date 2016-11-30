@@ -1,7 +1,7 @@
 package una.model
 
 uses java.lang.Double
-
+uses java.math.BigDecimal
 
 /**
  * Created DTO for Tuna Service
@@ -12,10 +12,7 @@ class PropertyDataModel {
 
   var Id:String           as ID
   var value:String        as Value
-  var line:String         as Line
-  var percent:Double      as Percent
-  var levelRecord:String  as LevelRecord
-  var namedValue: String  as NamedValue
-  var listValue: List<PropertyDataModel> as ListValue
+  var percent:BigDecimal      as Percent
+
 
 }

@@ -10,8 +10,8 @@
   priority="19200"
   public-id="HODW_LossAssessmentCov_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_LossAssessmentCov_HOE_Ext.PatternCode, HODW_LossAssessmentCov_HOE_Ext.Dwelling)]]></InitializeScript>
   <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isCoverageAvailable("HODW_LossAssessmentCov_HOE_Ext", Dwelling_HOE)]]></AvailabilityScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_LossAssessmentCov_HOE_Ext.PatternCode, HODW_LossAssessmentCov_HOE_Ext.Dwelling)]]></InitializeScript>
   <ExistenceScript><![CDATA[return(Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)? ExistenceType.TC_REQUIRED  :  ExistenceType.TC_ELECTABLE]]></ExistenceScript>
   <CovTerms>
     <DirectCovTermPattern
@@ -190,7 +190,7 @@
         <CovTermOpt
           codeIdentifier="zd2isads36p5g9vi425krrchg8b"
           optionCode="2000Section1"
-          priority="300"
+          priority="250"
           public-id="zd2isads36p5g9vi425krrchg8b"
           value="2000"/>
       </Options>

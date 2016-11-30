@@ -3,6 +3,7 @@ package una.rating.ho.group1.ratinginfos
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
 uses java.math.BigDecimal
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -21,7 +22,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _permittedIncidentalOccupancyOtherStructuresLimit: BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
-  var _ordinanceOrLawLimit : String as OrdinanceOrLawLimit
+  var _ordinanceOrLawLimit : BigDecimal as OrdinanceOrLawLimit
   construct(dwellingCov: DwellingCov_HOE) {
     super(dwellingCov)
     var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
@@ -49,7 +50,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _otherStructuresRentedToOthersLimit = dwellingCov.HODW_IncreasedLimit_HOETerm?.Value
     }
     if (dwellingCov typeis HODW_OrdinanceCov_HOE){
-      _ordinanceOrLawLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.DisplayValue
+      _ordinanceOrLawLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.Value
     }
     if (dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
       _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value

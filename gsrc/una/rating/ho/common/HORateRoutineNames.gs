@@ -50,6 +50,7 @@ public final class HORateRoutineNames {
   public static final var AFFINITY_DISCOUNT_RATE_ROUTINE : String = "UNAHOAffinityDiscountRateRoutine"
   public static final var AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE : String = "UNAHOAgeOfHomePremiumModifierRateRoutine"
   public static final var PREFERRED_BUILDER_CREDIT_RATE_ROUTINE : String = "UNAHOPreferredBuilderCreditRateRoutine"
+  public static final var MAXIMUM_DISCOUNT_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMaximumDiscountAdjustmentRateRoutine"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states

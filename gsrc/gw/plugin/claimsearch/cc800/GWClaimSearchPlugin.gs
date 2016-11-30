@@ -163,6 +163,7 @@ class GWClaimSearchPlugin implements IClaimSearchPlugin {
     claim.ClaimNumber = pcClaim.ClaimNumber
     claim.PolicyType = pcClaim.PolicyTypeName
     claim.LossDate = pcClaim.LossDate
+    claim.ReportedDate = pcClaim.ReportedDate
     claim.Status = pcClaim.Status
     claim.LitigationIndicator = pcClaim.LitigationIndicator
     claim.FraudIndicator = pcClaim.FraudIndicator

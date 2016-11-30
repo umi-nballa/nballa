@@ -14,7 +14,9 @@ uses java.util.Map
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 uses una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo
 uses una.rating.ho.group2.ratinginfos.HOGroup2LineRatingInfo
+
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
+uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -112,6 +114,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_SpecialLimitsPP_HOE_Ext:
           rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          break
+      case HODW_ScheduledProperty_HOE:
+          rateScheduledPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_BuildingAdditions_HOE_Ext:
           if(dwellingCov.HODW_BuildAddInc_HOETerm.LimitDifference > 0){
@@ -242,6 +247,22 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+  /**
+   * Rate the Scheduled Personal property
+   * TODO : Update the scheduled personal property after the mapping to the item type is done
+   */
+  function rateScheduledPersonalProperty(dwellingCov: HODW_ScheduledProperty_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
+    for (item in dwellingCov.ScheduledItems) {
+      var rateRoutineParameterMap = getScheduledPersonalPropertyCovParameterSet(PolicyLine, item)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SCHEDULED_PERSONAL_PROPERTY_COV_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -475,6 +496,16 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
   }
 
+
+  /**
+   * Returns the parameter set for the Scheduled Personal Property Cov
+   */
+  private function getScheduledPersonalPropertyCovParameterSet(line: PolicyLine, item: ScheduledItem_HOE): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> new HOScheduledPersonalPropertyRatingInfo(item)
+    }
+  }
 
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.SuperiorConstructionDiscount

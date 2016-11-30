@@ -56,34 +56,30 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
 
-      if (_baseState == typekey.Jurisdiction.TC_TX || _baseState == typekey.Jurisdiction.TC_AZ || _baseState == typekey.Jurisdiction.TC_CA
-          || _baseState == typekey.Jurisdiction.TC_NV || _baseState == typekey.Jurisdiction.TC_SC ||
-          _baseState == typekey.Jurisdiction.TC_FL){
-        //rate base premium
-        rateHOBasePremium(lineVersion.Dwelling, RateCache, sliceRange)
+      //rate base premium
+      rateHOBasePremium(lineVersion.Dwelling, RateCache, sliceRange)
 
-        //rate Discounts and Credits
-        _logger.info("Rating Discounts and Surcharges")
-        rateHOLineCosts(sliceRange)
-        _logger.info("Discounts and Surcharges rating done")
+      //rate Discounts and Credits
+      _logger.info("Rating Discounts and Surcharges")
+      rateHOLineCosts(sliceRange)
+      _logger.info("Discounts and Surcharges rating done")
 
-        //rate line level coverages
-        _logger.info("Rating Line Level HO Coverages")
-        var covs = lineVersion.CoveragesFromCoverable.where( \ elt -> lineVersion.hasCoverageConditionOrExclusion(elt.PatternCode))
-        covs.each( \ elt -> rateLineCoverages(elt as HomeownersLineCov_HOE, sliceRange ))
-        _logger.info("Done rating Line Level HO Coverages")
+      //rate line level coverages
+      _logger.info("Rating Line Level HO Coverages")
+      var covs = lineVersion.CoveragesFromCoverable.where( \ elt -> lineVersion.hasCoverageConditionOrExclusion(elt.PatternCode))
+      covs.each( \ elt -> rateLineCoverages(elt as HomeownersLineCov_HOE, sliceRange ))
+      _logger.info("Done rating Line Level HO Coverages")
 
-        //rate dwelling level coverages
-        _logger.info("Rating Dwelling Level HO Coverages")
-        if (lineVersion.Dwelling != null){
-          var existingCov =  lineVersion.Dwelling.CoveragesFromCoverable.where( \ elt -> lineVersion.Dwelling.hasCoverageConditionOrExclusion(elt.PatternCode) )
-          existingCov.each( \ elt -> rateDwellingCoverages(elt  as DwellingCov_HOE, sliceRange))
-        }
-        _logger.info("Done rating Dwelling Level HO Coverages")
-
-        //Add the minimum premium adjustment, if the total premium is less than minimum premium
-        rateManualPremiumAdjustment(sliceRange)
+      //rate dwelling level coverages
+      _logger.info("Rating Dwelling Level HO Coverages")
+      if (lineVersion.Dwelling != null){
+        var existingCov =  lineVersion.Dwelling.CoveragesFromCoverable.where( \ elt -> lineVersion.Dwelling.hasCoverageConditionOrExclusion(elt.PatternCode) )
+        existingCov.each( \ elt -> rateDwellingCoverages(elt  as DwellingCov_HOE, sliceRange))
       }
+      _logger.info("Done rating Dwelling Level HO Coverages")
+
+      //Add the minimum premium adjustment, if the total premium is less than minimum premium
+      rateManualPremiumAdjustment(sliceRange)
     }
   }
 
@@ -177,7 +173,8 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     var params = {BaseState.Code, PolicyLine.HOPolicyType.Code}
     minimumPremium = new RatingQueryFacade().getFactor(filter, "ho_minimum_premium_cost_cw", params).Factor
     if (minimumPremium > totalPremium){
-      _logger.debug("Entering :: rateManualPremiumAdjustment:", this.IntrinsicType)
+      if(_logger.isDebugEnabled())
+        _logger.debug("Entering :: rateManualPremiumAdjustment:", this.IntrinsicType)
       var premiumAdjustment = (minimumPremium - totalPremium)
       var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
           TC_POLICYLINE -> PolicyLine,
@@ -187,15 +184,40 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
       if (costData != null)
         addCost(costData)
-      _logger.debug("Minimum Premium Adjustment added Successfully", this.IntrinsicType)
+      if(_logger.isDebugEnabled())
+        _logger.debug("Minimum Premium Adjustment added Successfully", this.IntrinsicType)
     }
+  }
+
+  /**
+  * Adjusting the total discount if it exceeds the maximum discount of a particular state
+   */
+  function rateMaximumDiscountAdjustment(dateRange : DateRange, totalDiscountAmount : BigDecimal, basePremium : BigDecimal) : BigDecimal{
+    if(_logger.isDebugEnabled())
+      _logger.debug("Entering :: rateMaximumDiscountAdjustment:", this.IntrinsicType)
+    var discountAdjustment : BigDecimal = 0
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_STATE -> _baseState.Code,
+        TC_TOTALDISCOUNTAMOUNT -> totalDiscountAmount,
+        TC_BASEPREMIUM -> basePremium
+    }
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MAXIMUM_DISCOUNT_ADJUSTMENT_RATE_ROUTINE, HOCostType_Ext.TC_MAXIMUMDISCOUNTADJUSTMENT, RateCache, PolicyLine, rateRoutineParameterMap, Executor, PolicyLine.Branch.NumDaysInPeriod)
+    if (costData != null){
+      discountAdjustment = costData.ActualTermAmount
+      addCost(costData)
+    }
+    if(_logger.isDebugEnabled())
+      _logger.debug("Discount Adjustment Done Successfully", this.IntrinsicType)
+    return discountAdjustment
   }
 
   /**
    * Rate the Policy fee
    */
   function ratePolicyFee(line: HomeownersLine_HOE) {
-    _logger.debug("Entering :: ratePolicyFee:", this.IntrinsicType)
+    if(_logger.isDebugEnabled())
+      _logger.debug("Entering :: ratePolicyFee:", this.IntrinsicType)
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
         TC_POLICYLINE -> PolicyLine,
         TC_STATE -> _baseState.Code
@@ -206,7 +228,8 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       costData.ActualAmount = costData.ActualTermAmount
       addCost(costData)
     }
-    _logger.debug("Policy fee added Successfully", this.IntrinsicType)
+    if(_logger.isDebugEnabled())
+      _logger.debug("Policy fee added Successfully", this.IntrinsicType)
   }
 
   /**

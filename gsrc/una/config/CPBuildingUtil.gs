@@ -90,7 +90,7 @@ class CPBuildingUtil {
       if(bldg.Building.NumStories>3)
         bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
 
-      bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      bldg.ResQuestions.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
     }
     else
     {
@@ -148,7 +148,7 @@ If Roof Covering does not = Reinforced Concrete then no default response.
       if(bldg.Building.NumStories>=3)
         bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
 
-      bldg.ResQuestions.roofdecat=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      bldg.ResQuestions.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
     }
     else
     {

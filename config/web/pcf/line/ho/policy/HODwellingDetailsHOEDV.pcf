@@ -169,11 +169,10 @@
               onChange="if(getTunaCodes(&quot;bceg&quot;)?.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_USERENTERED}"
               target="bceg_Ext"/>
           </RangeInput>
-          <TypeKeyInput
+          <Input
             available="!dwelling.HOLocation.OverrideBCEG_Ext"
             id="bcegMatchLevel_Ext"
             label="displaykey.Web.Homeowners.HOLocation.BCEGMatchlevel_Ext"
-            required="true"
             value="dwelling.HOLocation.BCEGMatchLevel_Ext"/>
           <BooleanRadioInput
             editable="true"
@@ -656,41 +655,40 @@ function getResidenceType() : List<ResidenceType_HOE>{
 }
 
 function getTunaCodes(category : String) : List<String> {
-    var tuneCodes = new ArrayList<String>()
-    var tunaCodesByCategory = getTunaCodesByCategory(category)
+  var tuneCodes = new ArrayList<String>()
+  var tunaCodesByCategory = getTunaCodesByCategory(category)
+
+  tunaCodesByCategory?.each( \ tunaCode -> {
+    tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
+  })
+  return tuneCodes
+}
+
+function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
+  switch(category) {
+    case "bceg" :
+        return tunaCodesBO.BCEGValues
+  }
+  return null
+} 
+
+function initializeTunaCodes() : TunaCodesBO {
+  var initialTunaCodesBO = new TunaCodesBO()
+
+  var bcegCode1 = new TunaCodesDTO()
+  bcegCode1.Code = "2"
+  bcegCode1.MatchPercentage = "5%"
+      
+  var bcegCode2 = new TunaCodesDTO()
+  bcegCode2.Code = "5"
+  bcegCode2.MatchPercentage = "10%"
   
-    tunaCodesByCategory?.each( \ tunaCode -> {
-      tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
-    })
-    return tuneCodes
-  }
-
-  function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
-    switch(category) {
-      case "bceg" :
-          return tunaCodesBO.BCEGValues
-    }
-    return null
-  }
-
-  function initializeTunaCodes () : TunaCodesBO {
-    print(1)
-    var initialTunaCodesBO = new TunaCodesBO()
-
-    var aBCEGCode1 = new TunaCodesDTO()
-    aBCEGCode1.Code = "2"
-    aBCEGCode1.MatchPercentage = "5%"
-    print(2)
-    /*var aBCEGCode2 = new TunaCodesDTO()
-    aBCEGCode2.Code = "5"
-    aBCEGCode2.MatchPercentage = "10%"*/
-    print(3)
-    var bcegCodes = new ArrayList<TunaCodesDTO>()
-    bcegCodes.add(aBCEGCode1)
-    //bcegCodes.add(aBCEGCode2)
-    print(4)
-    initialTunaCodesBO.BCEGValues = bcegCodes
-    return initialTunaCodesBO
-  }]]></Code>
+  var bcegCodes = new ArrayList<TunaCodesDTO>()
+  bcegCodes.add(bcegCode1)
+  bcegCodes.add(bcegCode2)
+  
+  initialTunaCodesBO.BCEGValues = bcegCodes
+  return initialTunaCodesBO
+}]]></Code>
   </DetailViewPanel>
 </PCF>

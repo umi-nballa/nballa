@@ -39,4 +39,14 @@ class PreRenewalPCFController {
     return {"BP7BusinessOwners", "CommercialPackage"}.contains(_policyTerm.Policy.ProductCode)
       and  _policyTerm.PreRenewalDirection=="nonrenew"
   }
+
+  function onNonRenewReasonCodeChanged(){
+    var newExplanationCodes = _policyTerm.NonRenewReason.getNonRenewExplanationCodes(_policyTerm)
+
+    _policyTerm.NonRenewalExplanations?.each( \ existingExplanation -> {
+      if(!newExplanationCodes.hasMatch( \ newExplanation -> newExplanation.Code == existingExplanation.Code)){
+        existingExplanation?.remove()
+      }
+    })
+  }
 }

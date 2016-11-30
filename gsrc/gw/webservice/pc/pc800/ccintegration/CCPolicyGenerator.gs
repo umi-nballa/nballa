@@ -117,24 +117,29 @@ class CCPolicyGenerator {
       // Create all the policy-level contacts
       if (pcPolicyPeriod.ProducerOfRecord.Contact != null) {
         _policy.Agent = _contactGenerator.getOrCreateContact( pcPolicyPeriod.ProducerOfRecord.Contact )
+        PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - Agent "+ _policy.Agent)
       }
       for( var policyContactRole in pcPolicyPeriod.PolicyContactRoles ) {
         if (policyContactRole.AccountContactRole.AccountContact.Contact != null) {
           switch(typeof policyContactRole) {
             case PolicyPriNamedInsured:
                 _policy.Insured = _contactGenerator.getOrCreateContact(policyContactRole.AccountContactRole.AccountContact.Contact)
+                PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - Insured "+ _policy.Insured)
                 break
             case PolicyAddlNamedInsured:  // FALL THROUGH
             case PolicySecNamedInsured:
                 _policy.CoveredParty.add(_contactGenerator.getOrCreateContact(policyContactRole.AccountContactRole.AccountContact.Contact))
+                PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - CoveredParty "+ _policy.CoveredParty)
                 break
             case PolicyOwnerOfficer:
               if (_policy.PolicyHolder == null) {
                 _policy.PolicyHolder = _contactGenerator.getOrCreateContact(policyContactRole.AccountContactRole.AccountContact.Contact)
+                PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - PolicyHolder "+ _policy.PolicyHolder)
               }
               break
             case PolicyAddlInsured:
               _policy.CoveredParty.add(_contactGenerator.getOrCreateContact(policyContactRole.AccountContactRole.AccountContact.Contact))
+              PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - CoveredParty "+ _policy.CoveredParty)
               break
             case PolicyDriver:
               // This will pick up personal auto drivers only.  Comm auto drivers are not in the PolicyContactRole list and must be dealt
@@ -143,6 +148,7 @@ class CCPolicyGenerator {
               if (driverContact typeis Person) {  // This should always be a Person (not a Company), so this is just to be safe.
                 if (meetsDriverFilteringCriteria(driverContact.LastName)) {
                   _policy.CoveredParty.add(_contactGenerator.getOrCreateContact(driverContact))
+                  PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - CoveredParty "+ _policy.CoveredParty)
                 }
               }
               break
@@ -152,6 +158,7 @@ class CCPolicyGenerator {
             default:
               // the rest of the contacts don't map well to CC policy roles but should be sent to CC in case they are useful
               _policy.Other.add(_contactGenerator.getOrCreateContact(policyContactRole.AccountContactRole.AccountContact.Contact))
+              PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - Other "+ _policy.Other)
           }
         }
       }
@@ -179,6 +186,7 @@ class CCPolicyGenerator {
           endorsement.Comments = displaykey.CCPolicySearchIntegration.Endorsement.Comment(form.EndorsementNumber)
         }
         _policy.Endorsements.add(new CCPolicy_Endorsements( endorsement ))
+        PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - Endorsements "+ _policy.Endorsements)
       }
 
       // Map all of the line-level details for each policy line
@@ -198,7 +206,8 @@ class CCPolicyGenerator {
         }
       }
     } // done adding not archive-safe fields
-
+    PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - _policy "+ _policy)
+    PCLoggerCategory.INTEGRATION.debug("PC CC Mapping - _env "+ _env)
     return _env
   }
 

@@ -177,7 +177,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
     }
 
-    //TODO : Need to update the final aop premium and final wind premium
+    rateMaximumDiscountAdjustmentForAOP(dateRange)
+
+    updateFinalAdjustedAOPBasePremium()
+
+    //TODO : Need to update the final adjusted wind premium
     _hoRatingInfo.TotalBasePremium = _hoRatingInfo.FinalAdjustedAOPBasePremium + _hoRatingInfo.FinalAdjustedWindBasePremium
 
     if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
@@ -739,6 +743,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     return false
   }
 
+  /**
+   * Adjusting the total discount if it exceeds the maximum discount
+   */
+  function rateMaximumDiscountAdjustmentForAOP(dateRange: DateRange) {
+    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.TownHouseOrRowHouseSurchargeAOP + _hoRatingInfo.ProtectiveDevicesDiscount +
+                              _hoRatingInfo.PreferredBuilderCredit + _hoRatingInfo.MatureHomeOwnerDiscountAOP + _hoRatingInfo.NoPriorInsurance + _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP
+    if (_hoRatingInfo.AgeOfHomeDiscount < 0)
+      totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
+    if (_hoRatingInfo.HigherAllPerilDeductibleAOP < 0)
+      totalDiscountAmount += _hoRatingInfo.HigherAllPerilDeductibleAOP
+    _hoRatingInfo.DiscountAdjustment = rateMaximumDiscountAdjustment(dateRange, totalDiscountAmount, _hoRatingInfo.AdjustedBaseClassPremium)
+  }
+
   private function determineAge(year : int) : int{
     return PolicyLine.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate - year
   }
@@ -747,5 +764,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _hoRatingInfo.AdjustedWindBasePremium = _hoRatingInfo.WindBasePremium + _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForWind + _hoRatingInfo.TownHouseOrRowHouseSurchargeWind +
                                             _hoRatingInfo.AgeOfHomeDiscountWind + _hoRatingInfo.BuildingCodeNonParticipatingRisksSurcharge + _hoRatingInfo.SuperiorConstructionDiscountForWind +
                                             _hoRatingInfo.HigherAllPerilDeductibleWind
+  }
+
+  private function updateFinalAdjustedAOPBasePremium(){
+    _hoRatingInfo.FinalAdjustedAOPBasePremium = _hoRatingInfo.AdjustedAOPBasePremium + _hoRatingInfo.NoPriorInsurance + _hoRatingInfo.SuperiorConstructionDiscountForAOP + _hoRatingInfo.TownHouseOrRowHouseSurchargeAOP +
+                                                _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.HigherAllPerilDeductibleAOP + _hoRatingInfo.AgeOfHomeDiscountAOP + _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP +
+                                                _hoRatingInfo.PreferredBuilderCredit + _hoRatingInfo.MatureHomeOwnerDiscountAOP + _hoRatingInfo.DiscountAdjustment
   }
 }

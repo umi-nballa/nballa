@@ -44,46 +44,75 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
   }
 
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
-    if(currentCovTerm.PatternCode == "HOPL_LossAssCovLimit_HOE") {
-      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value : 0.00
-      limit.NetChangeAmt.Amt = value - orignalValue
-      limit.FormatPct = 0
-      limit.FormatText = ""
-      limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true)
-      limit.CoverageCd = coverage.PatternCode
-      limit.CoverageSubCd = currentCovTerm.PatternCode
-      limit.WrittenAmt.Amt = 0.00
-      return limit
-    } else if(currentCovTerm.PatternCode == "HODW_OrdinanceLimit_HOE") {
-      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      var period = coverage.PolicyLine.AssociatedPolicyPeriod
-      var maxDwelling = period.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOEExists ? period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.getMaxAllowedLimitValue(period.HomeownersLine_HOE.Dwelling) : 0.00
-      var dwellingLimit = period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ? period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value : 0.00
-      limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value * dwellingLimit: 0.00
-      limit.NetChangeAmt.Amt = (value - orignalValue)* getDwellingCovLimit(coverage)
-      limit.FormatPct = value
-      limit.FormatText = ""
-      limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
-                        " | Max : " + maxDwelling * 0.25
-      limit.CoverageCd = coverage.PatternCode
-      limit.CoverageSubCd = currentCovTerm.PatternCode
-      limit.WrittenAmt.Amt = 0.00
-      return limit
-    } else {
-      return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
+    switch (currentCovTerm.PatternCode) {
+      case "HOPL_LossAssCovLimit_HOE" :
+          return createLossAssessmentLimit(coverage, currentCovTerm, previousCovTerm, transactions)
+      case "HODW_OrdinanceLimit_HOE" :
+          return createOrdinanceLawLimit(coverage, currentCovTerm, previousCovTerm, transactions)
+      case "HODW_AdditionalAmtInsurance_HOE" :
+          return createAdditionalDwellingCovLimit(coverage, currentCovTerm, previousCovTerm, transactions)
+      default :
+        return super.createOptionLimitInfo(coverage, currentCovTerm, previousCovTerm, transactions)
     }
+  }
+
+  function createLossAssessmentLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value : 0.00
+    limit.NetChangeAmt.Amt = value - orignalValue
+    limit.FormatPct = 0
+    limit.FormatText = ""
+    limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true)
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.WrittenAmt.Amt = 0.00
+    return limit
+  }
+
+  function createOrdinanceLawLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    var value = currentCovTerm.Value as double
+    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var max = currentCovTerm.AvailableOptions.max()
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0.00
+    limit.FormatPct = pctValue
+    limit.FormatText = ""
+    limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
+        " | Max: " + max
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.WrittenAmt.Amt = 0.00
+    return limit
+  }
+
+  function createAdditionalDwellingCovLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    var value = currentCovTerm.Value as double
+    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var max = currentCovTerm.AvailableOptions.max()
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0.00
+    limit.FormatPct = pctValue
+    limit.FormatText = ""
+    limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
+        " | Max: " + max
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.WrittenAmt.Amt = 0.00
+    return limit
   }
 
   override function createDirectLimitInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "HODW_BuildAddInc_HOE") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double - getPersonalPropertyLimit(coverage)*0.10).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.Value as double - getPersonalPropertyLimit(coverage)*0.10).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+      var personalPropertyLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value as double
+      var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double - personalPropertyLimit *0.10).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+      var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.Value as double - personalPropertyLimit*0.10).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
       limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
       limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : value
       limit.FormatPct = 0
@@ -91,22 +120,6 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CoverageSubCd = currentCovTerm.PatternCode
       limit.LimitDesc = ""
       limit.FormatText = ""
-      limit.WrittenAmt.Amt = 0.00
-      return limit
-    } else if(currentCovTerm.PatternCode == "HODW_Dwelling_Limit_HOE") {
-      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      var period = coverage.PolicyLine.AssociatedPolicyPeriod
-      var maxDwelling = period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.getMaxAllowedLimitValue(period.HomeownersLine_HOE.Dwelling)
-      limit.CurrentTermAmt.Amt = currentCovTerm.Value != null ? currentCovTerm.Value : 0.00
-      limit.NetChangeAmt.Amt = previousCovTerm != null ? (value - orignalValue) : value
-      limit.FormatPct = 0
-      limit.FormatText = ""
-      limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
-          " | Max : " + maxDwelling
-      limit.CoverageCd = coverage.PatternCode
-      limit.CoverageSubCd = currentCovTerm.PatternCode
       limit.WrittenAmt.Amt = 0.00
       return limit
     } else {
@@ -276,18 +289,6 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limits.add(limit)
     }
     return limits
-  }
-
-  function getPersonalPropertyLimit(cov : Coverage) : double {
-    var covC = cov.PolicyLine.AllCoverages.where( \ elt -> elt.PatternCode.equals("HODW_Personal_Property_HOE"))
-    var limit = covC.CovTerms.where( \ elt -> elt.PatternCode.equals("HODW_PersonalPropertyLimit_HOE"))
-    return (limit.first() as DirectCovTerm).Value
-  }
-
-  function getDwellingCovLimit(cov : Coverage) : double {
-    var covC = cov.PolicyLine.AllCoverages.where( \ elt -> elt.PatternCode.equals("HODW_Dwelling_Cov_HOE"))
-    var limit = covC.CovTerms.where( \ elt -> elt.PatternCode.equals("HODW_Dwelling_Limit_HOE"))
-    return (limit.first() as DirectCovTerm).Value
   }
 
   override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {

@@ -190,37 +190,42 @@ class CPAutoPopulateUtil {
 
     if(cLine.causeofloss!=null)
     {
-      cBuilding?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value = cLine.causeofloss
-      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+      if(cBuilding?.CPBldgCovExists)
+        cBuilding?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value = cLine.causeofloss
+      if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
         cBuilding?.CPBPPCov?.CPBPPCovCauseOfLossTerm?.Value = cLine?.causeofloss
     }
 
-    if(cLine.allotherperilded!=null)
+    if(cLine.allotherperilded!=null && cBuilding?.CPBldgCovExists)
     {
-      cBuilding?.CPBldgCov?.CPBldgCovDeductibleTerm?.OptionValue=cLine.allotherperilded.Code
-      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+      if(cBuilding?.CPBldgCovExists)
+        cBuilding?.CPBldgCov?.CPBldgCovDeductibleTerm?.OptionValue=cLine.allotherperilded.Code
+      if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
         cBuilding?.CPBPPCov?.CPBPPCovDeductibleTerm?.OptionValue=cLine?.allotherperilded.Code
       }
 
     if(cLine.hurricanededtype!=null)
     {
-      cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
-      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+      if(cBuilding?.CPBldgCovExists)
+        cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+      if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
         cBuilding?.CPBPPCov?.CPBPPCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
 
     }
 
     if(cLine.hurricanepercded!=null)
     {
-      cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
-      if(cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
+      if(cBuilding?.CPBldgCovExists)
+        cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+      if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
         cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
 
   }
 
     if(cLine.Inflationguard!=null)
      {
-       cBuilding.CPBldgCov.CPBldgCovAutoIncreaseTerm?.OptionValue=cLine.Inflationguard.Code
+       if(cBuilding?.CPBldgCovExists)
+        cBuilding.CPBldgCov.CPBldgCovAutoIncreaseTerm?.OptionValue=cLine.Inflationguard.Code
      }
 
     _logger.info("ordinance coveagrae " + cLine.AssociatedPolicyPeriod.CPLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first())
@@ -268,10 +273,10 @@ class CPAutoPopulateUtil {
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value)
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT " + cBuilding?.CPOrdinanceorLaw_EXT)
 
-      if(cLine.CPCoverageBC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)//cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value!=99)
+      if(cBuilding?.CPBldgCovExists && cBuilding?.CPOrdinanceorLaw_EXTExists && cLine.CPCoverageBC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)//cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value!=99)
       {
         _logger.info(cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm + ":"+cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value + ":" + cBuilding?.CPBldgCov?.CPBldgCovLimitTerm)
-        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value = Double.parseDouble(cLine.CPCoverageBC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
+        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value = Double.parseDouble(cLine?.CPCoverageBC?.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
       }
     }
 

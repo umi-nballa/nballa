@@ -36,14 +36,14 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     }
   }
 
-  override function determineAgeOfHome(year : int): int {
+  override property get YearForAgeOfHomeCalc() : int{
     var yearForCalc: int
     if (this.Line.BaseState != Jurisdiction.TC_NV and Line.Dwelling?.HasAllRenovations) {
       yearForCalc = Line.Dwelling.MostRecentRenovationYear
     } else {
       yearForCalc = Line.Dwelling.YearBuilt
     }
-    return super.determineAgeOfHome(yearForCalc)
+    return yearForCalc
   }
 
   private function isPrivateFireCompanyDiscountApplicable(line: HomeownersLine_HOE): boolean {

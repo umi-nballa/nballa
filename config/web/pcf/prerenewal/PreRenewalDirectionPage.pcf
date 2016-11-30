@@ -107,7 +107,8 @@
                 value="policyTerm.NonRenewReason"
                 valueRange="pcfController.NonRenewReasons"
                 visible="policyTerm.PreRenewalDirection==&quot;nonrenew&quot;">
-                <PostOnChange/>
+                <PostOnChange
+                  onChange="descriptions[0] = descriptions[0] + policyTerm.createNonRenewalReasonHistoryDescription(originalNonRenewReason);"/>
               </RangeInput>
               <TextAreaInput
                 editable="true"

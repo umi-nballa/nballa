@@ -58,7 +58,7 @@ class NewSubmissionUIHelper {
     //if(!una.pageprocess.SubmissionWizardHelper.canAllowSubmission(acct)){
       //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.AlreadyAPolicyExists)
     //}
-    if(selectionOfProducer.Producer != null && selectionOfProducer.DefaultPPEffDate == null) {
+    if(selectionOfProducer.Producer!=null && selectionOfProducer.DefaultPPEffDate == null) {
       //throw new gw.api.util.DisplayableException(displaykey.Web.SubmissionManagerLV.DefaultPPEffDateRequired)
     }
     if( canPerformNameClearance(acct, selectionOfProducer) )

@@ -368,7 +368,7 @@ class PropertyInformationCompletePluginImpl {
           //TODO
         } else {
           if(res.DistanceToCoast[0].Value != "")
-          policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistanceToCoast_Ext = (res.DistanceToCoast[0].Value) as Integer
+          policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoastTunaReturned_Ext = (res.DistanceToCoast[0].Value) as Integer
         }
       }
     } catch (exp: Exception) {

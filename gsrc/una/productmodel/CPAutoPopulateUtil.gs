@@ -20,16 +20,6 @@ class CPAutoPopulateUtil {
 
   public static function setTermValue(term:CovTerm):void
   {
-    /*_logger.info("1" + term.checkCovTermValue())
-    _logger.info("2" + term.Clause.Pattern)
-    _logger.info("3" + term.DisplayName)
-    _logger.info("4" + term.DisplayValue)
-    _logger.info("5" + term.Pattern)
-    _logger.info("6" + term.PatternCode)
-    _logger.info("7" + term.ValueAsString)
-
-      */
-
    // var cLine = (coverable as CPBuilding).PolicyLine as CommercialPropertyLine
 
     if(term!=null && term.Clause.Pattern=="CPSinkholeLossCoverage_EXT" && term.PatternCode=="SinkholeLimit_EXT")//cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm!=null)
@@ -41,7 +31,12 @@ class CPAutoPopulateUtil {
     if(term!=null && term.Clause.Pattern=="GLCGLCov" && term.PatternCode=="GLCGLOccLimit")//cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm!=null)
     {
       var gline = term.Clause.OwningCoverable as GLLine
+      try
+      {
           gline.GLCGLCov.GLCGLAggLimitTerm.OptionValue=gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue
+        }
+      catch(e)
+      {}
     }
 
 
@@ -59,16 +54,7 @@ class CPAutoPopulateUtil {
     if(covpattern!=null && coverable!=null && covpattern.Name=="Ordinance or Law")
       {
 
-        _logger.info("Yes, inside ordinance coverage , cline is " + cLine + ":CPCoverageA : " + cLine.CPOrdinanceOrLawType +":CPCoverageB :"+ cLine.CPCoverageB +":CPCoverageC"+ cLine.CPCoverageC)
-        _logger.info(" 1 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm.ValueAsString)
-        _logger.info(" 2 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm)
-        _logger.info(" 3 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm)
-        _logger.info(" 4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovABCLimit_EXTTerm)
-        _logger.info(" 5 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovALimit_EXTTerm)
-        _logger.info(" 6 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm)
-        _logger.info(" 7 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm)
-        _logger.info(" 8 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBLimit_EXTTerm)
-        _logger.info(" 9 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm)
+        _logger.info("inside ordinance coverage , cline is " + cLine + ":CPCoverageA : " + cLine.CPOrdinanceOrLawType +":CPCoverageB :"+ cLine.CPCoverageB +":CPCoverageC"+ cLine.CPCoverageC)
 
         if(cLine.CPOrdinanceOrLawType!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCoverage_EXTTerm)
         {
@@ -78,24 +64,12 @@ class CPAutoPopulateUtil {
         //_logger.info("hasnoavailableoptions  b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
         if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovB_ExtTerm)// && !cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm.hasNoAvailableOptionsOrNotApplicableOptionOnly())
         {
-          _logger.info("1 b " + cBuilding)
-          _logger.info("2 b " + cBuilding?.CPOrdinanceorLaw_EXT)
-          _logger.info("3 b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm)
-          _logger.info("4 b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.AvailableOptions)
-          _logger.info("4 b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue)
-
           cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue = cLine?.CPCoverageB?.Code
         }
 
         //_logger.info("hasnoavailableoptions c "+ cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
         if(cLine.CPCoverageC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovC_ExtTerm)// && !cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
         {
-          _logger.info("1 c " + cBuilding)
-          _logger.info("2 c " + cBuilding?.CPOrdinanceorLaw_EXT)
-          _logger.info("3 c " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm)
-          _logger.info("4 c " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.AvailableOptions)
-          _logger.info("4 c " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue)
-
           cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue = cLine?.CPCoverageC?.Code
         }
       }

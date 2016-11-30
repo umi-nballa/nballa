@@ -8,11 +8,12 @@ package una.rating.ho.common
  */
 class HOScheduledPersonalPropertyRatingInfo {
 
-  var _itemType: String as ItemType
+  var _itemType: typekey.ScheduleType_HOE as ItemType
   var _exposureValue: int as ExposureValue
+
 
   construct(item: ScheduledItem_HOE) {
     _exposureValue = item.ExposureValue
-    _itemType = item.ScheduleType.DisplayName
+    _itemType = item.ScheduleType
   }
 }

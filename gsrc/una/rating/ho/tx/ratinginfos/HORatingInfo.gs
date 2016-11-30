@@ -25,4 +25,5 @@ class HORatingInfo {
   var _hailResistantRoofCredit: BigDecimal as HailResistantRoofCredit = 0.0
   var _affinityDiscount: BigDecimal as AffinityDiscount = 0.0
   var _preferredBuilderCredit : BigDecimal as PreferredBuilderCredit = 0.0
+  var _multiLineDiscount : BigDecimal as MultiLineDiscount = 0.0
 }

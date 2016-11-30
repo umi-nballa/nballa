@@ -6,7 +6,6 @@ uses java.math.BigDecimal
  * User: ssok
  * Date: 10/12/16
  * Time: 1:20 PM
- * To change this template use File | Settings | File Templates.
  */
 class HORatingInfo {
   var _totalBasePremium: BigDecimal as TotalBasePremium = 0.0
@@ -15,4 +14,7 @@ class HORatingInfo {
   var _ageOfHomeDiscount: BigDecimal as AgeOfHomeDiscount = 0.0
   var _seasonalSecondaryResidenceSurcharge: BigDecimal as SeasonalSecondaryResidenceSurcharge = 0.0
   var _keyPremium : BigDecimal as KeyPremium = 0.0
+  var _multiLineDiscount : BigDecimal as MultiLineDiscount = 0.0
+  var _protectiveDevicesDiscount : BigDecimal as ProtectiveDevicesDiscount = 0.0
+  var _discountAdjustment : BigDecimal as DiscountAdjustment = 0.0
 }

@@ -31,7 +31,7 @@ class HPXBP7BuildingMapper implements HPXStructureMapper {
     return dwell
   }
 
-  function createCoverableInfo(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+  function createCoverableInfo(bldg : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
     if (bldg typeis BP7Building) {
       var building = bldg as BP7Building

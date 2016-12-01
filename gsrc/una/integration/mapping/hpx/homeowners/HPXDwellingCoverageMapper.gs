@@ -4,6 +4,7 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.DirectCovTerm
 uses java.math.BigDecimal
+uses una.integration.mapping.hpx.common.HPXRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -186,6 +187,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createScheduledPropertySchedule(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
                                                                             : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var ratingHelper = new HPXRatingHelper()
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_ScheduledProperty_HOE.ScheduledItems
     var costs = transactions.Cost
@@ -203,6 +205,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
             limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
+            limit.Rate = ratingHelper.getBaseRate(currentCoverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE, trx.Cost.NameOfCoverable)
             break
           }
         }

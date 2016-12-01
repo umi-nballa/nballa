@@ -157,7 +157,7 @@ abstract class HPXPolicyMapper {
       var structurePolicyConditions = createPolicyConditionsInfo(getStructurePolicyConditions(policyPeriod, coverableStructure), getStructurePolicyConditions(previousPeriod, coverableStructure),
           getStructureCoverageTransactions(policyPeriod, coverableStructure))
       for (cond in structureExclusions) { propertyStructure.addChild(new XmlElement("Coverage", cond))}
-      var additionalInterests = getAdditionalInterests(coverableStructure)
+      var additionalInterests = getAdditionalInterests(coverableStructure, structureMapper)
       for (additionalInterest in additionalInterests) { propertyStructure.addChild(new XmlElement("AdditionalInterest", additionalInterest))}
       // structure location
       var structureLoc = getLocation(coverableStructure)
@@ -357,7 +357,7 @@ abstract class HPXPolicyMapper {
 
   abstract function getClassificationCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
-  abstract function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType>
+  abstract function getAdditionalInterests(coverable : Coverable, mapper : HPXStructureMapper) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType>
 
   abstract function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable
 

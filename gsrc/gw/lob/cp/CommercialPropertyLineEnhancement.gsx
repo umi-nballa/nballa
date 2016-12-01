@@ -100,6 +100,27 @@ enhancement CommercialPropertyLineEnhancement : entity.CommercialPropertyLine {
     return branch.getProductModifierFactor()
   }
 
+  /**
+   * The createAndAddScheduledItem adds a scheduled item entity and associates it to the owning coverage that covers
+   * scheduled items.    The function has been designed with the coverage pattern as an input so that
+   * the function can be resused for any other coverage at homeownersline level that also have an array of scheduled items
+   */
+  function createAndAddCPScheduledItem(covPattern : String) : CPscheduleItem_CP_Ext {
+
+    var schedItem = new CPscheduleItem_CP_Ext(this.Branch)
+
+    if (covPattern.matches("CPAddPropExclSch_EXT") and this.CPAddPropExclSch_EXTExists){//CPOptionalOutdoorProperty_EXTExists) {
+      this.CPAddPropExclSch_EXT.addScheduledItem(schedItem)
+
+    }
+      else
+      {
+        throw "Unsupported cov pattern in CommercialPropertyLineEnhancement.gsx"
+      }
+
+    return schedItem
+  }
+
 
 
 }

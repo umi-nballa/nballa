@@ -18,6 +18,7 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
   var logger = UnaLoggerCategory.UNA_INTEGRATION
   private static final var CLASS_NAME = TunaInformationResponseMapper.Type.DisplayName
   var response: TunaAppResponse
+  var helper = new TunaResponseHelper()
 
   /**
    * Tuna Response is Mapped to Transient Object to map in PCF
@@ -42,39 +43,20 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
       response.Latitude = tunaResponse.Coordinates.Latitude
       response.Longitude = tunaResponse.Coordinates.Longitude
       var counties = tunaResponse.Counties.PropertyDatumModel
-      var countyList = new ArrayList<PropertyDataModel>()
+      var countyList = new ArrayList<String>()
       for (details in counties) {
-        var propertyDataModelResponse = new PropertyDataModel()
-        propertyDataModelResponse.ID = details.Id
-        propertyDataModelResponse.Value = details.Value
-        propertyDataModelResponse.Percent = (details.Percent) as Double
-        countyList.add(propertyDataModelResponse)
+        countyList.add(details.Value)
       }
       response.Counties = countyList
-      response.Line = (tunaResponse.Lines.PropertyLine.Line) as String
-      var territoryLine = tunaResponse.Lines.PropertyLine.Territories.PropertyTerritory
-      var territoryList = new ArrayList<PropertyTerritoryModel>()
-      for (details in territoryLine) {
-        var propertyTerritoryResponse= new PropertyTerritoryModel()
-        propertyTerritoryResponse.Code = details.Code.first()
-        propertyTerritoryResponse.Name = details.Name.first()
-        //propertyTerritoryResponse.PercentTerritory = details.PercentTerritory
-        territoryList.add(propertyTerritoryResponse)
+      //return list of territory codes
+      var territoryLine = tunaResponse.Lines.PropertyLine*.Territories*.PropertyTerritory?.first()
+      var territoryCodeList = new ArrayList<String>()
+      for(detail in territoryLine){
+        territoryCodeList.add(detail.Code)
       }
-      response.TerritoryDetails = territoryList
-      var propertyModelDetails = tunaResponse.Datums.PropertyDatumModel
-      var propertyList = new ArrayList<PropertyDataModel>()
-      for (details in propertyModelDetails) {
-        var propertyDataModelResponse = new PropertyDataModel()
-        propertyDataModelResponse.ID = details.Id
-        propertyDataModelResponse.Value = details.Value
-        propertyDataModelResponse.Percent = (details.Percent) as Double
-        propertyDataModelResponse.NamedValue = details.NamedValue
-        propertyDataModelResponse.Line = details.Line
-        propertyDataModelResponse.LevelRecord = details.LevelRecord
-        propertyList.add(propertyDataModelResponse)
-      }
-      response.Datums = propertyList
+      response.TerritoryCodes = territoryCodeList
+      //Map datums
+      response = helper.mapDatumsTunaResponse(tunaResponse,response)
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " tunaAppResponse" + "For response Mapping ", this.IntrinsicType)
     } catch (exp: Exception) {
       logger.error("Tuna Response Mapping Failure  : Stacktrace = " + exp.StackTraceAsString)

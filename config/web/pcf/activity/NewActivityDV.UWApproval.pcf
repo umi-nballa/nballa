@@ -73,21 +73,26 @@
         outputConversion="getEmailDisplayName(VALUE)"
         pickLocation="PickEmailTemplatePopup.push(new gw.api.email.EmailTemplateSearchCriteria(symbolTable.Keys as String[]))"
         value="activity.EmailTemplate"/>
-      <RangeInput
+      <TypeKeyInput
+        editable="true"
+        id="SelectFromList"
+        label="displaykey.Web.Assignment.Popup.AssignTo"
+        required="true"
+        value="activity.AssignTo"/>
+      <!-- <RangeInput
         available="assignmentPopup.SelectionType == &quot;FromList&quot;"
         editable="true"
-        filter="VALUE as String != &quot;Default Assignment Role&quot;"
         id="SelectFromList"
         label="displaykey.Web.Assignment.Popup.AssignTo"
         required="true"
         sortValueRange="false"
-        value="assigneePicker.SelectedAssignee"
-        valueRange="assigneePicker.buildSuggestedAssignees(assignmentPopup.SuggestedAssignees)">
+        value="activity.AssignTo"
+        valueRange="typekey.AssignTo_Ext.getTypeKeys(false)">
         <MenuItem
           action="PCAssigneePickerPopup.push( assigneePicker )"
           icon="&quot;search.png&quot;"
           id="AssigneePicker"/>
-      </RangeInput>
+      </RangeInput> -->
       <InputDivider/>
     </InputColumn>
     <Code><![CDATA[function getEmailDisplayName(templateFilename : String) : String {

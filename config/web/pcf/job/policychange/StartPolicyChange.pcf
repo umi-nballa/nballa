@@ -13,12 +13,12 @@
     startInEditMode="true"
     title="displaykey.Web.PolicyChange.StartPolicyChange">
     <LocationEntryPoint
-      signature="StartPolicyChange(policyPeriod : PolicyPeriod)"/>
+      signature="StartPolicyChange(policyPeriod : PolicyPeriod, initiateSERP : boolean)"/>
     <Variable
       name="policyPeriod"
       type="PolicyPeriod"/>
     <Variable
-      initialValue="gw.web.job.policychange.StartPolicyChangeUIHelper.applyEffectiveTimePluginForPolicyChange( policyPeriod, job, policyPeriod.EditEffectiveDate )"
+      initialValue="initiateSERP ? policyPeriod.PeriodEnd.addDays(-1) : gw.web.job.policychange.StartPolicyChangeUIHelper.applyEffectiveTimePluginForPolicyChange( policyPeriod, job, policyPeriod.EditEffectiveDate )"
       name="effectiveDate"
       type="java.util.Date"/>
     <Variable
@@ -30,12 +30,16 @@
       name="inForcePeriod"
       recalculateOnRefresh="true"
       type="PolicyPeriod"/>
+    <Variable
+      initialValue="false"
+      name="initiateSERP"
+      type="boolean"/>
     <Screen
       id="StartPolicyChangeScreen">
       <Toolbar>
         <ToolbarButton
-          action="if (gw.web.job.policychange.StartPolicyChangeUIHelper.refreshAndStartJobAndCommit(job, policyPeriod, effectiveDate, CurrentLocation)) { PolicyChangeWizard.go(job, job.LatestPeriod) }"
-          available="policyPeriod.Policy.canStartPolicyChange(effectiveDate) == null"
+          action="gw.acc.futuredatedchanges.job.StartPolicyChangeHelper_Ext.startPolicyChangeWizard(job, policyPeriod, effectiveDate, CurrentLocation);job.LatestPeriod.setSERPIndicator(job,initiateSERP)"
+          available="not policyPeriod.canStartFutureChangeOnDate_Ext(effectiveDate)"
           confirmMessage="gw.web.job.policychange.StartPolicyChangeUIHelper.getConfirmMessage(inForcePeriod, effectiveDate)"
           id="NewPolicyChange"
           label="displaykey.Button.StartPolicyChange"
@@ -55,10 +59,16 @@
         label="displaykey.Web.PolicyChange.StartPolicyChange.Warning(gw.web.job.policychange.StartPolicyChangeUIHelper.getPolicyChangeWarningMessage(inForcePeriod, effectiveDate))"
         visible="gw.web.job.policychange.StartPolicyChangeUIHelper.getPolicyChangeWarningMessage(inForcePeriod, effectiveDate) != null"
         warning="true"/>
+      <Verbatim
+        id="BeyondElevenMonthsErrorID"
+        label="displaykey.Accelerator.FutureDatedChanges.CannotStartFutureChangeBeyondDate(policyPeriod.TermType == TermType.TC_ANNUAL ? policyPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext).addDays(0) : policyPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext).addDays(0))"
+        visible="policyPeriod.canStartFutureChangeOnDate_Ext(effectiveDate)"
+        warning="true"/>
       <DetailViewPanel
         id="StartPolicyChangeDV">
         <InputColumn>
           <DateTimeInput
+            available="!initiateSERP"
             editable="true"
             id="EffectiveDate"
             label="displaykey.Web.Job.EffectiveDate"

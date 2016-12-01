@@ -65,39 +65,158 @@ class CPBuildingUtil {
       return false
   }
 
-  public static function setResDefaults(bldg:CPBuilding):boolean
+  public static function setRoofDeckDefaults(bldg:CPBuilding):boolean
   {
-    /*
-    Gust wind speed of location
-       When # stories = 1 to 3: Default the response to => 120 if county = Miami Dade or Broward.
-      Default to 100 for all other counties.
-      When # stories = 4 to 6: Default the response to => 120 if county = Miami Dade or Broward.
-      Default to 110 for all other counties.
-       When # stories = 7 or more: Default the response to => 120 if county = Miami Dade or Broward.
-      Default to 100 for all other counties.
-     */
-    if(bldg.PolicyPeriod?.PrimaryLocation.County=="Miami Dade" || bldg.PolicyPeriod.PrimaryLocation.County=="Broward")
-      bldg?.ResQuestions?.gustwindloc="120"
+    if(bldg?.Building?.YearBuilt>=2002)
+    {
+      if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+      else
+      {
+        if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+        else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+        else if(bldg.Building.NumStories>6)
+            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+      }
+    }
+
+
+    if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+    {
+      if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      if(bldg.Building.NumStories>3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+
+      bldg.ResQuestions.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
+    }
     else
+    {
+      bldg.ResQuestions.roofcv=null
+      bldg.ResQuestions.roofdecat = null
+     }
+
+    return true
+  }
+
+  public static function setStoryBasedDefaults(bldg:CPBuilding):boolean
+  {
+
+    if(bldg.Building.NumStories!=null)
+      bldg?.BldHt=bldg?.Building?.NumStories*10;
+    /*
+Gust wind speed of design
+When Year Built => 2002
+When # of stories is 1 to 3: Default the response to => 120 if county = Miami Dade or Broward.
+Default to 100 for all other counties.
+When # of stories is 4 to 6: Default the response to => 120 if county = Miami Dade or Broward.
+Default to 110 for all other counties.
+When # of stories is 7 or more: Default the response to => 120 if county = Miami Dade or Broward.
+Default to 100 for all other counties.
+
+When Year Built <2002
+No default response applies
+
+ */
+   if(bldg?.Building?.YearBuilt>=2002)
+   {
+    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+      bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
+    else
+    {
+      if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
+        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
+      else
+        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
+    }
+    }
+    else
+     bldg?.ResQuestions?.guswind=null
+
+    /*
+    Roof Cover
+    If Roof Covering = Reinforced Concrete AND # stories = 1 OR = 2 OR = 3 default response to Reinforced Concrete Deck.
+If Roof Covering = Reinforced Concrete AND # stories = 4 OR = 5 OR = 6  OR = >6 default response to FBC Equivalent.
+If Roof Covering does not = Reinforced Concrete then no default response.
+     */
+    if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+    {
+      if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      if(bldg.Building.NumStories>=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+
+      bldg.ResQuestions.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
+    }
+    else
+    {
+      bldg.ResQuestions.roofcv=null
+      bldg.ResQuestions.roofdecat = null
+    }
+
+    if(bldg?.Building?.NumStories<=3 && bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+
+    if(bldg?.Building?.YearBuilt>=2002)
+    {
+      if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+      else
+      {
+        if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+        else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+        else if(bldg.Building.NumStories>6)
+            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+      }
+    }
+
+    if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
+      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+
+    return true
+  }
+
+  public static function setYearBasedDefaults(bldg:CPBuilding):boolean
+  {
+
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.wbdr="Yes"
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.ResQuestions.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)
+      bldg.ResQuestions.wbdr="No"
+
+
+    if(bldg?.Building?.YearBuilt<2002 && bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+    {
+      if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+      if(bldg.Building.NumStories>=3)
+        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+    }
+
+    if(bldg?.Building?.YearBuilt>=2002)
+    {
+      if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
+      else
       {
         if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
-          bldg?.ResQuestions?.gustwindloc="110"
+          bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
         else
-          bldg?.ResQuestions?.gustwindloc="100"
+          bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
       }
-
-      /*
-      Internal pressure design
-      Default the response to Enclosed.
-       */
-
-    bldg.ResQuestions.intpresdes="Enclosed"
+    }
+    else
+      bldg?.ResQuestions?.guswind=null
 
     /*
-    Roof Deck
-    "Only display when Windstorm, hurricane & hail exclusion = No.
+  Roof Deck
+  "Only display when Windstorm, hurricane & hail exclusion = No.
 
- When Year Built => 2002
+When Year Built => 2002
 If Roof Covering = Reinforced Concrete default response to Reinforced Concrete Deck regardless of stories.
 
 If Roof Covering does not = Reinforced Concrete then:
@@ -114,77 +233,36 @@ Only display when Do you have a wind mitigation form dated within last 5 years =
 Make response editable.
 "
 
-     */
+   */
 
     if(bldg?.Building?.YearBuilt>=2002)
-      {
-        if(bldg.Building.RoofType==typekey.RoofType.TC_REINFORCEDCONCRETE_EXT)
-          bldg.ResQuestions.roofdeck="Reinforced Concrete Deck"
-        else
-          {
-            if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
-              bldg.ResQuestions.roofdeck="Other Roof Deck"
-            else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
-              bldg.ResQuestions.roofdeck="Wood Deck"
-            else if(bldg.Building.NumStories>6)
-              bldg.ResQuestions.roofdeck="Metal Deck"
-          }
-      }
-
-    /*
-    WDBR
-Default the response to Yes if Gust Wind Speed of Design =>120
-Default response to No if Gust Wind Speed of Design = 100 OR = 110
-     */
-    if(bldg.ResQuestions.gustwind>=120)
-      bldg.ResQuestions.wbdr="Yes"
-    if(bldg.ResQuestions.gustwind==100 || bldg.ResQuestions.gustwind>=110)
-      bldg.ResQuestions.wbdr="No"
-
-    /*
-    Gust wind speed of design
-When Year Built => 2002
- When # of stories is 1 to 3: Default the response to => 120 if county = Miami Dade or Broward.
-Default to 100 for all other counties.
- When # of stories is 4 to 6: Default the response to => 120 if county = Miami Dade or Broward.
-Default to 110 for all other counties.
- When # of stories is 7 or more: Default the response to => 120 if county = Miami Dade or Broward.
-Default to 100 for all other counties.
-
-When Year Built <2002
-No default response applies
-     */
-    if(bldg.PolicyPeriod?.PrimaryLocation.County=="Miami Dade" || bldg.PolicyPeriod.PrimaryLocation.County=="Broward")
-      bldg?.ResQuestions?.gustwind="120"
-    else
     {
-      if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
-        bldg?.ResQuestions?.gustwind="110"
+      if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
+        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
       else
-        bldg?.ResQuestions?.gustwind="100"
-    }
-
-      /*
-      Roof Cover
-      If Roof Covering = Reinforced Concrete AND # stories = 1 OR = 2 OR = 3 default response to Reinforced Concrete Deck.
-If Roof Covering = Reinforced Concrete AND # stories = 4 OR = 5 OR = 6  OR = >6 default response to FBC Equivalent.
-If Roof Covering does not = Reinforced Concrete then no default response.
-       */
-    if(bldg.Building.RoofType==typekey.RoofType.TC_REINFORCEDCONCRETE_EXT)
       {
-        if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
-          bldg.ResQuestions.roofcov="Reinforced Concrete Deck"
-        if(bldg.Building.NumStories>=3)
-          bldg.ResQuestions.roofcov="FBC Equivalent"
-
-        bldg.ResQuestions.roofdeckat="Reinforced Concrete Deck"
+        if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+        else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
+          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+        else if(bldg.Building.NumStories>6)
+            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
       }
+    }
+    else
+      bldg.ResQuestions.roofdk = null;
+
 
     if(bldg.Building.YearBuilt>=2002)
     {
-      bldg.ResQuestions.swr="No SWR"
-      bldg.ResQuestions.openprot="No Opening Protection"
+      bldg.ResQuestions.swrr=typekey.CPSwr_Ext.TC_NOSWR//"No SWR"
+      bldg.ResQuestions.openprt=typekey.CPOpenProt_Ext.TC_NOOPENINGPROT//"No Opening Protection"
     }
+    else
+      {
+      bldg.ResQuestions.swrr=null
+      bldg.ResQuestions.openprt=null
+       }
     /*
     Terrain exposure
     When Year Built => 2002
@@ -198,15 +276,78 @@ Default response to HVHZ if Building Address county = Miami-Dade or Broward
 Default response to B if Building Address county = All Other Counties
      */
 
-    if(bldg.PolicyPeriod?.PrimaryLocation.County=="Miami Dade" || bldg.PolicyPeriod.PrimaryLocation.County=="Broward")
-      {
-        if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.ResQuestions.windmiti5==true))
-          bldg.ResQuestions.terrexp="HVHZ"
-      }
+    if(bldg.ResQuestions?.windmiti5!=null && bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    {
+      if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.ResQuestions.windmiti5==true))
+        bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_HVHZ//"HVHZ"
+    }
+    else
+    {
+      bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_TERRAINB//"B"
+    }
+
+
+    /*Only display when Windstorm, when # stories = 1  OR = 2 OR = 3
+    Only display when Year Built =>2002.*/
+
+    if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
+      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+
+    return true
+  }
+
+
+
+  public static function setResDefaults(bldg:CPBuilding):boolean
+  {
+    /*
+    Gust wind speed of location
+       When # stories = 1 to 3: Default the response to => 120 if county = Miami Dade or Broward.
+      Default to 100 for all other counties.
+      When # stories = 4 to 6: Default the response to => 120 if county = Miami Dade or Broward.
+      Default to 110 for all other counties.
+       When # stories = 7 or more: Default the response to => 120 if county = Miami Dade or Broward.
+      Default to 100 for all other counties.
+      "Only display when Windstorm, hurricane & hail exclusion = No.
+
+"
+
+
+
+     */
+    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+      bldg?.ResQuestions?.gustwindloc="120"
     else
       {
-        bldg.ResQuestions.terrexp="B"
+        if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
+          bldg?.ResQuestions?.gustwindloc="110"
+        else
+          bldg?.ResQuestions?.gustwindloc="100"
       }
+
+      /*
+      Internal pressure design
+      Default the response to Enclosed.
+       */
+    if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
+      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+   // bldg.ResQuestions.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+
+
+
+    /*
+    WDBR
+Default the response to Yes if Gust Wind Speed of Design =>120
+Default response to No if Gust Wind Speed of Design = 100 OR = 110
+     */
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
+      bldg.ResQuestions.wbdr="Yes"
+    if(bldg.ResQuestions.gustwind==100 || bldg.ResQuestions.gustwind>=110)
+      bldg.ResQuestions.wbdr="No"
+
+
+
+
 
 
     return false

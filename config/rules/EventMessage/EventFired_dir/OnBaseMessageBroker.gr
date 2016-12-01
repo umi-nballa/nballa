@@ -1,0 +1,18 @@
+package rules.EventMessage.EventFired_dir
+
+@gw.rules.RuleName("OnBaseMessageBroker")
+internal class OnBaseMessageBroker {
+  static function doCondition(messageContext : entity.MessageContext) : boolean {
+/*start00rule*/
+return messageContext.DestID == 0 and messageContext.EventName == 'MessageComplete'
+/*end00rule*/
+}
+
+  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+/*start00rule*/
+   var messageBrokerMessage = messageContext.Root as OnBaseMessageBrokerMessage_Ext
+    var message = messageContext.createMessage(messageBrokerMessage.MessageStatus.toString())
+    message.putEntityByName('response', messageBrokerMessage)
+/*end00rule*/
+  }
+}

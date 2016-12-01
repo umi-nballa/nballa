@@ -2,9 +2,8 @@ package gw.assignment
 
 uses java.util.Set
 
-enhancement ProducerCodeAssignmentEnhancement : ProducerCode
-{
-  
+enhancement ProducerCodeAssignmentEnhancement : ProducerCode {
+
    /** This method will return the default group for this producer code.
   * There are a couple of strategies that the could be used:
   * Implemented the root group if no other, but others are available
@@ -43,5 +42,16 @@ enhancement ProducerCodeAssignmentEnhancement : ProducerCode
     groups.removeAll( parents ) // get the leaf groups will also remove the root group
   }
   
-
+  /**
+   * Converts the given producer code to a type of AccountProducerCode
+   * @param acct the account to associate with the producer code
+   * @return accProdCode an AccountProducer code entity
+   */
+  function toAccountProducerCode(acct : Account) : AccountProducerCode {
+    var accProdCode = new AccountProducerCode()
+    accProdCode.Account = acct
+    accProdCode.ProducerCode = this
+    accProdCode.ManuallyAdded_Ext = true
+    return accProdCode
+  }
 }

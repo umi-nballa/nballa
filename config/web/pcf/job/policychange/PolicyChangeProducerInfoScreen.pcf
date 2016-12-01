@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <Screen
+    editable="openForEdit"
+    id="PolicyChangeProducerInfoScreen">
+    <Require
+      name="policyChange"
+      type="PolicyChange"/>
+    <Require
+      name="period"
+      type="PolicyPeriod"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <Toolbar>
+      <WizardButtons/>
+      <ToolbarButtonSetRef
+        mode="period.Job.Subtype"
+        toolbarButtonSet="JobWizardToolbarButtonSet(period, policyChange, jobWizardHelper)"/>
+    </Toolbar>
+    <DetailViewPanel>
+      <InputColumn>
+        <!-- Input set (including effective date) is not editable in issuance jobs -->
+        <InputSetRef
+          def="PolicyInfoInputSet(period, true, false, false)"
+          editable="false"/>
+        <InputDivider/>
+      </InputColumn>
+      <InputColumn>
+        <InputSetRef
+          def="PolicyInfoProducerInfoInputSet(period, ProducerStatusUse.TC_OKAY)"/>
+      </InputColumn>
+    </DetailViewPanel>
+  </Screen>
+</PCF>

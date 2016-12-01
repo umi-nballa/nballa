@@ -6,7 +6,7 @@
     beforeValidate="gw.lob.bp7.schedules.validation.BP7ScheduleValidation .validateSchedule(schedule as gw.api.productmodel.Schedule &amp; gw.api.domain.Clause)"
     canEdit="openForEdit"
     id="BP7ScheduledItemPopup"
-    startEditing="if (not {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code}.contains(category.Code) and (schedule as gw.api.domain.Clause).Pattern != &quot;BP7LossPayable&quot; and schedule.ScheduledItems.Count == 0) schedule.createAndAddScheduledItem()"
+    startEditing="if (not {gw.lob.bp7.BP7Categories.BP7LineAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7LocationAddlInsuredGrp.Code, gw.lob.bp7.BP7Categories.BP7BuildingAddlInterestGrp_EXT.Code}.contains(category.Code) and (schedule as gw.api.domain.Clause).Pattern != &quot;BP7LossPayable&quot; and schedule.ScheduledItems.Count == 0) schedule.createAndAddScheduledItem()"
     startInEditMode="startInEdit"
     title="schedule.ScheduleName">
     <LocationEntryPoint

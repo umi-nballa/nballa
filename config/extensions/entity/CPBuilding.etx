@@ -35,13 +35,21 @@
     desc="Fire Protection Class"
     name="fireprotectionclass"
     nullok="true"
-    type="text"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
+  </column>
   <column
     columnName="BCEG"
     desc="BCEG"
     name="bceg"
     nullok="true"
-    type="text"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
   <foreignkey
     columnName="ResQuestions"
     desc="ResidentialQuestions"
@@ -113,6 +121,87 @@
     columnName="NumOther"
     desc="Number of Other Facilities"
     name="NumOther"
+    nullok="true"
+    type="text"/>
+  <typekey
+    columnName="RoofTypeCP"
+    desc="Roof Type for CP Building"
+    name="RoofTypeCP"
+    nullok="true"
+    typelist="RoofType_CP"/>
+  <column
+    columnName="SquareFootage"
+    desc="SquareFootage"
+    name="SqFootExt"
+    nullok="true"
+    type="IntegerRange">
+    <columnParam
+      name="maximum"
+      value="99999"/>
+    <columnParam
+      name="minimum"
+      value="0"/>
+  </column>
+  <typekey
+    columnName="NumPg"
+    desc="numpg"
+    name="numpg"
+    nullok="true"
+    typelist="CPNoPlaygrounds_Ext"/>
+  <typekey
+    columnName="NumSw"
+    desc="numsw"
+    name="numsw"
+    nullok="true"
+    typelist="CPNoSwimmingPools_Ext"/>
+  <typekey
+    columnName="Numfit"
+    desc="numfit"
+    name="numfit"
+    nullok="true"
+    typelist="CPNoFitnessFacilities_Ext"/>
+  <typekey
+    columnName="Numdocks"
+    desc="numdocks"
+    name="numdocks"
+    nullok="true"
+    typelist="CPNoDockBoat_Ext"/>
+  <typekey
+    columnName="numoth"
+    desc="numoth"
+    name="numot"
+    nullok="true"
+    typelist="CPNoOtherFacilities_Ext"/>
+  <column
+    desc="RoofShapeOtherDes"
+    name="RoofShapeOtherDes"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="300"/>
+  </column>
+  <column
+    columnName="ClassCodeDesc"
+    desc="Class Code Description"
+    name="ClassCodeDesc"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    columnName="DistFirHyd"
+    desc="Distance to fire hydrant"
+    name="DistFirhyd"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="BldHt"
+    desc="Building Height"
+    name="BldHt"
+    nullok="true"
+    type="text"/>
+  <column
+    columnName="SqFtExt"
+    name="SqFtExt"
     nullok="true"
     type="text"/>
 </extension>

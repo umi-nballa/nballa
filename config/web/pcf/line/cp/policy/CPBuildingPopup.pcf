@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Popup
-    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding);cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding))//;una.config.CPBuildingUtil.setClassCode(cpBuilding) "
+    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding);cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding));cpBuilding.RateType=typekey.RateType.TC_CLASS//;una.config.CPBuildingUtil.setClassCode(cpBuilding) "
     beforeCommit="gw.lob.cp.CPBuildingValidation.validateBuilding(cpBuilding)"
     canEdit="openForEdit"
     countsAsWork="false"
@@ -85,6 +85,7 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ClassCode"
                 outputConversion="VALUE == null ? &quot;&quot; : VALUE.Code"
                 pickLocation="CPClassCodeSearchPopup.push(cpLine, cpBuilding)"
+                required="true"
                 value="cpBuilding.ClassCode">
                 <PostOnChange
                   target="ClassDescription"/>
@@ -99,11 +100,12 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ClassDescription"
                 numCols="40"
                 numRows="2"
-                value="cpBuilding.ClassCode.Classification"/>
+                value="cpBuilding.ClassCodeDesc"/>
               <TypeKeyInput
                 editable="true"
                 id="OccupancyType"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.OccupancyType"
+                required="true"
                 value="cpBuilding.OccupancyType">
                 <PostOnChange
                   onChange="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({cpBuilding}, jobWizardHelper) };una.config.CPBuildingUtil.setResDefaults(cpBuilding)"/>
@@ -124,11 +126,11 @@
                 value="cpBuilding.RateType"/> -->
               <TextInput
                 align="left"
-                editable="true"
                 formatType="exactNumber"
                 id="RateType"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RateType"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
                 value="cpBuilding.RateType"/>
               <InputDivider/>
@@ -140,7 +142,10 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.YearBuilt"
                 maxChars="4"
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
-                value="cpBuilding.Building.YearBuilt"/>
+                value="cpBuilding.Building.YearBuilt">
+                <PostOnChange
+                  onChange="una.config.CPBuildingUtil.setYearBasedDefaults(cpBuilding);new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding)"/>
+              </TextInput>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Construction"/>
               <TextInput
@@ -148,9 +153,10 @@
                 editable="true"
                 id="NumStories"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.NumStories"
+                required="true"
                 value="cpBuilding.Building.NumStories">
                 <PostOnChange
-                  onChange="cpBuilding.BldgHt=cpBuilding.Building.NumStories*10"/>
+                  onChange="una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
               </TextInput>
               <TextInput
                 align="left"
@@ -166,12 +172,14 @@
                 editable="true"
                 id="fireprotclass"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireProtClass"
+                required="true"
                 value="cpBuilding.fireprotectionclass"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="bceg"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Bceg"
+                required="true"
                 value="cpBuilding.bceg"/>
               <TypeKeyInput
                 editable="true"
@@ -189,7 +197,9 @@
                 editable="true"
                 id="TotalArea"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.TotalArea"
-                value="cpBuilding.Building.TotalArea"/>
+                maxChars="5"
+                required="true"
+                value="cpBuilding.SqFtExt"/>
               <!-- <TextInput
                 align="left"
                 editable="true"
@@ -206,25 +216,39 @@
                 editable="true"
                 id="RoofType"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofType"
-                value="cpBuilding.Building.RoofType"/>
+                required="true"
+                value="cpBuilding.RoofTypeCP ">
+                <PostOnChange
+                  onChange="una.config.CPBuildingUtil.setRoofDeckDefaults(cpBuilding)"/>
+              </TypeKeyInput>
               <TypeKeyInput
                 editable="true"
                 id="RoofShape"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofShape"
+                required="true"
                 value="cpBuilding.RoofShape">
                 <PostOnChange/>
               </TypeKeyInput>
+              <TextAreaInput
+                align="left"
+                editable="true"
+                id="roofothdes"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofShapeOthDes"
+                required="true"
+                value="cpBuilding.RoofShapeOtherDes"/>
               <TypeKeyInput
                 editable="true"
                 id="FlatRoofDesc"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FlatRoofDesc"
+                required="cpBuilding.RoofShape==typekey.CPRoofShape_Ext.TC_FLAT"
                 value="cpBuilding.FlatRoofDesc"
                 visible="cpBuilding.RoofShape==typekey.CPRoofShape_Ext.TC_FLAT"/>
               <BooleanRadioInput
                 editable="true"
                 id="Sprinklered"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Sprinklered"
-                value="cpBuilding.Building.Sprinklered">
+                value="cpBuilding.Building.Sprinklered"
+                visible="true">
                 <PostOnChange
                   onChange="//cpBuilding.Building.HeatingBoilerElsewhere = gw.web.line.cp.policy.CPBuildingPopupUIHelper.getBoilerInsuredValue(cpBuilding, cpBuilding.Building.HeatingBoilerOnPremises)"/>
               </BooleanRadioInput>
@@ -264,7 +288,9 @@
                 editable="true"
                 id="TimesRented"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.TimesRented"
-                value="cpBuilding.Building.TimesRented"/>
+                maxChars="3"
+                required="true"
+                value="cpBuilding.Building.TimesRent"/>
               <InputGroup
                 childrenVisible="showResidentialQues"
                 id="ResQuesInputGroup"
@@ -274,13 +300,16 @@
                   editable="true"
                   id="statewindstorm"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.StateWindstorm"
-                  required="false"
-                  value="cpBuilding.ResQuestions.windstorm"/>
+                  required="true"
+                  value="cpBuilding.ResQuestions.windstorm">
+                  <PostOnChange
+                    onChange="cpBuilding.ResQuestions.windstormexcl=cpBuilding.ResQuestions.windstorm"/>
+                </BooleanRadioInput>
                 <BooleanRadioInput
                   editable="true"
                   id="windexclusion"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.WindExclusions"
-                  required="false"
+                  required="true"
                   value="cpBuilding.ResQuestions.windstormexcl">
                   <PostOnChange/>
                 </BooleanRadioInput>
@@ -288,98 +317,118 @@
                   editable="true"
                   id="windexclusion5"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Wind5Years"
-                  required="false"
+                  required="cpBuilding.ResQuestions.windstormexcl==false"
                   value="cpBuilding.ResQuestions.windmiti5"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false">
+                  visible="cpBuilding.ResQuestions.windstormexcl==false ">
                   <PostOnChange/>
                 </BooleanRadioInput>
-                <TextInput
+                <TypeKeyInput
                   align="left"
                   editable="true"
                   id="desexp"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.DesExp"
-                  value="cpBuilding.ResQuestions.desgrp3"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&gt;6//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.desgr3"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&gt;6//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                <TypeKeyInput
                   align="left"
                   editable="(cpBuilding.Building?.YearBuilt&gt;=2002 &amp;&amp; cpBuilding.ResQuestions?.windmiti5==true) || cpBuilding.Building?.YearBuilt&lt;2002"
                   id="gust"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Gustwind"
-                  value="cpBuilding.ResQuestions.gustwind"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
+                  required="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.guswind"
+                  visible="(cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)|| (cpBuilding.Building.YearBuilt&gt;=2002 &amp;&amp; cpBuilding.ResQuestions.windstormexcl==false )  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
                   <PostOnChange/>
-                </TextInput>
-                <TextInput
+                </TypeKeyInput>
+                <TypeKeyInput
                   align="left"
                   editable="cpBuilding.ResQuestions.windmiti5==true"
                   id="gustloc"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Gustwindloc"
-                  value="cpBuilding.ResQuestions.gustwindloc"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002"
+                  value="cpBuilding.ResQuestions.guswindloc"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002"/>
-                <TextInput
+                <TypeKeyInput
                   align="left"
                   editable="cpBuilding.ResQuestions.windmiti5==true"
                   id="intprdes"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Intpres"
-                  value="cpBuilding.ResQuestions.intpresdes"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002 &amp;&amp; (cpBuilding.Building.NumStories==1 || cpBuilding.Building.NumStories==2 || cpBuilding.Building.NumStories==3) "
+                  value="cpBuilding.ResQuestions.intpredes"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002 &amp;&amp; (cpBuilding.Building.NumStories==1 || cpBuilding.Building.NumStories==2 || cpBuilding.Building.NumStories==3) "/>
-                <TextInput
+                <TypeKeyInput
                   align="left"
                   editable="cpBuilding.ResQuestions.windmiti5==true"
                   id="openprot"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.OpenProt"
-                  value="cpBuilding.ResQuestions.openprot"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true)//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true)//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.openprt"
+                  visible="(cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true)|| (cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002)//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                <TypeKeyInput
                   align="left"
                   editable="true"
                   id="roofcov"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Roofcover"
-                  value="cpBuilding.ResQuestions.roofcov"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002"
+                  value="cpBuilding.ResQuestions.roofcv"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002"/>
-                <TextInput
+                <TypeKeyInput
                   align="left"
                   editable="true"
                   id="rda"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.RoofDeckProt"
-                  value="cpBuilding.ResQuestions.roofdeckat"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&lt;=3//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.roofdecat"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&lt;=3//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                <TypeKeyInput
                   align="left"
                   editable="cpBuilding.ResQuestions.windmiti5==true || cpBuilding.Building.YearBuilt&lt;=2002"
                   id="rd"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Roofdeck"
-                  value="cpBuilding.ResQuestions.roofdeck"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                  required="cpBuilding.ResQuestions.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.roofdk"
+                  visible="(cpBuilding.ResQuestions.windstormexcl==false  &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windmiti5==true) ||  (cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002)//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                <TypeKeyInput
                   align="left"
                   editable="true"
                   id="rwa"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Roofwall"
-                  value="cpBuilding.ResQuestions.roofwall"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&lt;=3//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.roofwl"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&lt;=3//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                <TypeKeyInput
                   align="left"
-                  editable="cpBuilding.ResQuestions.windmiti5==true"
+                  editable="(cpBuilding.ResQuestions.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002) || cpBuilding.Building.YearBuilt&lt;2002"
                   id="swr"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Swr"
-                  value="cpBuilding.ResQuestions.swr"
-                  visible="cpBuilding.ResQuestions.windstormexcl==false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                  required="cpBuilding.ResQuestions.windstormexcl==false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.swrr"
+                  visible="(cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5==true)|| (cpBuilding.Building.YearBuilt&gt;=2002 &amp;&amp; cpBuilding.ResQuestions.windstormexcl==false)//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                <TypeKeyInput
                   align="left"
                   editable="true"
                   id="ter"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Terrainexp"
-                  value="cpBuilding.ResQuestions.terrexp"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.terexp"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                <TypeKeyInput
+                  align="left"
+                  editable="true"
+                  id="rcvatt"
+                  label="displaykey.Web.Policy.CP.Location.CPBuilding.Roofcvat"
+                  required="true//cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
+                  value="cpBuilding.ResQuestions.roofcvatach"
+                  visible="true//cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.ResQuestions.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
                 <TextInput
                   align="left"
                   editable="cpBuilding.ResQuestions.windmiti5==true"
                   id="wdbr"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Wbdr"
+                  required="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002//una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.ResQuestions.wbdr"
                   visible="cpBuilding.ResQuestions.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                <DateInput
                   align="left"
                   editable="true"
                   id="winddate"
@@ -400,101 +449,80 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.BurglarySafeguard"
                 value="cpBuilding.Building.BurglarySafeguard"/> -->
               <CheckBoxInput
+                align="center"
                 editable="true"
                 id="activemonitoringvideo"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ActiveMonitoring"
                 required="false"
-                value="cpBuilding.ProtectionDetails.ActiveMonitoringVideo">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.ActiveMonitoringVideo"/>
               <CheckBoxInput
+                align="center"
                 editable="true"
                 id="automaticfire"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.AutomaticFireSupp"
                 required="false"
-                value="cpBuilding.ProtectionDetails.AutomaticFireSuppress">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.AutomaticFireSuppress"/>
               <CheckBoxInput
+                align="left"
                 editable="true"
                 id="centralburglar"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.CentralBurglarAlarm"
                 required="false"
-                value="cpBuilding.ProtectionDetails.CentralBurglarAlarm">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.CentralBurglarAlarm"/>
               <CheckBoxInput
                 editable="true"
                 id="centralfire"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.CentralFireAlarm"
                 required="false"
-                value="cpBuilding.ProtectionDetails.CentralFireAlarm">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.CentralFireAlarm"/>
               <CheckBoxInput
                 editable="true"
                 id="continuousvideo"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ContinuousVideo"
                 required="false"
-                value="cpBuilding.ProtectionDetails.ContinuousRecVideo">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.ContinuousRecVideo"/>
               <CheckBoxInput
                 editable="true"
                 id="exteriormotion"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ExteriorMotion"
                 required="false"
-                value="cpBuilding.ProtectionDetails.ExteriorMotionLighting">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.ExteriorMotionLighting"/>
               <CheckBoxInput
                 editable="true"
                 id="gatedaccess"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.GatedAccess"
                 required="false"
-                value="cpBuilding.ProtectionDetails.GatedAccess">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.GatedAccess"/>
               <CheckBoxInput
                 editable="true"
                 id="guarddogs"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.GuardDogs"
                 required="false"
-                value="cpBuilding.ProtectionDetails.GuardDogs">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.GuardDogs"/>
               <CheckBoxInput
                 editable="true"
                 id="guardwatch"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.GuardWatch"
                 required="false"
-                value="cpBuilding.ProtectionDetails.GuardWatchmen">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.GuardWatchmen"/>
               <CheckBoxInput
                 editable="true"
                 id="localburglar"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LocalBurglarAlarm"
                 required="false"
-                value="cpBuilding.ProtectionDetails.LocalBurglarAlarm">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.LocalBurglarAlarm"/>
               <CheckBoxInput
                 editable="true"
                 id="localfire"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LocalFireAlarm"
                 required="false"
-                value="cpBuilding.ProtectionDetails.LocalFireAlarm">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.LocalFireAlarm"/>
               <CheckBoxInput
                 editable="true"
                 id="motionvideo"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.MotionVideoCameras"
                 required="false"
-                value="cpBuilding.ProtectionDetails.MotionActivatedVideo">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.ProtectionDetails.MotionActivatedVideo"/>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.ACBurglarySafeguard"/>
               <CheckBoxInput
@@ -502,25 +530,19 @@
                 id="caged"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.caged"
                 required="false"
-                value="cpBuilding.AirCondProt.caged">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.AirCondProt.caged"/>
               <CheckBoxInput
                 editable="true"
                 id="alarmed"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.alarmed"
                 required="false"
-                value="cpBuilding.AirCondProt.alarmed">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.AirCondProt.alarmed"/>
               <CheckBoxInput
                 editable="true"
                 id="monitored"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.monitored"
                 required="false"
-                value="cpBuilding.AirCondProt.monitored">
-                <PostOnChange/>
-              </CheckBoxInput>
+                value="cpBuilding.AirCondProt.monitored"/>
               <!-- <InputGroup
                 allowToggle="true"
                 childrenVisible="showAlarmFields"
@@ -563,6 +585,7 @@
                 id="LastUpdateHeating"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateHeating"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Heating.YearAdded)"
                 value="cpBuilding.Building.Heating.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
@@ -572,6 +595,7 @@
                 id="LastUpdatePlumbing"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdatePlumbing"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Plumbing.YearAdded)"
                 value="cpBuilding.Building.Plumbing.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
@@ -581,18 +605,20 @@
                 id="LastUpdateRoofing"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateRoofing"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Roofing.YearAdded)"
                 value="cpBuilding.Building.Roofing.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  //&amp;&amp; (cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.Building?.RoofType==typekey.RoofType.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT)"/>
+                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  &amp;&amp; (cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT || cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_ASPHALTCOMP_EXT)"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="LastUpdateWiring"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateWiring"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Wiring.YearAdded)"
                 value="cpBuilding.Building.Wiring.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  //&amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
+                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50) &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
               <InputDivider/>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Other"/>
@@ -619,36 +645,79 @@
                 editable="true"
                 id="FireHyd"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireHyd"
-                value="cpBuilding.DistFireHyd"/>
+                maxChars="4"
+                required="true"
+                value="cpBuilding.DistFirHyd"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="FireStn"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireStn"
+                maxChars="2"
+                required="true"
                 value="cpBuilding.DistFireStn"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="RespFireDept"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RespFireStn"
+                maxChars="50"
+                required="true"
                 value="cpBuilding.RespFireDept"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="DistBldg"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.DistanceBldg"
+                maxChars="5"
+                required="true"
                 value="cpBuilding.DistToNext"/>
               <TextInput
                 align="left"
                 id="BldgHt"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.BldgHt"
-                value="cpBuilding.BldgHt"/>
+                maxChars="4"
+                required="true"
+                value="cpBuilding.BldHt"/>
               <Input
                 editable="true"
                 id="FireProtectionClass"
                 label="displaykey.Web.Policy.PolicyLocation.FireProtectionClass"
-                labelAbove="true"
                 value="cpBuilding?.CPLocation?.Location?.FireProtectClass"/>
+              <InputDivider/>
+              <Label
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Rec"/>
+              <TypeKeyInput
+                align="left"
+                editable="true"
+                id="numpg"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numpg"
+                value="cpBuilding.numpg"
+                visible="true"/>
+              <TypeKeyInput
+                align="left"
+                editable="true"
+                id="numfit"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numfit"
+                value="cpBuilding.numfit"/>
+              <TypeKeyInput
+                align="left"
+                editable="true"
+                id="numsw"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numsw"
+                value="cpBuilding.numsw"/>
+              <TypeKeyInput
+                align="left"
+                editable="true"
+                id="numdock"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numbot"
+                value="cpBuilding.numdocks"/>
+              <TypeKeyInput
+                align="left"
+                editable="true"
+                id="numot"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Numot"
+                value="cpBuilding.numot"/>
             </InputColumn>
           </DetailViewPanel>
         </Card>
@@ -660,6 +729,11 @@
               <PanelColumn>
                 <PanelRef
                   def="CPBldgSuggestedCovDV(cpBuilding, openForEdit)"/>
+                <PanelRef
+                  def="AdditionalLineTerCoveragesPanelSet(cpBuilding.PolicyLine as CommercialPropertyLine, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  editable="true"
+                  id="cpoptionalcov"
+                  visible="cpBuilding != null"/>
               </PanelColumn>
               <PanelColumn>
                 <DetailViewPanel>
@@ -680,32 +754,32 @@
                   </InputColumn>
                 </DetailViewPanel>
                 <PanelRef
-                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
+                  def="AdditionalCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;,&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpoptcov"
                   visible="cpBuilding != null"/>
-                <DetailViewPanel>
+                <!-- <DetailViewPanel>
                   <InputColumn>
                     <Label
                       label="&quot;Line Level Coverages&quot;"/>
                   </InputColumn>
-                </DetailViewPanel>
-                <PanelRef
+                </DetailViewPanel> -->
+                <!-- <PanelRef
                   def="AdditionalLineCoveragesPanelSet(cpBuilding.PolicyLine as CommercialPropertyLine, new String[]{&quot;CPOptionalPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpoptionalcov"
-                  visible="cpBuilding != null"/>
-                <DetailViewPanel>
+                  visible="cpBuilding != null"/> -->
+                <!-- <DetailViewPanel>
                   <InputColumn>
                     <Label
                       label="&quot;Optional Scheduled Coverages&quot;"/>
                   </InputColumn>
-                </DetailViewPanel>
-                <PanelRef
+                </DetailViewPanel> -->
+                <!-- <PanelRef
                   def="AdditionalLineCoveragesPanelSet(cpBuilding, new String[]{&quot;CPOptionalSchedPropCovCategory_EXT&quot;}, true)"
                   editable="true"
                   id="cpschedcov"
-                  visible="cpBuilding != null"/>
+                  visible="cpBuilding != null"/> -->
               </PanelColumn>
             </PanelRow>
           </PanelRef>

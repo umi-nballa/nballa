@@ -57,6 +57,66 @@
     <indexcol
         keyposition="4"
         name="ID"/>
+  </index>
+
+   KanjiIndexDefinition: Uncomment if you use kanji name fields for Japanese.
+
+  <index
+      desc="Covering index for search by name; need subtype to know whether name is relevant"
+      name="CompanyNameK1"
+      unique="true">
+    <indexcol
+        keyposition="1"
+        name="NameKanji"/>
+    <indexcol
+        keyposition="2"
+        name="Subtype"/>
+    <indexcol
+        keyposition="3"
+        name="Retired"/>
+    <indexcol
+        keyposition="4"
+        name="ID"/>
+  </index>
+
+   KanjiIndexDefinition: Uncomment if you use kanji name fields for Japanese.
+
+  <index
+      desc="Covering index for search by name; need subtype to know whether name is relevant"
+      name="CompanyNameK1"
+      unique="true">
+    <indexcol
+        keyposition="1"
+        name="NameKanji"/>
+    <indexcol
+        keyposition="2"
+        name="Subtype"/>
+    <indexcol
+        keyposition="3"
+        name="Retired"/>
+    <indexcol
+        keyposition="4"
+        name="ID"/>
+  </index>
+
+   KanjiIndexDefinition: Uncomment if you use kanji name fields for Japanese.
+
+  <index
+      desc="Covering index for search by name; need subtype to know whether name is relevant"
+      name="CompanyNameK1"
+      unique="true">
+    <indexcol
+        keyposition="1"
+        name="NameKanji"/>
+    <indexcol
+        keyposition="2"
+        name="Subtype"/>
+    <indexcol
+        keyposition="3"
+        name="Retired"/>
+    <indexcol
+        keyposition="4"
+        name="ID"/>
   </index> -->
 <extension
   xmlns="http://guidewire.com/datamodel"
@@ -85,6 +145,18 @@
       name="validator"
       value="Email"/>
   </column-override>
+  <column
+    desc="Email address to mail Commission Statements"
+    name="EmailAddress3"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+    <columnParam
+      name="validator"
+      value="Email"/>
+  </column>
   <column
     default="0"
     desc="The version number of this contact in external contact system"

@@ -38,9 +38,12 @@ class HODwellingValidation_HOE extends PCValidationBase {
 
   function validateDwellingMainFields() {
     Context.addToVisited(this, "validateDwellingMainFields")
-    if (HODwelling.ResidenceType == null) {
-      addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeRequired, "HomeownersDwelling")
+    if(HODwelling.HomePurchaseDate_Ext != null && (HODwelling.PolicyPeriod.PeriodStart.differenceInYears(HODwelling.HomePurchaseDate_Ext) < 5) ) {
+      Result.addWarning(HODwelling,  "default", displaykey.Web.Policy.HomeownersLine.Validation.FiveYearsPriorResidenceRequired)
     }
+    /*if (HODwelling.ResidenceType == null) {
+      addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeRequired, "HomeownersDwelling")
+    }*/
     if (HODwelling.DwellingUsage == null) {
       addErrorOrWarning("DwellingUsage", displaykey.Web.Policy.HomeownersLine.Validation.DwellingUsageRequired, "HomeownersDwelling")
     }
@@ -145,9 +148,6 @@ class HODwellingValidation_HOE extends PCValidationBase {
   }
   
   function validateFieldsForHO3DP2(policyType : HOPolicyType_HOE) {
-    if (HODwelling.ResidenceType != ResidenceType_HOE.TC_FAM1 and HODwelling.ResidenceType != ResidenceType_HOE.TC_FAM2
-        and HODwelling.ResidenceType != ResidenceType_HOE.TC_TOWNROW and HODwelling.ResidenceType != ResidenceType_HOE.TC_MOBILE)
-      addErrorOrWarning("ResidenceType", displaykey.Web.Policy.HomeownersLine.Validation.ResidenceTypeInValid(policyType), "HomeownersDwelling")
     if (HODwelling.SwimmingPoolExists and HODwelling.SwimmingPoolDivingBoard == null)
       addErrorOrWarning("SwimmingPoolDivingBoard", displaykey.Web.Policy.HomeownersLine.Validation.DivingBoardExists, "HomeownersDwelling")
     if (HODwelling.SwimmingPoolExists and HODwelling.SwimmingPoolFencing == null)

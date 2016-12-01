@@ -83,16 +83,19 @@ class CancellationLeadTimeCalculator {
     if (not _inUWPeriod) {
       return null
     }
-    var leadTime = getMaximumLeadTimeForActionType(NotificationActionType.TC_UWOTHERCANCEL)
-    if (leadTime == null) {
-      var actionTypeForCategory = new NotificationTypeEvolver(_policyPeriod).inferActionType(TC_UWCANCEL)
+    var leadTime : Integer
+    var actionTypeForCategory = new NotificationTypeEvolver(_policyPeriod).inferActionType(TC_UWCANCEL)
 
-      if(actionTypeForCategory != null){
-        leadTime = getMaximumLeadTimeForActionType(actionTypeForCategory)
-      }else{
-        leadTime = getMaximumLeadTimeForCategory(NotificationCategory.TC_UWCANCEL)
-      }
+    if(actionTypeForCategory != null){
+      leadTime = getMaximumLeadTimeForActionType(actionTypeForCategory)
+    }else{
+      leadTime = getMaximumLeadTimeForActionType(NotificationActionType.TC_UWOTHERCANCEL)
     }
+
+    if (leadTime == null) {
+      leadTime = getMaximumLeadTimeForCategory(NotificationCategory.TC_UWCANCEL)
+    }
+
     return leadTime
   }
   

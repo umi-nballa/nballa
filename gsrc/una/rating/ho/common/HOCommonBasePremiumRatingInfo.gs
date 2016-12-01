@@ -40,7 +40,7 @@ class HOCommonBasePremiumRatingInfo {
 
     _policyType = dwelling?.HOLine.HOPolicyType.Code
     if (dwelling.HODW_Dwelling_Cov_HOEExists){
-      _dwellingLimit = dwelling?.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm?.Value as int
+      _dwellingLimit = dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value as int
     }
 
     if (dwelling.HODW_Personal_Property_HOEExists){

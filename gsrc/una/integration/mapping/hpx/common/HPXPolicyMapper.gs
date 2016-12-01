@@ -35,8 +35,8 @@ abstract class HPXPolicyMapper {
     itemIdInfo.AgencyId = 0
     itemIdInfo.InsurerId = 0
     itemIdInfo.SystemId = "00000000-0000-0000-0000-000000000000"
-    itemIdInfo.OtherIdentifier.OtherId = 0
-    itemIdInfo.OtherIdentifier.OtherIdTypeCd = "CreditBureau"
+    itemIdInfo.OtherIdentifier.OtherId = java.util.UUID.randomUUID().toString()
+    itemIdInfo.OtherIdentifier.OtherIdTypeCd = "DocID"
     return itemIdInfo
   }
 
@@ -157,6 +157,8 @@ abstract class HPXPolicyMapper {
       var structurePolicyConditions = createPolicyConditionsInfo(getStructurePolicyConditions(policyPeriod, coverableStructure), getStructurePolicyConditions(previousPeriod, coverableStructure),
           getStructureCoverageTransactions(policyPeriod, coverableStructure))
       for (cond in structureExclusions) { propertyStructure.addChild(new XmlElement("Coverage", cond))}
+      var additionalInterests = getAdditionalInterests(coverableStructure)
+      for (additionalInterest in additionalInterests) { propertyStructure.addChild(new XmlElement("AdditionalInterest", additionalInterest))}
       // structure location
       var structureLoc = getLocation(coverableStructure)
       var location = locationMapper.createLocation(structureLoc)
@@ -166,11 +168,9 @@ abstract class HPXPolicyMapper {
           getLocationCoverageTransactions(policyPeriod, coverableStructure))
       var locationPolicyConditions = createPolicyConditionsInfo(getLocationPolicyConditions(policyPeriod, coverableStructure), getLocationPolicyConditions(previousPeriod, coverableStructure),
           getLocationCoverageTransactions(policyPeriod, coverableStructure))
-      var additionalInterests = getAdditionalInterests(coverableStructure)
       for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
       for (locExcl in locationExclusions) { location.addChild(new XmlElement("Coverage", locExcl))}
       for (locCond in locationPolicyConditions) { location.addChild(new XmlElement("Coverage", locCond))}
-      for (additionalInterest in additionalInterests) { location.addChild(new XmlElement("AdditionalInterest", additionalInterest))}
       propertyStructure.addChild(new XmlElement("Location", location))
       // building classifications
       var structureClassifications = getClassifications(coverableStructure)

@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <JobWizard
+    acceleratedMenuActions="MultiQuoteAcceleratedMenuActions(PolicyChange, PolicyPeriod, jobWizardHelper)"
+    canEdit="not Job.Complete &amp;&amp; perm.System.editproducercode_ext"
+    canVisit="perm.PolicyChange.view(PolicyChange)"
+    countsAsWork="false"
+    desc="The main Wizard for making a change to a Policy.  Flow steps within the Wizard are determined by the product model."
+    id="PolicyChangeProducerOnlyWizard"
+    independentStepsTitle="displaykey.Web.PolicyFile.ToolsMenuTitle"
+    independentStepsTitleIcon="&quot;ToolsMenuTitle.gif&quot;"
+    infoBar="JobWizardInfoBar(PolicyChange, PolicyPeriod)"
+    initialStep="jobWizardHelper.getInitialWizardStepId( PolicyPeriod )"
+    jobType="PolicyChange"
+    menuActions="WizardMenuActions(jobWizardHelper,PolicyChange,PolicyPeriod)"
+    parent="JobForward(PolicyChange)"
+    subtitle="PolicyPeriod.Status.DisplayName"
+    title="displaykey.Web.PolicyChangeWizard.Title(PolicyChange.JobNumber)">
+    <LocationEntryPoint
+      signature="PolicyChangeProducerOnlyWizard(PolicyChange : PolicyChange, PolicyPeriod : PolicyPeriod)"/>
+    <Variable
+      name="PolicyChange"
+      type="PolicyChange"/>
+    <Variable
+      name="PolicyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      initialValue="PolicyPeriod.Policy.Account"
+      name="Account"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="PolicyPeriod.Submission"
+      name="Submission"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="PolicyChange"
+      name="Job"/>
+    <Variable
+      initialValue="PolicyPeriod.Policy"
+      name="Policy"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="Policy.Product.Code"
+      name="ProductCode"
+      type="String"/>
+    <Variable
+      initialValue="new web.job.JobWizardHelper(CurrentLocation)"
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
+    <JobWizardStep
+      allowFinish="false"
+      id="PolicyInfo"
+      onEnter="if ( PolicyPeriod.OpenForEdit ) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncPolicyTerm( PolicyPeriod, jobWizardHelper ) }"
+      save="PolicyPeriod.OpenForEdit"
+      screen="PolicyChangeProducerInfoScreen(PolicyChange, PolicyPeriod, PolicyPeriod.OpenForEdit,jobWizardHelper)"
+      title="displaykey.Web.PolicyChangeWizard.PolicyInfo"/>
+    <Code><![CDATA[function autoSaveDraft(popupCommitted : boolean) {
+  if (popupCommitted and gw.lob.common.AutoSaveUtil.canAutoSaveDraft(CurrentLocation.getCurrentStepId())) {
+    CurrentLocation.saveDraft()
+  }
+}]]></Code>
+  </JobWizard>
+</PCF>

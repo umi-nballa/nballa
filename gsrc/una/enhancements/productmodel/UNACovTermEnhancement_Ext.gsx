@@ -61,22 +61,32 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     var coverable = this.Clause.OwningCoverable
     var uneditableCovTerms = ConfigParamsUtil.getList(TC_UneditableCoverageTerms, coverable.PolicyLine.BaseState)
     var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, this.PatternCode)
-    var disableEditForCPOrdinanceOrLaw = this typeis OptionCovTerm
-                                     and this.Clause.OwningCoverable typeis CPBuilding
-                                     and this.Value == 99
 
-    if(uneditableCovTerms.contains(this.PatternCode) or configResult != null){
-      if(!{"CPOrdinanceorLawCovBLimit_EXT", "CPOrdinanceorLawCovCLimit_EXT", "CPOrdinanceorLawCovBCLimit_EXT"}.contains(this.PatternCode) or disableEditForCPOrdinanceOrLaw){
-        result = false
+    if(this.Clause.OwningCoverable typeis CPBuilding)
+      {
+        if(((this.Clause.OwningCoverable.PolicyLine as CommercialPropertyLine).CPCoverageC == typekey.CPCoverageBC_Ext.TC_CODE11 && this.PatternCode=="CPOrdinanceorLawCovCLimit_EXT") ||
+          ((this.Clause.OwningCoverable.PolicyLine as CommercialPropertyLine).CPCoverageB == typekey.CPCoverageBC_Ext.TC_CODE11 && this.PatternCode=="CPOrdinanceorLawCovBLimit_EXT")||
+            ((this.Clause.OwningCoverable.PolicyLine as CommercialPropertyLine).CPCoverageBC == typekey.CPCoverageBC_Ext.TC_CODE11 && this.PatternCode=="CPOrdinanceorLawCovBCLimit_EXT"))
+        {
+          return true
+          }
+
       }
+
+   if(uneditableCovTerms.contains(this.PatternCode) or configResult != null){
+      result = false
     }else if(coverable typeis Dwelling_HOE){
       var min = this.getMinAllowedLimitValue(coverable)
       var max = this.getMaxAllowedLimitValue(coverable)
 
       result = (min == null and max == null) or min != max
     }
+      else if({"CPOrdinanceorLawCoverage_EXT"}.contains(this.PatternCode))
+        {
+        result = false
+          }
 
-    return result
+   return result
   }
 
   /*

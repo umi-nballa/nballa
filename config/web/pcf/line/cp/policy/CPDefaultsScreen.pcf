@@ -104,7 +104,7 @@
         <InputGroup
           allowToggle="false//ordinancecoverage.allowToggle(coverable)"
           childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
-          id="CovPatternInputGroup"
+          id="CovPattern1InputGroup"
           label="&quot;Ordinance or Law Coverages&quot;"
           onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
           <PostOnChange/>
@@ -112,7 +112,6 @@
             editable="true"
             id="coveragetype"
             label="&quot;Coverage type&quot;"
-            required="true"
             value="cpLine.CPOrdinanceOrLawType">
             <PostOnChange/>
           </TypeKeyInput>
@@ -139,7 +138,7 @@
             visible="cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT ||cpLine.CPOrdinanceOrLawType==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT "/>
         </InputGroup>
         <InputGroup
-          allowToggle="false"
+          allowToggle="true//false"
           childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
           id="CovPattern2InputGroup"
           label="&quot;Equipment Breakdown Enhancement Coverage&quot;"

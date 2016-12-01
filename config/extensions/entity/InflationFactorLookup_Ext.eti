@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A system table that holds static inflation factor data"
+  entity="InflationFactorLookup_Ext"
+  extendable="false"
+  table="inflationfactorlookup_ext"
+  type="retireable">
+  <column
+    desc="City"
+    name="City"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="State"
+    name="State"
+    nullok="false"
+    typelist="State"/>
+  <column
+    name="ZipCode"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="9"/>
+  </column>
+  <column
+    desc="The inflation factor"
+    name="Value"
+    nullok="false"
+    type="decimal">
+    <columnParam
+      name="scale"
+      value="5"/>
+    <columnParam
+      name="precision"
+      value="6"/>
+  </column>
+</entity>

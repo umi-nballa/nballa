@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <InputSet
+    id="CoverageInputSet"
+    mode="CPAddPropExclSch_EXT">
+    <Require
+      name="coveragePattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Require
+      name="coverable"
+      type="Coverable"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <HiddenInput
+      id="CovPatternCode"
+      value="coveragePattern.CodeIdentifier"/>
+    <InputGroup
+      allowToggle="coveragePattern.allowToggle(coverable)"
+      childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
+      id="CovInputGroup"
+      label="coveragePattern.DisplayName"
+      onToggle="coverable.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
+      <ListViewInput
+        boldLabel="true"
+        editable="true"
+        id="AdditionalPropertyScheduleExclusionLV"
+        label="displaykey.Web.Homeowners.HOCoveragesScreen.ScheduledProperty">
+        <Toolbar>
+          <IteratorButtons
+            iterator="ItemsLV"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="openForEdit"
+          id="ItemsLV">
+          <RowIterator
+            editable="true"
+            elementName="schedItem"
+            toCreateAndAdd="(coverable as CommercialPropertyLine).createAndAddCPScheduledItem(coveragePattern.CodeIdentifier)"
+            toRemove="(coverable as CommercialPropertyLine).CPAddPropExclSch_EXT.removeScheduledItem(schedItem)"
+            value="(coverable as CommercialPropertyLine).CPAddPropExclSch_EXT.scheduleItem">
+            <Row>
+              <Cell
+                editable="true"
+                id="desc"
+                label="&quot;Description of Scheduled Property&quot;"
+                required="true"
+                value="schedItem.CPDescSchPropExcl_Ext"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
+      <PostOnChange/>
+    </InputGroup>
+  </InputSet>
+</PCF>

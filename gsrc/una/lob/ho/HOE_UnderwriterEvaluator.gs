@@ -26,13 +26,14 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
 
   /*
-  * This method is used to determine the allowed jobs and states for Credit Reporting
+  * This method is used to determine the allowed jobs and risk states for Credit Reporting
   * Add the jobs we need to use for CreditReporting to Set<IType>
   * In future if we need to include all the jobs for CreditReporting then delete the Set allowedJobsForCredit
   */
   private function allowedJobsAndStatesForCreditReporting(): boolean{
-    if(!(_policyEvalContext.Period.BaseState == "CA" || _policyEvalContext.Period.BaseState == "HI")){
-      var allowedJobsForCredit : Set<IType> = {Submission, Issuance}
+    if(!(_policyEvalContext.Period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State.Code == "CA" ||
+        _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State.Code == "HI")){
+      var allowedJobsForCredit : Set<IType> = {Submission, Reinstatement, Renewal, Rewrite, Issuance, RewriteNewAccount}
       return allowedJobsForCredit.contains(typeof(_policyEvalContext.Period.Job))
     }
     return false
@@ -57,6 +58,12 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     if(numberOfLosses >= 1){
       _policyEvalContext.addIssue("HOPriorLoss_Ext", "HOPriorLoss_Ext",
           shortDescription, longDescription, numberOfLosses)
+    }
+    shortDescription=   \ -> displaykey.LexisNexis.UWIssue.Homeowners.PriorLosses.shortDesc
+    longDescription = \ -> displaykey.LexisNexis.UWIssue.Homeowners.PriorLosses.LongDesc
+    if(_policyEvalContext.Period.HomeownersLine_HOE.ClueHit_Ext==null){
+      _policyEvalContext.addIssue("ClueReportOrdered_Ext", "ClueReportOrdered_Ext",
+          shortDescription, longDescription)
     }
   }
 
@@ -226,7 +233,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
 
   /*
-  * Creates underwriting related issues, for the below Credit Statuses
+  * Creates underwriting issues, for the below Credit Statuses
   * TC_NO_SCORE, TC_ERROR, NULL, TC_NOT_ORDERED
   */
   private function createsCreditRelatedUwIssuesForHO(){
@@ -235,18 +242,15 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       if (creditStatus == CreditStatusExt.TC_NO_HIT || creditStatus == CreditStatusExt.TC_NO_SCORE){
         //adds below UW Issue if the CreditStatus is No HIT or NO Score
         var creditNoHitNoScore = \ ->  displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportNoHitOrNoScore(creditStatus)
-        _policyEvalContext.removeOrphanedIssues()
         _policyEvalContext.addIssue("CreditReportNoHit", "CreditReportNoHit", creditNoHitNoScore, creditNoHitNoScore)
       }
-      else if (creditStatus == CreditStatusExt.TC_ERROR){
+      if (creditStatus == CreditStatusExt.TC_ERROR){
         //adds below UW Issue if the CreditStatus has Errors
-        _policyEvalContext.removeOrphanedIssues()
         var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
         _policyEvalContext.addIssue("CreditReportErrors","CreditReportErrors", creditReportErrors,creditReportErrors)
       }
-      else if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+      if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
         //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
-        _policyEvalContext.removeOrphanedIssues()
         var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
         _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)
       }

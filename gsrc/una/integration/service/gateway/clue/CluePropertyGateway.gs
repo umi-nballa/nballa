@@ -6,11 +6,10 @@
  **/
 package una.integration.service.gateway.clue
 
-uses gw.api.system.logging.LoggerFactory
 uses gw.api.util.DisplayableException
-uses gw.pl.logging.LoggerCategory
 uses gw.xml.ws.WebServiceException
 uses una.integration.service.transport.clue.CluePropertyCommunicator
+uses una.logging.UnaLoggerCategory
 uses wsi.schema.una.inscore.cprulesorderschema.Order
 uses wsi.schema.una.inscore.cprulesorderschema.enums.DescriptionType_Sex
 uses wsi.schema.una.inscore.cprulesorderschema.enums.NameType_Type
@@ -32,7 +31,7 @@ class CluePropertyGateway implements CluePropertyInterface {
   private static var DATE_FORMAT = "MM/dd/yyyy"
   private static var cluePropertyCommunicator: CluePropertyCommunicator
   var timeout = "500"
-  static var _logger = LoggerFactory.getLogger(LoggerCategory.PLUGIN, "ClueProperty")
+  static var _logger =UnaLoggerCategory.UNA_INTEGRATION
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     cluePropertyCommunicator = new CluePropertyCommunicator()
@@ -50,10 +49,10 @@ class CluePropertyGateway implements CluePropertyInterface {
     //attempt to create the order xml
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.debug("sending order " + orderXml)
+    _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
-      _logger.debug("received result " + result)
+      _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.debug("finished ordering CLUE")
@@ -72,8 +71,8 @@ class CluePropertyGateway implements CluePropertyInterface {
     var clueResponseXml = wsi.schema.una.inscore.cprulesresultschema.Result.parse(responseXml)
     var messages = clueResponseXml.Messages.Message_elem
     var clueProductReports = clueResponseXml.ProductResults.CluePersonalProperty
-    // code for Clue Check for Ofac ,Uncomment once data Governance is approved
-    // pPeriod.HomeownersLine_HOE.ClueHit_Ext=true
+    // code for Clue Check to Check Ordered Status
+     pPeriod.HomeownersLine_HOE.ClueHit_Ext = true
     if (clueProductReports.HasElements){
       for (clueProductReport in clueProductReports) {
         _logger.debug("Clue Product Report found")
@@ -187,19 +186,20 @@ class CluePropertyGateway implements CluePropertyInterface {
     var pHolderType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
     var policyHolder = claim.Subject.firstWhere(\c -> c.Classification == pHolderType)
     if (policyHolder != null){
-      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + policyHolder.Name.Middle
-      var phAddress = policyHolder.Address.first()
-      priorLoss.AddressType = phAddress.Type as String
-      priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")
-      priorLoss.City = phAddress.City
-      priorLoss.State = phAddress.State
-      priorLoss.Zip = phAddress.Postalcode
-      priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
-      priorLoss.PhoneNumber = policyHolder.Telephone
-    }
+    priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " +(policyHolder.Name.Middle!=null? policyHolder.Name.Middle:"")
+    var phAddress = policyHolder.Address.first()
+    priorLoss.AddressType = phAddress.Type as String
+    priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")
+    priorLoss.City = phAddress.City
+    priorLoss.State = phAddress.State
+    priorLoss.Zip = phAddress.Postalcode
+    priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
+    priorLoss.PhoneNumber = policyHolder.Telephone
+  }
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
+    priorLoss.Source="C"
 
     return priorLoss
   }

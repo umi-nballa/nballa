@@ -50,7 +50,7 @@
         label="displaykey.Web.ContactDetail.AddressDetail.AddressType"
         required="true"
         value="primaryAddress.AddressType"
-        visible="period.CPLineExists==false or period.HomeownersLine_HOEExists"/>
+        visible="(period.CPLineExists==false or period.HomeownersLine_HOEExists) and policyContactRole.Subtype != TC_PolicyAddlInterest"/>
       <Input
         editable="primaryAddress.LinkedAddress == null"
         id="AddressDescription"

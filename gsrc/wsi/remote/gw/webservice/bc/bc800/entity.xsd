@@ -68,6 +68,7 @@
       <xs:element name="AccountNumbers" minOccurs="0" maxOccurs="unbounded" type="xs:string"/>
       <xs:element name="AccountName" minOccurs="0" type="xs:string"/>
       <xs:element name="AccountNameKanji" minOccurs="0" type="xs:string"/>
+      <xs:element name="LoanNumber" minOccurs="0" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
   <xs:element name="NewInvoiceStream" type="NewInvoiceStream"/>
@@ -147,8 +148,7 @@
           <xs:element name="PeriodStart" minOccurs="0" type="xs:dateTime"/>
           <xs:element name="PeriodEnd" minOccurs="0" type="xs:dateTime"/>
           <xs:element name="PrimaryNamedInsuredContact" minOccurs="0" type="PCContactInfo"/>
-          <xs:element name="AltBillingContact" minOccurs="0" type="PCContactInfo"/>
-          <xs:element name="MortgageeLoanNumber" minOccurs="0" type="xs:string"/>
+          <xs:element name="PolicyAdditionalInterests" minOccurs="0" maxOccurs="unbounded" type="PCContactInfo"/>
         </xs:sequence>
       </xs:extension>
     </xs:complexContent>
@@ -312,6 +312,7 @@
     <xs:sequence>
       <xs:element name="PublicID" minOccurs="0" type="xs:string"/>
       <xs:element name="MasterProducerID" minOccurs="0" type="xs:string"/>
+      <xs:element name="PayToMaster" minOccurs="0" type="xs:boolean"/>
       <xs:element name="ProducerNumber" minOccurs="0" type="xs:string"/>
       <xs:element name="ProducerName" minOccurs="0" type="xs:string"/>
       <xs:element name="ProducerNameKanji" minOccurs="0" type="xs:string"/>

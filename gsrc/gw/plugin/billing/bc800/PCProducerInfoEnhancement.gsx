@@ -13,6 +13,7 @@ enhancement PCProducerInfoEnhancement : PCProducerInfo {
     this.AgencyBillPlanIDs = organization.AgencyBillPlans*.PlanID.toList()
     this.PublicID = organization.PublicID
     this.MasterProducerID = organization.MasterOrganization_Ext.PublicID
+    this.PayToMaster = organization.CommissionOnMaster_Ext
     this.Tier = organization.Tier.Code
     var contactInfo = new PCContactInfo()
     contactInfo.sync( organization.Contact )

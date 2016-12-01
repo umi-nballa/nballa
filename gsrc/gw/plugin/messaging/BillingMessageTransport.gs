@@ -241,15 +241,12 @@ class BillingMessageTransport implements MessageTransport {
     var basedOnPeriod = policyPeriod.BasedOn
     var newPrimaryNamedInsured = policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.PublicID
     var oldPrimaryNamedInsured = basedOnPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.PublicID
-    var newMortgageeLoanNumber = PolicyInfoUtil.getMortgageeLoanNumber(policyPeriod)
-    var oldMortgageeLoanNumber = PolicyInfoUtil.getMortgageeLoanNumber(basedOnPeriod)
     return transactions.countWhere(\ t -> t.Charged) > 0
       or policyPeriod.BaseState != basedOnPeriod.BaseState
       or policyPeriod.PeriodStart != basedOnPeriod.PeriodStart
       or policyPeriod.PeriodEnd != basedOnPeriod.PeriodEnd
       or newPrimaryNamedInsured != oldPrimaryNamedInsured
-      or policyPeriod.BillingContact.ContactDenorm.AddressBookUID != basedOnPeriod.BillingContact.ContactDenorm.AddressBookUID
-      or newMortgageeLoanNumber != oldMortgageeLoanNumber
+      or PolicyInfoUtil.hasAddlInterestsUpdated(policyPeriod)
   }
 
   private function getTransactionId(message : Message) : String {

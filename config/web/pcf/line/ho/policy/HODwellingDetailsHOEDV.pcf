@@ -428,23 +428,25 @@
           editable="true"
           id="MultiPolicyDiscount_Ext"
           label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
-          value="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"
+          visible="allHomeowners_Ext()">
           <PostOnChange/>
         </BooleanRadioInput>
-        <TypeKeyInput
+        <RangeInput
           editable="true"
           id="HOPolicyType"
           label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
-          required="true"
+          required="false"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
-          visible="dwelling.DwellingRentedEverToOthers_Ext == true">
+          valueRange="typekey.TypeofPolicy_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)">
           <PostOnChange/>
-        </TypeKeyInput>
+        </RangeInput>
         <Input
           editable="true"
           id="PolicyNumber_Ext"
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
-          value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"/>
+          value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"
+          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext == true"/>
         <InputDivider/>
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>
@@ -826,6 +828,21 @@ function initializeTunaCodes() : TunaCodesBO {
   
   initialTunaCodesBO.BCEGValues = bcegCodes
   return initialTunaCodesBO
+}
+
+function allHomeowners_Ext():boolean{
+  if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
+      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
+      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
+      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
+      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
+      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
+    return true    
+  }
+  if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
+    return true
+  }  
+  return false
 }]]></Code>
   </DetailViewPanel>
 </PCF>

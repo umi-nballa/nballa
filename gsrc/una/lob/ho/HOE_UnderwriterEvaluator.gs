@@ -59,6 +59,12 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       _policyEvalContext.addIssue("HOPriorLoss_Ext", "HOPriorLoss_Ext",
           shortDescription, longDescription, numberOfLosses)
     }
+    shortDescription=   \ -> displaykey.LexisNexis.UWIssue.Homeowners.PriorLosses.shortDesc
+    longDescription = \ -> displaykey.LexisNexis.UWIssue.Homeowners.PriorLosses.LongDesc
+    if(_policyEvalContext.Period.HomeownersLine_HOE.ClueHit_Ext==null){
+      _policyEvalContext.addIssue("ClueReportOrdered_Ext", "ClueReportOrdered_Ext",
+          shortDescription, longDescription)
+    }
   }
 
   /*

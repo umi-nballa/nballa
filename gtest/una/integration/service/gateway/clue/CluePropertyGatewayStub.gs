@@ -73,7 +73,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     var messages = clueResponseXml.Messages.Message_elem
     var clueProductReports = clueResponseXml.ProductResults.CluePersonalProperty
    // code for Clue Check for Ofac ,Uncomment once data Governance is approved
-   // pPeriod.HomeownersLine_HOE.ClueHit_Ext=true
+   pPeriod.HomeownersLine_HOE.ClueHit_Ext=true
 
     if (clueProductReports.HasElements){
       for (clueProductReport in clueProductReports) {

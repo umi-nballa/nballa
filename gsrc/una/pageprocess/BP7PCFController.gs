@@ -17,14 +17,17 @@ class BP7PCFController {
     this._bp7Line = bp7Line
   }
 
-  static function setTheftLimitationValue(line:BP7BusinessOwnersLine){
+  static function setTheftLimitationValue(line: BP7BusinessOwnersLine):String{
+    var optionValue:String
     if(line.BP7TheftExclusion_EXTExists){
       for(classification in line.AllClassifications){
-        if(classification typeis BP7TheftLimitations){
+        if(classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm!=null){
           classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.setValueFromString("BP7TheftExcluded_EXT")
+          optionValue = (classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue) as String
         }
       }
     }
+    return optionValue
   }
 
   static function isBarbAndBeautiProfLiabCoverageAvailable(classification:BP7Classification):boolean{

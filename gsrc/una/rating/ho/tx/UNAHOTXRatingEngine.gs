@@ -12,11 +12,11 @@ uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.tx.ratinginfos.HODiscountsOrSurchargesRatingInfo
 uses una.rating.ho.tx.ratinginfos.HOLineRatingInfo
 uses una.rating.ho.tx.ratinginfos.HORatingInfo
-uses una.rating.ho.tx.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.util.HOCreateCostDataUtil
 
 uses java.math.BigDecimal
 uses java.util.Map
+uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.

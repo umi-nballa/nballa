@@ -12,7 +12,7 @@ uses gw.xml.XmlElement
  */
 class HPXAdditionalInterestMapper {
 
-function createAdditionalInterests(additlInterests : AddlInterestDetail []) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType>  {
+function createAdditionalInterests(additlInterests : AddlInterestDetail [], mapper : HPXStructureMapper, coverable : Coverable) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType>  {
 
     var generalPartyInfoMapper = new HPXGeneralPartyInfoMapper()
     var additionalInterests = new ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType>()
@@ -26,6 +26,7 @@ function createAdditionalInterests(additlInterests : AddlInterestDetail []) : Li
       additionalInterestInfo.Description = addtlInterest.AdditionalInterestType.Description
       additionalInterestInfo.ContractNumber = addtlInterest.ContractNumber
       additionalInterest.addChild(new XmlElement("AdditionalInterestInfo", additionalInterestInfo))
+      additionalInterest.addChild(new XmlElement("BuildingKey", mapper.createCoverableInfo(coverable)))
       additionalInterests.add(additionalInterest)
     }
     return additionalInterests

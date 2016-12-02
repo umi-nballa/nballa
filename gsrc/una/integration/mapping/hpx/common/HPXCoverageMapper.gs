@@ -132,10 +132,12 @@ abstract class HPXCoverageMapper {
 
   function createDirectLimitInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-    var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var value = currentCovTerm.Value as double
+    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
     var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
     limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
-    limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
+    limit.NetChangeAmt.Amt = !(pctValue > 0) ? previousCovTerm != null ? value - orignalValue : 0.00 : 0.00
     limit.FormatPct = 0
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -148,11 +150,13 @@ abstract class HPXCoverageMapper {
 
   function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-    var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var value = currentCovTerm.OptionValue.Value as double
+    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
     var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
     limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
-    limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
-    limit.FormatPct = 0
+    limit.NetChangeAmt.Amt = !(pctValue > 0) ? previousCovTerm != null ? value - orignalValue : 0.00 : 0.00
+    limit.FormatPct = pctValue
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""

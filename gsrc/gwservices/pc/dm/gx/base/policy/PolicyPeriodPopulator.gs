@@ -81,7 +81,7 @@ class PolicyPeriodPopulator extends BaseEntityPopulator<PolicyPeriod, KeyableBea
       _logger.debug("assigning account [${child.Policy.Account.AccountNumber}] to notes [${notes.PublicID}]")
     }
     //Populate Estimated Premium for Policy
-    if(child.EstimatedPremium_amt != 0){
+    if(child.EstimatedPremium_amt != null && child.EstimatedPremium_amt != 0){
       var estimatedAmount = child.EstimatedPremium_amt
       var EstimatedPremium = new MonetaryAmount(estimatedAmount, Currency.TC_USD)
       child.EstimatedPremium = EstimatedPremium

@@ -11,7 +11,6 @@ class HOScheduledPersonalPropertyRatingInfo {
   var _itemType: typekey.ScheduleType_HOE as ItemType
   var _exposureValue: int as ExposureValue
 
-
   construct(item: ScheduledItem_HOE) {
     _exposureValue = item.ExposureValue
     _itemType = item.ScheduleType

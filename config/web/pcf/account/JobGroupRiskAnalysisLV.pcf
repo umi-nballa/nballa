@@ -10,7 +10,7 @@
     <RowIterator
       editable="false"
       elementName="issue"
-      value="new Object[]{}">
+      value="uwIssueHistoryAtAcctRiskAnalysis()//new Object[]{}">
       <Row>
         <!-- <Cell
           action="JobForward.go( issue.PolicyPeriod.Job )"
@@ -47,5 +47,16 @@
           value="issue.RiskPoints"/> -->
       </Row>
     </RowIterator>
+    <Code><![CDATA[function uwIssueHistoryAtAcctRiskAnalysis() : UWIssueHistory[]{
+  var uwIssues : UWIssueHistory[]
+  if(jobGroup.Subtype==typekey.JobGroup.TC_SUBMISSIONGROUP){
+    print("jobGroup.Jobs.Policy.IssueHistories: "+jobGroup.Jobs.Policy.IssueHistories.length)
+    return jobGroup.Jobs.Policy.IssueHistories
+  }
+  /*if(jobGroup.Subtype==typekey.JobGroup.TC_RENEWALGROUP){
+    return jobGroup.Jobs.Policy.IssueHistories.where( \ elt1 ->elt1.PolicyPeriod.Job.Subtype==typekey.Job.TC_RENEWAL )
+  }*/
+  return uwIssues
+}]]></Code>
   </ListViewPanel>
 </PCF>

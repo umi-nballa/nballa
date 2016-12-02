@@ -31,7 +31,7 @@ class HPXCPBuildingMapper implements HPXStructureMapper  {
     return dwell
   }
 
-  function createCoverableInfo(bldg : CPBuilding) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+  function createCoverableInfo(bldg : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
     if (bldg typeis CPBuilding) {
       var building = bldg as CPBuilding

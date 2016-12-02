@@ -153,7 +153,7 @@ class CPAutoPopulateUtil {
       if(cLine.EquipmentBreakdownEnhancement!=null && cLine.EquipmentBreakdownEnhancement.trim()!="")
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
-        cBuilding.CPEquipmentBreakdownEnhance_EXT.CovTerms.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
+//        cBuilding.CPEquipmentBreakdownEnhance_EXT?.CovTerms?.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
           }
 
     if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)

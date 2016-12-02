@@ -13,12 +13,11 @@ uses una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 uses una.rating.ho.group1.ratinginfos.HORatingInfo
-uses una.rating.ho.group1.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOWCPrivateResidenceEmployeeRatingInfo
 uses una.rating.util.HOCreateCostDataUtil
 
 uses java.util.Map
-uses una.rating.ho.common.HOOtherStructuresRatingInfo
+uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.

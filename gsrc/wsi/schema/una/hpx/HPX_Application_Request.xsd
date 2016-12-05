@@ -3975,6 +3975,12 @@
 			<xsd:element name="ContactMechanisms" type="ContactMechanismsType"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="MortgageInformationType">
+        <xsd:sequence>
+            <xsd:element name="MortgageCompanyName" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="LoanNumber" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="PersonInspectorType">
 		<xsd:sequence>
 			<xsd:element name="PersonID" type="xsd:string"/>
@@ -5111,6 +5117,7 @@
 			<xsd:element name="isMoldInvolded" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isHazardousWasteInvolved" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OwnerRole" type="OwnerRoleType"/>
+            <xsd:element name="MortgageInformation" type="MortgageInformationType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ClaimInjuryIncidentType">
@@ -5407,6 +5414,11 @@
 			<xsd:element name="LossDescription" type="xsd:string"/>
 			<xsd:element name="LossLocation" type="LossLocationType"/>
 			<xsd:element name="LossDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimAge" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AMB" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="CreatedDate" type="xsd:dateTime"/>
 			<xsd:element name="CreatedByUserAccount" type="CreatedByUserAccountType"/>
@@ -5435,6 +5447,7 @@
 			<xsd:element name="AdjusterUserAccount" type="AdjusterUserAccountType" minOccurs="0"/>
 			<xsd:element name="AdjusterRoleSupervisor" type="AdjusterRoleSupervisorType" minOccurs="0"/>
 			<xsd:element name="Catastrophe" type="CatastropheType" minOccurs="0"/>
+            <xsd:element name="CatastropheInd" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="BillingAccountType">

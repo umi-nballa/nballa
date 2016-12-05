@@ -28,7 +28,14 @@ enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
     
     // If no additional criteria are required, this method will construct the query and execute 
     // the select as above.
-    if (!meetsMinimumSearchCriteria()) throw new DisplayableException(displaykey.Web.Policy.MinimumSearchCriteria);
+    //PC.24.01.25 changes
+    if (!meetsMinimumSearchCriteria()) {
+      if(this.SearchObjectType == SearchObjectType.TC_POLICY){
+        throw new DisplayableException(displaykey.Web.Policy.MinimumPolicySearchCriteria);
+      }else{
+        throw new DisplayableException(displaykey.Web.Policy.MinimumSearchCriteria)
+      }
+    }
 
     // Adding HO Policy Type to the Policy Search Criteria - PC.24.01.20
     if(this.HOPolicyType != null) {
@@ -75,8 +82,15 @@ enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
     var has_name = (this.NameCriteria.FirstName.NotBlank && (this.NameCriteria.FirstName.length >= 3 || this.FirstNameExact)) &&
                    (this.NameCriteria.LastName.NotBlank && (this.NameCriteria.LastName.length >= 3 || this.LastNameExact))
 
-    var has_location = ((this.PrimaryInsuredCity.NotBlank || this.PrimaryInsuredCityKanji.NotBlank)
-        && this.PrimaryInsuredState != null) || this.PrimaryInsuredPostalCode.NotBlank
+    var has_location = false
+    //PC.24.01.25 changes
+    if(this.SearchObjectType == SearchObjectType.TC_POLICY){
+          has_location = (((this.PrimaryInsuredAddressLine1_Ext.NotBlank) &&  (this.PrimaryInsuredAddressLine2_Ext.NotBlank) &&
+                           (this.PrimaryInsuredCity.NotBlank || this.PrimaryInsuredCityKanji.NotBlank) && this.PrimaryInsuredState != null) || this.PrimaryInsuredPostalCode.NotBlank)
+    }else{
+          has_location =(((this.PrimaryInsuredCity.NotBlank || this.PrimaryInsuredCityKanji.NotBlank)
+                        && this.PrimaryInsuredState != null) || this.PrimaryInsuredPostalCode.NotBlank)
+    }
      
     return has_name && (this.LastNameExact || has_location || this.PermissiveSearch)
   }

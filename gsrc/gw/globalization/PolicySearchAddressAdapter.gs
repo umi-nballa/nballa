@@ -52,4 +52,17 @@ class PolicySearchAddressAdapter extends UnsupportedAddressFillable {
     _searchCriteria.PrimaryInsuredState = st
   }
 
+  override property get AddressLine1() : String {
+    return _searchCriteria.PrimaryInsuredAddressLine1_Ext
+  }
+  override property set AddressLine1(addr1 : String) {
+    _searchCriteria.PrimaryInsuredAddressLine1_Ext = addr1
+  }
+
+  override property get AddressLine2() : String {
+    return _searchCriteria.PrimaryInsuredAddressLine2_Ext
+  }
+  override property set AddressLine2(addr2 : String) {
+    _searchCriteria.PrimaryInsuredAddressLine2_Ext = addr2
+  }
 }

@@ -62,6 +62,19 @@ class CoveragesUtil {
     return result
   }
 
+  public static function isCoverageVisible(coveragePattern:String, coverable : Coverable):boolean
+  {
+    if(coveragePattern=="CPTerrorismCoverage_EXT")
+      {
+        if(coverable typeis CPBuilding && (coverable.PolicyLine as CommercialPropertyLine).TerrorismCoverage==true)
+           return true
+        else
+          return false
+      }
+    else
+      return true
+  }
+
   public static function isExclusionAvailable(exclusionPattern : String, coverable : Coverable) : boolean{
     var result = true
 

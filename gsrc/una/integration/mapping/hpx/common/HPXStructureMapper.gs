@@ -9,4 +9,6 @@ package una.integration.mapping.hpx.common
 interface HPXStructureMapper {
 
   function createStructure(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType
+
+  function createCoverableInfo(coverable : Coverable) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
 }

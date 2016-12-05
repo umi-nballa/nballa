@@ -29,11 +29,12 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
     if(contact typeis Company){
       phoneNumberValue =  contact.WorkPhoneValue
     }else if(contact typeis Person){
-      if(contact.PrimaryPhone == PrimaryPhoneType.TC_WORK && contact.WorkPhoneExtension!=null)
+      if(contact.PrimaryPhone == PrimaryPhoneType.TC_WORK && contact.WorkPhoneExtension!=null){
         phoneNumberValue = contact.WorkPhoneValue + contact.WorkPhoneExtension
-      else if(contact.WorkPhoneExtension==null)
+      }else if(contact.PrimaryPhone == PrimaryPhoneType.TC_WORK && contact.WorkPhoneExtension==null){
         phoneNumberValue = contact.WorkPhoneValue
-      else if(contact.PrimaryPhone == PrimaryPhoneType.TC_HOME)
+      }
+      if(contact.PrimaryPhone == PrimaryPhoneType.TC_HOME)
         phoneNumberValue = contact.HomePhoneValue
       else if(contact.PrimaryPhone == PrimaryPhoneType.TC_MOBILE)
         phoneNumberValue = contact.CellPhone
@@ -54,7 +55,7 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
     return location
   }
 
-  static function setSERPIndicator(job:Job,initiateSERP:boolean)  {
+  function setSERPIndicator(job:Job,initiateSERP:boolean)  {
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       job = bundle.add(job)
       if(job.LatestPeriod!=null){

@@ -12,11 +12,11 @@ uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.tx.ratinginfos.HODiscountsOrSurchargesRatingInfo
 uses una.rating.ho.tx.ratinginfos.HOLineRatingInfo
 uses una.rating.ho.tx.ratinginfos.HORatingInfo
-uses una.rating.ho.tx.ratinginfos.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.util.HOCreateCostDataUtil
 
 uses java.math.BigDecimal
 uses java.util.Map
+uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -147,6 +147,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
     if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
       ratePreferredBuilderCredit(dateRange)
+
+    rateMaximumDiscountAdjustment(dateRange)
   }
 
   /**
@@ -578,6 +580,17 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     if(_logger.DebugEnabled)
       _logger.debug("Increased Limits Jewelry Watches Furs Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Adjusting the total discount if it exceeds the maximum discount
+  */
+  function rateMaximumDiscountAdjustment(dateRange : DateRange){
+    var totalDiscountAmount = _hoRatingInfo.FireProtectiveDevicesCredit + _hoRatingInfo.BurglarProtectiveDevicesCredit + _hoRatingInfo.AffinityDiscount +
+                              _hoRatingInfo.PreferredBuilderCredit + _hoRatingInfo.HailResistantRoofCredit + _hoRatingInfo.MultiLineDiscount
+    if(_hoRatingInfo.AgeOfHomeDiscount < 0)
+      totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
+    rateMaximumDiscountAdjustment(dateRange, totalDiscountAmount, _hoRatingInfo.TotalBasePremium)
   }
 
   /**

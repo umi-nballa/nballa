@@ -73,6 +73,12 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
 
       }
 
+    if(this.Clause.OwningCoverable typeis GeneralLiabilityLine)
+      {
+        if(this.PatternCode=="HiredAutoNonOwnedLimit_EXT")
+          return false
+      }
+
    if(uneditableCovTerms.contains(this.PatternCode) or configResult != null){
       result = false
     }else if(coverable typeis Dwelling_HOE){

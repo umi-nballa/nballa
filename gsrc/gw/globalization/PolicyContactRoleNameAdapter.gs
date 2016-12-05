@@ -79,4 +79,5 @@ class PolicyContactRoleNameAdapter extends UnsupportedPersonNameFields {
   override property set NameKanji(value: String) {
     _policyContactRole.CompanyNameKanji = value
   }
+
 }

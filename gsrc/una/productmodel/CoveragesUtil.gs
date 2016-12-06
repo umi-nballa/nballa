@@ -110,6 +110,16 @@ class CoveragesUtil {
     var covTermsToInitialize : List<CovTerm> = {}
 
     switch(coveragePattern){
+      case "GLHiredAutoNonOwnedLiab_EXT":
+        {
+
+          var gline = coverable as GeneralLiabilityLine
+          if(gline.GLHiredAutoNonOwnedLiab_EXTExists)
+          {
+            gline.GLHiredAutoNonOwnedLiab_EXT.HiredAutoNonOwnedLimit_EXTTerm.Value= gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value
+          }
+          break
+        }
       case "HODW_Dwelling_Cov_HOE":
       case "DPDW_Dwelling_Cov_HOE":
         initDwelling_Cov_HOE(coverable)

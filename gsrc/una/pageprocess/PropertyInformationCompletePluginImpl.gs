@@ -39,7 +39,7 @@ class PropertyInformationCompletePluginImpl {
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
-    if (location.AccountLocation.addressScrub_Ext) {
+  //  if (location.AccountLocation.addressScrub_Ext) {
       _address.AddressLine1 = location.AddressLine1
       _address.State = location.State.DisplayName
       _address.City = location.City
@@ -64,15 +64,13 @@ class PropertyInformationCompletePluginImpl {
           tunaFireSlopeDetail(policyPeriod, tunaResponse)
         } else {
           LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
-        }
+       }
       } catch (exp: Exception) {
         LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
         logger.error("TunaGateway : Dwelling  Information " + " : StackTrace = ", exp)
       }
-    }
-    else{
-      LocationUtil.addRequestScopedWarningMessage("Unable to call TUNA, Since the address is not scrubbed")
-    }
+  //  }
+
     logger.info(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     return tunaResponse
   }
@@ -84,7 +82,7 @@ class PropertyInformationCompletePluginImpl {
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingConstructionInformation" + "For DwellingConstruction ", this.IntrinsicType)
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
-    if (location.AccountLocation.addressScrub_Ext) {
+  //  if (location.AccountLocation.addressScrub_Ext) {
       _address.AddressLine1 = location.AddressLine1
       _address.State = location.State.DisplayName
       _address.City = location.City
@@ -107,9 +105,9 @@ class PropertyInformationCompletePluginImpl {
         LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
         logger.error("TunaGateway : Dwelling Construction Information " + " : StackTrace = ", exp)
       }
-    }else{
-      LocationUtil.addRequestScopedWarningMessage("Unable to call TUNA, Since the address is not scrubbed")
-    }
+//    }else{
+//      LocationUtil.addRequestScopedWarningMessage("Unable to call TUNA, Since the address is not scrubbed")
+//    }
     logger.info(" Leaving  " + CLASS_NAME + " :: " + " getDwellingConstructionInformation" + "For DwellingConstruction ", this.IntrinsicType)
     return tunaResponse
   }

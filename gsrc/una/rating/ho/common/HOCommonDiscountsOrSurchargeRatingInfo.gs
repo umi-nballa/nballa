@@ -18,6 +18,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _maxAgeOfHome: int as MaxAgeOfHome
   var _line : HomeownersLine_HOE as Line
   var _policyType : HOPolicyType_HOE as PolicyType
+  var _typeOfPolicyForMultiLine : TypeofPolicy_Ext as TypeOfPolicyForMultiLine
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line

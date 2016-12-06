@@ -37,12 +37,14 @@
         def="PolicyInfoProducerOfRecordInputSet(policyPeriod, ProducerStatusUse.TC_SUBMISSIONOKAY)"/>
       <InputDivider/>
       <Label
-        label="displaykey.Web.RewriteWizard.PolicyInfo.PolicyNumber"/>
+        label="displaykey.Web.RewriteWizard.PolicyInfo.PolicyNumber"
+        visible="!(policyPeriod.Job typeis Rewrite)"/>
       <Input
         editable="true"
         id="ChangePolicyNumber"
         label="displaykey.Web.RewriteWizard.PolicyInfo.ChangePolicyNumber"
-        value="rewrite.ChangePolicyNumber"/>
+        value="rewrite.ChangePolicyNumber"
+        visible="!(policyPeriod.Job typeis Rewrite)"/>
       <InputDivider/>
       <Label
         label="displaykey.Web.Policy.UWCompanies.Name"/>

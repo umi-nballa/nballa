@@ -508,9 +508,10 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.SuperiorConstructionDiscount
-        + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge
-
+    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.AgeOfHomeDiscount  + _hoRatingInfo.SuperiorConstructionDiscount +
+          + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge +  _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.WindHailExclusionCredit
+          + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.ProtectiveDevicesDiscount
+          + _hoRatingInfo.DiscountAdjustment
     )
   }
 }

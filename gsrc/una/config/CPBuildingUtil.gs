@@ -316,13 +316,13 @@ Default response to B if Building Address county = All Other Counties
 
      */
     if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
-      bldg?.ResQuestions?.gustwindloc="120"
+      bldg?.ResQuestions?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_120GREATER//"120"
     else
       {
         if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
-          bldg?.ResQuestions?.gustwindloc="110"
+          bldg?.ResQuestions?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_110//"110"
         else
-          bldg?.ResQuestions?.gustwindloc="100"
+          bldg?.ResQuestions?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_100//"100"
       }
 
       /*
@@ -342,7 +342,7 @@ Default response to No if Gust Wind Speed of Design = 100 OR = 110
      */
     if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
       bldg.ResQuestions.wbdr="Yes"
-    if(bldg.ResQuestions.gustwind==100 || bldg.ResQuestions.gustwind>=110)
+    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.ResQuestions.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)//110)
       bldg.ResQuestions.wbdr="No"
 
 

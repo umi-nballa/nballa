@@ -85,6 +85,7 @@ class OFACGatewayHelper {
   function checkAndMapResponseForAlerts(policyContacts: List<Contact>, pPeriod: PolicyPeriod, result: SearchResults): HashMap<Contact, Integer> {
     var isFalsePositive : boolean
 
+    //no hit scenario
     if (result != null && result.Records == null)
       isFalsePositive = true
 
@@ -93,9 +94,11 @@ class OFACGatewayHelper {
       {
         var watchList = record.Watchlist.Matches.WLMatch.first()
 
+        //False positive
         if (watchList != null && watchList.FalsePositive)
           isFalsePositive = true
 
+        //Hit Scenario
         if (watchList != null && !watchList.FalsePositive && watchList.EntityScore >= PropertiesHolder.getProperty("ENTITY_SCORE") as int )
           isFalsePositive = false
 

@@ -57,7 +57,6 @@ class OFACGateway implements OFACInterface {
         ofacResponseMapper.persistOFACResult(contactAndScoreMap, policyPeriod)
     } catch (exp: Exception) {
       _logger.error(CLASS_NAME + " :: " + "validateOFACEntity" + " : StackTrace = " + exp.StackTraceAsString)
-      throw exp
-    }
+     }
   }
 }

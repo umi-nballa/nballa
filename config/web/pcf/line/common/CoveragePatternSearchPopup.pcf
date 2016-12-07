@@ -45,7 +45,7 @@
           def="CoveragePatternSearchResultsLV(coveragePatterns)">
           <Toolbar>
             <CheckedValuesToolbarButton
-              allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues ); CheckedValues.each(\ value -&gt; gw.lob.bp7.BP7PostOnChangeHandler.handleClause(coverable, value, true, jobWizardHelper))"
+              allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues ); CheckedValues.each(\ value -&gt; gw.lob.bp7.BP7PostOnChangeHandler.handleClause(coverable, value, true, jobWizardHelper));una.pageprocess.BP7PCFController.dataCompromiseCoverageRestriction(coverable,CheckedValues,jobWizardHelper)"
               id="AddCoverageButton"
               iterator="CoveragePatternSearchResultsLV.CoveragePatternSearchResultsLV"
               label="searchType == CoveragePatternSearchType.TC_COVERAGE ? displaykey.Web.Coverage.SearchPage.AddSelectedCoverages : displaykey.Web.Coverage.SearchPage.AddSelectedExclusionsAndConditions"/>

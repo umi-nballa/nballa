@@ -17,6 +17,7 @@ uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
 uses una.config.ConfigParamsUtil
 uses com.sun.java.swing.plaf.windows.resources.windows
+uses una.rating.ho.group3.ratinginfos.HOGroup3ScheduledPersonalPropertyRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,7 +125,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
         break
       case HODW_ScheduledProperty_HOE:
-        //rateScheduledPersonalProperty(dwellingCov, dateRange)
+        rateScheduledPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_Dwelling_Cov_HOE:
         if (dwellingCov.HODW_ExecutiveCov_HOE_ExtTerm.Value)
@@ -132,6 +133,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HODW_SpecificOtherStructure_HOE_Ext:
         rateOtherStructuresRentedToOthersCoverage(dwellingCov, dateRange)
+        break
+      case HODW_PermittedIncOcp_HOE_Ext:
+        ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
         break
     }
   }
@@ -400,6 +404,21 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Rate the Permitted Incidental Occupancies Coverage
+   */
+  function ratePermittedIncidentalOccupanciesCoverage(dwellingCov: HODW_PermittedIncOcp_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: ratePermittedIncidentalOccupanciesCoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Permitted Incidental Occupancies Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    * Rate the Special Limits Personal property coverage
    */
   function rateSpecialLimitsPersonalPropertyCoverage(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange) {
@@ -632,7 +651,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
   /**
    * Rate the Scheduled Personal property
-   * TODO : Update the scheduled personal property after the mapping to the item type is done
    */
   function rateScheduledPersonalProperty(dwellingCov: HODW_ScheduledProperty_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateScheduledPersonalProperty to rate Personal Property Scheduled Coverage", this.IntrinsicType)
@@ -717,7 +735,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private function getScheduledPersonalPropertyCovParameterSet(line: PolicyLine, item: ScheduledItem_HOE): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
-        TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> null//new HOScheduledPersonalPropertyRatingInfo(item)
+        TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> new HOGroup3ScheduledPersonalPropertyRatingInfo(item,item.DwellingCov.Dwelling.HOLocation.PolicyLocation.County)
     }
   }
 

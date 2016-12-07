@@ -56,6 +56,31 @@ class CoveragesUtil {
       case "HODW_PremisesLiability_HOE_Ext":
         result = isPremiseLiabilityCoverageAvailable(coverable as HomeownersLine_HOE)
         break
+      case "BP7CondoCommlUnitOwnersOptionalCovsLossAssess":
+      case "BP7CondoCommlUnitOwnersOptionalCovMiscRealProp":
+        result = isCondominiumCoveragesAvailable(coverable as BP7Classification)
+        break
+      case "BP7TheftLimitations":
+        result = isTheftCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7BarbersBeauticiansProfessionalLiability_EXT":
+        result = isBarbAndBeautiProfLiabCoverageAvailable(coverable as BP7Classification)
+        break
+      case "BP7FuneralDirectorsProflLiab_EXT":
+        result = isFuneralDirectorsProfLiabCoverageAvailable(coverable as BP7Classification)
+        break
+      case "BP7OptProfLiabCov_EXT":
+        result = isOpticiansProfLiabCoverageAvailable(coverable as BP7Classification)
+        break
+      case "BP7HearingAidSvcsProfLiab_EXT":
+        result = isHearingAidSvcsProfLiabCoverageAvailable(coverable as BP7Classification)
+        break
+      /*case "DataCmprmiseRspnseExpns_EXT":
+        result = isDataCmprmiseRspnseExpnsFirstPartyCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7DataCompromiseDfnseandLiabCov_EXT":
+        result = isDataCompromiseDfnseandLiabCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break*/
       default:
     }
 
@@ -86,9 +111,30 @@ class CoveragesUtil {
       case "HODW_WindHurricaneHailExc_HOE_Ext":
         result = isWindHurricaneAndHailExclusionAvailable(coverable as HomeownersLine_HOE)
         break
+      case "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT":
+        result = isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7WindstormOrHailExcl_EXT":
+        result = isWindstormOrHailExclusionAvailable(coverable as BP7BusinessOwnersLine)
+        break
       default:
     }
 
+    return result
+  }
+
+  public static function isConditionAvailable(conditionPattern : String, coverable : Coverable) : boolean{
+    var result = true
+
+    switch(conditionPattern){
+      case "BP7FloridaChangesCondoAssociation_EXT":
+        result = isFloridaChangesCondoAssociationConditionAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "BP7FloridaChangesCondoUnitOwner_EXT":
+        result = isFloridaChangesCondoUnitOwnerConditionAvailable(coverable as BP7BusinessOwnersLine)
+        break
+        default:
+    }
     return result
   }
 
@@ -98,6 +144,9 @@ class CoveragesUtil {
     switch(pattern){
       case "HODW_AckNoWindstromHail_HOE_Ext":
         result = getAcknowledgementOfNoWindstormHailCoverageExistence(coverable as HomeownersLine_HOE)
+        break
+      case "BP7ClassifnExclPersonalAdvertisingInjury_Ext":
+        result = getPersonalAdvertisingInjuryExclusionExistence(coverable as BP7Classification)
         break
       default:
         break
@@ -176,6 +225,19 @@ class CoveragesUtil {
     }
   }
 
+  private static function isTheftCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(!bp7Line.BP7TheftExclusion_EXTExists){
+      return true
+    }else{//If Theft Exclusion Exists remove Theft Coverage and its Coverage Terms
+      for(classification in bp7Line.AllClassifications){
+        if(classification.theftLimitationsAvailable()){
+          classification.BP7TheftLimitations.remove()
+        }
+      }
+    }
+    return false
+  }
+
   private static function isWorkersCompForEmployeesAvailable(hoLine: HomeownersLine_HOE) : boolean{
     var result = true
 
@@ -242,6 +304,31 @@ class CoveragesUtil {
        and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County))
   }
 
+  /*Available when the Occupancy type is:
+  1. Building Owner (or)
+  2. Building Owner and Occupant and the under the Building Coverage, the 'building owner occupies' field is either < or > 65% (or)
+  3. Condominium Association (or)
+  4. Condominium Unit Owner*/
+  private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    for(building in bp7Line.AllBuildings){
+      if( building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
+          ( building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
+              (building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
+                (building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
+        return true
+      }
+    }
+    return false
+  }
+
+  private static function isWindstormOrHailExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue!=null &&
+        bp7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("NA_EXT")){
+      return true
+    }
+    return false
+  }
+
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
     var result : ExistenceType = null
 
@@ -253,17 +340,98 @@ class CoveragesUtil {
 
     return result
   }
+
+  private static function getPersonalAdvertisingInjuryExclusionExistence(bp7Classification:BP7Classification):ExistenceType{
+    var result : ExistenceType = TC_Electable
+    if(bp7Classification.ClassCode_Ext=="65121B" || bp7Classification.ClassCode_Ext=="65121K"){
+      result = TC_REQUIRED
+    }
+    return result
+  }
   
   private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
     return  bp7Line.BP7EmployeeDishtyExists
   }
 
   private static function isInterruptionComputerOpsCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    return  bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXTExists
+    if(bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7NumberOfMonths_EXTTerm.OptionValue!=null &&
+        !bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7NumberOfMonths_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7NoCoverage_EXT")){
+      return true
+    }
+    return false
   }
+
+  /*private static function isDataCmprmiseRspnseExpnsFirstPartyCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    //var jobWizardHelper = (bp7Line as PolicyLine).JobType
+    if(!bp7Line.BP7DataCompromiseDfnseandLiabCov_EXTExists){
+      return true
+    }
+    return false
+  }
+
+  private static function isDataCompromiseDfnseandLiabCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    //var jobWizardHelper = (bp7Line as PolicyLine).JobType
+    if(!bp7Line.DataCmprmiseRspnseExpns_EXTExists){
+      return true
+    }
+    return false
+  }*/
 
   private static function isBP7CapLossesFromCertfdActsTerrsmCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     return !bp7Line.BP7ExclOfTerrorismExists
+  }
+
+  private static function isFloridaChangesCondoUnitOwnerConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    for(classification in bp7Line.AllClassifications){
+      if(classification.ClassCode_Ext=="60999"){
+        return true
+      }
+    }
+    return false
+  }
+
+  private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    for(classification in bp7Line.AllClassifications){
+      if(classification.ClassCode_Ext=="60999A"){
+        return true
+      }
+    }
+    return false
+  }
+
+  private static function isBarbAndBeautiProfLiabCoverageAvailable(bp7Classification:BP7Classification):boolean{
+    if( (bp7Classification.ClassCode_Ext=="71332" || bp7Classification.ClassCode_Ext=="71952") ){
+      return true
+    }
+    return false
+  }
+
+  private static function isFuneralDirectorsProfLiabCoverageAvailable(bp7Classification:BP7Classification):boolean{
+    if(bp7Classification.ClassCode_Ext=="71865"){
+      return true
+    }
+    return false
+  }
+
+  private static function isOpticiansProfLiabCoverageAvailable(bp7Classification:BP7Classification):boolean{
+    if(bp7Classification.ClassCode_Ext=="59954"){
+      return true
+    }
+    return false
+  }
+
+  private static function isHearingAidSvcsProfLiabCoverageAvailable(bp7Classification:BP7Classification):boolean{
+    if(bp7Classification.ClassCode_Ext=="59974"){
+      return true
+    }
+    return false
+  }
+
+  private static function isCondominiumCoveragesAvailable(bp7Classification:BP7Classification):boolean{
+    if(bp7Classification.Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER || bp7Classification.Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOUNITOWNEROCCUPANT ){
+      return true
+    }
+    return false
   }
 
   private static function isBuildingMoneySecuritiesCoverageAvailable(bp7Building :BP7Building) : boolean {

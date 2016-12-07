@@ -1,6 +1,9 @@
 package una.pageprocess
 
 uses gw.api.web.job.JobWizardHelper
+uses gw.api.productmodel.ClausePattern
+uses gw.api.util.DisplayableException
+
 /**
  * Created with IntelliJ IDEA.
  * User: tmanickam
@@ -17,27 +20,6 @@ class BP7PCFController {
     this._bp7Line = bp7Line
   }
 
-  static function setTheftLimitationValue(line: BP7BusinessOwnersLine):String{
-    var optionValue:String
-    if(line.BP7TheftExclusion_EXTExists){
-      for(classification in line.AllClassifications){
-        if(classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm!=null){
-          classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.setValueFromString("BP7TheftExcluded_EXT")
-          optionValue = (classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue) as String
-        }
-      }
-    }
-    return optionValue
-  }
-
-  static function isBarbAndBeautiProfLiabCoverageAvailable(classification:BP7Classification):boolean{
-    if( classification typeis BP7BarbersBeauticiansProfessionalLiability_EXT and (classification.ClassCode_Ext=="71332" ||
-        classification.ClassCode_Ext=="71952") ){
-      return true
-    }
-    return false
-  }
-
   static function prodsCompletedOpsCovTermActions(line:BP7BusinessOwnersLine){
     if(line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
       line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
@@ -50,4 +32,18 @@ class BP7PCFController {
     if(line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Excluded_EXT"))
       jobWizardHelper.addInfoWebMessage("Products/Completed Ops. has been changed to Excluded")
   }
+
+  static function dataCompromiseCoverageRestriction(coverable:Coverable, coveragePatterns:ClausePattern[], jobWizardHelper : JobWizardHelper){
+
+    if(coverable.PolicyLine typeis BP7BusinessOwnersLine)
+    {
+    for(coveragePattern in coveragePatterns){
+      if( ((coverable.PolicyLine as BP7BusinessOwnersLine).BP7DataCompromiseDfnseandLiabCov_EXTExists && coveragePattern == "DataCmprmiseRspnseExpns_EXT" ) ||
+          ((coverable.PolicyLine as BP7BusinessOwnersLine).DataCmprmiseRspnseExpns_EXTExists && coveragePattern == "BP7DataCompromiseDfnseandLiabCov_EXT")  ){
+            jobWizardHelper.addErrorWebMessage("Only one Data Compromise Coverage can be added")
+            //throw new gw.api.util.DisplayableException("Only one Data Compromise Coverage can be added")
+      }
+    }
+  }
+    }
 }

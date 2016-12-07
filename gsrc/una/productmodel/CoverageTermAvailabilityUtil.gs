@@ -162,10 +162,6 @@ class CoverageTermAvailabilityUtil {
         default:
         break
     }
-    if( patternCode.equalsIgnoreCase("FursandFurGarments_EXT")|| patternCode.equalsIgnoreCase("JewerlyWatchesetc_EXT") ||
-        patternCode.equalsIgnoreCase("PatternsDiesMoldsandForms") ){
-          result = isTheftCoverageAvailable(coverable as BP7Classification)
-    }
 
     if( patternCode.equalsIgnoreCase("DataRestorationCosts_EXT") || patternCode.equalsIgnoreCase("SysRestorationCosts_EXT") ){
           result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
@@ -618,17 +614,6 @@ class CoverageTermAvailabilityUtil {
       }
 
   }
-  
-  private static function isTheftCoverageAvailable(bp7Classification:BP7Classification):boolean{
-    if(bp7Classification.BP7TheftLimitations!=null and bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm!=null and
-        bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue!=null){
-          if(bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7TheftIncluded_EXT")){
-            return true
-          }
-     }
-    return false
-  }
-
 
   private static function isExecutiveCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
     var result = true

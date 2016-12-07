@@ -7,10 +7,16 @@
     <Require
       name="renewals"
       type="RenewalQuery"/>
+    <Variable
+      name="activity"
+      type="Activity"/>
     <RowIterator
       editable="false"
       elementName="renewal"
       value="renewals">
+      <Variable
+        name="activity"
+        type="Activity"/>
       <ToolbarFilter
         name="renewalsFilter">
         <ToolbarFilterOptionGroup
@@ -53,6 +59,35 @@
           value="renewal.Policy.Product"/>
         <Cell
           enableSort="false"
+          id="Transaction"
+          label="displaykey.Web.DesktopJobsLV.Transaction"
+          value="activity.Job.Subtype"/>
+        <Cell
+          enableSort="false"
+          id="PolicyType"
+          label="displaykey.Web.DesktopJobsLV.PolicyType"
+          value="getPolicyType(activity.PolicyPeriod)"/>
+        <Cell
+          enableSort="false"
+          id="Organization"
+          label="displaykey.Web.DesktopJobsLV.Organization"
+          value="activity.ProducerCode.Organization"/>
+        <Cell
+          enableSort="false"
+          id="ProducerCode"
+          label="displaykey.Web.DesktopJobsLV.ProducerCode"
+          value="activity.ProducerCode.Code"/>
+        <Cell
+          enableSort="false"
+          id="SubStatus"
+          label="displaykey.Web.DesktopJobsLV.SubStatus"
+          value="activity.SubStatus"/>
+        <Cell
+          id="Description"
+          label="displaykey.Web.DesktopJobsLV.Description"
+          value="activity.Description"/>
+        <Cell
+          enableSort="false"
           id="Producer"
           label="displaykey.Web.DesktopJobsLV.Producer"
           value="renewal.getUserRoleAssignmentByRole( &quot;Producer&quot; ).AssignedUser"
@@ -65,5 +100,16 @@
           visible="perm.System.viewproducerstyledesktopdetails"/>
       </Row>
     </RowIterator>
+    <Code><![CDATA[function getPolicyType(period:PolicyPeriod):String
+      {
+        if(period.HomeownersLine_HOEExists)
+          return period.HomeownersLine_HOE.HOPolicyType.DisplayName
+        if(period.BOPLineExists)
+          return "Business Owners"
+        if(period.CPLineExists || period.GLLineExists)
+          return "Commercial Package"
+        return "None"
+
+      }]]></Code>
   </ListViewPanel>
 </PCF>

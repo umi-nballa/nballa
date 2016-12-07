@@ -36,7 +36,21 @@ class CPAutoPopulateUtil {
           gline.GLCGLCov.GLCGLAggLimitTerm.OptionValue=gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue
         }
       catch(e)
-      {}
+      {
+
+      }
+
+      try
+      {
+        if(gline.GLHiredAutoNonOwnedLiab_EXTExists)
+        {
+          gline.GLHiredAutoNonOwnedLiab_EXT.HiredAutoNonOwnedLimit_EXTTerm.Value= gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value
+        }
+      }
+          catch(e)
+          {
+
+          }
     }
 
 
@@ -45,6 +59,16 @@ class CPAutoPopulateUtil {
   public static function setCoveragesOnToggle(covpattern:gw.api.productmodel.ClausePattern, coverable:Coverable):void
   {
     _logger.info("1 is building  " + (coverable typeis CPBuilding) + ": pattern name " + covpattern.Name + ": PolicyLinePattern " + covpattern.PolicyLinePattern + ": policylinepattern " + covpattern.PolicyLinePattern.CodeIdentifier )
+
+    if(coverable typeis GeneralLiabilityLine)
+      {
+        var gline = coverable as GeneralLiabilityLine
+        if(gline.GLHiredAutoNonOwnedLiab_EXTExists)
+        {
+          gline.GLHiredAutoNonOwnedLiab_EXT.HiredAutoNonOwnedLimit_EXTTerm.Value= gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value
+        }
+      }
+
 
     if(coverable typeis CPBuilding)
       {
@@ -150,7 +174,7 @@ class CPAutoPopulateUtil {
 
     cBuilding.CoverageForm=cLine.CoverageForm
 
-      if(cLine.EquipmentBreakdownEnhancement!=null && cLine.EquipmentBreakdownEnhancement.trim()!="")
+      if(cLine.EquipmentBreakdownEnh!=null && cLine.EquipmentBreakdownEnh!=false)
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
 //        cBuilding.CPEquipmentBreakdownEnhance_EXT?.CovTerms?.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)

@@ -236,8 +236,8 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       if((_line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_CA || _line.BaseState == typekey.Jurisdiction.TC_AZ) and (_line.Dwelling?.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO6))
         return new UNAHOGroup1RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-      if((_line.BaseState == typekey.Jurisdiction.TC_NC || _line.BaseState == typekey.Jurisdiction.TC_SC)
-          and (_line.Dwelling?.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO6))
+      if(_line.BaseState == typekey.Jurisdiction.TC_SC
+          and _line.Dwelling?.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO6)
         return new UNAHOGroup2RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       if((_line.BaseState == typekey.Jurisdiction.TC_FL || _line.BaseState == typekey.Jurisdiction.TC_HI)
           and (_line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3))

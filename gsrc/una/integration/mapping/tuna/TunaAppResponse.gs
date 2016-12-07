@@ -54,6 +54,7 @@ class TunaAppResponse {
   var _roofType : List<PropertyDataModel>                      as RoofType
   var _squareFootage : List<PropertyDataModel>                 as SquareFootage
   var _windPool :List<PropertyDataModel>                       as WindPool
+  var _earthQuakeTerritory :List<PropertyDataModel>            as EarthQuakeTerritory
 
 
 

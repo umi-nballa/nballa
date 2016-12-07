@@ -123,7 +123,7 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
   }
 
   function theftLimitationsAvailable() : boolean {
-    return this.BP7ClassificationBusinessPersonalPropertyExists
+    return this.BP7ClassificationBusinessPersonalPropertyExists  and !(this.PolicyLine as entity.BP7BusinessOwnersLine).BP7TheftExclusion_EXTExists
   }
 
   function motelLiabGuestsPropAvailable() : boolean {
@@ -233,5 +233,4 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
     }
     return ExistenceType.TC_REQUIRED
   }
-
 }

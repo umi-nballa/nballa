@@ -66,6 +66,33 @@ class CreditReportScreen {
     return period
   }
 
+  static function setDefaultCreditReport(period:PolicyPeriod):boolean
+  {
+    /*
+    FL: 749
+NC: 746
+NV: 720
+TX: 721
+SC: 721
+     */
+    if(period.HomeownersLine_HOE.Dwelling.FirstTimeDeededHome_Ext)
+      {
+        var st = period.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State
+        if(st==typekey.State.TC_FL)
+          period.CreditInfoExt.CreditReport.CreditScore = "749"
+        if(st==typekey.State.TC_NC)
+          period.CreditInfoExt.CreditReport.CreditScore = "746"
+        if(st==typekey.State.TC_NV)
+          period.CreditInfoExt.CreditReport.CreditScore = "720"
+        if(st==typekey.State.TC_TX)
+          period.CreditInfoExt.CreditReport.CreditScore = "721"
+        if(st==typekey.State.TC_SC)
+          period.CreditInfoExt.CreditReport.CreditScore = "721"
+
+      }
+    return true
+  }
+
   static function orderCreditReport(creditReportContact: PolicyContactRole, period : PolicyPeriod, hasPrimaryNamedInsuredMoved : boolean,
             hasPrimaryNamedInsuredNameChanged : boolean, aFormerAddress : Address, formerFirstName : String, formerMiddleName : String,
             formerLastName : String) : PolicyPeriod {

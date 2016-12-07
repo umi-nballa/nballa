@@ -21,6 +21,10 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _hurricanePercentage : String as HurricanePercentage
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
   var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
+  var _isPermittedIncidentalOccupancyInDwelling: boolean as IsPermittedIncidentalOccupancyInDwelling = false
+  var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures = false
+  var _permittedIncidentalOccupancyOtherStructuresLimit: BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
+  var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -51,6 +55,13 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
     if(dwellingCov typeis HODW_SpecificOtherStructure_HOE_Ext){
       _otherStructuresRentedToOthersLimit = dwellingCov.HODW_IncreasedLimit_HOETerm?.Value
+    }
+
+    if (dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
+      _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value
+      _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
+      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
+      _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
     }
   }
 }

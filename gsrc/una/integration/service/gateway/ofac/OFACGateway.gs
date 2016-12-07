@@ -51,10 +51,12 @@ class OFACGateway implements OFACInterface {
       var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
       _logger.debug("result:" + result)
 
+      if(result != null) {
       var contactAndScoreMap = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
 
       if (contactAndScoreMap != null)
         ofacResponseMapper.persistOFACResult(contactAndScoreMap, policyPeriod)
+        }
     } catch (exp: Exception) {
       _logger.error(CLASS_NAME + " :: " + "validateOFACEntity" + " : StackTrace = " + exp.StackTraceAsString)
      }

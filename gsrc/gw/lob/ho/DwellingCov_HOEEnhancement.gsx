@@ -34,7 +34,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     this.ScheduledItemAutoNumberSeq = new AutoNumberSequence(bundle)
   }
 
-  private function renumberScheduledItems() {
+  public function renumberScheduledItems() {
     this.ScheduledItemAutoNumberSeq.renumber(this.ScheduledItems, ScheduledItem_HOE.Type.TypeInfo.getProperty("ItemNumber") )
   }
 

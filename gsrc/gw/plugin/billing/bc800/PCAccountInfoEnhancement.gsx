@@ -23,12 +23,14 @@ enhancement PCAccountInfoEnhancement : PCAccountInfo
 
     var billingContacts = new ArrayList<PCContactInfo>()
     var accountBillingContacts = account.getAccountContactsWithRole( typekey.AccountContactRole.TC_BILLINGCONTACT)
+    var addlInterests = PolicyInfoUtil.retrieveAdditionalInterests(account.Policies.first().LatestPeriod)
     for(b in accountBillingContacts){
       if(insuredContactID == b.Contact.ID){
         this.InsuredIsBilling = true
       }else{
         var PCContactInfo = new PCContactInfo()
         PCContactInfo.sync( b.Contact )
+        PCContactInfo.LoanNumber = addlInterests?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == b.Contact.AddressBookUID)?.ContractNumber
         billingContacts.add( PCContactInfo )
       }
     }

@@ -4,7 +4,7 @@
   coverageCategory="BP7ClassificationStdGrp"
   coverageSubtype="BP7ClassificationCov"
   coveredPartyType="FirstParty"
-  existence="Required"
+  existence="Electable"
   lookupTableName="BP7ClassificationCov"
   owningEntityType="BP7Classification"
   policyLinePattern="BP7Line"
@@ -36,36 +36,6 @@
     <OptionCovTermPattern
       aggregationModel="po"
       choiceLookupTableName="BP7ClassificationCovOpt"
-      codeIdentifier="BP7LimitOptions_EXT"
-      coverageColumn="ChoiceTerm1"
-      lookupTableName="BP7ClassificationCovTerm"
-      modelType="Limit"
-      priority="110"
-      public-id="BP7LimitOptions_EXT"
-      required="true"
-      restrictionModel="bipd"
-      valueType="money">
-      <DefaultsSet/>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zglgmshgrku5568gg166c5n1nka"
-          currency="usd"
-          optionCode="BP7TheftExcluded_EXT"
-          priority="100"
-          public-id="zglgmshgrku5568gg166c5n1nka"
-          value="0"/>
-        <CovTermOpt
-          codeIdentifier="zvsj84ru8obdedf6mdb7dn3pnl9"
-          currency="usd"
-          optionCode="BP7TheftIncluded_EXT"
-          priority="100"
-          public-id="zvsj84ru8obdedf6mdb7dn3pnl9"
-          value="1"/>
-      </Options>
-    </OptionCovTermPattern>
-    <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="BP7ClassificationCovOpt"
       codeIdentifier="FursandFurGarments_EXT"
       coverageColumn="ChoiceTerm2"
       lookupTableName="BP7ClassificationCovTerm"
@@ -75,7 +45,6 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("FursandFurGarments_EXT", BP7Classification)]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="z7kiislnqhjdq2k23902ob2bjm8"
@@ -105,7 +74,6 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("FursandFurGarments_EXT", BP7Classification)]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="zs2guj5ufi2nrblph9a4t7qkdha"
@@ -135,7 +103,6 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("FursandFurGarments_EXT", BP7Classification)]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="z3pgiksdikqjs0rrln09dl3ttub"
@@ -151,6 +118,39 @@
           priority="100"
           public-id="zncggg2rh0ksjfmcj912hmc9ok9"
           value="2500"/>
+      </Options>
+    </OptionCovTermPattern>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7ClassificationCovOpt"
+      codeIdentifier="BP7LimitOptions_EXT"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Other"
+      priority="110"
+      public-id="BP7LimitOptions_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="other">
+      <DefaultsSet>
+        <CovTermDefault
+          codeIdentifier="zpki0tmvnf7u92f60s69ajvofeb"
+          defaultValue="BP7TheftIncluded_EXT"
+          public-id="zpki0tmvnf7u92f60s69ajvofeb"/>
+      </DefaultsSet>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zcjh875h0238q1rdvvjipa79vm8"
+          optionCode="BP7TheftIncluded_EXT"
+          priority="200"
+          public-id="zcjh875h0238q1rdvvjipa79vm8"
+          value="1"/>
+        <CovTermOpt
+          codeIdentifier="z36j4nekvtctla10tt0jb23mm78"
+          optionCode="BP7TheftExcluded_EXT"
+          priority="100"
+          public-id="z36j4nekvtctla10tt0jb23mm78"
+          value="0"/>
       </Options>
     </OptionCovTermPattern>
   </CovTerms>

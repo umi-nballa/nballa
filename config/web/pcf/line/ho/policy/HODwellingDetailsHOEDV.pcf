@@ -32,7 +32,7 @@
       type="una.config.TunaCodesBO"/>
     <Variable
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingInformation(policyPeriod)"
-      name="tunares"/>
+      name="tunaAppResponse"/>
     <InputColumn
       labelWidth="250">
       <Label
@@ -61,7 +61,7 @@
           <IteratorSort
             sortBy="TerritoryCode.PolicyLinePattern.Priority"
             sortOrder="1"/>
-          <!-- <PickerInput
+          <PickerInput
             available="dwelling.HOLocation.PolicyLocation.State != null"
             editable="true"
             id="TerritoryCode"
@@ -69,8 +69,8 @@
             pickLocation="TerritoryCodeSearchPopup.push(dwelling.HOLine.Branch, TerritoryCode)"
             required="true"
             validationExpression="TerritoryCode.prelimValidate()"
-            value="TerritoryCode.Code"/> -->
-          <RangeInput
+            value="TerritoryCode.Code"/>
+          <!-- <RangeInput
             available="dwelling.HOLocation.PolicyLocation.State != null"
             editable="true"
             id="TerritoryCode"
@@ -78,7 +78,7 @@
             required="true"
             validationExpression="TerritoryCode.prelimValidate()"
             value="TerritoryCode.Code"
-            valueRange="tunares.TerritoryCodes"/>
+            valueRange="tunaAppResponse.TerritoryCodes"/> -->
         </InputIterator>
       </InputSet>
       <InputSet
@@ -201,9 +201,9 @@
           id="BCEGTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGTunaReturned_Ext"
           value="dwelling.HOLocation.BCEGTunaReturned_Ext"
-          valueRange="tunares.BCEGGrade//getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)">
           <PostOnChange
-            onChange="if(tunares.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_USERENTERED}"
+            onChange="if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_USERENTERED}"
             target="bceg_Ext"/>
         </RangeInput>
         <Input
@@ -235,9 +235,9 @@
           id="PCCodeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
           value="dwelling.HOLocation.DwellingPCCodeTunaReturned_Ext"
-          valueRange="tunares.ProtectionClass//getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
           <PostOnChange
-            onChange="if(tunares.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_USERENTERED}"
+            onChange="if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_USERENTERED}"
             target="bceg_Ext"/>
         </RangeInput>
         <Input
@@ -269,9 +269,9 @@
           id="WindPoolTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.WindPoolTunaReturned_Ext"
           value="dwelling.HOLocation.WindPoolTunaReturned_Ext"
-          valueRange="tunares.WindPool//getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)">
           <PostOnChange
-            onChange="if(tunares.WindPool.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_USERENTERED}"
+            onChange="if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_USERENTERED}"
             target="WindPool_Ext"/>
         </RangeInput>
         <Input
@@ -303,9 +303,9 @@
           id="DistToCoastTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
           value="dwelling.HOLocation.DistToCoastTunaReturned_Ext"
-          valueRange="tunares.DistanceToCoast//getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)">
           <PostOnChange
-            onChange="if(tunares.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_USERENTERED}"
+            onChange="if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_USERENTERED}"
             target="WindPool_Ext"/>
         </RangeInput>
         <Input
@@ -337,9 +337,9 @@
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
           value="dwelling.HOLocation.DistBOWTunaReturned_Ext"
-          valueRange="tunares.Datums//getTunaCodes(&quot;bceg&quot;)//TO BE replaced with INT TUNA app Objects">
+          valueRange="tunaAppResponse.Datums">
           <PostOnChange
-            onChange="if(tunares.Datums.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_USERENTERED}"
+            onChange="if(tunaAppResponse.Datums.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_USERENTERED}"
             target="WindPool_Ext"/>
         </RangeInput>
         <Input

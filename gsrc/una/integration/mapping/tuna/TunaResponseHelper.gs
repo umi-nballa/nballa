@@ -35,6 +35,7 @@ class TunaResponseHelper {
   final static var FIRE_LINE_ACCESS = "FirelineAccess"
   final static var FIRE_LINE_SLOPE = "FirelineSlope"
   final static var FIRE_LINE_SHIA = "FirelineSHIA"
+  final static var EARTH_QUAKE_TERRITORY = "EarthquakeTerritory"
 
 
   // Mapping datums
@@ -118,6 +119,10 @@ class TunaResponseHelper {
         case WIND_POOL:
             var windList = dynamicListMapper(propDetail)
             response.WindPool = windList
+            break
+        case EARTH_QUAKE_TERRITORY:
+            var earthQuakeList = dynamicListMapper(propDetail)
+            response.EarthQuakeTerritory = earthQuakeList
             break
 
       }

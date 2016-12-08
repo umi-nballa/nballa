@@ -29,7 +29,8 @@
   <ColumnInfo Path="CPBldgExtraExpenseCov.CPBldgExtraExpenseCovLimit"
     Header="Export.CPBuilding.ExtraExpenseCoverageLimit"
     ColumnType="gw.api.domain.covterm.CovTerm"/>
-  <Parent>
+
+		<Parent>
       <ColumnInfo Path="CPLocation.PublicID"
         Header="Export.CPBuilding.LocationID"
         Locked="true"
@@ -70,6 +71,8 @@
         <Dependent purpose="State">stateColumn</Dependent>
       </ColumnInfo>
   </Parent>
+  
+ 
   <ColumnInfo Path="ClassCode"
     Header="Export.CPBuilding.ClassCode"
     ColumnType="entity.CPClassCode"
@@ -192,11 +195,191 @@
     Header="RoofShapeDescription"
     ColumnType="java.lang.String"
     RequiredForImport="true" />
-
-	<ColumnInfo Path="ResQuestions.wbdr"
-    Header="Export.CPBuilding.ResQuestions.wbdr"
+	
+	<ColumnInfo 
+	Path="wbdr"
+    Header="wbdr"
 	ColumnType="java.lang.String"
     RequiredForImport="false" />
+
+  	<ColumnInfo Path="terexp"
+    Header="ResQuestions.terexp"
+	ColumnType="typekey.CPTerrainExp_Ext"
+    RequiredForImport="false" />
+	
+	<ColumnInfo Path="desgr3"
+    Header="ResQuestions.desgr3"
+	ColumnType="typekey.CPDesExpBldgGrp3_Ext"
+    RequiredForImport="false" />	
+	<ColumnInfo Path="guswind"
+    Header="ResQuestions.guswind"
+	ColumnType="typekey.CPGustWindSpeedDes_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="guswindloc"
+    Header="ResQuestions.guswindloc"
+	ColumnType="typekey.CPGustWindSpeedLoc_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="intpredes"
+    Header="ResQuestions.intpredes"
+	ColumnType="typekey.CPInternalPressureDes_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="openprt"
+    Header="ResQuestions.openprt"
+	ColumnType="typekey.CPOpenProt_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="roofcv"
+    Header="ResQuestions.roofcv"
+	ColumnType="typekey.CPRoofCover_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="roofdecat"
+    Header="ResQuestions.roofdecat"
+	ColumnType="typekey.CPRoofDeckAttachment_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="roofdk"
+    Header="ResQuestions.roofdk"
+	ColumnType="typekey.CPRoofDeck_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="roofwl"
+    Header="ResQuestions.roofwl"
+	ColumnType="typekey.CPRoofWallConn_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="swrr"
+    Header="ResQuestions.swrr"
+	ColumnType="typekey.CPSwr_Ext"
+    RequiredForImport="false" />
+	<ColumnInfo Path="roofcvatach"
+    Header="ResQuestions.roofcvatach"
+	ColumnType="typekey.CPRoofCoveringAttach_Ext"
+    RequiredForImport="false" />	
+	
+
+	<ColumnInfo Path="windstorm"
+    Header="ResQuestions.windstorm"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+<ColumnInfo Path="windstormexcl"
+    Header="ResQuestions.windstormexcl"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+	<ColumnInfo Path="windmiti5"
+    Header="ResQuestions.windmiti5"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+
+
+	<!--ColumnInfo Path="windmitidate"
+    Header="ResQuestions.windmitidate"
+	ColumnType="java.lang.String"
+    RequiredForImport="false" /-->
+ 
+	<ColumnInfo Path="Building.Heating.YearAdded"
+    Header="Heating.YearAdded"
+	ColumnType="java.lang.Integer"
+    RequiredForImport="false" />
+	<ColumnInfo Path="Building.Plumbing.YearAdded"
+    Header="Plumbing.YearAdded"
+	ColumnType="java.lang.Integer"
+    RequiredForImport="false" />
+	<ColumnInfo Path="Building.Roofing.YearAdded"
+    Header="Roofing.YearAdded"
+	ColumnType="java.lang.Integer"
+    RequiredForImport="false" />
+	<ColumnInfo Path="Building.Wiring.YearAdded"
+    Header="Wiring.YearAdded"
+	ColumnType="java.lang.Integer"
+    RequiredForImport="false" />
+	
+	<ColumnInfo Path="Building.BuildingNum"
+    Header="#Buildings"
+	ColumnType="java.lang.Integer"
+    RequiredForImport="false" />
+
+  <ColumnInfo Path="Building.YearBuilt"
+    Header="YearBuilt"
+	ColumnType="java.lang.Integer"
+    RequiredForImport="false" /> 
+<ColumnInfo Path="Building.NumStories"
+    Header="#Stories"
+    ColumnType="java.lang.Integer"
+    RequiredForImport="false" /> 
+
+ <ColumnInfo Path="Building.NumUnits"
+    Header="#Units"
+    ColumnType="java.lang.Integer"
+    RequiredForImport="false" />
+
+<ColumnInfo Path="Building.Sprinklered"
+    Header="Sprinklered"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" /> 
+
+	<ColumnInfo Path="ActiveMonitoringVideo"
+    Header="ActiveMonitoringVideo"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+	<ColumnInfo Path="AutomaticFireSuppress"
+    Header="AutomaticFireSuppress"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="CentralBurglarAlarm"
+    Header="CentralBurglarAlarm"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="CentralFireAlarm"
+    Header="CentralFireAlarm"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="ContinuousRecVideo"
+    Header="ContinuousRecVideo"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="ExteriorMotionLighting"
+    Header="ExteriorMotionLighting"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="GatedAccess"
+    Header="GatedAccess"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="GuardDogs"
+    Header="GuardDogs"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="GuardWatchmen"
+    Header="GuardWatchmen"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+		<ColumnInfo Path="LocalBurglarAlarm"
+    Header="LocalBurglarAlarm"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+	<ColumnInfo Path="LocalFireAlarm"
+    Header="LocalFireAlarm"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+	<ColumnInfo Path="MotionActivatedVideo"
+    Header="MotionActivatedVideo"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false" />
+
+	<ColumnInfo Path="caged"
+    Header="AirCondProt.caged"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false"/>
+	<ColumnInfo Path="alarmed"
+    Header="AirCondProt.alarmed"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false"/>
+	<ColumnInfo Path="monitored"
+    Header="AirCondProt.monitored"
+	ColumnType="java.lang.Boolean"
+    RequiredForImport="false"/>
+
+	
+	<ColumnInfo Path="OtherFacilitiesDescription"
+    Header="OtherFacilitiesDescription"
+	ColumnType="java.lang.String"
+    RequiredForImport="false"/>
 
 		
   </EntityInfo>

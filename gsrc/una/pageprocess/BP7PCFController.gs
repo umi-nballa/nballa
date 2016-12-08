@@ -34,6 +34,9 @@ class BP7PCFController {
   }
 
   static function dataCompromiseCoverageRestriction(coverable:Coverable, coveragePatterns:ClausePattern[], jobWizardHelper : JobWizardHelper){
+
+    if(coverable.PolicyLine typeis BP7BusinessOwnersLine)
+    {
     for(coveragePattern in coveragePatterns){
       if( ((coverable.PolicyLine as BP7BusinessOwnersLine).BP7DataCompromiseDfnseandLiabCov_EXTExists && coveragePattern == "DataCmprmiseRspnseExpns_EXT" ) ||
           ((coverable.PolicyLine as BP7BusinessOwnersLine).DataCmprmiseRspnseExpns_EXTExists && coveragePattern == "BP7DataCompromiseDfnseandLiabCov_EXT")  ){
@@ -42,4 +45,5 @@ class BP7PCFController {
       }
     }
   }
+    }
 }

@@ -126,9 +126,9 @@ uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.Policy
 uses gwservices.pc.dm.gx.base.policy.PolicyPeriodOfferingPopulator
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_GeneralLiabilityLine_GLExposuresWM_Entry
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_GeneralLiabilityLine_GLLineCoverages_Entry
-uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ProtectionDetails
-uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ResQuestions
-uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AirCondProt
+//uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ProtectionDetails
+//uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ResQuestions
+//uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AirCondProt
 uses gwservices.pc.dm.gx.shared.product.GLExposurePopulator
 uses gwservices.pc.dm.gx.lob.CPP.CPBuildingPrtcnDetailsPopulator
 uses gwservices.pc.dm.gx.lob.CPP.CPBuildingResQuestionsPopulator
@@ -232,9 +232,9 @@ class Registry {
       PolicyPeriod_Offering -> getConstructor(PolicyPeriodOfferingPopulator),
       PolicyLine_Entity_GeneralLiabilityLine_GLExposuresWM_Entry -> getConstructor(GLExposurePopulator),
       PolicyLine_Entity_GeneralLiabilityLine_GLLineCoverages_Entry -> getConstructor(CoveragePopulator),
-      CPBuilding_ProtectionDetails -> getConstructor(CPBuildingPrtcnDetailsPopulator),
-      CPBuilding_ResQuestions -> getConstructor(CPBuildingResQuestionsPopulator),
-      CPBuilding_AirCondProt -> getConstructor(CPBuildingAirConPopulator),
+      //CPBuilding_ProtectionDetails -> getConstructor(CPBuildingPrtcnDetailsPopulator),
+      //CPBuilding_ResQuestions -> getConstructor(CPBuildingResQuestionsPopulator),
+      //CPBuilding_AirCondProt -> getConstructor(CPBuildingAirConPopulator),
       GLExposure_ClassCode -> getConstructor(GLExposClassCodePopulator),
       PolicyLine_Entity_BP7BusinessOwnersLine_AllClassifications_Entry -> getConstructor(BP7AllClassificationPopulator),
       PolicyLine_Entity_BP7BusinessOwnersLine_Blankets_Entry -> getConstructor(BP7BlanketPopulators),

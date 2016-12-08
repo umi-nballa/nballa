@@ -466,6 +466,24 @@ class SubmissionProcess extends NewTermProcess {
     bindReinsurableRisks() // flags Activity on error...
 
     _branch.promoteBranch(false)
+
+    /* Code changes for US5360 : For multiple Additional Interests of type Mortgage, add them as Billing Contacts under Account Contacts
+    So those contacts will have 2 assigned roles - Additional Interest and Billing Contact */
+    var  additionalInterests =  _branch.PolicyContactRoles.where( \ elt -> elt.Subtype == typekey.PolicyContactRole.TC_POLICYADDLINTEREST)
+
+    for(addlInt in additionalInterests){
+      if(addlInt typeis PolicyAddlInterest){
+         var addlIntDetails = addlInt.AdditionalInterestDetails
+        for(det in addlIntDetails){
+            if(det.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
+                det.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
+                det.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
+                det.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT){
+              _branch.addNewPolicyBillingContactForContact(addlInt.ContactDenorm)
+            }
+        }
+      }
+    }
   }
 
   override function issueJob(bindAndIssue : boolean) {

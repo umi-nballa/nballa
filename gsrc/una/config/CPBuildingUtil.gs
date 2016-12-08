@@ -53,11 +53,11 @@ class CPBuildingUtil {
 
   public static function isVisible(bldg:CPBuilding):boolean
   {
-    if((bldg.ResQuestions.windstormexcl==false && bldg.OccupancyType.Code==typekey.CPOccupancyType_Ext.TC_RESIDENTIAL.Code) || (bldg.ResQuestions.windmiti5==true))
+    if((bldg.windstormexcl==false && bldg.OccupancyType.Code==typekey.CPOccupancyType_Ext.TC_RESIDENTIAL.Code) || (bldg.windmiti5==true))
       {
       return true
       }
-    else if(bldg.Building.YearBuilt<2002 && bldg.ResQuestions.windmiti5==false)
+    else if(bldg.Building.YearBuilt<2002 && bldg.windmiti5==false)
       {
       return false
       }
@@ -70,15 +70,15 @@ class CPBuildingUtil {
     if(bldg?.Building?.YearBuilt>=2002)
     {
       if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
-        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+        bldg.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
       else
       {
         if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
-          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+          bldg.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
         else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
-          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+          bldg.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
         else if(bldg.Building.NumStories>6)
-            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+            bldg.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
       }
     }
 
@@ -86,16 +86,16 @@ class CPBuildingUtil {
     if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
     {
       if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
-        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+        bldg.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
       if(bldg.Building.NumStories>3)
-        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+        bldg.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
 
-      bldg.ResQuestions.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
+      bldg.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
     }
     else
     {
-      bldg.ResQuestions.roofcv=null
-      bldg.ResQuestions.roofdecat = null
+      bldg.roofcv=null
+      bldg.roofdecat = null
      }
 
     return true
@@ -123,17 +123,17 @@ No default response applies
    if(bldg?.Building?.YearBuilt>=2002)
    {
     if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
-      bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
+      bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
     else
     {
       if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
-        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
+        bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
       else
-        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
+        bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
     }
     }
     else
-     bldg?.ResQuestions?.guswind=null
+     bldg?.guswind=null
 
     /*
     Roof Cover
@@ -144,38 +144,38 @@ If Roof Covering does not = Reinforced Concrete then no default response.
     if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
     {
       if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
-        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+        bldg.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
       if(bldg.Building.NumStories>=3)
-        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+        bldg.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
 
-      bldg.ResQuestions.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
+      bldg.roofdecat=typekey.CPRoofDeckAttachment_Ext.TC_REINCONC//"Reinforced Concrete Deck"
     }
     else
     {
-      bldg.ResQuestions.roofcv=null
-      bldg.ResQuestions.roofdecat = null
+      bldg.roofcv=null
+      bldg.roofdecat = null
     }
 
     if(bldg?.Building?.NumStories<=3 && bldg.Building.YearBuilt>=2002)
-      bldg.ResQuestions.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+      bldg.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
     if(bldg?.Building?.YearBuilt>=2002)
     {
       if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
-        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+        bldg.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
       else
       {
         if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
-          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+          bldg.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
         else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
-          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+          bldg.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
         else if(bldg.Building.NumStories>6)
-            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+            bldg.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
       }
     }
 
     if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
-      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+      bldg.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
     return true
   }
@@ -183,34 +183,34 @@ If Roof Covering does not = Reinforced Concrete then no default response.
   public static function setYearBasedDefaults(bldg:CPBuilding):boolean
   {
 
-    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
-      bldg.ResQuestions.wbdr="Yes"
-    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.ResQuestions.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)
-      bldg.ResQuestions.wbdr="No"
+    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
+      bldg.wbdr="Yes"
+    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)
+      bldg.wbdr="No"
 
 
     if(bldg?.Building?.YearBuilt<2002 && bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
     {
       if(bldg.Building.NumStories>=1 && bldg.Building.NumStories<=3)
-        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
+        bldg.roofcv=typekey.CPRoofCover_Ext.TC_REINFORCEDCONCRETE//"Reinforced Concrete Deck"
       if(bldg.Building.NumStories>=3)
-        bldg.ResQuestions.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
+        bldg.roofcv=typekey.CPRoofCover_Ext.TC_FBCEQ//"FBC Equivalent"
     }
 
     if(bldg?.Building?.YearBuilt>=2002)
     {
       if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
-        bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
+        bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
       else
       {
         if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
-          bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
+          bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_110//"110"
         else
-          bldg?.ResQuestions?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
+          bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_100//"100"
       }
     }
     else
-      bldg?.ResQuestions?.guswind=null
+      bldg?.guswind=null
 
     /*
   Roof Deck
@@ -238,30 +238,30 @@ Make response editable.
     if(bldg?.Building?.YearBuilt>=2002)
     {
       if(bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
-        bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
+        bldg.roofdk=typekey.CPRoofDeck_Ext.TC_REINCONCDECK//"Reinforced Concrete Deck"
       else
       {
         if(bldg.Building.NumStories>=1 && bldg?.Building?.NumStories<=3)
-          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
+          bldg.roofdk=typekey.CPRoofDeck_Ext.TC_OTHER//"Other Roof Deck"
         else if(bldg.Building.NumStories>=4 && bldg.Building.NumStories<=6)
-          bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
+          bldg.roofdk=typekey.CPRoofDeck_Ext.TC_WOODDECK//"Wood Deck"
         else if(bldg.Building.NumStories>6)
-            bldg.ResQuestions.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
+            bldg.roofdk=typekey.CPRoofDeck_Ext.TC_METALDECK//"Metal Deck"
       }
     }
     else
-      bldg.ResQuestions.roofdk = null;
+      bldg.roofdk = null;
 
 
     if(bldg.Building.YearBuilt>=2002)
     {
-      bldg.ResQuestions.swrr=typekey.CPSwr_Ext.TC_NOSWR//"No SWR"
-      bldg.ResQuestions.openprt=typekey.CPOpenProt_Ext.TC_NOOPENINGPROT//"No Opening Protection"
+      bldg.swrr=typekey.CPSwr_Ext.TC_NOSWR//"No SWR"
+      bldg.openprt=typekey.CPOpenProt_Ext.TC_NOOPENINGPROT//"No Opening Protection"
     }
     else
       {
-      bldg.ResQuestions.swrr=null
-      bldg.ResQuestions.openprt=null
+      bldg.swrr=null
+      bldg.openprt=null
        }
     /*
     Terrain exposure
@@ -276,14 +276,14 @@ Default response to HVHZ if Building Address county = Miami-Dade or Broward
 Default response to B if Building Address county = All Other Counties
      */
 
-    if(bldg.ResQuestions?.windmiti5!=null && bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg?.windmiti5!=null && bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
     {
-      if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.ResQuestions.windmiti5==true))
-        bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_HVHZ//"HVHZ"
+      if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.windmiti5==true))
+        bldg.terexp=typekey.CPTerrainExp_Ext.TC_HVHZ//"HVHZ"
     }
     else
     {
-      bldg.ResQuestions.terexp=typekey.CPTerrainExp_Ext.TC_TERRAINB//"B"
+      bldg.terexp=typekey.CPTerrainExp_Ext.TC_TERRAINB//"B"
     }
 
 
@@ -291,7 +291,7 @@ Default response to B if Building Address county = All Other Counties
     Only display when Year Built =>2002.*/
 
     if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
-      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+      bldg.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
     return true
   }
@@ -316,13 +316,13 @@ Default response to B if Building Address county = All Other Counties
 
      */
     if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
-      bldg?.ResQuestions?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_120GREATER//"120"
+      bldg?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_120GREATER//"120"
     else
       {
         if(bldg?.Building?.NumStories>=4 && bldg?.Building?.NumStories<=6)
-          bldg?.ResQuestions?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_110//"110"
+          bldg?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_110//"110"
         else
-          bldg?.ResQuestions?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_100//"100"
+          bldg?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_100//"100"
       }
 
       /*
@@ -330,8 +330,8 @@ Default response to B if Building Address county = All Other Counties
       Default the response to Enclosed.
        */
     if(bldg.Building.YearBuilt>=2002 && bldg?.Building?.NumStories<=3 )
-      bldg.ResQuestions.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
-   // bldg.ResQuestions.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+      bldg.intpredes = typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
+   // bldg.intpredes=typekey.CPInternalPressureDes_Ext.TC_ENCLOSED//intpresdes="Enclosed"
 
 
 
@@ -340,10 +340,10 @@ Default response to B if Building Address county = All Other Counties
 Default the response to Yes if Gust Wind Speed of Design =>120
 Default response to No if Gust Wind Speed of Design = 100 OR = 110
      */
-    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
-      bldg.ResQuestions.wbdr="Yes"
-    if(bldg.ResQuestions.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.ResQuestions.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)//110)
-      bldg.ResQuestions.wbdr="No"
+    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
+      bldg.wbdr="Yes"
+    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)//110)
+      bldg.wbdr="No"
 
 
 

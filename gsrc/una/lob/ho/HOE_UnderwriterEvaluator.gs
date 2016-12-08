@@ -47,7 +47,8 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
      if( allowedJobType.contains(typeof(_policyEvalContext.Period.Job))){
 
        createUwIssueForCoverage()
-       createUwIssueCovBLimitHigh()
+       // To do : revalidate require with latest req sheet
+       //createUwIssueCovBLimitHigh()
        createUwIssueCovALimitHighDpType()
        createUwIssueFuseBox()
        createUwIssueFederalPacific()

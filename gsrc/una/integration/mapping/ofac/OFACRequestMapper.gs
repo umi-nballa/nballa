@@ -61,6 +61,7 @@ class OFACRequestMapper {
     clientContext.Password = PASSWORD
     clientContext.GLB = GLB
     clientContext.DPPA = DPPA
+    _logger.info(clientContext)
     _logger.debug("Exting from the method buildClientContext")
     return clientContext
   }
@@ -81,6 +82,7 @@ class OFACRequestMapper {
     searchConfiguration.AssignResultTo.RolesOrUsers.String = list
     searchConfiguration.WriteResultsToDatabase = true
     _logger.debug("Exting from the method buildSearchConfiguration")
+    _logger.info(searchConfiguration)
     return searchConfiguration
   }
 
@@ -118,8 +120,10 @@ class OFACRequestMapper {
         searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].Street2 = ofacDTOList[i].AddressStreet2
       if (ofacDTOList[i].PostalCode != null)
         searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].PostalCode = ofacDTOList[i].PostalCode
+      searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].StateProvinceDistrict = ofacDTOList[i].State
       searchInput.Records.InputRecord[i].Entity.Addresses.InputAddress[0].Type = wsi.remote.una.ofac.ofac.xgservices_svc.enums.AddressType.Mailing
     }
+    _logger.info(searchInput)
     _logger.debug("Exting from the method buildSearchInput")
     return searchInput
   }
@@ -181,7 +185,10 @@ class OFACRequestMapper {
         ofacDTO.Country = insured.PrimaryAddress.Country.Code
       if (null != insured.PrimaryAddress.PostalCode)
         ofacDTO.PostalCode = insured.PrimaryAddress.PostalCode
-
+      if(null !=insured.PrimaryAddress.AddressType)
+        ofacDTO.AddressType= insured.PrimaryAddress.AddressType.toString()
+      if(null!=insured.PrimaryAddress.State)
+        ofacDTO.State=insured.PrimaryAddress.State.Code
       ofacDTOList.add(ofacDTO)
     }
     _logger.debug("Exting from the method buildOFACInput")

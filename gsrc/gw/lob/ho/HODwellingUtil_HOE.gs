@@ -3,6 +3,7 @@ package gw.lob.ho
 uses java.lang.Integer
 uses java.util.ArrayList
 uses java.util.Calendar
+uses una.model.PropertyDataModel
 
 /**
  * Created with IntelliJ IDEA.
@@ -683,6 +684,14 @@ class HODwellingUtil_HOE {
     applicableJurisdiction.add(Jurisdiction.TC_TX)
     applicableJurisdiction.add(Jurisdiction.TC_NV)
     return applicableJurisdiction
+  }
+
+  static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(tunaValues != null) {
+      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.Value + " - " +elt.Percent+" %"))
+    }
+    return tunaCodeAndPercent
   }
 
 }// End of class

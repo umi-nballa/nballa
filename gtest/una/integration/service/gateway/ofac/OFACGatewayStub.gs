@@ -154,7 +154,6 @@ class OFACGatewayStub implements OFACInterface {
           activityPattern.createPolicyActivity(bundle, pol, activityPattern.Subject, activityPattern.Description, null, activityPattern.Priority, null, null, null)*/
           //Persist ofac entity in GW
           var ofacEntity = new OfacContact_Ext(policyPeriod)
-          ofacEntity.OfacTriggeringDate = new Date()
           ofacEntity.EntityScore = contact.Value
           ofacEntity.Contact = contact.Key
           ofacEntity.OfacHit = true

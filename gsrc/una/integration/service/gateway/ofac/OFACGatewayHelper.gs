@@ -61,18 +61,22 @@ class OFACGatewayHelper {
     if (record.RecordDetails.EntityType == ResultEntityType.Individual) {
 
       //add person contact to Map
-      if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.Last != null && personList.HasElements) {
-        var person = personList.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase(record.RecordDetails.Name.First)
+      if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.Last != null) {
+        var person = personList?.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase(record.RecordDetails.Name.First)
             && elt.LastName.equalsIgnoreCase(record.RecordDetails.Name.Last))
         _logger.debug("Adding " + person.Name + " to the AleretList")
+
+        if(person != null)
         contactScoreMap.put(person, watchList.EntityScore)
       }
     } else {
       // add company contact to the map
       if (record.RecordDetails.Name.Full != null && companyList.HasElements) {
-        var company = companyList.firstWhere(\elt ->
+        var company = companyList?.firstWhere(\elt ->
             elt.Name.equalsIgnoreCase(record.RecordDetails.Name.Full))
         _logger.debug("Adding " + company.Name  + " to the AleretList")
+
+        if(company != null)
         contactScoreMap.put(company, watchList.EntityScore)
       }
     }
@@ -85,7 +89,7 @@ class OFACGatewayHelper {
   function checkAndMapResponseForAlerts(policyContacts: List<Contact>, pPeriod: PolicyPeriod, result: SearchResults): HashMap<Contact, Integer> {
     var isFalsePositive : boolean
 
-    //no hit scenario
+    //no hit scenario, don't have to map isFalsePositive
     if (result != null && result.Records == null)
       isFalsePositive = true
 

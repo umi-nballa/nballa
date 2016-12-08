@@ -12,7 +12,8 @@ uses java.lang.NullPointerException
 class EnvironmentUtil {
   public static final var LOCAL_ENVIRONMENT: String = "local"
   public static final var LOCAL_DEV_ENVIRONMENT: String = "pc_dev"
-  public static final var LOCAL_DEVINT_ENVIRONMENT: String = "pc_devint"
+  public static final var LOCAL_DEV_INT_ENV: String = "pc_devint"
+  public static final var LOCAL_DEV_CNV_ENV: String = "pc_dev_cnv"
   public static final var INT1_ENVIRONMENT: String = "pc_asm"
   public static final var QA_ENVIRONMENT: String = "pc_qa"
   public static final var UAT_ENVIRONMENT: String = "pc_uat"
@@ -43,7 +44,8 @@ class EnvironmentUtil {
     if (EnvironmentUtil.PolicyCenterRuntime == null || EnvironmentUtil.PolicyCenterRuntime.Empty
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_ENVIRONMENT
         || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_ENVIRONMENT
-        || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEVINT_ENVIRONMENT) {
+        || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_INT_ENV
+        || EnvironmentUtil.PolicyCenterRuntime == LOCAL_DEV_CNV_ENV) {
       return true
     } else {
       return false

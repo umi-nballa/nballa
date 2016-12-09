@@ -1,8 +1,8 @@
 package una.forms
 
-uses gw.forms.generic.AbstractSimpleAvailabilityForm
 uses java.util.Set
 uses gw.forms.FormInferenceContext
+uses gw.forms.generic.AbstractSimpleAvailabilityForm
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,92 +11,15 @@ uses gw.forms.FormInferenceContext
  * Time: 5:36 PM
  * To change this template use File | Settings | File Templates.
  */
-class UNAFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
+class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 {
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
 
     var formCode = this.Pattern.FormNumber//Code
-    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
 
     var bownerline = context.Period.BP7Line
     var bopbuildings = context.Period.BP7Line.AllBuildings
     var boplocations = context.Period.BP7Line.BP7Locations
-
-    print("################ form code is " + formCode)
-
-
-    if (formCode.equals("HO 04 81") || formCode.equals("UN LPP 04 76"))
-      {
-        if(dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
-            dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
-            && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.OptionValue==
-        "Actual")
-
-          return true
-      }
-
-    if (formCode.equals("HO 04 90") || formCode.equals("HO-101") || formCode.equals("UI 04 90") )
-    {
-
-      print("##dwelling.HODW_Personal_Property_HOEExists " + dwelling.HODW_Personal_Property_HOEExists)
-      print("##dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm " + dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm.OptionValue)
-
-      if(dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
-          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOETerm
-          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm.OptionValue==
-              "Replacement")
-
-        return true
-    }
-
-    if (formCode.equals("TDP-002"))
-    {
-      if((dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
-          dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
-          && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.OptionValue==
-              "Replacement") ||
-          (dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
-              dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOETerm
-              && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm.OptionValue==
-                  "Replacement"))
-
-        return true
-    }
-
-    if (formCode.equals("UN 09 56"))
-    {
-      if(dwelling!=null && dwelling.HODW_Dwelling_Cov_HOEExists &&
-          dwelling.HODW_Dwelling_Cov_HOE.HasHODW_ExecutiveCov_HOE_ExtTerm)
-
-        return true
-    }
-
-    if (formCode.equals("UN LPP 03 12"))
-    {
-      if(dwelling!=null && dwelling.HODW_SectionI_Ded_HOEExists &&
-          dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm)
-
-        return true
-    }
-
-    if (formCode.equals("UN LPP 03 51"))
-    {
-      if(dwelling!=null && dwelling.HODW_SectionI_Ded_HOEExists &&
-          dwelling.HODW_SectionI_Ded_HOE.HasHODW_Hurricane_Ded_HOETerm)
-
-        return true
-    }
-
-
-    //Waiting on Faye for Scheduled coverages
-    if (formCode.equals("HO 04 61"))
-    {
-      if(dwelling!=null && dwelling.HODW_ScheduledProperty_HOEExists &&
-          dwelling.HODW_ScheduledProperty_HOE.CovTerms.length>0)
-
-        return true
-    }
-
 
    //BP7AddlInsdManagersLessorsPremises
     //BP7AddlInsdManagersLessorsPremisesLine_EXT

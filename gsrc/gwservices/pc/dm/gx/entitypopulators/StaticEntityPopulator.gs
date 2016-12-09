@@ -40,8 +40,9 @@ abstract class StaticEntityPopulator<C extends KeyableBean, P extends KeyableBea
       throw new DataMigrationNonFatalException(CODE.GENERAL, "unexpected model type ${typeof(model)}")
     }
     var lookUpRecord = (Query.make(entityType).compare(entityProperty, Equals, entityKey).select().AtMostOneRow) as C
-    var policy = this.Branch
+
     if( lookUpRecord typeis OfferingLookup){
+      var policy = this.Branch
       policy.Offering = gw.api.productmodel.OfferingLookup.getByCode(lookUpRecord.OfferingCode)
     }
     return lookUpRecord as C

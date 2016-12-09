@@ -23,4 +23,44 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
     }
     return null
   }
+
+  static function getPhoneNumberValue(contact:Contact):String{
+    var phoneNumberValue:String
+    if(contact typeis Company){
+      phoneNumberValue =  contact.WorkPhoneValue
+    }else if(contact typeis Person){
+      if(contact.PrimaryPhone == PrimaryPhoneType.TC_WORK && contact.WorkPhoneExtension!=null){
+        phoneNumberValue = contact.WorkPhoneValue + contact.WorkPhoneExtension
+      }else if(contact.PrimaryPhone == PrimaryPhoneType.TC_WORK && contact.WorkPhoneExtension==null){
+        phoneNumberValue = contact.WorkPhoneValue
+      }
+      if(contact.PrimaryPhone == PrimaryPhoneType.TC_HOME)
+        phoneNumberValue = contact.HomePhoneValue
+      else if(contact.PrimaryPhone == PrimaryPhoneType.TC_MOBILE)
+        phoneNumberValue = contact.CellPhone
+    }
+    return phoneNumberValue
+  }
+
+  static function getLocationValue(policyPeriod : PolicyPeriod):String{
+    var location:String
+    if(policyPeriod.HomeownersLine_HOEExists) {
+      location = policyPeriod.HomeownersLine_HOE.HOLocation.PolicyLocation
+    }else if(policyPeriod.BP7LineExists){
+      for (pLoc in policyPeriod.BP7Line.BP7Locations.PolicyLocation){
+        if(pLoc.PrimaryLoc)
+          location = pLoc.DisplayName
+      }
+    }
+    return location
+  }
+
+  function setSERPIndicator(job:Job,initiateSERP:boolean)  {
+    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+      job = bundle.add(job)
+      if(job.LatestPeriod!=null){
+        job.LatestPeriod.SERPEndorsed_Ext = initiateSERP
+      }
+    })
+  }
 }

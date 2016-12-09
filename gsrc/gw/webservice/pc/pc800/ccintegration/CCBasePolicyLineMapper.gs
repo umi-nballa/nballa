@@ -152,19 +152,19 @@ class CCBasePolicyLineMapper {
           // are assumed to mean money values.
           if (ccCovTerm typeis CCFinancialCovTerm) {
             // Set the Coverage-level deductible field if there is a deductible cov term
-            if( covTerm.ModelType == CovTermModelType.TC_DEDUCTIBLE )  {
+            if( covTerm?.ModelType == CovTermModelType.TC_DEDUCTIBLE )  {
               ccCov.Deductible = ccCovTerm.FinancialAmount
             }
-            if( covTerm.ModelType == CovTermModelType.TC_LIMIT )  {
+            if( covTerm?.ModelType == CovTermModelType.TC_LIMIT )  {
               // Set the coverage-level exposure limit field if one is found (per person, per vehicle, etc.)
-              if( ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PP.Code)
-                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PI.Code) ) {
+              if( ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PP.Code)
+                    or ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PI.Code) ) {
                 ccCov.ExposureLimit = ccCovTerm.FinancialAmount
               }
               // Set the coverage-level exposure limit field if one is found (per incident, per accident, per injury, etc.)
-              if( ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PC.Code)
-                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_EA.Code)
-                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PO.Code) ) {
+              if( ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PC.Code)
+                    or ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_EA.Code)
+                    or ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PO.Code) ) {
                 ccCov.IncidentLimit = ccCovTerm.FinancialAmount
               }
             }

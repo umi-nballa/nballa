@@ -46,6 +46,9 @@ class AddressCountryCityStatePostalCodeOwner extends AddressOwnerBase {
     hFields.removeAll(AddressOwnerFieldId.CITY_FIELDS)
     hFields.remove(AddressOwnerFieldId.STATE)
     hFields.remove(AddressOwnerFieldId.POSTALCODE)
+    //PC.24.01.25 changes
+    hFields.remove(AddressOwnerFieldId.ADDRESSLINE1)
+    hFields.remove(AddressOwnerFieldId.ADDRESSLINE2)
     return hFields
   }
 }

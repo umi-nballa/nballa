@@ -252,9 +252,9 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
         .withLastNameKanji(_lastNameKanji)
         .withCompanyNameKanji(_companyNameKanji)
         .withOfficialId(_officialId)
-        .withWorkPhoneRestrictor_Ext(_workPhone_Ext)
-        .withCellPhoneRestrictor_Ext(_cellPhone_Ext)
-        .withHomePhoneRestrictor_Ext(_homePhone_Ext)
+        .withWorkPhoneRestrictor_Ext(replaceHyphenInPhone(_workPhone_Ext))
+        .withCellPhoneRestrictor_Ext(replaceHyphenInPhone(_cellPhone_Ext))
+        .withHomePhoneRestrictor_Ext(replaceHyphenInPhone(_homePhone_Ext))
         .withCompanyPhone(_companyPhone)
         .withCityDenormStarting(_city)
         .withCityKanjiDenormStarting(_cityKanji)
@@ -263,6 +263,15 @@ class AccountSearchCriteria extends EntitySearchCriteria<AccountSummary> impleme
         .withStateDenorm(_state)
     return builder
   }
+
+  function replaceHyphenInPhone(phone:String):String
+  {
+    if(phone!=null && phone.trim()!="" && phone.indexOf("-")!=-1)
+      return phone.replaceAll("-","")
+    else
+      return ""
+  }
+
   
   internal property get ShouldAddPrimaryAddressAddressQueryBuilder() : boolean {
     return

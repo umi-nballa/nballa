@@ -56,11 +56,12 @@ class UnsupportedPersonNameFields implements PersonNameFields {
   }
 
   override property get Suffix(): typekey.NameSuffix {
-    return _unsupportedBehavior.getValue<String>()
+    //return _unsupportedBehavior.getValue<String>()
+    return null
   }
 
   override property set Suffix(value: typekey.NameSuffix) {
-    _unsupportedBehavior.setValue("Suffix")
+    //_unsupportedBehavior.setValue("Suffix")
   }
 
   override property get FirstNameKanji(): String {

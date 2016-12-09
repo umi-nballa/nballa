@@ -13,6 +13,7 @@ uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusionMapper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
+uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -182,8 +183,10 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getAdditionalInterests(coverable : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
-    return null
+  override function getAdditionalInterests(coverable : Coverable, mapper : HPXStructureMapper) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
+    var additionalInterestMapper = new HPXAdditionalInterestMapper()
+    var additionalInterests = additionalInterestMapper.createAdditionalInterests((coverable as CPBuilding).AdditionalInterests, mapper, coverable)
+    return additionalInterests
   }
 
   override function getPolicyLine(policyPeriod : PolicyPeriod) : Coverable {

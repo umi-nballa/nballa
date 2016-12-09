@@ -82,7 +82,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
         break
     }
 
-    return results?.toList()?.orderByDescending( \ pattern -> pattern.Body)
+    return results?.toSet()?.orderByDescending( \ pattern -> pattern.Body)?.toTypedArray()
   }
 
   private property get RiskCharacteristicExplanationCodes() : List<String>{

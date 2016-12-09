@@ -13,6 +13,7 @@ class PropertyDataModel {
   var Id:String           as ID
   var value:String        as Value
   var percent:BigDecimal      as Percent
+  var namedValue:String   as NamedValue
 
 
 }

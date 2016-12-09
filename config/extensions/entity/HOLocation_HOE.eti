@@ -63,13 +63,23 @@
     type="varchar">
     <columnParam
       name="size"
-      value="10"/>
+      value="16"/>
   </column>
   <column
     name="DistanceToCoast_Ext"
     nullok="true"
     type="positiveinteger"/>
+
   <column
+    desc="Distance to Coast Returned by Tuna"
+    name="DistToCoastTunaReturned_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="16"/>
+  </column>
+    <column
     desc="Responding Fire Department"
     name="RespondingFireDept_Ext"
     nullok="true"
@@ -99,15 +109,15 @@
   </column>
   <column
     default="0"
-    desc="User Override BCEG "
+    desc="Override BCEG returned from TUNA"
     name="OverrideBCEG_Ext"
     nullok="true"
     type="bit"/>
   <typekey
-    desc="BCEG Match Level"
+    desc="BCEG Match Level from TUNA"
     name="BCEGMatchLevel_Ext"
     nullok="true"
-    typelist="BCEGMatchLevel_Ext"/>
+    typelist="TUNAMatchLevel_Ext"/>
   <column
     desc="BCEG Grade Entered by User"
     name="BCEGUserEntered_Ext"
@@ -115,6 +125,103 @@
     type="varchar">
     <columnParam
       name="size"
-      value="10"/>
+      value="16"/>
+  </column>
+  <column
+    desc="Dwelling Protection Class Code Returned by TUNA"
+    name="DwellingPCCodeTunaReturned_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Dwelling Protection Class Code Match Level from TUNA"
+    name="DwellingPCCodeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Dwelling PC Code returned from TUNA"
+    name="OverrideDwellingPCCode_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Wind Pool Value returned by TUNA"
+    name="WindPoolTunaReturned_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="16"/>
+  </column>
+  <typekey
+    desc="Wind Pool Match Level from TUNA"
+    name="WindPoolMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Wind Pool Value returned from TUNA"
+    name="OverrideWindPool_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Wind Pool Value Entered by User"
+    name="WindPoolUserEntered_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="16"/>
+  </column>
+  <typekey
+    desc="Distance To Coast Match Level from TUNA"
+    name="DistToCoastMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Wind Pool Value returned from TUNA"
+    name="OverrideDistToCoast_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Distance to Coast Entered by User"
+    name="DistToCoastUserEntered_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="16"/>
+  </column>
+  <column
+    desc="Distance to Major BOW Returned by Tuna"
+    name="DistBOWTunaReturned_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="16"/>
+  </column>
+  <typekey
+    desc="Distance To Major BOW Match Level from TUNA"
+    name="DistBOWMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    desc="Override Distance to Major BOW returned from TUNA"
+    name="OverrideDistBOW_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Distance to Major BOW Entered by User"
+    name="DistBOWUserEntered_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="16"/>
   </column>
 </entity>

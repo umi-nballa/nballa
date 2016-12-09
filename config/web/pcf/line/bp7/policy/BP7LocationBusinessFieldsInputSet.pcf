@@ -10,14 +10,17 @@
     <Require
       name="openForEdit"
       type="boolean"/>
-    <PickerInput
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingInformation(location.Branch)"
+      name="tunares"/>
+    <RangeInput
       editable="true"
       id="TerritoryCode"
       label="displaykey.Web.Policy.BP7.Location.TerritoryCode"
-      pickLocation="TerritoryCodeSearchPopup.push(location.PolicyLocation.Branch, location.TerritoryCode)"
       required="true"
       validationExpression="location.TerritoryCode.prelimValidate()"
-      value="location.TerritoryCode.Code"/>
+      value="location.TerritoryCode.Code"
+      valueRange="tunares.TerritoryCodes"/>
     <ContentInput
       hideIfReadOnly="true"
       id="AutofillButton">

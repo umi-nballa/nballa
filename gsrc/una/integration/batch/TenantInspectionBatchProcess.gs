@@ -38,7 +38,8 @@ class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
                                     }).select()?.toList()
 
     policyPeriodResults.removeWhere( \ policyPeriod -> policyPeriod.Policy.AllOpenActivities?.hasMatch( \ activity -> activity.ActivityPattern.Code == ACTIVITY_PATTERN)
-                                                   or  policyPeriod.Policy.LatestBoundPeriod != policyPeriod)
+                                                   or  policyPeriod.Policy.LatestBoundPeriod != policyPeriod
+                                                   or  policyPeriod.BP7Line.AllExclusions.hasMatch( \ exclusion -> exclusion.PatternCode == "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"))
 
     return policyPeriodResults
   }

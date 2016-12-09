@@ -422,7 +422,7 @@
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
 			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
 			<xsd:element name="WrittenAmt" type="WrittenAmtType" minOccurs="0"/>
-			<xsd:element name="Rate" type="xsd:float" minOccurs="0"/>
+			<xsd:element name="Rate" type="xsd:double" minOccurs="0"/>
 			<xsd:element name="BaseRateAmt" type="BaseRateAmtType" minOccurs="0"/>
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageCd" type="xsd:string"/>
@@ -1583,6 +1583,7 @@
 			<xsd:element name="ItemIdInfo" type="ItemIdInfoType" minOccurs="0"/>
 			<xsd:element name="GeneralPartyInfo" type="GeneralPartyInfoType"/>
 			<xsd:element name="AdditionalInterestInfo" type="AdditionalInterestInfoType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="BuildingKey" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="TaxCodeInfoType">
@@ -1971,8 +1972,8 @@
 			<xsd:element name="ResidenceTypeDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="DwellUseCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="DwellUseDesc" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="OccupancyTypeCd" type="xsd:string"/>
-			<xsd:element name="OccupancyTypeDesc" type="xsd:string"/>
+			<xsd:element name="OccupancyTypeCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="OccupancyTypeDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="LengthTimeOccupancyType" type="LengthTimeOccupancyTypeType" minOccurs="0"/>
 			<xsd:element name="VisibilityInd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="VisibleToRoadInd" type="xsd:string" minOccurs="0"/>
@@ -2411,6 +2412,7 @@
 			<xsd:element name="MinimumAdditionalChargeAmt" type="MinimumAdditionalChargeAmtType" minOccurs="0"/>
 			<xsd:element name="MasterPolicyInfo" type="MasterPolicyInfoType" minOccurs="0"/>
 			<xsd:element name="Watercraft" type="WatercraftType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="AdditionalInterest" type="AdditionalInterestType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="BP7Classification" type="BP7ClassificationType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="BuildingKey" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
@@ -3279,7 +3281,7 @@
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" maxOccurs="unbounded"/>
 			<xsd:element name="Location" type="LocationType" minOccurs="0"/>
-			<xsd:element name="Dwell" type="DwellType" minOccurs="0"/>
+			<xsd:element name="Dwell" type="DwellType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="CommercialPackagePolicyType">
@@ -3973,6 +3975,12 @@
 			<xsd:element name="ContactMechanisms" type="ContactMechanismsType"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="MortgageInformationType">
+        <xsd:sequence>
+            <xsd:element name="MortgageCompanyName" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="LoanNumber" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="PersonInspectorType">
 		<xsd:sequence>
 			<xsd:element name="PersonID" type="xsd:string"/>
@@ -5109,6 +5117,7 @@
 			<xsd:element name="isMoldInvolded" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isHazardousWasteInvolved" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OwnerRole" type="OwnerRoleType"/>
+            <xsd:element name="MortgageInformation" type="MortgageInformationType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ClaimInjuryIncidentType">
@@ -5405,6 +5414,11 @@
 			<xsd:element name="LossDescription" type="xsd:string"/>
 			<xsd:element name="LossLocation" type="LossLocationType"/>
 			<xsd:element name="LossDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimAge" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AMB" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="CreatedDate" type="xsd:dateTime"/>
 			<xsd:element name="CreatedByUserAccount" type="CreatedByUserAccountType"/>
@@ -5433,6 +5447,7 @@
 			<xsd:element name="AdjusterUserAccount" type="AdjusterUserAccountType" minOccurs="0"/>
 			<xsd:element name="AdjusterRoleSupervisor" type="AdjusterRoleSupervisorType" minOccurs="0"/>
 			<xsd:element name="Catastrophe" type="CatastropheType" minOccurs="0"/>
+            <xsd:element name="CatastropheInd" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="BillingAccountType">

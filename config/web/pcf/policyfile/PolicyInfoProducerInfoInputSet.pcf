@@ -16,6 +16,7 @@
     <Label
       label="displaykey.Web.ProducerSelection.ProducerOfRecordInfo"/>
     <Input
+      action="pcf.OrganizationDetail.go(policyPeriod.ProducerCodeOfRecord.Organization)"
       id="POROrganization"
       label="displaykey.Web.ProducerSelection.Producer"
       value="policyPeriod.ProducerCodeOfRecord.Organization"/>
@@ -40,6 +41,12 @@
         target="PolicyInfoProducerInfoInputSet"/>
     </Input>
     <Input
+      editable="true"
+      id="POREmail"
+      label="displaykey.Web.Admin.ContactDetailDV.Email"
+      required="false"
+      value="policyPeriod.ProducerCodeOfRecord.Organization.contact.EmailAddress1"/>
+    <Input
       id="MasterOrganizationPOR_Ext"
       label="displaykey.Ext.Web.ProducerSelection.MasterOrganization"
       required="true"
@@ -56,6 +63,7 @@
     <Label
       label="displaykey.Web.ProducerSelection.ProducerOfServiceInfo"/>
     <OrgInput
+      action="pcf.OrganizationDetail.go(policyPeriod.ProducerCodeOfRecord.Organization)"
       editable="not User.util.CurrentUser.ExternalUser"
       id="Producer"
       label="displaykey.Web.ProducerSelection.ProducerOrg"
@@ -87,6 +95,12 @@
         onChange="policyPeriod.EffectiveDatedFields.ProducerCode = null"
         target="PolicyInfoProducerInfoInputSet"/>
     </Input>
+    <Input
+      editable="true"
+      id="Email"
+      label="displaykey.Web.Admin.ContactDetailDV.Email"
+      required="false"
+      value="producer.contact.EmailAddress1"/>
     <Input
       id="MasterOrganizationPOS_Ext"
       label="displaykey.Ext.Web.ProducerSelection.MasterOrganization"

@@ -57,7 +57,6 @@ class ArchiveDocumentAsyncWSP implements ArchiveDocumentAsyncInterface {
     }
 
     logger.debug("Finished executing archiveDocument Async using WSP service.")
-
   }
 
 }

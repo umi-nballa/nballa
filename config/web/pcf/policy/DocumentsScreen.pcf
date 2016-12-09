@@ -46,16 +46,28 @@
             label="displaykey.Web.PolicyFile.Documents.Deobsolesce"
             shortcut="O"
             visible="searchCriteria.IncludeObsoletes"/>
+          <ToolbarButton
+            action="OnBaseWebClientExitPoint.push(constructUploadUrl())"
+            id="EasyButtonTest"
+            label="&quot;View Documents in OnBase&quot;"/>
         </Toolbar>
       </PanelRef>
     </SearchPanel>
-    <Code><![CDATA[
+    <Code><![CDATA[uses onbase.api.DocPopUtils
+
 function createCriteria() : DocumentSearchCriteria {
   var criteria = new DocumentSearchCriteria()
   criteria.setFixedContextWith(account)
   criteria.IncludeObsoletes = false
   return criteria
 }
-]]></Code>
+
+function constructUploadUrl() : String {
+  var dataMap = {
+      "KT152_0_0_0" -> account.AccountNumber
+  }
+  var customQueryId = "101"
+  return DocPopUtils.generateCustomQueryURL(dataMap, customQueryId)
+}]]></Code>
   </Screen>
 </PCF>

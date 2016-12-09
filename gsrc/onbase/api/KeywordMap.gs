@@ -35,16 +35,13 @@ package onbase.api
  * This is an enum for keyword mapping between GW & OnBase.
  */
 public enum KeywordMap {
-  accountid("Account Number"),
+  accountnumber("Account Number"),
   user("User"),
   source("Source"),
   activitycode("Activity Code"),
-  additionalfirstname("Additional First Name"),
-  additionalmiddlename("Additional Middle Name"),
-  additionallastname("Additional Last Name"),
   additionalnamedinsureds("Additional Named Insureds"),
   agencycode("Agency Code"),
-  csr("CSR"),
+  csr("CSR"), //TODO: REMOVE
   description("Description"),
   issuedate("Issue Date"),
   jobdisplayname("Job Display Name"),
@@ -61,31 +58,17 @@ public enum KeywordMap {
   policyexpirationdate("Policy Expiration Date"),
   policynumber("Policy Number"),
   policytype("Policy Type"),
-  primaryfirstname("Primary First Name"),
-  primarymiddlename("Primary Middle Name"),
-  primarylastname("Primary Last Name"),
+  primarynamedinsureds("Primary Named Insureds"),
   productname("Product Name"),
   receiveddate("Received Date"),
   subtype("Subtype"),
   supressactivity("Supress Activity"),
   term("Term"),
   transactioneffectivedate("Transaction Effective Date"),
-  underwriter("Underwriter"),
-  /*Previous values */
+  underwriter("Underwriter"),//TODO: REMOVE
 
-  claimid("Claim Number"),
-  policyid("Policy Number"),
-  contactid("Contact ID"),
-  contactname("Contact Name"),
-  insured("Insured Name"),
-  exposureid("Exposure ID"),
-  exposurename("Exposure Name"),
-  matterid("Matter ID"),
-  mattername("Matter Name"),
-  activityid("Activity ID"),
-  checkid("Check ID"),
-  reserveid("Reserve ID"),
-  producerid("Producer ID"),
+ /*Previous values */
+
   linktype("GW Link Type"),
   linkvalue("GW Link ID"),
   status("Status"),
@@ -94,9 +77,7 @@ public enum KeywordMap {
   documenttype("Document Type"),
   documentidforrevision("Document Id For Revision"),
   recipient("Recipient"),
-  claimsecurityrole("Claim Security Role"),
   asyncdocumentid("Async Document ID");
-
 
   private construct(kwName : String) {
     obName = kwName

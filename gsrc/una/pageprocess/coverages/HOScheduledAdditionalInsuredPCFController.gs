@@ -22,19 +22,10 @@ class HOScheduledAdditionalInsuredPCFController {
   *  returns additional insureds not yet added to the schedule
   */
   property get ExistingAdditionalInsureds() : AccountContactView[]{
-    var results : AccountContactView[]
+    var results : AccountContact[]
+    var existingAddInsureds = _schedule.OwningCoverable.PolicyLine.ExistingAdditionalInsureds
 
-    if(_schedule typeis DwellingCov_HOE){
-      results = _schedule.OwningCoverable.PolicyLine.ExistingAdditionalInsureds
-               .where( \ ai -> !_schedule.ScheduledItems.hasMatch( \ scheduledItem -> scheduledItem.AdditionalInsured.PolicyAddlInsured.ContactDenorm == ai.Contact))
-               .asViews()
-    }else if(_schedule typeis HomeownersLineCov_HOE){
-      results = _schedule.OwningCoverable.PolicyLine.ExistingAdditionalInsureds
-                .where( \ ai -> !_schedule.scheduledItem_Ext.hasMatch( \ scheduledItem -> scheduledItem.AdditionalInsured.PolicyAddlInsured.ContactDenorm == ai.Contact))
-                .asViews()
-    }
-
-    return results
+    return existingAddInsureds?.where( \ ai -> !ScheduledItems.hasMatch( \ si -> si.AdditionalInsured.AccountContactRole.AccountContact.Contact.PublicID == ai.Contact.PublicID))?.asViews()
   }
 
   public function addScheduledAdditionalInsured(additionalInsured : PolicyAddlInsuredDetail) : ScheduledAdditionalInsured {
@@ -47,9 +38,10 @@ class HOScheduledAdditionalInsuredPCFController {
       scheduledItem = _schedule.addScheduledAdditionalInsured(additionalInsured)
     }
 
-    result = new ScheduledAdditionalInsured (_schedule, scheduledItem)
-
-    ScheduledItems.add(result)
+    if(!ScheduledItems.contains(result)){
+      result = new ScheduledAdditionalInsured (_schedule, scheduledItem)
+      ScheduledItems.add(result)
+    }
 
     return result
   }

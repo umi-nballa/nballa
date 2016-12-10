@@ -75,12 +75,9 @@ class CoveragesUtil {
       case "BP7HearingAidSvcsProfLiab_EXT":
         result = isHearingAidSvcsProfLiabCoverageAvailable(coverable as BP7Classification)
         break
-      /*case "DataCmprmiseRspnseExpns_EXT":
-        result = isDataCmprmiseRspnseExpnsFirstPartyCoverageAvailable(coverable as BP7BusinessOwnersLine)
+      case "SupplExtendedReportingPeriodEndrsmnt_EXT":
+        result = isCyberOneSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
-      case "BP7DataCompromiseDfnseandLiabCov_EXT":
-        result = isDataCompromiseDfnseandLiabCoverageAvailable(coverable as BP7BusinessOwnersLine)
-        break*/
       default:
     }
 
@@ -372,21 +369,6 @@ class CoveragesUtil {
     return false
   }
 
-  /*private static function isDataCmprmiseRspnseExpnsFirstPartyCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    //var jobWizardHelper = (bp7Line as PolicyLine).JobType
-    if(!bp7Line.BP7DataCompromiseDfnseandLiabCov_EXTExists){
-      return true
-    }
-    return false
-  }
-
-  private static function isDataCompromiseDfnseandLiabCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    //var jobWizardHelper = (bp7Line as PolicyLine).JobType
-    if(!bp7Line.DataCmprmiseRspnseExpns_EXTExists){
-      return true
-    }
-    return false
-  }*/
 
   private static function isBP7CapLossesFromCertfdActsTerrsmCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     return !bp7Line.BP7ExclCertfdActsTerrsmCovFireLossesExists
@@ -433,6 +415,15 @@ class CoveragesUtil {
 
   private static function isHearingAidSvcsProfLiabCoverageAvailable(bp7Classification:BP7Classification):boolean{
     if(bp7Classification.ClassCode_Ext=="59974"){
+      return true
+    }
+    return false
+  }
+
+  private static function isCyberOneSERPCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if( bp7Line.BP7CyberOneCov_EXTExists && bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value!=null &&
+        (bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
+            bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT) ){
       return true
     }
     return false

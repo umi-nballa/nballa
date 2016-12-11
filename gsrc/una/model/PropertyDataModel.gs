@@ -10,7 +10,6 @@ uses gw.xml.ws.annotation.WsiExportable
  * Created By: pavan Theegala
  * Created Date: 6/16/16
  */
-@WsiExportable
 class PropertyDataModel {
   var Id:String           as ID
   var value:String        as Value

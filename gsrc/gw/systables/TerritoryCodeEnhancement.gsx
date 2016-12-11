@@ -94,6 +94,7 @@ enhancement TerritoryCodeEnhancement : TerritoryCode {
 
   /**
    * check if territoryCode agrees with the policy location
+   * skipped at UNA
    */
   function prelimValidate() : String {
     var territories = getTerritoryCodes(MatchingLookupCriteria)
@@ -105,6 +106,7 @@ enhancement TerritoryCodeEnhancement : TerritoryCode {
 
   /**
    * check if territoryCode agrees with the policy location
+   * skipped at UNA
    */
   @Param("matcher", "Criteria defining what territories match this territory code. See TerritoryCode.MatchingCriteria.")
   @Deprecated("Replaced by the prelimValidate(matcher : gw.lob.common.TerritoryLookupCriteria) in PolicyCenter 8.0.") 
@@ -118,6 +120,7 @@ enhancement TerritoryCodeEnhancement : TerritoryCode {
 
   /**
    * check if territoryCode agrees with the policy location
+   * skipped at UNA
    */
   @Param("matcher", "Criteria defining what territories match this territory code. See TerritoryCode.MatchingLookupCriteria.")
   function prelimValidate(matcher : gw.lob.common.TerritoryLookupCriteria) : String {

@@ -139,6 +139,7 @@ class TunaResponseHelper {
         var propertyDataModelResponse = new PropertyDataModel()
         propertyDataModelResponse.Value = lValue.Value
         propertyDataModelResponse.Percent = lValue.Percent
+        propertyDataModelResponse.NamedValue = lValue.NamedValue
         list.add(propertyDataModelResponse)
       }
     }

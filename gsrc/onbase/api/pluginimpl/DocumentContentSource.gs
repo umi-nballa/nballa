@@ -19,6 +19,8 @@ uses java.lang.Exception
 uses java.lang.Long
 uses java.util.Map
 uses java.util.ArrayList
+uses onbase.api.services.datamodels.InsuredName
+uses onbase.api.KeywordMap
 
 /**
  *
@@ -41,6 +43,9 @@ uses java.util.ArrayList
  * IDocumentContentSource plugin implementation with OnBase as DMS.
  */
 class DocumentContentSource implements IDocumentContentSource, InitializablePlugin {
+
+  /** Metadata plugin name */
+  private static final var _metadataPlugin = "IDocumentMetadataSource"
   /** OnBase client type to show documents.  Unity or Web */
   private static var _onbaseClientType: Settings.OnBaseClientType = null
   /** OnBase web client type. HTML or ActiveX */
@@ -51,7 +56,6 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
   private static var _asyncDocumentFolder: File = null
   /** Async Enabled  */
   private var _asyncEnabled: boolean
-
   /** Logger for OnBaseDMS */
   private var logger = Logger.forCategory(Settings.PluginLoggerCategory)
   /** properties used by admin pages.  */
@@ -120,7 +124,7 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
         logger.debug("Document " + document.DocUID + " has been added to OnBase.")
       }
       // return true to ignore IDocumentMetadataSource.saveDocument or false uses Guidewire OOTB implementation to save metadata again.
-      return Plugins.isEnabled("IDocumentMetadataSource")
+      return Plugins.isEnabled(_metadataPlugin)
     }
     // Call onbase.api.application to do the real work.
     var docUID = null as String
@@ -132,7 +136,7 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
       } else {
         throw new DisplayableException("Calling DocumentContentSource.addDocument for new document with zero byte document content.")
       }
-      return Plugins.isEnabled("IDocumentMetadataSource")
+      return Plugins.isEnabled(_metadataPlugin)
     } catch (ex2: Exception) {
       logger.error("Adding document to OnBase failed!", ex2)
       throw new DisplayableException("Adding document to OnBase failed!")
@@ -142,10 +146,9 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
       return true
     } else {
       // return true to ignore IDocumentMetadataSource.saveDocument or false uses Guidewire OOTB implementation to save metadata again.
-      return Plugins.isEnabled("IDocumentMetadataSource")
+      return Plugins.isEnabled(_metadataPlugin)
     }
   }
-
 
   /**
    * Add a document to OnBase.
@@ -159,48 +162,38 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
    */
   public function addKeyword(documentContents: InputStream, document: Document, asyncFolder: File, asyncSize: long): String {
     var keywords = new ArrayList <Keyword>()
-    // A list of cache entries need to be invalidated after add document.
-    var cacheEntries = new ArrayList <String>()
+
     // Add document account number.
-    keywords.add(new Keyword("accountid", document.Account.AccountNumber))
-    //cacheEntries.add(DocumentProvider.buildPrimaryContextString(Settings.CurrentCenter, new Keyword(KeywordMap.accountid, document.Account.AccountNumber)))
+    keywords.add(new Keyword(KeywordMap.accountnumber.Name, document.Account.AccountNumber))
     // Add document properties.
-    keywords.add(new Keyword("filename", document.Name))
-    keywords.add(new Keyword("description", document.Description))
-    keywords.add(new Keyword("status", document.Status.Code))
-    keywords.add(new Keyword("recipient", document.Recipient))
-    //TODO: Need to AUTOFILL KEYWORDS
-    // Add policy information.
-    if (document.PolicyPeriod != null) {
-      keywords.add(new Keyword("policyid", document.PolicyPeriod.PolicyNumber))
-     // cacheEntries.add(DocumentProvider.buildPrimaryContextString(Settings.CurrentCenter, new Keyword(KeywordMap.policyid, document.PolicyPeriod.PolicyNumber)))
-    } else if (document.Policy != null && document.Policy.Periods[0] != null) {
-      keywords.add(new Keyword("policyid", document.Policy.Periods[0].PolicyNumber))
-     // cacheEntries.add(DocumentProvider.buildPrimaryContextString(Settings.CurrentCenter, new Keyword(KeywordMap.policyid, document.Policy.Periods[0].PolicyNumber)))
+    keywords.add(new Keyword(KeywordMap.filename.Name, document.Name))
+    keywords.add(new Keyword(KeywordMap.description.Name, document.Description))
+    keywords.add(new Keyword(KeywordMap.status.Name, document.Status.Code))
+    keywords.add(new Keyword(KeywordMap.recipient.Name, document.Recipient))
+    //keywords.add(new Keyword(KeywordMap.subtype, document.))//TODO: Add document subtype
+    keywords.add(new Keyword(KeywordMap.onbasedocumenttype.Name, document.OnBaseDocumentType.DisplayName))
+    //Add any Policy related keywords
+    var policyKeywordList = getKeywordsFromPolicy(document)
+    if(!policyKeywordList.Empty){
+      keywords.addAll(policyKeywordList)
     }
     // Add job number information.
     if (document.Job != null) {
-      keywords.add(new Keyword("jobnumber", document.Job.JobNumber))
+      keywords.add(new Keyword(KeywordMap.jobnumber.Name, document.Job.JobNumber))
     }
     // Add user information.
-    keywords.add(new Keyword("user", User.util.CurrentUser == null ? "" : User.util.CurrentUser.DisplayName))
+    keywords.add(new Keyword(KeywordMap.user.Name, User.util.CurrentUser == null ? "" : User.util.CurrentUser.DisplayName))
 
     var archivalApp = new DocumentArchival()
     var docUID = archivalApp.archiveDocument(documentContents, document, keywords, asyncFolder, asyncSize)
-    if (docUID != null  && docUID != "0") {
+    if (docUID != null && docUID != "0") {
       document.DocUID = docUID
       document.DMS = true
       document.DateCreated = DateUtil.currentDate()
       document.DateModified = DateUtil.currentDate()
-//      // Invalidate cache entries for newly documents.
-//      if (Settings.enableDocumentProviderCache) {
-//        foreach (context in cacheEntries) {
-//          DocumentProvider.invalidate(context)
-//        }
     }
     return docUID
   }
-
 
   /**
    * Display document in OnBase Unity/Web client.
@@ -211,10 +204,50 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
    * @return The DocumentContentsInfo object for this document.
    */
   override function getDocumentContentsInfo(document: Document, includeDocumentContents: boolean): DocumentContentsInfo {
-
-   return getDocumentContentsInformation(document, includeDocumentContents, _onbaseClientType, _onbaseWebClientType)
+    return getDocumentContentsInformation(document, includeDocumentContents, _onbaseClientType, _onbaseWebClientType)
   }
 
+  /**
+   *   Add keywords based on policy info
+   *
+   *   @param document The document to be added.
+   *   @return The policy related Keyword List this document.
+   */
+  private function getKeywordsFromPolicy(document: Document): List<Keyword> {
+    var keywords = new ArrayList <Keyword>()
+
+    // Add policy information.
+    var period: PolicyPeriod = null
+
+    if (document.PolicyPeriod != null) {
+      period = document.PolicyPeriod
+    } else if (document.Policy != null && document.Policy.Periods[0] != null) {
+      period = document.Policy.Periods[0]
+    }
+    if (period != null) {
+      keywords.add(new Keyword(KeywordMap.policynumber.Name, period.PolicyNumber))
+      var primaryInsured = period.PrimaryNamedInsured
+      keywords.add(new Keyword(KeywordMap.primarynamedinsureds.Name, new InsuredName(primaryInsured.FirstName, primaryInsured.LastName, primaryInsured.MiddleName)))
+
+      var additionalNamedInsuredContacts = period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+      if (additionalNamedInsuredContacts.Count > 0) {
+        additionalNamedInsuredContacts.each(\contact -> keywords.add(new Keyword(KeywordMap.additionalnamedinsureds.Name, new InsuredName(contact.FirstName, contact.LastName, contact.MiddleName))))
+      }
+
+      keywords.add(new Keyword(KeywordMap.productname.Name, document.Policy.Product.DisplayName))
+      keywords.add(new Keyword(KeywordMap.policytype.Name, document.Policy.Product.Abbreviation))
+      keywords.add(new Keyword(KeywordMap.agencycode.Name, period.ProducerCodeOfRecord.Organization.AgenyNumber_Ext))
+      keywords.add(new Keyword(KeywordMap.legacypolicynumber.Name, period.LegacyPolicyNumber_Ext))
+      keywords.add(new Keyword(KeywordMap.underwriter.Name, document.Policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_UNDERWRITER).AssignedUser.DisplayName))
+      keywords.add(new Keyword(KeywordMap.csr.Name, document.Policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_CUSTOMERREP).AssignedUser.DisplayName))
+      keywords.add(new Keyword(KeywordMap.term.Name, period.TermType.Code))
+      keywords.add(new Keyword(KeywordMap.policyexpirationdate.Name,period.PeriodEnd))
+      keywords.add(new Keyword(KeywordMap.policyeffectivedate.Name, period.PeriodStart))
+//      keywords.add(new Keyword(KeywordMap.issuedate.Name, document.Policy.IssueDate))
+//      keywords.add(new Keyword(KeywordMap.transactioneffectivedate.Name, period.PeriodStart))
+    }
+    return keywords
+  }
 
   /**
    * Open document in Unity or Web client.
@@ -227,21 +260,21 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
    * @return The DocumentContentInfo which contains the document URL.
    */
   function getDocumentContentsInformation(document: Document, includeDocumentContents: boolean, clientType: Settings.OnBaseClientType, webClientType: Settings.OnBaseWebClientType): DocumentContentsInfo {
-//    var retrievalApp = new DocumentRetrieval()
-//    var js = null as String
-//    var contents = null as String
-//    //dci's hidden frame is false by default.
-//    if (clientType == Settings.OnBaseClientType.Unity) {
-//     var uri = retrievalApp.getDocumentUnityURL(document.DocUID)
-//      contents= "<html><head><script>document.location.href='" + uri + "';</script></head></html>"
-//    } else {
-//       var uri = retrievalApp.getDocumentWebURL(document.DocUID, webClientType)
-//      js = "window.open('" + uri + "');"
-//      contents= "<html><head><script>" + js + "</script></head></html>"
-//    }
-//
-//    var dci = new DocumentContentsInfo(DocumentContentsInfo.DOCUMENT_CONTENTS, contents, "text/html")
-//    return dci
+    //    var retrievalApp = new DocumentRetrieval()
+    //    var js = null as String
+    //    var contents = null as String
+    //    //dci's hidden frame is false by default.
+    //    if (clientType == Settings.OnBaseClientType.Unity) {
+    //     var uri = retrievalApp.getDocumentUnityURL(document.DocUID)
+    //      contents= "<html><head><script>document.location.href='" + uri + "';</script></head></html>"
+    //    } else {
+    //       var uri = retrievalApp.getDocumentWebURL(document.DocUID, webClientType)
+    //      js = "window.open('" + uri + "');"
+    //      contents= "<html><head><script>" + js + "</script></head></html>"
+    //    }
+    //
+    //    var dci = new DocumentContentsInfo(DocumentContentsInfo.DOCUMENT_CONTENTS, contents, "text/html")
+    //    return dci
 
     var retrievalApp = new DocumentRetrieval()
     var uri = null as String
@@ -270,7 +303,6 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     return dci
   }
 
-
   /**
    * Get the document content input stream from OnBase.
    *
@@ -284,7 +316,6 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     retrievalApp.getDocumentContent(obDocument)
     return obDocument.FileContent
   }
-
 
   /**
    * Is this a valid document?
@@ -313,11 +344,9 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     //return true so that OnBaseDocumentMetadataSource won't be used
     //Note: if u want to update the keywords in OnBase then u have to do it HERE, before u return
     return false
-   // logger.error("DocumentContentSource.removeDocument not implemented.")
+    // logger.error("DocumentContentSource.removeDocument not implemented.")
     //throw new DisplayableException("DocumentContentSource.removeDocument not implemented.")
   }
-
-
 
   /**
    * Update document in OnBase. Store the document as a revision
@@ -327,17 +356,12 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
    *
    * @return True if document has been updated.
    */
-
   override function updateDocument(document: Document, documentIS: InputStream): boolean {
-
     //## todo: Implement me
     //return true so that OnBaseDocumentMetadataSource won't be used
     logger.error("OnBaseDocumentContentSource.updateDocument not implemented.")
     throw new DisplayableException("OnBaseDocumentContentSource.updateDocument not implemented.")
-
   }
-
-
 
   /**
    * Update document in OnBase.
@@ -352,14 +376,14 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
   public function updateKeyword(documentContents: InputStream, document: Document, asyncFolder: File, asyncSize: long): String {
     var keywords = new ArrayList <Keyword>()
     // Add document account number.
-    keywords.add(new Keyword("accountid", document.Account.AccountNumber))
+    keywords.add(new Keyword(KeywordMap.accountnumber.Name, document.Account.AccountNumber))
 
     // Add document properties.
-    keywords.add(new Keyword("documentidforrevision", document.DocUID))
+    keywords.add(new Keyword(KeywordMap.documentidforrevision.Name, document.DocUID))
     var oldDocHandle = document.DocUID
     var updateApp = new DocumentArchival()
     var docUID = updateApp.archiveDocument(documentContents, document, keywords, asyncFolder, asyncSize)
-    if (docUID != null  && docUID != "0") {
+    if (docUID != null && docUID != "0") {
       document.DateCreated = DateUtil.currentDate()
       document.DateModified = DateUtil.currentDate()
     }

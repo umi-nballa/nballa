@@ -8,9 +8,14 @@ uses onbase.api.services.interfaces.ArchiveDocumentSyncInterface
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.anonymous.elements.KeywordsArchiveDocument_Multi_Instance_Keyword_Group
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.anonymous.elements.KeywordsArchiveDocument_StandAlone
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.ArchiveDocument
+uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.AdditionalInsured
+uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.PrimaryInsured
 uses org.apache.commons.codec.binary.Base64
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.PrimaryInsured
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.types.complex.KeywordsArchiveDocument
+uses java.io.File
+uses java.lang.Exception
+uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.ArchiveDocumentResponse
+uses java.lang.Long
+uses java.text.SimpleDateFormat
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -65,92 +70,71 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     // File information
     archiveDocument.DocumentArchiveData.FileInfo.MIMEType = mimeType
     archiveDocument.DocumentArchiveData.FileInfo.Base64FileStream = base64Content
-
     // Create keyword adaptor
     var adaptor = new KeywordAdaptor(keywords)
 
     // Standalone Keywords
     var archiveKeywords = new KeywordsArchiveDocument_StandAlone()
 
-    //archiveKeywords.GWFileName_Collection.String[0] = fileName     //TODO: OnBase - commented out awaiting taxonomy
-    //archiveKeywords.DocumentType_Collection.String[0] = documentType
-    //archiveKeywords.Account_Collection.String[0] = adaptor.AccountNumber //TODO: OnBase - commented out awaiting taxonomy//What happened to Account Number?
-    //archiveKeywords.AccountNumber_Collection.String[0] = adaptor.AccountNumber    //TODO: OnBase - commented out awaiting taxonomy
-    //archiveKeywords.ClaimNumber_Collection.String[0] = adaptor.ClaimNumber         //TODO: OnBase - commented out awaiting taxonomy
     archiveKeywords.AgencyCode_Collection.String[0] = adaptor.AgencyCode
     archiveKeywords.CSR_Collection.String[0] = adaptor.CSR
     archiveKeywords.Description_Collection.String[0] = adaptor.Description
     archiveKeywords.LegacyPolicyNumber_Collection.String[0] = adaptor.LegacyPolicyNumber
     archiveKeywords.OnBaseDocumentType_Collection.String[0] = documentType
-    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = adaptor.PolicyEffectiveDate
-    archiveKeywords.PolicyExpirationDate_Collection.String[0] = adaptor.PolicyExpirationDate
+    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = convertDateFormat(adaptor.PolicyEffectiveDate)
+    archiveKeywords.PolicyExpirationDate_Collection.String[0] = convertDateFormat(adaptor.PolicyExpirationDate)
     archiveKeywords.PolicyNumber_Collection.String[0] = adaptor.PolicyNumber
     archiveKeywords.PolicyType_Collection.String[0] = adaptor.PolicyType
     archiveKeywords.ProductName_Collection.String[0] = adaptor.ProductName
-    archiveKeywords.ReceivedDate_Collection.String[0] = adaptor.ReceivedDate
+    archiveKeywords.ReceivedDate_Collection.String[0] = convertDateFormat(adaptor.ReceivedDate)
     archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"
     archiveKeywords.Subtype_Collection.String[0] = adaptor.Subtype
     archiveKeywords.Term_Collection.String[0] = adaptor.Term
     archiveKeywords.Underwriter_Collection.String[0] = adaptor.Underwriter
-
-
-    /*if (adaptor.ClaimSecurityRole != null) {           //TODO: OnBase - commented out awaiting taxonomy
-      foreach (role in adaptor.ClaimSecurityRole.split(",") index i) {
-        archiveKeywords.ClaimSecurityRole_Collection.String[i] = role
-      }
-    }*/
     archiveDocument.DocumentArchiveData.Keywords.StandAlone = archiveKeywords
 
     // MIKG keywords
     var archiveMIKGs = new KeywordsArchiveDocument_Multi_Instance_Keyword_Group()
 
-//    for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
-//      var addNamedInsured = new onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.AdditionalInsured()
-//      addNamedInsured.AdditionalFirstName = ""
-//      addNamedInsured.AdditionalMiddleName = ""
-//      addNamedInsured.AdditionalLastName = ""
-//      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured.add(addNamedInsured)
-//    }
+    for(namedInsured in adaptor.PrimaryNamedInsureds index i) {
+      var primaryInsured = new PrimaryInsured()
+      primaryInsured.PrimaryInsuredName= namedInsured.FirstName
+      primaryInsured.PrimaryMiddleName = namedInsured.MiddleName
+      primaryInsured.PrimaryLastName = namedInsured.LastName
+      archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured = new List<PrimaryInsured>()
+      archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured.add(primaryInsured)
+    }
 
+    for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
+      var addNamedInsured = new AdditionalInsured()
+      addNamedInsured.AdditionalFirstName = namedInsured.FirstName
+      addNamedInsured.AdditionalMiddleName = namedInsured.MiddleName
+      addNamedInsured.AdditionalLastName = namedInsured.LastName
+      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured = new List<AdditionalInsured>()
+      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured.add(addNamedInsured)
+    }
 
-    //TODO: OnBase - commented out awaiting taxonomy
-    //archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured[0] = adaptor.AdditionalNamedInsureds
-/*    archiveMIKGs.Contact_Collection.Contact[0].ContactID = adaptor.ContactID
-    archiveMIKGs.Contact_Collection.Contact[0].ContactName = adaptor.ContactName
-    archiveMIKGs.Matter_Collection.Matter[0].MatterID = adaptor.MatterID
-    archiveMIKGs.Matter_Collection.Matter[0].MatterName = adaptor.MatterName
-    archiveMIKGs.Job_Collection.Job[0].JobNumber = adaptor.JobNumber*/
-/*    var index = 0
-    if (adaptor.ActivityID != null) {
-      //TODO: OnBase - commented out awaiting taxonomy
-*//*      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.activityid.toString()
-      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ActivityID*//*
-      index++
-    }
-    if (adaptor.CheckID != null) {
-//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.checkid.toString() //TODO: OnBase - commented out awaiting taxonomy
-//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.CheckID  //TODO: OnBase - commented out awaiting taxonomy
-      index++
-    }
-    if (adaptor.ReserveID != null) {
-//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.reserveid.toString()   //TODO: OnBase - commented out awaiting taxonomy
-//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ReserveID    //TODO: OnBase - commented out awaiting taxonomy
-      index++
-    }
-    if (adaptor.ExposureID != null) {
-//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkType = Settings.DocumentLinkType.exposureid.toString()   //TODO: OnBase - commented out awaiting taxonomy
-//      archiveMIKGs.GWLink_Collection.GWLink[index].GWLinkID = adaptor.ExposureID     //TODO: OnBase - commented out awaiting taxonomy
-      index++
-    }*/
-   // archiveMIKGs.PrimaryInsured_Collection = adaptor.PrimaryFirstName
     archiveDocument.DocumentArchiveData.Keywords.Multi_Instance_Keyword_Group = archiveMIKGs
     // Make request
-    var response = service.ArchiveDocument(archiveDocument)
 
+    var doc = new File("C:/Users/cmattox/Desktop/request12.txt")
+    doc.write(archiveDocument.asUTFString())
+
+    var response = service.ArchiveDocument(archiveDocument)
     if (logger.isDebugEnabled()) {
       logger.debug("Finished executing archiveDocument() using WSP service with document ID: ${response}")
     }
 
     return response.toString()
+  }
+
+  function convertDateFormat(dateString: String): String {
+    var retVal = ""
+    if(dateString?.HasContent) {
+      var expectedFormat = new SimpleDateFormat("MM/dd/yyyy")
+      var formatForWS = new SimpleDateFormat("YYYY-MM-DD")
+      retVal = formatForWS.format(expectedFormat.parse(dateString))
+    }
+    return retVal
   }
 }

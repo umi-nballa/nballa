@@ -21,7 +21,8 @@ class LexisFirstServicePayload {
   public static final var REINSTATEPERIOD_MSG: String = "ReinstatePeriod"
   public static final var RENEWPERIOD_MSG: String = "RenewPeriod"
   public static final var REWRITEPERIOD_MSG: String = "RewritePeriod"
-  /**
+
+   /**
    * This function takes care of creating payload to the LexisFirst message transport.
    */
   function payLoadXML(policyPeriod: PolicyPeriod, eventName: String): LexisFirstFileData {
@@ -183,7 +184,7 @@ class LexisFirstServicePayload {
       lexisFirstFileData.ProducerCity = policyPeriod.ProducerCodeOfRecord.Address.City
       lexisFirstFileData.ProducerState = policyPeriod.ProducerCodeOfRecord.Address.State
       lexisFirstFileData.ProducerCountry = policyPeriod.ProducerCodeOfRecord.Address.Country
-      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Address.PostalCode.substring(0, 5)
+      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Address.PostalCode?.substring(0, 5)
       lexisFirstFileData.ProducerPhone = ""
       //15
       lexisFirstFileData.EndorsementState1 = ""

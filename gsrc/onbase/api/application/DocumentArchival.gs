@@ -18,6 +18,8 @@ uses java.io.FileOutputStream
 uses java.io.InputStream
 uses java.lang.Exception
 uses java.util.UUID
+uses onbase.api.services.interfaces.ArchiveDocumentSyncInterface
+
 /**
  *
  * Hyland Build Version: 16.0.0.999
@@ -102,10 +104,10 @@ class DocumentArchival {
         docID = "0"
       } else {
         // Sychronized upload document to OnBase.
-        docID = servicesManager.archiveDocumentSynchronously(baos.toByteArray(), document.Name, document.Type.Code, document.MimeType, keywords)
+        docID = servicesManager.archiveDocumentSynchronously(baos.toByteArray(), document.Name, document.OnBaseDocumentType.DisplayName, document.MimeType, keywords)
       }
     } catch (ex: ServicesTierServerErrorException) {
-      logger.error("'ServicesTierServerErrorException' occurred while archiving document to OnBase. Pushing the request into the message queue to be processed asynchronously....")
+      logger.error("'ServicesTierServerErrorException' occurred while archiving document to OnBase. Pushing the request into the message queue to be processed asynchronously...")
       //In case the error happened while trying to archive document synchronously then write the document contents to a folder to be picked up by the Message Transporter later.
       if (!useAsync){
         this.saveDocContentsToAsyncFolder(baos.toByteArray(), localFile)
@@ -113,7 +115,7 @@ class DocumentArchival {
       document.DocumentIdentifier = localFile.getName()
       document.addEvent("DocumentStore")
     } catch (ex: ServicesTierServerConnectionException) {
-      logger.error("'ServicesTierServerConnectionException' occurred while archiving document to OnBase. Pushing the request into the message queue to be processed asynchronously....")
+      logger.error("'ServicesTierServerConnectionException' occurred while archiving document to OnBase. Pushing the request into the message queue to be processed asynchronously...")
       //In case the error happened while trying to archive document synchronously then write the document contents to a folder to be picked up by the Message Transporter later.
       if (!useAsync){
         this.saveDocContentsToAsyncFolder(baos.toByteArray(), localFile)
@@ -121,7 +123,7 @@ class DocumentArchival {
       document.DocumentIdentifier = localFile.getName()
       document.addEvent("DocumentStore")
     } catch (ex: BreakerOpenException) {
-      logger.error("'BreakerOpenException' occurred while archiving document to OnBase. Pushing the request into the message queue to be processed asynchronously....")
+      logger.error("'BreakerOpenException' occurred while archiving document to OnBase. Pushing the request into the message queue to be processed asynchronously...")
       //In case the error happened while trying to archive document synchronously then write the document contents to a folder to be picked up by the Message Transporter later.
       if (!useAsync){
         this.saveDocContentsToAsyncFolder(baos.toByteArray(), localFile)

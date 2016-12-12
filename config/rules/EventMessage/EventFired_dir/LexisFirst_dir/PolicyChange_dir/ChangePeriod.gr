@@ -22,11 +22,13 @@ return (messageContext.EventName == LexisFirstServicePayload.ISSUEPERIOD_MSG ||
 
  var policyPeriod = messageContext.Root as PolicyPeriod
  if(policyPeriod.Policy.Product == "Homeowners") {
+ if(policyPeriod.Job?.SupressPrint!=true && !messageContext.EventName.equalsIgnoreCase("ChangePeriod")) {
  var servicePayload = new LexisFirstServicePayload()
  var eventName = messageContext.EventName
  var lexisFirstFileData = servicePayload.payLoadXML(policyPeriod,eventName)
  var xml = new una.gxmodels.lexisfirstfiledatamodel.LexisFirstFileData(lexisFirstFileData)
 messageContext.createMessage(xml.asUTFString())
+}
 }
 /*end00rule*/
   }

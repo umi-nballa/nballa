@@ -8,6 +8,7 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchInput
 uses wsi.remote.una.ofac.ofac.xgservices.ports.XGServices_BasicHttpBinding_ISearch
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchResults
 uses una.logging.UnaLoggerCategory
+uses java.lang.Exception
 
 /**
  * Class for communicating with OFAC services
@@ -28,16 +29,16 @@ class OFACCommunicator {
    */
   function returnOFACSearchResults(clientContext: ClientContext, searchConfiguration: SearchConfiguration, searchInput: SearchInput): SearchResults
   {
-    _logger.debug("Entering inside method returnOFACSearchResults ")
+    _logger.info("Entering inside method returnOFACSearchResults ")
     try
     {
       var xsService = new XGServices_BasicHttpBinding_ISearch()
       var result = xsService.Search(clientContext, searchConfiguration, searchInput)
-      _logger.debug("Exiting from method returnOFACSearchResults ")
+      _logger.info("Exiting from method returnOFACSearchResults ")
       return result
-    } catch (wse: WebServiceException) {
-      _logger.debug("WS_NOT_AVAILABLE")
-      throw new DisplayableException(WS_NOT_AVAILABLE, wse)
+    } catch (e: Exception) {
+      _logger.error("Exception while retrieving information from OFAC : ", e.StackTraceAsString)
+      throw new DisplayableException(WS_NOT_AVAILABLE )
     }
   }
 }

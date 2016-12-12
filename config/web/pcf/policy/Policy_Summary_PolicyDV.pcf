@@ -97,6 +97,36 @@
         def="PolicyAddressDisplayInputSet(policyPeriod, true)"
         id="PolicyAddress"
         visible="not policyPeriod.Archived"/>
+      <Input
+        id="PrimaryPhone"
+        label="displaykey.Web.AccountFile.Summary.PhoneNumber"
+        required="false"
+        value="policyPeriod.getPhoneNumberValue(policyPeriod.PNIContactDenorm)">
+        <PostOnChange/>
+      </Input>
+      <Input
+        id="PolicyType"
+        label="displaykey.Web.Homeowners.PolicyTypeLabel"
+        value="policyPeriod.HomeownersLine_HOE.HOPolicyType.Code"
+        visible="policyPeriod.HomeownersLine_HOEExists"/>
+      <Input
+        id="RiskLocation"
+        label="displaykey.Web.PolicyFile.Summary.RiskLocation"
+        value="policyPeriod.getLocationValue(policyPeriod)"/>
+      <CheckBoxInput
+        id="ConsenttoRate_Ext"
+        label="displaykey.Web.ModifiersScreen.ConsenttoRate_Ext"
+        value="policyPeriod.ConsentToRateReceived_Ext">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <Input
+        id="ReInsuFacultative"
+        label="displaykey.Web.PolicyFile.Summary.Facultative"
+        value="&quot;&quot;"/>
+      <Input
+        id="RiskIndicator"
+        label="displaykey.Web.PolicyFile.Summary.RiskIndicator"
+        value="&quot;&quot;"/>		
     </InputColumn>
     <Code><![CDATA[function shouldDisplayRewritePolicyLink() : boolean {
   var rewrite = policyPeriod.Policy.RewrittenToNewAccountDestination

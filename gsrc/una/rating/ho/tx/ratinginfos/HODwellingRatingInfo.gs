@@ -50,7 +50,7 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
     _lossAssessmentLimit = (dwellingCov.Dwelling.HODW_LossAssessmentCov_HOE_ExtExists) ? dwellingCov.Dwelling.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
 
-    _territoryCode = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
+    _territoryCode = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.single().Code)
     _county = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County != null) ? dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County : ""
   }
 }

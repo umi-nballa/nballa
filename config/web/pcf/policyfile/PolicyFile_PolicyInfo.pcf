@@ -27,6 +27,41 @@
       <PanelRef
         def="PolicyDBAsDV(period,false)"
         id="listOfDBAs"/>
+      <PanelRef
+        id="ListOfOFACContacts">
+        <DetailViewPanel>
+          <InputColumn>
+            <InputSet>
+              <Label
+                label="&quot;OFAC HIT RECORDS&quot;"/>
+              <ListViewInput
+                labelAbove="true">
+                <Toolbar
+                  visible="false"/>
+                <ListViewPanel>
+                  <RowIterator
+                    editable="false"
+                    elementName="ofacContact"
+                    value="period.ofaccontact">
+                    <Row
+                      editable="false">
+                      <TextCell
+                        id="Name"
+                        label="displaykey.Web.Homeowners.PolicyInfoScreen.AddlNameInsured"
+                        numCols="32"
+                        value="ofacContact.Contact"/>
+                      <TextCell
+                        id="OFACScore"
+                        label="&quot;OFAC SCORE&quot;"
+                        value="ofacContact.EntityScore"/>
+                    </Row>
+                  </RowIterator>
+                </ListViewPanel>
+              </ListViewInput>
+            </InputSet>
+          </InputColumn>
+        </DetailViewPanel>
+      </PanelRef>
     </Screen>
   </Page>
 </PCF>

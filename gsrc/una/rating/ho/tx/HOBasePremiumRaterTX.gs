@@ -59,7 +59,7 @@ class HOBasePremiumRaterTX {
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
         var rateRoutineParameterMap = createParameterSet(costData, basePremiumRatingInfo)
         _executor.executeBasedOnSliceDate(routine, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
-        if (costData != null and costData.ActualTermAmount != 0){
+        if (costData != null){
           costs.add(costData)
         }
       }

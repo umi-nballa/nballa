@@ -1,17 +1,10 @@
-package onbase.webservice.dataobject
+package onbase.api.services.datamodels
 
-uses gw.xml.ws.annotation.WsiExportable
 
 /**
- * Created with IntelliJ IDEA.
- * User: CMattox
- * Date: 11/15/16
- * Time: 2:54 PM
- * To change this template use File | Settings | File Templates.
+ * Data model for OnBase Insured Name
  */
-@WsiExportable("http://onbase.net/onbase/webservice/dataobject")
-final class ContactInfoForOnBase {
-
+class InsuredName {
   var _firstName  : String as FirstName
 
   var _middleName : String as MiddleName
@@ -31,4 +24,8 @@ final class ContactInfoForOnBase {
     _middleName = middleName
   }
 
+/*  override function toString() : String {
+
+    return ((_firstName != null ? _firstName + " " : "") + (_middleName  != null ? _middleName + " " : "") + (_lastName ?: "")).trim()
+  }*/
 }

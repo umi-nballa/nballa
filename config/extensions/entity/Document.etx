@@ -1,11 +1,37 @@
 <?xml version="1.0"?>
-<extension xmlns="http://guidewire.com/datamodel" entityName="Document">
-  <column default="OnBase Document" desc="OnBase Document Type" name="OnBaseDocumentType" nullok="true" type="varchar">
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="Document">
+  <column-override
+    desc="Human-readable name of the document."
+    name="Name"
+    nullok="true"
+    supportsLinguisticSearch="true"
+    type="varchar">
     <columnParam
       name="size"
-      value="255"/>
+      value="120"/>
+  </column-override>
+  <events>
+    <event
+      description="This is used by the asynchronous storage to inform the transport that this document needs to be processed."
+      name="DocumentStore"/>
+    <event
+      description="This is used by OnBase to get Keyword updates."
+      name="DocumentChanged"/>
+  </events>
+  <column
+    desc="The security realm of the portal user which created the document. A realm identifies a collection of users and groups."
+    name="PortalSecurityRealm_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
   </column>
-  <column desc="The security realm of the portal user which created the document. A realm identifies a collection of users and groups." name="PortalSecurityRealm_Ext" nullok="true" type="varchar">
-   <columnParam name="size" value="60"/>
-  </column>
+  <typekey
+    desc="The specific type of OnBase document, if any."
+    name="OnBaseDocumentType"
+    nullok="true"
+    typelist="OnBaseDocumentType_Ext"/>
 </extension>

@@ -50,10 +50,16 @@
             label="displaykey.Button.SaveDraft"
             shortcut="S"
             visible="wizard &lt;&gt; null"/>
+          <ToolbarButton
+            action="OnBaseWebClientExitPoint.push(constructUploadUrl())"
+            id="EasyButtonTest"
+            label="&quot;View Documents in OnBase&quot;"/>
         </Toolbar>
       </PanelRef>
     </SearchPanel>
-    <Code><![CDATA[function createCriteria() : DocumentSearchCriteria {
+    <Code><![CDATA[uses onbase.api.DocPopUtils
+
+function createCriteria() : DocumentSearchCriteria {
   var criteria = new DocumentSearchCriteria()
   criteria.IncludeObsoletes = false
   criteria.setFixedContextWith(policyPeriod.Policy)
@@ -65,6 +71,14 @@ function maybeSaveDraft() {
   if (wizard <> null) {
     wizard.saveDraft()
   }
+}
+
+function constructUploadUrl() : String {
+  var dataMap = {
+      "KT114_0_0_0" -> policyPeriod.PolicyNumber
+  }
+  var customQueryId = "101"
+  return DocPopUtils.generateCustomQueryURL(dataMap, customQueryId)
 }]]></Code>
   </Screen>
 </PCF>

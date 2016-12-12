@@ -5,7 +5,7 @@
   <Forward
     canVisit="perm.Account.view(account)"
     id="AccountFileForward"
-    onBeforeForward="gw.api.web.util.SessionUtil.addAccountToHistory(account);"
+    onBeforeForward="gw.api.web.util.SessionUtil.addAccountToHistory(account);gw.web.account.AccountInfoInputSetUIHelper.createHistoryEventAccount(account);"
     parent="AccountForward()">
     <LocationEntryPoint
       signature="AccountFileForward(account : Account)"/>

@@ -148,6 +148,9 @@ class CoveragesUtil {
       case "BP7ClassifnExclPersonalAdvertisingInjury_Ext":
         result = getPersonalAdvertisingInjuryExclusionExistence(coverable as BP7Classification)
         break
+      case "BP7FLChngsEmployPracLiabInsCov_EXT":
+        result = getFLChngsEmployPracLiabInsCoverageExistence(coverable as BP7BusinessOwnersLine)
+        break
       default:
         break
     }
@@ -348,6 +351,14 @@ class CoveragesUtil {
     }
     return result
   }
+
+  private static function getFLChngsEmployPracLiabInsCoverageExistence(bp7Line : BP7BusinessOwnersLine):ExistenceType{
+    var result : ExistenceType = null
+    if(bp7Line.BP7EmploymentPracticesLiabilityCov_EXTExists){
+      result = TC_REQUIRED
+    }
+    return result
+  }
   
   private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
     return  bp7Line.BP7EmployeeDishtyExists
@@ -378,12 +389,12 @@ class CoveragesUtil {
   }*/
 
   private static function isBP7CapLossesFromCertfdActsTerrsmCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    return !bp7Line.BP7ExclOfTerrorismExists
+    return !bp7Line.BP7ExclCertfdActsTerrsmCovFireLossesExists
   }
 
   private static function isFloridaChangesCondoUnitOwnerConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     for(classification in bp7Line.AllClassifications){
-      if(classification.ClassCode_Ext=="60999"){
+      if(classification.ClassCode_Ext=="60999A"){
         return true
       }
     }
@@ -392,7 +403,7 @@ class CoveragesUtil {
 
   private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     for(classification in bp7Line.AllClassifications){
-      if(classification.ClassCode_Ext=="60999A"){
+      if(classification.ClassCode_Ext=="60999"){
         return true
       }
     }

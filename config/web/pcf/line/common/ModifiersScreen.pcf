@@ -58,7 +58,8 @@
             label="displaykey.Web.ModifiersScreen.ConsenttoRate_Ext"
             labelStyleClass="ext_redLabel"
             value="policyPeriod.ConsentToRateReceived_Ext">
-            <PostOnChange/>
+            <PostOnChange
+              onChange="gw.job.JobWizardHelperEnhancement.createHistoryEventTransaction(policyPeriod)"/>
           </CheckBoxInput>
           <CheckBoxInput
             editable="policyPeriod.ConsentToRateReceived_Ext == null || policyPeriod.ConsentToRateReceived_Ext == false"

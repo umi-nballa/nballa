@@ -419,11 +419,13 @@ class CoverageTermAvailabilityUtil {
     var allowedLimitsPersonalLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Personal_Liability_HOE.PatternCode)
     var allowedLimitsPremiseLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Premise_Liability_HOE_Ext.PatternCode)
 
-    if(hoLine.BaseState == TC_CA){
+    if({3000d,5000d}.contains(covTermOpt.Value.doubleValue())){
+      result = hoLine.DPLI_Personal_Liability_HOEExists
+    }else if(hoLine.BaseState == TC_CA){
       if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
-        result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
+        result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
-        result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
+        result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }
     }
 

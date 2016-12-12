@@ -37,8 +37,8 @@ abstract class AbstractAdditionalInterestContainer<K extends KeyableBean> implem
     // create a detail entity
     var interestDetail= createNewAdditionalInterestDetail()
     this.addToAdditionalInterestDetails(interestDetail)
-    policyAdditionalInterest.addToAdditionalInterestDetails(interestDetail)
     interestDetail?.AdditionalInterestType = policyAdditionalInterest.AdditionalInterestDetails.single().AdditionalInterestType
+    policyAdditionalInterest.addToAdditionalInterestDetails(interestDetail)
     return interestDetail
   }
 

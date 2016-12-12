@@ -74,6 +74,9 @@ class CovTermInputSetPCFController {
 
       if(result == null){
         result = validateFloodCoverageLimits(covTerm, coverable)
+      }
+
+      if(result == null){
         result = validateBuildAddAltLimits(covTerm, coverable)
       }
     }

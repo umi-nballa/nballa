@@ -24,6 +24,8 @@ class BP7CostDisplayableImpl implements BP7CostDisplayable {
         return _cost.Classification.Building.Location
       case BP7BlanketedClassificationCovCost:
         return _cost.Classification.Building.Location
+      case BP7LocationCovCost:
+          return _cost.Location
       default:
         throw "unknown cost type " + typeof _cost
     }
@@ -54,7 +56,11 @@ class BP7CostDisplayableImpl implements BP7CostDisplayable {
       case BP7BlanketedClassificationCovCost:
         return _cost.Classification.Building.DisplayName + ": " +
                _cost.Classification.DisplayName
-      default:
+      case BP7LineCovCost:
+          return _cost.Line.DisplayName
+      case BP7LocationCovCost:
+          return _cost.Location.DisplayName
+        default:
         throw "unknown cost type " + typeof _cost
     }
   }

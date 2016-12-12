@@ -12,5 +12,50 @@
   public-id="BP7BuildingMoneySecurities_EXT"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isCoverageAvailable("BP7BuildingMoneySecurities_EXT", BP7Building)]]></AvailabilityScript>
-  <CovTerms/>
+  <CovTerms>
+    <OptionCovTermPattern
+      aggregationModel="po"
+      choiceLookupTableName="BP7BuildingCovOpt"
+      codeIdentifier="BP7InsideOutsideLimit_EXT"
+      coverageColumn="ChoiceTerm1"
+      lookupTableName="BP7BuildingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="BP7InsideOutsideLimit_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <DefaultsSet/>
+      <Options>
+        <CovTermOpt
+          codeIdentifier="zmriepuncigptdk3evbm91pr7fa"
+          currency="usd"
+          optionCode="BP710000/2000_EXT"
+          priority="300"
+          public-id="zmriepuncigptdk3evbm91pr7fa"
+          value="3"/>
+        <CovTermOpt
+          codeIdentifier="zvogulg936flu4uvdg6es69ffc9"
+          currency="usd"
+          optionCode="BP710000/10000_EXT"
+          priority="400"
+          public-id="zvogulg936flu4uvdg6es69ffc9"
+          value="4"/>
+        <CovTermOpt
+          codeIdentifier="zcqhs7hum4lfteplp2vio7o5ff9"
+          currency="usd"
+          optionCode="BP75000/2000_EXT"
+          priority="100"
+          public-id="zcqhs7hum4lfteplp2vio7o5ff9"
+          value="1"/>
+        <CovTermOpt
+          codeIdentifier="z0pgg4mi44kcf4r94pihn77meqb"
+          currency="usd"
+          optionCode="BP75000/5000_EXT"
+          priority="200"
+          public-id="z0pgg4mi44kcf4r94pihn77meqb"
+          value="2"/>
+      </Options>
+    </OptionCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

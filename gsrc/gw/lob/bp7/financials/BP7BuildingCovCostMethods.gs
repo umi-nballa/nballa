@@ -16,7 +16,8 @@ class BP7BuildingCovCostMethods extends BP7AbstractCostMethods<BP7BuildingCovCos
   }
 
   override property get CostQualifier() : BP7Qualifier {
-    return new BP7Qualifier("/location" + _owner.Building.Location.Location.LocationNum + 
+    return new BP7Qualifier("/line" + _owner.Building.Location.Line.FixedId.Value +
+                            "/location" + _owner.Building.Location.Location.LocationNum +
                             "/building" + _owner.Building.Building.BuildingNum +
                              "/" + Coverage.PatternCode)
   }

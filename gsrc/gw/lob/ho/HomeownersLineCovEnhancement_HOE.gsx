@@ -84,7 +84,8 @@ enhancement HomeownersLineCovEnhancement_HOE : entity.HomeownersLineCov_HOE {
   }
 
   function removeScheduledItem(item: HOscheduleItem_HOE_Ext) {
-    this.removeFromScheduledItem_Ext(item)
+    //this.removeFromScheduledItem_Ext(item)
+    this.removeScheduledItem(item)
 
     //renumberScheduledItems()
   }

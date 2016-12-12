@@ -164,7 +164,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
     }
     var exposureMap = dwelling.HODW_ScheduledProperty_HOE.ScheduledItems.partition( \ schItem -> schItem.ScheduleType )
     exposureMap.eachKey( \ scheduleType -> {
-      var totalCalculateExpValue = exposureMap.get(scheduleType).sum( \ schItem -> schItem.ExposureValue )
+      var totalCalculateExpValue = exposureMap.get(scheduleType).where( \ item -> item.ExposureValue != null).sum( \ schItem -> schItem.ExposureValue)
       var maxValidTotalExposureValue = ConfigParamsUtil.getInt(TC_totalscheduleExposureMaxValue, dwelling.HOLine.BaseState,scheduleType.Code)
       if(totalCalculateExpValue> maxValidTotalExposureValue){
         resultBuffer.append(displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext(scheduleType.DisplayName,new Double(maxValidTotalExposureValue as double).asMoney()))

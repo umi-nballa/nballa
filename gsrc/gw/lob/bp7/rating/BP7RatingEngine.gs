@@ -43,10 +43,10 @@ class BP7RatingEngine extends BP7AbstractRatingEngine<BP7Line> {
   }
 
   override function rateClassification(classification : BP7Classification, sliceToRate : DateRange) {
-    var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
+    /*var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
     if (classification.BP7ClassificationBusinessPersonalPropertyExists) {
       addCost(step.rate(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate))
-    }
+    }  */
   }
 
   function hasRateForClassGroup(classification : BP7Classification) : boolean{

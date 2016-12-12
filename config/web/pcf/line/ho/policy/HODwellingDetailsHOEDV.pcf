@@ -68,7 +68,6 @@
             label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
             pickLocation="TerritoryCodeSearchPopup.push(dwelling.HOLine.Branch, TerritoryCode)"
             required="true"
-            validationExpression="TerritoryCode.prelimValidate()"
             value="TerritoryCode.Code"/>
           <!-- <RangeInput
             available="dwelling.HOLocation.PolicyLocation.State != null"
@@ -113,6 +112,7 @@
             target="DATA_ONLY"/>
         </Input>
         <Input
+          editable="true"
           id="respondingFireDept_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
           value="dwelling.HOLocation.RespondingFireDept_Ext"/>
@@ -135,18 +135,10 @@
           value="dwelling.HOLocation.NearCommercial"/> -->
         <Input
           boldValue="true"
+          editable="true"
           id="ProtectionClassCode"
           label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
           value="dwelling.HOLocation.DwellingProtectionClassCode"/>
-        <ContentInput
-          label="&quot; &quot;">
-          <Link
-            action="dwelling.setProtectionClassCode()"
-            available="openForEdit"
-            id="AutofillId"
-            label="displaykey.Web.Homeowners.Dwelling.Autofill"
-            styleClass="miniButton"/>
-        </ContentInput>
         <BooleanRadioInput
           editable="true"
           id="protectedSubdivision"
@@ -196,18 +188,16 @@
       <InputSet
         id="bceg_Ext">
         <RangeInput
-          available="!dwelling.HOLocation.OverrideBCEG_Ext"
-          editable="true"
+          editable="!dwelling.HOLocation.OverrideBCEG_Ext"
           id="BCEGTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGTunaReturned_Ext"
           value="dwelling.HOLocation.BCEGTunaReturned_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)">
+          valueRange="tunaAppResponse.BCEGGrade">
           <PostOnChange
             onChange="if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_USERENTERED}"
             target="bceg_Ext"/>
         </RangeInput>
         <Input
-          available="!dwelling.HOLocation.OverrideBCEG_Ext"
           id="BCEGMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGMatchlevel_Ext"
           value="dwelling.HOLocation.BCEGMatchLevel_Ext"/>
@@ -220,7 +210,6 @@
             target="bceg_Ext"/>
         </BooleanRadioInput>
         <Input
-          available="dwelling.HOLocation.OverrideBCEG_Ext"
           editable="true"
           id="BCEGUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGUserEntered_Ext"

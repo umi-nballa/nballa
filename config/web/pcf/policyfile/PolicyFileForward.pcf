@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Forward
     id="PolicyFileForward"
-    onBeforeForward="if(retrievedPeriod != null) gw.api.web.util.SessionUtil.addToPoliciesList(retrievedPeriod)"
+    onBeforeForward="if(retrievedPeriod != null) gw.api.web.util.SessionUtil.addToPoliciesList(retrievedPeriod);gw.web.policyfile.PolicyFileMenuActionsUIHelper.createHistoryEventPolicy(retrievedPeriod);"
     parent="PolicyForward()">
     <LocationEntryPoint
       signature="PolicyFileForward(policyNumber : String)"/>

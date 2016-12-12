@@ -21,7 +21,7 @@ class PolicyLocationValidation extends PCValidationBase {
     Context.addToVisited( this, "validateImpl" )
 
     allAccountLocationsAreActive()
-    territoryCodeAgreesWithLocation()
+    //skipped at UNA - territoryCodeAgreesWithLocation()
     checkAnswers()
   }
 
@@ -34,6 +34,7 @@ class PolicyLocationValidation extends PCValidationBase {
     }
   }
 
+  //skipped at UNA
   function territoryCodeAgreesWithLocation() {
     Context.addToVisited(this, "territoryCodeAgreesWithLocation")
     Location.TerritoryCodes.each(\ code -> {
@@ -46,6 +47,7 @@ class PolicyLocationValidation extends PCValidationBase {
     })
   }
 
+  //skipped at UNA
   function validateMismatchTerritoryCode(code: TerritoryCode) {
     /* Don't validate null codes since required validation will catch that... */
     if ( code.Code != null ) {
@@ -89,7 +91,7 @@ class PolicyLocationValidation extends PCValidationBase {
       var validatedTerritoryCodes : Map<Map<String, Object>, String> = {}
       locs.each(\ loc -> {
 	var val = new PolicyLocationValidation(context, loc, validatedTerritoryCodes)
-        val.territoryCodeAgreesWithLocation()
+        ////skipped at UNA - val.territoryCodeAgreesWithLocation()
         val.checkAnswers()
       })
     })

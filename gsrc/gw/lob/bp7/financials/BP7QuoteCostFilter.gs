@@ -10,7 +10,7 @@ class BP7QuoteCostFilter {
 
   function children(parent : BP7Qualifier) : List<BP7Qualifier> {
     var uniqueChildren = _costs
-      .where(\ row -> row.Qualifier.childOf(parent) and 
+      .where(\ row -> row.Qualifier.childOf(parent) and
                       not row.Qualifier.leafOf(parent))
       .map(\ row -> row.Qualifier.nextLevel(parent))
       .toSet()
@@ -26,11 +26,25 @@ class BP7QuoteCostFilter {
     return list
   }
 
+  function coverageCosts(costQualifier : BP7Qualifier) : List<BP7CostDisplayable> {
+    var list : List<BP7CostDisplayable> = {}
+    list.addAll(costsFor(costQualifier))
+    return list
+  }
+
   function buildingCoverageCosts(locationQualifier : BP7Qualifier) : List<BP7CostDisplayable> {
     var list : List<BP7CostDisplayable> = {}
 
     var buildings = children(locationQualifier)
     list.addAll(coverageCosts(buildings))
+
+    return list
+  }
+
+  function lineCoverageCosts(lineQualifier : BP7Qualifier) : List<BP7CostDisplayable> {
+    var list : List<BP7CostDisplayable> = {}
+
+    list.addAll(coverageCosts(lineQualifier))
 
     return list
   }

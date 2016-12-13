@@ -40,7 +40,6 @@ class TunaAppResponse {
   var _protectionClass : List<PropertyDataModel>               as ProtectionClass
   var _distanceToCoast : List<PropertyDataModel>               as DistanceToCoast
   var _bcegGrade : List<PropertyDataModel>                     as BCEGGrade
-  var _fireDeptMatchLevel : List<PropertyDataModel>            as FireDepartmentMatchLevel
   var _estimatedReplacementCost : List<PropertyDataModel>      as EstimatedReplacementCost
   var _iso360Value : List<PropertyDataModel>                   as ISO360Value
   var _adjustedHazard : List<PropertyDataModel>                as AdjustedHazard

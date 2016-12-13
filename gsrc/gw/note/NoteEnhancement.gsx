@@ -7,8 +7,10 @@ uses gw.api.util.DisplayableException
 uses gw.api.util.LocaleUtil
 uses java.io.StringReader
 uses gw.document.TemplatePluginUtils
+uses com.guidewire.pl.web.controller.UserDisplayableException
 
 enhancement NoteEnhancement : Note {
+
   static function getLevelDisplayString(value : Object) : String {
     if(value typeis Account) {
       return displaykey.Java.Note.AccountLevelNote(value)
@@ -68,18 +70,24 @@ enhancement NoteEnhancement : Note {
       }
     })
   }
-  
+
   /** This will use the results of a template search to populate the note.
    * 
    * @param result the template result
    * @param beans the symbol table
    */
     function useTemplate(result : NoteTemplateSearchResults, beans : Map<String,Object>) {
-    try {
+
+      try {
       var locale = LocaleUtil.toLanguage( result.Language)
       if (locale == null) {
         locale = LocaleUtil.getDefaultLocale()
       }
+       //uim-svallabhapurapu
+        doNotAddTmpAtAccntLevel(result)
+        if(policyTemplates().contains(result.Name)){
+          this.SecurityType = typekey.NoteSecurityType.TC_INTERNALONLY
+        }
       TemplatePluginUtils.resolveTemplates( locale , 
           {new StringReader(result.Subject), new StringReader(result.Body)}, 
           // setup the symbol table for the template processing
@@ -103,4 +111,16 @@ enhancement NoteEnhancement : Note {
        throw new DisplayableException(displaykey.NoteAPI.ExceptionCaught(itemName), e)
     }
   }
+
+   // uim-svallabhapurapu
+  private function doNotAddTmpAtAccntLevel(result : NoteTemplateSearchResults){
+       if(this.Policy == null and policyTemplates().contains(result.Name))  {
+         throw new   UserDisplayableException(displaykey.Web.Note.NoteTemplate.NotApplicableToAccount)
+       }
+  }
+  // uim-svallabhapurapu
+  private function policyTemplates() : String[]{
+      return {"New Bsuiness","Inspection Review","Renewal Review"}
+  }
+
 }

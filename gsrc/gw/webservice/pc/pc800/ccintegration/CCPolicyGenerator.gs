@@ -477,6 +477,14 @@ class CCPolicyGenerator {
     return ProductModelTypelistGenerator.trimTypeCode(pp.Policy.ProductCode)
   }
 
+  // This function can be used to map Product Type field for HO Policies only
+  private function mapProductType(pp : PolicyPeriod) : String {
+    if(pp.HomeownersLine_HOEExists ){
+      return ProductModelTypelistGenerator.trimTypeCode(pp.HomeownersLine_HOE.HOPolicyType.Code)
+    }
+    return null
+  }
+
   // This function determines the typecode in CC that describes the status of the policy (e.g. inforce, expired, etc.)
   private function mapPolicyStatus(pp : PolicyPeriod) : String {
     if (pp.Archived) {
@@ -518,6 +526,8 @@ class CCPolicyGenerator {
 
     ccSummary.PolicyNumber = pcSummary.PolicyNumber
     ccSummary.PolicyType = mapPolicyType(pcPolicyPeriod)
+    //Fix for defect DE497 - Product Type field is not added on Step 1 of Claim wizard for HO
+    ccSummary.ProductType = mapProductType(pcPolicyPeriod)
     ccSummary.Status = mapPolicyStatus(pcPolicyPeriod)
     ccSummary.EffectiveDate = pcSummary.PeriodStart
     ccSummary.ExpirationDate = pcSummary.PeriodEnd

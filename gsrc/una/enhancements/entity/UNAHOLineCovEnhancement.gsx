@@ -1,6 +1,5 @@
 package una.enhancements.entity
 
-uses gw.pl.persistence.core.Bundle
 /**
  * Created with IntelliJ IDEA.
  * User: TVang

@@ -261,7 +261,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createAdditionalResidencesRentedToOthers(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
-    var scheduleItems = (currentCoverage.OwningCoverable as coverable as HomeownersLine_HOE).HOLI_AddResidenceRentedtoOthers_HOE.scheduledItem_Ext  //.HOLI_AddResidenceRentedtoOthers_HOE.ScheduledItems
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as HomeownersLine_HOE).HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.CoverageCd = currentCoverage.PatternCode
@@ -269,7 +269,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.numFamilies
+      limit.FormatText = item.NumberOfFamilies
       limit.LimitDesc = item.PolicyLocation.CompactName != null ? "Location : " + item.PolicyLocation.CompactName : ""
       limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
@@ -290,7 +290,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         }
       }
       limits.add(limit)
-    }
+   }
     return limits
   }
 

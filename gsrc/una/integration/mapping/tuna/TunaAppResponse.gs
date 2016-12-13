@@ -55,6 +55,14 @@ class TunaAppResponse {
   var _squareFootage : List<PropertyDataModel>                 as SquareFootage
   var _windPool :List<PropertyDataModel>                       as WindPool
   var _earthQuakeTerritory :List<PropertyDataModel>            as EarthQuakeTerritory
+  var _propertyFlood :List<PropertyDataModel>                  as PropertyFlood
+  var _baseFloodElevation :List<PropertyDataModel>             as BaseFloodElevation
+  var _acv :List<PropertyDataModel>                            as ACV
+  var _condoACV :List<PropertyDataModel>                       as CondoACV
+  var _condoValuationID:List<PropertyDataModel>                as CondoValuationID
+  var _fireLinePropertyHazard :List<PropertyDataModel>         as FireLinePropertyHazard
+  var _coverageLimit :List<PropertyDataModel>                  as CoverageLimit
+
 
 
 

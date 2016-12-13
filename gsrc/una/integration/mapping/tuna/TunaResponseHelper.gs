@@ -36,6 +36,14 @@ class TunaResponseHelper {
   final static var FIRE_LINE_SLOPE = "FirelineSlope"
   final static var FIRE_LINE_SHIA = "FirelineSHIA"
   final static var EARTH_QUAKE_TERRITORY = "EarthquakeTerritory"
+  final static var PROPERTY_FLOOD = "PropertyFlood"
+  final static var BASE_FLOOD_ELEVATION ="BaseFloodElevation"
+  final static var COVERAGE_LIMIT = "CoverageALimit"
+  final static var ACV = "ACV"
+  final static var CONDO_VALUATION = "CondoValuationId"
+  final static var CONDO_ACV = "CondoACV"
+  final static var METRICS_VERSION = "MetricsVersion"
+  final static var FIRE_LINE_PROPERTY_HAZARD_SCORE= "FirelinePropertyHazardScore"
 
 
   // Mapping datums
@@ -124,6 +132,35 @@ class TunaResponseHelper {
             var earthQuakeList = dynamicListMapper(propDetail)
             response.EarthQuakeTerritory = earthQuakeList
             break
+        case PROPERTY_FLOOD:
+            var propertyFlood = dynamicListMapper(propDetail)
+            response.PropertyFlood = propertyFlood
+            break
+        case BASE_FLOOD_ELEVATION:
+            var baseFlood = dynamicListMapper(propDetail)
+            response.BaseFloodElevation = baseFlood
+            break
+        case COVERAGE_LIMIT:
+            var coverageLimit = dynamicListMapper(propDetail)
+            response.CoverageLimit = coverageLimit
+            break
+        case ACV:
+            var acv = dynamicListMapper(propDetail)
+            response.ACV = acv
+            break
+        case CONDO_ACV:
+            var condoACV = dynamicListMapper(propDetail)
+            response.CondoACV = condoACV
+            break
+        case CONDO_VALUATION:
+            var condoValuation = dynamicListMapper(propDetail)
+            response.CondoValuationID = condoValuation
+            break
+        case FIRE_LINE_PROPERTY_HAZARD_SCORE:
+            var propertyHazard = dynamicListMapper(propDetail)
+            response.FireLinePropertyHazard = propertyHazard
+            break
+
 
       }
     }

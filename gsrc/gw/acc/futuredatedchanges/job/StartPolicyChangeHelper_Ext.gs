@@ -18,7 +18,7 @@
     @Param("inForcePeriod","The latest policy period in force")
     @Param("effectiveDate","Effective date of the change")
     @Param("CurrentLocation","The current pcf file")
-    static function startPolicyChangeWizard(job : PolicyChange, inForcePeriod: PolicyPeriod, effectiveDate : Date, CurrentLocation : pcf.StartPolicyChange){
+    static function startPolicyChangeWizard(job : PolicyChange, inForcePeriod: PolicyPeriod, effectiveDate : Date, CurrentLocation : pcf.StartPolicyChange, initiateSERP : boolean){
 
       if(!inForcePeriod.existOnDate_Ext(effectiveDate)){
         job.remove()
@@ -42,6 +42,11 @@
       }
       else{
         if (job.startJobAndCommit(inForcePeriod.Policy, effectiveDate, CurrentLocation)){
+          gw.transaction.Transaction.runWithNewBundle(\ bundle ->{
+            job = bundle.add(job)
+            job.LatestPeriod?.setSERPIndicator(initiateSERP)
+          })
+
           pcf.PolicyChangeWizard.go(job, job.LatestPeriod)
         }
       }

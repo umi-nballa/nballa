@@ -4,7 +4,8 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Forward
     canVisit="perm.System.viewaccount"
-    id="AccountForward">
+    id="AccountForward"
+    onBeforeForward="gw.web.account.AccountInfoInputSetUIHelper.createHistoryEventAccount(savedAccount)">
     <Variable
       initialValue="gw.api.web.util.SessionUtil.getSavedAccount()"
       name="savedAccount"/>

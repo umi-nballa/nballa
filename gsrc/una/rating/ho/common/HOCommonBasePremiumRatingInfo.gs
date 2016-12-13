@@ -52,6 +52,7 @@ class HOCommonBasePremiumRatingInfo {
     var editEffectiveDate = policyPeriod?.EditEffectiveDate
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
 
+    //TODO : Need to update the prior losses
     if (policyPeriod?.Policy?.LossHistoryType == typekey.LossHistoryType.TC_ATT) {
       _priorLosses = policyPeriod?.Policy?.NumPriorLosses
     } else if (policyPeriod?.Policy?.LossHistoryType == typekey.LossHistoryType.TC_MAN){

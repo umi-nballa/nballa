@@ -20,9 +20,8 @@ abstract class BP7RatingStep {
   function rate(coverage : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine> {
     var costData = createCostData(coverage, sliceToRate)
     var parameterSet = createParameterSet(coverage, costData)
-
     _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
-   
+
     return costData
   }
   

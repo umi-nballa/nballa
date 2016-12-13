@@ -5,10 +5,14 @@ uses gw.lob.bp7.rating.BP7ClassificationStep
 uses gw.lob.bp7.rating.BP7RateRoutineExecutor
 uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
+uses una.rating.bp7.common.BP7LineStep
+uses una.rating.bp7.ratinginfos.BP7ClassificationRatingInfo
+uses una.rating.bp7.ratinginfos.BP7RatingInfo
 
 class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   var _minimumRatingLevel: RateBookStatus
   var _executor: BP7RateRoutineExecutor
+  var _bp7RatingInfo : BP7RatingInfo
   final static var _logger = UnaLoggerCategory.UNA_RATING
   construct(line: BP7Line) {
     this(line, RateBookStatus.TC_ACTIVE)
@@ -19,10 +23,15 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     _logger.info("Initializing the " + line.BaseState.Code + " BOP Rating Engine")
     _minimumRatingLevel = minimumRatingLevel
     _executor = new BP7RateRoutineExecutor(ReferenceDatePlugin, PolicyLine, minimumRatingLevel)
+    _bp7RatingInfo = new BP7RatingInfo()
     _logger.info(line.BaseState.Code + " BOP Rating Engine initialized")
   }
 
   override function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange) {
+    var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
+    if(lineCov typeis IdentityRecovCoverage_EXT){
+      addCost(step.rate(lineCov, sliceToRate))
+    }
   }
 
   override function rateLocationCoverage(lineCov: BP7LocationCov, sliceToRate: DateRange) {
@@ -48,14 +57,15 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   override function rateBuilding(building: BP7Building, sliceToRate: DateRange) {
     var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
     if (building.BP7StructureExists) {
-      addCost(step.rate(building.BP7Structure, sliceToRate))
+      //addCost(step.rate(building.BP7Structure, sliceToRate))
     }
   }
 
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
-    var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
-    if (classification.BP7ClassificationBusinessPersonalPropertyExists) {
-      addCost(step.rate(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate))
+    var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
+    var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
+    if (classification.BP7SpoilgCovExists) {
+      addCost(step.rate(classification.BP7SpoilgCov, sliceToRate))
     }
   }
 

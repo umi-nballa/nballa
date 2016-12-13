@@ -22,7 +22,15 @@
         id="Topic"
         label="displaykey.Web.NewNote.Topic"
         required="true"
-        value="note.Topic"/>
+        value="note.Topic"
+        visible="false"/>
+      <RangeInput
+        editable="true"
+        id="rangetopic"
+        label="displaykey.Web.NewNote.Topic"
+        required="true"
+        value="note.Topic"
+        valueRange="policy != null ? typekey.NoteTopicType.TF_POLICYFILTER_EXT.TypeKeys : typekey.NoteTopicType.TF_ACCOUNTFILTER_EXT.TypeKeys"/>
       <Input
         editable="true"
         id="Subject"
@@ -38,6 +46,16 @@
         value="note.Level"
         valueRange="note.generateLevels(account, policy, job)"
         visible="(!(job typeis Submission) or (job as Submission).FullMode)"/>
+      <Input
+        editable="true"
+        id="sessionId"
+        label="displaykey.Web.Note.NoteTemplate.SessionId"
+        value="note.SessionId_Ext"/>
+      <Input
+        editable="true"
+        id="caller"
+        label="displaykey.Web.Note.NoteTemplate.Caller"
+        value="note.Caller_Ext"/>
       <TypeKeyInput
         editable="true"
         filter="note.hasCreatePermission(VALUE)"
@@ -54,5 +72,6 @@
         required="true"
         value="note.Body"/>
     </InputColumn>
+    <InputColumn/>
   </DetailViewPanel>
 </PCF>

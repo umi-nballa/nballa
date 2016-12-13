@@ -22,10 +22,12 @@ class BP7PCFController {
   }
 
   static function prodsCompletedOpsCovTermActions(line:BP7BusinessOwnersLine){
-    if(line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
-      line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
-    }else{
-      line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
+    for(building in line.AllBuildings){
+      if(building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
+        line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
+      }else{
+        line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
+      }
     }
   }
 

@@ -1,0 +1,79 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="NewAccountSearchDV">
+    <Require
+      name="searchCriteria"
+      type="gw.account.AccountSearchCriteria"/>
+    <Variable
+      initialValue="new gw.globalization.AccountSearchCriteriaAdapter(searchCriteria)"
+      name="accountSearchAdapter"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="new gw.globalization.AccountAddressSearchAdapter(searchCriteria)"
+      name="addrAreaAdapter"
+      recalculateOnRefresh="true"/>
+    <InputColumn>
+      <Label
+        label="displaykey.Web.AccountSearch.ApplicantInfo"/>
+      <InputSetRef
+        def="GlobalContactNameInputSet(new gw.search.BasicNameOwner(accountSearchAdapter))"
+        mode="gw.api.name.NameLocaleSettings.PCFMode"/>
+      <CheckBoxInput
+        editable="true"
+        id="CompanyNameExact"
+        label="displaykey.Web.AccountSearch.CompanyNameExactMatch"
+        required="false"
+        value="searchCriteria.CompanyNameExact"/>
+      <Input
+        editable="true"
+        id="CompanyPhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Company.Phone_Ext"
+        value="searchCriteria.CompanyPhone"/>
+      <InputDivider
+        id="CompanyPersonDivider_Ext"/>
+      <InputSetRef
+        def="GlobalPersonNameInputSet(new una.pageprocess.account.AccountSearchNameOwner(accountSearchAdapter))"
+        mode="gw.api.name.NameLocaleSettings.PCFMode"/>
+      <CheckBoxInput
+        editable="true"
+        id="FirstNameExact"
+        label="displaykey.Web.AccountSearch.FirstNameExactMatch"
+        required="false"
+        value="searchCriteria.FirstNameExact"/>
+      <CheckBoxInput
+        editable="true"
+        id="LastNameExact"
+        label="displaykey.Web.AccountSearch.LastNameExactMatch"
+        required="false"
+        value="searchCriteria.LastNameExact"/>
+      <Input
+        editable="true"
+        id="PersonWorkPhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Person.WorkPhone_Ext"
+        value="searchCriteria.WorkPhone"/>
+      <Input
+        editable="true"
+        id="PersonHomePhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Person.HomePhone_Ext"
+        value="searchCriteria.HomePhone"/>
+      <Input
+        editable="true"
+        id="PersonCellPhone"
+        label="displaykey.Web.SubmissionWizard.Account.Applicant.Person.CellPhone_Ext"
+        value="searchCriteria.CellPhone"/>
+    </InputColumn>
+    <InputColumn
+      width="70%">
+      <InputSetRef
+        def="AddressOwnerAddressInputSet(new una.pageprocess.account.NewAccountAddressAreaOwner(addrAreaAdapter))"
+        mode="gw.pcf.AccountSearchHelper.getCountry(searchCriteria)"/>
+    </InputColumn>
+    <InputFooterSection>
+      <InputSetRef
+        def="SearchAndResetInputSet()"/>
+    </InputFooterSection>
+  </DetailViewPanel>
+</PCF>

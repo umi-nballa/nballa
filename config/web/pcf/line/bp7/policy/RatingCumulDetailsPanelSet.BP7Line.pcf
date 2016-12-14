@@ -36,17 +36,17 @@
           <ListViewPanel>
             <RowIterator
               editable="false"
-              elementName="locationQualifier"
+              elementName="lineQualifier"
               pageSize="0"
               value="quoteCostFilter.children(new gw.lob.bp7.financials.BP7Qualifier(&quot;/&quot;))">
               <Variable
-                initialValue="quoteCostFilter.buildingCoverageCosts(locationQualifier)"
-                name="buildingCosts"/>
+                initialValue="line.FixedId.Value"
+                name="lineNumber"/>
               <Variable
-                initialValue="quoteCostFilter.classificationCoverageCosts(locationQualifier)"
-                name="classificationCosts"/>
+                initialValue="quoteCostFilter.lineCoverageCosts(lineQualifier)"
+                name="lineCosts"/>
               <IteratorSort
-                sortBy="locationQualifier"
+                sortBy="lineQualifier"
                 sortOrder="1"/>
               <Row
                 visible="false">
@@ -91,32 +91,47 @@
                   id="CostBlanketed"
                   label="displaykey.Web.Policy.BP7.Financials.Blanketed"/>
               </Row>
+              <RowSetRef
+                def="BP7CostRowSet(lineCosts, prorated, &quot;BP7Line&quot;)"
+                id="LineCosts"/>
               <Row
                 useSubHeaderStyle="true"
                 visible="not prorated">
-                <Cell
+                <!-- <Cell
                   bold="true"
                   colspan="7"
                   enableSort="false"
                   id="NonProratedLocation"
-                  value="(buildingCosts.first() ?: classificationCosts.first()).DisplayLocation"/>
+                  value="(buildingCosts.first() ?: classificationCosts.first()).DisplayLocation"/> -->
               </Row>
               <Row
                 useSubHeaderStyle="true"
                 visible="prorated">
-                <Cell
+                <!-- <Cell
                   bold="true"
                   colspan="11"
                   enableSort="false"
                   id="ProratedLocation"
-                  value="(buildingCosts.first() ?: classificationCosts.first()).DisplayLocation"/>
+                  value="(buildingCosts.first() ?: classificationCosts.first()).DisplayLocation"/> -->
               </Row>
-              <RowSetRef
-                def="BP7CostRowSet(buildingCosts, prorated, displaykey.Web.Policy.BP7.Financials.Buildings)"
-                id="BuildingCosts"/>
-              <RowSetRef
-                def="BP7CostRowSet(classificationCosts, prorated, displaykey.Web.Policy.BP7.Financials.Classifications)"
-                id="ClassificationCosts"/>
+              <RowIterator
+                editable="false"
+                elementName="locationQualifier"
+                pageSize="0"
+                value="quoteCostFilter.children(new gw.lob.bp7.financials.BP7Qualifier(&quot;/line&quot;+lineNumber+&quot;/&quot;))">
+                <Variable
+                  initialValue="quoteCostFilter.buildingCoverageCosts(locationQualifier)"
+                  name="buildingCosts"/>
+                <Variable
+                  initialValue="quoteCostFilter.classificationCoverageCosts(locationQualifier)"
+                  name="classificationCosts"/>
+                <RowSetRef
+                  def="BP7CostRowSet(buildingCosts, prorated, displaykey.Web.Policy.BP7.Financials.Buildings)"
+                  id="BuildingCosts"/>
+                <RowSetRef
+                  def="BP7CostRowSet(classificationCosts, prorated, displaykey.Web.Policy.BP7.Financials.Classifications)"
+                  id="ClassificationCosts"/>
+              </RowIterator>
             </RowIterator>
           </ListViewPanel>
         </ListViewInput>

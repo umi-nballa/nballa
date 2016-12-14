@@ -689,7 +689,15 @@ class HODwellingUtil_HOE {
   static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
     var tunaCodeAndPercent = new ArrayList<String>()
     if(tunaValues != null) {
-      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.Value + " - " +elt.Percent+" %"))
+      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.Value))// + " - " +elt.Percent+" %"))
+    }
+    return tunaCodeAndPercent
+  }
+
+  static function getDependentCodes(tunaValues : List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(tunaValues != null) {
+      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.NamedValue))// + " - " +elt.Percent+" %"))
     }
     return tunaCodeAndPercent
   }

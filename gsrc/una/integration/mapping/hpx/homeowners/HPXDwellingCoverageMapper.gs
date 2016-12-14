@@ -14,7 +14,7 @@ uses una.integration.mapping.hpx.common.HPXRatingHelper
  * To change this template use File | Settings | File Templates.
  */
 class HPXDwellingCoverageMapper extends HPXCoverageMapper{
-  function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
                                                 : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
 
@@ -33,6 +33,26 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           break
       case "HOLI_AddResidenceRentedtoOthers_HOE" :
           var scheduledProperties = createAdditionalResidencesRentedToOthers(currentCoverage, previousCoverage, transactions)
+          for (item in scheduledProperties) { limits.add(item)}
+          break
+      case "HODW_AdditionalInsuredSchedResidencePremises" :
+          var scheduledProperties = createAdditionalInsuredResidencePremises(currentCoverage, previousCoverage, transactions)
+          for (item in scheduledProperties) { limits.add(item)}
+          break
+      case "HODW_AdditionalInsuredSchedProp" :
+          var scheduledProperties = createAdditionalInsuredScheduledProperty(currentCoverage, previousCoverage, transactions)
+          for (item in scheduledProperties) { limits.add(item)}
+          break
+      case "HODW_AdditionalInsuredSchedDescribedLocation" :
+          var scheduledProperties = createAdditionalInsuredDescribedLocation(currentCoverage, previousCoverage, transactions)
+          for (item in scheduledProperties) { limits.add(item)}
+          break
+      case "HOLI_AdditionalInsuredSchedPersonalLiability" :
+          var scheduledProperties = createAdditionalInsuredPersonalLiability(currentCoverage, previousCoverage, transactions)
+          for (item in scheduledProperties) { limits.add(item)}
+          break
+      case "HOLI_AdditionalInsuredSchedPropertyManager" :
+          var scheduledProperties = createAdditionalInsuredPropertyManager(currentCoverage, previousCoverage, transactions)
           for (item in scheduledProperties) { limits.add(item)}
           break
     }
@@ -261,7 +281,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createAdditionalResidencesRentedToOthers(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
-    var scheduleItems = (currentCoverage.OwningCoverable as coverable as HomeownersLine_HOE).HOLI_AddResidenceRentedtoOthers_HOE.scheduledItem_Ext  //.HOLI_AddResidenceRentedtoOthers_HOE.ScheduledItems
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as HomeownersLine_HOE).HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.CoverageCd = currentCoverage.PatternCode
@@ -269,7 +289,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
-      limit.FormatText = item.numFamilies
+      limit.FormatText = item.NumberOfFamilies
       limit.LimitDesc = item.PolicyLocation.CompactName != null ? "Location : " + item.PolicyLocation.CompactName : ""
       limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
@@ -285,6 +305,156 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
         if(cost typeis ScheduleCovCost_HOE){
           if((cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
             limit.WrittenAmt.Amt = cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
+   }
+    return limits
+  }
+
+  function createAdditionalInsuredResidencePremises(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_AdditionalInsuredSchedResidencePremises.ScheduledItems
+    for (item in scheduleItems) {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CoverageCd = currentCoverage.PatternCode
+      limit.CoverageSubCd = "AdditionalInsured"
+      limit.CurrentTermAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
+          "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
+          "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
+          "| SubLoc:" +
+          "| Interest: " + item.Interest
+      limit.WrittenAmt.Amt = 0.00
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
+    }
+    return limits
+  }
+
+  function createAdditionalInsuredScheduledProperty(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_AdditionalInsuredSchedProp.ScheduledItems
+    for (item in scheduleItems) {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CoverageCd = currentCoverage.PatternCode
+      limit.CoverageSubCd = "AdditionalInsured"
+      limit.CurrentTermAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
+          "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
+          "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
+          "| SubLoc:" +
+          "| Interest: " + item.Interest
+      limit.WrittenAmt.Amt = 0.00
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
+    }
+    return limits
+  }
+
+  function createAdditionalInsuredDescribedLocation(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as Dwelling_HOE).HODW_AdditionalInsuredSchedDescribedLocation.ScheduledItems
+    for (item in scheduleItems) {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CoverageCd = currentCoverage.PatternCode
+      limit.CoverageSubCd = "AdditionalInsured"
+      limit.CurrentTermAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
+          "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
+          "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
+          "| SubLoc:" +
+          "| Interest: " + item.Interest
+      limit.WrittenAmt.Amt = 0.00
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
+    }
+    return limits
+  }
+
+  function createAdditionalInsuredPersonalLiability(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as HomeownersLine_HOE).HOLI_AdditionalInsuredSchedPersonalLiability.scheduledItem_Ext
+    for (item in scheduleItems) {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CoverageCd = currentCoverage.PatternCode
+      limit.CoverageSubCd = "AdditionalInsured"
+      limit.CurrentTermAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
+          "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
+          "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
+          "| SubLoc:" +
+          "| Interest: " + item.Interest
+      limit.WrittenAmt.Amt = 0.00
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
+    }
+    return limits
+  }
+
+  function createAdditionalInsuredPropertyManager(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var scheduleItems = (currentCoverage.OwningCoverable as coverable as HomeownersLine_HOE).HOLI_AdditionalInsuredSchedPropertyManager.scheduledItem_Ext
+    for (item in scheduleItems) {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CoverageCd = currentCoverage.PatternCode
+      limit.CoverageSubCd = "AdditionalInsured"
+      limit.CurrentTermAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.FormatText = ""
+      limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
+          "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
+          "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
+          "| SubLoc:" +
+          "| Interest: " + item.Interest
+      limit.WrittenAmt.Amt = 0.00
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
             break
           }
         }

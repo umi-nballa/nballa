@@ -57,7 +57,7 @@ class PropertyInformationCompletePluginImpl {
           tunaEstReplacementCostDetail(policyPeriod, tunaResponse)
           tunaDistToCoastDetail(policyPeriod, tunaResponse)
           tunaBCEGDetail(policyPeriod, tunaResponse)
-          tunaFireDeptMatchLineLevelDetail(policyPeriod, tunaResponse)
+          //tunaFireDeptMatchLineLevelDetail(policyPeriod, tunaResponse)
           tunaFireHazardDetail(policyPeriod, tunaResponse)
           tunaFireFuelDetail(policyPeriod, tunaResponse)
           tunaFireAccessDetail(policyPeriod, tunaResponse)
@@ -391,22 +391,7 @@ class PropertyInformationCompletePluginImpl {
     }
   }
 
-  /**
-   * This function is to map FireLine Match Level in dwelling screen
-   */
-  private function tunaFireDeptMatchLineLevelDetail(policyPeriod: PolicyPeriod, res: TunaAppResponse) {
-    try {
-      if (res.FireDepartmentMatchLevel != null){
-        if (res.FireDepartmentMatchLevel.size() > 1) {
-          //TODO
-        } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireDeptMatchLevel_Ext = typekey.FireDeptMatchLevel_Ext.TC_USERENTERED
-        }
-      }
-    } catch (exp: Exception) {
-      logger.error("GetPropertyInformationComplete : tunaFireDeptMatchLineLevelDetail " + " : StackTrace = ", exp)
-    }
-  }
+
 
   /**
    * This function is to map Adjust Hazard Score info in dwelling screen for California
@@ -494,7 +479,7 @@ class PropertyInformationCompletePluginImpl {
         tunaStoryNumDetail(building,tunaResponse)
         tunaSquareFootDetail(building,tunaResponse)
         tunaBCEGDetail(building,tunaResponse)
-        tunaFireDeptMatchLineLevelDetail(building,tunaResponse)
+        //tunaFireDeptMatchLineLevelDetail(building,tunaResponse)
         tunaProtectionClassDetail(building,tunaResponse)
         tunaConstructionTypeDetail(building,tunaResponse)
         tunaWindPoolDetail(building,tunaResponse)
@@ -559,19 +544,19 @@ class PropertyInformationCompletePluginImpl {
   /**
    * This function is to map FireDepartmentMatchLevel value in BOP Buildings screen
    */
-  private function tunaFireDeptMatchLineLevelDetail(building: BP7Building, res: TunaAppResponse) {
-    try {
-      if (res.FireDepartmentMatchLevel != null) {
-        if (res.FireDepartmentMatchLevel.size() > 1) {
-          //TODO
-        } else {
-            building.FireDepartmentDistance_Ext = (res.FireDepartmentMatchLevel[0].Value) as Boolean
-        }
-      }
-    } catch (exp: Exception) {
-      logger.error("GetPropertyInformation - BOP : tunaFireDeptMatchLineLevelDetail " + " : StackTrace = ", exp)
-    }
-  }
+//  private function tunaFireDeptMatchLineLevelDetail(building: BP7Building, res: TunaAppResponse) {
+//    try {
+//      if (res.FireDepartmentMatchLevel != null) {
+//        if (res.FireDepartmentMatchLevel.size() > 1) {
+//          //TODO
+//        } else {
+//         //   building.FireDepartmentDistance_Ext = (res.FireDepartmentMatchLevel[0].Value) as Boolean
+//        }
+//      }
+//    } catch (exp: Exception) {
+//      logger.error("GetPropertyInformation - BOP : tunaFireDeptMatchLineLevelDetail " + " : StackTrace = ", exp)
+//    }
+//  }
 
   /**
    * This function is to map ProtectionClass value in BOP Buildings screen

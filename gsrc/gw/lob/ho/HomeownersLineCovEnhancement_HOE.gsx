@@ -80,17 +80,20 @@ enhancement HomeownersLineCovEnhancement_HOE : entity.HomeownersLineCov_HOE {
 
   function addScheduledItem(item: HOscheduleItem_HOE_Ext){
     this.addToScheduledItem_Ext(item)
-    //this.ScheduleItemsAutoNumberSeq_Ext.number(item, this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum"))
+
+    if(this.ScheduleItemsAutoNumberSeq_Ext == null){
+      this.ScheduleItemsAutoNumberSeq_Ext = new AutoNumberSequence()
+    }
+
+    this.ScheduleItemsAutoNumberSeq_Ext.number(item, this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum"))
   }
 
   function removeScheduledItem(item: HOscheduleItem_HOE_Ext) {
-    //this.removeFromScheduledItem_Ext(item)
-    this.removeScheduledItem(item)
-
-    //renumberScheduledItems()
+    this.removeFromScheduledItem_Ext(item)
+    renumberScheduledItems()
   }
   private function renumberScheduledItems() {
-    this.ScheduleItemsAutoNumberSeq_Ext.renumber(this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum") )
+    this.ScheduleItemsAutoNumberSeq_Ext?.renumber(this.scheduledItem_Ext, HOscheduleItem_HOE_Ext.Type.TypeInfo.getProperty("ItemNum") )
   }
 
   function cloneScheduledItemAutoNumberSequence() {

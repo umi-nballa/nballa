@@ -1,0 +1,240 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="OrganizationDetail_BasicDV">
+    <Require
+      name="group"
+      type="Group"/>
+    <Require
+      name="orgHelper"
+      type="gw.web.admin.OrganizationUIHelper"/>
+    <Variable
+      initialValue="orgHelper.Organization"
+      name="organization"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="organization.Name"
+      name="name"/>
+    <Variable
+      initialValue="orgHelper.getAllOrganizationUsers()"
+      name="organizationUsers"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="organizationUsers.where(\u -&gt; u.Contact != organization.Contact).map(\u -&gt; u.Contact).toTypedArray()"
+      name="userContacts"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="new gw.globalization.OrganizationNameAdapter(organization)"
+      name="orgNameAdapter"/>
+    <Variable
+      initialValue="orgHelper.newDefaultCurrencyBillPlanSelector()"
+      name="planSelector"/>
+    <InputColumn>
+      <Input
+        editable="organization?.Type == typekey.BusinessType.TC_AGENCY and perm.Organization.editbasic(organization)"
+        id="AgentyNumber_Ext"
+        label="displaykey.Ext.Web.Admin.OrganizationDetail.BasicDV.AgentNumber"
+        required="organization.Type == typekey.BusinessType.TC_AGENCY"
+        value="organization.AgenyNumber_Ext"
+        visible="organization.Type == typekey.BusinessType.TC_AGENCY">
+        <PostOnChange/>
+      </Input>
+      <InputSetRef
+        def="GlobalContactNameInputSet(new gw.search.OrganizationNameOwner(orgNameAdapter))"
+        mode="gw.api.name.NameLocaleSettings.PCFMode"/>
+      <PickerInput
+        editable="organization?.Type == typekey.BusinessType.TC_AGENCY and perm.Organization.editbasic(organization)"
+        id="MasterOrganization"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.MasterOrganization_Ext"
+        pickLocation="OrganizationSearchPopup.push(false, false)"
+        required="false"
+        value="organization.MasterOrganization_Ext"
+        visible="organization?.Type == typekey.BusinessType.TC_AGENCY">
+        <PostOnChange/>
+      </PickerInput>
+      <TypeKeyInput
+        editable="(organization.New) and perm.Organization.editbasic(organization)"
+        filter="!VALUE.hasCategory(BusinessTypeCategory.TC_CARRIER)"
+        id="Type"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.Type"
+        required="false"
+        value="organization.Type">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <TypeKeyInput
+        editable="perm.Organization.editagency(organization)"
+        id="ProducerStatus"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.ProducerStatus"
+        required="true"
+        value="organization.ProducerStatus"
+        visible="organization.Producer and perm.System.orgviewagency">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
+      <Input
+        editable="perm.Organization.editagency(organization)"
+        id="Tier"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.Tier"
+        value="organization.Tier"
+        visible="organization.Producer and perm.System.orgviewagency"/>
+      <Input
+        editable="perm.Organization.editagency(organization)"
+        id="MktChannelCode_Ext"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.MktChannelCode_Ext"
+        value="organization.MktChannelCode_Ext"
+        visible="organization.Producer and perm.System.orgviewagency"/>
+      <Input
+        editable="perm.Organization.editagency(organization)"
+        id="MktChannelDesc_Ext"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.MktChannelDesc_Ext"
+        value="organization.MktChannelDesc_Ext"
+        visible="organization.Producer and perm.System.orgviewagency"/>
+      <RangeInput
+        editable="planSelector.Editable"
+        id="AgencyBillPlan"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.AgencyBillPlan"
+        optionLabel="VALUE.Name"
+        value="planSelector.AgencyBillPlan"
+        valueRange="planSelector.AvailableBillPlans"
+        visible="orgHelper.SingleBillPlanVisible"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="UseDirectDeposit"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.UseDirectDeposit_Ext"
+        value="organization.UseDirectDeposit_Ext"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="PrintOnDec"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.PrintOnDec_Ext"
+        value="organization.PrintOnDec_Ext"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="CommissionOnMaster"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.CommissionOnMaster_Ext"
+        value="organization.CommissionOnMaster_Ext"
+        visible="organization?.Type == typekey.BusinessType.TC_AGENCY"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="SendCommission"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.SendCommission_Ext"
+        value="organization.SendCommission_Ext"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="SuppressPrint"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.SuppressPrint_Ext"
+        value="organization.SuppressPrint_Ext"/>
+      <BooleanRadioInput
+        editable="perm.Organization.editagency(organization)"
+        id="EligibleforAffinity"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.EligibleForAffinity_Ext"
+        value="organization.EligibleForAffinity_Ext"/>
+      <TypeKeyInput
+        editable="perm.Organization.editagency(organization)"
+        id="UWCategory_Ext"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.UWCategory_Ext"
+        required="false"
+        value="organization.UWCategory_Ext"
+        visible="true">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
+      <TypeKeyInput
+        editable="perm.Organization.editagency(organization)"
+        id="RewardLevel_Ext"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.RewardLevel_Ext"
+        required="false"
+        value="organization.RewardLevel_Ext"
+        visible="true">
+        <PostOnChange
+          target="DATA_ONLY"/>
+      </TypeKeyInput>
+      <InputDivider/>
+      <Input
+        boldLabel="true"
+        id="PrimaryContactLabel"
+        label="displaykey.Web.Organization.PrimaryContact"
+        value="&quot;&quot;"
+        visible="not CurrentLocation.InEditMode"/>
+      <Input
+        boldLabel="true"
+        hideChildrenIfReadOnly="false"
+        id="ChangePrimaryContactButton"
+        label="displaykey.Web.Organization.PrimaryContact"
+        value="displaykey.Web.Policy.Account.PrimaryInsured.ChangeTo"
+        visible="CurrentLocation.InEditMode">
+        <MenuItem
+          id="OtherExistingContact"
+          label="displaykey.Web.Policy.Contact.ExistingContact">
+          <MenuItemIterator
+            elementName="contact"
+            id="UnassignedContactIterator"
+            value="userContacts">
+            <IteratorSort
+              sortBy="contact.DisplayName"
+              sortOrder="1"/>
+            <MenuItem
+              action="organization.Contact = contact"
+              id="UnassignedContact"
+              label="contact.DisplayName"/>
+          </MenuItemIterator>
+          <PickerMenuItem
+            action="UserSearchPopup.push(organization)"
+            id="MoreUser"
+            label="displaykey.Web.ContactDetail.MoreUser"
+            onPick="organization.Contact = PickedValue.Contact"
+            visible="organization.AllUsers.Count &gt; 10"/>
+        </MenuItem>
+        <MenuItem
+          action="NewOrganizationUserPopup.push(organization)"
+          id="NewUser"
+          label="displaykey.Web.ContactDetail.NewUser"
+          visible="perm.User.create"/>
+        <PickerMenuItem
+          action="NewContactPopup.push(typekey.ContactType.TC_COMPANY)"
+          id="NewCompany"
+          label="displaykey.Web.ContactDetail.NewCompany"
+          onPick="organization.Contact = PickedValue"/>
+        <PickerMenuItem
+          action="NewContactPopup.push(typekey.ContactType.TC_PERSON)"
+          id="NewPerson"
+          label="displaykey.Web.ContactDetail.NewPerson"
+          onPick="organization.Contact = PickedValue"/>
+      </Input>
+      <InputSet
+        visible="organization.Contact != null">
+        <Input
+          action="OrganizationContactForward.push( organization.Contact )"
+          id="ContactName"
+          label="displaykey.Web.Policy.Account.Applicant.Name"
+          value="organization.Contact"/>
+        <InputSetRef
+          def="GlobalPhoneInputSet(new gw.api.phone.BasicPhoneOwner(new gw.api.phone.ContactPhoneDelegate(organization.Contact, Contact#WorkPhone), displaykey.Web.ContactDetail.Phone))"
+          editable="true"
+          id="WorkPhone"/>
+        <Label
+          label="displaykey.Web.ContactDetail.Location"/>
+        <InputSetRef
+          def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(organization.Contact.PrimaryAddress, false, true))"
+          visible="organization.Contact != null"/>
+      </InputSet>
+      <Input
+        editable="true"
+        id="AddressType"
+        label="displaykey.Web.AddressDetail.AddressType"
+        required="true"
+        value="organization.Contact.PrimaryAddress.AddressType"
+        visible="organization.Contact != null"/>
+      <Input
+        editable="true"
+        id="AddressDescription"
+        label="displaykey.Web.AddressDetail.Description"
+        value="organization.Contact.PrimaryAddress.Description"
+        visible="organization.Contact != null"/>
+      <InputDivider/>
+      <InputSetRef
+        def="GroupDetailInputSet(organization.RootGroup, true, organizationUsers.toList())"/>
+    </InputColumn>
+  </DetailViewPanel>
+</PCF>

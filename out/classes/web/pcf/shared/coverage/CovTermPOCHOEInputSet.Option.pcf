@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <InputSet
+    id="CovTermPOCHOEInputSet"
+    mode="Option">
+    <Require
+      name="term"
+      type="gw.api.domain.covterm.CovTerm"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Require
+      name="coverable_Ext"
+      type="Coverable"/>
+    <RangeInput
+      editable="openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(term)"
+      id="OptionTermInput"
+      label="una.pageprocess.CovTermInputSetPCFController .getOptionLabel(term, coverable_Ext)"
+      required="term.Pattern.Required"
+      sortValueRange="false"
+      value="(term as gw.api.domain.covterm.OptionCovTerm).OptionValue"
+      valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term as gw.api.domain.covterm.OptionCovTerm, openForEdit)">
+      <PostOnChange
+        onChange="gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({term.Clause.OwningCoverable}, null); una.pageprocess.CovTermInputSetPCFController .onCovTermOptionChange(term, coverable_Ext);"/>
+    </RangeInput>
+  </InputSet>
+</PCF>

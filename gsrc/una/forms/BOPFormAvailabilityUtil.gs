@@ -3,6 +3,7 @@ package una.forms
 uses java.util.Set
 uses gw.forms.FormInferenceContext
 uses gw.forms.generic.AbstractSimpleAvailabilityForm
+uses gw.lob.common.util.FormPatternConstants
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +16,8 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 {
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
 
-    var formCode = this.Pattern.FormNumber//Code
+    var formNumber = this.Pattern.FormNumber
+    var formCode = this.Pattern.Code
 
     var bownerline = context.Period.BP7Line
     var bopbuildings = context.Period.BP7Line.AllBuildings
@@ -24,7 +26,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
    //BP7AddlInsdManagersLessorsPremises
     //BP7AddlInsdManagersLessorsPremisesLine_EXT
     var formret1=false
-    if (formCode.equals("BP 04 02"))
+    if (formNumber.equals("BP 04 02"))
     {
         boplocations?.each( \ elt ->
         {
@@ -41,7 +43,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     //BP7AddlInsdControllingInterest
     //BP7AddlInsdControllingInterestLocation_EXT
     var formret2=false
-    if (formCode.equals("BP 04 06"))
+    if (formNumber.equals("BP 04 06"))
     {
           boplocations.each( \ elt ->
           {
@@ -58,7 +60,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     //BP7AddlInsdMortgageeAssigneeReceiver
     //BP7AddlInsdMortgageeAssigneeReceiverLine_EXT
     var formret3=false
-    if (formCode.equals("BP 04 09"))
+    if (formNumber.equals("BP 04 09"))
     {
       boplocations.each( \ elt ->
       {
@@ -75,7 +77,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     //BP7AddlInsdLandLeased
     //BP7AddlInsdLandLeased
     var formret4=false
-    if (formCode.equals("BP 04 10"))
+    if (formNumber.equals("BP 04 10"))
     {
       boplocations.each( \ elt ->
       {
@@ -92,7 +94,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     //BP7AddlInsdCoOwnerInsdPremises
     //BP7AddlInsdCoOwnerInsdPremisesLine_EXT
     var formret5=false
-    if (formCode.equals("BP 04 11"))
+    if (formNumber.equals("BP 04 11"))
     {
       boplocations.each( \ elt ->
       {
@@ -109,7 +111,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     //BP7AddlInsdLessorsLeasedEquipmt
     //BP7AddlInsdLessorsLeasedEquipmtLine_EXT
     var formret6=false
-    if (formCode.equals("BP 04 16"))
+    if (formNumber.equals("BP 04 16"))
     {
       boplocations.each( \ elt ->
       {
@@ -126,7 +128,7 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     //BP7AddlInsdDesignatedPersonOrgLocation_EXT
     //BP7AddlInsdDesignatedPersonOrg
     var formret7=false
-    if (formCode.equals("BP 04 48"))
+    if (formNumber.equals("BP 04 48"))
     {
       boplocations.each( \ elt ->
       {
@@ -140,6 +142,51 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         return true
     }
 
+    var bopLine = context.Period.BOPLine
+    var bopLineLocations = bopLine?.BOPLocations
+    var formReturn8 = false
+    if(formCode.equals(FormPatternConstants.BOP_WINDSTORM_HAIL_DEDUCTIBLE_FORM)){
+       bopLineLocations.each( \ elt -> {
+          if(elt.BOPLocWindHailCovExists and elt.BOPLocWindHailCov?.HasBOPWindHailDedTerm){
+              formReturn8 = true
+          }
+       })
+       if(formReturn8 and bopLineLocations != null){
+           return true
+       }
+    }
+
+    if(formCode.equals(FormPatternConstants.BOP_COMP_BUSINESS_LIABILITY_EXCLUSION_FORM)){
+      if(bownerline != null and bownerline.BP7BusinessLiabilityExclusion_EXTExists
+          and bownerline.BP7BusinessLiabilityExclusion_EXT != null){
+        return true
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.BOP_HIRED_AUTO_AND_NON_OWNED_FORM)) {
+      if(bownerline != null and bownerline.BP7HiredNonOwnedAutoExists and bownerline.BP7HiredNonOwnedAuto != null){
+         return true
+      }
+    }
+    if(formCode.equals(FormPatternConstants.BOP_COV_LIMIT_DESIGNATED_PREMISES_FORM)) {
+      if(bownerline != null and bownerline.BP7LimitationDesignatedPremisesOrProject_EXTExists and
+          bownerline.BP7LimitationDesignatedPremisesOrProject_EXT != null){
+        return true
+      }
+    }
+    var formReturn9 = false
+    if(formCode.equals(FormPatternConstants.BOP_SPOILAGE_COVERAGE_FORM)){
+      if(bownerline != null and bownerline.AllClassifications != null){
+        bownerline.AllClassifications.each( \ elt -> {
+            if(elt.BP7SpoilgCovExists){
+                formReturn9 = true
+            }
+        })
+      }
+      if(formReturn9){
+         return true
+      }
+    }
     return false
   }
 }

@@ -432,6 +432,10 @@ class CoverageTermAvailabilityUtil {
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
         result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }
+
+      if(1000d == covTermOpt.Value.doubleValue()){
+        result = hoLine.Dwelling.ResidenceType == TC_FAM1 or hoLine.Dwelling.ResidenceType == TC_FAM2
+      }
     }
 
     return result

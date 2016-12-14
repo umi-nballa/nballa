@@ -130,6 +130,7 @@ class PropertyInspection {
       propertyInspectionData.UpdateTime=propertyInspectionData.UpdateTime
       outboundEntityDAO.insert(propertyInspectionData)
       LOGGER.debug("Exiting inserttoIntegrationDB to Insert data into DB")
+      policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_INSPECTIONORDERED, \ -> displaykey.Web.InspectionScore.Event.Msg)
     }
   }
 }

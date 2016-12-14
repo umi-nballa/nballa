@@ -33,13 +33,16 @@
     <Variable
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingInformation(policyPeriod)"
       name="tunaAppResponse"/>
+    <Variable
+      initialValue="setTunaFieldsMatchLevel()"
+      name="setTunaFieldsMatchLevel"/>
     <InputColumn
       labelWidth="250">
       <Label
         label="displaykey.Web.Homeowners.HOLocation.LocationInfo_Ext"/>
       <InputSetRef
         def="HODwellingLocationHOEInputSet(dwelling, policyPeriod, openForEdit, jobWizardHelper )"/>
-      <Input
+      <!-- <Input
         editable="true"
         id="YearBuilt"
         label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
@@ -50,11 +53,62 @@
         <PostOnChange
           onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"
           target="deedInfo_Ext"/>
-      </Input>
+      </Input> -->
+      <InputSet
+        id="Yearbuilt_Ext">
+        <RangeInput
+          available="!dwelling.OverrideYearbuilt_Ext"
+          editable="true"
+          id="yearbuiltTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltTunaReturned_Ext"
+          value="dwelling.Yearbuilt"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.YearBuilt)"/>
+        <Input
+          available="!dwelling.OverrideYearbuilt_Ext"
+          id="latitudeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltMatchlevel_Ext"
+          value="dwelling.YearbuiltMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideYearbuilt_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltOverride_Ext"
+          value="dwelling.OverrideYearbuilt_Ext">
+          <PostOnChange
+            target="Yearbuilt_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideYearbuilt_Ext"
+          editable="true"
+          id="yearbuiltUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltUserEntered_Ext"
+          required="dwelling.OverrideYearbuilt_Ext"
+          value="dwelling.YearBuilt_Ext"
+          visible="dwelling.OverrideYearbuilt_Ext"/>
+      </InputSet>
       <InputSet
         editable="true"
         id="TerritoryCodeInputSet"
         visible="dwelling.HOLocation.PolicyLocation != null and dwelling.HOLocation.PolicyLocation.TerritoryCodes.length != 0">
+        <RangeInput
+          available="!dwelling.OverrideYearbuilt_Ext"
+          editable="true"
+          id="TerritoryCodeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TerritoryCodeTunaReturned_Ext"
+          value="dwelling.HOLocation.TerritoryCodeTunaReturned_Ext"
+          valueRange="tunaAppResponse.TerritoryCodes"/>
+        <Input
+          available="!dwelling.OverrideYearbuilt_Ext"
+          id="TerritoryCodeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TerritoryCodeMatchlevel_Ext"
+          value="dwelling.HOLocation.TerritoryCodeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideTerritoryCode_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TerritoryCodeOverride_Ext"
+          value="dwelling.HOLocation.OverrideTerritoryCode_Ext">
+          <PostOnChange
+            target="TerritoryCodeInputSet"/>
+        </BooleanRadioInput>
         <InputIterator
           elementName="TerritoryCode"
           value="dwelling.HOLocation.PolicyLocation.TerritoryCodes">
@@ -67,8 +121,9 @@
             id="TerritoryCode"
             label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
             pickLocation="TerritoryCodeSearchPopup.push(dwelling.HOLine.Branch, TerritoryCode)"
-            required="true"
-            value="TerritoryCode.Code"/>
+            required="dwelling.HOLocation.OverrideTerritoryCode_Ext"
+            value="dwelling.HOLocation.TerritoryCodeOverridden_Ext"
+            visible="dwelling.HOLocation.OverrideTerritoryCode_Ext"/>
           <!-- <RangeInput
             available="dwelling.HOLocation.PolicyLocation.State != null"
             editable="true"
@@ -77,7 +132,9 @@
             required="true"
             validationExpression="TerritoryCode.prelimValidate()"
             value="TerritoryCode.Code"
-            valueRange="tunaAppResponse.TerritoryCodes"/> -->
+            valueRange="tunaAppResponse.TerritoryCodes">
+            <PickerMenuItem/>
+          </RangeInput> -->
         </InputIterator>
       </InputSet>
       <InputSet
@@ -111,16 +168,6 @@
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"
             target="DATA_ONLY"/>
         </Input>
-        <Input
-          editable="true"
-          id="respondingFireDept_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
-          value="dwelling.HOLocation.RespondingFireDept_Ext"/>
-        <TypeKeyInput
-          editable="true"
-          id="FireDeptMLvlsss"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDeptMatchLevel_Ext"
-          value="dwelling.HOLocation.FireDeptMatchLevel_Ext"/>
         <!-- <BooleanRadioInput
           editable="true"
           id="FloodFireHazard"
@@ -133,12 +180,6 @@
           label="displaykey.Web.Homeowners.HOLocation.WithinCommercialProperty"
           required="true"
           value="dwelling.HOLocation.NearCommercial"/> -->
-        <Input
-          boldValue="true"
-          editable="true"
-          id="ProtectionClassCode"
-          label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
-          value="dwelling.HOLocation.DwellingProtectionClassCode"/>
         <BooleanRadioInput
           editable="true"
           id="protectedSubdivision"
@@ -163,27 +204,540 @@
       <Input
         id="distanceToCoast"
         label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
-        value="dwelling.HOLocation.DistToCoastTunaReturned_Ext"/>
-      <Input
+        value="dwelling.HOLocation.DistToCoast_Ext"/>
+      <!-- <Input
         editable="true"
         id="latitude_Ext"
         label="displaykey.Web.Homeowners.HOLocation.Latitude_Ext"
-        value="dwelling.HOLocation.PolicyLocation.Latitude_Ext"/>
-      <Input
+        value="dwelling.HOLocation.PolicyLocation.Latitude_Ext"/> -->
+      <!-- <Input
         editable="true"
         id="Longitude_Ext"
         label="displaykey.Web.Homeowners.HOLocation.Longitude_Ext"
-        value="dwelling.HOLocation.PolicyLocation.Longitude_Ext"/>
+        value="dwelling.HOLocation.PolicyLocation.Longitude_Ext"/> -->
       <Input
         id="DwellingReplacement"
         label="displaykey.Web.Homeowners.Dwelling.EstReplacementCost"
         numCols="10"
         required="false"
         value="dwelling.ReplacementCost"/>
-      <Input
+      <!-- <Input
         id="iso360ValueID_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ISO360ValueID_Ext"
-        value="dwelling.HOLocation.ISO360ValueID_Ext"/>
+        value="dwelling.HOLocation.ISO360ValueID_Ext"/> -->
+      <InputDivider/>
+      <InputSet
+        id="latitude_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideLatitude_Ext"
+          editable="true"
+          id="latitudeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LatitudeTunaReturned_Ext"
+          value="dwelling.HOLocation.PolicyLocation.Latitude_Ext"
+          valueRange="{tunaAppResponse.Latitude}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Latitude)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideLatitude_Ext"
+          id="latitudeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LatitudeMatchlevel_Ext"
+          value="dwelling.HOLocation.LatitudeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideLatitude_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LatitudeOverride_Ext"
+          value="dwelling.HOLocation.OverrideLatitude_Ext">
+          <PostOnChange
+            target="latitude_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideLatitude_Ext"
+          editable="true"
+          id="latitudeUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LatitudeUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideLatitude_Ext"
+          value="dwelling.HOLocation.PolicyLocation.LatitudeOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideLatitude_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Longitude_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideLongitude_Ext"
+          editable="true"
+          id="LongitudeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LongitudeTunaReturned_Ext"
+          value="dwelling.HOLocation.PolicyLocation.Longitude_Ext"
+          valueRange="{tunaAppResponse.Longitude}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Longitude)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideLongitude_Ext"
+          id="LongitudeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LongitudeMatchlevel_Ext"
+          value="dwelling.HOLocation.LongitudeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideLongitude_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LongitudeOverride_Ext"
+          value="dwelling.HOLocation.OverrideLongitude_Ext">
+          <PostOnChange
+            target="Longitude_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideLongitude_Ext"
+          editable="true"
+          id="LongitudeUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.LongitudeUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideLongitude_Ext"
+          value="dwelling.HOLocation.PolicyLocation.LongitudeOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideLongitude_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Fireslope_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFireslope_Ext"
+          editable="true"
+          id="FireslopeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireslopeTunaReturned_Ext"
+          value="dwelling.HOLocation.Fireslope_Ext"
+          valueRange="{tunaAppResponse.FireLineSlope}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Longitude)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFireslope_Ext"
+          id="FireslopeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireslopeMatchlevel_Ext"
+          value="dwelling.HOLocation.FireslopeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFireslope_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireslopeOverride_Ext"
+          value="dwelling.HOLocation.OverrideFireslope_Ext">
+          <PostOnChange
+            target="Fireslope_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFireslope_Ext"
+          editable="true"
+          id="FireslopeUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireslopeUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFireslope_Ext"
+          value="dwelling.HOLocation.FireslopeOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFireslope_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Fireaccess_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFireaccess_Ext"
+          editable="true"
+          id="FireaccessTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireaccessTunaReturned_Ext"
+          value="dwelling.HOLocation.Fireaccess_Ext"
+          valueRange="{tunaAppResponse.FireLineAccess}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Longitude)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFireaccess_Ext"
+          id="FireaccessMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireaccessMatchlevel_Ext"
+          value="dwelling.HOLocation.FireaccessMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFireaccess_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireaccessOverride_Ext"
+          value="dwelling.HOLocation.OverrideFireaccess_Ext">
+          <PostOnChange
+            target="Fireaccess_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFireaccess_Ext"
+          editable="true"
+          id="FireaccessUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FireaccessUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFireaccess_Ext"
+          value="dwelling.HOLocation.FireaccessOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFireaccess_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="FirelineAdjHaz_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
+          editable="true"
+          id="FirelineAdjHazTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineAdjHazTunaReturned_Ext"
+          value="dwelling.HOLocation.FirelineAdjHaz_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireLinePropertyHazard)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
+          id="FirelineAdjHazMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineAdjHazMatchlevel_Ext"
+          value="dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFirelineAdjHaz_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineAdjHazOverride_Ext"
+          value="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext">
+          <PostOnChange
+            target="FirelineAdjHaz_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
+          editable="true"
+          id="FirelineAdjHazUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineAdjHazUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
+          value="dwelling.HOLocation.FirelineAdjHazOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="FirelinePropHaz_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFirelinePropHaz_Ext"
+          editable="true"
+          id="FirelinePropHazTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinePropTunaReturned_Ext"
+          value="dwelling.HOLocation.FirelinePrHaz_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireLinePropertyHazard)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFirelinePropHaz_Ext"
+          id="FirelinePropHazMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinePropMatchlevel_Ext"
+          value="dwelling.HOLocation.FirelinePropHazMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFirelinePropHaz_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinePropOverride_Ext"
+          value="dwelling.HOLocation.OverrideFirelinePropHaz_Ext">
+          <PostOnChange
+            target="FirelinePropHaz_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFirelinePropHaz_Ext"
+          editable="true"
+          id="FirelinePropHazUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinePropUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFirelinePropHaz_Ext"
+          value="dwelling.HOLocation.FirelinePropHazOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFirelinePropHaz_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="FirelineFuelHaz_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFirelineFuel_Ext"
+          editable="true"
+          id="FirelineFuelTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineFuelTunaReturned_Ext"
+          value="dwelling.HOLocation.FirelineFuel_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireLineFuel)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFirelineFuel_Ext"
+          id="FirelineFuelMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineFuelMatchlevel_Ext"
+          value="dwelling.HOLocation.FirelineFuelMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFirelineFuel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineFuelOverride_Ext"
+          value="dwelling.HOLocation.OverrideFirelineFuel_Ext">
+          <PostOnChange
+            target="FirelineFuelHaz_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFirelineFuel_Ext"
+          editable="true"
+          id="FirelineFuelUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineFuelUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFirelineFuel_Ext"
+          value="dwelling.HOLocation.FirelineFuelOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFirelineFuel_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="FirelineSHIA_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFirelineSHIA_Ext"
+          editable="true"
+          id="FirelineSHIATunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineSHIATunaReturned_Ext"
+          value="dwelling.HOLocation.FirelineSHIA_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireLineSHIA)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFirelineSHIA_Ext"
+          id="FirelineSHIAMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineSHIAMatchlevel_Ext"
+          value="dwelling.HOLocation.FirelineSHIAMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFirelineSHIA_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineSHIAOverride_Ext"
+          value="dwelling.HOLocation.OverrideFirelineSHIA_Ext">
+          <PostOnChange
+            target="FirelineSHIA_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFirelineSHIA_Ext"
+          editable="true"
+          id="FirelineSHIAUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelineSHIAUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFirelineSHIA_Ext"
+          value="dwelling.HOLocation.FirelineSHIAOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFirelineSHIA_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="ACVValue_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideACVValue_Ext"
+          editable="true"
+          id="ACVValueTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ACVValueTunaReturned_Ext"
+          value="dwelling.HOLocation.ACVValue_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ACV)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideACVValue_Ext"
+          id="ACVValueMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ACVValueMatchlevel_Ext"
+          value="dwelling.HOLocation.ACVValueMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideACVValue_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ACVValueOverride_Ext"
+          value="dwelling.HOLocation.OverrideACVValue_Ext">
+          <PostOnChange
+            target="ACVValue_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideACVValue_Ext"
+          editable="true"
+          id="ACVValueUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ACVValueUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideACVValue_Ext"
+          value="dwelling.HOLocation.ACVValueOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideACVValue_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Firedeptnamedval_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
+          editable="true"
+          id="FiredeptnamedvalTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalTunaReturned_Ext"
+          value="dwelling.HOLocation.Firedeptnmval_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
+          id="FiredeptnamedvalMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalMatchlevel_Ext"
+          value="dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFiredeptnamedval_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalOverride_Ext"
+          value="dwelling.HOLocation.OverrideFiredeptnamedval_Ext">
+          <PostOnChange
+            target="Firedeptnamedval_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
+          editable="true"
+          id="FiredeptnamedvalUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
+          value="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Windpoolvalue_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideWindpoolvalue_Ext"
+          editable="true"
+          id="WindpoolvalueTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueTunaReturned_Ext"
+          value="dwelling.HOLocation.Windpoolvalue_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideWindpoolvalue_Ext"
+          id="WindpoolvalueMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueMatchlevel_Ext"
+          value="dwelling.HOLocation.WindpoolvalueMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideWindpoolvalue_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueOverride_Ext"
+          value="dwelling.HOLocation.OverrideWindpoolvalue_Ext">
+          <PostOnChange
+            target="Windpoolvalue_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideWindpoolvalue_Ext"
+          editable="true"
+          id="WindpoolvalueUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideWindpoolvalue_Ext"
+          value="dwelling.HOLocation.WindpoolvalueOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideWindpoolvalue_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Firelinematchlevelval_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideFirelnmthlevelval_Ext"
+          editable="true"
+          id="FirelinematchlevelvalTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinematchlevelvalTunaReturned_Ext"
+          value="dwelling.HOLocation.Firelinemthlvl_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireDepartmentMatchLevel)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideFirelnmthlevelval_Ext"
+          id="FirelinematchlevelvalMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinematchlevelvalMatchlevel_Ext"
+          value="dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFirelinematchlevelval_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinematchlevelvalOverride_Ext"
+          value="dwelling.HOLocation.OverrideFirelnmthlevelval_Ext">
+          <PostOnChange
+            target="Firelinematchlevelval_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideFirelnmthlevelval_Ext"
+          editable="true"
+          id="FirelinematchlevelvalUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FirelinematchlevelvalUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideFirelnmthlevelval_Ext"
+          value="dwelling.HOLocation.FirelinemhlvlOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideFirelnmthlevelval_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="EarthquakeTerritory_Ext">
+        <RangeInput
+          available="!dwelling.OverrideEarthquakeTer_Ext"
+          editable="true"
+          id="EarthquakeTerritoryTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryTunaReturned_Ext"
+          value="dwelling.EarthquakeTer_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.EarthQuakeTerritory)"/>
+        <Input
+          available="!dwelling.OverrideEarthquakeTer_Ext"
+          id="EarthquakeTerritoryMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryMatchlevel_Ext"
+          value="dwelling.EarthquakeTerMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideEarthquakeTerritory_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryOverride_Ext"
+          value="dwelling.OverrideEarthquakeTer_Ext">
+          <PostOnChange
+            target="EarthquakeTerritory_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideEarthquakeTer_Ext"
+          editable="true"
+          id="EarthquakeTerritoryUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryUserEntered_Ext"
+          required="dwelling.OverrideEarthquakeTer_Ext"
+          value="dwelling.EarthquakeTerOverridden_Ext"
+          visible="dwelling.OverrideEarthquakeTer_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="PropFloodVal_Ext">
+        <RangeInput
+          available="!dwelling.OverridePropFloodVal_Ext"
+          editable="true"
+          id="PropFloodValTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
+          value="dwelling.PropFloodVal_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
+        <Input
+          available="!dwelling.OverridePropFloodVal_Ext"
+          id="PropFloodValMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PropFloodValMatchlevel_Ext"
+          value="dwelling.PropFloodValMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRidePropFloodVal_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PropFloodValOverride_Ext"
+          value="dwelling.OverridePropFloodVal_Ext">
+          <PostOnChange
+            target="PropFloodVal_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverridePropFloodVal_Ext"
+          editable="true"
+          id="PropFloodValUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.PropFloodValUserEntered_Ext"
+          required="dwelling.OverridePropFloodVal_Ext"
+          value="dwelling.PropFloodValOverridden_Ext"
+          visible="dwelling.OverridePropFloodVal_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="BaseFloodElVal_Ext">
+        <RangeInput
+          available="!dwelling.OverrideBaseFloodElVal_Ext"
+          editable="true"
+          id="BaseFloodElValTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValTunaReturned_Ext"
+          value="dwelling.BaseFloodElVal_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BaseFloodElevation)"/>
+        <Input
+          available="!dwelling.OverrideBaseFloodElVal_Ext"
+          id="BaseFloodElValMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValMatchlevel_Ext"
+          value="dwelling.BaseFloodElValMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideBaseFloodElVal_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValOverride_Ext"
+          value="dwelling.OverrideBaseFloodElVal_Ext">
+          <PostOnChange
+            target="BaseFloodElVal_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideBaseFloodElVal_Ext"
+          editable="true"
+          id="BaseFloodElValUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValUserEntered_Ext"
+          required="dwelling.OverrideBaseFloodElVal_Ext"
+          value="dwelling.BaseFloodElValOverridden_Ext"
+          visible="dwelling.OverrideBaseFloodElVal_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputDivider/>
+      <InputSet
+        id="iso360_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideISO360_Ext"
+          editable="true"
+          id="ISO360TunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ISO360TunaReturned_Ext"
+          value="dwelling.HOLocation.ISO360ValueID_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ISO360Value)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideISO360_Ext"
+          id="ISO360MatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ISO360Matchlevel_Ext"
+          value="dwelling.HOLocation.ISO360MatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideISO360_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ISO360Override_Ext"
+          value="dwelling.HOLocation.OverrideISO360_Ext">
+          <PostOnChange
+            target="iso360_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideISO360_Ext"
+          editable="true"
+          id="ISO360UserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ISO360UserEntered_Ext"
+          required="dwelling.HOLocation.OverrideISO360_Ext"
+          value="dwelling.HOLocation.ISO360Overridden_Ext"
+          visible="dwelling.HOLocation.OverrideISO360_Ext"/>
+      </InputSet>
       <InputDivider/>
       <InputSet
         id="bceg_Ext">
@@ -191,12 +745,8 @@
           editable="!dwelling.HOLocation.OverrideBCEG_Ext"
           id="BCEGTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGTunaReturned_Ext"
-          value="dwelling.HOLocation.BCEGTunaReturned_Ext"
-          valueRange="tunaAppResponse.BCEGGrade">
-          <PostOnChange
-            onChange="if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_USERENTERED}"
-            target="bceg_Ext"/>
-        </RangeInput>
+          value="dwelling.HOLocation.BCEG_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)"/>
         <Input
           id="BCEGMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGMatchlevel_Ext"
@@ -210,10 +760,13 @@
             target="bceg_Ext"/>
         </BooleanRadioInput>
         <Input
+          available="dwelling.HOLocation.OverrideBCEG_Ext"
           editable="true"
           id="BCEGUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.BCEGUserEntered_Ext"
-          value="dwelling.HOLocation.BCEGUserEntered_Ext"/>
+          required="dwelling.HOLocation.OverrideBCEG_Ext"
+          value="dwelling.HOLocation.BCEGOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideBCEG_Ext"/>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -223,12 +776,8 @@
           editable="true"
           id="PCCodeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
-          value="dwelling.HOLocation.DwellingPCCodeTunaReturned_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
-          <PostOnChange
-            onChange="if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_USERENTERED}"
-            target="bceg_Ext"/>
-        </RangeInput>
+          value="dwelling.HOLocation.DwellingProtectionClassCode"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)"/>
         <Input
           available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
           id="PCCodeMatchLevel_Ext"
@@ -247,7 +796,9 @@
           editable="true"
           id="PCCodeUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PCCodeUserEntered_Ext"
-          value="dwelling.HOLocation.DwellingProtectionClassCode"/>
+          required="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+          value="dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext"/>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -257,12 +808,8 @@
           editable="true"
           id="WindPoolTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.WindPoolTunaReturned_Ext"
-          value="dwelling.HOLocation.WindPoolTunaReturned_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)">
-          <PostOnChange
-            onChange="if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_USERENTERED}"
-            target="WindPool_Ext"/>
-        </RangeInput>
+          value="dwelling.HOLocation.WindPool_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
         <Input
           available="!dwelling.HOLocation.OverrideWindPool_Ext"
           id="WindPoolMatchLevel_Ext"
@@ -281,7 +828,9 @@
           editable="true"
           id="bcegUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.WindPoolUserEntered_Ext"
-          value="dwelling.HOLocation.WindPoolUserEntered_Ext"/>
+          required="dwelling.HOLocation.OverrideWindPool_Ext"
+          value="dwelling.HOLocation.WindPoolOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideWindPool_Ext"/>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -291,12 +840,8 @@
           editable="true"
           id="DistToCoastTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
-          value="dwelling.HOLocation.DistToCoastTunaReturned_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)">
-          <PostOnChange
-            onChange="if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_USERENTERED}"
-            target="WindPool_Ext"/>
-        </RangeInput>
+          value="dwelling.HOLocation.DistToCoast_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
         <Input
           available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
           id="DistToCoastMatchLevel_Ext"
@@ -315,7 +860,9 @@
           editable="true"
           id="DistToCoastUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoastUserEntered_Ext"
-          value="dwelling.HOLocation.DistToCoastUserEntered_Ext"/>
+          required="dwelling.HOLocation.OverrideDistToCoast_Ext"
+          value="dwelling.HOLocation.DistToCoastOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideDistToCoast_Ext"/>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -325,16 +872,12 @@
           editable="true"
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
-          value="dwelling.HOLocation.DistBOWTunaReturned_Ext"
-          valueRange="tunaAppResponse.Datums">
-          <PostOnChange
-            onChange="if(tunaAppResponse.Datums.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_USERENTERED}"
-            target="WindPool_Ext"/>
-        </RangeInput>
+          value="dwelling.HOLocation.DistBOW_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)"/>
         <Input
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           id="DistBOWMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.DistBOWtMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWMatchLevel_Ext"
           value="dwelling.HOLocation.DistBOWMatchLevel_Ext"/>
         <BooleanRadioInput
           editable="true"
@@ -349,9 +892,92 @@
           editable="true"
           id="DistToCoastUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOWUserEntered_Ext"
-          value="dwelling.HOLocation.DistBOWUserEntered_Ext"/>
+          required="dwelling.HOLocation.OverrideDistBOW_Ext"
+          value="dwelling.HOLocation.DistBOWOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideDistBOW_Ext"/>
       </InputSet>
       <InputDivider/>
+      <InputSet
+        id="DistToMajorBOWNamedVal_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideDistBOW_Ext"
+          editable="true"
+          id="DistBOWTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
+          value="dwelling.HOLocation.DistBOWNamedValue_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.DistanceToMajorBOW)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideDistBOW_Ext"
+          id="DistBOWMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWMatchLevel_Ext"
+          value="dwelling.HOLocation.DistBOWNVMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideDistToCoast_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWOverride_Ext"
+          value="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext">
+          <PostOnChange
+            target="DistToMajorBOWNamedVal_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"
+          editable="true"
+          id="DistToCoastUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"
+          value="dwelling.HOLocation.DistBOWNVOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"/>
+      </InputSet>
+      <InputSet
+        id="NoteDetail_Ext">
+        <RangeInput
+          editable="true"
+          id="NoteDetailTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.NoteDetail_Ext"
+          value="dwelling.NoteDetail_Ext"
+          valueRange="{tunaAppResponse.NoteDetail}"/>
+        <InputDivider/>
+      </InputSet>
+      <InputSet
+        id="CoverageALimitValue_Ext">
+        <RangeInput
+          editable="true"
+          id="CoverageALimitValueTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.CoverageALimitValue_Ext"
+          value="dwelling.CoverageALimitValue_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.CoverageLimit)"/>
+        <InputDivider/>
+      </InputSet>
+      <InputSet
+        id="CondoValuationIDValue_Ext">
+        <RangeInput
+          editable="true"
+          id="CondoValuationIDValueTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.CondoValuationIDValue_Ext"
+          value="dwelling.CondoValuationIDValue_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.CondoValuationID)"/>
+        <InputDivider/>
+      </InputSet>
+      <InputSet
+        id="MetricsVersionValue_Ext">
+        <RangeInput
+          editable="true"
+          id="MetricsVersionValueTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.MetricsVersionValue_Ext"
+          value="dwelling.MetricsVersionValue_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.MetricsVersion)"/>
+        <InputDivider/>
+      </InputSet>
+      <InputSet
+        id="ResultingPrecision_Ext">
+        <RangeInput
+          editable="true"
+          id="ResultingPercisionTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ResultingPrecisionValue_Ext"
+          value="dwelling.ResultingPrecision_Ext"
+          valueRange="{tunaAppResponse.ResultingPrecision}"/>
+        <InputDivider/>
+      </InputSet>
       <InputSet>
         <Label
           label="displaykey.Web.Homeowners.Dwelling.OccupancyInfo_Ext"/>
@@ -844,6 +1470,73 @@ function allHomeowners_Ext():boolean{
     return true
   }  
   return false
+}
+
+function totalBCEG() : boolean {
+  print("Total BCEG Returned : "+tunaAppResponse.BCEGGrade.Count)
+  return true
+}
+
+function setTunaFieldsMatchLevel() : boolean {
+  if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    //TODO Change WindPool to FloodZone mapping when INT ready  
+  if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.FloodZoneMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.FloodZoneMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    //TODO Change Datums to Dit To Major BOW mapping when INT ready
+  if(tunaAppResponse.Datums.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.StoryNumber.Count == 1) {dwelling.StoriesNumberMatchLevel_Ext = TC_EXACT} else {dwelling.StoriesNumberMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.RoofType.Count == 1) {dwelling.RoofTypeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.RoofCover.Count == 1) {dwelling.RoofShapeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofShapeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.ConstructionType.Count == 1) {dwelling.ConstructionTypeMatchLevel_Ext = TC_EXACT} else {dwelling.ConstructionTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.TerritoryCodes!=null) {dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+  if(tunaAppResponse.YearBuilt!=null) {dwelling.YearBuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.YearbuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+if(tunaAppResponse.Latitude!=null) {dwelling.HOLocation.LatitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.LatitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED} 
+if(tunaAppResponse.DistanceToMajorBOW.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED} 
+
+if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.ISO360Value.Count == 1) {dwelling.HOLocation.ISO360MatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.ISO360MatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+
+
+if(tunaAppResponse.BaseFloodElevation.Count == 1) {dwelling.BaseFloodElValMatchLevel_Ext = TC_EXACT} else {dwelling.BaseFloodElValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.PropertyFlood.Count == 1) {dwelling.PropFloodValMatchLevel_Ext = TC_EXACT} else {dwelling.PropFloodValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.EarthQuakeTerritory.Count == 1) {dwelling.EarthquakeTerMatchLevel_Ext = TC_EXACT} else {dwelling.EarthquakeTerMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireDepartmentMatchLevel.Count == 1) {dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireDepartmentMatchLevel.Count == 1) {dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.ACV.Count == 1) {dwelling.HOLocation.ACVValueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.ACVValueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireLineSHIA.Count == 1) {dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireLineFuel.Count == 1) {dwelling.HOLocation.FirelineFuelMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineFuelMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireLinePropertyHazard.Count == 1) {dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireLinePropertyHazard.Count == 1) {dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireLineAccess.Count == 1) {dwelling.HOLocation.FireaccessMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FireaccessMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.FireLineSlope.Count == 1) {dwelling.HOLocation.FireslopeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FireslopeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+if(tunaAppResponse.Longitude!=null) {dwelling.HOLocation.LongitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.LongitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+  if(tunaAppResponse.DistanceToMajorBOW.Count == 1) {dwelling.HOLocation.DistBOWNVMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWNVMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+  return true
 }]]></Code>
   </DetailViewPanel>
 </PCF>

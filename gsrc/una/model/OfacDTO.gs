@@ -16,5 +16,6 @@ class OfacDTO {
   var _country: String as Country
   var _postalCode: String as PostalCode
   var _addressType: String as AddressType
+  var _state:String as State
 
 }

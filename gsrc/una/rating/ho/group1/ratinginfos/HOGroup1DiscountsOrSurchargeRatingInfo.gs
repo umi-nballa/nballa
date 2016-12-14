@@ -25,7 +25,7 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     this.CoverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     this.AllPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _isPrivateFireCompanyDiscountApplicable = isPrivateFireCompanyDiscountApplicable(line)
-    _territoryCode = (line.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code.toInt())
+    _territoryCode = (line.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.single().Code.toInt())
     //_bcegFactor = line.Dwelling?.HOLocation?.BCEG_Ext?.Numeric ? line.Dwelling?.HOLocation?.BCEG_Ext?.toInt() : null
 
     if(line.BaseState == Jurisdiction.TC_CA){

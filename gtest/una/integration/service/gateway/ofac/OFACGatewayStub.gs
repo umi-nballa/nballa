@@ -29,8 +29,7 @@ uses java.util.HashMap
  * User: JGupta
  * Date: 10/5/16
  * Time: 9:06 AM
- * To change this template use File | Settings | File Templates.
- */
+ **/
 class OFACGatewayStub implements OFACInterface {
   private final static var DISPLAY_ERROR_MESSAGE: String = "Failed to retrieve OFAC, please contact help desk."
   private final static var WS_NOT_AVAILABLE: String = "Failed to connect to the OFAC web service."
@@ -66,8 +65,14 @@ class OFACGatewayStub implements OFACInterface {
     searchConfiguration = buildSearchConfiguration()
     var ofacDTOList = buildOFACInput(insuredList, policyPeriod)
     searchInput = buildSearchInput(ofacDTOList)
+
     var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
     _logger.info("result:" + result)
+
+
+    // var personList = getPersonContactList()
+    // Var CompanyList = getCompanyContactList()
+
     var personList = new ArrayList<entity.Person>()
     var companyList = new ArrayList<Company>()
     var insuredItr = insuredList.iterator()
@@ -80,6 +85,10 @@ class OFACGatewayStub implements OFACInterface {
         companyList.add(contact)
       }
     }
+
+    //mapOFACResults()
+
+
     if (result != null && result.Records != null && result.Records.ResultRecord != null && result.Records.ResultRecord.size() > 0)  {
       for (resultRecord in result.Records.ResultRecord)
       {
@@ -144,8 +153,7 @@ class OFACGatewayStub implements OFACInterface {
           var pol = bundle.add(policyPeriod.Policy)
           activityPattern.createPolicyActivity(bundle, pol, activityPattern.Subject, activityPattern.Description, null, activityPattern.Priority, null, null, null)*/
           //Persist ofac entity in GW
-          var ofacEntity = new OfacContact_Ext()
-          ofacEntity.OfacTriggeringDate = new Date()
+          var ofacEntity = new OfacContact_Ext(policyPeriod)
           ofacEntity.EntityScore = contact.Value
           ofacEntity.Contact = contact.Key
           ofacEntity.OfacHit = true

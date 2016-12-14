@@ -29,14 +29,14 @@ class HOCommonBasePremiumRatingInfo {
   var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
 
   construct(dwelling: Dwelling_HOE) {
-    _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
+    _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.single().Code)
     //TODO: remove this code once the tuna integration is in place
-    if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_AZ)
+    /*if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_AZ)
       _territoryCode = 40
     else if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_CA)
       _territoryCode = 7
     else if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_NV or dwelling.Branch.BaseState == TC_SC)
-        _territoryCode = 30
+        _territoryCode = 30 */
 
     _policyType = dwelling?.HOLine.HOPolicyType.Code
     if (dwelling.HODW_Dwelling_Cov_HOEExists){
@@ -52,6 +52,7 @@ class HOCommonBasePremiumRatingInfo {
     var editEffectiveDate = policyPeriod?.EditEffectiveDate
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
 
+    //TODO : Need to update the prior losses
     if (policyPeriod?.Policy?.LossHistoryType == typekey.LossHistoryType.TC_ATT) {
       _priorLosses = policyPeriod?.Policy?.NumPriorLosses
     } else if (policyPeriod?.Policy?.LossHistoryType == typekey.LossHistoryType.TC_MAN){

@@ -56,7 +56,7 @@
         id="GLModifiers"
         onEnter="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncModifiers(policyPeriod.GLLine.AllModifiables, jobWizardHelper)}"
         save="openForEdit"
-        screen="ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper, policyPeriod.GLLine.GLModifiers)"
+        screen="ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper, policyPeriod.GLLine.GLModifiers, false)"
         title="displaykey.Web.SubmissionWizardMenu.Modifiers"
         visible="policyPeriod.CanViewModifiers"/>
       <JobWizardStep
@@ -87,14 +87,14 @@
         save="openForEdit"
         screen="CPBlanketScreen(policyPeriod.CPLine, openForEdit, jobWizardHelper)"
         title="displaykey.Web.LineWizardMenu.Blankets"/> -->
-      <JobWizardStep
+      <!-- <JobWizardStep
         beforeSave="gw.lob.cp.CPLineValidation.validateModifiers(); gw.validation.ValidationUtil.checkCurrentResult()"
         id="CPModifiers"
         onEnter="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncModifiers( {policyPeriod.CPLine}, jobWizardHelper)}"
         save="openForEdit"
-        screen="ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper, policyPeriod.CPLine.CPModifiers)"
+        screen="ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper, policyPeriod.CPLine.CPModifiers, false)"
         title="displaykey.Web.SubmissionWizardMenu.Modifiers"
-        visible="policyPeriod.CanViewModifiers"/>
+        visible="policyPeriod.CanViewModifiers"/> -->
       <JobWizardStep
         id="CPReview"
         screen="CPPLineReviewScreen(policyPeriod.CPLine, jobWizardHelper)"
@@ -146,7 +146,7 @@
       id="CPPModifiers"
       onEnter="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncModifiers( {policyPeriod.EffectiveDatedFields}, jobWizardHelper) }"
       save="openForEdit"
-      screen="ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper, policyPeriod.EffectiveDatedFields.Modifiers)"
+      screen="ModifiersScreen(policyPeriod, openForEdit, jobWizardHelper, policyPeriod.EffectiveDatedFields.Modifiers,true)"
       title="displaykey.Web.LineWizardMenu.CommercialPackage.Modifiers"
       visible="policyPeriod.CanViewModifiers"/>
   </WizardStepSet>

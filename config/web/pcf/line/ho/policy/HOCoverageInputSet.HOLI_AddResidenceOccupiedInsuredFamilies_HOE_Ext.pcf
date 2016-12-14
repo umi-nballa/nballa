@@ -30,7 +30,8 @@
         boldLabel="true"
         editable="true"
         id="CovLocationsListLV"
-        label="displaykey.Web.Policy.Schedule.ScheduledItems">
+        label="displaykey.Web.Policy.Schedule.ScheduledItems"
+        labelAbove="true">
         <Toolbar>
           <IteratorButtons
             addLabel="displaykey.Java.ContactDetails.AddLocation"
@@ -44,18 +45,18 @@
             editable="openForEdit"
             elementName="schedItem"
             hideCheckBoxesIfReadOnly="true"
-            pickLocation="HoliSchedItemLocationPopup.push(hoLine, coveragePattern , false, openForEdit)"
-            toRemove="hoLine.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.removeScheduledItem(schedItem)"
-            value="hoLine.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.scheduledItem_Ext">
+            pickLocation="HOCovLocationHOEPopup.push(hoLine, coveragePattern, true, openForEdit)"
+            toRemove="hoLine.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.removeCoveredLocation(schedItem)"
+            value="hoLine.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.CoveredLocations">
             <IteratorSort
-              sortBy="schedItem.ItemNum"
+              sortBy="schedItem.LocationNumber"
               sortOrder="1"/>
             <Row>
               <Cell
-                action="HoliSchedItemLocationPopup.push(hoLine, schedItem, coveragePattern.CodeIdentifier, false, openForEdit)"
+                action="HOCovLocationHOEPopup.push(hoLine, coveragePattern, schedItem, true, openForEdit)"
                 id="LocationID"
                 label="displaykey.Web.AddressBook.AddressInputSet.Name"
-                value="schedItem.policyLocation.CompactName"/>
+                value="schedItem.PolicyLocation.CompactName"/>
             </Row>
           </RowIterator>
         </ListViewPanel>

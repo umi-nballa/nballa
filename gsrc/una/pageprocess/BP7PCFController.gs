@@ -22,27 +22,29 @@ class BP7PCFController {
   }
 
   static function prodsCompletedOpsCovTermActions(line:BP7BusinessOwnersLine){
-    if(line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
-      line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
-    }else{
-      line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
+    for(building in line.AllBuildings){
+      if(building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
+        line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
+      }else{
+        line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
+      }
     }
   }
 
   static function infoMessage(line:BP7BusinessOwnersLine,jobWizardHelper : JobWizardHelper){
     if(line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Excluded_EXT"))
-      jobWizardHelper.addInfoWebMessage("Products/Completed Ops. has been changed to Excluded")
+      jobWizardHelper.addInfoWebMessage(displaykey.una.productmodel.validation.ProductsCompletedOpsMessage)
   }
 
   static function dataCompromiseCoverageRestriction(coverable:Coverable, coveragePatterns:ClausePattern[], jobWizardHelper : JobWizardHelper){
     if(coverable.PolicyLine typeis BP7BusinessOwnersLine){
       for(coveragePattern in coveragePatterns){
         if(coverable.PolicyLine.BP7DataCompromiseDfnseandLiabCov_EXTExists && coveragePattern == "DataCmprmiseRspnseExpns_EXT" ){
-          jobWizardHelper.addErrorWebMessage("Only one Data Compromise Coverage can be added")
+          jobWizardHelper.addErrorWebMessage(displaykey.una.productmodel.validation.DataCompromiseCoverageMessage)
           coverable.PolicyLine.DataCmprmiseRspnseExpns_EXT.remove()
         }
         if(coverable.PolicyLine.DataCmprmiseRspnseExpns_EXTExists && coveragePattern == "BP7DataCompromiseDfnseandLiabCov_EXT") {
-          jobWizardHelper.addErrorWebMessage("Only one Data Compromise Coverage can be added")
+          jobWizardHelper.addErrorWebMessage(displaykey.una.productmodel.validation.DataCompromiseCoverageMessage)
           coverable.PolicyLine.BP7DataCompromiseDfnseandLiabCov_EXT.remove()
         }
       }
@@ -63,7 +65,7 @@ class BP7PCFController {
           limitValue = limitValue + bp7Classification.BP7ClassificationBusinessPersonalProperty.BP7BusnPrsnlPropLimitTerm.Value
         }
       }
+      bp7Line.BP7EquipBreakEndor_EXT.BP7EquipBreakEndorLimit_ExtTerm.Value = limitValue
     }
-    bp7Line.BP7EquipBreakEndor_EXT.BP7EquipBreakEndorLimit_ExtTerm.Value = limitValue
   }
 }

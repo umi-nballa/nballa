@@ -209,7 +209,9 @@ class CoverageTermAvailabilityUtil {
     var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
 
     if(isValidForMedPayLimitOption){
-      if(state == TC_HI){
+      if(_hoLine.BaseState != TC_NC and _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value == 100000bd){
+        result = _option.Value == 1000bd
+      }else if(state == TC_HI){
         result = isMedPayOptionAvailableVariantFilter(personalLiabilityLimit, _option, state)
       }else{
         result = isMedPayOptionAvailableStandardFilter(personalLiabilityLimit, _option, state)
@@ -324,7 +326,12 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isProductsCompletedOpsAggrLimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    return !bp7Line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists
+    for(building in bp7Line.AllBuildings){
+      if(!building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
+        return true
+      }
+    }
+    return false
   }
 
   private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -344,7 +351,7 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isCyberOneCovTermsAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_EXT.TC_FULL and
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_FULL and
         bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
         bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
       return true
@@ -426,6 +433,10 @@ class CoverageTermAvailabilityUtil {
         result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
         result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
+      }
+
+      if(1000d == covTermOpt.Value.doubleValue()){
+        result = hoLine.Dwelling.ResidenceType == TC_FAM1 or hoLine.Dwelling.ResidenceType == TC_FAM2
       }
     }
 

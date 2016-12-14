@@ -158,17 +158,29 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
     var treeNodes : List<WorksheetTreeNodeContainer> = {}
 
     var filter = new BP7QuoteCostFilter(_line.AllCostsWindowMode)
-    var locations = filter.children(new BP7Qualifier("/"))
+    var lineNumber = _line.FixedId.Value
+    var bp7Line = filter.children(new BP7Qualifier("/"))
+    bp7Line.each( \ line -> {
+      var lineCosts = filter.lineCoverageCosts(line)*.RelatedWorksheetCost.toList()
+      var lineDescription = lineCosts.first().DisplayDescription
 
-    locations
-      .sortBy(\ location -> location.toString())
-      .each(\ location -> {
+      var lineContainer = createTitleContainer(lineDescription)
+      treeNodes.add(lineContainer)
+
+      lineCosts.each(\ lineCost -> {
+        createCostContainer(lineContainer, lineCost, showConditionals)
+      })
+      var locations = filter.children(new BP7Qualifier("/line"+lineNumber+ "/"))
+
+      locations
+          .sortBy(\ location -> location.toString())
+          .each(\ location -> {
         var buildingCosts = filter.buildingCoverageCosts(location)*.RelatedWorksheetCost.toList()
         var classificationCosts = filter.classificationCoverageCosts(location)*.RelatedWorksheetCost.toList()
         var locationDescription = (buildingCosts.first() ?: classificationCosts.first()).DisplayLocation.DisplayName
 
         var locationContainer = createTitleContainer(locationDescription)
-        treeNodes.add(locationContainer)
+        lineContainer.addChild(locationContainer)
 
         var buildingContainer = createTitleContainer(displaykey.Web.Policy.BP7.Financials.Buildings)
         locationContainer.addChild(buildingContainer)
@@ -179,11 +191,12 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
 
         var classificationContainer = createTitleContainer(displaykey.Web.Policy.BP7.Financials.Classifications)
         locationContainer.addChild(classificationContainer)
-      
+
         classificationCosts.each(\ classification -> {
           createCostContainer(classificationContainer, classification, showConditionals)
         })
       })
+    })
 
     return WorksheetTreeNodeUtil.buildRootNode(treeNodes)
   }

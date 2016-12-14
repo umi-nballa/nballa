@@ -31,6 +31,9 @@ class MessageBrokerInboundMessageReceiver implements InboundIntegrationStartable
   // Constant name used for logging start/stop
   static final var _name = "MessageBrokerInBoundMessageReceiver"
 
+  /** Should run when server starts? */
+  private static final var _RUN_ON_SERVER_START = "runOnServerStartup";
+
   var logger = LoggerFactory.getLogger('MessageBroker')
 
   // Name of the corresponding integration in inbound-integration-config.xml. This
@@ -39,6 +42,7 @@ class MessageBrokerInboundMessageReceiver implements InboundIntegrationStartable
 
   // Startable plugin information.
   var _state = StartablePluginState.Stopped
+  var _runOnServerStart: Boolean
   var _callback : StartablePluginCallbackHandler
 
   // Maximum message count per polling operation. This will be read out of
@@ -52,14 +56,16 @@ class MessageBrokerInboundMessageReceiver implements InboundIntegrationStartable
    */
   override function setParameters(params: Map) {
     _inboundIntegrationName = params['integrationservice'] as String
+    _runOnServerStart = (params[_RUN_ON_SERVER_START]?: false) as Boolean
   }
 
   override function start(callback: StartablePluginCallbackHandler, isStarting: boolean) {
     _callback = callback
     _callback.logStart(_name)
-
-    start()
-    _state = Started;
+    if(!isStarting ||_runOnServerStart){
+      start()
+      _state = Started;
+    }
   }
 
   override function stop(isStopping: boolean) {

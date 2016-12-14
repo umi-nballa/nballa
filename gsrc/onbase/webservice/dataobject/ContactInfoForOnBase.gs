@@ -14,6 +14,8 @@ final class ContactInfoForOnBase {
 
   var _firstName  : String as FirstName
 
+  var _middleName : String as MiddleName
+
   var _lastName : String as LastName
 
   construct() {}
@@ -21,6 +23,12 @@ final class ContactInfoForOnBase {
   construct(firstName :String, lastName : String) {
     _firstName = firstName
     _lastName = lastName
+  }
+
+  construct(firstName :String, lastName : String, middleName : String) {
+    _firstName = firstName
+    _lastName = lastName
+    _middleName = middleName
   }
 
 }

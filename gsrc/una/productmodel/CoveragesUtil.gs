@@ -75,12 +75,9 @@ class CoveragesUtil {
       case "BP7HearingAidSvcsProfLiab_EXT":
         result = isHearingAidSvcsProfLiabCoverageAvailable(coverable as BP7Classification)
         break
-      /*case "DataCmprmiseRspnseExpns_EXT":
-        result = isDataCmprmiseRspnseExpnsFirstPartyCoverageAvailable(coverable as BP7BusinessOwnersLine)
+      case "SupplExtendedReportingPeriodEndrsmnt_EXT":
+        result = isCyberOneSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
-      case "BP7DataCompromiseDfnseandLiabCov_EXT":
-        result = isDataCompromiseDfnseandLiabCoverageAvailable(coverable as BP7BusinessOwnersLine)
-        break*/
       default:
     }
 
@@ -112,7 +109,7 @@ class CoveragesUtil {
         result = isWindHurricaneAndHailExclusionAvailable(coverable as HomeownersLine_HOE)
         break
       case "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT":
-        result = isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(coverable as BP7BusinessOwnersLine)
+        result = isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(coverable as BP7Building)
         break
       case "BP7WindstormOrHailExcl_EXT":
         result = isWindstormOrHailExclusionAvailable(coverable as BP7BusinessOwnersLine)
@@ -312,16 +309,14 @@ class CoveragesUtil {
   2. Building Owner and Occupant and the under the Building Coverage, the 'building owner occupies' field is either < or > 65% (or)
   3. Condominium Association (or)
   4. Condominium Unit Owner*/
-  private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    for(building in bp7Line.AllBuildings){
-      if( building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
-          ( building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
-              (building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
-                (building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
+  private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Building : BP7Building):boolean{
+      if( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
+          ( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
+              (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
+                (bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
         return true
       }
-    }
-    return false
+   return false
   }
 
   private static function isWindstormOrHailExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -372,21 +367,6 @@ class CoveragesUtil {
     return false
   }
 
-  /*private static function isDataCmprmiseRspnseExpnsFirstPartyCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    //var jobWizardHelper = (bp7Line as PolicyLine).JobType
-    if(!bp7Line.BP7DataCompromiseDfnseandLiabCov_EXTExists){
-      return true
-    }
-    return false
-  }
-
-  private static function isDataCompromiseDfnseandLiabCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    //var jobWizardHelper = (bp7Line as PolicyLine).JobType
-    if(!bp7Line.DataCmprmiseRspnseExpns_EXTExists){
-      return true
-    }
-    return false
-  }*/
 
   private static function isBP7CapLossesFromCertfdActsTerrsmCovAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     return !bp7Line.BP7ExclCertfdActsTerrsmCovFireLossesExists
@@ -433,6 +413,15 @@ class CoveragesUtil {
 
   private static function isHearingAidSvcsProfLiabCoverageAvailable(bp7Classification:BP7Classification):boolean{
     if(bp7Classification.ClassCode_Ext=="59974"){
+      return true
+    }
+    return false
+  }
+
+  private static function isCyberOneSERPCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if( bp7Line.BP7CyberOneCov_EXTExists && bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value!=null &&
+        (bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
+            bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT) ){
       return true
     }
     return false

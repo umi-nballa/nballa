@@ -37,41 +37,38 @@ class PropertyInformationCompletePluginImpl {
    */
   public function getDwellingInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
-    _address = new AddressDTO()
+//    _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
   //  if (location.AccountLocation.addressScrub_Ext) {
-      _address.AddressLine1 = location.AddressLine1
-      _address.State = location.State.DisplayName
-      _address.City = location.City
-      _address.PostalCode = location.PostalCode
-      _address.Country = location.Country.DisplayName
-      try {
+//      _address.AddressLine1 = location.AddressLine1
+//      _address.State = location.State.DisplayName
+//      _address.City = location.City
+//      _address.PostalCode = location.PostalCode
+//      _address.Country = location.Country.DisplayName
+
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
         if (tunaResponse != null) {
-          tunaLongitudeDetail(policyPeriod, tunaResponse)
-          tunaLatitudeDetail(policyPeriod, tunaResponse)
-          tunaTerritoryCode(policyPeriod, tunaResponse)
-          tunaYearBuiltDetail(policyPeriod, tunaResponse)
-          tunaProtectionClassDetail(policyPeriod, tunaResponse)
-          tunaISO360Detail(policyPeriod, tunaResponse)
-          tunaEstReplacementCostDetail(policyPeriod, tunaResponse)
-          tunaDistToCoastDetail(policyPeriod, tunaResponse)
-          tunaBCEGDetail(policyPeriod, tunaResponse)
-          //tunaFireDeptMatchLineLevelDetail(policyPeriod, tunaResponse)
-          tunaFireHazardDetail(policyPeriod, tunaResponse)
-          tunaFireFuelDetail(policyPeriod, tunaResponse)
-          tunaFireAccessDetail(policyPeriod, tunaResponse)
-          tunaFireSlopeDetail(policyPeriod, tunaResponse)
+//          tunaLongitudeDetail(policyPeriod, tunaResponse)
+//          tunaLatitudeDetail(policyPeriod, tunaResponse)
+//          tunaTerritoryCode(policyPeriod, tunaResponse)
+//          tunaYearBuiltDetail(policyPeriod, tunaResponse)
+//          tunaProtectionClassDetail(policyPeriod, tunaResponse)
+//          tunaISO360Detail(policyPeriod, tunaResponse)
+//          tunaEstReplacementCostDetail(policyPeriod, tunaResponse)
+//          tunaDistToCoastDetail(policyPeriod, tunaResponse)
+//          tunaBCEGDetail(policyPeriod, tunaResponse)
+//          //tunaFireDeptMatchLineLevelDetail(policyPeriod, tunaResponse)
+//          tunaFireHazardDetail(policyPeriod, tunaResponse)
+//          tunaFireFuelDetail(policyPeriod, tunaResponse)
+//          tunaFireAccessDetail(policyPeriod, tunaResponse)
+//          tunaFireSlopeDetail(policyPeriod, tunaResponse)
         } else {
           LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
        }
-      } catch (exp: Exception) {
-        LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
-        logger.error("TunaGateway : Dwelling  Information " + " : StackTrace = ", exp)
-      }
+
   //  }
 
-    logger.info(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
+    logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     return tunaResponse
   }
 
@@ -91,13 +88,13 @@ class PropertyInformationCompletePluginImpl {
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
         if (tunaResponse != null) {
-          tunaStoryNumDetail(policyPeriod, tunaResponse)
-          tunaConstructionTypeDetail(policyPeriod, tunaResponse)
-          tunaExteriorWallDetail(policyPeriod, tunaResponse)
-          tunaSquareFootDetail(policyPeriod, tunaResponse)
-          tunaRoofTypeDetail(policyPeriod, tunaResponse)
-          tunaRoofMaterialDetail(policyPeriod, tunaResponse)
-          tunaWindPoolDetail(policyPeriod, tunaResponse)
+//          tunaStoryNumDetail(policyPeriod, tunaResponse)
+//          tunaConstructionTypeDetail(policyPeriod, tunaResponse)
+//          tunaExteriorWallDetail(policyPeriod, tunaResponse)
+//          tunaSquareFootDetail(policyPeriod, tunaResponse)
+//          tunaRoofTypeDetail(policyPeriod, tunaResponse)
+//          tunaRoofMaterialDetail(policyPeriod, tunaResponse)
+//          tunaWindPoolDetail(policyPeriod, tunaResponse)
         } else {
           LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
         }
@@ -365,8 +362,8 @@ class PropertyInformationCompletePluginImpl {
         if (res.DistanceToCoast.size() > 1) {
           //TODO
         } else {
-          if(res.DistanceToCoast[0].Value != "")
-          policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoastTunaReturned_Ext = (res.DistanceToCoast[0].Value) as Integer
+      //    if(res.DistanceToCoast[0].Value != "")
+          //policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoastTunaReturned_Ext = (res.DistanceToCoast[0].Value) as Integer
         }
       }
     } catch (exp: Exception) {
@@ -383,7 +380,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.BCEGGrade.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEGTunaReturned_Ext= (res.BCEGGrade[0].Value) as String
+      //    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEGTunaReturned_Ext= (res.BCEGGrade[0].Value) as String
         }
       }
     } catch (exp: Exception) {

@@ -183,9 +183,8 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getAdditionalInterests(coverable : Coverable, mapper : HPXStructureMapper) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
-    var additionalInterestMapper = new HPXAdditionalInterestMapper()
-    var additionalInterests = additionalInterestMapper.createAdditionalInterests((coverable as CPBuilding).AdditionalInterests, mapper, coverable)
+  override function getAdditionalInterests(coverable : Coverable) : AddlInterestDetail [] {
+    var additionalInterests = (coverable as CPBuilding).AdditionalInterests
     return additionalInterests
   }
 

@@ -170,8 +170,9 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     keywords.add(new Keyword(KeywordMap.description.Name, document.Description))
     keywords.add(new Keyword(KeywordMap.status.Name, document.Status.Code))
     keywords.add(new Keyword(KeywordMap.recipient.Name, document.Recipient))
-    //keywords.add(new Keyword(KeywordMap.subtype, document.))//TODO: Add document subtype
+    keywords.add(new Keyword(KeywordMap.subtype.Name, document.OnBaseDocumentSubtype.DisplayName))
     keywords.add(new Keyword(KeywordMap.onbasedocumenttype.Name, document.OnBaseDocumentType.DisplayName))
+
     //Add any Policy related keywords
     var policyKeywordList = getKeywordsFromPolicy(document)
     if(!policyKeywordList.Empty){
@@ -243,8 +244,8 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
       keywords.add(new Keyword(KeywordMap.term.Name, period.TermType.Code))
       keywords.add(new Keyword(KeywordMap.policyexpirationdate.Name,period.PeriodEnd))
       keywords.add(new Keyword(KeywordMap.policyeffectivedate.Name, period.PeriodStart))
-//      keywords.add(new Keyword(KeywordMap.issuedate.Name, document.Policy.IssueDate))
-//      keywords.add(new Keyword(KeywordMap.transactioneffectivedate.Name, period.PeriodStart))
+      keywords.add(new Keyword(KeywordMap.issuedate.Name, document.Policy.IssueDate))
+      keywords.add(new Keyword(KeywordMap.transactioneffectivedate.Name, period.PeriodStart))
     }
     return keywords
   }

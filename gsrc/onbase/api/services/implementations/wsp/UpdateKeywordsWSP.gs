@@ -28,7 +28,6 @@ class UpdateKeywordsWSP implements UpdateKeywordsInterface {
    * @param ukRequest The Bulk keyword update request object.
    */
   public override function updateKeywords(ukRequest: UpdateKeywordsRequest) {
-    //TODO: OnBase - commented out awaiting taxonomy
     logger.debug("Start executing bulkKeywordUpdate() using WSP service.")
 
     var service = new onbase.api.services.implementations.wsp.webservicecollection.onbasekeywordupateapi.soapservice.ports.EISClientWithConfig_BasicHttpBinding_HylandOutBoundContract()

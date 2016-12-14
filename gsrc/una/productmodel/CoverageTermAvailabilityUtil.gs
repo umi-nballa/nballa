@@ -209,7 +209,9 @@ class CoverageTermAvailabilityUtil {
     var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
 
     if(isValidForMedPayLimitOption){
-      if(state == TC_HI){
+      if(_hoLine.BaseState != TC_NC and _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value == 100000bd){
+        result = _option.Value == 1000bd
+      }else if(state == TC_HI){
         result = isMedPayOptionAvailableVariantFilter(personalLiabilityLimit, _option, state)
       }else{
         result = isMedPayOptionAvailableStandardFilter(personalLiabilityLimit, _option, state)

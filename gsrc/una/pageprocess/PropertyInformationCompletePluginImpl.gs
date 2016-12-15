@@ -36,6 +36,9 @@ class PropertyInformationCompletePluginImpl {
    * This function is to call getDwellingInformation Service to map dwelling screen
    */
   public function getDwellingInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
+    if(!(policyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT)){
+      return null
+    }
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
@@ -79,6 +82,9 @@ class PropertyInformationCompletePluginImpl {
    * This function is to call GetPropertyInformationComplete Service to map dwelling construction screen
    */
   public function getDwellingConstructionInformation(policyPeriod: PolicyPeriod): TunaAppResponse {
+    if(!(policyPeriod.Status ==  typekey.PolicyPeriodStatus.TC_DRAFT)){
+      return null
+    }
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingConstructionInformation" + "For DwellingConstruction ", this.IntrinsicType)
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation

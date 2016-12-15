@@ -29,13 +29,22 @@ class TunaResponseHelper {
   final static var EXTERIOR_WALL_FINISH = "ExteriorWallFinish"
   final static var ISO_360_VALUE = "ISO360ValuationId"
   final static var ESTIMATED_REPLACEMENT_COST = "CondoReplacementCost"
-  final static var FIRE_DEPT_MATCH_LEVEL = "DistanceToMajorBOW"
+  final static var DISTANCE_TO_MAJOR_BOW = "DistanceToMajorBOW"
   final static var FIRE_LINE_ADJUSTED_HAZARD = "FirelineAdjustedHazardScore"
   final static var FIRE_LINE_FUEL = "FirelineFuel"
   final static var FIRE_LINE_ACCESS = "FirelineAccess"
   final static var FIRE_LINE_SLOPE = "FirelineSlope"
   final static var FIRE_LINE_SHIA = "FirelineSHIA"
   final static var EARTH_QUAKE_TERRITORY = "EarthquakeTerritory"
+  final static var COVERAGE_A_LIMIT = "CoverageALimit"
+
+  final static var BASE_FLOOD_ELEVATION = "BaseFloodElevation"
+  final static var CONDO_VALUATION_ID = "CondoValuationId"
+  final static var FIRE_LINE_PROPERTY_HAZARD = "FirelinePropertyHazardScore"
+  final static var METRICS_VERSION = "MetricsVersion"
+  final static var PROPERTY_FLOOD = "PropertyFlood"
+  final static var ACV = "ACV"
+
 
 
   // Mapping datums
@@ -60,9 +69,9 @@ class TunaResponseHelper {
             var distanceToCoastList = dynamicListMapper(propDetail)
             response.DistanceToCoast = distanceToCoastList
             break
-        case FIRE_DEPT_MATCH_LEVEL:
-            var fireDeptList = dynamicListMapper(propDetail)
-            response.FireDepartmentMatchLevel = fireDeptList
+        case DISTANCE_TO_MAJOR_BOW:
+            var distanceToMajorBOW = dynamicListMapper(propDetail)
+            response.DistanceToMajorBOW = distanceToMajorBOW
             break
         case BCEG:
             var BCEGList = dynamicListMapper(propDetail)
@@ -75,6 +84,10 @@ class TunaResponseHelper {
         case ISO_360_VALUE:
             var ISOList = dynamicListMapper(propDetail)
             response.ISO360Value = ISOList
+            break
+        case FIRE_LINE_MATCH_LEVEL:
+            var fireLineMatch = dynamicListMapper(propDetail)
+            response.FireLineMatchLevel = fireLineMatch
             break
         case FIRE_LINE_ADJUSTED_HAZARD:
             var hazardList = dynamicListMapper(propDetail)
@@ -123,6 +136,38 @@ class TunaResponseHelper {
         case EARTH_QUAKE_TERRITORY:
             var earthQuakeList = dynamicListMapper(propDetail)
             response.EarthQuakeTerritory = earthQuakeList
+            break
+        case COVERAGE_A_LIMIT:
+            var coverageALimit = dynamicListMapper(propDetail)
+            response.CoverageLimit = coverageALimit
+            break
+        case BASE_FLOOD_ELEVATION:
+            var baseFloodElevation = dynamicListMapper(propDetail)
+            response.BaseFloodElevation = baseFloodElevation
+            break
+        case CONDO_VALUATION_ID:
+            var condoValuationID = dynamicListMapper(propDetail)
+            response.CondoValuationID = condoValuationID
+            break
+        case FIRE_LINE_PROPERTY_HAZARD:
+            var fireLinePropertyHazard = dynamicListMapper(propDetail)
+            response.FireLinePropertyHazard = fireLinePropertyHazard
+            break
+        case METRICS_VERSION:
+            var metricsVersion = dynamicListMapper(propDetail)
+            response.MetricsVersion = metricsVersion
+            break
+        case PROPERTY_FLOOD:
+            var propertyFlood = dynamicListMapper(propDetail)
+            response.PropertyFlood = propertyFlood
+            break
+        case ACV:
+            var acv = dynamicListMapper(propDetail)
+            response.ACV = acv
+            break
+        case FIRE_LINE_SHIA:
+            var fireLineSHIA = dynamicListMapper(propDetail)
+            response.FireLineSHIA = fireLineSHIA
             break
 
       }

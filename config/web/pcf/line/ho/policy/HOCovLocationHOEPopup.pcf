@@ -13,8 +13,10 @@
       signature="HOCovLocationHOEPopup(hoLine: HomeownersLine_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
     <LocationEntryPoint
       signature="HOCovLocationHOEPopup(hoLine: HomeownersLine_HOE, coveredLocation : CoveredLocation_HOE, covPattern : gw.api.productmodel.ClausePattern, locFilter : boolean, editMode : boolean)"/>
+    <LocationEntryPoint
+      signature="HOCovLocationHOEPopup(hoLine: HomeownersLine_HOE, covPattern : gw.api.productmodel.ClausePattern, coveredLocation : CoveredLocation_HOE  ,locFilter : boolean, editMode : boolean)"/>
     <Variable
-      initialValue="hoLine.createAndAddCoveredLocation(covPattern.CodeIdentifier)"
+      initialValue="(coveredLocation == null) ? hoLine.createAndAddCoveredLocation(covPattern.CodeIdentifier) : coveredLocation"
       name="coveredLocation"
       type="CoveredLocation_HOE"/>
     <Variable
@@ -40,13 +42,20 @@
         <InputColumn>
           <InputSetRef
             def="HOCovLocationHOEInputSet(coveredLocation, hoLine, hoLine.Branch, covPattern.CodeIdentifier, locFilter, editMode)"/>
-          <TypeKeyInput
+          <!-- <TypeKeyInput
             editable="editMode"
             id="OtheResNamedInsuredDirectTerm"
             label="displaykey.Web.Homeowners.Coverages.Limit"
             numCols="5"
             required="true"
-            value="coveredLocation.LocationLimit"/>
+            value="coveredLocation.LocationLimit"/> -->
+          <Input
+            editable="editMode"
+            id="OtheStructuresOffPremisesDesc"
+            label="displaykey.Web.Homeowners.HOCoveragesScreen.Numfamilies_Ext"
+            required="true"
+            value="coveredLocation.NumberOfFamilies"
+            visible="covPattern.CodeIdentifier == &quot;HOLI_AddResidenceRentedtoOthers_HOE&quot;"/>
         </InputColumn>
       </DetailViewPanel>
     </Screen>

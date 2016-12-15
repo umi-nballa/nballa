@@ -38,6 +38,7 @@
         label="displaykey.Web.Homeowners.HOLocation.LocationInfo_Ext"/>
       <InputSetRef
         def="HODwellingLocationHOEInputSet(dwelling, policyPeriod, openForEdit, jobWizardHelper )"/>
+      <InputDivider/>
       <!-- <Input
         editable="true"
         id="YearBuilt"
@@ -78,13 +79,14 @@
           id="yearbuiltUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.YearbuiltUserEntered_Ext"
           required="dwelling.OverrideYearbuilt_Ext"
-          value="dwelling.YearBuilt_Ext"
+          value="dwelling.YearBuiltOverridden_Ext"
           visible="dwelling.OverrideYearbuilt_Ext"/>
       </InputSet>
       <InputSet
         editable="true"
         id="TerritoryCodeInputSet"
         visible="dwelling.HOLocation.PolicyLocation != null and dwelling.HOLocation.PolicyLocation.TerritoryCodes.length != 0">
+        <InputDivider/>
         <RangeInput
           available="!dwelling.OverrideYearbuilt_Ext"
           editable="true"
@@ -133,6 +135,7 @@
           </RangeInput> -->
         </InputIterator>
       </InputSet>
+      <InputDivider/>
       <InputSet
         visible="dwelling.HOLocation.PolicyLocation != null">
         <!-- <PickerInput
@@ -176,6 +179,44 @@
           label="displaykey.Web.Homeowners.HOLocation.WithinCommercialProperty"
           required="true"
           value="dwelling.HOLocation.NearCommercial"/> -->
+        <InputDivider/>
+        <InputSet
+          id="PCCode_Ext">
+          <RangeInput
+            available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+            editable="true"
+            id="PCCodeTunaReturned_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
+            value="dwelling.HOLocation.DwellingProtectionClassCode"
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
+            <PostOnChange
+              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+          </RangeInput>
+          <Input
+            available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+            id="PCCodeMatchLevel_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
+            value="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext"/>
+          <BooleanRadioInput
+            editable="true"
+            id="OverRideTunaBCEG_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PCCodeOverride_Ext"
+            value="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
+            <PostOnChange
+              target="PCCode_Ext"/>
+          </BooleanRadioInput>
+          <Input
+            available="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+            editable="true"
+            id="PCCodeUserEntered_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PCCodeUserEntered_Ext"
+            required="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
+            value="dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
+            visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
+            <PostOnChange
+              onChange="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingPCCodeOverridden_Ext,tunaAppResponse.ProtectionClass )"/>
+          </Input>
+        </InputSet>
         <BooleanRadioInput
           editable="true"
           id="protectedSubdivision"
@@ -196,6 +237,7 @@
           <PostOnChange
             onChange="gw.lob.ho.HODwellingUtil_HOE.resetProtectionClassCode(policyPeriod.BaseState, dwelling.HOLocation)"/>
         </RangeInput>
+        <InputDivider/>
       </InputSet>
       <Input
         id="distanceToCoast"
@@ -763,44 +805,6 @@
           required="dwelling.HOLocation.OverrideBCEG_Ext"
           value="dwelling.HOLocation.BCEGOverridden_Ext"
           visible="dwelling.HOLocation.OverrideBCEG_Ext"/>
-      </InputSet>
-      <InputDivider/>
-      <InputSet
-        id="PCCode_Ext">
-        <RangeInput
-          available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
-          editable="true"
-          id="PCCodeTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
-          value="dwelling.HOLocation.DwellingProtectionClassCode"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
-          <PostOnChange
-            onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
-        </RangeInput>
-        <Input
-          available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
-          id="PCCodeMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
-          value="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideTunaBCEG_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PCCodeOverride_Ext"
-          value="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
-          <PostOnChange
-            target="PCCode_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
-          editable="true"
-          id="PCCodeUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PCCodeUserEntered_Ext"
-          required="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
-          value="dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
-          <PostOnChange
-            onChange="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingPCCodeOverridden_Ext,tunaAppResponse.ProtectionClass )"/>
-        </Input>
       </InputSet>
       <InputDivider/>
       <InputSet

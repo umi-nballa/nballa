@@ -19,6 +19,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _line : HomeownersLine_HOE as Line
   var _policyType : HOPolicyType_HOE as PolicyType
   var _typeOfPolicyForMultiLine : TypeofPolicy_Ext as TypeOfPolicyForMultiLine
+  var _territoryCode : int as TerritoryCode
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line
@@ -28,6 +29,9 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _allPerilDeductible = line.Dwelling?.AllPerilsOrAllOtherPerilsCovTerm?.Value
     _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
     _policyType = line.HOPolicyType
+    _territoryCode = line.Dwelling?.HOLocation?.TerritoryCodeTunaReturned_Ext?.toInt()
+    if(line.Dwelling?.HOLocation?.OverrideTerritoryCode_Ext)
+      _territoryCode = line.Dwelling?.HOLocation?.TerritoryCodeOverridden_Ext.toInt()
   }
 
   property get AgeOfHome() : int {
@@ -35,7 +39,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   }
 
    property get YearForAgeOfHomeCalc() : int{
-    return Line.Dwelling.YearBuilt
+    return Line.Dwelling.OverrideYearbuilt_Ext? Line.Dwelling.YearBuiltOverridden_Ext : Line.Dwelling.YearBuilt
   }
 
 

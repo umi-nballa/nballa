@@ -54,6 +54,9 @@ class HOCommonDwellingRatingInfo {
       _isPersonalLiabilityLimitIncreased = true
 
     _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
-    _territoryCode = dwellingCov.Dwelling.HOLocation.PolicyLocation?.TerritoryCodes.single().Code
+
+    _territoryCode = dwellingCov.Dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
+    if(dwellingCov.Dwelling.HOLocation?.OverrideTerritoryCode_Ext)
+      _territoryCode = dwellingCov.Dwelling.HOLocation?.TerritoryCodeOverridden_Ext
   }
 }

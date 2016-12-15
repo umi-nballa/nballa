@@ -12,7 +12,6 @@ uses java.math.BigDecimal
  */
 class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _otherStructuresIncreasedOrDecreasedLimit: int as OtherStructuresIncreasedOrDecreasedLimit
-  var _territoryCode: String as TerritoryCode
   var _county: String as County
   var _unitOwnersOutbuildingAndOtherStructuresLimit: BigDecimal as UnitOwnersOutbuildingAndOtherStructuresLimit
   var _increasedLimitsJewelryWatchesFurs: BigDecimal as IncreasedLimitsJewelryWatchesFurs
@@ -50,7 +49,6 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
     _lossAssessmentLimit = (dwellingCov.Dwelling.HODW_LossAssessmentCov_HOE_ExtExists) ? dwellingCov.Dwelling.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
 
-    _territoryCode = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.single().Code)
     _county = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County != null) ? dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County : ""
   }
 }

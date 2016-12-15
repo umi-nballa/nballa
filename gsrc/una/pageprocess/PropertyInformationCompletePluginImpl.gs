@@ -425,7 +425,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.AdjustedHazard.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = (res.AdjustedHazard[0].Value) as String
+          //policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = (res.AdjustedHazard[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -442,7 +442,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.FireLineAccess.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Access = (res.FireLineAccess[0].Value) as String
+        //  policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Access = (res.FireLineAccess[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -459,7 +459,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.FireLineSlope.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Slope = (res.FireLineSlope[0].Value) as String
+          //policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Slope = (res.FireLineSlope[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -476,7 +476,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.FireLineFuel.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Fuel = (res.FireLineFuel[0].Value) as String
+         // policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Fuel = (res.FireLineFuel[0].Value) as String
         }
       }
     } catch (exp: Exception) {

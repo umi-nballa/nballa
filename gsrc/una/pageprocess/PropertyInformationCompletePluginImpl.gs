@@ -50,6 +50,7 @@ class PropertyInformationCompletePluginImpl {
       _address.Country = location.Country.DisplayName
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))
         if (tunaResponse != null) {
 //          tunaLongitudeDetail(policyPeriod, tunaResponse)
 //          tunaLatitudeDetail(policyPeriod, tunaResponse)
@@ -96,6 +97,7 @@ class PropertyInformationCompletePluginImpl {
       _address.Country = location.Country.DisplayName
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))
         if (tunaResponse != null) {
 //          tunaStoryNumDetail(policyPeriod, tunaResponse)
 //          tunaConstructionTypeDetail(policyPeriod, tunaResponse)
@@ -423,7 +425,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.AdjustedHazard.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = (res.AdjustedHazard[0].Value) as String
+          //policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore = (res.AdjustedHazard[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -440,7 +442,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.FireLineAccess.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Access = (res.FireLineAccess[0].Value) as String
+        //  policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Access = (res.FireLineAccess[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -457,7 +459,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.FireLineSlope.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Slope = (res.FireLineSlope[0].Value) as String
+          //policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Slope = (res.FireLineSlope[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -474,7 +476,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.FireLineFuel.size() > 1) {
           //TODO
         } else {
-          policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Fuel = (res.FireLineFuel[0].Value) as String
+         // policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.Fuel = (res.FireLineFuel[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -667,6 +669,7 @@ class PropertyInformationCompletePluginImpl {
     _address.YearBuilt = (cpBuilding.Building.YearBuilt) as String
     try {
       tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
+      cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation",tunaResponse.MetricsVersion.first().NamedValue))
       tunaLongitudeDetail(cpBuilding,tunaResponse)
       tunaLatitudeDetail(cpBuilding,tunaResponse)
       tunaStoryNumDetail(cpBuilding,tunaResponse)

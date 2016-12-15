@@ -15,6 +15,14 @@ uses gw.api.address.AddressOwnerFieldId
 
 class BP7LocationAddressOwner extends AbstractInputSetAddressOwner{
 
+  public var period :PolicyPeriod
+
+  construct(policyLocation: PolicyLocation,pPeriod:PolicyPeriod) {
+    super(policyLocation.AccountLocation.NonSpecific, policyLocation != null ? policyLocation.canChangeState() : false)
+    period =  pPeriod
+    setInternalDelegate(policyLocation)
+  }
+
   construct(policyLocation: PolicyLocation) {
     super(policyLocation.AccountLocation.NonSpecific, policyLocation != null ? policyLocation.canChangeState() : false)
     setInternalDelegate(policyLocation)

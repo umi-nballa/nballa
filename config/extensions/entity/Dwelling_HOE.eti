@@ -625,12 +625,264 @@
     nullok="true"
     type="bit"/>
   <foreignkey
-    desc="CA Fireline Info"
-    fkentity="CAFireLineInfo_Ext"
-    name="CAFirelineInfo"
-    nullok="true"/>
-  <foreignkey
     fkentity="HODwellingProtDetails_Ext"
     name="DwellingProtectionDetails"
     nullok="true"/>
+  <typekey
+    desc="YearBuilt Match Level from TUNA"
+    name="YearbuiltMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override YearBuilt returned from TUNA"
+    name="OverrideYearbuilt_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="YearBuilt Overridden"
+    name="YearBuiltOverridden_Ext"
+    nullok="true"
+    type="year"/>
+  <column
+    desc="EarthquakeTerritory Returned by Tuna"
+    name="EarthQuakeTer_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="EarthquakeTerritory Match Level from TUNA"
+    name="EarthquakeTerMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override EarthquakeTerritory returned from TUNA"
+    name="OverrideEarthquakeTer_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="EarthquakeTerritory Entered by User"
+    name="EarthquakeTerOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="PropFloodVal Returned by Tuna"
+    name="PropFloodVal_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="PropFloodVal Match Level from TUNA"
+    name="PropFloodValMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override PropFloodVal returned from TUNA"
+    name="OverridePropFloodVal_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="PropFloodVal Entered by User"
+    name="PropFloodValOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="BaseFloodElVal Returned by Tuna"
+    name="BaseFloodElVal_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="BaseFloodElVal Match Level from TUNA"
+    name="BaseFloodElValMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override BaseFloodElVal returned from TUNA"
+    name="OverrideBaseFloodElVal_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="BaseFloodElVal Entered by User"
+    name="BaseFloodElValOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <!-- column
+    desc="TotalSqFtVal Returned by Tuna"
+    name="TotalSqFtVal_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column -->
+  <typekey
+    desc="TotalSqFtVal Match Level from TUNA"
+    name="TotalSqFtValMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override TotalSqFtVal returned from TUNA"
+    name="OverrideTotalSqFtVal_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="TotalSqFtVal Entered by User"
+    name="TotalSqFtValOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="NoteDetail_Ext Returned by Tuna"
+    name="NoteDetail_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="CoverageALimitValue_Ext Returned by Tuna"
+    name="CoverageALimitValue_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="CondoValuationIDValue_Ext Returned by Tuna"
+    name="CondoValuationIDValue_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="MetricsVersionValue_Ext Returned by Tuna"
+    name="MetricsVersionValue_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="ResultingPrecision_Ext Returned by Tuna"
+    name="ResultingPrecision_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Construction Type Match Level returned from TUNA"
+    name="ConstructionTypeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Construction Type returned from TUNA"
+    name="OverrideConstructionType_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Construction Type entered by Users"
+    name="ConstTypeOverridden_Ext"
+    nullok="true"
+    typelist="ConstructionType_HOE"/>
+  <typekey
+    desc="ExteriorWFval Match Level from TUNA"
+    name="ExteriorWFvalMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override ExteriorWFval returned from TUNA"
+    name="OverrideExteriorWFval_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    default="0"
+    desc="Override Number Of Stories Returned by TUNA"
+    name="OverrideStoriesNumber_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Number of Stories Match Level Returned by TUNA"
+    name="StoriesNumberMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <typekey
+    desc="Number of Stories entered by Users"
+    name="NoofStoriesOverridden_Ext"
+    nullok="true"
+    typelist="NoOfStoriesOverridden_Ext"/>
+  <typekey
+    desc="Roofing Material Match Level returned from TUNA"
+    name="RoofTypeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Roofing Material returned by TUNA"
+    name="OverrideRoofType_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Roofing Material entered by Users"
+    name="RoofingMaterialOverridden_Ext"
+    nullok="true"
+    typelist="RoofTypeOverridden_Ext"/>
+  <typekey
+    desc="Roof Shape Match Level returned from TUNA"
+    name="RoofShapeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Roof Shape returned from TUNA"
+    name="OverrideRoofShape_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Roof Shape entered by Users"
+    name="RoofShapeOverridden_Ext"
+    nullok="true"
+    typelist="RoofShapeOverridden_Ext"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ExteriorWFvalueOverridden_Ext"
+    nullok="true"
+    typelist="ExteriorWallFinish_Ext"/>
 </entity>

@@ -35,11 +35,12 @@ class TunaAppResponse {
   var _counties: List                                          as Counties
   var _datums :List<PropertyDataModel>                         as Datums
   var _territoryDetails : List<PropertyTerritoryModel>         as TerritoryDetails
-  var _territoryCodes:List                                     as TerritoryCodes
+  var _territoryCodes:List<String>                             as TerritoryCodes
   var _yearBuilt : List<PropertyDataModel>                     as YearBuilt
   var _protectionClass : List<PropertyDataModel>               as ProtectionClass
   var _distanceToCoast : List<PropertyDataModel>               as DistanceToCoast
   var _bcegGrade : List<PropertyDataModel>                     as BCEGGrade
+  var _fireLIneMatchLevel : List<PropertyDataModel>            as FireLineMatchLevel
   var _estimatedReplacementCost : List<PropertyDataModel>      as EstimatedReplacementCost
   var _iso360Value : List<PropertyDataModel>                   as ISO360Value
   var _adjustedHazard : List<PropertyDataModel>                as AdjustedHazard

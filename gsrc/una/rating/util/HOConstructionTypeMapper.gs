@@ -17,7 +17,7 @@ class HOConstructionTypeMapper {
       case TC_FL:
           return setConstructionType(constructionType)
     }
-    //we dafault to frame
+    //we default to frame
     return RateTableConstructionType_Ext.TC_FRAME
   }
 

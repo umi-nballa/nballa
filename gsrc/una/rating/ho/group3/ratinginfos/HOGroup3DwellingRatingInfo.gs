@@ -25,18 +25,21 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures = false
   var _permittedIncidentalOccupancyOtherStructuresLimit: BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
+  var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
+  var _ordinanceOrLawCovLimit : BigDecimal as ordinanceOrLawCovLimit
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
     _covALimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
     if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
       _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
-      _territoryCodeForLossAssessmentCov = dwellingCov.Dwelling.HOLocation.PolicyLocation?.TerritoryCodes.single().Code.toInt()
+      _territoryCodeForLossAssessmentCov = TerritoryCode.toInt()
     }
 
     if(dwellingCov typeis HODW_SinkholeLoss_HOE_Ext){
       _county = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County != null)? dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County : ""
-      _territoryCodeForSinkholeLossCov = dwellingCov.Dwelling.HOLocation.PolicyLocation?.TerritoryCodes.single().Code.toInt()
+      _territoryCodeForSinkholeLossCov = TerritoryCode.toInt()
+
     }
 
     if(dwellingCov typeis HODW_OrdinanceCov_HOE){
@@ -62,6 +65,12 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
       _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
       _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
       _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
+    }
+    if (dwellingCov typeis HODW_BuildingAdditions_HOE_Ext){
+      _buildingAdditionsAndAlterationsLimit = dwellingCov.HODW_BuildAddInc_HOETerm?.Value
+    }
+    if (dwellingCov typeis HODW_OrdinanceCov_HOE){
+      _ordinanceOrLawCovLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.Value
     }
   }
 }

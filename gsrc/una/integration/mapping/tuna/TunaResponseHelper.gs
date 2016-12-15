@@ -85,6 +85,10 @@ class TunaResponseHelper {
             var ISOList = dynamicListMapper(propDetail)
             response.ISO360Value = ISOList
             break
+        case FIRE_LINE_MATCH_LEVEL:
+            var fireLineMatch = dynamicListMapper(propDetail)
+            response.FireLineMatchLevel = fireLineMatch
+            break
         case FIRE_LINE_ADJUSTED_HAZARD:
             var hazardList = dynamicListMapper(propDetail)
             response.AdjustedHazard = hazardList

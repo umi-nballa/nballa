@@ -110,7 +110,9 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     var isConsentToRateEligible = ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
     var policyDeviationFactor = 1.1
     //TODO tlv this is temporary.  waiting on NC HO Rating requirements
-
-    return isConsentToRateEligible and !_branch.ConsentToRateReceived_Ext and policyDeviationFactor > 1.0
+    var CTRNeeded = isConsentToRateEligible and !_branch.ConsentToRateReceived_Ext and policyDeviationFactor > 1.0
+    if(CTRNeeded)
+      Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)
+    return CTRNeeded
   }
 }

@@ -11,9 +11,17 @@ uses gw.pcf.contacts.AbstractInputSetAddressOwner
  * To change this template use File | Settings | File Templates.
  */
 class UnaPolicyLocationAddressOwner extends PolicyLocationAddressOwner{
+
+  public var pperiod : PolicyPeriod
   construct(policyLocation: PolicyLocation) {
     super(policyLocation)
   }
+
+  construct(policyLocation: PolicyLocation,period:PolicyPeriod) {
+    super(policyLocation)
+    pperiod = period
+  }
+
 
   override property get SelectedMode() : String {
     return "location"

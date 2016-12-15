@@ -44,7 +44,18 @@
         <EditButtons
           hideIfReadOnly="true"
           pickValue="thePolicyLocation"/>
+        <ToolbarButton
+          action="setAddressScrubbed()"
+          available="thePolicyLocation.AccountLocation.addressScrub_Ext == null ? false : thePolicyLocation.AccountLocation.addressScrub_Ext"
+          id="AddressOverride"
+          label="displaykey.Web.Account.Locations.AddressOverride"/>
       </Toolbar>
+      <AlertBar
+        allowDismiss="false"
+        available="false"
+        id="OverrideWarning"
+        label="displaykey.Web.Account.Locations.AddressAlert"
+        visible="!thePolicyLocation.AccountLocation.addressScrub_Ext"/>
       <PanelSet
         id="LocationDetailPanelSet">
         <PanelRef
@@ -87,6 +98,11 @@ function maybeCreateWCJurisdiction(location : PolicyLocation) {
   if (policyPeriod.WorkersCompLine.getJurisdiction(loc) == null) {
     policyPeriod.WorkersCompLine.addJurisdiction(loc)
   }
+}
+
+
+function setAddressScrubbed(){
+  thePolicyLocation.AccountLocation.addressScrub_Ext =  false
 }]]></Code>
   </Popup>
 </PCF>

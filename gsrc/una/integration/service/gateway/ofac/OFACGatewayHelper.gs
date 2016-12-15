@@ -53,7 +53,7 @@ class OFACGatewayHelper {
 
 
   // Function to check & add contact and Score to a Hashmap
-  function addContactScoreToMap(record: ArrayOfResultRecord_ResultRecord, policyContacts: List<Contact>, watchList: ArrayOfWLMatch_WLMatch): HashMap<Contact, Integer> {
+  function addContactScoreToMap(record: ArrayOfResultRecord_ResultRecord, policyContacts: List<Contact>, watchList: ArrayOfWLMatch_WLMatch,pPeriod: PolicyPeriod): HashMap<Contact, Integer> {
     var contactScoreMap = new HashMap<Contact, Integer>()
     var personList = retrievePersonContactList(policyContacts)
     var companyList = retrieveCompanyContactList(policyContacts)
@@ -66,8 +66,10 @@ class OFACGatewayHelper {
             && elt.LastName.equalsIgnoreCase(record.RecordDetails.Name.Last))
         _logger.debug("Adding " + person.Name + " to the AleretList")
 
-        if(person != null)
+        if(person != null)   {
         contactScoreMap.put(person, watchList.EntityScore)
+        pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(person.DisplayName))
+        }
       }
     } else {
       // add company contact to the map
@@ -76,9 +78,11 @@ class OFACGatewayHelper {
             elt.Name.equalsIgnoreCase(record.RecordDetails.Name.Full))
         _logger.debug("Adding " + company.Name  + " to the AleretList")
 
-        if(company != null)
+        if(company != null)       {
         contactScoreMap.put(company, watchList.EntityScore)
-      }
+        pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(company.DisplayName))
+        }
+        }
     }
 
     return contactScoreMap
@@ -90,9 +94,9 @@ class OFACGatewayHelper {
     var isFalsePositive : boolean
 
     //no hit scenario, don't have to map isFalsePositive
-    if (result != null && result.Records == null)
+    if (result != null && result.Records == null)    {
       isFalsePositive = true
-
+    }
     if (result != null && result.Records != null)  {
       for (record in result.Records.ResultRecord)
       {
@@ -107,11 +111,8 @@ class OFACGatewayHelper {
           isFalsePositive = false
 
         if (!isFalsePositive){
-
-          // Add contact and score to Map
-          var contactMap = addContactScoreToMap(record, policyContacts, watchList)
-
-
+         // Add contact and score to Map
+          var contactMap = addContactScoreToMap(record, policyContacts, watchList,pPeriod)
           return contactMap
         }
       }

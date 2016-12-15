@@ -66,7 +66,6 @@ class HPXJobMapper {
     var premiumMapper = new HPXPremiumMapper()
     var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.EndorsementInfoType()
     endorsementInfo.SequenceNumber = policyPeriod.Job.JobNumber.substring(2)
-    endorsementInfo.ChangeDesc = createEndorsementDescription(policyPeriod, policyMapper)
     endorsementInfo.EffectiveDt = policyPeriod.EffectiveDatedFields.EffectiveDate != null ? new XmlDate(policyPeriod.EffectiveDatedFields.EffectiveDate) : null
     endorsementInfo.ExpirationDt = policyPeriod.EffectiveDatedFields.ExpirationDate != null ? new XmlDate(policyPeriod.EffectiveDatedFields.ExpirationDate) : null
     // premiums
@@ -74,88 +73,190 @@ class HPXJobMapper {
     for (child in endorsementPremiumInfo.$Children) {
       endorsementInfo.addChild(child)
     }
+    endorsementInfo.addChild(new XmlElement("PremiumInfo", createInsuredNameChangeInfo(policyPeriod)))
+    endorsementInfo.addChild(new XmlElement("PremiumInfo", createInsuredMailingAddressChangeInfo(policyPeriod)))
+    endorsementInfo.addChild(new XmlElement("PremiumInfo", createPolicyNumberChangeInfo(policyPeriod)))
+    endorsementInfo.addChild(new XmlElement("PremiumInfo", createCompanyChangeInfo(policyPeriod)))
+    endorsementInfo.addChild(new XmlElement("PremiumInfo", createEffectivePeriodChangeInfo(policyPeriod)))
+    var additionalInterestsAdded = createAdditionalInterestedPartiesAddedInfo(policyPeriod, policyMapper)
+    for (additionalInterest in additionalInterestsAdded) {
+      endorsementInfo.addChild(new XmlElement("PremiumInfo", additionalInterest))
+    }
+    var additionalInterestsRemoved = createAdditionalInterestedPartiesRemovedInfo(policyPeriod, policyMapper)
+    for (additionalInterest in additionalInterestsRemoved) {
+      endorsementInfo.addChild(new XmlElement("PremiumInfo", additionalInterest))
+    }
     return endorsementInfo
   }
 
-  function createEndorsementDescription(policyPeriod : PolicyPeriod, policyMapper : HPXPolicyMapper) : String {
-    var endorsementDescription = createInsuredNameChange(policyPeriod) +
-                                 createInsuredMailingAddressChange(policyPeriod) +
-                                 createPolicyNumberChange(policyPeriod) +
-                                 createCompanyChange(policyPeriod) +
-                                 createEffectivePeriodChange(policyPeriod) +
-                                 createLegalStatusChange(policyPeriod) +
-                                 createPaymentPlanChange(policyPeriod) +
-                                 createAdditionalInterestedParties(policyPeriod, policyMapper)
-    return endorsementDescription
-  }
-
-  private function createInsuredNameChange(policyPeriod : PolicyPeriod) : String {
+  function createInsuredNameChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
     var insured = policyPeriod.PrimaryNamedInsured
     var insuredNameCurrent = insured.DisplayName
     var insuredNamePrevious = policyPeriod.BasedOn.PrimaryNamedInsured.DisplayName
-    var insuredNameChanged = !insuredNameCurrent.equals(insuredNamePrevious)  and (insured.AccountContactRole.AccountContact.Contact typeis Person)
-    var insuredName = insuredNameChanged ? "Insured_Name:" + insuredNameCurrent + "#" + insuredNamePrevious + "|"  : ""
-    return insuredName
+    var insuredNameChanged = !insuredNameCurrent.equals(insuredNamePrevious) and (insured.AccountContactRole.AccountContact.Contact typeis Person)
+    if (insuredNameChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Insured Name Change"
+      premiumInfo.ChangeTypeDesc = "InsuredNameChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Insured Name Changed"
+      premiumInfo.PreviousValueDesc = insuredNamePrevious
+      premiumInfo.NewValueDesc = insuredNameCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createInsuredMailingAddressChange(policyPeriod : PolicyPeriod) : String {
+  function createInsuredMailingAddressChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
     var insured = policyPeriod.PrimaryNamedInsured
     var insuredMailingAddressCurrent = insured.AccountContactRole.AccountContact.Contact.AllAddresses.firstWhere( \ elt -> elt.AddressType == typekey.AddressType.TC_BILLING)
     var insuredMailingAddressPrevious = policyPeriod?.BasedOn?.PrimaryNamedInsured?.AccountContactRole?.AccountContact?.Contact?.AllAddresses?.firstWhere( \ elt -> elt.AddressType == typekey.AddressType.TC_BILLING)
     var insuredMailingAddressChanged = !insuredMailingAddressCurrent.equals(insuredMailingAddressPrevious)
-    var insuredMailingAddress = insuredMailingAddressChanged ? "Insured_Mailing_Address:" + insuredMailingAddressCurrent + "#" + insuredMailingAddressPrevious + "|"  : ""
-    return insuredMailingAddress
+    if (insuredMailingAddressChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Insured Mailing Address Change"
+      premiumInfo.ChangeTypeDesc = "InsuredMailingAddressChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Insured Mailing Address Changed"
+      premiumInfo.PreviousValueDesc = insuredMailingAddressPrevious
+      premiumInfo.NewValueDesc = insuredMailingAddressCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createPolicyNumberChange(policyPeriod : PolicyPeriod) : String {
+  function createPolicyNumberChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
     var policyNumberCurrent = policyPeriod.PolicyNumber
     var policyNumberPrevious = policyPeriod.BasedOn.PolicyNumber
     var policyNumberChanged = !policyNumberCurrent?.equals(policyNumberPrevious)
-    var policyNumber = policyNumberChanged ? "Policy_Number:" + policyNumberCurrent + "#" + policyNumberPrevious + "|"  : ""
-    return policyNumber
+    if (policyNumberChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Policy Number Change"
+      premiumInfo.ChangeTypeDesc = "PolicyNumberChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Policy Number Changed"
+      premiumInfo.PreviousValueDesc = policyNumberPrevious
+      premiumInfo.NewValueDesc = policyNumberCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createCompanyChange(policyPeriod : PolicyPeriod) : String {
+  function createCompanyChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
     var insured = policyPeriod.PrimaryNamedInsured
     var insuredNameCurrent = insured.DisplayName
     var insuredNamePrevious = policyPeriod.BasedOn.PrimaryNamedInsured.DisplayName
-    var insuredNameChanged = !insuredNameCurrent.equals(insuredNamePrevious) and (insured.AccountContactRole.AccountContact.Contact typeis Company)
-    var insuredName = insuredNameChanged ? "Company:" + insuredNameCurrent + "#" + insuredNamePrevious + "|"  : ""
-    return insuredName
+    var insuredCompanyChanged = !insuredNameCurrent.equals(insuredNamePrevious) and (insured.AccountContactRole.AccountContact.Contact typeis Company)
+    if (insuredCompanyChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Insured Company Change"
+      premiumInfo.ChangeTypeDesc = "InsuredCompanyChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Insured Company Changed"
+      premiumInfo.PreviousValueDesc = insuredNamePrevious
+      premiumInfo.NewValueDesc = insuredNameCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createEffectivePeriodChange(policyPeriod : PolicyPeriod) : String {
+  function createEffectivePeriodChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
     var effectiveDateCurrent = policyPeriod.EffectiveDatedFields.EffectiveDate
     var effectiveDatePrevious = policyPeriod.BasedOn.EffectiveDatedFields.EffectiveDate
     var expirationDateCurrent = policyPeriod.EffectiveDatedFields.ExpirationDate
     var expirationDatePrevious = policyPeriod.BasedOn.EffectiveDatedFields.ExpirationDate
     var effectivePeriodChanged = !(effectiveDateCurrent.equals(effectiveDatePrevious) and expirationDateCurrent.equals(expirationDatePrevious))
-    var effectivePeriod = effectivePeriodChanged ? "Effective-Expiration Date:" + effectiveDateCurrent + "-" + expirationDateCurrent + "#" + effectiveDatePrevious + "-" + expirationDatePrevious + "|"  : ""
-    return effectivePeriod
+    if (effectivePeriodChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Effective Period Change"
+      premiumInfo.ChangeTypeDesc = "EffectivePeriodChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Effective Period Changed"
+      premiumInfo.PreviousValueDesc = effectiveDatePrevious + " - " + expirationDatePrevious
+      premiumInfo.NewValueDesc = effectiveDateCurrent + " - " + expirationDateCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createLegalStatusChange(policyPeriod : PolicyPeriod) : String {
+  function createLegalStatusChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
     var entityTypeCurrent = policyPeriod.Policy.Account.AccountOrgType
     var entityTypePrevious = policyPeriod.BasedOn.Policy.Account.AccountOrgType
     var entityTypeChanged = !entityTypeCurrent.equals(entityTypePrevious)
-    var entityType = entityTypeChanged ? "Legal_Status:" + entityTypeCurrent + "#" + entityTypePrevious + "|"  : ""
-    return entityType
+    if (entityTypeChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Legal Status Change"
+      premiumInfo.ChangeTypeDesc = "LegalStatusChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Legal Status Changed"
+      premiumInfo.PreviousValueDesc = entityTypePrevious
+      premiumInfo.NewValueDesc = entityTypeCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createPaymentPlanChange(policyPeriod : PolicyPeriod) : String {
-    var paymentPlan = ""
-    try {
-      var paymentOptionMapper = new HPXPaymentOptionMapper()
-      var paymentPlanCurrent = policyPeriod.SelectedPaymentPlan.PaymentPlanName != null ? policyPeriod.SelectedPaymentPlan.PaymentPlanName : null
-      var paymentPlanPrevious = policyPeriod.BasedOn.SelectedPaymentPlan.PaymentPlanName != null ? policyPeriod.BasedOn.SelectedPaymentPlan.PaymentPlanName : null
-      var paymentPlanChanged = !paymentPlanCurrent?.equals(paymentPlanPrevious)
-      paymentPlan = paymentPlanChanged ? "Payment_Plan:" + paymentPlanCurrent + "#" + paymentPlanPrevious + "|"  : ""
-    } catch (e : Exception) {}
-    return paymentPlan
+  function createPaymentPlanChangeInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType {
+    var paymentPlanCurrent = policyPeriod.SelectedPaymentPlan.PaymentPlanName != null ? policyPeriod.SelectedPaymentPlan.PaymentPlanName : null
+    var paymentPlanPrevious = policyPeriod.BasedOn.SelectedPaymentPlan.PaymentPlanName != null ? policyPeriod.BasedOn.SelectedPaymentPlan.PaymentPlanName : null
+    var paymentPlanChanged = !paymentPlanCurrent?.equals(paymentPlanPrevious)
+    if (paymentPlanChanged) {
+      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+      premiumInfo.ChangeDisplayNameDesc = "Payment Plan Change"
+      premiumInfo.ChangeTypeDesc = "PaymentPlanChange"
+      premiumInfo.SequenceNumber = 0
+      premiumInfo.PreviousPremiumAmt.Amt = 0.00
+      premiumInfo.PremiumAmt.Amt = 0.00
+      premiumInfo.ProRateFactor = 0
+      premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+      premiumInfo.ReturnPremiumAmt.Amt = 0.00
+      premiumInfo.RiskDesc = "Payment Plan Changed"
+      premiumInfo.PreviousValueDesc = paymentPlanPrevious
+      premiumInfo.NewValueDesc = paymentPlanCurrent
+      return premiumInfo
+    } else {
+      return null
+    }
   }
 
-  private function createAdditionalInterestedParties(policyPeriod : PolicyPeriod, policyMapper : HPXPolicyMapper) : String {
-    var additionalInterestChanges = ""
+  function createAdditionalInterestedPartiesAddedInfo(policyPeriod : PolicyPeriod, policyMapper : HPXPolicyMapper) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType> {
+    var premiumInfos = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType>()
     var structuresCurrent = policyMapper.getStructures(policyPeriod)
     var structuresPrevious = policyMapper.getStructures(policyPeriod.BasedOn)
     for (struct in structuresCurrent) {
@@ -165,16 +266,54 @@ class HPXJobMapper {
       var addedInterests = additionalInterestsCurrent?.where( \ elt -> !additionalInterestsPrevious?.contains(elt))
       var structMsg = struct.DisplayName
       for (add in addedInterests) {
-        structMsg = structMsg + "~" + "New" + "~" + add.PolicyAddlInterest.DisplayName
-        structMsg = structMsg + "~" + add.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress.DisplayName
+        var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+        premiumInfo.ChangeDisplayNameDesc = "Additional Interest Added for " + structMsg
+        premiumInfo.ChangeTypeDesc = "AdditionalInterestAdded"
+        premiumInfo.SequenceNumber = 0
+        premiumInfo.PreviousPremiumAmt.Amt = 0.00
+        premiumInfo.PremiumAmt.Amt = 0.00
+        premiumInfo.ProRateFactor = 0
+        premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+        premiumInfo.ReturnPremiumAmt.Amt = 0.00
+        premiumInfo.RiskDesc = "Additional interest Added - " + structMsg + " - " + add.PolicyAddlInterest.DisplayName
+        premiumInfo.PreviousValueDesc = ""
+        premiumInfo.NewValueDesc = structMsg + " - " +
+                                   add.PolicyAddlInterest.DisplayName + " - " +
+                                   add.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress.DisplayName
+        premiumInfos.add(premiumInfo)
       }
-      var removedInterests = additionalInterestsPrevious?.where( \ elt -> !additionalInterestsCurrent?.contains(elt))
-      for (add in removedInterests) {
-        structMsg = structMsg + "~" + "Old" + "~" + add.PolicyAddlInterest.DisplayName
-        structMsg = structMsg + "~" + add.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress.DisplayName
-      }
-      additionalInterestChanges = additionalInterestChanges + structMsg
     }
-    return additionalInterestChanges
+    return premiumInfos
+  }
+
+  function createAdditionalInterestedPartiesRemovedInfo(policyPeriod : PolicyPeriod, policyMapper : HPXPolicyMapper) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType> {
+    var premiumInfos = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType>()
+    var structuresCurrent = policyMapper.getStructures(policyPeriod)
+    var structuresPrevious = policyMapper.getStructures(policyPeriod.BasedOn)
+    for (struct in structuresCurrent) {
+      var additionalInterestsCurrent = policyMapper.getAdditionalInterests(struct)
+      var structureInPreviousPeriod = structuresPrevious?.firstWhere( \ elt -> elt == struct)
+      var additionalInterestsPrevious = policyMapper.getAdditionalInterests(structureInPreviousPeriod)
+      var removedInterests = additionalInterestsPrevious?.where( \ elt -> !additionalInterestsCurrent?.contains(elt))
+      var structMsg = struct.DisplayName
+      for (add in removedInterests) {
+        var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
+        premiumInfo.ChangeDisplayNameDesc = "Additional Interest Removed for " + structMsg
+        premiumInfo.ChangeTypeDesc = "AdditionalInterestRemoved"
+        premiumInfo.SequenceNumber = 0
+        premiumInfo.PreviousPremiumAmt.Amt = 0.00
+        premiumInfo.PremiumAmt.Amt = 0.00
+        premiumInfo.ProRateFactor = 0
+        premiumInfo.AdditionalPremiumAmt.Amt = 0.00
+        premiumInfo.ReturnPremiumAmt.Amt = 0.00
+        premiumInfo.RiskDesc = "Additional interest Removed - " + structMsg + " - " + add.PolicyAddlInterest.DisplayName
+        premiumInfo.PreviousValueDesc = ""
+        premiumInfo.NewValueDesc = structMsg + " - " +
+            add.PolicyAddlInterest.DisplayName + " - " +
+            add.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress.DisplayName
+        premiumInfos.add(premiumInfo)
+      }
+    }
+    return premiumInfos
   }
 }

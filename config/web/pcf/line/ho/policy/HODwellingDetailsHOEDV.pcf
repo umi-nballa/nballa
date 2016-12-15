@@ -27,14 +27,10 @@
       recalculateOnRefresh="true"
       type="boolean"/>
     <Variable
-      initialValue="initializeTunaCodes()"
-      name="tunaCodesAppResponseObj"
-      type="una.config.TunaCodesBO"/>
-    <Variable
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingInformation(policyPeriod)"
       name="tunaAppResponse"/>
     <Variable
-      initialValue="setTunaFieldsMatchLevel()"
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
       name="setTunaFieldsMatchLevel"/>
     <InputColumn
       labelWidth="250">
@@ -586,7 +582,7 @@
           id="FirelinematchlevelvalTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.FirelinematchlevelvalTunaReturned_Ext"
           value="dwelling.HOLocation.Firelinemthlvl_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireLineMatchLevel)"/>
         <Input
           available="!dwelling.HOLocation.OverrideFirelnmthlevelval_Ext"
           id="FirelinematchlevelvalMatchLevel_Ext"
@@ -777,12 +773,15 @@
           id="PCCodeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
           value="dwelling.HOLocation.DwellingProtectionClassCode"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
+          <PostOnChange
+            onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+        </RangeInput>
         <Input
           available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
           id="PCCodeMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
-          value="dwelling.HOLocation.BCEGMatchLevel_Ext"/>
+          value="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext"/>
         <BooleanRadioInput
           editable="true"
           id="OverRideTunaBCEG_Ext"
@@ -798,7 +797,10 @@
           label="displaykey.Web.Homeowners.HOLocation.PCCodeUserEntered_Ext"
           required="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
           value="dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext"/>
+          visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
+          <PostOnChange
+            onChange="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingPCCodeOverridden_Ext,tunaAppResponse.ProtectionClass )"/>
+        </Input>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -873,7 +875,10 @@
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
           value="dwelling.HOLocation.DistBOW_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
+          <PostOnChange
+            onChange="dwelling.HOLocation.DistBOWNamedValue_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DistBOW_Ext,tunaAppResponse.DistanceToMajorBOW)"/>
+        </RangeInput>
         <Input
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           id="DistBOWMatchLevel_Ext"
@@ -903,18 +908,18 @@
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           editable="true"
           id="DistBOWTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWNV_Ext"
           value="dwelling.HOLocation.DistBOWNamedValue_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.DistanceToMajorBOW)"/>
         <Input
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           id="DistBOWMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.DistBOWMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWNVMatchLevel_Ext"
           value="dwelling.HOLocation.DistBOWNVMatchLevel_Ext"/>
         <BooleanRadioInput
           editable="true"
           id="OverRideDistToCoast_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.DistBOWOverride_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWNVOverride_Ext"
           value="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext">
           <PostOnChange
             target="DistToMajorBOWNamedVal_Ext"/>
@@ -923,7 +928,7 @@
           available="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"
           editable="true"
           id="DistToCoastUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.DistBOWUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.DistBOWNVUserEntered_Ext"
           required="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"
           value="dwelling.HOLocation.DistBOWNVOverridden_Ext"
           visible="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"/>
@@ -986,7 +991,7 @@
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
           value="dwelling.ResidenceType"
-          valueRange="getResidenceType()"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getResidenceType(dwelling)"/>
         <RangeInput
           editable="true"
           id="DwellingUse"
@@ -1056,7 +1061,7 @@
           id="MultiPolicyDiscount_Ext"
           label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"
-          visible="allHomeowners_Ext()">
+          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod)">
           <PostOnChange/>
         </BooleanRadioInput>
         <RangeInput
@@ -1373,170 +1378,5 @@
           value="dwelling.CAFirelineInfo.FirelineInfoFileDate"/>
       </InputSet>
     </InputColumn>
-    <Code><![CDATA[uses gw.api.util.DisplayableException
-uses gw.api.util.LocationUtil
-uses java.util.ArrayList
-uses una.config.TunaCodesBO
-uses una.config.TunaCodesDTO
-
-function searchTaxLocation(code: String): TaxLocation {
-  try{
-    var taxLoc = getTaxLocation(code, polLocation)
-   // TaxLocationSearchCriteria
-    return taxLoc
-  }catch(ex: DisplayableException){
-    LocationUtil.addRequestScopedErrorMessage(ex.Message)
-    return null
-  }
-}
-
-function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLocation {
-  if (code == null) {
-    return null
-  } else {
-    var state = gw.api.util.JurisdictionMappingUtil.getJurisdiction(policyLocation)
-    var locs = new gw.lob.common.TaxLocationQueryBuilder()
-        .withCodeStarting(code)
-        .withState(state)
-        .withEffectiveOnDate(policyLocation.Branch.PeriodStart)
-        .build().select() as gw.api.database.IQueryBeanResult<TaxLocation>
-    if (locs.Count == 1) {
-      return locs.FirstResult
-    } else {
-      throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
-    }
-  }
-}
-
-function getResidenceType() : List<ResidenceType_HOE>{
-  var residenceType = new ArrayList<ResidenceType_HOE>()
-  var values = ResidenceType_HOE.getTypeKeys(false)
-  values.each( \ elt -> {
-    if(elt.Categories.contains(dwelling.HOPolicyType)) {
-      residenceType.add(elt)  
-    }
-  })
-  residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
-  return residenceType
-}
-
-function getTunaCodes(category : String) : List<String> {
-  var tuneCodes = new ArrayList<String>()
-  var tunaCodesByCategory = getTunaCodesByCategory(category)
-
-  tunaCodesByCategory?.each( \ tunaCode -> {
-    tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
-  })
-  return tuneCodes
-}
-
-function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
-  switch(category) {
-    case "bceg" :
-        return tunaCodesAppResponseObj.BCEGValues
-  }
-  return null
-} 
-
-function initializeTunaCodes() : TunaCodesBO {
-  var initialTunaCodesBO = new TunaCodesBO()
-
-  var bcegCode1 = new TunaCodesDTO()
-  bcegCode1.Code = "2"
-  bcegCode1.MatchPercentage = "5%"
-      
-  var bcegCode2 = new TunaCodesDTO()
-  bcegCode2.Code = "5"
-  bcegCode2.MatchPercentage = "10%"
-  
-  var bcegCodes = new ArrayList<TunaCodesDTO>()
-  bcegCodes.add(bcegCode1)
-  bcegCodes.add(bcegCode2)
-  
-  initialTunaCodesBO.BCEGValues = bcegCodes
-  return initialTunaCodesBO
-}
-
-function allHomeowners_Ext():boolean{
-  if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
-    return true    
-  }
-  if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
-    return true
-  }  
-  return false
-}
-
-function totalBCEG() : boolean {
-  print("Total BCEG Returned : "+tunaAppResponse.BCEGGrade.Count)
-  return true
-}
-
-function setTunaFieldsMatchLevel() : boolean {
-  if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-    //TODO Change WindPool to FloodZone mapping when INT ready  
-  if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.FloodZoneMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.FloodZoneMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-    //TODO Change Datums to Dit To Major BOW mapping when INT ready
-  if(tunaAppResponse.Datums.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.StoryNumber.Count == 1) {dwelling.StoriesNumberMatchLevel_Ext = TC_EXACT} else {dwelling.StoriesNumberMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.RoofType.Count == 1) {dwelling.RoofTypeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.RoofCover.Count == 1) {dwelling.RoofShapeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofShapeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.ConstructionType.Count == 1) {dwelling.ConstructionTypeMatchLevel_Ext = TC_EXACT} else {dwelling.ConstructionTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.TerritoryCodes!=null) {dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-  if(tunaAppResponse.YearBuilt!=null) {dwelling.YearBuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.YearbuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-if(tunaAppResponse.Latitude!=null) {dwelling.HOLocation.LatitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.LatitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED} 
-if(tunaAppResponse.DistanceToMajorBOW.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED} 
-
-if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.ISO360Value.Count == 1) {dwelling.HOLocation.ISO360MatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.ISO360MatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-
-
-if(tunaAppResponse.BaseFloodElevation.Count == 1) {dwelling.BaseFloodElValMatchLevel_Ext = TC_EXACT} else {dwelling.BaseFloodElValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.PropertyFlood.Count == 1) {dwelling.PropFloodValMatchLevel_Ext = TC_EXACT} else {dwelling.PropFloodValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.EarthQuakeTerritory.Count == 1) {dwelling.EarthquakeTerMatchLevel_Ext = TC_EXACT} else {dwelling.EarthquakeTerMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.ACV.Count == 1) {dwelling.HOLocation.ACVValueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.ACVValueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.FireLineSHIA.Count == 1) {dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.FireLineFuel.Count == 1) {dwelling.HOLocation.FirelineFuelMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineFuelMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.FireLinePropertyHazard.Count == 1) {dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.FireLinePropertyHazard.Count == 1) {dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.FireLineAccess.Count == 1) {dwelling.HOLocation.FireaccessMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FireaccessMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.FireLineSlope.Count == 1) {dwelling.HOLocation.FireslopeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FireslopeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.Longitude!=null) {dwelling.HOLocation.LongitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.LongitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-  if(tunaAppResponse.DistanceToMajorBOW.Count == 1) {dwelling.HOLocation.DistBOWNVMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWNVMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-  return true
-}]]></Code>
   </DetailViewPanel>
 </PCF>

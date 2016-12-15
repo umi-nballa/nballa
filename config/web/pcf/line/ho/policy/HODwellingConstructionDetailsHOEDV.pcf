@@ -12,11 +12,11 @@
       name="openForEdit"
       type="Boolean"/>
     <Variable
-      initialValue="setTunaFieldsMatchLevel()"
-      name="setTunaFieldsMatchLevel"/>
-    <Variable
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getDwellingConstructionInformation(dwelling.PolicyPeriod)"
       name="tunaAppResponse"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
+      name="setTunaFieldsMatchLevel"/>
     <InputColumn
       labelWidth="350">
       <InputSet
@@ -85,7 +85,7 @@
           id="ConstructionTypeUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeUserEntered_Ext"
           required="dwelling.OverrideConstructionType_Ext"
-          value="dwelling.ConstTypeOverridden_Ext"
+          value="dwelling.ConstructionType"
           visible="dwelling.OverrideConstructionType_Ext"/>
       </InputSet>
       <!-- <RangeInput
@@ -126,7 +126,7 @@
           id="ExteriorWFvalUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalUserEntered_Ext"
           required="dwelling.OverrideExteriorWFval_Ext"
-          value="dwelling.ExteriorWFvalOverridden_Ext"
+          value="dwelling.ExteriorWFvalueOverridden_Ext"
           visible="dwelling.OverrideExteriorWFval_Ext"/>
       </InputSet>
       <InputDivider/>
@@ -782,22 +782,5 @@
         value="dwelling.ElectricalSystemUpgradeDate"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWiringReplacedVisible(dwelling) and (dwelling.ElectricalSystemUpgrade != null and dwelling.ElectricalSystemUpgrade)"/>
     </InputColumn>
-    <Code><![CDATA[function setTunaFieldsMatchLevel() : boolean {
-if(tunaAppResponse.RoofCover.Count == 1) {dwelling.RoofShapeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofShapeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.RoofType.Count == 1) {dwelling.RoofTypeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.StoryNumber.Count == 1) {dwelling.StoriesNumberMatchLevel_Ext = TC_EXACT} else {dwelling.StoriesNumberMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.WallFinish.Count == 1) {dwelling.ExteriorWFvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.ExteriorWFvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.ConstructionType.Count == 1) {dwelling.ConstructionTypeMatchLevel_Ext = TC_EXACT} else {dwelling.ConstructionTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-if(tunaAppResponse.YearBuilt!=null) {dwelling.YearBuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.YearbuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-
-  if(tunaAppResponse.SquareFootage.Count == 1) {dwelling.TotalSqFtValMatchLevel_Ext = TC_EXACT} else {dwelling.TotalSqFtValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
-    
-  return true
-}]]></Code>
   </DetailViewPanel>
 </PCF>

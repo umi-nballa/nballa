@@ -4,6 +4,11 @@ uses java.lang.Integer
 uses java.util.ArrayList
 uses java.util.Calendar
 uses una.model.PropertyDataModel
+uses gw.api.util.DisplayableException
+uses gw.api.util.LocationUtil
+uses java.util.ArrayList
+uses una.config.TunaCodesBO
+uses una.config.TunaCodesDTO
 
 /**
  * Created with IntelliJ IDEA.
@@ -702,4 +707,186 @@ class HODwellingUtil_HOE {
     return tunaCodeAndPercent
   }
 
+  static function getDependentCode(value:String,tunaValues : List<PropertyDataModel> ):String
+  {
+    return tunaValues.where( \ elt -> elt.Value.equalsIgnoreCase(value))?.first()?.NamedValue
+
+
+  }
+
+
+  static function searchTaxLocation(code: String, polLocation:PolicyLocation): TaxLocation {
+    try{
+      var taxLoc = getTaxLocation(code, polLocation)
+      // TaxLocationSearchCriteria
+      return taxLoc
+    }catch(ex: DisplayableException){
+      LocationUtil.addRequestScopedErrorMessage(ex.Message)
+      return null
+    }
+  }
+
+  static function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLocation {
+    if (code == null) {
+      return null
+    } else {
+      var state = gw.api.util.JurisdictionMappingUtil.getJurisdiction(policyLocation)
+      var locs = new gw.lob.common.TaxLocationQueryBuilder()
+          .withCodeStarting(code)
+          .withState(state)
+          .withEffectiveOnDate(policyLocation.Branch.PeriodStart)
+          .build().select() as gw.api.database.IQueryBeanResult<TaxLocation>
+      if (locs.Count == 1) {
+        return locs.FirstResult
+      } else {
+        throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
+      }
+    }
+  }
+
+  static function getResidenceType(dwelling:Dwelling_HOE) : List<ResidenceType_HOE>{
+    var residenceType = new ArrayList<ResidenceType_HOE>()
+    var values = ResidenceType_HOE.getTypeKeys(false)
+    values.each( \ elt -> {
+      if(elt.Categories.contains(dwelling.HOPolicyType)) {
+        residenceType.add(elt)
+      }
+    })
+    residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
+    return residenceType
+  }
+
+ /* function getTunaCodes(category : String) : List<String> {
+    var tuneCodes = new ArrayList<String>()
+    var tunaCodesByCategory = getTunaCodesByCategory(category)
+
+    tunaCodesByCategory?.each( \ tunaCode -> {
+      tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
+    })
+    return tuneCodes
+  } */
+
+ /* function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
+    switch(category) {
+      case "bceg" :
+          return tunaCodesAppResponseObj.BCEGValues
+    }
+    return null
+  }*/
+
+ /* static function initializeTunaCodes() : TunaCodesBO {
+    var initialTunaCodesBO = new TunaCodesBO()
+
+    var bcegCode1 = new TunaCodesDTO()
+    bcegCode1.Code = "2"
+    bcegCode1.MatchPercentage = "5%"
+
+    var bcegCode2 = new TunaCodesDTO()
+    bcegCode2.Code = "5"
+    bcegCode2.MatchPercentage = "10%"
+
+    var bcegCodes = new ArrayList<TunaCodesDTO>()
+    bcegCodes.add(bcegCode1)
+    bcegCodes.add(bcegCode2)
+
+    initialTunaCodesBO.BCEGValues = bcegCodes
+    return initialTunaCodesBO
+  }   */
+
+  static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
+    if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
+      return true
+    }
+    if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
+      return true
+    }
+    return false
+  }
+
+  static function totalBCEG(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse) : boolean {
+    print("Total BCEG Returned : "+tunaAppResponse.BCEGGrade.Count)
+    return true
+  }
+
+  static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, dwelling:Dwelling_HOE) : boolean {
+    if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    //TODO Change WindPool to FloodZone mapping when INT ready
+    if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.FloodZoneMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.FloodZoneMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    //TODO Change Datums to Dit To Major BOW mapping when INT ready
+    if(tunaAppResponse.Datums.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.StoryNumber.Count == 1) {dwelling.StoriesNumberMatchLevel_Ext = TC_EXACT} else {dwelling.StoriesNumberMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.RoofType.Count == 1) {dwelling.RoofTypeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.RoofCover.Count == 1) {dwelling.RoofShapeMatchLevel_Ext = TC_EXACT} else {dwelling.RoofShapeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.ConstructionType.Count == 1) {dwelling.ConstructionTypeMatchLevel_Ext = TC_EXACT} else {dwelling.ConstructionTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.TerritoryCodes!=null) {dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.YearBuilt!=null) {dwelling.YearBuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.YearbuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.Latitude!=null) {dwelling.HOLocation.LatitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.LatitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+    if(tunaAppResponse.DistanceToMajorBOW.Count == 1) {dwelling.HOLocation.DistBOWMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistBOWMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.DistanceToCoast.Count == 1) {dwelling.HOLocation.DistToCoastMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DistToCoastMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindPoolMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.WindPoolMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.BCEGGrade.Count == 1) {dwelling.HOLocation.BCEGMatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.BCEGMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.ISO360Value.Count == 1) {dwelling.HOLocation.ISO360MatchLevel_Ext = TC_EXACT} else {dwelling.HOLocation.ISO360MatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+
+
+    if(tunaAppResponse.BaseFloodElevation.Count == 1) {dwelling.BaseFloodElValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.BaseFloodElValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.PropertyFlood.Count == 1) {dwelling.PropFloodValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.PropFloodValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.EarthQuakeTerritory.Count == 1) {dwelling.EarthquakeTerMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.EarthquakeTerMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.WindPool.Count == 1) {dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.ProtectionClass.Count == 1) {dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.ACV.Count == 1) {dwelling.HOLocation.ACVValueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.ACVValueMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.FireLineSHIA.Count == 1) {dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.FireLineFuel.Count == 1) {dwelling.HOLocation.FirelineFuelMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineFuelMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.FireLinePropertyHazard.Count == 1) {dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.FireLinePropertyHazard.Count == 1) {dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.FireLineAccess.Count == 1) {dwelling.HOLocation.FireaccessMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FireaccessMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.FireLineSlope.Count == 1) {dwelling.HOLocation.FireslopeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.FireslopeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.Longitude!=null) {dwelling.HOLocation.LongitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.LongitudeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.DistanceToMajorBOW.Count == 1) {dwelling.HOLocation.DistBOWNVMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.HOLocation.DistBOWNVMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.RoofCover.Count == 1) {dwelling.RoofShapeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.RoofShapeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.RoofType.Count == 1) {dwelling.RoofTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.RoofTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.StoryNumber.Count == 1) {dwelling.StoriesNumberMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.StoriesNumberMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.WallFinish.Count == 1) {dwelling.ExteriorWFvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.ExteriorWFvalMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.ConstructionType.Count == 1) {dwelling.ConstructionTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.ConstructionTypeMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.YearBuilt!=null) {dwelling.YearBuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.YearbuiltMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+    if(tunaAppResponse.SquareFootage.Count == 1) {dwelling.TotalSqFtValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_EXACT} else {dwelling.TotalSqFtValMatchLevel_Ext = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED}
+
+
+    return true
+  }
 }// End of class

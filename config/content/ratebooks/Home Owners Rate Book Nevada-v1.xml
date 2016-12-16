@@ -19,16 +19,12 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-20 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2016-12-06 10:16:46.408</LastStatusChangeDate>
-    <LastTableRowEdit>2016-12-02 16:42:11.209</LastTableRowEdit>
+    <LastStatusChangeDate>2016-12-13 18:58:54.039</LastStatusChangeDate>
+    <LastTableRowEdit>2016-12-12 16:18:48.922</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines>
       <RateBookCalcRoutine public-id="pc:11201">
         <CalcRoutineDefinition public-id="pc:8502"/>
-        <RateBook public-id="pc:405"/>
-      </RateBookCalcRoutine>
-      <RateBookCalcRoutine public-id="pc:11202">
-        <CalcRoutineDefinition public-id="pc:8504"/>
         <RateBook public-id="pc:405"/>
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pc:11403">
@@ -97,6 +93,10 @@
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pc:15457">
         <CalcRoutineDefinition public-id="pc:11185"/>
+        <RateBook public-id="pc:405"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pc:16599">
+        <CalcRoutineDefinition public-id="pc:11702"/>
         <RateBook public-id="pc:405"/>
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pc:2805">
@@ -492,7 +492,7 @@
       <RateTable public-id="pc:622">
         <BasedOnTable/>
         <Definition public-id="pc:522"/>
-        <LastTableRowEdit>2016-08-10 14:09:39.596</LastTableRowEdit>
+        <LastTableRowEdit>2016-12-12 16:18:21.288</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:405"/>
@@ -503,7 +503,7 @@
       <RateTable public-id="pc:623">
         <BasedOnTable/>
         <Definition public-id="pc:523"/>
-        <LastTableRowEdit>2016-08-10 14:11:15.056</LastTableRowEdit>
+        <LastTableRowEdit>2016-12-12 16:18:48.922</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:405"/>
@@ -7345,11 +7345,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:201">
+  <CalcRoutineParameter public-id="pc:203">
     <CalcRoutineParameterSet public-id="pc:201"/>
-    <Code>state</Code>
+    <Code>ratinginfo</Code>
     <CoveragePattern/>
-    <ParamType>typekey.Jurisdiction</ParamType>
+    <ParamType>una.rating.ho.tx.ratinginfos.HOLineRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -7363,11 +7363,11 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:203">
+  <CalcRoutineParameter public-id="pc:201">
     <CalcRoutineParameterSet public-id="pc:201"/>
-    <Code>ratinginfo</Code>
+    <Code>state</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.ho.tx.ratinginfos.HOLineRatingInfo</ParamType>
+    <ParamType>typekey.Jurisdiction</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -7637,29 +7637,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:903">
-    <CalcRoutineParameterSet public-id="pc:601"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:904">
-    <CalcRoutineParameterSet public-id="pc:601"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>true</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:901">
     <CalcRoutineParameterSet public-id="pc:601"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:903">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -7672,6 +7663,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:904">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>true</Writable>
   </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pc:51032">
     <RateTable public-id="pc:610"/>
@@ -25798,15 +25798,6 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3601">
-    <CalcRoutineParameterSet public-id="pc:3301"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3603">
     <CalcRoutineParameterSet public-id="pc:3301"/>
     <Code>ratinginfo</Code>
@@ -25821,6 +25812,15 @@
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>typekey.Jurisdiction</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3601">
+    <CalcRoutineParameterSet public-id="pc:3301"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -27542,7 +27542,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>01</str1>
+    <str1>1</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27571,7 +27571,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>02</str1>
+    <str1>2</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27600,7 +27600,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>03</str1>
+    <str1>3</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27629,7 +27629,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>04</str1>
+    <str1>4</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27658,7 +27658,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>05</str1>
+    <str1>5</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27687,7 +27687,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>06</str1>
+    <str1>6</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27716,7 +27716,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>07</str1>
+    <str1>7</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27745,7 +27745,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>08</str1>
+    <str1>8</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27774,7 +27774,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>09</str1>
+    <str1>9</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27965,7 +27965,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>01</str1>
+    <str1>1</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -27994,7 +27994,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>02</str1>
+    <str1>2</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28023,7 +28023,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>03</str1>
+    <str1>3</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28052,7 +28052,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>04</str1>
+    <str1>4</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28081,7 +28081,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>05</str1>
+    <str1>5</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28110,7 +28110,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>06</str1>
+    <str1>6</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28139,7 +28139,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>07</str1>
+    <str1>7</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28168,7 +28168,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>08</str1>
+    <str1>8</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -28197,7 +28197,7 @@
     <int6/>
     <int7/>
     <int8/>
-    <str1>09</str1>
+    <str1>9</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -30675,15 +30675,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2002">
-    <CalcRoutineParameterSet public-id="pc:1701"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2003">
     <CalcRoutineParameterSet public-id="pc:1701"/>
     <Code>discountOrSurchargeRatingInfo_Ext</Code>
@@ -30698,6 +30689,15 @@
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>typekey.Jurisdiction</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2002">
+    <CalcRoutineParameterSet public-id="pc:1701"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -31356,20 +31356,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:1202">
-    <CalcRoutineParameterSet public-id="pc:901"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1201">
     <CalcRoutineParameterSet public-id="pc:901"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1202">
+    <CalcRoutineParameterSet public-id="pc:901"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -31421,7 +31421,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>92</SortOrder>
+        <SortOrder>99</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -31457,7 +31457,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>93</SortOrder>
+        <SortOrder>100</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -31596,7 +31596,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>46</SortOrder>
+        <SortOrder>47</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>baseClassPremium</StoreLocation>
         <StoreType/>
@@ -31678,7 +31678,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>47</SortOrder>
+        <SortOrder>48</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -31735,7 +31735,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>48</SortOrder>
+        <SortOrder>49</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>protectionConstructionFactor</StoreLocation>
         <StoreType/>
@@ -31817,7 +31817,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>49</SortOrder>
+        <SortOrder>50</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -31874,7 +31874,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>50</SortOrder>
+        <SortOrder>51</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>protectionConstructionFactor</StoreLocation>
         <StoreType/>
@@ -31910,7 +31910,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>51</SortOrder>
+        <SortOrder>52</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -31992,7 +31992,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>26</SortOrder>
+        <SortOrder>25</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -32366,42 +32366,6 @@
         <SortOrder>32</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
-        <StoreType/>
-      </CalcStepDefinition>
-      <CalcStepDefinition public-id="pc:17423">
-        <CalcRoutineDefinition public-id="pc:1701"/>
-        <InScopeParam/>
-        <InScopeValue/>
-        <Notes/>
-        <Operands>
-          <CalcStepDefinitionOperand public-id="pc:19436">
-            <ArgumentSourceSetCode/>
-            <ArgumentSources/>
-            <CalcStep public-id="pc:17423"/>
-            <ConstantValue>150000</ConstantValue>
-            <CovTermCode/>
-            <FunctionName/>
-            <InScopeParam/>
-            <InScopeValue/>
-            <InScopeValueIsModifier>false</InScopeValueIsModifier>
-            <InScopeValueType>java.lang.Integer</InScopeValueType>
-            <LeftParenthesisGroup/>
-            <LogicalNot/>
-            <OperandOrder>0</OperandOrder>
-            <OperandType>constant</OperandType>
-            <OperatorType>store</OperatorType>
-            <ReturnFactorColumns/>
-            <RightParenthesisGroup/>
-            <RoundingScaleType/>
-            <TableCode/>
-            <VariableFieldName/>
-            <VariableName/>
-          </CalcStepDefinitionOperand>
-        </Operands>
-        <SectionComment/>
-        <SortOrder>25</SortOrder>
-        <StepType>assignment</StepType>
-        <StoreLocation>nvCovCLimit</StoreLocation>
         <StoreType/>
       </CalcStepDefinition>
       <CalcStepDefinition public-id="pc:17424">
@@ -32946,7 +32910,7 @@
             <CovTermCode/>
             <FunctionName/>
             <InScopeParam>dwellingRatingInfo_Ext</InScopeParam>
-            <InScopeValue>DwellingLimit</InScopeValue>
+            <InScopeValue>PersonalPropertyLimit</InScopeValue>
             <InScopeValueIsModifier>false</InScopeValueIsModifier>
             <InScopeValueType>int</InScopeValueType>
             <LeftParenthesisGroup/>
@@ -32982,7 +32946,7 @@
             <RoundingScaleType/>
             <TableCode/>
             <VariableFieldName/>
-            <VariableName>nvCovCLimit</VariableName>
+            <VariableName>nvCovCMaxLimitForRating</VariableName>
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
@@ -33106,7 +33070,7 @@
                 <Parameter>CovCAmount</Parameter>
                 <ParameterType/>
                 <VariableFieldName/>
-                <VariableName>nvCovCLimit</VariableName>
+                <VariableName>nvCovCMaxLimitForRating</VariableName>
               </CalcStepDefinitionArgument>
             </ArgumentSources>
             <CalcStep public-id="pc:17438"/>
@@ -33204,7 +33168,7 @@
             <RoundingScaleType/>
             <TableCode/>
             <VariableFieldName/>
-            <VariableName>nvCovCLimit</VariableName>
+            <VariableName>nvCovCMaxLimitForRating</VariableName>
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
@@ -33338,7 +33302,7 @@
             <InScopeValue/>
             <InScopeValueIsModifier>false</InScopeValueIsModifier>
             <InScopeValueType>java.math.BigDecimal</InScopeValueType>
-            <LeftParenthesisGroup/>
+            <LeftParenthesisGroup>(</LeftParenthesisGroup>
             <LogicalNot/>
             <OperandOrder>0</OperandOrder>
             <OperandType>localvar</OperandType>
@@ -33401,7 +33365,7 @@
                 <Operand public-id="pc:19460"/>
               </CalcStepDefinitionRateFactor>
             </ReturnFactorColumns>
-            <RightParenthesisGroup/>
+            <RightParenthesisGroup>)</RightParenthesisGroup>
             <RoundingScaleType/>
             <TableCode>ho4_key_factor_greater_limit_nv_table</TableCode>
             <VariableFieldName/>
@@ -33445,7 +33409,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>63</SortOrder>
+        <SortOrder>64</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -33553,7 +33517,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>64</SortOrder>
+        <SortOrder>65</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -33590,6 +33554,150 @@
         </Operands>
         <SectionComment/>
         <SortOrder>96</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24955">
+        <CalcRoutineDefinition public-id="pc:1701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28169">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24955"/>
+            <ConstantValue>300000</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.Integer</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>5</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>nvCovALimit</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24956">
+        <CalcRoutineDefinition public-id="pc:1701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28170">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24956"/>
+            <ConstantValue>150000</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.Integer</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>26</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>nvCovCMaxLimitForRating</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24957">
+        <CalcRoutineDefinition public-id="pc:1701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28171">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24957"/>
+            <ConstantValue>150000</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.Integer</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>46</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>nvCovCLimit</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24984">
+        <CalcRoutineDefinition public-id="pc:1701"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28204">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24984"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>rounding</OperandType>
+            <OperatorType>halfup</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType>0</RoundingScaleType>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>93</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -33779,7 +33887,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>5</SortOrder>
+        <SortOrder>4</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34155,42 +34263,6 @@
         <StoreLocation/>
         <StoreType/>
       </CalcStepDefinition>
-      <CalcStepDefinition public-id="pc:3105">
-        <CalcRoutineDefinition public-id="pc:1701"/>
-        <InScopeParam/>
-        <InScopeValue/>
-        <Notes/>
-        <Operands>
-          <CalcStepDefinitionOperand public-id="pc:3309">
-            <ArgumentSourceSetCode/>
-            <ArgumentSources/>
-            <CalcStep public-id="pc:3105"/>
-            <ConstantValue>300000</ConstantValue>
-            <CovTermCode/>
-            <FunctionName/>
-            <InScopeParam/>
-            <InScopeValue/>
-            <InScopeValueIsModifier>false</InScopeValueIsModifier>
-            <InScopeValueType>java.lang.Integer</InScopeValueType>
-            <LeftParenthesisGroup/>
-            <LogicalNot/>
-            <OperandOrder>0</OperandOrder>
-            <OperandType>constant</OperandType>
-            <OperatorType>store</OperatorType>
-            <ReturnFactorColumns/>
-            <RightParenthesisGroup/>
-            <RoundingScaleType/>
-            <TableCode/>
-            <VariableFieldName/>
-            <VariableName/>
-          </CalcStepDefinitionOperand>
-        </Operands>
-        <SectionComment/>
-        <SortOrder>4</SortOrder>
-        <StepType>assignment</StepType>
-        <StoreLocation>nvCovALimit</StoreLocation>
-        <StoreType/>
-      </CalcStepDefinition>
       <CalcStepDefinition public-id="pc:3133">
         <CalcRoutineDefinition public-id="pc:1701"/>
         <InScopeParam/>
@@ -34268,7 +34340,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>52</SortOrder>
+        <SortOrder>53</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34325,7 +34397,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>53</SortOrder>
+        <SortOrder>54</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>keyFactor</StoreLocation>
         <StoreType/>
@@ -34361,7 +34433,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>54</SortOrder>
+        <SortOrder>55</SortOrder>
         <StepType>else</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34418,7 +34490,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>55</SortOrder>
+        <SortOrder>56</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>keyFactor</StoreLocation>
         <StoreType/>
@@ -34454,7 +34526,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>56</SortOrder>
+        <SortOrder>57</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>exposure</StoreLocation>
         <StoreType/>
@@ -34490,7 +34562,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>57</SortOrder>
+        <SortOrder>58</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34526,7 +34598,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>58</SortOrder>
+        <SortOrder>59</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34562,7 +34634,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>59</SortOrder>
+        <SortOrder>60</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34598,7 +34670,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>60</SortOrder>
+        <SortOrder>61</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>keyFactor</StoreLocation>
         <StoreType/>
@@ -34634,7 +34706,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>61</SortOrder>
+        <SortOrder>62</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34691,7 +34763,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>62</SortOrder>
+        <SortOrder>63</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34763,7 +34835,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>90</SortOrder>
+        <SortOrder>91</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -34845,7 +34917,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>65</SortOrder>
+        <SortOrder>66</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34927,7 +34999,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>66</SortOrder>
+        <SortOrder>67</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -34984,7 +35056,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>67</SortOrder>
+        <SortOrder>68</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -35066,7 +35138,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>68</SortOrder>
+        <SortOrder>69</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35123,7 +35195,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>69</SortOrder>
+        <SortOrder>70</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -35205,7 +35277,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>70</SortOrder>
+        <SortOrder>71</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35262,7 +35334,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>71</SortOrder>
+        <SortOrder>72</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -35344,7 +35416,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>72</SortOrder>
+        <SortOrder>73</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35401,7 +35473,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>73</SortOrder>
+        <SortOrder>74</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -35483,7 +35555,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>74</SortOrder>
+        <SortOrder>75</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35540,7 +35612,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>75</SortOrder>
+        <SortOrder>76</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -35576,7 +35648,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>76</SortOrder>
+        <SortOrder>77</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35612,7 +35684,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>77</SortOrder>
+        <SortOrder>78</SortOrder>
         <StepType>else</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35694,7 +35766,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>78</SortOrder>
+        <SortOrder>79</SortOrder>
         <StepType>if</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35766,7 +35838,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>79</SortOrder>
+        <SortOrder>80</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -35848,7 +35920,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>80</SortOrder>
+        <SortOrder>81</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -35920,7 +35992,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>81</SortOrder>
+        <SortOrder>82</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -36002,7 +36074,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>82</SortOrder>
+        <SortOrder>83</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -36074,7 +36146,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>83</SortOrder>
+        <SortOrder>84</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -36156,7 +36228,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>84</SortOrder>
+        <SortOrder>85</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -36228,7 +36300,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>85</SortOrder>
+        <SortOrder>86</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -36310,7 +36382,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>86</SortOrder>
+        <SortOrder>87</SortOrder>
         <StepType>elseif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -36382,7 +36454,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>87</SortOrder>
+        <SortOrder>88</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation>customerProfileMatrixFactor</StoreLocation>
         <StoreType/>
@@ -36418,7 +36490,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>88</SortOrder>
+        <SortOrder>89</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -36454,7 +36526,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>89</SortOrder>
+        <SortOrder>90</SortOrder>
         <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -36490,7 +36562,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>91</SortOrder>
+        <SortOrder>92</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -36670,7 +36742,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>99</SortOrder>
+        <SortOrder>101</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -36706,7 +36778,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>100</SortOrder>
+        <SortOrder>102</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -36759,15 +36831,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:2603">
-    <CalcRoutineParameterSet public-id="pc:2301"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2601">
     <CalcRoutineParameterSet public-id="pc:2301"/>
     <Code>policyline</Code>
@@ -36794,6 +36857,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>true</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2603">
+    <CalcRoutineParameterSet public-id="pc:2301"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.common.HOCommonBasePremiumRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pc:11103">
     <Code>UNAHOBuildingAdditionsAndAlterationsIncreasedLimitsRateRoutine</Code>
@@ -36914,7 +36986,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>12</SortOrder>
+        <SortOrder>13</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -36950,7 +37022,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>11</SortOrder>
+        <SortOrder>12</SortOrder>
         <StepType>continue</StepType>
         <StoreLocation/>
         <StoreType/>
@@ -37022,7 +37094,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>10</SortOrder>
+        <SortOrder>11</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -37058,7 +37130,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>9</SortOrder>
+        <SortOrder>10</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -37243,6 +37315,42 @@
         <StoreLocation/>
         <StoreType/>
       </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24985">
+        <CalcRoutineDefinition public-id="pc:11103"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28205">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24985"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>rounding</OperandType>
+            <OperatorType>halfup</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType>0</RoundingScaleType>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>9</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
@@ -37309,20 +37417,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3702">
-    <CalcRoutineParameterSet public-id="pc:3401"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3701">
     <CalcRoutineParameterSet public-id="pc:3401"/>
     <Code>dwellingRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3702">
+    <CalcRoutineParameterSet public-id="pc:3401"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -38095,15 +38203,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1303">
-    <CalcRoutineParameterSet public-id="pc:1001"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1302">
     <CalcRoutineParameterSet public-id="pc:1001"/>
     <Code>state</Code>
@@ -38118,6 +38217,15 @@
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1303">
+    <CalcRoutineParameterSet public-id="pc:1001"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -42612,20 +42720,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1902">
-    <CalcRoutineParameterSet public-id="pc:1601"/>
-    <Code>outboardMotorsAndWatercraftRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1901">
     <CalcRoutineParameterSet public-id="pc:1601"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1902">
+    <CalcRoutineParameterSet public-id="pc:1601"/>
+    <Code>outboardMotorsAndWatercraftRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -44092,38 +44200,44 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineDefinition public-id="pc:8504">
+  <CalcRoutineDefinition public-id="pc:11702">
     <Code>UNAHOReplacementCostPersonalPropertyRateRoutine</Code>
     <Description/>
     <Description_L10N_ARRAY/>
     <Jurisdiction>NV</Jurisdiction>
     <Name>HO Replacement Cost Personal Property Rate Routine</Name>
-    <Name_L10N_ARRAY/>
+    <Name_L10N_ARRAY>
+      <CalcRoutineDefinition_Name_L10N public-id="pc:2903">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pc:11702"/>
+        <Value>HO Replacement Cost Personal Property Rate Routine</Value>
+      </CalcRoutineDefinition_Name_L10N>
+    </Name_L10N_ARRAY>
     <ParameterSet public-id="pc:1401"/>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
     <Steps>
-      <CalcStepDefinition public-id="pc:13521">
-        <CalcRoutineDefinition public-id="pc:8504"/>
+      <CalcStepDefinition public-id="pc:24974">
+        <CalcRoutineDefinition public-id="pc:11702"/>
         <InScopeParam/>
         <InScopeValue/>
         <Notes/>
         <Operands>
-          <CalcStepDefinitionOperand public-id="pc:14821">
+          <CalcStepDefinitionOperand public-id="pc:28192">
             <ArgumentSourceSetCode/>
             <ArgumentSources/>
-            <CalcStep public-id="pc:13521"/>
+            <CalcStep public-id="pc:24974"/>
             <ConstantValue/>
             <CovTermCode/>
             <FunctionName/>
-            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
-            <InScopeValue>AdjustedBaseClassPremium</InScopeValue>
+            <InScopeParam/>
+            <InScopeValue/>
             <InScopeValueIsModifier>false</InScopeValueIsModifier>
-            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <InScopeValueType/>
             <LeftParenthesisGroup/>
             <LogicalNot/>
             <OperandOrder>0</OperandOrder>
-            <OperandType>inscope</OperandType>
-            <OperatorType>multiplication</OperatorType>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
             <ReturnFactorColumns/>
             <RightParenthesisGroup/>
             <RoundingScaleType/>
@@ -44133,78 +44247,21 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>3</SortOrder>
-        <StepType>continue</StepType>
+        <SortOrder>6</SortOrder>
+        <StepType>endif</StepType>
         <StoreLocation/>
         <StoreType/>
       </CalcStepDefinition>
-      <CalcStepDefinition public-id="pc:13522">
-        <CalcRoutineDefinition public-id="pc:8504"/>
-        <InScopeParam>costdata</InScopeParam>
-        <InScopeValue>BaseRate</InScopeValue>
-        <Notes/>
-        <Operands>
-          <CalcStepDefinitionOperand public-id="pc:14822">
-            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
-            <ArgumentSources>
-              <CalcStepDefinitionArgument public-id="pc:10204">
-                <ConstantValue/>
-                <CovTermCode/>
-                <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
-                <InScopeValue>PolicyType</InScopeValue>
-                <InScopeValueIsModifier>false</InScopeValueIsModifier>
-                <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
-                <Operand public-id="pc:14822"/>
-                <OperandType>inscope</OperandType>
-                <OverrideSource>true</OverrideSource>
-                <Parameter>PolicyForm</Parameter>
-                <ParameterType/>
-                <VariableFieldName/>
-                <VariableName/>
-              </CalcStepDefinitionArgument>
-            </ArgumentSources>
-            <CalcStep public-id="pc:13522"/>
-            <ConstantValue/>
-            <CovTermCode/>
-            <FunctionName/>
-            <InScopeParam/>
-            <InScopeValue/>
-            <InScopeValueIsModifier>false</InScopeValueIsModifier>
-            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
-            <LeftParenthesisGroup/>
-            <LogicalNot/>
-            <OperandOrder>0</OperandOrder>
-            <OperandType>ratetable</OperandType>
-            <OperatorType>store</OperatorType>
-            <ReturnFactorColumns>
-              <CalcStepDefinitionRateFactor public-id="pc:10104">
-                <ColumnName>Factor</ColumnName>
-                <Operand public-id="pc:14822"/>
-              </CalcStepDefinitionRateFactor>
-            </ReturnFactorColumns>
-            <RightParenthesisGroup/>
-            <RoundingScaleType/>
-            <TableCode>ho_personal_property_replacement_cost_coverage</TableCode>
-            <VariableFieldName/>
-            <VariableName/>
-          </CalcStepDefinitionOperand>
-        </Operands>
-        <SectionComment/>
-        <SortOrder>1</SortOrder>
-        <StepType>assignment</StepType>
-        <StoreLocation/>
-        <StoreType>java.math.BigDecimal</StoreType>
-      </CalcStepDefinition>
-      <CalcStepDefinition public-id="pc:13523">
-        <CalcRoutineDefinition public-id="pc:8504"/>
+      <CalcStepDefinition public-id="pc:24975">
+        <CalcRoutineDefinition public-id="pc:11702"/>
         <InScopeParam>costdata</InScopeParam>
         <InScopeValue>TermAmount</InScopeValue>
         <Notes/>
         <Operands>
-          <CalcStepDefinitionOperand public-id="pc:14823">
+          <CalcStepDefinitionOperand public-id="pc:28193">
             <ArgumentSourceSetCode/>
             <ArgumentSources/>
-            <CalcStep public-id="pc:13523"/>
+            <CalcStep public-id="pc:24975"/>
             <ConstantValue/>
             <CovTermCode/>
             <FunctionName/>
@@ -44226,26 +44283,26 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>4</SortOrder>
+        <SortOrder>10</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
       </CalcStepDefinition>
-      <CalcStepDefinition public-id="pc:13524">
-        <CalcRoutineDefinition public-id="pc:8504"/>
+      <CalcStepDefinition public-id="pc:24976">
+        <CalcRoutineDefinition public-id="pc:11702"/>
         <InScopeParam>costdata</InScopeParam>
         <InScopeValue>AdjustedRate</InScopeValue>
         <Notes/>
         <Operands>
-          <CalcStepDefinitionOperand public-id="pc:14824">
+          <CalcStepDefinitionOperand public-id="pc:28194">
             <ArgumentSourceSetCode/>
             <ArgumentSources/>
-            <CalcStep public-id="pc:13524"/>
+            <CalcStep public-id="pc:24976"/>
             <ConstantValue/>
             <CovTermCode/>
             <FunctionName/>
-            <InScopeParam>costdata</InScopeParam>
-            <InScopeValue>BaseRate</InScopeValue>
+            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+            <InScopeValue>TotalBasePremium</InScopeValue>
             <InScopeValueIsModifier>false</InScopeValueIsModifier>
             <InScopeValueType>java.math.BigDecimal</InScopeValueType>
             <LeftParenthesisGroup/>
@@ -44262,10 +44319,329 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>2</SortOrder>
+        <SortOrder>7</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24977">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>BaseRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28195">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pc:15720">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+                <InScopeValue>PolicyType</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+                <Operand public-id="pc:28195"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>PolicyForm</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pc:24977"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pc:15319">
+                <ColumnName>Factor</ColumnName>
+                <Operand public-id="pc:28195"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>ho_personal_property_replacement_cost_coverage</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24978">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28196">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24978"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+            <InScopeValue>PersonalPropertyIncreasedLimit</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>3</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>ppLimit</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24979">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28197">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24979"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+            <InScopeValue>PersonalPropertyLimit</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>5</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation>ppLimit</StoreLocation>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24980">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28198">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24980"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>BaseRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>9</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24981">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28199">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24981"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>4</SortOrder>
+        <StepType>else</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24982">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28200">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24982"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>localvar</OperandType>
+            <OperatorType>addition</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName>ppLimit</VariableName>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>8</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pc:24983">
+        <CalcRoutineDefinition public-id="pc:11702"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pc:28201">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24983"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>conditional</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:28202">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24983"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>discountOrSurchargeRatingInfo_Ext</InScopeParam>
+            <InScopeValue>PolicyType</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>1</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+          <CalcStepDefinitionOperand public-id="pc:28203">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pc:24983"/>
+            <ConstantValue>HO3</ConstantValue>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>typekey.HOPolicyType_HOE</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot>false</LogicalNot>
+            <OperandOrder>2</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType>equal</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>2</SortOrder>
+        <StepType>if</StepType>
+        <StoreLocation/>
+        <StoreType/>
       </CalcStepDefinition>
     </Steps>
     <Version>1</Version>
@@ -44306,20 +44682,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1703">
-    <CalcRoutineParameterSet public-id="pc:1401"/>
-    <Code>discountOrSurchargeRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1702">
     <CalcRoutineParameterSet public-id="pc:1401"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1703">
+    <CalcRoutineParameterSet public-id="pc:1401"/>
+    <Code>discountOrSurchargeRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -44694,20 +45070,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:4301">
-    <CalcRoutineParameterSet public-id="pc:3901"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:4302">
     <CalcRoutineParameterSet public-id="pc:3901"/>
     <Code>scheduledPersonalPropertyRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:4301">
+    <CalcRoutineParameterSet public-id="pc:3901"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>

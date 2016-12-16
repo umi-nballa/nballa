@@ -12,8 +12,10 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _aopBaseClassPremium: BigDecimal as AOPBaseClassPremium = 0.0
   var _adjustedAOPBasePremium: BigDecimal as AdjustedAOPBasePremium = 0.0
   var _finalAdjustedAOPBasePremium: BigDecimal as FinalAdjustedAOPBasePremium = 0.0
+  var _keyAOPPremium : BigDecimal as KeyAOPPremium = 0.0
 
   var _windKeyFactor: BigDecimal as WindKeyFactor = 0.0
+  var _windKeyPremium : BigDecimal as WindKeyPremium = 0.0
   var _windBaseClassPremium: BigDecimal as WindBaseClassPremium = 0.0
   var _windBasePremium: BigDecimal as WindBasePremium = 0.0
   var _adjustedWindBasePremium: BigDecimal as AdjustedWindBasePremium = 0.0

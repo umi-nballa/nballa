@@ -133,13 +133,14 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     _discountsOrSurchargeRatingInfo = new HOGroup2DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
-    if (dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
+    var constructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
+    if (constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
       rateSuperiorConstructionDiscount(dateRange)
     }
     if (dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3){
       rateAgeOfHomeDiscount(dateRange)
     }
-    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+    if ((dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC) and dwelling.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO4){
       rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
 
@@ -182,6 +183,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE, HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.HigherAllPerilDeductible = costData?.ActualTermAmount
     if (costData != null)
       addCost(costData)
     _logger.debug("Higher All Peril Deductible Rated Successfully", this.IntrinsicType)
@@ -195,6 +197,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.GATED_COMMUNITY_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.GatedCommunity = costData?.ActualTermAmount
     if (costData != null){
       addCost(costData)
     }
@@ -508,10 +511,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.AgeOfHomeDiscount  + _hoRatingInfo.SuperiorConstructionDiscount +
-          + _hoRatingInfo.SeasonalSecondaryResidenceSurcharge +  _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.WindHailExclusionCredit
-          + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.ProtectiveDevicesDiscount
-          + _hoRatingInfo.DiscountAdjustment
+    _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount +
+    _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.GatedCommunity + _hoRatingInfo.DiscountAdjustment
     )
   }
 }

@@ -89,17 +89,17 @@ class HODwellingValidation_HOE extends PCValidationBase {
   
   function validateDwellingConstructionFields() {
     Context.addToVisited(this, "validateDwellingConstructionFields")
-    if (HODwelling.YearBuilt == null) {
-      addErrorOrWarning("YearBuilt", displaykey.Web.Policy.HomeownersLine.Validation.YearBuilt, "HomeownersDwellingConstruction")
+    if (HODwelling.YearBuilt == null and HODwelling.YearBuiltOverridden_Ext == null) {
+        addErrorOrWarning("YearBuilt", displaykey.Web.Policy.HomeownersLine.Validation.YearBuilt, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.ConstructionType == null) {
-      addErrorOrWarning("ConstructionType", displaykey.Web.Policy.HomeownersLine.Validation.ConstructionTypeRequired, "HomeownersDwellingConstruction")
+    if (HODwelling.ConstructionType == null and HODwelling.ConstTypeOverridden_Ext == null) {
+        addErrorOrWarning("ConstructionType", displaykey.Web.Policy.HomeownersLine.Validation.ConstructionTypeRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.StoriesNumber == null) {
-      addErrorOrWarning("StoriesNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumStoriesRequired, "HomeownersDwellingConstruction")
+    if (HODwelling.StoriesNumber == null and HODwelling.NoofStoriesOverridden_Ext == null) {
+        addErrorOrWarning("StoriesNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumStoriesRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.RoofType == null) {
-      addErrorOrWarning("RoofType", displaykey.Web.Policy.HomeownersLine.Validation.RoofTypeRequired, "HomeownersDwellingConstruction")
+    if (HODwelling.RoofType == null and HODwelling.RoofingMaterialOverridden_Ext == null) {
+        addErrorOrWarning("RoofType", displaykey.Web.Policy.HomeownersLine.Validation.RoofTypeRequired, "HomeownersDwellingConstruction")
     }
     if (HODwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 or HODwelling.HOPolicyType == HOPolicyType_HOE.TC_DP2) {
       validateHO3AndDP2DwellingConstructionFields()

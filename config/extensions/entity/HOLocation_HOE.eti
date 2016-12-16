@@ -58,28 +58,27 @@
     type="bit"/>
   <column
     desc="BCEG Grade Returned by Tuna"
-    name="BCEGTunaReturned_Ext"
+    name="BCEG_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
   </column>
   <column
     name="DistanceToCoast_Ext"
     nullok="true"
     type="positiveinteger"/>
-
   <column
     desc="Distance to Coast Returned by Tuna"
-    name="DistToCoastTunaReturned_Ext"
+    name="DistToCoast_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
   </column>
-    <column
+  <!--column
     desc="Responding Fire Department"
     name="RespondingFireDept_Ext"
     nullok="true"
@@ -92,7 +91,7 @@
     desc="Fire Department Match Level"
     name="FireDeptMatchLevel_Ext"
     nullok="true"
-    typelist="FireDeptMatchLevel_Ext"/>
+    typelist="TUNAMatchLevel_Ext"/-->
   <typekey
     desc="Protected Subdivision Name"
     name="SubdivisionName_Ext"
@@ -109,6 +108,124 @@
   </column>
   <column
     default="0"
+    desc="Override ISO360 returned from TUNA"
+    name="OverrideISO360_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="ISO360 Entered by user"
+    name="ISO360Overridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="ISO360 Match Level from TUNA"
+    name="ISO360MatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Latitude returned from TUNA"
+    name="OverrideLatitude_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Latitude Returned by Tuna"
+    name="Latitude_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Latitude Match Level from TUNA"
+    name="LatitudeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Fireslope returned from TUNA"
+    name="OverrideFireslope_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Fireslope Returned by Tuna"
+    name="Fireslope_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Fireslope Match Level from TUNA"
+    name="FireslopeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    desc="Fireslope Override by User"
+    name="FireslopeOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    default="0"
+    desc="Override Fireaccess returned from TUNA"
+    name="OverrideFireaccess_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Fireaccess Returned by Tuna"
+    name="Fireaccess_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Fireaccess Match Level from TUNA"
+    name="FireaccessMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    desc="Fireaccess Override by User"
+    name="FireaccessOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    default="0"
+    desc="Override Longitude returned from TUNA"
+    name="OverrideLongitude_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Longitude Returned by Tuna"
+    name="Longitude_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Longitude Match Level from TUNA"
+    name="LongitudeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
     desc="Override BCEG returned from TUNA"
     name="OverrideBCEG_Ext"
     nullok="true"
@@ -120,16 +237,16 @@
     typelist="TUNAMatchLevel_Ext"/>
   <column
     desc="BCEG Grade Entered by User"
-    name="BCEGUserEntered_Ext"
+    name="BCEGOverridden_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
   </column>
   <column
-    desc="Dwelling Protection Class Code Returned by TUNA"
-    name="DwellingPCCodeTunaReturned_Ext"
+    desc="Dwelling Protection Class Code Overridden"
+    name="DwellingPCCodeOverridden_Ext"
     nullok="true"
     type="varchar">
     <columnParam
@@ -149,12 +266,12 @@
     type="bit"/>
   <column
     desc="Wind Pool Value returned by TUNA"
-    name="WindPoolTunaReturned_Ext"
+    name="WindPool_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
   </column>
   <typekey
     desc="Wind Pool Match Level from TUNA"
@@ -169,12 +286,12 @@
     type="bit"/>
   <column
     desc="Wind Pool Value Entered by User"
-    name="WindPoolUserEntered_Ext"
+    name="WindPoolOverridden_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
   </column>
   <typekey
     desc="Distance To Coast Match Level from TUNA"
@@ -188,22 +305,13 @@
     nullok="true"
     type="bit"/>
   <column
-    desc="Distance to Coast Entered by User"
-    name="DistToCoastUserEntered_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="16"/>
-  </column>
-  <column
     desc="Distance to Major BOW Returned by Tuna"
-    name="DistBOWTunaReturned_Ext"
+    name="DistBOW_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
   </column>
   <typekey
     desc="Distance To Major BOW Match Level from TUNA"
@@ -211,17 +319,334 @@
     nullok="true"
     typelist="TUNAMatchLevel_Ext"/>
   <column
+    default="0"
     desc="Override Distance to Major BOW returned from TUNA"
     name="OverrideDistBOW_Ext"
     nullok="true"
     type="bit"/>
   <column
-    desc="Distance to Major BOW Entered by User"
-    name="DistBOWUserEntered_Ext"
+    desc="FirelineSHIA Returned by Tuna"
+    name="FirelineSHIA_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="16"/>
+      value="100"/>
+  </column>
+  <typekey
+    desc="FirelineSHIA Match Level from TUNA"
+    name="FirelineSHIAMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override FirelineSHIA returned from TUNA"
+    name="OverrideFirelineSHIA_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="FirelineSHIA Entered by User"
+    name="FirelineSHIAOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="FirelineFuel Returned by Tuna"
+    name="FirelineFuel_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="FirelineFuel Match Level from TUNA"
+    name="FirelineFuelMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override FirelineFuel returned from TUNA"
+    name="OverrideFirelineFuel_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="FirelineFuel Entered by User"
+    name="FirelineFuelOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="FirelinePropHaz Returned by Tuna"
+    name="FirelinePrHaz_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="FirelinePropHaz Match Level from TUNA"
+    name="FirelinePropHazMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override FirelinePropHaz returned from TUNA"
+    name="OverrideFirelinePropHaz_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="FirelinePropHaz Entered by User"
+    name="FirelinePropHazOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="FirelineAdjHaz Returned by Tuna"
+    name="FirelineAdjHaz_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="FirelineAdjHaz Match Level from TUNA"
+    name="FirelineAdjHazMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override FirelineAdjHaz returned from TUNA"
+    name="OverrideFirelineAdjHaz_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="FirelineAdjHaz Entered by User"
+    name="FirelineAdjHazOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="ACVValue Returned by Tuna"
+    name="ACVValue_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="ACVValue Match Level from TUNA"
+    name="ACVValueMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override ACVValue returned from TUNA"
+    name="OverrideACVValue_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="ACVValue Entered by User"
+    name="ACVValueOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="Firedeptnamedval Returned by Tuna"
+    name="Firedeptnmval_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Firedeptnamedval Match Level from TUNA"
+    name="FiredeptnamedvalMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Firedeptnamedval returned from TUNA"
+    name="OverrideFiredeptnamedval_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Firedeptnamedval Entered by User"
+    name="FiredeptnamedvalOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="Windpoolvalue Returned by Tuna"
+    name="Windpoolvalue_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Windpoolvalue Match Level from TUNA"
+    name="WindpoolvalueMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Windpoolvalue returned from TUNA"
+    name="OverrideWindpoolvalue_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Windpoolvalue Entered by User"
+    name="WindpoolvalueOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="Firelinematchlevelval Returned by Tuna"
+    name="Firelinemthlvl_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Firelinematchlevelval Match Level from TUNA"
+    name="FirelinemthlvlMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Firelinematchlevelval returned from TUNA"
+    name="OverrideFirelnmthlevelval_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Firelinematchlevelval Entered by User"
+    name="FirelinemhlvlOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="Flood Zone Tuna Returned"
+    name="FloodZoneTunaReturned_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="Flood Zone Match Level"
+    name="FloodZoneMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Flood Zone Returned from Tuna"
+    name="OverrideFloodZone_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Flood Zone entered by Users"
+    name="FloodZoneOverridden_Ext"
+    nullok="true"
+    typelist="FloodZoneOverridden_Ext"/>
+  <typekey
+    desc="Distance to Coast entered by Users"
+    name="DistToCoastOverridden_Ext"
+    nullok="true"
+    typelist="DistToCoastOverridden_Ext"/>
+  <typekey
+    desc="Distance To Major BOW entered by Users"
+    name="DistBOWOverridden_Ext"
+    nullok="true"
+    typelist="DistBOWOverridden_Ext"/>
+  <column
+    desc="Distance to major bow named value"
+    name="DistBOWNamedValue_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    default="0"
+    desc="Override DistBOWNamedValue returned from TUNA"
+    name="OverrideDistBOWNamedValue_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="DistBOWNamedValue Match Level"
+    name="DistBOWNVMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    desc="DistBOWNamedValue Overridden"
+    name="DistBOWNVOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <column
+    desc="TerritoryCode returned by TUNA"
+    name="TerritoryCodeTunaReturned_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
+  </column>
+  <typekey
+    desc="TerritoryCode Match Level returned from TUNA"
+    name="TerritoryCodeMatchLevel_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override TerritoryCode returned from TUNA"
+    name="OverrideTerritoryCode_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="TerritoryCode overridden "
+    name="TerritoryCodeOverridden_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
 </entity>

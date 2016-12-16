@@ -30,6 +30,7 @@ class HODwellingUtil_HOE {
   private static final var DIFF_YEAR_25 : int = 25
   private static final var YEAR_2002 : int = 2002
   private static final var YEAR_2003 : int = 2003
+  private static final var YEAR_1975 : int = 1975
   private static final var WIND_SPEED_100 : int = 100
   private static final var WIND_SPEED_110 : int = 110
   private static final var WIND_SPEED_120 : int = 120
@@ -868,6 +869,15 @@ class HODwellingUtil_HOE {
     dwelling.TotalSqFtValMatchLevel_Ext = getMatchLevel(tunaAppResponse.SquareFootage)
 
     return true
+  }
+  
+   static function setPostFIRMValue(dwelling : Dwelling_HOE){
+    if(dwelling.YearBuilt >= YEAR_1975){
+      dwelling.PostFIRM_Ext = true
+    }
+    else{
+      dwelling.PostFIRM_Ext = false
+    }
   }
 
 }// End of class

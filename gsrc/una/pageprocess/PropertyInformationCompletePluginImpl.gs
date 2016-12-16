@@ -786,7 +786,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.BCEGGrade.size() > 1) {
           //TODO
         } else {
-          cpBuilding.bceg = (res.BCEGGrade[0].Value) as String
+          cpBuilding.BCEG_Ext = (res.BCEGGrade[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -803,7 +803,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.ProtectionClass.size() > 1) {
           //TODO
         } else {
-          cpBuilding.fireprotectionclass = (res.ProtectionClass[0].Value) as String
+          cpBuilding.DwellingProtectionClassCode = (res.ProtectionClass[0].Value) as String
         }
       }
     } catch (exp: Exception) {

@@ -94,10 +94,10 @@ class PropertyInformationCompletePluginImpl {
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
       _address.AddressLine1 = location.AddressLine1
-      _address.State = location.State.DisplayName
+      _address.State = location.State.Code
       _address.City = location.City
       _address.PostalCode = location.PostalCode
-      _address.Country = location.Country.DisplayName
+      _address.Country = location.Country.Code
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
         policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))

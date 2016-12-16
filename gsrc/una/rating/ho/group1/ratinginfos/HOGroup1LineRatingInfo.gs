@@ -21,10 +21,5 @@ class HOGroup1LineRatingInfo {
     if (line?.HOLI_FungiCov_HOEExists){
       _limitedFungiWetOrDryRotOrBacteriaSectionIILimit = line?.HOLI_FungiCov_HOE?.HOLI_AggLimit_HOETerm?.Value.intValue()
     }
-    if(line.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_ExtExists)
-      _numberOfAddtlResidences = line.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext?.scheduledItem_Ext?.Count
-
-    _personalInjuryLimit = (line.HOLI_PersonalInjury_HOEExists) ? line.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue() : 0
-    _residenceType = (line.Dwelling.ResidenceType.Code)
   }
 }

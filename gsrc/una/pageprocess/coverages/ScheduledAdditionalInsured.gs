@@ -92,19 +92,19 @@ class ScheduledAdditionalInsured {
     }
   }
 
-  public property get IsSectionIILiabilityCov() : Boolean{
-    var result : Boolean
+  public property get IsSectionIILiabilityCov() : typekey.HOSchedAddlInsOccType{
+    var result : typekey.HOSchedAddlInsOccType
 
     if(IsDwellingCov){
-      result = dwellingScheduledItem.IsSectionIILiabilityCoverage
+      result = dwellingScheduledItem.SectionIILiabilityOccType
     }
 
     return result
   }
 
-  public property set IsSectionIILiabilityCov(value : Boolean){
+  public property set IsSectionIILiabilityCov(value : typekey.HOSchedAddlInsOccType){
     if(IsDwellingCov){
-      dwellingScheduledItem.IsSectionIILiabilityCoverage = value
+      dwellingScheduledItem.SectionIILiabilityOccType = value
     }
   }
 

@@ -30,7 +30,10 @@ enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
     // the select as above.
     //PC.24.01.25 changes
     if (!meetsMinimumSearchCriteria()) {
-      if(this.SearchObjectType == SearchObjectType.TC_POLICY){
+      if(this.SearchObjectType == SearchObjectType.TC_POLICY or this.SearchObjectType == SearchObjectType.TC_REWRITE
+          or this.SearchObjectType == SearchObjectType.TC_REWRITENEWACCOUNT or this.SearchObjectType == SearchObjectType.TC_RENEWAL
+          or this.SearchObjectType == SearchObjectType.TC_CANCELLATION or this.SearchObjectType == SearchObjectType.TC_POLICYCHANGE
+          or this.SearchObjectType == SearchObjectType.TC_REINSTATEMENT){
         throw new DisplayableException(displaykey.Web.Policy.MinimumPolicySearchCriteria);
       }else{
         throw new DisplayableException(displaykey.Web.Policy.MinimumSearchCriteria)
@@ -84,7 +87,10 @@ enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
 
     var has_location = false
     //PC.24.01.25 changes
-    if(this.SearchObjectType == SearchObjectType.TC_POLICY){
+    if(this.SearchObjectType == SearchObjectType.TC_POLICY or this.SearchObjectType == SearchObjectType.TC_REWRITE
+        or this.SearchObjectType == SearchObjectType.TC_REWRITENEWACCOUNT or this.SearchObjectType == SearchObjectType.TC_RENEWAL
+        or this.SearchObjectType == SearchObjectType.TC_CANCELLATION or this.SearchObjectType == SearchObjectType.TC_POLICYCHANGE
+        or this.SearchObjectType == SearchObjectType.TC_REINSTATEMENT){
           has_location = (((this.PrimaryInsuredAddressLine1_Ext.NotBlank) &&  (this.PrimaryInsuredAddressLine2_Ext.NotBlank) &&
                            (this.PrimaryInsuredCity.NotBlank || this.PrimaryInsuredCityKanji.NotBlank) && this.PrimaryInsuredState != null) || this.PrimaryInsuredPostalCode.NotBlank)
     }else{

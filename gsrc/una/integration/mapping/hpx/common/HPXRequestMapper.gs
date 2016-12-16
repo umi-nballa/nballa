@@ -77,6 +77,7 @@ class HPXRequestMapper {
     policyDocumentPublish.addChild(new XmlElement("DwellingPolicy", dwellingPolicy))
     hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
     hpxRequest.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequest.addChild(new XmlElement("PublishingDocumentOutput", createPublishingDocumentOutput()))
     hpxRequestType.Transaction = "Policy Dwelling"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
     /*for (att in hpxRequest.AttributeNames) {
@@ -98,6 +99,7 @@ class HPXRequestMapper {
     policyDocumentPublish.addChild(new XmlElement("BusinessOwnerPolicy", businessOwnersPolicy))
     hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
     hpxRequestType.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequest.addChild(new XmlElement("PublishingDocumentOutput", createPublishingDocumentOutput()))
     hpxRequestType.Transaction = "Policy Business Owners"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
     return hpxRequest.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"", "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
@@ -114,6 +116,7 @@ class HPXRequestMapper {
     policyDocumentPublish.addChild(new XmlElement("CommercialPackagePolicy", commercialPackagePolicy))
     hpxRequest.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
     hpxRequestType.addChild(new XmlElement("CompositionUnit", compositionUnit))
+    hpxRequest.addChild(new XmlElement("PublishingDocumentOutput", createPublishingDocumentOutput()))
     hpxRequestType.Transaction = "Policy Commercial Package"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
     return hpxRequest.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"", "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
@@ -124,5 +127,11 @@ class HPXRequestMapper {
     publishingConsumerAppKey.AppKeyCd = "a"
     publishingConsumerAppKey.AppKeyDesc = "String"
     return publishingConsumerAppKey
+  }
+
+  function createPublishingDocumentOutput() : wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingDocumentOutputType {
+    var publishingDocumentOutput = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingDocumentOutputType()
+    publishingDocumentOutput.FileName = java.util.UUID.randomUUID().toString()
+    return publishingDocumentOutput
   }
 }

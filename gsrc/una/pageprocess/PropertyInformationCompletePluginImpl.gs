@@ -100,7 +100,7 @@ class PropertyInformationCompletePluginImpl {
       _address.Country = location.Country.DisplayName
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
-
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))
           if(tunaResponse == null)
           LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
 
@@ -130,6 +130,7 @@ class PropertyInformationCompletePluginImpl {
       _address.Country = location.Country.DisplayName
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))
         if (tunaResponse != null) {
 //          tunaStoryNumDetail(policyPeriod, tunaResponse)
 //          tunaConstructionTypeDetail(policyPeriod, tunaResponse)
@@ -701,6 +702,7 @@ class PropertyInformationCompletePluginImpl {
     _address.YearBuilt = (cpBuilding.Building.YearBuilt) as String
     try {
       tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
+      cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation",tunaResponse.MetricsVersion.first().NamedValue))
       tunaLongitudeDetail(cpBuilding,tunaResponse)
       tunaLatitudeDetail(cpBuilding,tunaResponse)
       tunaStoryNumDetail(cpBuilding,tunaResponse)

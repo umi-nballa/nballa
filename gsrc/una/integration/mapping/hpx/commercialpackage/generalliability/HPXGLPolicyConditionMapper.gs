@@ -44,6 +44,7 @@ class HPXGLPolicyConditionMapper extends HPXPolicyConditionMapper {
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Premises: " + currentPolicyCondition.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                       "| Project: " + (currentPolicyCondition.OwningCoverable as GLLine).Exposures.first().ClassCode + " - " +

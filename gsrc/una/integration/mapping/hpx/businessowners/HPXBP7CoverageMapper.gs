@@ -121,6 +121,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = currentCovTerm.OptionValue.Description != null ? currentCovTerm.OptionValue.Description : ""
       limit.LimitDesc = ""
       limit.CoverageCd = coverage.PatternCode
@@ -137,6 +138,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.FormatText = currentCovTerm?.OptionValue?.OptionCode != null ? currentCovTerm.OptionValue.OptionCode : ""
       limit.CurrentTermAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -148,6 +150,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = currentCovTerm.OptionValue.OptionCode != null ? currentCovTerm.OptionValue.OptionCode : ""
       limit.LimitDesc = ""
       limit.CoverageCd = coverage.PatternCode
@@ -185,6 +188,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -216,6 +220,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -247,6 +252,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -277,6 +283,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -308,6 +315,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
           "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
@@ -337,6 +345,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
           "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
@@ -366,6 +375,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -396,6 +406,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -426,6 +437,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -456,6 +468,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -486,6 +499,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -516,6 +530,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -546,6 +561,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -576,6 +592,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -606,6 +623,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = item.LongStringCol1 //  Desginated Part
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
                         "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -636,6 +654,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = item.LongStringCol1 //  Desginated Part
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -667,6 +686,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInterest.PolicyAddlInterest.DisplayName  +
           "| Address:" + item.AdditionalInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress +

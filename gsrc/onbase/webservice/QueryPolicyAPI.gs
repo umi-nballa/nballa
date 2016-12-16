@@ -72,9 +72,9 @@ class QueryPolicyAPI {
       jobNumber = null
     }
     // Either policyNumber or accountNumber is required parameter.
-    if (policyNumber == null && accountNumber == null) {
+    if (policyNumber == null && accountNumber == null && jobNumber == null) {
       logger.error("Unable to get policy meta data information because both policy number and account number are NULL.")
-      info.Error = "Policy number and account number are NULL!"
+      info.Error = "Policy number and account number and job number a are NULL!"
       return info
     }
 
@@ -122,7 +122,7 @@ class QueryPolicyAPI {
     } else {
       // Query based on Account number.
       var account: Account = null
-      if (job != null && job.Policy.Account.AccountNumber.equalsIgnoreCase(accountNumber)) {
+      if (job != null) {
         // Find the account with job object.
         account = job.Policy.Account
       } else {

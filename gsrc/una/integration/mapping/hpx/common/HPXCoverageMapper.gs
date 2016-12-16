@@ -139,6 +139,7 @@ abstract class HPXCoverageMapper {
     limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
     limit.NetChangeAmt.Amt = !(pctValue > 0) ? previousCovTerm != null ? value - orignalValue : 0.00 : 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
@@ -157,6 +158,7 @@ abstract class HPXCoverageMapper {
     limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
     limit.NetChangeAmt.Amt = !(pctValue > 0) ? previousCovTerm != null ? value - orignalValue : 0.00 : 0.00
     limit.FormatPct = pctValue
+    limit.Rate = 0.00
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
@@ -199,6 +201,7 @@ abstract class HPXCoverageMapper {
     limit.FormatText = currentCovTerm?.OptionValue?.Value != null ? currentCovTerm.OptionValue.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -213,6 +216,7 @@ abstract class HPXCoverageMapper {
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -227,6 +231,7 @@ abstract class HPXCoverageMapper {
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -241,6 +246,7 @@ abstract class HPXCoverageMapper {
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -251,6 +257,11 @@ abstract class HPXCoverageMapper {
 
   function createCoverageCostInfo(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
+    cov.WrittenAmt.Amt = 0.00
+    cov.CurrentTermAmt.Amt = 0.00
+    cov.NetChangeAmt.Amt = 0.00
+    cov.ProRateFactor = 0.00
+    cov.BaseRateAmt.Amt = 0.00
     if (transactions != null) {
       var cost = transactions.first()
       cov.BaseRateAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
@@ -262,7 +273,7 @@ abstract class HPXCoverageMapper {
           currentPremium = currentPremium + covCost.ActualAmount.Amount
         }
       }
-      cov.WrittenAmt.Amt = currentPremium
+      cov.WrittenAmt.Amt = currentPremium != null ? currentPremium : 0.00
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
       cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
     }

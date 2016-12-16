@@ -30,7 +30,6 @@ class HOCommonBasePremiumRatingInfo {
 
   construct(dwelling: Dwelling_HOE) {
     var hoLocation = dwelling?.HOLocation
-    //_territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.single().Code)
     _territoryCode = hoLocation?.OverrideTerritoryCode_Ext?  hoLocation?.TerritoryCodeOverridden_Ext : hoLocation?.TerritoryCodeTunaReturned_Ext
     //TODO: remove this code once the tuna integration is in place
     /*if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_AZ)
@@ -72,9 +71,7 @@ class HOCommonBasePremiumRatingInfo {
       _noHitOrScoreIndicator = true
     }
 
-    _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
-    if(dwelling?.HOLocation?.OverrideDwellingPCCode_Ext)
-      _protectionClassCode = dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext
+    _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
 
     var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
     var exteriorWallFinish = dwelling.OverrideExteriorWFval_Ext? dwelling.ExteriorWFvalueOverridden_Ext : dwelling.ExteriorWallFinish_Ext

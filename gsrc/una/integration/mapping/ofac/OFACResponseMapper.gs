@@ -32,6 +32,9 @@ class OFACResponseMapper {
 
       for(map in contactScoreMap.entrySet())
         {
+
+          var ofacContact = policyPeriod.ofaccontact?.firstWhere( \ elt -> elt.Contact == map.Key)
+          if(ofacContact == null) {
    //   if (contact.Value > PropertiesHolder.getProperty("ENTITY_SCORE").toInt()){
         //policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_OFAC_CHECK_FAILED, \ -> displaykey.Account.History.OfacCheckFailed)
      //   gw.transaction.Transaction.runWithNewBundle(\bundle -> {
@@ -44,6 +47,7 @@ class OFACResponseMapper {
           ofacEntity.EntityScore = map.Value
           ofacEntity.Contact = map.Key
           ofacEntity.OfacHit = true
+          }
        // })
       }
       /*   //           TBD Later after History Typelist Approval

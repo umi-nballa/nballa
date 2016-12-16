@@ -90,6 +90,7 @@
   <!-- Map a search on Document to search criteria -->
   <CriteriaDef entity="DocumentSearchCriteria" targetEntity="Document">
     <Criterion property="Author" targetProperty="Author" matchType="startsWith"/>
+      <Criterion property="OnBaseDocumentType" matchType="eq"/>
+      <Criterion property="OnBaseDocumentSubtype" matchType="eq"/>
   </CriteriaDef>
-
 </SearchConfig>

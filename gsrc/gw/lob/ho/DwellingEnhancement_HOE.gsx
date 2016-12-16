@@ -169,7 +169,8 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
   function beforeSavingDwellingPage(){
     // uim-svallabhapurapu, set Terrain as per county
     setTerrain()
-    setProtectionClassCode()
+    // skip at UNA
+    // setProtectionClassCode()
     HomeownersLineValidation_HOE.validateDwellingsStep(this.PolicyPeriod.HomeownersLine_HOE)
     
     // remove values for dependant fields  for some parent field values

@@ -12,7 +12,8 @@
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isCoverageAvailable("HODW_LossAssessmentCov_HOE_Ext", Dwelling_HOE)]]></AvailabilityScript>
   <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_LossAssessmentCov_HOE_Ext.PatternCode, HODW_LossAssessmentCov_HOE_Ext.Dwelling)]]></InitializeScript>
-  <ExistenceScript><![CDATA[return(Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)? ExistenceType.TC_REQUIRED  :  ExistenceType.TC_ELECTABLE]]></ExistenceScript>
+  <ExistenceScript><![CDATA[var requiredTypes = {HOPolicyType_HOE.TC_HO3, HOPolicyType_HOE.TC_HO6, HOPolicyType_HOE.TC_HO4}
+return requiredTypes.contains(Dwelling_HOE.HOPolicyType) ? ExistenceType.TC_REQUIRED  :  ExistenceType.TC_ELECTABLE]]></ExistenceScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"

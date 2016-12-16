@@ -121,7 +121,7 @@ class CoverageTermAvailabilityUtil {
     setTermValuesBeforeCheckingAvailability(coverable)
 
     var result = true
-      _logger.info("iscoveragetermavailable " + patternCode + " coverable type is cpbuilding ? " + coverable typeis CPBuilding )
+
     switch(patternCode){
       case "HOPL_Deductible_HOE":
         result = isLossAssessmentDeductibleAvailable(coverable as Dwelling_HOE)
@@ -159,22 +159,25 @@ class CoverageTermAvailabilityUtil {
       case "BP7ProdCompldOpsAggregateLimit":
           result = isProductsCompletedOpsAggrLimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
           break
-        default:
+      case "HODW_Hurricane_Ded_HOE":
+        result = isHurricanePercentageAvailable(coverable as Dwelling_HOE)
         break
-    }
-
-    if( patternCode.equalsIgnoreCase("DataRestorationCosts_EXT") || patternCode.equalsIgnoreCase("SysRestorationCosts_EXT") ){
-          result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
-    }
-
-    if( patternCode.equalsIgnoreCase("NetworkSecuLimit_EXT") || patternCode.equalsIgnoreCase("MalwareTransmission_EXT") ||
-        patternCode.equalsIgnoreCase("DenialofSvcCompAttackTriggers_EXT") ){
-      result = isCyberOneCoverageTermAvailable(coverable as BP7BusinessOwnersLine)
-    }
-
-    if(patternCode.equalsIgnoreCase("DataRecreationCosts_EXT")|| patternCode.equalsIgnoreCase("LossofBusiness_EXT") ||
-        patternCode.equalsIgnoreCase("PublicRelationsSvcs_EXT")){
-      result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
+      case "DataRestorationCosts_EXT":
+      case "SysRestorationCosts_EXT":
+        result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "NetworkSecuLimit_EXT":
+      case "MalwareTransmission_EXT":
+      case "DenialofSvcCompAttackTriggers_EXT":
+        result = isCyberOneCoverageTermAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "DataRecreationCosts_EXT":
+      case "LossofBusiness_EXT":
+      case "PublicRelationsSvcs_EXT":
+        result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      default:
+        break
     }
     return result
   }
@@ -334,6 +337,10 @@ class CoverageTermAvailabilityUtil {
     return false
   }
 
+  private static function isHurricanePercentageAvailable(dwelling : Dwelling_HOE) : boolean{
+    return dwelling.HOLine.BaseState == TC_FL and !dwelling.WHurricaneHailExclusion_Ext
+  }
+
   private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     if(bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
         bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
@@ -426,10 +433,10 @@ class CoverageTermAvailabilityUtil {
     var allowedLimitsPersonalLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Personal_Liability_HOE.PatternCode)
     var allowedLimitsPremiseLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Premise_Liability_HOE_Ext.PatternCode)
 
-    if({3000d,5000d}.contains(covTermOpt.Value.doubleValue())){
-      result = hoLine.DPLI_Personal_Liability_HOEExists
-    }else if(hoLine.BaseState == TC_CA){
-      if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
+     if(hoLine.BaseState == TC_CA){
+       if({3000d,5000d}.contains(covTermOpt.Value.doubleValue())){
+         result = hoLine.DPLI_Personal_Liability_HOEExists
+      }else if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
         result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
         result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())

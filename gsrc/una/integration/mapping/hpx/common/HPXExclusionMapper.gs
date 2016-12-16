@@ -136,6 +136,7 @@ abstract class HPXExclusionMapper {
     limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
     limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.CoverageCd = exclusion.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
@@ -151,6 +152,7 @@ abstract class HPXExclusionMapper {
     limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
     limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.CoverageCd = exclusion.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
@@ -190,6 +192,7 @@ abstract class HPXExclusionMapper {
     limit.FormatText = currentCovTerm?.OptionValue?.Value != null ? currentCovTerm.OptionValue.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = exclusion.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -203,6 +206,7 @@ abstract class HPXExclusionMapper {
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = exclusion.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -216,6 +220,7 @@ abstract class HPXExclusionMapper {
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = exclusion.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
@@ -229,6 +234,7 @@ abstract class HPXExclusionMapper {
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.CoverageCd = exclusion.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode

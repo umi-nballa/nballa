@@ -20,15 +20,15 @@ class TunaAppResponse {
   var _noteDetail: String                   as NoteDetail
   var _uSPSOnly: Boolean                    as USPSOnly
   var _isExact: Boolean                     as IsExact
-  var _resultPrecis: Integer                as ResultingPrecision
+  var _resultPrecis: String                as ResultingPrecision
   var _addressLine1: String                 as AddressLine1
   var _addressLine2: String                 as AddressLine2
   var _postalCode: String                   as PostalCode
   var _city: String                         as City
   var _state: String                        as State
   var _country: String                      as Country
-  var _latitude :Double                     as Latitude
-  var _longitude :Double                    as Longitude
+  var _latitude :String                     as Latitude
+  var _longitude :String                    as Longitude
   var _propertyLine:String                  as Line
 
   /*Property Information complete*/

@@ -42,7 +42,7 @@
         <PanelRef
           def="CoveragePatternSearchDV(searchCriteria, policyLinePattern, coverageCategories, includeElseExclude)"/>
         <PanelRef
-          def="CoveragePatternSearchResultsLV(coveragePatterns)">
+          def="CoveragePatternSearchResultsLV(coveragePatterns, coverable)">
           <Toolbar>
             <CheckedValuesToolbarButton
               allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues ); CheckedValues.each(\ value -&gt; gw.lob.bp7.BP7PostOnChangeHandler.handleClause(coverable, value, true, jobWizardHelper));una.pageprocess.BP7PCFController.dataCompromiseCoverageRestriction(coverable,CheckedValues,jobWizardHelper)"

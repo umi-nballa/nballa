@@ -96,6 +96,7 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.FormatText = ""
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
     var currentPolicyPeriod = (currentPolicyCondition.OwningCoverable as CPLine).AssociatedPolicyPeriod

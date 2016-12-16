@@ -72,11 +72,7 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
       var date = df.parse(temp_date);
 
       var existingDocs = Query.make(Document).compare('DocUID', Relop.Equals, properties.DocumentHandle)
-      if (existingDocs.select().Count > 0){
-        response.complete("")
-        return response
-      }
-
+      var existingDocResults = existingDocs.select()
       var policyNumber = keywords.StandAlone.PolicyNumber_Collection.PolicyNumber.first()
       var policy: Policy = null
       if (policyNumber.HasContent) {
@@ -104,30 +100,49 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
         }
       }
 
+      var onBaseDocumentSubtypeName = keywords.StandAlone.Subtype_Collection.Subtype.first()
+      var onBaseDocSubtype: OnBaseDocumentSubtype_Ext = null
+      if (onBaseDocumentSubtypeName.HasContent) {
+        onBaseDocSubtype = typekey.OnBaseDocumentSubtype_Ext.getByName(onBaseDocumentSubtypeName)
+      }
 
       var user = keywords.StandAlone.Underwriter_Collection.Underwriter.first()
+      var period = policy.LatestPeriod.getSlice(date)
 
-      // note that a user must be provided as the inbound-integration does not have a user context.
-      Transaction.runWithNewBundle(\bundle -> {
-
-        var doc = new Document()
-        doc.DocUID = properties.DocumentHandle
-        doc.DateCreated = date//properties.DocDate
-        doc.OnBaseDocumentType = onBaseDocType//onbaseDocumentType
-        doc.Account = policy.Account
-        doc.Name = properties.DocName // docName
-        doc.Description = description
-        doc.Author = user
-        doc.Status = typekey.DocumentStatusType.TC_FINAL // Hard-coding this status, it might be needed. cmattox 11/10/16
-        doc.Type = typekey.DocumentType.TC_ONBASE // Hard-coding this it might be needed. cmattox 11/10/16
-        doc.MimeType = properties.MimeType
-        doc.DateModified = date
-        doc.Policy = policy
-        doc.DMS = true
-      }, User.util.UnrestrictedUser)
-
+      if (existingDocResults.Count > 0){
+        // note that a user must be provided as the inbound-integration does not have a user context.
+        Transaction.runWithNewBundle(\bundle -> {
+          existingDocResults.each( \ exDoc -> {
+            bundle.add(exDoc)
+            exDoc.OnBaseDocumentType = onBaseDocType
+            exDoc.OnBaseDocumentSubtype = onBaseDocSubtype
+            exDoc.Description = description
+          } )
+        }, User.util.UnrestrictedUser)
+      } else {
+        // note that a user must be provided as the inbound-integration does not have a user context.
+        Transaction.runWithNewBundle(\bundle -> {
+          var doc = new Document()
+          doc.DocUID = properties.DocumentHandle
+          doc.DateCreated = date//properties.DocDate
+          doc.OnBaseDocumentType = onBaseDocType//onbaseDocumentType
+          doc.OnBaseDocumentSubtype = onBaseDocSubtype
+          doc.Account = policy.Account
+          doc.Name = properties.DocName // docName
+          doc.Description = description
+          doc.Author = user
+          doc.Status = typekey.DocumentStatusType.TC_FINAL // Hard-coding this status, it might be needed. cmattox 11/10/16
+          doc.Type = typekey.DocumentType.TC_ONBASE // Hard-coding this it might be needed. cmattox 11/10/16
+          doc.MimeType = properties.MimeType
+          doc.DateModified = date
+          doc.Policy = policy
+          doc.PolicyPeriod = period
+          doc.DMS = true
+        }, User.util.UnrestrictedUser)
+      }
       response.complete("")
       return response
+
     } else {
       logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrecognizedMessageContent(message.MessageXml.QName))
       response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnrecognizedMessageContent(message.MessageXml.QName))

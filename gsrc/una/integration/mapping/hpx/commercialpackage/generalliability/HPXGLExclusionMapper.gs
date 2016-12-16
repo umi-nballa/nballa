@@ -36,6 +36,7 @@ class HPXGLExclusionMapper extends HPXExclusionMapper {
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = ""
     limit.WrittenAmt.Amt = 0.00

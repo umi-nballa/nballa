@@ -81,12 +81,12 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     archiveKeywords.Description_Collection.String[0] = adaptor.Description
     archiveKeywords.LegacyPolicyNumber_Collection.String[0] = adaptor.LegacyPolicyNumber
     archiveKeywords.OnBaseDocumentType_Collection.String[0] = documentType
-    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = convertDateFormat(adaptor.PolicyEffectiveDate)
-    archiveKeywords.PolicyExpirationDate_Collection.String[0] = convertDateFormat(adaptor.PolicyExpirationDate)
+    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = adaptor.PolicyEffectiveDate//convertDateFormat(adaptor.PolicyEffectiveDate)
+    archiveKeywords.PolicyExpirationDate_Collection.String[0] = adaptor.PolicyExpirationDate// convertDateFormat(adaptor.PolicyExpirationDate)
     archiveKeywords.PolicyNumber_Collection.String[0] = adaptor.PolicyNumber
     archiveKeywords.PolicyType_Collection.String[0] = adaptor.PolicyType
     archiveKeywords.ProductName_Collection.String[0] = adaptor.ProductName
-    archiveKeywords.ReceivedDate_Collection.String[0] = convertDateFormat(adaptor.ReceivedDate)
+    archiveKeywords.ReceivedDate_Collection.String[0] = adaptor.ReceivedDate//convertDateFormat(adaptor.ReceivedDate)
     archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"
     archiveKeywords.Subtype_Collection.String[0] = adaptor.Subtype
     archiveKeywords.Term_Collection.String[0] = adaptor.Term
@@ -126,15 +126,5 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     }
 
     return response.toString()
-  }
-
-  function convertDateFormat(dateString: String): String {
-    var retVal = ""
-    if(dateString?.HasContent) {
-      var expectedFormat = new SimpleDateFormat("MM/dd/yyyy")
-      var formatForWS = new SimpleDateFormat("YYYY-MM-DD")
-      retVal = formatForWS.format(expectedFormat.parse(dateString))
-    }
-    return retVal
   }
 }

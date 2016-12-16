@@ -81,9 +81,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_WC_PrivateResidenceEmployee_HOE_Ext:
           rateWCPrivateResidenceEmployeeCoverage(lineCov, dateRange)
           break
-      case HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext:
-          updateLineCostData(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCES_OCCUPIED_BY_INSURED_RATE_ROUTINE, _lineRateRoutineParameterMap)
-          break
     }
   }
 

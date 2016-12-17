@@ -17,44 +17,10 @@ uses gw.lob.common.util.FormPatternConstants
 class CPPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm {
 
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
-    //var formNumber = this.Pattern.FormNumber
-    var formCode = this.Pattern.Code
 
+    var formCode = this.Pattern.Code
     var cppLine = context.Period.CPLine
     var cppLocations = context.Period.CPLine.CPLocations
-
-    /*var formReturn1 = false
-    if (formCode.equals(FormPatternConstants.CPP_LINE_CAUSE_OF_LOSS_BASIC_FORM)){
-        cppLocations?.each( \ elt ->
-        {
-          elt.Buildings?.each( \ elt1 ->
-          {
-              if(elt1.CPBldgCovExists and elt1.CPBldgCov.CPBldgCovCauseOfLossTerm.Value == "Basic") {
-                 formReturn1 = true
-              }
-          })
-        }
-      )
-      if(formReturn1 and cppLine != null){
-         return true
-      }
-    }*/
-    /*var formReturn2 = false
-    if (formCode.equals(FormPatternConstants.CPP_LINE_CAUSE_OF_LOSS_SPECIAL_FORM)){
-      cppLocations?.each( \ elt ->
-      {
-        elt.Buildings?.each( \ elt1 ->
-        {
-          if(elt1.CPBldgCovExists and elt1.CPBldgCov.CPBldgCovCauseOfLossTerm.Value == "Special") {
-            formReturn2 = true
-          }
-        })
-      }
-      )
-      if(formReturn2 and cppLine != null){
-        return true
-      }
-    }*/
 
     if(formCode.equals(FormPatternConstants.CPP_LINE_ADDL_NAMED_INSURED_FORM)){
       var polAddlNamedInsureds = context.Period?.PolicyContactRoles.where( \ elt -> elt.Subtype == typekey.PolicyContactRole.TC_POLICYADDLNAMEDINSURED)
@@ -70,8 +36,8 @@ class CPPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm {
        }
     }
 
-    var formRet = false
     if(formCode.equals(FormPatternConstants.CPP_ORDINANCE_LAW_FORM)) {
+      var formRet = false
       cppLocations?.each( \ elt ->
       {
         elt.Buildings?.each( \ elt1 ->
@@ -86,16 +52,59 @@ class CPPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm {
       }
     }
 
-    /*var formReturn4 = false
-    if(formNumber.equals("FL CRPP NR")){
-      if(context.Period.Job.Subtype == typekey.Job.TC_RENEWAL){
-          formReturn4 = true
-      }
-      if(formReturn4 and cppLine != null){
-          return true
-      }
-    }*/
+    if(formCode.equals(FormPatternConstants.CPP_ADDL_INSURED_MGR_OR_LESSER_FORM)){
+      var formRet = false
+      var polAddlInsureds = context.Period?.PolicyContactRoles.where( \ elt -> elt.Subtype == typekey.PolicyContactRole.TC_POLICYADDLINSURED)
+       polAddlInsureds?.each( \ elt -> {
+         if(elt typeis PolicyAddlInsured){
+                var polAdditionalInsuredDetails = elt.PolicyAdditionalInsuredDetails
+                polAdditionalInsuredDetails?.each( \ elt1 -> {
+                   if(elt1.AdditionalInsuredType == typekey.AdditionalInsuredType.TC_MGRORLESSOROFPREMISES_EXT){
+                       formRet = true
+                   }
+                })
+            }
+       })
+       if(formRet and context.Period?.GLLineExists){
+           return true
+       }
+    }
 
+    if(formCode.equals(FormPatternConstants.CPP_ADDL_INSURED_DESIGNATED_PERSON_OR_ORG_FORM)){
+      var formRet = false
+      var polAddlInsureds = context.Period?.PolicyContactRoles.where( \ elt -> elt.Subtype == typekey.PolicyContactRole.TC_POLICYADDLINSURED)
+      polAddlInsureds?.each( \ elt -> {
+        if(elt typeis PolicyAddlInsured){
+          var polAdditionalInsuredDetails = elt.PolicyAdditionalInsuredDetails
+          polAdditionalInsuredDetails?.each( \ elt1 -> {
+            if(elt1.AdditionalInsuredType == typekey.AdditionalInsuredType.TC_DESIGNATEDPERSONSORORGS_EXT){
+              formRet = true
+            }
+          })
+        }
+      })
+      if(formRet and context.Period?.GLLineExists){
+        return true
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.CPP_ADDL_INSURED_LESSER_OF_LEASED_EQUIPMENT_FORM)){
+      var formRet = false
+      var polAddlInsureds = context.Period?.PolicyContactRoles.where( \ elt -> elt.Subtype == typekey.PolicyContactRole.TC_POLICYADDLINSURED)
+      polAddlInsureds?.each( \ elt -> {
+        if(elt typeis PolicyAddlInsured){
+          var polAdditionalInsuredDetails = elt.PolicyAdditionalInsuredDetails
+          polAdditionalInsuredDetails?.each( \ elt1 -> {
+            if(elt1.AdditionalInsuredType == typekey.AdditionalInsuredType.TC_LESSORORLEASEDEQUIP_EXT){
+              formRet = true
+            }
+          })
+        }
+      })
+      if(formRet and context.Period?.GLLineExists){
+        return true
+      }
+    }
     return false
   }
 

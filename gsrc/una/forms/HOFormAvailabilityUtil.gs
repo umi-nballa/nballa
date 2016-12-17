@@ -110,24 +110,6 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         return true
     }
 
-    /*if(formCode.equals(FormPatternConstants.HO_CA_INSURANCE_GUARANTEE_ASSOCIATION_FORM)){
-      if(hoeLine != null and hoeLine.HODW_InsuranceGuaranteeAsosciation_HOEExists){
-         return true
-      }
-    }*/
-
-    /*if(formCode.equals(FormPatternConstants.HO_LENDERS_LOSS_PAYABLE_ENDORSEMENT_FORM)){
-      if(hoeLine != null and hoeLine.HODW_LendersLossPayableEndorsement_HOEExists){
-        return true
-      }
-    }*/
-
-    /*if(formCode.equals(FormPatternConstants.HO_TX_ADDL_PERILS_COVERAGE_FORM)){
-      if(hoeLine != null and dwelling != null and dwelling.HODW_AdditionalPerilCov_HOE_ExtExists){
-        return true
-      }
-    }*/
-
     if(formCode.equals(FormPatternConstants.HO_CA_EQ_COVERAGE_FORM)){
       if(hoeLine != null and dwelling != null){
         if(!dwelling.HODW_Limited_Earthquake_CA_HOEExists and !dwelling.HODW_Comp_Earthquake_CA_HOE_ExtExists){
@@ -286,6 +268,63 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
       }
     }
 
+    if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_CA_FL_FORM)){
+      if(hoeLine != null and dwelling != null and (dwelling.DwellingProtectionDetails?.FireAlarm or
+          dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
+          dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
+          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL or
+          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_PARTIAL)){
+        return true
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_HI_FORM)){
+      if(hoeLine != null and dwelling != null and (dwelling.DwellingProtectionDetails?.FireAlarm or
+          dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
+          dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
+          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL)){
+        return true
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_HO3_HO4_HO6_PROTECTION_SYSTEM_HI_FORM)){
+      if(hoeLine != null and dwelling != null and (dwelling.DwellingProtectionDetails?.FireAlarm or
+          dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
+          dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
+          dwelling.DwellingProtectionDetails?.Deadbolts or dwelling.DwellingProtectionDetails?.FireExtinguishers or
+          dwelling.DwellingProtectionDetails?.BurglarAlarm or dwelling.DwellingProtectionDetails?.BurglarAlarmReportCntlStn or
+          dwelling.DwellingProtectionDetails?.BurglarAlarmReportPoliceStn or
+          dwelling.DwellingProtectionDetails?.GatedCommunity or
+          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL or
+          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_PARTIAL)){
+        return true
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_LOSS_ASSESSMENT_COVERAGE_FORM)){
+      if(hoeLine != null and dwelling != null and dwelling.HODW_LossAssessmentCov_HOE_ExtExists
+          and dwelling.HODW_LossAssessmentCov_HOE_Ext?.HasHOPL_LossAssCovLimit_HOETerm and
+          dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE?.HasHODW_ExecutiveCov_HOE_ExtTerm
+          and (dwelling.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value == "5000" or
+              dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value == "10000")){
+        return true
+      }else if(hoeLine != null and dwelling != null and
+          (dwelling.HOLocation.PolicyLocation.State == typekey.State.TC_CA or dwelling.HOLocation.PolicyLocation.State == typekey.State.TC_HI) and
+          dwelling.HODW_LossAssessmentCov_HOE_ExtExists
+          and dwelling.HODW_LossAssessmentCov_HOE_Ext?.HasHOPL_LossAssCovLimit_HOETerm and
+          (!dwelling.HODW_Dwelling_Cov_HOE?.HasHODW_ExecutiveCov_HOE_ExtTerm) and
+          (dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value == "10000")){
+          return true
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_NO_DWELLING_FIRE_OTHER_STRUCTURE_FORM)){
+      if(hoeLine != null and dwelling != null and !dwelling?.DPDW_Other_Structures_HOEExists){
+        return true
+      }
+    }
+
     return false
   }
 }
+

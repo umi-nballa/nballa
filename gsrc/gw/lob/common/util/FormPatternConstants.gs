@@ -12,7 +12,9 @@ interface FormPatternConstants {
   static final var CPP_LINE_ADDL_NAMED_INSURED_FORM : String = "UICG010108"
   static final var CPP_LINE_BUILDING_AND_PERSONAL_PROPERTY_FORM : String = "CP00100402"
   static final var CPP_ORDINANCE_LAW_FORM : String = "UICP04060116"
-  static final var CPP_ADDL_INSURED_MGR_OR_LESSER_FORM : String = "CG20110196" // ToDo
+  static final var CPP_ADDL_INSURED_MGR_OR_LESSER_FORM : String = "CG20110196"
+  static final var CPP_ADDL_INSURED_DESIGNATED_PERSON_OR_ORG_FORM : String = "CG20260704"
+  static final var CPP_ADDL_INSURED_LESSER_OF_LEASED_EQUIPMENT_FORM : String = "CG20280704"
 
 
 
@@ -46,6 +48,11 @@ interface FormPatternConstants {
   static final var HO_CONSENT_TO_RATE_HO4_FORM : String = "UNCTRHO40411"
   static final var HO_CONSENT_TO_RATE_HO6_FORM : String = "UNCTRHO60411"
   static final var HO_ADDL_INSURED_DESCRIBED_LOCATION_FORM : String = "UNLPP04411202"
+  static final var HO_DP3_PROTECTION_SYSTEM_CA_FL_FORM : String = "DP04700788"
+  static final var HO_DP3_PROTECTION_SYSTEM_HI_FORM : String = "DP04701202"
+  static final var HO_HO3_HO4_HO6_PROTECTION_SYSTEM_HI_FORM : String = "HO04161000"
+  static final var HO_LOSS_ASSESSMENT_COVERAGE_FORM : String = "HO04351000"
+  static final var HO_NO_DWELLING_FIRE_OTHER_STRUCTURE_FORM : String = "UIDPCOVBX0916"
 
   // BOP Form Codes
   static final var BOP_ADDL_INSURED_MGR_OR_LESSOR_FORM : String = "BP04020106"

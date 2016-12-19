@@ -276,9 +276,6 @@ class CluePropertyGateway implements CluePropertyInterface {
     // Set subject details for the primary named insured
     var pHolder = pPeriod.PrimaryNamedInsured
 
-    lexOrder.Dataset.Subjects.Subject[0].Id = subId
-    lexOrder.Dataset.Addresses.Address[0].Id = addId
-
     var subject1 = new SubjectListType_Subject()
     i= i+1
     subject1.Id = subId + i

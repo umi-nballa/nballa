@@ -10,6 +10,9 @@
     <Require
       name="coveragePatterns"
       type="gw.api.productmodel.ClausePattern[]"/>
+    <Require
+      name="coverable"
+      type="Coverable"/>
     <RowIterator
       editable="true"
       elementName="pattern"
@@ -22,7 +25,7 @@
         <Cell
           id="Coverage"
           label="displaykey.Web.Coverage.SearchPage.Coverage"
-          value="pattern.DisplayName"
+          value="(pattern == &quot;HODW_SpecificAddAmt_HOE_Ext&quot; and coverable.PolicyLine.BaseState == TC_CA) ? displaykey.una.productmodel.coverages.ModifiedReplacementCostName : pattern.DisplayName"
           width="200"
           wrap="true"/>
         <Cell

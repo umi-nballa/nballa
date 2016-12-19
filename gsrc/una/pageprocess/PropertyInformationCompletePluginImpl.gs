@@ -94,10 +94,10 @@ class PropertyInformationCompletePluginImpl {
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
       _address.AddressLine1 = location.AddressLine1
-      _address.State = location.State.DisplayName
+      _address.State = location.State.Code
       _address.City = location.City
       _address.PostalCode = location.PostalCode
-      _address.Country = location.Country.DisplayName
+      _address.Country = location.Country.Code
       try {
         tunaResponse = TUNAGateway.fetchPropertyInformationComplete(_address)
         policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))
@@ -786,7 +786,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.BCEGGrade.size() > 1) {
           //TODO
         } else {
-          cpBuilding.bceg = (res.BCEGGrade[0].Value) as String
+          cpBuilding.BCEG_Ext = (res.BCEGGrade[0].Value) as String
         }
       }
     } catch (exp: Exception) {
@@ -803,7 +803,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.ProtectionClass.size() > 1) {
           //TODO
         } else {
-          cpBuilding.fireprotectionclass = (res.ProtectionClass[0].Value) as String
+          cpBuilding.DwellingProtectionClassCode = (res.ProtectionClass[0].Value) as String
         }
       }
     } catch (exp: Exception) {

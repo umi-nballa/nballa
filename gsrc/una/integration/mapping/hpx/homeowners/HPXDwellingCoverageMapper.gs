@@ -84,6 +84,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     limit.CurrentTermAmt.Amt = currentCovTerm.OptionValue.Value != null ? currentCovTerm.OptionValue.Value : 0.00
     limit.NetChangeAmt.Amt = value - orignalValue
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true)
     limit.CoverageCd = coverage.PatternCode
@@ -101,6 +102,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = pctValue
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
         " | Max: " + max
@@ -119,6 +121,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = pctValue
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
         " | Max: " + max
@@ -137,6 +140,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
       limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : value
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode
       limit.LimitDesc = ""
@@ -156,6 +160,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = currentCovTerm.Value != null ? currentCovTerm.Value : 0.00
       limit.NetChangeAmt.Amt = previousCovTerm != null ? (value - orignalValue) : value
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = currentCovTerm.PatternCode == "HOLI_NumClercEmp_HOE_Ext" and value > 0 ? "Clerical Employees" :
                         currentCovTerm.PatternCode == "HOLI_NumSCMIDSOP_HOE_Ext" and value > 0  ?  "Salesperson, Collector or Messenger, Installation, Demonstration or Servicing Operation" :
@@ -180,6 +185,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = item.AdditionalLimit != null ? item.AdditionalLimit.Code : 0
+      limit.Rate = 0.00
       limit.FormatText = item.rentedtoOthers_Ext != null ? item.rentedtoOthers_Ext : false
       limit.LimitDesc = item.Description != null ? item.Description : ""
       limit.WrittenAmt.Amt = 0.00
@@ -218,6 +224,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = item.ExposureValue != null ? item.ExposureValue : 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = item.Description != null ? item.Description : ""
       limit.WrittenAmt.Amt = 0.00
@@ -254,6 +261,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = item.ExposureValue != null ? item.ExposureValue : 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = item.AdditionalLimit != null ? item.AdditionalLimit : 0
+      limit.Rate = 0.00
       limit.FormatText = item.rentedtoOthers_Ext != null ? item.rentedtoOthers_Ext : false
       limit.LimitDesc = item.PolicyLocation.DisplayName != null ? item.PolicyLocation.DisplayName : ""
       limit.WrittenAmt.Amt = 0.00
@@ -289,6 +297,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = item.NumberOfFamilies
       limit.LimitDesc = item.PolicyLocation.CompactName != null ? "Location : " + item.PolicyLocation.CompactName : ""
       limit.WrittenAmt.Amt = 0.00
@@ -324,6 +333,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -354,6 +364,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -384,6 +395,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -414,6 +426,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
@@ -444,6 +457,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.CurrentTermAmt.Amt = 0.00
       limit.NetChangeAmt.Amt = 0.00
       limit.FormatPct = 0
+      limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +

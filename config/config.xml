@@ -596,7 +596,8 @@
   <!-- For the job expiration batch process (JobExpire), the number of days past the effective / create
        date before a job can be expired.  JobExpire will examine all jobs meeting the date criteria that
        follows.  Only those jobs that have job.canExpireJob() true will be expired. -->
-  <param name="JobExpirationEffDateThreshold" value="7"/>
+  <!-- Never expire at UNA <param name="JobExpirationEffDateThreshold" value="7"/> -->
+  <param name="JobExpirationEffDateThreshold" value="240"/>
   <!-- Note: setting create date threshold to a negative number effectively disables create
        date checking, since no job can be created with a future create date.  EffDateThreshold
        (above) should still be active.  -->
@@ -621,7 +622,7 @@
   <!-- Set to true to enable PolicyCenter to expire this job type. -->
   <param name="JobExpireCheckRewrite" value="false"/>
   <!-- Set to true to enable PolicyCenter to expire this job type. -->
-  <param name="JobExpireCheckSubmission" value="true"/>
+  <param name="JobExpireCheckSubmission" value="false"/>
   <!-- Set to true to enable PolicyCenter to expire this job type. -->
   <param name="JobExpireCheckTestJob" value="false"/>
 

@@ -22,6 +22,8 @@ class CoveragesUtil {
                                                                                                                                                "DPDW_PersonalPropertyLimit_HOE",
                                                                                                                                                "DPDW_Additional_LivingExpLimit_HOE",
                                                                                                                                                "DPDW_FairRentalValue_Ext"}}
+  private static final var REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES = {"2", "3", "4", "16C", "17", "19C", "19N"}
+
   public static function isCoverageAvailable(coveragePattern : String, coverable : Coverable) : boolean{
     var result = true
 
@@ -114,7 +116,11 @@ class CoveragesUtil {
       case "BP7WindstormOrHailExcl_EXT":
         result = isWindstormOrHailExclusionAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_WindstromHailExc_HOE_Ext":
+        result = isWindstormOrHailExclusionAvailableHO(coverable as HomeownersLine_HOE)
+        break
       default:
+        //do nothing intentionally
     }
 
     return result
@@ -130,7 +136,11 @@ class CoveragesUtil {
       case "BP7FloridaChangesCondoUnitOwner_EXT":
         result = isFloridaChangesCondoUnitOwnerConditionAvailable(coverable as BP7BusinessOwnersLine)
         break
-        default:
+      case "HODW_ReplaceCostCovAPaymentSched_HOE":
+        result = isReplaceCostWithRoofPayScheduleConditionAvailable(coverable as HomeownersLine_HOE)
+        break
+      default:
+        break
     }
     return result
   }
@@ -148,6 +158,8 @@ class CoveragesUtil {
       case "BP7FLChngsEmployPracLiabInsCov_EXT":
         result = getFLChngsEmployPracLiabInsCoverageExistence(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_WindstromHailExc_HOE_Ext":
+        result = getWindstormOrHailExclusionExistence(coverable as HomeownersLine_HOE)
       default:
         break
     }
@@ -249,17 +261,17 @@ class CoveragesUtil {
   }
 
   private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = true
+    var result = dwelling.FloodCoverage_Ext
     var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
 
-    if(floodIneligibleZips.HasElements){
-      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+   if(result and floodIneligibleZips.HasElements){
+     var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
 
-      if(zipCode.length >= 5){
-        zipCode = zipCode.substring(0, 5)
-        result = !floodIneligibleZips.contains(zipCode)
-      }
-    }
+     if(zipCode.length >= 5){
+       zipCode = zipCode.substring(0, 5)
+       result = !floodIneligibleZips.contains(zipCode)
+     }
+   }
 
     return result
   }
@@ -327,6 +339,10 @@ class CoveragesUtil {
     return false
   }
 
+  private static function isWindstormOrHailExclusionAvailableHO(line : HomeownersLine_HOE) : boolean{
+    return line.BaseState == TC_FL and line.Dwelling.WHurricaneHailExclusion_Ext
+  }
+
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
     var result : ExistenceType = null
 
@@ -354,6 +370,18 @@ class CoveragesUtil {
     }
     return result
   }
+
+  private static function getWindstormOrHailExclusionExistence(line : HomeownersLine_HOE) : ExistenceType{
+    var result : ExistenceType
+
+    if(line.BaseState == TC_FL and line.Dwelling.WHurricaneHailExclusion_Ext){
+      result = TC_REQUIRED
+    }else{
+      result = TC_ELECTABLE
+    }
+
+    return result
+  }
   
   private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
     return  bp7Line.BP7EmployeeDishtyExists
@@ -379,6 +407,10 @@ class CoveragesUtil {
       }
     }
     return false
+  }
+
+  private static function isReplaceCostWithRoofPayScheduleConditionAvailable(hoLine : HomeownersLine_HOE) : boolean{
+    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
   }
 
   private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{

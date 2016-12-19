@@ -161,8 +161,8 @@ enhancement CPBuildingEnhancement : CPBuilding {
 
     clonedBuilding.Building.NumStories = this.Building.NumStories//NoOfStories_Ext
     clonedBuilding.Building.NumUnits = this.Building.NumUnits
-    clonedBuilding.fireprotectionclass = this.fireprotectionclass
-    clonedBuilding.bceg=this.bceg
+    clonedBuilding.DwellingProtectionClassCode = this.DwellingProtectionClassCode
+    clonedBuilding.BCEG_Ext=this.BCEG_Ext
 
     clonedBuilding.Building.ConstructionType = this.Building.ConstructionType
     clonedBuilding.SqFtExt=this.SqFtExt

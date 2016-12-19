@@ -59,6 +59,7 @@
           editable="true"
           id="yearbuiltTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.YearbuiltTunaReturned_Ext"
+          required="!dwelling.OverrideYearbuilt_Ext"
           value="dwelling.Yearbuilt"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.YearBuilt)"/>
         <Input
@@ -93,6 +94,7 @@
           editable="true"
           id="TerritoryCodeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TerritoryCodeTunaReturned_Ext"
+          required="!dwelling.HOLocation.OverrideTerritoryCode_Ext"
           value="dwelling.HOLocation.TerritoryCodeTunaReturned_Ext"
           valueRange="tunaAppResponse.TerritoryCodes"/>
         <Input
@@ -201,6 +203,7 @@
             editable="true"
             id="PCCodeTunaReturned_Ext"
             label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
+            required="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
             value="dwelling.HOLocation.DwellingProtectionClassCode"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
             <PostOnChange

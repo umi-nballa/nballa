@@ -243,7 +243,7 @@
         editable="true"
         id="FoundationMaterial"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationMaterial"
-        required="false"
+        required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_SC &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
         value="dwelling.FoundationMaterial_Ext">
         <PostOnChange/>
       </TypeKeyInput>
@@ -251,7 +251,7 @@
         editable="true"
         id="FoundationHeight"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationHeight"
-        required="false"
+        required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
         value="dwelling.FoundationHeight_Ext">
         <PostOnChange/>
       </TypeKeyInput>
@@ -289,30 +289,47 @@
       <Label
         label="&quot;Heat Source - Select all that apply&quot;"/>
       <CheckBoxInput
+        editable="true"
         id="heat1"
         label="&quot;Central Electric&quot;"
-        value="dwelling.HeatSrcCentralElectric"/>
+        value="dwelling.HeatSrcCentralElectric">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat2"
         label="&quot;Central Natural gas&quot;"
-        value="dwelling.HeatSrcCentralNaturalGas"/>
+        value="dwelling.HeatSrcCentralNaturalGas">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat3"
         label="&quot;Central Propane&quot;"
-        value="dwelling.HeatSrcCentralPropane"/>
+        value="dwelling.HeatSrcCentralPropane">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat4"
         label="&quot;Central - Other&quot;"
-        value="dwelling.HeatSrcCentralOther"/>
+        value="dwelling.HeatSrcCentralOther">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat5"
         label="&quot;Fireplace&quot;"
         value="dwelling.HeatSrcFireplace"/>
       <CheckBoxInput
+        editable="true"
         id="heat6"
         label="&quot;Wood Burning Stove&quot;"
-        value="dwelling.HeatSrcWoodBurningStove"/>
+        value="dwelling.HeatSrcWoodBurningStove">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat7"
         label="&quot;Portable - All fuel types&quot;"
         value="dwelling.HeatSrcPortableAllFuelTypes"/>
@@ -323,6 +340,24 @@
         required="true"
         value="dwelling.PrimaryHeatingFuelTankLocation"
         visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
+      <BooleanRadioInput
+        editable="true"
+        id="Installedlicensed"
+        label="displaykey.Web.Homeowners.DwellingConstruction.InstalledLicensed"
+        value="dwelling.HeatSrcInstalledbyLicIns"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
+      <BooleanRadioInput
+        editable="true"
+        id="ULListedstove"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ULListedStove"
+        value="dwelling.ULListedstoveandchimneyflue"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
+      <BooleanRadioInput
+        editable="true"
+        id="Sittingonnoncombbase"
+        label="displaykey.Web.Homeowners.DwellingConstruction.Sittingonnoncombase"
+        value="dwelling.Sittingonnoncombustiblebase"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
       <!-- <TypeKeyInput
         actionAvailable="false"
         editable="true"

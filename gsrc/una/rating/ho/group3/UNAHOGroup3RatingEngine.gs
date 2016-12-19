@@ -91,7 +91,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
         break
       case HODW_Personal_Property_HOE:
-        if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 and dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
           rateIncreasedPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_BusinessProperty_HOE_Ext:
@@ -116,6 +116,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
         break
       case HODW_OrdinanceCov_HOE:
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
         rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
         break
       case HODW_LimitedScreenCov_HOE_Ext:
@@ -128,7 +129,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateScheduledPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_Dwelling_Cov_HOE:
-        if (dwellingCov.HODW_ExecutiveCov_HOE_ExtTerm.Value)
+        if (dwellingCov.HODW_ExecutiveCov_HOE_ExtTerm.Value and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
           rateExecutiveCoverage(dwellingCov, dateRange)
         break
       case HODW_SpecificOtherStructure_HOE_Ext:
@@ -151,28 +152,46 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
       rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
     }
-    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
-      rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
-    }
-    if(isMatureHomeOwnerDiscountApplicable(PolicyLine)){
-      rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
-    }
-    rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
     rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
-    if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountsOrSurchargeRatingInfo.AgeOfHome < 10)
-      ratePreferredBuilderCredit(dateRange)
+    if(PolicyLine.Dwelling?.PolicyPeriod?.Policy?.PriorPolicies?.Count == 0)
+      rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
+
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+      if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+        rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
+      }
+      if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+        _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
+      }
+
+      if(isMatureHomeOwnerDiscountApplicable(PolicyLine)){
+        rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
+      }
+      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+
+      if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountsOrSurchargeRatingInfo.AgeOfHome < 10)
+        ratePreferredBuilderCredit(dateRange)
+    }
+
 
     //rating all wind hail included, credit and discounts
     if(!windOrHailExcluded){
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
       if(constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT.Code)
         rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTWINDPREMIUM)
-      if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
-        rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEWINDPREMIUM)
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
-        rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
       /*if(dwelling?.HOLocation?.BCEG_Ext == BCEG_CODE_FOR_NON_PARTICIPATION)
         rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)*/
+
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+        if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
+          rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEWINDPREMIUM)
+        rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
+        if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+          _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+          rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEWIND)
+        }
+      }
     }
 
     updateWindBasePremium()
@@ -185,10 +204,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     updateFinalAdjustedAOPBasePremium()
 
+    _hoRatingInfo.FinalAdjustedWindBasePremium = _hoRatingInfo.AdjustedWindBasePremium + _hoRatingInfo.BuildingCodeComplianceGradingCredit + _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction
     //TODO : Need to update the final adjusted wind premium
     _hoRatingInfo.TotalBasePremium = _hoRatingInfo.FinalAdjustedAOPBasePremium + _hoRatingInfo.FinalAdjustedWindBasePremium
 
-    if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
+    if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
   }
@@ -466,6 +486,24 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Function to rate the No prior insurance
+   */
+  function rateNoPriorInsurance(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateNoPriorInsurance", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.NO_PRIOR_INSURANCE_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.NoPriorInsurance = costData?.ActualTermAmount
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("No Prior Insurance Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Function to rate the Mature Homeowner Discount
    */
   function rateMatureHomeOwnerDiscount(dateRange: DateRange, costType : HOCostType_Ext) {
@@ -582,6 +620,25 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForWind = costData?.ActualTermAmount
     }
     _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Town house Or Row house Surcharge
+   */
+  function rateTownhouseOrRowhouseSurcharge(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateTownhouseOrRowhouseSurcharge", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
+        _hoRatingInfo.TownHouseOrRowHouseSurchargeAOP = costData?.ActualTermAmount
+      else
+        _hoRatingInfo.TownHouseOrRowHouseSurchargeWind = costData?.ActualTermAmount
+    }
+    _logger.debug("Townhouse Or Surcharge Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -765,8 +822,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Adjusting the total discount if it exceeds the maximum discount
    */
   function rateMaximumDiscountAdjustmentForAOP(dateRange: DateRange) {
-    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.TownHouseOrRowHouseSurchargeAOP + _hoRatingInfo.ProtectiveDevicesDiscount +
-                              _hoRatingInfo.PreferredBuilderCredit + _hoRatingInfo.MatureHomeOwnerDiscountAOP + _hoRatingInfo.NoPriorInsurance + _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP
+    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.NoPriorInsurance + _hoRatingInfo.ProtectiveDevicesDiscount +
+                              _hoRatingInfo.TownHouseOrRowHouseSurchargeAOP + _hoRatingInfo.PreferredBuilderCredit + _hoRatingInfo.MatureHomeOwnerDiscountAOP +
+                              _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP
     if (_hoRatingInfo.AgeOfHomeDiscount < 0)
       totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
     if (_hoRatingInfo.HigherAllPerilDeductibleAOP < 0)

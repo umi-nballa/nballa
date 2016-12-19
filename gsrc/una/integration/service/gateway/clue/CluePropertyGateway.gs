@@ -332,10 +332,11 @@ class CluePropertyGateway implements CluePropertyInterface {
     subMailingAddress.Id = addId + x
 
     addressSub1 = mapSubjectAddress(subMailingAddress,"Mailing")
+    subject1.Address.add(addressSub1)
 
     }
 
-    subject1.Address.add(addressSub1)
+
 
 
 
@@ -348,10 +349,11 @@ class CluePropertyGateway implements CluePropertyInterface {
       subMailingAddress.Id = addId + x
 
       addressSub2 = mapSubjectAddress(subMailingAddress,"Former")
+      subject1.Address.add(addressSub2)
 
     }
 
-    subject1.Address.add(addressSub2)
+
 
 
 
@@ -368,6 +370,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     lexOrder.Products.ClueProperty[0].RiskAddress = address
 
     orderXml = lexOrder.asUTFString()
+    _logger.debug("CLUE order XML : " + orderXml )
     return orderXml
   }
 

@@ -276,6 +276,9 @@ class CluePropertyGateway implements CluePropertyInterface {
     // Set subject details for the primary named insured
     var pHolder = pPeriod.PrimaryNamedInsured
 
+    lexOrder.Dataset.Subjects.Subject[0].Id = subId
+    lexOrder.Dataset.Addresses.Address[0].Id = addId
+
     var subject1 = new SubjectListType_Subject()
     i= i+1
     subject1.Id = subId + i
@@ -314,12 +317,8 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     }
     lexOrder.Dataset.Addresses.Address.add(address)
-
     var addressSub = mapSubjectAddress(address,"Primary")
-
     subject1.Address.add(addressSub)
-
-
 
 
 
@@ -333,11 +332,9 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     addressSub1 = mapSubjectAddress(subMailingAddress,"Mailing")
     subject1.Address.add(addressSub1)
+    lexOrder.Dataset.Addresses.Address.add(subMailingAddress)
 
     }
-
-
-
 
 
     var priorAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_PRIORRESIDENCEADD1_EXT)
@@ -345,16 +342,16 @@ class CluePropertyGateway implements CluePropertyInterface {
     var address2 =  new AddressListType_Address()
     if(mailingAddress != null)  {
       x = x + 1
-      var subMailingAddress = mapAddress(address2,mailingAddress)
-      subMailingAddress.Id = addId + x
+      var priorRiskAddress = mapAddress(address2,mailingAddress)
+      priorRiskAddress.Id = addId + x
 
-      addressSub2 = mapSubjectAddress(subMailingAddress,"Former")
+      addressSub2 = mapSubjectAddress(priorRiskAddress,"Former")
       subject1.Address.add(addressSub2)
+      lexOrder.Dataset.Addresses.Address.add(priorRiskAddress)
 
     }
 
-
-
+    lexOrder.Dataset.Subjects.Subject.add(subject1)
 
 
     var formatter = new SimpleDateFormat(DATE_FORMAT)

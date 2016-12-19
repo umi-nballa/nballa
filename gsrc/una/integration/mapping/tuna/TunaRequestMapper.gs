@@ -64,9 +64,9 @@ class TunaRequestMapper {
       payloadRequestMapping()
       message.Address.Street = address.AddressLine1
       message.Address.City = address.City
-      message.Address.State = address.State.DisplayName
+      message.Address.State = address.State.Code
       message.Address.ZipCode = address.PostalCode
-      message.Address.Country = address.Country.DisplayName
+      message.Address.Country = address.Country.Code
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For scrubonly ", this.IntrinsicType)
       return message
     } catch (exp: Exception) {
@@ -107,7 +107,7 @@ class TunaRequestMapper {
    * Default field mapping across all the requests is being done in this method
    *
    * */
-  private function payloadRequestMapping()
+  private function  payloadRequestMapping()
   {
     try {
       var df = new SimpleDateFormat(PropertiesHolder.getProperty("TUNA_DATE_FORMAT"))

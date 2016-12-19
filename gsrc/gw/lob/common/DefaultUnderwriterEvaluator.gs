@@ -251,8 +251,8 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   private function blockSpecificConstructionTypes()
   {
    var state = _policyEvalContext.Period?.PrimaryLocation?.State?.Code
-    if ( state == typekey.State.TC_NV.Code || state == typekey.State.TC_TX.Code)  {
       var dwelling = _policyEvalContext.Period?.HomeownersLine_HOE?.Dwelling
+    if(typekey.State.TF_HOSTATES.TypeKeys.hasMatch( \ elt1 -> elt1.Code == state)){
       var constype = (dwelling?.OverrideConstructionType_Ext) ? dwelling?.ConstTypeOverridden_Ext : dwelling?.ConstructionType
           if(constype != null && ((constype == typekey.ConstructionType_HOE.TC_ICF_EXT  || constype== typekey.ConstructionType_HOE.TC_L )) ||
             ( state == typekey.State.TC_TX.Code && constype== typekey.ConstructionType_HOE.TC_EARTH_EXT ))

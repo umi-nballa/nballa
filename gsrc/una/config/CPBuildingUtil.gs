@@ -122,7 +122,7 @@ No default response applies
  */
    if(bldg?.Building?.YearBuilt>=2002)
    {
-    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
       bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
     else
     {
@@ -199,7 +199,7 @@ If Roof Covering does not = Reinforced Concrete then no default response.
 
     if(bldg?.Building?.YearBuilt>=2002)
     {
-      if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+      if(bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
         bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
       else
       {
@@ -276,7 +276,7 @@ Default response to HVHZ if Building Address county = Miami-Dade or Broward
 Default response to B if Building Address county = All Other Counties
      */
 
-    if(bldg?.windmiti5!=null && bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg?.windmiti5!=null && bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
     {
       if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.windmiti5==true))
         bldg.terexp=typekey.CPTerrainExp_Ext.TC_HVHZ//"HVHZ"
@@ -315,7 +315,7 @@ Default response to B if Building Address county = All Other Counties
 
 
      */
-    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
       bldg?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_120GREATER//"120"
     else
       {

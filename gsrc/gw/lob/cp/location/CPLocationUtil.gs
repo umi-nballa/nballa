@@ -34,16 +34,18 @@ class CPLocationUtil {
 
   static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, building:CPBuilding) : boolean {
     /************ location entity *****/
-    building.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
-    building.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
-    building.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-    building.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
-    building.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
-    building.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-    building.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-    building.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-    building.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
-
+    if(building!=null && tunaAppResponse!=null)
+      {
+    building?.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
+    building?.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+    building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+    building?.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
+    building?.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
+    building?.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+    building?.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+    building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+    building?.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+       }
     return true
   }
 

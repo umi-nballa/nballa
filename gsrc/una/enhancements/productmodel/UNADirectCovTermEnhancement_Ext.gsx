@@ -30,7 +30,7 @@ enhancement UNADirectCovTermEnhancement_Ext: gw.api.domain.covterm.DirectCovTerm
     var baseState = this.Clause.OwningCoverable.PolicyLine.BaseState
     var roundingFactor = ConfigParamsUtil.getInt(ConfigParameterType_Ext.TC_ROUNDINGFACTOR, baseState, this.PatternCode)
 
-    if(this.Value != null and roundingFactor != null){
+    if(this.Value != null and roundingFactor != null and roundingFactor > 0){
       this.Value = MathUtil.roundTo(this.Value.doubleValue(), roundingFactor, roundingMode)
     }
   }

@@ -92,19 +92,12 @@ class CoverageTermAvailabilityUtil {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm?.Value = cLine?.CPOrdinanceOrLawType.Code
       }
 
-      _logger.info("hasnoavailableoptions  b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       {
-        _logger.info("1 " + cBuilding)
-        _logger.info("2 " + cBuilding?.CPOrdinanceorLaw_EXT)
-        _logger.info("3 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm)
-        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.AvailableOptions)
-        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue)
 
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue = cLine?.CPCoverageB?.Code
       }
 
-      _logger.info("hasnoavailableoptions c "+ cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       if(cLine.CPCoverageC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue = cLine?.CPCoverageC?.Code
@@ -396,15 +389,19 @@ class CoverageTermAvailabilityUtil {
     var filterPrefix = getAOPFilterPrefix(dwelling)
     var state = dwelling.HOLine.BaseState
     var configType = ConfigParameterType_Ext.TC_AOP_RESTRICTEDOPTIONS
+    var namedStormValue = dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
 
     if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix + option.CovTermPattern.CodeIdentifier)){
-      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value.setScale(3)
+      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
+      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + namedStormValue + allPerilsValue)
       var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
 
-      if(valueRestrictedOptions != null){
+      if(namedStormRestrictedOptions != null){
+        result = namedStormRestrictedOptions.contains(optionValue)
+      }else if(valueRestrictedOptions != null){
         result = valueRestrictedOptions.contains(optionValue)
       }else if(defaultRestrictedOptions != null){
         result = defaultRestrictedOptions.contains(optionValue)
@@ -487,22 +484,14 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovALimitAvailable(building : CPBuilding):boolean
   {
-
-    _logger.info("Entered isOrdinanceCovALimitAvailable "+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-    + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
       {
-        _logger.info("returning true")
       return true
       }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -510,17 +499,11 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovBLimitAvailable(building : CPBuilding):boolean
   {
-    _logger.info("Entered isOrdinanceCovBLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
-
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT)
     {
-      _logger.info("returning true")
       return true
     }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -529,19 +512,13 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovCLimitAvailable(building : CPBuilding):boolean
   {
-    _logger.info("Entered isOrdinanceCovCLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
     {
-      _logger.info("returning true")
       return true
     }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -550,15 +527,11 @@ class CoverageTermAvailabilityUtil {
 
     private static function isOrdinanceCovBCCombinedLimitAvailable(building : CPBuilding):boolean
     {
-      _logger.info("Entered isOrdinanceCovBCCombinedLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value+":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
       if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
       {
-        _logger.info("returning true")
         return true
       }
     {
-      _logger.info("returning false")
       return false
     }
          }

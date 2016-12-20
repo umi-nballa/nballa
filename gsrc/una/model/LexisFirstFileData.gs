@@ -1,7 +1,7 @@
 package una.model
 
 uses una.integration.framework.file.outbound.persistence.OutboundFileData
-
+uses java.math.BigDecimal
 
 /**
  * Created for LexisFirst Mapping
@@ -97,8 +97,8 @@ class LexisFirstFileData extends OutboundFileData {
   var endorsement4: String as Endorsement4
   var endorsementState5: String as EndorsementState5
   var endorsement5: String as Endorsement5
-  var totalPolicyPremium: String as TotalPolicyPremium
-  var premiumAmountDue: String as PremiumAmountDue
+  var totalPolicyPremium: BigDecimal as TotalPolicyPremium
+  var premiumAmountDue: BigDecimal as PremiumAmountDue
   var increasedPremiumAmountDue: String as IncreasedPremiumAmountDue
   var maximumPremiumAmountDue: String as MaximumPremiumAmountDue
   var premiumAmountDueDate: String as PremiumAmountDueDate
@@ -116,11 +116,7 @@ class LexisFirstFileData extends OutboundFileData {
   var communityNumberORMapNumber: String as CommunityNumberORMapNumber
   var elevation: String as Elevation
   var notes: String as Notes
-  var lenderAccountNumber: String as LenderAccountNumber
-  var policyInceptionDate: String as PolicyInceptionDate
-  var dateofBirth: String as DateofBirth
-  var propertyType: String as PropertyType
-  var contributingAMBestNumber: String as ContributingAMBestNumber
+
 
 
 

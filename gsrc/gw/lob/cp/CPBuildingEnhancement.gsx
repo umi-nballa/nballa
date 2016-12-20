@@ -144,6 +144,33 @@ enhancement CPBuildingEnhancement : CPBuilding {
       clonedCoverage.setEffectiveWindow(clonedBuilding.SliceDate, this.Branch.PeriodEnd)
       clonedBuilding.addToCoverages(clonedCoverage)
     }
+
+    //Adding schedule coverage terms that did not copy over
+    if(this.CPOptionalOutdoorProperty_EXTExists)
+      {
+        this.CPOptionalOutdoorProperty_EXT.scheduledItem_Ext.each( \ elt ->
+        {
+            clonedBuilding.CPOptionalOutdoorProperty_EXT.addToScheduledItem_Ext(elt)
+        })
+      }
+
+    if(this.CPWindstormProtectiveDevices_EXTExists)
+    {
+      this.CPWindstormProtectiveDevices_EXT.scheduledItem_Ext.each( \ elt ->
+      {
+        clonedBuilding.CPWindstormProtectiveDevices_EXT.addToScheduledItem_Ext(elt)
+      })
+    }
+
+    if(this.CPProtectiveSafeguards_EXTExists)
+    {
+      this.CPProtectiveSafeguards_EXT.scheduledItem_Ext.each( \ elt ->
+      {
+        clonedBuilding.CPProtectiveSafeguards_EXT.addToScheduledItem_Ext(elt)
+      })
+    }
+
+
     /*for (var exclusion in this.ExclusionsFromCoverable) {
       var clonedExclusion = exclusion.copyExclusion() as CPBuildingExcl
       clonedExclusion.setEffectiveWindow(clonedBuilding.SliceDate, this.Branch.PeriodEnd)
@@ -193,6 +220,8 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.roofwl=this.roofwl
     clonedBuilding.roofdk=this.roofdk
     clonedBuilding.roofcv=this.roofcv
+    clonedBuilding.roofcvatach=this.roofcvatach
+
     clonedBuilding.openprt=this.openprt
 
 

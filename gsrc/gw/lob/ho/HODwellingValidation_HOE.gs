@@ -110,9 +110,9 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.Foundation == null){
       addErrorOrWarning("Foundation", displaykey.Web.Policy.HomeownersLine.Validation.FoundationTypeRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.PrimaryHeating == null) {
-      addErrorOrWarning("PrimaryHeating", displaykey.Web.Policy.HomeownersLine.Validation.PrimaryHeatingRequired, "HomeownersDwellingConstruction")
-    }
+    //if (HODwelling.PrimaryHeating == null) {
+    //  addErrorOrWarning("PrimaryHeating", displaykey.Web.Policy.HomeownersLine.Validation.PrimaryHeatingRequired, "HomeownersDwellingConstruction")
+    //}
     if (HODwelling.PlumbingType == null) {
       addErrorOrWarning("PlumbingType", displaykey.Web.Policy.HomeownersLine.Validation.PlumbingTypeRequired, "HomeownersDwellingConstruction")
     }

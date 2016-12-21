@@ -17,11 +17,18 @@
       name="line"
       type="String"/>
     <BooleanRadioInput
-      editable="polLocation.AccountLocation.New"
+      id="AddressScrubbed"
+      label="displaykey.Web.Account.Locations.AddressScrubbed"
+      required="true"
+      value="polLocation.AccountLocation.addressScrub_Ext">
+      <PostOnChange/>
+    </BooleanRadioInput>
+    <BooleanRadioInput
+      editable="false//polLocation.AccountLocation.New"
       id="NonSpecificLocation"
       label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
       value="polLocation.AccountLocation.NonSpecific"
-      visible="false//not polLocation.AccountLocation.New or supportsNonSpecificLocation">
+      visible="true//not polLocation.AccountLocation.New or supportsNonSpecificLocation">
       <PostOnChange/>
     </BooleanRadioInput>
     <Input
@@ -37,7 +44,7 @@
       value="polLocation.AccountLocation.LocationName"
       visible="polLocation.Branch.Policy.Product.Commercial"/>
     <InputSetRef
-      def="TargetedAddressInputSet(new una.extensions.UnaPolicyLocationAddressOwner(polLocation))"
+      def="TargetedAddressInputSet(new una.extensions.UnaPolicyLocationAddressOwner(polLocation,polLocation.Branch))"
       mode="&quot;location&quot;//polLocation.CountryCode"
       visible="polLocation.SyncedToAccount"
       widgets="LocationDetailInputSet"/>
@@ -79,18 +86,19 @@
     <InputSet
       editable="true"
       id="TerritoryCodeInputSet"
-      visible="polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null //&amp;&amp; !line.equals(&quot;cpline&quot;)">
+      visible="true//polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null //&amp;&amp; !line.equals(&quot;cpline&quot;)">
       <ContentInput>
         <Link
           action="polLocation.TerritoryCodes.each(\ c -&gt; c.fillWithFirst())"
           hideIfReadOnly="true"
           id="AutofillLink"
           label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode.Autofill"
-          styleClass="miniButton"/>
+          styleClass="miniButton"
+          visible="false"/>
       </ContentInput>
       <InputIterator
         elementName="territoryCode"
-        value="polLocation.TerritoryCodes.where( \ elt -&gt; elt.PolicyLinePattern.CodeIdentifier!=&quot;GLLine&quot;)">
+        value="getTC()">
         <IteratorSort
           sortBy="territoryCode.PolicyLinePattern.Priority"
           sortOrder="1"/>
@@ -101,9 +109,8 @@
           label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(territoryCode.PolicyLinePattern.DisplayName)"
           pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, territoryCode)"
           required="una.config.Locationutil.isTerritoryCodeRequired(territoryCode, line)//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"
-          validationExpression="territoryCode.prelimValidate()"
           value="territoryCode.Code"
-          visible="line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>
+          visible="true//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>
         <ContentInput
           hideIfReadOnly="true"
           id="AutofillButton"/>
@@ -137,6 +144,17 @@ function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLoc
       throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
     }
   }
+}
+
+function getTC():TerritoryCode[]{
+  var TC : TerritoryCode[]
+  if (polLocation.Branch.HomeownersLine_HOEExists)
+    TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="HomeownersLine_HOE")
+   
+  if(polLocation.Branch.CPLineExists)
+     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="CPLine" or  elt.PolicyLinePatternCode=="GLLine")
+    
+   return TC 
 }]]></Code>
   </InputSet>
 </PCF>

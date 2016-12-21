@@ -126,6 +126,7 @@ class CCPolicySearchIntegration {
     criteria.NameCriteria.FirstNameKanji = ccCriteria.FirstNameKanji
     criteria.NameCriteria.LastName = ccCriteria.LastName
     criteria.NameCriteria.LastNameKanji = ccCriteria.LastNameKanji
+    criteria.NameCriteria.MiddleName_Ext = ccCriteria.MiddleName
     criteria.NameCriteria.CompanyName = ccCriteria.CompanyName
     criteria.NameCriteria.CompanyNameKanji = ccCriteria.CompanyNameKanji
     criteria.NameCriteria.OfficialId = ccCriteria.TaxID

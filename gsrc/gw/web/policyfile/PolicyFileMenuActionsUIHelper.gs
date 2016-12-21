@@ -55,4 +55,24 @@ class PolicyFileMenuActionsUIHelper {
       RenewalWizard.go(renewal, renewal.LatestPeriod)
     }
   }
+
+  // Method that created History event for policy Viewing
+  public static function createHistoryEventPolicy (policyPeriod : entity.PolicyPeriod){
+    if(policyPeriod != null)    {
+    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+     var Job = bundle.add(policyPeriod.Job)
+     Job.createCustomHistoryEvent(CustomHistoryType.TC_VIEWPOLICY, \ -> displaykey.Web.Policy.HistoryEvent.Msg)
+    })
+    }
+  }
+
+  // Method that created History event for transaction Viewing
+  public static function createHistoryEventTransaction (policyPeriod : entity.PolicyPeriod){
+     if(policyPeriod != null)    {
+    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+      var Job = bundle.add(policyPeriod.Job)
+      Job.createCustomHistoryEvent(CustomHistoryType.TC_VIEWTRANSACTION, \ -> displaykey.Web.Transaction.History.Event.Msg)
+    })
+  }
+   }
 }

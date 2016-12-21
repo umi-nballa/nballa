@@ -24,7 +24,11 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
     return null
   }
 
-  static function getPhoneNumberValue(contact:Contact):String{
+  function setSERPIndicator(initiateSERP:boolean)  {
+    this.SERPEndorsed_Ext = initiateSERP
+  }
+
+  function getPhoneNumberValue(contact:Contact):String{
     var phoneNumberValue:String
     if(contact typeis Company){
       phoneNumberValue =  contact.WorkPhoneValue
@@ -42,25 +46,16 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
     return phoneNumberValue
   }
 
-  static function getLocationValue(policyPeriod : PolicyPeriod):String{
+  function getLocationValue(policyPeriod : PolicyPeriod):String{
     var location:String
     if(policyPeriod.HomeownersLine_HOEExists) {
-      location = policyPeriod.HomeownersLine_HOE.HOLocation.PolicyLocation
+      location = (policyPeriod.HomeownersLine_HOE.HOLocation.PolicyLocation) as String
     }else if(policyPeriod.BP7LineExists){
-      for (pLoc in policyPeriod.BP7Line.BP7Locations.PolicyLocation){
+      for (pLoc in policyPeriod.BP7Line.BP7Locations*.PolicyLocation){
         if(pLoc.PrimaryLoc)
           location = pLoc.DisplayName
       }
     }
     return location
-  }
-
-  function setSERPIndicator(job:Job,initiateSERP:boolean)  {
-    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-      job = bundle.add(job)
-      if(job.LatestPeriod!=null){
-        job.LatestPeriod.SERPEndorsed_Ext = initiateSERP
-      }
-    })
   }
 }

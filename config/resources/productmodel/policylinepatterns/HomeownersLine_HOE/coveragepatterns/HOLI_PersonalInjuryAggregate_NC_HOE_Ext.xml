@@ -11,5 +11,11 @@
   priority="17500"
   public-id="HOLI_PersonalInjuryAggregate_NC_HOE_Ext"
   referenceDateByType="PolicyTerm">
+  <InitializeScript><![CDATA[
+  var line = HOLI_PersonalInjuryAggregate_NC_HOE_Ext.OwningCoverable as entity.HomeownersLine_HOE
+  var clause = line.HOLI_PersonalInjury_NC_HOE_Ext
+ if(line.HOLI_PersonalInjury_NC_HOE_ExtExists){
+  line.removeCoverageConditionOrExclusionFromCoverable(clause)
+}]]></InitializeScript>
   <CovTerms/>
 </CoveragePattern>

@@ -1,13 +1,15 @@
 package gw.plugin.messaging
 
 uses gw.api.system.PCLoggerCategory
+uses gw.api.system.PLConfigParameters
 uses gw.plugin.Plugins
 uses gw.plugin.billing.IBillingSystemPlugin
-
-uses java.lang.IllegalStateException
-uses java.lang.Exception
-uses gw.api.system.PLConfigParameters
 uses gw.plugin.billing.bc800.PolicyInfoUtil
+uses una.integration.Helper.LexisFirstOutBoundHelper
+
+uses java.lang.Exception
+uses java.lang.IllegalStateException
+
 
 @Export
 class BillingMessageTransport implements MessageTransport {
@@ -27,10 +29,11 @@ class BillingMessageTransport implements MessageTransport {
   public static final var PREMIUMREPORT_MSG : String = "PremiumReport"
   public static final var WAIVEFINALAUDIT_MSG : String = "WaiveFinalAudit"
   public static final var NEWFINALAUDIT_MSG : String = "ScheduleFinalAudit"
-
   public static final var UPDATECONTACT_MSG : String = "ContactChanged"
 
+
   var logger = PCLoggerCategory.BILLING_SYSTEM_PLUGIN
+  var lexisFirstOutBoundHelper = new LexisFirstOutBoundHelper()
 
   override function send(message: Message, payLoad: String) {
     var plugin = Plugins.get(IBillingSystemPlugin)
@@ -60,6 +63,9 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.createPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Lexis First -  start
+          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
+          //Lexis First -  end
           break
         case CANCELPERIOD_MSG:
           if(not (policyPeriod.Job typeis Cancellation)){
@@ -74,6 +80,9 @@ class BillingMessageTransport implements MessageTransport {
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
           }
+          //Lexis First -  start
+          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
+          //Lexis First -  end
           break
         case ISSUEPERIOD_MSG:
           if(not (policyPeriod.Job typeis Issuance)){
@@ -82,6 +91,10 @@ class BillingMessageTransport implements MessageTransport {
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
           }
+          //Lexis First -  start
+          if(!policyPeriod.Job.SupressPrint) // If there is an endorsement of type suppress print,we are not triggering Lexis first
+          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
+          //Lexis First -  end
           break
 
         case REINSTATEPERIOD_MSG:
@@ -89,6 +102,9 @@ class BillingMessageTransport implements MessageTransport {
             throw new IllegalStateException("Unexpected job type ${policyPeriod.Job.Subtype} for message ${message.EventName}")
           }
           plugin.issueReinstatement(policyPeriod, getTransactionId(message))
+          //Lexis First -  start
+          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
+          //Lexis First -  end
           break
         case RENEWPERIOD_MSG:
           if(not (policyPeriod.Job typeis Renewal)){
@@ -97,6 +113,9 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.renewPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Lexis First -  start
+          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
+           //Lexis First -  end
           break
         case REWRITEPERIOD_MSG:
           if(not (policyPeriod.Job typeis Rewrite)){
@@ -104,6 +123,9 @@ class BillingMessageTransport implements MessageTransport {
           }
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.rewritePolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Lexis First -  start
+          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
+          //Lexis First -  start
           break
         case FINALAUDIT_MSG:
           if(not (policyPeriod.Job typeis Audit)){
@@ -256,6 +278,8 @@ class BillingMessageTransport implements MessageTransport {
 
     return TRANSACTION_ID_PREFIX + message.ID
   }
+
+
 
   override function resume() { }
 

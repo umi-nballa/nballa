@@ -1,20 +1,52 @@
 <?xml version="1.0"?>
-<!--Covered Location-->
-<entity xmlns="http://guidewire.com/datamodel" entity="CoveredLocation_HOE" loadable="false" table="coveredlocation_hoe" exportable="true" final="false" type="effdated" platform="false" 
-	effDatedBranchType="PolicyPeriod">
+<!-- Covered Location -->
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  effDatedBranchType="PolicyPeriod"
+  entity="CoveredLocation_HOE"
+  exportable="true"
+  final="false"
+  loadable="false"
+  table="coveredlocation_hoe"
+  type="effdated">
   <implementsInterface
     iface="gw.api.copier.EffDatedCopyable"
     impl="gw.lob.ho.CoveredLocationCopier_HOE"/>
   <implementsInterface
     iface="gw.api.logicalmatch.EffDatedLogicalMatcher"
     impl="gw.lob.ho.CoveredLocationMatcher_HOE"/>
-
-  <column name="LocationNumber" nullok="false" type="integer" desc="Location number (auto generated)"/>
-  <column name="Description" type="varchar" desc="Description" nullok="true">
-      <columnParam name="size" value="100"/>
+  <column
+    desc="Location number (auto generated)"
+    name="LocationNumber"
+    nullok="false"
+    type="integer"/>
+  <column
+    desc="Description"
+    name="Description"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="100"/>
   </column>
-  <typekey name="LocationLimit" typelist="LocationLimit_HOE" desc="Increase in limit required for the location" nullok="true"/>
-  <foreignkey fkentity="HomeownersLineCov_HOE" name="HOLineCov" desc="Line-level coverage for Homeowners" nullok="false"/>
-  <foreignkey fkentity="PolicyLocation" name="PolicyLocation" desc="Location possibly for dwelling" nullok="false"/>
+  <typekey
+    desc="Increase in limit required for the location"
+    name="LocationLimit"
+    nullok="true"
+    typelist="LocationLimit_HOE"/>
+  <foreignkey
+    desc="Line-level coverage for Homeowners"
+    fkentity="HomeownersLineCov_HOE"
+    name="HOLineCov"
+    nullok="false"/>
+  <foreignkey
+    desc="Location possibly for dwelling"
+    fkentity="PolicyLocation"
+    name="PolicyLocation"
+    nullok="false"/>
+  <column
+    desc="Number of Familes at the covered location"
+    name="NumberOfFamilies"
+    nullok="true"
+    type="integer"/>
 </entity>
-

@@ -1,6 +1,10 @@
 package una.pageprocess
 
 uses gw.api.web.job.JobWizardHelper
+uses gw.api.productmodel.ClausePattern
+uses gw.api.util.DisplayableException
+uses java.math.BigDecimal
+
 /**
  * Created with IntelliJ IDEA.
  * User: tmanickam
@@ -17,37 +21,51 @@ class BP7PCFController {
     this._bp7Line = bp7Line
   }
 
-  static function setTheftLimitationValue(line: BP7BusinessOwnersLine):String{
-    var optionValue:String
-    if(line.BP7TheftExclusion_EXTExists){
-      for(classification in line.AllClassifications){
-        if(classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm!=null){
-          classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.setValueFromString("BP7TheftExcluded_EXT")
-          optionValue = (classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue) as String
-        }
-      }
-    }
-    return optionValue
-  }
-
-  static function isBarbAndBeautiProfLiabCoverageAvailable(classification:BP7Classification):boolean{
-    if( classification typeis BP7BarbersBeauticiansProfessionalLiability_EXT and (classification.ClassCode_Ext=="71332" ||
-        classification.ClassCode_Ext=="71952") ){
-      return true
-    }
-    return false
-  }
-
   static function prodsCompletedOpsCovTermActions(line:BP7BusinessOwnersLine){
-    if(line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
-      line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
-    }else{
-      line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
+    for(building in line.AllBuildings){
+      if(building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
+        line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Excluded_EXT")
+      }else{
+        line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
+      }
     }
   }
 
   static function infoMessage(line:BP7BusinessOwnersLine,jobWizardHelper : JobWizardHelper){
     if(line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Excluded_EXT"))
-      jobWizardHelper.addInfoWebMessage("Products/Completed Ops. has been changed to Excluded")
+      jobWizardHelper.addInfoWebMessage(displaykey.una.productmodel.validation.ProductsCompletedOpsMessage)
+  }
+
+  static function dataCompromiseCoverageRestriction(coverable:Coverable, coveragePatterns:ClausePattern[], jobWizardHelper : JobWizardHelper){
+    if(coverable.PolicyLine typeis BP7BusinessOwnersLine){
+      for(coveragePattern in coveragePatterns){
+        if(coverable.PolicyLine.BP7DataCompromiseDfnseandLiabCov_EXTExists && coveragePattern == "DataCmprmiseRspnseExpns_EXT" ){
+          jobWizardHelper.addErrorWebMessage(displaykey.una.productmodel.validation.DataCompromiseCoverageMessage)
+          coverable.PolicyLine.DataCmprmiseRspnseExpns_EXT.remove()
+        }
+        if(coverable.PolicyLine.DataCmprmiseRspnseExpns_EXTExists && coveragePattern == "BP7DataCompromiseDfnseandLiabCov_EXT") {
+          jobWizardHelper.addErrorWebMessage(displaykey.una.productmodel.validation.DataCompromiseCoverageMessage)
+          coverable.PolicyLine.BP7DataCompromiseDfnseandLiabCov_EXT.remove()
+        }
+      }
+    }
+  }
+
+  static function equipBreakEndorsementCovLimitValue(bp7Line:BP7BusinessOwnersLine){
+    var limitValue:BigDecimal = 0.0
+    //Equipment Breakdown Endorsement Coverage Limit = Building Limit value + Business Personal Property Limit value
+    if(bp7Line.BP7EquipBreakEndor_EXTExists){
+      for(bp7Building in bp7Line.AllBuildings){
+        if(bp7Building.BP7Structure.BP7BuildingLimitTerm !=null){
+          limitValue = limitValue + bp7Building.BP7Structure.BP7BuildingLimitTerm.Value
+        }
+      }
+      for(bp7Classification in bp7Line.AllClassifications){
+        if(bp7Classification.BP7ClassificationBusinessPersonalPropertyExists && bp7Classification.BP7ClassificationBusinessPersonalProperty.BP7BusnPrsnlPropLimitTerm!=null){
+          limitValue = limitValue + bp7Classification.BP7ClassificationBusinessPersonalProperty.BP7BusnPrsnlPropLimitTerm.Value
+        }
+      }
+      bp7Line.BP7EquipBreakEndor_EXT.BP7EquipBreakEndorLimit_ExtTerm.Value = limitValue
+    }
   }
 }

@@ -77,8 +77,8 @@ class PropertyInspection {
       propertyInspectionData.YearBuilt=policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt
       propertyInspectionData.PPC=policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode
       propertyInspectionData.SqFeet=policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext
-      propertyInspectionData.FireLineScore=policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.AdjustedHazardScore
-      propertyInspectionData.SHIA=policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.OverrideSHIAScore
+      propertyInspectionData.FireLineScore=policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineAdjHaz_Ext
+      propertyInspectionData.SHIA=policyPeriod.HomeownersLine_HOE.HOLocation.OverrideFirelineSHIA_Ext
       propertyInspectionData.InspecttedYears=null
       propertyInspectionData.CovALimit=policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
       if(policyPeriod.Forms.hasMatch( \ form -> form.DisplayName.equalsIgnoreCase("HO0442"))) {
@@ -113,7 +113,7 @@ class PropertyInspection {
         propertyInspectionData.Woodburner=null
       }
       propertyInspectionData.ISO360Value=policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360ValueID_Ext
-      propertyInspectionData.FirelineOverride=policyPeriod.HomeownersLine_HOE.Dwelling.CAFirelineInfo.OverriddenHarardScore_Ext
+      propertyInspectionData.FirelineOverride=policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineAdjHazOverridden_Ext
       propertyInspectionData.ManualEntry=null
       propertyInspectionData.Appendix=null
       propertyInspectionData.RoofShape=policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext.Code
@@ -130,6 +130,7 @@ class PropertyInspection {
       propertyInspectionData.UpdateTime=propertyInspectionData.UpdateTime
       outboundEntityDAO.insert(propertyInspectionData)
       LOGGER.debug("Exiting inserttoIntegrationDB to Insert data into DB")
+      policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_INSPECTIONORDERED, \ -> displaykey.Web.InspectionScore.Event.Msg)
     }
   }
 }

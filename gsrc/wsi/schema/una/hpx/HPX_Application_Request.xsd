@@ -422,7 +422,7 @@
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
 			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
 			<xsd:element name="WrittenAmt" type="WrittenAmtType" minOccurs="0"/>
-			<xsd:element name="Rate" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="Rate" type="xsd:double"/>
 			<xsd:element name="BaseRateAmt" type="BaseRateAmtType" minOccurs="0"/>
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageCd" type="xsd:string"/>
@@ -539,7 +539,7 @@
 			<xsd:element name="Deductible" type="DeductibleType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Option" type="OptionType" minOccurs="0"/>
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
-			<xsd:element name="NetChangeAmt" type="NetChangeAmtType" minOccurs="0"/>
+			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
 			<xsd:element name="WrittenAmt" type="WrittenAmtType"/>
 			<xsd:element name="CreditOrSurcharge" type="CreditOrSurchargeType" minOccurs="0"/>
 			<xsd:element name="EffectiveDt" type="xsd:date"/>
@@ -3975,6 +3975,12 @@
 			<xsd:element name="ContactMechanisms" type="ContactMechanismsType"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="MortgageInformationType">
+        <xsd:sequence>
+            <xsd:element name="MortgageCompanyName" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="LoanNumber" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="PersonInspectorType">
 		<xsd:sequence>
 			<xsd:element name="PersonID" type="xsd:string"/>
@@ -5111,6 +5117,7 @@
 			<xsd:element name="isMoldInvolded" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isHazardousWasteInvolved" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OwnerRole" type="OwnerRoleType"/>
+            <xsd:element name="MortgageInformation" type="MortgageInformationType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ClaimInjuryIncidentType">
@@ -5407,6 +5414,11 @@
 			<xsd:element name="LossDescription" type="xsd:string"/>
 			<xsd:element name="LossLocation" type="LossLocationType"/>
 			<xsd:element name="LossDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimAge" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AMB" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="CreatedDate" type="xsd:dateTime"/>
 			<xsd:element name="CreatedByUserAccount" type="CreatedByUserAccountType"/>
@@ -5435,6 +5447,7 @@
 			<xsd:element name="AdjusterUserAccount" type="AdjusterUserAccountType" minOccurs="0"/>
 			<xsd:element name="AdjusterRoleSupervisor" type="AdjusterRoleSupervisorType" minOccurs="0"/>
 			<xsd:element name="Catastrophe" type="CatastropheType" minOccurs="0"/>
+            <xsd:element name="CatastropheInd" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="BillingAccountType">
@@ -5638,11 +5651,11 @@
 	</xsd:complexType>
 	<xsd:complexType name="PublishingDocumentOutputType">
 		<xsd:sequence>
-			<xsd:element name="DeliveryType" type="xsd:string"/>
-			<xsd:element name="Destination" type="xsd:string"/>
-			<xsd:element name="Originator" type="xsd:string"/>
-			<xsd:element name="Subject" type="xsd:string"/>
-			<xsd:element name="Description" type="xsd:string"/>
+			<xsd:element name="DeliveryType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Destination" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Originator" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Subject" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="FileName" type="xsd:string"/>
 		</xsd:sequence>
 	</xsd:complexType>

@@ -1,6 +1,7 @@
 package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
+uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +18,14 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
 
   override function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
-    var deductibles = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>()
-    return null
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    switch (currentPolicyCondition.PatternCode) {
+      case "CPFloridaPolicyChangesCondition_EXT" :
+          var floridaPropertyChanges = createFloridaPropertyChanges(currentPolicyCondition, previousPolicyCondition, transactions)
+          for (item in floridaPropertyChanges) { limits.add(item)}
+          break
+    }
+    return limits
   }
 
   override function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
@@ -79,4 +86,33 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
     }
     return deductibles
   }
+
+
+  function createFloridaPropertyChanges(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.CoverageCd = currentPolicyCondition.PatternCode
+    limit.CoverageSubCd = ""
+    limit.CurrentTermAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0.00
+    limit.FormatPct = 0
+    limit.Rate = 0.00
+    limit.FormatText = ""
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var currentPolicyPeriod = (currentPolicyCondition.OwningCoverable as CPLine).AssociatedPolicyPeriod
+    var previousPolicyPeriod = policyPeriodHelper.getPreviousBranch(currentPolicyPeriod)
+    var insured = (currentPolicyCondition.OwningCoverable as CPLine).AssociatedPolicyPeriod.PrimaryNamedInsured
+    var insuredNameChanged = !insured.DisplayName.equals(insured.DisplayName)
+    var insuredNameCurrent = insured.DisplayName
+    var insuredNamePrevious = previousPolicyPeriod.PrimaryNamedInsured.DisplayName != null ? previousPolicyPeriod.PrimaryNamedInsured.DisplayName : ""
+    var insuredName = insuredNameChanged ? "Insured_Name:" + insuredNameCurrent + "#" + insuredNamePrevious + "|"  : ""
+    var mailingAddressChanged = true
+    var mailingAddress = mailingAddressChanged ? "Mailing_Address: " + currentPolicyCondition.OwningCoverable.PolicyLocations.first().addressString(",", true, true) : ""
+    limit.LimitDesc = insuredName + mailingAddress
+    limit.WrittenAmt.Amt = 0.00
+    limits.add(limit)
+    return limits
+  }
+
+
 }

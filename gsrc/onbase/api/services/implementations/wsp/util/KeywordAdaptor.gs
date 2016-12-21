@@ -7,7 +7,9 @@ uses java.lang.IllegalArgumentException
 uses java.util.HashMap
 uses java.util.List
 uses onbase.api.KeywordMap
-uses onbase.api.services.datamodels.OnBaseDocument
+uses onbase.api.services.datamodels.InsuredName
+uses java.util.ArrayList
+uses java.lang.Class
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -51,7 +53,21 @@ class KeywordAdaptor {
    */
   construct(keywords : List<Keyword>) {
     try {
-      keywords.each( \ k -> _keywordMap.put(KeywordMap.valueOf(k.Name), k.Value))
+      keywords.each( \ k -> {
+        var keyword = KeywordMap.valueOf(k.Name)
+        var keywordVal = _keywordMap.get(keyword)
+        if(keywordVal == null) {
+          _keywordMap.put(keyword, k.Value)
+        } else {
+
+          if(typeof keywordVal == List) {
+            var list = keywordVal as List<Object>
+            list.add(k.Value)
+          } else {
+            _keywordMap.put(keyword, new ArrayList<Object>({keywordVal, k.Value}))
+          }
+        }
+      })
     } catch(ex: IllegalArgumentException) {
       ex.printStackTrace()
       throw new ServicesTierException("Unknown keyword in keyword adaptor", ex)
@@ -61,164 +77,156 @@ class KeywordAdaptor {
   /**
    * Value for keyword ActivityCode or null if unset.
    */
-  property get ActivityCode() : String { return _keywordMap.get(KeywordMap.activitycode) }
+  property get ActivityCode() : String { return _keywordMap.get(KeywordMap.activitycode) as String }
+
 
   /**
-   * Value for keyword AdditionalFirstName or null if unset.
+  *  Value for keyword AdditionalNamed Insureds or null if unset.
    */
-  property get AdditionalFirstName() : String { return _keywordMap.get(KeywordMap.additionalfirstname) }
+  property get AdditionalNamedInsureds() : List<InsuredName> {
+    var val = _keywordMap.get(KeywordMap.additionalnamedinsureds)
+    if(val typeis InsuredName) {
+      return new ArrayList<InsuredName>({val})
+    }
 
-  /**
-   * Value for keyword AdditionalMiddleName or null if unset.
-   */
-  property get AdditionalMiddleName() : String { return _keywordMap.get(KeywordMap.additionalmiddlename) }
-
-  /**
-   * Value for keyword AdditionalLastName or null if unset.
-   */
-  property get AdditionalLastName() : String { return _keywordMap.get(KeywordMap.additionalmiddlename) }
-
-  //TODO: are we using this?
-  property get AdditionalNamedInsureds() : String[] { return _keywordMap.get(KeywordMap.additionalnamedinsureds) as String[]}
+    return val as List<InsuredName>
+  }
 
   /**
    * Value for keyword AgencyCode or null if unset.
    */
-  property get AgencyCode() : String { return _keywordMap.get(KeywordMap.agencycode) }
+  property get AgencyCode() : String { return _keywordMap.get(KeywordMap.agencycode) as String }
 
   /**
    * Value for keyword ActivityCode or null if unset.
    */
-  property get CSR() : String { return _keywordMap.get(KeywordMap.csr) }
+  property get CSR() : String { return _keywordMap.get(KeywordMap.csr) as String }
 
   /**
    * Value for keyword Description or null if unset.
    */
-  property get Description() : String { return _keywordMap.get(KeywordMap.description) }
+  property get Description() : String { return _keywordMap.get(KeywordMap.description) as String }
 
   /**
    * Value for keyword IssueDate or null if unset.
    */
-  property get IssueDate() : String { return _keywordMap.get(KeywordMap.issuedate) }
+  property get IssueDate() : String { return _keywordMap.get(KeywordMap.issuedate) as String }
 
   /**
    * Value for keyword JobDisplayName or null if unset.
    */
-  property get JobDisplayName() : String { return _keywordMap.get(KeywordMap.jobdisplayname) }
+  property get JobDisplayName() : String { return _keywordMap.get(KeywordMap.jobdisplayname) as String }
 
   /**
    * Value for keyword JobID or null if unset.
    */
-  property get JobID() : String { return _keywordMap.get(KeywordMap.jobid) }
+  property get JobID() : String { return _keywordMap.get(KeywordMap.jobid) as String }
 
   /**
    * Value for keyword JobNumber or null if unset.
    */
-  property get JobNumber() : String { return _keywordMap.get(KeywordMap.jobnumber) }
+  property get JobNumber() : String { return _keywordMap.get(KeywordMap.jobnumber) as String }
 
   /**
    * Value for keyword LegacyPolicyNumber or null if unset.
    */
-  property get LegacyPolicyNumber() : String { return _keywordMap.get(KeywordMap.legacypolicynumber) }
+  property get LegacyPolicyNumber() : String { return _keywordMap.get(KeywordMap.legacypolicynumber) as String }
 
   /**
    * Value for keyword MailDate or null if unset.
    */
-  property get MailDate() : String { return _keywordMap.get(KeywordMap.maildate) }
+  property get MailDate() : String { return _keywordMap.get(KeywordMap.maildate) as String }
 
   /**
    * Value for keyword MailFromAddress or null if unset.
    */
-  property get MailFromAddress() : String { return _keywordMap.get(KeywordMap.mailfromaddress) }
+  property get MailFromAddress() : String { return _keywordMap.get(KeywordMap.mailfromaddress) as String }
 
   /**
    * Value for keyword MailSubject or null if unset.
    */
-  property get MailSubject() : String { return _keywordMap.get(KeywordMap.mailsubject) }
+  property get MailSubject() : String { return _keywordMap.get(KeywordMap.mailsubject) as String }
 
   /**
    * Value for keyword MailToAddress or null if unset.
    */
-  property get MailToAddress() : String { return _keywordMap.get(KeywordMap.mailtoaddress) }
+  property get MailToAddress() : String { return _keywordMap.get(KeywordMap.mailtoaddress) as String }
 
   /**
    * Value for keyword NamedInsured or null if unset.
    */
-  property get NamedInsured() : String { return _keywordMap.get(KeywordMap.namedinsured) }
+  property get NamedInsured() : String { return _keywordMap.get(KeywordMap.namedinsured) as String }
 
   /**
    * Value for keyword OnBaseDocumentType or null if unset.
    */
-  property get OnBaseDocumentType() : String { return _keywordMap.get(KeywordMap.onbasedocumenttype) }
+  property get OnBaseDocumentType() : String { return _keywordMap.get(KeywordMap.onbasedocumenttype) as String }
 
   /**
    * Value for keyword PolicyEffectiveDate or null if unset.
    */
-  property get PolicyEffectiveDate() : String { return _keywordMap.get(KeywordMap.policyeffectivedate) }
+  property get PolicyEffectiveDate() : String { return _keywordMap.get(KeywordMap.policyeffectivedate) as String }
 
   /**
    * Value for keyword PolicyExpirationDate or null if unset.
    */
-  property get PolicyExpirationDate() : String { return _keywordMap.get(KeywordMap.policyexpirationdate) }
+  property get PolicyExpirationDate() : String { return _keywordMap.get(KeywordMap.policyexpirationdate) as String }
 
   /**
    * Value for keyword PolicyNumber or null if unset.
    */
-  property get PolicyNumber() : String { return _keywordMap.get(KeywordMap.policynumber) }
+  property get PolicyNumber() : String { return _keywordMap.get(KeywordMap.policynumber) as String }
 
   /**
    * Value for keyword PolicyType or null if unset.
    */
-  property get PolicyType() : String { return _keywordMap.get(KeywordMap.policytype) }
+  property get PolicyType() : String { return _keywordMap.get(KeywordMap.policytype) as String }
 
   /**
-   * Value for keyword PrimaryFirstName or null if unset.
+   *  Value for keyword AdditionalNamed Insureds or null if unset.
    */
-  property get PrimaryFirstName() : String { return _keywordMap.get(KeywordMap.primaryfirstname) }
+  property get PrimaryNamedInsureds() : List<InsuredName> {
+    var val = _keywordMap.get(KeywordMap.primarynamedinsureds)
+    if(val typeis InsuredName) {
+      return new ArrayList<InsuredName>({val})
+    }
 
-  /**
-   * Value for keyword PrimaryMiddleName or null if unset.
-   */
-  property get PrimaryMiddleName() : String { return _keywordMap.get(KeywordMap.primarymiddlename) }
-
-  /**
-   * Value for keyword PrimaryLastName or null if unset.
-   */
-  property get PrimaryLastName() : String { return _keywordMap.get(KeywordMap.primarylastname) }
+    return val as List<InsuredName>
+  }
 
   /**
    * Value for keyword ProductName or null if unset.
    */
-  property get ProductName() : String { return _keywordMap.get(KeywordMap.productname) }
+  property get ProductName() : String { return _keywordMap.get(KeywordMap.productname) as String }
 
   /**
    * Value for keyword ReceivedDate or null if unset.
    */
-  property get ReceivedDate() : String { return _keywordMap.get(KeywordMap.receiveddate) }
+  property get ReceivedDate() : String { return _keywordMap.get(KeywordMap.receiveddate) as String }
 
   /**
    * Value for keyword Subtype or null if unset.
    */
-  property get Subtype() : String { return _keywordMap.get(KeywordMap.subtype) }
+  property get Subtype() : String { return _keywordMap.get(KeywordMap.subtype) as String }
 
   /**
    * Value for keyword SuppressActivity or null if unset.
    */
-  property get SuppressActivity() : String { return _keywordMap.get(KeywordMap.supressactivity) }
+  property get SuppressActivity() : String { return _keywordMap.get(KeywordMap.supressactivity) as String }
 
   /**
    * Value for keyword Term or null if unset.
    */
-  property get Term() : String { return _keywordMap.get(KeywordMap.term) }
+  property get Term() : String { return _keywordMap.get(KeywordMap.term) as String }
 
   /**
    * Value for keyword TransactionEffectiveDate or null if unset.
    */
-  property get TransactionEffectiveDate() : String { return _keywordMap.get(KeywordMap.transactioneffectivedate) }
+  property get TransactionEffectiveDate() : String { return _keywordMap.get(KeywordMap.transactioneffectivedate) as String }
 
   /**
    * Value for keyword Underwriter or null if unset.
    */
-  property get Underwriter() : String { return _keywordMap.get(KeywordMap.underwriter) }
+  property get Underwriter() : String { return _keywordMap.get(KeywordMap.underwriter) as String }
 
 }

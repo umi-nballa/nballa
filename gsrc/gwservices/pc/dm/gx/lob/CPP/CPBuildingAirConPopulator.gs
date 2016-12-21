@@ -3,7 +3,7 @@ package gwservices.pc.dm.gx.lob.CPP
 uses gwservices.pc.dm.gx.entitypopulators.BaseEntityPopulator
 uses gw.xml.XmlElement
 uses gw.pl.persistence.core.Bundle
-uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AirCondProt
+//uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AirCondProt
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,10 +15,10 @@ uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_A
 class CPBuildingAirConPopulator extends BaseEntityPopulator<CPAirCondProt_Ext, KeyableBean>{
 
     override function findEntity(model: XmlElement, parent: KeyableBean, bundle: Bundle) : CPAirCondProt_Ext{
-  if (model typeis CPBuilding_AirCondProt) {
+ // if (model typeis CPBuilding_AirCondProt) {
   var cpAirCondProt = new CPAirCondProt_Ext(Branch)
   return cpAirCondProt
-  }
-  return null
+ // }
+ // return null
   }
 }

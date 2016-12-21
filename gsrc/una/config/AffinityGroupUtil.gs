@@ -2,17 +2,22 @@ package una.config
 
 uses gw.util.concurrent.LockingLazyVar
 uses java.util.HashSet
-uses java.math.BigDecimal
-uses java.lang.NumberFormatException
+uses gw.util.concurrent.LockingLazyVar
+uses gw.util.concurrent.LockingLazyVar
+uses java.util.HashMap
+uses java.util.Map
+uses gw.util.concurrent.LockingLazyVar
+uses java.util.HashMap
+uses java.util.Map
+uses java.util.HashMap
+uses java.util.HashMap
+uses java.util.HashMap
+uses java.util.Map
+uses java.util.List
 uses gw.util.concurrent.LockingLazyVar
 uses java.util.HashSet
 uses java.util.Date
 uses gw.api.database.Query
-uses java.lang.IllegalStateException
-uses java.lang.Integer
-uses java.lang.Double
-uses una.logging.UnaLoggerCategory
-uses una.utils.EnvironmentUtil
 uses java.util.HashMap
 uses java.util.ArrayList
 uses java.util.Map
@@ -53,24 +58,23 @@ class AffinityGroupUtil {
     var currentDate = Date.CurrentDate
 
     if(shouldLoadConfigParameter(jurisdiction)){
-      var query = Query.make(AffinityDiscount_Ext)
-          .compare(jurisdiction.Code, Equals, true)
+      var query = Query.make(AffinityDiscount_Ext).compare("Jurisdiction", Equals, jurisdiction)
       var queryResults = query.select()?.toList()
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDBUILDER)) {
         var preferredBuilderMap = new HashMap<String, Date>()
         queryResults.each( \ elt -> {
-          if(elt.PreferredBuilderDescription != null && elt.getFieldValue(jurisdiction.Code+START_DATE) != null)
-          preferredBuilderMap.put(elt.PreferredBuilderDescription,
-              elt.getFieldValue(jurisdiction.Code+START_DATE) as java.util.Date)
+          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null)
+          preferredBuilderMap.put(elt.AffinityDescription,
+              elt.getFieldValue(START_DATE) as java.util.Date)
         })
         _lazyPreferredBuilder.get().put(jurisdiction, preferredBuilderMap)
       }
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDFININST)) {
         var preferredFinInstMap = new HashMap<String, Date>()
         queryResults.each( \ elt -> {
-          if(elt.PreferredFinancialInstitution != null && elt.getFieldValue(jurisdiction.Code+START_DATE) != null) {
-            preferredFinInstMap.put(elt.PreferredFinancialInstitution,
-                elt.getFieldValue(jurisdiction.Code+START_DATE) as java.util.Date)
+          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null) {
+            preferredFinInstMap.put(elt.AffinityDescription,
+                elt.getFieldValue(START_DATE) as java.util.Date)
           }
         })
         _lazyPreferredFinInst.get().put(jurisdiction, preferredFinInstMap)
@@ -78,9 +82,9 @@ class AffinityGroupUtil {
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER)) {
         var preferredEmployerMap = new HashMap<String, Date>()
         queryResults.each( \ elt -> {
-          if(elt.PreferredEmployer != null && elt.getFieldValue(jurisdiction.Code+START_DATE) != null) {
-            preferredEmployerMap.put(elt.PreferredEmployer,
-                elt.getFieldValue(jurisdiction.Code+START_DATE) as java.util.Date)
+          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null) {
+            preferredEmployerMap.put(elt.AffinityDescription,
+                elt.getFieldValue(START_DATE) as java.util.Date)
           }
         })
         _lazyPreferredEmployer.get().put(jurisdiction, preferredEmployerMap)

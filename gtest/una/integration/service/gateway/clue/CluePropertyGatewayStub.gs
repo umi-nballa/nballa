@@ -53,6 +53,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
+      pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
       _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
@@ -92,6 +93,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
           var totalPriorHist = clueReport.Report.Summary.TotalPriorInquiryHistory
           var totalClaims = totalPriorHist + totalRiskClaims + totalSubjectClaims
           var statusMsg = clueReport.Admin.Status.toString()
+          var reference=clueReport.Admin.ProductReference
 
           _logger.debug(" Risk Claims: ${totalRiskClaims}"
               + ", Subject Claims: ${totalSubjectClaims}, Prior History: ${totalPriorHist}")
@@ -106,7 +108,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
               var cHistoryType = cHistory.Type
               for (claim in claims) {
                 //for every claim reported, create a PAPriorLossExt entity and attach it to the PA line
-                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType))
+                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType,reference))
                 _logger.debug("A claim has been added to the priorLoss array " + claim.Number)
               }
             }
@@ -138,9 +140,10 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
   @Param("claim", " The prior loss or claim element")
   @Param("cHistoryType", " The claim--History_Type element ")
   private  function extractClaimDetails(claim: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.anonymous.elements.ResultsDataset_ClaimsHistory_Claim,
-                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type): HOPriorLoss_Ext {
+                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String): HOPriorLoss_Ext {
     var priorLoss = new HOPriorLoss_Ext()
     //get claim details
+    priorLoss.Reference=referenceNumber
     priorLoss.ClaimDate = claim.ClaimDate
     priorLoss.ClaimAge = claim.ClaimAge.Years as java.lang.String
     priorLoss.ClaimNum = claim.Number
@@ -201,7 +204,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
-    priorLoss.Source="C"
+    priorLoss.OriginLoss="CLUE"
 
     return priorLoss
   }

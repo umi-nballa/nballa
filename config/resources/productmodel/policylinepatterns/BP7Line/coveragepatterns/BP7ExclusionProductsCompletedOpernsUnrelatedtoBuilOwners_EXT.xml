@@ -1,14 +1,15 @@
 <?xml version="1.0"?>
 <ExclusionPattern
   codeIdentifier="BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"
-  coverageCategory="BP7LineExclGrp"
-  exclusionSubtype="BP7LineExcl"
-  existence="Electable"
-  lookupTableName="BP7LineExcl"
-  owningEntityType="BP7BusinessOwnersLine"
+  coverageCategory="BP7BuildingExclGrp"
+  exclusionSubtype="BP7BuildingExcl"
+  existence="Required"
+  lookupTableName="BP7BuildingExcl"
+  owningEntityType="BP7Building"
   policyLinePattern="BP7Line"
-  priority="1270"
+  priority="1670"
   public-id="BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isExclusionAvailable("BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT",BP7Building)]]></AvailabilityScript>
   <CovTerms/>
 </ExclusionPattern>

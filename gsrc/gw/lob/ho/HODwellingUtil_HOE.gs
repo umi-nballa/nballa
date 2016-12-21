@@ -3,6 +3,12 @@ package gw.lob.ho
 uses java.lang.Integer
 uses java.util.ArrayList
 uses java.util.Calendar
+uses una.model.PropertyDataModel
+uses gw.api.util.DisplayableException
+uses gw.api.util.LocationUtil
+uses java.util.ArrayList
+uses una.config.TunaCodesBO
+uses una.config.TunaCodesDTO
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,6 +30,7 @@ class HODwellingUtil_HOE {
   private static final var DIFF_YEAR_25 : int = 25
   private static final var YEAR_2002 : int = 2002
   private static final var YEAR_2003 : int = 2003
+  private static final var YEAR_1975 : int = 1975
   private static final var WIND_SPEED_100 : int = 100
   private static final var WIND_SPEED_110 : int = 110
   private static final var WIND_SPEED_120 : int = 120
@@ -683,6 +690,194 @@ class HODwellingUtil_HOE {
     applicableJurisdiction.add(Jurisdiction.TC_TX)
     applicableJurisdiction.add(Jurisdiction.TC_NV)
     return applicableJurisdiction
+  }
+
+  static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(tunaValues != null) {
+      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.Value))// + " - " +elt.Percent+" %"))
+    }
+    return tunaCodeAndPercent
+  }
+
+  static function getDependentCodes(tunaValues : List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(tunaValues != null) {
+      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.NamedValue))// + " - " +elt.Percent+" %"))
+    }
+    return tunaCodeAndPercent
+  }
+
+  static function getDependentCode(value:String,tunaValues : List<PropertyDataModel> ):String
+  {
+    return tunaValues.where( \ elt -> elt.Value.equalsIgnoreCase(value))?.first()?.NamedValue
+
+
+  }
+
+
+  static function searchTaxLocation(code: String, polLocation:PolicyLocation): TaxLocation {
+    try{
+      var taxLoc = getTaxLocation(code, polLocation)
+      // TaxLocationSearchCriteria
+      return taxLoc
+    }catch(ex: DisplayableException){
+      LocationUtil.addRequestScopedErrorMessage(ex.Message)
+      return null
+    }
+  }
+
+  static function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLocation {
+    if (code == null) {
+      return null
+    } else {
+      var state = gw.api.util.JurisdictionMappingUtil.getJurisdiction(policyLocation)
+      var locs = new gw.lob.common.TaxLocationQueryBuilder()
+          .withCodeStarting(code)
+          .withState(state)
+          .withEffectiveOnDate(policyLocation.Branch.PeriodStart)
+          .build().select() as gw.api.database.IQueryBeanResult<TaxLocation>
+      if (locs.Count == 1) {
+        return locs.FirstResult
+      } else {
+        throw new DisplayableException(displaykey.TaxLocation.Search.Error.InvalidCode(code, state.Description))
+      }
+    }
+  }
+
+  static function getResidenceType(dwelling:Dwelling_HOE) : List<ResidenceType_HOE>{
+    var residenceType = new ArrayList<ResidenceType_HOE>()
+    var values = ResidenceType_HOE.getTypeKeys(false)
+    values.each( \ elt -> {
+      if(elt.Categories.contains(dwelling.HOPolicyType)) {
+        residenceType.add(elt)
+      }
+    })
+    residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
+    return residenceType
+  }
+
+ /* function getTunaCodes(category : String) : List<String> {
+    var tuneCodes = new ArrayList<String>()
+    var tunaCodesByCategory = getTunaCodesByCategory(category)
+
+    tunaCodesByCategory?.each( \ tunaCode -> {
+      tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
+    })
+    return tuneCodes
+  } */
+
+ /* function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
+    switch(category) {
+      case "bceg" :
+          return tunaCodesAppResponseObj.BCEGValues
+    }
+    return null
+  }*/
+
+ /* static function initializeTunaCodes() : TunaCodesBO {
+    var initialTunaCodesBO = new TunaCodesBO()
+
+    var bcegCode1 = new TunaCodesDTO()
+    bcegCode1.Code = "2"
+    bcegCode1.MatchPercentage = "5%"
+
+    var bcegCode2 = new TunaCodesDTO()
+    bcegCode2.Code = "5"
+    bcegCode2.MatchPercentage = "10%"
+
+    var bcegCodes = new ArrayList<TunaCodesDTO>()
+    bcegCodes.add(bcegCode1)
+    bcegCodes.add(bcegCode2)
+
+    initialTunaCodesBO.BCEGValues = bcegCodes
+    return initialTunaCodesBO
+  }   */
+
+  static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
+    if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
+      return true
+    }
+    if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
+      return true
+    }
+    return false
+  }
+
+  static function totalBCEG(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse) : boolean {
+    print("Total BCEG Returned : "+tunaAppResponse.BCEGGrade.Count)
+    return true
+  }
+
+  static function getMatchLevel(thePropertyDataModelList : List<PropertyDataModel>) : typekey.TUNAMatchLevel_Ext {
+    var res = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
+    if(thePropertyDataModelList ==null || thePropertyDataModelList.Count < 1){
+      res = typekey.TUNAMatchLevel_Ext.TC_NONE
+    }else if(thePropertyDataModelList.Count == 1){
+      res = typekey.TUNAMatchLevel_Ext.TC_EXACT
+    }
+    return res
+  }
+
+  static function getMatchLevelString(thePropertyDataModelList : List<String>) : typekey.TUNAMatchLevel_Ext {
+    var res = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
+    if(thePropertyDataModelList ==null || thePropertyDataModelList.Count < 1){
+      res = typekey.TUNAMatchLevel_Ext.TC_NONE
+    }else if(thePropertyDataModelList.Count == 1){
+      res = typekey.TUNAMatchLevel_Ext.TC_EXACT
+    }
+    return res
+  }
+
+  static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, dwelling:Dwelling_HOE) : boolean {
+    /************ dwelling.HOLocation entity *****/
+    dwelling.HOLocation.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
+    dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+    dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext // named value of protection class
+    dwelling.HOLocation.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+    dwelling.HOLocation.DistBOWMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToMajorBOW)
+    dwelling.HOLocation.DistBOWNVMatchLevel_Ext = dwelling.HOLocation.DistBOWMatchLevel_Ext // named value of distance to coast
+    dwelling.HOLocation.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
+    dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
+    dwelling.HOLocation.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+    dwelling.HOLocation.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+    dwelling.HOLocation.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+    dwelling.HOLocation.ISO360MatchLevel_Ext = getMatchLevel(tunaAppResponse.ISO360Value)
+    dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+    dwelling.HOLocation.ACVValueMatchLevel_Ext = getMatchLevel(tunaAppResponse.ACV)
+    dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLineSHIA)
+    dwelling.HOLocation.FirelineFuelMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLineFuel)
+    dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLinePropertyHazard)
+    dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = getMatchLevel(tunaAppResponse.AdjustedHazard)
+    dwelling.HOLocation.FireaccessMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLineAccess)
+    dwelling.HOLocation.FireslopeMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLineSlope)
+    /************ dwelling entity *****/
+    dwelling.StoriesNumberMatchLevel_Ext = getMatchLevel(tunaAppResponse.StoryNumber)
+    dwelling.RoofTypeMatchLevel_Ext = getMatchLevel(tunaAppResponse.RoofType)
+    dwelling.RoofShapeMatchLevel_Ext = getMatchLevel(tunaAppResponse.RoofCover)
+    dwelling.ConstructionTypeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ConstructionType)
+    dwelling.YearBuiltMatchLevel_Ext = getMatchLevel(tunaAppResponse.YearBuilt)
+    dwelling.BaseFloodElValMatchLevel_Ext = getMatchLevel(tunaAppResponse.BaseFloodElevation)
+    dwelling.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+    dwelling.EarthquakeTerMatchLevel_Ext = getMatchLevel(tunaAppResponse.EarthQuakeTerritory)
+    dwelling.ExteriorWFvalMatchLevel_Ext = getMatchLevel(tunaAppResponse.WallFinish)
+    dwelling.TotalSqFtValMatchLevel_Ext = getMatchLevel(tunaAppResponse.SquareFootage)
+
+    return true
+  }
+  
+   static function setPostFIRMValue(dwelling : Dwelling_HOE){
+    if(dwelling.YearBuilt >= YEAR_1975){
+      dwelling.PostFIRM_Ext = true
+    }
+    else{
+      dwelling.PostFIRM_Ext = false
+    }
   }
 
 }// End of class

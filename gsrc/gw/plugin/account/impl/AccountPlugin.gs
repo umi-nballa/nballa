@@ -183,7 +183,7 @@ class AccountPlugin implements IAccountPlugin {
 
   //Generates Sequential number for Account
   function genSeqNumber(): String {
-    return  String.format("%011d" , {SequenceUtil.getSequenceUtil().next(00000000001, "Acc")})  }
+    return  String.format("%011d" , {SequenceUtil.getSequenceUtil().next(10000000001, "Acct")})  }
 
   /**
    * Returns true if risk is reserved for an account and a product. More

@@ -92,19 +92,12 @@ class CoverageTermAvailabilityUtil {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm?.Value = cLine?.CPOrdinanceOrLawType.Code
       }
 
-      _logger.info("hasnoavailableoptions  b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       {
-        _logger.info("1 " + cBuilding)
-        _logger.info("2 " + cBuilding?.CPOrdinanceorLaw_EXT)
-        _logger.info("3 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm)
-        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.AvailableOptions)
-        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue)
 
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue = cLine?.CPCoverageB?.Code
       }
 
-      _logger.info("hasnoavailableoptions c "+ cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       if(cLine.CPCoverageC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue = cLine?.CPCoverageC?.Code
@@ -121,7 +114,7 @@ class CoverageTermAvailabilityUtil {
     setTermValuesBeforeCheckingAvailability(coverable)
 
     var result = true
-      _logger.info("iscoveragetermavailable " + patternCode + " coverable type is cpbuilding ? " + coverable typeis CPBuilding )
+
     switch(patternCode){
       case "HOPL_Deductible_HOE":
         result = isLossAssessmentDeductibleAvailable(coverable as Dwelling_HOE)
@@ -159,26 +152,25 @@ class CoverageTermAvailabilityUtil {
       case "BP7ProdCompldOpsAggregateLimit":
           result = isProductsCompletedOpsAggrLimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
           break
-        default:
+      case "HODW_Hurricane_Ded_HOE":
+        result = isHurricanePercentageAvailable(coverable as Dwelling_HOE)
         break
-    }
-    if( patternCode.equalsIgnoreCase("FursandFurGarments_EXT")|| patternCode.equalsIgnoreCase("JewerlyWatchesetc_EXT") ||
-        patternCode.equalsIgnoreCase("PatternsDiesMoldsandForms") ){
-          result = isTheftCoverageAvailable(coverable as BP7Classification)
-    }
-
-    if( patternCode.equalsIgnoreCase("DataRestorationCosts_EXT") || patternCode.equalsIgnoreCase("SysRestorationCosts_EXT") ){
-          result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
-    }
-
-    if( patternCode.equalsIgnoreCase("NetworkSecuLimit_EXT") || patternCode.equalsIgnoreCase("MalwareTransmission_EXT") ||
-        patternCode.equalsIgnoreCase("DenialofSvcCompAttackTriggers_EXT") ){
-      result = isCyberOneCoverageTermAvailable(coverable as BP7BusinessOwnersLine)
-    }
-
-    if(patternCode.equalsIgnoreCase("DataRecreationCosts_EXT")|| patternCode.equalsIgnoreCase("LossofBusiness_EXT") ||
-        patternCode.equalsIgnoreCase("PublicRelationsSvcs_EXT")){
-      result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
+      case "DataRestorationCosts_EXT":
+      case "SysRestorationCosts_EXT":
+        result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "NetworkSecuLimit_EXT":
+      case "MalwareTransmission_EXT":
+      case "DenialofSvcCompAttackTriggers_EXT":
+        result = isCyberOneCoverageTermAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "DataRecreationCosts_EXT":
+      case "LossofBusiness_EXT":
+      case "PublicRelationsSvcs_EXT":
+        result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      default:
+        break
     }
     return result
   }
@@ -213,7 +205,9 @@ class CoverageTermAvailabilityUtil {
     var personalLiabilityLimit = _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value
 
     if(isValidForMedPayLimitOption){
-      if(state == TC_HI){
+      if(_hoLine.BaseState != TC_NC and _hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value == 100000bd){
+        result = _option.Value == 1000bd
+      }else if(state == TC_HI){
         result = isMedPayOptionAvailableVariantFilter(personalLiabilityLimit, _option, state)
       }else{
         result = isMedPayOptionAvailableStandardFilter(personalLiabilityLimit, _option, state)
@@ -328,7 +322,16 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isProductsCompletedOpsAggrLimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    return !bp7Line.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists
+    for(building in bp7Line.AllBuildings){
+      if(!building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
+        return true
+      }
+    }
+    return false
+  }
+
+  private static function isHurricanePercentageAvailable(dwelling : Dwelling_HOE) : boolean{
+    return dwelling.HOLine.BaseState == TC_FL and !dwelling.WHurricaneHailExclusion_Ext
   }
 
   private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -348,7 +351,7 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isCyberOneCovTermsAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_EXT.TC_FULL and
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_FULL and
         bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
         bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
       return true
@@ -386,15 +389,19 @@ class CoverageTermAvailabilityUtil {
     var filterPrefix = getAOPFilterPrefix(dwelling)
     var state = dwelling.HOLine.BaseState
     var configType = ConfigParameterType_Ext.TC_AOP_RESTRICTEDOPTIONS
+    var namedStormValue = dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
 
     if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix + option.CovTermPattern.CodeIdentifier)){
-      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value.setScale(3)
+      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
+      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + namedStormValue + allPerilsValue)
       var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
 
-      if(valueRestrictedOptions != null){
+      if(namedStormRestrictedOptions != null){
+        result = namedStormRestrictedOptions.contains(optionValue)
+      }else if(valueRestrictedOptions != null){
         result = valueRestrictedOptions.contains(optionValue)
       }else if(defaultRestrictedOptions != null){
         result = defaultRestrictedOptions.contains(optionValue)
@@ -423,11 +430,17 @@ class CoverageTermAvailabilityUtil {
     var allowedLimitsPersonalLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Personal_Liability_HOE.PatternCode)
     var allowedLimitsPremiseLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Premise_Liability_HOE_Ext.PatternCode)
 
-    if(hoLine.BaseState == TC_CA){
-      if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
-        result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
+     if(hoLine.BaseState == TC_CA){
+       if({3000d,5000d}.contains(covTermOpt.Value.doubleValue())){
+         result = hoLine.DPLI_Personal_Liability_HOEExists
+      }else if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
+        result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
-        result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toBigDecimal() == covTermOpt.Value)
+        result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
+      }
+
+      if(1000d == covTermOpt.Value.doubleValue()){
+        result = hoLine.Dwelling.ResidenceType == TC_FAM1 or hoLine.Dwelling.ResidenceType == TC_FAM2
       }
     }
 
@@ -471,22 +484,14 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovALimitAvailable(building : CPBuilding):boolean
   {
-
-    _logger.info("Entered isOrdinanceCovALimitAvailable "+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-    + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
       {
-        _logger.info("returning true")
       return true
       }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -494,17 +499,11 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovBLimitAvailable(building : CPBuilding):boolean
   {
-    _logger.info("Entered isOrdinanceCovBLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
-
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT)
     {
-      _logger.info("returning true")
       return true
     }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -513,19 +512,13 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovCLimitAvailable(building : CPBuilding):boolean
   {
-    _logger.info("Entered isOrdinanceCovCLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
     {
-      _logger.info("returning true")
       return true
     }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -534,15 +527,11 @@ class CoverageTermAvailabilityUtil {
 
     private static function isOrdinanceCovBCCombinedLimitAvailable(building : CPBuilding):boolean
     {
-      _logger.info("Entered isOrdinanceCovBCCombinedLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value+":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
       if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
       {
-        _logger.info("returning true")
         return true
       }
     {
-      _logger.info("returning false")
       return false
     }
          }
@@ -618,17 +607,6 @@ class CoverageTermAvailabilityUtil {
       }
 
   }
-  
-  private static function isTheftCoverageAvailable(bp7Classification:BP7Classification):boolean{
-    if(bp7Classification.BP7TheftLimitations!=null and bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm!=null and
-        bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue!=null){
-          if(bp7Classification.BP7TheftLimitations.BP7LimitOptions_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7TheftIncluded_EXT")){
-            return true
-          }
-     }
-    return false
-  }
-
 
   private static function isExecutiveCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
     var result = true

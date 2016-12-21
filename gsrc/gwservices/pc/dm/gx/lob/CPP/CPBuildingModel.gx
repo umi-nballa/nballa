@@ -1,27 +1,57 @@
 <?xml version="1.0"?>
 <gx-model type="entity.CPBuilding" xmlns="http://guidewire.com/gx">
   <includes>
+    <include path="ActiveMonitoringVideo" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="AdditionalInterests[]" type="entity.CPBldgAddlInterest" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cpbldgaddlinterestmodel"/>
-    <include path="AirCondProt" type="entity.CPAirCondProt_Ext" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cpaircondprot_extmodel"/>
-    <include path="bceg" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="alarmed" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="AutomaticFireSuppress" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="BldgHt" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="Building" type="entity.Building" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.covereditem.buildingmodel"/>
     <include path="BusIncomeLimitSumDisplay" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="caged" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="CentralBurglarAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="CentralFireAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="ClassCode" type="entity.CPClassCode" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.covereditem.cpclasscodemodel"/>
+    <include path="ContinuousRecVideo" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="CoverageForm" type="typekey.CoverageForm" propertyInclusionType="NORMAL"/>
     <include path="Coverages[]" type="entity.CPBuildingCov" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cpbuildingcovmodel"/>
     <include path="CPLocation" type="entity.CPLocation" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cplocationmodel"/>
-    <include path="DistFireHyd" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="desgr3" type="typekey.CPDesExpBldgGrp3_Ext" propertyInclusionType="NORMAL"/>
     <include path="DistFireStn" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="DistFirHyd" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="DistToNext" type="java.lang.String" propertyInclusionType="NORMAL"/>
-    <include path="fireprotectionclass" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorMotionLighting" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="FlatRoofDesc" type="typekey.CPFlatRoofDesc_Ext" propertyInclusionType="NORMAL"/>
+    <include path="GatedAccess" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="GuardDogs" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="GuardWatchmen" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="guswind" type="typekey.CPGustWindSpeedDes_Ext" propertyInclusionType="NORMAL"/>
+    <include path="guswindloc" type="typekey.CPGustWindSpeedLoc_Ext" propertyInclusionType="NORMAL"/>
+    <include path="intpredes" type="typekey.CPInternalPressureDes_Ext" propertyInclusionType="NORMAL"/>
+    <include path="LocalBurglarAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="LocalFireAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="monitored" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="MotionActivatedVideo" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="OccupancyType" type="typekey.CPOccupancyType_Ext" propertyInclusionType="NORMAL"/>
+    <include path="openprt" type="typekey.CPOpenProt_Ext" propertyInclusionType="NORMAL"/>
     <include path="PreferredCoverageCurrency" type="typekey.Currency" propertyInclusionType="NORMAL"/>
-    <include path="ProtectionDetails" type="entity.CPProtDetails_Ext" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cpprotdetails_extmodel"/>
     <include path="RateType" type="typekey.RateType" propertyInclusionType="NORMAL"/>
     <include path="RespFireDept" type="java.lang.String" propertyInclusionType="NORMAL"/>
-    <include path="ResQuestions" type="entity.CPResQuest_Ext" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.cpresquest_extmodel"/>
+    <include path="roofcv" type="typekey.CPRoofCover_Ext" propertyInclusionType="NORMAL"/>
+    <include path="roofcvatach" type="typekey.CPRoofCoveringAttach_Ext" propertyInclusionType="NORMAL"/>
+    <include path="roofdecat" type="typekey.CPRoofDeckAttachment_Ext" propertyInclusionType="NORMAL"/>
+    <include path="roofdk" type="typekey.CPRoofDeck_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoofShape" type="typekey.CPRoofShape_Ext" propertyInclusionType="NORMAL"/>
+    <include path="RoofShapeOtherDes" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="RoofTypeCP" type="typekey.RoofType_CP" propertyInclusionType="NORMAL"/>
+    <include path="roofwl" type="typekey.CPRoofWallConn_Ext" propertyInclusionType="NORMAL"/>
+    <include path="SqFtExt" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="swrr" type="typekey.CPSwr_Ext" propertyInclusionType="NORMAL"/>
+    <include path="terexp" type="typekey.CPTerrainExp_Ext" propertyInclusionType="NORMAL"/>
+    <include path="wbdr" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="windmiti5" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="windmitidate" type="java.util.Date" propertyInclusionType="NORMAL"/>
+    <include path="windstorm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="windstormexcl" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
   </includes>
 </gx-model>

@@ -36,7 +36,18 @@
         <EditButtons
           hideIfReadOnly="true"
           pickValue="location"/>
+        <ToolbarButton
+          action="setAddressScrubbed()"
+          available="location.Location.AccountLocation.addressScrub_Ext == null ? false : location.Location.AccountLocation.addressScrub_Ext"
+          id="AddressOverride"
+          label="displaykey.Web.Account.Locations.AddressOverride"/>
       </Toolbar>
+      <AlertBar
+        allowDismiss="false"
+        available="false"
+        id="OverrideWarning"
+        label="displaykey.Web.Account.Locations.AddressAlert"
+        visible="!location.Location.AccountLocation.addressScrub_Ext"/>
       <PanelSet
         editable="openForEdit"
         id="LocationDetailPanelSet">
@@ -68,9 +79,16 @@
                 name="polLocation"
                 recalculateOnRefresh="true"/>
               <BooleanRadioInput
-                editable="acctLocation.New"
+                id="AddressScrubbed"
+                label="displaykey.Web.Account.Locations.AddressScrubbed"
+                required="true"
+                value="polLocation.AccountLocation.addressScrub_Ext">
+                <PostOnChange/>
+              </BooleanRadioInput>
+              <BooleanRadioInput
                 id="NonSpecificLocation"
                 label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
+                required="true"
                 value="acctLocation.NonSpecific">
                 <PostOnChange/>
               </BooleanRadioInput>
@@ -93,7 +111,7 @@
                 <PostOnChange/>
               </Input>
               <InputSetRef
-                def="AddressInputSet(new una.lob.bp7.BP7LocationAddressOwner(polLocation))"
+                def="AddressInputSet(new una.lob.bp7.BP7LocationAddressOwner(polLocation,policyPeriod))"
                 mode="polLocation.CountryCode"
                 visible="polLocation.SyncedToAccount"/>
               <InputSet
@@ -106,14 +124,15 @@
                 <TextInput
                   editable="true"
                   id="UnsyncedCounty"
-                  label="displaykey.Web.ContactDetail.AddressDetail.County"
+                  label="displaykey.Web.ContactDetail.AddressDetail.County + &quot;Test&quot;"
+                  required="true"
                   value="polLocation.County"/>
                 <TypeKeyInput
                   editable="polLocation.canChangeState()"
                   id="UnsyncedCountry"
-                  label="displaykey.Web.ContactDetail.AddressDetail.Country"
+                  label="displaykey.Web.ContactDetail.AddressDetail.Country + &quot;TEST&quot;"
                   required="true"
-                  value="polLocation.Country">
+                  value="polLocation.Country ">
                   <PostOnChange/>
                 </TypeKeyInput>
               </InputSet>
@@ -136,6 +155,20 @@
                 pickLocation="TaxLocationSearchPopup.push(polLocation.Branch, gw.api.util.JurisdictionMappingUtil.getJurisdiction(polLocation))"
                 value="polLocation.TaxLocation"
                 visible="product == &quot;BusinessOwners&quot; or product == &quot;WorkersComp&quot; or product == &quot;CommercialProperty&quot;"/>
+              <TextInput
+                editable="true"
+                id="TerritoryCode"
+                label="displaykey.Web.Account.Locations.TerritoryCode"
+                required="true"
+                value="location.TerritoryCode.Code"/>
+              <ContentInput>
+                <Link
+                  action="location.TerritoryCode.fillWithFirst()"
+                  id="AutofillLink"
+                  label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode.Autofill"
+                  styleClass="miniButton"
+                  visible="false"/>
+              </ContentInput>
             </InputSet>
           </InputColumn>
         </DetailViewPanel>
@@ -172,6 +205,9 @@ function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLoc
     }
   }
 }
-]]></Code>
+
+function setAddressScrubbed(){
+  location.Location.AccountLocation.addressScrub_Ext =  false
+}]]></Code>
   </Popup>
 </PCF>

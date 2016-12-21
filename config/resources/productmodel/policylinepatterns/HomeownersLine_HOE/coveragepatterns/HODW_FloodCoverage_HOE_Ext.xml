@@ -346,9 +346,8 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA" ){
-return true
-}else return false]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[var optionCode = Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue
+            return optionCode == "DA" or optionCode == "DPA"]]></AvailabilityScript>
       <LimitsSet>
         <CovTermLimits
           codeIdentifier="z8bggasaqu2u0f09acvb90o89q9"
@@ -367,7 +366,15 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <LimitsSet/>
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="z2djs3bn62qkd7o0nrfbt3m9brb"
+          currency="usd"
+          defaultValue="2500"
+          maxVal="25000"
+          minVal="0"
+          public-id="z2djs3bn62qkd7o0nrfbt3m9brb"/>
+      </LimitsSet>
     </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

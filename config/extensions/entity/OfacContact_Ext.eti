@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
 <entity
   xmlns="http://guidewire.com/datamodel"
+  effDatedBranchType="PolicyPeriod"
   entity="OfacContact_Ext"
   table="ofaccontact"
-  type="retireable">
+  type="effdated">
   <foreignkey
     desc="OFAC Contact Referencing to Contact Enitity "
     fkentity="Contact"
@@ -15,11 +16,6 @@
     name="OfacHit"
     nullok="true"
     type="bit"/>
-  <column
-    desc="Date on which OFAC webservice get called Date on which OFAC webservice get called "
-    name="OfacTriggeringDate"
-    nullok="true"
-    type="dateonly"/>
   <column
     desc="Score return in OFAC Response "
     name="EntityScore"

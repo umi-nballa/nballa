@@ -11,57 +11,168 @@
     <Require
       name="openForEdit"
       type="Boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(dwelling.PolicyPeriod)"
+      name="tunaAppResponse"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
+      name="setTunaFieldsMatchLevel"/>
     <InputColumn
       labelWidth="350">
+      <InputDivider/>
+      <InputSet
+        id="NumberOfStories_Ext">
+        <RangeInput
+          editable="!dwelling.OverrideStoriesNumber_Ext"
+          id="NumberOfStoriesTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.NumberOfStories_Ext"
+          value="dwelling.StoriesNumber"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.StoryNumber)">
+          <PostOnChange/>
+        </RangeInput>
+        <Input
+          id="NumberOfStoriesMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.NumberOfStoriesMatchLevel_Ext"
+          value="dwelling.StoriesNumberMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideNumberOfStories_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.NumberOfStoriesOverride_Ext"
+          value="dwelling.OverrideStoriesNumber_Ext">
+          <PostOnChange
+            target="NumberOfStories_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideStoriesNumber_Ext"
+          editable="true"
+          id="NumberOfStoriesUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.NumberOfStoriesUserEntered_Ext"
+          required="dwelling.OverrideStoriesNumber_Ext"
+          value="dwelling.NoOfStoriesOverridden_Ext"
+          visible="dwelling.OverrideStoriesNumber_Ext"/>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="ConstructionType_Ext"
+        visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        <RangeInput
+          editable="!dwelling.OverrideConstructionType_Ext"
+          id="ConstructionTypeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
+          value="dwelling.ConstructionType"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType)"/>
+        <Input
+          id="ConstructionTypeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeMatchLevel_Ext"
+          value="dwelling.ConstructionTypeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideConstructionTypel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeOverride_Ext"
+          value="dwelling.OverrideConstructionType_Ext">
+          <PostOnChange
+            target="ConstructionType_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideConstructionType_Ext"
+          editable="true"
+          id="ConstructionTypeUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeUserEntered_Ext"
+          required="dwelling.OverrideConstructionType_Ext"
+          value="dwelling.ConstTypeOverridden_Ext"
+          visible="dwelling.OverrideConstructionType_Ext"/>
+      </InputSet>
       <Input
         editable="true"
-        id="YearBuilt"
-        label="displaykey.Web.Homeowners.DwellingConstruction.YearBuilt"
-        numCols="8"
-        required="true"
-        validationExpression="(dwelling.YearBuilt != null and dwelling.YearBuilt &lt;= (java.util.Date.CurrentDate.YearOfDate + 1)) ? null : displaykey.Web.Homeowners.DwellingConstruction.YearBuilt.ValidateYear "
-        value="dwelling.YearBuilt">
-        <PostOnChange
-          onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling)"/>
-      </Input>
-      <!-- <TypeKeyInput
+        id="ConstType1_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
+        value="dwelling.ConstructionTypeL1_Ext"
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+      <Input
         editable="true"
-        id="ConstructionType"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionType"
-        required="false"
-        value="dwelling.ConstructionType">
-        <PostOnChange/>
-      </TypeKeyInput> -->
-      <RangeInput
+        id="ConstType2_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2_Ext"
+        value="dwelling.ConstructionTypeL2_Ext"
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+      <InputDivider/>
+      <InputSet
+        id="ExteriorWFval_Ext"
+        visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <RangeInput
+          available="!dwelling.OverrideExteriorWFval_Ext"
+          editable="true"
+          id="ExteriorWFvalTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish"
+          value="dwelling.ExteriorWallFinish_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish)"/>
+        <Input
+          available="!dwelling.OverrideExteriorWFval_Ext"
+          id="ExteriorWFvalMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalMatchlevel_Ext"
+          value="dwelling.ExteriorWFvalMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideExteriorWFval_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOverride_Ext"
+          value="dwelling.OverrideExteriorWFval_Ext">
+          <PostOnChange
+            target="ExteriorWFval_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideExteriorWFval_Ext"
+          editable="true"
+          id="ExteriorWFvalUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalUserEntered_Ext"
+          required="dwelling.OverrideExteriorWFval_Ext"
+          value="dwelling.ExteriorWFvalueOverridden_Ext"
+          visible="dwelling.OverrideExteriorWFval_Ext"/>
+      </InputSet>
+      <Input
         editable="true"
-        id="constructiontyperange"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionType"
-        required="true"
-        value="dwelling.ConstructionType"
-        valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling)">
-        <PostOnChange/>
-      </RangeInput>
-      <!-- Added as pert of Dwelling Construction story -->
-      <TypeKeyInput
+        id="ExteriorWFva1_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
+        value="dwelling.ExteriorWallFinishL1_Ext"
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+      <Input
         editable="true"
-        id="ExteriorWall"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish"
-        required="true"
-        value="dwelling.ExteriorWallFinish_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)">
-        <PostOnChange/>
-      </TypeKeyInput>
-      <!-- Dwelling Construction : service depandant -->
-      <TypeKeyInput
-        editable="true"
-        id="NumStories"
-        label="displaykey.Web.Homeowners.DwellingConstruction.NumStories"
-        required="true"
-        value="dwelling.StoriesNumber"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)">
-        <PostOnChange
-          onChange="if(dwelling.StoriesNumber == typekey.NumberOfStories_HOE.TC_ONESTORY_EXT){dwelling.FloorLocation_Ext = null}"/>
-      </TypeKeyInput>
+        id="ExteriorWFval2_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
+        value="dwelling.ExteriorWallFinishL2_Ext"
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+      <InputDivider/>
+      <InputSet
+        id="TotalSqFtVal_Ext">
+        <RangeInput
+          available="!dwelling.OverrideTotalSqFtVal_Ext"
+          editable="true"
+          id="TotalSqFtValTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
+          value="dwelling.SquareFootage_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)"/>
+        <Input
+          available="!dwelling.OverrideTotalSqFtVal_Ext"
+          id="TotalSqFtValMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValMatchlevel_Ext"
+          value="dwelling.TotalSqFtValMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideTotalSqFtVal_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValOverride_Ext"
+          value="dwelling.OverrideTotalSqFtVal_Ext">
+          <PostOnChange
+            target="TotalSqFtVal_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideTotalSqFtVal_Ext"
+          editable="true"
+          id="TotalSqFtValUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValUserEntered_Ext"
+          required="dwelling.OverrideTotalSqFtVal_Ext"
+          value="dwelling.TotalSqFtValOverridden_Ext"
+          visible="dwelling.OverrideTotalSqFtVal_Ext"/>
+      </InputSet>
+      <InputDivider/>
       <TextInput
         editable="true"
         id="FloorLoc"
@@ -78,15 +189,6 @@
         required="true"
         value="dwelling.UpstairsLndrySurcharge_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isUpstairsLaundrySurchargeVisible(dwelling)"/>
-      <!-- DwellingConstruction : service dependant -->
-      <Input
-        editable="true"
-        id="ApproxSqFoot"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ApproxSqFoor"
-        numCols="7"
-        required="true"
-        validationExpression="dwelling.SquareFootage_Ext.toString().length &lt;= 4 ? null : displaykey.Web.Homeowners.DwellingConstruction.SquareFootage.ValidateLength"
-        value="dwelling.SquareFootage_Ext"/>
       <!-- <Input
         editable="true"
         id="ConstructionTypeDesc"
@@ -137,6 +239,22 @@
         value="dwelling.Foundation">
         <PostOnChange/>
       </TypeKeyInput>
+      <TypeKeyInput
+        editable="true"
+        id="FoundationMaterial"
+        label="displaykey.Web.Homeowners.DwellingConstruction.FoundationMaterial"
+        required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_SC &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
+        value="dwelling.FoundationMaterial_Ext">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <TypeKeyInput
+        editable="true"
+        id="FoundationHeight"
+        label="displaykey.Web.Homeowners.DwellingConstruction.FoundationHeight"
+        required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
+        value="dwelling.FoundationHeight_Ext">
+        <PostOnChange/>
+      </TypeKeyInput>
       <!-- <Input
         editable="true"
         id="BasementAreaFinished"
@@ -160,14 +278,61 @@
         required="true"
         value="dwelling.RoofTypeDescription"
         visible="dwelling.RoofType == typekey.RoofType.TC_OTHER"/>
-      <TypeKeyInput
+      <!-- <TypeKeyInput
         editable="true"
         id="PrimaryHeating"
         label="displaykey.Web.Homeowners.DwellingConstruction.PrimaryHeating"
         required="false"
         value="dwelling.PrimaryHeating">
         <PostOnChange/>
-      </TypeKeyInput>
+      </TypeKeyInput> -->
+      <Label
+        label="&quot;Heat Source - Select all that apply&quot;"/>
+      <CheckBoxInput
+        editable="true"
+        id="heat1"
+        label="&quot;Central Electric&quot;"
+        value="dwelling.HeatSrcCentralElectric">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="heat2"
+        label="&quot;Central Natural gas&quot;"
+        value="dwelling.HeatSrcCentralNaturalGas">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="heat3"
+        label="&quot;Central Propane&quot;"
+        value="dwelling.HeatSrcCentralPropane">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="heat4"
+        label="&quot;Central - Other&quot;"
+        value="dwelling.HeatSrcCentralOther">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="heat5"
+        label="&quot;Fireplace&quot;"
+        value="dwelling.HeatSrcFireplace"/>
+      <CheckBoxInput
+        editable="true"
+        id="heat6"
+        label="&quot;Wood Burning Stove&quot;"
+        value="dwelling.HeatSrcWoodBurningStove">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <CheckBoxInput
+        editable="true"
+        id="heat7"
+        label="&quot;Portable - All fuel types&quot;"
+        value="dwelling.HeatSrcPortableAllFuelTypes"/>
       <!-- <TypeKeyInput
         editable="true"
         id="FuelStorageTankLocation"
@@ -175,6 +340,24 @@
         required="true"
         value="dwelling.PrimaryHeatingFuelTankLocation"
         visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
+      <BooleanRadioInput
+        editable="true"
+        id="Installedlicensed"
+        label="displaykey.Web.Homeowners.DwellingConstruction.InstalledLicensed"
+        value="dwelling.HeatSrcInstalledbyLicIns"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
+      <BooleanRadioInput
+        editable="true"
+        id="ULListedstove"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ULListedStove"
+        value="dwelling.ULListedstoveandchimneyflue"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
+      <BooleanRadioInput
+        editable="true"
+        id="Sittingonnoncombbase"
+        label="displaykey.Web.Homeowners.DwellingConstruction.Sittingonnoncombase"
+        value="dwelling.Sittingonnoncombustiblebase"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
       <!-- <TypeKeyInput
         actionAvailable="false"
         editable="true"
@@ -190,12 +373,12 @@
         required="true"
         value="dwelling.PrimaryHeatingDescription"
         visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <BooleanRadioInput
+      <!-- <BooleanRadioInput
         editable="true"
         id="SecondaryHeatingExists"
         label="displaykey.Web.Homeowners.DwellingConstruction.SecondaryHeatingExists"
         required="false"
-        value="dwelling.SecondaryHeatingExists"/>
+        value="dwelling.SecondaryHeatingExists"/> -->
       <!-- <TypeKeyInput
         editable="true"
         id="PlumbingSystem"
@@ -316,19 +499,73 @@
         numCols="10"
         value="dwelling.ConstructionCode"
         visible="false"/>
-      <TypeKeyInput
-        editable="true"
-        id="RoofType"
-        label="displaykey.Web.Homeowners.DwellingConstruction.RoofType"
-        required="true"
-        value="dwelling.RoofType"/>
-      <TypeKeyInput
+      <InputSet
+        id="RoofingMaterial_Ext">
+        <RangeInput
+          editable="!dwelling.OverrideRoofType_Ext"
+          id="RoofingMaterialTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofingMaterial_Ext"
+          value="dwelling.RoofType"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofType)"/>
+        <Input
+          id="RoofingMaterialMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofingMaterialMatchLevel_Ext"
+          value="dwelling.RoofTypeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideRoofingMaterial_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofingMaterialOverride_Ext"
+          value="dwelling.OverrideRoofType_Ext">
+          <PostOnChange
+            target="RoofingMaterial_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideRoofType_Ext"
+          editable="true"
+          id="RoofingMaterialUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofingMaterialUserEntered_Ext"
+          required="dwelling.OverrideRoofType_Ext"
+          value="dwelling.RoofingMaterialOverridden_Ext"
+          visible="dwelling.OverrideRoofType_Ext"/>
+      </InputSet>
+      <!-- TypeKeyInput
         editable="true"
         id="roofshareInput"
         label="displaykey.Web.Homeowners.DwellingConstruction.RoofShape"
         required="true"
         value="dwelling.RoofShape_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/ -->
+      <InputDivider/>
+      <InputSet
+        id="RoofingShape_Ext">
+        <RangeInput
+          editable="!dwelling.OverrideRoofShape_Ext"
+          id="RoofShapeTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofShape_Ext"
+          value="dwelling.RoofShape_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover)"/>
+        <Input
+          id="RoofShapeMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofShapeMatchLevel_Ext"
+          value="dwelling.RoofShapeMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideRoofShape_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofShapeOverride_Ext"
+          value="dwelling.OverrideRoofShape_Ext">
+          <PostOnChange
+            target="RoofingShape_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideRoofShape_Ext"
+          editable="true"
+          id="RoofShapelUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RoofShapeUserEntered_Ext"
+          required="dwelling.OverrideRoofShape_Ext"
+          value="dwelling.RoofShapeOverridden_Ext"
+          visible="dwelling.OverrideRoofShape_Ext"/>
+      </InputSet>
+      <InputDivider/>
       <TextInput
         editable="true"
         id="numberOfRoofLayer"

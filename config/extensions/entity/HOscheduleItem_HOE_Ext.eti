@@ -107,16 +107,6 @@
     name="MotorADesc"
     nullok="true"
     type="longtext"/>
-  <column
-    desc="Motor B Description"
-    name="MotorBDesc"
-    nullok="true"
-    type="longtext"/>
-  <column
-    desc="Motor C Description"
-    name="MotorCDesc"
-    nullok="true"
-    type="longtext"/>
   <typekey
     desc="Overall LengthWC"
     name="overallLengthWC"
@@ -127,23 +117,18 @@
     name="WCHPA"
     nullok="true"
     typelist="HorsePowerWC_Ext"/>
-  <typekey
-    desc="WCHPB"
-    name="WCHPB"
-    nullok="true"
-    typelist="HorsePowerWC_Ext"/>
-  <typekey
-    desc="WCHPC"
-    name="WCHPC"
-    nullok="true"
-    typelist="HorsePowerWC_Ext"/>
   <foreignkey
-    fkentity="PolicyLocation"
-    name="policyLocation"
+    desc="The scheduled additional insured"
+    fkentity="PolicyAddlInsuredDetail"
+    name="AdditionalInsured"
     nullok="true"/>
   <column
-    desc="Number of Familes"
-    name="numFamilies"
+    desc="The interest that an Additional Insured has on the policy related to a coverage"
+    name="Interest"
     nullok="true"
-    type="integer"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
 </entity>

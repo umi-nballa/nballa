@@ -10,7 +10,7 @@
   priority="400"
   public-id="CPActsOfTerrorismExclusion_EXT"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[if(CommercialPropertyLine.CPTerrorismCoverage_EXTExists)
+  <AvailabilityScript><![CDATA[if(CommercialPropertyLine.AssociatedPolicyPeriod.GLLineExists  /*&&CommercialPropertyLine.AssociatedPolicyPeriod.GLLine.GLCapOnLossesTerr_ExtExists*/)
  return true
 else
  return false

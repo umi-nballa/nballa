@@ -161,8 +161,8 @@ enhancement CPBuildingEnhancement : CPBuilding {
 
     clonedBuilding.Building.NumStories = this.Building.NumStories//NoOfStories_Ext
     clonedBuilding.Building.NumUnits = this.Building.NumUnits
-    clonedBuilding.fireprotectionclass = this.fireprotectionclass
-    clonedBuilding.bceg=this.bceg
+    clonedBuilding.DwellingProtectionClassCode = this.DwellingProtectionClassCode
+    clonedBuilding.BCEG_Ext=this.BCEG_Ext
 
     clonedBuilding.Building.ConstructionType = this.Building.ConstructionType
     clonedBuilding.SqFtExt=this.SqFtExt
@@ -178,22 +178,22 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.Building.YearBuilt = this.Building.YearBuilt
     clonedBuilding.Building.TimesRent = this.Building.TimesRent
 
-    clonedBuilding.ResQuestions.windmiti5=this.ResQuestions.windmiti5
-    clonedBuilding.ResQuestions.windstorm=this.ResQuestions.windstorm
-    clonedBuilding.ResQuestions.windstormexcl=this.ResQuestions.windstormexcl
-    clonedBuilding.ResQuestions.windmitidate=this.ResQuestions.windmitidate
+    clonedBuilding.windmiti5=this.windmiti5
+    clonedBuilding.windstorm=this.windstorm
+    clonedBuilding.windstormexcl=this.windstormexcl
+    clonedBuilding.windmitidate=this.windmitidate
 
-    clonedBuilding.ResQuestions.desgr3=this.ResQuestions.desgr3
-    clonedBuilding.ResQuestions.guswind=this.ResQuestions.guswind
-    clonedBuilding.ResQuestions.terexp=this.ResQuestions.terexp
-    clonedBuilding.ResQuestions.swrr=this.ResQuestions.swrr
-    clonedBuilding.ResQuestions.guswindloc=this.ResQuestions.guswindloc
-    clonedBuilding.ResQuestions.intpredes=this.ResQuestions.intpredes
-    clonedBuilding.ResQuestions.roofdecat=this.ResQuestions.roofdecat
-    clonedBuilding.ResQuestions.roofwl=this.ResQuestions.roofwl
-    clonedBuilding.ResQuestions.roofdk=this.ResQuestions.roofdk
-    clonedBuilding.ResQuestions.roofcv=this.ResQuestions.roofcv
-    clonedBuilding.ResQuestions.openprt=this.ResQuestions.openprt
+    clonedBuilding.desgr3=this.desgr3
+    clonedBuilding.guswind=this.guswind
+    clonedBuilding.terexp=this.terexp
+    clonedBuilding.swrr=this.swrr
+    clonedBuilding.guswindloc=this.guswindloc
+    clonedBuilding.intpredes=this.intpredes
+    clonedBuilding.roofdecat=this.roofdecat
+    clonedBuilding.roofwl=this.roofwl
+    clonedBuilding.roofdk=this.roofdk
+    clonedBuilding.roofcv=this.roofcv
+    clonedBuilding.openprt=this.openprt
 
 
 
@@ -203,22 +203,23 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.numfit=this.numfit
     clonedBuilding.numsw=this.numsw
 
-    clonedBuilding.ProtectionDetails.ActiveMonitoringVideo=this.ProtectionDetails.ActiveMonitoringVideo
-    clonedBuilding.ProtectionDetails.AutomaticFireSuppress=this.ProtectionDetails.AutomaticFireSuppress
-        clonedBuilding.ProtectionDetails.CentralBurglarAlarm=this.ProtectionDetails.CentralBurglarAlarm
-        clonedBuilding.ProtectionDetails.CentralFireAlarm=this.ProtectionDetails.CentralFireAlarm
-        clonedBuilding.ProtectionDetails.ContinuousRecVideo=this.ProtectionDetails.ContinuousRecVideo
-        clonedBuilding.ProtectionDetails.ExteriorMotionLighting=this.ProtectionDetails.ExteriorMotionLighting
-        clonedBuilding.ProtectionDetails.GuardWatchmen=this.ProtectionDetails.GuardWatchmen
-        clonedBuilding.ProtectionDetails.GatedAccess=this.ProtectionDetails.GatedAccess
-        clonedBuilding.ProtectionDetails.GuardDogs=this.ProtectionDetails.GuardDogs
-        clonedBuilding.ProtectionDetails.LocalBurglarAlarm=this.ProtectionDetails.LocalBurglarAlarm
-        clonedBuilding.ProtectionDetails.LocalFireAlarm=this.ProtectionDetails.LocalFireAlarm
-        clonedBuilding.ProtectionDetails.MotionActivatedVideo=this.ProtectionDetails.MotionActivatedVideo
-    clonedBuilding.AirCondProt.alarmed=this.AirCondProt.alarmed
-    clonedBuilding.AirCondProt.caged=this.AirCondProt.caged
-    clonedBuilding.AirCondProt.monitored=this.AirCondProt.monitored
+    clonedBuilding.ActiveMonitoringVideo=this.ActiveMonitoringVideo
+    clonedBuilding.AutomaticFireSuppress=this.AutomaticFireSuppress
+        clonedBuilding.CentralBurglarAlarm=this.CentralBurglarAlarm
+        clonedBuilding.CentralFireAlarm=this.CentralFireAlarm
+        clonedBuilding.ContinuousRecVideo=this.ContinuousRecVideo
+        clonedBuilding.ExteriorMotionLighting=this.ExteriorMotionLighting
+        clonedBuilding.GuardWatchmen=this.GuardWatchmen
+        clonedBuilding.GatedAccess=this.GatedAccess
+        clonedBuilding.GuardDogs=this.GuardDogs
+        clonedBuilding.LocalBurglarAlarm=this.LocalBurglarAlarm
+        clonedBuilding.LocalFireAlarm=this.LocalFireAlarm
+        clonedBuilding.MotionActivatedVideo=this.MotionActivatedVideo
+    clonedBuilding.alarmed=this.alarmed
+    clonedBuilding.caged=this.caged
+    clonedBuilding.monitored=this.monitored
 
+    clonedBuilding.OtherFacilitiesDescription=this.OtherFacilitiesDescription
 
     clonedBuilding.DistFirHyd=this.DistFirHyd
     clonedBuilding.DistFireStn=this.DistFireStn

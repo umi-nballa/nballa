@@ -29,14 +29,15 @@ class HOCommonBasePremiumRatingInfo {
   var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
 
   construct(dwelling: Dwelling_HOE) {
-    _territoryCode = (dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code)
+    var hoLocation = dwelling?.HOLocation
+    _territoryCode = hoLocation?.OverrideTerritoryCode_Ext?  hoLocation?.TerritoryCodeOverridden_Ext : hoLocation?.TerritoryCodeTunaReturned_Ext
     //TODO: remove this code once the tuna integration is in place
-    if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_AZ)
+    /*if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_AZ)
       _territoryCode = 40
     else if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_CA)
       _territoryCode = 7
     else if (dwelling.Branch.BaseState == typekey.Jurisdiction.TC_NV or dwelling.Branch.BaseState == TC_SC)
-        _territoryCode = 30
+        _territoryCode = 30 */
 
     _policyType = dwelling?.HOLine.HOPolicyType.Code
     if (dwelling.HODW_Dwelling_Cov_HOEExists){
@@ -52,6 +53,7 @@ class HOCommonBasePremiumRatingInfo {
     var editEffectiveDate = policyPeriod?.EditEffectiveDate
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
 
+    //TODO : Need to update the prior losses
     if (policyPeriod?.Policy?.LossHistoryType == typekey.LossHistoryType.TC_ATT) {
       _priorLosses = policyPeriod?.Policy?.NumPriorLosses
     } else if (policyPeriod?.Policy?.LossHistoryType == typekey.LossHistoryType.TC_MAN){
@@ -68,9 +70,13 @@ class HOCommonBasePremiumRatingInfo {
         policyPeriod?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_SCORE){
       _noHitOrScoreIndicator = true
     }
-    _protectionClassCode = dwelling?.HOLocation?.DwellingProtectionClassCode
 
-    _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling.ConstructionType, dwelling.ExteriorWallFinish_Ext, dwelling.HOLine.BaseState)
+    _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
+
+    var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
+    var exteriorWallFinish = dwelling.OverrideExteriorWFval_Ext? dwelling.ExteriorWFvalueOverridden_Ext : dwelling.ExteriorWallFinish_Ext
+
+    _constructionType = HOConstructionTypeMapper.setConstructionType(dwellingConstructionType, exteriorWallFinish, dwelling.HOLine.BaseState)
 
     _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)
     var keyFactorRange = ConfigParamsUtil.getRange(TC_KEYFACTORRANGE, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)

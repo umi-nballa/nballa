@@ -315,8 +315,10 @@
   <param name="ClaimSystemURL" value="http://localhost:8080/cc" env="local"/>
   <param name="ClaimSystemURL" value="http://gwconfiguration:8080/cc" env="pc_dev"/>
   <param name="ClaimSystemURL" value="http://uimdevint01:8080/cc" env="pc_devint"/>
+  <param name="ClaimSystemURL" value="http://uimdevconver01:8080/cc" env="pc_dev_cnv"/>
   <param name="ClaimSystemURL" value="http://uimdevconfig02:8080/cc" env="pc_dev02"/>
   <param name="ClaimSystemURL" value="http://assembly:8080/cc" env="pc_asm"/>
+  <param name="ClaimSystemURL" value="http://uimasmconver01:8080/cc" env="pc_asm_cnv"/>
   <param name="ClaimSystemURL" value="http://GWQATICCB01/cc" env="pc_qat"/>
 
 
@@ -330,8 +332,10 @@
   <param name="BillingSystemURL" value="http://localhost:8580/bc" env="local"/>
   <param name="BillingSystemURL" value="http://gwconfiguration:8580/bc" env="pc_dev"/>
   <param name="BillingSystemURL" value="http://uimdevint01:8580/bc" env="pc_devint"/>
+  <param name="BillingSystemURL" value="http://uimdevconver01:8580/bc" env="pc_dev_cnv"/>
   <param name="BillingSystemURL" value="http://uimdevconfig02:8580/bc" env="pc_dev02"/>
   <param name="BillingSystemURL" value="http://assembly:8580/bc" env="pc_asm"/>
+  <param name="BillingSystemURL" value="http://uimasmconver01:8580/bc" env="pc_asm_cnv"/>
   <param name="BillingSystemURL" value="http://GWQATIBCB01/bc" env="pc_qat"/>
 
   <!--
@@ -343,8 +347,10 @@
   <param name="PaymentSystemURL" value="http://localhost:8580/bc" env="local"/>
   <param name="PaymentSystemURL" value="http://gwconfiguration:8580/bc" env="pc_dev"/>
   <param name="PaymentSystemURL" value="http://uimdevint01:8580/bc" env="pc_devint"/>
+  <param name="PaymentSystemURL" value="http://uimdevconver01:8580/bc" env="pc_dev_cnv"/>
   <param name="PaymentSystemURL" value="http://uimdevconfig02:8580/bc" env="pc_dev02"/>
   <param name="PaymentSystemURL" value="http://assembly:8580/bc" env="pc_asm"/>
+  <param name="PaymentSystemURL" value="http://uimasmconver01:8580/bc" env="pc_asm_cnv"/>
   <param name="PaymentSystemURL" value="http://GWQATIBCB01/bc" env="pc_qat"/>
 
   <!--
@@ -590,7 +596,8 @@
   <!-- For the job expiration batch process (JobExpire), the number of days past the effective / create
        date before a job can be expired.  JobExpire will examine all jobs meeting the date criteria that
        follows.  Only those jobs that have job.canExpireJob() true will be expired. -->
-  <param name="JobExpirationEffDateThreshold" value="7"/>
+  <!-- Never expire at UNA <param name="JobExpirationEffDateThreshold" value="7"/> -->
+  <param name="JobExpirationEffDateThreshold" value="240"/>
   <!-- Note: setting create date threshold to a negative number effectively disables create
        date checking, since no job can be created with a future create date.  EffDateThreshold
        (above) should still be active.  -->
@@ -615,7 +622,7 @@
   <!-- Set to true to enable PolicyCenter to expire this job type. -->
   <param name="JobExpireCheckRewrite" value="false"/>
   <!-- Set to true to enable PolicyCenter to expire this job type. -->
-  <param name="JobExpireCheckSubmission" value="true"/>
+  <param name="JobExpireCheckSubmission" value="false"/>
   <!-- Set to true to enable PolicyCenter to expire this job type. -->
   <param name="JobExpireCheckTestJob" value="false"/>
 

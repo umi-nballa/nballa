@@ -5,63 +5,14 @@
   entity="AffinityDiscount_Ext"
   table="affinitydiscount_ext"
   type="retireable">
-  <column
-    desc="Preferred Builder Description/Code/Value"
-    name="PreferredBuilderDescription"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="80"/>
-  </column>
-  <column
-    desc="Is applicable to Arizona"
-    name="AZ"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to California"
-    name="CA"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to Florida"
-    name="FL"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to Hawaii"
-    name="HI"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to Nevada"
-    name="NV"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to North Carolina"
-    name="NC"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to South Carolina"
-    name="SC"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Is applicable to Texas"
-    name="TX"
-    nullok="true"
-    type="bit"/>
   <typekey
     desc="Affinity Discount Category"
     name="AffinityDiscountCategory"
     nullok="true"
     typelist="AffinityDisCategory_Ext"/>
   <column
-    desc="Preferred Financial Institution"
-    name="PreferredFinancialInstitution"
+    desc="Stores description of the Affinity"
+    name="AffinityDescription"
     nullok="true"
     type="varchar">
     <columnParam
@@ -69,43 +20,18 @@
       value="80"/>
   </column>
   <column
-    name="PreferredEmployer"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="80"/>
-  </column>
-  <column
-    name="AZStartDate"
+    desc="Stores the start date of the affinity discount"
+    name="StartDate"
     nullok="true"
     type="datetime"/>
   <column
-    name="CAStartDate"
+    desc="Stores the end date of the affinity discount"
+    name="EndDate"
     nullok="true"
     type="datetime"/>
-  <column
-    name="FLStartDate"
+  <typekey
+    desc="Stores the jurisdiction for which the discount is applied"
+    name="Jurisdiction"
     nullok="true"
-    type="datetime"/>
-  <column
-    name="HIStartDate"
-    nullok="true"
-    type="datetime"/>
-  <column
-    name="NVStartDate"
-    nullok="true"
-    type="datetime"/>
-  <column
-    name="NCStartDate"
-    nullok="true"
-    type="datetime"/>
-  <column
-    name="SCStartDate"
-    nullok="true"
-    type="datetime"/>
-  <column
-    name="TXStartDate"
-    nullok="true"
-    type="datetime"/>
+    typelist="Jurisdiction"/>
 </entity>

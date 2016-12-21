@@ -41,11 +41,6 @@ class CoveragesValidation_HOE extends PCValidationBase {
   }
   
   function checkEmptyScheduledItems() {
-    if (_dwelling.HODW_PersonalPropertyOffResidence_HOEExists) {
-      if (_dwelling.HODW_PersonalPropertyOffResidence_HOE.ScheduledItems.length == 0) {
-        Result.addError(_dwelling, "default", displaykey.Web.Policy.HomeownersLine.Validation.PersonalPropertyOffResidenceEmpty)
-      }
-    }
     if (_dwelling.HODW_SpecificStructuresOffPremise_HOEExists) {
       if (_dwelling.HODW_SpecificStructuresOffPremise_HOE.ScheduledItems.length == 0) {
         Result.addError(_dwelling, "default", displaykey.Web.Policy.HomeownersLine.Validation.SpecificStructuresOffPremiseEmpty)

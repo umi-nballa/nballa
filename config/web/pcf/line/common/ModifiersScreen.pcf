@@ -17,6 +17,9 @@
     <Require
       name="modifiers"
       type="Modifier[]"/>
+    <Require
+      name="showrmf"
+      type="Boolean"/>
     <Variable
       initialValue="modifiers.where(\ mod -&gt; mod.ScheduleRate )"
       name="scheduleRates"/>
@@ -46,7 +49,8 @@
       <TitleBar
         title="displaykey.Web.ModifiersScreen.RatingInputs"/>
     </PanelRef>
-    <PanelRef>
+    <PanelRef
+      visible="showrmf">
       <DetailViewPanel>
         <InputColumn>
           <Label
@@ -58,7 +62,8 @@
             label="displaykey.Web.ModifiersScreen.ConsenttoRate_Ext"
             labelStyleClass="ext_redLabel"
             value="policyPeriod.ConsentToRateReceived_Ext">
-            <PostOnChange/>
+            <PostOnChange
+              onChange="gw.job.JobWizardHelperEnhancement.createHistoryEventTransaction(policyPeriod)"/>
           </CheckBoxInput>
           <CheckBoxInput
             editable="policyPeriod.ConsentToRateReceived_Ext == null || policyPeriod.ConsentToRateReceived_Ext == false"

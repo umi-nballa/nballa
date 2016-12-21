@@ -72,4 +72,28 @@
     name="rentedtoOthers_Ext"
     nullok="true"
     type="bit"/>
+  <foreignkey
+    desc="The scheduled additional insured"
+    fkentity="PolicyAddlInsuredDetail"
+    name="AdditionalInsured"
+    nullok="true"/>
+  <column
+    desc="The interest that an additional insured has to the policy in relation to the coverage"
+    name="Interest"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="Whether Property Applies"
+    name="IsSectionIPropertyCoverage"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="The occupancy type of a scheduled additional insured"
+    name="SectionIILiabilityOccType"
+    nullok="true"
+    typelist="HOSchedAddlInsOccType"/>
 </entity>

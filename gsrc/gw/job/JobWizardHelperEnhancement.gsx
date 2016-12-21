@@ -292,4 +292,13 @@ enhancement JobWizardHelperEnhancement : JobWizardHelper {
     gw.api.web.PebblesUtil.invalidateIterators(this.Wizard, PolicyLocation)
     gw.api.web.PebblesUtil.invalidateIterators(this.Wizard, Modifier)
   }
+
+  // Method that created History event for CTR Set
+  public static function createHistoryEventTransaction (policyPeriod : entity.PolicyPeriod){
+     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+      var Job = bundle.add(policyPeriod.Job)
+      if(policyPeriod.ConsentToRateReceived_Ext)
+        Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)
+    })
+  }
 }

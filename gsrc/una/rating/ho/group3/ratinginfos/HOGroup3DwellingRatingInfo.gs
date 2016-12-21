@@ -11,7 +11,6 @@ uses java.math.BigDecimal
 class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
   var _lossAssessmentLimit : int as LossAssessmentLimit
-  var _territoryCodeForLossAssessmentCov : int as TerritoryCodeForLossAssessmentCov
   var _territoryCodeForSinkholeLossCov : int as TerritoryCodeForSinkholeLossCov
   var _county : String as County
   var _covALimit : BigDecimal as CovALimit
@@ -33,7 +32,6 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
     _covALimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
     if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
       _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
-      _territoryCodeForLossAssessmentCov = TerritoryCode.toInt()
     }
 
     if(dwellingCov typeis HODW_SinkholeLoss_HOE_Ext){

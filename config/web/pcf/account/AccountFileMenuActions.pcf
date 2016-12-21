@@ -60,21 +60,21 @@
       id="AccountFileMenuActions_ReopenAccount"
       label="displaykey.Web.Account.Status.ReopenAccount"
       visible="account.AccountStatus == AccountStatus.TC_WITHDRAWN and perm.Account.reopen(account)"/>
-    <!-- <MenuItem
+    <MenuItem
       action="AccountFile_AccountSearch.go(account, typekey.AccountSearchType.TC_MOVEPOLICIES)"
       id="AccountFileMenuActions_MovePolicies"
       label="displaykey.Web.AccountFile.MovePolicies"
-      visible="perm.Account.movePolicies(account) and !account.Frozen and account.AccountStatus != AccountStatus.TC_WITHDRAWN"/> -->
-    <!-- <MenuItem
+      visible="gw.plugin.util.CurrentUserUtil.CurrentUser.User.Credential.UserName==&quot;su&quot; &amp;&amp; perm.Account.movePolicies(account) and !account.Frozen and account.AccountStatus != AccountStatus.TC_WITHDRAWN"/>
+    <MenuItem
       action="AccountFile_AccountSearch.go(account, typekey.AccountSearchType.TC_REWRITEPOLICIES)"
       id="AccountFileMenuActions_RewritePolicies"
       label="displaykey.Web.AccountFile.RewritePolicies"
-      visible="perm.Account.rewritePolicies(account) and !account.Frozen and account.AccountStatus != AccountStatus.TC_WITHDRAWN"/> -->
-    <!-- <MenuItem
+      visible="gw.plugin.util.CurrentUserUtil.CurrentUser.User.Credential.UserName==&quot;su&quot; &amp;&amp; perm.Account.rewritePolicies(account) and !account.Frozen and account.AccountStatus != AccountStatus.TC_WITHDRAWN"/>
+    <MenuItem
       action="AccountFile_AccountSearch.go(account, typekey.AccountSearchType.TC_MERGEACCOUNTS)"
       id="AccountFileMenuActions_MergeAccounts"
       label="displaykey.Web.AccountFile.MergeAccounts.MergeAccount"
-      visible="perm.Account.mergeAccounts(account) and !account.Frozen and account.AccountStatus != AccountStatus.TC_WITHDRAWN"/> -->
+      visible="gw.plugin.util.CurrentUserUtil.CurrentUser.User.Credential.UserName==&quot;su&quot; &amp;&amp; perm.Account.mergeAccounts(account) and !account.Frozen and account.AccountStatus != AccountStatus.TC_WITHDRAWN"/>
     <Code><![CDATA[function updateAccountStatusAndCommit(newStatus : AccountStatus) {
   gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
     var localAccount = bundle.add(account)

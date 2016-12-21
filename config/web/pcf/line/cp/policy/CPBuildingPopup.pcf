@@ -42,6 +42,12 @@
       initialValue="true"
       name="showResidentialQues"
       type="boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(cpLine.AssociatedPolicyPeriod)"
+      name="tunaAppResponse"/>
+    <Variable
+      initialValue="gw.lob.cp.location.CPLocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,cpBuilding)"
+      name="setTunaFieldsMatchLevel"/>
     <Screen>
       <Toolbar>
         <EditButtons/>
@@ -167,20 +173,20 @@
                 <PostOnChange
                   onChange="cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding))"/>
               </TextInput>
-              <TextInput
+              <!-- <TextInput
                 align="left"
                 editable="true"
                 id="fireprotclass"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireProtClass"
                 required="true"
-                value="cpBuilding.fireprotectionclass"/>
-              <TextInput
+                value="cpBuilding.fireprotectionclass"/> -->
+              <!-- <TextInput
                 align="left"
                 editable="true"
                 id="bceg"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Bceg"
                 required="true"
-                value="cpBuilding.bceg"/>
+                value="cpBuilding.bceg"/> -->
               <TypeKeyInput
                 editable="true"
                 id="ConstructionType"
@@ -390,7 +396,7 @@
                   visible="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.windmiti5==true &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.Building.NumStories&lt;=3//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
                 <TypeKeyInput
                   align="left"
-                  editable="cpBuilding.windmiti5==true || cpBuilding.Building.YearBuilt&lt;=2002"
+                  editable="cpBuilding.windmiti5==true || cpBuilding.Building.YearBuilt&lt;2002"
                   id="rd"
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Roofdeck"
                   required="cpBuilding.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.windmiti5==true)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
@@ -419,7 +425,7 @@
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Terrainexp"
                   required="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.terexp"
-                  visible="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                  visible="cpBuilding.windstormexcl==false || cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
                 <TextInput
                   align="left"
                   editable="cpBuilding.windmiti5==true"
@@ -436,6 +442,335 @@
                   value="cpBuilding.windmitidate"
                   visible="cpBuilding.windmiti5==true"/>
               </InputGroup>
+              <InputSet
+                editable="true"
+                id="TerritoryCodeInputSet"
+                visible="cpBuilding.CPLocation.PolicyLocation != null and cpBuilding.CPLocation.PolicyLocation.TerritoryCodes.length != 0">
+                <RangeInput
+                  available="!cpBuilding.OverrideTerritoryCode_Ext"
+                  editable="true"
+                  id="TerritoryCodeTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.TerritoryCodeTunaReturned_Ext"
+                  value="cpBuilding.TerritoryCodeTunaReturned_Ext"
+                  valueRange="tunaAppResponse.TerritoryCodes"/>
+                <Input
+                  available="!cpBuilding.OverrideTerritoryCode_Ext"
+                  id="TerritoryCodeMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.TerritoryCodeMatchlevel_Ext"
+                  value="cpBuilding.TerritoryCodeMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideTerritoryCode_Ext"
+                  label="displaykey.Web.CP.CPLocation.TerritoryCodeOverride_Ext"
+                  value="cpBuilding.OverrideTerritoryCode_Ext">
+                  <PostOnChange
+                    target="TerritoryCodeInputSet"/>
+                </BooleanRadioInput>
+                <InputIterator
+                  elementName="TerritoryCode"
+                  value="cpBuilding.CPLocation.PolicyLocation.TerritoryCodes">
+                  <IteratorSort
+                    sortBy="TerritoryCode.PolicyLinePattern.Priority"
+                    sortOrder="1"/>
+                  <PickerInput
+                    available="cpBuilding.CPLocation.PolicyLocation.State != null"
+                    editable="true"
+                    id="TerritoryCode"
+                    label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
+                    pickLocation="TerritoryCodeSearchPopup.push(cpBuilding.Branch, TerritoryCode)"
+                    required="cpBuilding.OverrideTerritoryCode_Ext"
+                    value="cpBuilding.TerritoryCodeOverridden_Ext"
+                    visible="cpBuilding.OverrideTerritoryCode_Ext"/>
+                </InputIterator>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="latitude_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideLatitude_Ext"
+                  editable="true"
+                  id="latitudeTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.LatitudeTunaReturned_Ext"
+                  value="cpBuilding.Latitude_Ext"
+                  valueRange="{tunaAppResponse.Latitude}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Latitude)"/>
+                <Input
+                  available="!cpBuilding.OverrideLatitude_Ext"
+                  id="latitudeMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.LatitudeMatchlevel_Ext"
+                  value="cpBuilding.LatitudeMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideLatitude_Ext"
+                  label="displaykey.Web.CP.CPLocation.LatitudeOverride_Ext"
+                  value="cpBuilding.OverrideLatitude_Ext">
+                  <PostOnChange
+                    target="latitude_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideLatitude_Ext"
+                  editable="true"
+                  id="latitudeUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.LatitudeUserEntered_Ext"
+                  required="cpBuilding.OverrideLatitude_Ext"
+                  value="cpBuilding.CPLocation.PolicyLocation.LatitudeOverridden_Ext"
+                  visible="cpBuilding.OverrideLatitude_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="Longitude_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideLongitude_Ext"
+                  editable="true"
+                  id="LongitudeTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.LongitudeTunaReturned_Ext"
+                  value="cpBuilding.CPLocation.PolicyLocation.Longitude_Ext"
+                  valueRange="{tunaAppResponse.Longitude}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Longitude)"/>
+                <Input
+                  available="!cpBuilding.OverrideLongitude_Ext"
+                  id="LongitudeMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.LongitudeMatchlevel_Ext"
+                  value="cpBuilding.LongitudeMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideLongitude_Ext"
+                  label="displaykey.Web.CP.CPLocation.LongitudeOverride_Ext"
+                  value="cpBuilding.OverrideLongitude_Ext">
+                  <PostOnChange
+                    target="Longitude_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideLongitude_Ext"
+                  editable="true"
+                  id="LongitudeUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.LongitudeUserEntered_Ext"
+                  required="cpBuilding.OverrideLongitude_Ext"
+                  value="cpBuilding.CPLocation.PolicyLocation.LongitudeOverridden_Ext"
+                  visible="cpBuilding.OverrideLongitude_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="Windpoolvalue_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideWindPool_Ext"
+                  editable="true"
+                  id="WindpoolvalueTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.WindpoolvalueTunaReturned_Ext"
+                  value="cpBuilding.Windpoolvalue_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
+                <Input
+                  available="!cpBuilding.OverrideWindPool_Ext"
+                  id="WindpoolvalueMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.WindpoolvalueMatchlevel_Ext"
+                  value="cpBuilding.WindPoolMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideWindpoolvalue_Ext"
+                  label="displaykey.Web.CP.CPLocation.WindpoolvalueOverride_Ext"
+                  value="cpBuilding.OverrideWindPool_Ext">
+                  <PostOnChange
+                    target="Windpoolvalue_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideWindPool_Ext"
+                  editable="true"
+                  id="WindpoolvalueUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.WindpoolvalueUserEntered_Ext"
+                  required="cpBuilding.OverrideWindPool_Ext"
+                  value="cpBuilding.WindPoolOverridden_Ext"
+                  visible="cpBuilding.OverrideWindPool_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="PropFloodVal_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverridePropFloodVal_Ext"
+                  editable="true"
+                  id="PropFloodValTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.PropFloodValTunaReturned_Ext"
+                  value="cpBuilding.PropFloodVal_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
+                <Input
+                  available="!cpBuilding.OverridePropFloodVal_Ext"
+                  id="PropFloodValMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.PropFloodValMatchlevel_Ext"
+                  value="cpBuilding.PropFloodValMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRidePropFloodVal_Ext"
+                  label="displaykey.Web.CP.CPLocation.PropFloodValOverride_Ext"
+                  value="cpBuilding.OverridePropFloodVal_Ext">
+                  <PostOnChange
+                    target="PropFloodVal_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverridePropFloodVal_Ext"
+                  editable="true"
+                  id="PropFloodValUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.PropFloodValUserEntered_Ext"
+                  required="cpBuilding.OverridePropFloodVal_Ext"
+                  value="cpBuilding.PropFloodValOverridden_Ext"
+                  visible="cpBuilding.OverridePropFloodVal_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="bceg_Ext">
+                <RangeInput
+                  editable="!cpBuilding.OverrideBCEG_Ext"
+                  id="BCEGTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.BCEGTunaReturned_Ext"
+                  value="cpBuilding.BCEG_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)"/>
+                <Input
+                  id="BCEGMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.BCEGMatchlevel_Ext"
+                  value="cpBuilding.BCEGMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideTunaBCEG_Ext"
+                  label="displaykey.Web.CP.CPLocation.BCEGOverride_Ext"
+                  value="cpBuilding.OverrideBCEG_Ext">
+                  <PostOnChange
+                    target="bceg_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideBCEG_Ext"
+                  editable="true"
+                  id="BCEGUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.BCEGUserEntered_Ext"
+                  required="cpBuilding.OverrideBCEG_Ext"
+                  value="cpBuilding.BCEGOverridden_Ext"
+                  visible="cpBuilding.OverrideBCEG_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="PCCode_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideDwellingPCCode_Ext"
+                  editable="true"
+                  id="PCCodeTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.ProtectionClass"
+                  value="cpBuilding.DwellingProtectionClassCode"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
+                  <PostOnChange
+                    onChange="cpBuilding.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(cpBuilding.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+                </RangeInput>
+                <Input
+                  available="!cpBuilding.OverrideDwellingPCCode_Ext"
+                  id="PCCodeMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.PCCodeMatchlevel_Ext"
+                  value="cpBuilding.DwellingPCCodeMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideTunaBCEG_Ext"
+                  label="displaykey.Web.CP.CPLocation.PCCodeOverride_Ext"
+                  value="cpBuilding.OverrideDwellingPCCode_Ext">
+                  <PostOnChange
+                    target="PCCode_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideDwellingPCCode_Ext"
+                  editable="true"
+                  id="PCCodeUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.PCCodeUserEntered_Ext"
+                  required="cpBuilding.OverrideDwellingPCCode_Ext"
+                  value="cpBuilding.DwellingPCCodeOverridden_Ext"
+                  visible="cpBuilding.OverrideDwellingPCCode_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="Firedeptnamedval_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideFiredeptnamedval_Ext"
+                  editable="true"
+                  id="FiredeptnamedvalTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.FiredeptnamedvalTunaReturned_Ext"
+                  value="cpBuilding.Firedeptnmval_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
+                <Input
+                  available="!cpBuilding.OverrideFiredeptnamedval_Ext"
+                  id="FiredeptnamedvalMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.FiredeptnamedvalMatchlevel_Ext"
+                  value="cpBuilding.FiredeptnamedvalMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideFiredeptnamedval_Ext"
+                  label="displaykey.Web.CP.CPLocation.FiredeptnamedvalOverride_Ext"
+                  value="cpBuilding.OverrideFiredeptnamedval_Ext">
+                  <PostOnChange
+                    target="Firedeptnamedval_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideFiredeptnamedval_Ext"
+                  editable="true"
+                  id="FiredeptnamedvalUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.FiredeptnamedvalUserEntered_Ext"
+                  required="cpBuilding.OverrideFiredeptnamedval_Ext"
+                  value="cpBuilding.FiredeptnamedvalOverridden_Ext"
+                  visible="cpBuilding.OverrideFiredeptnamedval_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="DistToCoast_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideDistToCoast_Ext"
+                  editable="true"
+                  id="DistToCoastTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistanceToCoast_Ext"
+                  value="cpBuilding.DistToCoast_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
+                <Input
+                  available="!cpBuilding.OverrideDistToCoast_Ext"
+                  id="DistToCoastMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistanceToCoastMatchLevel_Ext"
+                  value="cpBuilding.DistToCoastMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideDistToCoast_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistToCoastOverride_Ext"
+                  value="cpBuilding.OverrideDistToCoast_Ext">
+                  <PostOnChange
+                    target="DistToCoast_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideDistToCoast_Ext"
+                  editable="true"
+                  id="DistToCoastUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistanceToCoastUserEntered_Ext"
+                  required="cpBuilding.OverrideDistToCoast_Ext"
+                  value="cpBuilding.DistToCoastOverridden_Ext"
+                  visible="cpBuilding.OverrideDistToCoast_Ext"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="NoteDetail_Ext">
+                <RangeInput
+                  editable="true"
+                  id="NoteDetailTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.NoteDetail_Ext"
+                  value="cpBuilding.NoteDetail_Ext"
+                  valueRange="{tunaAppResponse.NoteDetail}"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="MetricsVersionValue_Ext">
+                <RangeInput
+                  editable="true"
+                  id="MetricsVersionValueTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.MetricsVersionValue_Ext"
+                  value="cpBuilding.MetricsVersionValue_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.MetricsVersion)"/>
+              </InputSet>
+              <InputDivider/>
+              <InputSet
+                id="ResultingPrecision_Ext">
+                <RangeInput
+                  editable="true"
+                  id="ResultingPercisionTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.ResultingPrecisionValue_Ext"
+                  value="cpBuilding.ResultingPrecision_Ext"
+                  valueRange="{tunaAppResponse.ResultingPrecision}"/>
+              </InputSet>
+              <InputDivider/>
             </InputColumn>
             <!-- InputColumn
               labelWidth="300">
@@ -842,6 +1177,6 @@
 function setCPClassCode():boolean
 {
   return false
-}]]></Code>
+} ]]></Code>
   </Popup>
 </PCF>

@@ -90,4 +90,6 @@ public final class HORateRoutineNames {
   public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
   public static final var BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeComplianceGradingCreditRateRoutine"
   public static final var OTHER_STRUCTURES_RENTED_TO_OTHERS_RATE_ROUTINE : String = "UNAHOOtherStructuresRentedToOthersRateRoutine"
+  public static final var NO_PRIOR_INSURANCE_RATE_ROUTINE : String = "UNAHONoPriorInsuranceRateRoutine"
+  public static final var TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE : String = "UNAHOTownhouseOrRowhouseSurchargeRateRoutine"
 }

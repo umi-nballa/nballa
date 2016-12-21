@@ -219,8 +219,15 @@ class CoverageTermAvailabilityUtil {
 
   private static function isAggLimitOptionAvailable (option: gw.api.productmodel.CovTermOpt, _glline:GLLine):boolean
   {
-     if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+     //if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==100000.0000 && (option?.Value.doubleValue()==100000.0000 || option?.Value.doubleValue()==200000.0000))
        return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==300000.0000 && (option?.Value.doubleValue()==300000.0000 || option?.Value.doubleValue()==600000.0000))
+      return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==500000.0000 && (option?.Value.doubleValue()==500000.0000 || option?.Value.doubleValue()==1000000.0000))
+      return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==1000000.0000 && (option?.Value.doubleValue()==2000000.0000 || option?.Value.doubleValue()==1000000.0000))
+      return true
     else
       return false
   }

@@ -160,6 +160,10 @@ class CoveragesUtil {
         break
       case "HODW_WindstromHailExc_HOE_Ext":
         result = getWindstormOrHailExclusionExistence(coverable as HomeownersLine_HOE)
+      break
+      case "CPProtectiveSafeguards_EXT":
+          result = getProtectiveSafeguardsExistence(coverable as CPBuilding)
+      break
       default:
         break
     }
@@ -379,6 +383,19 @@ class CoveragesUtil {
     }else{
       result = TC_ELECTABLE
     }
+
+    return result
+  }
+
+
+  private static function getProtectiveSafeguardsExistence(building : CPBuilding) : ExistenceType{
+    var result : ExistenceType
+
+
+    if(building.AutomaticFireSuppress)
+       result = TC_REQUIRED
+    else
+     result = TC_ELECTABLE
 
     return result
   }

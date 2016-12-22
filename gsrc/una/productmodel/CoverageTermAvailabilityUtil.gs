@@ -4,10 +4,12 @@ uses gw.util.Pair
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
-uses java.lang.StringBuilder
 uses java.util.HashMap
 uses gw.api.productmodel.CovTermOpt
 uses una.logging.UnaLoggerCategory
+uses org.apache.commons.lang3.StringUtils
+uses java.lang.Double
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,12 +19,24 @@ uses una.logging.UnaLoggerCategory
  * To change this template use File | Settings | File Templates.
  */
 class CoverageTermAvailabilityUtil {
-
   final static var _logger = UnaLoggerCategory.PRODUCT_MODEL
 
   private static final var HO_FILTER = "HO"
   private static final var DP_FILTER = "DP"
   private static final var CONDO_RENT_FILTER = "CONDO"
+  private static final var AOP = "AOP"
+  private static final var COV_LIMIT = "COVLIMIT"
+  private static final var SC_NAMED_STORM_RESTRICTION_MAP : Map<String, Double> = {
+    StringUtils.join({"HO3", AOP + "2500", "0.01"}, ",") -> 250000,
+    StringUtils.join({"HO3", AOP + "2500", "0.02"}, ",") -> 125000,
+    StringUtils.join({"HO3", AOP + "5000", "0.01"}, ",") -> 500000,
+    StringUtils.join({"HO3", AOP + "5000", "0.02"}, ",") -> 250000,
+    StringUtils.join({"HO4", AOP + "1000", "0.02"}, ",") -> 50000,
+    StringUtils.join({"HO6", AOP + "2500", "0.02"}, ",") -> 125000,
+    StringUtils.join({"HO6", AOP + "5000", "0.02"}, ",") -> 250000,
+    StringUtils.join({"HO6", AOP + "5000", "0.05"}, ",") -> 100000,
+    StringUtils.join({"HO6", AOP + "5000", "0.10"}, ",") ->50000
+  }
 
   @Param("option", "The CovTermOpt to evaluate availability for.")
   @Param("covTerm", "The CovTerm that the option is associated with.")
@@ -408,7 +422,6 @@ class CoverageTermAvailabilityUtil {
       var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + nonHurricaneWindValue + allPerilsValue)
       var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
-      var testPrefix =  filterPrefix + allPerilsValue
 
       if(namedStormRestrictedOptions != null){
         result = namedStormRestrictedOptions.contains(optionValue)
@@ -418,6 +431,23 @@ class CoverageTermAvailabilityUtil {
         result = valueRestrictedOptions.contains(optionValue)
       }else if(defaultRestrictedOptions != null){
         result = defaultRestrictedOptions.contains(optionValue)
+      }
+    }
+
+    //further filter based on "exceptions" rules
+    if(state == TC_SC and covTermPatternCode == "HODW_NamedStrom_Ded_HOE_Ext"){
+      var covLimitValue : BigDecimal
+
+      if(dwelling.HOPolicyType == TC_HO4 or dwelling.HOPolicyType == TC_HO6){
+        covLimitValue = dwelling.PersonalPropertyLimitCovTerm.Value
+      }else if(dwelling.HOPolicyType == TC_HO3){
+        covLimitValue = dwelling.DwellingLimitCovTerm.Value
+      }
+
+      var restrictionThreshold = SC_NAMED_STORM_RESTRICTION_MAP.get(StringUtils.join({dwelling.HOPolicyType.Code, AOP + allPerilsValue, option.Value}, ","))
+
+      if(result and restrictionThreshold != null and covLimitValue != null){
+        result = covLimitValue >= restrictionThreshold
       }
     }
 

@@ -43,7 +43,8 @@ class CovTermInputSet {
       var minimumAllowed = covTerm.getMinAllowedLimitValue(covTerm.Clause.OwningCoverable)
       var allowedIncrement = minimumAllowed
       var allowedIncrements : List<BigDecimal> = {allowedIncrement}
-      if(covTerm.PatternCode=="BP7LimitatDescribedPremises_EXTTerm" || covTerm.PatternCode=="BP7LimitDescribedPremises_EXT" || covTerm.PatternCode=="BP7Limit38"){
+      if(covTerm.PatternCode=="BP7LimitatDescribedPremises_EXT" || covTerm.PatternCode=="BP7LimitDescribedPremises_EXT" || covTerm.PatternCode=="BP7Limit38" || covTerm.PatternCode=="Limit" ||
+          covTerm.PatternCode=="Limit_EXT"){
         if((covTerm.Value).remainder(1000)!=0){
           throw new gw.api.util.DisplayableException(displaykey.una.productmodel.validation.AllowedLimitValidationMessage(covTerm.Clause.Pattern.DisplayName,covTerm.DisplayName))
         }

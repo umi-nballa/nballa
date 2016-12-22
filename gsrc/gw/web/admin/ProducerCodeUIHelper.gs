@@ -82,6 +82,12 @@ class ProducerCodeUIHelper {
     }
   }
 
+  function createUser() : User {
+    var user = new User()
+    user.UseOrgAddress = false
+    user.Credential = new Credential()
+    return user
+  }
   /**
    *  Upload available products for producer code from csv file
    *  Selected csv file imported on click of "Upload" button from ProducerCodeProductImportPage

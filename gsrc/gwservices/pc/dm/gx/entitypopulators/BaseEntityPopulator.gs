@@ -225,7 +225,8 @@ class BaseEntityPopulator<C extends KeyableBean, P extends KeyableBean> implemen
         }
       } else {
         try {
-          parent.setFieldValue(name, child)
+          if(!name.equalsIgnoreCase("Offering"))
+            parent.setFieldValue(name, child)
         } catch (iae: IllegalArgumentException) {
           if (iae.Message.contains("Can't add a bean with a different branch")) {
             var msg = "attempted to add type of ${typeof(child)} with id ${child.PublicID} to parent ${typeof(parent)}"
@@ -327,7 +328,7 @@ class BaseEntityPopulator<C extends KeyableBean, P extends KeyableBean> implemen
         var fieldName = child.QName.LocalPart
         if (child.Nil) {
           target.setFieldValue(fieldName, null)
-        } else if (child.SimpleValue != null) {
+        } else if (child.SimpleValue != null && fieldName != "BasisAmount") {
           target.setFieldValue(fieldName, child.SimpleValue.GosuValue)
         }
       }

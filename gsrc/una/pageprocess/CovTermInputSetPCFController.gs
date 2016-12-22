@@ -240,11 +240,11 @@ class CovTermInputSetPCFController {
     var value : BigDecimal = 10
 
     if(covTerm.PatternCode == "HODW_BuildAddInc_HOE" and coverable.HODW_Personal_Property_HOEExists and
-       coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm != null and
+       coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null and
        coverable.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm.Value< coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)) {
       result = displaykey.una.productmodel.validation.MinValidateBuildAlt_Ext(value)
     }else if (covTerm.PatternCode == "HODW_BuildAddInc_HOE" and coverable.HODW_Personal_Property_HOEExists and
-        coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm != null and
+        coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null and
         coverable.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm.Value > coverable.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value) {
       result = displaykey.una.productmodel.validation.MaxValidateBuilAlt_Ext
     }

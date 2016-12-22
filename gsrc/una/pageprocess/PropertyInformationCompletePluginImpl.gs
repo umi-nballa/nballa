@@ -662,7 +662,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.WindPool.size() > 1) {
           //TODO
         } else {
-            building.Location.WindpoolEligibility_Ext = (res.WindPool[0].Value) as Boolean
+           // building.Location.WindpoolEligibility_Ext = (res.WindPool[0].Value) as Boolean
         }
       }
     } catch (exp: Exception) {

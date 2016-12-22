@@ -4,7 +4,6 @@
   coverageCategory="CPOptionalSchedPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
-  existence="Electable"
   lookupTableName="CPBuildingCov"
   owningEntityType="CPBuilding"
   policyLinePattern="CPLine"
@@ -16,6 +15,11 @@
 else
  return false
       ]]></AvailabilityScript>
-  <ExistenceScript/>
+  <ExistenceScript><![CDATA[//if(CPBuilding.AutomaticFireSuppress)
+      //return typekey.ExistenceType.TC_REQUIRED
+  //else
+    //  return typekey.ExistenceType.TC_ELECTABLE
+                                    return una.productmodel.CoveragesUtil.getExistence("CPProtectiveSafeguards_EXT", CPBuilding)
+]]></ExistenceScript>
   <CovTerms/>
 </CoveragePattern>

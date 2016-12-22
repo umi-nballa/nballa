@@ -219,8 +219,15 @@ class CoverageTermAvailabilityUtil {
 
   private static function isAggLimitOptionAvailable (option: gw.api.productmodel.CovTermOpt, _glline:GLLine):boolean
   {
-     if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+     //if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==100000.0000 && (option?.Value.doubleValue()==100000.0000 || option?.Value.doubleValue()==200000.0000))
        return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==300000.0000 && (option?.Value.doubleValue()==300000.0000 || option?.Value.doubleValue()==600000.0000))
+      return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==500000.0000 && (option?.Value.doubleValue()==500000.0000 || option?.Value.doubleValue()==1000000.0000))
+      return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==1000000.0000 && (option?.Value.doubleValue()==2000000.0000 || option?.Value.doubleValue()==1000000.0000))
+      return true
     else
       return false
   }
@@ -331,7 +338,7 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isHurricanePercentageAvailable(dwelling : Dwelling_HOE) : boolean{
-    return dwelling.HOLine.BaseState == TC_FL and !dwelling.WHurricaneHailExclusion_Ext
+    return dwelling.HOLine.BaseState != TC_FL or !dwelling.WHurricaneHailExclusion_Ext
   }
 
   private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -386,21 +393,27 @@ class CoverageTermAvailabilityUtil {
   }
   private static function isOptionAvailableForSelectedAOPDeductible(option : CovTermOpt, dwelling : Dwelling_HOE) : boolean{
     var result = true
-    var filterPrefix = getAOPFilterPrefix(dwelling)
+    var covTermPatternCode = option.CovTermPattern.CodeIdentifier
+    var filterPrefix = getAOPFilterPrefix(dwelling) +  covTermPatternCode
     var state = dwelling.HOLine.BaseState
     var configType = ConfigParameterType_Ext.TC_AOP_RESTRICTEDOPTIONS
     var namedStormValue = dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
+    var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
+    var nonHurricaneWindValue = dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value
 
-    if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix + option.CovTermPattern.CodeIdentifier)){
-      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
+    if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix)){
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
       var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + namedStormValue + allPerilsValue)
+      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + nonHurricaneWindValue + allPerilsValue)
       var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
+      var testPrefix =  filterPrefix + allPerilsValue
 
       if(namedStormRestrictedOptions != null){
         result = namedStormRestrictedOptions.contains(optionValue)
+      }else if(nonHurricaneWindRestrictedOptions != null){
+        result = nonHurricaneWindRestrictedOptions.contains(optionValue)
       }else if(valueRestrictedOptions != null){
         result = valueRestrictedOptions.contains(optionValue)
       }else if(defaultRestrictedOptions != null){

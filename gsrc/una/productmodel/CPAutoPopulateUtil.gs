@@ -30,28 +30,32 @@ class CPAutoPopulateUtil {
 
     if(term!=null && term.Clause.Pattern=="GLCGLCov" && term.PatternCode=="GLCGLOccLimit")//cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm!=null)
     {
-      var gline = term.Clause.OwningCoverable as GLLine
+  /*    var gline = term.Clause.OwningCoverable as GLLine
       try
       {
-          gline.GLCGLCov.GLCGLAggLimitTerm.OptionValue=gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue
+
+        //if(gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value.doubleValue()==100000.0000)
+          gline.GLCGLCov.GLCGLAggLimitTerm.setOptionValue(gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue)
+
         }
       catch(e)
       {
-
+        print("exception occured" )
+        //e.printStackTrace()
+      }*/
       }
-
       try
       {
-        if(gline.GLHiredAutoNonOwnedLiab_EXTExists)
+        if(term.Clause.OwningCoverable.PolicyLine typeis GeneralLiabilityLine && term.Clause.OwningCoverable.PolicyLine.GLHiredAutoNonOwnedLiab_EXTExists)
         {
-          gline.GLHiredAutoNonOwnedLiab_EXT.HiredAutoNonOwnedLimit_EXTTerm.Value= gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value
+          term.Clause.OwningCoverable.PolicyLine.GLHiredAutoNonOwnedLiab_EXT.HiredAutoNonOwnedLimit_EXTTerm.Value= term.Clause.OwningCoverable.PolicyLine.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value
         }
       }
           catch(e)
           {
 
           }
-    }
+    //}
 
 
   }
@@ -177,7 +181,7 @@ class CPAutoPopulateUtil {
       if(cLine.EquipmentBreakdownEnh!=null && cLine.EquipmentBreakdownEnh!=false)
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
-//        cBuilding.CPEquipmentBreakdownEnhance_EXT?.CovTerms?.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
+       // cBuilding.CPEquipmentBreakdownEnhance_EXT?.CovTerms?.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
           }
 
     if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)

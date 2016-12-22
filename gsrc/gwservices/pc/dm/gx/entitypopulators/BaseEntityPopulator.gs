@@ -328,7 +328,7 @@ class BaseEntityPopulator<C extends KeyableBean, P extends KeyableBean> implemen
         var fieldName = child.QName.LocalPart
         if (child.Nil) {
           target.setFieldValue(fieldName, null)
-        } else if (child.SimpleValue != null) {
+        } else if (child.SimpleValue != null && fieldName != "BasisAmount") {
           target.setFieldValue(fieldName, child.SimpleValue.GosuValue)
         }
       }

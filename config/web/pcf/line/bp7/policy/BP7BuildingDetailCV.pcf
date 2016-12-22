@@ -34,6 +34,9 @@
     <Variable
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(location.Branch)"
       name="tunaAppResponse"/>
+    <Variable
+      initialValue="gw.lob.bp7.location.BP7LocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,location,building)"
+      name="setTunaFieldsMatchLevel"/>
     <Card
       id="GeneralInfoCard"
       title="displaykey.Web.Policy.LocationContainer.Location.Building.Details">
@@ -176,31 +179,31 @@
                 <InputSet
                   id="bceg_Ext">
                   <RangeInput
-                    editable="!location.OverrideBCEG_Ext"
+                    editable="!building.OverrideBCEG_Ext"
                     id="BCEGTunaReturned_Ext"
                     label="displaykey.Web.BOP.BP7Location.BCEGTunaReturned_Ext"
-                    value="location.BCEG_Ext"
+                    value="building.BldgCodeEffGrade"
                     valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)"/>
                   <Input
                     id="BCEGMatchLevel_Ext"
                     label="displaykey.Web.BOP.BP7Location.BCEGMatchlevel_Ext"
-                    value="location.BCEGMatchLevel_Ext"/>
+                    value="building.BCEGMatchLevel_Ext"/>
                   <BooleanRadioInput
                     editable="true"
                     id="OverRideTunaBCEG_Ext"
                     label="displaykey.Web.BOP.BP7Location.BCEGOverride_Ext"
-                    value="location.OverrideBCEG_Ext">
+                    value="building.OverrideBCEG_Ext">
                     <PostOnChange
                       target="bceg_Ext"/>
                   </BooleanRadioInput>
                   <Input
-                    available="location.OverrideBCEG_Ext"
+                    available="building.OverrideBCEG_Ext"
                     editable="true"
                     id="BCEGUserEntered_Ext"
                     label="displaykey.Web.BOP.BP7Location.BCEGUserEntered_Ext"
-                    required="location.OverrideBCEG_Ext"
-                    value="location.BCEGOverridden_Ext"
-                    visible="location.OverrideBCEG_Ext"/>
+                    required="building.OverrideBCEG_Ext"
+                    value="building.BCEGOverridden_Ext"
+                    visible="building.OverrideBCEG_Ext"/>
                 </InputSet>
                 <InputDivider/>
                 <TextInput
@@ -218,38 +221,38 @@
                   id="WindpoolEligibility"
                   label="displaykey.Web.Policy.BP7.Location.WindPoolEligibility"
                   required="true"
-                  value="location.WindpoolEligibility_Ext"/>
+                  value="building.WindpoolEligibility_Ext"/>
                 <InputDivider/>
                 <InputSet
                   id="Windpoolvalue_Ext">
                   <RangeInput
-                    available="!location.OverrideWindPool_Ext"
+                    available="!building.OverrideWindPool_Ext"
                     editable="true"
                     id="WindpoolvalueTunaReturned_Ext"
                     label="displaykey.Web.BOP.BP7Location.WindpoolvalueTunaReturned_Ext"
-                    value="location.Windpoolvalue_Ext"
+                    value="building.Windpoolvalue_Ext"
                     valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
                   <Input
-                    available="!location.OverrideWindPool_Ext"
+                    available="!building.OverrideWindPool_Ext"
                     id="WindpoolvalueMatchLevel_Ext"
                     label="displaykey.Web.BOP.BP7Location.WindpoolvalueMatchlevel_Ext"
-                    value="location.WindPoolMatchLevel_Ext"/>
+                    value="building.WindPoolMatchLevel_Ext"/>
                   <BooleanRadioInput
                     editable="true"
                     id="OverRideWindpoolvalue_Ext"
                     label="displaykey.Web.BOP.BP7Location.WindpoolvalueOverride_Ext"
-                    value="location.OverrideWindPool_Ext">
+                    value="building.OverrideWindPool_Ext">
                     <PostOnChange
                       target="Windpoolvalue_Ext"/>
                   </BooleanRadioInput>
                   <Input
-                    available="location.OverrideWindPool_Ext"
+                    available="building.OverrideWindPool_Ext"
                     editable="true"
                     id="WindpoolvalueUserEntered_Ext"
                     label="displaykey.Web.BOP.BP7Location.WindpoolvalueUserEntered_Ext"
-                    required="location.OverrideWindPool_Ext"
-                    value="location.WindPoolOverridden_Ext"
-                    visible="location.OverrideWindPool_Ext"/>
+                    required="building.OverrideWindPool_Ext"
+                    value="building.WindPoolOverridden_Ext"
+                    visible="building.OverrideWindPool_Ext"/>
                 </InputSet>
                 <InputDivider/>
                 <TypeKeyInput

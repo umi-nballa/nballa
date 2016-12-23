@@ -12,5 +12,26 @@
   public-id="HODW_SpecialComp_HOE_Ext"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return (!Dwelling_HOE.HODW_SpecialPersonalProperty_HOE_ExtExists)]]></AvailabilityScript>
-  <CovTerms/>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_SpecialComputerCoverageLimit_Ext"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_SpecialComputerCoverageLimit_Ext"
+      required="false"
+      restrictionModel="prp"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zn5ggu35po3bv6t5k18n5pv08mb"
+          currency="usd"
+          defaultValue="1000"
+          maxVal="20000"
+          public-id="zn5ggu35po3bv6t5k18n5pv08mb"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
 </CoveragePattern>

@@ -183,6 +183,9 @@ class CoverageTermAvailabilityUtil {
       case "PublicRelationsSvcs_EXT":
         result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "DPLI_Premise_Liability_HOE_Ext":
+        result = isDwellingFirePremiseLiabilityAvailable(coverable as HomeownersLine_HOE)
+        break
       default:
         break
     }
@@ -191,11 +194,9 @@ class CoverageTermAvailabilityUtil {
 
   @Param("homeOwnersLine", "The homeowners line instance to be evaluated.")
   @Returns("The existence type evaluated for the given homeowners instance.")
-  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : HomeownersLine_HOE) : ExistenceType{
+  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : entity.HomeownersLine_HOE) : ExistenceType{
     var result : ExistenceType
     var contact = homeOwnersLine.Branch.PrimaryNamedInsured.ContactDenorm
-    //    var isSuggestedForCorporation  //TODO tlv - filter for organization type  - this is not available, still.  question is will it ever be - BA will have to answer
-
     switch(homeOwnersLine.BaseState){
       case TC_FL:
       case TC_HI:
@@ -378,6 +379,10 @@ class CoverageTermAvailabilityUtil {
       return true
     }
     return false
+  }
+
+  private static function isDwellingFirePremiseLiabilityAvailable(line : HomeownersLine_HOE) : boolean{
+    return line.BaseState == TC_TX and AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
   }
 
   private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{

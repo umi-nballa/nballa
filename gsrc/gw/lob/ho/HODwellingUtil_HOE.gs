@@ -666,30 +666,16 @@ class HODwellingUtil_HOE {
   * Method to determine First Time Deeded visibility
    */
   static function isFirstTimeDeededVisible(dwelling : Dwelling_HOE) : boolean {
-    var applicableJurisdiction  = getFirstTimeDeededStates()
     var yearBuilt = dwelling.YearBuilt
     var currentYear = Calendar.getInstance().get(Calendar.YEAR);
     var validYearOfPurchase = (yearBuilt == currentYear or
         yearBuilt == currentYear+1 or yearBuilt == currentYear-1) ? true : false
     if(HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
-        && applicableJurisdiction.contains(dwelling.PolicyPeriod.BaseState)
+        && Jurisdiction.TF_FIRSTTIMEDEEDEDHOMETYPES.TypeKeys.contains(dwelling.PolicyPeriod.BaseState)
         && validYearOfPurchase) {
       return true
     }
     return false
-  }
-
-  /**
-   * Static list of Jurisdictions applicable for First Time Deed
-  */
-  private static function getFirstTimeDeededStates() : List<Jurisdiction> {
-    var applicableJurisdiction = new ArrayList<Jurisdiction>()
-    applicableJurisdiction.add(Jurisdiction.TC_FL)
-    applicableJurisdiction.add(Jurisdiction.TC_NC)
-    applicableJurisdiction.add(Jurisdiction.TC_SC)
-    applicableJurisdiction.add(Jurisdiction.TC_TX)
-    applicableJurisdiction.add(Jurisdiction.TC_NV)
-    return applicableJurisdiction
   }
 
   static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
@@ -756,43 +742,6 @@ class HODwellingUtil_HOE {
     residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
     return residenceType
   }
-
- /* function getTunaCodes(category : String) : List<String> {
-    var tuneCodes = new ArrayList<String>()
-    var tunaCodesByCategory = getTunaCodesByCategory(category)
-
-    tunaCodesByCategory?.each( \ tunaCode -> {
-      tuneCodes.add(tunaCode.Code+" - "+tunaCode.MatchPercentage)
-    })
-    return tuneCodes
-  } */
-
- /* function getTunaCodesByCategory(category : String) : List<TunaCodesDTO>{
-    switch(category) {
-      case "bceg" :
-          return tunaCodesAppResponseObj.BCEGValues
-    }
-    return null
-  }*/
-
- /* static function initializeTunaCodes() : TunaCodesBO {
-    var initialTunaCodesBO = new TunaCodesBO()
-
-    var bcegCode1 = new TunaCodesDTO()
-    bcegCode1.Code = "2"
-    bcegCode1.MatchPercentage = "5%"
-
-    var bcegCode2 = new TunaCodesDTO()
-    bcegCode2.Code = "5"
-    bcegCode2.MatchPercentage = "10%"
-
-    var bcegCodes = new ArrayList<TunaCodesDTO>()
-    bcegCodes.add(bcegCode1)
-    bcegCodes.add(bcegCode2)
-
-    initialTunaCodesBO.BCEGValues = bcegCodes
-    return initialTunaCodesBO
-  }   */
 
   static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
     if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||

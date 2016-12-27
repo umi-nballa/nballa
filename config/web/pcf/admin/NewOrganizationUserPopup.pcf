@@ -10,6 +10,8 @@
     title="displaykey.Web.Admin.NewUser">
     <LocationEntryPoint
       signature="NewOrganizationUserPopup(organization : Organization)"/>
+    <LocationEntryPoint
+      signature="NewOrganizationUserPopup(producerCode : ProducerCode)"/>
     <Variable
       name="organization"
       type="Organization"/>
@@ -17,9 +19,26 @@
       initialValue="new gw.web.admin.OrganizationUIHelper(organization)"
       name="helper"/>
     <Variable
-      initialValue="helper.createUser()"
+      initialValue="new gw.web.admin.ProducerCodeUIHelper()"
+      name="producerCodeHelper"
+      type="gw.web.admin.ProducerCodeUIHelper"/>
+    <Variable
+      initialValue="initialize()"
       name="user"/>
+    <Variable
+      name="producerCode"
+      type="ProducerCode"/>
     <ScreenRef
       def="OrganizationUserScreen(user)"/>
+    <Code><![CDATA[function initialize () :User {
+  var newUser : User
+  if (producerCode == null)  
+     newUser =  helper.createUser()
+  else {
+      newUser = producerCodeHelper.createUser()
+      ProducerCode.Contact_Ext = user.Contact
+    }  
+return newUser
+}]]></Code>
   </Popup>
 </PCF>

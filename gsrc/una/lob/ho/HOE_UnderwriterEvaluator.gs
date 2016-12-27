@@ -79,7 +79,38 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     validateQuestions()
     //This method will be called to create UW Issues related to Credit
     createsCreditRelatedUwIssuesForHO()
+    createDwellingRelatedUwIssuesForHO()
   }
+
+
+
+  private function createDwellingRelatedUwIssuesForHO(){
+
+      var hoLine = _policyEvalContext.Period.HomeownersLine_HOE
+
+
+    if(hoLine.Dwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_OTHER)
+      {
+        var fuelother = \ ->  "Fuel type ‘Other’ requires Underwriting review and approval prior to binding"
+
+        _policyEvalContext.addIssue("FuelTypeOther_Ext", "FuelTypeOther_Ext",fuelother, fuelother)
+      }
+
+    if(hoLine.Dwelling.HOUWQuestions.moldd != null )
+    {
+      var molddd = \ ->  "Properties with on premises business exposure require Underwriting review and approval prior to binding"
+      _policyEvalContext.addIssue("HOMold", "HOMold",molddd, molddd)
+    }
+
+    if(hoLine.Dwelling.HOUWQuestions.moldrem || hoLine.Dwelling.HOUWQuestions.moldremediated )
+    {
+      var moldremm = \ -> "Properties  with prior mold damage require Underwriting review and approval prior to binding.   Please provide proof of mold remediation for Underwriting review"
+      _policyEvalContext.addIssue("HOMoldRem", "HOMoldRem",moldremm, moldremm)
+
+    }
+
+  }
+
   /*
  * Creates underwriting issue if the number of PriorLosses associated with Homeowners line is one or more.
  */

@@ -97,6 +97,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
     return RiskCharacteristicExplanationCodes
            .concat(DocumentationExplanationCodes)
            .concat(LossHistoryExplanationCodes)
+           .concat(OtherExplanationCodes)
            .concat(AgentAppointmentExplanationCodes).toList()
   }
 

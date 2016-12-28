@@ -352,7 +352,8 @@
                   required="cpBuilding.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.guswind"
                   visible="(cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)|| (cpBuilding.Building.YearBuilt&gt;=2002 &amp;&amp; cpBuilding.windstormexcl==false )  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
-                  <PostOnChange/>
+                  <PostOnChange
+                    onChange="una.config.CPBuildingUtil.setWindSpeedDefaults(cpBuilding)"/>
                 </TypeKeyInput>
                 <TypeKeyInput
                   align="left"

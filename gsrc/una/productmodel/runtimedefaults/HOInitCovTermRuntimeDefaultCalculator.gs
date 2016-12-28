@@ -4,6 +4,8 @@ uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.domain.covterm.CovTerm
 uses una.config.ConfigParamsUtil
+uses java.math.MathContext
+uses una.utils.MathUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -130,9 +132,10 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     var result : Double
     var factor : Double = 0.1
 
-    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value?.multiply(factor)
+    var roundingFactor = ConfigParamsUtil.getDouble(TC_RoundingFactor, line.BaseState, "HODW_BuildAddInc_HOE")
+    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)
 
-    result = calculatedAmount
+    result = MathUtil.roundTo(calculatedAmount, roundingFactor, ROUND_NEAREST)
 
     return result
   }

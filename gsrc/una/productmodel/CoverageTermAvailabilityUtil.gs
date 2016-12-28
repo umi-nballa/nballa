@@ -382,7 +382,13 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isDwellingFirePremiseLiabilityAvailable(line : HomeownersLine_HOE) : boolean{
-    return line.BaseState == TC_TX and AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+    var result = true
+
+    if(line.BaseState == TC_TX){
+      result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+    }
+
+    return result
   }
 
   private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{

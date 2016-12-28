@@ -73,13 +73,14 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     relatedPriorLossforHomeownersOrDwelling()
     //Sunil
      submissionUWIssues()
+     createDwellingRelatedUwIssuesForHO()
   }
 
   override function onPreBind(){
     validateQuestions()
     //This method will be called to create UW Issues related to Credit
     createsCreditRelatedUwIssuesForHO()
-    createDwellingRelatedUwIssuesForHO()
+
   }
 
 

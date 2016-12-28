@@ -77,6 +77,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HODW_EQDwellingLimit_HOE_Ext":
           result = line.Dwelling.DwellingLimitCovTerm.Value
           break
+      case "HODW_OffPremises_Limit_HOE":
+        result = getOffPremisesLimitDefault(line)
+        break
       default:
         break
     }
@@ -136,6 +139,16 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)
 
     result = MathUtil.roundTo(calculatedAmount, roundingFactor, ROUND_NEAREST)
+
+    return result
+  }
+
+  private static function getOffPremisesLimitDefault(line : entity.HomeownersLine_HOE) : Double{
+    var result : Double
+
+    if(line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value != null){
+      result = (line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value * 0.20bd).doubleValue()
+    }
 
     return result
   }

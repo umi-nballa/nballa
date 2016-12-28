@@ -34,7 +34,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
         results = allPatternCodes.where( \ pattern -> OtherExplanationCodes.contains(pattern.Code))
         break
       case TC_BusinessClosed:
-        results = allPatternCodes.where( \ pattern -> OtherExplanationCodes.contains(pattern.Code))
+        results = allPatternCodes.where( \ pattern -> BusinessClosedExplanationCodes.contains(pattern.Code))
         break
       case TC_PropertySold:
         results = allPatternCodes.where( \ pattern -> PropertySoldExplanationCodes.contains(pattern.Code))

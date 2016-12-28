@@ -21,7 +21,11 @@
     desc="Home typefuelother"
     name="typefuelother"
     nullok="true"
-    type="bit"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="25"/>
+  </column>
   <column
     columnName="swimmingpool"
     desc="Home swimmingpool"
@@ -187,17 +191,15 @@
     nullok="true"
     type="bit"/>
   <column
-    columnName="typefuel2"
-    desc="Home typefuel2"
-    name="typefuel2"
-    nullok="true"
-    type="bit"/>
-  <column
     columnName="typefuelother2"
     desc="Home typefuelother2"
     name="typefuelother2"
     nullok="true"
-    type="bit"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="25"/>
+  </column>
   <column
     columnName="tanklocal2"
     desc="Home tanklocal2"
@@ -205,27 +207,9 @@
     nullok="true"
     type="bit"/>
   <column
-    columnName="capacitytank"
-    desc="Home capacitytank"
-    name="capacitytank"
-    nullok="true"
-    type="bit"/>
-  <column
-    columnName="closdist"
-    desc="Home closdist"
-    name="closdist"
-    nullok="true"
-    type="bit"/>
-  <column
     columnName="swpool"
     desc="Home swpool"
     name="swpool"
-    nullok="true"
-    type="bit"/>
-  <column
-    columnName="primprot1"
-    desc="Home primprot1"
-    name="primprot1"
     nullok="true"
     type="bit"/>
   <column
@@ -440,4 +424,26 @@
     name="newpurchase"
     nullok="true"
     type="bit"/>
+  <typekey
+    columnName="primprot1"
+    desc="HOPrimProt"
+    name="primprot1"
+    nullok="true"
+    typelist="HOPrimProtHotTub_Ext"/>
+  <typekey
+    columnName="closedist"
+    name="closedist"
+    nullok="true"
+    typelist="HOCloseseDistTank_Ext"/>
+  <typekey
+    columnName="capacitytank"
+    name="capacitytank"
+    nullok="true"
+    typelist="HOCapTankGal_Ext"/>
+  <typekey
+    columnName="typefuel2"
+    desc="typefuel2"
+    name="typefuel2"
+    nullok="true"
+    typelist="HOTypeFuel_Ext"/>
 </entity>

@@ -106,7 +106,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
   }
 
   private property get LossHistoryExplanationCodes() : List<String>{
-    return {"losshistory", "otherexplanation"}
+    return {"losshistory", "otherexplanation", "consumerinfoaan"}
   }
 
   private property get OtherExplanationCodes() : List<String> {

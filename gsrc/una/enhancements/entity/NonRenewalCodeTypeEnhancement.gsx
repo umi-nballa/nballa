@@ -105,27 +105,27 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
   }
 
   private property get LossHistoryExplanationCodes() : List<String>{
-    return {"losshistory"}
+    return {"losshistory", "otherexplanation"}
   }
 
   private property get OtherExplanationCodes() : List<String> {
-    return {"misstatementmisrep"}
+    return {"misstatementmisrep", "otherexplanation"}
   }
 
   private property get BusinessClosedExplanationCodes() : List<String> {
-    return {"businessclsd"}
+    return {"businessclsd", "otherexplanation"}
   }
 
   private property get PropertySoldExplanationCodes() : List<String> {
-    return {"propsold"}
+    return {"propsold", "otherexplanation"}
   }
 
   private property get CoveragePlacedElsewhereExplanationCodes() : List<String> {
-    return {"covplacedelsewhr"}
+    return {"covplacedelsewhr", "otherexplanation"}
   }
 
   private property get NotTakenExplanationCodes(): List<String>{
-    return {"offernotaccepted"}
+    return {"offernotaccepted", "otherexplanation"}
   }
 
   private property get OtherNotProvidedExplanationCodes() : List<String>{

@@ -92,7 +92,7 @@ class ScheduledAdditionalInsured {
     }
   }
 
-  public property get IsSectionIILiabilityCov() : typekey.HOSchedAddlInsOccType{
+  public property get SectionIILiabilityCov() : typekey.HOSchedAddlInsOccType{
     var result : typekey.HOSchedAddlInsOccType
 
     if(IsDwellingCov){
@@ -102,7 +102,7 @@ class ScheduledAdditionalInsured {
     return result
   }
 
-  public property set IsSectionIILiabilityCov(value : typekey.HOSchedAddlInsOccType){
+  public property set SectionIILiabilityCov(value : typekey.HOSchedAddlInsOccType){
     if(IsDwellingCov){
       dwellingScheduledItem.SectionIILiabilityOccType = value
     }

@@ -22,7 +22,11 @@
       name="currentTotal"
       type="int"/>
     <Variable
-      initialValue="scheduleTypeRange()"
+      initialValue="new una.pageprocess.coverages.HOScheduledPersonalPropertyPCFController(coverable.getCoverage(coveragePattern.CodeIdentifier))"
+      name="pcfController"
+      type="una.pageprocess.coverages.HOScheduledPersonalPropertyPCFController"/>
+    <Variable
+      initialValue="pcfController.ScheduleTypeRange"
       name="scheduleTypeRange"/>
     <HiddenInput
       id="CovPatternCode"
@@ -83,14 +87,5 @@
       </ListViewInput>
       <PostOnChange/>
     </InputGroup>
-    <Code><![CDATA[/**
- *  Amrita D
- *  Added function to get ScheduleType Range value as per the base state selected
- */
-function scheduleTypeRange() :List<gw.entity.TypeKey>{
- 
-  var scheduleTypeValue  = ScheduleType_HOE.Type.getTypeKeysByCategory(dwelling.PolicyPeriod.BaseState).where( \ elt ->! elt.Retired)
-  return scheduleTypeValue
-  }]]></Code>
   </InputSet>
 </PCF>

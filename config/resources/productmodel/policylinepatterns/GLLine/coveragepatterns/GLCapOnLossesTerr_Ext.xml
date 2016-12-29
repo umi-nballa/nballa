@@ -3,12 +3,18 @@
   codeIdentifier="GLCapOnLossesTerr_Ext"
   conditionSubtype="GeneralLiabilityCond"
   coverageCategory="GLOther"
-  existence="Required"
   lookupTableName="GLCond"
   owningEntityType="GeneralLiabilityLine"
   policyLinePattern="GLLine"
   priority="330"
   public-id="GLCapOnLossesTerr_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[if(GeneralLiabilityLine.GLTerrorCov_EXTExists)
+ return true
+else
+ return false]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[if(GeneralLiabilityLine.GLTerrorCov_EXTExists)
+ return typekey.ExistenceType.TC_REQUIRED
+]]></ExistenceScript>
   <CovTerms/>
 </ConditionPattern>

@@ -4,6 +4,8 @@ uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.domain.covterm.CovTerm
 uses una.config.ConfigParamsUtil
+uses java.math.MathContext
+uses una.utils.MathUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -75,6 +77,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HODW_EQDwellingLimit_HOE_Ext":
           result = line.Dwelling.DwellingLimitCovTerm.Value
           break
+      case "HODW_OffPremises_Limit_HOE":
+        result = getOffPremisesLimitDefault(line)
+        break
       default:
         break
     }
@@ -130,9 +135,20 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     var result : Double
     var factor : Double = 0.1
 
-    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value?.multiply(factor)
+    var roundingFactor = ConfigParamsUtil.getDouble(TC_RoundingFactor, line.BaseState, "HODW_BuildAddInc_HOE")
+    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)
 
-    result = calculatedAmount
+    result = MathUtil.roundTo(calculatedAmount, roundingFactor, ROUND_NEAREST)
+
+    return result
+  }
+
+  private static function getOffPremisesLimitDefault(line : entity.HomeownersLine_HOE) : Double{
+    var result : Double
+
+    if(line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value != null){
+      result = (line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value * 0.20bd).doubleValue()
+    }
 
     return result
   }

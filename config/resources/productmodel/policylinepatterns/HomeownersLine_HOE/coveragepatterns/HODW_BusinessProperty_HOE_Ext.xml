@@ -13,6 +13,7 @@
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return(Dwelling_HOE.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS ||
        Dwelling_HOE.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC )? false:true]]></AvailabilityScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_BusinessProperty_HOE_Ext.PatternCode, HODW_BusinessProperty_HOE_Ext.Dwelling)]]></InitializeScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"

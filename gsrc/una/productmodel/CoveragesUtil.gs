@@ -222,6 +222,9 @@ class CoveragesUtil {
       case "HODW_BuildingAdditions_HOE_Ext":
           covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm)
           break
+      case "HODW_BusinessProperty_HOE_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm)
+        break
       default:
         break
     }

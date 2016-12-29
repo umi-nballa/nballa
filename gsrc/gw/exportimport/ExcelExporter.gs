@@ -12,7 +12,7 @@ uses java.lang.IllegalStateException
 class ExcelExporter extends ExcelExporterBase {
 
   //password to unprotect spreadsheet
-  var _password : String as readonly SpreadSheetPassword = "1234"
+  var _password : String as readonly SpreadSheetPassword = ""
   var _columnHeaderStyle : XSSFCellStyle as readonly ColumnHeaderStyle
   var _lockedDataStyle : XSSFCellStyle as readonly LockedDataStyle
   var _unlockedDataStyle : XSSFCellStyle as readonly UnlockedDataStyle

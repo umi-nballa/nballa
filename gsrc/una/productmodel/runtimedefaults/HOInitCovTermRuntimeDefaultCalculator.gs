@@ -145,9 +145,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
 
   private static function getOffPremisesLimitDefault(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
-
+    var factor = (line.BaseState == TC_NC) ? 0.60bd : 0.20bd
     if(line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value != null){
-      result = (line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value * 0.20bd).doubleValue()
+      result = (line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value * factor).doubleValue()
     }
 
     return result

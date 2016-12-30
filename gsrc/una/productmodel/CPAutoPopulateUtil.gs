@@ -138,6 +138,7 @@ class CPAutoPopulateUtil {
     {
       cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
     }
+
   }
 
   public static function setIncreasedCostLimit (cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
@@ -175,6 +176,15 @@ class CPAutoPopulateUtil {
           }
       }
 
+    if(cBuilding.CPBldgCovExists && cBuilding.CPBldgCov.HasCPBldgCovLimitTerm)
+    {
+      if(cBuilding.CPSinkholeLossCoverage_EXTExists)
+      {
+        cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm.Value=cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value
+        cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm?.Value = cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm?.Value * 0.10
+      }
+    }
+
   }
 
   public static function setPcfDefaults(cLine:CommercialPropertyLine, cBuilding:CPBuilding):boolean
@@ -183,10 +193,39 @@ class CPAutoPopulateUtil {
     return true
   }
 
+  public static function setSinkHoldDefaults(cBuilding:CPBuilding):void
+  {
+    if(cBuilding.CPBldgCovExists && cBuilding.CPBldgCov.HasCPBldgCovLimitTerm)
+    {
+      if(cBuilding.CPSinkholeLossCoverage_EXTExists)
+      {
+        cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm.Value=cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value
+        cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm?.Value = cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm?.Value * 0.10
+      }
+    }
+
+  }
+
 
   public static function setCoveragesFromDefaultScreen(cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
   {
       _logger.info("Equipment brkdown " + cLine.EquipmentBreakdownEnhancement)
+
+
+    if(cBuilding.CPBldgCovExists && cBuilding.CPBldgCov.HasCPBldgCovLimitTerm)
+     {
+       if(cBuilding.CPSinkholeLossCoverage_EXTExists)
+       {
+         cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm.Value=cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value
+        cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm?.Value = cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm?.Value * 0.10
+        }
+     }
+
+   // if(cLine.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+   //   cLine.CPFloridaChangesCondoCondition_EXT.
+   // else
+   // return false
+
 
     if(cLine?.CoverageForm!=null && cBuilding!=null)// && cBuilding.CoverageForm!=null)
       cBuilding?.CoverageForm=cLine?.CoverageForm

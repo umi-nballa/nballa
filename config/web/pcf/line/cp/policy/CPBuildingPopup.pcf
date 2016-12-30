@@ -649,36 +649,36 @@
               <InputSet
                 id="PCCode_Ext">
                 <RangeInput
-                  available="!cpBuilding.OverrideDwellingPCCode_Ext"
+                  available="!cpBuilding.OverrideFirePCCode_Ext"
                   editable="true"
                   id="PCCodeTunaReturned_Ext"
                   label="displaykey.Web.CP.CPLocation.ProtectionClass"
-                  value="cpBuilding.DwellingProtectionClassCode"
+                  value="cpBuilding.FireProtectionClassCode"
                   valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
                   <PostOnChange
-                    onChange="cpBuilding.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(cpBuilding.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+                    onChange="cpBuilding.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(cpBuilding.FireProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
                 </RangeInput>
                 <Input
-                  available="!cpBuilding.OverrideDwellingPCCode_Ext"
+                  available="!cpBuilding.OverrideFirePCCode_Ext"
                   id="PCCodeMatchLevel_Ext"
                   label="displaykey.Web.CP.CPLocation.PCCodeMatchlevel_Ext"
-                  value="cpBuilding.DwellingPCCodeMatchLevel_Ext"/>
+                  value="cpBuilding.FirePCCodeMatchLevel_Ext"/>
                 <BooleanRadioInput
                   editable="true"
                   id="OverRideTunaBCEG_Ext"
                   label="displaykey.Web.CP.CPLocation.PCCodeOverride_Ext"
-                  value="cpBuilding.OverrideDwellingPCCode_Ext">
+                  value="cpBuilding.OverrideFirePCCode_Ext">
                   <PostOnChange
                     target="PCCode_Ext"/>
                 </BooleanRadioInput>
                 <Input
-                  available="cpBuilding.OverrideDwellingPCCode_Ext"
+                  available="cpBuilding.OverrideFirePCCode_Ext"
                   editable="true"
                   id="PCCodeUserEntered_Ext"
                   label="displaykey.Web.CP.CPLocation.PCCodeUserEntered_Ext"
-                  required="cpBuilding.OverrideDwellingPCCode_Ext"
-                  value="cpBuilding.DwellingPCCodeOverridden_Ext"
-                  visible="cpBuilding.OverrideDwellingPCCode_Ext"/>
+                  required="cpBuilding.OverrideFirePCCode_Ext"
+                  value="cpBuilding.FirePCCodeOverridden_Ext"
+                  visible="cpBuilding.OverrideFirePCCode_Ext"/>
               </InputSet>
               <InputDivider/>
               <InputSet

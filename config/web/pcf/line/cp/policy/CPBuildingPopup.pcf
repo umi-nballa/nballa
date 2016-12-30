@@ -48,6 +48,9 @@
     <Variable
       initialValue="gw.lob.cp.location.CPLocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,cpBuilding)"
       name="setTunaFieldsMatchLevel"/>
+    <Variable
+      initialValue="una.productmodel.CPAutoPopulateUtil.setPcfDefaults(cpLine,cpBuilding)"
+      name="initializepcf"/>
     <Screen>
       <Toolbar>
         <EditButtons/>
@@ -1168,6 +1171,9 @@
   if(cLine.CPCoverageC!=null)
     cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovC_Ext")?.first().setValueFromString(cLine.CPCoverageC.Code)
 
+  if(cLine.CPCoverageBC!=null)
+    cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovBC_Ext")?.first().setValueFromString(cLine.CPCoverageBC.Code)
+
   //if(cLine.EquipmentBreakdownEnhancement!=null)
   //  cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownEnhance_EXT")?.first().
   
@@ -1180,6 +1186,6 @@
 function setCPClassCode():boolean
 {
   return false
-} ]]></Code>
+}]]></Code>
   </Popup>
 </PCF>

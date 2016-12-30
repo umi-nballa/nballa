@@ -164,6 +164,9 @@ class CoveragesUtil {
       case "CPProtectiveSafeguards_EXT":
           result = getProtectiveSafeguardsExistence(coverable as CPBuilding)
       break
+      case "CPFloridaChangesCondoCondition_EXT":
+          result = getFloridaChangesCondoExistence(coverable as CommercialPropertyLine)
+          break
       default:
         break
     }
@@ -402,7 +405,20 @@ class CoveragesUtil {
 
     return result
   }
-  
+
+
+  private static function getFloridaChangesCondoExistence(line : CommercialPropertyLine) : ExistenceType{
+    var result : ExistenceType
+
+
+    if(line.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+      result = TC_REQUIRED
+    else
+      result = TC_ELECTABLE
+
+    return result
+  }
+
   private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
     return  bp7Line.BP7EmployeeDishtyExists
   }

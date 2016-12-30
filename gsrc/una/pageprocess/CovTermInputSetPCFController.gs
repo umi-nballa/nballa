@@ -61,6 +61,12 @@ class CovTermInputSetPCFController {
       case "HODW_ExecutiveCov_HOE_Ext":
         setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
         break
+      case "HODWDwelling_HOE":
+        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value = !(covTerm as BooleanCovTerm).Value
+        break
+      case "HODW_OtherStructure_HOE":
+        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value = !(covTerm as BooleanCovTerm).Value
+        break
       default:
         break;
     }
@@ -70,14 +76,12 @@ class CovTermInputSetPCFController {
     var result : String
 
     if(coverable typeis Dwelling_HOE){
-      result = validateCalculatedLimits(covTerm, coverable)
-
-      if(result == null){
-        result = validateFloodCoverageLimits(covTerm, coverable)
-      }
-
-      if(result == null){
+      if(covTerm.PatternCode == "HODW_BuildAddInc_HOE"){
         result = validateBuildAddAltLimits(covTerm, coverable)
+      }else if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE" or covTerm.PatternCode == "HODW_DebrisRemoval_HOE"){
+        result = validateFloodCoverageLimits(covTerm, coverable)
+      }else{
+        result = validateCalculatedLimits(covTerm, coverable)
       }
     }
 

@@ -385,7 +385,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(line.BaseState == TC_TX){
-      result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+      //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
     }
 
     return result

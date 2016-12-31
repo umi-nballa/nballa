@@ -142,23 +142,20 @@ class CovTermInputSetPCFController {
   private static function validateFloodCoverageLimits(covTerm : DirectCovTerm, coverable : Dwelling_HOE) : String{
     var result : String
     var maxValue: BigDecimal=250000
-      if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE") {
-        if(coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
-        coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm?.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) {
-       result = displaykey.una.productmodel.validation.ValidateFlood_Ext
-       }else if (!coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_FloodCoverage_HOE_ExtExists and coverable.HODW_FloodCoverage_HOE_Ext.HODW_CondominiumLossAssessment_HOETerm?.Value > maxValue) {
-        result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(new Double(maxValue as double).asMoney())
-      }}
-     else if(covTerm.PatternCode == "HODW_DebrisRemoval_HOE"){
-     if(coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm != null and coverable.HODW_FloodCoverage_HOE_ExtExists and
-         coverable.HODW_FloodCoverage_HOE_Ext.HODW_DebrisRemoval_HOETerm?.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
-       result = displaykey.una.productmodel.validation.ValidateFlood_Ext
-     }else if(!coverable.HODW_Dwelling_Cov_HOEExists and coverable.HODW_FloodCoverage_HOE_ExtExists and coverable.HODW_FloodCoverage_HOE_Ext.HODW_DebrisRemoval_HOETerm?.Value > maxValue){
-       result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(new Double(maxValue as double).asMoney())
-     }}
+
+    if(covTerm.PatternCode == "HODW_CondominiumLossAssessment_HOE" or covTerm.PatternCode == "HODW_DebrisRemoval_HOE"){
+      if(coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null){
+        if(covTerm.Value > coverable.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value){
+          result = displaykey.una.productmodel.validation.ValidateFlood_Ext
+        }else if(covTerm.Value > maxValue){
+          result = displaykey.una.productmodel.validation.maxValueFloodcov_Ext(new Double(maxValue as double).asMoney())
+        }
+      }
+    }
 
     return  result
   }
+
   private static function setExecutiveCoverageDefaults(dwelling : Dwelling_HOE, booleanCovTerm : BooleanCovTerm){
     var coveragePatternsToSelect = ConfigParamsUtil.getList(ConfigParameterType_Ext.TC_EXECUTIVEENDORSEMENTSELECTEDCOVERAGEPATTERNS, dwelling.PolicyLine.BaseState)
 

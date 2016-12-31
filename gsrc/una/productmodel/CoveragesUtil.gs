@@ -271,7 +271,7 @@ class CoveragesUtil {
   }
 
   private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = dwelling.FloodCoverage_Ext
+    var result = (dwelling.HOPolicyType == TC_HO3) ? dwelling.FloodCoverage_Ext : true
     var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
 
    if(result and floodIneligibleZips.HasElements){

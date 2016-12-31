@@ -56,6 +56,8 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
     var renewalJoin = openPeriods?.join(PolicyPeriod#Job)?.compare(Job#Subtype, Equals, typekey.Job.TC_RENEWAL)
     var renewalsDueToday = renewalJoin.select().where( \ openRenewal -> Date.CurrentDate.equalsIgnoreTime(openRenewal.RenewalProcess.IssueAutomatedRenewalDate)
                                                                     and openRenewal == openRenewal.Job.SelectedVersion)
+    renewalsDueToday.removeWhere( \ renewal -> renewal.Policy.ProductCode == "CommercialPackage")
+
     return renewalsDueToday?.toList()
   }
 

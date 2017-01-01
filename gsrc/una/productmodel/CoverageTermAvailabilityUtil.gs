@@ -213,6 +213,10 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
+  public static function getLateWildfireClaimReportingExistence(dwelling : Dwelling_HOE) : ExistenceType{
+    return (dwelling.HODW_DifferenceConditions_HOE_ExtExists) ? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE
+  }
+
   private static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
     var result = true
     var state = _hoLine.Branch.BaseState
@@ -385,7 +389,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(line.BaseState == TC_TX){
-      result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+      //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
     }
 
     return result

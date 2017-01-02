@@ -1,4 +1,8 @@
 package una.pageprocess.coverages
+
+uses java.lang.Integer
+uses una.productmodel.CoveragesUtil
+
 /**
  * Created with IntelliJ IDEA.
  * User: TVang
@@ -23,5 +27,15 @@ class HOScheduledPersonalPropertyPCFController {
     }
 
     return results
+  }
+
+  public function setValue(scheduledItem : ScheduledItem_HOE){
+    if(ScheduleType_HOE.TF_EXECUTIVEENDORSEMENTONLYTYPES.TypeKeys.contains(scheduledItem.ScheduleType)){
+      scheduledItem.ExposureValue = CoveragesUtil.SCHEDULED_PERSONAL_PROPERTY_DEFAULTS.get(scheduledItem.ScheduleType)
+    }
+  }
+
+  public function isValueEditable(scheduledItemType : ScheduleType_HOE) : boolean{
+    return !ScheduleType_HOE.TF_EXECUTIVEENDORSEMENTONLYTYPES.TypeKeys.contains(scheduledItemType)
   }
 }

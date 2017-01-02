@@ -4,6 +4,7 @@ uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
+uses java.lang.Double
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +15,11 @@ uses gw.api.domain.covterm.CovTerm
  */
 
 class CoveragesUtil {
+  public static final var SCHEDULED_PERSONAL_PROPERTY_DEFAULTS : HashMap<typekey.ScheduleType_HOE, Double> = {ScheduleType_HOE.TC_GUNSTHEFT_EXT -> 5000,
+                                                                                                              ScheduleType_HOE.TC_SILVERWARETHEFT_EXT -> 10000,
+                                                                                                              ScheduleType_HOE.TC_JEWELRYTHEFT_EXT -> 5000,
+                                                                                                              ScheduleType_HOE.TC_WATERCRAFT_EXT -> 2000,
+                                                                                                              ScheduleType_HOE.TC_TRAILEROTHERS_EXT -> 2000}
   public static final var DEPENDENT_LIMIT_PATTERNS_TO_DERIVING_LIMIT_PATTERNS : HashMap<String, List<String>> = {"HODW_PersonalPropertyLimit_HOE" -> {"HODW_LossOfUseDwelLimit_HOE"},
                                                                                                                  "HODW_Dwelling_Limit_HOE" -> {"HODW_OtherStructures_Limit_HOE",
                                                                                                                                                "HODW_PersonalPropertyLimit_HOE",

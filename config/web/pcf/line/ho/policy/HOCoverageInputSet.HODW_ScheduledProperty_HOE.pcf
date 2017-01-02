@@ -25,9 +25,6 @@
       initialValue="new una.pageprocess.coverages.HOScheduledPersonalPropertyPCFController(coverable.getCoverage(coveragePattern.CodeIdentifier))"
       name="pcfController"
       type="una.pageprocess.coverages.HOScheduledPersonalPropertyPCFController"/>
-    <Variable
-      initialValue="pcfController.ScheduleTypeRange"
-      name="scheduleTypeRange"/>
     <HiddenInput
       id="CovPatternCode"
       value="coveragePattern.CodeIdentifier"/>
@@ -66,7 +63,10 @@
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.ArticlePropertyType"
                 required="true"
                 value="schedItem.ScheduleType"
-                valueRange="scheduleTypeRange"/>
+                valueRange="pcfController.ScheduleTypeRange">
+                <PostOnChange
+                  onChange="pcfController.setValue(schedItem)"/>
+              </RangeCell>
               <Cell
                 editable="true"
                 id="SchedItemDescriptionId"
@@ -74,12 +74,12 @@
                 required="true"
                 value="schedItem.Description"/>
               <TextCell
-                editable="true"
+                editable="pcfController.isValueEditable(schedItem.ScheduleType)"
                 id="exposureValue"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.SchedItemExposureValue"
-                maxChars="10"
+                maxChars="6"
                 required="true"
-                validationExpression="gw.lob.ho.DwellingCov_HOEEnhancement.validateScheduleType_Ext(dwelling).length() &gt; 0 ? gw.lob.ho.DwellingCov_HOEEnhancement.validateScheduleType_Ext(dwelling) : null"
+                validationExpression="gw.lob.ho.DwellingCov_HOEEnhancement.validateScheduleType_Ext(dwelling)"
                 value="schedItem.ExposureValue"/>
             </Row>
           </RowIterator>

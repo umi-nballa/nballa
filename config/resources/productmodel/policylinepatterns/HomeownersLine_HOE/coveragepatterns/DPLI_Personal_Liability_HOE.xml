@@ -60,9 +60,7 @@
           priority="11013"
           public-id="z3qhsh2eag7b46d0psc67nq1n3b"
           value="300000.0000">
-            <AvailabilityScript><![CDATA[var hoLine = CovTerm.Coverage.OwningCoverable as HomeownersLine_HOE
-                                                 return hoLine.Branch.Renewal != null and hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value == CovTermOpt.Value
-                ]]></AvailabilityScript>
+          <AvailabilityScript/>
         </CovTermOpt>
         <CovTermOpt
           codeIdentifier="znfie8q3etnk352b3iljcnba7t8"
@@ -70,7 +68,11 @@
           optionCode="400k"
           priority="11014"
           public-id="znfie8q3etnk352b3iljcnba7t8"
-          value="400000.0000"/>
+          value="400000.0000">
+          <AvailabilityScript><![CDATA[var hoLine = CovTerm.Coverage.OwningCoverable as HomeownersLine_HOE
+                                       return hoLine.Branch.Renewal != null and hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value == CovTermOpt.Value
+                                       ]]></AvailabilityScript>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zaohqm17fnn748h197veds24oa9"
           currency="usd"

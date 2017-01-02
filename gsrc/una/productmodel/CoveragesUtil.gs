@@ -37,9 +37,6 @@ class CoveragesUtil {
       case "HODW_SpecialPersonalProperty_HOE_Ext":
         result = isSpecialPersonalPropertyAvailable(coverable as Dwelling_HOE)
         break
-      case "HODW_LossAssessmentCov_HOE":
-        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
-        break
 	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
@@ -80,7 +77,11 @@ class CoveragesUtil {
       case "SupplExtendedReportingPeriodEndrsmnt_EXT":
         result = isCyberOneSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_LossAssessmentCov_HOE_Ext":
+        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
+        break
       default:
+        break
     }
 
     return result
@@ -323,7 +324,7 @@ class CoveragesUtil {
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
     return applicableCounties.HasElements
-       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County))
+       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
   }
 
   /*Available when the Occupancy type is:

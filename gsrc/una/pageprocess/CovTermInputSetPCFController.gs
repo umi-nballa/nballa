@@ -9,9 +9,7 @@ uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
-uses gw.api.productmodel.CovTermOpt
 uses java.math.BigDecimal
-uses org.apache.commons.math.stat.descriptive.rank.Percentile
 
 /**
  * Created with IntelliJ IDEA.
@@ -39,7 +37,11 @@ class CovTermInputSetPCFController {
     ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
 
     if(covTerm typeis DirectCovTerm){
-      covTerm.round(ROUND_NEAREST)
+      if(covTerm.PatternCode == "HODW_BuildAddInc_HOE"){
+        covTerm.round(ROUND_UP)
+      }else{
+        covTerm.round(ROUND_NEAREST)
+      }
     }
 
     switch(covTerm.PatternCode) {
@@ -91,12 +93,18 @@ class CovTermInputSetPCFController {
   static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
     onCovTermOptionChange_OnPremisesLimit(term, coverable)
 
-    if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
-      (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
-    }
-
-    if({"HODW_OtherPerils_Ded_HOE", "HODW_AllPeril_HOE_Ext"}.contains(term.PatternCode)){
-      (coverable as Dwelling_HOE).HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
+    if(coverable typeis Dwelling_HOE){
+      if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
+        (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
+      }else if({"HODW_OtherPerils_Ded_HOE", "HODW_AllPeril_HOE_Ext"}.contains(term.PatternCode)){
+        coverable.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
+      }else if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
+        if(coverable.HOPolicyType == TC_HO6){
+          coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = coverable.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+        }else if(coverable.HOPolicyType == TC_DP3_Ext and coverable.ResidenceType == TC_CONDO_EXT){
+          coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
+        }
+      }
     }
   }
 

@@ -533,8 +533,8 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL){
-      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000
-          and dwelling.HOPolicyType == TC_HO6 or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT)
+      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd
+          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT))
     }
 
     return result

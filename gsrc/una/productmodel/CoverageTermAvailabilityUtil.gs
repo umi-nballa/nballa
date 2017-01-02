@@ -186,6 +186,9 @@ class CoverageTermAvailabilityUtil {
       case "DPLI_Premise_Liability_HOE_Ext":
         result = isDwellingFirePremiseLiabilityAvailable(coverable as HomeownersLine_HOE)
         break
+      case "HODW_Retrofitted_HOE":
+        result = isRetrofittedCovTermAvailable(coverable as Dwelling_HOE)
+        break
       default:
         break
     }
@@ -391,6 +394,17 @@ class CoverageTermAvailabilityUtil {
     if(line.BaseState == TC_TX){
       //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
     }
+
+    return result
+  }
+
+  private static function isRetrofittedCovTermAvailable(dwelling : Dwelling_HOE) : boolean{
+    var result = false
+    var yearBuilt = dwelling.OverrideYearbuilt_Ext ? dwelling.YearBuiltOverridden_Ext : dwelling.YearBuilt
+    var lowerBound = 1937
+    var upperBound = 1954
+
+    result = yearBuilt >= lowerBound and yearBuilt <= upperBound
 
     return result
   }

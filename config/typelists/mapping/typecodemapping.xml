@@ -9,6 +9,7 @@
     <namespace name="tuna_NV" />
     <namespace name="tuna_TX" />
     <namespace name="tuna_HI" />
+    <namespace name="lexisFirst" />
   </namespacelist>
   <typelist name="DwellingOccupancyType_HOE">
     <mapping typecode="owner" namespace="hpx" alias="OWNER" />
@@ -76,7 +77,7 @@
         <mapping typecode="AsphaltComp_Ext" namespace="tuna_FL" alias="A_COMP" />
         <mapping typecode="tarAndGravel_Ext" namespace="tuna" alias="BUP" />
         <mapping typecode="BuiltUpRoofGravel_Ext" namespace="tuna_FL" alias="BUP" />
-        <mapping typecode="tarAndGravel_Ext" namespace="tuna" alias="BUPNG" />
+        <mapping typecode="rolledTarPaper_Ext" namespace="tuna" alias="BUPNG" />
         <mapping typecode="BuiltUpGravel_Ext" namespace="tuna_FL" alias="BUPNG" />
         <mapping typecode="AsphaltComp_Ext" namespace="tuna" alias="COMP" />
         <mapping typecode="AsphaltComp_Ext" namespace="tuna_FL" alias="COMP" />
@@ -86,18 +87,18 @@
         <mapping typecode="LightMetal_Ext" namespace="tuna_FL" alias="COPS" />
         <mapping typecode="AsphaltComp_Ext" namespace="tuna" alias="ICOMP" />
         <mapping typecode="AsphaltComp_Ext" namespace="tuna_FL" alias="ICOMP" />
-        <mapping typecode="SinglePlyMemNonB_Ext" namespace="tuna" alias="MEME" />
-        <mapping typecode="SinglePlyMemBal_Ext" namespace="tuna_FL" alias="MEME" />
-        <mapping typecode="LightMetal_Ext" namespace="tuna" alias="MT" />
-        <mapping typecode="LightMetal_Ext" namespace="tuna_FL" alias="MT" />
-        <mapping typecode="LightMetal_Ext" namespace="tuna" alias="MTL" />
-        <mapping typecode="StandingSeamMetal_Ext" namespace="tuna_FL" alias="MTL" />
-        <mapping typecode="LightMetal_Ext" namespace="tuna" alias="MTLC" />
+        <mapping typecode="singlePlyMembraneSystems_Ext" namespace="tuna" alias="MEME" />
+        <mapping typecode="singlePlyMembrane_Ext" namespace="tuna_FL" alias="MEME" />
+        <mapping typecode="metalUnknown_Ext" namespace="tuna" alias="MT" />
+        <mapping typecode="lightMetalPanel_Ext" namespace="tuna_FL" alias="MT" />
+        <mapping typecode="metalUnknown_Ext" namespace="tuna" alias="MTL" />
+        <mapping typecode="seamMetal_Ext" namespace="tuna_FL" alias="MTL" />
+        <mapping typecode="metalUnknown_Ext" namespace="tuna" alias="MTLC" />
         <mapping typecode="LightMetal_Ext" namespace="tuna_FL" alias="MTLC" />
         <mapping typecode="steel_Ext" namespace="tuna" alias="MTLP" />
-        <mapping typecode="LightMetal_Ext" namespace="tuna_NC" alias="MTLP" />
-        <mapping typecode="StandingSeamMetal_Ext" namespace="tuna_FL" alias="MTLP" />
-        <mapping typecode="rolledTarPaper_Ext" namespace="tuna" alias="RR" />
+        <mapping typecode="metalUnknown_Ext" namespace="tuna_NC" alias="MTLP" />
+        <mapping typecode="seamMetal_Ext" namespace="tuna_FL" alias="MTLP" />
+        <mapping typecode="compositionRollRoofing_Ext" namespace="tuna" alias="RR" />
         <mapping typecode="rolledTarPaper_Ext" namespace="tuna_FL" alias="RR" />
         <mapping typecode="WoodShingles_Ext" namespace="tuna" alias="SCOMP" />
         <mapping typecode="AsphaltComp_Ext" namespace="tuna_FL" alias="SCOMP" />
@@ -107,19 +108,19 @@
         <mapping typecode="other" namespace="tuna" alias="SPF" />
         <mapping typecode="other" namespace="tuna_FL" alias="SPF" />
         <mapping typecode="tileclay" namespace="tuna" alias="TIL" />
-        <mapping typecode="tileconcrete" namespace="tuna_NV" alias="TIL" />
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna_NV" alias="TIL" />
         <mapping typecode="ClayConcreteExt" namespace="tuna_FL" alias="TIL" />
-        <mapping typecode="tileconcrete" namespace="tuna" alias="TILC" />
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILC" />
         <mapping typecode="ClayConcreteExt" namespace="tuna_FL" alias="TILC" />
-        <mapping typecode="tileconcrete" namespace="tuna" alias="TILF" />
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILF" />
         <mapping typecode="ClayConcreteExt" namespace="tuna_FL" alias="TILF" />
-        <mapping typecode="tileconcrete" namespace="tuna" alias="TILG" />
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILG" />
         <mapping typecode="ClayConcreteExt" namespace="tuna_FL" alias="TILG" />
         <mapping typecode="woodShake_Ext" namespace="tuna" alias="W" />
         <mapping typecode="WoodShingles_Ext" namespace="tuna_FL" alias="W" />
         <mapping typecode="woodShake_Ext" namespace="tuna_CA" alias="W" />
         <mapping typecode="woodShake_Ext" namespace="tuna" alias="WD" />
-        <mapping typecode="woodShake_Ext" namespace="tuna_FL" alias="WD" />
+        <mapping typecode="WoodShingles_Ext" namespace="tuna_FL" alias="WD" />
         <mapping typecode="woodShake_Ext" namespace="tuna_CA" alias="WD" />
 
     </typelist>
@@ -332,5 +333,12 @@
         <mapping typecode="F" namespace="tuna_HI" alias="SIP" />
         <mapping typecode="F" namespace="tuna" alias="SIP" />
         <mapping typecode="F" namespace="tuna" alias="N" />
+    </typelist>
+
+    <typelist name="AdditionalInterestType">
+        <mapping typecode="firstMortgagee_Ext" namespace="lexisFirst" alias="FM" />
+        <mapping typecode="secondMortgagee_Ext" namespace="lexisFirst" alias="SM" />
+        <mapping typecode="thirdMortgagee_Ext" namespace="lexisFirst" alias="TM" />
+        <mapping typecode="other_Ext" namespace="lexisFirst" alias="OT" />
     </typelist>
 </typecodemapping>

@@ -44,6 +44,7 @@ class LexisFirstOutBoundHelper {
       _logger.debug(" Leaving  " + CLASS_NAME + " :: " + "insertOutBoundFileData" + "For LexisFirst ")
     } catch (exp: Exception) {
       ExceptionUtil.suppressException(ErrorCode.ERROR_INSERTING_OUTBOUND_RECORD, null, exp)
+      throw exp
     }
 
   }

@@ -5,7 +5,7 @@ uses gw.api.system.PLConfigParameters
 uses gw.plugin.Plugins
 uses gw.plugin.billing.IBillingSystemPlugin
 uses gw.plugin.billing.bc800.PolicyInfoUtil
-uses una.integration.Helper.LexisFirstOutBoundHelper
+
 
 uses java.lang.Exception
 uses java.lang.IllegalStateException
@@ -17,7 +17,6 @@ class BillingMessageTransport implements MessageTransport {
   public static final var TRANSACTION_ID_PREFIX : String = PLConfigParameters.PublicIDPrefix.Value + ":"
   public static final var UPDATEACCOUNT_MSG : String = "AccountChanged"
   public static final var TRANSFERPOLICY_MSG : String = "TransferPolicy"
-
   public static final var CREATEPERIOD_MSG : String = "CreatePeriod"
   public static final var CANCELPERIOD_MSG : String = "CancelPeriod"
   public static final var CHANGEPERIOD_MSG : String = "ChangePeriod"
@@ -30,12 +29,20 @@ class BillingMessageTransport implements MessageTransport {
   public static final var WAIVEFINALAUDIT_MSG : String = "WaiveFinalAudit"
   public static final var NEWFINALAUDIT_MSG : String = "ScheduleFinalAudit"
   public static final var UPDATECONTACT_MSG : String = "ContactChanged"
+  public static final var CREATEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnCreatePeriod"
+  public static final var ISSUEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnIssuePeriod"
+  public static final var CHANGEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnChangePeriod"
+  public static final var REINSTATEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnReinstatePeriod"
+  public static final var REWRITEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnRewritePeriod"
+  public static final var RENEWPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnRenewPeriod"
+
 
 
   var logger = PCLoggerCategory.BILLING_SYSTEM_PLUGIN
-  var lexisFirstOutBoundHelper = new LexisFirstOutBoundHelper()
+
 
   override function send(message: Message, payLoad: String) {
+
     var plugin = Plugins.get(IBillingSystemPlugin)
     var policyPeriod = message.PolicyPeriod
     logger.debug("Billing message: ${message.EventName}:${policyPeriod.PolicyNumber}-${policyPeriod.TermNumber}"
@@ -47,6 +54,7 @@ class BillingMessageTransport implements MessageTransport {
           var account = message.MessageRoot as Account
           if(not account.Frozen){
             plugin.updateAccount(account, getTransactionId(message))
+
           }
           break
         case TRANSFERPOLICY_MSG:
@@ -63,9 +71,7 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.createPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
-          //Lexis First -  start
-          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
-          //Lexis First -  end
+          policyPeriod.addEvent(CREATEPERIOD_LEXIS_FIRST_MSG)
           break
         case CANCELPERIOD_MSG:
           if(not (policyPeriod.Job typeis Cancellation)){
@@ -79,10 +85,9 @@ class BillingMessageTransport implements MessageTransport {
           }
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
+            policyPeriod.addEvent(CHANGEPERIOD_LEXIS_FIRST_MSG)
           }
-          //Lexis First -  start
-          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
-          //Lexis First -  end
+
           break
         case ISSUEPERIOD_MSG:
           if(not (policyPeriod.Job typeis Issuance)){
@@ -90,11 +95,9 @@ class BillingMessageTransport implements MessageTransport {
           }
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
+            policyPeriod.addEvent(ISSUEPERIOD_LEXIS_FIRST_MSG)
           }
-          //Lexis First -  start
-          if(!policyPeriod.Job.SupressPrint) // If there is an endorsement of type suppress print,we are not triggering Lexis first
-          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
-          //Lexis First -  end
+
           break
 
         case REINSTATEPERIOD_MSG:
@@ -102,9 +105,7 @@ class BillingMessageTransport implements MessageTransport {
             throw new IllegalStateException("Unexpected job type ${policyPeriod.Job.Subtype} for message ${message.EventName}")
           }
           plugin.issueReinstatement(policyPeriod, getTransactionId(message))
-          //Lexis First -  start
-          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
-          //Lexis First -  end
+          policyPeriod.addEvent(REINSTATEPERIOD_LEXIS_FIRST_MSG)
           break
         case RENEWPERIOD_MSG:
           if(not (policyPeriod.Job typeis Renewal)){
@@ -113,9 +114,7 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.renewPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
-          //Lexis First -  start
-          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
-           //Lexis First -  end
+          policyPeriod.addEvent(RENEWPERIOD_LEXIS_FIRST_MSG)
           break
         case REWRITEPERIOD_MSG:
           if(not (policyPeriod.Job typeis Rewrite)){
@@ -123,9 +122,7 @@ class BillingMessageTransport implements MessageTransport {
           }
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.rewritePolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
-          //Lexis First -  start
-          lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
-          //Lexis First -  start
+          policyPeriod.addEvent(REWRITEPERIOD_LEXIS_FIRST_MSG)
           break
         case FINALAUDIT_MSG:
           if(not (policyPeriod.Job typeis Audit)){
@@ -170,6 +167,7 @@ class BillingMessageTransport implements MessageTransport {
           var contact = message.MessageRoot as Contact
           updateContact(contact, message)
           break
+
         default:
           message.ErrorDescription = "Unknown event: " + message.EventName
           message.reportNonRetryableError()

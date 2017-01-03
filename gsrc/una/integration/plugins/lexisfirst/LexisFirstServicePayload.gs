@@ -7,6 +7,7 @@ uses wsi.remote.gw.webservice.bc.bc800.billingapi.BillingAPI
 
 uses java.lang.Exception
 uses java.text.SimpleDateFormat
+uses gw.plugin.messaging.BillingMessageTransport
 
 /**
  * Created for LexisFirst Integration
@@ -17,12 +18,6 @@ uses java.text.SimpleDateFormat
 class LexisFirstServicePayload {
   final static  var _logger = UnaLoggerCategory.INTEGRATION
   private static final var CLASS_NAME = LexisFirstServicePayload.Type.DisplayName
-  private static final var CREATEPERIOD_MSG= "CreatePeriod"
-  private static final var CHANGEPERIOD_MSG= "ChangePeriod"
-  private static final var ISSUEPERIOD_MSG= "IssuePeriod"
-  private static final var REINSTATEPERIOD_MSG= "ReinstatePeriod"
-  private static final var RENEWPERIOD_MSG= "RenewPeriod"
-  private static final var REWRITEPERIOD_MSG= "RewritePeriod"
   private static final var HO3= "HO3"
   private static final var HO4= "HO4"
   private static final var HO6= "HO6"
@@ -50,7 +45,7 @@ class LexisFirstServicePayload {
   private static final var DIRECT_BILL_PAYMENT="Direct Bill"
   private static final var INDIVIDUAL = "I"
   private static final var BUSINESS="B"
-
+  private static final var EXTERNAL_SYSTEM ="lexisFirst"
 
   private static final var PRIMARY_NAMED_INSURED = "PolicyPriNamedInsured"
   private static final var PERSON= "person"
@@ -59,6 +54,7 @@ class LexisFirstServicePayload {
   var config = createWsiConfig()
   var billingAPI = new BillingAPI(config)
   var billingSummaryPlugin = gw.plugin.Plugins.get( gw.plugin.billing.IBillingSummaryPlugin)
+  var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
 
    /**
    * This function  creates payload to process LexisFirst transaction.
@@ -85,19 +81,19 @@ class LexisFirstServicePayload {
       }
 
       //Action Code for Business Transactions
-      if (eventName == CREATEPERIOD_MSG || eventName == ISSUEPERIOD_MSG) {
+      if (eventName == BillingMessageTransport.CREATEPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = NEW_BUSINESS
       }
-      else if (eventName == CHANGEPERIOD_MSG) {
+      else if (eventName == BillingMessageTransport.CHANGEPERIOD_LEXIS_FIRST_MSG || eventName == BillingMessageTransport.ISSUEPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = POLICY_CHANGE
       }
-      else if (eventName == REINSTATEPERIOD_MSG) {
+      else if (eventName == BillingMessageTransport.REINSTATEPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = REINSTATE_POLICY
       }
-      else if (eventName == RENEWPERIOD_MSG) {
+      else if (eventName == BillingMessageTransport.RENEWPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = RENEWAL_POLICY
       }
-      else if (eventName == REWRITEPERIOD_MSG) {
+      else if (eventName == BillingMessageTransport.REWRITEPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = REWRITE_POLICY
       }
       else {
@@ -159,35 +155,29 @@ class LexisFirstServicePayload {
       lexisFirstFileData.PropertyZip = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode?.substring(0, 5)
 
       //Fetching Primary payer Details from Billing Center
-      var primaryPayer = billingAPI.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
-      if(primaryPayer != null) {
-      var fetchContact = gw.api.database.Query.make(Contact).compare(Contact#AddressBookUID,Equals,primaryPayer).select().AtMostOneRow
-      var addInterest = policyPeriod.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
-      var addInterestContact = addInterest?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == fetchContact.AddressBookUID)
-      if(addInterestContact != null && (addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
-          addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
-          addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
-          addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
-        lexisFirstFileData.MortgageeName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
-        lexisFirstFileData.PayableName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
-        lexisFirstFileData.MortgageeCity = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.City
-        lexisFirstFileData.MortgageeCountry = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.Country.Code
-        lexisFirstFileData.MortgageeStreet = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine1+" "+
-            (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 !=null ?
-                addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 :"")
-        lexisFirstFileData.MortgageeState = (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.State) as String
-        lexisFirstFileData.MortgageeZip = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode?.substring(0, 5)
-        lexisFirstFileData.LoanNumber =  addInterestContact.ContractNumber
-        if(addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT)
-          lexisFirstFileData.MortgageeInterestType = "FM"
-        else if(addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT)
-          lexisFirstFileData.MortgageeInterestType = "SM"
-        else if(addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)
-          lexisFirstFileData.MortgageeInterestType = "TM"
-        else
-          lexisFirstFileData.MortgageeInterestType = "OT"
+
+        var primaryPayer = billingAPI.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
+        if(primaryPayer != null) {
+          var fetchContact = gw.api.database.Query.make(Contact).compare(Contact#AddressBookUID,Equals,primaryPayer).select().AtMostOneRow
+          var addInterest = policyPeriod.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
+          var addInterestContact = addInterest?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == fetchContact.AddressBookUID)
+          if(addInterestContact != null && (addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
+              addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
+              addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
+              addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
+            lexisFirstFileData.MortgageeName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
+            lexisFirstFileData.PayableName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
+            lexisFirstFileData.MortgageeCity = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.City
+            lexisFirstFileData.MortgageeCountry = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.Country.Code
+            lexisFirstFileData.MortgageeStreet = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine1+" "+
+                (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 !=null ?
+                    addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 :"")
+            lexisFirstFileData.MortgageeState = (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.State) as String
+            lexisFirstFileData.MortgageeZip = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode?.substring(0, 5)
+            lexisFirstFileData.LoanNumber =  addInterestContact.ContractNumber
+            lexisFirstFileData.MortgageeInterestType = typecodeMapper.getAliasByInternalCode(AdditionalInterestType.Type.RelativeName,EXTERNAL_SYSTEM,addInterestContact.AdditionalInterestType)
+          }
         }
-      }
 
       //Mapping Coverage Details
       if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6){
@@ -307,16 +297,18 @@ class LexisFirstServicePayload {
 
       //Mapping Billing related details
       lexisFirstFileData.TotalPolicyPremium = policyPeriod.TotalPremiumRPT_amt
-      var billingSummary = billingSummaryPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, policyPeriod.PolicyTerm.MostRecentTerm)
-      var sortedInvoices = billingSummary.Invoices.sort( \ elt1, elt2 -> elt1.InvoiceDueDate.before(elt2.InvoiceDueDate))
-      var firstUnpaidInvoice = sortedInvoices.firstWhere( \ elt -> elt.Unpaid.Amount > 0)
-      if(billingSummary.BillingMethod.DisplayName == DIRECT_BILL_PAYMENT) {
-      lexisFirstFileData.PremiumAmountDue = firstUnpaidInvoice.Amount.Amount
-      lexisFirstFileData.PremiumAmountDueDate = sdf.format(firstUnpaidInvoice.InvoiceDueDate)
-      } else{
-        lexisFirstFileData.PremiumAmountDue = 0
-        lexisFirstFileData.PremiumAmountDueDate = 0
-      }
+
+        var billingSummary = billingSummaryPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, policyPeriod.PolicyTerm.MostRecentTerm)
+        var sortedInvoices = billingSummary.Invoices.sort( \ elt1, elt2 -> elt1.InvoiceDueDate.before(elt2.InvoiceDueDate))
+        var firstUnpaidInvoice = sortedInvoices.firstWhere( \ elt -> elt.Unpaid.Amount > 0)
+        if(billingSummary.BillingMethod.DisplayName == DIRECT_BILL_PAYMENT) {
+          lexisFirstFileData.PremiumAmountDue = firstUnpaidInvoice.Amount.Amount
+          lexisFirstFileData.PremiumAmountDueDate = sdf.format(firstUnpaidInvoice.InvoiceDueDate)
+        } else{
+          lexisFirstFileData.PremiumAmountDue = 0
+          lexisFirstFileData.PremiumAmountDueDate = ""
+        }
+
       lexisFirstFileData.IncreasedPremiumAmountDue = ""
       lexisFirstFileData.MaximumPremiumAmountDue = ""
       //Remittance Details
@@ -342,6 +334,7 @@ class LexisFirstServicePayload {
       _logger.info(" Leaving  " + CLASS_NAME + " :: " + "" + "For LexisFirst payload service  ")
     } catch (exp: Exception) {
       _logger.error("Lexis First creating payload Error::::" + exp)
+      throw exp
     }
     return lexisFirstFileData
   }

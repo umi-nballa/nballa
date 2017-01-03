@@ -224,10 +224,9 @@ class TunaResponseHelper {
             return typeValue
 
         case ROOF_TYPE:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofType_CP", "tuna", dataNumValue)
+            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
             return typeValue
        }
-
-    return dataNumValue
+     return dataNumValue
   }
 }

@@ -17,6 +17,7 @@ uses org.slf4j.Logger
 uses java.lang.IllegalArgumentException
 uses java.util.Map
 uses gw.api.productmodel.Offering
+uses gwservices.pc.dm.gx.lob.cpp.glexposuremodel.anonymous.elements.GLExposure_ClassCode
 
 /**                                                                              n
  * This is the default populator, which all entity specific implementations extend
@@ -225,7 +226,11 @@ class BaseEntityPopulator<C extends KeyableBean, P extends KeyableBean> implemen
         }
       } else {
         try {
-          if(!name.equalsIgnoreCase("Offering"))
+          var skipGlClassCode : boolean = false
+            if(childModel typeis GLExposure_ClassCode){
+               skipGlClassCode = true
+            }
+          if(!name.equalsIgnoreCase("Offering") && !skipGlClassCode && !name.equalsIgnoreCase("LocationWM"))
             parent.setFieldValue(name, child)
         } catch (iae: IllegalArgumentException) {
           if (iae.Message.contains("Can't add a bean with a different branch")) {

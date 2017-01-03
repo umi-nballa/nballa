@@ -24,23 +24,30 @@ class GLExposurePopulator extends BaseEntityPopulator<GLExposure, KeyableBean >{
 
     if(model typeis PolicyLine_Entity_GeneralLiabilityLine_GLExposuresWM_Entry) {
       var gl = (GeneralLiabilityLine)parent
-      var glExpo = gl.addExposureWM()
+      var glExpo : GLExposure
       var BasisAmount = model.$Children.firstWhere( \ elt -> elt.QName.LocalPart == "BasisAmount").Text
-      glExpo.BasisAmount = BasisAmount
+      //glExpo.BasisAmount = BasisAmount
       var expoLocationVM = model.$Children.firstWhere( \ elt -> elt.QName.LocalPart == "LocationWM")
+      var policyLoc : PolicyLocation
       if(expoLocationVM typeis GLExposure_LocationWM ){
         var locationNum = expoLocationVM.LocationNum
         var expLocationVM = Branch.PolicyLocations.firstWhere( \ elt -> elt.LocationNum == locationNum)
-        glExpo.LocationWM = expLocationVM
+        policyLoc = expLocationVM
       }
+      var glClass : String
       var glClassCode = model.$Children.firstWhere( \ elt -> elt.QName.LocalPart == "ClassCode")
+      var code : String
       if(glClassCode typeis GLExposure_ClassCode){
-        var classCode = glClassCode.Code
-        glExpo.ClassCode.Code = classCode
+         code = glClassCode.Code
       }
-      gl.addToExposures(glExpo)
+      var lookUpRecord = (Query.make(entity.GLClassCode).compare("Code", Equals, code).select().AtMostOneRow) as entity.GLClassCode
 
-      return glExpo
+      /*var newExposure = gl.addExposureWM()
+      newExposure.LocationWM = policyLoc
+      newExposure.ClassCode = lookUpRecord
+      newExposure.BasisAmount = BasisAmount*/
+
+      return gl.addExposureWM(policyLoc, lookUpRecord, BasisAmount)
     }
     return null
   }

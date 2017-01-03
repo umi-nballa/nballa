@@ -194,7 +194,7 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA"){
+      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA" ){
 return true
 }else return false]]></AvailabilityScript>
       <DefaultsSet>
@@ -371,7 +371,6 @@ return true
           codeIdentifier="z2djs3bn62qkd7o0nrfbt3m9brb"
           currency="usd"
           defaultValue="2500"
-          maxVal="25000"
           minVal="0"
           public-id="z2djs3bn62qkd7o0nrfbt3m9brb"/>
       </LimitsSet>

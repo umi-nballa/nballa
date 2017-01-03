@@ -48,6 +48,9 @@
     <Variable
       initialValue="gw.lob.cp.location.CPLocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,cpBuilding)"
       name="setTunaFieldsMatchLevel"/>
+    <Variable
+      initialValue="una.productmodel.CPAutoPopulateUtil.setPcfDefaults(cpLine,cpBuilding)"
+      name="initializepcf"/>
     <Screen>
       <Toolbar>
         <EditButtons/>
@@ -352,7 +355,8 @@
                   required="cpBuilding.windstormexcl==false || (cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)  //una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.guswind"
                   visible="(cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&lt;2002 &amp;&amp; cpBuilding.windmiti5==true &amp;&amp; cpBuilding.Building.NumStories&gt;=4)|| (cpBuilding.Building.YearBuilt&gt;=2002 &amp;&amp; cpBuilding.windstormexcl==false )  //una.config.CPBuildingUtil.isVisible(cpBuilding)">
-                  <PostOnChange/>
+                  <PostOnChange
+                    onChange="una.config.CPBuildingUtil.setWindSpeedDefaults(cpBuilding)"/>
                 </TypeKeyInput>
                 <TypeKeyInput
                   align="left"
@@ -425,7 +429,7 @@
                   label="displaykey.Web.Policy.CP.Location.CPBuilding.Terrainexp"
                   required="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.terexp"
-                  visible="cpBuilding.windstormexcl==false || cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
+                  visible="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
                 <TextInput
                   align="left"
                   editable="cpBuilding.windmiti5==true"
@@ -645,36 +649,36 @@
               <InputSet
                 id="PCCode_Ext">
                 <RangeInput
-                  available="!cpBuilding.OverrideDwellingPCCode_Ext"
+                  available="!cpBuilding.OverrideFirePCCode_Ext"
                   editable="true"
                   id="PCCodeTunaReturned_Ext"
                   label="displaykey.Web.CP.CPLocation.ProtectionClass"
-                  value="cpBuilding.DwellingProtectionClassCode"
+                  value="cpBuilding.FireProtectionClassCode"
                   valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
                   <PostOnChange
-                    onChange="cpBuilding.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(cpBuilding.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+                    onChange="cpBuilding.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(cpBuilding.FireProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
                 </RangeInput>
                 <Input
-                  available="!cpBuilding.OverrideDwellingPCCode_Ext"
+                  available="!cpBuilding.OverrideFirePCCode_Ext"
                   id="PCCodeMatchLevel_Ext"
                   label="displaykey.Web.CP.CPLocation.PCCodeMatchlevel_Ext"
-                  value="cpBuilding.DwellingPCCodeMatchLevel_Ext"/>
+                  value="cpBuilding.FirePCCodeMatchLevel_Ext"/>
                 <BooleanRadioInput
                   editable="true"
                   id="OverRideTunaBCEG_Ext"
                   label="displaykey.Web.CP.CPLocation.PCCodeOverride_Ext"
-                  value="cpBuilding.OverrideDwellingPCCode_Ext">
+                  value="cpBuilding.OverrideFirePCCode_Ext">
                   <PostOnChange
                     target="PCCode_Ext"/>
                 </BooleanRadioInput>
                 <Input
-                  available="cpBuilding.OverrideDwellingPCCode_Ext"
+                  available="cpBuilding.OverrideFirePCCode_Ext"
                   editable="true"
                   id="PCCodeUserEntered_Ext"
                   label="displaykey.Web.CP.CPLocation.PCCodeUserEntered_Ext"
-                  required="cpBuilding.OverrideDwellingPCCode_Ext"
-                  value="cpBuilding.DwellingPCCodeOverridden_Ext"
-                  visible="cpBuilding.OverrideDwellingPCCode_Ext"/>
+                  required="cpBuilding.OverrideFirePCCode_Ext"
+                  value="cpBuilding.FirePCCodeOverridden_Ext"
+                  visible="cpBuilding.OverrideFirePCCode_Ext"/>
               </InputSet>
               <InputDivider/>
               <InputSet
@@ -1167,6 +1171,9 @@
   if(cLine.CPCoverageC!=null)
     cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovC_Ext")?.first().setValueFromString(cLine.CPCoverageC.Code)
 
+  if(cLine.CPCoverageBC!=null)
+    cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first().CovTerms.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovBC_Ext")?.first().setValueFromString(cLine.CPCoverageBC.Code)
+
   //if(cLine.EquipmentBreakdownEnhancement!=null)
   //  cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownEnhance_EXT")?.first().
   
@@ -1179,6 +1186,6 @@
 function setCPClassCode():boolean
 {
   return false
-} ]]></Code>
+}]]></Code>
   </Popup>
 </PCF>

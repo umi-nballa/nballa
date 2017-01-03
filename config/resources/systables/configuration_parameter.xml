@@ -43,7 +43,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State/>
-    <Value>allterrainvehicles,attractivenuisance,burglarbars,covexceedsmax,foundationdamage,protectionclass,lapsecoverage,propertycondition,numfamiliesunits,divingboardslide,constructiontype,constructedoverwater,acreage,morethan2mort,insuredvalue,vacantunoccupied,brush,legaljurisdiction,tidalwater,grouphomeassisted,existingdamage,condmajorsystems,replacemajorsys,seasonalsecondary,townrowhousefirewalls,trampolineskate,animalexposure,breeddog,businesspremises,dwellingtype,electricaltypecond,exteriorconstructionmaterial,foundationtype,fueltank,heatsource,occupancy,ownership,plumbingtype,roofagecondshapetype,roofcondshapetype,poolexposure,consumerinfoaan</Value>
+    <Value>allterrainvehicles,attractivenuisance,burglarbars,covexceedsmax,foundationdamage,protectionclass,lapsecoverage,propertycondition,numfamiliesunits,divingboardslide,constructiontype,constructedoverwater,acreage,morethan2mort,insuredvalue,vacantunoccupied,brush,legaljurisdiction,tidalwater,grouphomeassisted,existingdamage,condmajorsystems,replacemajorsys,seasonalsecondary,townrowhousefirewalls,trampolineskate,animalexposure,breeddog,businesspremises,dwellingtype,electricaltypecond,exteriorconstructionmaterial,foundationtype,fueltank,heatsource,occupancy,ownership,plumbingtype,roofagecondshapetype,roofcondshapetype,poolexposure,consumerinfoaan, otherexplanation</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zcjj650isncjk2uo4e54engm4r8">
     <ConfigParameterType>LimitMinFactor</ConfigParameterType>
@@ -79,7 +79,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State>FL</State>
-    <Value>500.000, 0.020, 0.050, 0.100</Value>
+    <Value>-2.000, 500.000, 0.020, 0.050, 0.100</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z30h48874s6d10dpe7gdve0sqna">
     <ConfigParameterType>LimitDefaultFactor</ConfigParameterType>
@@ -438,7 +438,7 @@
     <EffectiveDate/>
     <ExpirationDate/>
     <ServerTier/>
-    <State>HI</State>
+    <State/>
     <Value>2500</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z9vg0e7ou384g1gdh6pbnct5mb9">
@@ -747,15 +747,6 @@
     <State>SC</State>
     <Value>2500</Value>
   </ConfigurationParameter_Ext>
-  <ConfigurationParameter_Ext public-id="zltgigtsn35us54fbq5ih353dk8">
-    <ConfigParameterType>AOP_RestrictedOptions</ConfigParameterType>
-    <ConfigurationFilter>HOHODW_Hurricane_Ded_HOE7500</ConfigurationFilter>
-    <EffectiveDate/>
-    <ExpirationDate/>
-    <ServerTier/>
-    <State>FL</State>
-    <Value>0.050, 0.100</Value>
-  </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z7ihqnv6fcb9h0ftam3v0fp6q0b">
     <ConfigParameterType>LimitMaxFactor</ConfigParameterType>
     <ConfigurationFilter>DP3_ExtDPDW_OtherStructuresLimit_HOE</ConfigurationFilter>
@@ -855,8 +846,17 @@
     <State>CA</State>
     <Value>50000</Value>
   </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="z9mhatfali5f2bucuai7h1udde9">
+    <ConfigParameterType>DerivedLimitPatternPair</ConfigParameterType>
+    <ConfigurationFilter>HO4HODW_Limit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State/>
+    <Value>HODW_PersonalPropertyLimit_HOE</Value>
+  </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zk5icpmi9tohq4bogb6cdcs45vb">
-    <ConfigParameterType>LimitMaxFactor</ConfigParameterType>
+    <ConfigParameterType>LimitMinFactor</ConfigParameterType>
     <ConfigurationFilter>HO4HODW_Limit_HOE</ConfigurationFilter>
     <EffectiveDate/>
     <ExpirationDate/>
@@ -1034,6 +1034,15 @@
     <ServerTier/>
     <State>CA</State>
     <Value>2500</Value>
+  </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="zb2goaob2lgg4d3flln7gaceoa8">
+    <ConfigParameterType>LimitMinFactor</ConfigParameterType>
+    <ConfigurationFilter>HOA_ExtHODW_LossOfUseDwelLimit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State>TX</State>
+    <Value>0.10</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zb4hsm5kg6hm0cuem3b8ri7qle8">
     <ConfigParameterType>KeyFactorGreaterLimit</ConfigParameterType>
@@ -1222,7 +1231,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State>TX</State>
-    <Value>0.050</Value>
+    <Value>0.050, -1.000</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z8ag2quohi34h430pmomofdamf9">
     <ConfigParameterType>LimitDefaultFactor</ConfigParameterType>
@@ -1330,7 +1339,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State/>
-    <Value>agentnotunaic,agentnotuicna,exposuremanagement</Value>
+    <Value>agentnotunaic,agentnotuicna,exposuremanagement, otherexplanation</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z4rhmaliliehfa627dqpfggq9eb">
     <ConfigParameterType>ShouldApplyInflationFactor</ConfigParameterType>
@@ -1393,7 +1402,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State>FL</State>
-    <Value>0.050, 0.100</Value>
+    <Value>-2.000, 0.050, 0.100</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zqog4p7pc8cek7k6p1j0gvcob09">
     <ConfigParameterType>RoundingFactor</ConfigParameterType>
@@ -1438,7 +1447,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State/>
-    <Value>consumerinfoaan,otherexplanation,consenttorate,proofalarm,claimdetails,sppinfo,priorinsurancenoloss,proofcondmajorsys,proofrepairs,proofreplacemajorsys,occupancyownership,inspectionincomplete</Value>
+    <Value>consumerinfoaan,otherexplanation,consenttorate,proofalarm,claimdetails,sppinfo,priorinsurancenoloss,proofcondmajorsys,proofrepairs,proofreplacemajorsys,occupancyownership,inspectionincomplete, otherexplanation</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zd0i8p242ga421lf6a4n93m98a9">
     <ConfigParameterType>CovTermRuntimeDefault</ConfigParameterType>
@@ -1519,7 +1528,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State>TX</State>
-    <Value>0.020, -1</Value>
+    <Value>0.020, -1.000</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z2dhiaduce2af09fjcejmrlc488">
     <ConfigParameterType>scheduleExposureMaxValue</ConfigParameterType>
@@ -1655,15 +1664,6 @@
     <ServerTier/>
     <State>CA</State>
     <Value>5000</Value>
-  </ConfigurationParameter_Ext>
-  <ConfigurationParameter_Ext public-id="z6diil26qq6vuctknt91i43oskb">
-    <ConfigParameterType>AOP_RestrictedOptions</ConfigParameterType>
-    <ConfigurationFilter>HOHODW_WindHail_Ded_HOE-11000</ConfigurationFilter>
-    <EffectiveDate/>
-    <ExpirationDate/>
-    <ServerTier/>
-    <State>TX</State>
-    <Value>1000.000, 0.010, 0.020, 0.050</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="ze2j67pco6mgoecag07re9qa7rb">
     <ConfigParameterType>AOP_RestrictedOptions</ConfigParameterType>
@@ -1852,7 +1852,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State>FL</State>
-    <Value>0.020, 0.050, 0.100</Value>
+    <Value>-2.000, 0.020, 0.050, 0.100</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z20g4e2ts98dr9ojephil5r4p2a">
     <ConfigParameterType>RenewalIssueLeadTime</ConfigParameterType>
@@ -2369,7 +2369,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State/>
-    <Value>1000, 5000</Value>
+    <Value>5000</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zpoimrtn2q7hodtrei55ges2vr8">
     <ConfigParameterType>DerivedLimitPatternPair</ConfigParameterType>
@@ -2719,7 +2719,7 @@
     <EffectiveDate/>
     <ExpirationDate/>
     <ServerTier/>
-    <State>HI</State>
+    <State/>
     <Value>50000</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zlhjiqah3vajm8u56e1pkoger5b">
@@ -2819,7 +2819,7 @@
     <ExpirationDate/>
     <ServerTier/>
     <State>FL</State>
-    <Value>500.000, 0.020</Value>
+    <Value>-2.000, 500.000, 0.020</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z59jsn0t97uhdfa1rpuj3666og8">
     <ConfigParameterType>RestrictedHurricaneDedutibleValues</ConfigParameterType>
@@ -2874,6 +2874,15 @@
     <ServerTier/>
     <State>TX</State>
     <Value>0.02</Value>
+  </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="zehh8hoajpukp18t16788g290ub">
+    <ConfigParameterType>DerivedLimitPatternPair</ConfigParameterType>
+    <ConfigurationFilter>HO6HODW_Limit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State/>
+    <Value>HODW_Dwelling_Limit_HOE</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="znqh0f9qhl6u5fr707mn5ojs1p9">
     <ConfigParameterType>PolicyTypesToValidateNamedStormPercentage</ConfigParameterType>
@@ -3243,7 +3252,7 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <EffectiveDate/>
     <ExpirationDate/>
     <ServerTier/>
-    <State>CA</State>
+    <State/>
     <Value>50000</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zspj0c38gc3ip31dbdttrgn67t9">
@@ -3561,6 +3570,15 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <State>HI</State>
     <Value>50000</Value>
   </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="zq4jeim5oh9ou07n3m7lsg05qga">
+    <ConfigParameterType>LimitMinFactor</ConfigParameterType>
+    <ConfigurationFilter>HO3HODW_LossOfUseDwelLimit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State/>
+    <Value>0.20</Value>
+  </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zr0i8cb14pgja136v6jp5tg1ui8">
     <ConfigParameterType>PolicyTypesToValidateNamedStormPercentage</ConfigParameterType>
     <ConfigurationFilter/>
@@ -3705,6 +3723,15 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <State>FL</State>
     <Value>1000</Value>
   </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="zkmhgd94gpb1a0ejvkj76181re8">
+    <ConfigParameterType>LimitMaxFactor</ConfigParameterType>
+    <ConfigurationFilter>HOA_ExtHODW_LossOfUseDwelLimit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State>TX</State>
+    <Value>0.10</Value>
+  </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zf4jkqtod1jf273taf3m8knv6ia">
     <ConfigParameterType>ShouldLimitDeductibleOptionsForAOP</ConfigParameterType>
     <ConfigurationFilter>HOHODW_WindHail_Ded_HOE</ConfigurationFilter>
@@ -3784,7 +3811,7 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <ExpirationDate/>
     <ServerTier/>
     <State>FL</State>
-    <Value>0.020, 0.050, 0.100</Value>
+    <Value>-2.000, 0.020, 0.050, 0.100</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="z5thmbi1is7sb0b5oi7mckmb0ga">
     <ConfigParameterType>scheduleExposureMaxValue</ConfigParameterType>
@@ -4098,7 +4125,7 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <EffectiveDate/>
     <ExpirationDate/>
     <ServerTier/>
-    <State>CA</State>
+    <State/>
     <Value>10000</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zkajodl4jgndg55fj2j01j5cqna">
@@ -4317,6 +4344,15 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <State>HI</State>
     <Value>0.20</Value>
   </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="z6qjigqh1vh9f6ns86v4qaf4859">
+    <ConfigParameterType>LimitMaxFactor</ConfigParameterType>
+    <ConfigurationFilter>HO4HODW_Limit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State/>
+    <Value>0.50</Value>
+  </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zf3h82ljom7rt197vfvgbqcvu3b">
     <ConfigParameterType>LimitMaxFactor</ConfigParameterType>
     <ConfigurationFilter>LPP_ExtDPDW_OtherStructuresLimit_HOE</ConfigurationFilter>
@@ -4398,6 +4434,15 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <State/>
     <Value>1000</Value>
   </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="z9ojoh7cf79uk591m5gocfbcgq9">
+    <ConfigParameterType>AOP_RestrictedOptions</ConfigParameterType>
+    <ConfigurationFilter>DPHODW_Hurricane_Ded_HOE1000</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State>FL</State>
+    <Value>500.000, 0.020, 0.050, 0.100</Value>
+  </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zalia6fen6vv86g1i5s1ckj8mib">
     <ConfigParameterType>LimitDefaultFactor</ConfigParameterType>
     <ConfigurationFilter>TDP1_ExtDPDW_PersonalPropertyLimit_HOE</ConfigurationFilter>
@@ -4469,6 +4514,15 @@ BP7HoursWaitingPeriod_EXT,IdentityRecovCovLimit_EXT,IdentityRecovCovDeductible_E
     <ServerTier/>
     <State>SC</State>
     <Value>50000</Value>
+  </ConfigurationParameter_Ext>
+  <ConfigurationParameter_Ext public-id="zcnjodkkqk9lq4havs4st75sqka">
+    <ConfigParameterType>LimitMaxFactor</ConfigParameterType>
+    <ConfigurationFilter>HO3HODW_LossOfUseDwelLimit_HOE</ConfigurationFilter>
+    <EffectiveDate/>
+    <ExpirationDate/>
+    <ServerTier/>
+    <State/>
+    <Value>0.20</Value>
   </ConfigurationParameter_Ext>
   <ConfigurationParameter_Ext public-id="zpjjie1qlc6m120bvv20pqrnkm8">
     <ConfigParameterType>ExecutiveEndorsementSelectedCoveragePatterns</ConfigParameterType>

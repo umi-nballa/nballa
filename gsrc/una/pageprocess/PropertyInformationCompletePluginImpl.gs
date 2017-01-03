@@ -803,7 +803,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.ProtectionClass.size() > 1) {
           //TODO
         } else {
-          cpBuilding.DwellingProtectionClassCode = (res.ProtectionClass[0].Value) as String
+          cpBuilding.FireProtectionClassCode = (res.ProtectionClass[0].Value) as String
         }
       }
     } catch (exp: Exception) {

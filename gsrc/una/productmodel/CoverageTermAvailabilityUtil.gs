@@ -186,6 +186,9 @@ class CoverageTermAvailabilityUtil {
       case "DPLI_Premise_Liability_HOE_Ext":
         result = isDwellingFirePremiseLiabilityAvailable(coverable as HomeownersLine_HOE)
         break
+      case "HODW_Retrofitted_HOE":
+        result = isRetrofittedCovTermAvailable(coverable as Dwelling_HOE)
+        break
       default:
         break
     }
@@ -211,6 +214,10 @@ class CoverageTermAvailabilityUtil {
     }
 
     return result
+  }
+
+  public static function getLateWildfireClaimReportingExistence(dwelling : Dwelling_HOE) : ExistenceType{
+    return (dwelling.HODW_DifferenceConditions_HOE_ExtExists) ? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE
   }
 
   private static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
@@ -382,7 +389,24 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isDwellingFirePremiseLiabilityAvailable(line : HomeownersLine_HOE) : boolean{
-    return line.BaseState == TC_TX and AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+    var result = true
+
+    if(line.BaseState == TC_TX){
+      //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+    }
+
+    return result
+  }
+
+  private static function isRetrofittedCovTermAvailable(dwelling : Dwelling_HOE) : boolean{
+    var result = false
+    var yearBuilt = dwelling.OverrideYearbuilt_Ext ? dwelling.YearBuiltOverridden_Ext : dwelling.YearBuilt
+    var lowerBound = 1937
+    var upperBound = 1954
+
+    result = yearBuilt >= lowerBound and yearBuilt <= upperBound
+
+    return result
   }
 
   private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
@@ -523,8 +547,8 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL){
-      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000
-          and dwelling.HOPolicyType == TC_HO6 or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT)
+      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd
+          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT))
     }
 
     return result
@@ -642,8 +666,8 @@ class CoverageTermAvailabilityUtil {
     +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
 
 
-    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code
-    || building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+    //|| building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
     {
       _logger.info("returning true")
       return true

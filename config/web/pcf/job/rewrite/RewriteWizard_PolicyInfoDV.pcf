@@ -43,8 +43,8 @@
         editable="true"
         id="ChangePolicyNumber"
         label="displaykey.Web.RewriteWizard.PolicyInfo.ChangePolicyNumber"
-        value="rewrite.ChangePolicyNumber"
-        visible="!(policyPeriod.Job typeis Rewrite)"/>
+        validationExpression="(policyPeriod.Job typeis Rewrite &amp;&amp; rewrite.ChangePolicyNumber) ? displaykey.Web.RewriteInfo.Error.PolicyNumberChange : null"
+        value="rewrite.ChangePolicyNumber"/>
       <InputDivider/>
       <Label
         label="displaykey.Web.Policy.UWCompanies.Name"/>

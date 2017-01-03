@@ -29,13 +29,18 @@ class BP7BuildingDependencies extends AbstractFieldDependency<BP7Building> {
 
     building.TotalCondoBldgSquareFo = totalCondoBldgSquareFo()
 
-    if (building.BldgCodeEffGrade != bldgCodeEffGrade()) {
+
+    //SKashyap - Need to refactor the bp7_bldg_code_eff_grade.xml to add valid values - this is causing validation errors.
+    /*if (building.BldgCodeEffGrade != bldgCodeEffGrade()) {
       addDependentValueError(
         valContext, 
         BP7Building#BldgCodeEffGrade.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Building.EffectivenessGrade, 
         building.BldgCodeEffGrade.DisplayName)
-    }
+    } */
+
+
+
     //Uim-svallabhapurapu : BOP story - PctOwnerOccupied field has been unavailable so commenting below validation
     /*if (building.PctOwnerOccupied != percentageOwnerOccupied()) {
       addDependentValueError(

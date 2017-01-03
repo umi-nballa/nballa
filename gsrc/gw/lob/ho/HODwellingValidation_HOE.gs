@@ -346,10 +346,11 @@ class HODwellingValidation_HOE extends PCValidationBase {
   }
 
   private function addErrorOrWarning( message: String){
-   // if (Context.isAtLeast("quotable")) {
+  //  if (Context.isAtLeast("quotable")) {
    //   Result.addFieldError(HODwelling, fieldName, "quotable", message, pageName)
+   //   Result.addError(HODwelling,"quotable", message)
    // }
-   /// else {
+   // else {
       Result.addWarning(HODwelling,  "default", message)
    // }
   }

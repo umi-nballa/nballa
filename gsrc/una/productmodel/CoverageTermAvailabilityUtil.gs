@@ -4,10 +4,12 @@ uses gw.util.Pair
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
-uses java.lang.StringBuilder
 uses java.util.HashMap
 uses gw.api.productmodel.CovTermOpt
 uses una.logging.UnaLoggerCategory
+uses org.apache.commons.lang3.StringUtils
+uses java.lang.Double
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,12 +19,24 @@ uses una.logging.UnaLoggerCategory
  * To change this template use File | Settings | File Templates.
  */
 class CoverageTermAvailabilityUtil {
-
   final static var _logger = UnaLoggerCategory.PRODUCT_MODEL
 
   private static final var HO_FILTER = "HO"
   private static final var DP_FILTER = "DP"
   private static final var CONDO_RENT_FILTER = "CONDO"
+  private static final var AOP = "AOP"
+  private static final var COV_LIMIT = "COVLIMIT"
+  private static final var SC_NAMED_STORM_RESTRICTION_MAP : Map<String, Double> = {
+    StringUtils.join({"HO3", AOP + "2500", "0.01"}, ",") -> 250000,
+    StringUtils.join({"HO3", AOP + "2500", "0.02"}, ",") -> 125000,
+    StringUtils.join({"HO3", AOP + "5000", "0.01"}, ",") -> 500000,
+    StringUtils.join({"HO3", AOP + "5000", "0.02"}, ",") -> 250000,
+    StringUtils.join({"HO4", AOP + "1000", "0.02"}, ",") -> 50000,
+    StringUtils.join({"HO6", AOP + "2500", "0.02"}, ",") -> 125000,
+    StringUtils.join({"HO6", AOP + "5000", "0.02"}, ",") -> 250000,
+    StringUtils.join({"HO6", AOP + "5000", "0.05"}, ",") -> 100000,
+    StringUtils.join({"HO6", AOP + "5000", "0.10"}, ",") ->50000
+  }
 
   @Param("option", "The CovTermOpt to evaluate availability for.")
   @Param("covTerm", "The CovTerm that the option is associated with.")
@@ -92,19 +106,12 @@ class CoverageTermAvailabilityUtil {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm?.Value = cLine?.CPOrdinanceOrLawType.Code
       }
 
-      _logger.info("hasnoavailableoptions  b " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       {
-        _logger.info("1 " + cBuilding)
-        _logger.info("2 " + cBuilding?.CPOrdinanceorLaw_EXT)
-        _logger.info("3 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm)
-        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.AvailableOptions)
-        _logger.info("4 " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue)
 
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovB_ExtTerm?.OptionValue = cLine?.CPCoverageB?.Code
       }
 
-      _logger.info("hasnoavailableoptions c "+ cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       if(cLine.CPCoverageC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm!=null)//!cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.hasNoAvailableOptionsOrNotApplicableOptionOnly())
       {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovC_ExtTerm?.OptionValue = cLine?.CPCoverageC?.Code
@@ -176,6 +183,12 @@ class CoverageTermAvailabilityUtil {
       case "PublicRelationsSvcs_EXT":
         result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "DPLI_Premise_Liability_HOE_Ext":
+        result = isDwellingFirePremiseLiabilityAvailable(coverable as HomeownersLine_HOE)
+        break
+      case "HODW_Retrofitted_HOE":
+        result = isRetrofittedCovTermAvailable(coverable as Dwelling_HOE)
+        break
       default:
         break
     }
@@ -184,11 +197,9 @@ class CoverageTermAvailabilityUtil {
 
   @Param("homeOwnersLine", "The homeowners line instance to be evaluated.")
   @Returns("The existence type evaluated for the given homeowners instance.")
-  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : HomeownersLine_HOE) : ExistenceType{
+  static function getFireDwellingPremiseLiabilityExistence(homeOwnersLine : entity.HomeownersLine_HOE) : ExistenceType{
     var result : ExistenceType
     var contact = homeOwnersLine.Branch.PrimaryNamedInsured.ContactDenorm
-    //    var isSuggestedForCorporation  //TODO tlv - filter for organization type  - this is not available, still.  question is will it ever be - BA will have to answer
-
     switch(homeOwnersLine.BaseState){
       case TC_FL:
       case TC_HI:
@@ -203,6 +214,10 @@ class CoverageTermAvailabilityUtil {
     }
 
     return result
+  }
+
+  public static function getLateWildfireClaimReportingExistence(dwelling : Dwelling_HOE) : ExistenceType{
+    return (dwelling.HODW_DifferenceConditions_HOE_ExtExists) ? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE
   }
 
   private static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
@@ -226,8 +241,15 @@ class CoverageTermAvailabilityUtil {
 
   private static function isAggLimitOptionAvailable (option: gw.api.productmodel.CovTermOpt, _glline:GLLine):boolean
   {
-     if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+     //if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==100000.0000 && (option?.Value.doubleValue()==100000.0000 || option?.Value.doubleValue()==200000.0000))
        return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==300000.0000 && (option?.Value.doubleValue()==300000.0000 || option?.Value.doubleValue()==600000.0000))
+      return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==500000.0000 && (option?.Value.doubleValue()==500000.0000 || option?.Value.doubleValue()==1000000.0000))
+      return true
+    if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==1000000.0000 && (option?.Value.doubleValue()==2000000.0000 || option?.Value.doubleValue()==1000000.0000))
+      return true
     else
       return false
   }
@@ -338,7 +360,7 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isHurricanePercentageAvailable(dwelling : Dwelling_HOE) : boolean{
-    return dwelling.HOLine.BaseState == TC_FL and !dwelling.WHurricaneHailExclusion_Ext
+    return dwelling.HOLine.BaseState != TC_FL or !dwelling.WHurricaneHailExclusion_Ext
   }
 
   private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -364,6 +386,27 @@ class CoverageTermAvailabilityUtil {
       return true
     }
     return false
+  }
+
+  private static function isDwellingFirePremiseLiabilityAvailable(line : HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(line.BaseState == TC_TX){
+      //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+    }
+
+    return result
+  }
+
+  private static function isRetrofittedCovTermAvailable(dwelling : Dwelling_HOE) : boolean{
+    var result = false
+    var yearBuilt = dwelling.OverrideYearbuilt_Ext ? dwelling.YearBuiltOverridden_Ext : dwelling.YearBuilt
+    var lowerBound = 1937
+    var upperBound = 1954
+
+    result = yearBuilt >= lowerBound and yearBuilt <= upperBound
+
+    return result
   }
 
   private static function isOptionAvailableForNumberOfMonths(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
@@ -393,21 +436,47 @@ class CoverageTermAvailabilityUtil {
   }
   private static function isOptionAvailableForSelectedAOPDeductible(option : CovTermOpt, dwelling : Dwelling_HOE) : boolean{
     var result = true
-    var filterPrefix = getAOPFilterPrefix(dwelling)
+    var covTermPatternCode = option.CovTermPattern.CodeIdentifier
+    var filterPrefix = getAOPFilterPrefix(dwelling) +  covTermPatternCode
     var state = dwelling.HOLine.BaseState
     var configType = ConfigParameterType_Ext.TC_AOP_RESTRICTEDOPTIONS
+    var namedStormValue = dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
+    var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
+    var nonHurricaneWindValue = dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value
 
-    if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix + option.CovTermPattern.CodeIdentifier)){
-      var allPerilsValue = dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value.setScale(3)
+    if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix)){
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
+      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + namedStormValue + allPerilsValue)
+      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + nonHurricaneWindValue + allPerilsValue)
       var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
 
-      if(valueRestrictedOptions != null){
+      if(namedStormRestrictedOptions != null){
+        result = namedStormRestrictedOptions.contains(optionValue)
+      }else if(nonHurricaneWindRestrictedOptions != null){
+        result = nonHurricaneWindRestrictedOptions.contains(optionValue)
+      }else if(valueRestrictedOptions != null){
         result = valueRestrictedOptions.contains(optionValue)
       }else if(defaultRestrictedOptions != null){
         result = defaultRestrictedOptions.contains(optionValue)
+      }
+    }
+
+    //further filter based on "exceptions" rules
+    if(state == TC_SC and covTermPatternCode == "HODW_NamedStrom_Ded_HOE_Ext"){
+      var covLimitValue : BigDecimal
+
+      if(dwelling.HOPolicyType == TC_HO4 or dwelling.HOPolicyType == TC_HO6){
+        covLimitValue = dwelling.PersonalPropertyLimitCovTerm.Value
+      }else if(dwelling.HOPolicyType == TC_HO3){
+        covLimitValue = dwelling.DwellingLimitCovTerm.Value
+      }
+
+      var restrictionThreshold = SC_NAMED_STORM_RESTRICTION_MAP.get(StringUtils.join({dwelling.HOPolicyType.Code, AOP + allPerilsValue, option.Value}, ","))
+
+      if(result and restrictionThreshold != null and covLimitValue != null){
+        result = covLimitValue >= restrictionThreshold
       }
     }
 
@@ -478,8 +547,8 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL){
-      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000
-          and dwelling.HOPolicyType == TC_HO6 or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT)
+      result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd
+          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT))
     }
 
     return result
@@ -487,22 +556,14 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovALimitAvailable(building : CPBuilding):boolean
   {
-
-    _logger.info("Entered isOrdinanceCovALimitAvailable "+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-    + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
       {
-        _logger.info("returning true")
       return true
       }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -510,17 +571,11 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovBLimitAvailable(building : CPBuilding):boolean
   {
-    _logger.info("Entered isOrdinanceCovBLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
-
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT)
     {
-      _logger.info("returning true")
       return true
     }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -529,19 +584,13 @@ class CoverageTermAvailabilityUtil {
 
   private static function isOrdinanceCovCLimitAvailable(building : CPBuilding):boolean
   {
-    _logger.info("Entered isOrdinanceCovCLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVAONLY_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code
-        + ":" + typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
     if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
     {
-      _logger.info("returning true")
       return true
     }
   {
-    _logger.info("returning false")
     return false
   }
 
@@ -550,15 +599,11 @@ class CoverageTermAvailabilityUtil {
 
     private static function isOrdinanceCovBCCombinedLimitAvailable(building : CPBuilding):boolean
     {
-      _logger.info("Entered isOrdinanceCovBCCombinedLimitAvailable"+ building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value+":"+typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-
       if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
       {
-        _logger.info("returning true")
         return true
       }
     {
-      _logger.info("returning false")
       return false
     }
          }
@@ -621,8 +666,8 @@ class CoverageTermAvailabilityUtil {
     +":"+typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
 
 
-    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code
-    || building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
+    if(building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code)
+    //|| building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
     {
       _logger.info("returning true")
       return true

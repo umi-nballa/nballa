@@ -693,7 +693,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.WindPool.size() > 1) {
           //TODO
         } else {
-            building.Location.WindpoolEligibility_Ext = (res.WindPool[0].Value) as Boolean
+           // building.Location.WindpoolEligibility_Ext = (res.WindPool[0].Value) as Boolean
         }
       }
     } catch (exp: Exception) {
@@ -834,7 +834,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.ProtectionClass.size() > 1) {
           //TODO
         } else {
-          cpBuilding.DwellingProtectionClassCode = (res.ProtectionClass[0].Value) as String
+          cpBuilding.FireProtectionClassCode = (res.ProtectionClass[0].Value) as String
         }
       }
     } catch (exp: Exception) {

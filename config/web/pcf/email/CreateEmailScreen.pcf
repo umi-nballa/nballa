@@ -48,6 +48,22 @@
     <Variable
       initialValue="symbolTable.get(&quot;account&quot;) as entity.Account"
       name="account"/>
+    <Variable
+      initialValue="symbolTable.get(&quot;policyperiod&quot;) as entity.PolicyPeriod"
+      name="period"
+      type="PolicyPeriod"/>
+    <Variable
+      initialValue="period?.Policy"
+      name="policy"
+      type="Policy"/>
+    <Variable
+      initialValue="policy?.newNote()"
+      name="note"
+      type="Note"/>
+    <Variable
+      initialValue="symbolTable.get(&quot;job&quot;) as entity.Job"
+      name="job"
+      type="Job"/>
     <Toolbar>
       <ToolbarButton
         action="gw.web.email.CreateEmailsScreenUIHelper.sendEmailToRecipients(newEmail, language, saveAsDocument, documentToSave, docContainer, symbolTable, emailTemplate, CurrentLocation)"
@@ -66,7 +82,7 @@
         action="PickEmailTemplatePopup.push(new gw.api.email.EmailTemplateSearchCriteria( symbolTable.Keys as String[]))"
         id="EmailWorksheet_UseTemplateButton"
         label="displaykey.Web.Email.UseTemplate"
-        onPick="newEmail.useEmailTemplate( PickedValue, symbolTable ); language = gw.api.util.LocaleUtil.toLanguageType(PickedValue.Locale)"
+        onPick="newEmail.useEmailTemplate( PickedValue, symbolTable ); language = gw.api.util.LocaleUtil.toLanguageType(PickedValue.Locale);copyEmailBodyToNoteBody()"
         shortcut="P"
         visible="noDefaultTemplate"/>
     </Toolbar>
@@ -133,7 +149,9 @@
           editable="true"
           id="SenderEmail"
           label="displaykey.Web.Email.SenderEmail"
-          value="newEmail.Sender.EmailAddress"/>
+          value="newEmail.Sender.EmailAddress">
+          <PostOnChange/>
+        </TextInput>
         <TextInput
           editable="true"
           id="Subject"
@@ -148,7 +166,10 @@
           numRows="10"
           requestValidationExpression="VALUE == null ? displaykey.Web.Email.Error.BodyRequired : null"
           required="true"
-          value="newEmail.Body"/>
+          value="newEmail.Body">
+          <PostOnChange
+            onChange="copyEmailBodyToNoteBody()"/>
+        </TextAreaInput>
         <ListViewInput
           editable="true"
           label="displaykey.Web.Email.AttachedDocuments"
@@ -184,6 +205,69 @@
           </ListViewPanel>
         </ListViewInput>
       </InputColumn>
+      <InputColumn>
+        <RangeInput
+          editable="true"
+          id="rangetopic"
+          label="displaykey.Web.NewNote.Topic"
+          required="true"
+          value="note.Topic"
+          valueRange="policy != null ? typekey.NoteTopicType.TF_POLICYFILTER_EXT.TypeKeys : typekey.NoteTopicType.TF_ACCOUNTFILTER_EXT.TypeKeys"
+          visible="policy != null"/>
+        <Input
+          editable="true"
+          id="Subjct"
+          label="displaykey.Web.NewNote.Subject"
+          value="note.Subject"
+          visible="policy != null"/>
+        <RangeInput
+          editable="policy != null"
+          id="Related"
+          label="displaykey.Web.NewNote.RelatedTo"
+          optionLabel="note?.getLevelDisplayString(VALUE)"
+          required="true"
+          sortValueRange="false"
+          value="note.Level"
+          valueRange="note?.generateLevels(account, policy, job)"
+          visible=" policy != null"/>
+        <Input
+          editable="true"
+          id="sessionId"
+          label="displaykey.Web.Note.NoteTemplate.SessionId"
+          value="note.SessionId_Ext"
+          visible="policy != null"/>
+        <Input
+          editable="true"
+          id="caller"
+          label="displaykey.Web.Note.NoteTemplate.Caller"
+          value="note.Caller_Ext"
+          visible="policy != null"/>
+        <TypeKeyInput
+          editable="true"
+          id="SecurityLevel"
+          label="displaykey.Web.NewNote.SecurityLevel"
+          required="true"
+          value="note.SecurityType"
+          visible="policy != null"/>
+        <TextAreaInput
+          editable="true"
+          id="Text"
+          label="displaykey.Web.NewNote.Text"
+          numCols="60"
+          numRows="15"
+          required="true"
+          value="note.Body"
+          visible="policy != null">
+          <PostOnChange/>
+        </TextAreaInput>
+      </InputColumn>
     </DetailViewPanel>
+    <Code><![CDATA[//copy content to note body 
+function copyEmailBodyToNoteBody(){
+  if(policy != null and note != null){
+    note.SecurityType = typekey.NoteSecurityType.TC_INTERNALONLY  
+    note?.Body = newEmail?.Body
+  }
+}]]></Code>
   </Screen>
 </PCF>

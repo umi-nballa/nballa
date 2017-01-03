@@ -23,7 +23,7 @@ class TunaAppResponseSessionUtil {
         return null
       }
       else {
-        var tunaAppObj = TunaAppResponseSession.UserSessionVar.get(period.Job.JobNumber)
+        var tunaAppObj = TunaAppResponseSession?.UserSessionVar?.get(period?.Job?.JobNumber)
         return tunaAppObj
       }
     }

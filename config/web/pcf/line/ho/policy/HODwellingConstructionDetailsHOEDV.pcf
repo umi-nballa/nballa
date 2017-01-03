@@ -24,7 +24,8 @@
       <InputSet
         id="NumberOfStories_Ext">
         <RangeInput
-          editable="!dwelling.OverrideStoriesNumber_Ext"
+          available="!dwelling.OverrideStoriesNumber_Ext"
+          editable="true//!dwelling.OverrideStoriesNumber_Ext"
           id="NumberOfStoriesTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStories_Ext"
           value="dwelling.StoriesNumber"
@@ -57,7 +58,8 @@
         id="ConstructionType_Ext"
         visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="!dwelling.OverrideConstructionType_Ext"
+          available="!dwelling.OverrideConstructionType_Ext"
+          editable="true//!dwelling.OverrideConstructionType_Ext"
           id="ConstructionTypeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
           value="dwelling.ConstructionType"
@@ -85,16 +87,38 @@
       </InputSet>
       <Input
         editable="true"
+        id="ConstTypeo_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeIfOther_Ext"
+        value="dwelling.ConstructionTypeOther"
+        visible="dwelling.ConstructionType.Code==&quot;Other&quot;"/>
+      <Input
+        editable="true"
         id="ConstType1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
         value="dwelling.ConstructionTypeL1_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <PostOnChange/>
+      </Input>
+      <Input
+        editable="true"
+        id="ConstType1o_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1O_Ext"
+        value="dwelling.ConstructionTypeLevel1Other"
+        visible="dwelling.ConstructionTypeL1_Ext==typekey.ConstructionTypeL1_Ext.TC_OTHER"/>
       <Input
         editable="true"
         id="ConstType2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2_Ext"
         value="dwelling.ConstructionTypeL2_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <PostOnChange/>
+      </Input>
+      <Input
+        editable="true"
+        id="ConstType2o_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2O_Ext"
+        value="dwelling.ConstructionTypeLevel2Other"
+        visible="dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER"/>
       <InputDivider/>
       <InputSet
         id="ExteriorWFval_Ext"
@@ -130,16 +154,34 @@
       </InputSet>
       <Input
         editable="true"
+        id="ExtWallfinishOther_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther_Ext"
+        value="dwelling.ExteriorWallFinishOther"
+        visible="dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot;"/>
+      <Input
+        editable="true"
         id="ExteriorWFva1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
         value="dwelling.ExteriorWallFinishL1_Ext"
         visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
       <Input
         editable="true"
+        id="ExtWallfinishOther1_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther1_Ext"
+        value="dwelling.ExteriorWallFinishLevel1Other"
+        visible="dwelling.ExteriorWallFinishL1_Ext.Code==&quot;Other&quot;"/>
+      <Input
+        editable="true"
         id="ExteriorWFval2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
         value="dwelling.ExteriorWallFinishL2_Ext"
         visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+      <Input
+        editable="true"
+        id="ExtWallfinishOther2_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther2_Ext"
+        value="dwelling.ExteriorWallFinishLevel2Other"
+        visible="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"/>
       <InputDivider/>
       <InputSet
         id="TotalSqFtVal_Ext">
@@ -243,16 +285,18 @@
         editable="true"
         id="FoundationMaterial"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationMaterial"
-        required="false"
-        value="dwelling.FoundationMaterial_Ext">
+        required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_SC &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
+        value="dwelling.FoundationMaterial_Ext"
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_SC &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)">
         <PostOnChange/>
       </TypeKeyInput>
       <TypeKeyInput
         editable="true"
         id="FoundationHeight"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationHeight"
-        required="false"
-        value="dwelling.FoundationHeight_Ext">
+        required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
+        value="dwelling.FoundationHeight_Ext"
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)">
         <PostOnChange/>
       </TypeKeyInput>
       <!-- <Input
@@ -289,30 +333,47 @@
       <Label
         label="&quot;Heat Source - Select all that apply&quot;"/>
       <CheckBoxInput
+        editable="true"
         id="heat1"
         label="&quot;Central Electric&quot;"
-        value="dwelling.HeatSrcCentralElectric"/>
+        value="dwelling.HeatSrcCentralElectric">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat2"
         label="&quot;Central Natural gas&quot;"
-        value="dwelling.HeatSrcCentralNaturalGas"/>
+        value="dwelling.HeatSrcCentralNaturalGas">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat3"
         label="&quot;Central Propane&quot;"
-        value="dwelling.HeatSrcCentralPropane"/>
+        value="dwelling.HeatSrcCentralPropane">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat4"
         label="&quot;Central - Other&quot;"
-        value="dwelling.HeatSrcCentralOther"/>
+        value="dwelling.HeatSrcCentralOther">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat5"
         label="&quot;Fireplace&quot;"
         value="dwelling.HeatSrcFireplace"/>
       <CheckBoxInput
+        editable="true"
         id="heat6"
         label="&quot;Wood Burning Stove&quot;"
-        value="dwelling.HeatSrcWoodBurningStove"/>
+        value="dwelling.HeatSrcWoodBurningStove">
+        <PostOnChange/>
+      </CheckBoxInput>
       <CheckBoxInput
+        editable="true"
         id="heat7"
         label="&quot;Portable - All fuel types&quot;"
         value="dwelling.HeatSrcPortableAllFuelTypes"/>
@@ -323,6 +384,24 @@
         required="true"
         value="dwelling.PrimaryHeatingFuelTankLocation"
         visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
+      <BooleanRadioInput
+        editable="true"
+        id="Installedlicensed"
+        label="displaykey.Web.Homeowners.DwellingConstruction.InstalledLicensed"
+        value="dwelling.HeatSrcInstalledbyLicIns"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
+      <BooleanRadioInput
+        editable="true"
+        id="ULListedstove"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ULListedStove"
+        value="dwelling.ULListedstoveandchimneyflue"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
+      <BooleanRadioInput
+        editable="true"
+        id="Sittingonnoncombbase"
+        label="displaykey.Web.Homeowners.DwellingConstruction.Sittingonnoncombase"
+        value="dwelling.Sittingonnoncombustiblebase"
+        visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
       <!-- <TypeKeyInput
         actionAvailable="false"
         editable="true"
@@ -467,6 +546,7 @@
       <InputSet
         id="RoofingMaterial_Ext">
         <RangeInput
+          available="!dwelling.OverrideRoofType_Ext"
           editable="!dwelling.OverrideRoofType_Ext"
           id="RoofingMaterialTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterial_Ext"
@@ -504,6 +584,7 @@
       <InputSet
         id="RoofingShape_Ext">
         <RangeInput
+          available="!dwelling.OverrideRoofShape_Ext"
           editable="!dwelling.OverrideRoofShape_Ext"
           id="RoofShapeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofShape_Ext"

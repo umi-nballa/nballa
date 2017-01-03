@@ -1,7 +1,5 @@
 package una.pageprocess.coverages
 
-uses java.lang.IllegalArgumentException
-
 
 /**
  * Created with IntelliJ IDEA.

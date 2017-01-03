@@ -180,12 +180,24 @@ If Roof Covering does not = Reinforced Concrete then no default response.
     return true
   }
 
-  public static function setYearBasedDefaults(bldg:CPBuilding):boolean
+    public static function setWindSpeedDefaults(bldg:CPBuilding):boolean
+    {
+      print("guswind is " + bldg.guswind +" checking if 120 "+ bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 + " checking if100 " + bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100
+      + " checking if 110 " + bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110 + " ::: ")
+
+      if(bldg.Building.YearBuilt>=2002 && bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120)
+        bldg.wbdr="Yes"
+      if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))
+        bldg.wbdr="No"
+      return true
+    }
+
+      public static function setYearBasedDefaults(bldg:CPBuilding):boolean
   {
 
     if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
       bldg.wbdr="Yes"
-    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)
+    if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))
       bldg.wbdr="No"
 
 
@@ -342,7 +354,7 @@ Default response to No if Gust Wind Speed of Design = 100 OR = 110
      */
     if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
       bldg.wbdr="Yes"
-    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)//110)
+    if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))//110))
       bldg.wbdr="No"
 
 

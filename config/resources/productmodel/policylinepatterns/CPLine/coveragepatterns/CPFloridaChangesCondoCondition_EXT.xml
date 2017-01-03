@@ -10,9 +10,10 @@
   priority="300"
   public-id="CPFloridaChangesCondoCondition_EXT"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[      if(CommercialPropertyLine.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
-        return true
-      else
-       return false]]></AvailabilityScript>
+  <AvailabilityScript><![CDATA[if(CommercialPropertyLine.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+ return true
+else
+ return false]]></AvailabilityScript>
+  <!--ExistenceScript><![CDATA[//return una.productmodel.CoveragesUtil.getExistence("CPFloridaChangesCondoCondition_EXT", CommercialPropertyLine)]]></ExistenceScript-->
   <CovTerms/>
 </ConditionPattern>

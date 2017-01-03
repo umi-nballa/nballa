@@ -31,6 +31,12 @@
     <Variable
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
       name="propertyInformationCompletePluginImpl"/>
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(location.Branch)"
+      name="tunaAppResponse"/>
+    <Variable
+      initialValue="gw.lob.bp7.location.BP7LocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,location,building)"
+      name="setTunaFieldsMatchLevel"/>
     <Card
       id="GeneralInfoCard"
       title="displaykey.Web.Policy.LocationContainer.Location.Building.Details">
@@ -161,14 +167,95 @@
                   label="displaykey.Web.Building.BuildingSqFootage"
                   required="true"
                   value="building.BuildingSqFootage_Ext"/>
-                <RangeInput
+                <!-- <RangeInput
                   editable="gw.lob.bp7.utils.BP7UIDisplayUtil.rangeInputEditable(building.BldgCodeEffGrade, building.BldgCodeEffGradeValues)"
                   id="EffectivenessGrade"
                   label="displaykey.Web.Policy.BP7.Building.EffectivenessGrade"
                   optionLabel="VALUE.Description"
                   sortValueRange="false"
                   value="building.BldgCodeEffGrade"
-                  valueRange="building.BldgCodeEffGradeValues.sortBy(\ grade -&gt; grade.Priority)"/>
+                  valueRange="building.BldgCodeEffGradeValues.sortBy(\ grade -&gt; grade.Priority)"/> -->
+                <InputDivider/>
+                <InputSet
+                  id="bceg_Ext">
+                  <RangeInput
+                    available="!building.OverrideBCEG_Ext"
+                    editable="!building.OverrideBCEG_Ext"
+                    id="BCEGTunaReturned_Ext"
+                    label="displaykey.Web.BOP.BP7Location.BCEGTunaReturned_Ext"
+                    value="building.BldgCodeEffGrade"
+                    valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)"/>
+                  <Input
+                    id="BCEGMatchLevel_Ext"
+                    label="displaykey.Web.BOP.BP7Location.BCEGMatchlevel_Ext"
+                    value="building.BCEGMatchLevel_Ext"/>
+                  <BooleanRadioInput
+                    editable="true"
+                    id="OverRideTunaBCEG_Ext"
+                    label="displaykey.Web.BOP.BP7Location.BCEGOverride_Ext"
+                    value="building.OverrideBCEG_Ext">
+                    <PostOnChange
+                      target="bceg_Ext"/>
+                  </BooleanRadioInput>
+                  <Input
+                    available="building.OverrideBCEG_Ext"
+                    editable="true"
+                    id="BCEGUserEntered_Ext"
+                    label="displaykey.Web.BOP.BP7Location.BCEGUserEntered_Ext"
+                    required="building.OverrideBCEG_Ext"
+                    value="building.BCEGOverridden_Ext"
+                    visible="building.OverrideBCEG_Ext"/>
+                </InputSet>
+                <InputDivider/>
+                <TextInput
+                  id="respondingFire"
+                  label="displaykey.Web.Location.RespondingFireDepartment"
+                  value="location.FireDepartment_Ext"/>
+                <TypeKeyInput
+                  editable="true"
+                  id="FeetToHydrant"
+                  label="displaykey.Web.Policy.BP7.Location.FeetToHydrant "
+                  required="true"
+                  value="location.FeetToHydrant"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="WindpoolEligibility"
+                  label="displaykey.Web.Policy.BP7.Location.WindPoolEligibility"
+                  required="true"
+                  value="building.WindpoolEligibility_Ext"/>
+                <InputDivider/>
+                <InputSet
+                  id="Windpoolvalue_Ext">
+                  <RangeInput
+                    available="!building.OverrideWindPool_Ext"
+                    editable="true"
+                    id="WindpoolvalueTunaReturned_Ext"
+                    label="displaykey.Web.BOP.BP7Location.WindpoolvalueTunaReturned_Ext"
+                    value="building.Windpoolvalue_Ext"
+                    valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
+                  <Input
+                    available="!building.OverrideWindPool_Ext"
+                    id="WindpoolvalueMatchLevel_Ext"
+                    label="displaykey.Web.BOP.BP7Location.WindpoolvalueMatchlevel_Ext"
+                    value="building.WindPoolMatchLevel_Ext"/>
+                  <BooleanRadioInput
+                    editable="true"
+                    id="OverRideWindpoolvalue_Ext"
+                    label="displaykey.Web.BOP.BP7Location.WindpoolvalueOverride_Ext"
+                    value="building.OverrideWindPool_Ext">
+                    <PostOnChange
+                      target="Windpoolvalue_Ext"/>
+                  </BooleanRadioInput>
+                  <Input
+                    available="building.OverrideWindPool_Ext"
+                    editable="true"
+                    id="WindpoolvalueUserEntered_Ext"
+                    label="displaykey.Web.BOP.BP7Location.WindpoolvalueUserEntered_Ext"
+                    required="building.OverrideWindPool_Ext"
+                    value="building.WindPoolOverridden_Ext"
+                    visible="building.OverrideWindPool_Ext"/>
+                </InputSet>
+                <InputDivider/>
                 <TypeKeyInput
                   editable="true"
                   id="FireProtectionClass"

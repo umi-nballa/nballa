@@ -4,6 +4,7 @@ uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
+uses java.lang.Double
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +15,11 @@ uses gw.api.domain.covterm.CovTerm
  */
 
 class CoveragesUtil {
+  public static final var SCHEDULED_PERSONAL_PROPERTY_DEFAULTS : HashMap<typekey.ScheduleType_HOE, Double> = {ScheduleType_HOE.TC_GUNSTHEFT_EXT -> 5000,
+                                                                                                              ScheduleType_HOE.TC_SILVERWARETHEFT_EXT -> 10000,
+                                                                                                              ScheduleType_HOE.TC_JEWELRYTHEFT_EXT -> 5000,
+                                                                                                              ScheduleType_HOE.TC_WATERCRAFT_EXT -> 2000,
+                                                                                                              ScheduleType_HOE.TC_TRAILEROTHERS_EXT -> 2000}
   public static final var DEPENDENT_LIMIT_PATTERNS_TO_DERIVING_LIMIT_PATTERNS : HashMap<String, List<String>> = {"HODW_PersonalPropertyLimit_HOE" -> {"HODW_LossOfUseDwelLimit_HOE"},
                                                                                                                  "HODW_Dwelling_Limit_HOE" -> {"HODW_OtherStructures_Limit_HOE",
                                                                                                                                                "HODW_PersonalPropertyLimit_HOE",
@@ -36,9 +42,6 @@ class CoveragesUtil {
         break
       case "HODW_SpecialPersonalProperty_HOE_Ext":
         result = isSpecialPersonalPropertyAvailable(coverable as Dwelling_HOE)
-        break
-      case "HODW_LossAssessmentCov_HOE":
-        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
         break
 	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
@@ -80,7 +83,11 @@ class CoveragesUtil {
       case "SupplExtendedReportingPeriodEndrsmnt_EXT":
         result = isCyberOneSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_LossAssessmentCov_HOE_Ext":
+        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
+        break
       default:
+        break
     }
 
     return result
@@ -160,6 +167,13 @@ class CoveragesUtil {
         break
       case "HODW_WindstromHailExc_HOE_Ext":
         result = getWindstormOrHailExclusionExistence(coverable as HomeownersLine_HOE)
+      break
+      case "CPProtectiveSafeguards_EXT":
+          result = getProtectiveSafeguardsExistence(coverable as CPBuilding)
+      break
+      case "CPFloridaChangesCondoCondition_EXT":
+          result = getFloridaChangesCondoExistence(coverable as CommercialPropertyLine)
+          break
       default:
         break
     }
@@ -218,6 +232,9 @@ class CoveragesUtil {
       case "HODW_BuildingAdditions_HOE_Ext":
           covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm)
           break
+      case "HODW_BusinessProperty_HOE_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm)
+        break
       default:
         break
     }
@@ -261,7 +278,7 @@ class CoveragesUtil {
   }
 
   private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = dwelling.FloodCoverage_Ext
+    var result = (dwelling.HOPolicyType == TC_HO3) ? dwelling.FloodCoverage_Ext : true
     var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
 
    if(result and floodIneligibleZips.HasElements){
@@ -313,7 +330,7 @@ class CoveragesUtil {
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
     return applicableCounties.HasElements
-       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County))
+       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
   }
 
   /*Available when the Occupancy type is:
@@ -382,7 +399,33 @@ class CoveragesUtil {
 
     return result
   }
-  
+
+
+  private static function getProtectiveSafeguardsExistence(building : CPBuilding) : ExistenceType{
+    var result : ExistenceType
+
+
+    if(building.AutomaticFireSuppress)
+       result = TC_REQUIRED
+    else
+     result = TC_ELECTABLE
+
+    return result
+  }
+
+
+  private static function getFloridaChangesCondoExistence(line : CommercialPropertyLine) : ExistenceType{
+    var result : ExistenceType
+
+
+    if(line.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+      result = TC_REQUIRED
+    else
+      result = TC_ELECTABLE
+
+    return result
+  }
+
   private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
     return  bp7Line.BP7EmployeeDishtyExists
   }
@@ -497,5 +540,38 @@ class CoveragesUtil {
     }
 
     return result
+  }
+
+  //TODO tlv - the below is going to be updated when i get requirements clarifications from Sen
+  private static class ComprehensiveEarthquakeAvailabilityEvaluator{
+    private var _dwelling : Dwelling_HOE
+    private var availabilityRules : List<EarthquakeAvailabilityRule> = {
+      new EarthquakeAvailabilityRule(\ dwelling -> { return dwelling.DwellingLimitCovTerm.Value >= 100000
+                                                        and dwelling.DwellingLimitCovTerm.Value <= 750000
+                                                        /** and is concrete basement**/}, _dwelling),
+      new EarthquakeAvailabilityRule(\ dwelling -> { return (dwelling.YearBuiltOrOverride > 1973 and dwelling.ThreeOrLessStories)
+                                                         or (dwelling.YearBuiltOrOverride >= 1937 and dwelling.YearBuiltOrOverride <= 1973 and dwelling.TwoOrLessStories)}, _dwelling)
+    }
+
+    construct(dwelling : Dwelling_HOE){
+      _dwelling = dwelling
+    }
+
+    public function isAvailable() : boolean{
+      return availabilityRules.allMatch( \ rule -> rule.ok())
+    }
+  }
+
+  private static class EarthquakeAvailabilityRule{
+    private var _condition : block(dwelling : Dwelling_HOE) : boolean
+    private var _dwelling : Dwelling_HOE
+
+    construct(condition(dwelling : Dwelling_HOE) : boolean, dwelling : Dwelling_HOE){
+      _condition = condition
+    }
+
+    function ok() : boolean{
+      return _condition(_dwelling)
+    }
   }
 }

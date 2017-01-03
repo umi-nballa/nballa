@@ -10,9 +10,8 @@
   priority="11600"
   public-id="DPLI_Premise_Liability_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <ExistenceScript><![CDATA[var state = HomeownersLine_HOE.Branch.BaseState
-return(state == TC_CA || state == TC_TX ) ? ExistenceType.TC_SUGGESTED : (state == TC_FL ||
-       state == TC_HI)? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE]]></ExistenceScript>
+  <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("DPLI_Premise_Liability_HOE_Ext", HomeownersLine_HOE)]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.getFireDwellingPremiseLiabilityExistence(HomeownersLine_HOE)]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"

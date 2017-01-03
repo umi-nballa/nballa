@@ -34,7 +34,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
         results = allPatternCodes.where( \ pattern -> OtherExplanationCodes.contains(pattern.Code))
         break
       case TC_BusinessClosed:
-        results = allPatternCodes.where( \ pattern -> OtherExplanationCodes.contains(pattern.Code))
+        results = allPatternCodes.where( \ pattern -> BusinessClosedExplanationCodes.contains(pattern.Code))
         break
       case TC_PropertySold:
         results = allPatternCodes.where( \ pattern -> PropertySoldExplanationCodes.contains(pattern.Code))
@@ -82,7 +82,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
         break
     }
 
-    return results?.toSet()?.orderByDescending( \ pattern -> pattern.Body)?.toTypedArray()
+    return results?.toSet()?.orderBy( \ pattern -> pattern.Body)?.toTypedArray()
   }
 
   private property get RiskCharacteristicExplanationCodes() : List<String>{
@@ -97,6 +97,7 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
     return RiskCharacteristicExplanationCodes
            .concat(DocumentationExplanationCodes)
            .concat(LossHistoryExplanationCodes)
+           .concat(OtherExplanationCodes)
            .concat(AgentAppointmentExplanationCodes).toList()
   }
 
@@ -105,27 +106,27 @@ enhancement NonRenewalCodeTypeEnhancement: typekey.NonRenewalCode {
   }
 
   private property get LossHistoryExplanationCodes() : List<String>{
-    return {"losshistory"}
+    return {"losshistory", "otherexplanation", "consumerinfoaan"}
   }
 
   private property get OtherExplanationCodes() : List<String> {
-    return {"misstatementmisrep"}
+    return {"misstatementmisrep", "otherexplanation"}
   }
 
   private property get BusinessClosedExplanationCodes() : List<String> {
-    return {"businessclsd"}
+    return {"businessclsd", "otherexplanation"}
   }
 
   private property get PropertySoldExplanationCodes() : List<String> {
-    return {"propsold"}
+    return {"propsold", "otherexplanation"}
   }
 
   private property get CoveragePlacedElsewhereExplanationCodes() : List<String> {
-    return {"covplacedelsewhr"}
+    return {"covplacedelsewhr", "otherexplanation"}
   }
 
   private property get NotTakenExplanationCodes(): List<String>{
-    return {"offernotaccepted"}
+    return {"offernotaccepted", "otherexplanation"}
   }
 
   private property get OtherNotProvidedExplanationCodes() : List<String>{

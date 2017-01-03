@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Page
-    afterEnter="selectionOfProducer.DefaultPPEffDate = null; uiHelper.checkActStateExistsWithProducer(selectionOfProducer); uiHelper.isDefaultPPEffDatePopulated(selectionOfProducer)"
+    afterEnter="selectionOfProducer.DefaultPPEffDate = null; uiHelper.checkActStateExistsWithProducer(selectionOfProducer);// uiHelper.isDefaultPPEffDatePopulated(selectionOfProducer)"
     afterReturnFromPopup="uiHelper.refreshProductOffers(acct, selectionOfProducer)"
     autosaveable="false"
     beforeCommit="throw &quot;NewSubmission should never commit&quot;"
@@ -142,9 +142,7 @@
               id="QuoteType"
               label="displaykey.Web.Submission.Products.QuoteType"
               required="true"
-              value="typeOfQuote">
-              <PostOnChange/>
-            </TypeKeyInput>
+              value="typeOfQuote"/>
             <RangeInput
               editable="true"
               id="DefaultBaseStateRange"

@@ -308,7 +308,7 @@ class CancellationProcess extends JobProcess {
     if (not Job.MigrationJob) {
    JobProcessValidator.validateCancellationDateNotTooSoon(_branch, Job)
     }
-
+    Job.createCustomHistoryEvent(CustomHistoryType.TC_CANCEL_CREATED, \ -> displaykey.Job.Cancellation.History.Created)
     if (InitialNotificationsHaveBeenSent) {
 
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CANCEL_RESCHEDULE, \ -> displaykey.Job.Cancellation.History.Reschedule(processDate))

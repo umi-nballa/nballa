@@ -58,6 +58,8 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     var schedItem = new HOscheduleItem_HOE_Ext(this.Branch)
 
     if (covPattern.matches("HOSL_OutboardMotorsWatercraft_HOE_Ext") and this.HOSL_OutboardMotorsWatercraft_HOE_ExtExists) {
+      schedItem.fromDate = this.Branch.PeriodStart
+      schedItem.toDate = this.Branch.PeriodEnd
       this.HOSL_OutboardMotorsWatercraft_HOE_Ext.addScheduledItem(schedItem)
     } else if (covPattern.matches("HOSL_WatercraftLiabilityCov_HOE_Ext") and this.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
       this.HOSL_WatercraftLiabilityCov_HOE_Ext.addScheduledItem(schedItem)

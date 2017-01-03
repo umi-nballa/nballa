@@ -26,7 +26,7 @@ class ChoiceCovTermUtil {
 
     // cov term is editable if not required because <none>
     // could be an option
-    if (!covTermPattern.Required)
+    if (!covTermPattern.Required || (covTermPattern.Required && covTermPattern.CodeIdentifier=="GLCGLAggLimit"))
       return true    
      
     if (covTermPattern typeis ChoiceCovTermPattern) {

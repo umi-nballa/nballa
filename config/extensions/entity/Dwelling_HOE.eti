@@ -1077,7 +1077,7 @@
     columnName="ConstructionTypeL2_Ext"
     name="ConstructionTypeL2_Ext"
     nullok="true"
-    typelist="ConstructionType"/>
+    typelist="ConstructionTypeL2_Ext"/>
   <typekey
     columnName="FoundationMaterial_Ext"
     name="FoundationMaterial_Ext"
@@ -1132,7 +1132,7 @@
     desc="HeatSrcInstalledbyLicIns"
     name="HeatSrcInstalledbyLicIns"
     nullok="true"
-    type="bit"/>	
+    type="bit"/>
   <column
     desc="ULListedstoveandchimneyflue"
     name="ULListedstoveandchimneyflue"
@@ -1142,7 +1142,7 @@
     desc="Sittingonnoncombustiblebase"
     name="Sittingonnoncombustiblebase"
     nullok="true"
-    type="bit"/>	
+    type="bit"/>
   <column
     desc="ConstructionTypeOther"
     name="ConstructionTypeOther"
@@ -1151,7 +1151,7 @@
     <columnParam
       name="size"
       value="35"/>
-  </column>	  
+  </column>
   <column
     desc="ConstructionTypeL1Other"
     name="ConstructionTypeLevel1Other"
@@ -1160,7 +1160,7 @@
     <columnParam
       name="size"
       value="35"/>
-  </column>	  
+  </column>
   <column
     desc="ConstructionTypeL2Other"
     name="ConstructionTypeLevel2Other"
@@ -1168,34 +1168,39 @@
     type="varchar">
     <columnParam
       name="size"
-      value="35"/>	  
-  </column>	
- <column
+      value="35"/>
+  </column>
+  <column
     desc="ExteriorWallFinishOther"
     name="ExteriorWallFinishOther"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="35"/>	  
-  </column>	  
- <column
+      value="35"/>
+  </column>
+  <column
     desc="ExteriorWallFinishL1Other"
     name="ExteriorWallFinishLevel1Other"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="35"/>	  
-  </column>	
- <column
+      value="35"/>
+  </column>
+  <column
     desc="ExteriorWallFinishL2Other"
     name="ExteriorWallFinishLevel2Other"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
-      value="35"/>	  
-  </column>	  
-	
+      value="35"/>
+  </column>
+  <foreignkey
+    columnName="HOUWQuestions"
+    desc="HOUWquestions"
+    fkentity="DwellingUWQuestions_Ext"
+    name="HOUWQuestions"
+    nullok="true"/>
 </entity>

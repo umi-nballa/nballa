@@ -1,87 +1,164 @@
 <?xml version="1.0"?>
 <gx-model type="entity.Dwelling_HOE" xmlns="http://guidewire.com/gx">
   <includes>
+    <include path="AbveBlwBaseFldElvtn_Ext" type="typekey.AbveBlwBaseFldElvtn_Ext" propertyInclusionType="NORMAL"/>
     <include path="AdditionalInterests[]" type="entity.HODwellingAddlInt_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.contact.addlinterestdetailmodel"/>
     <include path="Amperage" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="AnimalsInDwelling" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="ApproxSquareFootage" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="BarrierIsland_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="BaseFloodElevation_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="BaseFloodElVal_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="BaseFloodElValMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="BaseFloodElValOverridden_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="BasementFinishedArea" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="BasementHome_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="BasementUnfinishedArea" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="BldgThatContainAsbestos_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="BldngFrameHeater_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="CondoValuationIDValue_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="ConstructionCode" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="ConstructionType" type="typekey.ConstructionType_HOE" propertyInclusionType="NORMAL"/>
     <include path="ConstructionTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeL1_Ext" type="typekey.ConstructionTypeL1_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeL2_Ext" type="typekey.ConstructionTypeL2_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeLevel1Other" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeLevel2Other" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ConstructionTypeOther" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ConstTypeOverridden_Ext" type="typekey.ConstructionType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="CoverageALimitValue_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="Coverages[]" type="entity.DwellingCov_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.dwellingcov_hoemodel"/>
     <include path="CoveredPorch" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="CoveredPorchArea" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="Cripplewalls_Ext" type="typekey.Cripplewalls_Ext" propertyInclusionType="NORMAL"/>
     <include path="DoorStrength_Ext" type="typekey.DoorStrength_Ext" propertyInclusionType="NORMAL"/>
     <include path="DwellingAnimals[]" type="entity.DwellingAnimal_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.dwellinganimal_hoemodel"/>
+    <include path="Dwellingbolted_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="Dwellingbuilt_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="DwellingLocation" type="typekey.DwellingLocationType_HOE" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.BurglarAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.BurglarAlarmType" type="typekey.BurglarAlarmType_HOE" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.Deadbolts" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.DeadboltsNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.DwellingLocationDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.FireAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.FireExtinguishers" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.SmokeAlarm" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.SmokeAlarmOnAllFloors" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.SprinklerSystemType" type="typekey.SprinklerSystemType_HOE" propertyInclusionType="NORMAL"/>
-    <include path="DwellingProtectionDetails.VisibleToNeighbors" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="DwellingProtectionDetails" type="entity.HODwellingProtDetails_Ext" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.hodwellingprotdetails_extmodel"/>
+    <include path="DwellingRentedEverToOthers_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="DwellingUsage" type="typekey.DwellingUsage_HOE" propertyInclusionType="NORMAL"/>
+    <include path="DwellingUsagePrimaryCoverage" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="EarthquakeConstrn_Ext" type="typekey.EarthquakeConstrn_Ext" propertyInclusionType="NORMAL"/>
+    <include path="EarthquakeCoverage_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="EarthQuakeTer_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="EarthquakeTerMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="EarthquakeTerOverridden_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="EarthquakeTerritory_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="EarthquakeZone_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="ElectricalSystemUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="ElectricalSystemUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="ElectricalType" type="typekey.BreakerType_HOE" propertyInclusionType="NORMAL"/>
     <include path="ElectricalTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ElevatedRiskCredit_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="ExpirationDate_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="ExteriorWallFinish_Ext" type="typekey.ExteriorWallFinish_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWallFinishL1_Ext" type="typekey.ExteriorWallFinishL1_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWallFinishL2_Ext" type="typekey.ExteriorWallFinishL2_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWallFinishLevel1Other" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWallFinishLevel2Other" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWallFinishOther" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWFvalMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ExteriorWFvalueOverridden_Ext" type="typekey.ExteriorWallFinish_Ext" propertyInclusionType="NORMAL"/>
     <include path="FBCWindSpeed_Ext" type="typekey.FBCWindSpeed_Ext" propertyInclusionType="NORMAL"/>
     <include path="FireplaceOrWoodStoveExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="FireplaceOrWoodStovesNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="FloodCoverage_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="FloorLocation_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="Foundation" type="typekey.FoundationType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="FoundationHeight_Ext" type="typekey.FoundationHeight_Ext" propertyInclusionType="NORMAL"/>
+    <include path="FoundationMaterial_Ext" type="typekey.FoundationMaterial_Ext" propertyInclusionType="NORMAL"/>
     <include path="Garage" type="typekey.GarageType_HOE" propertyInclusionType="NORMAL"/>
     <include path="GarageArea" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="HailResistantRoofCredit_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="HeatingUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="HeatingUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcCentralElectric" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcCentralNaturalGas" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcCentralOther" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcCentralPropane" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcFireplace" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcPortableAllFuelTypes" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="HeatSrcWoodBurningStove" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="HOLocation" type="entity.HOLocation_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.holocation_hoemodel"/>
+    <include path="HomePurchaseMMYYYY_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="InsuredTenantDiscount_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="InternalPressureDsgn_Ext" type="typekey.InternalPressureDsgn_Ext" propertyInclusionType="NORMAL"/>
     <include path="KnownWaterLeakage" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="KnownWaterLeakageDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Masonrychimney_Ext" type="typekey.Masonrychimney_Ext" propertyInclusionType="NORMAL"/>
+    <include path="MetricsVersionValue_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="NoofStoriesOverridden_Ext" type="typekey.NoOfStoriesOverridden_Ext" propertyInclusionType="NORMAL"/>
+    <include path="NoteDetail_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="NumberofAmps_Ext" type="typekey.NumberofAmps_Ext" propertyInclusionType="NORMAL"/>
     <include path="NumberofRoofLayers_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
+    <include path="NumOfMonthsConsUnOccupancy_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="NumUnitsFireDivision_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="Occupancy" type="typekey.DwellingOccupancyType_HOE" propertyInclusionType="NORMAL"/>
     <include path="OccupancyVacant" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="OpeningProtection_Ext" type="typekey.OpeningProtection_Ext" propertyInclusionType="NORMAL"/>
+    <include path="OverrideBaseFloodElVal_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideConstructionType_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideEarthquakeTer_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideExteriorWFval_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverridePropFloodVal_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideRoofShape_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideRoofType_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideStoriesNumber_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideTotalSqFtVal_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="OverrideYearbuilt_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="PanelManufacturer_Ext" type="typekey.PanelManufacturer_Ext" propertyInclusionType="NORMAL"/>
     <include path="PlumbingType" type="typekey.PlumbingType_HOE" propertyInclusionType="NORMAL"/>
     <include path="PlumbingTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="PlumbingUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="PlumbingUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="PolicyLocations[].TerritoryCodes[]" type="entity.TerritoryCode" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.location.territorycodemodel"/>
+    <include path="PreExstngEarthqukeDmg_Ext" type="typekey.PreExstngEarthqukeDmg_Ext" propertyInclusionType="NORMAL"/>
     <include path="PrimaryHeating" type="typekey.HeatingType_HOE" propertyInclusionType="NORMAL"/>
     <include path="PrimaryHeatingDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="PriorFloodInsProvider_Ext" type="typekey.PriorFloodInsProvider_Ext" propertyInclusionType="NORMAL"/>
+    <include path="PriorResidenceWas_Ext" type="typekey.PriorResidenceWas_Ext" propertyInclusionType="NORMAL"/>
+    <include path="PropertyCovByStateWndstorm_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="PropertyLocatedIn_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="PropFloodVal_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="PropFloodValMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="PropFloodValOverridden_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="ReplacementCost" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="ResidenceType" type="typekey.ResidenceType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="ResultingPrecision_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="RoofCover_Ext" type="typekey.RoofCover_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoofDeckAttachment_Ext" type="typekey.RoofDeckAttachment_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoofDecking_Ext" type="typekey.RoofDecking_Ext" propertyInclusionType="NORMAL"/>
+    <include path="RoofingMaterialOverridden_Ext" type="typekey.RoofTypeOverridden_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoofingUpgrade" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="RoofingUpgradeDate" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="RoofShape_Ext" type="typekey.RoofShape_Ext" propertyInclusionType="NORMAL"/>
+    <include path="RoofShapeMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="RoofShapeOverridden_Ext" type="typekey.RoofShapeOverridden_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoofSlope_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="RoofType" type="typekey.RoofType" propertyInclusionType="NORMAL"/>
     <include path="RoofTypeDescription" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="RoofTypeMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoofWallConnection_Ext" type="typekey.RoofWallConnection_Ext" propertyInclusionType="NORMAL"/>
     <include path="RoomerBoarders" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="RoomerBoardersNumber" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="SecondaryHeatingExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="SecondaryWaterResis_Ext" type="typekey.SecondaryWaterResis_Ext" propertyInclusionType="NORMAL"/>
+    <include path="ShortestRentalPeriod_Ext" type="typekey.ShortestRentalPeriod_Ext" propertyInclusionType="NORMAL"/>
     <include path="SquareFootage_Ext" type="java.lang.Integer" propertyInclusionType="NORMAL"/>
     <include path="StoriesNumber" type="typekey.NumberOfStories_HOE" propertyInclusionType="NORMAL"/>
+    <include path="StoriesNumberMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="SubstantialBarrierDebris_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="SupplHeatingSurcharge_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="SustainedFloodDmge_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="SwimmingPoolDivingBoard" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="SwimmingPoolExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="SwimmingPoolFencing" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="Terrain_Ext" type="typekey.Terrain_Ext" propertyInclusionType="NORMAL"/>
+    <include path="TotalSqFtValMatchLevel_Ext" type="typekey.TUNAMatchLevel_Ext" propertyInclusionType="NORMAL"/>
+    <include path="TotalSqFtValOverridden_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="TrampolineExists" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="TrampolineSafetyNet" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="UnitsNumber" type="typekey.NumUnits_HOE" propertyInclusionType="NORMAL"/>

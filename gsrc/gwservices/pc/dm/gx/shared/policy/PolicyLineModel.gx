@@ -24,16 +24,21 @@
     <include path="(entity-CommercialPropertyLine).hurricanededtype" type="typekey.CPHurricaneDedType_Ext" propertyInclusionType="NORMAL"/>
     <include path="(entity-CommercialPropertyLine).hurricanepercded" type="typekey.CPHurricanePercDed_Ext" propertyInclusionType="NORMAL"/>
     <include path="(entity-CommercialPropertyLine).Inflationguard" type="typekey.CPInflationGuard_Ext" propertyInclusionType="NORMAL"/>
+    <include path="(entity-GeneralLiabilityLine).ClaimsMadeOrigEffDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
     <include path="(entity-GeneralLiabilityLine).GLCoverageForm" type="typekey.GLCoverageFormType" propertyInclusionType="NORMAL"/>
     <include path="(entity-GeneralLiabilityLine).GLExposuresWM[]" type="entity.GLExposure" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.glexposuremodel"/>
     <include path="(entity-GeneralLiabilityLine).GLLineCoverages[]" type="entity.GeneralLiabilityCov" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.generalliabilitycovmodel"/>
     <include path="(entity-GeneralLiabilityLine).GLModifiers[]" type="entity.GLModifier" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.cpp.glmodifiermodel"/>
+    <include path="(entity-GeneralLiabilityLine).RetroactiveDate" type="java.util.Date" propertyInclusionType="NORMAL"/>
     <include path="(entity-GeneralLiabilityLine).SplitLimits" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
     <include path="(entity-HomeownersLine_HOE).Dwelling" type="entity.Dwelling_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineConditions[]" type="entity.HomeownersLineCond_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslinecond_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineCoverages[]" type="entity.HomeownersLineCov_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslinecov_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOLineExclusions[]" type="entity.HomeownersLineExcl_HOE" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.lob.ho.homeownerslineexcl_hoemodel"/>
     <include path="(entity-HomeownersLine_HOE).HOPolicyType" type="typekey.HOPolicyType_HOE" propertyInclusionType="NORMAL"/>
+    <include path="(entity-HomeownersLine_HOE).MultiPolicyDiscount_Ext" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="(entity-HomeownersLine_HOE).PolicyNumber_Ext" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="(entity-HomeownersLine_HOE).TypeofPolicy_Ext" type="typekey.TypeofPolicy_Ext" propertyInclusionType="NORMAL"/>
     <include path="AdditionalInsureds[]" type="entity.PolicyAddlInsured" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.contact.policycontactrolemodel"/>
     <include path="LineAnswers[]" type="entity.PolicyLineAnswer" propertyInclusionType="NORMAL" model="gwservices.pc.dm.gx.shared.general.policylineanswermodel"/>
     <include path="PatternCode" type="java.lang.String" propertyInclusionType="NORMAL"/>

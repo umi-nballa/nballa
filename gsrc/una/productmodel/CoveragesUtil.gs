@@ -357,7 +357,13 @@ class CoveragesUtil {
   }
 
   private static function isWindstormOrHailExclusionAvailableHO(line : HomeownersLine_HOE) : boolean{
-    return line.BaseState == TC_FL and line.Dwelling.WHurricaneHailExclusion_Ext
+    var result = true
+
+    if(line.BaseState == TC_FL){
+      result = line.Dwelling.WHurricaneHailExclusion_Ext
+    }
+
+    return result
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{

@@ -4,6 +4,7 @@ uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.lang.IllegalStateException
 uses una.config.ConfigParamsUtil
+uses java.lang.Integer
 
 /**
  * Created with IntelliJ IDEA.
@@ -106,6 +107,22 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       return 0
     }
 
+  }
+
+  property get YearBuiltOrOverride(): Integer{
+    if(this.OverrideYearbuilt_Ext){
+      return this.YearBuiltOverridden_Ext
+    }else{
+      return this.YearBuilt
+    }
+  }
+
+  property get TwoOrLessStories() : boolean{
+    return typekey.NumberOfStories_HOE.TF_TWOORLESSSTORIES.TypeKeys.contains(this.StoriesNumber)
+  }
+
+  property get ThreeOrLessStories() : boolean{
+    return typekey.NumberOfStories_HOE.TF_THREESTORIESORLESS.TypeKeys.contains(this.StoriesNumber)
   }
 
   property get isPolicyHOTypes() : boolean {

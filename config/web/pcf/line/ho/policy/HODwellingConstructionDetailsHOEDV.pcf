@@ -24,7 +24,8 @@
       <InputSet
         id="NumberOfStories_Ext">
         <RangeInput
-          editable="!dwelling.OverrideStoriesNumber_Ext"
+          available="!dwelling.OverrideStoriesNumber_Ext"
+          editable="true//!dwelling.OverrideStoriesNumber_Ext"
           id="NumberOfStoriesTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStories_Ext"
           value="dwelling.StoriesNumber"
@@ -57,7 +58,8 @@
         id="ConstructionType_Ext"
         visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="!dwelling.OverrideConstructionType_Ext"
+          available="!dwelling.OverrideConstructionType_Ext"
+          editable="true//!dwelling.OverrideConstructionType_Ext"
           id="ConstructionTypeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
           value="dwelling.ConstructionType"
@@ -85,16 +87,38 @@
       </InputSet>
       <Input
         editable="true"
+        id="ConstTypeo_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeIfOther_Ext"
+        value="dwelling.ConstructionTypeOther"
+        visible="dwelling.ConstructionType.Code==&quot;Other&quot;"/>
+      <Input
+        editable="true"
         id="ConstType1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
         value="dwelling.ConstructionTypeL1_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <PostOnChange/>
+      </Input>
+      <Input
+        editable="true"
+        id="ConstType1o_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1O_Ext"
+        value="dwelling.ConstructionTypeLevel1Other"
+        visible="dwelling.ConstructionTypeL1_Ext==typekey.ConstructionTypeL1_Ext.TC_OTHER"/>
       <Input
         editable="true"
         id="ConstType2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2_Ext"
         value="dwelling.ConstructionTypeL2_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <PostOnChange/>
+      </Input>
+      <Input
+        editable="true"
+        id="ConstType2o_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2O_Ext"
+        value="dwelling.ConstructionTypeLevel2Other"
+        visible="dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER"/>
       <InputDivider/>
       <InputSet
         id="ExteriorWFval_Ext"
@@ -130,16 +154,34 @@
       </InputSet>
       <Input
         editable="true"
+        id="ExtWallfinishOther_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther_Ext"
+        value="dwelling.ExteriorWallFinishOther"
+        visible="dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot;"/>
+      <Input
+        editable="true"
         id="ExteriorWFva1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
         value="dwelling.ExteriorWallFinishL1_Ext"
         visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
       <Input
         editable="true"
+        id="ExtWallfinishOther1_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther1_Ext"
+        value="dwelling.ExteriorWallFinishLevel1Other"
+        visible="dwelling.ExteriorWallFinishL1_Ext.Code==&quot;Other&quot;"/>
+      <Input
+        editable="true"
         id="ExteriorWFval2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
         value="dwelling.ExteriorWallFinishL2_Ext"
         visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+      <Input
+        editable="true"
+        id="ExtWallfinishOther2_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther2_Ext"
+        value="dwelling.ExteriorWallFinishLevel2Other"
+        visible="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"/>
       <InputDivider/>
       <InputSet
         id="TotalSqFtVal_Ext">
@@ -244,7 +286,8 @@
         id="FoundationMaterial"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationMaterial"
         required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_SC &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
-        value="dwelling.FoundationMaterial_Ext">
+        value="dwelling.FoundationMaterial_Ext"
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_SC &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)">
         <PostOnChange/>
       </TypeKeyInput>
       <TypeKeyInput
@@ -252,7 +295,8 @@
         id="FoundationHeight"
         label="displaykey.Web.Homeowners.DwellingConstruction.FoundationHeight"
         required="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)"
-        value="dwelling.FoundationHeight_Ext">
+        value="dwelling.FoundationHeight_Ext"
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)">
         <PostOnChange/>
       </TypeKeyInput>
       <!-- <Input
@@ -502,6 +546,7 @@
       <InputSet
         id="RoofingMaterial_Ext">
         <RangeInput
+          available="!dwelling.OverrideRoofType_Ext"
           editable="!dwelling.OverrideRoofType_Ext"
           id="RoofingMaterialTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterial_Ext"
@@ -539,6 +584,7 @@
       <InputSet
         id="RoofingShape_Ext">
         <RangeInput
+          available="!dwelling.OverrideRoofShape_Ext"
           editable="!dwelling.OverrideRoofShape_Ext"
           id="RoofShapeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofShape_Ext"

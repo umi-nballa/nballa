@@ -37,7 +37,7 @@ class CPLocationUtil {
     if(building!=null && tunaAppResponse!=null)
       {
     building?.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
-    building?.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+    building?.FirePCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
     building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
     building?.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
     building?.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)

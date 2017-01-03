@@ -192,10 +192,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
 
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 and
-        PolicyLine.BaseState == Jurisdiction.TC_CA))
-      if (PolicyLine.Branch.QualifiesAffinityDisc_Ext)
+        PolicyLine.BaseState == Jurisdiction.TC_CA)){
+      if (PolicyLine.Branch.QualifiesAffinityDisc_Ext) {
         rateAffinityDiscount(dateRange)
-
+      }
+    }
     if (PolicyLine.BaseState != Jurisdiction.TC_CA){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4)
         rateBuildingCodeEffectivenessGradingCredit(dateRange)
@@ -212,6 +213,18 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (PolicyLine.BaseState == Jurisdiction.TC_CA and dwelling.Occupancy == DwellingOccupancyType_HOE.TC_VACANT)
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4)
         rateVacantDwellings(dateRange)
+
+    if(_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 and dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+      _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+      rateTownhouseOrRowhouseSurcharge(dateRange)
+    }
+
+    if(PolicyLine.BaseState == Jurisdiction.TC_CA){
+      var firelineAdjustedHazardScore = dwelling?.HOLocation?.OverrideFirelineAdjHaz_Ext ? dwelling?.HOLocation?.FirelineAdjHazOverridden_Ext : dwelling?.HOLocation?.FirelineAdjHaz_Ext
+      if(firelineAdjustedHazardScore?.Numeric and firelineAdjustedHazardScore?.toInt() > 6)
+        rateBrushHazardSurcharge(dateRange)
+    }
+
 
     if(PolicyLine.MultiPolicyDiscount_Ext){
       _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
@@ -381,6 +394,36 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
     if (_logger.DebugEnabled)
       _logger.debug("Vacant Dwellings Rated Successfully", this.IntrinsicType)
+  }
+
+  /*
+   *  Function to rate the Town house Or Row house Surcharge
+   */
+  function rateTownhouseOrRowhouseSurcharge(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateTownhouseOrRowhouseSurcharge", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.TownhouseOrRowhouseSurcharge = costData?.ActualTermAmount
+    }
+    _logger.debug("Townhouse Or Rowhouse Surcharge Rated Successfully", this.IntrinsicType)
+  }
+
+  /*
+   *  Function to rate the Brush Hazard Surcharge
+   */
+  function rateBrushHazardSurcharge(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateBrushHazardSurcharge", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BRUSH_HAZARD_SURCHARGE_RATE_ROUTINE, HOCostType_Ext.TC_BRUSHHAZARDSURCHARGE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.BrushHazardSurcharge = costData?.ActualTermAmount
+    }
+    _logger.debug("Brush Hazard Surcharge Rated Successfully", this.IntrinsicType)
   }
 
   /**

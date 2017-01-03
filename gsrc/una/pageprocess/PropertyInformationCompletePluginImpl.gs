@@ -90,7 +90,7 @@ class PropertyInformationCompletePluginImpl {
     if(!(policyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT &&policyPeriod.Job.DisplayType == typekey.Job.TC_SUBMISSION.Code)){
        return null
       }
-     logger.debug(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
+     logger.info(" Entering  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     _address = new AddressDTO()
     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
       _address.AddressLine1 = location.AddressLine1
@@ -108,9 +108,40 @@ class PropertyInformationCompletePluginImpl {
         LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
         logger.error("TunaGateway : Dwelling  Information " + " : StackTrace = ", exp)
       }
-    logger.debug(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
+    logger.info(" Leaving  " + CLASS_NAME + " :: " + " getDwellingInformation" + "For Dwelling ", this.IntrinsicType)
     return tunaResponse
   }
+
+
+  public function retrieveTunaBOPInfo(location : BP7Location): TunaAppResponse{
+
+    var policyPeriod = location.Branch
+
+    if(!(policyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT && policyPeriod.Job.DisplayType == typekey.Job.TC_SUBMISSION.Code)){
+      return null
+    }
+    logger.info(" Entering  " + CLASS_NAME + " :: " + " retrieveTunaBOPInfo " + "For BOP ", this.IntrinsicType)
+    _address = new AddressDTO()
+
+    _address.AddressLine1 = location.Location.AddressLine1
+    _address.State = location.Location.State.Code
+    _address.City = location.Location.City
+    _address.PostalCode = location.Location.PostalCode
+    _address.Country = location.Location.Country.Code
+    try {
+      tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
+      policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformationComplete",tunaResponse.MetricsVersion.first().NamedValue))
+      if(tunaResponse == null)
+        LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
+
+    } catch (exp: Exception) {
+      LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
+      logger.error("TunaGateway : Retrieving TUNA Information " + " : StackTrace = ", exp)
+    }
+    logger.info(" Leaving  " + CLASS_NAME + " :: " + " retrieveTunaBOPInfo" + "For BOP ", this.IntrinsicType)
+    return tunaResponse
+  }
+
 
   /**
    * This function is to call GetPropertyInformationComplete Service to map dwelling construction screen
@@ -662,7 +693,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.WindPool.size() > 1) {
           //TODO
         } else {
-            building.Location.WindpoolEligibility_Ext = (res.WindPool[0].Value) as Boolean
+           // building.Location.WindpoolEligibility_Ext = (res.WindPool[0].Value) as Boolean
         }
       }
     } catch (exp: Exception) {
@@ -803,7 +834,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.ProtectionClass.size() > 1) {
           //TODO
         } else {
-          cpBuilding.DwellingProtectionClassCode = (res.ProtectionClass[0].Value) as String
+          cpBuilding.FireProtectionClassCode = (res.ProtectionClass[0].Value) as String
         }
       }
     } catch (exp: Exception) {

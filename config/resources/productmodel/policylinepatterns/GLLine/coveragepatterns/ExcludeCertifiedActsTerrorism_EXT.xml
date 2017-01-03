@@ -3,13 +3,15 @@
   codeIdentifier="ExcludeCertifiedActsTerrorism_EXT"
   coverageCategory="GLOther"
   exclusionSubtype="GeneralLiabilityExcl"
-  existence="Electable"
   lookupTableName="GLExcl"
   owningEntityType="GeneralLiabilityLine"
   policyLinePattern="GLLine"
   priority="800"
   public-id="ExcludeCertifiedActsTerrorism_EXT"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[if(GeneralLiabilityLine.GLTerrorism_EXTExists){return true}]]></AvailabilityScript>
+  <AvailabilityScript><![CDATA[if(!GeneralLiabilityLine.GLTerrorCov_EXTExists)
+{return true}]]></AvailabilityScript>
+  <ExistenceScript><![CDATA[if(!GeneralLiabilityLine.GLTerrorCov_EXTExists)
+ return typekey.ExistenceType.TC_REQUIRED]]></ExistenceScript>
   <CovTerms/>
 </ExclusionPattern>

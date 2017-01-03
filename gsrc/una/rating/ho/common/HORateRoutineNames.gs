@@ -92,4 +92,5 @@ public final class HORateRoutineNames {
   public static final var OTHER_STRUCTURES_RENTED_TO_OTHERS_RATE_ROUTINE : String = "UNAHOOtherStructuresRentedToOthersRateRoutine"
   public static final var NO_PRIOR_INSURANCE_RATE_ROUTINE : String = "UNAHONoPriorInsuranceRateRoutine"
   public static final var TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE : String = "UNAHOTownhouseOrRowhouseSurchargeRateRoutine"
+  public static final var BRUSH_HAZARD_SURCHARGE_RATE_ROUTINE : String = "UNAHOBrushHazardSurchargeRateRoutine"
 }

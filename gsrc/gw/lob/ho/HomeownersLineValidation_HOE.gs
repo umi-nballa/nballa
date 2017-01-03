@@ -43,8 +43,10 @@ class HomeownersLineValidation_HOE extends PolicyLineValidation<entity.Homeowner
       policyTypeValid = false
       addErrorOrWarning(displaykey.Web.Policy.HomeownersLine.Validation.DwellingIsVacant(hoLine.HOPolicyType))
     }
-    
-    return policyTypeValid
+
+
+
+        return policyTypeValid
   }
   
   function validateBaseStateAndDwellingState() {

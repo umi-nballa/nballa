@@ -411,7 +411,7 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
     var criteria = new ClaimSearchCriteria()
     criteria.DateCriteria.StartDate = Date.Today.addYears(-1)
     criteria.DateCriteria.EndDate = Date.Today
-    criteria.DateCriteria.DateSearchType = DateSearchType.TC_ENTEREDRANGE
+    criteria.DateCriteria.DateSearchType = DateSearchType.TC_FROMLIST//TC_ENTEREDRANGE
     if (useThisPolicy) {
       criteria.Policy = this.Policy
     }

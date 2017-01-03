@@ -29,21 +29,29 @@ class BP7LocationUtil {
     }else if(thePropertyDataModelList.Count == 1){
       res = typekey.TUNAMatchLevel_Ext.TC_EXACT
     }
+    else
+      res =typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
     return res
   }
 
-  static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, location:BP7Location) : boolean {
+  static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, location:BP7Location, building:BP7Building) : boolean {
     /************ location entity *****/
-    location.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
-    location.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
-    location.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-    location.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
-    location.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
-    location.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-    location.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-    location.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-    location.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+      if(building!=null)
+      {
+        building.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
+        building.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+      }
+      if(location!=null)
+      {
+        location.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+        location.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
+        location.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
+        location.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+        location.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+        location.FiredeptnamedvalMatchLevel_Ext =   (tunaAppResponse.ProtectionClass != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
 
+        location.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+       }
     return true
   }
 

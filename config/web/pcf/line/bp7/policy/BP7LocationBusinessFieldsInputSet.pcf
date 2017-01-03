@@ -11,10 +11,10 @@
       name="openForEdit"
       type="boolean"/>
     <Variable
-      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(location.Branch)"
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().retrieveTunaBOPInfo(location)"
       name="tunaAppResponse"/>
     <Variable
-      initialValue="gw.lob.bp7.location.BP7LocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,location)"
+      initialValue="gw.lob.bp7.location.BP7LocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,location, null)"
       name="setTunaFieldsMatchLevel"/>
     <!-- RangeInput
       editable="true"
@@ -130,38 +130,6 @@
     </InputSet>
     <InputDivider/>
     <InputSet
-      id="Windpoolvalue_Ext">
-      <RangeInput
-        available="!location.OverrideWindPool_Ext"
-        editable="true"
-        id="WindpoolvalueTunaReturned_Ext"
-        label="displaykey.Web.BOP.BP7Location.WindpoolvalueTunaReturned_Ext"
-        value="location.Windpoolvalue_Ext"
-        valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
-      <Input
-        available="!location.OverrideWindPool_Ext"
-        id="WindpoolvalueMatchLevel_Ext"
-        label="displaykey.Web.BOP.BP7Location.WindpoolvalueMatchlevel_Ext"
-        value="location.WindPoolMatchLevel_Ext"/>
-      <BooleanRadioInput
-        editable="true"
-        id="OverRideWindpoolvalue_Ext"
-        label="displaykey.Web.BOP.BP7Location.WindpoolvalueOverride_Ext"
-        value="location.OverrideWindPool_Ext">
-        <PostOnChange
-          target="Windpoolvalue_Ext"/>
-      </BooleanRadioInput>
-      <Input
-        available="location.OverrideWindPool_Ext"
-        editable="true"
-        id="WindpoolvalueUserEntered_Ext"
-        label="displaykey.Web.BOP.BP7Location.WindpoolvalueUserEntered_Ext"
-        required="location.OverrideWindPool_Ext"
-        value="location.WindPoolOverridden_Ext"
-        visible="location.OverrideWindPool_Ext"/>
-    </InputSet>
-    <InputDivider/>
-    <InputSet
       id="PropFloodVal_Ext">
       <RangeInput
         available="!location.OverridePropFloodVal_Ext"
@@ -191,36 +159,6 @@
         required="location.OverridePropFloodVal_Ext"
         value="location.PropFloodValOverridden_Ext"
         visible="location.OverridePropFloodVal_Ext"/>
-    </InputSet>
-    <InputDivider/>
-    <InputSet
-      id="bceg_Ext">
-      <RangeInput
-        editable="!location.OverrideBCEG_Ext"
-        id="BCEGTunaReturned_Ext"
-        label="displaykey.Web.BOP.BP7Location.BCEGTunaReturned_Ext"
-        value="location.BCEG_Ext"
-        valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)"/>
-      <Input
-        id="BCEGMatchLevel_Ext"
-        label="displaykey.Web.BOP.BP7Location.BCEGMatchlevel_Ext"
-        value="location.BCEGMatchLevel_Ext"/>
-      <BooleanRadioInput
-        editable="true"
-        id="OverRideTunaBCEG_Ext"
-        label="displaykey.Web.BOP.BP7Location.BCEGOverride_Ext"
-        value="location.OverrideBCEG_Ext">
-        <PostOnChange
-          target="bceg_Ext"/>
-      </BooleanRadioInput>
-      <Input
-        available="location.OverrideBCEG_Ext"
-        editable="true"
-        id="BCEGUserEntered_Ext"
-        label="displaykey.Web.BOP.BP7Location.BCEGUserEntered_Ext"
-        required="location.OverrideBCEG_Ext"
-        value="location.BCEGOverridden_Ext"
-        visible="location.OverrideBCEG_Ext"/>
     </InputSet>
     <InputDivider/>
     <InputSet
@@ -352,16 +290,6 @@
         valueRange="{tunaAppResponse.ResultingPrecision}"/>
     </InputSet>
     <InputDivider/>
-    <TextInput
-      id="respondingFire"
-      label="displaykey.Web.Location.RespondingFireDepartment"
-      value="location.FireDepartment_Ext"/>
-    <TypeKeyInput
-      editable="true"
-      id="FeetToHydrant"
-      label="displaykey.Web.Policy.BP7.Location.FeetToHydrant "
-      required="true"
-      value="location.FeetToHydrant"/>
     <TypeKeyInput
       editable="true"
       id="FireProtectionClass"
@@ -376,11 +304,5 @@
       required="true"
       value="location.LiquorLiabGrade"
       visible="new gw.lob.bp7.availability.BP7LiquorLiabilityGradeAvailabilityHelper(location.Line).isVisible()"/>
-    <BooleanRadioInput
-      editable="true"
-      id="WindpoolEligibility"
-      label="displaykey.Web.Policy.BP7.Location.WindPoolEligibility"
-      required="true"
-      value="location.WindpoolEligibility_Ext"/>
   </InputSet>
 </PCF>

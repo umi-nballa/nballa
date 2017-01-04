@@ -6,6 +6,7 @@ uses gw.lob.bp7.BP7Categories
 uses gw.lob.bp7.blanket.BP7ClassificationBlanketableCoverage
 uses java.math.BigDecimal
 uses gw.lob.bp7.utils.BP7SysTableQueryUtil
+uses gw.api.web.job.JobWizardHelper
 
 enhancement BP7ClassificationEnhancement : entity.BP7Classification {
 
@@ -232,5 +233,18 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
       return ExistenceType.TC_ELECTABLE
     }
     return ExistenceType.TC_REQUIRED
+  }
+
+  function syncIfNeeded(classification:BP7Classification,jwh : JobWizardHelper){
+    var synchCodes = {"65121B","65121K"}
+    if(synchCodes.contains(this.ClassCode_Ext)){
+      this.bp7sync(jwh)
+    }
+    if(classification.ClassCode_Ext!="59954" && classification.BP7OptProfLiabCov_EXTExists){
+      classification.BP7OptProfLiabCov_EXT.remove()
+    }
+    if(classification.ClassCode_Ext!="71865" && classification.BP7FuneralDirectorsProflLiab_EXTExists){
+      classification.BP7FuneralDirectorsProflLiab_EXT.remove()
+    }
   }
 }

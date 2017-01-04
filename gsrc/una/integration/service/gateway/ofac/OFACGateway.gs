@@ -52,14 +52,15 @@ class OFACGateway implements OFACInterface {
       _logger.debug("result:" + result)
 
       if(result != null) {
-      var contactAndScoreMap = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
+      var contactList = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
 
       policyPeriod.ofacdetails.isOFACOrdered = true
 
 
       //contactAndScoreMap should be null in case of no - HIT only
-      if (contactAndScoreMap != null)
-        ofacResponseMapper.mapOFACResponse(contactAndScoreMap, policyPeriod)
+      if (contactList.Count >= 1)
+        ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
+
         }
     } catch (exp: Exception) {
       _logger.error(CLASS_NAME + " :: " + "validateOFACEntity" + " : StackTrace = " + exp.StackTraceAsString)

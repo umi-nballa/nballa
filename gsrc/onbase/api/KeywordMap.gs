@@ -39,9 +39,9 @@ public enum KeywordMap {
   user("User"),
   source("Source"),
   activitycode("Activity Code"),
+  additionalinsured("Additional Insured"),
   additionalnamedinsureds("Additional Named Insureds"),
   agencycode("Agency Code"),
-  csr("CSR"), //TODO: REMOVE
   description("Description"),
   issuedate("Issue Date"),
   jobdisplayname("Job Display Name"),
@@ -58,6 +58,7 @@ public enum KeywordMap {
   policyexpirationdate("Policy Expiration Date"),
   policynumber("Policy Number"),
   policytype("Policy Type"),
+  primaryinsured("Primary Insured"),
   primarynamedinsureds("Primary Named Insureds"),
   productname("Product Name"),
   receiveddate("Received Date"),
@@ -65,7 +66,6 @@ public enum KeywordMap {
   supressactivity("Supress Activity"),
   term("Term"),
   transactioneffectivedate("Transaction Effective Date"),
-  underwriter("Underwriter"),//TODO: REMOVE
 
  /*Previous values */
 

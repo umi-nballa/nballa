@@ -1,6 +1,7 @@
 package onbase.api.services
 
 uses gw.xml.XmlElement
+uses onbase.api.Settings
 uses onbase.api.services.datamodels.Category
 uses onbase.api.services.datamodels.Keyword
 uses onbase.api.services.datamodels.OnBaseDocument
@@ -18,7 +19,11 @@ uses onbase.api.services.interfaces.ScriptDispatcherInterface
 uses onbase.api.services.interfaces.UpdateKeywordsInterface
 
 uses java.io.File
+uses java.lang.Class
+uses java.lang.Exception
 uses java.util.Hashtable
+uses java.util.List
+uses onbase.api.services.interfaces.CreateUnityFormInterface
 
 /**
  *
@@ -43,6 +48,8 @@ class ServicesManager {
   private static var archiveDocumentAsyncService: ArchiveDocumentAsyncInterface = new onbase.api.services.implementations.wsp.ArchiveDocumentAsyncWSP()
   /** Sync archive document service. */
   private static var archiveDocumentSyncService: ArchiveDocumentSyncInterface     = new onbase.api.services.implementations.wsp.ArchiveDocumentSyncWSP()
+  /** Create Unity Form service. */
+  private static var createUnityForm: CreateUnityFormInterface = new onbase.api.services.implementations.wsp.CreateUnityFormWSP()
   /** Document composition categories service. */
   private static var docCompCategoriesService: DocCompCategoriesInterface = new onbase.api.services.implementations.wsp.DocCompCategoriesWSP()
   /** Document composition templates service. */
@@ -86,6 +93,14 @@ class ServicesManager {
       return Breaker.checkedCall( \-> archiveDocumentSyncService.archiveDocument(documentContents, fileName, documentType, mimeType, keywords) )
   }
 
+  /**
+   * Create A Unity Form non-interactively.
+   *
+   * @return Unity Form Doc ID.
+   */
+  public function createUnityForm(unityFormName: String, keywords: List <Keyword>): String {
+    return Breaker.checkedCall( \-> createUnityForm.createUnityForm(unityFormName, keywords))
+  }
 
   /**
    * Get document composition template categories.

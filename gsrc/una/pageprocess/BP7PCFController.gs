@@ -4,6 +4,8 @@ uses gw.api.web.job.JobWizardHelper
 uses gw.api.productmodel.ClausePattern
 uses gw.api.util.DisplayableException
 uses java.math.BigDecimal
+uses gw.api.domain.covterm.CovTerm
+uses gw.api.domain.covterm.DirectCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,6 +68,20 @@ class BP7PCFController {
         }
       }
       bp7Line.BP7EquipBreakEndor_EXT.BP7EquipBreakEndorLimit_ExtTerm.Value = limitValue
+    }
+  }
+
+  //TLV - not really added by me.  Just moving here from a different class in the middle of optimizing performance for coverages screen.
+  //Trying to avoid post on change when unnecessary
+  static function isCovTermAllowedValue(covTerm : DirectCovTerm){
+    var minimumAllowed = covTerm.getMinAllowedLimitValue(covTerm.Clause.OwningCoverable)
+    var allowedIncrement = minimumAllowed
+    var allowedIncrements : List<BigDecimal> = {allowedIncrement}
+    if(covTerm.PatternCode=="BP7LimitatDescribedPremises_EXT" || covTerm.PatternCode=="BP7LimitDescribedPremises_EXT" || covTerm.PatternCode=="BP7Limit38" || covTerm.PatternCode=="Limit" ||
+        covTerm.PatternCode=="Limit_EXT"){
+      if((covTerm.Value).remainder(1000)!=0){
+        throw new gw.api.util.DisplayableException(displaykey.una.productmodel.validation.AllowedLimitValidationMessage(covTerm.Clause.Pattern.DisplayName,covTerm.DisplayName))
+      }
     }
   }
 }

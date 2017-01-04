@@ -66,6 +66,7 @@ class OnBaseMessageTransport implements MessageTransport, InitializablePlugin {
   public static function deserializeModel(model: onbase.api.messaging.updatekeywordsrequestmodel.UpdateKeywordsRequest) : UpdateKeywordsRequest {
     var updateRequest = new UpdateKeywordsRequest()
     updateRequest.UserID = model.UserID
+    updateRequest.PolicyNumber = model.PolicyNumber
 
     // Add any list entries that are present
     if (model.DocumentHandles.Entry.HasElements) {

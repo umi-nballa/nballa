@@ -1,6 +1,3 @@
-<%
-uses onbase.api.services.datamodels.InsuredName
-%>
 <%@ params(filename: String, documentType: String, mimeType: String, source: String, keywords: onbase.api.services.implementations.wsp.util.KeywordAdaptor)
 %>>>>>Self Configuring Tagged DIP<<<<
 BEGIN:

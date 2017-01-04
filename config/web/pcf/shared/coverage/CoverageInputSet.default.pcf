@@ -18,12 +18,12 @@
       id="CovPatternDisplayName"
       value="coveragePattern.DisplayName"/>
     <InputGroup
-      allowToggle="coveragePattern.allowToggle(coverable) //!(coverable typeis CPBuilding &amp;&amp; (coverable.PolicyLine as CommercialPropertyLine).TerrorismCoverage==true) &amp;&amp;"
+      allowToggle="coveragePattern.allowToggle(coverable)"
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
       id="CovPatternInputGroup"
       label="coveragePattern.DisplayName"
       onToggle="coverable.setCoverageConditionOrExclusionExists(coveragePattern, VALUE);una.productmodel.CPAutoPopulateUtil.setCoveragesOnToggle(coveragePattern,coverable)"
-      visible="una.productmodel.CoveragesUtil.isCoverageVisible(coveragePattern, coverable)//">
+      visible="una.productmodel.CoveragesUtil.isCoverageVisible(coveragePattern, coverable)">
       <InputIterator
         elementName="term"
         forceRefreshDespiteChangedEntries="true"

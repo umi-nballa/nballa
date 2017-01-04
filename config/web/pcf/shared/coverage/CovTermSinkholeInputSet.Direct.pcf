@@ -11,9 +11,6 @@
     <Require
       name="openForEdit"
       type="boolean"/>
-    <Variable
-      initialValue="new una.pageprocess.CovTermInputSet(term, openForEdit)"
-      name="pcfController"/>
     <CovTermDirectInput
       editable="true"
       id="DirectTermInput"
@@ -22,7 +19,7 @@
       validationExpression="term.PatternCode == &quot;HODW_DamagePropertyLimit_HOE&quot; //? una.pageprocess.CovTermInputSetPCFControllertroller.minValueDamageProperty(term.Clause.OwningCoverable as Dwelling_HOE)?displaykey.Web.Policy.HomeownersLine.Validation.Message_Ext:null:term.PatternCode == &quot;HODW_Limit_HOE&quot;? una.pagepCovTermInputSetPCFControllertPCFController.maxValuePermitIncidLimit(term.Clause.OwningCoverable as Dwelling_HOE)? displaykey.Web.Policy.HomeownersLine.Validation.MaxMessage_Ext:null:null"
       value="term">
       <PostOnChange
-        onChange="pcfController.onChange()"/>
+        onChange="una.pageprocess.BP7PCFController.isCovTermAllowedValue(term as gw.api.domain.covterm.DirectCovTerm)"/>
     </CovTermDirectInput>
   </InputSet>
 </PCF>

@@ -10,6 +10,7 @@ uses onbase.api.services.implementations.wsp.webservicecollection.onbasekeywordu
 uses onbase.api.services.implementations.wsp.webservicecollection.onbasekeywordupateapi.soapservice.types.complex.StandAloneKeywordUpdate
 uses onbase.api.services.interfaces.UpdateKeywordsInterface
 uses org.slf4j.LoggerFactory
+uses onbase.api.services.implementations.wsp.webservicecollection.onbasekeywordupateapi.soapservice.elements.QueryParameter
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -34,18 +35,30 @@ class UpdateKeywordsWSP implements UpdateKeywordsInterface {
 
     // Create request keywords.
     var standaloneKeywords = new StandAloneKeywordUpdate()
-    ukRequest.DocumentHandles.eachWithIndex( \handle, i -> { standaloneKeywords.DocumentHandle_Collection.String[i] = handle })
+    //ukRequest.DocumentHandles.eachWithIndex( \handle, i -> { standaloneKeywords.DocumentHandle_Collection.String[i] = handle })
 
     var sikgKeywords = new Single_Instance_Keyword_GroupKeywordUpdate()
     //sikgKeywords.QueryType= ukRequest. GWKWRequestTypeAndUserName.INS_Username = ukRequest.UserID
 
+    standaloneKeywords.INS_Username_Collection.String[0] = ukRequest.UserID
+    standaloneKeywords.INS_RequestType_Collection.String[0] = "ASYNCHRONOUS"
+    sikgKeywords.QueryType.INS_CustomQuery = "PC-BC Query"
     var mikgKeywords = new Multi_Instance_Keyword_GroupKeywordUpdate()
+
     foreach (action in ukRequest.Actions index i) {
       mikgKeywords.KeywordUpdateAction_Collection.KeywordUpdateAction[i].INS_Action = action.Action.toString()
       mikgKeywords.KeywordUpdateAction_Collection.KeywordUpdateAction[i].INS_ActionOrder = "0"
       mikgKeywords.KeywordUpdateAction_Collection.KeywordUpdateAction[i].INS_DataType = action.KeywordName
       mikgKeywords.KeywordUpdateAction_Collection.KeywordUpdateAction[i].INS_DataValue = action.KeywordValue
     }
+
+    var queryParameter = new QueryParameter()
+    queryParameter.INS_QueryKeywordOperator = "EQUAL"
+    queryParameter.INS_QueryKeywordRelation = "AND"
+    queryParameter.INS_QueryKeywordType = "POLICY NUMBER"
+    queryParameter.INS_QueryKeywordValue = ukRequest.PolicyNumber
+
+    mikgKeywords.QueryParameter_Collection.QueryParameter[0] = queryParameter
 
     // Build request object
     var requestKU = new KeywordUpdate()

@@ -27,15 +27,15 @@ class CoverageTermAvailabilityUtil {
   private static final var AOP = "AOP"
   private static final var COV_LIMIT = "COVLIMIT"
   private static final var SC_NAMED_STORM_RESTRICTION_MAP : Map<String, Double> = {
-    StringUtils.join({"HO3", AOP + "2500", "0.01"}, ",") -> 250000,
-    StringUtils.join({"HO3", AOP + "2500", "0.02"}, ",") -> 125000,
-    StringUtils.join({"HO3", AOP + "5000", "0.01"}, ",") -> 500000,
-    StringUtils.join({"HO3", AOP + "5000", "0.02"}, ",") -> 250000,
-    StringUtils.join({"HO4", AOP + "1000", "0.02"}, ",") -> 50000,
-    StringUtils.join({"HO6", AOP + "2500", "0.02"}, ",") -> 125000,
-    StringUtils.join({"HO6", AOP + "5000", "0.02"}, ",") -> 250000,
-    StringUtils.join({"HO6", AOP + "5000", "0.05"}, ",") -> 100000,
-    StringUtils.join({"HO6", AOP + "5000", "0.10"}, ",") ->50000
+    StringUtils.join({"HO3", AOP, "2500", "0.01"}) -> 250000,
+    StringUtils.join({"HO3", AOP, "2500", "0.02"}) -> 125000,
+    StringUtils.join({"HO3", AOP, "5000", "0.01"}) -> 500000,
+    StringUtils.join({"HO3", AOP, "5000", "0.02"}) -> 250000,
+    StringUtils.join({"HO4", AOP, "1000", "0.02"}) -> 50000,
+    StringUtils.join({"HO6", AOP, "2500", "0.02"}) -> 125000,
+    StringUtils.join({"HO6", AOP, "5000", "0.02"}) -> 250000,
+    StringUtils.join({"HO6", AOP, "5000", "0.05"}) -> 100000,
+    StringUtils.join({"HO6", AOP, "5000", "0.10"}) ->50000
   }
 
   @Param("option", "The CovTermOpt to evaluate availability for.")
@@ -488,9 +488,9 @@ class CoverageTermAvailabilityUtil {
     if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix)){
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
-      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + namedStormValue + allPerilsValue)
-      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + nonHurricaneWindValue + allPerilsValue)
-      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
+      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, namedStormValue, allPerilsValue.asString()}))
+      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, nonHurricaneWindValue, allPerilsValue.asString()}))
+      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()}))
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
 
       if(namedStormRestrictedOptions != null){
@@ -514,7 +514,7 @@ class CoverageTermAvailabilityUtil {
         covLimitValue = dwelling.DwellingLimitCovTerm.Value
       }
 
-      var restrictionThreshold = SC_NAMED_STORM_RESTRICTION_MAP.get(StringUtils.join({dwelling.HOPolicyType.Code, AOP + allPerilsValue, option.Value}, ","))
+      var restrictionThreshold = SC_NAMED_STORM_RESTRICTION_MAP.get(StringUtils.join({dwelling.HOPolicyType.Code, AOP, allPerilsValue, option.Value}))
 
       if(result and restrictionThreshold != null and covLimitValue != null){
         result = covLimitValue >= restrictionThreshold

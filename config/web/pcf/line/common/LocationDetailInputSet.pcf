@@ -16,6 +16,12 @@
     <Require
       name="line"
       type="String"/>
+    <Variable
+      initialValue="gw.lob.cp.location.CPLocationUtil.getTunaResponse(polLocation)"
+      name="tunaAppResponse"/>
+    <Variable
+      initialValue="gw.lob.cp.location.CPLocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,polLocation)"
+      name="setTunaFieldsMatchLevel"/>
     <BooleanRadioInput
       id="AddressScrubbed"
       label="displaykey.Web.Account.Locations.AddressScrubbed"
@@ -120,12 +126,80 @@
       editable="true"
       id="locationlatitude"
       label="&quot;Latitude&quot;"
-      value="polLocation.Latitude_Ext"/>
+      value="polLocation.Latitude_Ext"
+      visible="!(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))"/>
     <TextInput
       editable="true"
       id="locationlongitude"
       label="&quot;Longitude&quot;"
-      value="polLocation.Longitude_Ext"/>
+      value="polLocation.Longitude_Ext"
+      visible="!(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))"/>
+    <InputDivider/>
+    <InputSet
+      id="latitude_Ext"
+      visible="(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))">
+      <RangeInput
+        available="!polLocation.OverrideLatitude_Ext"
+        editable="true"
+        id="latitudeTunaReturned_Ext"
+        label="displaykey.Web.CP.CPLocation.LatitudeTunaReturned_Ext"
+        value="polLocation.Latitude_Ext"
+        valueRange="{tunaAppResponse.Latitude}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Latitude)"/>
+      <Input
+        available="!polLocation.OverrideLatitude_Ext"
+        id="latitudeMatchLevel_Ext"
+        label="displaykey.Web.CP.CPLocation.LatitudeMatchlevel_Ext"
+        value="polLocation.LatitudeMatchLevel_Ext"/>
+      <BooleanRadioInput
+        editable="true"
+        id="OverRideLatitude_Ext"
+        label="displaykey.Web.CP.CPLocation.LatitudeOverride_Ext"
+        value="polLocation.OverrideLatitude_Ext">
+        <PostOnChange
+          target="latitude_Ext"/>
+      </BooleanRadioInput>
+      <Input
+        available="polLocation.OverrideLatitude_Ext"
+        editable="true"
+        id="latitudeUserEntered_Ext"
+        label="displaykey.Web.CP.CPLocation.LatitudeUserEntered_Ext"
+        required="polLocation.OverrideLatitude_Ext"
+        value="polLocation.LatitudeOverridden_Ext"
+        visible="polLocation.OverrideLatitude_Ext"/>
+    </InputSet>
+    <InputDivider/>
+    <InputSet
+      id="Longitude_Ext"
+      visible="(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))">
+      <RangeInput
+        available="!polLocation.OverrideLongitude_Ext"
+        editable="true"
+        id="LongitudeTunaReturned_Ext"
+        label="displaykey.Web.CP.CPLocation.LongitudeTunaReturned_Ext"
+        value="polLocation.Longitude_Ext"
+        valueRange="{tunaAppResponse.Longitude}//gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.Longitude)"/>
+      <Input
+        available="!polLocation.OverrideLongitude_Ext"
+        id="LongitudeMatchLevel_Ext"
+        label="displaykey.Web.CP.CPLocation.LongitudeMatchlevel_Ext"
+        value="polLocation.LongitudeMatchLevel_Ext"/>
+      <BooleanRadioInput
+        editable="true"
+        id="OverRideLongitude_Ext"
+        label="displaykey.Web.CP.CPLocation.LongitudeOverride_Ext"
+        value="polLocation.OverrideLongitude_Ext">
+        <PostOnChange
+          target="Longitude_Ext"/>
+      </BooleanRadioInput>
+      <Input
+        available="polLocation.OverrideLongitude_Ext"
+        editable="true"
+        id="LongitudeUserEntered_Ext"
+        label="displaykey.Web.CP.CPLocation.LongitudeUserEntered_Ext"
+        required="polLocation.OverrideLongitude_Ext"
+        value="polLocation.LongitudeOverridden_Ext"
+        visible="polLocation.OverrideLongitude_Ext"/>
+    </InputSet>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 
 function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLocation {
@@ -153,7 +227,10 @@ function getTC():TerritoryCode[]{
    
   if(polLocation.Branch.CPLineExists)
      TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="CPLine" or  elt.PolicyLinePatternCode=="GLLine")
-    
+
+ // if(polLocation.Branch.CPLineExists)
+ //   TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="GLLine")
+  
    return TC 
 }]]></Code>
   </InputSet>

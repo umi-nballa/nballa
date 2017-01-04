@@ -230,7 +230,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
   //TODO : Need to update the policy types for all the states. Once we are done configuring the rating engines we need to fix this.
   //updating this method to create the custom rating engine by calling the custom UNA implementation
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
-   /* if(method == RateMethod.TC_SYSTABLE) {
+   if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     } else if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_line.Dwelling?.HOPolicyType)){
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
@@ -250,7 +250,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
        return new UNAHONCRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       }
     }
-   */ return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+    return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }
 

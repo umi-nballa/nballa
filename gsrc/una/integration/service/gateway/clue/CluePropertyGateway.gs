@@ -289,6 +289,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     var subType = mapSubject(pHolder.FirstName,pHolder.LastName)
 
     subject1.Name.add(subType)
+    subject1.Birthdate = pHolder.DateOfBirth as String
 
 
     var address =  new AddressListType_Address()
@@ -357,11 +358,12 @@ class CluePropertyGateway implements CluePropertyInterface {
     //Map additional insureds
 
     var additionalIns = pPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+     var subject = new SubjectListType_Subject()
 
     if(additionalIns != null){
-    for(addIns in additionalIns){
+     var addIns = additionalIns.first()
 
-      var subject = new SubjectListType_Subject()
+
       i= i+1
       subject.Id = subId + i
       subject.Quoteback = addIns.PublicID
@@ -369,26 +371,11 @@ class CluePropertyGateway implements CluePropertyInterface {
       var subType1 = mapSubject(addIns.FirstName,addIns.LastName)
 
       subject.Name.add(subType1)
-
-      var addInsAddress = addIns.AccountContactRole.AccountContact?.Contact.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_BILLING)
-
-      var insAddress : SubjectType_Address
-      var addAddress =  new AddressListType_Address()
-      if(addInsAddress != null)  {
-        x = x + 1
-        var insuredMailingAddress = mapAddress(addAddress,addInsAddress)
-        insuredMailingAddress.Id = addId + x
-
-        insAddress = mapSubjectAddress(insuredMailingAddress,"Mailing")
-        subject.Address.add(insAddress)
-        lexOrderAddress.Address.add(insuredMailingAddress)
-        lexOrderSubject.Subject.add(subject)
+      subject.Birthdate = addIns.DateOfBirth as String
 
 
-        }
-      }
-
-    }
+      lexOrderSubject.Subject.add(subject)
+     }
 
      lexOrder.Dataset.Addresses = lexOrderAddress
      lexOrder.Dataset.Subjects = lexOrderSubject
@@ -405,7 +392,14 @@ class CluePropertyGateway implements CluePropertyInterface {
     subject1.Description.Sex = getSex(pHolder)
 
     lexOrder.Products.ClueProperty[0].PrimarySubject = subject1
+
+    if(subject != null)
+    lexOrder.Products.ClueProperty[0].JointSubject = subject
+
     lexOrder.Products.ClueProperty[0].RiskAddress = address
+    lexOrder.Products.ClueProperty[0].MailingAddress = address1
+    lexOrder.Products.ClueProperty[0].MailingAddress = address2
+
 
     orderXml = lexOrder.asUTFString()
     _logger.debug("CLUE order XML : " + orderXml )

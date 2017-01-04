@@ -166,12 +166,11 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     // Add document account number.
     keywords.add(new Keyword(KeywordMap.accountnumber.Name, document.Account.AccountNumber))
     // Add document properties.
-    keywords.add(new Keyword(KeywordMap.filename.Name, document.Name))
-    keywords.add(new Keyword(KeywordMap.description.Name, document.Description))
-    keywords.add(new Keyword(KeywordMap.status.Name, document.Status.Code))
-    keywords.add(new Keyword(KeywordMap.recipient.Name, document.Recipient))
+    keywords.add(new Keyword(KeywordMap.status.Name, document.Status.toString()))
+    keywords.add(new Keyword(KeywordMap.description.Name, document.Description?.toUpperCase()))
+
     keywords.add(new Keyword(KeywordMap.subtype.Name, document.OnBaseDocumentSubtype.DisplayName))
-    keywords.add(new Keyword(KeywordMap.onbasedocumenttype.Name, document.OnBaseDocumentType.DisplayName))
+    keywords.add(new Keyword(KeywordMap.onbasedocumenttype.Name, document.OnBaseDocumentType))
 
     //Add any Policy related keywords
     var policyKeywordList = getKeywordsFromPolicy(document)
@@ -239,8 +238,6 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
       keywords.add(new Keyword(KeywordMap.policytype.Name, document.Policy.Product.Abbreviation))
       keywords.add(new Keyword(KeywordMap.agencycode.Name, period.ProducerCodeOfRecord.Organization.AgenyNumber_Ext))
       keywords.add(new Keyword(KeywordMap.legacypolicynumber.Name, period.LegacyPolicyNumber_Ext))
-      keywords.add(new Keyword(KeywordMap.underwriter.Name, document.Policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_UNDERWRITER).AssignedUser.DisplayName))
-      keywords.add(new Keyword(KeywordMap.csr.Name, document.Policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_CUSTOMERREP).AssignedUser.DisplayName))
       keywords.add(new Keyword(KeywordMap.term.Name, period.TermType.Code))
       keywords.add(new Keyword(KeywordMap.policyexpirationdate.Name,period.PeriodEnd))
       keywords.add(new Keyword(KeywordMap.policyeffectivedate.Name, period.PeriodStart))

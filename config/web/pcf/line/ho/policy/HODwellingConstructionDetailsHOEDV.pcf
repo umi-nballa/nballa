@@ -50,7 +50,7 @@
           id="NumberOfStoriesUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStoriesUserEntered_Ext"
           required="dwelling.OverrideStoriesNumber_Ext"
-          value="dwelling.NoOfStoriesOverridden_Ext"
+          value="dwelling.NoofStoriesOverridden_Ext"
           visible="dwelling.OverrideStoriesNumber_Ext">
           <PostOnChange/>
         </Input>
@@ -58,7 +58,7 @@
       <InputDivider/>
       <InputSet
         id="ConstructionType_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_2STORIES ">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
           editable="!dwelling.OverrideConstructionType_Ext"
           id="ConstructionTypeTunaReturned_Ext"
@@ -91,13 +91,13 @@
         id="ConstTypeo_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeIfOther_Ext"
         value="dwelling.ConstructionTypeOther"
-        visible="dwelling.ConstructionType.Code==&quot;Other&quot;"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ) &amp;&amp; (dwelling.ConstructionType.Code==&quot;Other&quot;)"/>
       <Input
         editable="true"
         id="ConstType1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
         value="dwelling.ConstructionTypeL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <PostOnChange/>
       </Input>
       <Input
@@ -105,13 +105,13 @@
         id="ConstType1o_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1O_Ext"
         value="dwelling.ConstructionTypeLevel1Other"
-        visible="dwelling.ConstructionTypeL1_Ext==typekey.ConstructionTypeL1_Ext.TC_OTHER"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL1_Ext==typekey.ConstructionTypeL1_Ext.TC_OTHER)"/>
       <Input
         editable="true"
         id="ConstType2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2_Ext"
         value="dwelling.ConstructionTypeL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <PostOnChange/>
       </Input>
       <Input
@@ -119,11 +119,11 @@
         id="ConstType2o_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2O_Ext"
         value="dwelling.ConstructionTypeLevel2Other"
-        visible="dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER)"/>
       <InputDivider/>
       <InputSet
         id="ExteriorWFval_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <RangeInput
           available="!dwelling.OverrideExteriorWFval_Ext"
           editable="true"
@@ -160,13 +160,13 @@
         id="ExtWallfinishOther_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther_Ext"
         value="dwelling.ExteriorWallFinishOther"
-        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_2STORIES) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWFvalueOverridden_Ext==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWFvalueOverridden_Ext==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
       <Input
         editable="true"
         id="ExteriorWFva1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
         value="dwelling.ExteriorWallFinishL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <PostOnChange/>
       </Input>
       <Input
@@ -181,7 +181,7 @@
         id="ExteriorWFval2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
         value="dwelling.ExteriorWallFinishL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <PostOnChange/>
       </Input>
       <Input

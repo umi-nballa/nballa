@@ -19,9 +19,6 @@
       sortValueRange="false"
       validationExpression="((term as gw.api.domain.covterm.OptionCovTerm).Value == null) ? (&quot;${term.Clause.DisplayName} require value in: ${term.DisplayName}&quot;) : null"
       value="(term as gw.api.domain.covterm.OptionCovTerm).OptionValue"
-      valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term as gw.api.domain.covterm.OptionCovTerm, openForEdit)">
-      <PostOnChange
-        onChange="una.productmodel.CPAutoPopulateUtil.setTermValue(term);"/>
-    </RangeInput>
+      valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term as gw.api.domain.covterm.OptionCovTerm, openForEdit)"/>
   </InputSet>
 </PCF>

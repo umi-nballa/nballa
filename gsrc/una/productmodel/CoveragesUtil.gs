@@ -547,37 +547,4 @@ class CoveragesUtil {
 
     return result
   }
-
-  //TODO tlv - the below is going to be updated when i get requirements clarifications from Sen
-  private static class ComprehensiveEarthquakeAvailabilityEvaluator{
-    private var _dwelling : Dwelling_HOE
-    private var availabilityRules : List<EarthquakeAvailabilityRule> = {
-      new EarthquakeAvailabilityRule(\ dwelling -> { return dwelling.DwellingLimitCovTerm.Value >= 100000
-                                                        and dwelling.DwellingLimitCovTerm.Value <= 750000
-                                                        /** and is concrete basement**/}, _dwelling),
-      new EarthquakeAvailabilityRule(\ dwelling -> { return (dwelling.YearBuiltOrOverride > 1973 and dwelling.ThreeOrLessStories)
-                                                         or (dwelling.YearBuiltOrOverride >= 1937 and dwelling.YearBuiltOrOverride <= 1973 and dwelling.TwoOrLessStories)}, _dwelling)
-    }
-
-    construct(dwelling : Dwelling_HOE){
-      _dwelling = dwelling
-    }
-
-    public function isAvailable() : boolean{
-      return availabilityRules.allMatch( \ rule -> rule.ok())
-    }
-  }
-
-  private static class EarthquakeAvailabilityRule{
-    private var _condition : block(dwelling : Dwelling_HOE) : boolean
-    private var _dwelling : Dwelling_HOE
-
-    construct(condition(dwelling : Dwelling_HOE) : boolean, dwelling : Dwelling_HOE){
-      _condition = condition
-    }
-
-    function ok() : boolean{
-      return _condition(_dwelling)
-    }
-  }
 }

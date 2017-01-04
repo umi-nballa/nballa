@@ -87,7 +87,7 @@ class BP7PostOnChangeHandler {
     }
   }
 
-  static function handleTerm(term : CovTerm, helper : JobWizardHelper) {    
+  static function handleTerm(term : CovTerm, helper : JobWizardHelper) {
     // product model dependencies
     if (doesCovTermHaveDependent(term)) {
       sync(term, helper)
@@ -123,9 +123,7 @@ class BP7PostOnChangeHandler {
   static function updateProdComplOpsAggrLimit(line : BP7BusinessOwnersLine){
     var liabilityCov = line.BP7BusinessLiability
     var aggrLimitTerm = liabilityCov.BP7ProdCompldOpsAggregateLimitTerm
-    if (aggrLimitTerm != null and aggrLimitTerm.Value == null and aggrLimitTerm.AvailableOptions.Count > 0) {
-      aggrLimitTerm.OptionValue = aggrLimitTerm.AvailableOptions.sortBy(\ option -> option.Value).first()
-    }else if (aggrLimitTerm != null and aggrLimitTerm.AvailableOptions.Count > 0) {
+    if(aggrLimitTerm != null and liabilityCov.BP7EachOccLimitTerm!=null and liabilityCov.BP7EachOccLimitTerm.Value!=null and aggrLimitTerm.AvailableOptions.Count > 0) {
       aggrLimitTerm.setValueFromString((liabilityCov.BP7EachOccLimitTerm.Value * 2) as String)
     }
   }

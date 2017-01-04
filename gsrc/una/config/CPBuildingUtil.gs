@@ -369,4 +369,13 @@ Default response to No if Gust Wind Speed of Design = 100 OR = 110
   {
     return coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -> term.Pattern.Priority ).where( \ elt -> elt.PatternCode!="CPOptionalOutdoorProperty_EXT")
   }
+
+  /*public static function addRequiredCoverages(building:CPBuilding,cpline:CommercialPropertyLine)
+  {
+
+    print("### exists " + cpline.CPFloridaChangesCondoCondition_EXT)
+    if(cpline.CPFloridaChangesCondoCondition_EXTExists && cpline.CPFloridaChangesCondoCondition_EXT.Pattern.getExistence(cpline)==typekey.ExistenceType.TC_REQUIRED)
+      cpline.addToCPLineConditions(cpline.CPFloridaChangesCondoCondition_EXT)
+  } */
+
 }

@@ -117,14 +117,6 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
-  property get TwoOrLessStories() : boolean{
-    return typekey.NumberOfStories_HOE.TF_TWOORLESSSTORIES.TypeKeys.contains(this.StoriesNumber)
-  }
-
-  property get ThreeOrLessStories() : boolean{
-    return typekey.NumberOfStories_HOE.TF_THREESTORIESORLESS.TypeKeys.contains(this.StoriesNumber)
-  }
-
   property get isPolicyHOTypes() : boolean {
     return typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }

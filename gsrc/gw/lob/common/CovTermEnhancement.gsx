@@ -104,7 +104,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
 
     if(factor > 1){
       result = factor
-    }else{
+    }else if(factor >= 0){
       result = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
     }
 

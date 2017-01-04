@@ -12,7 +12,8 @@ class CPBuildingPopupUIHelper {
                                     , building : entity.Building
                                     , cpBuilding : entity.CPBuilding
                                     , cpLocation : entity.CPLocation
-                                    , openForEdit : boolean) : entity.CPBuilding {
+                                    , openForEdit : boolean
+ ) : entity.CPBuilding {
     var result = cpBuilding
 
     if (building <> null and openForEdit) {
@@ -24,10 +25,20 @@ class CPBuildingPopupUIHelper {
     } else if (cpBuilding <> null) {
       if (openForEdit) {
         gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({cpBuilding}, jobWizardHelper)
+
       }
     }
 
     return result
+  }
+
+  public static function initcpline(jobWizardHelper:JobWizardHelper, cline:CommercialPropertyLine, openForEdit:boolean):entity.CommercialPropertyLine
+  {
+    var result = cline
+    if(openForEdit)
+      gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({cline}, jobWizardHelper)
+
+      return result
   }
 
   public static function getBoilerInsuredValue(cpBuilding : entity.CPBuilding, boilerPremises : boolean) : boolean {

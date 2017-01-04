@@ -56,7 +56,7 @@
       <InputDivider/>
       <InputSet
         id="ConstructionType_Ext"
-        visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_2STORIES ">
         <RangeInput
           editable="!dwelling.OverrideConstructionType_Ext"
           id="ConstructionTypeTunaReturned_Ext"
@@ -95,7 +95,7 @@
         id="ConstType1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
         value="dwelling.ConstructionTypeL1_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
         <PostOnChange/>
       </Input>
       <Input
@@ -109,7 +109,7 @@
         id="ConstType2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2_Ext"
         value="dwelling.ConstructionTypeL2_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
         <PostOnChange/>
       </Input>
       <Input
@@ -121,7 +121,7 @@
       <InputDivider/>
       <InputSet
         id="ExteriorWFval_Ext"
-        visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
         <RangeInput
           available="!dwelling.OverrideExteriorWFval_Ext"
           editable="true"
@@ -162,7 +162,7 @@
         id="ExteriorWFva1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
         value="dwelling.ExteriorWallFinishL1_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES"/>
       <Input
         editable="true"
         id="ExtWallfinishOther1_Ext"
@@ -174,7 +174,7 @@
         id="ExteriorWFval2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
         value="dwelling.ExteriorWallFinishL2_Ext"
-        visible="dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || dwelling.StoriesNumber==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES"/>
       <Input
         editable="true"
         id="ExtWallfinishOther2_Ext"
@@ -723,14 +723,14 @@
           required="true"
           value="dwelling.RoofWallConnection_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getRoofWallConnectionRange(dwelling)"
-          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt &lt; 2002) or (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code)"/>
+          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) &lt; 2002) or (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code)"/>
         <TypeKeyInput
           editable="true"
           id="roofCover"
           label="displaykey.Web.Homeowners.DwellingConstruction.RoofCover"
           required="true"
           value="dwelling.RoofCover_Ext"
-          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt &lt; 2002) or (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code)"/>
+          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) &lt; 2002) or (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code)"/>
         <!-- <TypeKeyInput
           editable="true"
           id="roofDeckattachement"
@@ -745,7 +745,7 @@
           required="true"
           value="dwelling.RoofDeckAttachment_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getRoofDeckAttachementStateRange(dwelling)"
-          visible="dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code or (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt &lt; 2002)"/>
+          visible="dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code or (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) &lt; 2002)"/>
         <TypeKeyInput
           editable="true"
           id="doorStrength"
@@ -816,7 +816,7 @@
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
         required="true"
-        validationExpression="(dwelling.YearBuilt != null and dwelling.HeatingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.HeatUpgradeYearErrorMsg : null"
+        validationExpression="(gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) != null and dwelling.HeatingUpgradeDate &lt; gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling)) ? displaykey.Web.Homeowners.DwellingConstruction.HeatUpgradeYearErrorMsg : null"
         value="dwelling.HeatingUpgradeDate"
         visible="gw.lob.ho.HODwellingUtil_HOE.isHeatingReplacedVisible(dwelling) and (dwelling.HeatingUpgrade != null and dwelling.HeatingUpgrade)">
         <PostOnChange/>
@@ -843,7 +843,7 @@
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
         required="true"
-        validationExpression="(dwelling.YearBuilt != null and dwelling.PlumbingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.PlumbingUpgradeYearErrorMsg : null"
+        validationExpression="(gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) != null and dwelling.PlumbingUpgradeDate &lt; gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling)) ? displaykey.Web.Homeowners.DwellingConstruction.PlumbingUpgradeYearErrorMsg : null"
         value="dwelling.PlumbingUpgradeDate"
         visible="gw.lob.ho.HODwellingUtil_HOE.isPlumbingReplacedVisible(dwelling) and (dwelling.PlumbingUpgrade != null and dwelling.PlumbingUpgrade)"/>
       <CheckBoxInput
@@ -867,7 +867,7 @@
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
         required="true"
-        validationExpression="(dwelling.YearBuilt != null and dwelling.RoofingUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.RoofingUpgradeYearErrorMsg : null"
+        validationExpression="(gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) != null and dwelling.RoofingUpgradeDate &lt; gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling)) ? displaykey.Web.Homeowners.DwellingConstruction.RoofingUpgradeYearErrorMsg : null"
         value="dwelling.RoofingUpgradeDate"
         visible="gw.lob.ho.HODwellingUtil_HOE.isRoofingReplacedVisible(dwelling) and (dwelling.RoofingUpgrade != null and dwelling.RoofingUpgrade)"/>
       <CheckBoxInput
@@ -885,7 +885,7 @@
         label="gw.api.web.HtmlUtil.indent( displaykey.Web.Homeowners.DwellingConstruction.UpgradeYear, ScriptParameters.HOChildQuestionIndent)"
         numCols="8"
         required="true"
-        validationExpression="(dwelling.YearBuilt != null and dwelling.ElectricalSystemUpgradeDate &lt; dwelling.YearBuilt) ? displaykey.Web.Homeowners.DwellingConstruction.ElectricalUpgradeYearErrorMsg : null"
+        validationExpression="(gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) != null and dwelling.ElectricalSystemUpgradeDate &lt; gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling)) ? displaykey.Web.Homeowners.DwellingConstruction.ElectricalUpgradeYearErrorMsg : null"
         value="dwelling.ElectricalSystemUpgradeDate"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWiringReplacedVisible(dwelling) and (dwelling.ElectricalSystemUpgrade != null and dwelling.ElectricalSystemUpgrade)"/>
     </InputColumn>

@@ -552,7 +552,7 @@ class PropertyInformationCompletePluginImpl {
    * This function is to call GetPropertyInformation Service which is for BOP Product
    * Below method is a Post On Change when user enters value in YearBuilt field
    */
-  public function getBOPInformation(building: BP7Building) {
+  public function getBOPInformation(building: BP7Building): TunaAppResponse {
 
      _address = new AddressDTO()
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " getBOPInformation" + "For BuildingLocation ", this.IntrinsicType)
@@ -567,19 +567,12 @@ class PropertyInformationCompletePluginImpl {
         if (tunaResponse == null)
           LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
 
-        tunaStoryNumDetail(building,tunaResponse)
-        tunaSquareFootDetail(building,tunaResponse)
-        tunaBCEGDetail(building,tunaResponse)
-
-        tunaProtectionClassDetail(building,tunaResponse)
-        tunaConstructionTypeDetail(building,tunaResponse)
-        tunaWindPoolDetail(building,tunaResponse)
-        tunaTerritoryCode(building,tunaResponse)
-      logger.debug(" Entering  " + CLASS_NAME + " :: " + " getBOPInformation" + "For BuildingLocation ", this.IntrinsicType)
+       logger.debug(" Entering  " + CLASS_NAME + " :: " + " getBOPInformation" + "For BuildingLocation ", this.IntrinsicType)
     } catch (exp: Exception) {
       LocationUtil.addRequestScopedWarningMessage("Unable to retrive information from TUNA")
       logger.error("TunaGateway :  getBOPInformation  " + " : StackTrace = ", exp)
     }
+    return tunaResponse
   }
 
   /**

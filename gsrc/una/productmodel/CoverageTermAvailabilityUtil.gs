@@ -553,7 +553,7 @@ class CoverageTermAvailabilityUtil {
       }
 
       if(1000d == covTermOpt.Value.doubleValue()){
-        result = hoLine.Dwelling.ResidenceType == TC_FAM1 or hoLine.Dwelling.ResidenceType == TC_FAM2
+        result = hoLine.Dwelling.ResidenceType == TC_singleFamily_Ext
       }
     }
 

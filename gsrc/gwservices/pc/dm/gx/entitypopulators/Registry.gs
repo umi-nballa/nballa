@@ -140,6 +140,7 @@ uses gwservices.pc.dm.gx.lob.bop.BP7AllClassificationPopulator
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_BP7BusinessOwnersLine_BP7LineCoverages_Entry
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_BP7BusinessOwnersLine_Blankets_Entry
 uses gwservices.pc.dm.gx.lob.bop.BP7BlanketPopulators
+uses gwservices.pc.dm.gx.lob.cpp.generalliabilitycovmodel.anonymous.elements.GeneralLiabilityCov_CovTerms_Entry
 
 /**
  * Entity populator registry
@@ -227,14 +228,10 @@ class Registry {
       BP7Building_Coverages_Entry  -> getConstructor(CoveragePopulator) ,
       BP7Building_Classifications_Entry  -> getConstructor(BP7classificationPopulator),
       BP7Classification_Coverages_Entry -> getConstructor(CoveragePopulator),
-      //PolicyLine_Entity_HomeownersLine_HOE_HOLineConditions_Entry -> getConstructor(),
       PolicyLine_Entity_HomeownersLine_HOE_HOLineExclusions_Entry -> getConstructor(ExclusionPopulator),
       PolicyPeriod_Offering -> getConstructor(PolicyPeriodOfferingPopulator),
       PolicyLine_Entity_GeneralLiabilityLine_GLExposuresWM_Entry -> getConstructor(GLExposurePopulator),
       PolicyLine_Entity_GeneralLiabilityLine_GLLineCoverages_Entry -> getConstructor(CoveragePopulator),
-      //CPBuilding_ProtectionDetails -> getConstructor(CPBuildingPrtcnDetailsPopulator),
-      //CPBuilding_ResQuestions -> getConstructor(CPBuildingResQuestionsPopulator),
-      //CPBuilding_AirCondProt -> getConstructor(CPBuildingAirConPopulator),
       GLExposure_ClassCode -> getConstructor(GLExposClassCodePopulator),
       PolicyLine_Entity_BP7BusinessOwnersLine_AllClassifications_Entry -> getConstructor(BP7AllClassificationPopulator),
       PolicyLine_Entity_BP7BusinessOwnersLine_Blankets_Entry -> getConstructor(BP7BlanketPopulators),
@@ -254,7 +251,8 @@ class Registry {
       CPBuildingCov_CovTerms_Entry,
       HomeownersLineCov_HOE_CovTerms_Entry,
       BP7LocationCov_CovTerms_Entry,
-      BP7BuildingCov_CovTerms_Entry
+      BP7BuildingCov_CovTerms_Entry,
+      GeneralLiabilityCov_CovTerms_Entry
   }
   /**
    * Entity types to not auto delete

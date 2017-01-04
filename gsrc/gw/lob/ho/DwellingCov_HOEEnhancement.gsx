@@ -170,7 +170,7 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
         resultBuffer.append(displaykey.Web.Policy.HomeownersLine.Validation.TotalSchvalue_Ext(scheduleType.DisplayName,new Double(maxValidTotalExposureValue as double).asMoney()))
       }
       })
-    return  resultBuffer.toString()
+    return  (resultBuffer.length() > 0) ? resultBuffer.toString() : null
   }
 
 }

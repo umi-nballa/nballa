@@ -46,9 +46,9 @@ class BP7LocationValidation extends PCValidationBase {
   private function requiredDataModelFields() {
     Context.addToVisited(this, "requiredDataModelFields")
     
-    if (_location.FeetToHydrant == null) {
-      addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.FeetToHydrant)
-    }
+  //  if (_location.FeetToHydrant == null) {
+  //    addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.FeetToHydrant)
+  //  }
     //uim-svallabhapurapu : BOP changes below validation will need to be commented
     /*if (_location.FireProtectionClassPPC == null) {
       addLocationDataModelFieldError(displaykey.Web.Policy.BP7.Location.FireProtectionClass)

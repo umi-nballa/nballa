@@ -23,6 +23,9 @@
     <Variable
       initialValue="new gw.pcf.contacts.AddressAutoFillSearchOwner(producerCode.Address, true)"
       name="addrAutoFillSearchOwner"/>
+    <Variable
+      initialValue="producerCode.AllUsers.where(\u -&gt; u.Contact != producerCode.Contact_Ext).map(\u -&gt; u.Contact)"
+      name="userContacts"/>
     <!-- Variable
       initialValue="orgHelper.getAllOrganizationUsers()"
       name="organizationUsers"
@@ -58,6 +61,12 @@
           onChange="gw.web.admin.ProducerCodeUIHelper.initializeCommissionPlans(producerCode, producerCode.OrganizationWithUpdate); gw.api.web.PebblesUtil.invalidateIterators(CurrentLocation, CommissionPlan)"
           target="CommissionPlan"/>
       </OrgInput>
+      <Input
+        editable="true"
+        id="AllStateNumber"
+        label="displaykey.Web.Admin.ProducerCodeDetail.BasicDV.AllStateNumber_Ext"
+        required="false"
+        value="producerCode.AllStateNumber_Ext"/>
       <RangeInput
         available="producerCode.Organization != null"
         editable="producerCode.New"
@@ -171,45 +180,44 @@
         value="producerCode.Branch">
         <PostOnChange/>
       </PickerInput>
-      <!--InputDivider/>
+      <InputDivider/>
       <Input
         boldLabel="true"
         id="PrimaryContactLabel"
-        label="displaykey.Web.Admin.ProducerCodeDetail.PrimaryContact"
-        value="producerCode.Contact_Ext"
+        label="displaykey.Web.Organization.PrimaryContact"
+        value="&quot;&quot;"
         visible="not CurrentLocation.InEditMode"/>
       <Input
         boldLabel="true"
         hideChildrenIfReadOnly="false"
         id="ChangePrimaryContactButton"
-        label="displaykey.Web.Admin.ProducerCode.PrimaryContact"
+        label="displaykey.Web.producerCode.PrimaryContact"
         value="displaykey.Web.Policy.Account.PrimaryInsured.ChangeTo"
         visible="CurrentLocation.InEditMode">
         <MenuItem
           id="OtherExistingContact"
           label="displaykey.Web.Policy.Contact.ExistingContact">
           <MenuItemIterator
-            elementName="contact"
+            elementName="Contact_Ext"
             id="UnassignedContactIterator"
-            value="userContacts"
-            visible="userContacts!=null &amp;&amp; userContacts.length&gt;0">
+            value="userContacts">
             <IteratorSort
-              sortBy="contact.DisplayName"
+              sortBy="Contact_Ext.DisplayName"
               sortOrder="1"/>
             <MenuItem
-              action="producerCode.Contact_Ext = contact"
+              action="producerCode.Contact_Ext = Contact_Ext"
               id="UnassignedContact"
-              label="contact.DisplayName"/>
+              label="Contact_Ext.DisplayName"/>
           </MenuItemIterator>
           <PickerMenuItem
-            action="UserSearchPopup.push(producerCode.Organization)"
+            action="UserSearchPopup.push(null)"
             id="MoreUser"
             label="displaykey.Web.ContactDetail.MoreUser"
             onPick="producerCode.Contact_Ext = PickedValue.Contact"
             visible="producerCode.AllUsers.Count &gt; 10"/>
         </MenuItem>
         <MenuItem
-          action="NewOrganizationUserPopup.push(producerCode.Organization)"
+          action="NewOrganizationUserPopup.push(producerCode)"
           id="NewUser"
           label="displaykey.Web.ContactDetail.NewUser"
           visible="perm.User.create"/>
@@ -217,39 +225,45 @@
           action="NewContactPopup.push(typekey.ContactType.TC_COMPANY)"
           id="NewCompany"
           label="displaykey.Web.ContactDetail.NewCompany"
-          onPick="organization.Contact = PickedValue"/>
+          onPick="producerCode.Contact_Ext = PickedValue"/>
         <PickerMenuItem
           action="NewContactPopup.push(typekey.ContactType.TC_PERSON)"
           id="NewPerson"
           label="displaykey.Web.ContactDetail.NewPerson"
-          onPick="organization.Contact = PickedValue"/>
+          onPick="producerCode.Contact_Ext = PickedValue"/>
       </Input>
-      <InputSet>
+      <InputSet
+        visible="true //producerCode.Contact_Ext != null">
         <Input
           action="OrganizationContactForward.push( producerCode.Contact_Ext )"
           id="ContactName"
           label="displaykey.Web.Policy.Account.Applicant.Name"
-          value="producerCode.Contact_Ext"/>
+          value="producerCode.Contact_Ext"
+          visible="true"/>
         <InputSetRef
           def="GlobalPhoneInputSet(new gw.api.phone.BasicPhoneOwner(new gw.api.phone.ContactPhoneDelegate(producerCode.Contact_Ext, Contact#WorkPhone), displaykey.Web.ContactDetail.Phone))"
           editable="true"
-          id="WorkPhone"/>
+          id="WorkPhone"
+          visible="true"/>
         <Label
           label="displaykey.Web.ContactDetail.Location"/>
         <InputSetRef
-          def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(producerCode.Contact_Ext.PrimaryAddress, false, true))"/>
+          def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(producerCode.Contact_Ext.PrimaryAddress, false, true))"
+          visible="true //producerCode.Contact_Ext != null"/>
       </InputSet>
       <Input
         editable="true"
         id="AddressType"
         label="displaykey.Web.AddressDetail.AddressType"
         required="true"
-        value="producerCode.Contact_Ext.PrimaryAddress.AddressType"/>
+        value="producerCode.Contact_Ext.PrimaryAddress.AddressType"
+        visible="true //producerCode.Contact_Ext != null"/>
       <Input
         editable="true"
         id="AddressDescription"
         label="displaykey.Web.AddressDetail.Description"
-        value="producerCode.Contact_Ext.PrimaryAddress.Description"/-->
+        value="producerCode.Contact_Ext.PrimaryAddress.Description"
+        visible="true //producerCode.Contact_Ext != null"/>
     </InputColumn>
     <Code><![CDATA[function getcontactlist(organizationUser:List<User>, organizatio:Organization):UserContact[]
 {
@@ -257,6 +271,8 @@
   return organizationUser?.where(\u -> u != null && u?.Contact != organizatio?.Contact).map(\u -> u.Contact).toTypedArray()
   //else
   //return null
-}]]></Code>
+}
+
+]]></Code>
   </DetailViewPanel>
 </PCF>

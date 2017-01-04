@@ -3,6 +3,8 @@ package una.enhancements.entity
 uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.lang.IllegalStateException
+uses una.config.ConfigParamsUtil
+uses java.lang.Integer
 
 /**
  * Created with IntelliJ IDEA.
@@ -107,6 +109,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   }
 
+  property get YearBuiltOrOverride(): Integer{
+    if(this.OverrideYearbuilt_Ext){
+      return this.YearBuiltOverridden_Ext
+    }else{
+      return this.YearBuilt
+    }
+  }
+
   property get isPolicyHOTypes() : boolean {
     return typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }
@@ -119,4 +129,53 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }
 
+  function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
+    if(coverable.HODW_FloodCoverage_HOE_ExtExists){
+      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA"){
+        coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA"){
+        coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA"){
+        coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
+      }
+    }
+    return coverable.FloodRiskType_Ext
+  }
+
+  function isFloodExcludedZipCode(dwelling : Dwelling_HOE):boolean{
+    var zipCodeExists:boolean
+    var floodExcludedZips = ConfigParamsUtil.getList(TC_FloodExcludedZipCodes, dwelling.PolicyLine.BaseState)
+    if(floodExcludedZips.HasElements){
+      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+      if(zipCode.length >= 5){
+        zipCode = zipCode.substring(0, 5)
+        zipCodeExists = !floodExcludedZips.contains(zipCode)
+      }
+    }
+   return zipCodeExists
+  }
+
+  function eastORWestCoastLocation(dwelling : Dwelling_HOE):CoastLocation_Ext{
+    var countyDirection:CoastLocation_Ext
+    var eastCoastLocations = ConfigParamsUtil.getList(TC_EastCoastLocation, dwelling.PolicyLine.BaseState)
+    var westCoastLocations = ConfigParamsUtil.getList(TC_WestCoastLocation, dwelling.PolicyLine.BaseState)
+    var county = dwelling.HOLocation.PolicyLocation.County
+    if(eastCoastLocations.HasElements && eastCoastLocations.hasMatch( \ ecl -> ecl.equalsIgnoreCase(county))){
+      countyDirection = typekey.CoastLocation_Ext.TC_EAST
+    }else if(westCoastLocations.HasElements && westCoastLocations.hasMatch( \ wcl -> wcl.equalsIgnoreCase(county))){
+      countyDirection = typekey.CoastLocation_Ext.TC_WEST
+    }
+    return countyDirection
+  }
+
+  function isCoastLocationCountyExists(dwelling : Dwelling_HOE):boolean{
+    var countyExists = false
+    var eastCoastLocations = ConfigParamsUtil.getList(TC_EastCoastLocation, dwelling.PolicyLine.BaseState)
+    var westCoastLocations = ConfigParamsUtil.getList(TC_WestCoastLocation, dwelling.PolicyLine.BaseState)
+    var county = dwelling.HOLocation.PolicyLocation.County
+    if( (eastCoastLocations.HasElements && eastCoastLocations.contains(county)) || (westCoastLocations.HasElements && westCoastLocations.contains(county)) ){
+      countyExists = true
+    }
+    return countyExists
+  }
 }

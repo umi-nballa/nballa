@@ -46,7 +46,7 @@
       name="formerLastName"
       type="String"/>
     <Variable
-      initialValue="period.CreditInfoExt.CreditReport == null ? true : false"
+      initialValue="setCreditRecordandDefaultValue()"
       name="creditLevelModeInd"
       type="boolean"/>
     <Variable
@@ -70,14 +70,14 @@
             id="Label3"
             label="&quot;In order to bind the policy, an actual credit score will be required.&quot;"/>
           <BooleanRadioInput
-            editable="true"
+            editable="!period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext"
             falseLabel="&quot;Credit Record&quot;"
             id="CreditLevelRecordSelector"
             label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevelReportSelector"
             trueLabel="&quot;Credit Level&quot;"
             value="creditLevelModeInd">
             <PostOnChange
-              onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period)"/>
+              onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period);una.pageprocess.credit.CreditReportScreen.setDefaultCreditReport(period)"/>
           </BooleanRadioInput>
           <InputDivider/>
           <InputSet
@@ -249,7 +249,7 @@
           </InputSet>
           <InputDivider/>
           <InputSet
-            visible="period.CreditInfoExt.CreditReport != null">
+            visible="period.CreditInfoExt.CreditReport != null &amp;&amp; !creditLevelModeInd">
             <Label
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportEnabledPrompt"/>
             <Input
@@ -264,7 +264,7 @@
               id="CreditReportDesc"
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditDescription"
               value="period.CreditInfoExt.CreditReport.CreditStatusDescription"
-              visible="period.CreditInfoExt.CreditReport?.CreditStatusDescription.containsIgnoreCase(displaykey.Web.SubmissionWizard.CreditReporting.Deceased)"/>
+              visible="period.CreditInfoExt.CreditReport?.CreditStatusDescription?.containsIgnoreCase(displaykey.Web.SubmissionWizard.CreditReporting.Deceased)"/>
             <Input
               editable="true"
               id="CreditReportScore"
@@ -343,7 +343,9 @@
   }
 }
 
-
-]]></Code>
+function setCreditRecordandDefaultValue():Boolean{
+  una.pageprocess.credit.CreditReportScreen.setDefaultCreditReport(period)
+  return period.CreditInfoExt.CreditReport == null ||  (!period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext)  ? true : false
+}]]></Code>
   </Screen>
 </PCF>

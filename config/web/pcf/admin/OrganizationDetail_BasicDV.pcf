@@ -41,6 +41,12 @@
         visible="organization.Type == typekey.BusinessType.TC_AGENCY">
         <PostOnChange/>
       </Input>
+      <Input
+        editable="true"
+        id="AllStateNumber"
+        label="displaykey.Web.Admin.OrganizationDetail.BasicDV.AllStateNumber_Ext"
+        required="false"
+        value="organization.AllStateNumber_Ext"/>
       <InputSetRef
         def="GlobalContactNameInputSet(new gw.search.OrganizationNameOwner(orgNameAdapter))"
         mode="gw.api.name.NameLocaleSettings.PCFMode"/>
@@ -206,6 +212,7 @@
         visible="organization.Contact != null">
         <Input
           action="OrganizationContactForward.push( organization.Contact )"
+          actionAvailable="!(organization.Type == typekey.BusinessType.TC_INSURER &amp;&amp; una.pageprocess.producer.ProducerEditControl.hasEditProducerOnlyRole())"
           id="ContactName"
           label="displaykey.Web.Policy.Account.Applicant.Name"
           value="organization.Contact"/>

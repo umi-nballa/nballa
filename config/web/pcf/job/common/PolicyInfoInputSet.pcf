@@ -97,7 +97,7 @@
       visible="policyPeriod.HomeownersLine_HOEExists"/>
     <!-- Changing the effective date updates the expiration date when the term type is not "short" -->
     <DateInput
-      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates and (policyPeriod.Job typeis Issuance)"
+      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates// and (policyPeriod.Job typeis Issuance)"
       id="EffectiveDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.EffectiveDate"
       required="true"
@@ -213,7 +213,8 @@
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
-      <Input
+      <BooleanRadioInput
+        editable="true"
         id="QualifiesDiscount"
         label="displaykey.Web.Admin.AffinityGroup.AffinityDiscount_Ext"
         value="policyPeriod.QualifiesAffinityDisc_Ext"/>

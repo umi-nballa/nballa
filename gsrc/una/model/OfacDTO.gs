@@ -6,7 +6,7 @@ package una.model
  * Time: 4:01 AM
  * To change this template use File | Settings | File Templates.
  */
-class OfacDTO {
+final class OfacDTO {
   var _firstName: String as FirstName
   var _lastName: String as LastName
   var _middleName: String as MiddleName

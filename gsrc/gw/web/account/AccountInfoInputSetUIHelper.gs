@@ -80,9 +80,11 @@ class AccountInfoInputSetUIHelper {
 
   // Method that created History event for account Viewing
   public static function createHistoryEventAccount (account : entity.Account){
+    if(account  != null){
         gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       var Account = bundle.add(account)
       Account.createCustomHistoryEvent(CustomHistoryType.TC_VIEWACCOUNT, \ -> displaykey.Web.Account.HistoryEvent.Msg)
     })
+  }
   }
 }

@@ -42,6 +42,7 @@ class HPXBP7ExclusionMapper extends HPXExclusionMapper {
     limit.CurrentTermAmt.Amt = 0.00
     limit.NetChangeAmt.Amt = 0.00
     limit.FormatPct = 0
+    limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Premises: " + currentExclusion.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                       "| Operations: " + (currentExclusion.OwningCoverable as BP7Line).AssociatedPolicyPeriod.PrimaryNamedInsured.IndustryCode + " - " +

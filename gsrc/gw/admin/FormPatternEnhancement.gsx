@@ -142,7 +142,7 @@ enhancement FormPatternEnhancement : entity.FormPattern {
    */
   property get AvailableProducts() : Product[] {
     var addedProductCodes =  this.FormPatternProducts.map(\ f -> f.ProductCode).toSet()
-    return PCDependenciesGateway.getProductModel().getAllInstances(Product).where(\ p -> not addedProductCodes.contains(p.Code)).toTypedArray()
+    return PCDependenciesGateway.getProductModel().getAllInstances(Product).where(\ p -> not addedProductCodes.contains(p.Code) && (p.CodeIdentifier=="Homeowners" || p.CodeIdentifier=="CommercialPackage" || p.CodeIdentifier=="BP7BusinessOwners")).toTypedArray()
   }
 
   /**

@@ -250,26 +250,20 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
   private function blockSpecificConstructionTypes()
   {
-    var constype = _policyEvalContext.Period?.HomeownersLine_HOE?.Dwelling?.ConstructionType
-    var st = _policyEvalContext.Period?.PrimaryLocation?.State?.Code
-    if(constype != null
-       && ((st=="NV" && (constype== typekey.ConstructionType_HOE.TC_ICF_EXT
-        || constype== typekey.ConstructionType_HOE.TC_L
-        || constype== typekey.ConstructionType_HOE.TC_EARTH_EXT))
-      ||
-      (st=="TX" && (constype== typekey.ConstructionType_HOE.TC_ICF_EXT
-          || constype== typekey.ConstructionType_HOE.TC_L
-          ))
-        ))
-      {
-        var shortDescription =
-            \ -> "Underwriting review required for this construction type"
-        var longDescription =
-            \ -> "Underwriting review is required for this Construction Type "
-        _policyEvalContext.addIssue("CheckConstructionType","CheckConstructionType",shortDescription,longDescription)
-
-      }
-
+   var state = _policyEvalContext.Period?.PrimaryLocation?.State?.Code
+      var dwelling = _policyEvalContext.Period?.HomeownersLine_HOE?.Dwelling
+    if(typekey.State.TF_HOSTATES.TypeKeys.hasMatch( \ elt1 -> elt1.Code == state)){
+      var constype = (dwelling?.OverrideConstructionType_Ext) ? dwelling?.ConstTypeOverridden_Ext : dwelling?.ConstructionType
+          if(constype != null && ((constype == typekey.ConstructionType_HOE.TC_ICF_EXT  || constype== typekey.ConstructionType_HOE.TC_L )) ||
+            ( state == typekey.State.TC_TX.Code && constype== typekey.ConstructionType_HOE.TC_EARTH_EXT ))
+          {
+            var shortDescription =
+                \ -> "Underwriting review required for this construction type"
+            var longDescription =
+                \ -> "Underwriting review is required for this Construction Type "
+            _policyEvalContext.addIssue("CheckConstructionType","CheckConstructionType",shortDescription,longDescription)
+          }
+    }
   }
 
   private function underwritingCompanySegmentNotValid() {

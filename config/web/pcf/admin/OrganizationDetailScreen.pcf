@@ -12,7 +12,7 @@
       name="orgHelper"
       recalculateOnRefresh="true"/>
     <Toolbar
-      visible="perm.Organization.editbasic(organization) or perm.Organization.delete(organization)">
+      visible="perm.Organization.editbasic(organization) or perm.Organization.delete(organization) or (perm.Organization.editagency(organization) &amp;&amp; organization.Type == typekey.BusinessType.TC_AGENCY)">
       <EditButtons
         editVisible="perm.Organization.edit(organization)"/>
       <ToolbarButton

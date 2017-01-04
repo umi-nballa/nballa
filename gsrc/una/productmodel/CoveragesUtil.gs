@@ -4,6 +4,7 @@ uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
+uses java.lang.Double
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,6 +15,11 @@ uses gw.api.domain.covterm.CovTerm
  */
 
 class CoveragesUtil {
+  public static final var SCHEDULED_PERSONAL_PROPERTY_DEFAULTS : HashMap<typekey.ScheduleType_HOE, Double> = {ScheduleType_HOE.TC_GUNSTHEFT_EXT -> 5000,
+                                                                                                              ScheduleType_HOE.TC_SILVERWARETHEFT_EXT -> 10000,
+                                                                                                              ScheduleType_HOE.TC_JEWELRYTHEFT_EXT -> 5000,
+                                                                                                              ScheduleType_HOE.TC_WATERCRAFT_EXT -> 2000,
+                                                                                                              ScheduleType_HOE.TC_TRAILEROTHERS_EXT -> 2000}
   public static final var DEPENDENT_LIMIT_PATTERNS_TO_DERIVING_LIMIT_PATTERNS : HashMap<String, List<String>> = {"HODW_PersonalPropertyLimit_HOE" -> {"HODW_LossOfUseDwelLimit_HOE"},
                                                                                                                  "HODW_Dwelling_Limit_HOE" -> {"HODW_OtherStructures_Limit_HOE",
                                                                                                                                                "HODW_PersonalPropertyLimit_HOE",
@@ -22,6 +28,8 @@ class CoveragesUtil {
                                                                                                                                                "DPDW_PersonalPropertyLimit_HOE",
                                                                                                                                                "DPDW_Additional_LivingExpLimit_HOE",
                                                                                                                                                "DPDW_FairRentalValue_Ext"}}
+  private static final var REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES = {"2", "3", "4", "16C", "17", "19C", "19N"}
+
   public static function isCoverageAvailable(coveragePattern : String, coverable : Coverable) : boolean{
     var result = true
 
@@ -34,9 +42,6 @@ class CoveragesUtil {
         break
       case "HODW_SpecialPersonalProperty_HOE_Ext":
         result = isSpecialPersonalPropertyAvailable(coverable as Dwelling_HOE)
-        break
-      case "HODW_LossAssessmentCov_HOE":
-        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
         break
 	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
@@ -78,7 +83,11 @@ class CoveragesUtil {
       case "SupplExtendedReportingPeriodEndrsmnt_EXT":
         result = isCyberOneSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_LossAssessmentCov_HOE_Ext":
+        result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
+        break
       default:
+        break
     }
 
     return result
@@ -109,12 +118,16 @@ class CoveragesUtil {
         result = isWindHurricaneAndHailExclusionAvailable(coverable as HomeownersLine_HOE)
         break
       case "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT":
-        result = isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(coverable as BP7BusinessOwnersLine)
+        result = isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(coverable as BP7Building)
         break
       case "BP7WindstormOrHailExcl_EXT":
         result = isWindstormOrHailExclusionAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_WindstromHailExc_HOE_Ext":
+        result = isWindstormOrHailExclusionAvailableHO(coverable as HomeownersLine_HOE)
+        break
       default:
+        //do nothing intentionally
     }
 
     return result
@@ -130,7 +143,11 @@ class CoveragesUtil {
       case "BP7FloridaChangesCondoUnitOwner_EXT":
         result = isFloridaChangesCondoUnitOwnerConditionAvailable(coverable as BP7BusinessOwnersLine)
         break
-        default:
+      case "HODW_ReplaceCostCovAPaymentSched_HOE":
+        result = isReplaceCostWithRoofPayScheduleConditionAvailable(coverable as HomeownersLine_HOE)
+        break
+      default:
+        break
     }
     return result
   }
@@ -148,6 +165,15 @@ class CoveragesUtil {
       case "BP7FLChngsEmployPracLiabInsCov_EXT":
         result = getFLChngsEmployPracLiabInsCoverageExistence(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_WindstromHailExc_HOE_Ext":
+        result = getWindstormOrHailExclusionExistence(coverable as HomeownersLine_HOE)
+      break
+      case "CPProtectiveSafeguards_EXT":
+          result = getProtectiveSafeguardsExistence(coverable as CPBuilding)
+      break
+      case "CPFloridaChangesCondoCondition_EXT":
+          result = getFloridaChangesCondoExistence(coverable as CommercialPropertyLine)
+          break
       default:
         break
     }
@@ -206,6 +232,9 @@ class CoveragesUtil {
       case "HODW_BuildingAdditions_HOE_Ext":
           covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm)
           break
+      case "HODW_BusinessProperty_HOE_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm)
+        break
       default:
         break
     }
@@ -249,17 +278,17 @@ class CoveragesUtil {
   }
 
   private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = true
+    var result = (dwelling.HOPolicyType == TC_HO3) ? dwelling.FloodCoverage_Ext : true
     var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
 
-    if(floodIneligibleZips.HasElements){
-      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+   if(result and floodIneligibleZips.HasElements){
+     var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
 
-      if(zipCode.length >= 5){
-        zipCode = zipCode.substring(0, 5)
-        result = !floodIneligibleZips.contains(zipCode)
-      }
-    }
+     if(zipCode.length >= 5){
+       zipCode = zipCode.substring(0, 5)
+       result = !floodIneligibleZips.contains(zipCode)
+     }
+   }
 
     return result
   }
@@ -301,7 +330,7 @@ class CoveragesUtil {
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
     return applicableCounties.HasElements
-       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County))
+       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
   }
 
   /*Available when the Occupancy type is:
@@ -309,16 +338,14 @@ class CoveragesUtil {
   2. Building Owner and Occupant and the under the Building Coverage, the 'building owner occupies' field is either < or > 65% (or)
   3. Condominium Association (or)
   4. Condominium Unit Owner*/
-  private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    for(building in bp7Line.AllBuildings){
-      if( building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
-          ( building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
-              (building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
-                (building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
+  private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Building : BP7Building):boolean{
+      if( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
+          ( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
+              (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
+                (bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
         return true
       }
-    }
-    return false
+   return false
   }
 
   private static function isWindstormOrHailExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -327,6 +354,16 @@ class CoveragesUtil {
       return true
     }
     return false
+  }
+
+  private static function isWindstormOrHailExclusionAvailableHO(line : HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(line.BaseState == TC_FL){
+      result = line.Dwelling.WHurricaneHailExclusion_Ext
+    }
+
+    return result
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
@@ -356,7 +393,45 @@ class CoveragesUtil {
     }
     return result
   }
-  
+
+  private static function getWindstormOrHailExclusionExistence(line : HomeownersLine_HOE) : ExistenceType{
+    var result : ExistenceType
+
+    if(line.BaseState == TC_FL and line.Dwelling.WHurricaneHailExclusion_Ext){
+      result = TC_REQUIRED
+    }else{
+      result = TC_ELECTABLE
+    }
+
+    return result
+  }
+
+
+  private static function getProtectiveSafeguardsExistence(building : CPBuilding) : ExistenceType{
+    var result : ExistenceType
+
+
+    if(building.AutomaticFireSuppress)
+       result = TC_REQUIRED
+    else
+     result = TC_ELECTABLE
+
+    return result
+  }
+
+
+  private static function getFloridaChangesCondoExistence(line : CommercialPropertyLine) : ExistenceType{
+    var result : ExistenceType
+
+
+    if(line.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+      result = TC_REQUIRED
+    else
+      result = TC_ELECTABLE
+
+    return result
+  }
+
   private static function isEmployDishonestCoverageAvailable(bp7Line : BP7BusinessOwnersLine):boolean{
     return  bp7Line.BP7EmployeeDishtyExists
   }
@@ -381,6 +456,10 @@ class CoveragesUtil {
       }
     }
     return false
+  }
+
+  private static function isReplaceCostWithRoofPayScheduleConditionAvailable(hoLine : HomeownersLine_HOE) : boolean{
+    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
   }
 
   private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{

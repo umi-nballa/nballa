@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<CoveragePattern
+  codeIdentifier="HODW_LateWildlifeClaimReporting_Ext"
+  coverageCategory="HODW_SectionI_HOE"
+  coverageSubtype="DwellingCov_HOE"
+  coveredPartyType="FirstParty"
+  lookupTableName="DwellingCov"
+  owningEntityType="Dwelling_HOE"
+  policyLinePattern="HomeownersLine_HOE"
+  priority="20300"
+  public-id="HODW_LateWildlifeClaimReporting_Ext"
+  referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.getLateWildfireClaimReportingExistence(Dwelling_HOE)]]></ExistenceScript>
+  <CovTerms>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_LateWildlifeClaimReportingLimit_Ext"
+      coverageColumn="DirectTerm1"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="100"
+      public-id="HODW_LateWildlifeClaimReportingLimit_Ext"
+      required="true"
+      restrictionModel="prp"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="zquhmt7pb2lqfcvg5vv1122th6b"
+          currency="usd"
+          defaultValue="2500"
+          public-id="zquhmt7pb2lqfcvg5vv1122th6b"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+  </CovTerms>
+</CoveragePattern>

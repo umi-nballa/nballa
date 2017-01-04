@@ -2,6 +2,7 @@ package gw.lob.ho
 
 uses java.util.ArrayList
 uses gw.api.util.JurisdictionMappingUtil
+uses java.lang.UnsupportedOperationException
 
 enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
 
@@ -34,18 +35,17 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
   //the other named insureed locations.    The function has been designed with the coverage pattenn as an input so that
   //the function cab be resused for any other coverage at line level that also have an array of covered locations
   
-  function createAndAddCoveredLocation(coverage : String) : CoveredLocation_HOE {
-    
-    var coveredLocation = new CoveredLocation_HOE(this.Branch)
-    
-    if (coverage.matches("HOLI_OtherInsuredResidence_HOE") and this.HOLI_OtherInsuredResidence_HOEExists) {
-      this.HOLI_OtherInsuredResidence_HOE.addCoveredLocation(coveredLocation)
-    } else {
-      throw "Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx"
+  function createAndAddCoveredLocation(patternCode : String) : CoveredLocation_HOE {
+
+    var coverage = this.getCoverage(patternCode)
+
+    if(coverage != null){
+      var coveredLocation = new CoveredLocation_HOE(this.Branch)
+      (coverage as HomeownersLineCov_HOE).addCoveredLocation(coveredLocation)
+      return coveredLocation
+    }else{
+      throw new UnsupportedOperationException("Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx")
     }
-    
-    return coveredLocation
-    
   }
 
   /**
@@ -58,13 +58,13 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     var schedItem = new HOscheduleItem_HOE_Ext(this.Branch)
 
     if (covPattern.matches("HOSL_OutboardMotorsWatercraft_HOE_Ext") and this.HOSL_OutboardMotorsWatercraft_HOE_ExtExists) {
+      schedItem.fromDate = this.Branch.PeriodStart
+      schedItem.toDate = this.Branch.PeriodEnd
       this.HOSL_OutboardMotorsWatercraft_HOE_Ext.addScheduledItem(schedItem)
     } else if (covPattern.matches("HOSL_WatercraftLiabilityCov_HOE_Ext") and this.HOSL_WatercraftLiabilityCov_HOE_ExtExists) {
       this.HOSL_WatercraftLiabilityCov_HOE_Ext.addScheduledItem(schedItem)
     } else if (covPattern.matches("HOLI_AddResidenceRentedtoOthers_HOE") and this.HOLI_AddResidenceRentedtoOthers_HOEExists) {
       this.HOLI_AddResidenceRentedtoOthers_HOE.addScheduledItem(schedItem)
-    } else if (covPattern.matches("HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext") and this.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_ExtExists) {
-      this.HOLI_AddResidenceOccupiedInsuredFamilies_HOE_Ext.addScheduledItem(schedItem)
     }else {
       throw "Unsupported cov pattern in HomeownersLineEnhancement_HOE.gsx"
     }

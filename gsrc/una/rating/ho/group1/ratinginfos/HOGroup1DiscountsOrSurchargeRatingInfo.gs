@@ -15,7 +15,6 @@ uses java.math.BigDecimal
 class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo {
 
   var _isPrivateFireCompanyDiscountApplicable: boolean as IsPrivateFireCompanyDiscountApplicable
-  var _territoryCode : int as TerritoryCode
   var _bcegFactor : int as BCEGFactor
   var _preferredBuilderExists : boolean as PreferredBuilderExists
   var _preferredFinancialInstitutionExists : boolean as PreferredFinancialInstitutionExists
@@ -25,8 +24,9 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     this.CoverageALimit = line.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
     this.AllPerilDeductible = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
     _isPrivateFireCompanyDiscountApplicable = isPrivateFireCompanyDiscountApplicable(line)
-    _territoryCode = (line.Dwelling?.HOLocation?.PolicyLocation?.TerritoryCodes.first().Code.toInt())
-    //_bcegFactor = line.Dwelling?.HOLocation?.BCEG_Ext?.Numeric ? line.Dwelling?.HOLocation?.BCEG_Ext?.toInt() : null
+    /*_bcegGrade = line.Dwelling.HOLocation?.BCEG_Ext?.toInt()
+    if(line.Dwelling?.HOLocation?.OverrideBCEG_Ext)
+      _bcegGrade = line.Dwelling?.HOLocation?.BCEGOverridden_Ext?.toInt()*/
 
     if(line.BaseState == Jurisdiction.TC_CA){
       if(line.Branch.PreferredBuilder_Ext != null)
@@ -41,7 +41,7 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     if (this.Line.BaseState != Jurisdiction.TC_NV and Line.Dwelling?.HasAllRenovations) {
       yearForCalc = Line.Dwelling.MostRecentRenovationYear
     } else {
-      yearForCalc = Line.Dwelling.YearBuilt
+      yearForCalc = Line.Dwelling.OverrideYearbuilt_Ext? Line.Dwelling.YearBuiltOverridden_Ext : Line.Dwelling.YearBuilt
     }
     return yearForCalc
   }

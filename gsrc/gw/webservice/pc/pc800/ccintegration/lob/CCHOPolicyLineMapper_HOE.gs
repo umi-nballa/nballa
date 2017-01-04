@@ -53,7 +53,9 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
       ccBld.Location = loc.LocationNum.toString();
 
       ccBld.Address = loc.AddressLine1;
-      if (loc.AddressLine2 <> "") { 
+      ccBld.AddressLine1 = loc.AddressLine1
+      if (loc.AddressLine2 <> "") {
+        ccBld.AddressLine2 = loc.AddressLine2
         ccBld.Address = ccBld.Address + ", " + loc.AddressLine2;
       }
       ccBld.City = loc.City;

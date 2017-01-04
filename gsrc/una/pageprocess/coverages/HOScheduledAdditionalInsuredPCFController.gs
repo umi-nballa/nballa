@@ -1,5 +1,6 @@
 package una.pageprocess.coverages
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: TVang
@@ -29,18 +30,23 @@ class HOScheduledAdditionalInsuredPCFController {
   }
 
   public function addScheduledAdditionalInsured(additionalInsured : PolicyAddlInsuredDetail) : ScheduledAdditionalInsured {
-    var result : ScheduledAdditionalInsured
+    var result : ScheduledAdditionalInsured = ScheduledItems.atMostOneWhere( \ si -> si.AdditionalInsured.AccountContactRole.AccountContact.Contact.PublicID
+                                                                                     == additionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PublicID)
     var scheduledItem : KeyableBean
 
-    if(_schedule typeis DwellingCov_HOE){
-      scheduledItem = _schedule.addScheduledAdditionalInsured(additionalInsured)
-    }else if(_schedule typeis HomeownersLineCov_HOE){
-      scheduledItem = _schedule.addScheduledAdditionalInsured(additionalInsured)
-    }
+    if(result == null){
+      if(_schedule typeis DwellingCov_HOE){
+        scheduledItem = _schedule.addScheduledAdditionalInsured(additionalInsured)
+      }else if(_schedule typeis HomeownersLineCov_HOE){
+        scheduledItem = _schedule.addScheduledAdditionalInsured(additionalInsured)
+      }
 
-    if(!ScheduledItems.contains(result)){
-      result = new ScheduledAdditionalInsured (_schedule, scheduledItem)
-      ScheduledItems.add(result)
+      if(!ScheduledItems.contains(result)){
+        result = new ScheduledAdditionalInsured (_schedule, scheduledItem)
+        ScheduledItems.add(result)
+      }
+    }else{
+      throw new com.guidewire.pl.web.controller.UserDisplayableException("Additional Insured ${additionalInsured.DisplayName} cannot be added twice to the same schedule.")
     }
 
     return result

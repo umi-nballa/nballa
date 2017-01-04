@@ -22,8 +22,9 @@
       name="currentTotal"
       type="int"/>
     <Variable
-      initialValue="scheduleTypeRange()"
-      name="scheduleTypeRange"/>
+      initialValue="new una.pageprocess.coverages.HOScheduledPersonalPropertyPCFController(coverable.getCoverage(coveragePattern.CodeIdentifier))"
+      name="pcfController"
+      type="una.pageprocess.coverages.HOScheduledPersonalPropertyPCFController"/>
     <HiddenInput
       id="CovPatternCode"
       value="coveragePattern.CodeIdentifier"/>
@@ -62,20 +63,23 @@
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.ArticlePropertyType"
                 required="true"
                 value="schedItem.ScheduleType"
-                valueRange="scheduleTypeRange"/>
+                valueRange="pcfController.ScheduleTypeRange">
+                <PostOnChange
+                  onChange="pcfController.setValue(schedItem)"/>
+              </RangeCell>
               <Cell
                 editable="true"
                 id="SchedItemDescriptionId"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.Description"
                 required="true"
                 value="schedItem.Description"/>
-              <Cell
-                editable="true"
-                id="SchedItemValueId"
+              <TextCell
+                editable="pcfController.isValueEditable(schedItem.ScheduleType)"
+                id="exposureValue"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.SchedItemExposureValue"
-                numCols="10"
+                maxChars="6"
                 required="true"
-                validationExpression="gw.lob.ho.DwellingCov_HOEEnhancement.validateScheduleType_Ext(dwelling).length() &gt; 0 ? gw.lob.ho.DwellingCov_HOEEnhancement.validateScheduleType_Ext(dwelling) : null"
+                validationExpression="gw.lob.ho.DwellingCov_HOEEnhancement.validateScheduleType_Ext(dwelling)"
                 value="schedItem.ExposureValue"/>
             </Row>
           </RowIterator>
@@ -83,14 +87,5 @@
       </ListViewInput>
       <PostOnChange/>
     </InputGroup>
-    <Code><![CDATA[/**
- *  Amrita D
- *  Added function to get ScheduleType Range value as per the base state selected
- */
-function scheduleTypeRange() :List<gw.entity.TypeKey>{
- 
-  var scheduleTypeValue  = ScheduleType_HOE.Type.getTypeKeysByCategory(dwelling.PolicyPeriod.BaseState).where( \ elt ->! elt.Retired)
-  return scheduleTypeValue
-  }]]></Code>
   </InputSet>
 </PCF>

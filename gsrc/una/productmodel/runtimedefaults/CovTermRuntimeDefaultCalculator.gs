@@ -53,7 +53,7 @@ abstract class CovTermRuntimeDefaultCalculator{
 
       if(defaultValue > 1 or covTerm typeis OptionCovTerm){ //if it is a static dollar amount or option cov term, do not calculate
         result = defaultValue
-      }else if(covTerm typeis DirectCovTerm){
+      }else if(covTerm typeis DirectCovTerm and defaultValue >= 0){
         result = getRoundedDefault(getSourceLimitValue(covTerm), defaultValue, covTerm)
       }
     }

@@ -122,7 +122,7 @@ No default response applies
  */
    if(bldg?.Building?.YearBuilt>=2002)
    {
-    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
       bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
     else
     {
@@ -180,12 +180,24 @@ If Roof Covering does not = Reinforced Concrete then no default response.
     return true
   }
 
-  public static function setYearBasedDefaults(bldg:CPBuilding):boolean
+    public static function setWindSpeedDefaults(bldg:CPBuilding):boolean
+    {
+      print("guswind is " + bldg.guswind +" checking if 120 "+ bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 + " checking if100 " + bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100
+      + " checking if 110 " + bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110 + " ::: ")
+
+      if(bldg.Building.YearBuilt>=2002 && bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120)
+        bldg.wbdr="Yes"
+      if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))
+        bldg.wbdr="No"
+      return true
+    }
+
+      public static function setYearBasedDefaults(bldg:CPBuilding):boolean
   {
 
     if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
       bldg.wbdr="Yes"
-    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)
+    if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))
       bldg.wbdr="No"
 
 
@@ -199,7 +211,7 @@ If Roof Covering does not = Reinforced Concrete then no default response.
 
     if(bldg?.Building?.YearBuilt>=2002)
     {
-      if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+      if(bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
         bldg?.guswind=typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120//"120"
       else
       {
@@ -276,7 +288,7 @@ Default response to HVHZ if Building Address county = Miami-Dade or Broward
 Default response to B if Building Address county = All Other Counties
      */
 
-    if(bldg?.windmiti5!=null && bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg?.windmiti5!=null && bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
     {
       if(bldg.Building.YearBuilt>=2002 || (bldg.Building.YearBuilt<2002 && bldg.windmiti5==true))
         bldg.terexp=typekey.CPTerrainExp_Ext.TC_HVHZ//"HVHZ"
@@ -315,7 +327,7 @@ Default response to B if Building Address county = All Other Counties
 
 
      */
-    if(bldg.CPLocation.Location.County=="Miami Dade" || bldg.CPLocation.Location.County=="Broward")
+    if(bldg.CPLocation.Location.County.equalsIgnoreCase("Miami Dade") || bldg.CPLocation.Location.County.equalsIgnoreCase("Broward"))
       bldg?.guswindloc=typekey.CPGustWindSpeedLoc_Ext.TC_120GREATER//"120"
     else
       {
@@ -342,7 +354,7 @@ Default response to No if Gust Wind Speed of Design = 100 OR = 110
      */
     if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
       bldg.wbdr="Yes"
-    if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110)//110)
+    if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))//110))
       bldg.wbdr="No"
 
 
@@ -357,4 +369,13 @@ Default response to No if Gust Wind Speed of Design = 100 OR = 110
   {
     return coverable.getCoverageConditionOrExclusion(coveragePattern).CovTerms.sortBy( \ term -> term.Pattern.Priority ).where( \ elt -> elt.PatternCode!="CPOptionalOutdoorProperty_EXT")
   }
+
+  /*public static function addRequiredCoverages(building:CPBuilding,cpline:CommercialPropertyLine)
+  {
+
+    print("### exists " + cpline.CPFloridaChangesCondoCondition_EXT)
+    if(cpline.CPFloridaChangesCondoCondition_EXTExists && cpline.CPFloridaChangesCondoCondition_EXT.Pattern.getExistence(cpline)==typekey.ExistenceType.TC_REQUIRED)
+      cpline.addToCPLineConditions(cpline.CPFloridaChangesCondoCondition_EXT)
+  } */
+
 }

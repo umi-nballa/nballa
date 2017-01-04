@@ -27,6 +27,8 @@ class HODwellingValidation_HOE extends PCValidationBase {
     validateDwellingConstructionFields()
     validateDataForBatchLoadDataFields()
     dwellingStateMatchesInsuredState()
+
+    validateDwellingUWQuestions()
   }
   
   function dwellingStateMatchesInsuredState() {
@@ -50,6 +52,210 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.Occupancy == null) {
       addErrorOrWarning("Occupancy", displaykey.Web.Policy.HomeownersLine.Validation.DwellingOccupancyRequired, "HomeownersDwelling")
     }
+    }
+
+   function validateDwellingUWQuestions()
+    {
+
+    if(HODwelling.HOUWQuestions.HOHomesharing_Ext)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties made available for home sharing, trading or exchange are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.unoccupied9)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties unoccupied for more than 9 consecutive months are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_BELOWGROUND)
+    {
+      //policyTypeValid = false
+      addErrorOrWarning("Properties with buried fuel tanks are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_GASOLINEDIESEL)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with gasoline or diesel fuel tanks are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_OTHER)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Fuel type ‘Other’ requires Underwriting review and approval prior to binding")    //uwissue
+    }
+
+    if(HODwelling.HOUWQuestions.fuellocalcode==typekey.HOFuelTankLocalBC_Ext.TC_NO)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with fuel tanks that do not meet local building codes are not eligible for coverage")
+    }
+
+    if((HODwelling.HOUWQuestions.tankcapacity==typekey.HOCapTankGal_Ext.TC_LT500  && HODwelling.HOUWQuestions.closestdisttank==typekey.HOCloseseDistTank_Ext.TC_LT15FT) ||
+        (HODwelling.HOUWQuestions.tankcapacity==typekey.HOCapTankGal_Ext.TC_GTEQ500  && (HODwelling.HOUWQuestions.closestdisttank==typekey.HOCloseseDistTank_Ext.TC_LT15FT
+            || HODwelling.HOUWQuestions.closestdisttank==typekey.HOCloseseDistTank_Ext.TC_15TO25)))
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Property is not eligible for coverage due to capacity and location of fuel tank")
+    }
+
+
+    if(HODwelling.HOUWQuestions.primprot==typekey.HOPrimProtHotTub_Ext.TC_NONE || HODwelling.HOUWQuestions.primprot==typekey.HOPrimProtHotTub_Ext.TC_HOTTUBCOVER)
+    {
+      // policyTypeValid=false
+      addErrorOrWarning("Properties without appropriate protection in place to prevent unauthorized access to the pool or hot tub are not eligible for coverage")
+    }
+
+
+    if(HODwelling.HOUWQuestions.swimdivboardslide)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Swimming pools with diving boards or slides are not eligible for coverage")
+    }
+    if(HODwelling.HOUWQuestions.floodcovnfip)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties located in a Special Flood Hazard Area are not eligible unless required flood coverage will be in place  within 30 days of effective date.")
+    }
+
+
+
+    if(HODwelling.HOUWQuestions.structincl)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with any structures built partially or entirely over water are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_ADULTDAYCARE  || HODwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_ASSISTEDLIVING)
+    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with on premises adult daycare or assisted living activities are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE  && !HODwelling.HOLocation.PolicyLocation.State.Code=="FL")
+    {
+      //policyTypeValid = false
+      addErrorOrWarning("Properties  with on premises daycare operations are not eligible for coverage")
+    }
+
+    if(!HODwelling.HOUWQuestions.daycare )
+    {
+      // policyTypeValid = false
+      addErrorOrWarning( "Properties with Family Daycare Homes that exceed the maximum number of children allowed in accordance with Florida Statute are not eligible for coverage")
+    }
+
+
+
+    if(!HODwelling.HOUWQuestions.daycareregs )   {
+      //policyTypeValid = false
+      addErrorOrWarning("Properties with Family Child Daycare operations that do not meet licensing/registration requirements are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.commercialliability )    {
+      //policyTypeValid = false
+      addErrorOrWarning("Properties with on premises Family Home Daycare operations require Underwriting approval prior to binding.   Proof of licensure/registration AND a copy of your current commerial daycare liability policy is required for Underwriting review")
+    }
+
+    if(!HODwelling.HOUWQuestions.commercialliability )      {
+      // policyTypeValid = false
+      addErrorOrWarning("Applicant is not eligible for coverage without a commercial insurance policy inforce for the Family Home Daycare operation")
+    }
+
+    if(!HODwelling.HOUWQuestions.businesspol &&  !HODwelling.HOLocation.PolicyLocation.State.Code=="TX" && HODwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_HOMEOFFICE)     {
+      // policyTypeValid = false
+      addErrorOrWarning("Applicant's home based business activities may qualify for “Permitted Incidental Occupancy– Residence Premises (HO 04 42)")
+    }
+
+    if(HODwelling.HOUWQuestions.moldd != null )    {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with on premises business exposure require Underwriting review and approval prior to binding")           //uwissue
+    }
+
+    if(HODwelling.HOUWQuestions.trampoline )     {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with trampolines, skateboard/bicycle/stunt ramps, rock climbing walls or other extreme sporting aparatus on the premises are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.farmanimals )    {
+      // policyTypeValid = false
+      addErrorOrWarning("Property is not eligbible for coverage due to animal exposure")
+    }
+
+    if(HODwelling.HOUWQuestions.mixbreedofdog )      {
+      // policyTypeValid = false
+      addErrorOrWarning("Property is not eligbible for coverage due to ineligible dog breed")
+    }
+
+    if(HODwelling.HOUWQuestions.tenmixbreed )    {
+      // policyTypeValid = false
+      addErrorOrWarning("Property is not eligbible for coverage due to ineligible dog breed")
+    }
+
+    if(HODwelling.HOUWQuestions.windowsquickrelease )   {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties with bars on windows without a quick release mechanism are not eligible for coverage")
+    }
+
+    if(!HODwelling.HOUWQuestions.moldrem || !HODwelling.HOUWQuestions.moldremediated )   {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties  with prior unremediated mold losses are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.moldrem || HODwelling.HOUWQuestions.moldremediated )    {
+      //  policyTypeValid = false
+      addErrorOrWarning("Properties  with prior mold damage require Underwriting review and approval prior to binding.   Please provide proof of mold remediation for Underwriting review") //uwissue
+    }
+
+    if(HODwelling.HOUWQuestions.assistedliving )     {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties used as group homes or assisted living facilities are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.norental==typekey.HOTotalRentalCommon_Ext.TC_6  || HODwelling.HOUWQuestions.norental==typekey.HOTotalRentalCommon_Ext.TC_7
+        || HODwelling.HOUWQuestions.norental==typekey.HOTotalRentalCommon_Ext.TC_8 || HODwelling.HOUWQuestions.norental==typekey.HOTotalRentalCommon_Ext.TC_9
+        || HODwelling.HOUWQuestions.norental==typekey.HOTotalRentalCommon_Ext.TC_10 || HODwelling.HOUWQuestions.norental==typekey.HOTotalRentalCommon_Ext.TC_GT10)   {
+      //  policyTypeValid = false
+      addErrorOrWarning("Applicants owning more than 5 rental units are not eligible for coverage")
+    }
+
+    if(!HODwelling.HOUWQuestions.exclusiveresi )     {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties that are not used used exclusively for residential purposes  other than eligible incidental office exposures are not eligible for coverage")
+    }
+
+    if(!HODwelling.HOUWQuestions.recpubutil )   {
+      //  policyTypeValid = false
+      addErrorOrWarning("Property without public utility services is not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.hilslide )     {
+      //policyTypeValid = false
+      addErrorOrWarning("Dwellings built on a hillside or directly next to a 30-degree or greater slope are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.loc1000 )    {
+      //policyTypeValid = false
+      addErrorOrWarning("Property located within 1,000 ft of saltwate are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.atvs || HODwelling.HOUWQuestions.atvallow )     {
+      // policyTypeValid = false
+      addErrorOrWarning("ATVs are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.underconstr )     {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties that are vacant or not occupied within 30 days of purchase are not eligible for coverage")
+    }
+
+    if(HODwelling.HOUWQuestions.forsale )     {
+      // policyTypeValid = false
+      addErrorOrWarning("Properties that are for sale or undergoing renovation are not eligible for coverage")
+    }
+
+
   }
 
   function validateDwellingProtectionFields() {
@@ -89,17 +295,17 @@ class HODwellingValidation_HOE extends PCValidationBase {
   
   function validateDwellingConstructionFields() {
     Context.addToVisited(this, "validateDwellingConstructionFields")
-    if (HODwelling.YearBuilt == null) {
-      addErrorOrWarning("YearBuilt", displaykey.Web.Policy.HomeownersLine.Validation.YearBuilt, "HomeownersDwellingConstruction")
+    if (HODwelling.YearBuilt == null and HODwelling.YearBuiltOverridden_Ext == null) {
+        addErrorOrWarning("YearBuilt", displaykey.Web.Policy.HomeownersLine.Validation.YearBuilt, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.ConstructionType == null) {
-      addErrorOrWarning("ConstructionType", displaykey.Web.Policy.HomeownersLine.Validation.ConstructionTypeRequired, "HomeownersDwellingConstruction")
+    if (HODwelling.ConstructionType == null and HODwelling.ConstTypeOverridden_Ext == null) {
+        addErrorOrWarning("ConstructionType", displaykey.Web.Policy.HomeownersLine.Validation.ConstructionTypeRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.StoriesNumber == null) {
-      addErrorOrWarning("StoriesNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumStoriesRequired, "HomeownersDwellingConstruction")
+    if (HODwelling.StoriesNumber == null and HODwelling.NoofStoriesOverridden_Ext == null) {
+        addErrorOrWarning("StoriesNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumStoriesRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.RoofType == null) {
-      addErrorOrWarning("RoofType", displaykey.Web.Policy.HomeownersLine.Validation.RoofTypeRequired, "HomeownersDwellingConstruction")
+    if (HODwelling.RoofType == null and HODwelling.RoofingMaterialOverridden_Ext == null) {
+        addErrorOrWarning("RoofType", displaykey.Web.Policy.HomeownersLine.Validation.RoofTypeRequired, "HomeownersDwellingConstruction")
     }
     if (HODwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 or HODwelling.HOPolicyType == HOPolicyType_HOE.TC_DP2) {
       validateHO3AndDP2DwellingConstructionFields()
@@ -110,9 +316,9 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.Foundation == null){
       addErrorOrWarning("Foundation", displaykey.Web.Policy.HomeownersLine.Validation.FoundationTypeRequired, "HomeownersDwellingConstruction")
     }
-    if (HODwelling.PrimaryHeating == null) {
+    /*if (HODwelling.PrimaryHeating == null) {
       addErrorOrWarning("PrimaryHeating", displaykey.Web.Policy.HomeownersLine.Validation.PrimaryHeatingRequired, "HomeownersDwellingConstruction")
-    }
+    }*/
     if (HODwelling.PlumbingType == null) {
       addErrorOrWarning("PlumbingType", displaykey.Web.Policy.HomeownersLine.Validation.PlumbingTypeRequired, "HomeownersDwellingConstruction")
     }
@@ -138,6 +344,16 @@ class HODwellingValidation_HOE extends PCValidationBase {
       Result.addFieldWarning(HODwelling, fieldName, "default", message, pageName)
     }
   }
+
+  private function addErrorOrWarning( message: String){
+  //  if (Context.isAtLeast("quotable")) {
+   //   Result.addFieldError(HODwelling, fieldName, "quotable", message, pageName)
+   //   Result.addError(HODwelling,"quotable", message)
+   // }
+   // else {
+      Result.addWarning(HODwelling,  "default", message)
+   // }
+  }
   
   function validateDataForBatchLoadDataFields() {
     validateCommonFieldsForPolicyType()
@@ -154,12 +370,12 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("SwimmingPoolFencing", displaykey.Web.Policy.HomeownersLine.Validation.FencingExists, "HomeownersDwelling")
     if (HODwelling.KnownWaterLeakage and HODwelling.KnownWaterLeakageDescription.length == 0)
       addErrorOrWarning("KnownWaterLeakageDescription", displaykey.Web.Policy.HomeownersLine.Validation.WaterLeakageDesc, "HomeownersDwelling")
-    if (HODwelling.PrimaryHeating == HeatingType_HOE.TC_OTHER and HODwelling.PrimaryHeatingDescription == null)
+    /*if (HODwelling.PrimaryHeating == HeatingType_HOE.TC_OTHER and HODwelling.PrimaryHeatingDescription == null)
       addErrorOrWarning("PrimaryHeatingDescription", displaykey.Web.Policy.HomeownersLine.Validation.PrimaryHeatingDesc, "HomeownersDwellingConstruction")
     if (HODwelling.PrimaryHeating == HeatingType_HOE.TC_HEATINGOIL and HODwelling.PrimaryHeatingFuelLineLocation == null)
       addErrorOrWarning("PrimaryHeatingFuelLineLocation", displaykey.Web.Policy.HomeownersLine.Validation.FuelLineLocation, "HomeownersDwellingConstruction")
     if (HODwelling.PrimaryHeating == HeatingType_HOE.TC_HEATINGOIL and HODwelling.PrimaryHeatingFuelTankLocation == null)
-      addErrorOrWarning("PrimaryHeatingFuelTankLocation", displaykey.Web.Policy.HomeownersLine.Validation.FuelTankLocation, "HomeownersDwellingConstruction")
+      addErrorOrWarning("PrimaryHeatingFuelTankLocation", displaykey.Web.Policy.HomeownersLine.Validation.FuelTankLocation, "HomeownersDwellingConstruction")*/
     if (HODwelling.PlumbingType == PlumbingType_HOE.TC_OTHER and HODwelling.PlumbingTypeDescription == null)
       addErrorOrWarning("PlumbingTypeDescription", displaykey.Web.Policy.HomeownersLine.Validation.PlumbingTypeDesc, "HomeownersDwellingConstruction")
     if (HODwelling.WiringType == WiringType_HOE.TC_OTHER and HODwelling.WiringTypeDescription == null)

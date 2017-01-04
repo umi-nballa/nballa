@@ -833,6 +833,20 @@
           </xs:sequence>
         </xs:complexType>
       </xs:element>
+      <xs:element name="searchPrimaryPayer">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="accountNumber" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="searchPrimaryPayerResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element name="return" type="xs:string" minOccurs="0"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema targetNamespace="http://guidewire.com/bc/ws/gw/webservice/policycenter/bc801/BCAccountSearchCriteria" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:import namespace="http://guidewire.com/bc/ws/gw/webservice/policycenter/bc801/PCUnappliedInfo"/>
@@ -1531,6 +1545,14 @@
       <wsdl:fault name="BadIdentifierException" message="tns:BadIdentifierException"/>
       <wsdl:fault name="RequiredFieldException" message="tns:RequiredFieldException"/>
       <wsdl:fault name="DataConversionException" message="tns:DataConversionException"/>
+      <wsdl:fault name="WsiAuthenticationException" message="tns:WsiAuthenticationException"/>
+    </wsdl:operation>
+    <wsdl:operation name="searchPrimaryPayer">
+      <wsdl:input name="searchPrimaryPayer" message="tns:searchPrimaryPayer"/>
+      <wsdl:output name="searchPrimaryPayerResponse" message="tns:searchPrimaryPayerResponse"/>
+      <wsdl:fault name="SOAPServerException" message="tns:SOAPServerException"/>
+      <wsdl:fault name="BadIdentifierException" message="tns:BadIdentifierException"/>
+      <wsdl:fault name="RequiredFieldException" message="tns:RequiredFieldException"/>
       <wsdl:fault name="WsiAuthenticationException" message="tns:WsiAuthenticationException"/>
     </wsdl:operation>
   </wsdl:portType>
@@ -2629,6 +2651,29 @@
       </wsdl:fault>
       <wsdl:fault name="DataConversionException">
         <soap12:fault name="DataConversionException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="WsiAuthenticationException">
+        <soap12:fault name="WsiAuthenticationException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
+    <wsdl:operation name="searchPrimaryPayer">
+      <soap12:operation soapActionRequired="false" style="document"/>
+      <wsdl:input name="searchPrimaryPayer">
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:gw-authentication" part="gw-authentication" use="literal"/>
+        <soap12:header message="tns:gw-locale" part="gw-locale" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchPrimaryPayerResponse">
+        <soap12:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SOAPServerException">
+        <soap12:fault name="SOAPServerException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="BadIdentifierException">
+        <soap12:fault name="BadIdentifierException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RequiredFieldException">
+        <soap12:fault name="RequiredFieldException" use="literal"/>
       </wsdl:fault>
       <wsdl:fault name="WsiAuthenticationException">
         <soap12:fault name="WsiAuthenticationException" use="literal"/>
@@ -3735,6 +3780,29 @@
         <soap11:fault name="WsiAuthenticationException" use="literal"/>
       </wsdl:fault>
     </wsdl:operation>
+    <wsdl:operation name="searchPrimaryPayer">
+      <soap11:operation style="document"/>
+      <wsdl:input name="searchPrimaryPayer">
+        <soap11:body use="literal"/>
+        <soap11:header message="tns:gw-authentication" part="gw-authentication" use="literal"/>
+        <soap11:header message="tns:gw-locale" part="gw-locale" use="literal"/>
+      </wsdl:input>
+      <wsdl:output name="searchPrimaryPayerResponse">
+        <soap11:body use="literal"/>
+      </wsdl:output>
+      <wsdl:fault name="SOAPServerException">
+        <soap11:fault name="SOAPServerException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="BadIdentifierException">
+        <soap11:fault name="BadIdentifierException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="RequiredFieldException">
+        <soap11:fault name="RequiredFieldException" use="literal"/>
+      </wsdl:fault>
+      <wsdl:fault name="WsiAuthenticationException">
+        <soap11:fault name="WsiAuthenticationException" use="literal"/>
+      </wsdl:fault>
+    </wsdl:operation>
   </wsdl:binding>
   <wsdl:service name="BillingAPI">
     <wsdl:port name="BillingAPISoap12Port" binding="tns:BillingAPISoap12Binding">
@@ -4057,6 +4125,12 @@
   </wsdl:message>
   <wsdl:message name="createPaymentInstrumentOnAccountResponse">
     <wsdl:part name="parameters" element="tns:createPaymentInstrumentOnAccountResponse"/>
+  </wsdl:message>
+  <wsdl:message name="searchPrimaryPayer">
+    <wsdl:part name="parameters" element="tns:searchPrimaryPayer"/>
+  </wsdl:message>
+  <wsdl:message name="searchPrimaryPayerResponse">
+    <wsdl:part name="parameters" element="tns:searchPrimaryPayerResponse"/>
   </wsdl:message>
   <wsdl:message name="gw-authentication">
     <wsdl:part name="gw-authentication" element="gwsoap:authentication"/>

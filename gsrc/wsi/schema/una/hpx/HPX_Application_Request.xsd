@@ -422,7 +422,7 @@
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
 			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
 			<xsd:element name="WrittenAmt" type="WrittenAmtType" minOccurs="0"/>
-			<xsd:element name="Rate" type="xsd:double" minOccurs="0"/>
+			<xsd:element name="Rate" type="xsd:double"/>
 			<xsd:element name="BaseRateAmt" type="BaseRateAmtType" minOccurs="0"/>
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageCd" type="xsd:string"/>
@@ -539,7 +539,7 @@
 			<xsd:element name="Deductible" type="DeductibleType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Option" type="OptionType" minOccurs="0"/>
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
-			<xsd:element name="NetChangeAmt" type="NetChangeAmtType" minOccurs="0"/>
+			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
 			<xsd:element name="WrittenAmt" type="WrittenAmtType"/>
 			<xsd:element name="CreditOrSurcharge" type="CreditOrSurchargeType" minOccurs="0"/>
 			<xsd:element name="EffectiveDt" type="xsd:date"/>
@@ -5651,11 +5651,11 @@
 	</xsd:complexType>
 	<xsd:complexType name="PublishingDocumentOutputType">
 		<xsd:sequence>
-			<xsd:element name="DeliveryType" type="xsd:string"/>
-			<xsd:element name="Destination" type="xsd:string"/>
-			<xsd:element name="Originator" type="xsd:string"/>
-			<xsd:element name="Subject" type="xsd:string"/>
-			<xsd:element name="Description" type="xsd:string"/>
+			<xsd:element name="DeliveryType" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Destination" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Originator" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Subject" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="FileName" type="xsd:string"/>
 		</xsd:sequence>
 	</xsd:complexType>

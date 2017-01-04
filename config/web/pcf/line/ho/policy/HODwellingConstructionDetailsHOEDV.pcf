@@ -51,7 +51,9 @@
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStoriesUserEntered_Ext"
           required="dwelling.OverrideStoriesNumber_Ext"
           value="dwelling.NoOfStoriesOverridden_Ext"
-          visible="dwelling.OverrideStoriesNumber_Ext"/>
+          visible="dwelling.OverrideStoriesNumber_Ext">
+          <PostOnChange/>
+        </Input>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -149,21 +151,26 @@
           label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalUserEntered_Ext"
           required="dwelling.OverrideExteriorWFval_Ext"
           value="dwelling.ExteriorWFvalueOverridden_Ext"
-          visible="dwelling.OverrideExteriorWFval_Ext"/>
+          visible="dwelling.OverrideExteriorWFval_Ext">
+          <PostOnChange/>
+        </Input>
       </InputSet>
       <Input
         editable="true"
         id="ExtWallfinishOther_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther_Ext"
         value="dwelling.ExteriorWallFinishOther"
-        visible="dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot;"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NoOfStoriesOverridden_Ext.TC_2STORIES) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWFvalueOverridden_Ext==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
       <Input
         editable="true"
         id="ExteriorWFva1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
         value="dwelling.ExteriorWallFinishL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        <PostOnChange/>
+      </Input>
       <Input
+        available="dwelling.ExteriorWallFinishL1_Ext.Code==&quot;Other&quot;"
         editable="true"
         id="ExtWallfinishOther1_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther1_Ext"
@@ -174,8 +181,11 @@
         id="ExteriorWFval2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
         value="dwelling.ExteriorWallFinishL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES"/>
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_ONEANDHALFSTORIES || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NoOfStoriesOverridden_Ext.TC_2STORIES">
+        <PostOnChange/>
+      </Input>
       <Input
+        available="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"
         editable="true"
         id="ExtWallfinishOther2_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther2_Ext"
@@ -279,6 +289,13 @@
         value="dwelling.Foundation">
         <PostOnChange/>
       </TypeKeyInput>
+      <TextInput
+        editable="true"
+        id="FoundTypeOther"
+        label="displaykey.Web.Homeowners.DwellingConstruction.FoundationType"
+        required="true"
+        value="dwelling.FoundationTypeOther_Ext"
+        visible="dwelling.Foundation==typekey.FoundationType_HOE.TC_OTHER"/>
       <TypeKeyInput
         editable="true"
         id="FoundationMaterial"

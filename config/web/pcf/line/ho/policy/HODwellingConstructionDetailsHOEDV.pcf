@@ -25,7 +25,7 @@
         id="NumberOfStories_Ext">
         <RangeInput
           available="!dwelling.OverrideStoriesNumber_Ext"
-          editable="true//!dwelling.OverrideStoriesNumber_Ext"
+          editable="true"
           id="NumberOfStoriesTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStories_Ext"
           value="dwelling.StoriesNumber"
@@ -58,8 +58,7 @@
         id="ConstructionType_Ext"
         visible="dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; dwelling.StoriesNumber!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          available="!dwelling.OverrideConstructionType_Ext"
-          editable="true//!dwelling.OverrideConstructionType_Ext"
+          editable="!dwelling.OverrideConstructionType_Ext"
           id="ConstructionTypeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
           value="dwelling.ConstructionType"
@@ -186,8 +185,7 @@
       <InputSet
         id="TotalSqFtVal_Ext">
         <RangeInput
-          available="!dwelling.OverrideTotalSqFtVal_Ext"
-          editable="true"
+          editable="!dwelling.OverrideTotalSqFtVal_Ext"
           id="TotalSqFtValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
           value="dwelling.SquareFootage_Ext"
@@ -543,11 +541,12 @@
         numCols="10"
         value="dwelling.ConstructionCode"
         visible="false"/>
+      <InputDivider/>
       <InputSet
         id="RoofingMaterial_Ext">
         <RangeInput
           available="!dwelling.OverrideRoofType_Ext"
-          editable="!dwelling.OverrideRoofType_Ext"
+          editable="true"
           id="RoofingMaterialTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterial_Ext"
           value="dwelling.RoofType"
@@ -585,7 +584,7 @@
         id="RoofingShape_Ext">
         <RangeInput
           available="!dwelling.OverrideRoofShape_Ext"
-          editable="!dwelling.OverrideRoofShape_Ext"
+          editable="true"
           id="RoofShapeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofShape_Ext"
           value="dwelling.RoofShape_Ext"

@@ -14,10 +14,10 @@
       <DetailViewPanel
         id="PolicySearchDV">
         <Variable
-          initialValue="gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product) as gw.api.productmodel.Product[]"
+          initialValue="gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product).where( \ elt -&gt; elt.CodeIdentifier==&quot;Homeowners&quot; || elt.CodeIdentifier==&quot;BP7BusinessOwners&quot; || elt.CodeIdentifier==&quot;CommercialPackage&quot;) as gw.api.productmodel.Product[]"
           name="products"/>
         <Variable
-          initialValue="UWCompany.finder.findUWCompanies().toList()"
+          initialValue="UWCompany.finder.findUWCompanies().toList().where( \ elt -&gt; elt.Code==&quot;01&quot; || elt.Code==&quot;02&quot;)"
           name="uwCompanies"/>
         <Variable
           initialValue="new gw.globalization.PolicySearchNameAdapter(searchCriteria)"

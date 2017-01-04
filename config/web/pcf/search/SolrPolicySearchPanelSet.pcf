@@ -8,7 +8,7 @@
     id="SolrPolicySearchPanelSet"
     visible="true">
     <Variable
-      initialValue="gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product) as gw.api.productmodel.Product[]"
+      initialValue="gw.api.system.PCDependenciesGateway.getProductModel().getAllInstances(gw.api.productmodel.Product).where( \ elt -&gt; elt.CodeIdentifier==&quot;Homeowners&quot; || elt.CodeIdentifier==&quot;BP7BusinessOwners&quot; || elt.CodeIdentifier==&quot;CommercialPackage&quot;) as gw.api.productmodel.Product[]"
       name="allProducts"/>
     <Variable
       initialValue="false"

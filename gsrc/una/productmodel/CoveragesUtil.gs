@@ -341,7 +341,8 @@ class CoveragesUtil {
   private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Building : BP7Building):boolean{
       if( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
           ( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
-              (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
+              (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue!=null && (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")||
+                  bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT"))) ) ||
                 (bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
         return true
       }
@@ -379,9 +380,11 @@ class CoveragesUtil {
   }
 
   private static function getPersonalAdvertisingInjuryExclusionExistence(bp7Classification:BP7Classification):ExistenceType{
-    var result : ExistenceType = TC_Electable
+    var result : ExistenceType
     if(bp7Classification.ClassCode_Ext=="65121B" || bp7Classification.ClassCode_Ext=="65121K"){
       result = TC_REQUIRED
+    }else{
+      result = TC_ELECTABLE
     }
     return result
   }

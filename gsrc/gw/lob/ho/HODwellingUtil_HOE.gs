@@ -97,7 +97,7 @@ class HODwellingUtil_HOE {
         dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
         dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
         (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)) {
-          if(dwelling.StoriesNumber != null and dwelling.StoriesNumber != typekey.NoOfStoriesOverridden_Ext.TC_1STORY){//NumberOfStories_HOE.TC_ONESTORY_EXT ) {
+          if(dwelling.StoriesNumber != null and dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT ) {
         return true
       }
     }
@@ -111,7 +111,7 @@ class HODwellingUtil_HOE {
   */
   static function isUpstairsLaundrySurchargeVisible(dwelling : Dwelling_HOE) : boolean {
     if(dwelling.Branch.BaseState.Code == typekey.State.TC_CA.Code and dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ){
-      if(dwelling.StoriesNumber != typekey.NoOfStoriesOverridden_Ext.TC_1STORY)//NumberOfStories_HOE.TC_ONESTORY_EXT)
+      if(dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT)
       {
         return true
       }
@@ -839,6 +839,10 @@ class HODwellingUtil_HOE {
   static function getNumStories(dwelling : Dwelling_HOE) : String {
 
     return dwelling.NoOfStoriesOverridden_Ext!=null ? dwelling.NoOfStoriesOverridden_Ext : dwelling.StoriesNumber
+  }
+
+  static function getConstructionType(dwelling:Dwelling_HOE) : String {
+    return ""
   }
 
 }// End of class

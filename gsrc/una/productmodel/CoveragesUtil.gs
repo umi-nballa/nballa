@@ -1,7 +1,6 @@
 package una.productmodel
 
 uses una.config.ConfigParamsUtil
-uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
@@ -234,6 +233,9 @@ class CoveragesUtil {
           break
       case "HODW_BusinessProperty_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm)
+        break
+      case "HOLI_Med_Pay_HOE":
+        covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm)
         break
       default:
         break

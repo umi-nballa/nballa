@@ -170,6 +170,8 @@ class CluePropertyGateway implements CluePropertyInterface {
         cPayment.ClaimType = p.CauseOfLoss.toString()
         cPayment.ClaimDisposition = p.Disposition as String
         cPayment.ClaimAmount = p.AmountPaid
+        //Field Mapping for Chargeable
+        cPayment.Chargeable=Chargeable_Ext.TC_YES
         pArray[i] = cPayment
       }
       priorLoss.ClaimPayment = pArray
@@ -181,6 +183,14 @@ class CluePropertyGateway implements CluePropertyInterface {
     //get policy details
     priorLoss.PolicyNum = claim.Policy.Number
     priorLoss.PolicyCompany = claim.PropertyPolicy.Issuer
+    //Statement field map
+    var consumerNarrative = claim.ConsumerNarrative?.first().Message
+    var statement=""
+    if(consumerNarrative!=null && consumerNarrative.size()>0)
+      for (message in consumerNarrative) {
+        statement = statement.concat(message)
+      }
+    priorLoss.Statements = statement
 
     priorLoss.PropertyPolicyNum = claim.PropertyPolicy.Number
     priorLoss.PropertyType = claim.PropertyPolicy.PropertyType as String

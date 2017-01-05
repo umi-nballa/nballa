@@ -208,23 +208,23 @@ class TunaResponseHelper {
       switch (value) {
 
         case STORIES_NUMBER:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dataNumValue)
             return typeValue
 
         case CONSTRUCTION_TYPE:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dataNumValue)
             return typeValue
 
         case EXTERIOR_WALL_FINISH:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dataNumValue)
             return typeValue
 
         case ROOF_COVER:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
             return typeValue
 
         case ROOF_TYPE:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
             return typeValue
        }
      return dataNumValue

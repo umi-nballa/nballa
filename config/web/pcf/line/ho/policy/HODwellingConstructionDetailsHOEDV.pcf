@@ -29,7 +29,7 @@
           id="NumberOfStoriesTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStories_Ext"
           value="dwelling.StoriesNumber"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.StoryNumber)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.StoryNumber)as typekey.NumberOfStories_HOE[]">
           <PostOnChange/>
         </RangeInput>
         <Input
@@ -64,7 +64,7 @@
           id="ConstructionTypeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
           value="dwelling.ConstructionType"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]"/>
         <Input
           id="ConstructionTypeMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeMatchLevel_Ext"
@@ -130,7 +130,7 @@
           id="ExteriorWFvalTunaReturned_Ext"
           label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish"
           value="dwelling.ExteriorWallFinish_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]"/>
         <Input
           available="!dwelling.OverrideExteriorWFval_Ext"
           id="ExteriorWFvalMatchLevel_Ext"
@@ -566,7 +566,7 @@
           id="RoofingMaterialTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterial_Ext"
           value="dwelling.RoofType"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover) as typekey.RoofType[]"/>
         <Input
           id="RoofingMaterialMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterialMatchLevel_Ext"
@@ -604,7 +604,7 @@
           id="RoofShapeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofShape_Ext"
           value="dwelling.RoofShape_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofType)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofType) as typekey.RoofShape_Ext[]"/>
         <Input
           id="RoofShapeMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofShapeMatchLevel_Ext"

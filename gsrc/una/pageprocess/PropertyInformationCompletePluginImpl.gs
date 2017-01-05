@@ -584,7 +584,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.StoryNumber.size() > 1) {
           //TODO
         } else {
-            building.NoOfStories_Ext = (res.StoryNumber[0].Value) as Integer
+         //   building.NoOfStories_Ext = (res.StoryNumber[0].Value) as Integer
         }
       }
     } catch (exp: Exception) {
@@ -776,7 +776,7 @@ class PropertyInformationCompletePluginImpl {
         if (res.StoryNumber.size() > 1) {
           //TODO
         } else {
-          cpBuilding.Building.NumStories = (res.StoryNumber[0].Value) as Integer
+       //   cpBuilding.Building.NumStories = (res.StoryNumber[0].Value) as Integer
         }
       }
     } catch (exp: Exception) {

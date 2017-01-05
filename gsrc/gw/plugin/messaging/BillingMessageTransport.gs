@@ -71,6 +71,7 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.createPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          if(!(policyPeriod.Submission.BindOption.Code == typekey.BindOption.TC_BINDONLY))
           policyPeriod.addEvent(CREATEPERIOD_LEXIS_FIRST_MSG)
           break
         case CANCELPERIOD_MSG:

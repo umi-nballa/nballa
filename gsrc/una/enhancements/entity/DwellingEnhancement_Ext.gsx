@@ -109,11 +109,19 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   }
 
-  property get YearBuiltOrOverride(): Integer{
-    if(this.OverrideYearbuilt_Ext){
+  property get YearBuiltOrOverride() : Integer{
+    if(this.OverrideYearbuilt_Ext and this.YearBuiltOverridden_Ext != null){
       return this.YearBuiltOverridden_Ext
     }else{
       return this.YearBuilt
+    }
+  }
+
+  property get TerritoryCodeOrOverride() : String{
+    if(this.HOLocation.OverrideTerritoryCode_Ext and this.HOLocation.TerritoryCodeOverridden_Ext != null){
+      return this.HOLocation.TerritoryCodeOverridden_Ext
+    }else{
+      return this.HOLocation.TerritoryCodeTunaReturned_Ext
     }
   }
 

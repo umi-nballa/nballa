@@ -192,7 +192,7 @@ class TunaResponseHelper {
     }
     else {
       var propertyDataModelResponse = new PropertyDataModel()
-      propertyDataModelResponse.Value = propDetail.Value
+      propertyDataModelResponse.Value = mapPropertyDataModelValue(value,propDetail.Value)
       propertyDataModelResponse.Percent = propDetail.Percent
       list.add(propertyDataModelResponse)
     }
@@ -220,11 +220,11 @@ class TunaResponseHelper {
             return typeValue
 
         case ROOF_COVER:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
+            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
             return typeValue
 
         case ROOF_TYPE:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
+            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
             return typeValue
        }
      return dataNumValue

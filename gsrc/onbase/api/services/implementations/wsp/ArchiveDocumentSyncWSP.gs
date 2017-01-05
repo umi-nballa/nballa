@@ -77,49 +77,46 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     var archiveKeywords = new KeywordsArchiveDocument_StandAlone()
 
     archiveKeywords.AgencyCode_Collection.String[0] = adaptor.AgencyCode
-    archiveKeywords.CSR_Collection.String[0] = adaptor.CSR
     archiveKeywords.Description_Collection.String[0] = adaptor.Description
     archiveKeywords.LegacyPolicyNumber_Collection.String[0] = adaptor.LegacyPolicyNumber
     archiveKeywords.OnBaseDocumentType_Collection.String[0] = documentType
-    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = adaptor.PolicyEffectiveDate//convertDateFormat(adaptor.PolicyEffectiveDate)
-    archiveKeywords.PolicyExpirationDate_Collection.String[0] = adaptor.PolicyExpirationDate// convertDateFormat(adaptor.PolicyExpirationDate)
+    archiveKeywords.PolicyEffectiveDate_Collection.String[0] = adaptor.PolicyEffectiveDate
+    archiveKeywords.PolicyExpirationDate_Collection.String[0] = adaptor.PolicyExpirationDate
     archiveKeywords.PolicyNumber_Collection.String[0] = adaptor.PolicyNumber
     archiveKeywords.PolicyType_Collection.String[0] = adaptor.PolicyType
     archiveKeywords.ProductName_Collection.String[0] = adaptor.ProductName
-    archiveKeywords.ReceivedDate_Collection.String[0] = adaptor.ReceivedDate//convertDateFormat(adaptor.ReceivedDate)
+    archiveKeywords.ReceivedDate_Collection.String[0] = adaptor.ReceivedDate
     archiveKeywords.Source_Collection.String[0] = Settings.CurrentCenter.Code + "center"
     archiveKeywords.Subtype_Collection.String[0] = adaptor.Subtype
     archiveKeywords.Term_Collection.String[0] = adaptor.Term
-    archiveKeywords.Underwriter_Collection.String[0] = adaptor.Underwriter
     archiveDocument.DocumentArchiveData.Keywords.StandAlone = archiveKeywords
 
     // MIKG keywords
     var archiveMIKGs = new KeywordsArchiveDocument_Multi_Instance_Keyword_Group()
-
-    for(namedInsured in adaptor.PrimaryNamedInsureds index i) {
-      var primaryInsured = new PrimaryInsured()
-      primaryInsured.PrimaryInsuredName= namedInsured.FirstName
-      primaryInsured.PrimaryMiddleName = namedInsured.MiddleName
-      primaryInsured.PrimaryLastName = namedInsured.LastName
+    if(!adaptor.PrimaryNamedInsureds.Empty) {
       archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured = new List<PrimaryInsured>()
-      archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured.add(primaryInsured)
+      for(namedInsured in adaptor.PrimaryNamedInsureds index i) {
+        var primaryInsured = new PrimaryInsured()
+        primaryInsured.PrimaryInsuredName= namedInsured.FirstName
+        primaryInsured.PrimaryMiddleName = namedInsured.MiddleName
+        primaryInsured.PrimaryLastName = namedInsured.LastName
+        archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured.add(primaryInsured)
+      }
     }
 
-    for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
-      var addNamedInsured = new AdditionalInsured()
-      addNamedInsured.AdditionalFirstName = namedInsured.FirstName
-      addNamedInsured.AdditionalMiddleName = namedInsured.MiddleName
-      addNamedInsured.AdditionalLastName = namedInsured.LastName
+    if(!adaptor.AdditionalNamedInsureds.Empty) {
       archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured = new List<AdditionalInsured>()
-      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured.add(addNamedInsured)
+      for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
+        var addNamedInsured = new AdditionalInsured()
+        addNamedInsured.AdditionalFirstName = namedInsured.FirstName
+        addNamedInsured.AdditionalMiddleName = namedInsured.MiddleName
+        addNamedInsured.AdditionalLastName = namedInsured.LastName
+        archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured.add(addNamedInsured)
+      }
     }
-
     archiveDocument.DocumentArchiveData.Keywords.Multi_Instance_Keyword_Group = archiveMIKGs
+
     // Make request
-
-    var doc = new File("C:/Users/cmattox/Desktop/request12.txt")
-    doc.write(archiveDocument.asUTFString())
-
     var response = service.ArchiveDocument(archiveDocument)
     if (logger.isDebugEnabled()) {
       logger.debug("Finished executing archiveDocument() using WSP service with document ID: ${response}")

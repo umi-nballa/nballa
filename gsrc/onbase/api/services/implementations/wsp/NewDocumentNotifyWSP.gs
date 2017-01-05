@@ -73,6 +73,35 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
 
       var existingDocs = Query.make(Document).compare('DocUID', Relop.Equals, properties.DocumentHandle)
       var existingDocResults = existingDocs.select()
+
+//      //match pending doc id with the asyncdocid
+//      var asyncdocid = keywords.StandAlone.AsyncDocumentID_Collection.AsyncDocumentID.first()
+//
+//      if(asyncdocid.HasContent)
+//      {
+//
+//        var asyncarchivequery = Query.make(Document).compare('PendingDocUID', Relop.Equals, asyncdocid)
+//
+//        var asyncdoc = asyncarchivequery.select().AtMostOneRow
+//        if(asyncdoc != null)
+//        {
+//          Transaction.runWithNewBundle(\bundle ->{
+//            asyncdoc = bundle.add(asyncdoc)
+//            asyncdoc.DocUID = properties.DocumentHandle
+//            asyncdoc.PendingDocUID = null
+//            asyncdoc.DateModified = date
+//          }, User.util.UnrestrictedUser)
+//          response.complete("")
+//          return response
+//        }
+//        else
+//        {
+//          logger.error(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnknownPendingID(asyncdocid))
+//          response.fail(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_UnknownPendingID(asyncdocid))
+//          return response
+//        }
+//      }
+
       var policyNumber = keywords.StandAlone.PolicyNumber_Collection.PolicyNumber.first()
       var policy: Policy = null
       if (policyNumber.HasContent) {
@@ -107,31 +136,34 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
       }
 
       var user = keywords.StandAlone.Underwriter_Collection.Underwriter.first()
-      var period = policy.LatestPeriod.getSlice(date)
+      var period = policy.LatestPeriod
 
       if (existingDocResults.Count > 0){
         // note that a user must be provided as the inbound-integration does not have a user context.
         Transaction.runWithNewBundle(\bundle -> {
           existingDocResults.each( \ exDoc -> {
             bundle.add(exDoc)
+            exDoc.Name = properties.DocName
             exDoc.OnBaseDocumentType = onBaseDocType
             exDoc.OnBaseDocumentSubtype = onBaseDocSubtype
-            exDoc.Description = description
-          } )
+            if(!exDoc.Description.equalsIgnoreCase(description)) {
+              exDoc.Description = description
+            }
+          })
         }, User.util.UnrestrictedUser)
       } else {
         // note that a user must be provided as the inbound-integration does not have a user context.
         Transaction.runWithNewBundle(\bundle -> {
           var doc = new Document()
           doc.DocUID = properties.DocumentHandle
-          doc.DateCreated = date//properties.DocDate
-          doc.OnBaseDocumentType = onBaseDocType//onbaseDocumentType
+          doc.DateCreated = date
+          doc.OnBaseDocumentType = onBaseDocType
           doc.OnBaseDocumentSubtype = onBaseDocSubtype
           doc.Account = policy.Account
           doc.Name = properties.DocName // docName
           doc.Description = description
           doc.Author = user
-          doc.Status = typekey.DocumentStatusType.TC_FINAL // Hard-coding this status, it might be needed. cmattox 11/10/16
+          doc.Status = typekey.DocumentStatusType.TC_APPROVED // Hard-coding this status, it might be needed. cmattox 11/10/16
           doc.Type = typekey.DocumentType.TC_ONBASE // Hard-coding this it might be needed. cmattox 11/10/16
           doc.MimeType = properties.MimeType
           doc.DateModified = date

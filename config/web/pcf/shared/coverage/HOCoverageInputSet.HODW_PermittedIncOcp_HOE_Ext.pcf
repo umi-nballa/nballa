@@ -1,10 +1,10 @@
 <?xml version="1.0"?>
 <PCF
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
   <InputSet
     id="HOCoverageInputSet"
-    mode="HODW_SpecialLimitsPP_HOE_Ext">
+    mode="HODW_PermittedIncOcp_HOE_Ext">
     <Require
       name="coveragePattern"
       type="gw.api.productmodel.ClausePattern"/>
@@ -15,8 +15,8 @@
       name="openForEdit"
       type="boolean"/>
     <HiddenInput
-      id="CovPatternDisplayName"
-      value="coveragePattern.DisplayName"/>
+      id="CovPatternCode"
+      value="coveragePattern.CodeIdentifier"/>
     <InputGroup
       allowToggle="coveragePattern.allowToggle(coverable)"
       childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
@@ -33,9 +33,7 @@
           def="CovTermPOCHOEInputSet(term, openForEdit, coverable)"
           mode="term.ValueTypeName"/>
       </InputIterator>
-      <InputSetRef
-        def="ScheduleInputSet(coverable.getCoverageConditionOrExclusion(coveragePattern), openForEdit)"
-        mode="coverable.getCoverageConditionOrExclusion(coveragePattern) typeis gw.api.productmodel.Schedule"/>
+      <PostOnChange/>
     </InputGroup>
   </InputSet>
 </PCF>

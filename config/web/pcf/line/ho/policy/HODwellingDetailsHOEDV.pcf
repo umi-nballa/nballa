@@ -63,8 +63,7 @@
           value="dwelling.Yearbuilt"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.YearBuilt)">
           <PostOnChange
-            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"
-            target="Yearbuilt_Ext"/>
+            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"/>
         </RangeInput>
         <Input
           available="!dwelling.OverrideYearbuilt_Ext"
@@ -87,8 +86,7 @@
           required="dwelling.OverrideYearbuilt_Ext"
           value="dwelling.YearBuiltOverridden_Ext"
           visible="dwelling.OverrideYearbuilt_Ext">
-          <PostOnChange
-            target="Yearbuilt_Ext"/>
+          <PostOnChange/>
         </Input>
       </InputSet>
       <InputDivider/>
@@ -1019,7 +1017,7 @@
           value="dwelling.DistancetoMajorBOW_Ext"/> -->
         <InputSet
           id="deedInfo_Ext"
-          visible="dwelling.YearBuilt!= null &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.isFirstTimeDeededVisible(dwelling)">
+          visible="gw.lob.ho.HODwellingUtil_HOE.isFirstTimeDeededVisible(dwelling)">
           <Input
             editable="true"
             id="firstTimeDeeded_Ext"

@@ -98,11 +98,6 @@ class KeywordAdaptor {
   property get AgencyCode() : String { return _keywordMap.get(KeywordMap.agencycode) as String }
 
   /**
-   * Value for keyword ActivityCode or null if unset.
-   */
-  property get CSR() : String { return _keywordMap.get(KeywordMap.csr) as String }
-
-  /**
    * Value for keyword Description or null if unset.
    */
   property get Description() : String { return _keywordMap.get(KeywordMap.description) as String }
@@ -223,10 +218,5 @@ class KeywordAdaptor {
    * Value for keyword TransactionEffectiveDate or null if unset.
    */
   property get TransactionEffectiveDate() : String { return _keywordMap.get(KeywordMap.transactioneffectivedate) as String }
-
-  /**
-   * Value for keyword Underwriter or null if unset.
-   */
-  property get Underwriter() : String { return _keywordMap.get(KeywordMap.underwriter) as String }
 
 }

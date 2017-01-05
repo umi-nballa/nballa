@@ -18,16 +18,13 @@ uses gw.api.domain.covterm.OptionCovTerm
  * To change this template use File | Settings | File Templates.
  */
 class CovTermInputSetPCFController {
-  private static final var SYNCABLE_COVERAGE_TERMS : List<String> = {"HODW_Dwelling_Limit_HOE", "DPDW_Dwelling_Limit_HOE", "HODW_PersonalPropertyLimit_HOE", "HODW_ExecutiveCov_HOE_Ext"}
-
   static function onChange(covTerm: gw.api.domain.covterm.CovTerm){
     var coverable = covTerm.Clause.OwningCoverable
 
-    if(coverable typeis Dwelling_HOE){
-      if(SYNCABLE_COVERAGE_TERMS.contains(covTerm.PatternCode)){
-        ProductModelSyncIssuesHandler.syncCoverages(coverable.PolicyLine.AllCoverables, null)
-      }
+    //sync coverages
+    ProductModelSyncIssuesHandler.syncCoverages(coverable.PolicyLine.AllCoverables, null)
 
+    if(coverable typeis Dwelling_HOE){
       if(covTerm typeis DirectCovTerm){
         onChangeDirectCovTerm(covTerm)
       }else if(covTerm typeis OptionCovTerm){

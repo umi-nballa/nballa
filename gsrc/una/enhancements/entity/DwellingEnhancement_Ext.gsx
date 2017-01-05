@@ -131,11 +131,11 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
     if(coverable.HODW_FloodCoverage_HOE_ExtExists){
-      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA"){
+      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
-      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA"){
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_PPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
-      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA"){
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
       }
     }

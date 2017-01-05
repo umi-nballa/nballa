@@ -293,18 +293,18 @@
         numCols="35"
         value="dwelling.HOUWQuestions.typefuelother2"
         visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typefuel2==typekey.HOTypeFuel_Ext.TC_OTHER"/>
-      <BooleanRadioInput
+      <TypeKeyInput
         editable="true"
         id="tanklocal2"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.tanklocal2"
-        value="dwelling.HOUWQuestions.tanklocal2"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType)"/>
+        value="dwelling.HOUWQuestions.tanklocall"
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_ABOVEGROUND || dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_BELOWGROUND"/>
       <TypeKeyInput
         editable="true"
         id="capacitytank"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.capacitytank"
         value="dwelling.HOUWQuestions.capacitytank"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType)"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.tanklocall==typekey.HOFuelTankLocalBC_Ext.TC_NOAPPLICABLEBUILDINGCODES"/>
       <TypeKeyInput
         editable="true"
         id="closdist"

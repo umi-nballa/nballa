@@ -92,7 +92,7 @@
     <InputSet
       editable="true"
       id="TerritoryCodeInputSet"
-      visible="true//polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null //&amp;&amp; !line.equals(&quot;cpline&quot;)">
+      visible="line==null || !(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))//polLocation.TerritoryCodes.length != 0 and !polLocation.Branch.HasWorkersComp and polLocation.Country.UsesTerritoryCodes &amp;&amp; line!=null //&amp;&amp; !line.equals(&quot;cpline&quot;)">
       <ContentInput>
         <Link
           action="polLocation.TerritoryCodes.each(\ c -&gt; c.fillWithFirst())"
@@ -122,18 +122,93 @@
           id="AutofillButton"/>
       </InputIterator>
     </InputSet>
+    <InputSet
+      editable="true"
+      id="TerritoryCodeInputSetTuna"
+      visible="(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))//cpBuilding.CPLocation.PolicyLocation != null and polLocation.TerritoryCodes.length != 0">
+      <RangeInput
+        available="!polLocation.OverrideTerritoryCode_Ext"
+        editable="true"
+        id="TerritoryCodeTunaReturned_Ext"
+        label="displaykey.Web.CP.CPLocation.TerritoryCodeTunaReturned_Ext"
+        value="polLocation.TerritoryCodeTunaReturned_Ext"
+        valueRange="tunaAppResponse.TerritoryCodes"/>
+      <Input
+        available="!polLocation.OverrideTerritoryCode_Ext"
+        id="TerritoryCodeMatchLevel_Ext"
+        label="displaykey.Web.CP.CPLocation.TerritoryCodeMatchlevel_Ext"
+        value="polLocation.TerritoryCodeMatchLevel_Ext"/>
+      <BooleanRadioInput
+        editable="true"
+        id="OverRideTerritoryCode_Ext"
+        label="displaykey.Web.CP.CPLocation.TerritoryCodeOverride_Ext"
+        value="polLocation.OverrideTerritoryCode_Ext">
+        <PostOnChange
+          target="TerritoryCodeInputSet"/>
+      </BooleanRadioInput>
+      <InputIterator
+        elementName="TerritoryCode"
+        value="polLocation.TerritoryCodes">
+        <IteratorSort
+          sortBy="TerritoryCode.PolicyLinePattern.Priority"
+          sortOrder="1"/>
+        <PickerInput
+          available="polLocation.State != null"
+          editable="true"
+          id="TerritoryCode"
+          label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
+          pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, TerritoryCode)"
+          required="polLocation.OverrideTerritoryCode_Ext"
+          value="polLocation.TerritoryCodeOverridden_Ext"
+          visible="polLocation.OverrideTerritoryCode_Ext"/>
+      </InputIterator>
+    </InputSet>
+    <InputDivider/>
+    <InputSet
+      id="PropFloodVal_Ext"
+      visible="(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))">
+      <RangeInput
+        available="!polLocation.OverridePropFloodVal_Ext"
+        editable="true"
+        id="PropFloodValTunaReturned_Ext"
+        label="displaykey.Web.CP.CPLocation.PropFloodValTunaReturned_Ext"
+        value="polLocation.PropFloodVal_Ext"
+        valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
+      <Input
+        available="!polLocation.OverridePropFloodVal_Ext"
+        id="PropFloodValMatchLevel_Ext"
+        label="displaykey.Web.CP.CPLocation.PropFloodValMatchlevel_Ext"
+        value="polLocation.PropFloodValMatchLevel_Ext"/>
+      <BooleanRadioInput
+        editable="true"
+        id="OverRidePropFloodVal_Ext"
+        label="displaykey.Web.CP.CPLocation.PropFloodValOverride_Ext"
+        value="polLocation.OverridePropFloodVal_Ext">
+        <PostOnChange
+          target="PropFloodVal_Ext"/>
+      </BooleanRadioInput>
+      <Input
+        available="polLocation.OverridePropFloodVal_Ext"
+        editable="true"
+        id="PropFloodValUserEntered_Ext"
+        label="displaykey.Web.CP.CPLocation.PropFloodValUserEntered_Ext"
+        required="polLocation.OverridePropFloodVal_Ext"
+        value="polLocation.PropFloodValOverridden_Ext"
+        visible="polLocation.OverridePropFloodVal_Ext"/>
+    </InputSet>
+    <InputDivider/>
     <TextInput
       editable="true"
       id="locationlatitude"
       label="&quot;Latitude&quot;"
       value="polLocation.Latitude_Ext"
-      visible="!(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))"/>
+      visible="line==null || !(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))"/>
     <TextInput
       editable="true"
       id="locationlongitude"
       label="&quot;Longitude&quot;"
       value="polLocation.Longitude_Ext"
-      visible="!(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))"/>
+      visible="line==null || !(line!=null &amp;&amp; line.equals(&quot;cpline&quot;))"/>
     <InputDivider/>
     <InputSet
       id="latitude_Ext"

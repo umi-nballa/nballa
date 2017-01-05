@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Popup
-    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding);cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding));cpBuilding.RateType=typekey.RateType.TC_CLASS;cpLine=gw.web.line.cp.policy.CPBuildingPopupUIHelper.initcpline(jobWizardHelper,cpLine,openForEdit);//una.config.CPBuildingUtil.addRequiredCoverages(cpBuilding,cpLine)//setClassCode(cpBuilding) "
+    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding);cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding));cpBuilding.RateType=typekey.RateType.TC_CLASS;//cpLine=gw.web.line.cp.policy.CPBuildingPopupUIHelper.initcpline(jobWizardHelper,cpLine,openForEdit);//una.config.CPBuildingUtil.addRequiredCoverages(cpBuilding,cpLine)//setClassCode(cpBuilding) "
     beforeCommit="gw.lob.cp.CPBuildingValidation.validateBuilding(cpBuilding)"
     canEdit="openForEdit"
     countsAsWork="false"
@@ -54,6 +54,9 @@
     <Screen>
       <Toolbar>
         <EditButtons/>
+        <ToolbarButton
+          id="CallTuna"
+          label="&quot;Call Tuna&quot;"/>
       </Toolbar>
       <PanelRef
         def="PreferredCoverageCurrencyPanelSet(cpBuilding, openForEdit, jobWizardHelper)"
@@ -446,47 +449,6 @@
                   value="cpBuilding.windmitidate"
                   visible="cpBuilding.windmiti5==true"/>
               </InputGroup>
-              <InputSet
-                editable="true"
-                id="TerritoryCodeInputSet"
-                visible="cpBuilding.CPLocation.PolicyLocation != null and cpBuilding.CPLocation.PolicyLocation.TerritoryCodes.length != 0">
-                <RangeInput
-                  available="!cpBuilding.OverrideTerritoryCode_Ext"
-                  editable="true"
-                  id="TerritoryCodeTunaReturned_Ext"
-                  label="displaykey.Web.CP.CPLocation.TerritoryCodeTunaReturned_Ext"
-                  value="cpBuilding.TerritoryCodeTunaReturned_Ext"
-                  valueRange="tunaAppResponse.TerritoryCodes"/>
-                <Input
-                  available="!cpBuilding.OverrideTerritoryCode_Ext"
-                  id="TerritoryCodeMatchLevel_Ext"
-                  label="displaykey.Web.CP.CPLocation.TerritoryCodeMatchlevel_Ext"
-                  value="cpBuilding.TerritoryCodeMatchLevel_Ext"/>
-                <BooleanRadioInput
-                  editable="true"
-                  id="OverRideTerritoryCode_Ext"
-                  label="displaykey.Web.CP.CPLocation.TerritoryCodeOverride_Ext"
-                  value="cpBuilding.OverrideTerritoryCode_Ext">
-                  <PostOnChange
-                    target="TerritoryCodeInputSet"/>
-                </BooleanRadioInput>
-                <InputIterator
-                  elementName="TerritoryCode"
-                  value="cpBuilding.CPLocation.PolicyLocation.TerritoryCodes">
-                  <IteratorSort
-                    sortBy="TerritoryCode.PolicyLinePattern.Priority"
-                    sortOrder="1"/>
-                  <PickerInput
-                    available="cpBuilding.CPLocation.PolicyLocation.State != null"
-                    editable="true"
-                    id="TerritoryCode"
-                    label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
-                    pickLocation="TerritoryCodeSearchPopup.push(cpBuilding.Branch, TerritoryCode)"
-                    required="cpBuilding.OverrideTerritoryCode_Ext"
-                    value="cpBuilding.TerritoryCodeOverridden_Ext"
-                    visible="cpBuilding.OverrideTerritoryCode_Ext"/>
-                </InputIterator>
-              </InputSet>
               <InputDivider/>
               <InputSet
                 id="Windpoolvalue_Ext">
@@ -520,37 +482,6 @@
                   visible="cpBuilding.OverrideWindPool_Ext"/>
               </InputSet>
               <InputDivider/>
-              <InputSet
-                id="PropFloodVal_Ext">
-                <RangeInput
-                  available="!cpBuilding.OverridePropFloodVal_Ext"
-                  editable="true"
-                  id="PropFloodValTunaReturned_Ext"
-                  label="displaykey.Web.CP.CPLocation.PropFloodValTunaReturned_Ext"
-                  value="cpBuilding.PropFloodVal_Ext"
-                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
-                <Input
-                  available="!cpBuilding.OverridePropFloodVal_Ext"
-                  id="PropFloodValMatchLevel_Ext"
-                  label="displaykey.Web.CP.CPLocation.PropFloodValMatchlevel_Ext"
-                  value="cpBuilding.PropFloodValMatchLevel_Ext"/>
-                <BooleanRadioInput
-                  editable="true"
-                  id="OverRidePropFloodVal_Ext"
-                  label="displaykey.Web.CP.CPLocation.PropFloodValOverride_Ext"
-                  value="cpBuilding.OverridePropFloodVal_Ext">
-                  <PostOnChange
-                    target="PropFloodVal_Ext"/>
-                </BooleanRadioInput>
-                <Input
-                  available="cpBuilding.OverridePropFloodVal_Ext"
-                  editable="true"
-                  id="PropFloodValUserEntered_Ext"
-                  label="displaykey.Web.CP.CPLocation.PropFloodValUserEntered_Ext"
-                  required="cpBuilding.OverridePropFloodVal_Ext"
-                  value="cpBuilding.PropFloodValOverridden_Ext"
-                  visible="cpBuilding.OverridePropFloodVal_Ext"/>
-              </InputSet>
               <InputDivider/>
               <InputSet
                 id="bceg_Ext">

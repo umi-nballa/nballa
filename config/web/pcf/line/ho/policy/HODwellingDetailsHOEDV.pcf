@@ -235,12 +235,12 @@
           id="FireDeptMLvlsss"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDeptMatchLevel_Ext"
           value="dwelling.HOLocation.FireDeptMatchLevel_Ext"/> -->
-        <Input
+        <!-- <Input
           editable="true"
           id="RespondingFireDeptOther_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartmentOther_Ext"
           value="dwelling.HOLocation.RespondingFireDeptOther_Ext"
-          visible="dwelling.HOLocation.RespondingFireDept_Ext!= null &amp;&amp; dwelling.HOLocation.RespondingFireDept_Ext.equalsIgnoreCase(&quot;Other&quot;)"/>
+          visible="dwelling.HOLocation.RespondingFireDept_Ext!= null &amp;&amp; dwelling.HOLocation.RespondingFireDept_Ext.equalsIgnoreCase(&quot;Other&quot;)"/> -->
         <!-- <BooleanRadioInput
           editable="true"
           id="FloodFireHazard"
@@ -265,7 +265,7 @@
             value="dwelling.HOLocation.DwellingProtectionClassCode"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
             <PostOnChange
-              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
           </RangeInput>
           <Input
             available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
@@ -280,7 +280,7 @@
             <PostOnChange
               target="PCCode_Ext"/>
           </BooleanRadioInput>
-          <Input
+          <TypeKeyInput
             available="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
             editable="true"
             id="PCCodeUserEntered_Ext"
@@ -646,7 +646,7 @@
           <PostOnChange
             target="bceg_Ext"/>
         </BooleanRadioInput>
-        <Input
+        <TypeKeyInput
           available="dwelling.HOLocation.OverrideBCEG_Ext"
           editable="true"
           id="BCEGUserEntered_Ext"
@@ -1238,6 +1238,11 @@
             required="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
             value="dwelling.HOLocation.FirelineAdjHazOverridden_Ext"
             visible="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"/>
+          <Input
+            editable="true"
+            id="firelineInfoFileDate_Ext"
+            label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.FireLineInfoFileDate_Ext"
+            value="dwelling.CAFirelineInfo.FirelineInfoFileDate"/>
         </InputSet>
         <InputDivider/>
         <InputSet

@@ -162,6 +162,19 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
    return zipCodeExists
   }
+  
+  function floodZipCodesToWatch(dwelling:Dwelling_HOE):boolean{
+    var floodZipCodeToWatch:boolean
+    var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
+    if(floodIneligibleZips.HasElements){
+      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+      if(zipCode.length >= 5){
+        zipCode = zipCode.substring(0, 5)
+        floodZipCodeToWatch = !floodIneligibleZips.contains(zipCode)
+      }
+    }
+    return floodZipCodeToWatch
+  }
 
   function eastORWestCoastLocation(dwelling : Dwelling_HOE):CoastLocation_Ext{
     var countyDirection:CoastLocation_Ext

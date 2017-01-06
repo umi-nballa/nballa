@@ -235,12 +235,12 @@
           id="FireDeptMLvlsss"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDeptMatchLevel_Ext"
           value="dwelling.HOLocation.FireDeptMatchLevel_Ext"/> -->
-        <Input
+        <!-- <Input
           editable="true"
           id="RespondingFireDeptOther_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartmentOther_Ext"
           value="dwelling.HOLocation.RespondingFireDeptOther_Ext"
-          visible="dwelling.HOLocation.RespondingFireDept_Ext!= null &amp;&amp; dwelling.HOLocation.RespondingFireDept_Ext.equalsIgnoreCase(&quot;Other&quot;)"/>
+          visible="dwelling.HOLocation.RespondingFireDept_Ext!= null &amp;&amp; dwelling.HOLocation.RespondingFireDept_Ext.equalsIgnoreCase(&quot;Other&quot;)"/> -->
         <!-- <BooleanRadioInput
           editable="true"
           id="FloodFireHazard"
@@ -265,7 +265,7 @@
             value="dwelling.HOLocation.DwellingProtectionClassCode"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
             <PostOnChange
-              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
           </RangeInput>
           <Input
             available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
@@ -280,7 +280,7 @@
             <PostOnChange
               target="PCCode_Ext"/>
           </BooleanRadioInput>
-          <Input
+          <TypeKeyInput
             available="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
             editable="true"
             id="PCCodeUserEntered_Ext"
@@ -646,7 +646,7 @@
           <PostOnChange
             target="bceg_Ext"/>
         </BooleanRadioInput>
-        <Input
+        <TypeKeyInput
           available="dwelling.HOLocation.OverrideBCEG_Ext"
           editable="true"
           id="BCEGUserEntered_Ext"
@@ -728,7 +728,8 @@
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
           value="dwelling.HOLocation.DistBOW_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)"
+          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
           <PostOnChange
             onChange="dwelling.HOLocation.DistBOWNamedValue_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DistBOW_Ext,tunaAppResponse.DistanceToMajorBOW)"/>
         </RangeInput>
@@ -851,7 +852,7 @@
           label="displaykey.Web.Homeowners.Dwelling.NumUnitsFireDivision_Ext"
           required="false"
           value="dwelling.NumUnitsFireDivision_Ext"
-          visible="dwelling.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_HI or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_HI)) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC)"/>
+          visible="dwelling.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT and ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_HI or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_HI)) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC)"/>
         <RangeInput
           editable="true"
           id="DwellingUse"
@@ -982,7 +983,7 @@
             label="displaykey.Web.Homeowners.HODwelling.PriorResidenceWas_Ext"
             required="false"
             value="dwelling.PriorResidenceWas_Ext"
-            visible="(dwelling.HomePurchaseDate_Ext != null &amp;&amp; dwelling.HomeNewPurchase_Ext) || (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_HOA_Ext || dwelling.HOPolicyType == TC_HOB_Ext) ||(dwelling.Occupancy == TC_Owner &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_CA || (dwelling.PolicyPeriod.BaseState == TC_HI &amp;&amp; dwelling.HOPolicyType == TC_DP3_Ext)))"/>
+            visible="(dwelling.HomePurchaseDate_Ext != null &amp;&amp; dwelling.HomeNewPurchase_Ext) || (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_HOA_Ext || dwelling.HOPolicyType == TC_HOB_Ext) ||(dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_CA || (dwelling.PolicyPeriod.BaseState == TC_HI &amp;&amp; dwelling.HOPolicyType == TC_DP3_Ext)))"/>
           <DateInput
             editable="true"
             id="homePurchaseDate_Ext"
@@ -1238,6 +1239,11 @@
             required="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
             value="dwelling.HOLocation.FirelineAdjHazOverridden_Ext"
             visible="dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"/>
+          <Input
+            editable="true"
+            id="firelineInfoFileDate_Ext"
+            label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.FireLineInfoFileDate_Ext"
+            value="dwelling.CAFirelineInfo.FirelineInfoFileDate"/>
         </InputSet>
         <InputDivider/>
         <InputSet
@@ -1536,37 +1542,43 @@
           id="PreExistingEarthquakeDmg_Ext"
           label="displaykey.Web.Homeowners.PreExstngEarthqukeDmg_Ext"
           required="false"
-          value="dwelling.PreExstngEarthqukeDmg_Ext"/>
+          value="dwelling.PreExstngEarthqukeDmg_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext)"/>
         <BooleanRadioInput
           editable="true"
           id="Dwellingbuilt_Ext"
           label="displaykey.Web.Homeowners.Dwelling.Dwellingbuilt_Ext"
           required="false"
-          value="dwelling.Dwellingbuilt_Ext"/>
+          value="dwelling.Dwellingbuilt_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext)"/>
         <BooleanRadioInput
           editable="true"
           id="Dwellingbolted_Ext"
           label="displaykey.Web.Homeowners.Dwelling.Dwellingbolted_Ext"
           required="false"
-          value="dwelling.Dwellingbolted_Ext"/>
+          value="dwelling.Dwellingbolted_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext)"/>
         <TypeKeyInput
           editable="true"
           id="Cripplewalls_Ext"
           label="displaykey.Web.Homeowners.Dwelling.Cripplewalls_Ext"
           required="false"
-          value="dwelling.Cripplewalls_Ext"/>
+          value="dwelling.Cripplewalls_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext)"/>
         <BooleanRadioInput
           editable="true"
           id="BldngFrameHeater_Ext"
           label="displaykey.Web.Homeowners.Dwelling.BldngFrameHeater_Ext"
           required="false"
-          value="dwelling.BldngFrameHeater_Ext"/>
+          value="dwelling.BldngFrameHeater_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext)"/>
         <TypeKeyInput
           editable="true"
           id="Masonrychimney_Ext"
           label="displaykey.Web.Homeowners.Dwelling.Masonrychimney_Ext"
           required="false"
-          value="dwelling.Masonrychimney_Ext"/>
+          value="dwelling.Masonrychimney_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext)"/>
         <TypeKeyInput
           editable="true"
           id="EarthquakeConstrn_Ext"

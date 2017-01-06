@@ -28,7 +28,6 @@ enhancement PolicyChangeInfoEnhancement : PolicyChangeInfo
 
     // PC-BC Integration: Mapping Policy Risk Address
     PolicyInfoUtil.retrieveRiskAddress(period)?.each( \ riskDetail -> {
-      var mailingAddress = false
       var policyRiskDetail = new PolicyRiskAddress()
       if(riskDetail.AccountLocation.LocationName != null){
         policyRiskDetail.LocationName = riskDetail.AccountLocation.LocationName

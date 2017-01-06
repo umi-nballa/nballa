@@ -1451,26 +1451,28 @@
           <PostOnChange/>
         </BooleanRadioInput>
         <Input
-          available="(dwelling.FloodCoverage_Ext!=null &amp;&amp; !dwelling.FloodCoverage_Ext) || (dwelling.PropFloodVal_Ext!=null &amp;&amp; (dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; !dwelling.PostFIRM_Ext)"
           editable="true"
           id="BaseFloodElevation_Ext"
           label="displaykey.Web.Homeowners.Dwelling.BaseFloodElevation_Ext"
           required="false"
-          value="dwelling.BaseFloodElevation_Ext"/>
+          value="dwelling.BaseFloodElevation_Ext"
+          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.PropFloodVal_Ext!=null &amp;&amp; (!dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
         <TypeKeyInput
-          available="(dwelling.FloodCoverage_Ext!=null &amp;&amp; !dwelling.FloodCoverage_Ext)|| (dwelling.PropFloodVal_Ext!=null &amp;&amp; (dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; !dwelling.PostFIRM_Ext)"
           editable="true"
           id="AbveBlwBaseFldElvtn_Ext"
           label="displaykey.Web.Homeowners.AbveBlwBaseFldElvtn_Ext"
           required="false"
-          value="dwelling.AbveBlwBaseFldElvtn_Ext"/>
+          value="dwelling.AbveBlwBaseFldElvtn_Ext"
+          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.PropFloodVal_Ext!=null &amp;&amp; (!dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
         <TypeKeyInput
           editable="true"
           id="PriorFloodInsProvider_Ext"
           label="displaykey.Web.Homeowners.PriorFloodInsProvider_Ext"
           required="false"
           value="dwelling.PriorFloodInsProvider_Ext"
-          visible="dwelling.FloodCoverage_Ext"/>
+          visible="dwelling.FloodCoverage_Ext">
+          <PostOnChange/>
+        </TypeKeyInput>
         <Input
           editable="true"
           id="ExpirationDate_Ext"

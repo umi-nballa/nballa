@@ -11,11 +11,9 @@ uses java.lang.Integer
  * Created by : AChandrashekar on Date: 12/8/16
  */
 class PropertyInspectionsBRHelper {
-  final static var CLASS_CODE_9 = 9
   final static var ONE_FIFTY : BigDecimal = 150
   final static var HUNDRED : BigDecimal = 100
   final static var CreditScore_626 = "626"
-  final static var CLASS_CODE_10 = 10
   final static var PROPERTY_AGE_20 = 20
   final static var LAST_INSPECTION_DONE_5 = 5
   final static var NUMPRIORLOSSES_ONE = 1
@@ -110,8 +108,8 @@ class PropertyInspectionsBRHelper {
     }
 
    //BR.09.10 :: Risk is PC9 or PC10 (excluding CA)
-    if(( dwelling_hoe.HOLocation.DwellingProtectionClassCode== CLASS_CODE_9 ||
-      dwelling_hoe.HOLocation.DwellingProtectionClassCode== CLASS_CODE_10 ) &&
+    if(( dwelling_hoe.HOLocation.DwellingProtectionClasscode == ProtectionClassCode_Ext.TC_9 ||
+      dwelling_hoe.HOLocation.DwellingProtectionClasscode == ProtectionClassCode_Ext.TC_10 ) &&
       policyPeriod.PolicyLocations.State.DisplayName!= typekey_state.TC_CA.Code)  {
     reportOne+="10|"
     }
@@ -160,8 +158,8 @@ class PropertyInspectionsBRHelper {
      }
 
     //BR.09.16 :: PC9 or PC10 (CA only)
-    if(( dwelling_hoe.HOLocation.DwellingProtectionClassCode == CLASS_CODE_9 ||
-        dwelling_hoe.HOLocation.DwellingProtectionClassCode == CLASS_CODE_10 ) &&
+    if(( dwelling_hoe.HOLocation.DwellingProtectionClasscode == ProtectionClassCode_Ext.TC_9 ||
+        dwelling_hoe.HOLocation.DwellingProtectionClasscode == ProtectionClassCode_Ext.TC_10 ) &&
         policyPeriod.PolicyLocations.first()?.State?.Code == typekey_state.TC_CA.Code)  {
       reportOne+="16|"
     }

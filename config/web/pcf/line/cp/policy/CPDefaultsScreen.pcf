@@ -104,15 +104,28 @@
         <InputGroup
           allowToggle="false//ordinancecoverage.allowToggle(coverable)"
           childrenVisible="true//ordinancecoverage.getCoverageConditionOrExclusion(coveragePattern) != null"
-          id="CovPattern1InputGroup"
+          id="OrdinanceLawInputGroup"
           label="&quot;Ordinance or Law Coverages&quot;"
           onToggle="//ordinancecoverage.setCoverageConditionOrExclusionExists(coveragePattern, VALUE)">
           <PostOnChange/>
+          <CheckBoxInput
+            available="true"
+            editable="true"
+            hideChildrenIfReadOnly="false"
+            id="equipmentbreakdownreqd"
+            label="&quot;Select if Required&quot;"
+            required="false"
+            value="cpLine.CPOrdinanceOrLawRequired"
+            visible="true">
+            <PostOnChange/>
+          </CheckBoxInput>
           <TypeKeyInput
             editable="true"
             id="coveragetype"
             label="&quot;Coverage type&quot;"
-            value="cpLine.CPOrdinanceOrLawType">
+            required="cpLine.CPOrdinanceOrLawRequired==1"
+            value="cpLine.CPOrdinanceOrLawType"
+            visible="cpLine.CPOrdinanceOrLawRequired==1">
             <PostOnChange/>
           </TypeKeyInput>
           <TypeKeyInput

@@ -24,9 +24,8 @@
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA" ){
-return true
-}else return false]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA
+    or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA]]></AvailabilityScript>
       <LimitsSet>
         <CovTermLimits
           codeIdentifier="ztdgqkbagud3ad7855hrpj5c7g9"
@@ -48,9 +47,7 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA" ){
-return true
-}else return false]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[ return Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_PPA]]></AvailabilityScript>
       <LimitsSet>
         <CovTermLimits
           codeIdentifier="zeqhufq7f2oudfsupbs5i48v408"
@@ -194,9 +191,7 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA" ){
-return true
-}else return false]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_PPA]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="z75hens9bd72i0rvut8m53j1al8"
@@ -255,9 +250,7 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[if(Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA" or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA" ){
-return true
-}else return false]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA]]></AvailabilityScript>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="znpgke2dn9c9b8u2f3p58mu7cs8"
@@ -304,37 +297,6 @@ return true
           value="1000.0000"/>
       </Options>
     </OptionCovTermPattern>
-    <OptionCovTermPattern
-      choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="HODW_FloodCovType_HOE"
-      coverageColumn="ChoiceTerm7"
-      lookupTableName="DwellingCovTerm"
-      priority="0"
-      public-id="HODW_FloodCovType_HOE"
-      required="true"
-      valueType="other">
-      <DefaultsSet/>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="ze0icpn4i09odcggfa2rk74r7u9"
-          optionCode="DA"
-          priority="200"
-          public-id="ze0icpn4i09odcggfa2rk74r7u9"
-          value="1"/>
-        <CovTermOpt
-          codeIdentifier="zrgjs4ntd4m220ooshnj0s9su2a"
-          optionCode="PA"
-          priority="300"
-          public-id="zrgjs4ntd4m220ooshnj0s9su2a"
-          value="1"/>
-        <CovTermOpt
-          codeIdentifier="zn4jcgv1o1rp0bsaqb3u4a43t9b"
-          optionCode="DPA"
-          priority="100"
-          public-id="zn4jcgv1o1rp0bsaqb3u4a43t9b"
-          value="1"/>
-      </Options>
-    </OptionCovTermPattern>
     <DirectCovTermPattern
       aggregationModel="po"
       codeIdentifier="HODW_CondominiumLossAssessment_HOE"
@@ -346,8 +308,7 @@ return true
       required="true"
       restrictionModel="prp"
       valueType="money">
-      <AvailabilityScript><![CDATA[var optionCode = Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue
-            return optionCode == "DA" or optionCode == "DPA"]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA or Dwelling_HOE.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA]]></AvailabilityScript>
       <LimitsSet>
         <CovTermLimits
           codeIdentifier="z8bggasaqu2u0f09acvb90o89q9"
@@ -375,5 +336,13 @@ return true
           public-id="z2djs3bn62qkd7o0nrfbt3m9brb"/>
       </LimitsSet>
     </DirectCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="HODW_FloodCoverageType"
+      coverageColumn="TypeKeyTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="0"
+      public-id="HODW_FloodCoverageType"
+      required="true"
+      typelist="FloodCoverageType"/>
   </CovTerms>
 </CoveragePattern>

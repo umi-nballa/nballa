@@ -1,0 +1,83 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="California FireLine Info"
+  entity="CAFireLineInfo_Ext"
+  table="cafirelineinfo_ext"
+  type="retireable">
+  <column
+    desc="Adjusted Hazard Score"
+    name="AdjustedHazardScore"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="12"/>
+  </column>
+  <column
+    desc="Override Adjusted Hazard Score?"
+    name="OverrideAdjHarardScore"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="New Overridden Adjusted Hazard Score"
+    name="OverriddenHarardScore_Ext"
+    nullok="true"
+    typelist="OverrideHazardScore_Ext"/>
+  <column
+    desc="Fireline Info Data File date"
+    name="FirelineInfoFileDate"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    desc="Special Hazard Interface Area"
+    name="SplHazardIntArea"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Override SHIA"
+    name="OverrideSHIA"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Override SHIA Score"
+    name="OverrideSHIAScore"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc="Fuel"
+    name="Fuel"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="3"/>
+  </column>
+  <column
+    desc="Slope"
+    name="Slope"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="3"/>
+  </column>
+  <column
+    desc="Access"
+    name="Access"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="3"/>
+  </column>
+  <column
+    desc="Match Indicator"
+    name="MatchIndicator"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="2"/>
+  </column>
+</entity>

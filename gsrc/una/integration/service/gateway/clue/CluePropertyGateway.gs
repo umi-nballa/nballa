@@ -56,16 +56,17 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Throws(DisplayableException, "If the web service is not available")
   function orderClueProperty(pPeriod: PolicyPeriod) {
     //attempt to create the order xml
+    _logger.info("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.info("CLUE Request or sending order :" + orderXml)
+    _logger.debug("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.info("CLUE Response or received result :" + result)
+      _logger.debug("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
-      _logger.debug("finished ordering CLUE")
+      _logger.info("finished ordering CLUE")
     }
         catch (wse: WebServiceException) {
           throw new DisplayableException(WS_NOT_AVAILABLE, wse)

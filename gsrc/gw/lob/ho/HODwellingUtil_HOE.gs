@@ -666,10 +666,13 @@ class HODwellingUtil_HOE {
   * Method to determine First Time Deeded visibility
    */
   static function isFirstTimeDeededVisible(dwelling : Dwelling_HOE) : boolean {
+
+
     var yearBuilt = getYearBuilt(dwelling)
     var currentYear = Calendar.getInstance().get(Calendar.YEAR);
-    var validYearOfPurchase = (yearBuilt == currentYear or
-        yearBuilt == currentYear+1 or yearBuilt == currentYear-1) ? true : false
+    var validYearOfPurchase = (yearBuilt!=null && (yearBuilt == currentYear or
+        yearBuilt == currentYear+1 or yearBuilt == currentYear-1)) ? true : false
+
     if(HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
         && Jurisdiction.TF_FIRSTTIMEDEEDEDHOMETYPES.TypeKeys.contains(dwelling.PolicyPeriod.BaseState)
         && validYearOfPurchase) {

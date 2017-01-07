@@ -23,6 +23,9 @@
     <Variable
       initialValue="account.AccountHolderContact.PrimaryAddress.AddressType = AddressType.TC_BILLING; return null"
       name="setAccountType_Ext"/>
+    <Variable
+      initialValue="setAddressTypeDefault(selectedAddress)"
+      name="defaultselectedaddresstype"/>
     <InputColumn>
       <InputSetRef
         def="CreateAccountContactInputSet(account.AccountHolderContact)"
@@ -139,6 +142,11 @@
   }
 }
 
-]]></Code>
+function setAddressTypeDefault(selectedAddresss:Address):boolean
+{
+  selectedAddresss.AddressType=typekey.AddressType.TC_RISKADDRESS
+  return true
+  
+}]]></Code>
   </DetailViewPanel>
 </PCF>

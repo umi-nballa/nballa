@@ -1,7 +1,6 @@
 package una.productmodel
 
 uses una.config.ConfigParamsUtil
-uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
@@ -235,6 +234,9 @@ class CoveragesUtil {
       case "HODW_BusinessProperty_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm)
         break
+      case "HOLI_Med_Pay_HOE":
+        covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm)
+        break
       default:
         break
     }
@@ -318,9 +320,7 @@ class CoveragesUtil {
     var dependentCovTerm = ConfigParamsUtil.getString(TC_WindHailExclusionCoverageTermPair, hoLine.BaseState)
     var dependentCovTermTerritories = ConfigParamsUtil.getList(tc_WindHailExclusionRestrictionTerritories, hoLine.BaseState)
 
-    result = hoLine.Dwelling.HODW_SectionI_Ded_HOE.hasCovTerm(dependentCovTerm)
-         and (hoLine.Dwelling.HODW_SectionI_Ded_HOE.getCovTerm(dependentCovTerm) as OptionCovTerm).Value > 0
-         and dependentCovTermTerritories.HasElements
+    result = (hoLine.Dwelling.HODW_SectionI_Ded_HOE.hasCovTerm(dependentCovTerm) or hoLine.hasExclusion(dependentCovTerm))
          and dependentCovTermTerritories?.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
 
     return result

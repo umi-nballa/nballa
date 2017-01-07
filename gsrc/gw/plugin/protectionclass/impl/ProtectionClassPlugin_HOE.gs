@@ -18,15 +18,15 @@ class ProtectionClassPlugin_HOE {
     }
     else {
       if (dwelling.HOLocation.DistanceToFireHydrant < 1000 and dwelling.HOLocation.DistanceToFireStation < 5) {
-        dwelling.HOLocation.DwellingProtectionClassCode = "01"
+        dwelling.HOLocation.DwellingProtectionClassCode = typekey.ProtectionClassCode_Ext.TC_1//"01"
       }
       else {
         if ((dwelling.HOLocation.DistanceToFireHydrant >= 1000 and dwelling.HOLocation.DistanceToFireHydrant < 2000) and
           (dwelling.HOLocation.DistanceToFireStation >= 5 and dwelling.HOLocation.DistanceToFireStation < 10)) {
-          dwelling.HOLocation.DwellingProtectionClassCode = "02"
+          dwelling.HOLocation.DwellingProtectionClassCode = typekey.ProtectionClassCode_Ext.TC_2//"02"
         }
         else {
-          dwelling.HOLocation.DwellingProtectionClassCode = "03"
+          dwelling.HOLocation.DwellingProtectionClassCode = typekey.ProtectionClassCode_Ext.TC_3//"03"
         }
       }
     }

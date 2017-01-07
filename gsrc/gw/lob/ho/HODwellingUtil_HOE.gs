@@ -666,10 +666,13 @@ class HODwellingUtil_HOE {
   * Method to determine First Time Deeded visibility
    */
   static function isFirstTimeDeededVisible(dwelling : Dwelling_HOE) : boolean {
+
+
     var yearBuilt = getYearBuilt(dwelling)
     var currentYear = Calendar.getInstance().get(Calendar.YEAR);
-    var validYearOfPurchase = (yearBuilt == currentYear or
-        yearBuilt == currentYear+1 or yearBuilt == currentYear-1) ? true : false
+    var validYearOfPurchase = (yearBuilt!=null && (yearBuilt == currentYear or
+        yearBuilt == currentYear+1 or yearBuilt == currentYear-1)) ? true : false
+
     if(HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType)
         && Jurisdiction.TF_FIRSTTIMEDEEDEDHOMETYPES.TypeKeys.contains(dwelling.PolicyPeriod.BaseState)
         && validYearOfPurchase) {
@@ -740,16 +743,17 @@ class HODwellingUtil_HOE {
       }
     })
     residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
-    return residenceType
+    return residenceType.orderBy( \ rt -> rt.DisplayName)
   }
 
   static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
-    if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
+    if( (policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
-        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT) &&
+        (policyPeriod.BaseState==TC_AZ || policyPeriod.BaseState==TC_CA || policyPeriod.BaseState==TC_TX || policyPeriod.BaseState==TC_SC || policyPeriod.BaseState==TC_HI || policyPeriod.BaseState==TC_NV) ){
       return true
     }
     if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){

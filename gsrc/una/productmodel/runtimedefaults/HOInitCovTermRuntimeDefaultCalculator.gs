@@ -57,6 +57,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "DPDW_Additional_LivingExpLimit_HOE":
       case "HODW_FungiSectionILimit_HOE":
       case "HODW_FungiSectionII_HOE":
+      case "HOLI_MedPay_Limit_HOE":
         result = covTerm.AvailableOptions.orderBy( \ option -> option.Value).first().Value
         break
       case "HODW_EQCovD_HOE_Ext":

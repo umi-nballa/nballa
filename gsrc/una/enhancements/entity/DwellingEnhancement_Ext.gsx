@@ -109,11 +109,19 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   }
 
-  property get YearBuiltOrOverride(): Integer{
-    if(this.OverrideYearbuilt_Ext){
+  property get YearBuiltOrOverride() : Integer{
+    if(this.OverrideYearbuilt_Ext and this.YearBuiltOverridden_Ext != null){
       return this.YearBuiltOverridden_Ext
     }else{
       return this.YearBuilt
+    }
+  }
+
+  property get TerritoryCodeOrOverride() : String{
+    if(this.HOLocation.OverrideTerritoryCode_Ext and this.HOLocation.TerritoryCodeOverridden_Ext != null){
+      return this.HOLocation.TerritoryCodeOverridden_Ext
+    }else{
+      return this.HOLocation.TerritoryCodeTunaReturned_Ext
     }
   }
 
@@ -131,11 +139,11 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
     if(coverable.HODW_FloodCoverage_HOE_ExtExists){
-      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA"){
+      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
-      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA"){
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_PPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
-      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA"){
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
       }
     }
@@ -153,6 +161,19 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       }
     }
    return zipCodeExists
+  }
+  
+  function floodZipCodesToWatch(dwelling:Dwelling_HOE):boolean{
+    var floodZipCodeToWatch:boolean
+    var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
+    if(floodIneligibleZips.HasElements){
+      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+      if(zipCode.length >= 5){
+        zipCode = zipCode.substring(0, 5)
+        floodZipCodeToWatch = !floodIneligibleZips.contains(zipCode)
+      }
+    }
+    return floodZipCodeToWatch
   }
 
   function eastORWestCoastLocation(dwelling : Dwelling_HOE):CoastLocation_Ext{

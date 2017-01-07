@@ -41,12 +41,12 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
 
             //CCPolicySummaryProperty.Address is deprecated as of 8.0.1. Use AddressLine1 and AddressLine2 instead.
             ccBld.Address = loc.AddressLine1
+            ccBld.AddressLine1 = loc.AddressLine1
             if (loc.AddressLine2.HasContent) {
+              ccBld.AddressLine2 = loc.AddressLine2
               ccBld.Address = ccBld.Address + ", " + loc.AddressLine2
             }
 
-            ccBld.AddressLine1 = loc.AddressLine1
-            ccBld.AddressLine2 = loc.AddressLine2
             ccBld.City = loc.City
             ccBld.Description = trimRUDescription(bld.Building.Description)
           }

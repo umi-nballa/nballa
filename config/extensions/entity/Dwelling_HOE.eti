@@ -628,7 +628,7 @@
     desc="CA Fireline Info"
     fkentity="CAFireLineInfo_Ext"
     name="CAFirelineInfo"
-    nullok="true"/>	
+    nullok="true"/>
   <foreignkey
     fkentity="HODwellingProtDetails_Ext"
     name="DwellingProtectionDetails"
@@ -824,6 +824,38 @@
   <typekey
     desc="Construction Type entered by Users"
     name="ConstTypeOverridden_Ext"
+    nullok="true"
+    typelist="ConstructionType_HOE"/>
+  <typekey
+    desc="Construction Type Match Level returned from TUNA"
+    name="ConstructionTypeMatchLvlL1_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Construction Type returned from TUNA"
+    name="OverrideConstructionTypeL1_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Construction Type entered by Users"
+    name="ConstTypeOverriddenL1_Ext"
+    nullok="true"
+    typelist="ConstructionType_HOE"/>
+  <typekey
+    desc="Construction Type Match Level returned from TUNA"
+    name="ConstructionTypeMatchLvlL2_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Construction Type returned from TUNA"
+    name="OverrideConstructionTypeL2_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Construction Type entered by Users"
+    name="ConstTypeOverriddenL2_Ext"
     nullok="true"
     typelist="ConstructionType_HOE"/>
   <typekey
@@ -1067,22 +1099,54 @@
     columnName="ExteriorWallFinishL1_Ext"
     name="ExteriorWallFinishL1_Ext"
     nullok="true"
-    typelist="ExteriorWallFinishL1_Ext"/>
+    typelist="ExteriorWallFinish_Ext"/>
   <typekey
     columnName="ExteriorWallFinishL2_Ext"
     name="ExteriorWallFinishL2_Ext"
     nullok="true"
-    typelist="ExteriorWallFinishL2_Ext"/>
+    typelist="ExteriorWallFinish_Ext"/>
+  <typekey
+    desc="ExteriorWFval Match Level from TUNA"
+    name="ExteriorWFvalMatchLevelL1_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override ExteriorWFval returned from TUNA"
+    name="OverrideExteriorWFvalL1_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ExteriorWFvalueOverridL1_Ext"
+    nullok="true"
+    typelist="ExteriorWallFinish_Ext"/>
+  <typekey
+    desc="ExteriorWFval Match Level from TUNA"
+    name="ExteriorWFvalMatchLevelL2_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override ExteriorWFval returned from TUNA"
+    name="OverrideExteriorWFvalL2_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ExteriorWFvalueOverridL2_Ext"
+    nullok="true"
+    typelist="ExteriorWallFinish_Ext"/>
   <typekey
     columnName="ConstructionTypeL1_Ext"
     name="ConstructionTypeL1_Ext"
     nullok="true"
-    typelist="ConstructionTypeL1_Ext"/>
+    typelist="ConstructionType_HOE"/>
   <typekey
     columnName="ConstructionTypeL2_Ext"
     name="ConstructionTypeL2_Ext"
     nullok="true"
-    typelist="ConstructionTypeL2_Ext"/>
+    typelist="ConstructionType_HOE"/>
   <typekey
     columnName="FoundationMaterial_Ext"
     name="FoundationMaterial_Ext"

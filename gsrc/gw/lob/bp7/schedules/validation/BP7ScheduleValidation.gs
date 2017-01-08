@@ -132,6 +132,9 @@ class BP7ScheduleValidation extends PCValidationBase {
         _schedule.Pattern.CoverageCategoryID == BP7Categories.BP7LocationAddlInsuredGrp.Code){
       new BP7AdditionalInsuredScheduleValidation(_schedule, Result).validate()
     }
+    if (_schedule.Pattern.CoverageCategoryID == BP7Categories.BP7BuildingAddlInterestGrp_EXT.Code){
+      new BP7AdditionalInterestScheduleValidation(_schedule, Result).validate()
+    }
   }
 
   static function validateSchedule(schedule: Schedule & Clause) {

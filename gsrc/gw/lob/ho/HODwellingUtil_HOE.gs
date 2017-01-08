@@ -743,16 +743,17 @@ class HODwellingUtil_HOE {
       }
     })
     residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
-    return residenceType
+    return residenceType.orderBy( \ rt -> rt.DisplayName)
   }
 
   static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
-    if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
+    if( (policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
-        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
+        policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT) &&
+        (policyPeriod.BaseState==TC_AZ || policyPeriod.BaseState==TC_CA || policyPeriod.BaseState==TC_TX || policyPeriod.BaseState==TC_SC || policyPeriod.BaseState==TC_HI || policyPeriod.BaseState==TC_NV) ){
       return true
     }
     if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
@@ -800,7 +801,7 @@ class HODwellingUtil_HOE {
     dwelling.HOLocation.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
     dwelling.HOLocation.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
     dwelling.HOLocation.ISO360MatchLevel_Ext = getMatchLevel(tunaAppResponse.ISO360Value)
-    dwelling.HOLocation.WindpoolvalueMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+    //dwelling.HOLocation.WindpoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
     dwelling.HOLocation.ACVValueMatchLevel_Ext = getMatchLevel(tunaAppResponse.ACV)
     dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLineSHIA)
     dwelling.HOLocation.FirelineFuelMatchLevel_Ext = getMatchLevel(tunaAppResponse.FireLineFuel)
@@ -813,11 +814,22 @@ class HODwellingUtil_HOE {
     dwelling.RoofTypeMatchLevel_Ext = getMatchLevel(tunaAppResponse.RoofType)
     dwelling.RoofShapeMatchLevel_Ext = getMatchLevel(tunaAppResponse.RoofCover)
     dwelling.ConstructionTypeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ConstructionType)
+
+    dwelling.ConstructionTypeMatchLvlL1_Ext = getMatchLevel(tunaAppResponse.ConstructionType)
+    dwelling.ConstructionTypeMatchLvlL2_Ext = getMatchLevel(tunaAppResponse.ConstructionType)
+
+
+
     dwelling.YearBuiltMatchLevel_Ext = getMatchLevel(tunaAppResponse.YearBuilt)
     dwelling.BaseFloodElValMatchLevel_Ext = getMatchLevel(tunaAppResponse.BaseFloodElevation)
     dwelling.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
     dwelling.EarthquakeTerMatchLevel_Ext = getMatchLevel(tunaAppResponse.EarthQuakeTerritory)
     dwelling.ExteriorWFvalMatchLevel_Ext = getMatchLevel(tunaAppResponse.WallFinish)
+
+    dwelling.ExteriorWFvalMatchLevelL1_Ext = getMatchLevel(tunaAppResponse.WallFinish)
+    dwelling.ExteriorWFvalMatchLevelL2_Ext = getMatchLevel(tunaAppResponse.WallFinish)
+
+
     dwelling.TotalSqFtValMatchLevel_Ext = getMatchLevel(tunaAppResponse.SquareFootage)
 
     return true

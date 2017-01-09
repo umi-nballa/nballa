@@ -52,10 +52,9 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
       location = (policyPeriod.HomeownersLine_HOE.HOLocation.PolicyLocation) as String
     }else if(policyPeriod.BP7LineExists){
       for (pLoc in policyPeriod.BP7Line.BP7Locations*.PolicyLocation){
-        if(pLoc.PrimaryLoc)
-          location = pLoc.DisplayName
+          location = pLoc.DisplayName + " " + pLoc.PostalCode
+        }
       }
-    }
     return location
   }
 }

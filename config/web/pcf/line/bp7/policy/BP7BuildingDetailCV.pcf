@@ -207,10 +207,10 @@
                     visible="building.OverrideBCEG_Ext"/>
                 </InputSet>
                 <InputDivider/>
-                <TextInput
+                <!-- <TextInput
                   id="respondingFire"
                   label="displaykey.Web.Location.RespondingFireDepartment"
-                  value="location.FireDepartment_Ext"/>
+                  value="location.FireDepartment_Ext"/> -->
                 <TypeKeyInput
                   editable="true"
                   id="FeetToHydrant"
@@ -254,6 +254,105 @@
                     required="building.OverrideWindPool_Ext"
                     value="building.WindPoolOverridden_Ext"
                     visible="building.OverrideWindPool_Ext"/>
+                </InputSet>
+                <InputDivider/>
+                <InputSet
+                  id="PCCode_Ext">
+                  <RangeInput
+                    available="!building.OverrideDwellingPCCode_Ext"
+                    editable="true"
+                    id="PCCodeTunaReturned_Ext"
+                    label="displaykey.Web.BOP.BP7Location.ProtectionClass"
+                    value="building.DwellingProtectionClassCode"
+                    valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
+                    <PostOnChange
+                      onChange="building.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(building.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+                  </RangeInput>
+                  <Input
+                    available="!building.OverrideDwellingPCCode_Ext"
+                    id="PCCodeMatchLevel_Ext"
+                    label="displaykey.Web.BOP.BP7Location.PCCodeMatchlevel_Ext"
+                    value="building.DwellingPCCodeMatchLevel_Ext"/>
+                  <BooleanRadioInput
+                    editable="true"
+                    id="OverRideTunaBCEG_Ext"
+                    label="displaykey.Web.BOP.BP7Location.PCCodeOverride_Ext"
+                    value="building.OverrideDwellingPCCode_Ext">
+                    <PostOnChange
+                      target="PCCode_Ext"/>
+                  </BooleanRadioInput>
+                  <Input
+                    available="building.OverrideDwellingPCCode_Ext"
+                    editable="true"
+                    id="PCCodeUserEntered_Ext"
+                    label="displaykey.Web.BOP.BP7Location.PCCodeUserEntered_Ext"
+                    required="building.OverrideDwellingPCCode_Ext"
+                    value="building.DwellingPCCodeOverridden_Ext"
+                    visible="building.OverrideDwellingPCCode_Ext"/>
+                </InputSet>
+                <InputDivider/>
+                <InputSet
+                  id="Firedeptnamedval_Ext">
+                  <RangeInput
+                    available="!building.OverrideFiredeptnamedval_Ext"
+                    editable="true"
+                    id="FiredeptnamedvalTunaReturned_Ext"
+                    label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalTunaReturned_Ext"
+                    value="building.Firedeptnmval_Ext"
+                    valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
+                  <Input
+                    available="!building.OverrideFiredeptnamedval_Ext"
+                    id="FiredeptnamedvalMatchLevel_Ext"
+                    label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalMatchlevel_Ext"
+                    value="building.FiredeptnamedvalMatchLevel_Ext"/>
+                  <BooleanRadioInput
+                    editable="true"
+                    id="OverRideFiredeptnamedval_Ext"
+                    label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalOverride_Ext"
+                    value="building.OverrideFiredeptnamedval_Ext">
+                    <PostOnChange
+                      target="Firedeptnamedval_Ext"/>
+                  </BooleanRadioInput>
+                  <Input
+                    available="building.OverrideFiredeptnamedval_Ext"
+                    editable="true"
+                    id="FiredeptnamedvalUserEntered_Ext"
+                    label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalUserEntered_Ext"
+                    required="building.OverrideFiredeptnamedval_Ext"
+                    value="building.FiredeptnamedvalOverridden_Ext"
+                    visible="building.OverrideFiredeptnamedval_Ext"/>
+                </InputSet>
+                <InputDivider/>
+                <InputSet
+                  id="DistToCoast_Ext">
+                  <RangeInput
+                    available="!building.OverrideDistToCoast_Ext"
+                    editable="true"
+                    id="DistToCoastTunaReturned_Ext"
+                    label="displaykey.Web.BOP.BP7Location.DistanceToCoast_Ext"
+                    value="building.DistToCoast_Ext"
+                    valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
+                  <Input
+                    available="!building.OverrideDistToCoast_Ext"
+                    id="DistToCoastMatchLevel_Ext"
+                    label="displaykey.Web.BOP.BP7Location.DistanceToCoastMatchLevel_Ext"
+                    value="building.DistToCoastMatchLevel_Ext"/>
+                  <BooleanRadioInput
+                    editable="true"
+                    id="OverRideDistToCoast_Ext"
+                    label="displaykey.Web.BOP.BP7Location.DistToCoastOverride_Ext"
+                    value="building.OverrideDistToCoast_Ext">
+                    <PostOnChange
+                      target="DistToCoast_Ext"/>
+                  </BooleanRadioInput>
+                  <Input
+                    available="building.OverrideDistToCoast_Ext"
+                    editable="true"
+                    id="DistToCoastUserEntered_Ext"
+                    label="displaykey.Web.BOP.BP7Location.DistanceToCoastUserEntered_Ext"
+                    required="building.OverrideDistToCoast_Ext"
+                    value="building.DistToCoastOverridden_Ext"
+                    visible="building.OverrideDistToCoast_Ext"/>
                 </InputSet>
                 <InputDivider/>
                 <TypeKeyInput
@@ -501,7 +600,7 @@
                                 value="selectedClassification.ClassDescription"
                                 valueRange="getAssociatedClassification(selectedClassification.ClassPropertyType)">
                                 <PostOnChange
-                                  onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue));selectedClassification.associatedClassCode()"/>
+                                  onChange="selectedClassification.updateDependentFields(new gw.lob.common.dependency.DependenciesContext(BP7Classification#ClassDescription.PropertyInfo, previousDescriptionValue));selectedClassification.associatedClassCode();selectedClassification.syncIfNeeded(selectedClassification,jobWizardHelper)"/>
                               </RangeInput>
                               <Input
                                 id="classcode"

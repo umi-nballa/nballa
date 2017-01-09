@@ -1,7 +1,6 @@
 package una.productmodel
 
 uses una.config.ConfigParamsUtil
-uses gw.api.domain.covterm.OptionCovTerm
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
@@ -235,6 +234,9 @@ class CoveragesUtil {
       case "HODW_BusinessProperty_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm)
         break
+      case "HOLI_Med_Pay_HOE":
+        covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm)
+        break
       default:
         break
     }
@@ -318,9 +320,7 @@ class CoveragesUtil {
     var dependentCovTerm = ConfigParamsUtil.getString(TC_WindHailExclusionCoverageTermPair, hoLine.BaseState)
     var dependentCovTermTerritories = ConfigParamsUtil.getList(tc_WindHailExclusionRestrictionTerritories, hoLine.BaseState)
 
-    result = hoLine.Dwelling.HODW_SectionI_Ded_HOE.hasCovTerm(dependentCovTerm)
-         and (hoLine.Dwelling.HODW_SectionI_Ded_HOE.getCovTerm(dependentCovTerm) as OptionCovTerm).Value > 0
-         and dependentCovTermTerritories.HasElements
+    result = (hoLine.Dwelling.HODW_SectionI_Ded_HOE.hasCovTerm(dependentCovTerm) or hoLine.hasExclusion(dependentCovTerm))
          and dependentCovTermTerritories?.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
 
     return result
@@ -341,7 +341,8 @@ class CoveragesUtil {
   private static function isProductsCompletedOpernsUnrelatedtoBuilOwnersExclusionAvailable(bp7Building : BP7Building):boolean{
       if( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER ||
           ( bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT &&
-              (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")|| bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT")) ) ||
+              (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue!=null && (bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7<65%_EXT")||
+                  bp7Building.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("BP7>65%_EXT"))) ) ||
                 (bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || bp7Building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER ) ){
         return true
       }
@@ -357,7 +358,13 @@ class CoveragesUtil {
   }
 
   private static function isWindstormOrHailExclusionAvailableHO(line : HomeownersLine_HOE) : boolean{
-    return line.BaseState == TC_FL and line.Dwelling.WHurricaneHailExclusion_Ext
+    var result = true
+
+    if(line.BaseState == TC_FL){
+      result = line.Dwelling.WHurricaneHailExclusion_Ext
+    }
+
+    return result
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
@@ -373,9 +380,11 @@ class CoveragesUtil {
   }
 
   private static function getPersonalAdvertisingInjuryExclusionExistence(bp7Classification:BP7Classification):ExistenceType{
-    var result : ExistenceType = TC_Electable
+    var result : ExistenceType
     if(bp7Classification.ClassCode_Ext=="65121B" || bp7Classification.ClassCode_Ext=="65121K"){
       result = TC_REQUIRED
+    }else{
+      result = TC_ELECTABLE
     }
     return result
   }
@@ -540,38 +549,5 @@ class CoveragesUtil {
     }
 
     return result
-  }
-
-  //TODO tlv - the below is going to be updated when i get requirements clarifications from Sen
-  private static class ComprehensiveEarthquakeAvailabilityEvaluator{
-    private var _dwelling : Dwelling_HOE
-    private var availabilityRules : List<EarthquakeAvailabilityRule> = {
-      new EarthquakeAvailabilityRule(\ dwelling -> { return dwelling.DwellingLimitCovTerm.Value >= 100000
-                                                        and dwelling.DwellingLimitCovTerm.Value <= 750000
-                                                        /** and is concrete basement**/}, _dwelling),
-      new EarthquakeAvailabilityRule(\ dwelling -> { return (dwelling.YearBuiltOrOverride > 1973 and dwelling.ThreeOrLessStories)
-                                                         or (dwelling.YearBuiltOrOverride >= 1937 and dwelling.YearBuiltOrOverride <= 1973 and dwelling.TwoOrLessStories)}, _dwelling)
-    }
-
-    construct(dwelling : Dwelling_HOE){
-      _dwelling = dwelling
-    }
-
-    public function isAvailable() : boolean{
-      return availabilityRules.allMatch( \ rule -> rule.ok())
-    }
-  }
-
-  private static class EarthquakeAvailabilityRule{
-    private var _condition : block(dwelling : Dwelling_HOE) : boolean
-    private var _dwelling : Dwelling_HOE
-
-    construct(condition(dwelling : Dwelling_HOE) : boolean, dwelling : Dwelling_HOE){
-      _condition = condition
-    }
-
-    function ok() : boolean{
-      return _condition(_dwelling)
-    }
   }
 }

@@ -58,7 +58,7 @@
     <DateInput
       editable="true"
       id="UNAWindMitReInspec_Ext"
-      label="displaykey.Web.SubmissionWizard.PolicyInfo.UNAWindMitReinspectionDate_Ext"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.UNAWindMitInspectionDate_Ext"
       value="policyPeriod.UNAWindMitReinspectionDate_Ext"
       visible="policyPeriod.BaseState == TC_FL or policyPeriod.BaseState == TC_SC or policyPeriod.BaseState == TC_NC"/>
     <DateInput
@@ -97,7 +97,7 @@
       visible="policyPeriod.HomeownersLine_HOEExists"/>
     <!-- Changing the effective date updates the expiration date when the term type is not "short" -->
     <DateInput
-      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates and (policyPeriod.Job typeis Issuance)"
+      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates// and (policyPeriod.Job typeis Issuance)"
       id="EffectiveDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.EffectiveDate"
       required="true"
@@ -214,7 +214,6 @@
           target="affinityGroupInputSet"/>
       </RangeInput>
       <BooleanRadioInput
-        editable="true"
         id="QualifiesDiscount"
         label="displaykey.Web.Admin.AffinityGroup.AffinityDiscount_Ext"
         value="policyPeriod.QualifiesAffinityDisc_Ext"/>

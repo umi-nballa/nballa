@@ -79,26 +79,24 @@ class DocumentQueryResultsParser {
    * multiple entities.
    */
   private function getOnBaseDocument(doc : Document) : OnBaseDocument {
-    var obDoc = _documentResults.get(doc.DocumentIdentifier)       //TODO: OnBase - Changed to from DocuemntHandle to Document Identifier
-
-    //TODO: OnbBase - commented out until taxonomy complete
-  /*  // If the document isn't already in the map, create a new one.
+    var obDoc = _documentResults.get(doc.DocumentIdentifier)
+   // If the document isn't already in the map, create a new one.
     if (obDoc == null) {
       obDoc = new OnBaseDocument()
-      obDoc.DocID = doc.DocumentHandle.toLong()
+      obDoc.DocID = doc.DocUID
       obDoc.Name = doc.Name
-      obDoc.Author = doc.CreatedBy
-      obDoc.OnBaseDocumentType = doc.DocTypeName
-      obDoc.DateCreated = doc.DateStored.toDate()
-      obDoc.DateModified = doc.DocDate.toDate()
-      obDoc.Status = doc.DocStatus
+      obDoc.Author = doc.CreateUser
+      obDoc.OnBaseDocumentType = doc.Name
+      obDoc.DateCreated = doc.DateCreated
+      obDoc.DateModified = doc.DateModified
+      obDoc.Status = doc.Status
 
       // Hard-coded in the mapping for the eis interface, duplicating the values here for now.
       obDoc.Locale = Settings.DocumentLocale.Code
       obDoc.SecurityType = Settings.DocumentSecurity.toString()
 
       _documentResults.put(obDoc.DocID, obDoc)
-    }*/
+    }
 
     return obDoc
   }

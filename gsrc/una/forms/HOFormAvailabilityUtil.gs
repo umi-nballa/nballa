@@ -159,7 +159,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     if(formCode.equals(FormPatternConstants.HO_PERSONAL_PROPERTY_REPLACEMENT_COST_FORM)){
       if(hoeLine != null and dwelling != null and dwelling.HODW_Personal_Property_HOEExists and
         dwelling.HODW_Personal_Property_HOE?.HasHODW_PropertyValuation_HOETerm and
-        dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.Value == "Replacement"){
+        dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.OptionValue.CodeIdentifier == "Replacement"){
         return true
       }
     }

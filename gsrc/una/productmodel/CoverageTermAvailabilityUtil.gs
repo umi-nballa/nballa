@@ -27,15 +27,15 @@ class CoverageTermAvailabilityUtil {
   private static final var AOP = "AOP"
   private static final var COV_LIMIT = "COVLIMIT"
   private static final var SC_NAMED_STORM_RESTRICTION_MAP : Map<String, Double> = {
-    StringUtils.join({"HO3", AOP + "2500", "0.01"}, ",") -> 250000,
-    StringUtils.join({"HO3", AOP + "2500", "0.02"}, ",") -> 125000,
-    StringUtils.join({"HO3", AOP + "5000", "0.01"}, ",") -> 500000,
-    StringUtils.join({"HO3", AOP + "5000", "0.02"}, ",") -> 250000,
-    StringUtils.join({"HO4", AOP + "1000", "0.02"}, ",") -> 50000,
-    StringUtils.join({"HO6", AOP + "2500", "0.02"}, ",") -> 125000,
-    StringUtils.join({"HO6", AOP + "5000", "0.02"}, ",") -> 250000,
-    StringUtils.join({"HO6", AOP + "5000", "0.05"}, ",") -> 100000,
-    StringUtils.join({"HO6", AOP + "5000", "0.10"}, ",") ->50000
+    StringUtils.join({"HO3", AOP, "2500", "0.01"}) -> 250000,
+    StringUtils.join({"HO3", AOP, "2500", "0.02"}) -> 125000,
+    StringUtils.join({"HO3", AOP, "5000", "0.01"}) -> 500000,
+    StringUtils.join({"HO3", AOP, "5000", "0.02"}) -> 250000,
+    StringUtils.join({"HO4", AOP, "1000", "0.02"}) -> 50000,
+    StringUtils.join({"HO6", AOP, "2500", "0.02"}) -> 125000,
+    StringUtils.join({"HO6", AOP, "5000", "0.02"}) -> 250000,
+    StringUtils.join({"HO6", AOP, "5000", "0.05"}) -> 100000,
+    StringUtils.join({"HO6", AOP, "5000", "0.10"}) ->50000
   }
 
   @Param("option", "The CovTermOpt to evaluate availability for.")
@@ -188,6 +188,15 @@ class CoverageTermAvailabilityUtil {
         break
       case "HODW_Retrofitted_HOE":
         result = isRetrofittedCovTermAvailable(coverable as Dwelling_HOE)
+        break
+	    case "Cov1Limit_EXT":
+        result = isBP7OrdinanceLawCov1LimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "Cov2Limit_EXT":
+        result = isBP7OrdinanceLawCov2LimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
+        break
+      case "Cov3Limit_EXT":
+        result = isBP7OrdinanceLawCov3LimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
         break
       default:
         break
@@ -351,6 +360,10 @@ class CoverageTermAvailabilityUtil {
   }
 
   private static function isProductsCompletedOpsAggrLimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+
+    if(bp7Line.AllBuildings.IsEmpty && bp7Line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Included_EXT")){
+      return true
+    }
     for(building in bp7Line.AllBuildings){
       if(!building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
         return true
@@ -358,9 +371,37 @@ class CoverageTermAvailabilityUtil {
     }
     return false
   }
+  private static function isBP7OrdinanceLawCov1LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line!=null && bp7Line.BP7OrdinanceOrLawCov_EXTExists && bp7Line.BP7OrdinanceOrLawCov_EXT!=null &&
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm!=null && bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue!=null &&
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1Only_EXT") ||
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
+          bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT")){
+      return true
+    }
+    return false
+  }
 
   private static function isHurricanePercentageAvailable(dwelling : Dwelling_HOE) : boolean{
     return dwelling.HOLine.BaseState != TC_FL or !dwelling.WHurricaneHailExclusion_Ext
+  }
+  
+  private static function isBP7OrdinanceLawCov2LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm!=null && bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue!=null &&
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT")){
+      return true
+    }
+    return false
+  }
+
+  private static function isBP7OrdinanceLawCov3LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm!=null && bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue!=null &&
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov3Only_EXT") ||
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT")){
+      return true
+    }
+    return false
   }
 
   private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
@@ -447,9 +488,9 @@ class CoverageTermAvailabilityUtil {
     if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix)){
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
-      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + namedStormValue + allPerilsValue)
-      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + nonHurricaneWindValue + allPerilsValue)
-      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix + allPerilsValue)
+      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, namedStormValue, allPerilsValue.asString()}))
+      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, nonHurricaneWindValue, allPerilsValue.asString()}))
+      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()}))
       var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
 
       if(namedStormRestrictedOptions != null){
@@ -473,7 +514,7 @@ class CoverageTermAvailabilityUtil {
         covLimitValue = dwelling.DwellingLimitCovTerm.Value
       }
 
-      var restrictionThreshold = SC_NAMED_STORM_RESTRICTION_MAP.get(StringUtils.join({dwelling.HOPolicyType.Code, AOP + allPerilsValue, option.Value}, ","))
+      var restrictionThreshold = SC_NAMED_STORM_RESTRICTION_MAP.get(StringUtils.join({dwelling.HOPolicyType.Code, AOP, allPerilsValue, option.Value}))
 
       if(result and restrictionThreshold != null and covLimitValue != null){
         result = covLimitValue >= restrictionThreshold
@@ -512,7 +553,7 @@ class CoverageTermAvailabilityUtil {
       }
 
       if(1000d == covTermOpt.Value.doubleValue()){
-        result = hoLine.Dwelling.ResidenceType == TC_FAM1 or hoLine.Dwelling.ResidenceType == TC_FAM2
+        result = hoLine.Dwelling.ResidenceType == TC_singleFamily_Ext
       }
     }
 

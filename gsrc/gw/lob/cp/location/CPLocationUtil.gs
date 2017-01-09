@@ -32,7 +32,22 @@ class CPLocationUtil {
     return res
   }
 
-  static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, building:CPBuilding) : boolean {
+    static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, location:PolicyLocation) : boolean
+    {
+
+      if(location!=null && tunaAppResponse!=null)
+        {
+          location?.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+          location?.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+          location?.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
+          location?.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+        }
+      return true
+
+    }
+
+    static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, building:CPBuilding) : boolean
+      {
     /************ location entity *****/
     if(building!=null && tunaAppResponse!=null)
       {
@@ -40,13 +55,19 @@ class CPLocationUtil {
     building?.FirePCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
     building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
     building?.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
-    building?.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
-    building?.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-    building?.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+
     building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-    building?.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+
        }
     return true
+  }
+
+  static function getTunaResponse(polLocation:PolicyLocation)  : TunaAppResponse
+  {
+    if(polLocation.AssociatedPolicyPeriod.CPLineExists)
+     return new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(polLocation.AssociatedPolicyPeriod)
+
+    else return null
   }
 
 }

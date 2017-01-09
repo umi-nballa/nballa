@@ -109,20 +109,70 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   }
 
-  property get YearBuiltOrOverride(): Integer{
-    if(this.OverrideYearbuilt_Ext){
+  property get YearBuiltOrOverride() : Integer{
+    if(this.OverrideYearbuilt_Ext and this.YearBuiltOverridden_Ext != null){
       return this.YearBuiltOverridden_Ext
     }else{
       return this.YearBuilt
     }
   }
 
-  property get TwoOrLessStories() : boolean{
-    return typekey.NumberOfStories_HOE.TF_TWOORLESSSTORIES.TypeKeys.contains(this.StoriesNumber)
+  property get ConstructionTypeOrOverride() : typekey.ConstructionType_HOE{
+    if(this.OverrideConstructionType_Ext and this.ConstTypeOverridden_Ext != null){
+      print("consttype overridden returning " + this.ConstTypeOverridden_Ext.Code)
+      return this.ConstTypeOverridden_Ext
+    }else{
+      print("consttype returning " + this.ConstructionType.Code)
+      return this.ConstructionType
+    }
   }
 
-  property get ThreeOrLessStories() : boolean{
-    return typekey.NumberOfStories_HOE.TF_THREESTORIESORLESS.TypeKeys.contains(this.StoriesNumber)
+  property get ConstructionTypeL1OrOverride() : typekey.ConstructionType_HOE{
+    if(this.OverrideConstructionTypeL1_Ext and this.ConstTypeOverriddenL1_Ext != null){
+      return this.ConstTypeOverriddenL1_Ext
+    }else{
+      return this.ConstructionTypeL1_Ext
+    }
+  }
+
+  property get ConstructionTypeL2OrOverride() : typekey.ConstructionType_HOE{
+    if(this.OverrideConstructionTypeL2_Ext and this.ConstTypeOverriddenL2_Ext != null){
+      return this.ConstTypeOverriddenL2_Ext
+    }else{
+      return this.ConstructionTypeL2_Ext
+    }
+  }
+
+  property get ExteriorWallFinishOrOverride() : typekey.ExteriorWallFinish_Ext{
+    if(this.OverrideExteriorWFval_Ext and this.ExteriorWFvalueOverridden_Ext != null){
+      return this.ExteriorWFvalueOverridden_Ext
+    }else{
+      return this.ExteriorWallFinish_Ext
+    }
+  }
+
+  property get ExteriorWallFinishL1OrOverride() : typekey.ExteriorWallFinish_Ext{
+    if(this.OverrideExteriorWFvalL1_Ext and this.ExteriorWFvalueOverridL1_Ext != null){
+      return this.ExteriorWFvalueOverridL1_Ext
+    }else{
+      return this.ExteriorWallFinishL1_Ext
+    }
+  }
+
+  property get ExteriorWallFinishL2OrOverride() : typekey.ExteriorWallFinish_Ext{
+    if(this.OverrideExteriorWFvalL2_Ext and this.ExteriorWFvalueOverridL2_Ext != null){
+      return this.ExteriorWFvalueOverridL2_Ext
+    }else{
+      return this.ExteriorWallFinishL2_Ext
+    }
+  }
+
+  property get TerritoryCodeOrOverride() : String{
+    if(this.HOLocation.OverrideTerritoryCode_Ext and this.HOLocation.TerritoryCodeOverridden_Ext != null){
+      return this.HOLocation.TerritoryCodeOverridden_Ext
+    }else{
+      return this.HOLocation.TerritoryCodeTunaReturned_Ext
+    }
   }
 
   property get isPolicyHOTypes() : boolean {
@@ -139,11 +189,11 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
     if(coverable.HODW_FloodCoverage_HOE_ExtExists){
-      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DPA"){
+      if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
-      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "PA"){
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_PPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
-      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCovType_HOETerm.OptionValue.OptionCode == "DA"){
+      }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
       }
     }
@@ -161,6 +211,19 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       }
     }
    return zipCodeExists
+  }
+  
+  function floodZipCodesToWatch(dwelling:Dwelling_HOE):boolean{
+    var floodZipCodeToWatch:boolean
+    var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
+    if(floodIneligibleZips.HasElements){
+      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+      if(zipCode.length >= 5){
+        zipCode = zipCode.substring(0, 5)
+        floodZipCodeToWatch = !floodIneligibleZips.contains(zipCode)
+      }
+    }
+    return floodZipCodeToWatch
   }
 
   function eastORWestCoastLocation(dwelling : Dwelling_HOE):CoastLocation_Ext{

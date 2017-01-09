@@ -52,9 +52,11 @@ class OFACGatewayHelper {
   }
 
 
-  // Function to check & add contact and Score to a Hashmap
-  function addContactScoreToMap(record: ArrayOfResultRecord_ResultRecord, policyContacts: List<Contact>, watchList: ArrayOfWLMatch_WLMatch,pPeriod: PolicyPeriod): HashMap<Contact, Integer> {
-    var contactScoreMap = new HashMap<Contact, Integer>()
+  // Function to check & add contact to LIST
+  function returnHITList(record: ArrayOfResultRecord_ResultRecord,
+                                policyContacts: List<Contact>, watchList: ArrayOfWLMatch_WLMatch,
+                                   pPeriod: PolicyPeriod): Contact {
+
     var personList = retrievePersonContactList(policyContacts)
     var companyList = retrieveCompanyContactList(policyContacts)
 
@@ -67,9 +69,9 @@ class OFACGatewayHelper {
         _logger.debug("Adding " + person.Name + " to the AleretList")
 
         if(person != null)   {
-        contactScoreMap.put(person, watchList.EntityScore)
-        pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(person.DisplayName))
-        }
+          pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(person.DisplayName))
+          return person
+       }
       }
     } else {
       // add company contact to the map
@@ -79,20 +81,21 @@ class OFACGatewayHelper {
         _logger.debug("Adding " + company.Name  + " to the AleretList")
 
         if(company != null)       {
-        contactScoreMap.put(company, watchList.EntityScore)
-        pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(company.DisplayName))
+          pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(company.DisplayName))
+          return company
         }
         }
     }
 
-    return contactScoreMap
+    return null
   }
 
 
   // Function checks for FalsePositive and returns a Hashmap with contacts and respective scores
-  function checkAndMapResponseForAlerts(policyContacts: List<Contact>, pPeriod: PolicyPeriod, result: SearchResults): HashMap<Contact, Integer> {
+  function checkAndMapResponseForAlerts(policyContacts: List<Contact>, pPeriod: PolicyPeriod, result: SearchResults): ArrayList<Contact> {
     var isFalsePositive : boolean
 
+    var ofacList = new ArrayList<Contact>()
     //no hit scenario, don't have to map isFalsePositive
     if (result != null && result.Records == null)    {
       isFalsePositive = true
@@ -112,11 +115,13 @@ class OFACGatewayHelper {
 
         if (!isFalsePositive){
          // Add contact and score to Map
-          var contactMap = addContactScoreToMap(record, policyContacts, watchList,pPeriod)
-          return contactMap
+          var contact = returnHITList(record, policyContacts, watchList,pPeriod)
+
+          if(contact != null)
+            ofacList.add(contact)
         }
       }
     }
-    return null
+    return ofacList
   }
 }

@@ -4,6 +4,12 @@ uses gw.entity.TypeKey
 uses onbase.api.KeywordMap
 
 uses java.util.ArrayList
+uses gw.api.web.document.DocumentsHelper
+uses gw.api.database.Query
+uses gw.api.database.Relop
+uses java.util.Date
+uses gw.diff.tree.DiffTree
+uses java.lang.StringBuilder
 
 /**
  *
@@ -25,18 +31,20 @@ class UpdateKeywordsRequest {
   }
 
   private static final var _documentFieldsToCheck = {
-   // 'Name' -> KeywordMap.filename,
+    'Name' -> KeywordMap.filename,
     'Description' -> KeywordMap.description,
     //'MimeType' -> KeywordMap.mimetype,
-    'Author' -> KeywordMap.user//,
+    //'Author' -> KeywordMap.user,
     //'Recipient' -> KeywordMap.recipient,
    // 'Status' -> KeywordMap.status,
-    //'Type' -> KeywordMap.documenttype
+    'OnBaseDocumentType' -> KeywordMap.onbasedocumenttype,
+    'OnBaseDocumentSubtype' -> KeywordMap.subtype
   }
 
 
 
   var _userId : String as UserID
+  var _policyNumber : String as PolicyNumber
   /** The list of documents to be updated. */
   var _docs: List <String> as  readonly DocumentHandles = new ArrayList<String>()
   /** The list of actions. */
@@ -89,6 +97,7 @@ class UpdateKeywordsRequest {
     foreach (field in _documentFieldsToCheck.Keys) {
       var keyword = _documentFieldsToCheck[field]
 
+
       if (document.isFieldChanged(field)) {
         var newValue = convertFieldValue(document.getFieldValue(field))
         var oldValue = convertFieldValue(document.getOriginalValue(field))
@@ -98,6 +107,86 @@ class UpdateKeywordsRequest {
     }
 
     return updateRequest
+  }
+
+  /**
+   * Convenience function for the common situation of creation an update request from a modified policyPeriod entity
+   *
+   * @param policyPeriod the PolicyPeriod that has been changed
+   */
+  public static function fromPolicyPeriod(policyPeriod : PolicyPeriod) : UpdateKeywordsRequest {
+
+    var updateRequest = new UpdateKeywordsRequest() { :UserID = User.util.CurrentUser.DisplayName, :PolicyNumber = policyPeriod.PolicyNumber }
+
+    if(policyPeriod != null) {
+      var keywordChanged = false
+
+      var basedOnPeriod = policyPeriod.BasedOn
+
+      //Check for primary insured name change
+      var newPrimaryNamedInsured = policyPeriod.PrimaryNamedInsured
+      var oldPrimaryNamedInsured = basedOnPeriod.PrimaryNamedInsured
+      if(!newPrimaryNamedInsured.DisplayName.equalsIgnoreCase(oldPrimaryNamedInsured.DisplayName)) {
+        keywordChanged = true
+        var nameValueSB = new StringBuilder()
+        nameValueSB.append("Primary Insured First Name|").append(policyPeriod.PrimaryNamedInsured.FirstName?:"")
+        nameValueSB.append(",Primary Insured Middle Name|").append(policyPeriod.PrimaryNamedInsured.MiddleName?:"")
+        nameValueSB.append(",Primary Insured Last Name|").append(policyPeriod.PrimaryNamedInsured.LastName?:"")
+        updateRequest.addUpdateAction(ActionType.ADD, KeywordMap.primaryinsured.OnBaseName, nameValueSB.toString())
+      }
+
+      //Check for product name change
+      if(!policyPeriod.Policy.Product.DisplayName.equals(basedOnPeriod.Policy.Product.DisplayName)) {
+        keywordChanged = true
+        updateRequest.replaceKeywordValue(KeywordMap.productname, basedOnPeriod.Policy.Product.DisplayName, policyPeriod.Policy.Product.DisplayName)
+      }
+
+      //Check for additional insured name changes
+      var newAddtnlInsureds = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+      var oldAddtnlInsureds = basedOnPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
+      var addedOrChangedInsureds = findInsuredDiffs(newAddtnlInsureds, oldAddtnlInsureds)
+      if(newAddtnlInsureds.Count != oldAddtnlInsureds.Count or !addedOrChangedInsureds.IsEmpty) {
+        keywordChanged = true
+
+        for(additionalInsured in addedOrChangedInsureds) {
+          var nameValueSB = new StringBuilder()
+          nameValueSB.append("Additional Insured First Name|").append(additionalInsured.FirstName?:"")
+          nameValueSB.append(",Additional Insured Middle Name|").append(additionalInsured.MiddleName?:"")
+          nameValueSB.append(",Additional Insured Last Name|").append(additionalInsured.LastName?:"")
+          updateRequest.addUpdateAction(ActionType.ADD, KeywordMap.additionalinsured.OnBaseName, nameValueSB.toString())
+        }
+      }
+
+      var newIssueDate = policyPeriod.Policy.IssueDate
+      var oldIssueDate = basedOnPeriod.Policy.IssueDate
+
+      if(newIssueDate.compareTo(oldIssueDate) != 0) {
+        keywordChanged = true
+        updateRequest.addUpdateAction(ActionType.ADD, KeywordMap.issuedate.OnBaseName, newIssueDate)
+      }
+
+      var newLegacyPolicyNumber = policyPeriod.LegacyPolicyNumber_Ext?: ""
+      var oldLegacyPolicyNumber = basedOnPeriod.LegacyPolicyNumber_Ext?: ""
+
+      if(!newLegacyPolicyNumber.equalsIgnoreCase(oldLegacyPolicyNumber)) {
+        keywordChanged = true
+        updateRequest.addUpdateAction(ActionType.ADD, KeywordMap.legacypolicynumber.OnBaseName, newLegacyPolicyNumber)
+      }
+    }
+    return updateRequest
+  }
+
+  private static function findInsuredDiffs(insuredsOnNewPeriod: PolicyAddlNamedInsured[], insuredsOnOldPeriod: PolicyAddlNamedInsured[]) : PolicyAddlNamedInsured[]{
+    var diffs = new ArrayList<PolicyAddlNamedInsured>()
+
+    for(newIns in insuredsOnNewPeriod) {
+      var newNotInOld = insuredsOnOldPeriod.firstWhere( \ old -> old.DisplayName.equalsIgnoreCase(newIns.DisplayName))
+      if(newNotInOld == null) {
+        diffs.add(newIns)
+      }
+    }
+
+    return diffs
   }
 
   /**
@@ -115,7 +204,6 @@ class UpdateKeywordsRequest {
 
     return value?.toString()
   }
-
 
   /** Individual keyword action to be applied during update. */
   public static class KeywordAction {

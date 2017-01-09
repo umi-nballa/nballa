@@ -33,7 +33,7 @@ class PropertyInspectionData extends OutboundFileData{
   var locationCounty : String as LocationCounty
   var priorCarrier : String as PriorCarrier
   var effDate : Date as EffDate
-  var priorExp : String as PriorExp
+  var priorExp : DateTime as PriorExp
   var creditScore : String as CreditScore
   var chargableLoss : String as ChargableLoss
   var anyLoss : String as AnyLoss
@@ -66,5 +66,14 @@ class PropertyInspectionData extends OutboundFileData{
   var mailingLine2 : String as MailingLine2
   var locationLine2 : String as LocationLine2
   var appendix : String as Appendix
+  var reportOne : String as ReportOne
+  var reportTwo : String as ReportTwo
+  var reportThree : String as ReportThree
+  var reportFour : String as ReportFour
+  var reportFive : String as ReportFive
+  var reportSix : String as  ReportSix
+  var reportSeven : String as ReportSeven
+  var reportEight : String as ReportEight
+  var roofType : String as RoofType
 
 }

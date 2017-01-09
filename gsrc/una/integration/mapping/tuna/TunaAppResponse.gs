@@ -65,4 +65,7 @@ class TunaAppResponse {
   var _fireLineSHIA : List<PropertyDataModel>                  as FireLineSHIA
   var _condoValuationID:List<PropertyDataModel>                as CondoValuationID
   var _distanceToMajorBOW :List<PropertyDataModel>             as DistanceToMajorBOW
+  var _hoTerritoryCode :List<PropertyDataModel>                as HOTerritoryCode
+  var _dfTerritoryCode :List<PropertyDataModel>                as DFTerritoryCode
+  var _territoryCode :List<PropertyDataModel>                  as TerritoryCode
 }

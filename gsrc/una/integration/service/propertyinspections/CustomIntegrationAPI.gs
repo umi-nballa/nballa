@@ -2,6 +2,7 @@ package una.integration.service.propertyinspections
 
 uses gw.xml.ws.annotation.WsiWebService
 uses una.integration.Helper.PropertyInspection
+uses una.integration.Helper.PropertyInspectionsBRHelper
 
 /**
  * This is the Custom Integration API, which is published in Policy center.
@@ -17,6 +18,11 @@ class CustomIntegrationAPI {
    */
   function notifyFirstPayment(policyNumber: String ) {
     var propertyInspection= new PropertyInspection()
-    propertyInspection.inserttoIntegrationDB(policyNumber)
+    var propertyInspectionsBRHelper : PropertyInspectionsBRHelper= new()
+    var description = propertyInspectionsBRHelper.propertyInsectionsCriteria(policyNumber)
+    if (!description.Empty) {
+      propertyInspection.inserttoIntegrationDB(policyNumber,description)
+    }
+
   }
 }

@@ -37,4 +37,22 @@ class PolicyInfoUtil {
     }
   }
 
+  /**
+   * Retrieves the risk location detail objects associated to the given Policy Period.
+   * @param period
+   */
+  static function retrieveRiskAddress(period: PolicyPeriod): PolicyLocation[] {
+    if (period.HomeownersLine_HOEExists) {
+      return period.HomeownersLine_HOE.Dwelling?.PolicyLocations
+    } else if (period.CPLineExists) {
+      return period.CPLine.CPLocations*.PolicyLocation
+    } else if (period.BOPLineExists) {
+      return period.BOPLine.BOPLocations*.PolicyLocation
+    } else if (period.BP7LineExists) {
+      return period.BP7Line.BP7Locations*.PolicyLocation
+    } else {
+      return null
+    }
+  }
+
 }

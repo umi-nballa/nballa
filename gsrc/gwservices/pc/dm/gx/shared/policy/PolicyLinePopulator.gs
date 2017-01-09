@@ -35,22 +35,7 @@ class PolicyLinePopulator extends BaseEntityPopulator<PolicyLine, KeyableBean> {
         break;
         default :
           throw new DataMigrationNonFatalException(CODE.INVALID_POLICY_LINE, model.Subtype as String)
-      }/*
-      if (model.Subtype == typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE) {
-
-
       }
-      if(model.Subtype == ){
-        policyLine =
-      }if(model.Subtype == typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE){
-
-      }if(model.Subtype == typekey.PolicyLine.TC_GENERALLIABILITYLINE){
-        *//*if (Branch.GLLine.Location.Count > 0)
-          Branch.CPLine.CPLocations.each( \ elt -> elt.remove())*//*
-
-      }else {
-        throw new DataMigrationNonFatalException(CODE.INVALID_POLICY_LINE, model.Subtype as String)
-      } */
       if(!isGLLineExists){
         var policyLinePattern : PolicyLinePattern
         policyLinePattern = PolicyLinePatternLookup.getAll().atMostOneWhere( \ plt -> plt.CodeIdentifier.equalsIgnoreCase("GLLine"))

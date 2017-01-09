@@ -143,7 +143,7 @@
         id="daycare"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.daycare"
         value="dwelling.HOUWQuestions.daycare"
-        visible="dwelling.PolicyPeriod.PrimaryLocation.State!=typekey.State.TC_FL &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE">
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_FL &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE">
         <PostOnChange/>
       </BooleanRadioInput>
       <BooleanRadioInput
@@ -151,7 +151,7 @@
         id="daycareregs"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.daycareregs"
         value="dwelling.HOUWQuestions.daycareregs"
-        visible="dwelling.PolicyPeriod.PrimaryLocation.State!=typekey.State.TC_FL &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE">
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_FL &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE">
         <PostOnChange/>
       </BooleanRadioInput>
       <BooleanRadioInput
@@ -159,7 +159,7 @@
         id="commercialliability"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.commercialliability"
         value="dwelling.HOUWQuestions.commercialliability"
-        visible="dwelling.PolicyPeriod.PrimaryLocation.State!=typekey.State.TC_FL &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.daycare || dwelling.HOUWQuestions.daycareregs"/>
+        visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_FL &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.HOUWQuestions.daycare || dwelling.HOUWQuestions.daycareregs)"/>
       <BooleanRadioInput
         editable="true"
         id="businesspol"

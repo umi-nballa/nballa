@@ -25,7 +25,7 @@
         id="NumberOfStories_Ext">
         <RangeInput
           available="!dwelling.OverrideStoriesNumber_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="NumberOfStoriesTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStories_Ext"
           value="dwelling.StoriesNumber"
@@ -61,7 +61,7 @@
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
           available="!dwelling.OverrideConstructionType_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="ConstructionTypeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
           value="dwelling.ConstructionType"
@@ -101,7 +101,7 @@
         id="ConstructionTypeL1_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="!dwelling.OverrideConstructionTypeL1_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideConstructionTypeL1_Ext"
           id="ConstructionTypeL1L1TunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1_Ext"
           value="dwelling.ConstructionTypeL1_Ext"
@@ -141,7 +141,7 @@
         id="ConstructionTypeL2_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="!dwelling.OverrideConstructionTypeL2_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideConstructionTypeL2_Ext"
           id="ConstructionTypeL2L2TunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2_Ext"
           value="dwelling.ConstructionTypeL2_Ext"
@@ -211,7 +211,7 @@
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <RangeInput
           available="!dwelling.OverrideExteriorWFval_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="ExteriorWFvalTunaReturned_Ext"
           label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish"
           value="dwelling.ExteriorWallFinish_Ext"
@@ -253,7 +253,7 @@
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <RangeInput
           available="!dwelling.OverrideExteriorWFvalL1_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="ExteriorWFvalTunaReturnedL1_Ext"
           label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
           value="dwelling.ExteriorWallFinishL1_Ext"
@@ -295,7 +295,7 @@
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
         <RangeInput
           available="!dwelling.OverrideExteriorWFvalL2_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="ExteriorWFvalTunaReturnedL2_Ext"
           label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
           value="dwelling.ExteriorWallFinishL2_Ext"
@@ -366,7 +366,7 @@
       <InputSet
         id="TotalSqFtVal_Ext">
         <RangeInput
-          editable="!dwelling.OverrideTotalSqFtVal_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideTotalSqFtVal_Ext"
           id="TotalSqFtValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
           value="dwelling.SquareFootage_Ext"
@@ -734,7 +734,7 @@
         id="RoofingMaterial_Ext">
         <RangeInput
           available="!dwelling.OverrideRoofType_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="RoofingMaterialTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterial_Ext"
           value="dwelling.RoofType"
@@ -772,7 +772,7 @@
         id="RoofingShape_Ext">
         <RangeInput
           available="!dwelling.OverrideRoofShape_Ext"
-          editable="true"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="RoofShapeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofShape_Ext"
           value="dwelling.RoofShape_Ext"

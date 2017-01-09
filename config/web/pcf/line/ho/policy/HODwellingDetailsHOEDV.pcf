@@ -288,6 +288,7 @@
             required="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
             value="dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
             visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext"/>
+          <InputDivider/>
         </InputSet>
         <BooleanRadioInput
           editable="true"
@@ -721,15 +722,15 @@
       </InputSet>
       <InputDivider/>
       <InputSet
-        id="DistToMajorBOW_Ext">
+        id="DistToMajorBOW_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           editable="true"
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
           value="dwelling.HOLocation.DistBOW_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)"
-          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
           <PostOnChange
             onChange="dwelling.HOLocation.DistBOWNamedValue_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DistBOW_Ext,tunaAppResponse.DistanceToMajorBOW)"/>
         </RangeInput>
@@ -786,6 +787,7 @@
           required="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"
           value="dwelling.HOLocation.DistBOWNVOverridden_Ext"
           visible="dwelling.HOLocation.OverrideDistBOWNamedValue_Ext"/>
+        <InputDivider/>
       </InputSet>
       <InputSet
         id="NoteDetail_Ext">

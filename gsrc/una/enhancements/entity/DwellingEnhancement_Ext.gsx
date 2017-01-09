@@ -119,10 +119,10 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   property get ConstructionTypeOrOverride() : typekey.ConstructionType_HOE{
     if(this.OverrideConstructionType_Ext and this.ConstTypeOverridden_Ext != null){
-      print("consttype overridden returning " + this.ConstTypeOverridden_Ext.Code)
+     // print("consttype overridden returning " + this.ConstTypeOverridden_Ext.Code)
       return this.ConstTypeOverridden_Ext
     }else{
-      print("consttype returning " + this.ConstructionType.Code)
+     // print("consttype returning " + this.ConstructionType.Code)
       return this.ConstructionType
     }
   }

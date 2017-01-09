@@ -21,7 +21,8 @@
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, policyPeriod.Job, jobWizardHelper)"/>
     </Toolbar>
     <PanelRef
-      def="BP7ModifiersPanelSet(policyPeriod, jobWizardHelper)"/>
+      def="BP7ModifiersPanelSet(policyPeriod, jobWizardHelper)"
+      editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE || (policyPeriod.Job.Subtype==typekey.Job.TC_POLICYCHANGE &amp;&amp; policyPeriod.EditEffectiveDate==policyPeriod.PeriodStart)"/>
     <PanelRef>
       <DetailViewPanel>
         <InputColumn>

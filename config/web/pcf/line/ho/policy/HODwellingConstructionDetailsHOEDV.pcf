@@ -60,11 +60,14 @@
         id="ConstructionType_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="!dwelling.OverrideConstructionType_Ext"
+          available="!dwelling.OverrideConstructionType_Ext"
+          editable="true"
           id="ConstructionTypeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionType_Ext"
           value="dwelling.ConstructionType"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]">
+          <PostOnChange/>
+        </RangeInput>
         <Input
           id="ConstructionTypeMatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeMatchLevel_Ext"
@@ -84,15 +87,97 @@
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeUserEntered_Ext"
           required="dwelling.OverrideConstructionType_Ext"
           value="dwelling.ConstTypeOverridden_Ext"
-          visible="dwelling.OverrideConstructionType_Ext"/>
+          visible="dwelling.OverrideConstructionType_Ext">
+          <PostOnChange/>
+        </Input>
       </InputSet>
       <Input
         editable="true"
         id="ConstTypeo_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeIfOther_Ext"
         value="dwelling.ConstructionTypeOther"
-        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ) &amp;&amp; (dwelling.ConstructionType.Code==&quot;Other&quot;)"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ) &amp;&amp; (dwelling.ConstructionTypeOrOverride.Code==&quot;Other&quot;)"/>
+      <InputSet
+        id="ConstructionTypeL1_Ext"
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        <RangeInput
+          editable="!dwelling.OverrideConstructionTypeL1_Ext"
+          id="ConstructionTypeL1L1TunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1_Ext"
+          value="dwelling.ConstructionTypeL1_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]">
+          <PostOnChange/>
+        </RangeInput>
+        <Input
+          id="ConstructionTypeL1MatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1MatchLevel_Ext"
+          value="dwelling.ConstructionTypeMatchLvlL1_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideConstructionTypeL1l_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1Override_Ext"
+          value="dwelling.OverrideConstructionTypeL1_Ext">
+          <PostOnChange
+            target="ConstructionTypeL1_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideConstructionTypeL1_Ext"
+          editable="true"
+          id="ConstructionTypeL1UserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1UserEntered_Ext"
+          required="dwelling.OverrideConstructionTypeL1_Ext"
+          value="dwelling.ConstTypeOverriddenL1_Ext"
+          visible="dwelling.OverrideConstructionTypeL1_Ext">
+          <PostOnChange/>
+        </Input>
+      </InputSet>
       <Input
+        editable="true"
+        id="ConstTypeoL1_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeL1IfOther_Ext"
+        value="dwelling.ConstructionTypeLevel1Other"
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ) &amp;&amp; (dwelling.ConstructionTypeL1OrOverride.Code==&quot;Other&quot;)"/>
+      <InputSet
+        id="ConstructionTypeL2_Ext"
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        <RangeInput
+          editable="!dwelling.OverrideConstructionTypeL2_Ext"
+          id="ConstructionTypeL2L2TunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2_Ext"
+          value="dwelling.ConstructionTypeL2_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]">
+          <PostOnChange/>
+        </RangeInput>
+        <Input
+          id="ConstructionTypeL2MatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2MatchLevel_Ext"
+          value="dwelling.ConstructionTypeMatchLvlL2_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideConstructionTypeL2l_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2Override_Ext"
+          value="dwelling.OverrideConstructionTypeL2_Ext">
+          <PostOnChange
+            target="ConstructionTypeL2_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideConstructionTypeL2_Ext"
+          editable="true"
+          id="ConstructionTypeL2UserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2UserEntered_Ext"
+          required="dwelling.OverrideConstructionTypeL2_Ext"
+          value="dwelling.ConstTypeOverriddenL2_Ext"
+          visible="dwelling.OverrideConstructionTypeL2_Ext">
+          <PostOnChange/>
+        </Input>
+      </InputSet>
+      <Input
+        editable="true"
+        id="ConstTypeoL2_Ext"
+        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeL2IfOther_Ext"
+        value="dwelling.ConstructionTypeLevel2Other"
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL2OrOverride==typekey.ConstructionType_HOE.TC_OTHER)"/>
+      <!-- Input
         editable="true"
         id="ConstType1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
@@ -119,7 +204,7 @@
         id="ConstType2o_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2O_Ext"
         value="dwelling.ConstructionTypeLevel2Other"
-        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER)"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER)"/ -->
       <InputDivider/>
       <InputSet
         id="ExteriorWFval_Ext"
@@ -130,7 +215,9 @@
           id="ExteriorWFvalTunaReturned_Ext"
           label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish"
           value="dwelling.ExteriorWallFinish_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]">
+          <PostOnChange/>
+        </RangeInput>
         <Input
           available="!dwelling.OverrideExteriorWFval_Ext"
           id="ExteriorWFvalMatchLevel_Ext"
@@ -160,8 +247,92 @@
         id="ExtWallfinishOther_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther_Ext"
         value="dwelling.ExteriorWallFinishOther"
-        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWFvalueOverridden_Ext==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishOrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+      <InputSet
+        id="ExteriorWFvalL1_Ext"
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <RangeInput
+          available="!dwelling.OverrideExteriorWFvalL1_Ext"
+          editable="true"
+          id="ExteriorWFvalTunaReturnedL1_Ext"
+          label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
+          value="dwelling.ExteriorWallFinishL1_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]">
+          <PostOnChange/>
+        </RangeInput>
+        <Input
+          available="!dwelling.OverrideExteriorWFvalL1_Ext"
+          id="ExteriorWFvalMatchLevelL1_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalMatchlevelL1_Ext"
+          value="dwelling.ExteriorWFvalMatchLevelL1_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideExteriorWFvalL1_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOverrideL1_Ext"
+          value="dwelling.OverrideExteriorWFvalL1_Ext">
+          <PostOnChange
+            target="ExteriorWFvalL1_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideExteriorWFvalL1_Ext"
+          editable="true"
+          id="ExteriorWFvalUserEnteredL1_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalUserEnteredL1_Ext"
+          required="dwelling.OverrideExteriorWFvalL1_Ext"
+          value="dwelling.ExteriorWFvalueOverridL1_Ext"
+          visible="dwelling.OverrideExteriorWFvalL1_Ext">
+          <PostOnChange/>
+        </Input>
+      </InputSet>
       <Input
+        editable="true"
+        id="ExtWallfinishOtherL1_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOtherL1_Ext"
+        value="dwelling.ExteriorWallFinishLevel1Other"
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL1OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+      <InputSet
+        id="ExteriorWFvalL2_Ext"
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        <RangeInput
+          available="!dwelling.OverrideExteriorWFvalL2_Ext"
+          editable="true"
+          id="ExteriorWFvalTunaReturnedL2_Ext"
+          label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
+          value="dwelling.ExteriorWallFinishL2_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]">
+          <PostOnChange/>
+        </RangeInput>
+        <Input
+          available="!dwelling.OverrideExteriorWFvalL2_Ext"
+          id="ExteriorWFvalMatchLevelL2_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalMatchlevelL2_Ext"
+          value="dwelling.ExteriorWFvalMatchLevelL2_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideExteriorWFvalL2_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOverrideL2_Ext"
+          value="dwelling.OverrideExteriorWFvalL2_Ext">
+          <PostOnChange
+            target="ExteriorWFvalL2_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideExteriorWFvalL2_Ext"
+          editable="true"
+          id="ExteriorWFvalUserEnteredL2_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalUserEnteredL2_Ext"
+          required="dwelling.OverrideExteriorWFvalL2_Ext"
+          value="dwelling.ExteriorWFvalueOverridL2_Ext"
+          visible="dwelling.OverrideExteriorWFvalL2_Ext">
+          <PostOnChange/>
+        </Input>
+      </InputSet>
+      <Input
+        editable="true"
+        id="ExtWallfinishOtherL2_Ext"
+        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOtherL2_Ext"
+        value="dwelling.ExteriorWallFinishLevel2Other"
+        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL2OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+      <!-- Input
         editable="true"
         id="ExteriorWFva1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
@@ -190,7 +361,7 @@
         id="ExtWallfinishOther2_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther2_Ext"
         value="dwelling.ExteriorWallFinishLevel2Other"
-        visible="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"/>
+        visible="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"/ -->
       <InputDivider/>
       <InputSet
         id="TotalSqFtVal_Ext">

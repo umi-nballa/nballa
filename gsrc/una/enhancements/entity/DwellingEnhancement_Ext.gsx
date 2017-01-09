@@ -117,6 +117,56 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
+  property get ConstructionTypeOrOverride() : typekey.ConstructionType_HOE{
+    if(this.OverrideConstructionType_Ext and this.ConstTypeOverridden_Ext != null){
+      print("consttype overridden returning " + this.ConstTypeOverridden_Ext.Code)
+      return this.ConstTypeOverridden_Ext
+    }else{
+      print("consttype returning " + this.ConstructionType.Code)
+      return this.ConstructionType
+    }
+  }
+
+  property get ConstructionTypeL1OrOverride() : typekey.ConstructionType_HOE{
+    if(this.OverrideConstructionTypeL1_Ext and this.ConstTypeOverriddenL1_Ext != null){
+      return this.ConstTypeOverriddenL1_Ext
+    }else{
+      return this.ConstructionTypeL1_Ext
+    }
+  }
+
+  property get ConstructionTypeL2OrOverride() : typekey.ConstructionType_HOE{
+    if(this.OverrideConstructionTypeL2_Ext and this.ConstTypeOverriddenL2_Ext != null){
+      return this.ConstTypeOverriddenL2_Ext
+    }else{
+      return this.ConstructionTypeL2_Ext
+    }
+  }
+
+  property get ExteriorWallFinishOrOverride() : typekey.ExteriorWallFinish_Ext{
+    if(this.OverrideExteriorWFval_Ext and this.ExteriorWFvalueOverridden_Ext != null){
+      return this.ExteriorWFvalueOverridden_Ext
+    }else{
+      return this.ExteriorWallFinish_Ext
+    }
+  }
+
+  property get ExteriorWallFinishL1OrOverride() : typekey.ExteriorWallFinish_Ext{
+    if(this.OverrideExteriorWFvalL1_Ext and this.ExteriorWFvalueOverridL1_Ext != null){
+      return this.ExteriorWFvalueOverridL1_Ext
+    }else{
+      return this.ExteriorWallFinishL1_Ext
+    }
+  }
+
+  property get ExteriorWallFinishL2OrOverride() : typekey.ExteriorWallFinish_Ext{
+    if(this.OverrideExteriorWFvalL2_Ext and this.ExteriorWFvalueOverridL2_Ext != null){
+      return this.ExteriorWFvalueOverridL2_Ext
+    }else{
+      return this.ExteriorWallFinishL2_Ext
+    }
+  }
+
   property get TerritoryCodeOrOverride() : String{
     if(this.HOLocation.OverrideTerritoryCode_Ext and this.HOLocation.TerritoryCodeOverridden_Ext != null){
       return this.HOLocation.TerritoryCodeOverridden_Ext

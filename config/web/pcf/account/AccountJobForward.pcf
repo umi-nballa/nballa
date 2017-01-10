@@ -4,6 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Forward
     id="AccountJobForward"
+    onBeforeForward="gw.web.policyfile.PolicyFileMenuActionsUIHelper.createHistoryEventPolicy(job?.Policy?.LatestPeriod);"
     parent="AccountForward()">
     <LocationEntryPoint
       signature="AccountJobForward(job : Job)"/>

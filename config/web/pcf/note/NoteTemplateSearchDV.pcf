@@ -8,12 +8,18 @@
       name="noteTemplateSearchCriteria"
       type="NoteTemplateSearchCriteria"/>
     <InputColumn>
-      <TypeKeyInput
+      <!-- <TypeKeyInput
         editable="true"
         id="Topic"
         label="displaykey.Web.NoteTemplateSearch.Topic"
         value="noteTemplateSearchCriteria.Topic"
-        visible="NoteTopicType.getTypeKeys( false ).Count &gt; 1"/>
+        visible="NoteTopicType.getTypeKeys( false ).Count &gt; 1"/> -->
+      <RangeInput
+        editable="true"
+        id="rangeinput"
+        label="displaykey.Web.NoteTemplateSearch.Topic"
+        value="noteTemplateSearchCriteria.Topic"
+        valueRange="NoteTopicType.getTypeKeys( false )"/>
       <TypeKeyInput
         editable="true"
         id="Type"

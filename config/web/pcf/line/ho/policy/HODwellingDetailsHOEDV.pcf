@@ -958,7 +958,8 @@
             editable="true"
             id="everRentedToOthers_Ext"
             label="displaykey.Web.Homeowners.HODwelling.DwellingEverRentedToOthers_Ext"
-            value="dwelling.DwellingRentedEverToOthers_Ext">
+            value="dwelling.DwellingRentedEverToOthers_Ext"
+            visible="dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_HOA_Ext || dwelling.HOPolicyType == TC_HOB_Ext || dwelling.HOPolicyType == TC_HCONB_Ext">
             <PostOnChange
               onChange="if(!dwelling.DwellingRentedEverToOthers_Ext &amp;&amp; dwelling.ShortestRentalPeriod_Ext != null ) dwelling.ShortestRentalPeriod_Ext = null"/>
           </BooleanRadioInput>

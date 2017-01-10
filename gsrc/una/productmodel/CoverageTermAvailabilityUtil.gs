@@ -457,7 +457,7 @@ class CoverageTermAvailabilityUtil {
     if(restrictiveOptions.contains(option.OptionCode)){
       if(bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value!=null){
         if(option.OptionCode == "BP712Months_EXT"){
-          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=30000
+          result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=300000
         }else if(option.OptionCode == "BP76Months_EXT"){
           result = bp7Line.BP7BuildingBusinessIncomeExtraExpense_EXT.BP7AnnualBI_EXTTerm.Value<=600000
         }

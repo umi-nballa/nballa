@@ -39,7 +39,7 @@ class CovTermInputSetPCFController {
     }
   }
 
-  static function validate(coverable: Coverable, covTerm: gw.api.domain.covterm.DirectCovTerm):String{
+  static function validate(coverable: Coverable, covTerm: gw.api.domain.covterm.DirectCovTerm):String{    
     var result : String
 
     if(coverable typeis Dwelling_HOE){
@@ -50,6 +50,8 @@ class CovTermInputSetPCFController {
       }else{
         result = validateCalculatedLimits(covTerm, coverable)
       }
+    }else if(coverable typeis BP7BusinessOwnersLine || coverable typeis BP7Building || coverable typeis BP7Classification){
+      result = isCovTermAllowedValue(covTerm)
     }
 
     return result
@@ -283,4 +285,18 @@ class CovTermInputSetPCFController {
     return  result
   }
 
+  // BOP/BP7 DirectCovTerm increment of 1000 validation method
+  private static function isCovTermAllowedValue(covTerm : DirectCovTerm):String{
+    var result:String
+    var minimumAllowed = covTerm.getMinAllowedLimitValue(covTerm.Clause.OwningCoverable)
+    var allowedIncrement = minimumAllowed
+    var allowedIncrements : List<BigDecimal> = {allowedIncrement}
+    if(covTerm.PatternCode=="BP7LimitatDescribedPremises_EXT" || covTerm.PatternCode=="BP7LimitDescribedPremises_EXT" || covTerm.PatternCode=="BP7Limit38" || covTerm.PatternCode=="Limit" ||
+        covTerm.PatternCode=="Limit_EXT"){
+      if((covTerm.Value).remainder(1000)!=0){
+        result = displaykey.una.productmodel.validation.AllowedLimitValidationMessage(covTerm.Clause.Pattern.DisplayName,covTerm.DisplayName)
+      }
+    }
+    return result
+  }
 }

@@ -20,6 +20,9 @@
     <Variable
       initialValue="policyPeriod.GLLine"
       name="glLine"/>
+    <Variable
+      initialValue="una.productmodel.GLAutoPopulateUtil.setCoveragesFromDefaultScreen(glLine)"
+      name="setRequiredCoverages"/>
     <Toolbar>
       <WizardButtons/>
       <ToolbarButtonSetRef
@@ -48,6 +51,7 @@
       </Card>
       <Card
         id="ExclusionsAndConditionsCard"
+        onSelect="una.productmodel.GLAutoPopulateUtil.setCoveragesFromDefaultScreen(glLine)"
         title="displaykey.Web.LineWizard.ExclusionsAndConditions">
         <PanelRef
           def="AdditionalExclusionsAndConditionsPanelSet(glLine, glLine.getAdditionalCoverageCategories() , true)"/>

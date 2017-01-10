@@ -4,12 +4,16 @@
   coverageCategory="CPOptionalPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
-  existence="Electable"
+  existence="Required"
   lookupTableName="CPBuildingCov"
   owningEntityType="CPBuilding"
   policyLinePattern="CPLine"
   priority="2704"
   public-id="CPEquipmentBreakdownEnhance_EXT"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[if((CPBuilding.PolicyLine as CommercialPropertyLine).EquipmentBreakdownEnh==true)
+ return true
+else
+ return false]]></AvailabilityScript>
   <CovTerms/>
 </CoveragePattern>

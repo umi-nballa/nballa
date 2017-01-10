@@ -5,6 +5,8 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.PackageCovTerm
 uses gw.api.productmodel.CovTermOpt
 uses gw.api.productmodel.CovTermPack
+uses gw.validation.PCValidation
+uses gw.validation.PCValidationBase
 
 @Export
 class ChoiceCovTermUtil {
@@ -39,7 +41,7 @@ class ChoiceCovTermUtil {
       }
       return availableValues.Count > 1      
     }
-    
+
     // default to true
     return true
   }

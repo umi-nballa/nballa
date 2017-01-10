@@ -850,13 +850,13 @@ class HODwellingUtil_HOE {
   // get YearBuild
   static function getYearBuilt(dwelling : Dwelling_HOE) : int {
 
-    return dwelling.OverrideYearbuilt_Ext!=null ? dwelling.YearBuiltOverridden_Ext?.intValue() : dwelling.YearBuilt?.intValue()
+    return dwelling?.OverrideYearbuilt_Ext ? dwelling?.YearBuiltOverridden_Ext?.intValue() : dwelling.YearBuilt?.intValue()
   }
 
   // get YearBuild
   static function getNumStories(dwelling : Dwelling_HOE) : String {
 
-    return dwelling.NoOfStoriesOverridden_Ext!=null ? dwelling.NoOfStoriesOverridden_Ext : dwelling.StoriesNumber
+    return dwelling?.OverrideStoriesNumber_Ext ? dwelling.NoOfStoriesOverridden_Ext : dwelling.StoriesNumber
   }
 
   static function getConstructionType(dwelling:Dwelling_HOE) : String {

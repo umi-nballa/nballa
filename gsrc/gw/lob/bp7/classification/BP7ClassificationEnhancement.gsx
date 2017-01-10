@@ -237,7 +237,9 @@ enhancement BP7ClassificationEnhancement : entity.BP7Classification {
 
   function syncIfNeeded(classification:BP7Classification,jwh : JobWizardHelper){
     var synchCodes = {"65121B","65121K"}
-    if(synchCodes.contains(this.ClassCode_Ext)){
+    if(!synchCodes.contains(this.ClassCode_Ext) && classification.BP7ClassifnExclPersonalAdvertisingInjury_ExtExists){
+      classification.BP7ClassifnExclPersonalAdvertisingInjury_Ext.remove()
+    }else if(synchCodes.contains(this.ClassCode_Ext)){
       this.bp7sync(jwh)
     }
     if(classification.ClassCode_Ext!="59954" && classification.BP7OptProfLiabCov_EXTExists){

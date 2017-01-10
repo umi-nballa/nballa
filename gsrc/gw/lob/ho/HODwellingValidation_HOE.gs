@@ -27,8 +27,6 @@ class HODwellingValidation_HOE extends PCValidationBase {
     validateDwellingConstructionFields()
     validateDataForBatchLoadDataFields()
     dwellingStateMatchesInsuredState()
-
-    validateDwellingUWQuestions()
   }
   
   function dwellingStateMatchesInsuredState() {
@@ -52,10 +50,6 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.Occupancy == null) {
       addErrorOrWarning("Occupancy", displaykey.Web.Policy.HomeownersLine.Validation.DwellingOccupancyRequired, "HomeownersDwelling")
     }
-    }
-
-   function validateDwellingUWQuestions()
-    {
 
     if(HODwelling.HOUWQuestions.HOHomesharing_Ext)
     {
@@ -346,13 +340,8 @@ class HODwellingValidation_HOE extends PCValidationBase {
   }
 
   private function addErrorOrWarning( message: String){
-  //  if (Context.isAtLeast("quotable")) {
-   //   Result.addFieldError(HODwelling, fieldName, "quotable", message, pageName)
-   //   Result.addError(HODwelling,"quotable", message)
-   // }
-   // else {
       Result.addWarning(HODwelling,  "default", message)
-   // }
+
   }
   
   function validateDataForBatchLoadDataFields() {

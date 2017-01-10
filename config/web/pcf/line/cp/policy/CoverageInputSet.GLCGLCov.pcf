@@ -1,0 +1,91 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <!-- The GL Coverage requires its own CoverageInputSet because the valuation method impacts the
+    available choices for co-insurance. -->
+  <InputSet
+    id="CoverageInputSet"
+    mode="GLCGLCov"
+    visible="isCoverageAvailable()">
+    <Require
+      name="coveragePattern"
+      type="gw.api.productmodel.ClausePattern"/>
+    <Require
+      name="coverable"
+      type="Coverable"/>
+    <Require
+      name="openForEdit"
+      type="boolean"/>
+    <Variable
+      initialValue="coverable as GeneralLiabilityLine"
+      name="gline"
+      recalculateOnRefresh="true"/>
+    <HiddenInput
+      id="CovPatternDisplayName"
+      value="coveragePattern.DisplayName"/>
+    <InputGroup
+      allowToggle="coveragePattern.allowToggle(coverable)"
+      childrenVisible="coverable.getCoverageConditionOrExclusion(coveragePattern) != null"
+      id="CovPatternInputGroup"
+      label="coveragePattern.DisplayName"
+      onToggle="gline.setCoverageConditionOrExclusionExists(coveragePattern, VALUE);una.productmodel.CPAutoPopulateUtil.setCoveragesOnToggle(null,gline);">
+      <RangeInput
+        editable="true//true"
+        id="GLCGLCovCauseOfLoss"
+        label="gline.GLCGLCov.GLCGLOccLimitTerm.DisplayName"
+        required="gline.GLCGLCov.GLCGLOccLimitTerm.Pattern.Required"
+        value="gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue"
+        valueRange="gline.GLCGLCov.GLCGLOccLimitTerm?.Pattern.getAvailableValues(gline.GLCGLCov.GLCGLOccLimitTerm)">
+        <PostOnChange
+          onChange="matchAggregateLimit() ;gline.createOrSyncCoverages();"/>
+      </RangeInput>
+      <RangeInput
+        editable="true//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(gline.GLCGLCov.GLCGLAggLimitTerm)"
+        id="GLCGLCovDeductible"
+        label="gline.GLCGLCov.GLCGLAggLimitTerm.DisplayName"
+        required="gline.GLCGLCov.GLCGLAggLimitTerm.Pattern.Required"
+        sortValueRange="false"
+        value="gline.GLCGLCov.GLCGLAggLimitTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(gline.GLCGLCov.GLCGLAggLimitTerm, openForEdit)"/>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(gline.GLCGLCov.GLCGLMedPayLimitTerm)"
+        id="GLCGLCovHurricaneDed"
+        label="gline.GLCGLCov.GLCGLMedPayLimitTerm.DisplayName"
+        required="gline.GLCGLCov.GLCGLMedPayLimitTerm.Pattern.Required"
+        sortValueRange="false"
+        value="gline.GLCGLCov.GLCGLMedPayLimitTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(gline.GLCGLCov.GLCGLMedPayLimitTerm, openForEdit)"
+        visible="true//gline.GLCGLCov.hasCovTerm(&quot;GLCGLMedPayLimitTerm&quot;)"/>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(gline.GLCGLCov.GLCGLPersAdLimitTerm)"
+        id="GLCGLCovHurricaneDedType"
+        label="gline.GLCGLCov.GLCGLPersAdLimitTerm.DisplayName"
+        required="gline.GLCGLCov.GLCGLPersAdLimitTerm.Pattern.Required"
+        sortValueRange="false"
+        value="gline.GLCGLCov.GLCGLPersAdLimitTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(gline.GLCGLCov.GLCGLPersAdLimitTerm, openForEdit)"
+        visible="true//gline.GLCGLCov.hasCovTerm(&quot;GLCGLPersAdLimitTerm&quot;)"/>
+      <RangeInput
+        editable="false//openForEdit and gw.web.productmodel.ChoiceCovTermUtil.isEditable(gline.GLCGLCov.GLCGLRentedPropLimitTerm)"
+        id="GLCGLCovWindDeductible"
+        label="gline.GLCGLCov.GLCGLRentedPropLimitTerm.DisplayName"
+        required="gline.GLCGLCov.GLCGLRentedPropLimitTerm.Pattern.Required"
+        sortValueRange="false"
+        value="gline.GLCGLCov.GLCGLRentedPropLimitTerm.OptionValue"
+        valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(gline.GLCGLCov.GLCGLRentedPropLimitTerm, openForEdit)"
+        visible="true//gline.GLCGLCov.hasCovTerm(&quot;GLCGLRentedPropLimitTerm&quot;)"/>
+    </InputGroup>
+    <InputDivider
+      visible="openForEdit or coverable.getCoverageConditionOrExclusion(coveragePattern) != null"/>
+    <Code><![CDATA[function isCoverageAvailable() : boolean {
+  return coverable.isCoverageConditionOrExclusionAvailable( coveragePattern )
+}
+
+function matchAggregateLimit(){
+  var occurrenceLimitValue = gline.GLCGLCov.GLCGLOccLimitTerm.Value
+  var matchingAggregate = gline.GLCGLCov.GLCGLAggLimitTerm.AvailableOptions.atMostOneWhere( \ option -> option.Value.doubleValue() == occurrenceLimitValue.doubleValue())
+  gline.GLCGLCov.GLCGLAggLimitTerm.setOptionValue(matchingAggregate)
+}]]></Code>
+  </InputSet>
+</PCF>

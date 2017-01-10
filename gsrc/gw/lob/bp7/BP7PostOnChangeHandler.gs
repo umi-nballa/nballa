@@ -65,7 +65,9 @@ class BP7PostOnChangeHandler {
     "BP7SpoilgCov" -> {"BP7CovType2"},
     "BP7NamedPerils" -> {"BP7BurglaryRobbery"},
     "BP7OffPremIntrpOfBusnVehiclesAndMobileEquipItem" -> {"BP7Option"},
-    "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7Limit26"}
+    "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7Limit26"},
+    "BP7BuildingBusinessIncomeExtraExpense_EXT" -> {"BP7AnnualBI_EXT"},
+    "BP7Structure" -> {"BP7BuildingOwnerOccupies_EXT"}
   }
 
   static public var COVTERMS_WITH_FIELD_LEVEL_VALIDATION : Map<ClausePattern, List<CovTermPattern>> = {
@@ -88,6 +90,7 @@ class BP7PostOnChangeHandler {
   }
 
   static function handleTerm(term : CovTerm, helper : JobWizardHelper) {
+    print("BP7PostOnChangeHandler - handleTerm method!!!")
     // product model dependencies
     if (doesCovTermHaveDependent(term)) {
       sync(term, helper)

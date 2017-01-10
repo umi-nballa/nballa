@@ -72,10 +72,25 @@
         visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_OTHER"/>
       <TypeKeyInput
         editable="true"
+        id="typefuel2"
+        label="displaykey.Web.Homeowners.Dwelling.UWQuestions.typefuel2"
+        value="dwelling.HOUWQuestions.typefuel2"
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_ABOVEGROUND">
+        <PostOnChange/>
+      </TypeKeyInput>
+      <Input
+        editable="true"
+        id="typefuelother2"
+        label="displaykey.Web.Homeowners.Dwelling.UWQuestions.typefuelother2"
+        numCols="35"
+        value="dwelling.HOUWQuestions.typefuelother2"
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typefuel2==typekey.HOTypeFuel_Ext.TC_OTHER"/>
+      <TypeKeyInput
+        editable="true"
         id="fuellocalcode"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.fuellocalcode"
         value="dwelling.HOUWQuestions.fuellocalcode"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_ABOVEGROUND || dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_BELOWGROUND">
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_ABOVEGROUND || dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_BELOWGROUND">
         <PostOnChange/>
       </TypeKeyInput>
       <TypeKeyInput
@@ -83,19 +98,19 @@
         id="tankcapacity"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.tankcapacity"
         value="dwelling.HOUWQuestions.tankcapacity"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.fuellocalcode==typekey.HOFuelTankLocalBC_Ext.TC_NOAPPLICABLEBUILDINGCODES"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.fuellocalcode==typekey.HOFuelTankLocalBC_Ext.TC_NOAPPLICABLEBUILDINGCODES"/>
       <TypeKeyInput
         editable="true"
         id="closestdisttank"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.closestdisttank"
         value="dwelling.HOUWQuestions.closestdisttank"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.fuellocalcode==typekey.HOFuelTankLocalBC_Ext.TC_NOAPPLICABLEBUILDINGCODES"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.fuellocalcode==typekey.HOFuelTankLocalBC_Ext.TC_NOAPPLICABLEBUILDINGCODES"/>
       <BooleanRadioInput
         editable="true"
         id="swimmingpool"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.swimmingpool"
         value="dwelling.HOUWQuestions.swimmingpool"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)">
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType)">
         <PostOnChange/>
       </BooleanRadioInput>
       <TypeKeyInput
@@ -103,7 +118,7 @@
         id="primprot"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.primprot"
         value="dwelling.HOUWQuestions.primprot"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.swimmingpool"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.swimmingpool"/>
       <BooleanRadioInput
         editable="true"
         id="swimdivboardslide"
@@ -279,21 +294,6 @@
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.floodcov"
         value="dwelling.HOUWQuestions.floodcov"
         visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.PolicyPeriod.PrimaryLocation.State!=typekey.State.TC_CA"/>
-      <TypeKeyInput
-        editable="true"
-        id="typefuel2"
-        label="displaykey.Web.Homeowners.Dwelling.UWQuestions.typefuel2"
-        value="dwelling.HOUWQuestions.typefuel2"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.propanegas==typekey.HOPropaneNaturalgas_Ext.TC_ABOVEGROUND">
-        <PostOnChange/>
-      </TypeKeyInput>
-      <Input
-        editable="true"
-        id="typefuelother2"
-        label="displaykey.Web.Homeowners.Dwelling.UWQuestions.typefuelother2"
-        numCols="35"
-        value="dwelling.HOUWQuestions.typefuelother2"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.typefuel2==typekey.HOTypeFuel_Ext.TC_OTHER"/>
       <TypeKeyInput
         editable="true"
         id="tanklocal2"

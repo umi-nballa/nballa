@@ -93,14 +93,18 @@ class HODwellingUtil_HOE {
 *  HO Line of business
 */
   static function isFloorLocationVisible(dwelling : Dwelling_HOE) : boolean{
-    if(dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
-        dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
-        dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
-        (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)) {
-          if(dwelling.StoriesNumber != null and dwelling.StoriesNumber != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT ) {
+//    if(dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
+//        dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
+//        dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
+//        (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)) {
+
+      if(typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+          dwelling.NumberStoriesOrOverride != null
+          and dwelling.NumberStoriesOrOverride != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT )
+      {
         return true
       }
-    }
+
     return false
   }
 
@@ -850,13 +854,13 @@ class HODwellingUtil_HOE {
   // get YearBuild
   static function getYearBuilt(dwelling : Dwelling_HOE) : int {
 
-    return dwelling.OverrideYearbuilt_Ext!=null ? dwelling.YearBuiltOverridden_Ext?.intValue() : dwelling.YearBuilt?.intValue()
+    return dwelling?.OverrideYearbuilt_Ext ? dwelling?.YearBuiltOverridden_Ext?.intValue() : dwelling.YearBuilt?.intValue()
   }
 
   // get YearBuild
   static function getNumStories(dwelling : Dwelling_HOE) : String {
 
-    return dwelling.NoOfStoriesOverridden_Ext!=null ? dwelling.NoOfStoriesOverridden_Ext : dwelling.StoriesNumber
+    return dwelling?.OverrideStoriesNumber_Ext ? dwelling.NoOfStoriesOverridden_Ext : dwelling.StoriesNumber
   }
 
   static function getConstructionType(dwelling:Dwelling_HOE) : String {

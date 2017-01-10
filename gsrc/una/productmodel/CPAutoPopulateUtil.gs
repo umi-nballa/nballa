@@ -244,6 +244,14 @@ class CPAutoPopulateUtil {
       cLine?.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
 
 
+    if(cLine.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+      cLine?.setConditionExists("CPFloridaChangesCondoCondition_EXT",true)
+
+    if(cLine.hurricanededtype==typekey.CPHurricaneDedType_Ext.TC_CPBLDGCALENDARYEAR_EXT)
+      cLine?.setConditionExists("CPFloridaHurricanePercentCondition_EXT",true)
+    else
+      cLine?.setConditionExists("CPFloridaHurricanePercentCondition_EXT",false)
+
     //setIncreasedCostLimit(cLine,cBuilding)
 
     if(cLine?.causeofloss!=null)

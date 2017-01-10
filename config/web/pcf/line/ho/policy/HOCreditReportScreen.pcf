@@ -30,10 +30,6 @@
       name="hasPrimaryNamedInsuredNameChanged"
       type="boolean"/>
     <Variable
-      initialValue="period.CreditInfoExt.CreditReport == null ? null : period.CreditInfoExt.CreditReport.PolicyContactRole"
-      name="creditReportContact"
-      type="PolicyContactRole"/>
-    <Variable
       initialValue="period.CreditInfoExt.CreditReport == null ? &quot;&quot; : period.CreditInfoExt.CreditReport.AlternateFirstName"
       name="formerFirstName"
       type="String"/>
@@ -47,12 +43,16 @@
       type="String"/>
     <Variable
       initialValue="setCreditRecordandDefaultValue()"
-      name="creditLevelModeInd"
+      name="creditLevelModeInd1"
       type="boolean"/>
     <Variable
       initialValue="una.integration.framework.util.CreditReportUtil.isCreditReportRequired(period)"
       name="isCreditReportRequired"
       type="boolean"/>
+    <Variable
+      initialValue="period.CreditInfoExt.CreditReport.PolicyContactRole"
+      name="creditReportContact"
+      type="PolicyContactRole"/>
     <Toolbar>
       <WizardButtons/>
       <ToolbarButtonSetRef
@@ -75,25 +75,25 @@
             id="CreditLevelRecordSelector"
             label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevelReportSelector"
             trueLabel="&quot;Credit Level&quot;"
-            value="creditLevelModeInd">
+            value="period.CreditInfoExt.CreditMode">
             <PostOnChange
-              onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period);una.pageprocess.credit.CreditReportScreen.setDefaultCreditReport(period)"/>
+              onChange="una.pageprocess.credit.CreditReportScreen.setDefaultCreditReport(period)"/>
           </BooleanRadioInput>
           <InputDivider/>
           <InputSet
-            visible="creditLevelModeInd">
+            visible="period.CreditInfoExt.CreditMode">
             <Input
               editable="true"
               id="CreditLevel"
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevel"
-              required="creditLevelModeInd"
+              required="period.CreditInfoExt.CreditMode"
               value="period.CreditInfoExt.CreditLevel">
               <PostOnChange/>
             </Input>
           </InputSet>
           <InputSet
             hideIfReadOnly="true"
-            visible="!creditLevelModeInd">
+            visible="!period.CreditInfoExt.CreditMode">
             <Label
               id="Label2"
               label="&quot;A credit score is required in order to bind a policy. Request one here:&quot;"/>
@@ -101,33 +101,33 @@
               editable="true"
               id="CreditReportContact"
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportIndividual"
-              required="!creditLevelModeInd"
-              value="creditReportContact"
-              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)">
-              <PostOnChange
-                onChange="una.pageprocess.credit.CreditReportScreen.deActiveLiveCreditReport(period)"/>
-            </RangeInput>
+              required="!period.CreditInfoExt.CreditMode"
+              value="period.CreditInfoExt.CreditReport.PolicyContactRole"
+              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)"/>
             <Input
               id="PolicyPrimaryInsured"
               label="displaykey.Web.SubmissionWizard.CreditReporting.PolicyName"
-              value="creditReportContact.ContactDenorm.DisplayName"/>
+              value="period.CreditInfoExt.CreditReport.PolicyContactRole.ContactDenorm.DisplayName"
+              visible="period.CreditInfoExt.CreditReport.PolicyContactRole!= null"/>
             <Input
               id="PolicyInsuredDateOfBirth"
               label="displaykey.Web.SubmissionWizard.CreditReporting.DateOfBirth"
-              value="(creditReportContact.ContactDenorm as Person).DateOfBirth"/>
+              value="(period.CreditInfoExt.CreditReport.PolicyContactRole.ContactDenorm as Person).DateOfBirth"
+              visible="period.CreditInfoExt.CreditReport.PolicyContactRole != null"/>
             <Input
               id="PolicyAddress"
               label="displaykey.Web.SubmissionWizard.CreditReporting.PolicyAddress"
-              value="creditReportContact.ContactDenorm.PrimaryAddress"/>
+              value="period.CreditInfoExt.CreditReport.PolicyContactRole.ContactDenorm.PrimaryAddress"
+              visible="period.CreditInfoExt.CreditReport.PolicyContactRole != null"/>
             <Label
               desc="Note to Display"
               id="AddressNote"
               label="displaykey.Web.SubmissionWizard.CreditReporting.Address.Note"
               visible="true"/>
             <InputSet
-              visible="!creditLevelModeInd">
+              visible="!period.CreditInfoExt.CreditMode">
               <BooleanRadioInput
-                available="!(creditReportContact == null) &amp;&amp; una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
+                available="!(period.CreditInfoExt.CreditReport.PolicyContactRole == null) &amp;&amp; una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 editable="true"
                 id="AddressChangeQuestion"
                 label="displaykey.Web.SubmissionWizard.CreditReporting.AlternateAddressQuestion"
@@ -135,7 +135,7 @@
                 value="hasPrimaryNamedInsuredMoved"
                 visible="false">
                 <PostOnChange
-                  onChange="una.pageprocess.credit.CreditReportScreen.updateFormerAddressFields(hasPrimaryNamedInsuredMoved, aFormerAddress, creditReportContact)"/>
+                  onChange="una.pageprocess.credit.CreditReportScreen.updateFormerAddressFields(hasPrimaryNamedInsuredMoved, aFormerAddress, period.CreditInfoExt.CreditReport.PolicyContactRole)"/>
               </BooleanRadioInput>
               <Label
                 id="FormerAddress"
@@ -249,7 +249,7 @@
           </InputSet>
           <InputDivider/>
           <InputSet
-            visible="period.CreditInfoExt.CreditReport != null &amp;&amp; !creditLevelModeInd">
+            visible="period.CreditInfoExt.CreditReport != null &amp;&amp; !period.CreditInfoExt.CreditMode">
             <Label
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportEnabledPrompt"/>
             <Input
@@ -309,7 +309,7 @@
             </InputSet>
           </InputSet>
           <InputSet
-            visible="creditLevelModeInd &amp;&amp; period.CreditInfoExt.CreditLevel != null">
+            visible="period.CreditInfoExt.CreditMode &amp;&amp; period.CreditInfoExt.CreditLevel != null">
             <Label
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevelEnabledPrompt"/>
             <Input

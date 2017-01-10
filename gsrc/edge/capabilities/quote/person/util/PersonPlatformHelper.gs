@@ -9,12 +9,14 @@ class PersonPlatformHelper {
     dto.FirstNameKanji = person.FirstNameKanji
     dto.LastNameKanji = person.LastNameKanji
     dto.Particle = person.Particle
+    dto.MiddleName=person.MiddleName
   }
   
   public static function updateBaseData(person : Person, dto : PersonDTO) {
     person.FirstNameKanji = dto.FirstNameKanji
     person.Particle = dto.Particle
     person.LastNameKanji = dto.LastNameKanji
+    person.MiddleName=dto.MiddleName
   }
   
 }

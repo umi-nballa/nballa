@@ -548,7 +548,8 @@ enhancement ContactEnhancement : entity.Contact {
       contact = new PersonNameFieldsImpl() {
         :LastName = this.LastName,
         :FirstName = this.FirstName,
-        :Particle = this.Particle
+        :Particle = this.Particle,
+        :MiddleName =  this.MiddleName
       }
     } else {
       contact = new ContactNameFieldsImpl() {

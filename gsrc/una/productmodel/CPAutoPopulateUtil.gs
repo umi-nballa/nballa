@@ -121,6 +121,7 @@ class CPAutoPopulateUtil {
       cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
     }
 
+
   }
 
   public static function setIncreasedCostLimit (cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
@@ -338,21 +339,22 @@ class CPAutoPopulateUtil {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovALimit_EXTTerm?.Value=cBuilding?.CPBldgCov?.CPBldgCovLimitTerm.Value
       // cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovALimit_EXTTerm.RestrictionModel
 
-      if(cLine?.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBLimit_EXTTerm &&cLine?.CPCoverageB.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
+      if(cBuilding?.CPBldgCovExists  && cBuilding?.CPBldgCov?.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm.Value!=null && cLine?.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBLimit_EXTTerm &&cLine?.CPCoverageB.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBLimit_EXTTerm?.Value= Double.parseDouble(cLine?.CPCoverageB.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
 
-      if(cLine?.CPCoverageC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovCLimit_EXTTerm && cLine?.CPCoverageC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
+
+      if(cLine?.CPCoverageC!=null && cBuilding?.CPBldgCovExists  && cBuilding?.CPBldgCov?.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovCLimit_EXTTerm && cLine?.CPCoverageC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
         cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm?.Value= Double.parseDouble(cLine?.CPCoverageC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
 
 
-      if(cLine?.CPCoverageBC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine?.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
+      if(cBuilding?.CPBldgCov?.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value!=null && cLine?.CPCoverageBC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine?.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
         cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value= Double.parseDouble(cLine?.CPCoverageBC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
 
 
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value)
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT " + cBuilding?.CPOrdinanceorLaw_EXT)
 
-      if(cBuilding?.CPBldgCovExists && cBuilding?.CPOrdinanceorLaw_EXTExists && cLine?.CPCoverageBC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine?.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)//cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value!=99)
+      if(cBuilding?.CPBldgCovExists && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value!=null && cBuilding?.CPOrdinanceorLaw_EXTExists && cLine?.CPCoverageBC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine?.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)//cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value!=99)
       {
         _logger.info(cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm + ":"+cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value + ":" + cBuilding?.CPBldgCov?.CPBldgCovLimitTerm)
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value = Double.parseDouble(cLine?.CPCoverageBC?.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value

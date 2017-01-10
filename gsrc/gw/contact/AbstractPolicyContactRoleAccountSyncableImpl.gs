@@ -25,6 +25,7 @@ abstract class AbstractPolicyContactRoleAccountSyncableImpl<S extends PolicyCont
       ContactToPolicyContactRoleSyncedField.CompanyNameKanji,
       PersonToPolicyContactRoleSyncedField.FirstName,
       PersonToPolicyContactRoleSyncedField.FirstNameKanji,
+      PersonToPolicyContactRoleSyncedField.MiddleName,
       PersonToPolicyContactRoleSyncedField.LastName,
       PersonToPolicyContactRoleSyncedField.LastNameKanji,
       PersonToPolicyContactRoleSyncedField.Particle,

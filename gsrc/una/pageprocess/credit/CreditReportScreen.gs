@@ -60,8 +60,8 @@ class CreditReportScreen {
   static function deActiveLiveCreditReport(period : PolicyPeriod) : PolicyPeriod {
     //Whenever we change screen mode or credit report parameters, we need to deactivate the active (live) credit report.
     //period.CreditReportExt.ActiveOnPolicy = false
-    period.CreditInfoExt.CreditReport = null
-    period.CreditInfoExt.CreditLevel = null
+   // period.CreditInfoExt.CreditReport = null
+   // period.CreditInfoExt.CreditLevel = null
 
     return period
   }
@@ -88,8 +88,9 @@ SC: 721
           period.CreditInfoExt.CreditReport.CreditScore = "721"
         if(st==typekey.State.TC_SC)
           period.CreditInfoExt.CreditReport.CreditScore = "721"
-
       }
+      period.CreditInfoExt.CreditReport?.PolicyContactRole = period.CreditInfoExt.CreditReport == null ? null : period.CreditInfoExt.CreditReport.PolicyContactRole
+
     return true
   }
 

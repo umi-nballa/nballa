@@ -496,15 +496,15 @@ class HODwellingUtil_HOE {
  */
   static function setDefault(dwelling : Dwelling_HOE){
     // These are mandatory for rating and these are not being shown in screen
-    dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
-    dwelling.ConstructionCode = "other"
-    if(dwelling.RoofType == null){
-      dwelling.RoofType = typekey.RoofType.TC_ALUMINUM_EXT
-    }
+ //   dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
+ //   dwelling.ConstructionCode = "other"
+ //   if(dwelling.RoofType == null){
+ //     dwelling.RoofType = typekey.RoofType.TC_ALUMINUM_EXT
+ //   }
     //Assuming Property Coverage by state windstorm field has been returned false from ISO360, making Wind Hurricane Hail Exclusion as false
     // As discussed with Chethan, fields will be mapped will response before entering the screen - ISO360 is under construction from Integ team so will be revisited after service is up
-    dwelling.PropertyCovByStateWndstorm_Ext = false
-    dwelling.WHurricaneHailExclusion_Ext = false
+ //   dwelling.PropertyCovByStateWndstorm_Ext = false
+ //   dwelling.WHurricaneHailExclusion_Ext = false
   }
 
   /*
@@ -684,7 +684,10 @@ class HODwellingUtil_HOE {
   static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
     var tunaCodeAndPercent = new ArrayList<String>()
     if(tunaValues != null) {
-      tunaValues.each( \ elt -> tunaCodeAndPercent.add(elt.Value))// + " - " +elt.Percent+" %"))
+      tunaValues.each( \ elt ->
+          {
+            tunaCodeAndPercent.add(elt.Value)
+          })// + " - " +elt.Percent+" %"))
     }
     return tunaCodeAndPercent
   }

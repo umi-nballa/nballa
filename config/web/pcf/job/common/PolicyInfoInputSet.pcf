@@ -119,7 +119,7 @@
         onChange="termType = policyPeriod.TermType"/>
     </DateInput>
     <DateInput
-      editable="perm.System.editwrittendate"
+      editable="perm.System.editwrittendate &amp;&amp; policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
       id="WrittenDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.WrittenDate"
       required="true"
@@ -127,7 +127,7 @@
       visible="showWrittenDate"/>
     <DateInput
       dateFormat="short"
-      editable="perm.System.editrateasofdate and not(policyPeriod.JobProcess typeis gw.job.NewTermProcess)"
+      editable="perm.System.editrateasofdate and not(policyPeriod.JobProcess typeis gw.job.NewTermProcess) &amp;&amp; policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
       id="RateAsOfDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.RateAsOfDate"
       required="not(policyPeriod.JobProcess typeis gw.job.NewTermProcess)"

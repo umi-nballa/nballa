@@ -500,8 +500,8 @@ class HODwellingUtil_HOE {
  */
   static function setDefault(dwelling : Dwelling_HOE){
     // These are mandatory for rating and these are not being shown in screen
- //   dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
- //   dwelling.ConstructionCode = "other"
+    dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
+    dwelling.ConstructionCode = "other"
  //   if(dwelling.RoofType == null){
  //     dwelling.RoofType = typekey.RoofType.TC_ALUMINUM_EXT
  //   }

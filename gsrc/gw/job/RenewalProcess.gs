@@ -97,15 +97,19 @@ class RenewalProcess extends NewTermProcess {
    */
   function start(startRenewalWorkflow : boolean){
     canStart().assertOkay()
-    startJobAsNew()
-    JobProcessLogger.logInfo("Starting renewal for branch: " + _branch)
+      JobProcessLogger.logInfo("Enter function start(boolean) before canStart() call.")
+      canStart().assertOkay()
+      JobProcessLogger.logInfo("After canStart().assertOkay()")
+      startJobAsNew()
+      JobProcessLogger.logInfo("startJobAsNew ran successfully.")
+      JobProcessLogger.logInfo("Starting renewal for branch: " + _branch)
 
-    if (Job.ActivePeriods.Count == 1) {
-      initialize()
-      if (startRenewalWorkflow) {
-      JobProcessLogger.logInfo("Starting renewal workflow for branch: " + _branch)
-      _timeoutHandler.startAutomatedRenewal(_branch)
-      }
+      if (Job.ActivePeriods.Count == 1) {
+        initialize()
+        if (startRenewalWorkflow) {
+          JobProcessLogger.logInfo("Starting renewal workflow for branch: " + _branch)
+          _timeoutHandler.startAutomatedRenewal(_branch)
+        }
     } else {
       // multiquote
       _branch.edit()
@@ -786,7 +790,7 @@ class RenewalProcess extends NewTermProcess {
     canSendNonRenewalDocuments().assertOkay()
     JobProcessLogger.logInfo("Sending non-renewal documents for renewal branch: " + _branch)
     Job.NonRenewalNotifDate = Date.CurrentDate
-    _branch.addEvent(FormsEventType.TC_SENDNONRENEWALDOCUMENTS.Code)
+    Job.addToFormsEvents(new FormsEvent(){:EventType = FormsEventType.TC_SENDNONRENEWALDOCUMENTS})
   }
 
   /**

@@ -116,10 +116,10 @@ class CovTermInputSetPCFController {
 
     switch(term.PatternCode){
       case "HODW_OtherStructure_HOE":
-        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value = !term.Value
+        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm?.setValue(!term.Value)
         break
       case "HODWDwelling_HOE":
-        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value = !term.Value
+        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm?.setValue(!term.Value)
         break
       case "HODW_ExecutiveCov_HOE_Ext":
         setExecutiveCoverageDefaults((coverable as Dwelling_HOE), term)

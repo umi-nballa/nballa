@@ -103,7 +103,10 @@ class EntityPopulatorUtil {
       entity = populator.create(xml, parent, bundle)
     }
     if (entity != null) {
-      populator.populate(xml, entity)
+      var GLLine:GeneralLiabilityLine = null
+      if(!(entity typeis GLExposure)){
+        populator.populate(xml, entity)
+      }
       if (not this._registry.DoNotAutoDelete.contains(xml.IntrinsicType)) {
         var parentDTO = new MigrationEntityIDDTO(parent)
         var entityList = _modifiedEntities.get(parentDTO)

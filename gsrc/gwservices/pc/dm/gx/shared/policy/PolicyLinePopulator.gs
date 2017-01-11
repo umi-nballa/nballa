@@ -22,6 +22,8 @@ class PolicyLinePopulator extends BaseEntityPopulator<PolicyLine, KeyableBean> {
             policyLine = Branch.HomeownersLine_HOE
         break;
         case typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
+            if(Branch.BP7Line.BP7Locations.Count > 0)
+              Branch.BP7Line.BP7Locations.each( \ elt -> elt.remove())
             policyLine = Branch.BP7Line
         break;
         case typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :

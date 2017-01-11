@@ -72,7 +72,6 @@ public enum KeywordMap {
   linktype("GW Link Type"),
   linkvalue("GW Link ID"),
   status("Status"),
-  filename("GW File Name"),
   mimetype("Mime Type"),
   documenttype("Document Type"),
   documentidforrevision("Document Id For Revision"),

@@ -19,6 +19,7 @@ uses java.io.InputStream
 uses java.lang.Exception
 uses java.util.UUID
 uses onbase.api.services.interfaces.ArchiveDocumentSyncInterface
+uses onbase.api.KeywordMap
 
 /**
  *
@@ -94,7 +95,7 @@ class DocumentArchival {
         //PENDING**
         //NOTE:pendingdocuid needs to be set back to null later so that isDocumentPending doesn't have true in it.
         document.PendingDocUID=UUID.randomUUID().toString();
-        keywords.add(new Keyword("asyncdocumentid", document.PendingDocUID))
+        keywords.add(new Keyword(KeywordMap.asyncdocumentid.Name, document.PendingDocUID))
         servicesManager.archiveDocumentAsynchronously(localFile, document.Type.Code, document.MimeType, keywords)
         if (logger.DebugEnabled) {
           logger.debug("Document " + localFile + " has been saved to local folder and waiting for OnBase to pick up later.")

@@ -4,22 +4,16 @@
   coverageCategory="CPOptionalSchedPropCovCategory_EXT"
   coverageSubtype="CPBuildingCov"
   coveredPartyType="FirstParty"
+  existence="Required"
   lookupTableName="CPBuildingCov"
   owningEntityType="CPBuilding"
   policyLinePattern="CPLine"
   priority="2904"
   public-id="CPProtectiveSafeguards_EXT"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[if(CPBuilding.Building.Sprinklered!=null && CPBuilding.Building.Sprinklered==true)
+  <AvailabilityScript><![CDATA[if(CPBuilding.AutomaticFireSuppress==1)
  return true
 else
- return false
-      ]]></AvailabilityScript>
-  <ExistenceScript><![CDATA[//if(CPBuilding.AutomaticFireSuppress)
-      //return typekey.ExistenceType.TC_REQUIRED
-  //else
-    //  return typekey.ExistenceType.TC_ELECTABLE
-                                    return una.productmodel.CoveragesUtil.getExistence("CPProtectiveSafeguards_EXT", CPBuilding)
-]]></ExistenceScript>
+ return false]]></AvailabilityScript>
   <CovTerms/>
 </CoveragePattern>

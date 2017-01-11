@@ -154,7 +154,7 @@
           label="displaykey.Web.Homeowners.HOLocation.TerritoryCodeTunaReturned_Ext"
           required="!dwelling.HOLocation.OverrideTerritoryCode_Ext"
           value="dwelling.HOLocation.TerritoryCodeTunaReturned_Ext"
-          valueRange="tunaAppResponse.TerritoryCodes"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTerritoryCodes(tunaAppResponse, dwelling.HOPolicyType)//tunaAppResponse.TerritoryCodes"/>
         <Input
           available="!dwelling.HOLocation.OverrideTerritoryCode_Ext"
           id="TerritoryCodeMatchLevel_Ext"
@@ -847,7 +847,10 @@
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
           value="dwelling.ResidenceType"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getResidenceType(dwelling)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getResidenceType(dwelling)">
+          <PostOnChange
+            target="NumUnitsFireDivision_Ext"/>
+        </RangeInput>
         <Input
           editable="true"
           id="NumUnitsFireDivision_Ext"

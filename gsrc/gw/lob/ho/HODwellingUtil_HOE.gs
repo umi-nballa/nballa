@@ -7,7 +7,7 @@ uses una.model.PropertyDataModel
 uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
 uses java.util.ArrayList
-
+uses una.integration.mapping.tuna.TunaAppResponse
 
 /**
  * Created with IntelliJ IDEA.
@@ -694,6 +694,16 @@ class HODwellingUtil_HOE {
           })// + " - " +elt.Percent+" %"))
     }
     return tunaCodeAndPercent
+  }
+
+  static function getTerritoryCodes(tunaResponse : TunaAppResponse, pType :HOPolicyType_HOE ) : List<PropertyDataModel>{
+     // bunch of if clauses
+     if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(pType) && tunaResponse.HOTerritoryCode!=null)
+       return tunaResponse.HOTerritoryCode
+    else if(typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(pType) && tunaResponse.DFTerritoryCode!=null)
+      return tunaResponse.DFTerritoryCode
+    else
+      return tunaResponse.TerritoryCode
   }
 
   static function getDependentCodes(tunaValues : List<PropertyDataModel>) : List<String> {

@@ -117,6 +117,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
+  property get NumberStoriesOrOverride() : typekey.NumberOfStories_HOE{
+    if(this.OverrideStoriesNumber_Ext and this.NoofStoriesOverridden_Ext != null){
+      return this.NoofStoriesOverridden_Ext
+    }else{
+      return this.StoriesNumber
+    }
+  }
+
   property get ConstructionTypeOrOverride() : typekey.ConstructionType_HOE{
     if(this.OverrideConstructionType_Ext and this.ConstTypeOverridden_Ext != null){
       return this.ConstTypeOverridden_Ext

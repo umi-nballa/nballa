@@ -73,17 +73,31 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     relatedPriorLossforHomeownersOrDwelling()
     //Sunil
      submissionUWIssues()
-     createDwellingRelatedUwIssuesForHO()
+    createDwellingRelatedUwIssuesForHO()
+
+
   }
 
   override function onPreBind(){
     validateQuestions()
     //This method will be called to create UW Issues related to Credit
     createsCreditRelatedUwIssuesForHO()
-
+    createDwellingRelatedUwIssuesForHOPB()
   }
 
+  private function createDwellingRelatedUwIssuesForHOPB()
+  {
 
+    var hoLine = _policyEvalContext.Period.HomeownersLine_HOE
+
+    if(!hoLine.Dwelling.HOUWQuestions.moldrem || !hoLine.Dwelling.HOUWQuestions.moldrem )
+    {
+      var moldremm = \ -> "Properties  with prior prior unremediated mold issues are ineligible for coverage"
+      _policyEvalContext.addIssue("HOMold", "HOMold",moldremm, moldremm)
+
+    }
+
+  }
 
   private function createDwellingRelatedUwIssuesForHO(){
 
@@ -97,11 +111,11 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         _policyEvalContext.addIssue("FuelTypeOther_Ext", "FuelTypeOther_Ext",fuelother, fuelother)
       }
 
-    if(hoLine.Dwelling.HOUWQuestions.moldd != null )
-    {
-      var molddd = \ ->  "Properties with on premises business exposure require Underwriting review and approval prior to binding"
-      _policyEvalContext.addIssue("HOMold", "HOMold",molddd, molddd)
-    }
+//    if(hoLine.Dwelling.HOUWQuestions.moldd != null )
+//    {
+//      var molddd = \ ->  "Properties with on premises business exposure require Underwriting review and approval prior to binding"
+//      _policyEvalContext.addIssue("HOMold", "HOMold",molddd, molddd)
+//    }
 
     if(hoLine.Dwelling.HOUWQuestions.moldrem || hoLine.Dwelling.HOUWQuestions.moldremediated )
     {
@@ -109,6 +123,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       _policyEvalContext.addIssue("HOMoldRem", "HOMoldRem",moldremm, moldremm)
 
     }
+
 
   }
 

@@ -77,8 +77,8 @@ class RenewalProcess extends NewTermProcess {
    */
   function canStart() : JobConditions {
     return canStartJob("start or do assignment")
-            .checkNotNull(_branch.PeriodStart, displaykey.Job.Renewal.Process.PeriodStartNotSet)
-            .checkNotNull(_branch.PeriodEnd, displaykey.Job.Renewal.Process.PeriodEndNotSet)
+        .checkNotNull(_branch.PeriodStart, displaykey.Job.Renewal.Process.PeriodStartNotSet)
+        .checkNotNull(_branch.PeriodEnd, displaykey.Job.Renewal.Process.PeriodEndNotSet)
   }
 
   /**
@@ -103,8 +103,8 @@ class RenewalProcess extends NewTermProcess {
     if (Job.ActivePeriods.Count == 1) {
       initialize()
       if (startRenewalWorkflow) {
-      JobProcessLogger.logInfo("Starting renewal workflow for branch: " + _branch)
-      _timeoutHandler.startAutomatedRenewal(_branch)
+        JobProcessLogger.logInfo("Starting renewal workflow for branch: " + _branch)
+        _timeoutHandler.startAutomatedRenewal(_branch)
       }
     } else {
       // multiquote
@@ -142,7 +142,7 @@ class RenewalProcess extends NewTermProcess {
    */
   function canEscalate() : JobConditions {
     return startChecksFor("job escalation")
-            .checkBranchNotLocked()
+        .checkBranchNotLocked()
   }
 
   /**
@@ -170,12 +170,12 @@ class RenewalProcess extends NewTermProcess {
    */
   function canManuallyQuote() : JobConditions {
     return startChecksFor("manually quote")
-            .checkBranchNotLocked()
-            .checkQuotePermission()
-            .checkDraft()
-            .checkNotQuoted()
-            .checkNoUnhandledPreemptions()
-            .checkEditPermission()
+        .checkBranchNotLocked()
+        .checkQuotePermission()
+        .checkDraft()
+        .checkNotQuoted()
+        .checkNoUnhandledPreemptions()
+        .checkEditPermission()
   }
 
   // ---------------------------------------------------------- Immediate Issue (UI button)
@@ -185,13 +185,13 @@ class RenewalProcess extends NewTermProcess {
    */
   function canIssueNow() : JobConditions {
     return startChecksFor("immediate bind")
-            .checkAdvancePermission()
-            .checkPermission(Permissions.Renew)
-            .checkQuoteIsValid()
-            .checkStatus(TC_QUOTED)
-            .checkBranchNotLocked()
-            .checkNoUnhandledPreemptions()
-            .checkIsOnlyPendingPeriod()
+        .checkAdvancePermission()
+        .checkPermission(Permissions.Renew)
+        .checkQuoteIsValid()
+        .checkStatus(TC_QUOTED)
+        .checkBranchNotLocked()
+        .checkNoUnhandledPreemptions()
+        .checkIsOnlyPendingPeriod()
   }
 
   /**
@@ -211,11 +211,11 @@ class RenewalProcess extends NewTermProcess {
    */
   function canPendingNonRenew() : JobConditions {
     return startChecksFor("pending non-renew")
-            .checkPermission(Permissions.NonRenew)
-            .checkBranchNotLocked()
-            .checkNoUnhandledPreemptions()
-            .checkStatus({TC_DRAFT, TC_QUOTED})
-            .checkIsOnlyPendingPeriod()
+        .checkPermission(Permissions.NonRenew)
+        .checkBranchNotLocked()
+        .checkNoUnhandledPreemptions()
+        .checkStatus({TC_DRAFT, TC_QUOTED})
+        .checkIsOnlyPendingPeriod()
   }
 
   /**
@@ -235,11 +235,11 @@ class RenewalProcess extends NewTermProcess {
    */
   function canPendingNotTaken() : JobConditions {
     return startChecksFor("pending not taken")
-            .checkPermission(Permissions.NotTaken)
-            .checkBranchNotLocked()
-            .checkNoUnhandledPreemptions()
-            .checkStatus({TC_DRAFT, TC_QUOTED})
-            .checkIsOnlyPendingPeriod()
+        .checkPermission(Permissions.NotTaken)
+        .checkBranchNotLocked()
+        .checkNoUnhandledPreemptions()
+        .checkStatus({TC_DRAFT, TC_QUOTED})
+        .checkIsOnlyPendingPeriod()
   }
 
   /**
@@ -259,13 +259,13 @@ class RenewalProcess extends NewTermProcess {
    */
   function canPendingRenew() : JobConditions {
     return startChecksFor("pending renew")
-            .checkAdvancePermission()
-            .checkPermission(Permissions.Renew)
-            .checkBranchNotLocked()
-            .checkQuoteIsValid()
-            .checkStatus(TC_QUOTED)
-            .checkNoUnhandledPreemptions()
-            .checkIsOnlyPendingPeriod()
+        .checkAdvancePermission()
+        .checkPermission(Permissions.Renew)
+        .checkBranchNotLocked()
+        .checkQuoteIsValid()
+        .checkStatus(TC_QUOTED)
+        .checkNoUnhandledPreemptions()
+        .checkIsOnlyPendingPeriod()
   }
 
   /**
@@ -293,8 +293,8 @@ class RenewalProcess extends NewTermProcess {
    */
   override function canEdit() : JobConditions {
     return super.canEdit()
-            .checkNull(Job.RenewalNotifDate, displaykey.Job.Renewal.Process.AlreadyHasRenewalNotificationDate)
-            .checkNull(ActiveRenewalWorkflow, displaykey.Job.Renewal.Process.HasActiveRenewalWorkflow)
+        .checkNull(Job.RenewalNotifDate, displaykey.Job.Renewal.Process.AlreadyHasRenewalNotificationDate)
+        .checkNull(ActiveRenewalWorkflow, displaykey.Job.Renewal.Process.HasActiveRenewalWorkflow)
   }
 
   // ---------------------------------------------------------- New Version (UI button)
@@ -317,9 +317,9 @@ class RenewalProcess extends NewTermProcess {
    */
   function canEditFromWorkflow() : JobConditions {
     return startChecksFor("editInWorkflow")
-            .checkEditPermission()
-            .checkBranchNotLocked()
-            .checkNotNull(ActiveRenewalWorkflow, displaykey.Job.Renewal.Process.NoActiveRenewalWorkflow)
+        .checkEditPermission()
+        .checkBranchNotLocked()
+        .checkNotNull(ActiveRenewalWorkflow, displaykey.Job.Renewal.Process.NoActiveRenewalWorkflow)
   }
 
   /**
@@ -339,10 +339,10 @@ class RenewalProcess extends NewTermProcess {
    */
   override function canWithdraw() : JobConditions {
     return super.canWithdraw()
-            .checkNull(Job.RenewalNotifDate, displaykey.Job.Renewal.Process.AlreadyHasRenewalNotificationDate)
-            .check(this.ActiveRenewalWorkflow == null or this.ActiveRenewalWorkflow.isTriggerAvailable("Withdraw"),
-                   displaykey.Job.Renewal.Process.WorkflowNotInAStateThatAllowsWithdraw)
-            .checkStatus(new PolicyPeriodStatus[] {TC_NEW, TC_RENEWING, TC_NONRENEWING, TC_NOTTAKING, TC_DRAFT, TC_QUOTED})
+        .checkNull(Job.RenewalNotifDate, displaykey.Job.Renewal.Process.AlreadyHasRenewalNotificationDate)
+        .check(this.ActiveRenewalWorkflow == null or this.ActiveRenewalWorkflow.isTriggerAvailable("Withdraw"),
+            displaykey.Job.Renewal.Process.WorkflowNotInAStateThatAllowsWithdraw)
+        .checkStatus(new PolicyPeriodStatus[] {TC_NEW, TC_RENEWING, TC_NONRENEWING, TC_NOTTAKING, TC_DRAFT, TC_QUOTED})
   }
 
   override function withdrawWithoutCheckingConditions() {
@@ -403,11 +403,11 @@ class RenewalProcess extends NewTermProcess {
       // an underwriter needs to take a look
       if (preRenewalDirection == TC_NONRENEWREFER) {
         var reasonChecker = new EscalationReasonChecker(TC_NONRENEWING)
-                              .addCustomError(displaykey.Job.Renewal.Escalation.Reason.NonRenewalRefer)
+            .addCustomError(displaykey.Job.Renewal.Escalation.Reason.NonRenewalRefer)
         escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
       } else {
         var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                              .addCustomError(displaykey.Job.Renewal.Escalation.Reason.ReferralRequested(preRenewalDirection))
+            .addCustomError(displaykey.Job.Renewal.Escalation.Reason.ReferralRequested(preRenewalDirection))
         escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
       }
     } else {
@@ -426,14 +426,14 @@ class RenewalProcess extends NewTermProcess {
     var issues = JobProcess.checkBranchAgainstProductModel(_branch)
     // fix issues and log events for them
     issues.fixDuringQuoteIfNecessary(_branch, \ fixedIssue -> Job.createCustomHistoryEvent(TC_RENEWAL,
-          \ -> displaykey.Job.Renewal.History.FixedProductModelIssue(Job.JobNumber, fixedIssue.BaseMessage))
+        \ -> displaykey.Job.Renewal.History.FixedProductModelIssue(Job.JobNumber, fixedIssue.BaseMessage))
     )
     _branch.runSegmentationRules()
   }
 
   protected property get PreRenewalDirectionBlocksPendingRenewal() : boolean {
     return new PreRenewalDirection[] {TC_NONRENEW, TC_NOTTAKEN}.contains(_branch.BasedOn.PolicyTerm.PreRenewalDirection)
-            or preRenewalDirectionRequestsReferral()
+        or preRenewalDirectionRequestsReferral()
   }
 
   protected property get IsProductAvailable() : boolean {
@@ -445,10 +445,10 @@ class RenewalProcess extends NewTermProcess {
       _branch.BasedOn.PolicyTerm.PreRenewalDirection = TC_NONRENEW
       Job.createCustomHistoryEvent(TC_RENEWAL, \ -> displaykey.Job.Renewal.History.PreRenewalDirection.PendingNonRenewal(_branch.BranchName))
       _branch.addNote(TC_PRERENEWAL,
-                      displaykey.Web.Renewal.Warning.NonRenewReason,
-                      displaykey.Web.Renewal.Warning.NonRenewProductNotAvailable(_branch.Policy.Product,
-                                                                                 _branch.BaseState,
-                                                                                 _branch.PeriodStart))
+          displaykey.Web.Renewal.Warning.NonRenewReason,
+          displaykey.Web.Renewal.Warning.NonRenewProductNotAvailable(_branch.Policy.Product,
+              _branch.BaseState,
+              _branch.PeriodStart))
     }
   }
 
@@ -475,23 +475,23 @@ class RenewalProcess extends NewTermProcess {
         } else {
           JobProcessLogger.logInfo("Quoting failed for renewal on branch: " + _branch)
           var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                                  .addCustomError(displaykey.Job.Renewal.Escalation.Reason.InvalidQuote)
+              .addCustomError(displaykey.Job.Renewal.Escalation.Reason.InvalidQuote)
           escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
         }
       } catch (e : EntityValidationException) {
         JobProcessLogger.logDebug("Exception in startPendingRenewal for branch: " + _branch, e)
         var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                                  .addCustomError(displaykey.Job.Renewal.Escalation.Reason.ValidationErrors)
+            .addCustomError(displaykey.Job.Renewal.Escalation.Reason.ValidationErrors)
         escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
       } catch (e : UWAuthorityBlocksProgressException) {
         JobProcessLogger.logDebug("Exception in startPendingRenewal for branch: " + _branch, e)
         var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                                  .addCustomError(displaykey.Job.Renewal.Escalation.Reason.UWIssues)
+            .addCustomError(displaykey.Job.Renewal.Escalation.Reason.UWIssues)
         escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
       } catch (e : Exception) {
         JobProcessLogger.logWarning("Exception in startPendingRenewal for branch: " + _branch, e)
         var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                                  .addCustomError(displaykey.Job.Renewal.Escalation.Reason.Other)
+            .addCustomError(displaykey.Job.Renewal.Escalation.Reason.Other)
         escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
       }
     }
@@ -571,9 +571,9 @@ class RenewalProcess extends NewTermProcess {
    */
   function canSendRenewalDocuments() : JobConditions {
     return startChecksFor("send renewal documents")
-            .checkBranchNotLocked()
-            .checkQuoteIsValid()
-            .checkStatus(TC_RENEWING)
+        .checkBranchNotLocked()
+        .checkQuoteIsValid()
+        .checkStatus(TC_RENEWING)
   }
 
   /**
@@ -592,9 +592,9 @@ class RenewalProcess extends NewTermProcess {
    * Checks the conditions for binding the renewal.
    */
   function canIssueAutomatedRenewal() : JobConditions {
-     return startChecksFor("issue renewal")
-            .checkBranchNotLocked()
-            .checkQuoteIsValid()
+    return startChecksFor("issue renewal")
+        .checkBranchNotLocked()
+        .checkQuoteIsValid()
   }
 
   /**
@@ -613,15 +613,15 @@ class RenewalProcess extends NewTermProcess {
       unconditionalIssueRenewal()
     } catch (e : EntityValidationException) {
       var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                              .addCustomError(displaykey.Job.Renewal.Escalation.Reason.ValidationErrors)
+          .addCustomError(displaykey.Job.Renewal.Escalation.Reason.ValidationErrors)
       escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
     } catch (e : UWAuthorityBlocksProgressException) {
       var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                              .addCustomError(displaykey.Job.Renewal.Escalation.Reason.UWIssues)
+          .addCustomError(displaykey.Job.Renewal.Escalation.Reason.UWIssues)
       escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
     } catch (e : Throwable) {
       var reasonChecker = new EscalationReasonChecker(TC_RENEWING)
-                              .addCustomError(displaykey.Job.Renewal.Escalation.Reason.Other)
+          .addCustomError(displaykey.Job.Renewal.Escalation.Reason.Other)
       escalate(reasonChecker.ActivitySubject, reasonChecker.ActivityDescription)
     }
   }
@@ -639,47 +639,47 @@ class RenewalProcess extends NewTermProcess {
 
     try {
       TransactionUtil.runAtomically(\ bundle -> {
-      _branch.properlySetTransactionFlags()
-      _branch.ensureProducerOfService()
-      _branch.ensureProducerOfRecord()
-      withdrawOtherActivePeriods()      // probably should be moved down too
-      _branch.bindAutoNumberSequences()
-      _branch.updateEstimatedPremium()
+        _branch.properlySetTransactionFlags()
+        _branch.ensureProducerOfService()
+        _branch.ensureProducerOfRecord()
+        withdrawOtherActivePeriods()      // probably should be moved down too
+        _branch.bindAutoNumberSequences()
+        _branch.updateEstimatedPremium()
 
-      startChecksFor("finish renewal").checkOnlyActivePeriod().assertOkay()
-      FormInferenceEngine.Instance.inferPreBindForms(_branch)
-      //uim-svallabhapurapu : Policy History1 Story, add suppress print for renewal
-      if(Job.SupressPrint){
-        Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \ -> displaykey.Job.Renewal.History.Issued.SuppressPrint)
-      } else {
-        Job.createCustomHistoryEvent(TC_RENEWAL, \ -> displaykey.Job.Renewal.History.Issued(_branch.BranchName))
-      }
-      prepareBranchForFinishingJob()
-      if (_branch.BasedOn != null) {
-        _branch.BasedOn.PolicyTerm.removePreRenewalDirection()
-        if (_branch.BasedOn.Status == PolicyPeriodStatus.TC_LEGACYCONVERSION
-              and not _branch.Policy.Issued) {
-          _branch.Policy.markIssued(Date.Today)
+        startChecksFor("finish renewal").checkOnlyActivePeriod().assertOkay()
+        FormInferenceEngine.Instance.inferPreBindForms(_branch)
+        //uim-svallabhapurapu : Policy History1 Story, add suppress print for renewal
+        if(Job.SupressPrint){
+          Job.createCustomHistoryEvent(typekey.CustomHistoryType.TC_SUPPRESSPRINT, \ -> displaykey.Job.Renewal.History.Issued.SuppressPrint)
+        } else {
+          Job.createCustomHistoryEvent(TC_RENEWAL, \ -> displaykey.Job.Renewal.History.Issued(_branch.BranchName))
         }
-      }
-      _branch.addEvent("IssueRenewal")
-      // if is renewal confirm, set bound to be false to wait for confirmation.
-      var plugin = Plugins.get(IPolicyRenewalPlugin)
-      _branch.PolicyTerm.Bound = not plugin.doesRenewalRequireConfirmation(_branch)
+        prepareBranchForFinishingJob()
+        if (_branch.BasedOn != null) {
+          _branch.BasedOn.PolicyTerm.removePreRenewalDirection()
+          if (_branch.BasedOn.Status == PolicyPeriodStatus.TC_LEGACYCONVERSION
+              and not _branch.Policy.Issued) {
+            _branch.Policy.markIssued(Date.Today)
+          }
+        }
+        _branch.addEvent("IssueRenewal")
+        // if is renewal confirm, set bound to be false to wait for confirmation.
+        var plugin = Plugins.get(IPolicyRenewalPlugin)
+        _branch.PolicyTerm.Bound = not plugin.doesRenewalRequireConfirmation(_branch)
 
-      bindReinsurableRisks() // flags Activity on error...
+        bindReinsurableRisks() // flags Activity on error...
 
-      /* Escalation will be performed by callers on error, but cannot occur once the
-       * branch has been promoted.  So promote last after any other actions whose
-       * errors or exceptions should be escalated (and don't depend on promotion)...
-       */
+        /* Escalation will be performed by callers on error, but cannot occur once the
+         * branch has been promoted.  So promote last after any other actions whose
+         * errors or exceptions should be escalated (and don't depend on promotion)...
+         */
 
-      createBillingEventMessages()
-      _branch.scheduleAllAudits()
-      _branch.Job.copyUsersFromJobToPolicy()
-      _branch.Policy.Account.markContactsForAutoSync()
-      _branch.updatePolicyTermDepositAmount()
-      _branch.promoteBranch(false)
+        createBillingEventMessages()
+        _branch.scheduleAllAudits()
+        _branch.Job.copyUsersFromJobToPolicy()
+        _branch.Policy.Account.markContactsForAutoSync()
+        _branch.updatePolicyTermDepositAmount()
+        _branch.promoteBranch(false)
       }, _branch)
     } catch (e : Exception) {
       PCLoggerCategory.JOB_PROCESS.error("Unable to issueRenewal", e)
@@ -706,9 +706,9 @@ class RenewalProcess extends NewTermProcess {
   protected function preRenewalDirectionRequestsReferral() : boolean {
     var preRenewalDirection = _branch.BasedOn.PolicyTerm.PreRenewalDirection
     return preRenewalDirection == TC_UNDERWRITER or
-           preRenewalDirection == TC_ASSISTANT or
-           preRenewalDirection == TC_CUSTREP or
-           preRenewalDirection == TC_NONRENEWREFER
+        preRenewalDirection == TC_ASSISTANT or
+        preRenewalDirection == TC_CUSTREP or
+        preRenewalDirection == TC_NONRENEWREFER
   }
 
   function preSchedulePendingRenewal() {
@@ -774,9 +774,9 @@ class RenewalProcess extends NewTermProcess {
    */
   function canSendNonRenewalDocuments() : JobConditions {
     return startChecksFor("send non renewal documents")
-            .checkBranchNotLocked()
-            .checkStatus(TC_NONRENEWING)
-            .checkNonRenewLeadTime()
+        .checkBranchNotLocked()
+        .checkStatus(TC_NONRENEWING)
+        .checkNonRenewLeadTime()
   }
 
   /**
@@ -794,9 +794,9 @@ class RenewalProcess extends NewTermProcess {
    */
   function canSendNonRenewal() : JobConditions {
     return startChecksFor("non-renew")
-            .checkBranchNotLocked()
-            .checkStatus(TC_NONRENEWING)
-            .checkNotNull(Job.NonRenewalNotifDate, "Non-renewal notification date is not set")
+        .checkBranchNotLocked()
+        .checkStatus(TC_NONRENEWING)
+        .checkNotNull(Job.NonRenewalNotifDate, "Non-renewal notification date is not set")
   }
 
   /**
@@ -893,8 +893,8 @@ class RenewalProcess extends NewTermProcess {
 
   private function canNotTaken(action : String) : JobConditions {
     return startChecksFor(action)
-            .checkBranchNotLocked()
-            .checkStatus({TC_NOTTAKING, TC_RENEWING})
+        .checkBranchNotLocked()
+        .checkStatus({TC_NOTTAKING, TC_RENEWING})
   }
 
   /**
@@ -1029,28 +1029,28 @@ class RenewalProcess extends NewTermProcess {
     property get ActivitySubject() : String {
       switch (_state) {
         case TC_NONRENEWING:
-          return displaykey.Job.Renewal.Escalation.Subject.NonRenewing(_branch.Renewal.JobNumber)
+            return displaykey.Job.Renewal.Escalation.Subject.NonRenewing(_branch.Renewal.JobNumber)
         case TC_RENEWING:
-          return displaykey.Job.Renewal.Escalation.Subject.Renewing(_branch.Renewal.JobNumber)
+            return displaykey.Job.Renewal.Escalation.Subject.Renewing(_branch.Renewal.JobNumber)
         case TC_NOTTAKING:
-          return displaykey.Job.Renewal.Escalation.Subject.NotTaking(_branch.Renewal.JobNumber)
-        default : throw "Unexpected state ${_state} passed in; should be one of NonRenewing, Renewing, or NotTaking"
+            return displaykey.Job.Renewal.Escalation.Subject.NotTaking(_branch.Renewal.JobNumber)
+          default : throw "Unexpected state ${_state} passed in; should be one of NonRenewing, Renewing, or NotTaking"
       }
     }
 
     property get ActivityDescription() : String {
       var stateString = ""
-       switch (_state) {
+      switch (_state) {
         case TC_NONRENEWING:
-          stateString = displaykey.Job.Renewal.Escalation.JobState.NonRenewing
-          break
+            stateString = displaykey.Job.Renewal.Escalation.JobState.NonRenewing
+            break
         case TC_RENEWING:
-          stateString = displaykey.Job.Renewal.Escalation.JobState.Renewing
-          break
+            stateString = displaykey.Job.Renewal.Escalation.JobState.Renewing
+            break
         case TC_NOTTAKING:
-          stateString = displaykey.Job.Renewal.Escalation.JobState.NotTaking
-          break
-        default : throw "Unexpected state ${_state} passed in; should be one of NonRenewing, Renewing, or NotTaking"
+            stateString = displaykey.Job.Renewal.Escalation.JobState.NotTaking
+            break
+          default : throw "Unexpected state ${_state} passed in; should be one of NonRenewing, Renewing, or NotTaking"
       }
 
       return displaykey.Job.Renewal.Escalation.ActivityHeader(stateString, _messages.join("\n"))

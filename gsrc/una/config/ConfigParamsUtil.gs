@@ -2,8 +2,6 @@ package una.config
 
 uses java.math.BigDecimal
 uses java.lang.NumberFormatException
-uses gw.util.concurrent.LockingLazyVar
-uses java.util.HashSet
 uses java.util.Date
 uses gw.api.database.Query
 uses java.lang.Integer
@@ -12,6 +10,7 @@ uses una.logging.UnaLoggerCategory
 uses una.utils.EnvironmentUtil
 uses java.util.HashMap
 uses java.lang.Exception
+uses java.util.Set
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,7 +20,7 @@ uses java.lang.Exception
  * To change this template use File | Settings | File Templates.
  */
 class ConfigParamsUtil {
-  private static var _lazyConfigParams = LockingLazyVar.make(\ -> new HashSet<ConfigurationParameter_Ext>())
+  private static final var _lazyConfigParams : Set<ConfigurationParameter_Ext> = loadConfigurationParameters()
   private static final var _logger = UnaLoggerCategory.UNA_SYS_TABLES
 
   /*
@@ -397,40 +396,34 @@ class ConfigParamsUtil {
     var result : ConfigurationParameter_Ext
     var currentDate = Date.CurrentDate
 
-    loadConfigurationParameters(configParamType)
     removeExpiredConfigParameters()
     result = retrieveConfigParameter(configParamType, state, configFilter)
 
     return result
   }
 
-  private static function loadConfigurationParameters(configParamType : ConfigParameterType_Ext){
+  private static function loadConfigurationParameters() : Set<ConfigurationParameter_Ext>{
     var currentDate = Date.CurrentDate
 
-    if(shouldLoadConfigParameter(configParamType)){
-      var query = Query.make(ConfigurationParameter_Ext)
-                       .compare(ConfigurationParameter_Ext#ConfigParameterType, Equals, configParamType)
-                       .or(\ orCriteria -> {orCriteria.compare(ConfigurationParameter_Ext#ServerTier, Equals, getServerTier())
-                                            orCriteria.compare(ConfigurationParameter_Ext#ServerTier, Equals, null)
-                                           })
-                       .or(\ orCriteria -> {orCriteria.compare(ConfigurationParameter_Ext#EffectiveDate, LessThanOrEquals, currentDate)
-                                            orCriteria.compare(ConfigurationParameter_Ext#EffectiveDate, Equals, null)
-                                           })
-                       .or(\ orCriteria -> {orCriteria.compare(ConfigurationParameter_Ext#ExpirationDate, GreaterThan, currentDate)
-                                            orCriteria.compare(ConfigurationParameter_Ext#ExpirationDate, Equals, null)
-                                           })
-       var queryResults = query.select()?.toList()
-      _lazyConfigParams.get().addAll(queryResults)
-    }
+    var query = Query.make(ConfigurationParameter_Ext)
+                     .or(\ orCriteria -> {orCriteria.compare(ConfigurationParameter_Ext#ServerTier, Equals, getServerTier())
+                                          orCriteria.compare(ConfigurationParameter_Ext#ServerTier, Equals, null)
+                                         })
+                     .or(\ orCriteria -> {orCriteria.compare(ConfigurationParameter_Ext#EffectiveDate, LessThanOrEquals, currentDate)
+                                          orCriteria.compare(ConfigurationParameter_Ext#EffectiveDate, Equals, null)
+                                         })
+                     .or(\ orCriteria -> {orCriteria.compare(ConfigurationParameter_Ext#ExpirationDate, GreaterThan, currentDate)
+                                          orCriteria.compare(ConfigurationParameter_Ext#ExpirationDate, Equals, null)
+                                         })
+    return query.select()?.toSet()
   }
 
-  private static function shouldLoadConfigParameter(configParamType: ConfigParameterType_Ext) : boolean {
-    return !_lazyConfigParams.get().hasMatch( \ elt -> elt.ConfigParameterType == configParamType
-                                                  and (elt.ServerTier == getServerTier() or elt.ServerTier == null))
+  private static function shouldLoadConfigParameter() : boolean {
+    return !_lazyConfigParams.hasMatch( \ elt -> (elt.ServerTier == getServerTier() or elt.ServerTier == null))
   }
 
   private static function removeExpiredConfigParameters(){
-    _lazyConfigParams.get().removeWhere( \ elt -> elt.ExpirationDate != null
+    _lazyConfigParams.removeWhere( \ elt -> elt.ExpirationDate != null
                                               and elt.ExpirationDate.beforeIgnoreTime(java.util.Date.CurrentDate))
   }
 
@@ -441,7 +434,7 @@ class ConfigParamsUtil {
   private static function retrieveConfigParameter(configParamType : ConfigParameterType_Ext, baseState : Jurisdiction, configFilter : String) : ConfigurationParameter_Ext{
     var result : ConfigurationParameter_Ext
 
-    var configParams = _lazyConfigParams.get().where( \ configParam -> configParam.ConfigParameterType == configParamType
+    var configParams = _lazyConfigParams.where( \ configParam -> configParam.ConfigParameterType == configParamType
                                                     and configParam.ConfigurationFilter?.toLowerCase() == configFilter?.toLowerCase())
 
     var firstTierMatch = configParams?.where( \ configParam -> configParam.State == baseState and configParam.ServerTier == getServerTier()).first()

@@ -62,8 +62,13 @@ class OpenRenewalsAutomationBatchProcess extends AbstractPolicyPeriodBatchProces
   }
 
   private function autoRenewPeriod(eligiblePeriod : PolicyPeriod){
+    //skip warnings for renewal auto start
+    (gw.transaction.Transaction.Current as com.guidewire.pl.system.bundle.EntityBundleImpl).CommitOptions.setValidationOption(com.guidewire.pl.system.bundle.validation.BundleValidationOption.VALIDATE_ERRORS_ONLY)
+
     if(eligiblePeriod.Status == TC_DRAFT){
       eligiblePeriod.RenewalProcess.requestQuote()
+      eligiblePeriod.RenewalProcess.preSchedulePendingRenewal()
+      eligiblePeriod.RenewalProcess.pendingRenew()
     }
 
     if(eligiblePeriod.Status == TC_QUOTED){

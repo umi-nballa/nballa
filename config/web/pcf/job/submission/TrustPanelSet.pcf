@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <PanelSet
+    id="TrustPanelSet">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <DetailViewPanel>
+      <InputColumn>
+        <BooleanRadioInput
+          editable="true"
+          falseLabel="&quot;No&quot;"
+          id="MultipleTrust"
+          label="&quot;Is Multiple Trust Involved&quot;"
+          trueLabel="&quot;Yes&quot;"
+          value="policyPeriod.isMultipleTrust"/>
+        <TypeKeyInput
+          editable="true"
+          id="TrustInvolved"
+          label="&quot;How many Trusts Involved&quot;"
+          value="policyPeriod.NoOfTrustInvolved">
+          <PostOnChange
+            onChange="createTrustResidings()"/>
+        </TypeKeyInput>
+      </InputColumn>
+    </DetailViewPanel>
+    <PanelRef
+      def="TrustResidingPanelSet(policyPeriod.TrustResidings)"
+      id="TrustList"/>
+    <Code><![CDATA[function createTrustResidings(){
+  var countTrust =policyPeriod.NoOfTrustInvolved.Code.toInt()
+  var storedTrust =  policyPeriod.TrustResidings.Count
+   //gw.transaction.Transaction.runWithNewBundle(\bundle -> {
+//  var localaccount = bundle.add(policyPeriod)
+  if (countTrust > storedTrust){
+    countTrust = countTrust-storedTrust
+    while(countTrust > 0) {
+      var trustResiding = new HOTrustResiding_Ext(policyPeriod)
+      policyPeriod.addToTrustResidings(trustResiding)
+      countTrust--
+    }
+  }else{
+    countTrust = storedTrust - countTrust
+    while(countTrust > 0) {
+     var trustResiding = policyPeriod.TrustResidings.last()
+      policyPeriod.removeFromTrustResidings(trustResiding)
+      countTrust--
+    }
+    }
+  policyPeriod.refresh()
+  }//)}]]></Code>
+  </PanelSet>
+</PCF>

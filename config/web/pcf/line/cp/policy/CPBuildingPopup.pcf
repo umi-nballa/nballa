@@ -669,7 +669,8 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.AutomaticFireSupp"
                 required="false"
                 value="cpBuilding.AutomaticFireSuppress">
-                <PostOnChange/>
+                <PostOnChange
+                  onChange="cpBuilding.syncCoverages()"/>
               </CheckBoxInput>
               <CheckBoxInput
                 align="left"
@@ -937,6 +938,7 @@
         </Card>
         <Card
           id="BuildingCoverages"
+          onSelect="una.productmodel.CPAutoPopulateUtil.cleanupcoverages(cpBuilding, cpLine)"
           title="displaykey.Web.Policy.CP.Location.CPBuilding.CoveragesCardTitle">
           <PanelRef>
             <PanelRow>
@@ -1000,6 +1002,7 @@
         </Card>
         <Card
           id="BuildingExclusionsConditions"
+          onSelect="una.productmodel.CPAutoPopulateUtil.cleanupcoverages(cpBuilding, cpLine)"
           title="&quot;Exclusions and Conditions&quot;">
           <PanelRef
             def="AdditionalExclusionsAndConditionsPanelSet(cpLine, new String[]{&quot;CPExclusions_EXT&quot;,&quot;CPConditions_EXT&quot;} , true)"/>

@@ -134,7 +134,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Properties  with on premises daycare operations are not eligible for coverage")
     }
 
-    if(!HODwelling.HOUWQuestions.daycare )
+    if(HODwelling.HOUWQuestions.daycare!=null && !HODwelling.HOUWQuestions.daycare )
     {
       // policyTypeValid = false
       addErrorOrWarning( "Properties with Family Daycare Homes that exceed the maximum number of children allowed in accordance with Florida Statute are not eligible for coverage")
@@ -142,7 +142,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
 
 
 
-    if(!HODwelling.HOUWQuestions.daycareregs )   {
+    if(HODwelling.HOUWQuestions.daycareregs!=null && !HODwelling.HOUWQuestions.daycareregs )   {
       //policyTypeValid = false
       addErrorOrWarning("Properties with Family Child Daycare operations that do not meet licensing/registration requirements are not eligible for coverage")
     }
@@ -152,7 +152,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Properties with on premises Family Home Daycare operations require Underwriting approval prior to binding.   Proof of licensure/registration AND a copy of your current commerial daycare liability policy is required for Underwriting review")
     }
 
-    if(!HODwelling.HOUWQuestions.commercialliability )      {
+    if(HODwelling.HOUWQuestions.commercialliability!=null && !HODwelling.HOUWQuestions.commercialliability )      {
       // policyTypeValid = false
       addErrorOrWarning("Applicant is not eligible for coverage without a commercial insurance policy inforce for the Family Home Daycare operation")
     }
@@ -192,7 +192,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Properties with bars on windows without a quick release mechanism are not eligible for coverage")
     }
 
-    if(!HODwelling.HOUWQuestions.moldrem || !HODwelling.HOUWQuestions.moldremediated )   {
+    if((HODwelling.HOUWQuestions.moldrem!=null && !HODwelling.HOUWQuestions.moldrem) || (HODwelling.HOUWQuestions.moldremediated!=null && !HODwelling.HOUWQuestions.moldremediated ))   {
       // policyTypeValid = false
       addErrorOrWarning("Properties  with prior unremediated mold losses are not eligible for coverage")
     }
@@ -214,12 +214,12 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Applicants owning more than 5 rental units are not eligible for coverage")
     }
 
-    if(!HODwelling.HOUWQuestions.exclusiveresi )     {
+    if(HODwelling.HOUWQuestions.exclusiveresi!=null && !HODwelling.HOUWQuestions.exclusiveresi )     {
       // policyTypeValid = false
       addErrorOrWarning("Properties that are not used used exclusively for residential purposes  other than eligible incidental office exposures are not eligible for coverage")
     }
 
-    if(!HODwelling.HOUWQuestions.recpubutil )   {
+    if(HODwelling.HOUWQuestions.recpubutil !=null && !HODwelling.HOUWQuestions.recpubutil )   {
       //  policyTypeValid = false
       addErrorOrWarning("Property without public utility services is not eligible for coverage")
     }

@@ -161,6 +161,14 @@ class PolicyChangeProcess extends JobProcess implements IPolicyChangeProcess {
     _branch.updatePolicyTermDepositAmount()
     bindReinsurableRisks()
     _branch.promoteBranch(true)
+    /* Code changes for US5360 : For multiple Additional Interests, add them as Billing Contacts under Account Contacts
+       So those contacts will have 2 assigned roles - Additional Interest and Billing Contact */
+    _branch.PolicyContactRoles.whereTypeIs(PolicyAddlInterest).each( \ pai -> {
+      var isBillingContact = _branch.PolicyContactRoles.whereTypeIs(PolicyBillingContact).hasMatch( \ pcr -> pcr.ContactDenorm == pai.ContactDenorm)
+      if (!isBillingContact) {
+        _branch.addNewPolicyBillingContactForContact(pai.ContactDenorm)
+      }
+    })
   }
 
   private function scheduleFinalAudit() {

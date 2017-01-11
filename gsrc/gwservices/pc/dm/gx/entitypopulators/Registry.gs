@@ -144,6 +144,8 @@ uses gwservices.pc.dm.gx.lob.cpp.generalliabilitycovmodel.anonymous.elements.Gen
 uses gwservices.pc.dm.gx.lob.bop.bp7buildingmodel.anonymous.elements.BP7Building_BldgUnits_Entry
 uses gwservices.pc.dm.gx.lob.bop.BP7BldngUnitsPopulator
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_GeneralLiabilityLine_Exposures_Entry
+uses gwservices.pc.dm.gx.lob.bop.bp7linecovmodel.anonymous.elements.BP7LineCov_CovTerms_Entry
+uses gwservices.pc.dm.gx.lob.bop.bp7classificationcovmodel.anonymous.elements.BP7ClassificationCov_CovTerms_Entry
 
 /**
  * Entity populator registry
@@ -256,7 +258,9 @@ class Registry {
       HomeownersLineCov_HOE_CovTerms_Entry,
       BP7LocationCov_CovTerms_Entry,
       BP7BuildingCov_CovTerms_Entry,
-      GeneralLiabilityCov_CovTerms_Entry
+      GeneralLiabilityCov_CovTerms_Entry,
+      BP7ClassificationCov_CovTerms_Entry,
+      BP7LineCov_CovTerms_Entry
   }
   /**
    * Entity types to not auto delete

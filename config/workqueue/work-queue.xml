@@ -172,10 +172,10 @@
   <!-- progressinterval is set at 10 minutes. if processing takes longer than, the 
        work item will be readded to the queue. make sure "progressinterval" is longer than the 
        longest sequence combination -->
-  <work-queue workQueueClass="gwservices.pc.dm.batch.PAMigrationWorker" progressinterval="600000">
+  <work-queue workQueueClass="gwservices.pc.dm.batch.PolicyMigrationWorker" progressinterval="600000">
      <worker instances="5" batchsize="1"/>
   </work-queue>
-    <work-queue workQueueClass="gwservices.pc.dm.batch.PAAccountMigrationWorker" progressinterval="600000">
+    <work-queue workQueueClass="gwservices.pc.dm.batch.AccountMigrationWorker" progressinterval="600000">
         <worker instances="5" batchsize="1"/>
     </work-queue>
 </work-queues>

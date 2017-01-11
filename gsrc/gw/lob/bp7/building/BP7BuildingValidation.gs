@@ -4,6 +4,10 @@ uses gw.lob.bp7.classification.BP7ClassificationValidation
 uses gw.validation.PCValidationBase
 uses gw.validation.PCValidationContext
 
+uses gw.api.productmodel.Schedule
+uses gw.lob.bp7.schedules.validation.BP7ScheduleValidation
+uses gw.api.domain.Clause
+
 uses java.math.BigDecimal
 
 @Export
@@ -25,6 +29,7 @@ class BP7BuildingValidation extends PCValidationBase {
     limitValidation()
     vacancyPermitDatesValidation()
     validateChildren()
+    validateSchedules()
   }
   
   private function validateBuilding() {
@@ -71,6 +76,11 @@ class BP7BuildingValidation extends PCValidationBase {
   private function validateChildren() {
     Context.addToVisited( this, "validateChildren")
     _building.Classifications.each(\ classification -> new BP7ClassificationValidation(Context, classification).validate())
+  }
+
+  private function validateSchedules()  {
+    Context.addToVisited(this, "validateSchedules")
+    _building.CoveragesConditionsAndExclusionsFromCoverable.whereTypeIs(Schedule).each( \ schedule -> new BP7ScheduleValidation(Context, schedule as Clause & Schedule).validate())
   }
 
   private function atLeastOneClassification() {

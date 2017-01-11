@@ -44,6 +44,7 @@ class BP7LineValidation extends PolicyLineValidation<entity.BP7BusinessOwnersLin
     validatePhotographySchedule()
     validateOrdinanceOrLawWaitingPeriod()
     validateSchedules()
+    validatePolicyDefaultsDuringPolicyChange()
   }
 
   private function validateChildren() {
@@ -265,6 +266,26 @@ class BP7LineValidation extends PolicyLineValidation<entity.BP7BusinessOwnersLin
       Result.addError(BP7Line,
           ValidationLevel.TC_QUOTABLE,
           displaykey.Web.Policy.BP7.Validation.Building.ordinanceOrLawWaitingPeriodMustBeTheSameAcrossAllBuildings)
+    }
+  }
+
+  private function validatePolicyDefaultsDuringPolicyChange()
+  {
+    Context.addToVisited(this, "policyDefaultsDuringPolicyChange")
+    //Basic-Policy Change Story
+    var curperiod =BP7Line.AssociatedPolicyPeriod
+    if(curperiod.Job.Subtype==typekey.Job.TC_POLICYCHANGE && curperiod.BP7Line.BP7LocationPropertyDeductibles_EXTExists) //covTerm.PatternCode=="BP7WindHailDeductible_EXT" &&
+    {
+      var basedonperiod = curperiod.BasedOn
+      if(curperiod.BP7Line.BP7LocationPropertyDeductibles_EXT.HasBP7WindHailDeductible_EXTTerm &&
+          basedonperiod.BP7Line.BP7LocationPropertyDeductibles_EXT.HasBP7WindHailDeductible_EXTTerm)
+      {
+        if(curperiod.BP7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue.CodeIdentifier!=basedonperiod.BP7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue.CodeIdentifier
+         &&   basedonperiod.BP7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue.CodeIdentifier!="NA_EXT")
+        {
+          Result.addError(BP7Line, ValidationLevel.TC_LOADSAVE, "Cannot change Windstorm Hail Percentage if original value was not Not Applicable")
+        }
+      }
     }
   }
 

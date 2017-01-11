@@ -30,7 +30,7 @@ enhancement PCAccountInfoEnhancement : PCAccountInfo
       }else{
         var PCContactInfo = new PCContactInfo()
         PCContactInfo.sync( b.Contact )
-        PCContactInfo.LoanNumber = addlInterests?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == b.Contact.AddressBookUID)?.ContractNumber
+        PCContactInfo.LoanNumber = addlInterests?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm == b.Contact)?.ContractNumber
         billingContacts.add( PCContactInfo )
       }
     }

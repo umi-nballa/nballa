@@ -4,12 +4,11 @@ uses gw.web.productmodel.ProductModelSyncIssuesHandler
 uses una.config.ConfigParamsUtil
 uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.BooleanCovTerm
-uses gw.api.domain.covterm.OptionCovTerm
-uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses java.math.BigDecimal
+uses gw.api.domain.covterm.OptionCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,62 +18,28 @@ uses java.math.BigDecimal
  * To change this template use File | Settings | File Templates.
  */
 class CovTermInputSetPCFController {
+  static function onChange(covTerm: gw.api.domain.covterm.CovTerm){
+    var coverable = covTerm.Clause.OwningCoverable
 
-  // Sen Pitchaimuthu: Added onchange function to calculate the Other Structure, Personal Property and Loss of use
-  // coverages based on Dwelling Coverage
-  static function onchange(coverable: Coverable, _covTerm: gw.api.domain.covterm.CovTerm){
-    switch(typeof coverable){
-      case Dwelling_HOE:
-          onChangeForDwellingCoverable(coverable, _covTerm)
-          break
-        default:
-        break
-    }
-  }
+    //sync coverages
+    ProductModelSyncIssuesHandler.syncCoverages(coverable.PolicyLine.AllCoverables, null)
 
-  private static function onChangeForDwellingCoverable(dwelling : Dwelling_HOE, covTerm : CovTerm){
-    dwelling.PolicyPeriod.editIfQuoted()
-    ProductModelSyncIssuesHandler.syncCoverages(dwelling.PolicyPeriod.Lines*.AllCoverables, null)
-
-    if(covTerm typeis DirectCovTerm){
-      if(covTerm.PatternCode == "HODW_BuildAddInc_HOE"){
-        covTerm.round(ROUND_UP)
-      }else{
-        covTerm.round(ROUND_NEAREST)
+    if(coverable typeis Dwelling_HOE){
+      if(covTerm typeis DirectCovTerm){
+        onChangeDirectCovTerm(covTerm)
+      }else if(covTerm typeis OptionCovTerm){
+        onChangeOptionCovTerm(covTerm)
+      }else if(covTerm typeis BooleanCovTerm){
+        onChangeBooleanCovTerm(covTerm)
+      }
+    }else if(coverable typeis CPBuilding){
+      if(covTerm.PatternCode == "SinkholeLimit_EXT"){
+        una.productmodel.CPAutoPopulateUtil.setTermValue(covTerm)
       }
     }
-
-    switch(covTerm.PatternCode) {
-      case "HODW_Dwelling_Limit_HOE":
-        dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
-        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm?.onInit()
-        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm?.onInit()
-        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
-        break
-      case "DPDW_Dwelling_Limit_HOE":
-        dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
-        dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
-        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
-        break
-      case "HODW_PersonalPropertyLimit_HOE":
-        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, covTerm))
-        dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.onInit()
-        break
-      case "HODW_ExecutiveCov_HOE_Ext":
-        setExecutiveCoverageDefaults(dwelling, covTerm as BooleanCovTerm)
-        break
-      case "HODWDwelling_HOE":
-        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value = !(covTerm as BooleanCovTerm).Value
-        break
-      case "HODW_OtherStructure_HOE":
-        dwelling.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value = !(covTerm as BooleanCovTerm).Value
-        break
-      default:
-        break;
-    }
   }
 
-  static function validate(coverable: Coverable, covTerm: gw.api.domain.covterm.DirectCovTerm):String{
+  static function validate(coverable: Coverable, covTerm: gw.api.domain.covterm.DirectCovTerm):String{    
     var result : String
 
     if(coverable typeis Dwelling_HOE){
@@ -85,16 +50,20 @@ class CovTermInputSetPCFController {
       }else{
         result = validateCalculatedLimits(covTerm, coverable)
       }
+    }else if(coverable typeis BP7BusinessOwnersLine || coverable typeis BP7Building || coverable typeis BP7Classification){
+      result = isCovTermAllowedValue(covTerm)
     }
 
     return result
   }
 
-  static function onCovTermOptionChange(term : gw.api.domain.covterm.CovTerm, coverable : Coverable) {
-    onCovTermOptionChange_OnPremisesLimit(term, coverable)
+  private static function onChangeOptionCovTerm(term : OptionCovTerm) {
+    var coverable = term.Clause.OwningCoverable
+
+    onChangeOptionCovTerm_OnPremisesLimit(term)
 
     if(coverable typeis Dwelling_HOE){
-      if(term.PatternCode == "HODW_WindHail_Ded_HOE" and term typeis OptionCovTerm){
+      if(term.PatternCode == "HODW_WindHail_Ded_HOE"){
         (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
       }else if({"HODW_OtherPerils_Ded_HOE", "HODW_AllPeril_HOE_Ext"}.contains(term.PatternCode)){
         coverable.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
@@ -108,12 +77,64 @@ class CovTermInputSetPCFController {
     }
   }
 
-  static function getOptionLabel(covTerm : gw.api.domain.covterm.CovTerm, coverable : Coverable) : String{
+  private static function onChangeDirectCovTerm(term : DirectCovTerm) {
+    var dwelling : Dwelling_HOE
+
+    if(term.Clause.OwningCoverable typeis Dwelling_HOE){
+      dwelling = term.Clause.OwningCoverable
+    }
+
+    if(term.PatternCode == "HODW_BuildAddInc_HOE"){
+      term.round(ROUND_UP)
+    }else{
+      term.round(ROUND_NEAREST)
+    }
+
+    switch(term.PatternCode) {
+      case "HODW_Dwelling_Limit_HOE":
+        dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm?.onInit()
+        dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm?.onInit()
+        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
+        break
+      case "DPDW_Dwelling_Limit_HOE":
+        dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
+        new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
+        break
+      case "HODW_PersonalPropertyLimit_HOE":
+        new CoverageTermsRuntimeDefaultController().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
+        dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.onInit()
+        break
+      default:
+        break
+    }
+  }
+
+  private static function onChangeBooleanCovTerm(term : BooleanCovTerm){
+    var coverable = term.Clause.OwningCoverable
+
+    switch(term.PatternCode){
+      case "HODW_OtherStructure_HOE":
+        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm.Value = !term.Value
+        break
+      case "HODWDwelling_HOE":
+        (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm.Value = !term.Value
+        break
+      case "HODW_ExecutiveCov_HOE_Ext":
+        setExecutiveCoverageDefaults((coverable as Dwelling_HOE), term)
+        break
+      default:
+        break
+    }
+  }
+
+  static function getOptionLabel(covTerm : gw.api.domain.covterm.CovTerm) : String{
     var result : String
 
-    if(coverable typeis Dwelling_HOE and covTerm.PatternCode == "HODW_Lossofuse_HOE_Ext"){
+    if(covTerm.Clause.OwningCoverable typeis Dwelling_HOE and covTerm.PatternCode == "HODW_Lossofuse_HOE_Ext"){
       var lossOfUseLabeledPolicyTypes : List<HOPolicyType_HOE> = {TC_HO3, TC_HO6}
-      result = (lossOfUseLabeledPolicyTypes.contains((coverable as Dwelling_HOE).HOLine.HOPolicyType)) ? displaykey.una.productmodel.LossOfUse : displaykey.una.productmodel.FairRentalValue
+      result = (lossOfUseLabeledPolicyTypes.contains(covTerm.Clause.OwningCoverable.HOLine.HOPolicyType)) ? displaykey.una.productmodel.LossOfUse : displaykey.una.productmodel.FairRentalValue
     }else{
       result = covTerm.Pattern.DisplayName
     }
@@ -169,6 +190,7 @@ class CovTermInputSetPCFController {
 
 
     coveragePatternsToSelect.each( \ coveragePattern -> {
+      var pattern = coveragePattern
       if(dwelling.isCoverageAvailable(coveragePattern)){
         toggleCoveragesExistenceForExecutiveCoverage(dwelling, booleanCovTerm.Value, coveragePattern)
       }else if(dwelling.HOLine.isCoverageAvailable(coveragePattern)){
@@ -199,7 +221,9 @@ class CovTermInputSetPCFController {
     }
   }
 
-  private static function onCovTermOptionChange_OnPremisesLimit(term : gw.api.domain.covterm.CovTerm, coverable : Coverable ){
+  private static function onChangeOptionCovTerm_OnPremisesLimit(term: gw.api.domain.covterm.CovTerm){
+    var coverable = term.Clause.OwningCoverable
+
     if(term.PatternCode == "HODW_OnPremises_Limit_HOE" and coverable typeis Dwelling_HOE){
       var onPremisesValue = coverable.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value
       var factor = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_OFFPREMISESLIMITFACTOR, coverable.PolicyLine.BaseState)
@@ -261,4 +285,18 @@ class CovTermInputSetPCFController {
     return  result
   }
 
+  // BOP/BP7 DirectCovTerm increment of 1000 validation method
+  private static function isCovTermAllowedValue(covTerm : DirectCovTerm):String{
+    var result:String
+    var minimumAllowed = covTerm.getMinAllowedLimitValue(covTerm.Clause.OwningCoverable)
+    var allowedIncrement = minimumAllowed
+    var allowedIncrements : List<BigDecimal> = {allowedIncrement}
+    if(covTerm.PatternCode=="BP7LimitatDescribedPremises_EXT" || covTerm.PatternCode=="BP7LimitDescribedPremises_EXT" || covTerm.PatternCode=="BP7Limit38" || covTerm.PatternCode=="Limit" ||
+        covTerm.PatternCode=="Limit_EXT"){
+      if((covTerm.Value).remainder(1000)!=0){
+        result = displaykey.una.productmodel.validation.AllowedLimitValidationMessage(covTerm.Clause.Pattern.DisplayName,covTerm.DisplayName)
+      }
+    }
+    return result
+  }
 }

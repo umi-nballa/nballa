@@ -11,18 +11,20 @@ uses gw.xml.ws.WebServiceException
 uses una.integration.service.transport.clue.CluePropertyCommunicator
 uses una.logging.UnaLoggerCategory
 uses wsi.schema.una.inscore.cprulesorderschema.Order
-uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.AddressListType_Address
-uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Addresses
-uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Subjects
-uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectListType_Subject
-uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectType_Address
-uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectType_Name
 uses wsi.schema.una.inscore.cprulesorderschema.enums.DescriptionType_Sex
 uses wsi.schema.una.inscore.cprulesorderschema.enums.NameType_Type
-uses wsi.schema.una.inscore.cprulesorderschema.enums.SubjectAddressType_Type
 uses wsi.schema.una.inscore.cprulesresultschema.anonymous.elements.MessageListType_Message
 
 uses java.text.SimpleDateFormat
+uses wsi.schema.una.inscore.cprulesorderschema.enums.SubjectAddressType_Type
+uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.AddressListType_Address
+uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectListType_Subject
+uses wsi.schema.una.inscore.xsd.cluecommonelements.types.complex.NameType
+uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectType_Name
+uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectType_Address
+uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Addresses
+uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Subjects
+uses una.utils.DateUtil
 
 class CluePropertyGateway implements CluePropertyInterface {
   private static var KEY_STORE_PATH: String
@@ -38,7 +40,7 @@ class CluePropertyGateway implements CluePropertyInterface {
   private static var DATE_FORMAT = "MM/dd/yyyy"
   private static var cluePropertyCommunicator: CluePropertyCommunicator
   var timeout = "500"
-  static var _logger = UnaLoggerCategory.UNA_INTEGRATION
+  static var _logger =UnaLoggerCategory.UNA_INTEGRATION
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     cluePropertyCommunicator = new CluePropertyCommunicator()
@@ -54,16 +56,17 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Throws(DisplayableException, "If the web service is not available")
   function orderClueProperty(pPeriod: PolicyPeriod) {
     //attempt to create the order xml
+    _logger.info("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.info("CLUE Request or sending order :" + orderXml)
+    _logger.debug("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
-      pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \-> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.info("CLUE Response or received result :" + result)
+      pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
+      _logger.debug("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
-      _logger.debug("finished ordering CLUE")
+      _logger.info("finished ordering CLUE")
     }
         catch (wse: WebServiceException) {
           throw new DisplayableException(WS_NOT_AVAILABLE, wse)
@@ -80,7 +83,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     var messages = clueResponseXml.Messages.Message_elem
     var clueProductReports = clueResponseXml.ProductResults.CluePersonalProperty
     // code for Clue Check to Check Ordered Status
-    pPeriod.HomeownersLine_HOE.ClueHit_Ext = true
+     pPeriod.HomeownersLine_HOE.ClueHit_Ext = true
     if (clueProductReports.HasElements){
       for (clueProductReport in clueProductReports) {
         _logger.debug("Clue Product Report found")
@@ -98,7 +101,7 @@ class CluePropertyGateway implements CluePropertyInterface {
           var totalPriorHist = clueReport.Report.Summary.TotalPriorInquiryHistory
           var totalClaims = totalPriorHist + totalRiskClaims + totalSubjectClaims
           var statusMsg = clueReport.Admin.Status.toString()
-          var reference = clueReport.Admin.ProductReference
+          var reference=clueReport.Admin.ProductReference
           _logger.debug(" Risk Claims: ${totalRiskClaims}"
               + ", Subject Claims: ${totalSubjectClaims}, Prior History: ${totalPriorHist}")
           //Save report status for UI feedback
@@ -112,7 +115,7 @@ class CluePropertyGateway implements CluePropertyInterface {
               var cHistoryType = cHistory.Type
               for (claim in claims) {
                 //for every claim reported, create a PAPriorLossExt entity and attach it to the PA line
-                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType, reference))
+                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType,reference))
                 _logger.debug("A claim has been added to the priorLoss array " + claim.Number)
               }
             }
@@ -144,10 +147,10 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Param("claim", " The prior loss or claim element")
   @Param("cHistoryType", " The claim--History_Type element ")
   private  function extractClaimDetails(claim: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.anonymous.elements.ResultsDataset_ClaimsHistory_Claim,
-                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type, referenceNumber: String): HOPriorLoss_Ext {
+                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String): HOPriorLoss_Ext {
     var priorLoss = new HOPriorLoss_Ext()
     //get claim details
-    priorLoss.Reference = referenceNumber
+    priorLoss.Reference=referenceNumber
     priorLoss.ClaimDate = claim.ClaimDate
     priorLoss.ClaimAge = claim.ClaimAge.Years as java.lang.String
     priorLoss.ClaimNum = claim.Number
@@ -184,12 +187,13 @@ class CluePropertyGateway implements CluePropertyInterface {
     priorLoss.PolicyCompany = claim.PropertyPolicy.Issuer
     //Statement field map
     var consumerNarrative = claim.ConsumerNarrative?.first().Message
-    var statement: String=""
+    var statement=""
     if(consumerNarrative!=null && consumerNarrative.size()>0)
-    for (message in consumerNarrative) {
-      statement = statement.concat(message)
-    }
+      for (message in consumerNarrative) {
+        statement = statement.concat(message)
+      }
     priorLoss.Statements = statement
+
     priorLoss.PropertyPolicyNum = claim.PropertyPolicy.Number
     priorLoss.PropertyType = claim.PropertyPolicy.PropertyType as String
     priorLoss.ClaimStatus = claim.Disposition_elem.$Value as String
@@ -204,20 +208,20 @@ class CluePropertyGateway implements CluePropertyInterface {
     var pHolderType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
     var policyHolder = claim.Subject.firstWhere(\c -> c.Classification == pHolderType)
     if (policyHolder != null){
-      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + (policyHolder.Name.Middle != null ? policyHolder.Name.Middle : "")
-      var phAddress = policyHolder.Address.first()
-      priorLoss.AddressType = phAddress.Type as String
-      priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")
-      priorLoss.City = phAddress.City
-      priorLoss.State = phAddress.State
-      priorLoss.Zip = phAddress.Postalcode
-      priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
-      priorLoss.PhoneNumber = policyHolder.Telephone
-    }
+    priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " +(policyHolder.Name.Middle!=null? policyHolder.Name.Middle:"")
+    var phAddress = policyHolder.Address.first()
+    priorLoss.AddressType = phAddress.Type as String
+    priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")
+    priorLoss.City = phAddress.City
+    priorLoss.State = phAddress.State
+    priorLoss.Zip = phAddress.Postalcode
+    priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
+    priorLoss.PhoneNumber = policyHolder.Telephone
+  }
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
-    priorLoss.OriginLoss = "CLUE"
+    priorLoss.OriginLoss="CLUE"
 
     return priorLoss
   }
@@ -280,7 +284,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     // only one subject associated with homeowner submission
     var addId = "A"
     var x = 0
-    // only one address associated with homeowner submission
+     // only one address associated with homeowner submission
 
     lexOrder.Products.ClueProperty[0].Usage_elem.$Value = Underwriting
     lexOrder.Products.ClueProperty[0].ReportType_elem.$Value = C_L_U_E__Property_only
@@ -290,71 +294,77 @@ class CluePropertyGateway implements CluePropertyInterface {
     var pHolder = pPeriod.PrimaryNamedInsured
 
     var subject1 = new SubjectListType_Subject()
-    i = i + 1
+    i= i+1
     subject1.Id = subId + i
     subject1.Quoteback = pHolder.PublicID
 
-    var subType = mapSubject(pHolder.FirstName, pHolder.LastName)
-
+    var subType = mapSubject(pHolder.FirstName,pHolder.LastName)
     subject1.Name.add(subType)
 
+    if(pHolder.DateOfBirth != null)
+    subject1.Birthdate = DateUtil.formatDateTime(pHolder.DateOfBirth)
 
-    var address = new AddressListType_Address()
+
+    var address =  new AddressListType_Address()
     var location = pPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
 
-    if (location != null){
-      x = x + 1
+    if(location != null){
+     x = x + 1
 
 
-      var houseAndStreet = location.AddressLine1.split(" ", 2)
-      if (houseAndStreet.length == 2) {
-        address.House = houseAndStreet[0]
-        address.Street1 = houseAndStreet[1]
-      }
-      else {
-        //address not in expected format
-        address.House = location.AddressLine1
-        address.Street1 = location.AddressLine2
-      }
-      address.City = location.City
-      address.State = location.State.Code
-      address.Postalcode = location.PostalCode
-      address.Id = addId + x
+    var houseAndStreet = location.AddressLine1.split(" ", 2)
+    if (houseAndStreet.length == 2) {
+      address.House = houseAndStreet[0]
+      address.Street1 = houseAndStreet[1]
+    }
+    else {
+      //address not in expected format
+      address.House = location.AddressLine1
+      address.Street1 = location.AddressLine2
+    }
+    address.City = location.City
+    address.State = location.State.Code
+    address.Postalcode = location.PostalCode
+    address.Id = addId + x
+
     }
     lexOrderAddress.Address.add(address)
-    var addressSub = mapSubjectAddress(address, "Primary")
+    var addressSub = mapSubjectAddress(address,"Primary")
     subject1.Address.add(addressSub)
 
 
-    var mailingAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere(\elt -> elt.AddressType == AddressType.TC_BILLING)
-    _logger.debug("******************************************** Mailing Address : " + mailingAddress.AddressLine1)
 
-    var addressSub1: SubjectType_Address
-    var address1 = new AddressListType_Address()
-    if (mailingAddress != null)  {
-      x = x + 1
-      var subMailingAddress = mapAddress(address1, mailingAddress)
-      subMailingAddress.Id = addId + x
+    var mailingAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_BILLING)
+    _logger.debug("******************************************** Mailing Address : " + mailingAddress.AddressLine1 )
 
-      addressSub1 = mapSubjectAddress(subMailingAddress, "Mailing")
-      subject1.Address.add(addressSub1)
-      lexOrderAddress.Address.add(subMailingAddress)
+    var addressSub1 : SubjectType_Address
+    var address1 =  new AddressListType_Address()
+    if(mailingAddress != null)  {
+    x = x + 1
+    address1 = mapAddress(address1,mailingAddress)
+    address1.Id = addId + x
+
+    addressSub1 = mapSubjectAddress(address1,"Mailing")
+    subject1.Address.add(addressSub1)
+    lexOrderAddress.Address.add(address1)
+    lexOrder.Products.ClueProperty[0].MailingAddress = address1
     }
 
 
-    var priorAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere(\elt -> elt.AddressType == AddressType.TC_PRIORRESIDENCEADD1_EXT)
-    _logger.debug("******************************************** Prior Address : " + priorAddress.AddressLine1)
-    var addressSub2: SubjectType_Address
-    var address2 = new AddressListType_Address()
-    if (priorAddress != null)  {
+    var priorAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_PRIORRESIDENCEADD1_EXT)
+    _logger.debug("******************************************** Prior Address : " + priorAddress.AddressLine1 )
+    var addressSub2 : SubjectType_Address
+    var address2 =  new AddressListType_Address()
+    if(priorAddress != null)  {
       x = x + 1
-      var priorRiskAddress = mapAddress(address2, priorAddress)
+      var priorRiskAddress = mapAddress(address2,priorAddress)
       priorRiskAddress.Id = addId + x
 
-      addressSub2 = mapSubjectAddress(priorRiskAddress, "Former")
+      addressSub2 = mapSubjectAddress(priorRiskAddress,"Former")
       subject1.Address.add(addressSub2)
       lexOrderAddress.Address.add(priorRiskAddress)
-    }
+      lexOrder.Products.ClueProperty[0].FormerAddress = address2
+     }
 
     lexOrderSubject.Subject.add(subject1)
 
@@ -362,37 +372,26 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     var additionalIns = pPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
 
-    if (additionalIns != null){
-      for (addIns in additionalIns) {
+      var addIns = additionalIns.first()
+      var subject = new SubjectListType_Subject()
+      if(addIns != null){
+      i= i+1
+      subject.Id = subId + i
+      if(addIns.DateOfBirth != null)
+      subject.Birthdate = DateUtil.formatDateTime(addIns.DateOfBirth)
+      subject.Quoteback = addIns.PublicID
 
-        var subject = new SubjectListType_Subject()
-        i = i + 1
-        subject.Id = subId + i
-        subject.Quoteback = addIns.PublicID
+      var subType1 = mapSubject(addIns.FirstName,addIns.LastName)
 
-        var subType1 = mapSubject(addIns.FirstName, addIns.LastName)
+      subject.Name.add(subType1)
 
-        subject.Name.add(subType1)
+       lexOrderSubject.Subject.add(subject)
+        lexOrder.Products.ClueProperty[0].JointSubject = subject
+       }
 
-        var addInsAddress = addIns.AccountContactRole.AccountContact?.Contact.AllAddresses.firstWhere(\elt -> elt.AddressType == AddressType.TC_BILLING)
+     lexOrder.Dataset.Addresses = lexOrderAddress
+     lexOrder.Dataset.Subjects = lexOrderSubject
 
-        var insAddress: SubjectType_Address
-        var addAddress = new AddressListType_Address()
-        if (addInsAddress != null)  {
-          x = x + 1
-          var insuredMailingAddress = mapAddress(addAddress, addInsAddress)
-          insuredMailingAddress.Id = addId + x
-
-          insAddress = mapSubjectAddress(insuredMailingAddress, "Mailing")
-          subject.Address.add(insAddress)
-          lexOrderAddress.Address.add(insuredMailingAddress)
-          lexOrderSubject.Subject.add(subject)
-        }
-      }
-    }
-
-    lexOrder.Dataset.Addresses = lexOrderAddress
-    lexOrder.Dataset.Subjects = lexOrderSubject
 
 
     var formatter = new SimpleDateFormat(DATE_FORMAT)
@@ -407,12 +406,20 @@ class CluePropertyGateway implements CluePropertyInterface {
     lexOrder.Products.ClueProperty[0].PrimarySubject = subject1
     lexOrder.Products.ClueProperty[0].RiskAddress = address
 
+
+
+
+
+
     orderXml = lexOrder.asUTFString()
-    _logger.debug("CLUE order XML : " + orderXml)
+    _logger.debug("CLUE order XML : " + orderXml )
     return orderXml
   }
 
-  function mapSubject(firstName: String, lastName: String): SubjectType_Name {
+
+
+  function mapSubject(firstName : String, lastName : String): SubjectType_Name{
+
     var subType = new SubjectType_Name()
 
     subType.First = firstName
@@ -422,25 +429,33 @@ class CluePropertyGateway implements CluePropertyInterface {
     return subType
   }
 
-  function mapSubjectAddress(address: AddressListType_Address, value: String): SubjectType_Address {
+
+
+
+
+  function mapSubjectAddress(address : AddressListType_Address, value : String) : SubjectType_Address{
     var addressSub = new SubjectType_Address()
 
-    if (value == "Primary")
-      addressSub.Type = SubjectAddressType_Type.Risk
+    if(value == "Primary")
+    addressSub.Type = SubjectAddressType_Type.Risk
 
-    if (value == "Mailing")
-      addressSub.Type = SubjectAddressType_Type.Mailing
+    if(value == "Mailing")
+    addressSub.Type = SubjectAddressType_Type.Mailing
 
-    if (value == "Former")
+    if(value == "Former")
       addressSub.Type = SubjectAddressType_Type.Former
 
 
     addressSub.Ref = address
 
     return addressSub
+
   }
 
-  function mapAddress(address: AddressListType_Address, pAddress: Address): AddressListType_Address {
+
+
+  function mapAddress(address : AddressListType_Address, pAddress : Address ) : AddressListType_Address{
+
     //Splits the addressline1 into housenumber and street
     // assumes that the house number is entered followed by a space and then the street name.
 
@@ -461,6 +476,10 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     return address
   }
+
+
+
+
 
   /**
    * Reads in various properties from the lexisnexis.properties file

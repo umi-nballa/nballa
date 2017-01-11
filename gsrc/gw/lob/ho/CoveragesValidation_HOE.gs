@@ -130,17 +130,17 @@ class CoveragesValidation_HOE extends PCValidationBase {
 
   private function validateNamedStormDeductible(){
     var namedStormCovTerm = _holine.Dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm
-    var currentTerritoryCodes = _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code
+    var currentTerritoryCodes = _holine.Dwelling.TerritoryCodeOrOverride
 
-    validateNamedStormPercentage(namedStormCovTerm, currentTerritoryCodes)
-    validateNamedStormDollarAmount(namedStormCovTerm, currentTerritoryCodes)
+    validateNamedStormPercentage(namedStormCovTerm, {currentTerritoryCodes})
+    validateNamedStormDollarAmount(namedStormCovTerm, {currentTerritoryCodes})
   }
 
   private function validateHurricaneDeductible(){
     var allOtherPerilsValue = _holine.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     var covAValue = _holine.Dwelling.DwellingLimitCovTerm.Value
     var territoriesToValidate = ConfigParamsUtil.getList(TC_TerritoryCodesToValidateHurricanePercentage, _holine.BaseState, _holine.HOPolicyType)
-    var territoryCodes = _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code
+    var territoryCodes = {_holine.Dwelling.TerritoryCodeOrOverride}
     var hurricaneCovTerm = _holine.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm
                                                  var hurricaneCovTermValue = hurricaneCovTerm.Value
     if(territoriesToValidate?.intersect(territoryCodes)?.Count > 0){
@@ -158,7 +158,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
   private function validateMinimumWindHailDeductible(){
     var windHailCovTerm = _holine.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm
     var territoriesToValidate = ConfigParamsUtil.getList(TC_TerritoryCodesToValidateWindHail, _holine.BaseState, _holine.HOPolicyType)
-    var territoryCodes =  _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code
+    var territoryCodes =  {_holine.Dwelling.TerritoryCodeOrOverride}
     var minimum = ConfigParamsUtil.getDouble(TC_WindHailDeductibleMinimumPercentage, _holine.BaseState)
     var minText = (minimum < 1) ? ((minimum * 100) + "%") : new Double(minimum)?.asMoney()
 
@@ -170,7 +170,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
   private function validateAllOtherPerilsDeductible(){
     var allPerilsCovTerm = _holine.Dwelling.AllPerilsOrAllOtherPerilsCovTerm
     var territoriesToValidate = ConfigParamsUtil.getList(TC_TerritoryCodesToValidateAllPerils, _holine.BaseState, _holine.HOPolicyType)
-    var territoryCodes =  _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code
+    var territoryCodes =  {_holine.Dwelling.TerritoryCodeOrOverride}
     var minimum = ConfigParamsUtil.getDouble(TC_AllPerilsMinimumPercentage, _holine.BaseState)
     var minText = (minimum < 1) ? ((minimum * 100) + "%") : new Double(minimum)?.asMoney()
 
@@ -217,7 +217,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
     return _holine.BaseState == TC_SC
             and (_holine.Dwelling.HOLocation.PolicyLocation.PostalCode?.startsWith("29492")
                  or county?.equalsIgnoreCase("Beaufort")
-                 or county?.equalsIgnoreCase("Georgetown") and _holine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code?.contains("14"))
+                 or county?.equalsIgnoreCase("Georgetown") and {_holine.Dwelling.TerritoryCodeOrOverride}?.contains("14"))
   }
 
   private function isCalculatedDeductibleLessThanCalculatedMinimum(deductible: double, minimum: double) : boolean{

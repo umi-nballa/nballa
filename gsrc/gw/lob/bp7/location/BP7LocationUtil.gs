@@ -40,15 +40,18 @@ class BP7LocationUtil {
       {
         building.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
         building.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+        building.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+        building.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
+        building.FiredeptnamedvalMatchLevel_Ext =   (tunaAppResponse.ProtectionClass != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
       }
       if(location!=null)
       {
-        location.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
-        location.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
+
+
         location.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
         location.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
         location.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-        location.FiredeptnamedvalMatchLevel_Ext =   (tunaAppResponse.ProtectionClass != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
+
 
         location.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
        }

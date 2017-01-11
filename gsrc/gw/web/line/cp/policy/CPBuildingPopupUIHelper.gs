@@ -22,7 +22,9 @@ class CPBuildingPopupUIHelper {
       result = cpLocation.addNewLineSpecificBuilding() as CPBuilding
       result.Building.HeatingBoilerOnPremises = false
       result.Building.HeatingBoilerElsewhere = false
-    } else if (cpBuilding <> null) {
+    }
+
+    else if (cpBuilding <> null) {
       if (openForEdit) {
         gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({cpBuilding}, jobWizardHelper)
 

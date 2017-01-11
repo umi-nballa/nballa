@@ -4,7 +4,7 @@ uses java.math.BigDecimal
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
 uses una.logging.UnaLoggerCategory
-
+uses gw.api.web.job.JobWizardHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,22 +28,6 @@ class CPAutoPopulateUtil {
       cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm?.Value = cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm?.Value * 0.10
     }
 
-    if(term!=null && term.Clause.Pattern=="GLCGLCov" && term.PatternCode=="GLCGLOccLimit")//cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm!=null)
-    {
-  /*    var gline = term.Clause.OwningCoverable as GLLine
-      try
-      {
-
-        //if(gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue.Value.doubleValue()==100000.0000)
-          gline.GLCGLCov.GLCGLAggLimitTerm.setOptionValue(gline.GLCGLCov.GLCGLOccLimitTerm.OptionValue)
-
-        }
-      catch(e)
-      {
-        print("exception occured" )
-        //e.printStackTrace()
-      }*/
-      }
       try
       {
         if(term.Clause.OwningCoverable.PolicyLine typeis GeneralLiabilityLine && term.Clause.OwningCoverable.PolicyLine.GLHiredAutoNonOwnedLiab_EXTExists)
@@ -53,10 +37,8 @@ class CPAutoPopulateUtil {
       }
           catch(e)
           {
-
+              _logger.debug(e.Message)
           }
-    //}
-
 
   }
 
@@ -139,6 +121,7 @@ class CPAutoPopulateUtil {
       cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
     }
 
+
   }
 
   public static function setIncreasedCostLimit (cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
@@ -189,8 +172,25 @@ class CPAutoPopulateUtil {
 
   public static function setPcfDefaults(cLine:CommercialPropertyLine, cBuilding:CPBuilding):boolean
   {
-    setCoveragesFromDefaultScreen(cLine, cBuilding)
+    //setCoveragesFromDefaultScreen(cLine, cBuilding)
+    //addRequiredCoverages(cBuilding,cLine)
     return true
+  }
+
+  public static function addRequiredCoverages(building:CPBuilding,cpline:CommercialPropertyLine)//coverable:Coverable):boolean/
+  {
+   //if(coverable typeis CommercialPropertyLine)
+  //{
+    //var cpline = coverable as CommercialPropertyLine
+    print("### exists " + cpline.CPFloridaChangesCondoCondition_EXT)
+     if(cpline.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION &&
+         //cpline.CPFloridaChangesCondoCondition_EXT.Pattern.getExistence(cpline)==typekey.ExistenceType.TC_REQUIRED &&
+        !cpline.CPFloridaChangesCondoCondition_EXTExists)
+    {
+      cpline.addToCPLineConditions(cpline.CPFloridaChangesCondoCondition_EXT)
+      }
+  //  }
+    //return true
   }
 
   public static function setSinkHoldDefaults(cBuilding:CPBuilding):void
@@ -206,10 +206,15 @@ class CPAutoPopulateUtil {
 
   }
 
+   public static function setCoveragesFromDefaultScreen( cBuilding:Coverable):void
+   {
+      if(cBuilding typeis CPBuilding)
+       setCoveragesFromDefaultScreen(cBuilding.PolicyLine as CommercialPropertyLine,cBuilding)
+   }
 
   public static function setCoveragesFromDefaultScreen(cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
   {
-      _logger.info("Equipment brkdown " + cLine.EquipmentBreakdownEnhancement)
+      _logger.info("Equipment brkdown " + cLine?.EquipmentBreakdownEnhancement)
 
 
     if(cBuilding.CPBldgCovExists && cBuilding.CPBldgCov.HasCPBldgCovLimitTerm)
@@ -230,87 +235,102 @@ class CPAutoPopulateUtil {
     if(cLine?.CoverageForm!=null && cBuilding!=null)// && cBuilding.CoverageForm!=null)
       cBuilding?.CoverageForm=cLine?.CoverageForm
 
-      if(cLine.EquipmentBreakdownEnh!=null && cLine.EquipmentBreakdownEnh!=false)
+      if(cLine?.EquipmentBreakdownEnh!=null && cLine?.EquipmentBreakdownEnh!=false)
         {
         cBuilding.setCoverageConditionOrExclusionExists("CPEquipmentBreakdownEnhance_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
        // cBuilding.CPEquipmentBreakdownEnhance_EXT?.CovTerms?.where( \ elt -> elt.PatternCode=="CPEquipmentBreakdownLimit_EXT").first().setValueFromString(cLine.EquipmentBreakdownEnhancement)
           }
 
-    if(cLine.TerrorismCoverage!=null && cLine.TerrorismCoverage==true)
-      cLine.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
+    if(cLine?.TerrorismCoverage!=null && cLine?.TerrorismCoverage==true)
+      cLine?.setCoverageConditionOrExclusionExists("CPTerrorismCoverage_EXT",true)//CPEquipmentBreakdownEnhance_EXT.addToCoverages()/Exists=true
 
+
+    if(cLine.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
+      cLine?.setConditionExists("CPFloridaChangesCondoCondition_EXT",true)
+
+    if(cLine.hurricanededtype==typekey.CPHurricaneDedType_Ext.TC_CPBLDGCALENDARYEAR_EXT)
+      cLine?.setConditionExists("CPFloridaHurricanePercentCondition_EXT",true)
+    else
+      cLine?.setConditionExists("CPFloridaHurricanePercentCondition_EXT",false)
 
     //setIncreasedCostLimit(cLine,cBuilding)
 
-    if(cLine.causeofloss!=null)
+    if(cLine?.causeofloss!=null)
     {
       if(cBuilding?.CPBldgCovExists)
-        cBuilding?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value = cLine.causeofloss
+        cBuilding?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value = cLine?.causeofloss
       if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
         cBuilding?.CPBPPCov?.CPBPPCovCauseOfLossTerm?.Value = cLine?.causeofloss
     }
 
-    if(cLine.allotherperilded!=null && cBuilding?.CPBldgCovExists)
+    if(cLine?.allotherperilded!=null && cBuilding?.CPBldgCovExists)
     {
       if(cBuilding?.CPBldgCovExists)
-        cBuilding?.CPBldgCov?.CPBldgCovDeductibleTerm?.OptionValue=cLine.allotherperilded.Code
+        cBuilding?.CPBldgCov?.CPBldgCovDeductibleTerm?.OptionValue=cLine?.allotherperilded.Code
       if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
         cBuilding?.CPBPPCov?.CPBPPCovDeductibleTerm?.OptionValue=cLine?.allotherperilded.Code
       }
 
-    if(cLine.hurricanededtype!=null)
+    if(cLine?.hurricanededtype!=null)
     {
       if(cBuilding?.CPBldgCovExists)
-        cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+        cBuilding.CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm?.OptionValue=cLine?.hurricanededtype.Code
       if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
-        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDedType_EXTTerm?.OptionValue=cLine.hurricanededtype.Code
+        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDedType_EXTTerm?.OptionValue=cLine?.hurricanededtype.Code
 
     }
 
-    if(cLine.hurricanepercded!=null)
+    if(cLine?.hurricanepercded!=null)
     {
       if(cBuilding?.CPBldgCovExists)
-        cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+        cBuilding.CPBldgCov.CPBldgCovHurricaneDeductible_EXTTerm?.OptionValue=cLine?.hurricanepercded.Code
       if(cBuilding?.CPBPPCovExists && cBuilding?.CPBPPCov?.HasCPBPPCovDeductibleTerm)
-        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine.hurricanepercded.Code
+        cBuilding?.CPBPPCov?.CPBPPCovHurricaneDed_EXTTerm?.OptionValue=cLine?.hurricanepercded.Code
 
   }
 
-    if(cLine.Inflationguard!=null)
+    if(cLine?.Inflationguard!=null)
      {
        if(cBuilding?.CPBldgCovExists)
-        cBuilding.CPBldgCov.CPBldgCovAutoIncreaseTerm?.OptionValue=cLine.Inflationguard.Code
+        cBuilding.CPBldgCov.CPBldgCovAutoIncreaseTerm?.OptionValue=cLine?.Inflationguard.Code
      }
 
-    _logger.info("ordinance coveagrae " + cLine.AssociatedPolicyPeriod.CPLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first())
+    _logger.info("ordinance coveagrae " + cLine?.AssociatedPolicyPeriod.CPLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first())
 
 
-    if(cLine.CPOrdinanceOrLawType!=null)
+    if(cLine?.CPOrdinanceOrLawType!=null)
     {
-      _logger.info(" lawtype " + cLine.CPOrdinanceOrLawType)
-      cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCoverage_EXT")?.first()?.setValueFromString(cLine.CPOrdinanceOrLawType.Code)
+      _logger.info(" lawtype " + cLine?.CPOrdinanceOrLawType)
+      cLine?.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCoverage_EXT")?.first()?.setValueFromString(cLine.CPOrdinanceOrLawType.Code)
      }
 
-    if(cLine.CPCoverageB!=null)
+    if(cLine?.CPCoverageB!=null)
     {
-      _logger.info(" covb " +cLine.CPCoverageB )
-      cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovB_Ext")?.first()?.setValueFromString(cLine.CPCoverageB.Code)
+      _logger.info(" covb " +cLine?.CPCoverageB )
+      cLine?.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovB_Ext")?.first()?.setValueFromString(cLine.CPCoverageB.Code)
+      print("##### B covterm is " + cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovB_ExtTerm.OptionValue)
+
      }
 
-    if(cLine.CPCoverageC!=null)
+    if(cLine?.CPCoverageC!=null)
     {
-      _logger.info(" covc " +cLine.CPCoverageC )
+      _logger.info(" covc " +cLine?.CPCoverageC )
 
-      cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovC_Ext")?.first()?.setValueFromString(cLine.CPCoverageC.Code)
-     }
+      cLine?.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovC_Ext")?.first()?.setValueFromString(cLine.CPCoverageC.Code)
 
-    if(cLine.CPCoverageBC!=null)
+      print("##### C covterm is " + cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovC_ExtTerm.OptionValue)
+    }
+
+    if(cLine?.CPCoverageBC!=null)
     {
-      _logger.info(" covBc " +cLine.CPCoverageBC )
+      _logger.info(" covBc " +cLine?.CPCoverageBC )
 
-      cLine.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt2 -> elt2.PatternCode=="CPOrdinanceorLawCovBC_Ext")?.each( \ elt3 ->
-        elt3.setValueFromString(cLine.CPCoverageBC.Code)
-      )//first()?.setValueFromString(cLine.CPCoverageBC.Code)
+      //cLine?.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt2 -> elt2.PatternCode=="CPOrdinanceorLawCovBC_Ext")?.first()?.setValueFromString(cLine?.CPCoverageBC.Code)
+      if(cBuilding!=null && cBuilding.CPOrdinanceorLaw_EXTExists && cBuilding.CPOrdinanceorLaw_EXT.HasCPOrdinanceorLawCovBC_ExtTerm)
+            cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovBC_ExtTerm.OptionValue=cLine.CPCoverageBC.Code
+      //first()?.setValueFromString(cLine.CPCoverageBC.Code)
+
+      print("##### BC covterm is " + cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovBC_ExtTerm.OptionValue)
 
     }
     if(cBuilding.CPOrdinanceorLaw_EXTExists)
@@ -319,21 +339,22 @@ class CPAutoPopulateUtil {
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovALimit_EXTTerm?.Value=cBuilding?.CPBldgCov?.CPBldgCovLimitTerm.Value
       // cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovALimit_EXTTerm.RestrictionModel
 
-      if(cLine.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBLimit_EXTTerm &&cLine.CPCoverageB.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
-        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBLimit_EXTTerm?.Value= Double.parseDouble(cLine.CPCoverageB.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
-
-      if(cLine.CPCoverageC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovCLimit_EXTTerm && cLine.CPCoverageC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
-        cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm?.Value= Double.parseDouble(cLine.CPCoverageC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
+      if(cBuilding?.CPBldgCovExists  && cBuilding?.CPBldgCov?.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm.Value!=null && cLine?.CPCoverageB!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBLimit_EXTTerm &&cLine?.CPCoverageB.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
+        cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBLimit_EXTTerm?.Value= Double.parseDouble(cLine?.CPCoverageB.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
 
 
-      if(cLine.CPCoverageBC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
-        cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value= Double.parseDouble(cLine.CPCoverageBC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
+      if(cLine?.CPCoverageC!=null && cBuilding?.CPBldgCovExists  && cBuilding?.CPBldgCov?.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovCLimit_EXTTerm && cLine?.CPCoverageC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
+        cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm?.Value= Double.parseDouble(cLine?.CPCoverageC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
+
+
+      if(cBuilding?.CPBldgCov?.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value!=null && cLine?.CPCoverageBC!=null && cBuilding.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine?.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)
+        cBuilding.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value= Double.parseDouble(cLine?.CPCoverageBC.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
 
 
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value " + cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value)
       _logger.info(" cBuilding?.CPOrdinanceorLaw_EXT " + cBuilding?.CPOrdinanceorLaw_EXT)
 
-      if(cBuilding?.CPBldgCovExists && cBuilding?.CPOrdinanceorLaw_EXTExists && cLine.CPCoverageBC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)//cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value!=99)
+      if(cBuilding?.CPBldgCovExists && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value!=null && cBuilding?.CPOrdinanceorLaw_EXTExists && cLine?.CPCoverageBC!=null && cBuilding?.CPOrdinanceorLaw_EXT?.HasCPOrdinanceorLawCovBCLimit_EXTTerm && cLine?.CPCoverageBC.Code!=typekey.CPCoverageBC_Ext.TC_CODE11)//cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value!=99)
       {
         _logger.info(cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm + ":"+cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBC_ExtTerm?.Value + ":" + cBuilding?.CPBldgCov?.CPBldgCovLimitTerm)
         cBuilding?.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value = Double.parseDouble(cLine?.CPCoverageBC?.Code)*cBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value
@@ -341,6 +362,21 @@ class CPAutoPopulateUtil {
     }
 
 
+  }
+
+  public static function cleanupcoverages(cpbuilding:CPBuilding, cpline:CommercialPropertyLine):boolean
+  {
+    if(cpline.AssociatedPolicyPeriod.Policy.PackageRisk!=typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION && cpline.CPFloridaChangesCondoCondition_EXTExists)
+      cpline.removeConditionFromCoverable(cpline.CPFloridaChangesCondoCondition_EXT)
+
+    if(cpbuilding.AutomaticFireSuppress==0 && cpbuilding.CPProtectiveSafeguards_EXTExists)
+      cpbuilding.removeFromCoverages(cpbuilding.CPProtectiveSafeguards_EXT)
+
+ /*   if(cpbuilding.AutomaticFireSuppress==1 && !cpbuilding.CPProtectiveSafeguards_EXTExists)
+      cpbuilding.setCoverageExists(cpbuilding.CPProtectiveSafeguards_EXT?.PatternCode, true)
+   */
+
+    return true
   }
 
 }

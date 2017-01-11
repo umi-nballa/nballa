@@ -65,7 +65,9 @@ class BP7PostOnChangeHandler {
     "BP7SpoilgCov" -> {"BP7CovType2"},
     "BP7NamedPerils" -> {"BP7BurglaryRobbery"},
     "BP7OffPremIntrpOfBusnVehiclesAndMobileEquipItem" -> {"BP7Option"},
-    "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7Limit26"}
+    "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7Limit26"},
+    "BP7BuildingBusinessIncomeExtraExpense_EXT" -> {"BP7AnnualBI_EXT"},
+    "BP7Structure" -> {"BP7BuildingOwnerOccupies_EXT"}
   }
 
   static public var COVTERMS_WITH_FIELD_LEVEL_VALIDATION : Map<ClausePattern, List<CovTermPattern>> = {
@@ -87,7 +89,8 @@ class BP7PostOnChangeHandler {
     }
   }
 
-  static function handleTerm(term : CovTerm, helper : JobWizardHelper) {    
+  static function handleTerm(term : CovTerm, helper : JobWizardHelper) {
+    print("BP7PostOnChangeHandler - handleTerm method!!!")
     // product model dependencies
     if (doesCovTermHaveDependent(term)) {
       sync(term, helper)
@@ -123,9 +126,7 @@ class BP7PostOnChangeHandler {
   static function updateProdComplOpsAggrLimit(line : BP7BusinessOwnersLine){
     var liabilityCov = line.BP7BusinessLiability
     var aggrLimitTerm = liabilityCov.BP7ProdCompldOpsAggregateLimitTerm
-    if (aggrLimitTerm != null and aggrLimitTerm.Value == null and aggrLimitTerm.AvailableOptions.Count > 0) {
-      aggrLimitTerm.OptionValue = aggrLimitTerm.AvailableOptions.sortBy(\ option -> option.Value).first()
-    }else if (aggrLimitTerm != null and aggrLimitTerm.AvailableOptions.Count > 0) {
+    if(aggrLimitTerm != null and liabilityCov.BP7EachOccLimitTerm!=null and liabilityCov.BP7EachOccLimitTerm.Value!=null and aggrLimitTerm.AvailableOptions.Count > 0) {
       aggrLimitTerm.setValueFromString((liabilityCov.BP7EachOccLimitTerm.Value * 2) as String)
     }
   }

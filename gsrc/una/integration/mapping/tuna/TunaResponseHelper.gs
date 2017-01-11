@@ -37,6 +37,9 @@ class TunaResponseHelper {
   final static var FIRE_LINE_SHIA = "FirelineSHIA"
   final static var EARTH_QUAKE_TERRITORY = "EarthquakeTerritory"
   final static var COVERAGE_A_LIMIT = "CoverageALimit"
+  final static var HO_TERRITORY_CODE = "Unatory-HO"
+  final static var DF_TERRITORY_CODE = "Unatory-DF"
+  final static var TERRITORY_CODE = "Unatory"
 
   final static var BASE_FLOOD_ELEVATION = "BaseFloodElevation"
   final static var CONDO_VALUATION_ID = "CondoValuationId"
@@ -62,6 +65,18 @@ class TunaResponseHelper {
         case YEAR_BUILT:
             var yearList = dynamicListMapper(propDetail,YEAR_BUILT)
             response.YearBuilt = yearList
+            break
+        case HO_TERRITORY_CODE:
+            var hoCode = dynamicListMapper(propDetail,HO_TERRITORY_CODE)
+            response.HOTerritoryCode = hoCode
+            break
+        case DF_TERRITORY_CODE:
+            var dfCode = dynamicListMapper(propDetail,DF_TERRITORY_CODE)
+            response.DFTerritoryCode = dfCode
+            break
+        case TERRITORY_CODE:
+            var code = dynamicListMapper(propDetail,TERRITORY_CODE)
+            response.TerritoryCode = code
             break
         case PROTECTION_CLASS:
             var proClassList = dynamicListMapper(propDetail,PROTECTION_CLASS)
@@ -192,8 +207,9 @@ class TunaResponseHelper {
     }
     else {
       var propertyDataModelResponse = new PropertyDataModel()
-      propertyDataModelResponse.Value = propDetail.Value
+      propertyDataModelResponse.Value = mapPropertyDataModelValue(value,propDetail.Value)
       propertyDataModelResponse.Percent = propDetail.Percent
+      propertyDataModelResponse.NamedValue = propDetail.NamedValue
       list.add(propertyDataModelResponse)
     }
     return list
@@ -208,23 +224,23 @@ class TunaResponseHelper {
       switch (value) {
 
         case STORIES_NUMBER:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("NumberOfStories_HOE", "tuna", dataNumValue)
             return typeValue
 
         case CONSTRUCTION_TYPE:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("ConstructionType_HOE", "tuna", dataNumValue)
             return typeValue
 
         case EXTERIOR_WALL_FINISH:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("ExteriorWallFinish_Ext", "tuna", dataNumValue)
             return typeValue
 
         case ROOF_COVER:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
             return typeValue
 
         case ROOF_TYPE:
-            var typeValue = typeCodeMapper.getInternalCodeByAlias("RoofType", "tuna", dataNumValue)
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
             return typeValue
        }
      return dataNumValue

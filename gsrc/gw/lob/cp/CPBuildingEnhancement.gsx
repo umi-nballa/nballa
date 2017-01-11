@@ -201,7 +201,7 @@ enhancement CPBuildingEnhancement : CPBuilding {
     clonedBuilding.OccupancyType=this.OccupancyType
 
 
-    clonedBuilding.Building.Sprinklered = this.Building.Sprinklered
+   // clonedBuilding.Building.Sprinklered = this.Building.Sprinklered
     clonedBuilding.Building.YearBuilt = this.Building.YearBuilt
     clonedBuilding.Building.TimesRent = this.Building.TimesRent
 

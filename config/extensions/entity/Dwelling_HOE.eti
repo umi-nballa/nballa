@@ -625,6 +625,11 @@
     nullok="true"
     type="bit"/>
   <foreignkey
+    desc="CA Fireline Info"
+    fkentity="CAFireLineInfo_Ext"
+    name="CAFirelineInfo"
+    nullok="true"/>
+  <foreignkey
     fkentity="HODwellingProtDetails_Ext"
     name="DwellingProtectionDetails"
     nullok="true"/>
@@ -822,6 +827,38 @@
     nullok="true"
     typelist="ConstructionType_HOE"/>
   <typekey
+    desc="Construction Type Match Level returned from TUNA"
+    name="ConstructionTypeMatchLvlL1_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Construction Type returned from TUNA"
+    name="OverrideConstructionTypeL1_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Construction Type entered by Users"
+    name="ConstTypeOverriddenL1_Ext"
+    nullok="true"
+    typelist="ConstructionType_HOE"/>
+  <typekey
+    desc="Construction Type Match Level returned from TUNA"
+    name="ConstructionTypeMatchLvlL2_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override Construction Type returned from TUNA"
+    name="OverrideConstructionTypeL2_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Construction Type entered by Users"
+    name="ConstTypeOverriddenL2_Ext"
+    nullok="true"
+    typelist="ConstructionType_HOE"/>
+  <typekey
     desc="ExteriorWFval Match Level from TUNA"
     name="ExteriorWFvalMatchLevel_Ext"
     nullok="true"
@@ -847,7 +884,7 @@
     desc="Number of Stories entered by Users"
     name="NoofStoriesOverridden_Ext"
     nullok="true"
-    typelist="NoOfStoriesOverridden_Ext"/>
+    typelist="NumberOfStories_HOE"/>
   <typekey
     desc="Roofing Material Match Level returned from TUNA"
     name="RoofTypeMatchLevel_Ext"
@@ -863,7 +900,7 @@
     desc="Roofing Material entered by Users"
     name="RoofingMaterialOverridden_Ext"
     nullok="true"
-    typelist="RoofTypeOverridden_Ext"/>
+    typelist="RoofType"/>
   <typekey
     desc="Roof Shape Match Level returned from TUNA"
     name="RoofShapeMatchLevel_Ext"
@@ -879,7 +916,7 @@
     desc="Roof Shape entered by Users"
     name="RoofShapeOverridden_Ext"
     nullok="true"
-    typelist="RoofShapeOverridden_Ext"/>
+    typelist="RoofShape_Ext"/>
   <typekey
     desc="Exterior Wall Finish"
     name="ExteriorWFvalueOverridden_Ext"
@@ -1062,22 +1099,54 @@
     columnName="ExteriorWallFinishL1_Ext"
     name="ExteriorWallFinishL1_Ext"
     nullok="true"
-    typelist="ExteriorWallFinishL1_Ext"/>
+    typelist="ExteriorWallFinish_Ext"/>
   <typekey
     columnName="ExteriorWallFinishL2_Ext"
     name="ExteriorWallFinishL2_Ext"
     nullok="true"
-    typelist="ExteriorWallFinishL2_Ext"/>
+    typelist="ExteriorWallFinish_Ext"/>
+  <typekey
+    desc="ExteriorWFval Match Level from TUNA"
+    name="ExteriorWFvalMatchLevelL1_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override ExteriorWFval returned from TUNA"
+    name="OverrideExteriorWFvalL1_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ExteriorWFvalueOverridL1_Ext"
+    nullok="true"
+    typelist="ExteriorWallFinish_Ext"/>
+  <typekey
+    desc="ExteriorWFval Match Level from TUNA"
+    name="ExteriorWFvalMatchLevelL2_Ext"
+    nullok="true"
+    typelist="TUNAMatchLevel_Ext"/>
+  <column
+    default="0"
+    desc="Override ExteriorWFval returned from TUNA"
+    name="OverrideExteriorWFvalL2_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="Exterior Wall Finish"
+    name="ExteriorWFvalueOverridL2_Ext"
+    nullok="true"
+    typelist="ExteriorWallFinish_Ext"/>
   <typekey
     columnName="ConstructionTypeL1_Ext"
     name="ConstructionTypeL1_Ext"
     nullok="true"
-    typelist="ConstructionTypeL1_Ext"/>
+    typelist="ConstructionType_HOE"/>
   <typekey
     columnName="ConstructionTypeL2_Ext"
     name="ConstructionTypeL2_Ext"
     nullok="true"
-    typelist="ConstructionTypeL2_Ext"/>
+    typelist="ConstructionType_HOE"/>
   <typekey
     columnName="FoundationMaterial_Ext"
     name="FoundationMaterial_Ext"

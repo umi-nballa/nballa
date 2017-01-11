@@ -13,6 +13,9 @@
     <Require
       name="openForEdit"
       type="boolean"/>
+    <Require
+      name="jobWizardHelper"
+      type="web.job.JobWizardHelper"/>
     <Variable
       initialValue="una.integration.service.gateway.plugin.GatewayPlugin.makeCLUEGateway()"
       name="ClueProperty"
@@ -52,7 +55,7 @@
             iterator="lossIterator"
             removeVisible="perm.System.cluepropertyedit_ext &amp;&amp; openForEdit"/>
           <ToolbarButton
-            action="HOFCRADisclosurePopup.push(null,null,null,policyPeriod.Submission.JobNumber,policyPeriod.PeriodStart,policyPeriod,null,null,null,null,ClueProperty)//ClueProperty.orderClueProperty(policyPeriod); CurrentLocation.commit(); CurrentLocation.startEditing();"
+            action="orderClue()"
             available="CurrentLocation.InEditMode &amp;&amp; openForEdit "
             id="ClueButton"
             label="displaykey.Accelerator.LexisNexis.Clue.Property.RetrieveClueLabel"
@@ -125,5 +128,9 @@
         </Card>
       </CardViewPanel>
     </ListDetailPanel>
+    <Code><![CDATA[function orderClue(){
+  HOFCRADisclosurePopup.push(null,null,null,policyPeriod.Submission.JobNumber,policyPeriod.PeriodStart,policyPeriod,null,null,null,null,ClueProperty,jobWizardHelper);
+}
+]]></Code>
   </PanelSet>
 </PCF>

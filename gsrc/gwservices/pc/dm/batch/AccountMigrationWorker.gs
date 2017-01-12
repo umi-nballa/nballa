@@ -8,10 +8,10 @@ uses com.gwservices.pc.dm.util.PropertyHelper
  * Time: 9:12 AM
  * To change this template use File | Settings | File Templates.
  */
-class PAAccountMigrationWorker extends MigrationWorker {
+class AccountMigrationWorker extends MigrationWorker {
 
   construct() {
-    super("DataMigrationPAAcct_Ext")
+    super("AccountDataMigration_Ext")
   }
 
   override function lineConfigure(helper: PropertyHelper) {

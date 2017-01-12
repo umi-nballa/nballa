@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A custom form event related to a job.   Used when evaluating the isAvailable condition in custom forms inference"
+  entity="FormsEvent"
+  exportable="true"
+  table="formsevent"
+  type="retireable">
+  <foreignkey
+    desc="The job this forms event is related to"
+    fkentity="Job"
+    name="Job"
+    nullok="false"/>
+  <typekey
+    desc="The forms event type"
+    name="EventType"
+    nullok="false"
+    typelist="FormsEventType"/>
+</entity>

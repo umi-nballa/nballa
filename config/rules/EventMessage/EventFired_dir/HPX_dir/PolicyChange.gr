@@ -13,7 +13,7 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
 var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
 var ewsRequestMapper = new HPXRequestMapper()
   if (period.NewlyAddedForms.Count > 0) {
-    var ewsRequestXML = ewsRequestMapper.createForms(period)
+    var ewsRequestXML = ewsRequestMapper.createForms(period, period.NewlyAddedForms)
     print(ewsRequestXML)
     messageContext.createMessage(ewsRequestXML)
   }

@@ -38,7 +38,7 @@ class HPXRequestMapper {
     return xml.toString()
   }
 
-  function createForms(policyPeriod : PolicyPeriod) : String {
+  function createForms(policyPeriod : PolicyPeriod, forms : Form[]) : String {
     var mapper = new HPXRequestMapper()
     var coverageMapper = new HPXDwellingCoverageMapper()
     var compositionUnitMapper = new HPXCompositionUnitMapper()
@@ -48,15 +48,15 @@ class HPXRequestMapper {
     var returnString = new String()
     if (policyPeriod.HomeownersLine_HOEExists) {
       var dwellingPolicy = dwellingPolicyMapper.createDwellingPolicy(policyPeriod)
-      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
+      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod, forms)
       returnString = createHPXDwellingPolicyRequestModel(dwellingPolicy, compositionUnit)
     } else if (policyPeriod.BP7LineExists) {
       var businessOwnersPolicy = businessOwnersPolicyMapper.createBusinessOwnersPolicy(policyPeriod)
-      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
+      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod, forms)
       returnString = createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy, compositionUnit)
     } else if (policyPeriod.CPLineExists) {
       var commercialPackagePolicy = commercialPackagePolicyMapper.createCommercialPackagePolicy(policyPeriod)
-      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod)
+      var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod, forms)
       returnString = createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy, compositionUnit)
     }
     return returnString

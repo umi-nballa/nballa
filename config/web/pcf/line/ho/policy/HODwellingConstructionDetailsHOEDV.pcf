@@ -41,8 +41,7 @@
           id="OverRideNumberOfStories_Ext"
           label="displaykey.Web.Homeowners.HOLocation.NumberOfStoriesOverride_Ext"
           value="dwelling.OverrideStoriesNumber_Ext">
-          <PostOnChange
-            target="NumberOfStories_Ext"/>
+          <PostOnChange/>
         </BooleanRadioInput>
         <Input
           available="dwelling.OverrideStoriesNumber_Ext"
@@ -101,7 +100,8 @@
         id="ConstructionTypeL1_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideConstructionTypeL1_Ext"
+          available="!dwelling.OverrideConstructionTypeL1_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE// &amp;&amp; !dwelling.OverrideConstructionTypeL1_Ext"
           id="ConstructionTypeL1L1TunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1_Ext"
           required="!dwelling.OverrideConstructionTypeL1_Ext"
@@ -141,7 +141,8 @@
         id="ConstructionTypeL2_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
         <RangeInput
-          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideConstructionTypeL2_Ext"
+          available="!dwelling.OverrideConstructionTypeL2_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE// &amp;&amp; !dwelling.OverrideConstructionTypeL2_Ext"
           id="ConstructionTypeL2L2TunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2_Ext"
           required="!dwelling.OverrideConstructionTypeL2_Ext"

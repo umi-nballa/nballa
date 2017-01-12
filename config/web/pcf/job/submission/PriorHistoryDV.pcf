@@ -31,7 +31,7 @@
                 editable="true"
                 id="CarrierTypenew"
                 label="displaykey.Web.Policy.PriorPolicy.CarrierType "
-                value="priorPolicy.CarrierType_Ext"
+                value="priorPolicy.CarrierType"
                 valueRange="edge.capabilities.helpers.PolicyUtil.getValuesByFilter(policyPeriod)"/>
               <Cell
                 editable="true"
@@ -113,7 +113,7 @@
       </ListViewInput>
     </InputColumn>
     <Code><![CDATA[function CarrierReq() : boolean{
-  for(pp in policyPeriod.Policy.PriorPolicies.CarrierType_Ext)   {
+  for(pp in policyPeriod.Policy.PriorPolicies.CarrierType)   {
      if(pp == typekey.CarrierType_Ext.TC_UNA)
        return true
    }
@@ -122,7 +122,7 @@
 }
 function otherReq() : boolean{
   
-  for(p in policyPeriod.Policy.PriorPolicies.CarrierType_Ext){
+  for(p in policyPeriod.Policy.PriorPolicies.CarrierType){
     if(p == typekey.CarrierType_Ext.TC_OTHER)
       return true
   }
@@ -130,7 +130,7 @@ function otherReq() : boolean{
 } 
 
 function noPriorIns() : boolean{
-  for(p1 in policyPeriod.Policy.PriorPolicies.CarrierType_Ext){
+  for(p1 in policyPeriod.Policy.PriorPolicies.CarrierType){
     if(p1 == typekey.CarrierType_Ext.TC_NOPRIORINS)
       return true
   }

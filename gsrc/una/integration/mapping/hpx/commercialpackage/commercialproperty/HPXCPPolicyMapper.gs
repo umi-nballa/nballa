@@ -14,6 +14,7 @@ uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusi
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
+uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 
 /**
  * Created with IntelliJ IDEA.
@@ -102,7 +103,7 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
 
   override function getStructures(policyPeriod : PolicyPeriod) : java.util.List<Coverable> {
     var structures = new java.util.ArrayList<Coverable>()
-    var buildings = policyPeriod.CPLine.AllCoverables.where( \ elt -> elt typeis CPBuilding)
+    var buildings = policyPeriod?.CPLine?.AllCoverables?.where( \ elt -> elt typeis CPBuilding)
     for (building in buildings) {
       structures.add(building)
     }
@@ -217,6 +218,10 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getDiscountCostTypes() : String[] {
+    return null
+  }
+
+  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     return null
   }
 }

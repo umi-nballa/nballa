@@ -85,6 +85,13 @@
                 visible="selectedAddress == period?.PolicyAddress.Address"/>
               <InputSetRef
                 def="LinkedAddressInputSet(selectedAddress, contact, period, account, openForEdit)"/>
+              <BooleanRadioInput
+                id="AddressScrubbed"
+                label="displaykey.Web.Account.Locations.AddressScrubbed"
+                required="true"
+                value="selectedAddress.addressScrub_Ext">
+                <PostOnChange/>
+              </BooleanRadioInput>
               <InputSetRef
                 def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(selectedAddress, false, true))"
                 editable="selectedAddress.LinkedAddress == null"/>
@@ -105,13 +112,6 @@
                 id="ValidUntil"
                 label="displaykey.Web.ContactDetail.AddressDetail.ValidUntil"
                 value="selectedAddress.ValidUntil"/>
-              <BooleanRadioInput
-                id="AddressScrubbed"
-                label="displaykey.Web.Account.Locations.AddressScrubbed"
-                required="true"
-                value="selectedAddress.addressScrub_Ext">
-                <PostOnChange/>
-              </BooleanRadioInput>
             </InputColumn>
           </DetailViewPanel>
         </Card>

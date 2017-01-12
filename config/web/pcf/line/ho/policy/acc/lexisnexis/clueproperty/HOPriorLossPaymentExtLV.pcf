@@ -32,36 +32,46 @@
       <Row>
         <Cell
           editable="openForEdit"
-          id="cType"
-          label="displaykey.Accelerator.LexisNexis.Clue.Property.ClaimType"
-          value="claimPayment.ClaimType"/>
-        <Cell
+          id="creporteddate"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.ReportedDate"
+          value="claimPayment.ReportedDate"/>
+        <TypeKeyCell
+          editable="openForEdit"
+          id="closstype"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.LossCause"
+          value="claimPayment.LossCause_Ext"/>
+        <TypeKeyCell
+          editable="openForEdit"
+          id="expandedloss"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.ExpandedLossCause"
+          value="claimPayment.ExpandedLossCause_Ext"/>
+        <TypeKeyCell
           editable="openForEdit"
           id="status"
           label="displaykey.Accelerator.LexisNexis.Clue.Property.Status"
-          value="claimPayment.ClaimDisposition"/>
+          value="claimPayment.ClaimDisposition_Ext"/>
         <Cell
           editable="openForEdit"
           id="pAmount"
           label="displaykey.Accelerator.LexisNexis.Clue.Property.PaymentAmount"
           value="claimPayment.ClaimAmount"/>
-        <Cell
+        <TypeKeyCell
           editable="openForEdit"
-          id="creporteddate"
-          label="displaykey.Accelerator.LexisNexis.Clue.Property.ReportedDate"
-          value="claimPayment.ReportedDate"/>
-        <Cell
+          id="cat"
+          label="displaykey.Accelerator.LexisNexis.Clue.Property.CAT"
+          value="claimPayment.Cat_Ext"/>
+        <TypeKeyCell
           editable="openForEdit"
           id="chargeable"
           label="displaykey.Accelerator.LexisNexis.Clue.Property.Chargeable"
           value="claimPayment.Chargeable"
-          visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;"/>
-        <Cell
+          visible="policyPeriod.HomeownersLine_HOEExists == &quot;True&quot;"/>
+        <TypeKeyCell
           editable="openForEdit"
           id="ignoreuw"
           label="displaykey.Accelerator.LexisNexis.Clue.Property.IgnoreUW"
           value="claimPayment.IgnoreUW"
-          visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;"/>
+          visible="policyPeriod.HomeownersLine_HOEExists == &quot;True&quot;"/>
       </Row>
     </RowIterator>
   </ListViewPanel>

@@ -4,7 +4,8 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Forward
     canVisit="perm.PolicyPeriod.view(policyPeriod)"
-    id="PolicyFileWorkOrdersForward">
+    id="PolicyFileWorkOrdersForward"
+    onBeforeForward="gw.web.policyfile.PolicyFileMenuActionsUIHelper.createHistoryEventPolicy(policyPeriod);">
     <LocationEntryPoint
       signature="PolicyFileWorkOrdersForward(job : Job, policyPeriod : PolicyPeriod)"/>
     <LocationEntryPoint

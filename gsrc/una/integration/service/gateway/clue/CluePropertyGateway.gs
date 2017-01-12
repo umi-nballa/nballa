@@ -106,7 +106,7 @@ class CluePropertyGateway implements CluePropertyInterface {
               + ", Subject Claims: ${totalSubjectClaims}, Prior History: ${totalPriorHist}")
           //Save report status for UI feedback
           pPeriod.HomeownersLine_HOE.ClueStatus_Ext = "CLUE Request Status: ${statusMsg}. Number of Claims: ${totalClaims}"
-              + ". Date: " + clueReport.Admin.DateRequestCompleted + "."
+              + ". Date: " + clueReport.Admin.DateRequestCompleted + "." +"\n" +"Mialing address, Risk Address, and Prior addresses are included in the C.L.U.E. report order."
 
           if (totalClaims > 0){
             var cHistories = clueReport.Report.ResultsDataset.ClaimsHistory
@@ -221,8 +221,6 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
-    priorLoss.OriginLoss="CLUE"
-
     return priorLoss
   }
 

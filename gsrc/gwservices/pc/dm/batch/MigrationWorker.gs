@@ -31,9 +31,9 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
   private var _propertyHelper: PropertyHelper
   construct(batchType: BatchProcessType) {
     super(batchType, StandardWorkItem, MigrationWorkConfig_Ext)
-    if(batchType.Code == BatchProcessType.TC_DATAMIGRATIONPA_EXT)
+    if(batchType.Code == BatchProcessType.TC_POLICYDATAMIGRATION_EXT)
     _propertyHelper = new PropertyHelper(_CONFIG_FILE, System.getProperty(_ENV_PROPERTY))
-    if(batchType.Code == BatchProcessType.TC_DATAMIGRATIONPAACCT_EXT)
+    if(batchType.Code == BatchProcessType.TC_ACCOUNTDATAMIGRATION_EXT)
       _propertyHelper = new PropertyHelper(_CONFIG_FILE_ACCTS, System.getProperty(_ENV_PROPERTY))
 
   }

@@ -16,7 +16,7 @@ class CreditReportScreen {
    * Common code to determine whether to enable/disable credit report name/address fields.
    */
   static function isCreditReportInputFieldAvailable(period : PolicyPeriod) : boolean {
-    return period.CreditInfoExt.CreditReport == null
+    return period.CreditInfoExt.CreditReport.PolicyContactRole != null   && period.CreditInfoExt.CreditOrdered == false
   }
 
   static function editCreditReportDetails(period : PolicyPeriod) : PolicyPeriod{
@@ -89,7 +89,7 @@ SC: 721
         if(st==typekey.State.TC_SC)
           period.CreditInfoExt.CreditReport.CreditScore = "721"
       }
-      period.CreditInfoExt.CreditReport?.PolicyContactRole = period.CreditInfoExt.CreditReport == null ? null : period.CreditInfoExt.CreditReport.PolicyContactRole
+     // period.CreditInfoExt.CreditReport?.PolicyContactRole = period.CreditInfoExt.CreditReport == null ? null : period.CreditInfoExt.CreditReport.PolicyContactRole
 
     return true
   }
@@ -110,6 +110,7 @@ SC: 721
     period.createCustomHistoryEvent(CustomHistoryType.TC_CREDIT_ORDERED, \ -> displaykey.Web.SubmissionWizard.CreditReporting.CreditOrdered)
     LOGGER.debug("Credit Ordered for Person "+firstName +" "+lastName)
 
+    period.CreditInfoExt.CreditOrdered = true
     // Populate former (alternative) address field
     if ( hasPrimaryNamedInsuredMoved) {
       period.CreditInfoExt.CreditReport.AlternateAddressInd = true

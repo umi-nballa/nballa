@@ -13,8 +13,21 @@ class GLAutoPopulateUtil {
       if(gLine.GLTerrorCov_EXTExists)
         {
          // gLine.addToGLLineConditions(gLine.ExcludeCertifiedActsTerrorism_EXT)
-        gLine.setConditionExists(gLine.ExcludeCertifiedActsTerrorism_EXT.PatternCode,true)
+//          if(!gLine.GLCapOnLossesTerr_ExtExists)
+//            gLine.setConditionExists(gLine.GLCapOnLossesTerr_Ext.PatternCode,true)
+          if(gLine.ExcludeCertifiedActsTerrorism_EXTExists)
+            gLine.removeExclusionFromCoverable(gLine.ExcludeCertifiedActsTerrorism_EXT)
          }
+
+      if(!gLine.GLTerrorCov_EXTExists)
+      {
+        // gLine.addToGLLineConditions(gLine.ExcludeCertifiedActsTerrorism_EXT)
+        if(gLine.GLCapOnLossesTerr_ExtExists)
+          gLine.removeConditionFromCoverable(gLine.GLCapOnLossesTerr_Ext)
+//        if(!gLine.ExcludeCertifiedActsTerrorism_EXTExists)
+//          gLine.setExclusionExists(gLine.ExcludeCertifiedActsTerrorism_EXT.PatternCode,true)
+      }
+      gLine.syncConditions()
       gLine.syncConditions()
       gLine.refresh()
 

@@ -111,7 +111,11 @@
     desc="Home typeofequipsupp"
     name="typeofequipsupp"
     nullok="true"
-    type="shorttext"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="75"/>
+  </column>
   <column
     columnName="trampoline"
     desc="Home trampoline"
@@ -225,12 +229,6 @@
     nullok="true"
     type="bit"/>
   <column
-    columnName="whattypeofbus"
-    desc="Home whattypeofbus"
-    name="whattypeofbus"
-    nullok="true"
-    type="shorttext"/>
-  <column
     columnName="buspolicy"
     desc="Home buspolicy"
     name="buspolicy"
@@ -267,7 +265,11 @@
     desc="Home typeofeqsupinv"
     name="typeofeqsupinv"
     nullok="true"
-    type="shorttext"/>
+    type="varchar">
+    <columnParam
+      name="size"
+      value="75"/>
+  </column>
   <column
     columnName="strucpart"
     desc="Home strucpart"
@@ -446,4 +448,10 @@
     name="tanklocall"
     nullok="true"
     typelist="HOFuelTankLocalBC_Ext"/>
+  <typekey
+    columnName="whattypeofbus"
+    desc="Type of business"
+    name="whattypeofbus"
+    nullok="true"
+    typelist="HOTypeofBusiness_Ext"/>
 </entity>

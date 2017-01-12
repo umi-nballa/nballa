@@ -46,8 +46,7 @@ class HPXCompositionUnitMapper {
     return documentComposition
   }
 
-  function createCompositionUnit(policyPeriod : PolicyPeriod)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
-    var forms = policyPeriod.NewlyAddedForms
+  function createCompositionUnit(policyPeriod : PolicyPeriod, forms : Form[])  : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
     var compositionUnitMapper = new HPXCompositionUnitMapper()
     var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>()
     var recipient = compositionUnitMapper.createRecipient("INSURED_PDF", "String", "String")

@@ -103,7 +103,9 @@
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportIndividual"
               required="!period.CreditInfoExt.CreditMode"
               value="period.CreditInfoExt.CreditReport.PolicyContactRole"
-              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)"/>
+              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)">
+              <PostOnChange/>
+            </RangeInput>
             <Input
               id="PolicyPrimaryInsured"
               label="displaykey.Web.SubmissionWizard.CreditReporting.PolicyName"
@@ -238,18 +240,18 @@
                 available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 id="OrderCreditReportButton"
                 value="&quot;Order Credit Report&quot;"
-                visible="creditReportContact != null &amp;&amp; period.CreditInfoExt.CreditReport == null"/>
+                visible="(period.CreditInfoExt.CreditReport.PolicyContactRole!= null) "/>
               <ButtonInput
                 action="una.pageprocess.credit.CreditReportScreen.editCreditReportDetails(period)"
-                available="!una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
+                available="period.CreditInfoExt.CreditOrdered"
                 id="EditDetailsButton"
                 value="&quot;Edit credit report details&quot;"
-                visible="creditReportContact != null &amp;&amp; period.CreditInfoExt.CreditReport != null"/>
+                visible="period.CreditInfoExt.CreditOrdered &amp;&amp; period.CreditInfoExt.CreditReport.PolicyContactRole != null &amp;&amp; period.CreditInfoExt.CreditReport != null"/>
             </InputSet>
           </InputSet>
           <InputDivider/>
           <InputSet
-            visible="period.CreditInfoExt.CreditReport != null &amp;&amp; !period.CreditInfoExt.CreditMode">
+            visible="period.CreditInfoExt.CreditOrdered &amp;&amp; period.CreditInfoExt.CreditReport.PolicyContactRole != null &amp;&amp; period.CreditInfoExt.CreditReport != null">
             <Label
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportEnabledPrompt"/>
             <Input

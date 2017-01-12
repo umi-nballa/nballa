@@ -364,4 +364,19 @@ class CPAutoPopulateUtil {
 
   }
 
+  public static function cleanupcoverages(cpbuilding:CPBuilding, cpline:CommercialPropertyLine):boolean
+  {
+    if(cpline.AssociatedPolicyPeriod.Policy.PackageRisk!=typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION && cpline.CPFloridaChangesCondoCondition_EXTExists)
+      cpline.removeConditionFromCoverable(cpline.CPFloridaChangesCondoCondition_EXT)
+
+    if(cpbuilding.AutomaticFireSuppress==0 && cpbuilding.CPProtectiveSafeguards_EXTExists)
+      cpbuilding.removeFromCoverages(cpbuilding.CPProtectiveSafeguards_EXT)
+
+ /*   if(cpbuilding.AutomaticFireSuppress==1 && !cpbuilding.CPProtectiveSafeguards_EXTExists)
+      cpbuilding.setCoverageExists(cpbuilding.CPProtectiveSafeguards_EXT?.PatternCode, true)
+   */
+
+    return true
+  }
+
 }

@@ -220,9 +220,10 @@ class PropertyInspectionsBRHelper {
       }
 
     // BR.09.24 :: Lapse in coverage in the last 3 years. No prior insurance or No need listed as prior carrier and purchase date over 45 days ago
-     if(policyPeriod.Policy?.PriorPolicies?.CarrierType?.Code==typekey.CarrierType_Ext.TC_NONEED.Code){
+      //To- do : Integ team should remove this code
+    /* if(policyPeriod.Policy?.PriorPolicies?.CarrierType?.Code==typekey.CarrierType_Ext.TC_NONEED.Code){
         reportOne+="24|"
-     }
+     } */
 
      //BR.09.25 :: Lapse in coverage in the last 3 years. No prior insurance or No need listed as prior carrier and purchase date over 45 days ago
      if(policyPeriod.Policy?.PriorPolicies?.length==0){

@@ -60,7 +60,7 @@ class PolicyFileMenuActionsUIHelper {
   public static function createHistoryEventPolicy (policyPeriod : entity.PolicyPeriod){
     if(policyPeriod != null)    {
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-     var Job = bundle.add(policyPeriod.Job)
+     var Job = bundle.add(policyPeriod?.Job)
      Job.createCustomHistoryEvent(CustomHistoryType.TC_VIEWPOLICY, \ -> displaykey.Web.Policy.HistoryEvent.Msg)
     })
     }

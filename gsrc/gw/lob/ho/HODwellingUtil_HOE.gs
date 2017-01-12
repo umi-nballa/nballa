@@ -693,14 +693,14 @@ class HODwellingUtil_HOE {
             tunaCodeAndPercent.add(elt.Value)
           })// + " - " +elt.Percent+" %"))
     }
-    return tunaCodeAndPercent
+    return tunaCodeAndPercent.order()
   }
 
   static function getTerritoryCodes(tunaResponse : TunaAppResponse, pType :HOPolicyType_HOE ) : List<PropertyDataModel>{
      // bunch of if clauses
-     if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(pType))
+     if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(pType) && tunaResponse.HOTerritoryCode!=null)
        return tunaResponse.HOTerritoryCode
-    else if(typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(pType))
+    else if(typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(pType) && tunaResponse.DFTerritoryCode!=null)
       return tunaResponse.DFTerritoryCode
     else
       return tunaResponse.TerritoryCode

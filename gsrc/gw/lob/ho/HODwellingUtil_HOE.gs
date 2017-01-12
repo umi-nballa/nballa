@@ -693,7 +693,7 @@ class HODwellingUtil_HOE {
             tunaCodeAndPercent.add(elt.Value)
           })// + " - " +elt.Percent+" %"))
     }
-    return tunaCodeAndPercent
+    return tunaCodeAndPercent.order()
   }
 
   static function getTerritoryCodes(tunaResponse : TunaAppResponse, pType :HOPolicyType_HOE ) : List<PropertyDataModel>{

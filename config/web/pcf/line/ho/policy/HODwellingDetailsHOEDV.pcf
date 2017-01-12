@@ -226,10 +226,10 @@
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
-        <Input
+        <!-- <Input
           id="respondingFireDept_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
-          value="dwelling.HOLocation.RespondingFireDept_Ext"/>
+          value="dwelling.HOLocation.RespondingFireDept_Ext"/> -->
         <!-- <TypeKeyInput
           editable="true"
           id="FireDeptMLvlsss"
@@ -463,7 +463,16 @@
           label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
           required="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
           value="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>
+          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext">
+          <PostOnChange
+            target="RespondingFireDeptOther_Ext"/>
+        </Input>
+        <Input
+          editable="true"
+          id="RespondingFireDeptOther_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartmentOther_Ext"
+          value="dwelling.HOLocation.RespondingFireDeptOther_Ext"
+          visible="(dwelling.HOLocation.Firedeptnmval_Ext!=null &amp;&amp; dwelling.HOLocation.Firedeptnmval_Ext.equalsIgnoreCase(&quot;Other&quot;)) || ( (dwelling.HOLocation.OverrideFiredeptnamedval_Ext &amp;&amp; dwelling.HOLocation.FiredeptnamedvalOverridden_Ext!=null &amp;&amp; dwelling.HOLocation.FiredeptnamedvalOverridden_Ext.equalsIgnoreCase(&quot;Other&quot;)) )"/>
       </InputSet>
       <InputDivider/>
       <!-- <InputSet
@@ -696,6 +705,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="DistToCoastTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
+          sortValueRange="false"
           value="dwelling.HOLocation.DistToCoast_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
         <Input
@@ -729,6 +739,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
+          sortValueRange="false"
           value="dwelling.HOLocation.DistBOW_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
           <PostOnChange
@@ -846,6 +857,7 @@
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
+          sortValueRange="false"
           value="dwelling.ResidenceType"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getResidenceType(dwelling)">
           <PostOnChange

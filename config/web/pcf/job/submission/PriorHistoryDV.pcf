@@ -31,20 +31,13 @@
                 editable="true"
                 id="CarrierTypenew"
                 label="displaykey.Web.Policy.PriorPolicy.CarrierType "
-                value="priorPolicy.CarrierType"
-                valueRange="CarrierType_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState) "
-                visible="PolicyPeriod.Policy.Product.CodeIdentifier == &quot;Homeowners&quot;"/>
-              <RangeCell
-                editable="true"
-                id="CarrierTypeCL"
-                label="displaykey.Web.Policy.PriorPolicy.CarrierType "
-                value="priorPolicy.CarrierType"
-                valueRange="CarrierType_Ext.Type.getTypeKeysByFilterName(&quot;CommercialLines&quot;)"
-                visible="PolicyPeriod.Policy.Product.CodeIdentifier != &quot;Homeowners&quot;"/>
+                value="priorPolicy.CarrierType_Ext"
+                valueRange="edge.capabilities.helpers.PolicyUtil.getValuesByFilter(policyPeriod)"/>
               <Cell
                 editable="true"
                 id="carrierOther"
-                label="&quot;If Other,enter&quot;"
+                label="displaykey.Web.Policy.PriorPolicy.Carrier"
+                required="true"
                 value="priorPolicy.Carrier"
                 visible="otherReq()"/>
               <TextCell
@@ -54,17 +47,29 @@
                 numCols="15"
                 required="CarrierReq()"
                 value="priorPolicy.PolicyNumber"/>
+              <TypeKeyCell
+                editable="true"
+                id="tenure"
+                label="displaykey.Web.Policy.PriorPolicy.Tenure"
+                required="CarrierReq()"
+                value="priorPolicy.Tenure_Ext"/>
               <DateCell
                 editable="true"
                 id="EffectiveDate"
                 label="displaykey.Web.Policy.PriorPolicy.EffectiveDate"
-                required="CarrierReq()"
+                required="false"
                 value="priorPolicy.EffectiveDate"/>
               <DateCell
                 editable="true"
                 id="ExpirationDate"
                 label="displaykey.Web.Policy.PriorPolicy.ExpirationDate"
                 value="priorPolicy.ExpirationDate"/>
+              <TypeKeyCell
+                editable="true"
+                id="nopriorins"
+                label="displaykey.Web.Policy.PriorPolicy.ReasonNoPriorIns"
+                required="noPriorIns()"
+                value="priorPolicy.ReasonNoPriorIns_Ext"/>
               <MonetaryAmountCell
                 align="right"
                 currency="policyPeriod.PreferredSettlementCurrency"
@@ -108,19 +113,25 @@
       </ListViewInput>
     </InputColumn>
     <Code><![CDATA[function CarrierReq() : boolean{
-  for(pp in policyPeriod.Policy.PriorPolicies.CarrierType )   {
+  for(pp in policyPeriod.Policy.PriorPolicies.CarrierType_Ext)   {
      if(pp == typekey.CarrierType_Ext.TC_UNA)
        return true
    }
    return false 
                       
 }
-
-
 function otherReq() : boolean{
   
-  for(p in policyPeriod.Policy.PriorPolicies.CarrierType){
-    if(p == typekey.CarrierType_Ext.TC_OTHER or p == typekey.CarrierType_Ext.TC_OTHERCL)
+  for(p in policyPeriod.Policy.PriorPolicies.CarrierType_Ext){
+    if(p == typekey.CarrierType_Ext.TC_OTHER)
+      return true
+  }
+  return false
+} 
+
+function noPriorIns() : boolean{
+  for(p1 in policyPeriod.Policy.PriorPolicies.CarrierType_Ext){
+    if(p1 == typekey.CarrierType_Ext.TC_NOPRIORINS)
       return true
   }
   return false

@@ -2484,13 +2484,15 @@
 			<xsd:element name="ResidenceBusiness" type="ResidenceBusinessType" minOccurs="0"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Discount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="EstimatedDiscount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="DiscountType">
 		<xsd:sequence>
-			<xsd:element name="DiscountAmount" type="PremiumChangeAmtType"/>
+			<xsd:element name="DiscountAmount" type="PremiumChangeAmtType" minOccurs="0"/>
+            <xsd:element name="DiscountPercent" type="PremiumChangeAmtType" minOccurs="0"/>
             <xsd:element name="DiscountCd" type="xsd:string"/>
-			<xsd:element name="DiscountDescription" type="xsd:string"/>
+			<xsd:element name="DiscountDescription" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>	
 	<xsd:complexType name="FileAttachmentInfoType">
@@ -3877,14 +3879,14 @@
 	</xsd:complexType>
 	<xsd:complexType name="OwnerRoleType">
 		<xsd:sequence>
-			<xsd:element name="OwnerRoleID" type="xsd:string"/>
-			<xsd:element name="AccountNumber" type="xsd:string"/>
-			<xsd:element name="FullName" type="xsd:string"/>
-			<xsd:element name="PrimaryInsuredPostalAddress" type="PrimaryInsuredPostalAddressType"/>
-			<xsd:element name="PrimaryInsuredPhysicalAddress" type="PrimaryInsuredPhysicalAddressType"/>
-			<xsd:element name="DriverLicenses" type="DriverLicensesType"/>
-			<xsd:element name="PersonHolder" type="PersonHolderType"/>
-			<xsd:element name="OrganizationHolder" type="OrganizationHolderType"/>
+			<xsd:element name="OwnerRoleID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="AccountNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="FullName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PrimaryInsuredPostalAddress" type="PrimaryInsuredPostalAddressType" minOccurs="0"/>
+			<xsd:element name="PrimaryInsuredPhysicalAddress" type="PrimaryInsuredPhysicalAddressType" minOccurs="0"/>
+			<xsd:element name="DriverLicenses" type="DriverLicensesType" minOccurs="0"/>
+			<xsd:element name="PersonHolder" type="PersonHolderType" minOccurs="0"/>
+			<xsd:element name="OrganizationHolder" type="OrganizationHolderType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InsuranceVehicleIncidentType">
@@ -3957,22 +3959,22 @@
 	</xsd:complexType>
 	<xsd:complexType name="PropertyOwnerType">
 		<xsd:sequence>
-			<xsd:element name="ClaimPropertyOwnerRoleID" type="xsd:string"/>
-			<xsd:element name="ClaimPropertyOwnerRoleCode" type="xsd:string"/>
-			<xsd:element name="ClaimPropertyOwnerRoleDesc" type="xsd:string"/>
-			<xsd:element name="PersonOwner" type="PersonOwnerType"/>
-			<xsd:element name="OrganizationHolder" type="OrganizationHolderType"/>
+			<xsd:element name="ClaimPropertyOwnerRoleID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimPropertyOwnerRoleCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimPropertyOwnerRoleDesc" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PersonOwner" type="PersonOwnerType" minOccurs="0"/>
+			<xsd:element name="OrganizationHolder" type="OrganizationHolderType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="PropertyLocationType">
 		<xsd:sequence>
-			<xsd:element name="LocationID" type="xsd:string"/>
-			<xsd:element name="LocationCode" type="xsd:string"/>
-			<xsd:element name="LocationName" type="xsd:string"/>
-			<xsd:element name="isPrincipalLocation" type="xsd:string"/>
-			<xsd:element name="PhysicalAddress" type="PhysicalAddressType"/>
-			<xsd:element name="PostalAddress" type="PostalAddressType"/>
-			<xsd:element name="ContactMechanisms" type="ContactMechanismsType"/>
+			<xsd:element name="LocationID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LocationCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LocationName" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="isPrincipalLocation" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PhysicalAddress" type="PhysicalAddressType" minOccurs="0"/>
+			<xsd:element name="PostalAddress" type="PostalAddressType" minOccurs="0"/>
+			<xsd:element name="ContactMechanisms" type="ContactMechanismsType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
     <xsd:complexType name="MortgageInformationType">
@@ -4028,11 +4030,11 @@
 	</xsd:complexType>
 	<xsd:complexType name="ClaimInspectionType">
 		<xsd:sequence>
-			<xsd:element name="ClaimPropertyInspectionID" type="xsd:string"/>
-			<xsd:element name="ClaimPropertyInspectorRole" type="ClaimPropertyInspectorRoleType"/>
-			<xsd:element name="InspectionDate" type="xsd:string"/>
-			<xsd:element name="ExtendOfDamageToProperty" type="xsd:string"/>
-			<xsd:element name="EstimateOfDamageRange" type="EstimateOfDamageRangeType"/>
+			<xsd:element name="ClaimPropertyInspectionID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimPropertyInspectorRole" type="ClaimPropertyInspectorRoleType" minOccurs="0"/>
+			<xsd:element name="InspectionDate" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ExtendOfDamageToProperty" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="EstimateOfDamageRange" type="EstimateOfDamageRangeType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="BuildingClassTypeType">
@@ -4058,11 +4060,11 @@
 	</xsd:complexType>
 	<xsd:complexType name="BuildingConstructionDetailsType">
 		<xsd:sequence>
-			<xsd:element name="ClaimPropertyBuildingConstructionDetailsID" type="xsd:string"/>
-			<xsd:element name="NumberOfStories" type="xsd:string"/>
-			<xsd:element name="BuildingClassType" type="BuildingClassTypeType"/>
-			<xsd:element name="RoofCoveringMaterialsType" type="RoofCoveringMaterialsTypeType"/>
-			<xsd:element name="ExteriorWallMaterialType" type="ExteriorWallMaterialTypeType"/>
+			<xsd:element name="ClaimPropertyBuildingConstructionDetailsID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NumberOfStories" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="BuildingClassType" type="BuildingClassTypeType" minOccurs="0"/>
+			<xsd:element name="RoofCoveringMaterialsType" type="RoofCoveringMaterialsTypeType" minOccurs="0"/>
+			<xsd:element name="ExteriorWallMaterialType" type="ExteriorWallMaterialTypeType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="OccupancyTypeType">
@@ -4074,9 +4076,9 @@
 	</xsd:complexType>
 	<xsd:complexType name="OccupancyLossAreaTypeType">
 		<xsd:sequence>
-			<xsd:element name="ClaimPropertyOccupancyLossAreaTypeID" type="xsd:string"/>
-			<xsd:element name="ClaimPropertyOccupancyLossAreaTypeCode" type="xsd:string"/>
-			<xsd:element name="ClaimPropertyOccupancyLossAreaTypeDesc" type="xsd:string"/>
+			<xsd:element name="ClaimPropertyOccupancyLossAreaTypeID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimPropertyOccupancyLossAreaTypeCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimPropertyOccupancyLossAreaTypeDesc" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InsurancePropertyIncidentType">
@@ -4084,21 +4086,21 @@
 			<xsd:element name="ClaimPropertyIncidentID" type="xsd:string"/>
 			<xsd:element name="ClaimPropertyIncidentSeq" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="PropertyDescription" type="xsd:string"/>
-			<xsd:element name="PropertyOwner" type="PropertyOwnerType"/>
+			<xsd:element name="PropertyOwner" type="PropertyOwnerType" minOccurs="0"/>
 			<xsd:element name="DamageDescription" type="xsd:string"/>
 			<xsd:element name="PropertyLocation" type="PropertyLocationType" minOccurs="0"/>
 			<xsd:element name="isThirdPartyLoss" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isInsuredsLoss" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isInspectionRequired" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="isEstimateReceived" type="xsd:string"/>
-			<xsd:element name="isAlreadyRepaired" type="xsd:string"/>
-			<xsd:element name="ClaimInspection" type="ClaimInspectionType"/>
-			<xsd:element name="BuildingConstructionDetails" type="BuildingConstructionDetailsType"/>
-			<xsd:element name="OccupancyType" type="OccupancyTypeType"/>
-			<xsd:element name="OccupancyLossAreaType" type="OccupancyLossAreaTypeType"/>
+			<xsd:element name="isEstimateReceived" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="isAlreadyRepaired" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimInspection" type="ClaimInspectionType" minOccurs="0"/>
+			<xsd:element name="BuildingConstructionDetails" type="BuildingConstructionDetailsType" minOccurs="0"/>
+			<xsd:element name="OccupancyType" type="OccupancyTypeType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="OccupancyLossAreaType" type="OccupancyLossAreaTypeType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="isMoldInvolded" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isHazardousWasteInvolved" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="OwnerRole" type="OwnerRoleType"/>
+			<xsd:element name="OwnerRole" type="OwnerRoleType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InjuredPersonType">
@@ -4408,7 +4410,7 @@
 			<xsd:element name="AdjusterRole" type="AdjusterRoleType"/>
 			<xsd:element name="AdjusterUserAccount" type="AdjusterUserAccountType"/>
 			<xsd:element name="AdjusterRoleSupervisor" type="AdjusterRoleSupervisorType"/>
-			<xsd:element name="LossDate" type="xsd:dateTime"/>
+			<xsd:element name="LossDate" type="xsd:date"/>
 			<xsd:element name="ClosedDate" type="xsd:date"/>
 			<xsd:element name="NotificationDate" type="xsd:date"/>
 			<xsd:element name="TotalPaidAmt" type="xsd:float"/>
@@ -4435,7 +4437,7 @@
 			<xsd:element name="ClaimNoteCode" type="xsd:string"/>
 			<xsd:element name="ClaimNoteDesc" type="xsd:string"/>
 			<xsd:element name="ClaimNoteCreatedOn" type="xsd:string"/>
-			<xsd:element name="ClaimNoteCreatedBy" type="ClaimNoteCreatedByType"/>
+			<xsd:element name="ClaimNoteCreatedBy" type="ClaimNoteCreatedByType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="LossLocationType">
@@ -4741,7 +4743,7 @@
 		<xsd:sequence>
 			<xsd:element name="InsurancePropertyID" type="xsd:string"/>
 			<xsd:element name="Seq" type="xsd:string"/>
-			<xsd:element name="PropertyLocation" type="PropertyLocationType"/>
+			<xsd:element name="PropertyLocation" type="PropertyLocationType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="CoverageDeductibleType">
@@ -5044,6 +5046,7 @@
 		<xsd:sequence>
 			<xsd:element name="ClaimOfficialID" type="xsd:string"/>
 			<xsd:element name="ClaimOfficialName" type="xsd:string"/>
+            <xsd:element name="ClaimOfficialEmail" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ReportNumber" type="xsd:string"/>
 			<xsd:element name="ClaimOfficialType" type="ClaimOfficialTypeType"/>
 			<xsd:element name="ShieldNumber" type="xsd:string" minOccurs="0"/>
@@ -5102,21 +5105,21 @@
 			<xsd:element name="ClaimPropertyIncidentID" type="xsd:string"/>
 			<xsd:element name="ClaimPropertyIncidentSeq" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="PropertyDescription" type="xsd:string"/>
-			<xsd:element name="PropertyOwner" type="PropertyOwnerType"/>
+			<xsd:element name="PropertyOwner" type="PropertyOwnerType" minOccurs="0"/>
 			<xsd:element name="DamageDescription" type="xsd:string"/>
-			<xsd:element name="PropertyLocation" type="PropertyLocationType"/>
+			<xsd:element name="PropertyLocation" type="PropertyLocationType" minOccurs="0"/>
 			<xsd:element name="isThirdPartyLoss" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isInsuredsLoss" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isInspectionRequired" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="isEstimateReceived" type="xsd:string"/>
-			<xsd:element name="isAlreadyRepaired" type="xsd:string"/>
-			<xsd:element name="ClaimInspection" type="ClaimInspectionType"/>
-			<xsd:element name="BuildingConstructionDetails" type="BuildingConstructionDetailsType"/>
-			<xsd:element name="OccupancyType" type="OccupancyTypeType"/>
-			<xsd:element name="OccupancyLossAreaType" type="OccupancyLossAreaTypeType"/>
+			<xsd:element name="isEstimateReceived" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="isAlreadyRepaired" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimInspection" type="ClaimInspectionType" minOccurs="0"/>
+			<xsd:element name="BuildingConstructionDetails" type="BuildingConstructionDetailsType" minOccurs="0"/>
+			<xsd:element name="OccupancyType" type="OccupancyTypeType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="OccupancyLossAreaType" type="OccupancyLossAreaTypeType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="isMoldInvolded" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isHazardousWasteInvolved" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="OwnerRole" type="OwnerRoleType"/>
+			<xsd:element name="OwnerRole" type="OwnerRoleType" minOccurs="0"/>
             <xsd:element name="MortgageInformation" type="MortgageInformationType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -5409,19 +5412,19 @@
 		<xsd:sequence>
 			<xsd:element name="ClaimID" type="xsd:string"/>
 			<xsd:element name="ClaimNumber" type="xsd:string"/>
-			<xsd:element name="ClaimExposure" type="ClaimExposureType" maxOccurs="unbounded"/>
-			<xsd:element name="ClaimNotes" type="ClaimNotesType" minOccurs="0"/>
-			<xsd:element name="LossDescription" type="xsd:string"/>
-			<xsd:element name="LossLocation" type="LossLocationType"/>
-			<xsd:element name="LossDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="ClaimExposure" type="ClaimExposureType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="ClaimNotes" type="ClaimNotesType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="LossDescription" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LossLocation" type="LossLocationType" minOccurs="0"/>
+			<xsd:element name="LossDate" type="xsd:date" minOccurs="0"/>
             <xsd:element name="ClaimDate" type="xsd:dateTime" minOccurs="0"/>
             <xsd:element name="ClaimAge" type="xsd:string" minOccurs="0"/>
             <xsd:element name="AMB" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
-			<xsd:element name="CreatedDate" type="xsd:dateTime"/>
-			<xsd:element name="CreatedByUserAccount" type="CreatedByUserAccountType"/>
+			<xsd:element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>
+			<xsd:element name="CreatedByUserAccount" type="CreatedByUserAccountType" minOccurs="0"/>
 			<xsd:element name="TotalPaidAmt" type="xsd:float" minOccurs="0"/>
 			<xsd:element name="TotalPaidAmtInWords" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="TotalLossEstimated" type="xsd:float" minOccurs="0"/>
@@ -5434,14 +5437,14 @@
 			<xsd:element name="CountVehiclesInvolved" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CountPropertiesInvolved" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CountInjuriesInvolved" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="ClaimOfficials" type="ClaimOfficialsType" minOccurs="0"/>
+			<xsd:element name="ClaimOfficials" type="ClaimOfficialsType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="ClaimVehicleIncident" type="ClaimVehicleIncidentType" minOccurs="0"/>
 			<xsd:element name="ClaimPropertyIncident" type="ClaimPropertyIncidentType" minOccurs="0"/>
 			<xsd:element name="ClaimInjuryIncident" type="ClaimInjuryIncidentType" minOccurs="0"/>
 			<xsd:element name="WitnessRole" type="WitnessRoleType" minOccurs="0"/>
 			<xsd:element name="ContributingFactors" type="ContributingFactorsType" minOccurs="0"/>
 			<xsd:element name="MetropolitanReport" type="MetropolitanReportType" minOccurs="0"/>
-			<xsd:element name="RequiredDocumentsList" type="RequiredDocumentsListType" minOccurs="0"/>
+			<xsd:element name="RequiredDocumentsList" type="RequiredDocumentsListType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="ClaimNotificationHistory" type="ClaimNotificationHistoryType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="AdjusterRole" type="AdjusterRoleType" minOccurs="0"/>
 			<xsd:element name="AdjusterUserAccount" type="AdjusterUserAccountType" minOccurs="0"/>

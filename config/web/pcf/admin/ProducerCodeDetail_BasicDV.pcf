@@ -233,9 +233,10 @@
           onPick="producerCode.Contact_Ext = PickedValue"/>
       </Input>
       <InputSet
-        visible="true //producerCode.Contact_Ext != null">
+        visible="producerCode.Contact_Ext != null">
         <Input
           action="OrganizationContactForward.push( producerCode.Contact_Ext )"
+          actionAvailable="!(producerCode.organization.Type == typekey.BusinessType.TC_INSURER &amp;&amp; una.pageprocess.producer.ProducerEditControl.hasEditProducerOnlyRole())"
           id="ContactName"
           label="displaykey.Web.Policy.Account.Applicant.Name"
           value="producerCode.Contact_Ext"

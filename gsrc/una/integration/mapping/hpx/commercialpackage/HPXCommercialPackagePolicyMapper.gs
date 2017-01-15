@@ -16,6 +16,7 @@ uses una.integration.mapping.hpx.common.HPXClassificationMapper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusionMapper
 uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
+uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 
 /**
  * Created with IntelliJ IDEA.
@@ -180,6 +181,10 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
   }
 
   override function getDiscountCostTypes() : String[] {
+    return null
+  }
+
+  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     return null
   }
 }

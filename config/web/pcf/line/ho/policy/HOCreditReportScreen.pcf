@@ -53,6 +53,10 @@
       initialValue="period.CreditInfoExt.CreditReport.PolicyContactRole"
       name="creditReportContact"
       type="PolicyContactRole"/>
+    <Variable
+      initialValue="Initialize()"
+      name="onLoad"
+      type="boolean"/>
     <Toolbar>
       <WizardButtons/>
       <ToolbarButtonSetRef
@@ -70,7 +74,7 @@
             id="Label3"
             label="&quot;In order to bind the policy, an actual credit score will be required.&quot;"/>
           <BooleanRadioInput
-            editable="!period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext"
+            editable="!period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext || period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext== null"
             falseLabel="&quot;Credit Record&quot;"
             id="CreditLevelRecordSelector"
             label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevelReportSelector"
@@ -103,7 +107,9 @@
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportIndividual"
               required="!period.CreditInfoExt.CreditMode"
               value="period.CreditInfoExt.CreditReport.PolicyContactRole"
-              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)"/>
+              valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)">
+              <PostOnChange/>
+            </RangeInput>
             <Input
               id="PolicyPrimaryInsured"
               label="displaykey.Web.SubmissionWizard.CreditReporting.PolicyName"
@@ -238,18 +244,18 @@
                 available="una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
                 id="OrderCreditReportButton"
                 value="&quot;Order Credit Report&quot;"
-                visible="creditReportContact != null &amp;&amp; period.CreditInfoExt.CreditReport == null"/>
+                visible="(period.CreditInfoExt.CreditReport.PolicyContactRole!= null) "/>
               <ButtonInput
                 action="una.pageprocess.credit.CreditReportScreen.editCreditReportDetails(period)"
-                available="!una.pageprocess.credit.CreditReportScreen.isCreditReportInputFieldAvailable(period)"
+                available="period.CreditInfoExt.CreditOrdered"
                 id="EditDetailsButton"
                 value="&quot;Edit credit report details&quot;"
-                visible="creditReportContact != null &amp;&amp; period.CreditInfoExt.CreditReport != null"/>
+                visible="period.CreditInfoExt.CreditOrdered &amp;&amp; period.CreditInfoExt.CreditReport.PolicyContactRole != null &amp;&amp; period.CreditInfoExt.CreditReport != null"/>
             </InputSet>
           </InputSet>
           <InputDivider/>
           <InputSet
-            visible="period.CreditInfoExt.CreditReport != null &amp;&amp; !period.CreditInfoExt.CreditMode">
+            visible="period.CreditInfoExt.CreditOrdered &amp;&amp; period.CreditInfoExt.CreditReport.PolicyContactRole != null &amp;&amp; period.CreditInfoExt.CreditReport != null">
             <Label
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportEnabledPrompt"/>
             <Input
@@ -328,7 +334,11 @@
           label="displaykey.Web.SubmissionWizard.CreditReporting.NoCreditCheckRequired"/>
       </InputColumn>
     </DetailViewPanel>
-    <Code><![CDATA[function updateFormerNameFields() {
+    <Code><![CDATA[function Initialize () : boolean {
+  period.CreditInfoExt.CreditMode= true
+  return true
+}
+function updateFormerNameFields() {
   period.CreditInfoExt.CreditReport = null
   if (hasPrimaryNamedInsuredNameChanged) {
     // Copy policy name to credit report name

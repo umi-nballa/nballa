@@ -1,7 +1,7 @@
 package una.integration.mapping.hpx.common
 
 uses gw.xml.XmlElement
-
+uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingMapper
 
 /**
  * Created with IntelliJ IDEA.

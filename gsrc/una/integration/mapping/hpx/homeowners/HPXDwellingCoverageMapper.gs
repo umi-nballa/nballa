@@ -369,8 +369,9 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
           "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
-          "| SubLoc:" +
-          "| Interest: " + item.Interest
+          "| Interest: " + item.Interest +
+          "| SectionI:" + item.IsSectionIPropertyCoverage +
+          "| SectionII:" + item.SectionIILiabilityOccType
       limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){

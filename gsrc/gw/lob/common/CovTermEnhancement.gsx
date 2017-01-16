@@ -108,6 +108,14 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
       result = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
     }
 
+    //added special handling for requirement updates for HO Product Model spreadsheet
+    if(dwelling.HOLine.BaseState == TC_CA
+       and this.PatternCode == "HODW_LossOfUseDwelLimit_HOE"
+       and dwelling.HOPolicyType == TC_HO6
+       and configParameterType == TC_LimitMaxFactor){
+      result = result + 35000
+    }
+
     return result
   }
 
@@ -181,6 +189,7 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
     return ConfigParamsUtil?.getList(TC_DerivedLimitsPatternCodes, dwelling.HOLine.BaseState)?.hasMatch( \ element -> element?.equalsIgnoreCase(this.PatternCode))
         or this.PatternCode == dwelling.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm.PatternCode
         or this.PatternCode == dwelling.HODW_WindstormHailBroadSpecial_HOE_Ext.HODW_WHBroadSpecialLimit_HOETerm.PatternCode
+        or this.PatternCode == "HODW_CompEarthquakeCovC_Ext"
   }
 
   private function isDerivedSpecialLimits(dwelling : Dwelling_HOE) : boolean{

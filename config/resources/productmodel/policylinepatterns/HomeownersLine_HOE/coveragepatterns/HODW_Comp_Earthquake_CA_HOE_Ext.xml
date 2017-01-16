@@ -70,33 +70,6 @@
     <OptionCovTermPattern
       aggregationModel="po"
       choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="HODW_EQCovC_Deductible_HOE"
-      coverageColumn="ChoiceTerm4"
-      lookupTableName="DwellingCovTerm"
-      modelType="Limit"
-      priority="500"
-      public-id="HODW_EQCovC_Deductible_HOE"
-      required="false"
-      restrictionModel="per"
-      valueType="percent">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="z3egkeib03tc729fpj73d2joqda"
-          defaultValue="50"
-          public-id="z3egkeib03tc729fpj73d2joqda"/>
-      </DefaultsSet>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zhmgk25c1rekr6f69nt6ej0h4lb"
-          optionCode="50"
-          priority="100"
-          public-id="zhmgk25c1rekr6f69nt6ej0h4lb"
-          value="0.50"/>
-      </Options>
-    </OptionCovTermPattern>
-    <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
       codeIdentifier="HODW_EQ_PPDeductible_HOE"
       coverageColumn="ChoiceTerm5"
       lookupTableName="DwellingCovTerm"
@@ -197,6 +170,19 @@
       public-id="HODW_EQCovD_HOE_Ext"
       required="false"
       restrictionModel="exp"
+      valueType="money">
+      <LimitsSet/>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="HODW_CompEarthquakeCovC_Ext"
+      coverageColumn="DirectTerm3"
+      lookupTableName="DwellingCovTerm"
+      modelType="Limit"
+      priority="500"
+      public-id="HODW_CompEarthquakeCovC_Ext"
+      required="false"
+      restrictionModel="prp"
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>

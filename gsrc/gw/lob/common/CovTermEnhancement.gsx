@@ -108,6 +108,11 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
       result = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
     }
 
+    //added special handling for requirement updates for HO Product Model spreadsheet
+    if(dwelling.HOLine.BaseState == TC_CA and dwelling.HOPolicyType == TC_HO6 and configParameterType == TC_LimitMaxFactor){
+      result = result + 35000
+    }
+
     return result
   }
 

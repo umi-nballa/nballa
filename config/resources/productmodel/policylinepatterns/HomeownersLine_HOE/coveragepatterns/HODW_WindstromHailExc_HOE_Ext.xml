@@ -3,6 +3,7 @@
   codeIdentifier="HODW_WindstromHailExc_HOE_Ext"
   coverageCategory="HODW_ConditionsExclusions_HOE"
   exclusionSubtype="HomeownersLineExcl_HOE"
+  existence="Required"
   lookupTableName="HomeownersLineExcl"
   owningEntityType="HomeownersLine_HOE"
   policyLinePattern="HomeownersLine_HOE"
@@ -10,7 +11,7 @@
   public-id="HODW_WindstromHailExc_HOE_Ext"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isExclusionAvailable("HODW_WindstromHailExc_HOE_Ext", HomeownersLine_HOE)]]></AvailabilityScript>
-  <InitializeScript><![CDATA[HODW_WindstromHailExc_HOE_Ext.HOLine.setConditionExists("HODW_CitizensPropertyInsurancePolicyPerilsExc_HOE", true)]]></InitializeScript>
-  <ExistenceScript><![CDATA[return una.productmodel.CoveragesUtil.getExistence("HODW_WindstromHailExc_HOE_Ext", HomeownersLine_HOE)]]></ExistenceScript>
+  <InitializeScript><![CDATA[HODW_WindstromHailExc_HOE_Ext.HOLine.setExclusionExists("HODW_CitizensInsurancePerilsExclusion_Ext", true)]]></InitializeScript>
+  <ExistenceScript/>
   <CovTerms/>
 </ExclusionPattern>

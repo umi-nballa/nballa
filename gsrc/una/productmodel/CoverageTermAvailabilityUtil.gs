@@ -433,7 +433,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(line.BaseState == TC_TX){
-      //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+      result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
     }
 
     return result
@@ -553,7 +553,7 @@ class CoverageTermAvailabilityUtil {
       }
 
       if(1000d == covTermOpt.Value.doubleValue()){
-        result = hoLine.Dwelling.ResidenceType == TC_singleFamily_Ext
+        result = hoLine.Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER
       }
     }
 

@@ -21,6 +21,7 @@ class CreditReportScreen {
 
   static function editCreditReportDetails(period : PolicyPeriod) : PolicyPeriod{
     period.CreditInfoExt.CreditReport = null
+    period.CreditInfoExt.CreditOrdered = false
     return period
   }
 

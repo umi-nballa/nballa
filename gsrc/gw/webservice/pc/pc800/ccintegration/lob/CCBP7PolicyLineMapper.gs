@@ -11,6 +11,11 @@ uses gw.webservice.pc.pc800.ccintegration.entities.types.complex.CCPropertyCover
 uses gw.webservice.pc.pc800.ccintegration.entities.anonymous.elements.CCRiskUnit_Coverages
 uses gw.webservice.pc.pc800.ccintegration.entities.types.complex.CCBuildingRU
 
+uses gw.webservice.pc.pc800.ccintegration.entities.types.complex.CCCoverage
+uses gw.webservice.pc.pc800.ccintegration.entities.types.complex.CCCovTerm
+uses gw.api.domain.covterm.CovTerm
+uses gw.api.domain.covterm.TypekeyCovTerm
+
 class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
 
   var _bp7Line : BP7BusinessOwnersLine
@@ -128,5 +133,26 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
 
     addToPropertiesCount(_RUCount - startingCount + skipCount)
   }
-  
+
+  override function handleCovTermSpecialCases(pcCov : Coverage, pcCovTerm : CovTerm, ccCov : CCCoverage, ccCovTerms : CCCovTerm[]) {
+
+    super.handleCovTermSpecialCases(pcCov, pcCovTerm, ccCov, ccCovTerms)
+
+    // Handle coinsurance
+    if (((pcCov.PatternCode == "BOPBuildingCov") and (pcCovTerm.PatternCode == "BOPBuildingCoin")) or
+        ((pcCov.PatternCode == "BOPPersonalPropCov") and (pcCovTerm.PatternCode == "BOPPersonalPropCoin")))
+    {
+      (ccCov as CCPropertyCoverage).Coinsurance = mapCoinsurance(pcCovTerm.ValueAsString)
+    }
+
+    // Handle valuation method (Actual Cash Value vs. Replacement Cost)
+    if (((pcCov.PatternCode == "BOPBuildingCov") and (pcCovTerm.PatternCode == "BOPBldgValuation")) or
+        ((pcCov.PatternCode == "BOPPersonalPropCov") and (pcCovTerm.PatternCode == "BOPBPPValuation")))
+    {
+      // Map the values in PC that have corresponding values in CC
+      (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as TypekeyCovTerm).Value.Code)
+    }
+
+  }
+
 }

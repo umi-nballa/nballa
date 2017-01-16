@@ -564,29 +564,29 @@
 	<xsd:complexType name="PolicyAmtType">
 		<xsd:sequence>
 			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="MinimumEarnedPremiumAmtType">
 		<xsd:sequence>
 			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="TotalPaidLossesAmtType">
 		<xsd:sequence>
 			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ReserveTotalAmtType">
 		<xsd:sequence>
 			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="OtherOrPriorPolicyType">
@@ -1711,7 +1711,7 @@
 			<xsd:element name="TotalPaidLossAmt" type="TotalPaidLossAmtType" minOccurs="0"/>
 			<xsd:element name="NumLosses" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="NumLossesYrs" type="xsd:byte" minOccurs="0"/>
-			<xsd:element name="OtherOrPriorPolicy" type="OtherOrPriorPolicyType" minOccurs="0"/>
+			<xsd:element name="OtherOrPriorPolicy" type="OtherOrPriorPolicyType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="PaymentOption" type="PaymentOptionType" minOccurs="0"/>
 			<xsd:element name="QuoteInfo" type="QuoteInfoType" minOccurs="0"/>
 			<xsd:element name="AdditionalInterest" type="AdditionalInterestType" minOccurs="0" maxOccurs="unbounded"/>

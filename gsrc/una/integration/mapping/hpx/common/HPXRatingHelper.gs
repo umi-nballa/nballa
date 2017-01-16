@@ -8,6 +8,8 @@ uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
 uses gw.rating.rtm.query.RateBookQueryFilter
 uses java.math.BigDecimal
 uses gw.rating.rtm.query.RatingQueryFacade
+uses java.lang.Integer
+uses java.util.Map
 
 /**
  * Created with IntelliJ IDEA.
@@ -103,6 +105,15 @@ class HPXRatingHelper {
     return factor.Factor as BigDecimal
   }
 
+  function getRatingFactors(policyPeriod : PolicyPeriod, table : String, jurisdictionState : String, input : List<int>) : Map<String, BigDecimal> {
+    var minimumRatingLevel = typekey.RateBookStatus.TC_STAGE
+    var filter = new RateBookQueryFilter(policyPeriod.PeriodStart, policyPeriod.PeriodEnd, policyPeriod.HomeownersLine_HOE.PatternCode)
+        {: Jurisdiction = jurisdictionState,
+            : MinimumRatingLevel = minimumRatingLevel}
+    var factors = new RatingQueryFacade().getAllFactors(filter, table, input)
+    return factors as Map<String, BigDecimal>
+  }
+
   function getSouthCarolinaMaximumInsuranceScoreSurcharge(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var maximumSurcharge = new HPXEstimatedDiscount()
     var ratingInfo = new HOCommonBasePremiumRatingInfo(policyPeriod.HomeownersLine_HOE.Dwelling)
@@ -110,7 +121,7 @@ class HPXRatingHelper {
     var ratingFactor = getRatingFactor(policyPeriod, "ho_insurance_credit_score_factors", typekey.Jurisdiction.TC_SC, creditScore)
     var maxRatingFactor = getRatingFactor(policyPeriod, "ho_insurance_credit_score_factors", typekey.Jurisdiction.TC_SC, 350)
     maximumSurcharge.Percent = (ratingFactor != null ? maxRatingFactor - ratingFactor : maxRatingFactor - 1)*100
-    maximumSurcharge.Code = "SC_MAX_INSCORE_SURCHARGE"
+    maximumSurcharge.Code = "MAX_INSCORE_SURCHARGE"
     maximumSurcharge.Description = "Maximum Surcharge if Insurance Score is decreased"
     return maximumSurcharge
   }
@@ -122,8 +133,49 @@ class HPXRatingHelper {
     var ratingFactor = getRatingFactor(policyPeriod, "ho_insurance_credit_score_factors", typekey.Jurisdiction.TC_SC, creditScore)
     var minRatingFactor = getRatingFactor(policyPeriod, "ho_insurance_credit_score_factors", typekey.Jurisdiction.TC_SC, 997)
     maximumDiscount.Percent = (ratingFactor != null ? ratingFactor - minRatingFactor : 1 - minRatingFactor)*100
-    maximumDiscount.Code = "SC_MAX_INSCORE_DISCOUNT"
+    maximumDiscount.Code = "MAX_INSCORE_DISCOUNT"
     maximumDiscount.Description = "Maximum Discount if Insurance Score is increased"
     return maximumDiscount
+  }
+
+  function getNevadaMaximumInsuranceScoreSurcharge(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
+    var maximumSurcharge = new HPXEstimatedDiscount()
+    var ratingInfo = new HOCommonBasePremiumRatingInfo(policyPeriod.HomeownersLine_HOE.Dwelling)
+    var creditScore = ratingInfo.CreditScore
+    var numYears = ratingInfo.ConsecutiveYrsWithUniversal
+    var numLosses = ratingInfo.PriorLosses
+    var ratingFactors = getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {numYears, creditScore} )
+    var ratingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, ratingFactors)
+    var maxRatingFactors = getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {0, 0} )
+    var maxRatingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, maxRatingFactors)
+    maximumSurcharge.Percent = (ratingFactor != null ? maxRatingFactor - ratingFactor : maxRatingFactor - 1)*100
+    maximumSurcharge.Code = "MAX_INSCORE_SURCHARGE"
+    maximumSurcharge.Description = "Maximum Surcharge if Insurance Score is decreased"
+    return maximumSurcharge
+  }
+
+  function getNevadaMaximumInsuranceScoreDiscount(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
+    var maximumDiscount = new HPXEstimatedDiscount()
+    var ratingInfo = new HOCommonBasePremiumRatingInfo(policyPeriod.HomeownersLine_HOE.Dwelling)
+    var creditScore = ratingInfo.CreditScore
+    var numYears = ratingInfo.ConsecutiveYrsWithUniversal
+    var numLosses = ratingInfo.PriorLosses
+    var ratingFactors = getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {numYears, creditScore} )
+    var ratingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, ratingFactors)
+    var minRatingFactors = getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {4, 997} )
+    var minRatingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, minRatingFactors)
+    maximumDiscount.Percent = (ratingFactor != null ? ratingFactor - minRatingFactor : 1 - minRatingFactor)*100
+    maximumDiscount.Code = "MAX_INSCORE_DISCOUNT"
+    maximumDiscount.Description = "Maximum Discount if Insurance Score is increased"
+    return maximumDiscount
+  }
+
+  function getRatingFactorFromRatingFactorsForPriorLosses(numLosses : int, factors : Map<String, BigDecimal>) : BigDecimal {
+    var factorName =  numLosses == 1 ? "OnePriorLosses" :
+                      numLosses == 2 ? "TwoPriorLosses" :
+                      numLosses == 3 ? "ThreePriorLosses" :
+                      numLosses >= 4 ? "MoreThanFourPriorLosses" : "ZeroPriorLosses"
+    var factor = (BigDecimal)factors.get(factorName)
+    return factor
   }
 }

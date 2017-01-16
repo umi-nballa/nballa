@@ -146,7 +146,7 @@ class CCBasePolicyLineMapper {
         // Ideally, these cov terms would be ordered so that the "first" deductible or limit found in priority
         // order would be the one used to set the coverage-level fields.
         for(ccCovTerm in ccCovTerms ) {
-          ccCov.CovTerms.add(new CCCoverage_CovTerms(ccCovTerm));
+         ccCov.CovTerms.add(new CCCoverage_CovTerms(ccCovTerm));
 
           // Only cov terms whose value represents Money can be denormalized to the coverage level since those fields
           // are assumed to mean money values.
@@ -157,14 +157,14 @@ class CCBasePolicyLineMapper {
             }
             if( covTerm?.ModelType == CovTermModelType.TC_LIMIT )  {
               // Set the coverage-level exposure limit field if one is found (per person, per vehicle, etc.)
-              if( ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PP.Code)
-                    or ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PI.Code) ) {
+              if( ccCovTerm.ModelAggregation != null and (ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PP.Code)
+                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PI.Code)) ) {
                 ccCov.ExposureLimit = ccCovTerm.FinancialAmount
               }
               // Set the coverage-level exposure limit field if one is found (per incident, per accident, per injury, etc.)
-              if( ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PC.Code)
-                    or ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_EA.Code)
-                    or ccCovTerm?.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PO.Code) ) {
+              if( ccCovTerm.ModelAggregation != null and (ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PC.Code)
+                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_EA.Code)
+                    or ccCovTerm.ModelAggregation.equalsIgnoreCase(CovTermModelAgg.TC_PO.Code) )) {
                 ccCov.IncidentLimit = ccCovTerm.FinancialAmount
               }
             }

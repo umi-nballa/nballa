@@ -198,6 +198,9 @@ class CoverageTermAvailabilityUtil {
       case "Cov3Limit_EXT":
         result = isBP7OrdinanceLawCov3LimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HOPL_SpecialLimitDeductibleAssessment_HOE":
+        result = !(coverable as Dwelling_HOE).HOLine.DPLI_Personal_Liability_HOEExists or (coverable as Dwelling_HOE).ResidenceType == TC_CONDO
+        break
       default:
         break
     }

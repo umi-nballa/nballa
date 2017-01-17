@@ -569,7 +569,7 @@ class CoverageTermAvailabilityUtil {
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
       if(dwelling.HOLine.DPLI_Personal_Liability_HOEExists){
         result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
-      }else if(dwelling.ResidenceType == TC_CONDO_EXT){
+      }else if(dwelling.ResidenceType == TC_CONDO){
         result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
       }
     }
@@ -592,7 +592,7 @@ class CoverageTermAvailabilityUtil {
 
     if(dwelling.Branch.BaseState == TC_FL){
       result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd
-          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT))
+          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO))
     }
 
     return result

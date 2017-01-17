@@ -70,7 +70,7 @@ class CovTermInputSetPCFController {
       }else if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
         if(coverable.HOPolicyType == TC_HO6){
           coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = coverable.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
-        }else if(coverable.HOPolicyType == TC_DP3_Ext and coverable.ResidenceType == TC_CONDO_EXT){
+        }else if(coverable.HOPolicyType == TC_DP3_Ext and coverable.ResidenceType == TC_CONDO){
           coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
         }
       }

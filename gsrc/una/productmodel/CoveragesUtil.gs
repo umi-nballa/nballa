@@ -307,7 +307,7 @@ class CoveragesUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
-      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO_EXT
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
     }
 
     return result
@@ -388,8 +388,6 @@ class CoveragesUtil {
     }
     return result
   }
-
-
   private static function getProtectiveSafeguardsExistence(building : CPBuilding) : ExistenceType{
     var result : ExistenceType
 

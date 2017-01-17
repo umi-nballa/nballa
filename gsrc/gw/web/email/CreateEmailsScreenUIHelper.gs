@@ -66,7 +66,7 @@ class CreateEmailsScreenUIHelper {
         documentToSave.Type = template.TemplateType
         documentToSave.Section = template.getMetadataPropertyValue( "section" ) as String // assigment will force it to SectionType
         documentToSave.SecurityType = template.DefaultSecurityType
-        documentToSave.Status = "final"
+        documentToSave.Status = typekey.DocumentStatusType.TC_APPROVED
         documentToSave.Recipient = emailToSend.ToRecipients.first().Name
         documentToSave.Author = User.util.CurrentUser.DisplayName
         documentToSave.Inbound = false

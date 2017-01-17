@@ -32,6 +32,7 @@ uses java.lang.UnsupportedOperationException
 /**
  * Implementation of the QueryDocuments interface using WSP.
  */
+//TODO: REMOVE THIS CLASS?
 class QueryDocumentsWSP implements QueryDocumentsInterface {
   private var logger = Logger.forCategory(Settings.ServicesLoggerCategory)
 

@@ -6,6 +6,7 @@ uses una.integration.mapping.hpx.common.HPXGeneralPartyInfoMapper
 uses una.integration.mapping.hpx.common.HPXJobMapper
 uses una.integration.mapping.hpx.common.HPXCompositionUnitMapper
 uses una.integration.mapping.hpx.common.HPXPaymentOptionMapper
+uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 uses gw.xml.XmlElement
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.ItemIdInfoType
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.FullTermAmtType
@@ -201,65 +202,6 @@ abstract class HPXPolicyMapper {
                                getLineCoverageTransactions(policyPeriod, policyLine))
   }
 
-  function createCoveragesInfo (currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
-                                    transactions : java.util.List<Transaction>)
-                                                          : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    // added or changed coverages
-    for (cov in currentCoverages) {
-      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
-     // if (trxs?.Count > 0) {
-        if (previousCoverages != null) {
-          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
-          coverages.add(getCoverageMapper().createCoverageInfo(cov, previousCoverage, trxs))
-        } else {
-          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, trxs))
-        }
-     // }
-    }
-    // removed coverages
-    if (previousCoverages != null) {
-      for (cov in previousCoverages) {
-        if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
-          continue
-        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
-      //  if (trxs?.Count > 0) {
-            coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null))
-      //  }
-      }
-    }
-    return coverages
-  }
-
-  function createExclusionsInfo (currentExclusions : java.util.List<Exclusion>, previousExclusions : java.util.List<Exclusion>,
-                                transactions : java.util.List<Transaction>)
-      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    // added or changed coverages
-    for (excl in currentExclusions) {
-      var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
-    //  if (trxs?.Count > 0) {
-        if (previousExclusions != null) {
-          var previousExclusion = previousExclusions.firstWhere( \ elt -> elt.PatternCode.equals(excl.PatternCode))
-          coverages.add(getExclusionMapper().createExclusionInfo(excl, previousExclusion, trxs))
-        } else {
-          coverages.add(getExclusionMapper().createExclusionInfo(excl, null, trxs))
-        }
-     // }
-    }
-    // removed coverages
-    if (previousExclusions != null) {
-      for (excl in previousExclusions) {
-        if (currentExclusions.hasMatch( \ elt1 -> elt1.PatternCode.equals(excl.PatternCode)))
-          continue
-        var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
-       // if (trxs?.Count > 0) {
-          coverages.add(getExclusionMapper().createExclusionInfo(excl, null, null))
-        //}
-      }
-    }
-    return coverages
-  }
 
   function createLineExclusions(policyPeriod : PolicyPeriod, policyLine : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var policyPeriodHelper = new HPXPolicyPeriodHelper()
@@ -268,41 +210,93 @@ abstract class HPXPolicyMapper {
         getLineCoverageTransactions(policyPeriod, policyLine))
   }
 
+  function createLinePolicyConditions(policyPeriod : PolicyPeriod, policyLine : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var policyPeriodHelper = new HPXPolicyPeriodHelper()
+    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    return createPolicyConditionsInfo(getLinePolicyConditions(getPolicyLine(policyPeriod)), getLinePolicyConditions(getPolicyLine(previousPeriod)),
+        getLineCoverageTransactions(policyPeriod, policyLine))
+  }
+
+  function createCoveragesInfo (currentCoverages : java.util.List<Coverage>, previousCoverages : java.util.List<Coverage>,
+                                transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    var jobHelper = new HPXJobHelper()
+    var changedCoveragePatterns = jobHelper.getChangedCoveragePatterns(currentCoverages?.first().PolicyLine.AssociatedPolicyPeriod, currentCoverages?.first().OwningCoverable)
+    // added or changed coverages
+    for (cov in currentCoverages) {
+      var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
+      if (cov.PolicyLine.AssociatedPolicyPeriod.BasedOn == null or changedCoveragePatterns.contains(cov.PatternCode)) {
+        if (previousCoverages != null) {
+          var previousCoverage = previousCoverages.firstWhere( \ elt -> elt.PatternCode.equals(cov.PatternCode))
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, previousCoverage, trxs))
+        } else {
+          coverages.add(getCoverageMapper().createCoverageInfo(cov, null, trxs))
+        }
+      }
+    }
+    // removed coverages
+    if (previousCoverages != null) {
+      for (cov in previousCoverages) {
+        if (currentCoverages.hasMatch( \ elt1 -> elt1.PatternCode.equals(cov.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
+        coverages.add(getCoverageMapper().createCoverageInfo(cov, null, null))
+      }
+    }
+    return coverages
+  }
+
+  function createExclusionsInfo (currentExclusions : java.util.List<Exclusion>, previousExclusions : java.util.List<Exclusion>,
+                                 transactions : java.util.List<Transaction>)
+      : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    // added or changed exclusions
+    for (excl in currentExclusions) {
+      var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
+      if (previousExclusions != null) {
+        var previousExclusion = previousExclusions.firstWhere( \ elt -> elt.PatternCode.equals(excl.PatternCode))
+        coverages.add(getExclusionMapper().createExclusionInfo(excl, previousExclusion, trxs))
+      } else {
+        coverages.add(getExclusionMapper().createExclusionInfo(excl, null, trxs))
+      }
+    }
+    // removed exclusions
+    if (previousExclusions != null) {
+      for (excl in previousExclusions) {
+        if (currentExclusions.hasMatch( \ elt1 -> elt1.PatternCode.equals(excl.PatternCode)))
+          continue
+        var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
+        coverages.add(getExclusionMapper().createExclusionInfo(excl, null, null))
+      }
+    }
+    return coverages
+  }
+
   function createPolicyConditionsInfo (currentPolicyConditions : java.util.List<PolicyCondition>, previousPolicyConditions : java.util.List<PolicyCondition>,
                                  transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
-    // added or changed coverages
+    // added or changed policy conditions
     for (cond in currentPolicyConditions) {
       var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
-      //  if (trxs?.Count > 0) {
       if (previousPolicyConditions != null) {
         var previousPolicyCondition = previousPolicyConditions.firstWhere( \ elt -> elt.PatternCode.equals(cond.PatternCode))
         coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, previousPolicyCondition, trxs))
       } else {
         coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, null, trxs))
       }
-      // }
     }
-    // removed coverages
+    // removed policy conditions
     if (previousPolicyConditions != null) {
       for (cond in previousPolicyConditions) {
         if (currentPolicyConditions.hasMatch( \ elt1 -> elt1.PatternCode.equals(cond.PatternCode)))
           continue
         var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
-        // if (trxs?.Count > 0) {
         coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, null, null))
-        //}
       }
     }
     return coverages
-  }
-
-  function createLinePolicyConditions(policyPeriod : PolicyPeriod, policyLine : Coverable) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
-    return createPolicyConditionsInfo(getLinePolicyConditions(getPolicyLine(policyPeriod)), getLinePolicyConditions(getPolicyLine(previousPeriod)),
-        getLineCoverageTransactions(policyPeriod, policyLine))
   }
 
   function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
@@ -313,6 +307,19 @@ abstract class HPXPolicyMapper {
       discount.DiscountCd = getCostType(cost)
       discount.DiscountDescription = cost.DisplayName
       discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
+      discounts.add(discount)
+    }
+    return discounts
+  }
+
+  function createEstimatedDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
+    var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
+    var estimatedDiscounts = getEstimatedDiscounts(policyPeriod)
+    for (estimatedDiscount in estimatedDiscounts) {
+      var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
+      discount.DiscountCd = estimatedDiscount.Code
+      discount.DiscountDescription = estimatedDiscount.Description
+      discount.DiscountPercent.Amt = estimatedDiscount.Percent
       discounts.add(discount)
     }
     return discounts
@@ -379,6 +386,8 @@ abstract class HPXPolicyMapper {
   abstract function getCostType(cost : Cost) :  String
 
   abstract function getDiscountCostTypes() : String[]
+
+  abstract function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
 
   abstract function getCoverageMapper() : HPXCoverageMapper
 

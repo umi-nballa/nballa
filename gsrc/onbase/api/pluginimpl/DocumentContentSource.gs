@@ -169,8 +169,8 @@ class DocumentContentSource implements IDocumentContentSource, InitializablePlug
     keywords.add(new Keyword(KeywordMap.status.Name, document.Status.toString()))
     keywords.add(new Keyword(KeywordMap.description.Name, document.Description?.toUpperCase()))
 
-    keywords.add(new Keyword(KeywordMap.subtype.Name, document.OnBaseDocumentSubtype.DisplayName))
-    keywords.add(new Keyword(KeywordMap.onbasedocumenttype.Name, document.OnBaseDocumentType))
+    keywords.add(new Keyword(KeywordMap.subtype.Name, document.OnBaseDocumentSubtype?.DisplayName))
+    keywords.add(new Keyword(KeywordMap.onbasedocumenttype.Name, document.OnBaseDocumentType?.DisplayName))
 
     //Add any Policy related keywords
     var policyKeywordList = getKeywordsFromPolicy(document)

@@ -55,6 +55,10 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           var scheduledProperties = createAdditionalInsuredPropertyManager(currentCoverage, previousCoverage, transactions)
           for (item in scheduledProperties) { limits.add(item)}
           break
+      case "HODW_ResidenceHeldTrust_NC_HOE_Ext" :
+          var scheduledProperties = createResidenceHeldInTrust(currentCoverage, previousCoverage, transactions)
+          for (item in scheduledProperties) { limits.add(item)}
+          break
     }
     return limits
   }
@@ -369,8 +373,9 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       limit.LimitDesc = "Name:" + item.AdditionalInsured.PolicyAddlInsured.DisplayName +
           "| Address:" + item.AdditionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress +
           "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
-          "| SubLoc:" +
-          "| Interest: " + item.Interest
+          "| Interest: " + item.Interest +
+          "| SectionI:" + item.IsSectionIPropertyCoverage +
+          "| SectionII:" + item.SectionIILiabilityOccType
       limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
@@ -464,6 +469,34 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
           "| SubLoc:" +
           "| Interest: " + item.Interest
+      limit.WrittenAmt.Amt = 0.00
+      for (trx in transactions) {
+        if(trx.Cost typeis ScheduleCovCost_HOE){
+          if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
+            limit.WrittenAmt.Amt = trx.Cost.ActualAmount.Amount
+            break
+          }
+        }
+      }
+      limits.add(limit)
+    }
+    return limits
+  }
+
+  function createResidenceHeldInTrust(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+    var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
+    var scheduleItems = currentCoverage.PolicyLine.AssociatedPolicyPeriod.TrustResidings
+    for (item in scheduleItems) {
+      var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.CoverageCd = currentCoverage.PatternCode
+      limit.CoverageSubCd = "ResidenceHeldInTrust" + item.ID
+      limit.CurrentTermAmt.Amt = 0.00
+      limit.NetChangeAmt.Amt = 0.00
+      limit.FormatPct = 0
+      limit.Rate = 0.00
+      limit.FormatText = ""
+      limit.LimitDesc = item.TrustResident == typekey.TrustResident_Ext.TC_GRANTOR ? "Name: " + item.NameOfGrantor + " (Grantor)":
+                                                                                     "Name: " + item.NameOfBeneficiary + " (Beneficiary)"
       limit.WrittenAmt.Amt = 0.00
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){

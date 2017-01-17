@@ -10,7 +10,7 @@ class PolicyMigrationWorker extends MigrationWorker {
   construct() {
     super("PolicyDataMigration_Ext")
   }
-  
+
   override function lineConfigure(helper : PropertyHelper) {
     setPrefixedProperties("PA_", helper)
   }

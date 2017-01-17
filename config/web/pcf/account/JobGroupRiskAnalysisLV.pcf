@@ -12,50 +12,42 @@
       elementName="issue"
       value="uwIssueHistoryAtAcctRiskAnalysis()//new Object[]{}">
       <Row>
-        <!-- <Cell
+        <Cell
           action="JobForward.go( issue.PolicyPeriod.Job )"
           id="PolicyNumber"
           label="displaykey.Web.RenewalGroup.RiskAnalysis.PolicyNumber"
-          value="issue.PolicyPeriod.Job.DisplayName"/> -->
-        <!-- <Cell
+          value="issue.PolicyPeriod.Job.DisplayName"/>
+        <Cell
           id="PolicyType"
           label="displaykey.Web.RenewalGroup.RiskAnalysis.PolicyType"
-          value="issue.PolicyPeriod.Policy.Product.Name"/> -->
-        <!-- <Cell
-          id="Type"
-          label="displaykey.Web.RenewalGroup.RiskAnalysis.Type"
-          value="issue.Type"/> -->
-        <!-- <Cell
-          id="Reason"
-          label="displaykey.Web.RenewalGroup.RiskAnalysis.Reason"
-          value="issue.Reason"/> -->
-        <!-- <Cell
+          value="issue.PolicyPeriod.Policy.Product.Name"/>
+        <Cell
           id="Description"
           label="displaykey.Web.RenewalGroup.RiskAnalysis.Description"
-          value="issue.Description"/> -->
-        <!-- <Cell
+          value="issue.PolicyPeriod.UWIssuesActiveOnly.firstWhere( \ elt -&gt; elt.IssueKey == issue.IssueKey).ShortDescription"/>
+        <Cell
+          id="LongDescription"
+          label="displaykey.Web.RenewalGroup.RiskAnalysis.DescriptionLong"
+          value="issue.PolicyPeriod.UWIssuesActiveOnly.firstWhere( \ elt -&gt; elt.IssueKey == issue.IssueKey).LongDescription"/>
+        <Cell
           id="Status"
           label="displaykey.Web.RenewalGroup.RiskAnalysis.Status"
-          value="issue.Status"/> -->
-        <!-- <Cell
-          id="Severity"
-          label="displaykey.Web.RenewalGroup.RiskAnalysis.Severity"
-          value="issue.Severity"/> -->
-        <!-- <Cell
-          id="Points"
-          label="displaykey.Web.RenewalGroup.RiskAnalysis.RiskPoints"
-          value="issue.RiskPoints"/> -->
+          value="issue.Status"/>
+        <Cell
+          id="Date"
+          label="displaykey.Web.RenewalGroup.RiskAnalysis.Date"
+          value="issue.CreateDate"/>
+        <Cell
+          id="User"
+          label="displaykey.Web.RenewalGroup.RiskAnalysis.User"
+          value="issue.CreateUser"/>
       </Row>
     </RowIterator>
     <Code><![CDATA[function uwIssueHistoryAtAcctRiskAnalysis() : UWIssueHistory[]{
   var uwIssues : UWIssueHistory[]
   if(jobGroup.Subtype==typekey.JobGroup.TC_SUBMISSIONGROUP){
-    print("jobGroup.Jobs.Policy.IssueHistories: "+jobGroup.Jobs.Policy.IssueHistories.length)
-    return jobGroup.Jobs.Policy.IssueHistories
+    return jobGroup?.Jobs?.Policy?.IssueHistories
   }
-  /*if(jobGroup.Subtype==typekey.JobGroup.TC_RENEWALGROUP){
-    return jobGroup.Jobs.Policy.IssueHistories.where( \ elt1 ->elt1.PolicyPeriod.Job.Subtype==typekey.Job.TC_RENEWAL )
-  }*/
   return uwIssues
 }]]></Code>
   </ListViewPanel>

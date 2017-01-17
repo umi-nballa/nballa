@@ -46,7 +46,7 @@
     <PanelRef
       def="ScheduleRateDV(scheduleRates,policyPeriod)"
       editable="(policyPeriod.CPLineExists &amp;&amp; policyPeriod.Job.Subtype==typekey.Job.TC_POLICYCHANGE &amp;&amp; policyPeriod.EditEffectiveDate==policyPeriod.PeriodStart)"
-      visible="scheduleRates.HasElements">
+      visible="showrmf &amp;&amp; scheduleRates.HasElements">
       <TitleBar
         title="displaykey.Web.ModifiersScreen.RatingInputs"/>
     </PanelRef>
@@ -67,6 +67,12 @@
             <PostOnChange
               onChange="gw.job.JobWizardHelperEnhancement.createHistoryEventTransaction(policyPeriod)"/>
           </CheckBoxInput>
+          <Input
+            editable="true"
+            id="Factor_Extc"
+            label="displaykey.Web.ModifiersScreen.Factor_Ext"
+            value="policyPeriod?.Factor_Ext"
+            visible="policyPeriod.ConsentToRateReceived_Ext == true"/>
           <CheckBoxInput
             editable="policyPeriod.ConsentToRateReceived_Ext == null || policyPeriod.ConsentToRateReceived_Ext == false"
             id="Rule180_Ext"
@@ -79,7 +85,7 @@
             id="Factor_Ext"
             label="displaykey.Web.ModifiersScreen.Factor_Ext"
             value="policyPeriod?.Factor_Ext"
-            visible="policyPeriod.ConsentToRateReceived_Ext == true || policyPeriod.Rule180_Ext == true"/>
+            visible="policyPeriod.Rule180_Ext == true"/>
         </InputColumn>
       </DetailViewPanel>
     </PanelRef>

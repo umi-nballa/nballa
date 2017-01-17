@@ -82,10 +82,13 @@ class ProducerCodeUIHelper {
     }
   }
 
-  function createUser() : User {
+  function createUser(producerCode: ProducerCode) : User {
     var user = new User()
+    user.ExternalUser = not producerCode.Organization.Carrier
     user.UseOrgAddress = false
+    user.setOrganizationWithUpdate(producerCode.Organization)
     user.Credential = new Credential()
+    producerCode.Contact_Ext = user.Contact
     return user
   }
   /**

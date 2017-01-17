@@ -11,7 +11,7 @@ uses java.math.BigDecimal
  */
 class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit
-  var buildingAdditionsAndAlterationsIncreasedLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
+  var _buildingAdditionsAndAlterationsIncreasedLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
   construct(lineVersion: HomeownersLine_HOE) {
     super(lineVersion)
   }
@@ -21,6 +21,10 @@ class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     if(dwellingCov typeis HODW_FungiCov_HOE){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
     }
+    if(dwellingCov.Dwelling.HODW_BuildingAdditions_HOE_ExtExists){
+      _buildingAdditionsAndAlterationsIncreasedLimit = dwellingCov.Dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.Value
+    }
+
   }
 
 }

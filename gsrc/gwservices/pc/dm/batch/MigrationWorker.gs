@@ -13,7 +13,6 @@ uses java.lang.System
 uses java.util.Collections
 uses java.util.Iterator
 uses java.util.Map
-uses java.lang.StringBuilder
 
 /**
  * Distributed worker for migration
@@ -23,8 +22,8 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
   private static final var _LOG_TAG = "${MigrationWorker.Type.RelativeName} - "
   private static final var _logger = DMLogger.General
   /// Data access configuration ///
-  private static final var _POLICY_CONFIG_FILE_ = "policyMigration"
-  private static final var _ACCT_CONFIG_FILE_ = "accountsMigration"
+  private static final var _CONFIG_FILE = "migration"
+  private static final var _CONFIG_FILE_ACCTS = "migration_accts"
   private static final var _ENV_PROPERTY = "gw.pc.env"
   private static final var _SEQUENCES_DEFAULT = 5
   private static final var _SEQUENCES_PARAM = "SEQUENCES_PER_WORKITEM"
@@ -32,18 +31,13 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
   private var _propertyHelper: PropertyHelper
   construct(batchType: BatchProcessType) {
     super(batchType, StandardWorkItem, MigrationWorkConfig_Ext)
-    var batchtypeCode : String = batchType.Code
-    switch(batchtypeCode){
-      case BatchProcessType.TC_ACCOUNTDATAMIGRATION_EXT :
-           _propertyHelper = getPropertyHelper(new StringBuilder(_ACCT_CONFIG_FILE_))
-      break;
-      case BatchProcessType.TC_POLICYDATAMIGRATION_EXT :
-           _propertyHelper = getPropertyHelper(_POLICY_CONFIG_FILE_)
-      break;
-      default :
-        throw new DataMigrationNonFatalException(INVLAID_MIGRATION_PROCESS_TYPE, "Invalid Migration process has been triggerd")
+    if(batchType.Code == BatchProcessType.TC_POLICYDATAMIGRATION_EXT)
+    _propertyHelper = new PropertyHelper(_CONFIG_FILE, System.getProperty(_ENV_PROPERTY))
+    if(batchType.Code == BatchProcessType.TC_ACCOUNTDATAMIGRATION_EXT)
+      _propertyHelper = new PropertyHelper(_CONFIG_FILE_ACCTS, System.getProperty(_ENV_PROPERTY))
+
   }
-  }
+
   /**
    * Configure line specific items
    */
@@ -222,33 +216,5 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
     var wiQuery = Query.make(StandardWorkItem).compare(StandardWorkItem#Status, NotEquals, WorkItemStatusType.TC_FAILED)
     wfQuery.subselect(MigrationWorkConfig_Ext#ID, CompareIn, wiQuery, StandardWorkItem#Target)
     return wfQuery.select().HasElements
-  }
-
-  private function getPropertyHelper(_CONFIG_FILE : StringBuilder) : PropertyHelper{
-    var proHelper : PropertyHelper
-    var env : StringBuilder = new StringBuilder(System.getProperty(_ENV_PROPERTY))
-    switch(env.toString().toUpperCase()){
-      case "LOCAL":
-            proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-      break;
-      case "ASM":
-            proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-      break;
-      case "QAT":
-            proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-      break;
-      case "QA":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-      break;
-      case "UAT":
-            proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-      break;
-      case "PROD":
-           proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-      break;
-      default :
-          throw new DataMigrationNonFatalException(INVALID_ENVIRONMET_TYPE, "Invalid Migration environment type.")
-    }
-    return proHelper
   }
 }

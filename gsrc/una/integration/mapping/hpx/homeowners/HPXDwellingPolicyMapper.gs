@@ -18,6 +18,9 @@ uses una.integration.mapping.hpx.common.HPXClassificationMapper
 uses una.integration.mapping.hpx.common.HPXPrimaryNamedInsuredMapper
 uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
+uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
+uses java.util.ArrayList
+uses una.integration.mapping.hpx.common.HPXRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -80,6 +83,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var discounts = createDiscounts(policyPeriod)
     for (discount in discounts) {
       dwellingLineBusiness.addChild(new XmlElement("Discount", discount))
+    }
+    var estimatedDiscounts = createEstimatedDiscounts(policyPeriod)
+    for (discount in estimatedDiscounts) {
+      dwellingLineBusiness.addChild(new XmlElement("EstimatedDiscount", discount))
     }
     return dwellingLineBusiness
   }
@@ -237,5 +244,22 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
         typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT
     }
     return discountTypeKeys
+  }
+
+  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
+    var jurisdictionState = policyPeriod.BaseState
+    var ratingHelper = new HPXRatingHelper()
+    switch (jurisdictionState) {
+      case typekey.Jurisdiction.TC_SC :
+          estimatedDiscounts.add(ratingHelper.getSouthCarolinaMaximumInsuranceScoreDiscount(policyPeriod))
+          estimatedDiscounts.add(ratingHelper.getSouthCarolinaMaximumInsuranceScoreSurcharge(policyPeriod))
+        break
+      case typekey.Jurisdiction.TC_NV :
+          estimatedDiscounts.add(ratingHelper.getNevadaMaximumInsuranceScoreDiscount(policyPeriod))
+          estimatedDiscounts.add(ratingHelper.getNevadaMaximumInsuranceScoreSurcharge(policyPeriod))
+        break
+    }
+    return estimatedDiscounts
   }
 }

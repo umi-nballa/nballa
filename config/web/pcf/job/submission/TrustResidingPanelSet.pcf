@@ -1,0 +1,43 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <PanelSet
+    id="TrustResidingPanelSet">
+    <Require
+      name="TrustResidings"
+      type="List&lt;HOTrustResiding_Ext&gt;"/>
+    <PanelIterator
+      elementName="TrustResidings"
+      value="TrustResidings">
+      <PanelSet
+        id="PanelSet">
+        <DetailViewPanel>
+          <InputColumn>
+            <TypeKeyInput
+              editable="true"
+              id="TrustResides"
+              label="&quot;Which party to the trust resides in the dwelling?&quot;"
+              value="TrustResidings.TrustResident"/>
+            <Input
+              editable="true"
+              id="grantor1"
+              label="&quot;Name Of Grantor&quot;"
+              value="TrustResidings.NameOfGrantor"/>
+            <Input
+              editable="true"
+              id="beneficiary"
+              label="&quot;Name Of Beneficiary&quot;"
+              value="TrustResidings.NameOfBeneficiary"/>
+            <BooleanRadioInput
+              editable="true"
+              id="isTrustOrg"
+              label="&quot;Are the Grantor, Trustee and Beneficiary natural person(s) (not a corporation, partnership, charitable organization or association)?&quot;"
+              value="TrustResidings.isTrustPartOfOrg"/>
+            <InputDivider/>
+          </InputColumn>
+        </DetailViewPanel>
+      </PanelSet>
+    </PanelIterator>
+  </PanelSet>
+</PCF>

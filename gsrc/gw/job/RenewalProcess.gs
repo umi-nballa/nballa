@@ -98,7 +98,6 @@ class RenewalProcess extends NewTermProcess {
   function start(startRenewalWorkflow : boolean){
     canStart().assertOkay()
     startJobAsNew()
-    JobProcessLogger.logInfo("Starting renewal for branch: " + _branch)
 
     if (Job.ActivePeriods.Count == 1) {
       initialize()

@@ -1,0 +1,26 @@
+package rules.EventMessage.EventFired_dir.HPX_dir
+uses una.integration.mapping.hpx.common.HPXRequestMapper
+uses una.forms.formsevents.EventTriggeredAvailability
+
+@gw.rules.RuleName("Custom Forms Event")
+internal class CustomFormsEvent {
+  static function doCondition(messageContext : entity.MessageContext) : boolean {
+/*start00rule*/
+return FormsEventType.getTypeKeys(false).hasMatch( \ event -> event.Code.equalsIgnoreCase(messageContext.EventName))
+/*end00rule*/
+}
+
+  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+/*start00rule*/
+var period = (messageContext.Root as PolicyPeriod)
+period = period.getSlice(period.EditEffectiveDate)
+var ewsRequestMapper = new HPXRequestMapper()
+var eventMessageForms = period.NewlyAddedForms.where( \ form -> form.Pattern.InferenceClass.Supertype == EventTriggeredAvailability)
+
+if (eventMessageForms.Count > 0) {
+  var ewsRequestXML = ewsRequestMapper.createForms(period, eventMessageForms)
+  messageContext.createMessage(ewsRequestXML)
+}
+/*end00rule*/
+  }
+}

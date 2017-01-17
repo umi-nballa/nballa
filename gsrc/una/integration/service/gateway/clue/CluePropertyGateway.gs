@@ -59,11 +59,11 @@ class CluePropertyGateway implements CluePropertyInterface {
     _logger.info("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.debug("CLUE Request or sending order :" + orderXml)
+    _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.debug("CLUE Response or received result :" + result)
+      _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.info("finished ordering CLUE")
@@ -106,7 +106,7 @@ class CluePropertyGateway implements CluePropertyInterface {
               + ", Subject Claims: ${totalSubjectClaims}, Prior History: ${totalPriorHist}")
           //Save report status for UI feedback
           pPeriod.HomeownersLine_HOE.ClueStatus_Ext = "CLUE Request Status: ${statusMsg}. Number of Claims: ${totalClaims}"
-              + ". Date: " + clueReport.Admin.DateRequestCompleted + "."
+              + ". Date: " + clueReport.Admin.DateRequestCompleted + "." +"\n" +"Mialing address, Risk Address, and Prior addresses are included in the C.L.U.E. report order."
 
           if (totalClaims > 0){
             var cHistories = clueReport.Report.ResultsDataset.ClaimsHistory
@@ -221,8 +221,6 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
-    priorLoss.OriginLoss="CLUE"
-
     return priorLoss
   }
 
@@ -332,10 +330,36 @@ class CluePropertyGateway implements CluePropertyInterface {
     var addressSub = mapSubjectAddress(address,"Primary")
     subject1.Address.add(addressSub)
 
+    //Map additional insureds
 
+    var additionalIns = pPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
 
-    var mailingAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_BILLING)
-    _logger.debug("******************************************** Mailing Address : " + mailingAddress.AddressLine1 )
+    var addIns = additionalIns.first()
+    var subject = new SubjectListType_Subject()
+    if(addIns != null){
+      i= i+1
+      subject.Id = subId + i
+      if(addIns.DateOfBirth != null)
+        subject.Birthdate = DateUtil.formatDateTime(addIns.DateOfBirth)
+      subject.Quoteback = addIns.PublicID
+
+      var subType1 = mapSubject(addIns.FirstName,addIns.LastName)
+
+      subject.Name.add(subType1)
+
+      lexOrderSubject.Subject.add(subject)
+      lexOrder.Products.ClueProperty[0].JointSubject = subject
+    }
+
+    var mailingAddress : Address
+
+    if(addIns != null) {
+      mailingAddress = addIns.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_BILLING)
+      _logger.debug("************** CLUE Mailing Address ***********************: " + mailingAddress.AddressLine1 )
+    } else {
+      mailingAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_BILLING)
+    _logger.debug("**************CLUE Mailing Address ***********************: : " + mailingAddress.AddressLine1 )
+     }
 
     var addressSub1 : SubjectType_Address
     var address1 =  new AddressListType_Address()
@@ -352,7 +376,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
 
     var priorAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_PRIORRESIDENCEADD1_EXT)
-    _logger.debug("******************************************** Prior Address : " + priorAddress.AddressLine1 )
+    _logger.debug("************ Prior Address ****************** : " + priorAddress.AddressLine1 )
     var addressSub2 : SubjectType_Address
     var address2 =  new AddressListType_Address()
     if(priorAddress != null)  {
@@ -367,27 +391,6 @@ class CluePropertyGateway implements CluePropertyInterface {
      }
 
     lexOrderSubject.Subject.add(subject1)
-
-    //Map additional insureds
-
-    var additionalIns = pPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
-
-      var addIns = additionalIns.first()
-      var subject = new SubjectListType_Subject()
-      if(addIns != null){
-      i= i+1
-      subject.Id = subId + i
-      if(addIns.DateOfBirth != null)
-      subject.Birthdate = DateUtil.formatDateTime(addIns.DateOfBirth)
-      subject.Quoteback = addIns.PublicID
-
-      var subType1 = mapSubject(addIns.FirstName,addIns.LastName)
-
-      subject.Name.add(subType1)
-
-       lexOrderSubject.Subject.add(subject)
-        lexOrder.Products.ClueProperty[0].JointSubject = subject
-       }
 
      lexOrder.Dataset.Addresses = lexOrderAddress
      lexOrder.Dataset.Subjects = lexOrderSubject

@@ -395,8 +395,9 @@ class HODwellingValidation_HOE extends PCValidationBase {
     // Validate common fields for policy types in Dwelling Protection
     /*if (HODwelling.DwellingProtectionDetails.BurglarAlarm == true and HODwelling.DwellingProtectionDetails.BurglarAlarmType == null)
       addErrorOrWarning("BurglarAlarmType", displaykey.Web.Policy.HomeownersLine.Validation.BurglarAlarmType, "HomeownersDwelling")*/
-    if (HODwelling.DwellingProtectionDetails.SmokeAlarm == true and HODwelling.DwellingProtectionDetails.SmokeAlarmOnAllFloors == null)
-      addErrorOrWarning("SmokeAlarmOnAllFloors", displaykey.Web.Policy.HomeownersLine.Validation.SmokeAlarmOnAllFloors, "HomeownersDwelling")
+   //Commenting this validation is not part of the new story card . The field Smoke alarm on all floors is disabled. no validation required.
+   // if (HODwelling.DwellingProtectionDetails.SmokeAlarm == true and HODwelling.DwellingProtectionDetails.SmokeAlarmOnAllFloors == null)
+   //   addErrorOrWarning("DwellingProtectionDetails.SmokeAlarmOnAllFloors", displaykey.Web.Policy.HomeownersLine.Validation.SmokeAlarmOnAllFloors, "HomeownersDwelling")
     /*if (HODwelling.DwellingProtectionDetails.Deadbolts == true and HODwelling.DwellingProtectionDetails.DeadboltsNumber == null)
       addErrorOrWarning("DeadboltsNumber", displaykey.Web.Policy.HomeownersLine.Validation.NumDeadBolts, "HomeownersDwelling")*/
     if (HODwelling.RoofType == RoofType.TC_OTHER and HODwelling.RoofTypeDescription == null)

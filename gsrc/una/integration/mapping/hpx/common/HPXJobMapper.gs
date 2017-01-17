@@ -117,7 +117,7 @@ class HPXJobMapper {
     var insured = policyPeriod.PrimaryNamedInsured
     var insuredMailingAddressCurrent = insured.AccountContactRole.AccountContact.Contact.AllAddresses.firstWhere( \ elt -> elt.AddressType == typekey.AddressType.TC_BILLING)
     var insuredMailingAddressPrevious = policyPeriod?.BasedOn?.PrimaryNamedInsured?.AccountContactRole?.AccountContact?.Contact?.AllAddresses?.firstWhere( \ elt -> elt.AddressType == typekey.AddressType.TC_BILLING)
-    var insuredMailingAddressChanged = !insuredMailingAddressCurrent.equals(insuredMailingAddressPrevious)
+    var insuredMailingAddressChanged = !insuredMailingAddressCurrent?.equals(insuredMailingAddressPrevious)
     if (insuredMailingAddressChanged) {
       var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
       premiumInfo.ChangeDisplayNameDesc = "Insured Mailing Address Change"

@@ -226,10 +226,10 @@
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
-        <Input
+        <!-- <Input
           id="respondingFireDept_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
-          value="dwelling.HOLocation.RespondingFireDept_Ext"/>
+          value="dwelling.HOLocation.RespondingFireDept_Ext"/> -->
         <!-- <TypeKeyInput
           editable="true"
           id="FireDeptMLvlsss"
@@ -463,7 +463,16 @@
           label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
           required="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
           value="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>
+          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext">
+          <PostOnChange
+            target="RespondingFireDeptOther_Ext"/>
+        </Input>
+        <Input
+          editable="true"
+          id="RespondingFireDeptOther_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartmentOther_Ext"
+          value="dwelling.HOLocation.RespondingFireDeptOther_Ext"
+          visible="(dwelling.HOLocation.Firedeptnmval_Ext!=null &amp;&amp; dwelling.HOLocation.Firedeptnmval_Ext.equalsIgnoreCase(&quot;Other&quot;)) || ( (dwelling.HOLocation.OverrideFiredeptnamedval_Ext &amp;&amp; dwelling.HOLocation.FiredeptnamedvalOverridden_Ext!=null &amp;&amp; dwelling.HOLocation.FiredeptnamedvalOverridden_Ext.equalsIgnoreCase(&quot;Other&quot;)) )"/>
       </InputSet>
       <InputDivider/>
       <!-- <InputSet
@@ -696,6 +705,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="DistToCoastTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
+          sortValueRange="false"
           value="dwelling.HOLocation.DistToCoast_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
         <Input
@@ -729,6 +739,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
+          sortValueRange="false"
           value="dwelling.HOLocation.DistBOW_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
           <PostOnChange
@@ -846,6 +857,7 @@
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
+          sortValueRange="false"
           value="dwelling.ResidenceType"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getResidenceType(dwelling)">
           <PostOnChange
@@ -857,7 +869,7 @@
           label="displaykey.Web.Homeowners.Dwelling.NumUnitsFireDivision_Ext"
           required="false"
           value="dwelling.NumUnitsFireDivision_Ext"
-          visible="dwelling.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT and ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_HI or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_HI)) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC)"/>
+          visible="dwelling.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT and ( (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_HI or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC)) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_HI)) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC) )"/>
         <RangeInput
           editable="true"
           id="DwellingUse"
@@ -936,7 +948,8 @@
           label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
           required="false"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
-          valueRange="typekey.TypeofPolicy_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)">
+          valueRange="typekey.TypeofPolicy_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
+          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod)">
           <PostOnChange/>
         </RangeInput>
         <Input
@@ -989,7 +1002,7 @@
             label="displaykey.Web.Homeowners.HODwelling.PriorResidenceWas_Ext"
             required="false"
             value="dwelling.PriorResidenceWas_Ext"
-            visible="((dwelling.HomePurchaseDate_Ext != null &amp;&amp; dwelling.HomeNewPurchase_Ext) &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_HOA_Ext || dwelling.HOPolicyType == TC_HOB_Ext)) ||(dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_CA || (dwelling.PolicyPeriod.BaseState == TC_HI &amp;&amp; dwelling.HOPolicyType == TC_DP3_Ext)))"/>
+            visible="(dwelling.HomeNewPurchase_Ext &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_HOA_Ext || dwelling.HOPolicyType == TC_HOB_Ext)) ||(dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_CA || (dwelling.PolicyPeriod.BaseState == TC_HI &amp;&amp; dwelling.HOPolicyType == TC_DP3_Ext)))"/>
           <DateInput
             editable="true"
             id="homePurchaseDate_Ext"

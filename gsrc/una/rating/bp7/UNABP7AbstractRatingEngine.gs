@@ -19,7 +19,7 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
 
       lineVersion.BP7Locations*.Coverages?.each(\locationCov -> rateLocationCoverage(locationCov, sliceRange))
-      //rateLiability(lineVersion, sliceRange)
+      rateLiability(lineVersion, sliceRange)
 
       lineVersion.AllBuildings.each(\building -> {
         rateBuilding(building, sliceRange)
@@ -57,7 +57,7 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
 
   abstract function rateLocationCoverage(location: BP7LocationCov, sliceToRate: DateRange)
 
-  //abstract function rateLiability(line : BP7BusinessOwnersLine, sliceToRate : DateRange)
+  abstract function rateLiability(line : BP7BusinessOwnersLine, sliceToRate : DateRange)
 
   abstract function rateBuilding(building: BP7Building, sliceToRate: DateRange)
 

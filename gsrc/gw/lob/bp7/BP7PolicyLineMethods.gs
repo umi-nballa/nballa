@@ -175,12 +175,17 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
       locations
           .sortBy(\ location -> location.toString())
           .each(\ location -> {
+        var locationCosts = filter.locationCoverageCosts(location)*.RelatedWorksheetCost.toList()
         var buildingCosts = filter.buildingCoverageCosts(location)*.RelatedWorksheetCost.toList()
         var classificationCosts = filter.classificationCoverageCosts(location)*.RelatedWorksheetCost.toList()
         var locationDescription = (buildingCosts.first() ?: classificationCosts.first()).DisplayLocation.DisplayName
 
         var locationContainer = createTitleContainer(locationDescription)
         lineContainer.addChild(locationContainer)
+
+        locationCosts.each(\ locationCost -> {
+          createCostContainer(locationContainer, locationCost, showConditionals)
+        })
 
         var buildingContainer = createTitleContainer(displaykey.Web.Policy.BP7.Financials.Buildings)
         locationContainer.addChild(buildingContainer)
@@ -278,11 +283,11 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   }
 
   override function createRatingEngine(method: RateMethod, parameters: Map<RateEngineParameter, Object>): AbstractRatingEngine<BP7Line> {
-    /*if (RateMethod.TC_SYSTABLE == method) {
+    if (RateMethod.TC_SYSTABLE == method) {
       return new BP7SysTableRatingEngine(_line as BP7Line)
     }
-    return new UNABP7RatingEngine(_line as productmodel.BP7Line, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus) */
-    return new BP7SysTableRatingEngine(_line as BP7Line)
+    return new UNABP7RatingEngine(_line as productmodel.BP7Line, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    //return new BP7SysTableRatingEngine(_line as BP7Line)
   }
 
   override property get BaseStateRequired(): boolean {

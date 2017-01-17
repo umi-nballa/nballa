@@ -71,6 +71,9 @@ class BP7CostDisplayableImpl implements BP7CostDisplayable {
   }
   
   override property get DisplayCoverageName() : String {
+    if(_cost.Coverage typeis BP7BusinessLiability){
+      return _cost.Coverage.DisplayName + " - Medical Payment Increase"
+    }
     return _cost.Coverage.DisplayName
   }
   

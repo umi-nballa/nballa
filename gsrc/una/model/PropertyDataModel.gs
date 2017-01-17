@@ -16,7 +16,7 @@ class PropertyDataModel {
   var percent:BigDecimal      as Percent
   var namedValue:String   as NamedValue
 
-  override  function toString() : String {
-    return value + " (" + percent + "%)"
-  }
+//  override  function toString() : String {
+//    return value + " (" + percent + "%)"
+//  }
 }

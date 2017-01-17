@@ -6,7 +6,7 @@ package una.rating.bp7.common
  */
 class BP7RateRoutineNames {
 
-  public static final var BP7_STRUCTURE_RATE_ROUTINE : String = "BP7StructureRateRoutine"
+  public static final var BP7_STRUCTURE_RATE_ROUTINE : String = "BP7BuildingStructureRateRoutine"
   public static final var BP7_BUILDING_MONEY_AND_SECURITIES_RATE_ROUTINE : String = "BP7BuildingMoneyAndSecuritiesRateRoutine"
   public static final var BP7_BUILDING_OUTDOOR_SIGNS_RATE_ROUTINE : String = "BP7BuildingOutdoorSignsRateRoutine"
   public static final var BP7_IDENTITY_RECOVERY_COVERAGE_RATE_ROUTINE : String = "BP7IdentityRecoveryCoverageRateRoutine"
@@ -34,4 +34,7 @@ class BP7RateRoutineNames {
   public static final var BP7_DAMAGE_PREMISES_RENTED_TO_YOU_RATE_ROUTINE : String = "BP7DamagePremisisRentedToYouRateRoutine"
   public static final var BP7_MEDICAL_PAYMENT_INCREASE_RATE_ROUTINE : String = "BP7MedicalPaymentIncreaseRateRoutine"
   public static final var BP7_LOCATION_ADDL_INSD_GRANTOR_OF_FRANCHISE_RATE_ROUTINE : String = "BP7LocationAddlInsdGrantorOfFranchiseRateRoutine"
+  public static final var BP7_LOCATION_ADDL_INSD_LESSORS_LEASED_EQUIPMENT_RATE_ROUTINE : String = "BP7LocationAddlInsdLessorsLeasedEquipmtRateRoutine"
+  public static final var BP7_LOCATION_ADDL_INSD_MANAGERS_LESSORS_PREMISES_RATE_ROUTINE : String = "BP7LocationAddlInsdManagersLessorsPremisesRateRoutine"
+  public static final var BP7_LOCATION_ADDL_INSD_DESIGNATED_PERSON_ORG_RATE_ROUTINE : String = "BP7LocationAddlInsdDesignatedPersonOrgRateRoutine"
 }

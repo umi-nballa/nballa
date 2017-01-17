@@ -68,8 +68,16 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     var step = new BP7LocationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, locationRatingInfo)
     switch(locationCov.Pattern){
       case "BP7AddlInsdGrantorOfFranchiseEndorsement":
-      //case "BP7AddlInsdDesignatedPersonOrgLocation_EXT":
-          addCost(step.rate(locationCov, sliceToRate))
+      case "BP7AddlInsdDesignatedPersonOrgLocation_EXT":
+      case "BP7AddlInsdManagersLessorsPremises" :
+      case "BP7AddlInsdLessorsLeasedEquipmt" :
+        addCost(step.rate(locationCov, sliceToRate))
+        break
+      case "BP7AddlInsdControllingInterestLocation_EXT" :
+      case "BP7AddlInsdOwnersLandLeasedToInsuredLocation_EXT" :
+      case "BP7AddlInsdMortgageeAssigneeReceiver" :
+      case "BP7AddlInsdCoOwnerInsdPremises" :
+        addCost(step.rateNonPremiumAdditionalInsuredCoverages(locationCov, sliceToRate))
     }
   }
 

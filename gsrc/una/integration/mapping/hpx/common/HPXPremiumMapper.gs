@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.common
 
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingMapper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 
 /**
  * Created with IntelliJ IDEA.

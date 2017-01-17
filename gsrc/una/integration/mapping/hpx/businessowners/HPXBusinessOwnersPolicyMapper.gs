@@ -8,7 +8,7 @@ uses una.integration.mapping.hpx.common.HPXAdditionalNameInsuredMapper
 uses una.integration.mapping.hpx.common.HPXLocationMapper
 uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
-uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
 uses una.integration.mapping.hpx.commercialpackage.commercialproperty.HPXCPCoverageMapper

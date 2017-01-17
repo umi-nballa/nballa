@@ -19,7 +19,7 @@ class PolicySearchResults {
       var thePolicyPeriod = elt.fetchPolicyPeriod()
       var theInsuredContact = thePolicyPeriod.PNIContactDenorm
       var theMiddleName = searchCriteria.NameCriteria.MiddleName_Ext.trim()
-      if(theMiddleName!=null && (theInsuredContact typeis Person) && theInsuredContact?.MiddleName?.trim().startsWith(theMiddleName)){
+      if(theMiddleName!=null && (theInsuredContact typeis Person) && (theInsuredContact as Person)?.MiddleName?.trim()?.startsWith(theMiddleName)){
         filteredList.add(elt)
       }
     }

@@ -1,4 +1,4 @@
-package una.integration.mapping.hpx.common
+package una.integration.mapping.hpx.helper
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara

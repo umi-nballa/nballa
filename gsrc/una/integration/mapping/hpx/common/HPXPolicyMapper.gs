@@ -21,6 +21,8 @@ uses wsi.schema.una.hpx.hpx_application_request.types.complex.ReinstateInfoType
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.RenewalInfoType
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.FeeType
 uses gw.xml.date.XmlDate
+uses una.integration.mapping.hpx.helper.HPXJobHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 
 /**
  * Created with IntelliJ IDEA.

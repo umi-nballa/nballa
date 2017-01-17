@@ -1,7 +1,7 @@
 package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
-uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 
 /**
  * Created with IntelliJ IDEA.

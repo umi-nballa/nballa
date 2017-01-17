@@ -114,7 +114,9 @@ return requiredTypes.contains(Dwelling_HOE.HOPolicyType) ? ExistenceType.TC_REQU
           optionCode="4000"
           priority="93"
           public-id="zs1gavd7k107g5g98e320i1e77b"
-          value="4000.0000"/>
+          value="4000.0000">
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as HODW_LossAssessmentCov_HOE_Ext).Dwelling)]]></AvailabilityScript>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zb7hqbuvuv4m31qunfop4idamlb"
           currency="usd"
@@ -168,6 +170,7 @@ return requiredTypes.contains(Dwelling_HOE.HOPolicyType) ? ExistenceType.TC_REQU
       required="true"
       restrictionModel="prp"
       valueType="other">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HOPL_SpecialLimitDeductibleAssessment_HOE", Dwelling_HOE)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt

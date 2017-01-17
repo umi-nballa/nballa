@@ -143,7 +143,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 
     if(formCode.equals(FormPatternConstants.HO_CONDO_UNIT_OWNER_COV_FORM)){
       if(hoeLine != null and dwelling != null and (dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO or
-          dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO_EXT)){
+          dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)){
         return true
       }
     }

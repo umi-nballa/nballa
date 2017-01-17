@@ -29,6 +29,7 @@ uses onbase.api.exception.UnityScriptErrorException
  * Note that this service call makes use of a Unity Script. Script responses
  * are not represented in the WSDL, so some manual Xml parsing is used.
  */
+//TODO: REMOVE THIS CLASS?
 class ScriptDispatcherWSP implements ScriptDispatcherInterface {
 
   private var logger = Logger.forCategory(Settings.ServicesLoggerCategory)

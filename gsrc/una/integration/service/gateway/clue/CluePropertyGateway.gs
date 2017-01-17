@@ -56,14 +56,14 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Throws(DisplayableException, "If the web service is not available")
   function orderClueProperty(pPeriod: PolicyPeriod) {
     //attempt to create the order xml
-    _logger.info("Entering orderClueProperty to order CLUE Report ")
+    _logger.debug("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.debug("CLUE Request or sending order :" + orderXml)
+    _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.debug("CLUE Response or received result :" + result)
+      _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.info("finished ordering CLUE")
@@ -353,7 +353,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     var mailingAddress : Address
 
-    if(subject != null) {
+    if(addIns != null) {
       mailingAddress = addIns.ContactDenorm?.AllAddresses.firstWhere( \ elt -> elt.AddressType == AddressType.TC_BILLING)
       _logger.debug("************** CLUE Mailing Address ***********************: " + mailingAddress.AddressLine1 )
     } else {
@@ -370,6 +370,12 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     addressSub1 = mapSubjectAddress(address1,"Mailing")
     subject1.Address.add(addressSub1)
+
+    if(addIns != null){
+      subject.Address.add(addressSub)
+      subject.Address.add(addressSub1)
+     }
+
     lexOrderAddress.Address.add(address1)
     lexOrder.Products.ClueProperty[0].MailingAddress = address1
     }
@@ -415,7 +421,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
 
     orderXml = lexOrder.asUTFString()
-    _logger.debug("CLUE order XML : " + orderXml )
+     _logger.debug("CLUE order XML : " + orderXml )
     return orderXml
   }
 
@@ -427,7 +433,6 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     subType.First = firstName
     subType.Last = lastName
-    subType.Type = NameType_Type.Primary
 
     return subType
   }

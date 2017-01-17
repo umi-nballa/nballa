@@ -44,8 +44,8 @@ class BP7BuildingRater extends BP7AbstractRater {
   }
   
   private function createCostData(coverage : BP7BuildingCov, sliceToRate : DateRange) : BP7CostData {
-    return coverage.InBlanket
-      ? new BP7BlanketedBuildingCovCostData(coverage.Blanket, coverage, sliceToRate)
-      : new BP7BuildingCovCostData(coverage, sliceToRate)
+  return coverage.InBlanket
+  ? new BP7BlanketedBuildingCovCostData(coverage.Blanket, coverage, sliceToRate)
+  : new BP7BuildingCovCostData(coverage, sliceToRate)
   }
 }

@@ -21,6 +21,7 @@ enhancement PCContactInfoEnhancement : PCContactInfo
     } else {
       this.FirstName = (contact as Person).FirstName
       this.LastName = (contact as Person).LastName
+      this.MiddleName = (contact as Person).MiddleName
       this.FirstNameKanji = (contact as Person).FirstNameKanji
       this.LastNameKanji = (contact as Person).LastNameKanji
       this.Particle = (contact as Person).Particle

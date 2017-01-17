@@ -250,7 +250,7 @@
           label="displaykey.Web.ContactDetail.Location"/>
         <InputSetRef
           def="AddressInputSet(new gw.pcf.contacts.AddressInputSetAddressOwner(producerCode.Contact_Ext.PrimaryAddress, false, true))"
-          visible="true //producerCode.Contact_Ext != null"/>
+          visible="producerCode.Contact_Ext != null"/>
       </InputSet>
       <Input
         editable="true"
@@ -258,13 +258,13 @@
         label="displaykey.Web.AddressDetail.AddressType"
         required="true"
         value="producerCode.Contact_Ext.PrimaryAddress.AddressType"
-        visible="true //producerCode.Contact_Ext != null"/>
+        visible="producerCode.Contact_Ext != null"/>
       <Input
         editable="true"
         id="AddressDescription"
         label="displaykey.Web.AddressDetail.Description"
         value="producerCode.Contact_Ext.PrimaryAddress.Description"
-        visible="true //producerCode.Contact_Ext != null"/>
+        visible="producerCode.Contact_Ext != null"/>
     </InputColumn>
     <Code><![CDATA[function getcontactlist(organizationUser:List<User>, organizatio:Organization):UserContact[]
 {

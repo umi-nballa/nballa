@@ -59,7 +59,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     _logger.debug("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.debug("CLUE Request or sending order :" + orderXml)
+    _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)

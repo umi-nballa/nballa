@@ -164,9 +164,6 @@ class CoveragesUtil {
       case "BP7FLChngsEmployPracLiabInsCov_EXT":
         result = getFLChngsEmployPracLiabInsCoverageExistence(coverable as BP7BusinessOwnersLine)
         break
-      case "HODW_WindstromHailExc_HOE_Ext":
-        result = getWindstormOrHailExclusionExistence(coverable as HomeownersLine_HOE)
-      break
       case "CPProtectiveSafeguards_EXT":
           result = getProtectiveSafeguardsExistence(coverable as CPBuilding)
       break
@@ -223,6 +220,7 @@ class CoveragesUtil {
       case "HODW_Comp_Earthquake_CA_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm)
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm)
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Comp_Earthquake_CA_HOE_Ext.HODW_CompEarthquakeCovC_ExtTerm)
         break
       case "HODW_LossAssessmentCov_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm)
@@ -309,7 +307,7 @@ class CoveragesUtil {
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
-      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO_EXT
+      result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
     }
 
     return result
@@ -358,13 +356,7 @@ class CoveragesUtil {
   }
 
   private static function isWindstormOrHailExclusionAvailableHO(line : HomeownersLine_HOE) : boolean{
-    var result = true
-
-    if(line.BaseState == TC_FL){
-      result = line.Dwelling.WHurricaneHailExclusion_Ext
-    }
-
-    return result
+    return line.Dwelling.WHurricaneHailExclusion_Ext
   }
 
   private static function getAcknowledgementOfNoWindstormHailCoverageExistence(hoLine : HomeownersLine_HOE) : ExistenceType{
@@ -396,20 +388,6 @@ class CoveragesUtil {
     }
     return result
   }
-
-  private static function getWindstormOrHailExclusionExistence(line : HomeownersLine_HOE) : ExistenceType{
-    var result : ExistenceType
-
-    if(line.BaseState == TC_FL and line.Dwelling.WHurricaneHailExclusion_Ext){
-      result = TC_REQUIRED
-    }else{
-      result = TC_ELECTABLE
-    }
-
-    return result
-  }
-
-
   private static function getProtectiveSafeguardsExistence(building : CPBuilding) : ExistenceType{
     var result : ExistenceType
 

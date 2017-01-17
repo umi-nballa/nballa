@@ -198,6 +198,9 @@ class CoverageTermAvailabilityUtil {
       case "Cov3Limit_EXT":
         result = isBP7OrdinanceLawCov3LimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HOPL_SpecialLimitDeductibleAssessment_HOE":
+        result = !(coverable as Dwelling_HOE).HOLine.DPLI_Personal_Liability_HOEExists or (coverable as Dwelling_HOE).ResidenceType == TC_CONDO
+        break
       default:
         break
     }
@@ -433,7 +436,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(line.BaseState == TC_TX){
-      //result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
+      result = AccountOrgType.TF_DWELLINGFIREPREMISEELIGIBLETYPES.TypeKeys.contains(line.Branch.Policy.Account.AccountOrgType)
     }
 
     return result
@@ -553,7 +556,7 @@ class CoverageTermAvailabilityUtil {
       }
 
       if(1000d == covTermOpt.Value.doubleValue()){
-        result = hoLine.Dwelling.ResidenceType == TC_singleFamily_Ext
+        result = hoLine.Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER
       }
     }
 
@@ -566,7 +569,7 @@ class CoverageTermAvailabilityUtil {
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
       if(dwelling.HOLine.DPLI_Personal_Liability_HOEExists){
         result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsWithPersonalLiability, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
-      }else if(dwelling.ResidenceType == TC_CONDO_EXT){
+      }else if(dwelling.ResidenceType == TC_CONDO){
         result = ConfigParamsUtil.getList(TC_LossAssessmentOptionsCondoOnly, dwelling.Branch.BaseState).contains(covTermOpt.Value?.setScale(0, BigDecimal.ROUND_FLOOR)?.toString())
       }
     }
@@ -589,7 +592,7 @@ class CoverageTermAvailabilityUtil {
 
     if(dwelling.Branch.BaseState == TC_FL){
       result = dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd
-          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO_EXT))
+          and  ((dwelling.HOPolicyType == TC_HO6 and dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null) or (dwelling.HOPolicyType == TC_DP3_EXT and dwelling.ResidenceType == TC_CONDO))
     }
 
     return result

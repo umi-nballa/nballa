@@ -219,4 +219,9 @@ class KeywordAdaptor {
    */
   property get TransactionEffectiveDate() : String { return _keywordMap.get(KeywordMap.transactioneffectivedate) as String }
 
+  /**
+   * Value for keyword ClaimSecurityRole or null if unset.
+   */
+  property get AysncDocumentID() : String { return _keywordMap.get(KeywordMap.asyncdocumentid) as String }
+
 }

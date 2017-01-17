@@ -25,6 +25,8 @@ class HOConstructionTypeMapper {
         case TC_CA:
         case TC_NV:
         case TC_FL:
+        case TC_NC:
+        case TC_SC:
             var returnConstructionType = setConstructionType(dwellingConstructionTypeL1)
             if(returnConstructionType == RateTableConstructionType_Ext.TC_FRAME)
               return returnConstructionType
@@ -41,6 +43,8 @@ class HOConstructionTypeMapper {
         case TC_CA:
         case TC_NV:
         case TC_FL:
+        case TC_SC:
+        case TC_NC:
             return setConstructionType(dwellingConstructionType)
       }
     }

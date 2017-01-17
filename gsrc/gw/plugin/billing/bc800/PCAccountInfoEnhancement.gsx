@@ -3,7 +3,7 @@ package gw.plugin.billing.bc800
 uses java.util.ArrayList
 uses wsi.remote.gw.webservice.bc.bc800.entity.types.complex.PCAccountInfo
 uses wsi.remote.gw.webservice.bc.bc800.entity.types.complex.PCContactInfo
-uses wsi.remote.gw.webservice.bc.bc800.entity.anonymous.elements.PCAccountInfo_BillingContacts
+uses wsi.remote.gw.webservice.bc.bc800.entity.anonymous.elements.PCAccountInfo_OtherBillingContacts
 
 @Export
 enhancement PCAccountInfoEnhancement : PCAccountInfo
@@ -20,24 +20,27 @@ enhancement PCAccountInfoEnhancement : PCAccountInfo
     this.InsuredContact.$TypeInstance = insuredContact
 
     var insuredContactID = account.AccountHolderContact.ID
-
-    var billingContacts = new ArrayList<PCContactInfo>()
-    var accountBillingContacts = account.getAccountContactsWithRole( typekey.AccountContactRole.TC_BILLINGCONTACT)
-    var addlInterests = PolicyInfoUtil.retrieveAdditionalInterests(account.Policies.first().LatestPeriod)
-    for(b in accountBillingContacts){
-      if(insuredContactID == b.Contact.ID){
-        this.InsuredIsBilling = true
-      }else{
-        var PCContactInfo = new PCContactInfo()
-        PCContactInfo.sync( b.Contact )
-        PCContactInfo.LoanNumber = addlInterests?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm == b.Contact)?.ContractNumber
-        billingContacts.add( PCContactInfo )
-      }
+    var policyPeriod = account.Policies.last().LatestPeriod
+    var primaryPayer = policyPeriod.BillingContact
+    if (primaryPayer.ContactDenorm.ID == insuredContactID) {
+      this.InsuredIsBilling = true
+    } else if (primaryPayer != null) {
+      // Mapping Primary Billing Contact (if insured is not primary payer)
+      var primaryBillingContact = new PCContactInfo()
+      primaryBillingContact.sync(primaryPayer.ContactDenorm)
+      this.PrimaryBillingContact.$TypeInstance = primaryBillingContact
     }
-    billingContacts.each(\ p -> {
-      var element = new PCAccountInfo_BillingContacts()
-      element.$TypeInstance = p
-      this.BillingContacts.add(element)
+    // Mapping Other Billing Contacts
+    var accountBillingContacts = account.getAccountContactsWithRole( typekey.AccountContactRole.TC_BILLINGCONTACT)
+    var addlInterests = PolicyInfoUtil.retrieveAdditionalInterests(policyPeriod)
+    accountBillingContacts.where( \ b -> b.Contact.ID != insuredContactID && b.Contact.ID != primaryPayer.ContactDenorm.ID).each( \ b -> {
+      var contInfo = new PCContactInfo()
+      contInfo.sync( b.Contact )
+      contInfo.LoanNumber = addlInterests?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm == b.Contact)?.ContractNumber
+
+      var element = new PCAccountInfo_OtherBillingContacts()
+      element.$TypeInstance = contInfo
+      this.OtherBillingContacts.add(element)
     })
   }
 }

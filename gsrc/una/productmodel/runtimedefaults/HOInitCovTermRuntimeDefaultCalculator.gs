@@ -66,6 +66,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HODW_EQCovA_HOE":
         result = line.Dwelling.DwellingLimitCovTerm.Value
         break
+      case "HODW_CompEarthquakeCovC_Ext":
+        result = getEarthquakeCompCovCLimitDefault(line)
+		break
       case "HOLI_UnitOwnersRentedOthers_Deductible_HOE_Ext":
         result = getUnitRentedToOthersDeductibleDefault(line)
         break
@@ -127,6 +130,19 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       result = maxAllowed
     }else{
       result = calculatedAmount
+    }
+
+    return result
+  }
+
+  private static function getEarthquakeCompCovCLimitDefault(line : entity.HomeownersLine_HOE) : Double{
+    var result : Double
+    var factor = ConfigParamsUtil.getDouble(TC_LimitDefaultFactor, line.BaseState, line.HOPolicyType.Code + "HODW_CompEarthquakeCovC_Ext")
+
+    if(factor > 1){
+      result = factor
+    }else if(factor < 1 and line.Dwelling.DwellingLimitCovTerm.Value != null){ //this check will account for a null result from config params
+      result = factor * line.Dwelling.DwellingLimitCovTerm.Value
     }
 
     return result

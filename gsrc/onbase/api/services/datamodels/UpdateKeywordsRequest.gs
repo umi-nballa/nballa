@@ -31,7 +31,6 @@ class UpdateKeywordsRequest {
   }
 
   private static final var _documentFieldsToCheck = {
-    'Name' -> KeywordMap.filename,
     'Description' -> KeywordMap.description,
     //'MimeType' -> KeywordMap.mimetype,
     //'Author' -> KeywordMap.user,

@@ -256,6 +256,8 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
           estimatedDiscounts.add(ratingHelper.getSouthCarolinaMaximumInsuranceScoreSurcharge(policyPeriod))
         break
       case typekey.Jurisdiction.TC_NV :
+          estimatedDiscounts.add(ratingHelper.getNevadaMaximumInsuranceScoreDiscount(policyPeriod))
+          estimatedDiscounts.add(ratingHelper.getNevadaMaximumInsuranceScoreSurcharge(policyPeriod))
         break
     }
     return estimatedDiscounts

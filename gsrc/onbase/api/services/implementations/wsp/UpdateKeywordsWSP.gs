@@ -35,10 +35,8 @@ class UpdateKeywordsWSP implements UpdateKeywordsInterface {
 
     // Create request keywords.
     var standaloneKeywords = new StandAloneKeywordUpdate()
-    //ukRequest.DocumentHandles.eachWithIndex( \handle, i -> { standaloneKeywords.DocumentHandle_Collection.String[i] = handle })
 
     var sikgKeywords = new Single_Instance_Keyword_GroupKeywordUpdate()
-    //sikgKeywords.QueryType= ukRequest. GWKWRequestTypeAndUserName.INS_Username = ukRequest.UserID
 
     standaloneKeywords.INS_Username_Collection.String[0] = ukRequest.UserID
     standaloneKeywords.INS_RequestType_Collection.String[0] = "ASYNCHRONOUS"

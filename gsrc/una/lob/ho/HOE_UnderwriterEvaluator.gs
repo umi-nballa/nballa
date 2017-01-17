@@ -493,12 +493,12 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
                    and typekey.HOPolicyType_HOE.TF_HOPOLICYTYPESFILTER6_EXT.TypeKeys.contains(_policyEvalContext.Period.HomeownersLine_HOE.HOPolicyType)){
                     _policyEvalContext.addIssue("HO_ResTypApartment_Ext","HO_ResTypApartment_Ext",shortDescription,longDescription_Form)
         }
-         else if(typekey.ResidenceType_HOE.TC_CONDO_EXT == _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.ResidenceType
+         else if(typekey.ResidenceType_HOE.TC_CONDO == _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.ResidenceType
                 and typekey.HOPolicyType_HOE.TF_HOPOLICYTYPESFILTER2.TypeKeys.contains(_policyEvalContext.Period.HomeownersLine_HOE.HOPolicyType)
                 and    typekey.Jurisdiction.TF_JURIDICTIONFILTER5_EXT.TypeKeys.contains(_policyEvalContext.Period.BaseState)) {
                   _policyEvalContext.addIssue("HO_ResTypDpCondo_Ext","HO_ResTypDpCondo_Ext",shortDescription,longDescription)
             }
-           else if (typekey.ResidenceType_HOE.TC_CONDO_EXT== _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.ResidenceType
+           else if (typekey.ResidenceType_HOE.TC_CONDO == _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.ResidenceType
                      and typekey.HOPolicyType_HOE.TF_HOPOLICYTYPESFILTER7.TypeKeys.contains(_policyEvalContext.Period.HomeownersLine_HOE.HOPolicyType)) {
                 _policyEvalContext.addIssue("HO_ResTypCondo_Ext","HO_ResTypCondo_Ext",shortDescription,longDescription_Form)
               }

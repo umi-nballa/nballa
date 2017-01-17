@@ -59,6 +59,7 @@
       <xs:element name="FirstNameKanji" minOccurs="0" type="xs:string"/>
       <xs:element name="LastName" minOccurs="0" type="xs:string"/>
       <xs:element name="LastNameKanji" minOccurs="0" type="xs:string"/>
+      <xs:element name="MiddleName" minOccurs="0" type="xs:string"/>
       <xs:element name="Particle" minOccurs="0" type="xs:string"/>
       <xs:element name="WorkPhone" minOccurs="0" type="xs:string"/>
       <xs:element name="WorkPhoneCountry" minOccurs="0" type="xs:string"/>
@@ -71,15 +72,15 @@
       <xs:element name="LoanNumber" minOccurs="0" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>
-    <xs:element name="PolicyRiskAddress" type="PolicyRiskAddress"/>
-    <xs:complexType name="PolicyRiskAddress">
-        <xs:sequence>
-            <xs:element name="LocationName" minOccurs="0" type="xs:string"/>
-            <xs:element name="Address" minOccurs="0" type="AddressInfo"/>
-            <xs:element name="County" minOccurs="0" type="xs:string"/>
-            <xs:element name="AddressType" minOccurs="0" type="xs:string"/>
-        </xs:sequence>
-    </xs:complexType>
+  <xs:element name="PolicyRiskAddress" type="PolicyRiskAddress"/>
+  <xs:complexType name="PolicyRiskAddress">
+    <xs:sequence>
+      <xs:element name="LocationName" minOccurs="0" type="xs:string"/>
+      <xs:element name="Address" minOccurs="0" type="AddressInfo"/>
+      <xs:element name="County" minOccurs="0" type="xs:string"/>
+      <xs:element name="AddressType" minOccurs="0" type="xs:string"/>
+    </xs:sequence>
+  </xs:complexType>
   <xs:element name="NewInvoiceStream" type="NewInvoiceStream"/>
   <xs:complexType name="NewInvoiceStream">
     <xs:sequence>
@@ -240,7 +241,8 @@
       <xs:element name="CustomerServiceTier" minOccurs="0" type="xs:string"/>
       <xs:element name="InsuredIsBilling" minOccurs="0" type="xs:boolean"/>
       <xs:element name="InsuredContact" minOccurs="0" type="PCContactInfo"/>
-      <xs:element name="BillingContacts" minOccurs="0" maxOccurs="unbounded" type="PCContactInfo"/>
+      <xs:element name="PrimaryBillingContact" minOccurs="0" type="PCContactInfo"/>
+      <xs:element name="OtherBillingContacts" minOccurs="0" maxOccurs="unbounded" type="PCContactInfo"/>
       <xs:element name="PaymentAllocationPlanPublicID" minOccurs="0" type="xs:string"/>
     </xs:sequence>
   </xs:complexType>

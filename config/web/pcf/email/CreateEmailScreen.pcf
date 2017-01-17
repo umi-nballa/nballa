@@ -18,10 +18,6 @@
       name="documentsToSend"
       type="Document[]"/>
     <Variable
-      initialValue="null"
-      name="documentToSave"
-      type="Document"/>
-    <Variable
       initialValue="emailTemplate == null"
       name="noDefaultTemplate"
       type="Boolean"/>
@@ -31,6 +27,10 @@
     <Variable
       initialValue="true//docContainer != null and perm.Document.create"
       name="saveAsDocument"/>
+    <Variable
+      initialValue="initializeDocumentToSave()"
+      name="documentToSave"
+      type="Document"/>
     <Variable
       initialValue="false"
       name="showCC"/>
@@ -141,7 +141,31 @@
           labelAbove="true"
           value="saveAsDocument"
           valueLabel="displaykey.Web.Email.SaveAsDocument"
-          visible="docContainer != null and perm.Document.create"/>
+          visible="docContainer != null and perm.Document.create">
+          <PostOnChange
+            disablePostOnEnter="false"
+            onChange="initializeDocumentToSave()"
+            target="DocumentTypeInputSet"/>
+        </CheckBoxInput>
+        <InputSet
+          editable="saveAsDocument"
+          id="DocumentTypeInputSet"
+          visible="docContainer != null and perm.Document.create">
+          <TypeKeyInput
+            editable="true"
+            hideIfReadOnly="true"
+            id="OnBaseDocumentType"
+            label="displaykey.Web.Email.DocumentType"
+            required="saveAsDocument"
+            value="documentToSave.OnBaseDocumentType"/>
+          <TypeKeyInput
+            editable="true"
+            hideIfReadOnly="true"
+            id="OnBaseDocumentSubtype"
+            label="displaykey.Web.Email.DocumentSubtype"
+            value="documentToSave.OnBaseDocumentSubtype"
+            visible="docContainer != null and perm.Document.create"/>
+        </InputSet>
       </InputColumn>
       <InputColumn>
         <TextInput
@@ -266,7 +290,15 @@
         </TextAreaInput>
       </InputColumn>
     </DetailViewPanel>
-    <Code><![CDATA[//copy content to note body 
+    <Code><![CDATA[function initializeDocumentToSave() :Document {
+  if(saveAsDocument && documentToSave == null) {
+    documentToSave = new Document()
+    documentToSave.OnBaseDocumentType = typekey.OnBaseDocumentType_Ext.TC_OUT_CORR
+  }
+  return documentToSave 
+}
+
+//copy content to note body 
 function copyEmailBodyToNoteBody(){
   if(policy != null and note != null){
     note.SecurityType = typekey.NoteSecurityType.TC_INTERNALONLY  

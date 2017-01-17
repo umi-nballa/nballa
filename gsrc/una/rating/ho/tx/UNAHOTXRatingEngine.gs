@@ -668,7 +668,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium += (_hoRatingInfo.FinalAdjustedBaseClassPremium + _hoRatingInfo.ReplacementCostDwellingPremium +
-        _hoRatingInfo.ReplacementCostPersonalPropertyPremium)
+        _hoRatingInfo.ReplacementCostPersonalPropertyPremium + _hoRatingInfo.HOAPlusCoveragePremium)
   }
 
   private function hasAdditionalNamedInsureds() : boolean{

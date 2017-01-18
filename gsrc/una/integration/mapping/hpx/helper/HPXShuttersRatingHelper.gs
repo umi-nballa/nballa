@@ -10,7 +10,7 @@ uses java.util.ArrayList
  * Time: 6:03 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXShuttersRatingHelper extends HPXHurricaneLossMitigationHelper {
+class HPXShuttersRatingHelper {
 
   function getEstimatedShuttersDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     var shuttersEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2011 ? getShuttersDiscountsForPre2001BuiltHomes(policyPeriod) : getShuttersDiscountsForPost2001BuiltHomes(policyPeriod)

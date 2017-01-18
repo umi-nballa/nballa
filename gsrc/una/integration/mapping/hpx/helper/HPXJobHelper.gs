@@ -1,8 +1,8 @@
-package una.integration.mapping.hpx.common
+package una.integration.mapping.hpx.helper
 
-uses gw.plugin.Plugins
-uses gw.plugin.diff.IPolicyPeriodDiffPlugin
 uses java.util.ArrayList
+uses gw.plugin.diff.IPolicyPeriodDiffPlugin
+uses gw.plugin.Plugins
 
 /**
  * Created with IntelliJ IDEA.

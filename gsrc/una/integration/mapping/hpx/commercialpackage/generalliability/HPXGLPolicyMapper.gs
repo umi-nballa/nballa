@@ -1,7 +1,7 @@
 package una.integration.mapping.hpx.commercialpackage.generalliability
 
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
-uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper

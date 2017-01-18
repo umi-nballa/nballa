@@ -1007,11 +1007,13 @@
             <ColumnLabel>displaykey.Web.Policy.BP7.Classification.Schedule.Description</ColumnLabel>
             <Required>false</Required>
         </TextAreaPropertyInfo>
-        <StringPropertyInfo priority="60">
+        <ReadOnlyPropertyInfo priority="60">
             <Name>LoanLeaseNumber</Name>
-            <ColumnName>StringCol2</ColumnName>
+            <ScheduledItemType>BP7ScheduledItem</ScheduledItemType>
+            <ColumnName>StringCol4</ColumnName>
             <ColumnLabel>displaykey.Web.Policy.BP7.AdditionalInterest.LoanLeaseNumber</ColumnLabel>
             <Required>false</Required>
-        </StringPropertyInfo>
+            <MethodExpression>(_entity as entity.BP7ScheduledItem).AdditionalInterest.ContractNumber</MethodExpression>
+        </ReadOnlyPropertyInfo>
     </Clause>
 </ScheduleConfig>

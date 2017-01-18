@@ -89,60 +89,20 @@
           <PostOnChange/>
         </Input>
       </InputSet>
-      <InputDivider/>
-      <!-- InputSet
-        id="Floodzone_Ext">
-        <RangeInput
-          available="!dwelling.OverrideYearbuilt_Ext"
-          editable="true"
-          id="FloodzoneTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FloodZoneTunaReturned_Ext"
-          required="!dwelling.OverrideYearbuilt_Ext"
-          value="dwelling.FloodZone_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)">
-          <PostOnChange
-            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"
-            target="Yearbuilt_Ext"/>
-        </RangeInput>
-        <Input
-          available="!dwelling.OverrideYearbuilt_Ext"
-          id="latitudeMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.YearbuiltMatchlevel_Ext"
-          value="dwelling.YearbuiltMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideYearbuilt_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.YearbuiltOverride_Ext"
-          value="dwelling.OverrideYearbuilt_Ext">
-          <PostOnChange
-            target="Yearbuilt_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.OverrideYearbuilt_Ext"
-          editable="true"
-          id="yearbuiltUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.YearbuiltUserEntered_Ext"
-          required="dwelling.OverrideYearbuilt_Ext"
-          value="dwelling.YearBuiltOverridden_Ext"
-          visible="dwelling.OverrideYearbuilt_Ext">
-          <PostOnChange
-            target="Yearbuilt_Ext"/>
-        </Input>
-      </InputSet>
-      <InputDivider/>
-      <Input
-        editable="true"
-        id="FloodZone_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.FloodZone"
-        required="false"
-        value="dwelling.FloodZone_Ext"
-        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)"/>
+      <InputDivider/>      
       <Input
         id="FloodRiskType_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.FloodRiskType"
         required="false"
         value="dwelling.getFloodRiskTypeValue(dwelling)"/>
-      <InputDivider/ -->
+	  <Input
+          editable="true"
+          id="PostFirm_Ext"
+          label="displaykey.Web.Homeowners.DwellingConstruction.PostFirm"
+          required="false"
+          value="dwelling.PostFIRM_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT)"/>
+      <InputDivider/>
       <InputSet
         editable="true"
         id="TerritoryCodeInputSet"

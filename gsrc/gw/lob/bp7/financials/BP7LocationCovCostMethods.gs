@@ -16,6 +16,8 @@ class BP7LocationCovCostMethods extends BP7AbstractCostMethods<BP7LocationCovCos
   }
   
   override property get CostQualifier() : BP7Qualifier {
-    throw "not implemented"
+    return new BP7Qualifier("/line" + _owner.Location.Line.FixedId.Value +
+                            "/location" + _owner.Location.Location.LocationNum +
+                            "/" + Coverage.PatternCode)
   }
 }

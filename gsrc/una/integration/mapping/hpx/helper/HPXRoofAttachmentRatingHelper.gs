@@ -13,7 +13,7 @@ uses java.util.ArrayList
 class HPXRoofAttachmentRatingHelper {
 
   function getEstimatedRoofAttachmentDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
-    var roofAttachmentEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2011 ? getRoofAttachmentDiscountsForPre2001BuiltHomes(policyPeriod) : getRoofAttachmentDiscountsForPost2001BuiltHomes(policyPeriod)
+    var roofAttachmentEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2001 ? getRoofAttachmentDiscountsForPre2001BuiltHomes(policyPeriod) : getRoofAttachmentDiscountsForPost2001BuiltHomes(policyPeriod)
     return roofAttachmentEstimatedDiscounts
   }
 

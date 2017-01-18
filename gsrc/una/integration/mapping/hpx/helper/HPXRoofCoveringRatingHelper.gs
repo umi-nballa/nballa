@@ -14,7 +14,7 @@ uses java.util.ArrayList
 class HPXRoofCoveringRatingHelper {
 
   function getEstimatedRoofCoveringDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
-    var roofCoveringEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2011 ? getRoofCoveringDiscountsForPre2001BuiltHomes(policyPeriod) : getRoofCoveringDiscountsForPost2001BuiltHomes(policyPeriod)
+    var roofCoveringEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2001 ? getRoofCoveringDiscountsForPre2001BuiltHomes(policyPeriod) : getRoofCoveringDiscountsForPost2001BuiltHomes(policyPeriod)
     return roofCoveringEstimatedDiscounts
   }
 

@@ -10,7 +10,7 @@ uses java.util.ArrayList
  * Time: 5:34 PM
  * To change this template use File | Settings | File Templates.
  */
-class HPXRootToWallRatingHelper extends HPXHurricaneLossMitigationHelper {
+class HPXRootToWallRatingHelper {
 
   function getEstimatedRoofCoveringDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     var roofCoveringEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2011 ? getRoofToWallDiscountsForPre2001BuiltHomes(policyPeriod) : getRoofToWallDiscountsForPost2001BuiltHomes(policyPeriod)

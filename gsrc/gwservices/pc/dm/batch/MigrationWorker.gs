@@ -247,7 +247,7 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
           proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
           break;
         default :
-        throw new DataMigrationNonFatalException(INVALID_ENVIRONMET_TYPE, "Invalid Migration environment type.")
+        //throw new DataMigrationNonFatalException(INVALID_ENVIRONMET_TYPE, "Invalid Migration environment type.")
     }
     return proHelper
   }

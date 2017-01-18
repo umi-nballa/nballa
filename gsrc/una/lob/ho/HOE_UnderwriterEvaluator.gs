@@ -568,7 +568,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
           if(_policyEvalContext.Period.BaseState == typekey.Jurisdiction.TC_FL
              and   _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOEExists
               and _policyEvalContext.Period.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm?.Value < covALimit_125000)
-                    _policyEvalContext.addIssue("HO_DpCovALmtLs125000_","HO_DpCovALmtLs125000_",shortDescription,longDescription)
+                    _policyEvalContext.addIssue("HO_DpCovALmtLs125000_Ext","HO_DpCovALmtLs125000_Ext",shortDescription,longDescription)
           break
       case  typekey.HOPolicyType_HOE.TC_HO6 : // row 12
           var shortDescription = \-> displaykey.Ext.UWIssue.HO.Coverage.DwellingLimit.ShortDesc_Ext

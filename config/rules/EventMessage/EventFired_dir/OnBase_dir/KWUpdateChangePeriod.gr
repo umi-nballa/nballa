@@ -1,21 +1,19 @@
 package rules.EventMessage.EventFired_dir.OnBase_dir
 uses java.lang.IllegalStateException
-uses java.lang.System
-uses java.util.Date
+
 uses gw.util.Base64Util
 uses onbase.api.services.datamodels.UpdateKeywordsRequest
 
-@gw.rules.RuleName("KW Update - Policy Period Changed")
-internal class KWUpdatePolicyPeriodChanged {
-  static function doCondition(messageContext : entity.MessageContext) : boolean {
+@gw.rules.RuleName("KW Update - Change Period")
+internal class KWUpdateChangePeriod {
+  static function doCondition(messageContext  :  entity.MessageContext) : boolean {
 /*start00rule*/
 return messageContext.Root typeis PolicyPeriod && (messageContext.EventName == "IssuePeriod" || messageContext.EventName == "ChangePeriod")
 /*end00rule*/
 }
 
-  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+  static function doAction(messageContext  :  entity.MessageContext, actions : gw.rules.Action) {
 /*start00rule*/
-
 var policyPeriod = (messageContext.Root as PolicyPeriod)
 
 if(not (policyPeriod.Job typeis Issuance) && not (policyPeriod.Job typeis PolicyChange)){
@@ -29,8 +27,7 @@ var newPeriod = policyPeriod.getSlice(policyPeriod.EditEffectiveDate)
   var payload = new onbase.api.messaging.updatekeywordsrequestmodel.UpdateKeywordsRequest(updateRequest)
   if(payload != null) {
     messageContext.createMessage(Base64Util.encode(payload.bytes()))
-  }
-
+  } 
 /*end00rule*/
   }
 }

@@ -189,7 +189,11 @@ class QueryPolicyAPI {
     info.IssuedDate = policy.IssueDate
     info.Underwriter = policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_UNDERWRITER).AssignedUser.DisplayName
 
-    info.PrimaryNamedInsured = new ContactInfoForOnBase(policyPeriod.PrimaryNamedInsured.FirstName,  policyPeriod.PrimaryNamedInsured.LastName)
+    if(policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact typeis Company)  {
+      info.PrimaryNamedInsured = new ContactInfoForOnBase(policyPeriod.PrimaryNamedInsured.DisplayName, "")
+    } else {
+      info.PrimaryNamedInsured = new ContactInfoForOnBase(policyPeriod.PrimaryNamedInsured.FirstName,  policyPeriod.PrimaryNamedInsured.LastName)
+    }
 
     var additionalNamedInsureds : List<ContactInfoForOnBase> = null
     var additionalNamedInsuredContacts = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)

@@ -1,7 +1,7 @@
 package una.integration.mapping.hpx.commercialpackage.generalliability
 
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
-uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
@@ -9,6 +9,7 @@ uses una.integration.mapping.hpx.common.HPXClassificationMapper
 uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -185,7 +186,7 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
     return transactions
   }
 
-  override function getCostType(cost : Cost) :  String {
+  override function getDiscountCostType(cost : Cost) :  String {
     return null
   }
 
@@ -193,7 +194,15 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+  override function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal {
     return null
   }
 }

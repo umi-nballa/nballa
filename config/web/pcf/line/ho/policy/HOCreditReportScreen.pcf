@@ -108,7 +108,8 @@
               required="!period.CreditInfoExt.CreditMode"
               value="period.CreditInfoExt.CreditReport.PolicyContactRole"
               valueRange="una.pageprocess.credit.CreditReportScreen.getPersonContactRoles(period)//period.PolicyContactRoles.where(\ p -&gt; p.Subtype == &quot;PolicyPriNamedInsured&quot; || p.Subtype == &quot;PolicyAddlNamedInsured&quot;)">
-              <PostOnChange/>
+              <PostOnChange
+                onChange="creditReportContact = period.CreditInfoExt.CreditReport.PolicyContactRole"/>
             </RangeInput>
             <Input
               id="PolicyPrimaryInsured"
@@ -255,7 +256,7 @@
           </InputSet>
           <InputDivider/>
           <InputSet
-            visible="period.CreditInfoExt.CreditOrdered &amp;&amp; period.CreditInfoExt.CreditReport.PolicyContactRole != null &amp;&amp; period.CreditInfoExt.CreditReport != null">
+            visible="period.CreditInfoExt.CreditOrdered &amp;&amp; period.CreditInfoExt.CreditReport.PolicyContactRole != null &amp;&amp; period.CreditInfoExt.CreditReport != null &amp;&amp; !period.CreditInfoExt.CreditMode">
             <Label
               label="displaykey.Web.SubmissionWizard.CreditReporting.CreditReportEnabledPrompt"/>
             <Input

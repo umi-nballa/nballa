@@ -71,6 +71,7 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.createPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Added below code for lexis First Integration
           if(!(policyPeriod.Submission.BindOption.Code == typekey.BindOption.TC_BINDONLY))
           policyPeriod.addEvent(CREATEPERIOD_LEXIS_FIRST_MSG)
           break
@@ -86,6 +87,7 @@ class BillingMessageTransport implements MessageTransport {
           }
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
+            //Added below code for lexis First Integration
             policyPeriod.addEvent(CHANGEPERIOD_LEXIS_FIRST_MSG)
           }
 
@@ -96,6 +98,7 @@ class BillingMessageTransport implements MessageTransport {
           }
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
+            //Added below code for lexis First Integration
             policyPeriod.addEvent(ISSUEPERIOD_LEXIS_FIRST_MSG)
           }
 
@@ -106,6 +109,7 @@ class BillingMessageTransport implements MessageTransport {
             throw new IllegalStateException("Unexpected job type ${policyPeriod.Job.Subtype} for message ${message.EventName}")
           }
           plugin.issueReinstatement(policyPeriod, getTransactionId(message))
+          //Added below code for lexis First Integration
           policyPeriod.addEvent(REINSTATEPERIOD_LEXIS_FIRST_MSG)
           break
         case RENEWPERIOD_MSG:
@@ -115,6 +119,7 @@ class BillingMessageTransport implements MessageTransport {
           createAccountIfNecessary(policyPeriod.Policy.Account, getTransactionId(message))
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.renewPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Added below code for lexis First Integration
           policyPeriod.addEvent(RENEWPERIOD_LEXIS_FIRST_MSG)
           break
         case REWRITEPERIOD_MSG:
@@ -123,6 +128,7 @@ class BillingMessageTransport implements MessageTransport {
           }
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.rewritePolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Added below code for lexis First Integration
           policyPeriod.addEvent(REWRITEPERIOD_LEXIS_FIRST_MSG)
           break
         case FINALAUDIT_MSG:

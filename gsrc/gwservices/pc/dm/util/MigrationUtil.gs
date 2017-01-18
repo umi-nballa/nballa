@@ -22,6 +22,8 @@ uses java.lang.System
 uses java.util.Map
 uses java.util.zip.ZipEntry
 uses java.util.zip.ZipOutputStream
+uses java.lang.StringBuilder
+uses gwservices.pc.dm.batch.DataMigrationNonFatalException
 
 /**
  * Migration utility functions
@@ -29,12 +31,12 @@ uses java.util.zip.ZipOutputStream
 abstract class MigrationUtil {
   public static final var SEQUENCE_MIN_PARAM: String = "SEQUENCE_MIN"
   public static final var SEQUENCE_MAX_PARAM: String = "SEQUENCE_MAX"
-  private static final var _MIGRATION_CONFIG_FILE = "migration"
+  private static final var _MIGRATION_CONFIG_FILE = "accountsMigration"
   private static final var _MIGRATION_ROLE_PROPERTY = "MIGRATION_ROLE"
   private static final var _ENV_PARAM = "gw.pc.env"
   private static final var _ENV_WILDCARD = "*"
   private static final var _migrationRoleName: LockingLazyVar<String> as MIGRATION_ROLE_NAME = LockingLazyVar.make(\-> {
-    var ph = new PropertyHelper(_MIGRATION_CONFIG_FILE, System.getProperty(_ENV_PARAM))
+    var ph = getPropertyHelper(_MIGRATION_CONFIG_FILE)
     return ph.getProperty(_MIGRATION_ROLE_PROPERTY)
   })
   public static final var _migrationRole: LockingLazyVar<Role> as MIGRATION_ROLE = LockingLazyVar.make(\-> {
@@ -292,5 +294,39 @@ abstract class MigrationUtil {
       }
     }
     return xml
+  }
+
+  private static function getPropertyHelper(_CONFIG_FILE : StringBuilder) : PropertyHelper{
+    var proHelper : PropertyHelper
+    var env : StringBuilder = new StringBuilder(System.getProperty(_ENV_PARAM))
+    switch(env.toString().toUpperCase()){
+      case "LOCAL":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
+          break;
+      case "PC_DEV":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
+          break;
+      case "PC_DEVINT":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
+          break;
+      case "PC_ASM":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"asm", "ASM")
+          break;
+      case "QAT":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
+          break;
+      case "QA":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
+          break;
+      case "UAT":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
+          break;
+      case "PROD":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
+          break;
+        default :
+        //throw new DataMigrationNonFatalException(INVALID_ENVIRONMET_TYPE, "Invalid Migration environment type.")
+    }
+    return proHelper
   }
 }

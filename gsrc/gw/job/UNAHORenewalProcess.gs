@@ -69,31 +69,33 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     return _branch.HomeownersLine_HOE.HOPolicyType.Code
   }
 
-  protected function retrieveInsuranceCreditScores(){
+  protected override function retrieveInsuranceCreditScores(){
     if(ConfigParamsUtil.getBoolean(TC_ShouldOrderInsScoreCredit, _branch.BaseState, _branch.Policy.ProductCode)){
       var lastReceivedCreditReport = _branch.NamedInsureds*.LastCreditReportReceived?.orderByDescending(\ creditReport -> creditReport.CreditScoreDate)?.first()
+      var creditNamedInsured = lastReceivedCreditReport.PolicyContactRole
+      var secondPersonToOrderFor = _branch.NamedInsureds.firstWhere( \ namedInsured -> namedInsured.AccountContactRole.AccountContact.Contact.ID != creditNamedInsured.AccountContactRole.AccountContact.Contact.ID)
+      var response : CreditReportResponse
 
-      if(lastReceivedCreditReport.CreditScoreDate.afterIgnoreTime(Date.CurrentDate.addYears(-1))){
-        var namedInsured = lastReceivedCreditReport.PolicyContactRole
-        var response : CreditReportResponse
-        var exceptionOccurred : boolean
+      if((lastReceivedCreditReport != null and lastReceivedCreditReport.CreditScoreDate.afterIgnoreTime(Date.CurrentDate.addYears(-1)) or this.Job.IsCreditOrderingRenewal)){
+        response = orderCreditReport(creditNamedInsured)
 
-        try{
-          response = new CreditReportRequestDispatcher(namedInsured, _branch).orderNewCreditReport(namedInsured.ContactDenorm.PrimaryAddress, namedInsured.FirstName, namedInsured.MiddleName, namedInsured.LastName, namedInsured.DateOfBirth)
-        }catch(e : Exception){
-          if(JobProcessLogger.DebugEnabled){
-            JobProcessLogger.logError("Failed to retrieve credit report for contact with public id ${namedInsured.PublicID}.  Exception: %{e.StackTraceAsString}")
-          }
-          exceptionOccurred = true
+        if(!typekey.CreditStatusExt.TF_RECEIVEDCREDITSTATUSES.TypeKeys.contains(response.StatusCode) and secondPersonToOrderFor != null){
+          response = orderCreditReport(secondPersonToOrderFor)
         }
 
-        if(exceptionOccurred or !typekey.CreditStatusExt.TF_RECEIVEDCREDITSTATUSES.TypeKeys.contains(response.StatusCode)){
-          var secondNamedInsured = _branch.NamedInsureds.where( \ insured -> insured.ContactDenorm.AddressBookUID != lastReceivedCreditReport.PolicyContactRole.ContactDenorm.AddressBookUID)
-              ?.orderByDescending(\ ni -> ni.LastCreditReportReceived.CreditScoreDate)?.first()
-          new CreditReportRequestDispatcher(secondNamedInsured, _branch).orderNewCreditReport(secondNamedInsured.ContactDenorm.PrimaryAddress, secondNamedInsured.FirstName, secondNamedInsured.MiddleName, secondNamedInsured.LastName, secondNamedInsured.DateOfBirth)
+        if(_branch.CreditInfoExt.CreditReport.CreditStatus == null or _branch.CreditInfoExt.CreditReport.CreditStatus == TC_NOT_ORDERED){
+          var creditReportNotOrderedIssue = _branch.UWIssuesIncludingSoftDeleted.atMostOneWhere( \ uwIssue -> uwIssue.IssueType.Code == "CreditReportNotOrdered")
+
+          if(creditReportNotOrderedIssue.HasApprovalOrRejection){
+            creditReportNotOrderedIssue.reopen()
+          }
         }
       }
     }
+  }
+
+  private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{
+    return new CreditReportRequestDispatcher(namedInsured, _branch).orderNewCreditReport(namedInsured.ContactDenorm.PrimaryAddress, namedInsured.FirstName, namedInsured.MiddleName, namedInsured.LastName, namedInsured.DateOfBirth)
   }
 
   private function handleConsentToRateProcess() {

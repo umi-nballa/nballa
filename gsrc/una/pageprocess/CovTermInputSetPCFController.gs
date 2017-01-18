@@ -120,6 +120,7 @@ class CovTermInputSetPCFController {
         break
       case "HODWDwelling_HOE":
         (coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm?.setValue(!term.Value)
+         ProductModelSyncIssuesHandler.syncSpecifiedCoverages({(coverable as Dwelling_HOE).HODW_PermittedIncOcp_HOE_Ext}, null)
         break
       case "HODW_ExecutiveCov_HOE_Ext":
         setExecutiveCoverageDefaults((coverable as Dwelling_HOE), term)

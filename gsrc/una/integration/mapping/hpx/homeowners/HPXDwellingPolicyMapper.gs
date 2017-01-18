@@ -22,6 +22,8 @@ uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 uses java.util.ArrayList
 uses una.integration.mapping.hpx.helper.HPXRatingHelper
 uses una.integration.mapping.hpx.helper.HPXInsuranceScoreRatingHelper
+uses java.math.BigDecimal
+uses una.integration.mapping.hpx.helper.HPXHurricaneLossMitigationHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,9 +87,13 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     for (discount in discounts) {
       dwellingLineBusiness.addChild(new XmlElement("Discount", discount))
     }
-    var estimatedDiscounts = createEstimatedDiscounts(policyPeriod)
-    for (discount in estimatedDiscounts) {
-      dwellingLineBusiness.addChild(new XmlElement("EstimatedDiscount", discount))
+    var estimatedInscoreDiscounts = createEstimatedInsuranceScoreDiscounts(policyPeriod)
+    for (discount in estimatedInscoreDiscounts) {
+      dwellingLineBusiness.addChild(new XmlElement("EstimatedInsScoreDiscount", discount))
+    }
+    var estimatedWindDiscounts = createEstimatedWindDiscounts(policyPeriod)
+    for (discount in estimatedWindDiscounts) {
+      dwellingLineBusiness.addChild(new XmlElement("EstimatedWindDiscount", discount))
     }
     return dwellingLineBusiness
   }
@@ -226,7 +232,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     return transactions
   }
 
-  override function getCostType(cost : Cost) :  String {
+  override function getDiscountCostType(cost : Cost) :  String {
     var costType : String = null
     if (cost typeis HomeownersLineCost_EXT) {
       costType = (cost as HomeownersLineCost_EXT).HOCostType
@@ -242,25 +248,39 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
         typekey.HOCostType_Ext.TC_CONCRETETILEROOFDISCOUNT,
         typekey.HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE,
         typekey.HOCostType_Ext.TC_GATEDCOMMUNITYDISCOUNT,
-        typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT
+        typekey.HOCostType_Ext.TC_PRIVATEFIRECOMPANYDISCOUNT,
+        typekey.HOCostType_Ext.TC_POLICYFEE,
+        typekey.HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT,
+        typekey.HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE,
+        typekey.HOCostType_Ext.TC_PREFERREDBUILDERCREDIT,
+        typekey.HOCostType_Ext.TC_BURGLARPROTECTIVEDEVICESCREDIT,
+        typekey.HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE,
+        typekey.HOCostType_Ext.TC_NOPRIORINSURANCE,
+        typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND,
+        typekey.HOCostType_Ext.TC_MAXIMUMDISCOUNTADJUSTMENT,
+        typekey.HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER
     }
     return discountTypeKeys
   }
 
-  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+  override function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
     var jurisdictionState = policyPeriod.BaseState
-    var ratingHelper = new HPXInsuranceScoreRatingHelper()
-    switch (jurisdictionState) {
-      case typekey.Jurisdiction.TC_SC :
-          estimatedDiscounts.add(ratingHelper.getSouthCarolinaMaximumInsuranceScoreDiscount(policyPeriod))
-          estimatedDiscounts.add(ratingHelper.getSouthCarolinaMaximumInsuranceScoreSurcharge(policyPeriod))
-        break
-      case typekey.Jurisdiction.TC_NV :
-          estimatedDiscounts.add(ratingHelper.getNevadaMaximumInsuranceScoreDiscount(policyPeriod))
-          estimatedDiscounts.add(ratingHelper.getNevadaMaximumInsuranceScoreSurcharge(policyPeriod))
-        break
-    }
+    var insScoreHelper = new HPXInsuranceScoreRatingHelper()
+    estimatedDiscounts.addAll(insScoreHelper.getEstimatedDiscounts(policyPeriod))
     return estimatedDiscounts
+  }
+
+  override function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
+    var jurisdictionState = policyPeriod.BaseState
+    var hurricaneWindHelper = new HPXHurricaneLossMitigationHelper()
+    estimatedDiscounts.addAll(hurricaneWindHelper.getEstimatedDiscounts(policyPeriod))
+    return estimatedDiscounts
+  }
+
+  override function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal {
+    var windPremium = policyPeriod.AllCosts.where( \ elt -> elt typeis HomeownersBaseCost_HOE and elt.HOCostType.equals(HOCostType_Ext.TC_WINDBASEPREMIUM))
+    return windPremium.first().ActualTermAmount.Amount
   }
 }

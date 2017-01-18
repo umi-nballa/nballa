@@ -43,6 +43,11 @@ class HPXCompositionUnitMapper {
     for (form in documentForms) {
       documentComposition.addChild(new XmlElement("DocumentForm", form))
     }
+
+    var compositionUnitMapper = new HPXCompositionUnitMapper()
+    var documentForm1 = compositionUnitMapper.createDocumentForm("DP04731202","English","DP04731202", new java.util.Date(),"07-02", false)
+    documentComposition.addChild(new XmlElement("DocumentForm", documentForm1))
+
     return documentComposition
   }
 

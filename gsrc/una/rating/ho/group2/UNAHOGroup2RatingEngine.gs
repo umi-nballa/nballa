@@ -140,7 +140,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3){
       rateAgeOfHomeDiscount(dateRange)
     }
-    if ((dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC) and dwelling.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO4){
+    if ((dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC) and dwelling.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO4){
       rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
 

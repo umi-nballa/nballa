@@ -23,6 +23,8 @@ interface TunaInterface {
   /* TBD - Yet to be Implemented*/
   public function fetchPropertyInformation(address: AddressDTO): TunaAppResponse
 
+  public function fetchPropertyInformationISOLookUpOnly(address: AddressDTO): TunaAppResponse
+
   /**
   * The purpose of the method is to validate Address in GW
   * @param address is Address Entity in GW
@@ -36,6 +38,6 @@ interface TunaInterface {
   /* TBD - Yet to be Implemented */
   public function fetchPropertyInformation360ValueLookUpOnlyExl(policyPeriod: PolicyPeriod): TunaAppResponse
 
-  /* TBD - Yet to be Implemented */
-  public function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse
+  /* TBD - Ye t to be Implemented */
+  public function fetchPropertyInformation360ValueLookUpOnlyInc(address : AddressDTO): TunaAppResponse
 }

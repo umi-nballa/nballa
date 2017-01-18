@@ -173,7 +173,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4)
         rateDifferenceInConditions(dwelling.HODW_DifferenceConditions_HOE_Ext, dateRange)
     }
-    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and
               (PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ or PolicyLine.BaseState == typekey.Jurisdiction.TC_NV)))

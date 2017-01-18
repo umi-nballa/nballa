@@ -8,7 +8,7 @@ uses una.integration.mapping.hpx.common.HPXLocationMapper
 uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
 uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
-uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses gw.xml.XmlElement
 uses wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyCancelReinstateType
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
@@ -20,7 +20,8 @@ uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 uses java.util.ArrayList
-uses una.integration.mapping.hpx.common.HPXRatingHelper
+uses una.integration.mapping.hpx.helper.HPXRatingHelper
+uses una.integration.mapping.hpx.helper.HPXInsuranceScoreRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -249,7 +250,7 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
     var jurisdictionState = policyPeriod.BaseState
-    var ratingHelper = new HPXRatingHelper()
+    var ratingHelper = new HPXInsuranceScoreRatingHelper()
     switch (jurisdictionState) {
       case typekey.Jurisdiction.TC_SC :
           estimatedDiscounts.add(ratingHelper.getSouthCarolinaMaximumInsuranceScoreDiscount(policyPeriod))

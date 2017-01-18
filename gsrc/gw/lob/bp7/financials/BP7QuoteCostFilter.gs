@@ -48,6 +48,14 @@ class BP7QuoteCostFilter {
 
     return list
   }
+
+  function locationCoverageCosts(locationQualifier : BP7Qualifier) : List<BP7CostDisplayable> {
+    var list : List<BP7CostDisplayable> = {}
+
+    list.addAll(coverageCosts(locationQualifier))
+
+    return list
+  }
   
   function classificationCoverageCosts(locationQualifier : BP7Qualifier) : List<BP7CostDisplayable> {
     var list : List<BP7CostDisplayable> = {}

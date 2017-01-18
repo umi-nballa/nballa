@@ -4,7 +4,7 @@ uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.DirectCovTerm
 uses java.math.BigDecimal
-uses una.integration.mapping.hpx.common.HPXRatingHelper
+uses una.integration.mapping.hpx.helper.HPXRatingHelper
 
 /**
  * Created with IntelliJ IDEA.

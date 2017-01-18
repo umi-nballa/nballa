@@ -36,10 +36,10 @@ class BP7RatingEngine extends BP7AbstractRatingEngine<BP7Line> {
   }
 
   override function rateBuilding(building : BP7Building, sliceToRate : DateRange) {
-    var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
+    /*var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm)
     if (building.BP7StructureExists) {
       addCost(step.rate(building.BP7Structure, sliceToRate))
-    }
+    } */
   }
 
   override function rateClassification(classification : BP7Classification, sliceToRate : DateRange) {

@@ -2,7 +2,7 @@ package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
 uses una.integration.mapping.hpx.common.HPXLocationMapper
-uses una.integration.mapping.hpx.common.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyMapper
 uses gw.xml.XmlElement
 uses gw.lang.reflect.IType

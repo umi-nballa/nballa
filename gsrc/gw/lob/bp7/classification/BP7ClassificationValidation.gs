@@ -54,11 +54,13 @@ class BP7ClassificationValidation extends PCValidationBase {
         BP7Classification#ClassDescription.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Classification.ClassDescription)
     }
+    /** Commenting to get the deployment in - touch base with Thiagu later
     if (_classification.Area == null) {
       addDataModelFieldError(
         BP7Classification#Area.PropertyInfo.Name, 
         displaykey.Web.Policy.BP7.Classification.Area)
     }
+    */
     if (_classification.AmusementArea == null) {
       addDataModelFieldError(
         BP7Classification#AmusementArea.PropertyInfo.Name, 

@@ -8,6 +8,7 @@ uses wsi.remote.gw.webservice.bc.bc800.billingapi.BillingAPI
 uses java.lang.Exception
 uses java.text.SimpleDateFormat
 uses gw.plugin.messaging.BillingMessageTransport
+uses una.utils.PropertiesHolder
 
 /**
  * Created for LexisFirst Integration
@@ -46,6 +47,7 @@ class LexisFirstServicePayload {
   private static final var INDIVIDUAL = "I"
   private static final var BUSINESS="B"
   private static final var EXTERNAL_SYSTEM ="lexisFirst"
+  var endorseFormNumbers = PropertiesHolder.getProperty("EndorsmentDetails")
 
   private static final var PRIMARY_NAMED_INSURED = "PolicyPriNamedInsured"
   private static final var PERSON= "person"
@@ -81,10 +83,10 @@ class LexisFirstServicePayload {
       }
 
       //Action Code for Business Transactions
-      if (eventName == BillingMessageTransport.CREATEPERIOD_LEXIS_FIRST_MSG) {
+      if (eventName == BillingMessageTransport.CREATEPERIOD_LEXIS_FIRST_MSG || eventName == BillingMessageTransport.ISSUEPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = NEW_BUSINESS
       }
-      else if (eventName == BillingMessageTransport.CHANGEPERIOD_LEXIS_FIRST_MSG || eventName == BillingMessageTransport.ISSUEPERIOD_LEXIS_FIRST_MSG) {
+      else if (eventName == BillingMessageTransport.CHANGEPERIOD_LEXIS_FIRST_MSG) {
         lexisFirstFileData.ActionCode = POLICY_CHANGE
       }
       else if (eventName == BillingMessageTransport.REINSTATEPERIOD_LEXIS_FIRST_MSG) {
@@ -94,7 +96,7 @@ class LexisFirstServicePayload {
         lexisFirstFileData.ActionCode = RENEWAL_POLICY
       }
       else if (eventName == BillingMessageTransport.REWRITEPERIOD_LEXIS_FIRST_MSG) {
-        lexisFirstFileData.ActionCode = REWRITE_POLICY
+        lexisFirstFileData.ActionCode = NEW_BUSINESS
       }
       else {
         lexisFirstFileData.ActionCode = ""
@@ -133,7 +135,8 @@ class LexisFirstServicePayload {
           lexisFirstFileData.InsuredCountry = policyPriNamedInsured.ContactDenorm.PrimaryAddress.Country.Code
           lexisFirstFileData.InsuredCity = policyPriNamedInsured.ContactDenorm.PrimaryAddress.City
           lexisFirstFileData.InsuredState = (policyPriNamedInsured.ContactDenorm.PrimaryAddress.State) as String
-          lexisFirstFileData.InsuredZip = policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode?.substring(0, 5)
+          lexisFirstFileData.InsuredZip = policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode?.length > 5 ? policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode.substring(0, 5)
+          :policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode
         }
       }
       for (PolicyAddlNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)) {
@@ -152,8 +155,8 @@ class LexisFirstServicePayload {
       lexisFirstFileData.PropertyCity = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City
       lexisFirstFileData.PropertyCountry = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Country.Code
       lexisFirstFileData.PropertyState = (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State) as String
-      lexisFirstFileData.PropertyZip = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode?.substring(0, 5)
-
+      lexisFirstFileData.PropertyZip = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode?.length > 5 ? policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode.substring(0, 5)
+       :policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode
       //Fetching Primary payer Details from Billing Center
 
         var primaryPayer = billingAPI.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
@@ -173,7 +176,8 @@ class LexisFirstServicePayload {
                 (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 !=null ?
                     addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 :"")
             lexisFirstFileData.MortgageeState = (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.State) as String
-            lexisFirstFileData.MortgageeZip = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode?.substring(0, 5)
+            lexisFirstFileData.MortgageeZip = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode?.length>5 ? addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode.substring(0, 5)
+             : addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode
             lexisFirstFileData.LoanNumber =  addInterestContact.ContractNumber
             lexisFirstFileData.MortgageeInterestType = typecodeMapper.getAliasByInternalCode(AdditionalInterestType.Type.RelativeName,EXTERNAL_SYSTEM,addInterestContact.AdditionalInterestType)
           }
@@ -280,20 +284,33 @@ class LexisFirstServicePayload {
       lexisFirstFileData.ProducerCity = policyPeriod.ProducerCodeOfRecord.Address.City
       lexisFirstFileData.ProducerState = (policyPeriod.ProducerCodeOfRecord.Address.State) as String
       lexisFirstFileData.ProducerCountry = policyPeriod.ProducerCodeOfRecord.Address.Country.Code
-      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Address.PostalCode?.substring(0, 5)
-      lexisFirstFileData.ProducerPhone = ""
+      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Address.PostalCode?.length > 5 ? policyPeriod.ProducerCodeOfRecord.Address.PostalCode.substring(0, 5)
+      : policyPeriod.ProducerCodeOfRecord.Address.PostalCode
+      lexisFirstFileData.ProducerPhone = policyPeriod.ProducerCodeOfRecord.Contact_Ext.WorkPhone
 
       //Endorsement Details
-      lexisFirstFileData.EndorsementState1 = ""
-      lexisFirstFileData.Endorsement1 = ""
-      lexisFirstFileData.EndorsementState2 = ""
-      lexisFirstFileData.Endorsement2 = ""
-      lexisFirstFileData.EndorsementState3 = ""
-      lexisFirstFileData.Endorsement3 = ""
-      lexisFirstFileData.EndorsementState4 = ""
-      lexisFirstFileData.Endorsement4 = ""
-      lexisFirstFileData.EndorsementState5 = ""
-      lexisFirstFileData.Endorsement5 = ""
+      lexisFirstFileData.EndorsementState1 = policyPeriod.BaseState.Code
+      lexisFirstFileData.EndorsementState2 = policyPeriod.BaseState.Code
+      lexisFirstFileData.EndorsementState3 = policyPeriod.BaseState.Code
+      lexisFirstFileData.EndorsementState4 = policyPeriod.BaseState.Code
+      lexisFirstFileData.EndorsementState5 = policyPeriod.BaseState.Code
+      for (endorseNumber in policyPeriod.Forms) {
+          if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+            lexisFirstFileData.Endorsement1 = endorseNumber
+          }
+          else if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+            lexisFirstFileData.Endorsement2 = endorseNumber.FormNumber
+          }
+          else if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+            lexisFirstFileData.Endorsement3 = endorseNumber.FormNumber
+          }
+          else if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+            lexisFirstFileData.Endorsement4 = endorseNumber.FormNumber
+          }
+          else if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+            lexisFirstFileData.Endorsement5 = endorseNumber.FormNumber
+          }
+      }
 
       //Mapping Billing related details
       lexisFirstFileData.TotalPolicyPremium = policyPeriod.TotalPremiumRPT_amt

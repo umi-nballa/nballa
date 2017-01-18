@@ -146,6 +146,8 @@
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
                 value="cpBuilding.RateType"/>
               <InputDivider/>
+              <Label
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Construction"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -153,13 +155,12 @@
                 id="YearBuilt"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.YearBuilt"
                 maxChars="4"
+                required="true"
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
                 value="cpBuilding.Building.YearBuilt">
                 <PostOnChange
                   onChange="una.config.CPBuildingUtil.setYearBasedDefaults(cpBuilding);new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding)"/>
               </TextInput>
-              <Label
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.Construction"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -170,6 +171,19 @@
                 <PostOnChange
                   onChange="una.config.CPBuildingUtil.setStoryBasedDefaults(cpBuilding)"/>
               </TextInput>
+              <TypeKeyInput
+                editable="true"
+                id="ConstructionType"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.ConstructionType"
+                value="cpBuilding.Building.ConstructionType"/>
+              <TextInput
+                align="left"
+                editable="true"
+                id="TotalArea"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.TotalArea"
+                maxChars="5"
+                required="true"
+                value="cpBuilding.SqFtExt"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -179,6 +193,18 @@
                 <PostOnChange
                   onChange="cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding))"/>
               </TextInput>
+              <TextInput
+                align="left"
+                editable="true"
+                id="TimesRented"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.TimesRented"
+                maxChars="3"
+                required="false"
+                value="cpBuilding.Building.TimesRent"/>
+              <InputDivider/>
+              <Label
+                id="RoofingLabel_Ext"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Roofing"/>
               <!-- <TextInput
                 align="left"
                 editable="true"
@@ -193,25 +219,12 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Bceg"
                 required="true"
                 value="cpBuilding.bceg"/> -->
-              <TypeKeyInput
-                editable="true"
-                id="ConstructionType"
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.ConstructionType"
-                value="cpBuilding.Building.ConstructionType"/>
               <!-- <TextInput
                 align="left"
                 editable="true"
                 id="NumBasements"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.NumBasements"
                 value="cpBuilding.Building.NumBasements"/> -->
-              <TextInput
-                align="left"
-                editable="true"
-                id="TotalArea"
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.TotalArea"
-                maxChars="5"
-                required="true"
-                value="cpBuilding.SqFtExt"/>
               <!-- <TextInput
                 align="left"
                 editable="true"
@@ -264,7 +277,7 @@
                 required="cpBuilding.RoofShape==typekey.CPRoofShape_Ext.TC_FLAT"
                 value="cpBuilding.FlatRoofDesc"
                 visible="cpBuilding.RoofShape==typekey.CPRoofShape_Ext.TC_FLAT"/>
-              <BooleanRadioInput
+              <!-- <BooleanRadioInput
                 editable="true"
                 id="Sprinklered"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Sprinklered"
@@ -272,7 +285,7 @@
                 visible="true">
                 <PostOnChange
                   onChange="//cpBuilding.Building.HeatingBoilerElsewhere = gw.web.line.cp.policy.CPBuildingPopupUIHelper.getBoilerInsuredValue(cpBuilding, cpBuilding.Building.HeatingBoilerOnPremises)"/>
-              </BooleanRadioInput>
+              </BooleanRadioInput> -->
               <!-- <TypeKeyInput
                 editable="true"
                 id="WindRating"
@@ -304,14 +317,6 @@
                 id="RearExposure"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Rear"
                 value="cpBuilding.Building.RearSide.Description"/> -->
-              <TextInput
-                align="left"
-                editable="true"
-                id="TimesRented"
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.TimesRented"
-                maxChars="3"
-                required="false"
-                value="cpBuilding.Building.TimesRent"/>
               <InputGroup
                 childrenVisible="showResidentialQues"
                 id="ResQuesInputGroup"
@@ -343,6 +348,13 @@
                   visible="cpBuilding.windstormexcl==false ">
                   <PostOnChange/>
                 </BooleanRadioInput>
+                <DateInput
+                  align="left"
+                  editable="true"
+                  id="winddate"
+                  label="displaykey.Web.Policy.CP.Location.CPBuilding.WindDate"
+                  value="cpBuilding.windmitidate"
+                  visible="cpBuilding.windmiti5==true"/>
                 <TypeKeyInput
                   align="left"
                   editable="true"
@@ -442,13 +454,6 @@
                   required="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002//una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.wbdr"
                   visible="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.Building.YearBuilt&gt;=2002//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <DateInput
-                  align="left"
-                  editable="true"
-                  id="winddate"
-                  label="displaykey.Web.Policy.CP.Location.CPBuilding.WindDate"
-                  value="cpBuilding.windmitidate"
-                  visible="cpBuilding.windmiti5==true"/>
               </InputGroup>
               <InputDivider/>
               <InputSet
@@ -483,6 +488,37 @@
                   visible="cpBuilding.OverrideWindPool_Ext"/>
               </InputSet>
               <InputDivider/>
+              <InputSet
+                id="DistToCoast_Ext">
+                <RangeInput
+                  available="!cpBuilding.OverrideDistToCoast_Ext"
+                  editable="true"
+                  id="DistToCoastTunaReturned_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistanceToCoast_Ext"
+                  value="cpBuilding.DistToCoast_Ext"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
+                <Input
+                  available="!cpBuilding.OverrideDistToCoast_Ext"
+                  id="DistToCoastMatchLevel_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistanceToCoastMatchLevel_Ext"
+                  value="cpBuilding.DistToCoastMatchLevel_Ext"/>
+                <BooleanRadioInput
+                  editable="true"
+                  id="OverRideDistToCoast_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistToCoastOverride_Ext"
+                  value="cpBuilding.OverrideDistToCoast_Ext">
+                  <PostOnChange
+                    target="DistToCoast_Ext"/>
+                </BooleanRadioInput>
+                <Input
+                  available="cpBuilding.OverrideDistToCoast_Ext"
+                  editable="true"
+                  id="DistToCoastUserEntered_Ext"
+                  label="displaykey.Web.CP.CPLocation.DistanceToCoastUserEntered_Ext"
+                  required="cpBuilding.OverrideDistToCoast_Ext"
+                  value="cpBuilding.DistToCoastOverridden_Ext"
+                  visible="cpBuilding.OverrideDistToCoast_Ext"/>
+              </InputSet>
               <InputDivider/>
               <InputSet
                 id="bceg_Ext">
@@ -549,6 +585,23 @@
                   visible="cpBuilding.OverrideFirePCCode_Ext"/>
               </InputSet>
               <InputDivider/>
+              <BooleanRadioInput
+                editable="true"
+                id="FireHydrantDistance_Ext"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.FireHydrantDistance_Ext"
+                value="cpBuilding.FireHydrantDistance_Ext">
+                <PostOnChange
+                  onChange="cpBuilding.windstormexcl=cpBuilding.windstorm"/>
+              </BooleanRadioInput>
+              <BooleanRadioInput
+                editable="true"
+                id="FireDeptDistance_Ext"
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.FireDeptDistance_Ext"
+                value="cpBuilding.FireDeptDistance_Ext">
+                <PostOnChange
+                  onChange="cpBuilding.windstormexcl=cpBuilding.windstorm"/>
+              </BooleanRadioInput>
+              <InputDivider/>
               <InputSet
                 id="Firedeptnamedval_Ext">
                 <RangeInput
@@ -579,38 +632,6 @@
                   required="cpBuilding.OverrideFiredeptnamedval_Ext"
                   value="cpBuilding.FiredeptnamedvalOverridden_Ext"
                   visible="cpBuilding.OverrideFiredeptnamedval_Ext"/>
-              </InputSet>
-              <InputDivider/>
-              <InputSet
-                id="DistToCoast_Ext">
-                <RangeInput
-                  available="!cpBuilding.OverrideDistToCoast_Ext"
-                  editable="true"
-                  id="DistToCoastTunaReturned_Ext"
-                  label="displaykey.Web.CP.CPLocation.DistanceToCoast_Ext"
-                  value="cpBuilding.DistToCoast_Ext"
-                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
-                <Input
-                  available="!cpBuilding.OverrideDistToCoast_Ext"
-                  id="DistToCoastMatchLevel_Ext"
-                  label="displaykey.Web.CP.CPLocation.DistanceToCoastMatchLevel_Ext"
-                  value="cpBuilding.DistToCoastMatchLevel_Ext"/>
-                <BooleanRadioInput
-                  editable="true"
-                  id="OverRideDistToCoast_Ext"
-                  label="displaykey.Web.CP.CPLocation.DistToCoastOverride_Ext"
-                  value="cpBuilding.OverrideDistToCoast_Ext">
-                  <PostOnChange
-                    target="DistToCoast_Ext"/>
-                </BooleanRadioInput>
-                <Input
-                  available="cpBuilding.OverrideDistToCoast_Ext"
-                  editable="true"
-                  id="DistToCoastUserEntered_Ext"
-                  label="displaykey.Web.CP.CPLocation.DistanceToCoastUserEntered_Ext"
-                  required="cpBuilding.OverrideDistToCoast_Ext"
-                  value="cpBuilding.DistToCoastOverridden_Ext"
-                  visible="cpBuilding.OverrideDistToCoast_Ext"/>
               </InputSet>
               <InputDivider/>
               <InputSet
@@ -787,7 +808,8 @@
               </InputGroup> -->
               <InputDivider/>
               <Label
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.Improvements"/>
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Improvements"
+                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -829,7 +851,8 @@
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Wiring.YearAdded)"
                 value="cpBuilding.Building.Wiring.YearAdded"
                 visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50) &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
-              <InputDivider/>
+              <InputDivider
+                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Other"/>
               <TypeKeyInput
@@ -850,30 +873,30 @@
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Vacancy"
                 value="cpBuilding.Building.PercentVacant"/>
               <InputDivider/>
-              <TextInput
+              <!-- <TextInput
                 align="left"
                 editable="true"
                 id="FireHyd"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireHyd"
                 maxChars="4"
                 required="true"
-                value="cpBuilding.DistFirHyd"/>
-              <TextInput
+                value="cpBuilding.DistFirHyd"/> -->
+              <!-- <TextInput
                 align="left"
                 editable="true"
                 id="FireStn"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.FireStn"
                 maxChars="2"
                 required="true"
-                value="cpBuilding.DistFireStn"/>
-              <TextInput
+                value="cpBuilding.DistFireStn"/> -->
+              <!-- <TextInput
                 align="left"
                 editable="true"
                 id="RespFireDept"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.RespFireStn"
                 maxChars="50"
                 required="false"
-                value="cpBuilding.RespFireDept"/>
+                value="cpBuilding.RespFireDept"/> -->
               <TextInput
                 align="left"
                 editable="true"
@@ -889,50 +912,50 @@
                 maxChars="4"
                 required="true"
                 value="cpBuilding.BldHt"/>
-              <Input
+              <!-- <Input
                 editable="true"
                 id="FireProtectionClass"
                 label="displaykey.Web.Policy.PolicyLocation.FireProtectionClass"
-                value="cpBuilding?.CPLocation?.Location?.FireProtectClass"/>
-              <InputDivider/>
-              <Label
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.Rec"/>
-              <TypeKeyInput
+                value="cpBuilding?.CPLocation?.Location?.FireProtectClass"/> -->
+              <!-- <InputDivider/> -->
+              <!-- <Label
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Rec"/> -->
+              <!-- <TypeKeyInput
                 align="left"
                 editable="true"
                 id="numpg"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Numpg"
                 value="cpBuilding.numpg"
-                visible="true"/>
-              <TypeKeyInput
+                visible="true"/> -->
+              <!-- <TypeKeyInput
                 align="left"
                 editable="true"
                 id="numfit"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Numfit"
-                value="cpBuilding.numfit"/>
-              <TypeKeyInput
+                value="cpBuilding.numfit"/> -->
+              <!-- <TypeKeyInput
                 align="left"
                 editable="true"
                 id="numsw"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Numsw"
-                value="cpBuilding.numsw"/>
-              <TypeKeyInput
+                value="cpBuilding.numsw"/> -->
+              <!-- <TypeKeyInput
                 align="left"
                 editable="true"
                 id="numdock"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Numbot"
-                value="cpBuilding.numdocks"/>
-              <TypeKeyInput
+                value="cpBuilding.numdocks"/> -->
+              <!-- <TypeKeyInput
                 align="left"
                 editable="true"
                 id="numot"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Numot"
-                value="cpBuilding.numot"/>
-              <Input
+                value="cpBuilding.numot"/> -->
+              <!-- <Input
                 editable="true"
                 id="OtherFacDesc"
                 label="displaykey.Web.Policy.PolicyLocation.OtherFac"
-                value="cpBuilding?.OtherFacilitiesDescription"/>
+                value="cpBuilding?.OtherFacilitiesDescription"/> -->
             </InputColumn>
           </DetailViewPanel>
         </Card>

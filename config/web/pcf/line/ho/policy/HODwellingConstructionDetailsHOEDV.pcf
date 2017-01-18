@@ -12,7 +12,10 @@
       name="openForEdit"
       type="Boolean"/>
     <Variable
-      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(dwelling.PolicyPeriod)"
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
+      name="pageProcess"/>
+    <Variable
+      initialValue="pageProcess.getTunaInformation(dwelling.PolicyPeriod)"
       name="tunaAppResponse"
       recalculateOnRefresh="true"/>
     <Variable
@@ -392,7 +395,10 @@
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValUserEntered_Ext"
           required="dwelling.OverrideTotalSqFtVal_Ext"
           value="dwelling.TotalSqFtValOverridden_Ext"
-          visible="dwelling.OverrideTotalSqFtVal_Ext"/>
+          visible="dwelling.OverrideTotalSqFtVal_Ext">
+          <PostOnChange
+            onChange="new una.pageprocess.PropertyInformationCompletePluginImpl().retrieveBCEG360Value(dwelling.PolicyPeriod,dwelling.YearBuiltOverridden_Ext as String,dwelling.TotalSqFtValOverridden_Ext)"/>
+        </Input>
       </InputSet>
       <InputDivider/>
       <TextInput

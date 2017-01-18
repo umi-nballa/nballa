@@ -61,7 +61,11 @@ class TunaGatewayStub implements TunaInterface {
     return null
   }
 
-  override function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformationISOLookUpOnly(address: AddressDTO): TunaAppResponse {
+    return null
+  }
+
+  override function fetchPropertyInformation360ValueLookUpOnlyInc(address: AddressDTO): TunaAppResponse {
     return null
   }
 }

@@ -1,10 +1,10 @@
 package gw.plugin.billing.bc800
 
 uses gw.api.util.DateUtil
-uses gw.plugin.job.IPolicyRenewalPlugin
 uses gw.plugin.Plugins
-uses wsi.remote.gw.webservice.bc.bc800.entity.types.complex.IssuePolicyInfo
+uses gw.plugin.job.IPolicyRenewalPlugin
 uses wsi.remote.gw.webservice.bc.bc800.entity.anonymous.elements.IssuePolicyInfo_NewInvoiceStream
+uses wsi.remote.gw.webservice.bc.bc800.entity.types.complex.IssuePolicyInfo
 
 @Export
 enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
@@ -59,9 +59,24 @@ enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
     }
     this.InvoiceStreamId = advancedOptionsSelected ? period.InvoiceStreamCode : null
     this.Currency = period.PreferredSettlementCurrency.Code
+    //PC-BC year built and Wind Coastal
+    if(period.HomeownersLine_HOEExists){
+      if(period.HomeownersLine_HOE.Dwelling.YearBuilt != null)
+        this.YearBuilt = period.HomeownersLine_HOE.Dwelling.YearBuilt
+      else
+        this.YearBuilt = period.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext
+      if(period.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE?.HasHODW_WindHail_Ded_HOETerm && period.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value != null)
+        this.CoastalWind = period.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value > 0 ? true:false
+      else
+        this.CoastalWind = false
+    }
+
     var plugin = Plugins.get(IPolicyRenewalPlugin)
     if(plugin.isRenewalOffered(period)){
       this.OfferNumber = period.Job.JobNumber
     }
-  }  
+  }
+
+
+
 }

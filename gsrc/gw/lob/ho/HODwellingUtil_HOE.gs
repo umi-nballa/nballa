@@ -696,6 +696,22 @@ class HODwellingUtil_HOE {
     return tunaCodeAndPercent.order()
   }
 
+  static function getProtectionCodes(theProtectionClassValues: List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(theProtectionClassValues != null) {
+      theProtectionClassValues.each( \ elt ->
+      {
+        if(elt.Value.contains("/")){
+          tunaCodeAndPercent.add(elt.Value.split("/").first())
+          tunaCodeAndPercent.add(elt.Value.split("/").last())
+        }else{
+          tunaCodeAndPercent.add(elt.Value)
+        }
+      })
+    }
+    return tunaCodeAndPercent.order()
+  }
+
   static function getTerritoryCodes(tunaResponse : TunaAppResponse, pType :HOPolicyType_HOE ) : List<String>{
      // bunch of if clauses
      if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(pType) && tunaResponse.HOTerritoryCode!=null)

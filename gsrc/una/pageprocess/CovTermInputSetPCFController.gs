@@ -136,6 +136,8 @@ class CovTermInputSetPCFController {
     if(covTerm.Clause.OwningCoverable typeis Dwelling_HOE and covTerm.PatternCode == "HODW_Lossofuse_HOE_Ext"){
       var lossOfUseLabeledPolicyTypes : List<HOPolicyType_HOE> = {TC_HO3, TC_HO6}
       result = (lossOfUseLabeledPolicyTypes.contains(covTerm.Clause.OwningCoverable.HOLine.HOPolicyType)) ? displaykey.una.productmodel.LossOfUse : displaykey.una.productmodel.FairRentalValue
+    }else if(covTerm.PatternCode == "HODW_ElectronicApparatusLimit_HOE" and covTerm.Clause.OwningCoverable.PolicyLine.BaseState == TC_NC){
+      result = displaykey.una.coverages.electronic_aparatus_name_NC
     }else{
       result = covTerm.Pattern.DisplayName
     }

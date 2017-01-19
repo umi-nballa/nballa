@@ -14,6 +14,7 @@ uses java.util.Collections
 uses java.util.Iterator
 uses java.util.Map
 uses java.lang.StringBuilder
+uses gw.api.system.server.ServerUtil
 
 /**
  * Distributed worker for migration
@@ -35,13 +36,15 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
     var batchtypeCode : String = batchType.Code
     switch(batchtypeCode){
       case BatchProcessType.TC_ACCOUNTDATAMIGRATION_EXT :
-          _propertyHelper = getPropertyHelper(new StringBuilder(_ACCT_CONFIG_FILE_))
+          _propertyHelper = new PropertyHelper(_ACCT_CONFIG_FILE_)
+          _propertyHelper.setPrefix(ServerUtil.Env+".")
           break;
       case BatchProcessType.TC_POLICYDATAMIGRATION_EXT :
-          _propertyHelper = getPropertyHelper(_POLICY_CONFIG_FILE_)
+          _propertyHelper = new PropertyHelper(_POLICY_CONFIG_FILE_)
+          _propertyHelper.setPrefix(ServerUtil.Env+".")
           break;
         default :
-        //throw new DataMigrationNonFatalException(INVLAID_MIGRATION_PROCESS_TYPE, "Invalid Migration process has been triggerd")
+          throw new DataMigrationNonFatalException(INVLAID_MIGRATION_PROCESS_TYPE, "Invalid Migration process has been triggerd")
     }
   }
   /**
@@ -222,42 +225,5 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
     var wiQuery = Query.make(StandardWorkItem).compare(StandardWorkItem#Status, NotEquals, WorkItemStatusType.TC_FAILED)
     wfQuery.subselect(MigrationWorkConfig_Ext#ID, CompareIn, wiQuery, StandardWorkItem#Target)
     return wfQuery.select().HasElements
-  }
-
-  private function getPropertyHelper(_CONFIG_FILE : StringBuilder) : PropertyHelper{
-    var proHelper : PropertyHelper
-    var env : StringBuilder = new StringBuilder(System.getProperty(_ENV_PROPERTY))
-    switch(env.toString().toUpperCase()){
-      case "LOCAL":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "PC_DEV":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
-          break;
-      case "PC_DEVINT":
-        proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
-        break;
-      case "PC_DEV02":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
-          break;
-      case "PC_ASM":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"asm", "ASM")
-          break;
-      case "QAT":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "QA":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "UAT":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "PROD":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-        default :
-        //throw new DataMigrationNonFatalException(INVALID_ENVIRONMET_TYPE, "Invalid Migration environment type.")
-    }
-    return proHelper
   }
 }

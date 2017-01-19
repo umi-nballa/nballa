@@ -59,11 +59,11 @@ class CluePropertyGateway implements CluePropertyInterface {
     _logger.debug("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.info("CLUE Request or sending order :" + orderXml)
+    _logger.debug("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.info("CLUE Response or received result :" + result)
+      _logger.debug("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.info("finished ordering CLUE")
@@ -346,9 +346,6 @@ class CluePropertyGateway implements CluePropertyInterface {
       var subType1 = mapSubject(addIns.FirstName,addIns.LastName)
 
       subject.Name.add(subType1)
-
-      lexOrderSubject.Subject.add(subject)
-      lexOrder.Products.ClueProperty[0].JointSubject = subject
     }
 
     var mailingAddress : Address
@@ -396,7 +393,13 @@ class CluePropertyGateway implements CluePropertyInterface {
       lexOrder.Products.ClueProperty[0].FormerAddress = address2
      }
 
-    lexOrderSubject.Subject.add(subject1)
+     lexOrderSubject.Subject.add(subject1)
+
+    if(addIns != null){
+
+      lexOrderSubject.Subject.add(subject)
+      lexOrder.Products.ClueProperty[0].JointSubject = subject
+    }
 
      lexOrder.Dataset.Addresses = lexOrderAddress
      lexOrder.Dataset.Subjects = lexOrderSubject

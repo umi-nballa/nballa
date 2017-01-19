@@ -231,8 +231,17 @@ abstract class MigrationWorker extends WorkQueueBase<MigrationWorkConfig_Ext, St
       case "LOCAL":
           proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
           break;
-      case "ASM":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
+      case "PC_DEV":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
+          break;
+      case "PC_DEVINT":
+        proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
+        break;
+      case "PC_DEV02":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
+          break;
+      case "PC_ASM":
+          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"asm", "ASM")
           break;
       case "QAT":
           proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)

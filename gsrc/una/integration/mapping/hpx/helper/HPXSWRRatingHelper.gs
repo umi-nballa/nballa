@@ -13,7 +13,7 @@ uses java.util.ArrayList
 class HPXSWRRatingHelper {
 
   function getEstimatedSWRDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
-    var secondaryWaterResistanceEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2011 ? getSWRDiscountsForPre2001BuiltHomes(policyPeriod) : getSWRDiscountsForPost2001BuiltHomes(policyPeriod)
+    var secondaryWaterResistanceEstimatedDiscounts = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOrOverride < 2001 ? getSWRDiscountsForPre2001BuiltHomes(policyPeriod) : getSWRDiscountsForPost2001BuiltHomes(policyPeriod)
     return secondaryWaterResistanceEstimatedDiscounts
   }
 

@@ -123,7 +123,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     _discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine, _hoRatingInfo.TotalBasePremium)
-    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEAS || dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
       rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
     }
     if (_discountOrSurchargeRatingInfo.BurglarAlarmReportPoliceStn || _discountOrSurchargeRatingInfo.BurglarAlarmReportCntlStn || _discountOrSurchargeRatingInfo.CompleteLocalBurglarAlarm){

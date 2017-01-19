@@ -17,6 +17,7 @@ uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusi
 uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -176,7 +177,7 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getCostType(cost : Cost) :  String {
+  override function getDiscountCostType(cost : Cost) :  String {
     return null
   }
 
@@ -184,7 +185,15 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+  override function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal {
     return null
   }
 }

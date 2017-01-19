@@ -27,8 +27,12 @@
       recalculateOnRefresh="true"
       type="boolean"/>
     <Variable
-      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(policyPeriod)"
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
+      name="pageProcess"/>
+    <Variable
+      initialValue="pageProcess.getTunaInformation(policyPeriod)"
       name="tunaAppResponse"
+      recalculateOnRefresh="true"
       type="una.integration.mapping.tuna.TunaAppResponse"/>
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
@@ -86,7 +90,8 @@
           required="dwelling.OverrideYearbuilt_Ext"
           value="dwelling.YearBuiltOverridden_Ext"
           visible="dwelling.OverrideYearbuilt_Ext">
-          <PostOnChange/>
+          <PostOnChange
+            onChange="pageProcess.retrieveBCEG360Value(policyPeriod,dwelling.YearBuiltOverridden_Ext as String,dwelling.TotalSqFtValOverridden_Ext)"/>
         </Input>
       </InputSet>
       <InputDivider/>      

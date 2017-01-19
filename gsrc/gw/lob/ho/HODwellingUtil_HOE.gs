@@ -877,8 +877,4 @@ class HODwellingUtil_HOE {
     return ""
   }
 
-
-
-
-
 }// End of class

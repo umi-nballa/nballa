@@ -60,6 +60,7 @@ class TunaRequestMapper {
   {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For scrubonly ", this.IntrinsicType)
+      payloadRequestMapping()
       message.Address.Street = address.AddressLine1
       message.Address.City = address.City
       message.Address.State = address.State.Code

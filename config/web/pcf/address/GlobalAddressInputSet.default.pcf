@@ -49,7 +49,7 @@
       available="addressOwner.isAvailable(fieldId.ADDRESSLINE1)"
       editable="addressOwner.isEditable(fieldId.ADDRESSLINE1)"
       id="AddressLine1"
-      label="displaykey.Web.AddressBook.AddressInputSet.Address1"
+      label="addressOwner.AddressLine1Label"
       required="addressOwner.isRequired(fieldId.ADDRESSLINE1)"
       value="addressOwner.AddressDelegate.AddressLine1"
       visible="addressOwner.isVisible(fieldId.ADDRESSLINE1)">
@@ -114,7 +114,7 @@
       required="addressOwner.isRequired(fieldId.STATE)"
       validationExpression="gw.api.contact.AddressAutocompleteUtil.validate(addressOwner.AddressDelegate, &quot;State&quot;)"
       value="addressOwner.AddressDelegate.State"
-      valueRange="getStates()"
+      valueRange="contact.AddressAutocompleteUtil.getStates(addressOwner.AddressDelegate.Country)"
       valueWidth="228"
       visible="addressOwner.isVisible(fieldId.STATE)">
       <PostOnChange
@@ -141,14 +141,5 @@
         onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;PostalCode&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
         target="globalAddressContainer"/>
     </AddressAutoFillInput>
-    <Code><![CDATA[uses una.lob.bp7.BP7LocationAddressOwner
-
-function getStates():State[]{
-  if(addressOwner typeis BP7LocationAddressOwner){
-    if(!addressOwner.period?.Policy.Product.Description.equals("Homeowners"))
-      return typekey.State.TF_CPPANDBOPSTATE.TypeKeys
-  }
-     return contact.AddressAutocompleteUtil.getStates(addressOwner.AddressDelegate.Country)  
-}]]></Code>
   </InputSet>
 </PCF>

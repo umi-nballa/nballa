@@ -22,6 +22,8 @@ uses java.lang.System
 uses java.util.Map
 uses java.util.zip.ZipEntry
 uses java.util.zip.ZipOutputStream
+uses java.lang.StringBuilder
+uses gwservices.pc.dm.batch.DataMigrationNonFatalException
 
 /**
  * Migration utility functions
@@ -29,12 +31,12 @@ uses java.util.zip.ZipOutputStream
 abstract class MigrationUtil {
   public static final var SEQUENCE_MIN_PARAM: String = "SEQUENCE_MIN"
   public static final var SEQUENCE_MAX_PARAM: String = "SEQUENCE_MAX"
-  private static final var _MIGRATION_CONFIG_FILE = "MIGRATION"
+  private static final var _MIGRATION_CONFIG_FILE = "accountsMigration"
   private static final var _MIGRATION_ROLE_PROPERTY = "MIGRATION_ROLE"
   private static final var _ENV_PARAM = "gw.pc.env"
   private static final var _ENV_WILDCARD = "*"
   private static final var _migrationRoleName: LockingLazyVar<String> as MIGRATION_ROLE_NAME = LockingLazyVar.make(\-> {
-    var ph = new PropertyHelper(_MIGRATION_CONFIG_FILE, System.getProperty(_ENV_PARAM))
+    var ph = getPropertyHelper(_MIGRATION_CONFIG_FILE)
     return ph.getProperty(_MIGRATION_ROLE_PROPERTY)
   })
   public static final var _migrationRole: LockingLazyVar<Role> as MIGRATION_ROLE = LockingLazyVar.make(\-> {
@@ -292,5 +294,12 @@ abstract class MigrationUtil {
       }
     }
     return xml
+  }
+
+  public static function getPropertyHelper(_CONFIG_FILE : String) : PropertyHelper{
+    var  proHelper : PropertyHelper
+    proHelper = new PropertyHelper(_CONFIG_FILE)
+    proHelper.Prefix = ServerUtil.Env + "."
+    return proHelper
   }
 }

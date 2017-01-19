@@ -15,6 +15,7 @@ uses java.lang.System
 uses java.lang.Thread
 uses java.lang.Throwable
 uses java.util.Map
+uses gw.api.system.server.ServerUtil
 
 /**
  * Core implementation of the migration process. Include transaction specific functionality.
@@ -52,6 +53,7 @@ abstract class AbstractMigrationProcess {
       _logger.debug(_LOG_TAG + "parameters ${params}")
     }
     _propertyHelper = new PropertyHelper(params)
+    _propertyHelper.setPrefix(ServerUtil.Env+".")
   }
 
   /**

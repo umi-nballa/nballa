@@ -204,7 +204,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
-    priorLoss.OriginLoss="CLUE"
+
 
     return priorLoss
   }

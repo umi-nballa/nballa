@@ -112,8 +112,9 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
     if(dwelling.HOLine.BaseState == TC_CA
        and this.PatternCode == "HODW_LossOfUseDwelLimit_HOE"
        and dwelling.HOPolicyType == TC_HO6
-       and configParameterType == TC_LimitMaxFactor){
-      result = result + 35000
+       and configParameterType == TC_LimitMaxFactor
+       and result != null){
+       result = result + 35000
     }
 
     return result

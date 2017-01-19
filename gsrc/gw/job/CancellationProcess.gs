@@ -347,10 +347,7 @@ class CancellationProcess extends JobProcess {
     Job.InitialNotificationDate  = currentDate
     Job.NotificationDate         = currentDate
     JobProcessLogger.logInfo("Sending notice of cancellation on ${Job.NotificationDate} for branch \"${_branch}\"")
-    // For asynchronous integration, add the "SendCancellationNotices" event.  The event rules should create
-    // a message for a MessageTransport to send to an external system.  When the external  system finishes
-    // sending the notices, it should advance the CancellationProcess by calling the finishSendNotices() method.
-    //_branch.addEvent("SendCancellationNotices")
+    Job.addToFormsEvents(new FormsEvent(){:EventType = FormsEventType.TC_SENDCANCELLATIONNOTICES})
   }
 
   /**

@@ -193,7 +193,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }
 
- /* function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
+  function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
     if(coverable.HODW_FloodCoverage_HOE_ExtExists){
       if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
@@ -205,7 +205,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
     return coverable.FloodRiskType_Ext
   }
-      */
+
   function isFloodExcludedZipCode(dwelling : Dwelling_HOE):boolean{
     var zipCodeExists:boolean
     var floodExcludedZips = ConfigParamsUtil.getList(TC_FloodExcludedZipCodes, dwelling.PolicyLine.BaseState)
@@ -217,6 +217,19 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       }
     }
    return zipCodeExists
+  }
+  
+  function floodZipCodesToWatch(dwelling:Dwelling_HOE):boolean{
+    var floodZipCodeToWatch:boolean
+    var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
+    if(floodIneligibleZips.HasElements){
+      var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
+      if(zipCode.length >= 5){
+        zipCode = zipCode.substring(0, 5)
+        floodZipCodeToWatch = !floodIneligibleZips.contains(zipCode)
+      }
+    }
+    return floodZipCodeToWatch
   }
 
   function eastORWestCoastLocation(dwelling : Dwelling_HOE):CoastLocation_Ext{

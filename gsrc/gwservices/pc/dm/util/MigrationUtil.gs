@@ -296,40 +296,10 @@ abstract class MigrationUtil {
     return xml
   }
 
-  private static function getPropertyHelper(_CONFIG_FILE : StringBuilder) : PropertyHelper{
-    var proHelper : PropertyHelper
-    var env : StringBuilder = new StringBuilder(System.getProperty(_ENV_PARAM))
-    switch(env.toString().toUpperCase()){
-      case "LOCAL":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "PC_DEV":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
-          break;
-      case "PC_DEVINT":
-        proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
-        break;
-      case "PC_DEV02":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"qat", "QAT")
-          break;
-      case "PC_ASM":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+"asm", "ASM")
-          break;
-      case "QAT":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "QA":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "UAT":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-      case "PROD":
-          proHelper = new PropertyHelper(_CONFIG_FILE.append("_")+env, env)
-          break;
-        default :
-        //throw new DataMigrationNonFatalException(INVALID_ENVIRONMET_TYPE, "Invalid Migration environment type.")
-    }
+  public static function getPropertyHelper(_CONFIG_FILE : String) : PropertyHelper{
+    var  proHelper : PropertyHelper
+    proHelper = new PropertyHelper(_CONFIG_FILE)
+    proHelper.Prefix = ServerUtil.Env + "."
     return proHelper
   }
 }

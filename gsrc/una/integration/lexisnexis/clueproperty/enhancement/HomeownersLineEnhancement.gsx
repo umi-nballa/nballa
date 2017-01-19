@@ -13,7 +13,7 @@ enhancement HomeownersLineEnhancement : entity.HomeownersLine_HOE {
    *  Gets a list of {@link entity.HOPriorLossExt} associated to this instance
    *  @return HOPriorLossExt[]
    */
-  property get  HOPriorLosses_Ext() : HOPriorLoss_Ext[] {
+  property get HOPriorLosses_Ext() : HOPriorLoss_Ext[] {
     return Query
         .make(HOPriorLoss_Ext)
         .compare(HOPriorLoss_Ext#HomeownersLineID, Equals, this.PublicID)

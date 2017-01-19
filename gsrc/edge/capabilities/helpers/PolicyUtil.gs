@@ -192,9 +192,7 @@ class PolicyUtil {
       if(policyPeriod.BaseState==typekey.Jurisdiction.TC_FL and policyPeriod.HomeownersLine_HOEExists=="false")
      return typekey.CarrierType_Ext.TF_FL_BOP_CRP.TypeKeys
 
-    return null
+    return typekey.CarrierType_Ext.TC_AEQIS.Typekeys
 
 }
-
-
 }

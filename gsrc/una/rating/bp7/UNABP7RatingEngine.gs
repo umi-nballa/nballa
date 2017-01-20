@@ -10,12 +10,12 @@ uses una.rating.bp7.ratinginfos.BP7ClassificationRatingInfo
 uses una.rating.bp7.ratinginfos.BP7RatingInfo
 uses una.rating.bp7.ratinginfos.BP7LineRatingInfo
 uses gw.lob.bp7.rating.BP7LiabilityLessorStep
-uses gw.lob.bp7.rating.BP7LiabilityOccupantStep
 uses una.rating.bp7.ratinginfos.BP7StructureRatingInfo
 uses una.rating.bp7.ratinginfos.BP7BuildingRatingInfo
 uses una.rating.bp7.ratinginfos.BP7BusinessPersonalPropertyRatingInfo
 uses una.rating.bp7.common.BP7LocationStep
 uses una.rating.bp7.ratinginfos.BP7LocationRatingInfo
+uses una.rating.bp7.util.RateFactorUtil
 
 class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   var _minimumRatingLevel: RateBookStatus
@@ -99,9 +99,11 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   }
 
   override function rateBuilding(building: BP7Building, sliceToRate: DateRange) {
+    _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
     var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo)
     var buildingRatingInfo = new BP7BuildingRatingInfo(building)
     if (building.BP7StructureExists) {
+      _bp7RatingInfo.PropertyBuildingAdjustmentFactor = RateFactorUtil.setPropertyBuildingAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
       var bp7StructureRatingInfo = new BP7StructureRatingInfo(building.BP7Structure)
       addCost(step.rateBP7Structure(building.BP7Structure, sliceToRate, bp7StructureRatingInfo))
     }
@@ -119,6 +121,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){
+      _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setContentBuildingAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
       var businessPersonalPropertyRatingInfo = new BP7BusinessPersonalPropertyRatingInfo(classification?.BP7ClassificationBusinessPersonalProperty)
       addCost(step.rateBP7BusinessPersonalProperty(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate, businessPersonalPropertyRatingInfo))
     }

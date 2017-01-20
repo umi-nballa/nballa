@@ -17,8 +17,9 @@ class BP7RatingInfo {
   var _businessPersonalPropertyBaseRate : BigDecimal as BusinessPersonalPropertyBaseRate = 1.0
 
   construct(line : BP7Line){
-    var adjFactor = line.AssociatedPolicyPeriod?.LatestPeriod?.Factor_Ext
-    if(adjFactor != null and adjFactor != 0)
+    var policyPeriod = line.AssociatedPolicyPeriod
+    var adjFactor = policyPeriod?.Factor_Ext
+    if(policyPeriod?.ConsentToRateReceived_Ext and adjFactor != null and adjFactor != 0)
       _otherAdjustmentFactor = adjFactor
   }
 }

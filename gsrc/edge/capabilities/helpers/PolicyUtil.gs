@@ -189,10 +189,32 @@ class PolicyUtil {
        }
 
       }
+    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_NC){
+        if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||policyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
+          return typekey.CarrierType_Ext.TF_NC_HO_LPP.TypeKeys
+      }
       if(policyPeriod.BaseState==typekey.Jurisdiction.TC_FL and policyPeriod.HomeownersLine_HOEExists=="false")
+
      return typekey.CarrierType_Ext.TF_FL_BOP_CRP.TypeKeys
 
-    return typekey.CarrierType_Ext.TC_AEQIS.Typekeys
+    return null
 
-}
-}
+
+      }
+  //author aranjan
+
+  static function getValuesByVisibility(policyPeriod : PolicyPeriod) :boolean{
+    if(policyPeriod.BOPLineExists == "True")
+      return true
+    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_NC){
+      if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||policyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
+        return true
+    }
+    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_TX) {
+        if( policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT)
+          return true
+      }
+    return false
+  }
+
+  }

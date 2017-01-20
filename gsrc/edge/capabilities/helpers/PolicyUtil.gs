@@ -161,7 +161,7 @@ class PolicyUtil {
     return filteredPolicies.toTypedArray()
   }
 
-  //author aranjan
+  //author aranajan
 
   static function getValuesByFilter(policyPeriod : PolicyPeriod) :  List<typekey.CarrierType_Ext> {
     if(policyPeriod.BaseState==typekey.Jurisdiction.TC_FL) {
@@ -184,37 +184,15 @@ class PolicyUtil {
                return typekey.CarrierType_Ext.TF_HI_HO_DP.TypeKeys
        } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_TX) {
            if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||
-               policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT)
+               policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT){
              return typekey.CarrierType_Ext.TF_TX_HO_TDP.TypeKeys
        }
-           else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_NC){
-             if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||policyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
-               return typekey.CarrierType_Ext.TF_NC_HO_LPP.TypeKeys
+
       }
       if(policyPeriod.BaseState==typekey.Jurisdiction.TC_FL and policyPeriod.HomeownersLine_HOEExists=="false")
      return typekey.CarrierType_Ext.TF_FL_BOP_CRP.TypeKeys
 
-    return null
+    return typekey.CarrierType_Ext.TC_AEQIS.Typekeys
 
 }
-
-
-  //author aranjan
-
-  static function getValuesByVisibility(policyPeriod : PolicyPeriod) :boolean{
-    if(policyPeriod.BOPLineExists == "True")
-      return true
-    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_NC){
-      if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||policyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
-        return true
-        }
-      else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_TX) {
-        if( policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT)
-          return true
-        }
-     return false
-    }
-
-  }
-
-
+}

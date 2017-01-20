@@ -19,6 +19,7 @@ uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -68,11 +69,11 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     }
     var lineExcls = createLineExclusions(policyPeriod, policyPeriod.BP7Line)
     for (lineExcl in lineExcls) {
-      bopLineBusiness.addChild(new XmlElement("Coverage", lineExcl))
+      bopLineBusiness.addChild(new XmlElement("Exclusion", lineExcl))
     }
     var lineConds = createLinePolicyConditions(policyPeriod, policyPeriod.BP7Line)
     for (lineCond in lineConds) {
-      bopLineBusiness.addChild(new XmlElement("Coverage", lineCond))
+      bopLineBusiness.addChild(new XmlElement("PolicyCondition", lineCond))
     }
     return bopLineBusiness
   }
@@ -214,7 +215,7 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return transactions
   }
 
-  override function getCostType(cost : Cost) :  String {
+  override function getDiscountCostType(cost : Cost) :  String {
     return null
   }
 
@@ -222,7 +223,15 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
-  override function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+  override function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal {
     return null
   }
 }

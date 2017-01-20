@@ -60,7 +60,6 @@ class TunaRequestMapper {
   {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For scrubonly ", this.IntrinsicType)
-      //Default Mapping method for  fields in request
       payloadRequestMapping()
       message.Address.Street = address.AddressLine1
       message.Address.City = address.City
@@ -75,7 +74,8 @@ class TunaRequestMapper {
     }
   }
 
-  /**
+
+ /**
    *
    * Mapping AccountLocation Entity  to  map address fields to the request
    * @param address : AddressDTO class
@@ -92,9 +92,10 @@ class TunaRequestMapper {
       message.Address.State = address.State
       message.Address.ZipCode = address.PostalCode
       message.Address.Country = address.Country
-      if(address.YearBuilt != null){
-        message.YearBuild = address.YearBuilt
-      }
+      if(address.YearBuilt != null)
+        message.YearBuild = address.YearBuilt as int
+      if(address.SqrFtg != null)
+        message.TotalSquareFootage = address.SqrFtg as int
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For propertyinformationComplete ", this.IntrinsicType)
       return message
     } catch (exp: Exception) {
@@ -103,6 +104,31 @@ class TunaRequestMapper {
     }
   }
 
+
+  function createISORequestModel(address: AddressDTO): GetPropertyInformationRequestModel
+  {
+    try {
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For propertyinformationComplete ", this.IntrinsicType)
+      //Default Mapping method for  fields in request
+      message.Address.Street = address.AddressLine1
+      message.Address.City = address.City
+      message.Address.State = address.State
+      message.Address.ZipCode = address.PostalCode
+      message.Address.Country = address.Country
+      message.YearBuild = address.YearBuilt
+      if(address.SqrFtg != null)
+      message.TotalSquareFootage = address.SqrFtg as int
+      mapAsOfDate()
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For propertyinformationComplete ", this.IntrinsicType)
+      return message
+    } catch (exp: Exception) {
+      logger.error(CLASS_NAME + " :: " + "createMappingAddress3 : Mapping to payload ", exp)
+      throw exp
+    }
+  }
+
+
+
   /**
    * Default field mapping across all the requests is being done in this method
    *
@@ -110,11 +136,8 @@ class TunaRequestMapper {
   private function  payloadRequestMapping()
   {
     try {
-      var df = new SimpleDateFormat(PropertiesHolder.getProperty("TUNA_DATE_FORMAT"))
-      var s = df.format(DateUtil.currentDate())
-      var theXmlDate = new XmlDateTime(s)
+      mapAsOfDate()
       message.YearBuild = DEFAULT_VALUE
-      message.AsOfDate = theXmlDate
       message.TotalSquareFootage = DEFAULT_VALUE
       message.Coordinates.Latitude = DEFAULT_VALUE as Double
       message.Coordinates.Longitude = DEFAULT_VALUE as Double
@@ -124,5 +147,15 @@ class TunaRequestMapper {
       logger.error(CLASS_NAME + " :: " + "payloadRequestMapping : DefaultMapping ", exp)
       throw exp
     }
+   }
+
+  private function mapAsOfDate()
+    {
+    var df = new SimpleDateFormat(PropertiesHolder.getProperty("TUNA_DATE_FORMAT"))
+    var s = df.format(DateUtil.currentDate())
+    var theXmlDate = new XmlDateTime(s)
+    message.YearBuild = DEFAULT_VALUE
+    message.AsOfDate = theXmlDate
+    }
+
   }
-}

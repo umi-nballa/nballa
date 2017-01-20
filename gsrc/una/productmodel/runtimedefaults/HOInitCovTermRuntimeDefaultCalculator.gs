@@ -153,7 +153,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     var factor : Double = 0.1
 
     var roundingFactor = ConfigParamsUtil.getDouble(TC_RoundingFactor, line.BaseState, "HODW_BuildAddInc_HOE")
-    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.multiply(factor)
+    var calculatedAmount = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value?.multiply(factor)
 
     result = MathUtil.roundTo(calculatedAmount, roundingFactor, ROUND_NEAREST)
 

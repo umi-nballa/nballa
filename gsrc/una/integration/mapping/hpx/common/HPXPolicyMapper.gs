@@ -23,6 +23,7 @@ uses wsi.schema.una.hpx.hpx_application_request.types.complex.FeeType
 uses gw.xml.date.XmlDate
 uses una.integration.mapping.hpx.helper.HPXJobHelper
 uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -156,10 +157,10 @@ abstract class HPXPolicyMapper {
       for (cov in strucureCovs) { propertyStructure.addChild(new XmlElement("Coverage", cov))}
       var structureExclusions = createExclusionsInfo(getStructureExclusions(policyPeriod, coverableStructure), getStructureExclusions(previousPeriod, coverableStructure),
           getStructureCoverageTransactions(policyPeriod, coverableStructure))
-      for (excl in structureExclusions) { propertyStructure.addChild(new XmlElement("Coverage", excl))}
+      for (excl in structureExclusions) { propertyStructure.addChild(new XmlElement("Exclusion", excl))}
       var structurePolicyConditions = createPolicyConditionsInfo(getStructurePolicyConditions(policyPeriod, coverableStructure), getStructurePolicyConditions(previousPeriod, coverableStructure),
           getStructureCoverageTransactions(policyPeriod, coverableStructure))
-      for (cond in structureExclusions) { propertyStructure.addChild(new XmlElement("Coverage", cond))}
+      for (cond in structureExclusions) { propertyStructure.addChild(new XmlElement("PolicyCondition", cond))}
       var additionalInts = getAdditionalInterests(coverableStructure)
       var additionalInterests = createAdditionalInterests(additionalInts, coverableStructure, structureMapper)
       for (additionalInterest in additionalInterests) { propertyStructure.addChild(new XmlElement("AdditionalInterest", additionalInterest))}
@@ -173,8 +174,8 @@ abstract class HPXPolicyMapper {
       var locationPolicyConditions = createPolicyConditionsInfo(getLocationPolicyConditions(policyPeriod, coverableStructure), getLocationPolicyConditions(previousPeriod, coverableStructure),
           getLocationCoverageTransactions(policyPeriod, coverableStructure))
       for (loc in locationCovs) { location.addChild(new XmlElement("Coverage", loc))}
-      for (locExcl in locationExclusions) { location.addChild(new XmlElement("Coverage", locExcl))}
-      for (locCond in locationPolicyConditions) { location.addChild(new XmlElement("Coverage", locCond))}
+      for (locExcl in locationExclusions) { location.addChild(new XmlElement("Exclusion", locExcl))}
+      for (locCond in locationPolicyConditions) { location.addChild(new XmlElement("PolicyCondition", locCond))}
       propertyStructure.addChild(new XmlElement("Location", location))
       // building classifications
       var structureClassifications = getClassifications(coverableStructure)
@@ -185,10 +186,10 @@ abstract class HPXPolicyMapper {
         for (classifcn in classifcnCovs) { buildlingClassification.addChild(new XmlElement("Coverage", classifcn))}
         var classifcnExclusions = createExclusionsInfo(getClassificationExclusions(policyPeriod, structureClassification), getClassificationExclusions(previousPeriod, structureClassification),
             getClassificationCoverageTransactions(policyPeriod, structureClassification))
-        for (classifcnExclusion in classifcnExclusions) { buildlingClassification.addChild(new XmlElement("Coverage", classifcnExclusion))}
+        for (classifcnExclusion in classifcnExclusions) { buildlingClassification.addChild(new XmlElement("Exclusion", classifcnExclusion))}
         var classifcnPolicyConditions = createPolicyConditionsInfo(getClassificationPolicyConditions(policyPeriod, structureClassification), getClassificationPolicyConditions(previousPeriod, structureClassification),
             getClassificationCoverageTransactions(policyPeriod, structureClassification))
-        for (classifcnCond in classifcnExclusions) { buildlingClassification.addChild(new XmlElement("Coverage", classifcnCond))}
+        for (classifcnCond in classifcnExclusions) { buildlingClassification.addChild(new XmlElement("PolicyCondition", classifcnCond))}
         propertyStructure.addChild(new XmlElement("BP7Classification", buildlingClassification))
       }
 
@@ -303,10 +304,10 @@ abstract class HPXPolicyMapper {
 
   function createDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
     var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
-    var discnts = policyPeriod.AllCosts.where( \ elt -> getDiscountCostTypes().contains(getCostType(elt)) )
+    var discnts = policyPeriod.AllCosts.where( \ elt -> getDiscountCostTypes().contains(getDiscountCostType(elt)) )
     for (cost in discnts) {
       var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
-      discount.DiscountCd = getCostType(cost)
+      discount.DiscountCd = getDiscountCostType(cost)
       discount.DiscountDescription = cost.DisplayName
       discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
       discounts.add(discount)
@@ -314,14 +315,29 @@ abstract class HPXPolicyMapper {
     return discounts
   }
 
-  function createEstimatedDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
+  function createEstimatedInsuranceScoreDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
     var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
-    var estimatedDiscounts = getEstimatedDiscounts(policyPeriod)
+    var estimatedDiscounts = getEstimatedInsScoreDiscounts(policyPeriod)
     for (estimatedDiscount in estimatedDiscounts) {
       var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
       discount.DiscountCd = estimatedDiscount.Code
       discount.DiscountDescription = estimatedDiscount.Description
       discount.DiscountPercent.Amt = estimatedDiscount.Percent
+      discounts.add(discount)
+    }
+    return discounts
+  }
+
+  function createEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
+    var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
+    var estimatedDiscounts = getEstimatedWindDiscounts(policyPeriod)
+    var windPremium = getHurricaneWindPremium(policyPeriod)
+    for (estimatedDiscount in estimatedDiscounts) {
+      var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
+      discount.DiscountCd = estimatedDiscount.Code
+      discount.DiscountDescription = estimatedDiscount.Description
+      discount.DiscountPercent.Amt = estimatedDiscount.Percent
+      discount.DiscountAmount.Amt = estimatedDiscount.Percent * windPremium / 100
       discounts.add(discount)
     }
     return discounts
@@ -385,11 +401,15 @@ abstract class HPXPolicyMapper {
 
   abstract function getLineCoverageTransactions(policyPeriod : PolicyPeriod, coverable : Coverable) : java.util.List<Transaction>
 
-  abstract function getCostType(cost : Cost) :  String
+  abstract function getDiscountCostType(cost : Cost) :  String
 
   abstract function getDiscountCostTypes() : String[]
 
-  abstract function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
+  abstract function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
+
+  abstract function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
+
+  abstract function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal
 
   abstract function getCoverageMapper() : HPXCoverageMapper
 

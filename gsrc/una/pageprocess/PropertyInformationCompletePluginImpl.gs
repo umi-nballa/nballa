@@ -260,30 +260,30 @@ class PropertyInformationCompletePluginImpl {
   }
 
  /**
-  *
+  *   Function to retrieve BCEG / ISO 360 values
   */
 
-  public function retrieveBCEG360Value(policyPeriod : PolicyPeriod, yearBuilt : String, sqrFtg : String) : TunaAppResponse{
+  public function retrieveBCEG360Value(dwelling : Dwelling_HOE) : TunaAppResponse{
     var mapISO : boolean
-    if(!(policyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT &&policyPeriod.Job.DisplayType == typekey.Job.TC_SUBMISSION.Code)){
+    if(!(dwelling.PolicyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT && dwelling.PolicyPeriod.Job.DisplayType == typekey.Job.TC_SUBMISSION.Code)){
      return null
     }
     logger.info(" Entering  " + CLASS_NAME + " :: " + " retrieveBCEG/360Value" + "For Dwelling ", this.IntrinsicType)
     _address = new AddressDTO()
-     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
+     var location = dwelling.HOLocation.PolicyLocation
     _address.AddressLine1 = location.AddressLine1
     _address.State = location.State.Code
     _address.City = location.City
     _address.PostalCode = location.PostalCode
     _address.Country = location.Country.Code
-    _address.YearBuilt = yearBuilt
-    _address.SqrFtg = sqrFtg
+    _address.YearBuilt = mapYearBuilt(dwelling)
+    _address.SqrFtg = mapSqrFtg(dwelling)
     try {
 
-      if(yearBuilt != null){
+      if( _address.YearBuilt != null){
        tunaResponse = TUNAGateway.fetchPropertyInformationISOLookUpOnly(_address)
 
-      if(sqrFtg != null ){
+      if(_address.SqrFtg != null ){
        var tunaResponse360 = TUNAGateway.fetchPropertyInformation360ValueLookUpOnlyInc(_address)
        tunaResponse.EstimatedReplacementCost = tunaResponse360.EstimatedReplacementCost
        tunaResponse.ISO360Value = tunaResponse360.ISO360Value
@@ -292,10 +292,10 @@ class PropertyInformationCompletePluginImpl {
        tunaResponse.CoverageLimit = tunaResponse360.CoverageLimit
        mapISO = true
        }
-       refreshSessionVar(policyPeriod, tunaResponse, mapISO)
+       refreshSessionVar(dwelling.PolicyPeriod, tunaResponse, mapISO)
        }
        if(tunaResponse == null)
-        LocationUtil.addRequestScopedWarningMessage("Unable to retrive BCEG/ISO 360 information from TUNA")
+       LocationUtil.addRequestScopedWarningMessage("Unable to retrive BCEG/ISO 360 information from TUNA")
 
     } catch (exp: Exception) {
       LocationUtil.addRequestScopedWarningMessage("Unable to retrive BCEG/ISO 360 value from TUNA")
@@ -413,7 +413,7 @@ class PropertyInformationCompletePluginImpl {
     _address.City = cpBuilding.CPLocation.PolicyLocation.City
     _address.State = cpBuilding.CPLocation.PolicyLocation.State.Code
     _address.PostalCode = cpBuilding.CPLocation.PolicyLocation.PostalCode
-    _address.YearBuilt = (cpBuilding.Building.YearBuilt) as String
+    _address.YearBuilt = (cpBuilding.Building.YearBuilt)
     try {
       tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
       cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation",tunaResponse.MetricsVersion.first().NamedValue))
@@ -425,6 +425,21 @@ class PropertyInformationCompletePluginImpl {
     return tunaResponse
   }
 
+  /**
+   * Function to retrieve right year built value
+   */
+
+  function mapYearBuilt(dwelling_hoe : Dwelling_HOE) : int{
+     if(dwelling_hoe.OverrideYearbuilt_Ext)
+      return dwelling_hoe.YearBuiltOverridden_Ext
+    return dwelling_hoe.YearBuilt
+  }
 
 
+  function mapSqrFtg(dwelling_hoe : Dwelling_HOE) : String {
+
+     if(dwelling_hoe.OverrideTotalSqFtVal_Ext)
+        return dwelling_hoe.TotalSqFtValOverridden_Ext
+        return dwelling_hoe.SquareFootage_Ext as String
+      }
  }

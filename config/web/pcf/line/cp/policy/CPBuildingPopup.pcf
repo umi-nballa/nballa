@@ -124,8 +124,8 @@
               </TypeKeyInput>
               <TypeKeyInput
                 id="CoverageForm"
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.CoverageForm"
-                value="cpBuilding.CoverageForm">
+                label="&quot;Cause of Loss&quot;"
+                value="cpBuilding.setCoverageForm(cpLine.causeofloss)">
                 <PostOnChange
                   onChange="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({cpBuilding}, jobWizardHelper) }"/>
               </TypeKeyInput>
@@ -557,6 +557,7 @@
                   editable="true"
                   id="PCCodeTunaReturned_Ext"
                   label="displaykey.Web.CP.CPLocation.ProtectionClass"
+                  required="true"
                   value="cpBuilding.FireProtectionClassCode"
                   valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
                   <PostOnChange

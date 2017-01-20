@@ -67,7 +67,7 @@
           value="dwelling.Yearbuilt"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.YearBuilt)">
           <PostOnChange
-            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"/>
+            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling);pageProcess.retrieveBCEG360Value(dwelling)"/>
         </RangeInput>
         <Input
           available="!dwelling.OverrideYearbuilt_Ext"
@@ -91,7 +91,7 @@
           value="dwelling.YearBuiltOverridden_Ext"
           visible="dwelling.OverrideYearbuilt_Ext">
           <PostOnChange
-            onChange="pageProcess.retrieveBCEG360Value(policyPeriod,dwelling.YearBuiltOverridden_Ext as String,dwelling.TotalSqFtValOverridden_Ext)"/>
+            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
         </Input>
       </InputSet>
       <InputDivider/>
@@ -228,7 +228,7 @@
             label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
             required="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
             value="dwelling.HOLocation.DwellingProtectionClassCode"
-            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass)">
             <PostOnChange
               onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
           </RangeInput>

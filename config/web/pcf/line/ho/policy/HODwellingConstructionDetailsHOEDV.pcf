@@ -374,7 +374,10 @@
           id="TotalSqFtValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
           value="dwelling.SquareFootage_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)">
+          <PostOnChange
+            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
+        </RangeInput>
         <Input
           available="!dwelling.OverrideTotalSqFtVal_Ext"
           id="TotalSqFtValMatchLevel_Ext"
@@ -397,7 +400,7 @@
           value="dwelling.TotalSqFtValOverridden_Ext"
           visible="dwelling.OverrideTotalSqFtVal_Ext">
           <PostOnChange
-            onChange="new una.pageprocess.PropertyInformationCompletePluginImpl().retrieveBCEG360Value(dwelling.PolicyPeriod,dwelling.YearBuiltOverridden_Ext as String,dwelling.TotalSqFtValOverridden_Ext)"/>
+            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
         </Input>
       </InputSet>
       <InputDivider/>

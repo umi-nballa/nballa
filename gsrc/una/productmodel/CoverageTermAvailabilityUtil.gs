@@ -229,7 +229,7 @@ class CoverageTermAvailabilityUtil {
   }
 
   public static function getLateWildfireClaimReportingExistence(dwelling : Dwelling_HOE) : ExistenceType{
-    return (dwelling.HODW_DifferenceConditions_HOE_ExtExists) ? ExistenceType.TC_REQUIRED : ExistenceType.TC_ELECTABLE
+    return (dwelling.HODW_DifferenceConditions_HOE_ExtExists) ? ExistenceType.TC_ELECTABLE : ExistenceType.TC_REQUIRED
   }
 
   private static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {

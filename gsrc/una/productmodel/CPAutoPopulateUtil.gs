@@ -19,7 +19,7 @@ class CPAutoPopulateUtil {
 
 
   public static function setTermValue(term:CovTerm):void
-  {
+  {    
    // var cLine = (coverable as CPBuilding).PolicyLine as CommercialPropertyLine
 
     if(term!=null && term.Clause.Pattern=="CPSinkholeLossCoverage_EXT" && term.PatternCode=="SinkholeLimit_EXT")//cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm!=null)
@@ -361,7 +361,7 @@ class CPAutoPopulateUtil {
       }
     }
 
-
+    cBuilding.CoverageForm = cBuilding.setCoverageForm(cLine.causeofloss)
   }
 
   public static function cleanupcoverages(cpbuilding:CPBuilding, cpline:CommercialPropertyLine):boolean

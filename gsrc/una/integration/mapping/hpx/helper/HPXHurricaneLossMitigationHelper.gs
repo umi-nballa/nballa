@@ -15,7 +15,7 @@ class HPXHurricaneLossMitigationHelper {
   function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
     var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
     var jurisdictionState = policyPeriod.BaseState
-    if (jurisdictionState == typekey.Jurisdiction.TC_FL) {
+    if (jurisdictionState == typekey.Jurisdiction.TC_FL and policyPeriod.HomeownersLine_HOEExists) {
       var estimatedRoofCoveringDiscount = new HPXRoofCoveringRatingHelper()
       var estimatedRoofAttachmentDiscount = new HPXRoofAttachmentRatingHelper()
       var estimatedRoofToWallDiscount = new HPXRootToWallRatingHelper()

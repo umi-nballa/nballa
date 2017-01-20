@@ -73,11 +73,11 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     }
     var lineExcls = createLineExclusions(policyPeriod, policyPeriod.HomeownersLine_HOE)
     for (lineExcl in lineExcls) {
-      dwellingLineBusiness.addChild(new XmlElement("Coverage", lineExcl))
+      dwellingLineBusiness.addChild(new XmlElement("Exclusion", lineExcl))
     }
     var lineConds = createLinePolicyConditions(policyPeriod, policyPeriod.HomeownersLine_HOE)
     for (lineCond in lineConds) {
-      dwellingLineBusiness.addChild(new XmlElement("Coverage", lineCond))
+      dwellingLineBusiness.addChild(new XmlElement("PolicyCondition", lineCond))
     }
     var questions = createQuestionSet(policyPeriod)
     for (question in questions) {

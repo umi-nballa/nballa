@@ -1102,6 +1102,7 @@
 			<xsd:element name="AdditionalPremiumAmt" type="AdditionalPremiumAmtType" minOccurs="0"/>
 			<xsd:element name="NetPremiumAmt" type="NetPremiumAmtType" minOccurs="0"/>
 			<xsd:element name="ReturnPremiumAmt" type="ReturnPremiumAmtType" minOccurs="0"/>
+            <xsd:element name="ConsentToRatePremiumAmt" type="AdditionalPremiumAmtType" minOccurs="0"/>
 			<xsd:element name="PremiumAdjustmentFrequencyCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="RecoveryAssessmentInd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ChangeDisplayNameDesc" type="xsd:string" minOccurs="0"/>
@@ -1122,6 +1123,7 @@
 			<xsd:element name="AdditionalPremiumAmt" type="AdditionalPremiumAmtType"/>
 			<xsd:element name="ReturnPremiumAmt" type="ReturnPremiumAmtType" minOccurs="0"/>
 			<xsd:element name="NetPremiumAmt" type="NetPremiumAmtType"/>
+            <xsd:element name="ConsentToRatePremiumAmt" type="AdditionalPremiumAmtType" minOccurs="0"/>
 			<xsd:element name="PremiumInfo" type="PremiumInfoType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -1779,6 +1781,8 @@
 			<xsd:element name="LocationDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CatastropheZoneCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="LocationKey" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -2360,6 +2364,8 @@
 			<xsd:element name="ClassCode" type="xsd:string"/>
 			<xsd:element name="VacantArea" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="ClassificationKey" type="CoverableType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -2395,6 +2401,8 @@
 			<xsd:element name="AnimalOrExoticPetsInd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="AnimalExposureInfo" type="AnimalExposureInfoType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="DwellStateSupplement" type="DwellStateSupplementType" minOccurs="0"/>
 			<xsd:element name="MinPremInd" type="xsd:string" minOccurs="0"/>
@@ -2481,6 +2489,8 @@
 			<xsd:element name="PolicyStatusDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Dwell" type="DwellType"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="ResidenceBusiness" type="ResidenceBusinessType" minOccurs="0"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Discount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
@@ -3242,6 +3252,8 @@
 			<xsd:element name="PolicyStatusDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Dwell" type="DwellType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Location" type="LocationType" minOccurs="0"/>
 		</xsd:sequence>
@@ -3282,6 +3294,8 @@
 			<xsd:element name="PolicyStatusCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="PolicyStatusDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" maxOccurs="unbounded"/>
 			<xsd:element name="Location" type="LocationType" minOccurs="0"/>
 			<xsd:element name="Dwell" type="DwellType" minOccurs="0" maxOccurs="unbounded"/>

@@ -3,9 +3,9 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
   <Popup
-    afterCommit="gw.api.web.PebblesUtil.invalidateIterators(TopLocation, PolicyLocation);"
+    afterCommit="gw.api.web.PebblesUtil.invalidateIterators(TopLocation, PolicyLocation); tunaApp.getTunaInformation(policyPeriod)"
     afterEnter="maybeCreateLocation()"
-    beforeCommit="checkChangeableState(); handleBeforeCommitForProduct()"
+    beforeCommit="checkChangeableState(); handleBeforeCommitForProduct();tunaApp.resetTunaInfo(policyPeriod);"
     canEdit="openForEdit"
     countsAsWork="false"
     id="LocationPopup"
@@ -38,6 +38,9 @@
     <Variable
       name="supportsNonSpecificLocation"
       type="boolean"/>
+    <Variable
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
+      name="tunaApp"/>
     <Screen
       id="LocationScreen">
       <Toolbar>

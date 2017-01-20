@@ -270,4 +270,9 @@ enhancement CPBuildingEnhancement : CPBuilding {
     return  clonedBuilding
   }
 
+  function setCoverageForm(causeOfLossValue:CPCauseOfLoss):CoverageForm{
+    var coverageFormValue:CoverageForm
+    coverageFormValue =  causeOfLossValue.DisplayName
+    return coverageFormValue
+  }
 }

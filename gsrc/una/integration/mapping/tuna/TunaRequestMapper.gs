@@ -115,7 +115,7 @@ class TunaRequestMapper {
       message.Address.State = address.State
       message.Address.ZipCode = address.PostalCode
       message.Address.Country = address.Country
-      message.YearBuild = address.YearBuilt as int
+      message.YearBuild = address.YearBuilt
       if(address.SqrFtg != null)
       message.TotalSquareFootage = address.SqrFtg as int
       mapAsOfDate()

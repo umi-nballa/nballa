@@ -271,8 +271,14 @@ enhancement CPBuildingEnhancement : CPBuilding {
   }
 
   function setCoverageForm(causeOfLossValue:CPCauseOfLoss):CoverageForm{
-    var coverageFormValue:CoverageForm
-    coverageFormValue =  causeOfLossValue.DisplayName
+    var coverageFormValue : CoverageForm
+
+    if(causeOfLossValue == typekey.CPCauseOfLoss.TC_SPECIAL){
+      coverageFormValue = CoverageForm.TC_SPECIAL
+    }else if(causeOfLossValue == typekey.CPCauseOfLoss.TC_BASIC){
+      coverageFormValue = typekey.CoverageForm.TC_BASIC
+    }
+
     return coverageFormValue
   }
 }

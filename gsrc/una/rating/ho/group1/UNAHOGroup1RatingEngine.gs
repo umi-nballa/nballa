@@ -147,7 +147,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
             rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
           break
       case HODW_LossAssessmentCov_HOE_Ext:
-          rateLossAssessmentCoverage(dwellingCov, dateRange)
+          if(!(PolicyLine.BaseState == Jurisdiction.TC_AZ and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4))
+            rateLossAssessmentCoverage(dwellingCov, dateRange)
           break
       case HODW_SpecificOtherStructure_HOE_Ext:
           rateOtherStructuresRentedToOthersCoverage(dwellingCov, dateRange)
@@ -462,9 +463,13 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function ratePersonalPropertyReplacementCost(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyReplacementCost", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE)
+    var rateRoutineParameter = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costDataForIncreasedPersonalProperty = HOCreateCostDataUtil.createCostDataForDwellingCoverage(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameter, Executor, this.NumDaysInCoverageRatedTerm)
     var lineLevelRatingInfo = new HOGroup1LineLevelRatingInfo(PolicyLine)
     lineLevelRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     lineLevelRatingInfo.AdjustedBaseClassPremium = _hoRatingInfo.AdjustedBaseClassPremium
+    lineLevelRatingInfo.IncreasedPersonalPropertyPremium = costDataForIncreasedPersonalProperty?.ActualTermAmount
     var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, lineLevelRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)

@@ -4,7 +4,7 @@ uses java.math.BigDecimal
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
- * Date: 12/21/16
+ * Rating info for the BP7 Building Structure coverage
  */
 class BP7StructureRatingInfo {
 

@@ -5,7 +5,7 @@ uses java.math.BigDecimal
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 12/7/16
- * Time: 6:26 PM
+ * Common Rating info which stores all the factors used to calculate rates for BP7 Coverages
  */
 class BP7RatingInfo {
 

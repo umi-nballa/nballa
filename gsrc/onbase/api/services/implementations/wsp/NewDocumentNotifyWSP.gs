@@ -205,8 +205,6 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
 
   @Throws(java.lang.IllegalArgumentException, "If OnBase Document Type is not present, throws IllegalArgumentException")
   private function getOnBaseDocumentType(keywords: MessageData_MessageContentType_DequeuePCDocumentMessageType_Keywords): OnBaseDocumentType_Ext {
-    var onbaseDocumentType = typekey.OnBaseDocumentType_Ext.getByName(keywords.StandAlone.OnBaseDocumentType_Collection.OnBaseDocumentType.first())
-
     var onBaseDocType: OnBaseDocumentType_Ext = null
     var onBaseDocumentTypeName = keywords.StandAlone.OnBaseDocumentType_Collection.OnBaseDocumentType.first()
     if (onBaseDocumentTypeName.HasContent) {

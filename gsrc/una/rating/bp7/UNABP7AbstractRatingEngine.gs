@@ -16,14 +16,14 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
 
+      lineVersion.AllBuildings.each(\building -> {
+        rateBuilding(building, sliceRange)
+      })
+
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
 
       lineVersion.BP7Locations*.Coverages?.each(\locationCov -> rateLocationCoverage(locationCov, sliceRange))
       rateLiability(lineVersion, sliceRange)
-
-      lineVersion.AllBuildings.each(\building -> {
-        rateBuilding(building, sliceRange)
-      })
 
       lineVersion.AllClassifications.each(\classification -> {
         rateClassification(classification, sliceRange)

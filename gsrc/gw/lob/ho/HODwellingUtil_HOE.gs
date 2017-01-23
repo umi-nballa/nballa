@@ -33,10 +33,10 @@ class HODwellingUtil_HOE {
   private static final var WIND_SPEED_100 : int = 100
   private static final var WIND_SPEED_110 : int = 110
   private static final var WIND_SPEED_120 : int = 120
-  private static final var PROTECTION_CLASSCODE_4 = "04"
-  private static final var PROTECTION_CLASSCODE_2 = "02"
-  private static final var PROTECTION_CLASSCODE_3 = "03"
-  private static final var PROTECTION_CLASSCODE_5 = "05"
+  private static final var PROTECTION_CLASSCODE_4 = typekey.ProtectionClassCode_Ext.TC_4.Code
+  private static final var PROTECTION_CLASSCODE_2 = typekey.ProtectionClassCode_Ext.TC_2.Code
+  private static final var PROTECTION_CLASSCODE_3 = typekey.ProtectionClassCode_Ext.TC_3.Code
+  private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
@@ -692,6 +692,22 @@ class HODwellingUtil_HOE {
           {
             tunaCodeAndPercent.add(elt.Value)
           })// + " - " +elt.Percent+" %"))
+    }
+    return tunaCodeAndPercent.order()
+  }
+
+  static function getProtectionCodes(theProtectionClassValues: List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(theProtectionClassValues != null) {
+      theProtectionClassValues.each( \ elt ->
+      {
+        if(elt.Value.contains("/")){
+          tunaCodeAndPercent.add(elt.Value.split("/").first())
+          tunaCodeAndPercent.add(elt.Value.split("/").last())
+        }else{
+          tunaCodeAndPercent.add(elt.Value)
+        }
+      })
     }
     return tunaCodeAndPercent.order()
   }

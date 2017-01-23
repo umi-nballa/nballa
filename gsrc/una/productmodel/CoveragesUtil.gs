@@ -4,6 +4,7 @@ uses una.config.ConfigParamsUtil
 uses java.util.HashMap
 uses gw.api.domain.covterm.CovTerm
 uses java.lang.Double
+uses gw.api.domain.covterm.TypekeyCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -242,15 +243,42 @@ class CoveragesUtil {
     covTermsToInitialize.each( \ covTerm -> covTerm?.onInit())
   }
 
-  private static function initDwelling_Cov_HOE(coverable : Coverable){
-    var valuationCovTerm = (coverable as Dwelling_HOE).DwellingValuationMethodCovTerm
 
-    if(valuationCovTerm.AvailableOptions.Count == 1){
-      valuationCovTerm.setOptionValue(valuationCovTerm.AvailableOptions.single())
+  public static function getAvailableValuationMethods(covTerm: TypekeyCovTerm): List<gw.entity.TypeKey>{
+
+    if(covTerm == null){
+      return null
+    }
+
+    if(covTerm.Pattern.TypeList != typekey.ValuationMethod) {
+      return covTerm.Pattern.OrderedAvailableValues
+    }
+
+    var state = covTerm.Clause.PolicyLine.BaseState
+    var policyType: typekey.HOPolicyType_HOE
+
+    if(covTerm.Clause.OwningCoverable typeis Dwelling_HOE) {
+
+      policyType = (covTerm.Clause.OwningCoverable as Dwelling_HOE).HOPolicyType
+    } else{
+
+      policyType = (covTerm.Clause.OwningCoverable as HomeownersLine_HOE).HOPolicyType
+    }
+
+    return ValuationMethod.getTypeKeys(false)
+        .where( \ elt -> elt.hasCategory(policyType) and elt.hasCategory(state))
+
+  }
+
+  private static function initDwelling_Cov_HOE(coverable : Coverable){
+
+    var valuationCovTerm = (coverable as Dwelling_HOE).DwellingValuationMethodCovTerm
+    var availableValuationMethods = getAvailableValuationMethods(valuationCovTerm)
+
+    if(availableValuationMethods.Count == 1){
+      valuationCovTerm.Value =   availableValuationMethods.single()
     }else{
-      var stringVal = ((coverable as Dwelling_HOE).HOLine.BaseState == TC_TX) ? "Actual" : "Replacement"
-      //using setValueFromString right now.  may eventually be changed to a typekey cov term.  also might move from
-      valuationCovTerm.setValueFromString(stringVal)
+      valuationCovTerm.setValue(((coverable as Dwelling_HOE).HOLine.BaseState == TC_TX) ?  typekey.ValuationMethod.TC_ACV : typekey.ValuationMethod.TC_REPLCOST)
     }
   }
 

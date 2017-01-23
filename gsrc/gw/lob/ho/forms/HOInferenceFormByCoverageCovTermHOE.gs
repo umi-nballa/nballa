@@ -34,18 +34,7 @@ class HOInferenceFormByCoverageCovTermHOE extends FormData {
             }
           }
         }      
-      } else if (formCode.equals("HODW_HO0465_HOE")) {
-        // HO 04 65
-        if (dwelling.HODW_Dwelling_Cov_HOEExists) {
-          _referenceDate = dwelling.HODW_Dwelling_Cov_HOE.ReferenceDate
-          if (policyType.equals("HO3")) {
-            var covTerm = dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm
-            if (covTerm <> null and covTerm.OptionValue.OptionCode == "Special") {
-              _covTermCheckSatisfied = true
-            }
-          }
-        }      
-      } else if (formCode.equals("HODW_HO0390_HOE")) {
+      }  else if (formCode.equals("HODW_HO0390_HOE")) {
         // HO 03 90
         // Alabama only
         if (dwelling.HODW_SectionI_Ded_HOEExists) {

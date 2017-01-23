@@ -4,7 +4,7 @@ uses java.math.BigDecimal
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
- * Date: 12/21/16
+ * Rating info for the BP7 Building Structure coverage
  */
 class BP7StructureRatingInfo {
 
@@ -43,7 +43,7 @@ class BP7StructureRatingInfo {
     _businessIncomeExtraExpenseNumberOfMonths = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue
     _businessLiabilityOccurrenceLimit = line?.BP7BusinessLiability?.BP7EachOccLimitTerm?.Value.intValue()
     _protectionClassCode = building?.OverrideDwellingPCCode_Ext? building?.DwellingPCCodeOverridden_Ext : building?.DwellingProtectionClassCode
-    _protectionClassCodeInt = (_protectionClassCode == "8B")? 9 : _protectionClassCode.toInt()
+    _protectionClassCodeInt = (_protectionClassCode == "8B")? 9 : _protectionClassCode?.toInt()
 
     _classificationClassCode = building.Classifications?.first().ClassCode_Ext
   }

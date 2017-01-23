@@ -2,6 +2,8 @@ package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses gw.xml.XmlElement
+uses gw.api.domain.covterm.OptionCovTerm
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -64,6 +66,32 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
           break
     }
     return result
+  }
+
+  function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+    if(currentCovTerm.PatternCode == "CPBldgCovHurricaneDeductible_EXT") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      var value = currentCovTerm.OptionValue.Value as double
+      var pctValue = 0
+      value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+      if (valueType.Value == typekey.CovTermModelVal.TC_PERCENT) {
+        pctValue = value
+      } else {
+        pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
+        value = 0.00
+      }
+      deductible.FormatCurrencyAmt.Amt = value
+      deductible.FormatPct = pctValue
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = (coverage.OwningCoverable as CPBuilding).CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.DisplayValue
+      deductible.FormatText = (coverage.OwningCoverable as CPBuilding).CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.Value
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
+      return deductible
+    }  else {
+      return super.createOptionDeductibleInfo(coverage, currentCovTerm, previousCovTerm, transactions)
+    }
   }
 
   function createCPWindstormProtectiveDevices(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {

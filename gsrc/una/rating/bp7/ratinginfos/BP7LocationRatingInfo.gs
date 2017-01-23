@@ -3,6 +3,7 @@ package una.rating.bp7.ratinginfos
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 1/17/17
+ * Rating info for the BP7 Location coverages
  */
 class BP7LocationRatingInfo {
 

@@ -17,8 +17,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
   var _windOrHailPercentage: String as WindOrHailPercentage
   var _namedStormPercentage: String as NamedStormPercentage
   var _isTerritoryIncludedForNamedStormDeductibleFactor: boolean as IsTerritoryIncludedForNamedStormDeductibleFactor
-  var REPLACEMENT_COST = "Replacement Cost"
-  var REPLACEMENT_COST_WITH_ROOF_SURFACING = "Replacement Cost with Roof Surfacing"
   var REPLACEMENT_COST_CODE = "RCLS"
   var REPLACEMENT_COST_WITH_ROOF_SURFACING_CODE = "RCSR"
   var _replacementCostDwellingCoverage: String as ReplacementCostDwellingCoverage
@@ -38,9 +36,9 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
       this.PersonalPropertyLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value as int
     }
     if (dwelling.HODW_Dwelling_Cov_HOEExists){
-      if (dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue == REPLACEMENT_COST) {
+      if (dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOE_ExtTerm.Value == tc_ReplCost) {
         _replacementCostDwellingCoverage = REPLACEMENT_COST_CODE
-      } else if (dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue == REPLACEMENT_COST_WITH_ROOF_SURFACING){
+      } else if (dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOE_ExtTerm.Value == tc_ReplWRoof){
         _replacementCostDwellingCoverage = REPLACEMENT_COST_WITH_ROOF_SURFACING_CODE
       }
     }

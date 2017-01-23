@@ -3,6 +3,7 @@ package una.rating.bp7.common
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 12/20/16
+ * Class which has list of all the BP7 Rate routine codes
  */
 class BP7RateRoutineNames {
 
@@ -37,4 +38,8 @@ class BP7RateRoutineNames {
   public static final var BP7_LOCATION_ADDL_INSD_LESSORS_LEASED_EQUIPMENT_RATE_ROUTINE : String = "BP7LocationAddlInsdLessorsLeasedEquipmtRateRoutine"
   public static final var BP7_LOCATION_ADDL_INSD_MANAGERS_LESSORS_PREMISES_RATE_ROUTINE : String = "BP7LocationAddlInsdManagersLessorsPremisesRateRoutine"
   public static final var BP7_LOCATION_ADDL_INSD_DESIGNATED_PERSON_ORG_RATE_ROUTINE : String = "BP7LocationAddlInsdDesignatedPersonOrgRateRoutine"
+  public static final var BP7_EMPLOYMENT_PRACTICES_LIABILITY_RATE_ROUTINE : String = "BP7EmploymentPracticesLiabilityRateRoutine"
+  public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_1_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage1RateRoutine"
+  public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_2_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage2RateRoutine"
+  public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_3_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage3RateRoutine"
 }

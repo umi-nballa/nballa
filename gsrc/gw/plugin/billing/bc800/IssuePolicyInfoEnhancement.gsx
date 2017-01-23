@@ -70,6 +70,8 @@ enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
       else
         this.CoastalWind = false
     }
+    // PC-BC Integration: Adding Bankruptcy Flag
+    this.BankruptcyFlag = period.bankruptcy_Ext
 
     var plugin = Plugins.get(IPolicyRenewalPlugin)
     if(plugin.isRenewalOffered(period)){

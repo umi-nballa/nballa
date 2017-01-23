@@ -8,6 +8,7 @@ uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 uses java.math.BigDecimal
+uses java.util.ArrayList
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,6 +18,22 @@ uses java.math.BigDecimal
  * To change this template use File | Settings | File Templates.
  */
 class HPXInsuranceScoreRatingHelper {
+
+  function getEstimatedDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
+    var jurisdictionState = policyPeriod.BaseState
+    switch (jurisdictionState) {
+      case typekey.Jurisdiction.TC_SC :
+          estimatedDiscounts.add(getSouthCarolinaMaximumInsuranceScoreDiscount(policyPeriod))
+          estimatedDiscounts.add(getSouthCarolinaMaximumInsuranceScoreSurcharge(policyPeriod))
+          break
+      case typekey.Jurisdiction.TC_NV :
+          estimatedDiscounts.add(getNevadaMaximumInsuranceScoreDiscount(policyPeriod))
+          estimatedDiscounts.add(getNevadaMaximumInsuranceScoreSurcharge(policyPeriod))
+          break
+    }
+    return estimatedDiscounts
+  }
 
   function getRateForInsuranceScore(period : PolicyPeriod, score : int) {
     // Credit Score

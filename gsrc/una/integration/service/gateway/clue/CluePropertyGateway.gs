@@ -25,6 +25,9 @@ uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectType_Ad
 uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Addresses
 uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Subjects
 uses una.utils.DateUtil
+uses java.sql.Timestamp
+uses java.text.DateFormat
+uses java.sql.Date
 
 class CluePropertyGateway implements CluePropertyInterface {
   private static var KEY_STORE_PATH: String
@@ -59,11 +62,11 @@ class CluePropertyGateway implements CluePropertyInterface {
     _logger.debug("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.info("CLUE Request or sending order :" + orderXml)
+    _logger.debug("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \ -> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.info("CLUE Response or received result :" + result)
+      _logger.debug("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.info("finished ordering CLUE")
@@ -171,6 +174,7 @@ class CluePropertyGateway implements CluePropertyInterface {
         var cPayment = new ClaimPayment_Ext()
         cPayment.ClaimType = p.CauseOfLoss.toString()
         cPayment.ClaimDisposition = p.Disposition as String
+        cPayment.LossCause_Ext= LossCause_Ext.get(p.CauseOfLoss.Code.replaceAll("_",""))
         cPayment.ClaimAmount = p.AmountPaid
         //Field Mapping for Chargeable
         cPayment.Chargeable=Chargeable_Ext.TC_YES
@@ -221,6 +225,8 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
+    priorLoss.Source_Ext = Source_Ext.TC_CLUE
+
     return priorLoss
   }
 
@@ -346,9 +352,6 @@ class CluePropertyGateway implements CluePropertyInterface {
       var subType1 = mapSubject(addIns.FirstName,addIns.LastName)
 
       subject.Name.add(subType1)
-
-      lexOrderSubject.Subject.add(subject)
-      lexOrder.Products.ClueProperty[0].JointSubject = subject
     }
 
     var mailingAddress : Address
@@ -396,7 +399,13 @@ class CluePropertyGateway implements CluePropertyInterface {
       lexOrder.Products.ClueProperty[0].FormerAddress = address2
      }
 
-    lexOrderSubject.Subject.add(subject1)
+     lexOrderSubject.Subject.add(subject1)
+
+    if(addIns != null){
+
+      lexOrderSubject.Subject.add(subject)
+      lexOrder.Products.ClueProperty[0].JointSubject = subject
+    }
 
      lexOrder.Dataset.Addresses = lexOrderAddress
      lexOrder.Dataset.Subjects = lexOrderSubject

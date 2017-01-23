@@ -16,7 +16,7 @@ class HPXEstimatedDiscount {
   public var Amount : BigDecimal
   public var Percent : BigDecimal
 
-  function getEstimatedDiscount(maxFactor : int, amount : BigDecimal, code : String, description : String) : HPXEstimatedDiscount {
+  function getEstimatedDiscount(maxFactor : BigDecimal, amount : BigDecimal, code : String, description : String) : HPXEstimatedDiscount {
     this.Percent = maxFactor*100
     this.Code = code
     this.Amount = amount

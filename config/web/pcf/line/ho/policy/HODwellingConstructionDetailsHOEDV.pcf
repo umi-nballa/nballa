@@ -12,7 +12,10 @@
       name="openForEdit"
       type="Boolean"/>
     <Variable
-      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(dwelling.PolicyPeriod)"
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
+      name="pageProcess"/>
+    <Variable
+      initialValue="pageProcess.getTunaInformation(dwelling.PolicyPeriod)"
       name="tunaAppResponse"
       recalculateOnRefresh="true"/>
     <Variable
@@ -371,7 +374,10 @@
           id="TotalSqFtValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
           value="dwelling.SquareFootage_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)">
+          <PostOnChange
+            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
+        </RangeInput>
         <Input
           available="!dwelling.OverrideTotalSqFtVal_Ext"
           id="TotalSqFtValMatchLevel_Ext"
@@ -392,7 +398,10 @@
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValUserEntered_Ext"
           required="dwelling.OverrideTotalSqFtVal_Ext"
           value="dwelling.TotalSqFtValOverridden_Ext"
-          visible="dwelling.OverrideTotalSqFtVal_Ext"/>
+          visible="dwelling.OverrideTotalSqFtVal_Ext">
+          <PostOnChange
+            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
+        </Input>
       </InputSet>
       <InputDivider/>
       <TextInput

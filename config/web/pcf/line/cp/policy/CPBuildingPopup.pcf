@@ -3,7 +3,7 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Popup
-    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding);cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding));cpBuilding.RateType=typekey.RateType.TC_CLASS;//cpLine=gw.web.line.cp.policy.CPBuildingPopupUIHelper.initcpline(jobWizardHelper,cpLine,openForEdit);//una.config.CPBuildingUtil.addRequiredCoverages(cpBuilding,cpLine)//setClassCode(cpBuilding) "
+    afterEnter="cpBuilding = gw.web.line.cp.policy.CPBuildingPopupUIHelper.initialize(jobWizardHelper, building, cpBuilding, cpLocation, openForEdit);if (cpBuilding &lt;&gt; null &amp;&amp; !openForEdit) cpLocation = cpBuilding.CPLocation;una.productmodel.CPAutoPopulateUtil.setCoveragesFromDefaultScreen(cpLine,cpBuilding);cpBuilding.ClassCode=gw.web.line.cp.policy.CPBuildingPopupUIHelper.findFirstMatchingClassCode(cpBuilding, una.config.CPBuildingUtil.getClassCode(cpBuilding));cpBuilding.RateType=typekey.RateType.TC_CLASS;"
     beforeCommit="gw.lob.cp.CPBuildingValidation.validateBuilding(cpBuilding)"
     canEdit="openForEdit"
     countsAsWork="false"
@@ -124,7 +124,7 @@
               </TypeKeyInput>
               <TypeKeyInput
                 id="CoverageForm"
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.CoverageForm"
+                label="&quot;Cause of Loss&quot;"
                 value="cpBuilding.CoverageForm">
                 <PostOnChange
                   onChange="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages({cpBuilding}, jobWizardHelper) }"/>
@@ -557,6 +557,7 @@
                   editable="true"
                   id="PCCodeTunaReturned_Ext"
                   label="displaykey.Web.CP.CPLocation.ProtectionClass"
+                  required="true"
                   value="cpBuilding.FireProtectionClassCode"
                   valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
                   <PostOnChange

@@ -35,14 +35,8 @@ class OFACCommunicator {
     try
     {
       var xsService = new XGServices_BasicHttpBinding_ISearch()
-      _logger.info(CLASS_NAME + " : Request for OFAC -------")
-      _logger.info(clientContext)
-      _logger.info(searchConfiguration)
-      _logger.info(searchInput)
       var result = xsService.Search(clientContext, searchConfiguration, searchInput)
-      _logger.info(CLASS_NAME + " :Response from OFAC")
-      _logger.info(result)
-      _logger.info(CLASS_NAME + " : Exiting from method returnOFACSearchResults ")
+     _logger.info(CLASS_NAME + " : Exiting from method returnOFACSearchResults ")
       return result
     } catch (e: Exception) {
       _logger.error(CLASS_NAME + " : Exception while retrieving information from OFAC : ", e.StackTraceAsString)

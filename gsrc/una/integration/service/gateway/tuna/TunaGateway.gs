@@ -113,6 +113,27 @@ class TunaGateway implements TunaInterface {
     }
   }
 
+
+  /**
+   *  TBD - No Implementation Available
+   */
+  override function fetchPropertyInformationISOLookUpOnly(address : AddressDTO): TunaAppResponse {
+    try {
+      logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformationISOLookUpOnly" + "For ", this.IntrinsicType)
+      resMapper = new TunaLookupExlResponseMapper()
+      var req = reqMapper.createISORequestModel(address)
+      var tunaResponse = tunaCommunicator.getPropertyInformationISOLookUpOnly(req)
+      var response = resMapper.tunaAppResponse(tunaResponse)
+      logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformationISOLookUpOnly" + "For ", this.IntrinsicType)
+      return response
+    } catch (exp: Exception) {
+      logger.error(CLASS_NAME + " :: " + " fetchPropertyInformationISOLookUpOnly " + " : StackTrace = " + exp)
+      throw exp
+    }
+  }
+
+
+
   /**
    *  TBD - No Implementation Available
    */
@@ -134,11 +155,11 @@ class TunaGateway implements TunaInterface {
   /**
    * TBD - No Implementation Available
    */
-  override function fetchPropertyInformation360ValueLookUpOnlyInc(policyPeriod: PolicyPeriod): TunaAppResponse {
+  override function fetchPropertyInformation360ValueLookUpOnlyInc(address : AddressDTO): TunaAppResponse {
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyInc" + "For ", this.IntrinsicType)
       resMapper = new TunaLookUpIncResponseMapper()
-      var req = reqMapper.createRequestModel(policyPeriod)
+      var req = reqMapper.createISORequestModel(address)
       var tunaResponse = tunaCommunicator.getPropertyInformation360ValueLookUpOnly(req)
       var response = resMapper.tunaAppResponse(tunaResponse)
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " fetchPropertyInformation360ValueLookUpOnlyInc" + "For ", this.IntrinsicType)

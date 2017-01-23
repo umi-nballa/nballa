@@ -33,10 +33,10 @@ class HODwellingUtil_HOE {
   private static final var WIND_SPEED_100 : int = 100
   private static final var WIND_SPEED_110 : int = 110
   private static final var WIND_SPEED_120 : int = 120
-  private static final var PROTECTION_CLASSCODE_4 = "04"
-  private static final var PROTECTION_CLASSCODE_2 = "02"
-  private static final var PROTECTION_CLASSCODE_3 = "03"
-  private static final var PROTECTION_CLASSCODE_5 = "05"
+  private static final var PROTECTION_CLASSCODE_4 = typekey.ProtectionClassCode_Ext.TC_4.Code
+  private static final var PROTECTION_CLASSCODE_2 = typekey.ProtectionClassCode_Ext.TC_2.Code
+  private static final var PROTECTION_CLASSCODE_3 = typekey.ProtectionClassCode_Ext.TC_3.Code
+  private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
@@ -502,13 +502,8 @@ class HODwellingUtil_HOE {
     // These are mandatory for rating and these are not being shown in screen
     dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
     dwelling.ConstructionCode = "other"
- //   if(dwelling.RoofType == null){
- //     dwelling.RoofType = typekey.RoofType.TC_ALUMINUM_EXT
- //   }
-    //Assuming Property Coverage by state windstorm field has been returned false from ISO360, making Wind Hurricane Hail Exclusion as false
-    // As discussed with Chethan, fields will be mapped will response before entering the screen - ISO360 is under construction from Integ team so will be revisited after service is up
- //   dwelling.PropertyCovByStateWndstorm_Ext = false
- //   dwelling.WHurricaneHailExclusion_Ext = false
+    //apply changes for windpool eligible policies  - applied during exit from dwelling screen
+    //applyChangesIfWindPoolEligible(dwelling)
   }
 
   /*
@@ -696,6 +691,22 @@ class HODwellingUtil_HOE {
     return tunaCodeAndPercent.order()
   }
 
+  static function getProtectionCodes(theProtectionClassValues: List<PropertyDataModel>) : List<String> {
+    var tunaCodeAndPercent = new ArrayList<String>()
+    if(theProtectionClassValues != null) {
+      theProtectionClassValues.each( \ elt ->
+      {
+        if(elt.Value.contains("/")){
+          tunaCodeAndPercent.add(elt.Value.split("/").first())
+          tunaCodeAndPercent.add(elt.Value.split("/").last())
+        }else{
+          tunaCodeAndPercent.add(elt.Value)
+        }
+      })
+    }
+    return tunaCodeAndPercent.order()
+  }
+
   static function getTerritoryCodes(tunaResponse : TunaAppResponse, pType :HOPolicyType_HOE ) : List<String>{
      // bunch of if clauses
      if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(pType) && tunaResponse.HOTerritoryCode!=null)
@@ -875,6 +886,26 @@ class HODwellingUtil_HOE {
 
   static function getConstructionType(dwelling:Dwelling_HOE) : String {
     return ""
+  }
+
+  public static function isWindPoolEligible(theDwelling: Dwelling_HOE) : boolean{
+    var resultEligible : boolean = false
+    if(theDwelling.HOLocation.OverrideWindPool_Ext && (theDwelling.HOLocation.WindPoolOverridden_Ext.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPoolOverridden_Ext.equalsIgnoreCase("TRUE"))){
+       resultEligible = true
+    }else if(theDwelling.HOLocation.WindPool_Ext.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPool_Ext.equalsIgnoreCase("TRUE")){
+      resultEligible = true
+    }
+    return resultEligible
+  }
+
+  public static function applyChangesIfWindPoolEligible(dwelling: Dwelling_HOE){
+    if(isWindPoolEligible(dwelling)){
+      dwelling.PropertyCovByStateWndstorm_Ext = true
+      dwelling.WHurricaneHailExclusion_Ext = true
+    } else {
+      dwelling.PropertyCovByStateWndstorm_Ext = false
+      dwelling.WHurricaneHailExclusion_Ext = false
+    }
   }
 
 }// End of class

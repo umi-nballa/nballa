@@ -25,6 +25,9 @@ uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.SubjectType_Ad
 uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Addresses
 uses wsi.schema.una.inscore.cprulesorderschema.anonymous.elements.DatasetType_Subjects
 uses una.utils.DateUtil
+uses java.sql.Timestamp
+uses java.text.DateFormat
+uses java.sql.Date
 
 class CluePropertyGateway implements CluePropertyInterface {
   private static var KEY_STORE_PATH: String
@@ -172,6 +175,7 @@ class CluePropertyGateway implements CluePropertyInterface {
         var cPayment = new ClaimPayment_Ext()
         cPayment.ClaimType = p.CauseOfLoss.toString()
         cPayment.ClaimDisposition = p.Disposition as String
+        cPayment.LossCause_Ext= LossCause_Ext.get(p.CauseOfLoss.Code.replaceAll("_",""))
         cPayment.ClaimAmount = p.AmountPaid
         cPayment.LossCause_Ext = typekey.LossCause_Ext.getTypeKeys(false).atMostOneWhere( \ elt -> elt.Description.trim().equalsIgnoreCase(p.CauseOfLoss.GosuValue))
 
@@ -224,6 +228,8 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
+    priorLoss.Source_Ext = Source_Ext.TC_CLUE
+
     return priorLoss
   }
 

@@ -69,11 +69,11 @@ class HPXBusinessOwnersPolicyMapper extends HPXPolicyMapper {
     }
     var lineExcls = createLineExclusions(policyPeriod, policyPeriod.BP7Line)
     for (lineExcl in lineExcls) {
-      bopLineBusiness.addChild(new XmlElement("Coverage", lineExcl))
+      bopLineBusiness.addChild(new XmlElement("Exclusion", lineExcl))
     }
     var lineConds = createLinePolicyConditions(policyPeriod, policyPeriod.BP7Line)
     for (lineCond in lineConds) {
-      bopLineBusiness.addChild(new XmlElement("Coverage", lineCond))
+      bopLineBusiness.addChild(new XmlElement("PolicyCondition", lineCond))
     }
     return bopLineBusiness
   }

@@ -6,7 +6,7 @@ uses java.math.BigDecimal
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 12/7/16
- * Time: 3:57 PM
+ * Rating info for the BP7 Line coverages
  */
 class BP7LineRatingInfo {
 
@@ -24,6 +24,10 @@ class BP7LineRatingInfo {
   var _numOfAdditionalInterestsLessorOfEqmt : int as NumOfAdditionalInterestsLessorOfEqmt
   var _numOfAdditionalInterestsDesignatedPersonOrOrg : int as NumOfAdditionalInterestsDesignatedPersonOrOrg
   var _medicalExpensesPerPersonLimit : BigDecimal as MedicalExpensesPerPersonLimit
+  var _ordinanceOrLawCoverage : String as OrdinanceOrLawCoverage
+  var _ordinanceOrLawCoverage1Limit : BigDecimal as OrdinanceOrLawCoverage1Limit
+  var _ordinanceOrLawCoverage2Limit : BigDecimal as OrdinanceOrLawCoverage2Limit
+  var _ordinanceOrLawCoverage3Limit : BigDecimal as OrdinanceOrLawCoverage3Limit
 
   construct(lineCov: BP7LineCov) {
     if(lineCov typeis BP7CyberOneCov_EXT){
@@ -59,6 +63,12 @@ class BP7LineRatingInfo {
     }
     if(lineCov typeis BP7BusinessLiability) {
       _medicalExpensesPerPersonLimit = lineCov?.BP7OptionalMedicalCovLimitPerPersonTerm?.Value
+    }
+    if(lineCov typeis BP7OrdinanceOrLawCov_EXT){
+      _ordinanceOrLawCoverage = lineCov.BP7OrdinLawCov_EXTTerm?.DisplayValue
+      _ordinanceOrLawCoverage1Limit = lineCov?.Cov1Limit_EXTTerm?.Value
+      _ordinanceOrLawCoverage2Limit = lineCov?.Cov2Limit_EXTTerm?.Value
+      _ordinanceOrLawCoverage3Limit = lineCov?.Cov3Limit_EXTTerm?.Value
     }
   }
 }

@@ -278,14 +278,14 @@ class LexisFirstServicePayload {
       lexisFirstFileData.InsuranceCarrierNAIC = policyPeriod.UWCompany.Code as String
 
       //Producer Details
-      lexisFirstFileData.ProducerName = policyPeriod.ProducerCodeOfRecord.Description
+      lexisFirstFileData.ProducerName = policyPeriod.ProducerCodeOfRecord.DisplayName
       lexisFirstFileData.ProducerCode = policyPeriod.ProducerCodeOfRecord.Code
-      lexisFirstFileData.ProducerStreet = policyPeriod.ProducerCodeOfRecord.Address.AddressLine1
-      lexisFirstFileData.ProducerCity = policyPeriod.ProducerCodeOfRecord.Address.City
-      lexisFirstFileData.ProducerState = (policyPeriod.ProducerCodeOfRecord.Address.State) as String
-      lexisFirstFileData.ProducerCountry = policyPeriod.ProducerCodeOfRecord.Address.Country.Code
-      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Address.PostalCode?.length > 5 ? policyPeriod.ProducerCodeOfRecord.Address.PostalCode.substring(0, 5)
-      : policyPeriod.ProducerCodeOfRecord.Address.PostalCode
+      lexisFirstFileData.ProducerStreet = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.AddressLine1
+      lexisFirstFileData.ProducerCity = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.City
+      lexisFirstFileData.ProducerState = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.State.Code
+      lexisFirstFileData.ProducerCountry = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.Country.Code
+      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode?.length > 5 ? policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode.substring(0, 5)
+      : policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode
       lexisFirstFileData.ProducerPhone = policyPeriod.ProducerCodeOfRecord.Contact_Ext.WorkPhone
 
       //Endorsement Details

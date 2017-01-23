@@ -37,11 +37,11 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     }
     if(policyPeriod.GLLineExists) {
       var glLineExlcs = generalLiabilityPolicyLine.createGeneralLiabilityLineExclusions(policyPeriod)
-      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineExlc)) }
+      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Exclusion", glLineExlc)) }
     }
     if(policyPeriod.GLLineExists) {
       var glLineConds = generalLiabilityPolicyLine.createGeneralLiabilityLinePolicyConditions(policyPeriod)
-      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineCond)) }
+      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("PolicyCondition", glLineCond)) }
     }
     if(policyPeriod.CPLineExists) {
       var glLineCovs = createCommericalPropertyLineCoverages(policyPeriod)
@@ -49,11 +49,11 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     }
     if(policyPeriod.CPLineExists) {
       var glLineExlcs = createCommericalPropertyLineExclusions(policyPeriod)
-      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineExlc)) }
+      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Exclusion", glLineExlc)) }
     }
     if(policyPeriod.CPLineExists) {
       var glLineConds = createCommericalPropertyLinePolicyConditions(policyPeriod)
-      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", glLineCond)) }
+      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("PolicyCondition", glLineCond)) }
     }
     var buildings = createStructuresInfo(policyPeriod)
     for (building in buildings) {

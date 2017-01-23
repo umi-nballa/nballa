@@ -11,6 +11,9 @@ uses gw.lob.bp7.rating.BP7LocationCovCostData
 uses una.rating.bp7.ratinginfos.BP7LocationRatingInfo
 uses gw.rating.CostData
 
+/**
+ * Class which rates all the available BP7 location coverages
+ */
 class BP7LocationStep extends BP7RatingStep {
 
   var _bp7RatingInfo : BP7RatingInfo
@@ -22,6 +25,9 @@ class BP7LocationStep extends BP7RatingStep {
     _locationRatingInfo = locationRatingInfo
   }
 
+  /**
+   * Returns the rate routine code based on coverage pattern
+   */
   override function getRateRoutineCode(coveragePattern : ClausePattern) : String {
     switch (coveragePattern) {
       case "BP7AddlInsdGrantorOfFranchiseEndorsement" : return BP7RateRoutineNames.BP7_LOCATION_ADDL_INSD_GRANTOR_OF_FRANCHISE_RATE_ROUTINE
@@ -33,6 +39,9 @@ class BP7LocationStep extends BP7RatingStep {
     }
   }
 
+  /**
+   * Rates the additional insured which has no premium/no charge
+   */
   function rateNonPremiumAdditionalInsuredCoverages(locationCov : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine> {
     var costData = createCostData(locationCov, sliceToRate)
     costData.StandardBaseRate = 0.0
@@ -42,6 +51,9 @@ class BP7LocationStep extends BP7RatingStep {
     return costData
   }
 
+  /**
+   * creates the parameter set with location rating infos
+   */
   override function createParameterSet(lineCov : Coverage, costData : BP7CostData<BP7Cost>) : Map<CalcRoutineParamName, Object> {
     return
         {TC_POLICYLINE         -> _line,
@@ -50,6 +62,9 @@ class BP7LocationStep extends BP7RatingStep {
          TC_COSTDATA           -> costData}
   }
 
+  /**
+   * Creates the BP7 Location cost data
+   */
   override function createCostData(coverage : Coverage, sliceToRate : DateRange) : BP7CostData<BP7Cost> {
     var costData = new BP7LocationCovCostData(coverage, sliceToRate)
     costData.init(_line)

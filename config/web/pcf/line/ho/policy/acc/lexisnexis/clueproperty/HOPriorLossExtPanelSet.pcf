@@ -62,9 +62,10 @@
             visible="policyPeriod.Submission?.QuoteType != typekey.QuoteType.TC_QUICK"/>
           <ToolbarRangeInput
             id="NoOfClaimYears"
-            label="&quot;Number of Claim Free Years&quot;"
+            label="displaykey.Accelerator.LexisNexis.Clue.Property.ClaimFreeYears"
             value="policyPeriod.ClaimFreeYear"
-            valueRange="typekey.NoClaimFreeYears_Ext.getTypeKeys(false)"/>
+            valueRange="typekey.NoClaimFreeYears_Ext.getTypeKeys(false)"
+            visible="edge.capabilities.helpers.PolicyUtil.getValuesByVisibility(policyPeriod)"/>
         </Toolbar>
         <ListViewPanel
           id="LossesLV">

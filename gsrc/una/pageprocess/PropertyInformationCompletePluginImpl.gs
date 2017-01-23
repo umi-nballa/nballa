@@ -107,6 +107,126 @@ class PropertyInformationCompletePluginImpl {
     return tunaAppObject
   }
 
+  /**
+   * This function is to reset the dwelling and dwelling construction details fetched from TUNA
+   * when user click on edit or new location in dwelling screen
+   * @param policyPeriod
+   *
+   */
+  public function resetTunaInfo(policyPeriod : PolicyPeriod){
+
+    //Remove from session
+    tunaAppSession.removeFromSession(policyPeriod)
+    //Dwelling Details
+    policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.TerritoryCodeTunaReturned_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.TerritoryCodeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClasscode = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingPCCodeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Latitude_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.LatitudeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Longitude_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.LongitudeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValue_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValueOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.Firedeptnmval_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FiredeptnamedvalOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.RespondingFireDeptOther_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.EarthQuakeTer_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.EarthquakeTerOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.PropFloodVal_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.PropFloodValOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.BaseFloodElVal_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.BaseFloodElValOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360ValueID_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360Overridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEG_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEGOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.WindPool_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.WindPoolOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoast_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoastOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOW_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOWOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOWNamedValue_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOWNVOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.NoteDetail_Ext= null
+    policyPeriod.HomeownersLine_HOE.Dwelling.CoverageALimitValue_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.CondoValuationIDValue_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.MetricsVersionValue_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ResultingPrecision_Ext= null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineAdjHaz_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineAdjHazOverridden_Ext= null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineSHIA_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineSHIAOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelinePrHaz_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelinePropHazOverridden_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineFuel_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineFuelOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.Fireslope_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireslopeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.Fireaccess_Ext= null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireaccessOverridden_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.Firelinemthlvl_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelinemhlvlOverridden_Ext = null
+    //Dwelling Construction Details
+    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.NoofStoriesOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL1_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverriddenL1_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL2_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverriddenL2_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinish_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalueOverridden_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinishL1_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalueOverridL1_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWallFinishL2_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalueOverridL2_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.SquareFootage_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.TotalSqFtValOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.RoofType  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.RoofingMaterialOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.RoofShape_Ext   = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.RoofShapeOverridden_Ext = null
+    //Match Level Details
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.BCEGMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.WindPoolMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOWMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOWNVMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistToCoastMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.LatitudeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.LongitudeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.WindPoolMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ISO360MatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValueMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineSHIAMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineFuelMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelinePropHazMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineAdjHazMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireaccessMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FireslopeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumberMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.RoofTypeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.RoofShapeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLvlL1_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLvlL2_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.BaseFloodElValMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.PropFloodValMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.EarthquakeTerMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevelL1_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevelL2_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.TotalSqFtValMatchLevel_Ext = null
+  }
 
   /**
    *  Function to retrieve complete information
@@ -140,30 +260,30 @@ class PropertyInformationCompletePluginImpl {
   }
 
  /**
-  *
+  *   Function to retrieve BCEG / ISO 360 values
   */
 
-  public function retrieveBCEG360Value(policyPeriod : PolicyPeriod, yearBuilt : String, sqrFtg : String) : TunaAppResponse{
+  public function retrieveBCEG360Value(dwelling : Dwelling_HOE) : TunaAppResponse{
     var mapISO : boolean
-    if(!(policyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT &&policyPeriod.Job.DisplayType == typekey.Job.TC_SUBMISSION.Code)){
+    if(!(dwelling.PolicyPeriod.Status == typekey.PolicyPeriodStatus.TC_DRAFT && dwelling.PolicyPeriod.Job.DisplayType == typekey.Job.TC_SUBMISSION.Code)){
      return null
     }
     logger.info(" Entering  " + CLASS_NAME + " :: " + " retrieveBCEG/360Value" + "For Dwelling ", this.IntrinsicType)
     _address = new AddressDTO()
-     var location = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
+     var location = dwelling.HOLocation.PolicyLocation
     _address.AddressLine1 = location.AddressLine1
     _address.State = location.State.Code
     _address.City = location.City
     _address.PostalCode = location.PostalCode
     _address.Country = location.Country.Code
-    _address.YearBuilt = yearBuilt
-    _address.SqrFtg = sqrFtg
+    _address.YearBuilt = mapYearBuilt(dwelling)
+    _address.SqrFtg = mapSqrFtg(dwelling)
     try {
 
-      if(yearBuilt != null){
+      if( _address.YearBuilt != null){
        tunaResponse = TUNAGateway.fetchPropertyInformationISOLookUpOnly(_address)
 
-      if(sqrFtg != null ){
+      if(_address.SqrFtg != null ){
        var tunaResponse360 = TUNAGateway.fetchPropertyInformation360ValueLookUpOnlyInc(_address)
        tunaResponse.EstimatedReplacementCost = tunaResponse360.EstimatedReplacementCost
        tunaResponse.ISO360Value = tunaResponse360.ISO360Value
@@ -172,10 +292,10 @@ class PropertyInformationCompletePluginImpl {
        tunaResponse.CoverageLimit = tunaResponse360.CoverageLimit
        mapISO = true
        }
-       refreshSessionVar(policyPeriod, tunaResponse, mapISO)
+       refreshSessionVar(dwelling.PolicyPeriod, tunaResponse, mapISO)
        }
        if(tunaResponse == null)
-        LocationUtil.addRequestScopedWarningMessage("Unable to retrive BCEG/ISO 360 information from TUNA")
+       LocationUtil.addRequestScopedWarningMessage("Unable to retrive BCEG/ISO 360 information from TUNA")
 
     } catch (exp: Exception) {
       LocationUtil.addRequestScopedWarningMessage("Unable to retrive BCEG/ISO 360 value from TUNA")
@@ -293,7 +413,7 @@ class PropertyInformationCompletePluginImpl {
     _address.City = cpBuilding.CPLocation.PolicyLocation.City
     _address.State = cpBuilding.CPLocation.PolicyLocation.State.Code
     _address.PostalCode = cpBuilding.CPLocation.PolicyLocation.PostalCode
-    _address.YearBuilt = (cpBuilding.Building.YearBuilt) as String
+    _address.YearBuilt = (cpBuilding.Building.YearBuilt)
     try {
       tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
       cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation",tunaResponse.MetricsVersion.first().NamedValue))
@@ -305,6 +425,21 @@ class PropertyInformationCompletePluginImpl {
     return tunaResponse
   }
 
+  /**
+   * Function to retrieve right year built value
+   */
+
+  function mapYearBuilt(dwelling_hoe : Dwelling_HOE) : int{
+     if(dwelling_hoe.OverrideYearbuilt_Ext)
+      return dwelling_hoe.YearBuiltOverridden_Ext
+    return dwelling_hoe.YearBuilt
+  }
 
 
+  function mapSqrFtg(dwelling_hoe : Dwelling_HOE) : String {
+
+     if(dwelling_hoe.OverrideTotalSqFtVal_Ext)
+        return dwelling_hoe.TotalSqFtValOverridden_Ext
+        return dwelling_hoe.SquareFootage_Ext as String
+      }
  }

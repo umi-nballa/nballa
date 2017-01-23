@@ -3,8 +3,6 @@ package una.rating.bp7.common
 uses gw.api.productmodel.ClausePattern
 uses java.util.Map
 uses gw.lob.common.util.DateRange
-
-uses java.util.Map
 uses gw.lob.bp7.rating.BP7RatingStep
 uses gw.lob.bp7.rating.BP7RateRoutineExecutor
 uses gw.lob.bp7.rating.BP7CostData
@@ -13,6 +11,9 @@ uses una.rating.bp7.ratinginfos.BP7RatingInfo
 uses una.rating.bp7.ratinginfos.BP7LineRatingInfo
 uses gw.rating.CostData
 
+/**
+* Class which rates all the available BP7 line coverages
+ */
 class BP7LineStep extends BP7RatingStep {
 
   var _bp7RatingInfo : BP7RatingInfo
@@ -24,6 +25,9 @@ class BP7LineStep extends BP7RatingStep {
     _lineRatingInfo = lineRatingInfo
   }
 
+  /**
+   * Returns the rate routine code based on coverage pattern
+   */
   override function getRateRoutineCode(coveragePattern : ClausePattern) : String {
     switch (coveragePattern) {
       case "BP7CyberOneCov_EXT" : return BP7RateRoutineNames.BP7_CYBER_ONE_COVERAGE_RATE_ROUTINE
@@ -37,22 +41,25 @@ class BP7LineStep extends BP7RatingStep {
       case "BP7AddlInsdManagersLessorsPremisesLine_EXT" : return BP7RateRoutineNames.BP7_ADDL_INSD_MANAGERS_LESSORS_PREMISES_LINE_RATE_ROUTINE
       case "BP7AddlInsdDesignatedPersonOrg" : return BP7RateRoutineNames.BP7_ADDL_INSD_DESIGNATED_PERSON_ORG_RATE_ROUTINE
       case "BP7BusinessLiability" : return BP7RateRoutineNames.BP7_MEDICAL_PAYMENT_INCREASE_RATE_ROUTINE
+      case "BP7EmploymentPracticesLiabilityCov_EXT" : return BP7RateRoutineNames.BP7_EMPLOYMENT_PRACTICES_LIABILITY_RATE_ROUTINE
       default :
         throw "Rating is not supported for ${coveragePattern.ClauseName}"
     }
   }
 
+  /**
+  * Creates the parameter set which is used to pass onto rate routines
+   */
   override function createParameterSet(lineCov : Coverage, costData : BP7CostData<BP7Cost>) : Map<CalcRoutineParamName, Object> {
-    if(lineCov typeis BP7CyberOneCov_EXT || lineCov typeis BP7EmployeeDishty || lineCov typeis BP7ForgeryAlteration ||
-       lineCov typeis BP7EquipBreakEndor_EXT || lineCov typeis BP7HiredNonOwnedAuto || lineCov typeis BP7AddlInsdGrantorOfFranchiseLine_EXT ||
-       lineCov typeis BP7AddlInsdLessorsLeasedEquipmtLine_EXT || lineCov typeis BP7AddlInsdManagersLessorsPremisesLine_EXT || lineCov typeis BP7AddlInsdDesignatedPersonOrg ||
-       lineCov typeis BP7BusinessLiability)
-      return createLineRatingInfoParameterSet(costData)
     if(lineCov typeis IdentityRecovCoverage_EXT)
       return createLineParameterSet(costData)
-    return createLineParameterSet(costData)
+    else
+      return createLineRatingInfoParameterSet(costData)
   }
 
+  /**
+  * Rates the additional insured which has no premium/no charge
+   */
   function rateNonPremiumAdditionalInsuredCoverages(lineCov : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine> {
     var costData = createCostData(lineCov, sliceToRate)
     costData.StandardBaseRate = 0.0
@@ -62,6 +69,52 @@ class BP7LineStep extends BP7RatingStep {
     return costData
   }
 
+  /**
+  *  Rates the ordinance or Law coverage
+   */
+  function rateOrdinanceOrLawCoverage(lineCov : Coverage, sliceToRate : DateRange) : List<CostData<Cost, PolicyLine>> {
+    var costDatas : List<CostData<Cost, PolicyLine>> = {}
+    if(lineCov typeis BP7OrdinanceOrLawCov_EXT){
+      if(_lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 1 Only" || _lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 1 2 and 3 Only" ||
+          _lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 1 and 3"){
+        var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_ORDINANCEORLAWCOVERAGE1)
+        var parameterSet = createParameterSet(lineCov, costData)
+        _executor.execute(BP7RateRoutineNames.BP7_ORDINANCE_OR_LAW_COVERAGE_1_RATE_ROUTINE, lineCov, parameterSet, costData)
+        costDatas.add(costData)
+      }
+
+      if(_lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 3 Only" || _lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 1 2 and 3 Only" ||
+          _lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 1 and 3"){
+        var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_ORDINANCEORLAWCOVERAGE3)
+        var parameterSet = createParameterSet(lineCov, costData)
+        _executor.execute(BP7RateRoutineNames.BP7_ORDINANCE_OR_LAW_COVERAGE_3_RATE_ROUTINE, lineCov, parameterSet, costData)
+        costDatas.add(costData)
+      }
+
+      if(_lineRatingInfo.OrdinanceOrLawCoverage == "Coverage 1 2 and 3 Only"){
+        var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_ORDINANCEORLAWCOVERAGE2)
+        var parameterSet = createParameterSet(lineCov, costData)
+        _executor.execute(BP7RateRoutineNames.BP7_ORDINANCE_OR_LAW_COVERAGE_2_RATE_ROUTINE, lineCov, parameterSet, costData)
+        costDatas.add(costData)
+      }
+    }
+    return costDatas
+  }
+
+  /**
+  *  Rates when there is Medical Payment increase
+   */
+  function rateBusinessLiabilityMedicalPaymentIncrease(lineCov : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine>{
+    var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_MEDICALPAYMENTINCREASE)
+    var parameterSet = createParameterSet(lineCov, costData)
+    _executor.execute(getRateRoutineCode(lineCov.Pattern), lineCov, parameterSet, costData)
+
+    return costData
+  }
+
+  /**
+  * Creates the BP7 line cost data with no cost type
+   */
   override function createCostData(coverage : Coverage, sliceToRate : DateRange) : BP7CostData<BP7Cost> {
     var costData = new BP7LineCovCostData(coverage, sliceToRate)
     costData.init(_line)
@@ -69,12 +122,28 @@ class BP7LineStep extends BP7RatingStep {
     return costData
   }
 
+  /**
+  * Creates the BP7 line cost data with cost type
+   */
+  function createCostData(coverage : Coverage, sliceToRate : DateRange, costType : BP7CostType_Ext) : BP7CostData<BP7Cost> {
+    var costData = new BP7LineCovCostData(coverage, sliceToRate, costType)
+    costData.init(_line)
+    costData.NumDaysInRatedTerm = _daysInTerm
+    return costData
+  }
+
+  /**
+  * creates the parameter set with no rating infos
+   */
   private function createLineParameterSet(costData : BP7CostData<BP7Cost>) : Map<CalcRoutineParamName, Object>{
     return
         {TC_POLICYLINE         -> _line,
          TC_COSTDATA           -> costData}
   }
 
+  /**
+   * creates the parameter set with line rating infos
+   */
   private function createLineRatingInfoParameterSet(costData : BP7CostData<BP7Cost>) : Map<CalcRoutineParamName, Object>{
     return
         {TC_POLICYLINE         -> _line,

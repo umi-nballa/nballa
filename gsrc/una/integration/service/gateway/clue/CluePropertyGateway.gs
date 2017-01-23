@@ -178,6 +178,14 @@ class CluePropertyGateway implements CluePropertyInterface {
         cPayment.LossCause_Ext= LossCause_Ext.get(p.CauseOfLoss.Code.replaceAll("_",""))
         cPayment.ClaimAmount = p.AmountPaid
         cPayment.LossCause_Ext = typekey.LossCause_Ext.getTypeKeys(false).atMostOneWhere( \ elt -> elt.Description.trim().equalsIgnoreCase(p.CauseOfLoss.GosuValue))
+        if (period.BaseState.Code == typekey.State.TC_NC) {
+          if (typekey.LossCause_Ext.TF_NAWEATHERHO.TypeKeys.contains(cPayment.LossCause_Ext))
+            cPayment.Weather = "NA"
+          else if(typekey.LossCause_Ext.TF_WEATHERHO.TypeKeys.contains(cPayment.LossCause_Ext))
+            cPayment.Weather = "Weather"
+          else
+            cPayment.Weather = "Non-Weather"
+        }
 
         //Field Mapping for Chargeable
        pArray[i] = cPayment

@@ -89,8 +89,7 @@
       required="true"
       restrictionModel="bld"
       valueType="percent">
-      <AvailabilityScript><![CDATA[return (Dwelling_HOE.HODW_Dwelling_Cov_HOE != null and Dwelling_HOE.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm.OptionValue == "Special")
-]]></AvailabilityScript>
+      <AvailabilityScript/>
       <DefaultsSet>
         <CovTermDefault
           codeIdentifier="HO_FullRepPercent_HOEnocurrency"
@@ -130,51 +129,6 @@
           value="50.0000"/>
       </Options>
     </OptionCovTermPattern>
-    <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="HODW_DwellingValuation_HOE"
-      coverageColumn="ChoiceTerm2"
-      lookupTableName="DwellingCovTerm"
-      modelType="Other"
-      priority="1115"
-      public-id="HODW_DwellingValuation_HOE"
-      required="true"
-      restrictionModel="bld"
-      valueType="count">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_DwellingValuation_HOEnocurrency"
-          defaultValue="Replacement"
-          public-id="HODW_DwellingValuation_HOEnocurrency"/>
-      </DefaultsSet>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zsthmbq93or7taj0968ogvb7328"
-          optionCode="Replacement"
-          priority="1141"
-          public-id="zsthmbq93or7taj0968ogvb7328"
-          value="1.0"/>
-        <CovTermOpt
-          codeIdentifier="zkqgccb0u8roq6koufhm5hilj59"
-          optionCode="Actual"
-          priority="1142"
-          public-id="zkqgccb0u8roq6koufhm5hilj59"
-          value="2.0"/>
-        <CovTermOpt
-          codeIdentifier="zq3g47p61sgg5d6j8goolomqtt8"
-          optionCode="Special"
-          priority="1243"
-          public-id="zq3g47p61sgg5d6j8goolomqtt8"
-          value="3.0"/>
-        <CovTermOpt
-          codeIdentifier="zptjc5kkmvubcdp432bdkrbese9"
-          optionCode="RepleacementwithRoof"
-          priority="1143"
-          public-id="zptjc5kkmvubcdp432bdkrbese9"
-          value="3.0"/>
-      </Options>
-    </OptionCovTermPattern>
     <GenericCovTermPattern
       codeIdentifier="HODW_ExecutiveCov_HOE_Ext"
       coverageColumn="BooleanTerm1"
@@ -185,5 +139,14 @@
       required="false">
       <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HODW_ExecutiveCov_HOE_Ext", Dwelling_HOE) ]]></AvailabilityScript>
     </GenericCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="HODW_DwellingValuation_HOE_Ext"
+      coverageColumn="TypeKeyTerm1"
+      lookupTableName="DwellingCovTerm"
+      priority="1340"
+      public-id="HODW_DwellingValuation_HOE_Ext"
+      required="true"
+      typefilter="CovAFilter"
+      typelist="ValuationMethod"/>
   </CovTerms>
 </CoveragePattern>

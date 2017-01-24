@@ -73,8 +73,7 @@ class HOBasePremiumRaterTX {
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
     if (_dwelling.HODW_Dwelling_Cov_HOEExists){
-      var dwellingValuation = _dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue
-      if (dwellingValuation == "Replacement Cost") {
+      if (_dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOE_ExtTerm.Value == ValuationMethod.TC_REPLCOST) {
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
       } else {

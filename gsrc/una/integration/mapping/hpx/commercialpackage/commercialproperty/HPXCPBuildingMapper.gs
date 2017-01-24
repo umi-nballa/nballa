@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.helper.HPXJobHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +39,8 @@ class HPXCPBuildingMapper implements HPXStructureMapper  {
       coverable.BuildingNo = building?.Building?.BuildingNum != null ? building.Building.BuildingNum : ""
       coverable.LocationNo = building?.CPLocation?.Location.LocationNum != null ? building?.CPLocation?.Location.LocationNum : ""
       coverable.Description = building?.Building?.Description
+      var jobHelper = new HPXJobHelper()
+      coverable.NewlyAdded = jobHelper.isNewlyAddedBuilding(building.PolicyLine.AssociatedPolicyPeriod, building.Building)
     }
     return coverable
   }

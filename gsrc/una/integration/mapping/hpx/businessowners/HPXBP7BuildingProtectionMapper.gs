@@ -10,7 +10,7 @@ class HPXBP7BuildingProtectionMapper {
 
   function createBuildingProtection(bldg : BP7Building) : wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType {
     var bldgProtection = new wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType()
-    bldgProtection.FireProtectionClassCd = bldg.Location.FireProtectionClassPPC != null ? bldg.Location.FireProtectionClassPPC : ""
+    bldgProtection.FireProtectionClassCd = bldg.DwellingProtectionClassCode != null ? bldg.DwellingProtectionClassCode : null
     bldgProtection.ProtectionDeviceBurglarInd = bldg.CentralBurglarAlarm_Ext != null ? bldg.CentralBurglarAlarm_Ext : false
     bldgProtection.ProtectionDeviceBurglarCd = bldg.CentralBurglarAlarm_Ext != null ? "CEN" : ""
     bldgProtection.ProtectionDeviceSprinklerInd = bldg.Sprinklered != null ? bldg.Sprinklered : false

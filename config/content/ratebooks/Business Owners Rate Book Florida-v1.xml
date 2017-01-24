@@ -25,8 +25,8 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-20 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2017-01-21 13:23:43.116</LastStatusChangeDate>
-    <LastTableRowEdit>2017-01-21 12:06:31.632</LastTableRowEdit>
+    <LastStatusChangeDate>2017-01-24 16:35:01.110</LastStatusChangeDate>
+    <LastTableRowEdit>2017-01-24 16:04:40.131</LastTableRowEdit>
     <PolicyLine>BP7Line</PolicyLine>
     <RateBookCalcRoutines>
       <RateBookCalcRoutine public-id="pcbd:15801">
@@ -163,6 +163,10 @@
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pcdb:21203">
         <CalcRoutineDefinition public-id="pcdb:15202"/>
+        <RateBook public-id="pcbd:1701"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pcdb:21401">
+        <CalcRoutineDefinition public-id="pcdb:15401"/>
         <RateBook public-id="pcbd:1701"/>
       </RateBookCalcRoutine>
     </RateBookCalcRoutines>
@@ -937,6 +941,28 @@
         <RefTable/>
         <RowUniformityStatus>nonuniform</RowUniformityStatus>
       </RateTable>
+      <RateTable public-id="pcdb:23601">
+        <BasedOnTable/>
+        <Definition public-id="pcdb:9701"/>
+        <LastTableRowEdit>2017-01-24 10:29:12.539</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pcbd:1701"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
+      <RateTable public-id="pcdb:23701">
+        <BasedOnTable/>
+        <Definition public-id="pcdb:9801"/>
+        <LastTableRowEdit>2017-01-24 16:04:40.131</LastTableRowEdit>
+        <NormalizedRowCount/>
+        <QueryStrategy>Memory</QueryStrategy>
+        <RateBook public-id="pcbd:1701"/>
+        <ReduceMemoryUsage>false</ReduceMemoryUsage>
+        <RefTable/>
+        <RowUniformityStatus>nonuniform</RowUniformityStatus>
+      </RateTable>
     </RateTables>
     <RenewalEffectiveDate>2000-06-20 00:00:00.000</RenewalEffectiveDate>
     <Status>Stage</Status>
@@ -1086,6 +1112,15 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pcbd:4703">
+    <CalcRoutineParameterSet public-id="pcbd:4201"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:4702">
     <CalcRoutineParameterSet public-id="pcbd:4201"/>
     <Code>classificationRatingInfo</Code>
@@ -1100,15 +1135,6 @@
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:4703">
-    <CalcRoutineParameterSet public-id="pcbd:4201"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -1280,20 +1306,20 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcbp7:6b486f4b9aac9ef3">
-    <CalcRoutineParameterSet public-id="pcbp7:39256bc00eae2b4a"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.BP7BusinessOwnersLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable/>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbp7:630ad378a819c515">
     <CalcRoutineParameterSet public-id="pcbp7:39256bc00eae2b4a"/>
     <Code>coverage</Code>
     <CoveragePattern/>
     <ParamType>entity.BP7BuildingCov</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable/>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbp7:6b486f4b9aac9ef3">
+    <CalcRoutineParameterSet public-id="pcbp7:39256bc00eae2b4a"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.BP7BusinessOwnersLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable/>
@@ -1712,14 +1738,14 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcbd:5036">
+  <CalcRoutineParameter public-id="pcbd:5038">
     <CalcRoutineParameterSet public-id="pcbd:4456"/>
-    <Code>policyline</Code>
+    <Code>ratinginfo</Code>
     <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
+    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
-    <Writable>false</Writable>
+    <Writable>true</Writable>
   </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5037">
     <CalcRoutineParameterSet public-id="pcbd:4456"/>
@@ -1730,14 +1756,14 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:5038">
+  <CalcRoutineParameter public-id="pcbd:5036">
     <CalcRoutineParameterSet public-id="pcbd:4456"/>
-    <Code>ratinginfo</Code>
+    <Code>policyline</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
-    <Writable>true</Writable>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pcbd:359739">
     <RateTable public-id="pcbd:21807"/>
@@ -39739,6 +39765,137 @@
     <str7/>
     <str8/>
   </DefaultRateFactorRow>
+  <RateTableDefinition public-id="pcdb:9701">
+    <ArgumentSourceSets>
+      <RateTableArgumentSourceSet public-id="pcdb:11201">
+        <CalcRoutineParameterSet public-id="pcbd:4401"/>
+        <Code>DEFAULT</Code>
+        <Name>Default</Name>
+        <Name_L10N_ARRAY/>
+        <RateTableArgumentSources>
+          <RateTableArgumentSource public-id="pcdb:13201">
+            <ArgumentSource/>
+            <ArgumentSourceSet public-id="pcdb:11201"/>
+            <IsModifier>false</IsModifier>
+            <Parameter public-id="pcdb:12201"/>
+            <Root/>
+          </RateTableArgumentSource>
+        </RateTableArgumentSources>
+        <RateTableDefinition public-id="pcdb:9701"/>
+      </RateTableArgumentSourceSet>
+    </ArgumentSourceSets>
+    <EntityName>DefaultRateFactorRow</EntityName>
+    <Factors>
+      <RateTableColumn public-id="pcdb:17002">
+        <ColumnLabel>Premium</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY>
+          <RateTableColumn_ColumnLabel_L10N public-id="pcdb:5901">
+            <Language>en_US_edg</Language>
+            <Owner public-id="pcdb:17002"/>
+            <Value>Premium</Value>
+          </RateTableColumn_ColumnLabel_L10N>
+        </ColumnLabel_L10N_ARRAY>
+        <ColumnName>premium</ColumnName>
+        <ColumnScale/>
+        <ColumnType>Integer</ColumnType>
+        <DefinitionForFactor public-id="pcdb:9701"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>int1</PhysicalColumnName>
+        <SortOrder>0</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
+    </Factors>
+    <MatchOps>
+      <RateTableMatchOp public-id="pcdb:12201">
+        <Definition public-id="pcdb:9701"/>
+        <DisplayText>Parameter</DisplayText>
+        <DisplayText_L10N_ARRAY>
+          <RateTableMatchOp_DisplayText_L10N public-id="pcdb:4701">
+            <Language>en_US_edg</Language>
+            <Owner public-id="pcdb:12201"/>
+            <Value>Parameter</Value>
+          </RateTableMatchOp_DisplayText_L10N>
+        </DisplayText_L10N_ARRAY>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>parameter</Name>
+        <Params>
+          <RateTableColumn public-id="pcdb:17001">
+            <ColumnLabel>Parameter</ColumnLabel>
+            <ColumnLabel_L10N_ARRAY>
+              <RateTableColumn_ColumnLabel_L10N public-id="pcdb:5902">
+                <Language>en_US_edg</Language>
+                <Owner public-id="pcdb:17001"/>
+                <Value>Parameter</Value>
+              </RateTableColumn_ColumnLabel_L10N>
+            </ColumnLabel_L10N_ARRAY>
+            <ColumnName>parameter</ColumnName>
+            <ColumnScale/>
+            <ColumnType>String</ColumnType>
+            <DefinitionForFactor/>
+            <DefinitionForParam public-id="pcdb:9701"/>
+            <DependsOn/>
+            <DisplayType>Normal</DisplayType>
+            <MatchOp public-id="pcdb:12201"/>
+            <MultiSelect>false</MultiSelect>
+            <PhysicalColumnName>str1</PhysicalColumnName>
+            <SortOrder>0</SortOrder>
+            <ValueProvider/>
+          </RateTableColumn>
+        </Params>
+      </RateTableMatchOp>
+    </MatchOps>
+    <PolicyLine>BP7Line</PolicyLine>
+    <TableCode>bp7_minimum_premium_table</TableCode>
+    <TableDesc>BP7 Minimum Premium Rate Table</TableDesc>
+    <TableDesc_L10N_ARRAY>
+      <RateTableDefinition_TableDesc_L10N public-id="pcdb:3901">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:9701"/>
+        <Value>BP7 Minimum Premium Rate Table</Value>
+      </RateTableDefinition_TableDesc_L10N>
+    </TableDesc_L10N_ARRAY>
+    <TableName>BP7 Minimum Premium Rate Table</TableName>
+    <TableName_L10N_ARRAY>
+      <RateTableDefinition_TableName_L10N public-id="pcdb:3901">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:9701"/>
+        <Value>BP7 Minimum Premium Rate Table</Value>
+      </RateTableDefinition_TableName_L10N>
+    </TableName_L10N_ARRAY>
+  </RateTableDefinition>
+  <DefaultRateFactorRow public-id="pcdb:538601">
+    <RateTable public-id="pcdb:23601"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1/>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1>500</int1>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Y</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
   <RateTableDefinition public-id="pcbd:8614">
     <ArgumentSourceSets>
       <RateTableArgumentSourceSet public-id="pcbd:10114">
@@ -41957,6 +42114,137 @@
     <int7/>
     <int8/>
     <str1>Noncombustible</str1>
+    <str2/>
+    <str3/>
+    <str4/>
+    <str5/>
+    <str6/>
+    <str7/>
+    <str8/>
+  </DefaultRateFactorRow>
+  <RateTableDefinition public-id="pcdb:9801">
+    <ArgumentSourceSets>
+      <RateTableArgumentSourceSet public-id="pcdb:11301">
+        <CalcRoutineParameterSet public-id="pcbd:4401"/>
+        <Code>DEFAULT</Code>
+        <Name>Default</Name>
+        <Name_L10N_ARRAY/>
+        <RateTableArgumentSources>
+          <RateTableArgumentSource public-id="pcdb:13301">
+            <ArgumentSource/>
+            <ArgumentSourceSet public-id="pcdb:11301"/>
+            <IsModifier>false</IsModifier>
+            <Parameter public-id="pcdb:12301"/>
+            <Root/>
+          </RateTableArgumentSource>
+        </RateTableArgumentSources>
+        <RateTableDefinition public-id="pcdb:9801"/>
+      </RateTableArgumentSourceSet>
+    </ArgumentSourceSets>
+    <EntityName>DefaultRateFactorRow</EntityName>
+    <Factors>
+      <RateTableColumn public-id="pcdb:17102">
+        <ColumnLabel>Fee</ColumnLabel>
+        <ColumnLabel_L10N_ARRAY>
+          <RateTableColumn_ColumnLabel_L10N public-id="pcdb:6001">
+            <Language>en_US_edg</Language>
+            <Owner public-id="pcdb:17102"/>
+            <Value>Fee</Value>
+          </RateTableColumn_ColumnLabel_L10N>
+        </ColumnLabel_L10N_ARRAY>
+        <ColumnName>fee</ColumnName>
+        <ColumnScale/>
+        <ColumnType>Integer</ColumnType>
+        <DefinitionForFactor public-id="pcdb:9801"/>
+        <DefinitionForParam/>
+        <DependsOn/>
+        <DisplayType>Normal</DisplayType>
+        <MatchOp/>
+        <MultiSelect>false</MultiSelect>
+        <PhysicalColumnName>int1</PhysicalColumnName>
+        <SortOrder>0</SortOrder>
+        <ValueProvider/>
+      </RateTableColumn>
+    </Factors>
+    <MatchOps>
+      <RateTableMatchOp public-id="pcdb:12301">
+        <Definition public-id="pcdb:9801"/>
+        <DisplayText>Parameter</DisplayText>
+        <DisplayText_L10N_ARRAY>
+          <RateTableMatchOp_DisplayText_L10N public-id="pcdb:4801">
+            <Language>en_US_edg</Language>
+            <Owner public-id="pcdb:12301"/>
+            <Value>Parameter</Value>
+          </RateTableMatchOp_DisplayText_L10N>
+        </DisplayText_L10N_ARRAY>
+        <MatchOpDefinition public-id="rtm:ExactMatchOpDef"/>
+        <Name>parameter</Name>
+        <Params>
+          <RateTableColumn public-id="pcdb:17101">
+            <ColumnLabel>Parameter</ColumnLabel>
+            <ColumnLabel_L10N_ARRAY>
+              <RateTableColumn_ColumnLabel_L10N public-id="pcdb:6002">
+                <Language>en_US_edg</Language>
+                <Owner public-id="pcdb:17101"/>
+                <Value>Parameter</Value>
+              </RateTableColumn_ColumnLabel_L10N>
+            </ColumnLabel_L10N_ARRAY>
+            <ColumnName>parameter</ColumnName>
+            <ColumnScale/>
+            <ColumnType>String</ColumnType>
+            <DefinitionForFactor/>
+            <DefinitionForParam public-id="pcdb:9801"/>
+            <DependsOn/>
+            <DisplayType>Normal</DisplayType>
+            <MatchOp public-id="pcdb:12301"/>
+            <MultiSelect>false</MultiSelect>
+            <PhysicalColumnName>str1</PhysicalColumnName>
+            <SortOrder>0</SortOrder>
+            <ValueProvider/>
+          </RateTableColumn>
+        </Params>
+      </RateTableMatchOp>
+    </MatchOps>
+    <PolicyLine>BP7Line</PolicyLine>
+    <TableCode>bp7_policy_fee_table</TableCode>
+    <TableDesc>BP7 Policy Fee Table</TableDesc>
+    <TableDesc_L10N_ARRAY>
+      <RateTableDefinition_TableDesc_L10N public-id="pcdb:4001">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:9801"/>
+        <Value>BP7 Policy Fee Table</Value>
+      </RateTableDefinition_TableDesc_L10N>
+    </TableDesc_L10N_ARRAY>
+    <TableName>BP7 Policy Fee Table</TableName>
+    <TableName_L10N_ARRAY>
+      <RateTableDefinition_TableName_L10N public-id="pcdb:4001">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:9801"/>
+        <Value>BP7 Policy Fee Table</Value>
+      </RateTableDefinition_TableName_L10N>
+    </TableName_L10N_ARRAY>
+  </RateTableDefinition>
+  <DefaultRateFactorRow public-id="pcdb:538701">
+    <RateTable public-id="pcdb:23701"/>
+    <bit1/>
+    <bit2/>
+    <date1/>
+    <date2/>
+    <dec1/>
+    <dec2/>
+    <dec3/>
+    <dec4/>
+    <dec5/>
+    <dec6/>
+    <int1>25</int1>
+    <int2/>
+    <int3/>
+    <int4/>
+    <int5/>
+    <int6/>
+    <int7/>
+    <int8/>
+    <str1>Y</str1>
     <str2/>
     <str3/>
     <str4/>
@@ -73629,20 +73917,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:4902">
-    <CalcRoutineParameterSet public-id="pcbd:4402"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:4904">
     <CalcRoutineParameterSet public-id="pcbd:4402"/>
     <Code>lineRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.bp7.ratinginfos.BP7LineRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:4902">
+    <CalcRoutineParameterSet public-id="pcbd:4402"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -76565,20 +76853,20 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcbd:5103">
-    <CalcRoutineParameterSet public-id="pcbd:4501"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5101">
     <CalcRoutineParameterSet public-id="pcbd:4501"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:5103">
+    <CalcRoutineParameterSet public-id="pcbd:4501"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -92036,20 +92324,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:5301">
-    <CalcRoutineParameterSet public-id="pcbd:4701"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5302">
     <CalcRoutineParameterSet public-id="pcbd:4701"/>
     <Code>locationRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.bp7.ratinginfos.BP7LocationRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:5301">
+    <CalcRoutineParameterSet public-id="pcbd:4701"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -95609,4 +95897,245 @@
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
+  <CalcRoutineDefinition public-id="pcdb:15401">
+    <Code>BP7TerrorismCoverageRateRoutine</Code>
+    <Description>BP7 Terrorism Coverage Rate Routine</Description>
+    <Description_L10N_ARRAY>
+      <CalcRoutineDefinition_Description_L10N public-id="pcdb:2401">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:15401"/>
+        <Value>BP7 Terrorism Coverage Rate Routine</Value>
+      </CalcRoutineDefinition_Description_L10N>
+    </Description_L10N_ARRAY>
+    <Jurisdiction>FL</Jurisdiction>
+    <Name>BP7 Terrorism Coverage Rate Routine</Name>
+    <Name_L10N_ARRAY>
+      <CalcRoutineDefinition_Name_L10N public-id="pcdb:6801">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:15401"/>
+        <Value>BP7 Terrorism Coverage Rate Routine</Value>
+      </CalcRoutineDefinition_Name_L10N>
+    </Name_L10N_ARRAY>
+    <ParameterSet public-id="pcdb:5001"/>
+    <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
+    <Steps>
+      <CalcStepDefinition public-id="pcdb:42101">
+        <CalcRoutineDefinition public-id="pcdb:15401"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>BaseRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcdb:49501">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pcdb:21401">
+                <ConstantValue>"Y"</ConstantValue>
+                <CovTermCode/>
+                <InScopeParam/>
+                <InScopeValue/>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>java.lang.String</InScopeValueType>
+                <Operand public-id="pcdb:49501"/>
+                <OperandType>constant</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>parameter</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pcdb:42101"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pcdb:20701">
+                <ColumnName>factor</ColumnName>
+                <Operand public-id="pcdb:49501"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>bp7_terrorism</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcdb:42102">
+        <CalcRoutineDefinition public-id="pcdb:15401"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>AdjustedRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcdb:49502">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcdb:42102"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>BaseRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>2</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcdb:42103">
+        <CalcRoutineDefinition public-id="pcdb:15401"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>TermAmount</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcdb:49503">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcdb:42103"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>AdjustedRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>3</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcdb:42104">
+        <CalcRoutineDefinition public-id="pcdb:15401"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcdb:49504">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcdb:42104"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>terrorismBasePremium_Ext</InScopeParam>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>multiplication</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>4</SortOrder>
+        <StepType>continue</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+    </Steps>
+    <Version>1</Version>
+  </CalcRoutineDefinition>
+  <CalcRoutineParameterSet public-id="pcdb:5001">
+    <Code>BP7TerrorismCovParameterSet</Code>
+    <IncludesCost>true</IncludesCost>
+    <Name>BP7 Terrorism Cov Parameter Set</Name>
+    <Name_L10N_ARRAY>
+      <CalcRoutineParameterSet_Name_L10N public-id="pcdb:1401">
+        <Language>en_US_edg</Language>
+        <Owner public-id="pcdb:5001"/>
+        <Value>BP7 Terrorism Cov Parameter Set</Value>
+      </CalcRoutineParameterSet_Name_L10N>
+    </Name_L10N_ARRAY>
+    <Parameters>
+      <CalcRoutineParameter public-id="pcdb:5601">
+        <CalcRoutineParameterSet public-id="pcdb:5001"/>
+        <Code>policyline</Code>
+        <CoveragePattern/>
+        <ParamType>entity.PolicyLine</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+      <CalcRoutineParameter public-id="pcdb:5602">
+        <CalcRoutineParameterSet public-id="pcdb:5001"/>
+        <Code>terrorismBasePremium_Ext</Code>
+        <CoveragePattern/>
+        <ParamType>java.math.BigDecimal</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+    </Parameters>
+    <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
+  </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pcdb:5601">
+    <CalcRoutineParameterSet public-id="pcdb:5001"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcdb:5602">
+    <CalcRoutineParameterSet public-id="pcdb:5001"/>
+    <Code>terrorismBasePremium_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>java.math.BigDecimal</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
 </import>

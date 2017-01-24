@@ -26,7 +26,7 @@
       value="(term as gw.api.domain.covterm.OptionCovTerm).OptionValue"
       valueRange="gw.web.productmodel.ChoiceCovTermUtil.getModelValueRange(term as gw.api.domain.covterm.OptionCovTerm, openForEdit)">
       <PostOnChange
-        onChange="gw.lob.bp7.BP7PostOnChangeHandler.handleTerm(term, jobWizardHelper)"/>
+        onChange="gw.lob.bp7.BP7PostOnChangeHandler.handleTerm(term, jobWizardHelper);una.pageprocess.SubmissionWizardHelper.populateNumberOfEmployeesForAllCovTerms(term.Clause.PolicyLine as BP7BusinessOwnersLine)"/>
     </RangeInput>
   </InputSet>
 </PCF>

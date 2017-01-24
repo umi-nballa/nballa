@@ -128,31 +128,186 @@
   </typefilter>
   <typefilter
     desc="Types that are eligible for dwelling fire premise liability coverage"
-    name="DwellingFirePremiseEligibleTypes">
+    name="DwellingFirePremiseEligibleTypes"/>
+  <typecode
+    code="oneIndividual_Ext"
+    desc="One Individual"
+    name="One Individual"/>
+  <typecode
+    code="individualSpouse_Ext"
+    desc="Individual and Spouse"
+    name="Individual and Spouse"/>
+  <typecode
+    code="twoIndOtherThanSpousal_Ext"
+    desc="2 individuals other than Spousal relationship"
+    name="2 individuals other than Spousal relationship"/>
+  <typecode
+    code="moreThan2Ind_Ext"
+    desc="More than 2 individual"
+    name="More than 2 individual"/>
+  <typecode
+    code="Corporation_Ext"
+    desc="Corporation"
+    name="Corporation"/>
+  <typecode
+    code="ira_Ext"
+    desc="IRA"
+    name="IRA"/>
+  <typecode
+    code="association_Ext"
+    desc="Association"
+    name="Association"/>
+  <typecode
+    code="church_Ext"
+    desc="Church"
+    name="Church"/>
+  <typecode
+    code="soleProprietor_Ext"
+    desc="Sole Proprietor"
+    name="Sole Proprietor"/>
+  <typecode
+    code="generalPartnership_Ext"
+    desc="General Partnership"
+    name="General Partnership"/>
+  <typecode
+    code="limitedLiabilityPartnership_Ext"
+    desc="Limited Liability Partnership"
+    name="Limited Liability Partnership"/>
+  <typecode
+    code="jointVenture_Ext"
+    desc="Joint Venture"
+    name="Joint Venture"/>
+  <typecode
+    code="corporationAllOther_Ext"
+    desc="Corporation- all other"
+    name="Corporation- all other"/>
+  <typecode
+    code="sCorp_Ext"
+    desc="S Corp"
+    name="S Corp"/>
+  <typecode
+    code="cCorp_Ext"
+    desc="C Corp"
+    name="C Corp"/>
+  <typecode
+    code="residentialCondoAssociation_Ext"
+    desc="Residential Condominium Association"
+    name="Residential Condominium Association"/>
+  <typecode
+    code="commercialCondoAssociation_Ext"
+    desc="Commercial Condominium Association"
+    name="Commercial Condominium Association"/>
+  <typecode
+    code="cooperative_Ext"
+    desc="Cooperative"
+    name="Cooperative"/>
+  <typecode
+    code="governmental_Ext"
+    desc="Governmental"
+    name="Governmental"/>
+  <typecode
+    code="nonProfit_Ext"
+    desc="Non profit"
+    name="Non profit"/>
+  <typefilter
+    desc="HO Person filter values"
+    name="HOPerson_Ext">
     <include
-      code="2IndOtherSpousal"/>
+      code="individualSpouse_Ext"/>
     <include
-      code="individual"/>
+      code="oneIndividual_Ext"/>
     <include
-      code="IndividualandSpouse"/>
+      code="moreThan2Ind_Ext"/>
+    <include
+      code="twoIndOtherThanSpousal_Ext"/>
+    <include
+      code="other"/>
+  </typefilter>
+  <typefilter
+    desc="HO Company Filter values"
+    name="HOCompany_Ext">
+    <include
+      code="association_Ext"/>
+    <include
+      code="church_Ext"/>
+    <include
+      code="corporation"/>
+    <include
+      code="estate_Ext"/>
+    <include
+      code="ira_Ext"/>
     <include
       code="llc"/>
     <include
-      code="MoreThan2Ind"/>
+      code="other"/>
+    <include
+      code="partnership"/>
+    <include
+      code="trust_Ext"/>
   </typefilter>
-  <typecode
-    code="IndividualandSpouse"
-    desc="Individual and Spouse"
-    name="Individual and Spouse"
-    priority="2"/>
-  <typecode
-    code="2IndOtherSpousal"
-    desc="2 individuals other than Spousal relationship"
-    name="2 individuals other than Spousal relationship"
-    priority="3"/>
-  <typecode
-    code="MoreThan2Ind"
-    desc="More than 2 individual"
-    name="More than 2 individual"
-    priority="4"/>
+  <typefilter
+    desc="BOP or CPP Person filter"
+    name="BOPCPPPerson_Ext">
+    <include
+      code="generalPartnership_Ext"/>
+    <include
+      code="soleProprietor_Ext"/>
+  </typefilter>
+  <typefilter
+    desc="BOP or CPP Company Filter"
+    name="BOPCPPCompany_Ext">
+    <include
+      code="cCorp_Ext"/>
+    <include
+      code="commercialCondoAssociation_Ext"/>
+    <include
+      code="cooperative_Ext"/>
+    <include
+      code="corporationAllOther_Ext"/>
+    <include
+      code="generalPartnership_Ext"/>
+    <include
+      code="governmental_Ext"/>
+    <include
+      code="jointventure"/>
+    <include
+      code="limitedLiabilityPartnership_Ext"/>
+    <include
+      code="nonProfit_Ext"/>
+    <include
+      code="residentialCondoAssociation_Ext"/>
+    <include
+      code="sCorp_Ext"/>
+  </typefilter>
+  <typefilter
+    desc="Filter used in field How many properties of any type are under common ownership?"
+    name="CommonOwnership_Ext">
+    <include
+      code="association_Ext"/>
+    <include
+      code="church_Ext"/>
+    <include
+      code="corporation"/>
+    <include
+      code="estate_Ext"/>
+    <include
+      code="individualSpouse_Ext"/>
+    <include
+      code="ira_Ext"/>
+    <include
+      code="moreThan2Ind_Ext"/>
+    <include
+      code="oneIndividual_Ext"/>
+    <include
+      code="other"/>
+    <include
+      code="partnership"/>
+    <include
+      code="trust_Ext"/>
+    <include
+      code="twoIndOtherThanSpousal_Ext"/>
+  </typefilter>
+  <typefilter
+    desc="Filter used in field Ownership Percentage"
+    name="OwnershipPercentageFilter_Ext"/>
 </typelistextension>

@@ -5,6 +5,7 @@ uses gw.rating.AbstractRatingEngine
 uses gw.rating.CostData
 
 uses java.lang.Iterable
+uses una.rating.bp7.util.RateFactorUtil
 
 abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRatingEngine<BP7Line> {
   construct(line: T) {
@@ -15,7 +16,7 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     assertSliceMode(lineVersion)
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
-
+      RateFactorUtil.setDefaults()
       lineVersion.AllBuildings.each(\building -> {
         rateBuilding(building, sliceRange)
       })
@@ -28,6 +29,14 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
       lineVersion.AllClassifications.each(\classification -> {
         rateClassification(classification, sliceRange)
       })
+
+      var terrorismCov = lineVersion.BP7LineCoverages?.where( \ cov -> cov.PatternCode == "BP7CapLossesFromCertfdActsTerrsm").first()
+      if(terrorismCov != null){
+        rateTerrorismCoverage(terrorismCov as BP7CapLossesFromCertfdActsTerrsm, sliceRange)
+      }
+
+      //Add the minimum premium adjustment, if the total premium is less than minimum premium
+      rateManualPremiumAdjustment(sliceRange)
     }
   }
 
@@ -40,6 +49,7 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
 
   override function rateWindow(lineVersion: BP7Line) {
     // for Tax
+
   }
 
   /******
@@ -62,4 +72,8 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
   abstract function rateBuilding(building: BP7Building, sliceToRate: DateRange)
 
   abstract function rateClassification(classification: BP7Classification, sliceToRate: DateRange)
+
+  abstract function rateTerrorismCoverage(lineCov: BP7CapLossesFromCertfdActsTerrsm, sliceToRate: DateRange)
+
+  abstract function rateManualPremiumAdjustment(sliceRange : DateRange)
 }

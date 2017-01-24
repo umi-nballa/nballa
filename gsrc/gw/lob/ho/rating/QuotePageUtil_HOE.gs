@@ -95,7 +95,7 @@ abstract class QuotePageUtil_HOE {
       var description = displaykey.Web.Homeowners.Quote.LocationPrefix + loc.PolicyLocation.DisplayName
       var value = loc.LocationLimit.Description
       result.add(new NameValueCostData_HOE(description, value, cost))
-    }else if(coverage.PatternCode == "HOSL_OutboardMotorsWatercraft_HOE_Ext"){
+    }else if(coverage.PatternCode == "HOSL_OutboardMotorsWatercraft_HOE_Ext" || coverage.PatternCode == "HOSL_WatercraftLiabilityCov_HOE_Ext"){
       // Outboard Motors and Watercraft Coverage
       var lineCov = coverage as HomeownersLineCov_HOE
       var scheduledItem = (cost as ScheduleLineCovCost_HOE_Ext).LineScheduledItem

@@ -10,6 +10,7 @@ uses gw.lob.bp7.rating.BP7LineCovCostData
 uses una.rating.bp7.ratinginfos.BP7RatingInfo
 uses una.rating.bp7.ratinginfos.BP7LineRatingInfo
 uses gw.rating.CostData
+uses java.math.BigDecimal
 
 /**
 * Class which rates all the available BP7 line coverages
@@ -42,6 +43,7 @@ class BP7LineStep extends BP7RatingStep {
       case "BP7AddlInsdDesignatedPersonOrg" : return BP7RateRoutineNames.BP7_ADDL_INSD_DESIGNATED_PERSON_ORG_RATE_ROUTINE
       case "BP7BusinessLiability" : return BP7RateRoutineNames.BP7_MEDICAL_PAYMENT_INCREASE_RATE_ROUTINE
       case "BP7EmploymentPracticesLiabilityCov_EXT" : return BP7RateRoutineNames.BP7_EMPLOYMENT_PRACTICES_LIABILITY_RATE_ROUTINE
+      case "BP7CapLossesFromCertfdActsTerrsm" : return BP7RateRoutineNames.BP7_TERRORISM_COVERAGE_RATE_ROUTINE
       default :
         throw "Rating is not supported for ${coveragePattern.ClauseName}"
     }
@@ -101,6 +103,15 @@ class BP7LineStep extends BP7RatingStep {
     return costDatas
   }
 
+  function rateTerrorismCoverageRateRoutine(lineCov : Coverage, sliceToRate : DateRange, basePremiumForTerrorismCoverage : BigDecimal) : CostData<Cost, PolicyLine>{
+    var costData = createCostData(lineCov, sliceToRate)
+    var termAmount : BigDecimal = 100.0
+    var parameterSet = createTerrorismParameterSet(costData, basePremiumForTerrorismCoverage)
+    _executor.execute(getRateRoutineCode(lineCov.Pattern), lineCov, parameterSet, costData)
+
+    return costData
+  }
+
   /**
   *  Rates when there is Medical Payment increase
    */
@@ -139,6 +150,16 @@ class BP7LineStep extends BP7RatingStep {
     return
         {TC_POLICYLINE         -> _line,
          TC_COSTDATA           -> costData}
+  }
+
+  /**
+   * creates the parameter set for terrorism
+   */
+  private function createTerrorismParameterSet(costData : BP7CostData<BP7Cost>, basePremiumForTerrorismCoverage : BigDecimal) : Map<CalcRoutineParamName, Object>{
+    return
+        {TC_POLICYLINE         -> _line,
+         TC_TERRORISMBASEPREMIUM_EXT -> basePremiumForTerrorismCoverage,
+         TC_COSTDATA        -> costData}
   }
 
   /**

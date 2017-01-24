@@ -18,6 +18,7 @@ uses una.rating.util.HOCreateCostDataUtil
 
 uses java.util.Map
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
+uses gw.rating.CostData
 
 /**
  * Created with IntelliJ IDEA.
@@ -188,7 +189,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6)) {
       rateSuperiorConstructionDiscount(dateRange)
     }
-    if (dwelling.RoofType == typekey.RoofType.TC_TILECONCRETE and PolicyLine.BaseState != typekey.Jurisdiction.TC_NV){
+
+    var dwellingRoofType = dwelling.OverrideRoofType_Ext? dwelling.RoofingMaterialOverridden_Ext : dwelling.RoofType
+
+    if ((dwellingRoofType == typekey.RoofType.TC_TILECONCRETE || dwellingRoofType== typekey.RoofType.TC_TILE_CONCRETE_EXT)
+        and PolicyLine.BaseState != typekey.Jurisdiction.TC_NV){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3)
         rateConcreteTileRoofDiscount(dateRange)
     }
@@ -463,9 +468,12 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function ratePersonalPropertyReplacementCost(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyReplacementCost", this.IntrinsicType)
-    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE)
-    var rateRoutineParameter = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
-    var costDataForIncreasedPersonalProperty = HOCreateCostDataUtil.createCostDataForDwellingCoverage(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameter, Executor, this.NumDaysInCoverageRatedTerm)
+    var costDataForIncreasedPersonalProperty : CostData = null
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+      var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE)
+      var rateRoutineParameter = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      costDataForIncreasedPersonalProperty = HOCreateCostDataUtil.createCostDataForDwellingCoverage(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameter, Executor, this.NumDaysInCoverageRatedTerm)
+    }
     var lineLevelRatingInfo = new HOGroup1LineLevelRatingInfo(PolicyLine)
     lineLevelRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     lineLevelRatingInfo.AdjustedBaseClassPremium = _hoRatingInfo.AdjustedBaseClassPremium
@@ -958,8 +966,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Returns the parameter set for the Dwelling level coverages
-   */
+ * Returns the parameter set for the Dwelling level coverages
+ */
   private function getOutboardMotorsAndWatercraftCovParameterSet(line: PolicyLine, item: HOscheduleItem_HOE_Ext, lineCov: HOSL_OutboardMotorsWatercraft_HOE_Ext): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,

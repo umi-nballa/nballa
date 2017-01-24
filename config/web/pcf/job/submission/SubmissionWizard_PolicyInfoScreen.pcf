@@ -24,21 +24,161 @@
         toolbarButtonSet="JobWizardToolbarButtonSet(period, submission, jobWizardHelper)"/>
     </Toolbar>
     <PanelRef
-      def="SubmissionWizard_PolicyInfoDV(period, submission)">
-      <Toolbar/>
+      def="TrustPanelSet(period)">
+      <PanelSet>
+        <PanelRef
+          def="SubmissionWizard_PolicyInfoDV(period, submission)">
+          <Toolbar/>
+        </PanelRef>
+      </PanelSet>
     </PanelRef>
-    <PanelRef
-      def="TrustPanelSet(period)"/>
     <PanelRef
       def="AdditionalNamedInsuredsDV(period, openForEdit)"/>
     <PanelRef
+      def="AdditionalInsuredsDV(period.HomeownersLine_HOE, true, true)"
+      visible="period.HomeownersLine_HOEExists"/>
+    <PanelRef
       def="PolicyDBAsDV(period,true)"
       id="listOfDBAs"/>
+    <PanelRef
+      id="partiesToTrust"
+      visible="!period.HomeownersLine_HOEExists">
+      <DetailViewPanel>
+        <InputColumn>
+          <InputDivider/>
+          <Label
+            label="&quot;Parties to the Trust&quot;"/>
+          <ListViewInput
+            labelAbove="true">
+            <Toolbar>
+              <IteratorButtons
+                iterator="partiesLV"/>
+            </Toolbar>
+            <ListViewPanel
+              id="partiesLV">
+              <RowIterator
+                editable="true"
+                elementName="parties"
+                toCreateAndAdd="period.createAndAddNewParties()"
+                toRemove="period.removeFromPartiesTrust_Ext(parties)"
+                value="period.PartiesTrust_Ext">
+                <Row>
+                  <Cell
+                    editable="true"
+                    id="name"
+                    label="&quot;Name&quot;"
+                    value="parties.Name"/>
+                  <Cell
+                    editable="true"
+                    id="partyTrust"
+                    label="&quot;Party to the Trust&quot;"
+                    required="true"
+                    value="parties.PartiesToTrust_Ext"/>
+                </Row>
+              </RowIterator>
+            </ListViewPanel>
+          </ListViewInput>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
+    <PanelRef
+      visible="!period.HomeownersLine_HOEExists">
+      <DetailViewPanel>
+        <InputColumn>
+          <BooleanRadioInput
+            editable="true"
+            id="anyotherbusiness"
+            label="&quot;Any Other Business Under Common Ownership with any named insured&quot;"
+            required="true"
+            value="period.CommonOwenership_Ext"
+            visible="!period.HomeownersLine_HOEExists"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
+    <PanelRef
+      visible="!period.HomeownersLine_HOEExists">
+      <DetailViewPanel>
+        <InputColumn>
+          <InputDivider/>
+          <Label
+            label="&quot;Other Business Entities&quot;"/>
+          <ListViewInput
+            labelAbove="true">
+            <Toolbar>
+              <IteratorButtons
+                iterator="OBEntitiesLV"/>
+            </Toolbar>
+            <ListViewPanel
+              id="OBEntitiesLV">
+              <RowIterator
+                editable="true"
+                elementName="OBEntity"
+                toCreateAndAdd="period.createAndAddNewOBEntity()"
+                toRemove="period.removeFromOBEntities_Ext(OBEntity)"
+                value="period.OBEntities_Ext">
+                <Row>
+                  <Cell
+                    editable="true"
+                    id="name"
+                    label="&quot;Name&quot;"
+                    value="OBEntity.Name"/>
+                  <Cell
+                    editable="true"
+                    id="ownershipPercentage"
+                    label="&quot;Ownership Percentage&quot;"
+                    value="OBEntity.OwnershipPercentage_Ext"/>
+                </Row>
+              </RowIterator>
+            </ListViewPanel>
+          </ListViewInput>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
+    <PanelRef
+      visible="!period.HomeownersLine_HOEExists">
+      <DetailViewPanel>
+        <InputColumn>
+          <InputDivider/>
+          <Label
+            label="&quot;Number of Partnerships, Partners, Parties &quot;"/>
+          <ListViewInput
+            labelAbove="true">
+            <Toolbar>
+              <IteratorButtons
+                iterator="partnershipLV"/>
+            </Toolbar>
+            <ListViewPanel
+              id="partnershipLV">
+              <RowIterator
+                editable="true"
+                elementName="partnership"
+                toCreateAndAdd="period.createAndAddNewNumberOfPartnership()"
+                toRemove="period.removeFromNumberOfPartnerships_Ext(partnership)"
+                value="period.NumberOfPartnerships_Ext">
+                <Row>
+                  <Cell
+                    editable="true"
+                    id="name"
+                    label="&quot;Name&quot;"
+                    value="partnership.Name"/>
+                  <Cell
+                    editable="true"
+                    id="owneershipPercentage"
+                    label="&quot;Ownership Percentage&quot;"
+                    value="partnership.OwnershipPercentage_Ext"/>
+                </Row>
+              </RowIterator>
+            </ListViewPanel>
+          </ListViewInput>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
     <PanelRef
       id="ListOfOFACContacts">
       <DetailViewPanel>
         <InputColumn>
           <InputSet>
+            <InputDivider/>
             <Label
               label="&quot;OFAC HIT RECORDS&quot;"/>
             <ListViewInput

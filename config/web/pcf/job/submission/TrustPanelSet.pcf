@@ -15,12 +15,16 @@
           id="MultipleTrust"
           label="&quot;Is Multiple Trust Involved&quot;"
           trueLabel="&quot;Yes&quot;"
-          value="policyPeriod.isMultipleTrust"/>
+          value="policyPeriod.isMultipleTrust"
+          visible="(policyPeriod.isHOType() or policyPeriod.isDFType()) and policyPeriod.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT">
+          <PostOnChange/>
+        </BooleanRadioInput>
         <TypeKeyInput
           editable="true"
           id="TrustInvolved"
           label="&quot;How many Trusts Involved&quot;"
-          value="policyPeriod.NoOfTrustInvolved">
+          value="policyPeriod.NoOfTrustInvolved"
+          visible="(policyPeriod.isHOType() or policyPeriod.isDFType()) and policyPeriod.isMultipleTrust">
           <PostOnChange
             onChange="createTrustResidings()"/>
         </TypeKeyInput>

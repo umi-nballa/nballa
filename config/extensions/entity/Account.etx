@@ -1,32 +1,75 @@
 <?xml version="1.0"?>
-<extension xmlns="http://guidewire.com/datamodel" entityName="Account">
+<extension
+  xmlns="http://guidewire.com/datamodel"
+  entityName="Account">
   <typekey-override
+    default="en_US"
+    desc="The account's preferred language"
     name="PrimaryLanguage"
-    default="en_US"/>
+    nullok="true"/>
   <typekey-override
-      name="PrimaryLocale"
-      default="en_US"/>
-  <remove-index name="accountp3"/>
-  <index name="accountp3x" desc="Index for performance of desktop account summary views." unique="true">
+    default="en_US"
+    desc="The account's preferred locale"
+    name="PrimaryLocale"
+    nullok="true"/>
+  <remove-index
+    name="accountp3"/>
+  <index
+    desc="Index for performance of desktop account summary views."
+    name="accountp3x"
+    unique="true">
     <indexcol
-      name="ID"
-      keyposition="1"/>
+      keyposition="1"
+      name="ID"/>
     <indexcol
-      name="Retired"
-      keyposition="2"/>
+      keyposition="2"
+      name="Retired"/>
     <indexcol
-      name="CreateTime"
-      keyposition="3"/>
+      keyposition="3"
+      name="CreateTime"/>
     <indexcol
-      name="AccountStatus"
-      keyposition="4"/>
+      keyposition="4"
+      name="AccountStatus"/>
     <indexcol
-      name="AccountNumber"
-      keyposition="5"/>
+      keyposition="5"
+      name="AccountNumber"/>
   </index>
   <onetoone
     desc="Account migration information"
     fkentity="MigrationAccountInfo_Ext"
     name="MigrationAccountInfo_Ext"
     nullok="true"/>
+  <column
+    name="DescribeRelationship_Ext"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="40"/>
+  </column>
+  <column
+    desc="  Do all owners occupy the dwelling as their primary residence?"
+    name="OccupyPrimaryResidence_Ext"
+    nullok="true"
+    type="bit"/>
+  <column
+    desc=" Are all parties with ownership interest in the LLC natural persons (not a corporation, partnership, trust, estate, charitable organization or association)?"
+    name="OwnershipInterestLLC_Ext"
+    nullok="true"
+    type="bit"/>
+  <typekey
+    desc="How many properties of any type are under common ownership with the majority owner of the LLC?"
+    name="MajorityOwnerLLC_Ext"
+    nullok="true"
+    typelist="NumberPrptiesCmmnOwnr_Ext"/>
+  <typekey
+    desc="How many properties of any type are under common ownership?"
+    name="UnderCommonOwnership_Ext"
+    nullok="true"
+    typelist="NumberPrptiesCmmnOwnr_Ext"/>
+  <column
+    desc="Ownership Percentage"
+    name="OwnershipPercentage_Ext"
+    nullok="true"
+    type="percentage"/>
 </extension>

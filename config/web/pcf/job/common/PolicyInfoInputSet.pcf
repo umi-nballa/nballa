@@ -38,18 +38,34 @@
       type="Policy"/>
     <ReferencedWidget
       widget="UWCompanyInputSet"/>
-    <Label
-      label="displaykey.Web.SubmissionWizard.PolicyInfo.PolicyPeriod"/>
     <DateInput
       id="originalInceptionDate_Ext"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.OriginalInceptionDate_Ext"
-      value="policyPeriod.originalInceptionDate_Ext"/>
+      value="policyPeriod.inceptionDateBsdSrcSys()">
+      <PostOnChange/>
+    </DateInput>
+    <TypeKeyInput
+      editable="policyPeriod.Job typeis Submission "
+      id="sourceSystem"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.SourceSystem_Ext"
+      required="true"
+      value="policyPeriod.SourceSystem_Ext">
+      <PostOnChange
+        target="legacyPolicyNumber_Ext"/>
+    </TypeKeyInput>
     <Input
       editable="policyPeriod.Job typeis Submission"
       id="legacyPolicyNumber_Ext"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.PriorLegacyPolicyNumber_Ext"
       required="policyPeriod.SourceSystem_Ext == TC_LEGACY"
       value="policyPeriod.LegacyPolicyNumber_Ext"/>
+    <DateInput
+      editable="!policyPeriod.HomeownersLine_HOEExists"
+      id="DateLastInspection"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.DateLastInspection_Ext"
+      value="policyPeriod.DateLastInspection_Ext"/>
+    <Label
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.PolicyPeriod"/>
     <!-- <DateInput
       editable="true"
       id="lastInspectionDate_Ext"
@@ -65,16 +81,8 @@
       editable="true"
       id="UNAWindForm"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.UNAWindMitFormCompletionDate_Ext"
-      value="policyPeriod.UNAWindMitFormCompDate_Ext"/>
-    <TypeKeyInput
-      editable="policyPeriod.Job typeis Submission"
-      id="sourceSystem"
-      label="displaykey.Web.SubmissionWizard.PolicyInfo.SourceSystem_Ext"
-      required="true"
-      value="policyPeriod.SourceSystem_Ext">
-      <PostOnChange
-        target="legacyPolicyNumber_Ext"/>
-    </TypeKeyInput>
+      value="policyPeriod.UNAWindMitFormCompDate_Ext"
+      visible="policyPeriod.BaseState == TC_FL or policyPeriod.BaseState == TC_SC or policyPeriod.BaseState == TC_NC"/>
     <!-- Changing the term type updates the expiration date -->
     <RangeInput
       editable="policyPeriod.CanUpdatePeriodDates"
@@ -97,7 +105,7 @@
       visible="policyPeriod.HomeownersLine_HOEExists"/>
     <!-- Changing the effective date updates the expiration date when the term type is not "short" -->
     <DateInput
-      editable="!(policyPeriod.Job typeis PolicyChange) and policyPeriod.CanUpdatePeriodDates// and (policyPeriod.Job typeis Issuance)"
+      editable="!(policyPeriod.Job typeis PolicyChange or policyPeriod.Job typeis Renewal) and policyPeriod.CanUpdatePeriodDates and (policyPeriod.Job typeis Issuance) or ((policyPeriod.Job typeis Cancellation ) or policyPeriod.Job typeis Rewrite)"
       id="EffectiveDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.EffectiveDate"
       required="true"
@@ -167,7 +175,7 @@
       visible="dividedSourcePolicy != null and showSplitSource"/>
     <InputSet
       id="affinityGroupInputSet"
-      visible="policyPeriod.HomeownersLine_HOEExists and (policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT)">
+      visible="policyPeriod.HomeownersLine_HOEExists and (policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT) and !policyPeriod.BP7LineExists and !policyPeriod.CPLineExists">
       <Variable
         initialValue="una.config.AffinityGroupUtil.setAffinityDiscountEligibility(policyPeriod)"
         name="affinityDiscount"
@@ -175,8 +183,9 @@
         type="boolean"/>
       <InputDivider/>
       <Label
-        label="displaykey.Web.Admin.AffinityGroup"/>
-      <!-- <PickerInput
+        label="displaykey.Web.Admin.AffinityGroup"
+        visible="!policyPeriod.BP7LineExists or !policyPeriod.CPLineExists"/>
+      <PickerInput
         editable="true"
         id="AffinityGroup"
         inputConversion="gw.web.policy.PolicyInfoUIHelper.performAffinityGroupSearch(VALUE, policyPeriod)"
@@ -184,13 +193,14 @@
         pickLocation="AffinityGroupSearchPopup.push(policyPeriod)"
         required="false"
         value="policyPeriod.PolicyTerm.AffinityGroup"
-        visible="false"/> -->
+        visible="policyPeriod.HomeownersLine_HOEExists and !(policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT)"/>
       <RangeInput
         editable="true"
         id="PreferredBuilder"
         label="displaykey.Web.Admin.AffinityGroup.PreferredBuilder_Ext"
         value="policyPeriod.PreferredBuilder_Ext"
-        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDBUILDER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)">
+        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDBUILDER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
+        visible="policyPeriod.affinityVisible()">
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
@@ -200,7 +210,7 @@
         label="displaykey.Web.Admin.AffinityGroup.PreferredFinInst_Ext"
         value="policyPeriod.PreferredFinInst_Ext"
         valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDFININST, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
-        visible="policyPeriod.BaseState != TC_AZ or policyPeriod.BaseState != TC_NC or policyPeriod.BaseState != TC_SC">
+        visible="(policyPeriod.BaseState != TC_AZ or policyPeriod.BaseState != TC_NC or policyPeriod.BaseState != TC_SC) and policyPeriod.affinityVisible()">
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
@@ -209,14 +219,16 @@
         id="EmployerGroup"
         label="displaykey.Web.Admin.AffinityGroup.PreferredEmployerGroup_Ext"
         value="policyPeriod.PreferredEmpGroup_Ext"
-        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)">
+        valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
+        visible="policyPeriod.affinityVisible()">
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
       <BooleanRadioInput
         id="QualifiesDiscount"
         label="displaykey.Web.Admin.AffinityGroup.AffinityDiscount_Ext"
-        value="policyPeriod.QualifiesAffinityDisc_Ext"/>
+        value="policyPeriod.QualifiesAffinityDisc_Ext"
+        visible="policyPeriod.affinityVisible()"/>
     </InputSet>
     <Code><![CDATA[function printVal() : boolean{
   print("Job Type : "+typeof policyPeriod.Job)

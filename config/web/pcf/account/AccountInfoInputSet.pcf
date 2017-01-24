@@ -37,6 +37,8 @@
       initialValue="period.Job.NewTerm ? null : primaryNamedInsured.BasedOn.IndustryCode"
       name="previousIndustryCode"
       type="IndustryCode"/>
+    <Expose
+      widget="AreAllPartiesWithOwnershipInterest"/>
     <!-- The primary named insured -->
     <Input
       boldLabel="true"
@@ -177,7 +179,7 @@
     <!-- Organization Type -->
     <InputSet>
       <InputDivider/>
-      <RangeInput
+      <!-- <RangeInput
         editable="period.Policy.Account.Editable"
         id="OrganizationType"
         label="displaykey.Web.Policy.Account.EntityType_Ext"
@@ -186,6 +188,15 @@
         valueRange="getOrgTypes()">
         <PostOnChange
           target="OrganizationTypeOtherDescription"/>
+      </RangeInput> -->
+      <RangeInput
+        editable="period.Policy.Account.Editable"
+        id="EntityType"
+        label="period.HomeownersLine_HOEExists ?  displaykey.Web.Policy.Account.OrganizationType : displaykey.Web.Policy.Account.EntityType_Ext"
+        required="true"
+        value="period.Policy.Account.AccountOrgType"
+        valueRange="period.entityValueRange()">
+        <PostOnChange/>
       </RangeInput>
       <Input
         editable="period.Policy.Account.Editable"
@@ -193,7 +204,60 @@
         label="displaykey.Web.Policy.Account.OrganizationTypeOtherDescription"
         required="true"
         value="period.Policy.Account.OtherOrgTypeDescription"
-        visible="period.Policy.Account.AccountOrgType == &quot;Other&quot;"/>
+        visible="period.Policy.Account.AccountOrgType == &quot;Other&quot;">
+        <PostOnChange/>
+      </Input>
+      <!-- row 32 -->
+      <Input
+        editable="true"
+        id="describeRelationship"
+        label="displaykey.Web.PolicyInfo.DescribeRelationship"
+        required="true"
+        value="period.Policy.Account.DescribeRelationship_Ext"
+        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT">
+        <PostOnChange/>
+      </Input>
+      <!-- row 33 -->
+      <BooleanRadioInput
+        editable="true"
+        id="DoAllOwnersOccupy"
+        label="displaykey.Web.PolicyInfo.DoAllOwnersOccupyTheDwellingAsTheirPrimaryResidence"
+        required="true"
+        value="period.Policy.Account.OccupyPrimaryResidence_Ext"
+        visible="period.isHOType() and  (period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_INDIVIDUALSPOUSE_EXT or period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT or period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_MORETHAN2IND_EXT)"/>
+      <!-- row 40 -->
+      <BooleanRadioInput
+        editable="true"
+        id="AreAllPartiesWithOwnershipInterest"
+        label="displaykey.Web.PolicyInfo.AreAllPartiesWithOwnershipInterestInTheLLCNaturalPersons"
+        required="true"
+        value="period.Policy.Account.OwnershipInterestLLC_Ext"
+        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC"/>
+      <!-- row 41 -->
+      <TypeKeyInput
+        editable="true"
+        id="MajorityOwnerOfTheLLC"
+        label="displaykey.Web.PolicyInfo.HowManyPropertiesOfAnyTypeAreUnderCommonOwnershipWithTheMajorityOwnerOfTheLLC"
+        required="true"
+        value="period.Policy.Account.MajorityOwnerLLC_Ext"
+        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC"/>
+      <!-- row 42 -->
+      <TypeKeyInput
+        editable="true"
+        id="UnderCommonOwnership"
+        label="displaykey.Web.PolicyInfo.HowManyPropertiesOfAnyTypeAreUnderCommonOwnership"
+        value="period.Policy.Account.UnderCommonOwnership_Ext"
+        visible="typekey.AccountOrgType.TF_COMMONOWNERSHIP_EXT.TypeKeys.contains(period.Policy.Account.AccountOrgType)"/>
+      <!-- row 43 -->
+      <Input
+        editable="true"
+        id="OwnerShipPercentage"
+        label="displaykey.Web.PolicyInfo.OwnerShipPercentage"
+        required="true"
+        value="period.Policy.Account.OwnershipPercentage_Ext"
+        visible="(period.BP7LineExists or period.CPLineExists)">
+        <PostOnChange/>
+      </Input>
     </InputSet>
     <Code><![CDATA[property get OrgTypes() : List<AccountOrgType> {
   return period.Policy.Account.AccountHolderContact typeis Company ? 

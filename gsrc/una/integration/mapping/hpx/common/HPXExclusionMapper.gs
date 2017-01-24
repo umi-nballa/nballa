@@ -21,6 +21,7 @@ abstract class HPXExclusionMapper {
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentExclusion.PatternCode
+    cov.ExclusionDesc = currentExclusion.Pattern.Description
     var coverableInfo = createCoverableInfo(currentExclusion, previousExclusion)
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))

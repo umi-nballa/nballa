@@ -177,7 +177,9 @@ class CluePropertyGateway implements CluePropertyInterface {
         cPayment.ClaimDisposition = p.Disposition as String
         cPayment.LossCause_Ext= LossCause_Ext.get(p.CauseOfLoss.Code.replaceAll("_",""))
         cPayment.ClaimAmount = p.AmountPaid
-        cPayment.LossCause_Ext = typekey.LossCause_Ext.getTypeKeys(false).atMostOneWhere( \ elt -> elt.Description.trim().equalsIgnoreCase(p.CauseOfLoss.GosuValue))
+        cPayment.ClaimDisposition_Ext = Status_Ext.get(p.Disposition as String)
+        var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+        cPayment.LossCause_Ext = typecodeMapper.getInternalCodeByAlias(LossCause_Ext.Type.RelativeName, "clue", p.CauseOfLoss.toString())
         if(!(period.Job typeis Renewal)) {
         if (period.BaseState.Code == typekey.State.TC_NC) {
           if (typekey.LossCause_Ext.TF_NAWEATHERHO.TypeKeys.contains(cPayment.LossCause_Ext))

@@ -118,7 +118,7 @@ class CluePropertyGateway implements CluePropertyInterface {
               var cHistoryType = cHistory.Type
               for (claim in claims) {
                 //for every claim reported, create a PAPriorLossExt entity and attach it to the PA line
-                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType,reference))
+                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType,reference,pPeriod))
                 _logger.debug("A claim has been added to the priorLoss array " + claim.Number)
               }
             }
@@ -150,7 +150,8 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Param("claim", " The prior loss or claim element")
   @Param("cHistoryType", " The claim--History_Type element ")
   private  function extractClaimDetails(claim: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.anonymous.elements.ResultsDataset_ClaimsHistory_Claim,
-                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String): HOPriorLoss_Ext {
+                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String,
+                                        period : PolicyPeriod): HOPriorLoss_Ext {
     var priorLoss = new HOPriorLoss_Ext()
     //get claim details
     priorLoss.Reference=referenceNumber
@@ -176,13 +177,35 @@ class CluePropertyGateway implements CluePropertyInterface {
         cPayment.ClaimDisposition = p.Disposition as String
         cPayment.LossCause_Ext= LossCause_Ext.get(p.CauseOfLoss.Code.replaceAll("_",""))
         cPayment.ClaimAmount = p.AmountPaid
+        cPayment.ClaimDisposition_Ext = Status_Ext.get(p.Disposition as String)
+        var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+        cPayment.LossCause_Ext = typecodeMapper.getInternalCodeByAlias(LossCause_Ext.Type.RelativeName, "clue", p.CauseOfLoss.toString())
+        if(!(period.Job typeis Renewal)) {
+        if (period.BaseState.Code == typekey.State.TC_NC) {
+          if (typekey.LossCause_Ext.TF_NAWEATHERHO.TypeKeys.contains(cPayment.LossCause_Ext))
+            cPayment.Weather = "NA"
+          else if(typekey.LossCause_Ext.TF_WEATHERHO.TypeKeys.contains(cPayment.LossCause_Ext))
+            cPayment.Weather = "Weather"
+          else
+            cPayment.Weather = "Non-Weather"
+        } } else {
+          if (typekey.LossCause_Ext.TC_EQBRK == cPayment.LossCause_Ext)
+            cPayment.Weather = "NA"
+          else if (typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.contains(cPayment.LossCause_Ext) ||
+              typekey.ExpanedLossCause_Ext.TF_RNLNCHOFILTER.TypeKeys.contains(cPayment.LossCause_Ext) ||
+              typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.contains(cPayment.LossCause_Ext))
+                  cPayment.Weather = "Weather"
+          else
+                  cPayment.Weather = "Non-Weather"
+        }
+
         //Field Mapping for Chargeable
-        cPayment.Chargeable=Chargeable_Ext.TC_YES
-        pArray[i] = cPayment
+       pArray[i] = cPayment
       }
       priorLoss.ClaimPayment = pArray
     }
-
+    priorLoss.Source_Ext = typekey.Source_Ext.TC_CLUE
+    priorLoss.ChargeableClaim  =   calculateChargeable(priorLoss ,period )
     _logger.debug("Getting claim scope and dispute date Details ")
     priorLoss.ClaimScope = claim.ScopeOfClaim.toString()
     priorLoss.DisputeDate = claim.DisputeClearanceDate
@@ -230,6 +253,161 @@ class CluePropertyGateway implements CluePropertyInterface {
     return priorLoss
   }
 
+
+    function calculateChargeable(claim : HOPriorLoss_Ext ,
+                                 period : PolicyPeriod) : Chargeable_Ext{
+
+
+      // To Simplify the logic below , I have created may type Filters for state / Policy Types that are not chargeable
+      // so the not of Type filter will be chargeable ( Since hte no of non chargeable was less hence the approach.
+      // condition one all not chargeable states code
+      // condition 2 new business or renewal
+      // condition 3  applicable state
+      //condition 4   loss cause codes
+      //condition 5 claim date less than 3 years
+      // condition 6 amount > 500 or 1 as per the PC.23.01.45 / Policy - Risk Analysis V1.1
+      //refer the the tabs that has Clue HO / TDP / RNL Prior loss TDp / HO
+      // if multiple payments for the same loss , then add the amount of all the chargeable loss to determine the flag.
+      if(period.HomeownersLine_HOE.Dwelling?.HomePurchaseDate_Ext != null && claim.ClaimDate.toDate() < period.HomeownersLine_HOE.Dwelling?.HomePurchaseDate_Ext ) {
+        if(typekey.State.TF_CLAIMCHARGEABLEFILTERHO.TypeKeys.hasMatch( \ elt1 -> elt1.Code == period.BaseState.Code ) &&
+            !typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.hasMatch( \ elt1 -> elt1.Code == period.HomeownersLine_HOE?.HOPolicyType ))
+          return  Chargeable_Ext.TC_NO
+        else if ( typekey.State.TC_FL.Code == period.BaseState.Code && typekey.HOPolicyType_HOE.TC_DP3_EXT == period.HomeownersLine_HOE?.HOPolicyType) {
+          return  Chargeable_Ext.TC_NO
+        }
+      }
+
+      if (!(period.Job typeis Renewal))  {
+         if (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.hasMatch( \ elt1 -> elt1.Code == period.HomeownersLine_HOE.HOPolicyType.Code))  {
+           var amount = 0
+           for(pay in claim.ClaimPayment)    {
+           if (period.BaseState.Code == typekey.State.TC_HI){
+                 if (!typekey.LossCause_Ext.TF_HIHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
+                      if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                            amount += pay.ClaimAmount.toBigDecimal()
+                 }
+           } else if(period.BaseState.Code == typekey.State.TC_NC){
+             if (typekey.LossCause_Ext.TC_LAE.Code !=  pay.LossCause_Ext.Code)
+                   if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                     amount += pay.ClaimAmount.toBigDecimal()
+           }
+           else if(period.BaseState.Code == typekey.State.TC_TX){
+               if (!typekey.LossCause_Ext.TF_TXHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+                   if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                     amount += pay.ClaimAmount.toBigDecimal()
+           }else if(period.BaseState.Code == typekey.State.TC_FL){
+               if (!typekey.LossCause_Ext.TF_FLSCHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
+               if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                 amount += pay.ClaimAmount.toBigDecimal()
+           }
+          }
+         else if(period.BaseState.Code == typekey.State.TC_SC ){
+           if (!typekey.LossCause_Ext.TF_FLSCHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+             if ( period.EditEffectiveDate.addMonths(-3).differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+               amount += pay.ClaimAmount.toBigDecimal()
+         } else if(period.BaseState.Code == typekey.State.TC_AZ || period.BaseState.Code == typekey.State.TC_CA || period.BaseState.Code == typekey.State.TC_NE){
+                 if (!typekey.LossCause_Ext.TF_AZCANEHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+                   if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 && period.BaseState.Code == typekey.State.TC_NE )
+                     amount += pay.ClaimAmount.toBigDecimal()
+                 if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3
+                     && period.BaseState.Code == typekey.State.TC_AZ || period.BaseState.Code == typekey.State.TC_CA)
+                   amount += pay.ClaimAmount.toBigDecimal()
+           }
+            }
+             if (period.BaseState.Code == typekey.State.TC_AZ ||period.BaseState.Code == typekey.State.TC_CA ){
+                if (amount >= 500) return Chargeable_Ext.TC_YES
+             }else  {
+                if (amount >= 1) return Chargeable_Ext.TC_YES
+             }
+         }else if (typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.hasMatch( \ elt1 -> elt1.Code == period.HomeownersLine_HOE.HOPolicyType.Code))  {
+           var amount = 0
+           for(pay in claim.ClaimPayment)    {
+             if (period.BaseState.Code == typekey.State.TC_HI){
+               if (!typekey.LossCause_Ext.TF_HITDPFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
+                 if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                   amount += pay.ClaimAmount.toBigDecimal()
+               }
+             } else if(period.BaseState.Code == typekey.State.TC_NC || period.BaseState.Code == typekey.State.TC_CA){
+               if (!typekey.LossCause_Ext.TF_CANCTDPFILTER .TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+                 if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                   amount += pay.ClaimAmount.toBigDecimal()
+             }
+             else if(period.BaseState.Code == typekey.State.TC_TX){
+                 if (!typekey.LossCause_Ext.TF_TXTDPFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+                   if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                     amount += pay.ClaimAmount.toBigDecimal()
+               }else if(period.BaseState.Code == typekey.State.TC_FL){
+                 if (!typekey.LossCause_Ext.TF_FLTDPFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
+                   if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                     amount += pay.ClaimAmount.toBigDecimal()
+                 }
+               }
+           }
+              if (amount >= 1) return Chargeable_Ext.TC_YES
+
+      }
+      }
+      else if (period.Job typeis Renewal){
+          // Renewal Calculation for chargeable
+
+        if (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.hasMatch( \ elt1 -> elt1.Code == period.HomeownersLine_HOE.HOPolicyType.Code))  {
+          var amount = 0
+          for(pay in claim.ClaimPayment)    {
+            if (period.BaseState.Code == typekey.State.TC_HI || period.BaseState.Code == typekey.State.TC_TX || period.BaseState.Code == typekey.State.TC_FL ||
+                period.BaseState.Code == typekey.State.TC_AZ || period.BaseState.Code == typekey.State.TC_CA){
+              if (!typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code) ||
+                  !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
+                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                  amount += pay.ClaimAmount.toBigDecimal()
+              }
+            } else if(period.BaseState.Code == typekey.State.TC_NC){
+              if (!typekey.ExpanedLossCause_Ext.TF_RNLNCHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code)||
+                  !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+                if ( period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                  amount += pay.ClaimAmount.toBigDecimal()
+            } else if(period.BaseState.Code == typekey.State.TC_SC ){
+                  if (!typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)||
+                      !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code))
+                    if ( period.EditEffectiveDate.addMonths(-3).differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                      amount += pay.ClaimAmount.toBigDecimal()
+                }
+          }
+          if (period.BaseState.Code == typekey.State.TC_AZ ||period.BaseState.Code == typekey.State.TC_CA ){
+            if (amount >= 500) return Chargeable_Ext.TC_YES
+          }else  {
+            if (amount >= 1) return Chargeable_Ext.TC_YES
+          }
+        }else if (typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.hasMatch( \ elt1 -> elt1.Code == period.HomeownersLine_HOE.HOPolicyType.Code))  {
+
+          var amount = 0
+          for(pay in claim.ClaimPayment)    {
+            if (period.BaseState.Code == typekey.State.TC_HI || period.BaseState.Code == typekey.State.TC_NC || period.BaseState.Code == typekey.State.TC_FL ||
+                period.BaseState.Code == typekey.State.TC_TX ){
+              if (!typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code)||
+                  !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
+                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                  amount += pay.ClaimAmount.toBigDecimal()
+              }
+            } else if (period.BaseState.Code == typekey.State.TC_CA){
+              if (!typekey.ExpanedLossCause_Ext.TF_RNLNCHOFILTER.TypeKeys.hasMatch( \ elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code) ||
+                    typekey.ExpanedLossCause_Ext.TC_MOLD_FLOODRELATED != pay.ExpandedLossCause_Ext ||
+                  !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch( \ elt1 -> pay.LossCause_Ext.Code == elt1.Code) ){
+                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate.toDate()) <= 3 )
+                  amount += pay.ClaimAmount.toBigDecimal()
+              }
+           }
+            if (period.BaseState.Code == typekey.State.TC_CA ){
+              if (amount >= 500) return Chargeable_Ext.TC_YES
+            }else  {
+              if (amount >= 1) return Chargeable_Ext.TC_YES
+            }
+        }
+        }
+
+        }
+
+      return  Chargeable_Ext.TC_NO
+     }
   /**
    *  Handles all types of messages that are contained in the provided list of messages
    */

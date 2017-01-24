@@ -376,6 +376,15 @@ class CPAutoPopulateUtil {
       cpbuilding.setCoverageExists(cpbuilding.CPProtectiveSafeguards_EXT?.PatternCode, true)
    */
 
+    if(cpline.CPOrdinanceOrLawRequired===0)
+      {
+        if(cpbuilding.CPOrdinanceorLaw_EXTExists)
+          cpbuilding.removeFromCoverages(cpbuilding.CPOrdinanceorLaw_EXT)
+
+
+        cpbuilding.setCoverageConditionOrExclusionExists(cpbuilding.CPOrdinanceorLaw_EXT.PatternCode,false)
+      }
+
     return true
   }
 

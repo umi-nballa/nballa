@@ -27,8 +27,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
       {
         if(dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
             dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
-            && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.OptionValue==
-        "Actual")
+            && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.Value== tc_ACV)
 
           return true
       }
@@ -37,9 +36,8 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     {
 
       if(dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
-          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOETerm
-          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm.OptionValue==
-              "Replacement")
+          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
+          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost)
 
         return true
     }
@@ -48,12 +46,10 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     {
       if((dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
           dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
-          && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.OptionValue==
-              "Replacement") ||
+          && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.Value == tc_ReplCost) ||
           (dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
-              dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOETerm
-              && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOETerm.OptionValue==
-                  "Replacement"))
+              dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
+              && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost))
 
         return true
     }
@@ -158,8 +154,8 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 
     if(formCode.equals(FormPatternConstants.HO_PERSONAL_PROPERTY_REPLACEMENT_COST_FORM)){
       if(hoeLine != null and dwelling != null and dwelling.HODW_Personal_Property_HOEExists and
-        dwelling.HODW_Personal_Property_HOE?.HasHODW_PropertyValuation_HOETerm and
-        dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.OptionValue.CodeIdentifier == "Replacement"){
+        dwelling.HODW_Personal_Property_HOE?.HasHODW_PropertyValuation_HOE_ExtTerm and
+        dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost){
         return true
       }
     }

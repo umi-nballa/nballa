@@ -265,7 +265,7 @@ class CoveragesUtil {
       policyType = (covTerm.Clause.OwningCoverable as HomeownersLine_HOE).HOPolicyType
     }
 
-    return ValuationMethod.getTypeKeys(false)
+    return covTerm.Pattern.OrderedAvailableValues
         .where( \ elt -> elt.hasCategory(policyType) and elt.hasCategory(state))
 
   }

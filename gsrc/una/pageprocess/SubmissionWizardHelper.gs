@@ -49,29 +49,22 @@ class SubmissionWizardHelper {
    * @param noOfEmployees : int
    * @return void
    */
-  public static function populateNumberOfEmployeesForAllCovTerms(covTerm: gw.api.domain.covterm.DirectCovTerm, line : BP7BusinessOwnersLine) {
+  public static function populateNumberOfEmployeesForAllCovTerms(line : BP7BusinessOwnersLine):int {
     var partialEmp : int
     var noOfPartialEmp : int = line.NoOfPartEmployee_Ext
     var fullTimeEmployees : int = line.NoOfEmployees_Ext
-    if(covTerm!=null){
-      if(noOfPartialEmp % 2 == 0){
-        partialEmp = noOfPartialEmp/2
-      } else {
-        partialEmp = noOfPartialEmp/2 + 1
-      }
-      covTerm.setValue(fullTimeEmployees + partialEmp)
+    if(noOfPartialEmp % 2 == 0){
+      partialEmp = noOfPartialEmp/2
+    } else {
+      partialEmp = noOfPartialEmp/2 + 1
     }
-  }
-
-  /**
-   * Function to copy number of employees into coverage term. Should be caleed all places where such copy is required.
-   * Eg: BP7EmployeeDishty
-   * @param covTerm: gw.api.domain.covterm.DirectCovTerm
-   * @param noOfEmployees : int
-   * @return void
-   */
-  public static function populateForSubmission(covTerm: gw.api.domain.covterm.DirectCovTerm, noOfEmployees : int) : void {
-    covTerm.setValue(noOfEmployees)
+    if(line.BP7EmployeeDishtyExists){
+      line.BP7EmployeeDishty.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm.setValue(fullTimeEmployees + partialEmp)
+    }
+    if(line.BP7EmploymentPracticesLiabilityCov_EXTExists){
+      line.BP7EmploymentPracticesLiabilityCov_EXT.NumbOfEmployees_EXTTerm.setValue(fullTimeEmployees + partialEmp)
+    }
+    return fullTimeEmployees + partialEmp
   }
 
   /**

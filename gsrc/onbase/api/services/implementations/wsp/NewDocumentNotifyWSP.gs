@@ -18,6 +18,7 @@ uses java.text.SimpleDateFormat
 uses java.util.Date
 uses gw.api.database.IQueryBeanResult
 uses java.lang.IllegalArgumentException
+uses gw.job.UNAHORenewalProcess
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -156,6 +157,8 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
       doc.Policy = policy
       doc.PolicyPeriod = period
       doc.DMS = true
+
+      onDocumentAdded(doc)
     }, User.util.UnrestrictedUser)
 
     return response
@@ -232,5 +235,15 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
     var temp_date = date_stored.replaceAll("Z$", "+0000")
     var df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssZ");
     return df.parse(temp_date);
+  }
+
+  private function onDocumentAdded(document : Document){
+    if(document.Type == TC_ONBASE and document.OnBaseDocumentSubtype == tc_incorr_consent_to_rate){
+      var openRenewal = document.Policy.OpenRenewalJob
+
+      if(openRenewal != null and openRenewal.LatestPeriod.HomeownersLine_HOEExists){
+        (openRenewal.LatestPeriod.JobProcess as UNAHORenewalProcess).onUploadConsentToRateForm()
+      }
+    }
   }
 }

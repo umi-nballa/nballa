@@ -105,6 +105,7 @@ class CoverageSummaryUtil_HOE {
       || coverage.PatternCode.equals("HODW_SpecialLimitsCovC_HOE")
       || coverage.PatternCode.equals("HODW_ScheduledProperty_HOE")
       || coverage.PatternCode.equals("HOSL_OutboardMotorsWatercraft_HOE_Ext")
+      || coverage.PatternCode.equals("HOSL_WatercraftLiabilityCov_HOE_Ext")
     return isLow
   }
   

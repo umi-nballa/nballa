@@ -16,6 +16,9 @@ uses una.rating.bp7.ratinginfos.BP7BusinessPersonalPropertyRatingInfo
 uses una.rating.bp7.common.BP7LocationStep
 uses una.rating.bp7.ratinginfos.BP7LocationRatingInfo
 uses una.rating.bp7.util.RateFactorUtil
+uses gw.lob.bp7.rating.BP7LineCovCostData
+uses gw.rating.CostData
+uses java.math.BigDecimal
 
 /**
 *  Class which extends the bp7 abstract rating engine and implements the rating for all the available BP7 coverages
@@ -176,7 +179,31 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     }
   }
 
+  override function rateTerrorismCoverage(lineCov: BP7CapLossesFromCertfdActsTerrsm, sliceToRate: DateRange){
+    var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, null)
+    addCost(step.rateTerrorismCoverageRateRoutine(lineCov, sliceToRate, totalCostWithoutOptionalCoverages()))
+  }
+
+  override function rateManualPremiumAdjustment(sliceRange : DateRange){
+
+  }
+
   function hasRateForClassGroup(classification: BP7Classification): boolean {
     return not {"17", "19", "20", "21"}.contains(classification.ClassificationClassGroup)
+  }
+
+  private function totalCostWithoutOptionalCoverages() : BigDecimal{
+    var costDatasForTerrorism : List<CostData> = {}
+    for(costData in CostDatas){
+      if(costData typeis BP7LineCovCostData){
+        var cost = costData.getPopulatedCost(PolicyLine)
+        if(cost.Coverage.PatternCode == "IdentityRecovCoverage_EXT" || cost.Coverage.PatternCode == "BP7CyberOneCov_EXT" ||
+           cost.Coverage.PatternCode == "DataCmprmiseRspnseExpns_EXT" || cost.Coverage.PatternCode == "BP7EmploymentPracticesLiabilityCov_EXT" ||
+           cost.Coverage.PatternCode == "BP7DataCompromiseDfnseandLiabCov_EXT" || cost.Coverage.PatternCode == "BP7CapLossesFromCertfdActsTerrsm")
+          continue
+      }
+      costDatasForTerrorism.add(costData)
+    }
+    return costDatasForTerrorism.sum(\costData -> costData.ActualTermAmount)
   }
 }

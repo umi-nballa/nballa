@@ -13,6 +13,8 @@ class HPXCPBuildingProtectionMapper {
     bldgProtection.ProtectionDeviceBurglarInd = bldg.Building.BurglarySafeguard != null ? true : false
     bldgProtection.ProtectionDeviceBurglarCd = bldg.Building.BurglarySafeguard != null ? "CEN" : ""
     bldgProtection.ProtectionDeviceSprinklerInd = bldg.Building.SprinklerCoverage != null ? true : false  // has sprinkler coverage... might need to add the percentage
+    bldgProtection.FireProtectionClassCd = bldg.FirePCCodeOverridden_Ext != null ? bldg.FirePCCodeOverridden_Ext : bldg.FireProtectionClassCode
+    bldgProtection.BCEG = bldg.OverrideBCEG_Ext != null ? bldg.OverrideBCEG_Ext : bldg.BCEG_Ext
     return bldgProtection
   }
 }

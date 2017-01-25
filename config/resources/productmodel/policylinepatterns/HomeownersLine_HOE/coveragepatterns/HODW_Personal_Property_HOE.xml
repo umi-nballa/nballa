@@ -65,45 +65,6 @@
           value="500.0000"/>
       </Options>
     </OptionCovTermPattern>
-    <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="HODW_PropertyValuation_HOE"
-      coverageColumn="ChoiceTerm4"
-      lookupTableName="DwellingCovTerm"
-      modelType="Other"
-      priority="1340"
-      public-id="HODW_PropertyValuation_HOE"
-      required="true"
-      restrictionModel="prp"
-      valueType="count">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="HODW_PropertyValuation_HOEnocurrency"
-          defaultValue="Actual"
-          public-id="HODW_PropertyValuation_HOEnocurrency"/>
-      </DefaultsSet>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zsmiobuq1n9e52smcth0pe4rp2b"
-          optionCode="Replacement"
-          priority="1341"
-          public-id="zsmiobuq1n9e52smcth0pe4rp2b"
-          value="2.0"/>
-        <CovTermOpt
-          codeIdentifier="zdghehtrqjs2sb3oiu1qod7263b"
-          optionCode="Actual"
-          priority="1241"
-          public-id="zdghehtrqjs2sb3oiu1qod7263b"
-          value="1.0"/>
-        <CovTermOpt
-          codeIdentifier="z2shse9f6vbpj6r51gtsg6n1kk9"
-          optionCode="HODW_ValuationMethodReplacementWithACVH"
-          priority="1441"
-          public-id="z2shse9f6vbpj6r51gtsg6n1kk9"
-          value="3"/>
-      </Options>
-    </OptionCovTermPattern>
     <DirectCovTermPattern
       aggregationModel="po"
       codeIdentifier="HODW_PersonalPropertyLimit_HOE"
@@ -117,5 +78,15 @@
       valueType="money">
       <LimitsSet/>
     </DirectCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="HODW_PropertyValuation_HOE_Ext"
+      coverageColumn="TypeKeyTerm1"
+      defaultValue="PersProp_ACV"
+      lookupTableName="DwellingCovTerm"
+      priority="1440"
+      public-id="HODW_PropertyValuation_HOE_Ext"
+      required="true"
+      typefilter="PersonalPropertyFilter"
+      typelist="ValuationMethod"/>
   </CovTerms>
 </CoveragePattern>

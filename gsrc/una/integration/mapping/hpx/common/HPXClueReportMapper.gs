@@ -215,5 +215,4 @@ class HPXClueReportMapper {
     lossCauseType.LossCauseTypeDesc = lossCause.Description != null ? lossCause.Description : ""
     return lossCauseType
   }
-
 }

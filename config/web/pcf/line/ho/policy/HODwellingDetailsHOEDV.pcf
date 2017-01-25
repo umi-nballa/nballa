@@ -146,11 +146,11 @@
         </Input>
       </InputSet>
       <InputDivider/>
-      <!-- <Input
+      <Input
         id="FloodRiskType_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.FloodRiskType"
         required="false"
-        value="dwelling.getFloodRiskTypeValue(dwelling)"/> -->
+        value="dwelling.getFloodRiskTypeValue(dwelling)"/>
       <Input
         editable="true"
         id="PostFirm_Ext"
@@ -479,7 +479,7 @@
           label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
           required="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
           value="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>
+          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>                  
       </InputSet>
       <InputDivider/>
       <!-- <InputSet
@@ -514,37 +514,6 @@
           visible="dwelling.HOLocation.OverrideWindpoolvalue_Ext"/>
       </InputSet> -->
       <!-- <InputDivider/> -->
-      <InputSet
-        id="EarthquakeTerritory_Ext">
-        <RangeInput
-          available="!dwelling.OverrideEarthquakeTer_Ext"
-          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
-          id="EarthquakeTerritoryTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryTunaReturned_Ext"
-          value="dwelling.EarthquakeTer_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.EarthQuakeTerritory)"/>
-        <Input
-          available="!dwelling.OverrideEarthquakeTer_Ext"
-          id="EarthquakeTerritoryMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryMatchlevel_Ext"
-          value="dwelling.EarthquakeTerMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideEarthquakeTerritory_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryOverride_Ext"
-          value="dwelling.OverrideEarthquakeTer_Ext">
-          <PostOnChange
-            target="EarthquakeTerritory_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.OverrideEarthquakeTer_Ext"
-          editable="true"
-          id="EarthquakeTerritoryUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryUserEntered_Ext"
-          required="dwelling.OverrideEarthquakeTer_Ext"
-          value="dwelling.EarthquakeTerOverridden_Ext"
-          visible="dwelling.OverrideEarthquakeTer_Ext"/>
-      </InputSet>
       <InputDivider/>
       <InputSet
         id="PropFloodVal_Ext">
@@ -712,6 +681,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="DistToCoastTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
+          sortValueRange="false"
           value="dwelling.HOLocation.DistToCoast_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
         <Input
@@ -745,6 +715,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="DistBOWTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
+          sortValueRange="false"
           value="dwelling.HOLocation.DistBOW_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
           <PostOnChange
@@ -862,6 +833,7 @@
           editable="true"
           id="ResidenceType"
           label="displaykey.Web.Homeowners.Dwelling.ResidenceType"
+          sortValueRange="false"
           value="dwelling.ResidenceType"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getResidenceType(dwelling)">
           <PostOnChange
@@ -973,8 +945,7 @@
         <Label
           label="if(dwelling.HOPolicyType == TC_HO4) return &quot;Dwelling - Rental Info&quot; else return &quot;Dwelling - Rental/Purchase Info&quot;"/>
         <InputSet
-          id="dwellingRentedInputSet_ext"
-          visible="HOpolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_HO3 or dwelling.HOPolicyType == TC_HO6 or dwelling.HOPolicyType == TC_HCONB_EXT">
+          id="dwellingRentedInputSet_ext">
           <BooleanRadioInput
             editable="true"
             id="everRentedToOthers_Ext"
@@ -1013,7 +984,7 @@
             id="homePurchaseDate_Ext"
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseDate_Ext"
             value="dwelling.HomePurchaseDate_Ext"
-            visible="dwelling.HomeNewPurchase_Ext"/>
+            visible="dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HOPolicyType != TC_HO4"/>
           <Input
             editable="true"
             id="homePurchaseMMYYYY_Ext"
@@ -1558,12 +1529,37 @@
           label="displaykey.Web.Homeowners.Dwelling.EarthquakeZone_Ext"
           value="dwelling.EarthquakeZone_Ext"
           visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext"/>
-        <Input
-          editable="true"
-          id="EarthquakeTerritory2_Ext"
-          label="displaykey.Web.Homeowners.Dwelling.EarthquakeTerritory_Ext"
-          value="dwelling.EarthquakeTerritory_Ext"
-          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext"/>
+        <InputSet
+          id="EarthquakeTerritory_Ext">
+          <RangeInput
+            available="!dwelling.OverrideEarthquakeTer_Ext"
+            editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+            id="EarthquakeTerritoryTunaReturned_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryTunaReturned_Ext"
+            value="dwelling.EarthquakeTer_Ext"
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.EarthQuakeTerritory)"/>
+          <Input
+            available="!dwelling.OverrideEarthquakeTer_Ext"
+            id="EarthquakeTerritoryMatchLevel_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryMatchlevel_Ext"
+            value="dwelling.EarthquakeTerMatchLevel_Ext"/>
+          <BooleanRadioInput
+            editable="true"
+            id="OverRideEarthquakeTerritory_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryOverride_Ext"
+            value="dwelling.OverrideEarthquakeTer_Ext">
+            <PostOnChange
+              target="EarthquakeTerritory_Ext"/>
+          </BooleanRadioInput>
+          <Input
+            available="dwelling.OverrideEarthquakeTer_Ext"
+            editable="true"
+            id="EarthquakeTerritoryUserEntered_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryUserEntered_Ext"
+            required="dwelling.OverrideEarthquakeTer_Ext"
+            value="dwelling.EarthquakeTerOverridden_Ext"
+            visible="dwelling.OverrideEarthquakeTer_Ext"/>
+        </InputSet>
         <TypeKeyInput
           editable="true"
           id="PreExistingEarthquakeDmg_Ext"

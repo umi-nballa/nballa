@@ -3,6 +3,7 @@ package una.integration.mapping.hpx.businessowners
 uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingProtectionMapper
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.helper.HPXJobHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +39,8 @@ class HPXBP7BuildingMapper implements HPXStructureMapper {
       coverable.BuildingNo = building?.Building?.BuildingNum != null ? building.Building.BuildingNum : ""
       coverable.LocationNo = building?.Location?.Location.LocationNum != null ? building?.Location?.Location.LocationNum : ""
       coverable.Description = building?.Building?.Description
+      var jobHelper = new HPXJobHelper()
+      coverable.NewlyAdded = jobHelper.isNewlyAddedBuilding(building.PolicyLine.AssociatedPolicyPeriod, building.Building)
     }
     return coverable
   }

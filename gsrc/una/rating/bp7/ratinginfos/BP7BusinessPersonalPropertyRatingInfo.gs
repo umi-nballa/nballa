@@ -32,7 +32,7 @@ class BP7BusinessPersonalPropertyRatingInfo {
     _predominantOccupancyType = classification.ClassPropertyType
     _constructionType = building?.ConstructionType
     _protectionClassCode = building?.OverrideDwellingPCCode_Ext? building?.DwellingPCCodeOverridden_Ext : building?.DwellingProtectionClassCode
-    _protectionClassCodeInt = (_protectionClassCode == "8B")? 9 : _protectionClassCode.toInt()
+    _protectionClassCodeInt = (_protectionClassCode == "8B")? 9 : _protectionClassCode?.toInt()
 
     _businessIncomeExtraExpenseLimit = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7AnnualBI_EXTTerm?.Value
     _businessIncomeExtraExpenseNumberOfMonths = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue

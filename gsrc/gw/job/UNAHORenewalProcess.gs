@@ -22,16 +22,18 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     super(period)
   }
 
-  public function onUploadConsentToRateForm(){  //TODO tlv need to check how to detect this, if it is registered when it is sent out and when to confirm it was returned and how to tell the difference between the two
+  public function onUploadConsentToRateForm(){
     if(JobProcessLogger.DebugEnabled){
       JobProcessLogger.logDebug("Begin 'onUploadConsentToRateForm' for transaction ${this.Job.JobNumber}.  Current Renewal Job Status is %{this.Job.SelectedVersion.Status}")
     }
 
     if(ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)){
-      editRenewalWithActions(\ -> {
-        this._branch.ConsentToRateReceived_Ext = true
-        this.Job.AllOpenActivities?.atMostOneWhere( \ activity -> activity.ActivityPattern.Code?.equalsIgnoreCase(CONSENT_TO_RATE_ACTIVITY_PATTERN))?.complete()
-      }, displaykey.una.historyevent.ConsentToRateReceived)
+      if(java.util.Date.CurrentDate.afterOrEqualsIgnoreTime(PendingRenewalFirstCheckDate) and !this._branch.ConsentToRateReceived_Ext){ //consent to rate has previously been sent out and not yet received
+        editRenewalWithActions(\ -> {
+          this._branch.ConsentToRateReceived_Ext = true
+          this.Job.AllOpenActivities?.atMostOneWhere( \ activity -> activity.ActivityPattern.Code?.equalsIgnoreCase(CONSENT_TO_RATE_ACTIVITY_PATTERN))?.complete()
+        }, displaykey.una.historyevent.ConsentToRateReceived)
+      }
     }
 
     if(JobProcessLogger.DebugEnabled){

@@ -60,20 +60,6 @@
       name="size"
       value="100"/>
   </column>
-  <!-- column
-    desc="Responding Fire Department"
-    name="RespondingFireDept_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="30"/>
-  </column>
-  <typekey
-    desc="Fire Department Match Level"
-    name="FireDeptMatchLevel_Ext"
-    nullok="true"
-    typelist="TUNAMatchLevel_Ext"/ -->
   <typekey
     desc="Protected Subdivision Name"
     name="SubdivisionName_Ext"
@@ -434,8 +420,8 @@
       value="100"/>
   </column>
   <column
-    desc="Firedeptnamedval Returned by Tuna"
-    name="Firedeptnmval_Ext"
+    desc="Responding Fire Dept Returned by Tuna"
+    name="ResFireDept_Ext"
     nullok="true"
     type="varchar">
     <columnParam
@@ -443,54 +429,25 @@
       value="100"/>
   </column>
   <typekey
-    desc="Firedeptnamedval Match Level from TUNA"
-    name="FiredeptnamedvalMatchLevel_Ext"
+    desc="Responding Fire Dept Match Level from TUNA"
+    name="ResFireDeptMatchLevel_Ext"
     nullok="true"
     typelist="TUNAMatchLevel_Ext"/>
   <column
     default="0"
-    desc="Override Firedeptnamedval returned from TUNA"
-    name="OverrideFiredeptnamedval_Ext"
+    desc="Is Responding Fire Dept returned from TUNA Overridden"
+    name="OverrideResFireDept_Ext"
     nullok="true"
     type="bit"/>
   <column
-    desc="Firedeptnamedval Entered by User"
-    name="FiredeptnamedvalOverridden_Ext"
+    desc="Responding Fire Dept Overridden by User"
+    name="ResFireDeptOverridden_Ext"
     nullok="true"
     type="varchar">
     <columnParam
       name="size"
       value="100"/>
   </column>
-  <!--column
-    desc="Windpoolvalue Returned by Tuna"
-    name="Windpoolvalue_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
-  <typekey
-    desc="Windpoolvalue Match Level from TUNA"
-    name="WindpoolvalueMatchLevel_Ext"
-    nullok="true"
-    typelist="TUNAMatchLevel_Ext"/>
-  <column
-    default="0"
-    desc="Override Windpoolvalue returned from TUNA"
-    name="OverrideWindpoolvalue_Ext"
-    nullok="true"
-    type="bit"/>
-  <column
-    desc="Windpoolvalue Entered by User"
-    name="WindpoolvalueOverridden_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column-->
   <column
     desc="Firelinematchlevelval Returned by Tuna"
     name="Firelinemthlvl_Ext"
@@ -612,24 +569,6 @@
     <columnParam
       name="size"
       value="100"/>
-  </column>
-  <column
-    desc="Responding Fire Department if Other"
-    name="RespondingFireDeptOther_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="50"/>
-  </column>
-  <column
-    desc="Responding Fire Department"
-    name="RespondingFireDept_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="30"/>
   </column>
   <typekey
     columnName="BCEGOverridden_Ext"

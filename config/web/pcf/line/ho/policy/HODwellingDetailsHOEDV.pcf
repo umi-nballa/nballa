@@ -199,18 +199,39 @@
             required="dwelling.HOLocation.OverrideTerritoryCode_Ext"
             value="dwelling.HOLocation.TerritoryCodeOverridden_Ext"
             visible="dwelling.HOLocation.OverrideTerritoryCode_Ext"/>
-          <!-- <RangeInput
-            available="dwelling.HOLocation.PolicyLocation.State != null"
-            editable="true"
-            id="TerritoryCode"
-            label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
-            required="true"
-            validationExpression="TerritoryCode.prelimValidate()"
-            value="TerritoryCode.Code"
-            valueRange="tunaAppResponse.TerritoryCodes">
-            <PickerMenuItem/>
-          </RangeInput> -->
         </InputIterator>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Firedeptnamedval_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideResFireDept_Ext"
+          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+          id="FiredeptnamedvalTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalTunaReturned_Ext"
+          value="dwelling.HOLocation.ResFireDept_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideResFireDept_Ext"
+          id="FiredeptnamedvalMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalMatchlevel_Ext"
+          value="dwelling.HOLocation.ResFireDeptMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFiredeptnamedval_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalOverride_Ext"
+          value="dwelling.HOLocation.OverrideResFireDept_Ext">
+          <PostOnChange
+            target="Firedeptnamedval_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideResFireDept_Ext"
+          editable="true"
+          id="FiredeptnamedvalUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideResFireDept_Ext"
+          value="dwelling.HOLocation.ResFireDeptOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideResFireDept_Ext"/>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -242,21 +263,6 @@
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
-        <Input
-          id="respondingFireDept_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
-          value="dwelling.HOLocation.RespondingFireDept_Ext"/>
-        <!-- <TypeKeyInput
-          editable="true"
-          id="FireDeptMLvlsss"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDeptMatchLevel_Ext"
-          value="dwelling.HOLocation.FireDeptMatchLevel_Ext"/> -->
-        <!-- <Input
-          editable="true"
-          id="RespondingFireDeptOther_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartmentOther_Ext"
-          value="dwelling.HOLocation.RespondingFireDeptOther_Ext"
-          visible="dwelling.HOLocation.RespondingFireDept_Ext!= null &amp;&amp; dwelling.HOLocation.RespondingFireDept_Ext.equalsIgnoreCase(&quot;Other&quot;)"/> -->
         <!-- <BooleanRadioInput
           editable="true"
           id="FloodFireHazard"
@@ -281,7 +287,7 @@
             value="dwelling.HOLocation.DwellingProtectionClassCode"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass)">
             <PostOnChange
-              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
+              onChange="dwelling.HOLocation.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
           </RangeInput>
           <Input
             available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
@@ -448,38 +454,6 @@
           required="dwelling.HOLocation.OverrideACVValue_Ext"
           value="dwelling.HOLocation.ACVValueOverridden_Ext"
           visible="dwelling.HOLocation.OverrideACVValue_Ext"/>
-      </InputSet>
-      <InputDivider/>
-      <InputSet
-        id="Firedeptnamedval_Ext">
-        <RangeInput
-          available="!dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
-          id="FiredeptnamedvalTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalTunaReturned_Ext"
-          value="dwelling.HOLocation.Firedeptnmval_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
-        <Input
-          available="!dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          id="FiredeptnamedvalMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalMatchlevel_Ext"
-          value="dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideFiredeptnamedval_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalOverride_Ext"
-          value="dwelling.HOLocation.OverrideFiredeptnamedval_Ext">
-          <PostOnChange
-            target="Firedeptnamedval_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          editable="true"
-          id="FiredeptnamedvalUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
-          required="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          value="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>                  
       </InputSet>
       <InputDivider/>
       <!-- <InputSet

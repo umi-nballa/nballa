@@ -1,0 +1,39 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="HOCostHOEFeesDV">
+    <Require
+      name="FeeCosts"
+      type="List&lt;HOTaxCost_HOE&gt;"/>
+    <InputColumn>
+      <ListViewInput
+        labelAbove="true">
+        <Toolbar/>
+        <ListViewPanel
+          id="HOCostHOEDVFeesLV">
+          <RowIterator
+            editable="false"
+            elementName="feesRowIterator"
+            value="FeeCosts.toTypedArray()">
+            <Row>
+              <Cell
+                bold="true"
+                enableSort="false"
+                footerLabel="displaykey.Web.Policy.BA.Subtotal"
+                id="discountOrSurchargeType"
+                label="&quot;Charge Description&quot;"
+                value="(feesRowIterator).ChargePattern.Description"/>
+              <Cell
+                footerSumValue="feesRowIterator.ActualTermAmount"
+                id="Premium"
+                label="&quot;Premium&quot;"
+                value="(feesRowIterator).ActualTermAmount"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
+    </InputColumn>
+  </DetailViewPanel>
+</PCF>

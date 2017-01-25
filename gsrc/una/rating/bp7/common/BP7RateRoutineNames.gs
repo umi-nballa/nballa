@@ -43,4 +43,5 @@ class BP7RateRoutineNames {
   public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_2_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage2RateRoutine"
   public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_3_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage3RateRoutine"
   public static final var BP7_TERRORISM_COVERAGE_RATE_ROUTINE : String = "BP7TerrorismCoverageRateRoutine"
+  public static final var BP7_POLICY_FEE_RATE_ROUTINE : String = "BP7PolicyFeeRateRoutine"
 }

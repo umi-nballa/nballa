@@ -49,7 +49,8 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
 
   override function rateWindow(lineVersion: BP7Line) {
     // for Tax
-
+    //print("************************ " + (lineVersion as EffDated).Slice)
+    //ratePolicyFee(lineVersion)
   }
 
   /******
@@ -76,4 +77,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
   abstract function rateTerrorismCoverage(lineCov: BP7CapLossesFromCertfdActsTerrsm, sliceToRate: DateRange)
 
   abstract function rateManualPremiumAdjustment(sliceRange : DateRange)
+
+  abstract function ratePolicyFee(lineVersion: BP7Line)
 }

@@ -1,10 +1,9 @@
-package una.rating.ho.tx.ratinginfos
+package una.rating.ho.common
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  * Date: 1/23/17
  */
-
 class HOWatercraftLiabilityCovRatingInfo {
 
   var _watercraftType : WatercraftType_Ext as WatercraftType

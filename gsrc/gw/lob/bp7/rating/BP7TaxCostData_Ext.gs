@@ -18,6 +18,10 @@ class BP7TaxCostData_Ext extends CostDataWithOverrideSupport<BP7TaxCost_Ext, BP7
     _state = taxState
   }
 
+  construct(c : BP7TaxCost_Ext){
+    super(c)
+  }
+
   override function setSpecificFieldsOnCost(line : BP7Line, cost : BP7TaxCost_Ext) {
     //super.setSpecificFieldsOnCost(line, cost)
     cost.setFieldValue("Line", line.FixedId)

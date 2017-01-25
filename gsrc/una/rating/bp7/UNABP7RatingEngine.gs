@@ -61,6 +61,8 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "BP7AddlInsdLessorsLeasedEquipmtLine_EXT" :
       case "BP7AddlInsdManagersLessorsPremisesLine_EXT" :
       case "BP7AddlInsdDesignatedPersonOrg" :
+      case "DataCmprmiseRspnseExpns_EXT" :
+      case "BP7DataCompromiseDfnseandLiabCov_EXT" :
       //case "BP7EmploymentPracticesLiabilityCov_EXT" :
           addCost(step.rate(lineCov, sliceToRate))
           break
@@ -122,10 +124,10 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateBuilding(building: BP7Building, sliceToRate: DateRange) {
     _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
+    _bp7RatingInfo.PropertyBuildingAdjustmentFactor = RateFactorUtil.setPropertyBuildingAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
     var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo)
     var buildingRatingInfo = new BP7BuildingRatingInfo(building)
     if (building.BP7StructureExists) {
-      _bp7RatingInfo.PropertyBuildingAdjustmentFactor = RateFactorUtil.setPropertyBuildingAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
       var bp7StructureRatingInfo = new BP7StructureRatingInfo(building.BP7Structure)
       addCost(step.rateBP7Structure(building.BP7Structure, sliceToRate, bp7StructureRatingInfo))
     }
@@ -144,9 +146,9 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
+    _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){
-      _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
       var businessPersonalPropertyRatingInfo = new BP7BusinessPersonalPropertyRatingInfo(classification?.BP7ClassificationBusinessPersonalProperty)
       addCost(step.rateBP7BusinessPersonalProperty(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate, businessPersonalPropertyRatingInfo))
     }
@@ -187,6 +189,9 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     addCost(step.rateTerrorismCoverageRateRoutine(lineCov, sliceToRate, totalCostWithoutOptionalCoverages()))
   }
 
+  /**
+  * rate the policy fee
+   */
   override function ratePolicyFee(line: BP7Line){
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
     var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_POLICYFEES)
@@ -197,6 +202,8 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
         TC_COSTDATA   -> costData
     }
     _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_POLICY_FEE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+    costData.StandardAmount = costData.StandardTermAmount
+    costData.ActualAmount = costData.StandardAmount
     costData.copyStandardColumnsToActualColumns()
     addCost(costData)
   }

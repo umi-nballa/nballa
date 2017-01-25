@@ -82,9 +82,6 @@ class CancellationProcess extends JobProcess {
                                  displaykey.Job.Cancellation.CancellationForRenewal,
                                  displaykey.Job.Cancellation.OpenRenewal(_branch.PolicyNumber))
     }
-    if (not Job.MigrationJob) {
-    requestQuote()
-  }
   }
 
   /**

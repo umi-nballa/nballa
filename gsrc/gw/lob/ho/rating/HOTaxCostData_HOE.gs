@@ -13,6 +13,12 @@ class HOTaxCostData_HOE extends HOCostData_HOE<HOTaxCost_HOE>  {
     ChargePattern = "Taxes"
   }
 
+  construct(effDate : Date, expDate : Date, c : Currency, rateCache : PolicyPeriodFXRateCache, chargePatternType : ChargePattern) {
+    super(effDate, expDate, c, rateCache)
+    RateAmountType = "TaxSurcharge"
+    ChargePattern = chargePatternType
+  }
+
   override function getVersionedCosts(line : HomeownersLine_HOE) : List<EffDatedVersionList> {
     return line.VersionList.HomeownersCosts.where(\ costVL -> costVL.AllVersions.first() typeis HOTaxCost_HOE).toList()
   }

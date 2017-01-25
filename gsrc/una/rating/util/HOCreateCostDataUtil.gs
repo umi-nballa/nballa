@@ -11,6 +11,7 @@ uses una.rating.ho.common.HORateRoutineExecutor
 uses una.rating.ho.common.HomeownersLineCostData_HOE
 
 uses java.util.Map
+uses gw.lob.ho.rating.HOTaxCostData_HOE
 
 /**
  * Created with IntelliJ IDEA.
@@ -82,6 +83,17 @@ class HOCreateCostDataUtil {
   public static function createCostDataForHOLineCosts(dateRange: DateRange, routineName: String, costType: HOCostType_Ext, rateCache: PolicyPeriodFXRateCache,
                                                       line: PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor: HORateRoutineExecutor, numDaysInCoverageRatedTerm: int): CostData {
     var costData = new HomeownersLineCostData_HOE(dateRange.start, dateRange.end, (line as HomeownersLine_HOE).PreferredCoverageCurrency, rateCache, costType)
+    costData.init(line as HomeownersLine_HOE)
+    costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
+    rateRoutineParameterMap.put(TC_COSTDATA, costData)
+    executor.executeBasedOnSliceDate(routineName, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+    costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  public static function createCostDataForTaxCosts(dateRange: DateRange, routineName: String, rateCache: PolicyPeriodFXRateCache,
+                                                   line: PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor: HORateRoutineExecutor, numDaysInCoverageRatedTerm: int, chargePatternType : ChargePattern) : CostData {
+    var costData = new HOTaxCostData_HOE(dateRange.start, dateRange.end, (line as HomeownersLine_HOE).PreferredCoverageCurrency, rateCache, chargePatternType)
     costData.init(line as HomeownersLine_HOE)
     costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
     rateRoutineParameterMap.put(TC_COSTDATA, costData)

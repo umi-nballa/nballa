@@ -19,6 +19,9 @@ uses una.rating.bp7.util.RateFactorUtil
 uses gw.lob.bp7.rating.BP7LineCovCostData
 uses gw.rating.CostData
 uses java.math.BigDecimal
+uses java.util.Map
+uses gw.lob.bp7.rating.BP7TaxCostData_Ext
+uses una.rating.bp7.common.BP7RateRoutineNames
 
 /**
 *  Class which extends the bp7 abstract rating engine and implements the rating for all the available BP7 coverages
@@ -182,6 +185,20 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   override function rateTerrorismCoverage(lineCov: BP7CapLossesFromCertfdActsTerrsm, sliceToRate: DateRange){
     var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, null)
     addCost(step.rateTerrorismCoverageRateRoutine(lineCov, sliceToRate, totalCostWithoutOptionalCoverages()))
+  }
+
+  override function ratePolicyFee(line: BP7Line){
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_POLICYFEES)
+    costData.init(line)
+    costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_COSTDATA   -> costData
+    }
+    _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_POLICY_FEE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+    costData.copyStandardColumnsToActualColumns()
+    addCost(costData)
   }
 
   override function rateManualPremiumAdjustment(sliceRange : DateRange){

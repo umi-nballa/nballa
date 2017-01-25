@@ -16,7 +16,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
   var _allOtherPerils: String as AllOtherPerils
   var _windOrHailPercentage: String as WindOrHailPercentage
   var _namedStormPercentage: String as NamedStormPercentage
-  var _isTerritoryIncludedForNamedStormDeductibleFactor: boolean as IsTerritoryIncludedForNamedStormDeductibleFactor
   var REPLACEMENT_COST_CODE = "RCLS"
   var REPLACEMENT_COST_WITH_ROOF_SURFACING_CODE = "RCSR"
   var _replacementCostDwellingCoverage: String as ReplacementCostDwellingCoverage
@@ -25,10 +24,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     var policyPeriod = dwelling?.PolicyPeriod
-    //temp fix to get the base premium for now
-    //var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
-    //var exteriorWallFinish = dwelling.OverrideExteriorWFval_Ext? dwelling.ExteriorWFvalueOverridden_Ext : dwelling.ExteriorWallFinish_Ext
-
     this.ConstructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
 
     _otherStructuresLimit = ((dwelling?.HODW_Other_Structures_HOEExists) ? dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
@@ -54,13 +49,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
       }
       if (dwelling?.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
         _namedStormPercentage = dwelling.HODW_SectionI_Ded_HOE?.HODW_NamedStrom_Ded_HOE_ExtTerm?.DisplayValue
-        _isTerritoryIncludedForNamedStormDeductibleFactor = IsTerritoryIncludedForNamedStormDeductibleFactor()
       }
     }
-  }
-
-  private function IsTerritoryIncludedForNamedStormDeductibleFactor(): boolean {
-    var territoryCodes = new String[]{"1", "1A", "8", "9", "10", "11", "11A", "11B", "11H", "14A"}
-    return territoryCodes.contains(this.TerritoryCode)
   }
 }

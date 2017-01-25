@@ -1772,5 +1772,79 @@ enhancement PolicyPeriodBaseEnhancement : PolicyPeriod {
     var pp = entity.Policy.finder.findPolicyPeriodByPolicyNumberAndAsOfDate(this.PolicyNumber, asOfDate)
     return pp != null
   }
+
+  // uim-svallabhapurapu : PolicyInfo story
+  public function inceptionDateBsdSrcSys() : java.util.Date{
+    if(this.Job typeis Submission
+        and this.SourceSystem_Ext == typekey.SourceSystem_Ext.TC_GUIDEWIRE){
+      this.originalInceptionDate_Ext = this.PeriodStart
+    } else if(this.Job typeis Renewal or this.Job typeis Rewrite
+        and this.SourceSystem_Ext == typekey.SourceSystem_Ext.TC_GUIDEWIRE) {
+         this.originalInceptionDate_Ext = this.BasedOn.PeriodStart
+    }
+      return this.originalInceptionDate_Ext
+  }
+  // Policy Info
+  public function affinityVisible() : boolean {
+    if(this.HomeownersLine_HOEExists and typekey.HOPolicyType_HOE.TF_AFFINITYGRPFILTER.TypeKeys.contains(this.HomeownersLine_HOE.HOPolicyType)) {
+         return false
+    }
+       return true
+  }
+
+ // uim-svallabhapurapu : Policy Info
+  public function entityValueRange() : List{
+     if(this.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact typeis Person){
+        if(this.HomeownersLine_HOEExists ){
+         return typekey.AccountOrgType.TF_HOPERSON_EXT.TypeKeys
+        } else if (this.BP7LineExists or this.CPLineExists) {
+           return typekey.AccountOrgType.TF_BOPCPPPERSON_EXT.TypeKeys
+        }
+     } else if (this.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact typeis Company){
+       if(this.HomeownersLine_HOEExists ){
+         return typekey.AccountOrgType.TF_HOCOMPANY_EXT.TypeKeys
+       }  else if(this.BP7LineExists or this.CPLineExists ){
+           return typekey.AccountOrgType.TF_BOPCPPCOMPANY_EXT.TypeKeys
+          }
+     }
+      return typekey.AccountOrgType.getTypeKeys(false)
+  }
+
+
+  //  uim-svallabhapurapu - policy info
+  function createAndAddNewParties() : PartiesTrust_Ext{
+    var unit = new PartiesTrust_Ext(this)
+    this.addToPartiesTrust_Ext(unit)
+    return unit
+  }
+      // uim-svallabhapurapu - Policy Info     OBEntities_Ext
+  function createAndAddNewOBEntity() : OBEntities_Ext{
+    var obentity = new OBEntities_Ext(this)
+    this.addToOBEntities_Ext(obentity)
+    return obentity
+  }
+
+  // uim-svallabhapurapu - Policy Info    NumberOfPartnerships_Ext
+  function createAndAddNewNumberOfPartnership() : NumberOfPartnerships_Ext {
+     var numOfPartnership = new NumberOfPartnerships_Ext(this)
+      this.addToNumberOfPartnerships_Ext(numOfPartnership)
+    return  numOfPartnership
+
+  }
+
+  // All HO types
+  function isHOType() : boolean {
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HomeownersLine_HOE.HOPolicyType)) {
+          return true
+        }
+    return false
+  }
+  // All DF types
+  function isDFType() : boolean {
+    if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(this.HomeownersLine_HOE.HOPolicyType)) {
+      return true
+    }
+    return false
+  }
 }
 

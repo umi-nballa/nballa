@@ -34,7 +34,7 @@
             id="ConsenttoRate_Ext"
             label="displaykey.Web.ModifiersScreen.ConsenttoRate_Ext"
             labelStyleClass="ext_redLabel"
-            value="policyPeriod.ConsentToRateReceived_Ext">
+            value="policyPeriod.ConsentToRate_Ext">
             <PostOnChange
               onChange="gw.job.JobWizardHelperEnhancement.createHistoryEventTransaction(policyPeriod)"/>
           </CheckBoxInput>
@@ -44,7 +44,7 @@
             label="displaykey.Web.ModifiersScreen.Factor_Ext"
             required="true"
             value="policyPeriod?.Factor_Ext"
-            visible="policyPeriod.ConsentToRateReceived_Ext == true"/>
+            visible="policyPeriod.ConsentToRate_Ext"/>
           <CheckBoxInput
             editable="policyPeriod.ConsentToRateReceived_Ext == null || policyPeriod.ConsentToRateReceived_Ext == false"
             id="Rule180_Ext"
@@ -55,7 +55,7 @@
           <Input
             editable="true"
             id="Factor_Ext"
-            label="&quot;policyperiod=&quot;+policyPeriod"
+            label="displaykey.Web.ModifiersScreen.Factor_Ext"
             required="true"
             value="policyPeriod?.Factor_Ext"
             visible="policyPeriod.Rule180_Ext == true"/>

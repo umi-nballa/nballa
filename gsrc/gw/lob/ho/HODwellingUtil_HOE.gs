@@ -502,13 +502,8 @@ class HODwellingUtil_HOE {
     // These are mandatory for rating and these are not being shown in screen
     dwelling.WindClass = typekey.WindRating.TC_RESISTIVE
     dwelling.ConstructionCode = "other"
- //   if(dwelling.RoofType == null){
- //     dwelling.RoofType = typekey.RoofType.TC_ALUMINUM_EXT
- //   }
-    //Assuming Property Coverage by state windstorm field has been returned false from ISO360, making Wind Hurricane Hail Exclusion as false
-    // As discussed with Chethan, fields will be mapped will response before entering the screen - ISO360 is under construction from Integ team so will be revisited after service is up
- //   dwelling.PropertyCovByStateWndstorm_Ext = false
- //   dwelling.WHurricaneHailExclusion_Ext = false
+    //apply changes for windpool eligible policies  - applied during exit from dwelling screen
+    //applyChangesIfWindPoolEligible(dwelling)
   }
 
   /*
@@ -891,6 +886,26 @@ class HODwellingUtil_HOE {
 
   static function getConstructionType(dwelling:Dwelling_HOE) : String {
     return ""
+  }
+
+  public static function isWindPoolEligible(theDwelling: Dwelling_HOE) : boolean{
+    var resultEligible : boolean = false
+    if(theDwelling.HOLocation.OverrideWindPool_Ext && (theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("TRUE"))){
+       resultEligible = true
+    }else if(theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("TRUE")){
+      resultEligible = true
+    }
+    return resultEligible
+  }
+
+  public static function applyChangesIfWindPoolEligible(dwelling: Dwelling_HOE){
+    if(isWindPoolEligible(dwelling)){
+      dwelling.PropertyCovByStateWndstorm_Ext = true
+      dwelling.WHurricaneHailExclusion_Ext = true
+    } else {
+      dwelling.PropertyCovByStateWndstorm_Ext = false
+      dwelling.WHurricaneHailExclusion_Ext = false
+    }
   }
 
 }// End of class

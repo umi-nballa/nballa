@@ -25,6 +25,11 @@ function createAdditionalInterests(additlInterests : AddlInterestDetail [], mapp
       additionalInterestInfo.NatureInterestCd = addtlInterest.AdditionalInterestType.Code
       additionalInterestInfo.Description = addtlInterest.AdditionalInterestType.Description
       additionalInterestInfo.ContractNumber = addtlInterest.ContractNumber
+      if (coverable.PolicyLine.AssociatedPolicyPeriod.EffectiveDatedFields.BillingContact.AccountContactRole.AccountContact.Contact == addtlInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact) {
+        additionalInterestInfo.PayorInd = "true"
+      } else {
+        additionalInterestInfo.PayorInd = "false"
+      }
       additionalInterest.addChild(new XmlElement("AdditionalInterestInfo", additionalInterestInfo))
       additionalInterest.addChild(new XmlElement("BuildingKey", mapper.createCoverableInfo(coverable)))
       additionalInterests.add(additionalInterest)

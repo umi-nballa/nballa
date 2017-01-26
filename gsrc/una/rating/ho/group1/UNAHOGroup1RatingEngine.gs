@@ -34,6 +34,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private var _lineRatingInfo: HOGroup1LineRatingInfo
   private var _lineRateRoutineParameterMap: Map<CalcRoutineParamName, Object>
   private var _hasExecutiveCoverage: boolean as HasExecutiveCoverage
+  private var _hasEarthquakeLimitedCoverage: boolean as HasEarthquakeLimitedCoverage
+  private var _hasEarthquakeComprehensiveCoverage: boolean as HasEarthquakeComprehensiveCoverage
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -44,6 +46,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _lineRatingInfo = new HOGroup1LineRatingInfo(line)
     _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState.Code)
     _hasExecutiveCoverage = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HasHODW_ExecutiveCov_HOE_ExtTerm ? line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_ExecutiveCov_HOE_ExtTerm?.Value : false
+    _hasEarthquakeLimitedCoverage = line?.Dwelling?.HODW_Limited_Earthquake_CA_HOEExists
+    _hasEarthquakeComprehensiveCoverage = line?.Dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists
   }
 
   /**
@@ -94,7 +98,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if (HasExecutiveCoverage){
             rateExecutiveCoverage(dwellingCov, dateRange)
           }
-
+          if(PolicyLine.BaseState == Jurisdiction.TC_AZ and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+            rateUnitOwnersCovAIncreasedLimit(dwellingCov, dateRange)
+          }
           break
       case HODW_EquipBreakdown_HOE_Ext:
           rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
@@ -159,6 +165,18 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_BuildingAdditions_HOE_Ext:
           rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
+          break
+      case HODW_Limited_Earthquake_CA_HOE:
+          if (HasEarthquakeLimitedCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA and
+             (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)){
+            rateEarthquakeLimitedCovCA(dwellingCov, dateRange)
+          }
+          break
+      case HODW_Comp_Earthquake_CA_HOE_Ext:
+          if (HasEarthquakeComprehensiveCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA
+              and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+            rateEarthquakeComprehensiveCovCA(dwellingCov, dateRange)
+          }
           break
     }
   }
@@ -581,6 +599,42 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateEarthquakeLimitedCovCA(dwellingCov : HODW_Limited_Earthquake_CA_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateEarthquakeLimitedCovCA ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.EQ_LIMITED_COV_CA_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Earthquake Limited Coverage CA Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateEarthquakeComprehensiveCovCA(dwellingCov : HODW_Comp_Earthquake_CA_HOE_Ext, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateEarthquakeComprehensiveCovCA ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.EQ_COMPREHENSIVE_COV_CA_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Earthquake Comprehensive Coverage CA Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateUnitOwnersCovAIncreasedLimit(dwellingCov : HODW_Dwelling_Cov_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovAIncreasedLimit ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Unit Owners CovA Increased Limit Rated Successfully", this.IntrinsicType)
   }
 
   /**

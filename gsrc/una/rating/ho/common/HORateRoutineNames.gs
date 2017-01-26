@@ -100,4 +100,7 @@ public final class HORateRoutineNames {
   public static final var RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE : String = "UNAHOResidenceHeldInTrustRateRoutine"
   public static final var PERSONAL_PROPERTY_OFF_RESIDENCE : String = "UNAPersonalPropertyOffResidence"
 
+  public static final var EQ_LIMITED_COV_CA_RATE_ROUTINE : String = "UNAHOEarthquakeLimitedCovRateRoutine"
+  public static final var EQ_COMPREHENSIVE_COV_CA_RATE_ROUTINE :String = "UNAHOEarthquakeComprehensiveCovRateRoutine"
+  public static final var UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE :String = "UNAHOUnitOwnersCovAIncreasedLimitRateRoutine"
 }

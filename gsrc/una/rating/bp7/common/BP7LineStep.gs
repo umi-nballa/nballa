@@ -44,6 +44,8 @@ class BP7LineStep extends BP7RatingStep {
       case "BP7BusinessLiability" : return BP7RateRoutineNames.BP7_MEDICAL_PAYMENT_INCREASE_RATE_ROUTINE
       case "BP7EmploymentPracticesLiabilityCov_EXT" : return BP7RateRoutineNames.BP7_EMPLOYMENT_PRACTICES_LIABILITY_RATE_ROUTINE
       case "BP7CapLossesFromCertfdActsTerrsm" : return BP7RateRoutineNames.BP7_TERRORISM_COVERAGE_RATE_ROUTINE
+      case "DataCmprmiseRspnseExpns_EXT" : return BP7RateRoutineNames.BP7_DATA_COMPROMISE_RESPONSE_EXPENSES_FIRST_PARTY_RATE_ROUTINE
+      case "BP7DataCompromiseDfnseandLiabCov_EXT" : return BP7RateRoutineNames.BP7_DATA_COMPROMISE_RESPONSE_EXPENSES_FIRST_THIRD_PARTY_RATE_ROUTINE
       default :
         throw "Rating is not supported for ${coveragePattern.ClauseName}"
     }

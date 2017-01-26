@@ -72,7 +72,11 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       }
     }
     if (dwellingCov typeis HODW_Comp_Earthquake_CA_HOE_Ext){
-      _earthquakeComprehensiveLimit = dwellingCov?.HODW_EQCovA_HOETerm?.Value
+      if(PolicyType == HOPolicyType_HOE.TC_HO6){
+        _earthquakeComprehensiveLimit = dwellingCov?.HODW_CompEarthquakeCovC_ExtTerm?.Value
+      } else if(PolicyType == HOPolicyType_HOE.TC_HO3){
+        _earthquakeComprehensiveLimit = dwellingCov?.HODW_EQCovA_HOETerm?.Value
+      }
     }
 
     if(dwellingCov typeis HODW_Limited_Earthquake_CA_HOE or dwellingCov typeis HODW_Comp_Earthquake_CA_HOE_Ext){

@@ -73,18 +73,18 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
     props.put("sender.name", name)
     props.put("mail.transport.protocol", "smtp");
     //authenticated alternative
-    props.put("mail.smtp.auth", "true");
-
-    var authenticator  = new javax.mail.Authenticator() {
-      protected override property get PasswordAuthentication() : javax.mail.PasswordAuthentication{
-        return new javax.mail.PasswordAuthentication(user, password);
-      }
-    };
+//    props.put("mail.smtp.auth", "true");
+//
+//    var authenticator  = new javax.mail.Authenticator() {
+//      protected override property get PasswordAuthentication() : javax.mail.PasswordAuthentication{
+//        return new javax.mail.PasswordAuthentication(user, password);
+//      }
+//    };
 
     // session with properties and authenticator
-    var sessionObj = Session.getDefaultInstance(props, authenticator)
+    var sessionObj = Session.getDefaultInstance(props) //, authenticator)
 
-    sessionObj.setDebug(debug)
+//   sessionObj.setDebug(debug)
 
     var out = new HtmlEmail(sessionObj)
     out.setFrom(address, name)

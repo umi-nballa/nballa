@@ -96,6 +96,17 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     }
   }
 
+  override function startPendingRenewal(){
+
+    if(_branch.HomeownersLine_HOE.Dwelling.HODW_DifferenceConditions_HOE_ExtExists){
+      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEANDCONDITIONS}
+      Job.addToFormsEvents(event)
+    }
+
+    super.startPendingRenewal()
+
+  }
+
   private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{
     return new CreditReportRequestDispatcher(namedInsured, _branch).orderNewCreditReport(namedInsured.ContactDenorm.PrimaryAddress, namedInsured.FirstName, namedInsured.MiddleName, namedInsured.LastName, namedInsured.DateOfBirth)
   }

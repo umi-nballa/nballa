@@ -70,6 +70,68 @@ abstract class HPXPolicyMapper {
     return policySummaryInfo
   }
 
+  /************************************** Policy Summary Info For Clue Report  ******************************************************/
+  function createCluePolicySummaryInfo(clueReport : ClueReport_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryType {
+    var transactionMapper = new HPXJobMapper ()
+    var billingInfoMapper = new HPXBillingInfoMapper ()
+    var policySummaryInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryType()
+    policySummaryInfo.PolicyNumber = clueReport.PolicyNumber != null ? clueReport.PolicyNumber : ""
+    policySummaryInfo.LOB = clueReport.PolicyType != null ? clueReport.PolicyType : ""
+    policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompany(clueReport.PolicyCompany)))
+    return policySummaryInfo
+  }
+
+  function createPriorLossPolicySummaryInfo(priorLoss : HOPriorLoss_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryType {
+    var transactionMapper = new HPXJobMapper ()
+    var billingInfoMapper = new HPXBillingInfoMapper ()
+    var policySummaryInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicySummaryType()
+    policySummaryInfo.PolicyNumber = priorLoss.PolicyNum != null ? priorLoss.PolicyNum : ""
+    policySummaryInfo.LOB = priorLoss.PropertyType != null ? priorLoss.PropertyType : ""
+    policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompany(priorLoss.PolicyCompany)))
+    policySummaryInfo.addChild(new XmlElement("PolicyHolder", createPriorLossPolicyHolder(priorLoss)))
+    return policySummaryInfo
+  }
+
+  function createPriorLossPolicyHolder(priorLoss : HOPriorLoss_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyHolderType {
+    var policyHolderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyHolderType()
+    policyHolderType.FullName = priorLoss.PolicyHolderName != null ? priorLoss.PolicyHolderName : ""
+    policyHolderType.addChild(new XmlElement("PersonHolder", createPriorLossPersonHolderType(priorLoss.PolicyHolder)))
+    return policyHolderType
+  }
+
+  function createPriorLossPersonHolderType(person : Person) : wsi.schema.una.hpx.hpx_application_request.types.complex.PersonHolderType {
+    var personHolderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PersonHolderType()
+    var physicalAddressType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PhysicalAddressType()
+    var genderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.GenderType()
+    var contactMechanismType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ContactMechanismType()
+    personHolderType.FirstName = person.FirstName != null ? person.FirstName : ""
+    personHolderType.LastName = person.LastName != null ? person.LastName : ""
+    personHolderType.SSN = person.SSNOfficialID != null ? person.SSNOfficialID : ""
+    personHolderType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
+    physicalAddressType.AddressLine1 = person.PrimaryAddress.AddressLine1 != null ? person.PrimaryAddress.AddressLine1 : ""
+    physicalAddressType.City = person.PrimaryAddress.City != null ? person.PrimaryAddress.City : ""
+    physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State : ""
+    physicalAddressType.PostalCode = person.PrimaryAddress.PostalCode != null ? person.PrimaryAddress.PostalCode : ""
+    genderType.GenderID = person.Gender.Code != null ? person.Gender.Code : ""
+    genderType.GenderCode = person.Gender.Code != null ? person.Gender.Code : ""
+    genderType.GenderDesc = person.Gender.Code != null ? person.Gender.Code : ""
+    contactMechanismType.HomePhone = person.HomePhone != null ? person.HomePhone : ""
+    personHolderType.addChild(new XmlElement("PhysicalAddress", physicalAddressType))
+    personHolderType.addChild(new XmlElement("Gender", genderType))
+    personHolderType.addChild(new XmlElement("ContactMechanism", contactMechanismType))
+    return personHolderType
+  }
+
+
+
+  function createUWCompany(policyCompany : String) : wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType {
+    var uwCompanyType = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
+    var insuranceProviderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuranceProviderType()
+    insuranceProviderType.OrganizationName = policyCompany != null ? policyCompany : ""
+    uwCompanyType.addChild(new XmlElement("InsuranceProvider", insuranceProviderType))
+    return uwCompanyType
+  }
+
 
   /************************************** Insured Or Principal ******************************************************/
   function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {

@@ -95,8 +95,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
           break
       case HODW_RefrigeratedPP_HOE_Ext:
-          rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
-          break
+        rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
+        break
       case HODW_SpecialComp_HOE_Ext:
           rateSpecialComputerCoverage(dwellingCov, dateRange)
           break

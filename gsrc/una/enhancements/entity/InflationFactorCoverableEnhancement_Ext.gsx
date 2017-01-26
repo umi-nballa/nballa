@@ -30,19 +30,22 @@ enhancement InflationFactorCoverableEnhancement_Ext: entity.Coverable {
 
   private property get InflationFactor() : BigDecimal{
     var result : String
+    var inflationFactorEntities = {entity.CPBuilding, entity.BP7Building, entity.Dwelling_HOE}
 
-    switch(this.PolicyLine.Branch.Policy.ProductCode){
-      case "CommercialPackage":
-        result = (this.getCoverage("CPBldgCov").getCovTerm("CPBldgCovAutoIncrease") as OptionCovTerm).Value
-        break
-      case "Homeowners":
-        result = getInflationFactorFromTable()
-        break
-      case "BP7BusinessOwners":
-        result = (this.getCoverage("BP7Structure").getCovTerm("BP7AutomaticIncreasePct1") as OptionCovTerm).Value
-        break
-      default:
-        break
+    if(inflationFactorEntities.contains(this.IntrinsicType)){
+      switch(this.PolicyLine.Branch.Policy.ProductCode){
+        case "CommercialPackage":
+            result = (this.getCoverage("CPBldgCov").getCovTerm("CPBldgCovAutoIncrease") as OptionCovTerm).Value
+            break
+        case "Homeowners":
+            result = getInflationFactorFromTable()
+            break
+        case "BP7BusinessOwners":
+            result = (this.getCoverage("BP7Structure").getCovTerm("BP7AutomaticIncreasePct1") as OptionCovTerm).Value
+            break
+        default:
+          break
+      }
     }
 
     return result?.toBigDecimal()

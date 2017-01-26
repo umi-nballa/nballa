@@ -58,11 +58,11 @@ class CluePropertyGateway implements CluePropertyInterface {
     _logger.debug("Entering orderClueProperty to order CLUE Report ")
     var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
     var result: String
-    _logger.debug("CLUE Request or sending order :" + orderXml)
+    _logger.info("CLUE Request or sending order :" + orderXml)
     try {
       result = cluePropertyCommunicator.invokeCluePropertyService(orderXml)
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \-> displaykey.Web.SubmissionWizard.Clue.EventMsg)
-      _logger.debug("CLUE Response or received result :" + result)
+      _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
       mapXmlToObject(pPeriod, result)
       _logger.info("finished ordering CLUE")
@@ -477,6 +477,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     if (pHolder.DateOfBirth != null)
       subject1.Birthdate = DateUtil.formatDateTime(pHolder.DateOfBirth)
+      subject1.Ssn = "000000000"
 
 
     var address = new AddressListType_Address()
@@ -516,6 +517,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       subject.Id = subId + i
       if (addIns.DateOfBirth != null)
         subject.Birthdate = DateUtil.formatDateTime(addIns.DateOfBirth)
+        subject.Ssn = "000000000"
       subject.Quoteback = addIns.PublicID
 
       var subType1 = mapSubject(addIns.FirstName, addIns.LastName)

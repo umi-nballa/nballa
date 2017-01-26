@@ -41,26 +41,17 @@ class EmailUtil {
   /**
    * Function to send email
    */
-  public static function sendEmail(messageText: String, recipients: EmailContact[], subject: String) {
+  public static function sendEmail(messageText: String, recipients: EmailContact, subject: String) {
     _logger.info(CLASS_NAME + " :: " + " Sending Email")
     try {
       var emailSenderContact = new EmailContact()
-
       emailSenderContact.setEmailAddress(PropertiesHolder.getProperty("EMAIL_Sender_Address"))
       emailSenderContact.setName(PropertiesHolder.getProperty("EMAIL_Sender_Name"))
-
-      if(ServerUtil.Env == "prd")
-        subject = subject
 
       if(ServerUtil.Env != "prd")
       subject = subject + "_" + ServerUtil.Env
 
-
-      var email = new Email(null, emailSenderContact, subject, messageText)
-
-      for (recipient in recipients) {
-        email.addToRecipient(recipient)
-      }
+      var email = new Email(recipients, emailSenderContact, subject, messageText)
 
       gw.api.email.EmailUtil.sendEmailWithBody(null, email)
       _logger.info(CLASS_NAME + " :: " + " Email Sent")

@@ -255,24 +255,16 @@
         visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)"/>
       <BooleanRadioInput
         editable="true"
-        id="newpurc"
-        label="displaykey.Web.Homeowners.Dwelling.UWQuestions.newpurchase"
-        value="dwelling.HOUWQuestions.newpurchase"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)">
-        <PostOnChange/>
-      </BooleanRadioInput>
-      <BooleanRadioInput
-        editable="true"
         id="underconstr"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.underconstr"
         value="dwelling.HOUWQuestions.underconstr"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HOUWQuestions.newpurchase"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HomeNewPurchase_Ext"/>
       <BooleanRadioInput
         editable="true"
         id="forsale"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.forsale"
         value="dwelling.HOUWQuestions.forsale"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.HOUWQuestions.newpurchase!=null &amp;&amp; !dwelling.HOUWQuestions.newpurchase)"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.HomeNewPurchase_Ext!=null &amp;&amp; !dwelling.HomeNewPurchase_Ext)"/>
       <TypeKeyInput
         editable="true"
         id="norental"
@@ -464,13 +456,13 @@
         id="constvac"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.constvac"
         value="dwelling.HOUWQuestions.constvac"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType)"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.HomeNewPurchase_Ext"/>
       <BooleanRadioInput
         editable="true"
         id="undreno"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.undreno"
         value="dwelling.HOUWQuestions.undreno"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType)"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.HomeNewPurchase_Ext!=null &amp;&amp; !dwelling.HomeNewPurchase_Ext)"/>
       <BooleanRadioInput
         editable="true"
         id="provasslhosp"

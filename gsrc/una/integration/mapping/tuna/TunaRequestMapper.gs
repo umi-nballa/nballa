@@ -46,7 +46,7 @@ class TunaRequestMapper {
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " createRequestModel" + "mapping payload For AddressValidation ", this.IntrinsicType)
       return message
     } catch (exp: Exception) {
-      logger.error(CLASS_NAME + " :: " + "createRequestMapper1 : Mapping to payload ", exp)
+      logger.error(CLASS_NAME + " :: " + "createRequestMapper : Mapping to payload ", exp)
       throw exp
     }
   }
@@ -154,7 +154,7 @@ class TunaRequestMapper {
     var df = new SimpleDateFormat(PropertiesHolder.getProperty("TUNA_DATE_FORMAT"))
     var s = df.format(DateUtil.currentDate())
     var theXmlDate = new XmlDateTime(s)
-    message.YearBuild = DEFAULT_VALUE
+  //  message.YearBuild = DEFAULT_VALUE
     message.AsOfDate = theXmlDate
     }
 

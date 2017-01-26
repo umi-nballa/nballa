@@ -2,6 +2,16 @@
 <extension
   xmlns="http://guidewire.com/datamodel"
   entityName="Note">
+  <!-- column-override name="Body" supportsLinguisticSearch="true"/foreignkey-override name="Author" nullok="false"/ The note hierarchy in PC is : Account -> Policy -> Job -> PolicyPeriod
+   !   Actually, Account and Policy are containment keys, while Job and PolicyPeriod
+   !   appear to be association keys although a PolicyPeriod association enforces
+   !   association with a Job as well.
+   !   Don't create backing indices for Account and Policy since they will
+   !   be covered by overriding performance indices (see below)... -->
+  <foreignkey-override
+    desc="Associated account"
+    name="Account"
+    nullok="false"/>
   <column
     desc="To capture Session ID on note"
     name="SessionId_Ext"
@@ -12,4 +22,12 @@
     name="Caller_Ext"
     nullok="true"
     type="mediumtext"/>
+  <foreignkey
+    fkentity="ClueReport_Ext"
+    name="ClueReport"
+    nullok="true"/>
+  <column
+    name="NarrativeRelation"
+    nullok="true"
+    type="shorttext"/>
 </extension>

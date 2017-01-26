@@ -130,10 +130,10 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.LongitudeOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValue_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValueOverridden_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.Firedeptnmval_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FiredeptnamedvalOverridden_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.RespondingFireDeptOther_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDept_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.EarthQuakeTer_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.EarthquakeTerOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.PropFloodVal_Ext = null

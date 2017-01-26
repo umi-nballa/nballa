@@ -28,8 +28,10 @@
       recalculateOnRefresh="true"
       type="gw.web.policy.RiskEvaluationPanelSetModalRow[]"/>
     <Variable
-      initialValue="0"
-      name="uwcode"/>
+      initialValue="decisionCode()"
+      name="uwcode"
+      recalculateOnRefresh="true"
+      type="UWDecisonCode_Ext"/>
     <Verbatim
       id="NoIssuesMessage"
       label="displaykey.Web.Policy.EvaluationIssues.NoIssues"
@@ -83,8 +85,9 @@
           id="UWdecisioncode"
           label="displaykey.Web.Policy.EvaluationIssues.UWDecisionCode"
           required="true"
-          value="policyPeriod.UWDecisionCode"
-          valueRange="typekey.UWDecisonCode_Ext.getTypeKeys(false)"/>
+          sortValueRange="false"
+          value="uwcode"
+          valueRange="uwcode.getTypeKeys(false)"/>
       </Toolbar>
       <ListViewPanel
         alternateEntryStyle="false"
@@ -127,6 +130,27 @@
   map.put("View All", gw.util.Pair<UWAuthorityProfile[], String>.make(new UWAuthorityProfile[]{}, displaykey.Web.Policy.EvaluationIssues.ViewIssuesBlocking.ViewAll))
 
   return map 
+}
+
+function decisionCode() : typekey.UWDecisonCode_Ext {
+ var bp: typekey.UWIssueBlockingPoint 
+  switch(bp) {
+
+    case "BlocksBind" : 
+      return typekey.UWDecisonCode_Ext.TC_SYSTEMREJECT_BLOCKBINDWEBEDITDECLINATION
+     
+         
+
+    case  "BlocksIssuance": 
+      return typekey.UWDecisonCode_Ext.TC_SYSTEMACCEPT_BLOCKISSUE
+      
+        
+
+    case "NonBlocking" : 
+      return typekey.UWDecisonCode_Ext.TC_SYSTEMACCEPT_NOREFERRAL
+      default :return  typekey.UWDecisonCode_Ext.TC_UESPENDING
+  }
+
 }]]></Code>
   </PanelSet>
 </PCF>

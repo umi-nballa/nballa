@@ -35,6 +35,11 @@ class BP7LineRatingInfo {
   var _dataCompromiseFirstThirdPartyDeductible : BigDecimal as DataCompromiseFirstThirdPartyDeductible
   var _dataCompromiseFirstThirdPartyForensicITLegalReviewLimit : String as DataCompromiseFirstThirdPartyForensicITLegalReviewLimit
   var _classificationClassCode : String as ClassificationClassCode
+  var _employmentPracticesLiabilityCoverageOptions : String as EmploymentPracticesLiabilityCoverageOptions
+  var _employmentPracticesLiabilityLimit : int as EmploymentPracticesLiabilityLimit
+  var _employmentPracticesLiabilityDeductible : int as EmploymentPracticesLiabilityDeductible
+  var _numberOfFullTimeEmployees : int as NumberOfFullTimeEmployees
+  var _numberOfPartTimeEmployees : int as NumberOfPartTimeEmployees
 
   construct(lineCov: BP7LineCov) {
     if(lineCov typeis BP7CyberOneCov_EXT){
@@ -88,6 +93,13 @@ class BP7LineRatingInfo {
       _dataCompromiseFirstThirdPartyDeductible = lineCov.DataCompromiseDfnseandLiabCovDeduc_EXTTerm?.Value
       _dataCompromiseFirstThirdPartyForensicITLegalReviewLimit = lineCov.DfnseLiabForensicITLegalRvwSublimits_EXTTerm?.DisplayValue
       _classificationClassCode = lineCov.BP7Line.AllBuildings*.Classifications?.first().ClassCode_Ext
+    }
+    if(lineCov typeis BP7EmploymentPracticesLiabilityCov_EXT){
+      _employmentPracticesLiabilityLimit = lineCov?.EmployPracLiabCovLimit_EXTTerm?.Value?.intValue()
+      _employmentPracticesLiabilityDeductible = lineCov?.EmployPracLiabCovDeduc_EXTTerm?.Value?.intValue()
+      _employmentPracticesLiabilityCoverageOptions = lineCov?.CovOptions_EXTTerm?.DisplayValue
+      _numberOfFullTimeEmployees = lineCov?.BP7Line?.NoOfEmployees_Ext?.intValue()
+      _numberOfPartTimeEmployees = lineCov?.BP7Line?.NoOfPartEmployee_Ext?.intValue()
     }
   }
 }

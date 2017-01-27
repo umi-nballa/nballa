@@ -96,6 +96,17 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     }
   }
 
+  override function startPendingRenewal(){
+
+    if(_branch.HomeownersLine_HOE.Dwelling.HODW_DifferenceConditions_HOE_ExtExists){
+      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEANDCONDITIONS}
+      Job.addToFormsEvents(event)
+    }
+
+    super.startPendingRenewal()
+
+  }
+
   private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{
     return new CreditReportRequestDispatcher(namedInsured, _branch).orderNewCreditReport(namedInsured.ContactDenorm.PrimaryAddress, namedInsured.FirstName, namedInsured.MiddleName, namedInsured.LastName, namedInsured.DateOfBirth)
   }
@@ -107,16 +118,14 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
       var activity = this.Job?.createRoleActivity(typekey.UserRole.TC_UNDERWRITER, consentToRateActivityPattern, consentToRateActivityPattern.Subject, consentToRateActivityPattern.Description)
       activity.TargetDate = _branch.PeriodStart.addDays(-CONSENT_TO_RATE_LEAD_TIME)
 
-      Job.addToFormsEvents(new FormsEvent(){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
+      Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
 
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)
     }
   }
 
   private function shouldRequestConsentToRate(): boolean {
-    var isConsentToRateEligible = ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
-    var policyDeviationFactor = 1.1
-    //TODO tlv this is temporary.  waiting on NC HO Rating requirements
-    return isConsentToRateEligible and !_branch.ConsentToRateReceived_Ext and policyDeviationFactor > 1.0
+    return ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
+       and _branch.ConsentToRate_Ext and !_branch.ConsentToRateReceived_Ext
   }
 }

@@ -63,7 +63,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "BP7AddlInsdDesignatedPersonOrg" :
       case "DataCmprmiseRspnseExpns_EXT" :
       case "BP7DataCompromiseDfnseandLiabCov_EXT" :
-      //case "BP7EmploymentPracticesLiabilityCov_EXT" :
+      case "BP7EmploymentPracticesLiabilityCov_EXT" :
           addCost(step.rate(lineCov, sliceToRate))
           break
       case "BP7BusinessLiability" :

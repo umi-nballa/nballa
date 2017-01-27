@@ -30,6 +30,7 @@ class HPXClueReportMapper {
     }
     claimElement.ClaimID = priorLoss.ID != null ? priorLoss.ID : ""
     claimElement.addChild(new XmlElement("ClueSearchInfo", createClueSearchInfo(priorLoss)))
+    claimElement.addChild(new XmlElement("ClueHeader", createClueHeader(priorLoss.ClueReport)))
     claimElement.ClaimDate = priorLoss.ClaimDate != null ? new XmlDateTime(sourceFormat.parse(priorLoss.ClaimDate).toCalendar(), true) : new XmlDateTime()
     claimElement.ClaimAge = priorLoss.ClaimAge != null ? priorLoss.ClaimAge : ""
     claimElement.ClaimNumber = priorLoss.ClaimNum != null ? priorLoss.ClaimNum : ""
@@ -41,7 +42,7 @@ class HPXClueReportMapper {
     claimElement.addChild(new XmlElement("ClaimPropertyIncident", createClaimPropertyIncident(priorLoss)))
     claimElement.LossDescription = priorLoss.LocationOfLoss != null ? priorLoss.LocationOfLoss : ""
     claimElement.ClueFileNumber = priorLoss.ClueFileNumber != null ? priorLoss.ClueFileNumber : ""
-    claimElement.ClueProcessingStatus = priorLoss.ClueReport.ProcessingStatus != null ? priorLoss.ClueReport.ProcessingStatus : ""
+    claimElement.ClueMatchIndicator = priorLoss.SearchMatchIndicator != null ? priorLoss.SearchMatchIndicator : ""
     for(clueNarrative in priorLoss.ClueReport.narratives)
     {
       var narrativeNote = noteMapper.createClueNarrativeNote(clueNarrative)
@@ -59,11 +60,16 @@ class HPXClueReportMapper {
   function createClueHeader(clueReport : ClueReport_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.ClueHeaderType {
     var clueHeaderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClueHeaderType()
     clueHeaderType.QuotebackID = clueReport.QuotebackID != null ? clueReport.QuotebackID : ""
+    clueHeaderType.CaseID = clueReport.QuotebackID != null ? clueReport.QuotebackID : ""
     clueHeaderType.ReferenceNumber = clueReport.ReferenceNumber != null ? clueReport.ReferenceNumber : ""
     clueHeaderType.OrderDate = clueReport.OrderDate != null ? clueReport.OrderDate : ""
     clueHeaderType.Requestor = clueReport.Requestor != null ? clueReport.Requestor : ""
     clueHeaderType.AccountNumber = clueReport.AccountNumber != null ? clueReport.AccountNumber : ""
     clueHeaderType.CompleteDate = clueReport.CompleteDate != null ? clueReport.CompleteDate : ""
+    clueHeaderType.ClueProcessingStatus = clueReport.ProcessingStatus != null ? clueReport.ProcessingStatus : ""
+    clueHeaderType.ClueTotalRiskClaims = clueReport.RiskClaims != null ? clueReport.RiskClaims : ""
+    clueHeaderType.ClueTotalSubjectClaims = clueReport.SubjectClaims != null ? clueReport.SubjectClaims : ""
+    clueHeaderType.NodeLocation = clueReport.NodeLocation != null ? clueReport.NodeLocation : ""
     return clueHeaderType
   }
 

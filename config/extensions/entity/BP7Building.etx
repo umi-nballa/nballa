@@ -137,8 +137,8 @@
     nullok="true"
     type="nonnegativeinteger"/>
   <column
-    desc="Windpoolvalue Returned by Tuna"
-    name="Windpoolvalue_Ext"
+    desc="Wind Pool Eligibility returned by Tuna"
+    name="WindPool_Ext"
     nullok="true"
     type="varchar">
     <columnParam
@@ -146,18 +146,18 @@
       value="100"/>
   </column>
   <typekey
-    desc="Wind Pool Match Level from TUNA"
+    desc="Wind Pool Eligible Match Level returned by TUNA"
     name="WindPoolMatchLevel_Ext"
     nullok="true"
     typelist="TUNAMatchLevel_Ext"/>
   <column
     default="0"
-    desc="Override Wind Pool Value returned from TUNA"
+    desc="Has the Wind Pool Value returned from TUNA Overrriden"
     name="OverrideWindPool_Ext"
     nullok="true"
     type="bit"/>
   <column
-    desc="Wind Pool Value Entered by User"
+    desc="Wind Pool Eligible Value Overridden by User"
     name="WindPoolOverridden_Ext"
     nullok="true"
     type="varchar">
@@ -165,15 +165,6 @@
       name="size"
       value="100"/>
   </column>
-  <!-- column
-    desc="BCEG Grade Returned by Tuna"
-    name="BCEG_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column -->
   <column
     default="0"
     desc="Override BCEG returned from TUNA"
@@ -194,11 +185,6 @@
       name="size"
       value="100"/>
   </column>
-  <column
-    desc="WindpoolEligibility_Ext"
-    name="WindpoolEligibility_Ext"
-    nullok="true"
-    type="bit"/>
   <column
     desc="Dwelling Protection Class lookup on address field and Distance to Fire Station based on ISO classification manual"
     name="DwellingProtectionClassCode"
@@ -229,8 +215,8 @@
     nullok="true"
     type="bit"/>
   <column
-    desc="Firedeptnamedval Returned by Tuna"
-    name="Firedeptnmval_Ext"
+    desc="Responding Fire Dept Returned by Tuna"
+    name="ResFireDept_Ext"
     nullok="true"
     type="varchar">
     <columnParam
@@ -238,19 +224,19 @@
       value="100"/>
   </column>
   <typekey
-    desc="Firedeptnamedval Match Level from TUNA"
-    name="FiredeptnamedvalMatchLevel_Ext"
+    desc="Responding Fire Dept Match Level from TUNA"
+    name="ResFireDeptMatchLevel_Ext"
     nullok="true"
     typelist="TUNAMatchLevel_Ext"/>
   <column
     default="0"
-    desc="Override Firedeptnamedval returned from TUNA"
-    name="OverrideFiredeptnamedval_Ext"
+    desc="Has responding fire dept returned by Tuna Overridden"
+    name="OverrideResFireDept_Ext"
     nullok="true"
     type="bit"/>
   <column
-    desc="Firedeptnamedval Entered by User"
-    name="FiredeptnamedvalOverridden_Ext"
+    desc="Responding Fire Dept Overridden by User"
+    name="ResFireDeptOverridden_Ext"
     nullok="true"
     type="varchar">
     <columnParam

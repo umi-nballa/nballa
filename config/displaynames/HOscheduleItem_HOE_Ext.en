@@ -18,25 +18,14 @@
       beanPath="HOscheduleItem_HOE_Ext.homeOwnersCov"
       name="coverage"/>
     <Column
-      beanPath="HOscheduleItem_HOE_Ext.watercraftName1"
-      name="wcLiabilityName"/>
-    <Column
-      beanPath="HOscheduleItem_HOE_Ext.watercraftType1"
-      name="wcLiabilityOutboardType"/>
-    <Column
-      beanPath="HOscheduleItem_HOE_Ext.overallLengthWC"
-      name="wcLiabilityLength"/>
-    <Column
-      beanPath="HOscheduleItem_HOE_Ext.WCHPA"
-      name="wcLiabilityHPRating"/>
+      beanPath="HOScheduleItem_HOE_Ext.AdditionalInsured"
+      name="additionalInsured"/>
   </Columns>
-  <DisplayName><![CDATA[if(coverage.scheduledItem_Ext.AdditionalInsured != null){
+  <DisplayName><![CDATA[if(additionalInsured != null){
   return coverage.scheduledItem_Ext.AdditionalInsured.DisplayName
-}else if(coverage.PatternCode == "HOSL_OutboardMotorsWatercraft_HOE_Ext"){
+}else if({"HOSL_OutboardMotorsWatercraft_HOE_Ext", "HOSL_WatercraftLiabilityCov_HOE_Ext"}.contains(coverage.PatternCode)){
   return outboardWCName + " (" + outboardWCType.DisplayName + " - " + overallLength.DisplayName + " - " + horsepower.DisplayName + ")"  
-}else if(coverage.PatternCode == "HOSL_WatercraftLiabilityCov_HOE_Ext"){
-  return wcLiabilityName + " (" + wcLiabilityOutboardType.DisplayName + " - " + wcLiabilityLength.DisplayName + " - " + wcLiabilityHPRating.DisplayName + ")"
 }else{
   return null
-}]]></DisplayName>
+}            ]]></DisplayName>
 </Entity>

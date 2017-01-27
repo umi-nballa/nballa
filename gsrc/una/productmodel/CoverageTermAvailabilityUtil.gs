@@ -76,6 +76,9 @@ class CoverageTermAvailabilityUtil {
       case "ComputerAttackLimit_EXT":
         result = isOptionAvailableForComputerAttackLimit(option, coverable as BP7BusinessOwnersLine)
         break
+      case "NetworkSecuLimit_EXT":
+        result = isOptionAvailableForNetworkSecurityLimit(coverable as BP7BusinessOwnersLine)
+        break
       case "BP7NumberOfMonths_EXT":
         result = isOptionAvailableForNumberOfMonths(option,coverable as BP7BusinessOwnersLine)
         break
@@ -168,20 +171,6 @@ class CoverageTermAvailabilityUtil {
           break
       case "HODW_Hurricane_Ded_HOE":
         result = isHurricanePercentageAvailable(coverable as Dwelling_HOE)
-        break
-      case "DataRestorationCosts_EXT":
-      case "SysRestorationCosts_EXT":
-        result = isCyberOneCovTermAvailable(coverable as BP7BusinessOwnersLine)
-        break
-      case "NetworkSecuLimit_EXT":
-      case "MalwareTransmission_EXT":
-      case "DenialofSvcCompAttackTriggers_EXT":
-        result = isCyberOneCoverageTermAvailable(coverable as BP7BusinessOwnersLine)
-        break
-      case "DataRecreationCosts_EXT":
-      case "LossofBusiness_EXT":
-      case "PublicRelationsSvcs_EXT":
-        result = isCyberOneCovTermsAvailable(coverable as BP7BusinessOwnersLine)
         break
       case "DPLI_Premise_Liability_HOE_Ext":
         result = isDwellingFirePremiseLiabilityAvailable(coverable as HomeownersLine_HOE)
@@ -318,6 +307,13 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
+  private static function isOptionAvailableForNetworkSecurityLimit(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm != null && bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_LIMITED){
+      return true
+    }
+    return false
+  }
+
   private static function isOptionAvailableForCyberOneCovDeduct(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
     var result = true
 
@@ -402,31 +398,6 @@ class CoverageTermAvailabilityUtil {
         bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov3Only_EXT") ||
         bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
         bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT")){
-      return true
-    }
-    return false
-  }
-
-  private static function isCyberOneCoverageTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
-        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
-      return true
-    }
-    return false
-  }
-
-  private static function isCyberOneCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
-        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
-      return true
-    }
-    return false
-  }
-
-  private static function isCyberOneCovTermsAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_FULL and
-        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
-        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT){
       return true
     }
     return false
@@ -604,7 +575,7 @@ class CoverageTermAvailabilityUtil {
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVAANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVABANDC_EXT.Code ||
         building.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCoverage_EXTTerm.Value==typekey.CPOutdoorPropCovType_EXT.TC_COVACOMBINEDBC_EXT.Code)
-      {
+      {      
       return true
       }
   {

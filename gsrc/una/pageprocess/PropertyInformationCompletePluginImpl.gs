@@ -51,6 +51,8 @@ class PropertyInformationCompletePluginImpl {
     if(tunaAppObject != null)
      tunaAppSession.initializeSessionVar(policyPeriod,tunaAppObject)
 
+    gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppObject,policyPeriod.HomeownersLine_HOE.Dwelling)
+
 
      return tunaAppObject
   }

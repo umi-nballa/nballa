@@ -141,7 +141,6 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDept_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptMatchLevel_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptOverridden_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.OverrideResFireDept_Ext = false
     policyPeriod.HomeownersLine_HOE.Dwelling.EarthQuakeTer_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideEarthquakeTer_Ext = false

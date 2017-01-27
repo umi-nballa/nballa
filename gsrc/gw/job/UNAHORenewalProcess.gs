@@ -118,7 +118,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
       var activity = this.Job?.createRoleActivity(typekey.UserRole.TC_UNDERWRITER, consentToRateActivityPattern, consentToRateActivityPattern.Subject, consentToRateActivityPattern.Description)
       activity.TargetDate = _branch.PeriodStart.addDays(-CONSENT_TO_RATE_LEAD_TIME)
 
-      Job.addToFormsEvents(new FormsEvent(){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
+      Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
 
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)
     }

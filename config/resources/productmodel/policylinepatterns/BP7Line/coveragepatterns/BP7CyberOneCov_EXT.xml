@@ -24,7 +24,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("LossofBusiness_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCovTermsAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -48,7 +48,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("DataRecreationCosts_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCovTermsAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -72,7 +72,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("PublicRelationsSvcs_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCovTermsAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -96,7 +96,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("DataRestorationCosts_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCovTermAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -154,7 +154,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("DenialofSvcCompAttackTriggers_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCoverageTermAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -178,7 +178,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("NetworkSecuLimit_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCoverageTermAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -193,13 +193,16 @@
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern
+      aggregationModel="ag"
       choiceLookupTableName="BP7LineCovOpt"
       codeIdentifier="Deductible_EXT"
       coverageColumn="ChoiceTerm3"
       lookupTableName="BP7LineCovTerm"
+      modelType="Deductible"
       priority="1004"
       public-id="Deductible_EXT"
       required="true"
+      restrictionModel="bipd"
       valueType="money">
       <DefaultsSet/>
       <Options>
@@ -235,7 +238,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("MalwareTransmission_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCoverageTermAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -259,7 +262,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("SysRestorationCosts_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return una.pageprocess.BP7PCFController.isCyberOneCovTermAvailable(BP7BusinessOwnersLine)]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -275,6 +278,7 @@
       codeIdentifier="CoverageType_Ext"
       coverageColumn="TypeKeyTerm1"
       lookupTableName="BP7LineCovTerm"
+      modelType="Other"
       priority="1001"
       public-id="CoverageType_Ext"
       required="true"

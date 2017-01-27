@@ -25,12 +25,8 @@ uses gw.plugin.email.HtmlEmail
 @Export
 class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
 
-
-  //authenticated session
-  public static final var user : String = "akreci"; // need to input real user id
-  public static final var password : String = "Password1$"; // Need to use real password
   //set this to true/false depending upon the need
-  var debug = true
+  var debug = false
   construct() {
   }
 
@@ -72,17 +68,8 @@ class EmailMessageTransportImpl extends AbstractEmailMessageTransport {
     props.put("sender.email", address)
     props.put("sender.name", name)
     props.put("mail.transport.protocol", "smtp");
-    //authenticated alternative
-    props.put("mail.smtp.auth", "true");
 
-    var authenticator  = new javax.mail.Authenticator() {
-      protected override property get PasswordAuthentication() : javax.mail.PasswordAuthentication{
-        return new javax.mail.PasswordAuthentication(user, password);
-      }
-    };
-
-    // session with properties and authenticator
-    var sessionObj = Session.getDefaultInstance(props, authenticator)
+    var sessionObj = Session.getDefaultInstance(props)
 
     sessionObj.setDebug(debug)
 

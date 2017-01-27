@@ -98,9 +98,9 @@ class BillingMessageTransport implements MessageTransport {
           }
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
+          }
             //Added below code for lexis First Integration
             policyPeriod.addEvent(ISSUEPERIOD_LEXIS_FIRST_MSG)
-          }
 
           break
 

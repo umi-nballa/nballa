@@ -125,9 +125,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
   }
 
   private function shouldRequestConsentToRate(): boolean {
-    var isConsentToRateEligible = ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
-    var policyDeviationFactor = 1.1
-    //TODO tlv this is temporary.  waiting on NC HO Rating requirements
-    return isConsentToRateEligible and !_branch.ConsentToRateReceived_Ext and policyDeviationFactor > 1.0
+    return ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
+       and _branch.ConsentToRate_Ext and !_branch.ConsentToRateReceived_Ext
   }
 }

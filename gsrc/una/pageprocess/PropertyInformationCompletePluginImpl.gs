@@ -51,6 +51,8 @@ class PropertyInformationCompletePluginImpl {
     if(tunaAppObject != null)
      tunaAppSession.initializeSessionVar(policyPeriod,tunaAppObject)
 
+    gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppObject,policyPeriod.HomeownersLine_HOE.Dwelling)
+
 
      return tunaAppObject
   }
@@ -135,12 +137,10 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.OverrideLongitude_Ext = false
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValue_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ACVValueOverridden_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.OverrideACVValue_Ext = false
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.Firedeptnmval_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.OverrideFiredeptnamedval_Ext = false
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FiredeptnamedvalOverridden_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.RespondingFireDeptOther_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDept_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptMatchLevel_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.ResFireDeptOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.EarthQuakeTer_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideEarthquakeTer_Ext = false
     policyPeriod.HomeownersLine_HOE.Dwelling.EarthquakeTerOverridden_Ext = null

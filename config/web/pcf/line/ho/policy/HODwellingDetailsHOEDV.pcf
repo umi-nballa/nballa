@@ -36,7 +36,8 @@
       type="una.integration.mapping.tuna.TunaAppResponse"/>
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
-      name="setTunaFieldsMatchLevel"/>
+      name="setTunaFieldsMatchLevel"
+      recalculateOnRefresh="true"/>
     <InputColumn
       labelWidth="250">
       <Label
@@ -146,19 +147,6 @@
         </Input>
       </InputSet>
       <InputDivider/>
-      <Input
-        id="FloodRiskType_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.FloodRiskType"
-        required="false"
-        value="dwelling.getFloodRiskTypeValue(dwelling)"/>
-      <Input
-        editable="true"
-        id="PostFirm_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.PostFirm"
-        required="false"
-        value="dwelling.PostFIRM_Ext"
-        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT)"/>
-      <InputDivider/>
       <InputSet
         editable="true"
         id="TerritoryCodeInputSet"
@@ -199,18 +187,39 @@
             required="dwelling.HOLocation.OverrideTerritoryCode_Ext"
             value="dwelling.HOLocation.TerritoryCodeOverridden_Ext"
             visible="dwelling.HOLocation.OverrideTerritoryCode_Ext"/>
-          <!-- <RangeInput
-            available="dwelling.HOLocation.PolicyLocation.State != null"
-            editable="true"
-            id="TerritoryCode"
-            label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(TerritoryCode.PolicyLinePattern.DisplayName)"
-            required="true"
-            validationExpression="TerritoryCode.prelimValidate()"
-            value="TerritoryCode.Code"
-            valueRange="tunaAppResponse.TerritoryCodes">
-            <PickerMenuItem/>
-          </RangeInput> -->
         </InputIterator>
+      </InputSet>
+      <InputDivider/>
+      <InputSet
+        id="Firedeptnamedval_Ext">
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideResFireDept_Ext"
+          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+          id="FiredeptnamedvalTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalTunaReturned_Ext"
+          value="dwelling.HOLocation.ResFireDept_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideResFireDept_Ext"
+          id="FiredeptnamedvalMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalMatchlevel_Ext"
+          value="dwelling.HOLocation.ResFireDeptMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideFiredeptnamedval_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalOverride_Ext"
+          value="dwelling.HOLocation.OverrideResFireDept_Ext">
+          <PostOnChange
+            target="Firedeptnamedval_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideResFireDept_Ext"
+          editable="true"
+          id="FiredeptnamedvalUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideResFireDept_Ext"
+          value="dwelling.HOLocation.ResFireDeptOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideResFireDept_Ext"/>
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -242,21 +251,6 @@
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
-        <Input
-          id="respondingFireDept_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartment_Ext"
-          value="dwelling.HOLocation.RespondingFireDept_Ext"/>
-        <!-- <TypeKeyInput
-          editable="true"
-          id="FireDeptMLvlsss"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDeptMatchLevel_Ext"
-          value="dwelling.HOLocation.FireDeptMatchLevel_Ext"/> -->
-        <!-- <Input
-          editable="true"
-          id="RespondingFireDeptOther_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.RespondingFireDepartmentOther_Ext"
-          value="dwelling.HOLocation.RespondingFireDeptOther_Ext"
-          visible="dwelling.HOLocation.RespondingFireDept_Ext!= null &amp;&amp; dwelling.HOLocation.RespondingFireDept_Ext.equalsIgnoreCase(&quot;Other&quot;)"/> -->
         <!-- <BooleanRadioInput
           editable="true"
           id="FloodFireHazard"
@@ -281,7 +275,7 @@
             value="dwelling.HOLocation.DwellingProtectionClassCode"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass)">
             <PostOnChange
-              onChange="dwelling.HOLocation.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
+              onChange="dwelling.HOLocation.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
           </RangeInput>
           <Input
             available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
@@ -451,135 +445,6 @@
       </InputSet>
       <InputDivider/>
       <InputSet
-        id="Firedeptnamedval_Ext">
-        <RangeInput
-          available="!dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
-          id="FiredeptnamedvalTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalTunaReturned_Ext"
-          value="dwelling.HOLocation.Firedeptnmval_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
-        <Input
-          available="!dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          id="FiredeptnamedvalMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalMatchlevel_Ext"
-          value="dwelling.HOLocation.FiredeptnamedvalMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideFiredeptnamedval_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalOverride_Ext"
-          value="dwelling.HOLocation.OverrideFiredeptnamedval_Ext">
-          <PostOnChange
-            target="Firedeptnamedval_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          editable="true"
-          id="FiredeptnamedvalUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.FiredeptnamedvalUserEntered_Ext"
-          required="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"
-          value="dwelling.HOLocation.FiredeptnamedvalOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideFiredeptnamedval_Ext"/>                  
-      </InputSet>
-      <InputDivider/>
-      <!-- <InputSet
-        id="Windpoolvalue_Ext">
-        <RangeInput
-          available="!dwelling.HOLocation.OverrideWindpoolvalue_Ext"
-          editable="true"
-          id="WindpoolvalueTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueTunaReturned_Ext"
-          value="dwelling.HOLocation.Windpoolvalue_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
-        <Input
-          available="!dwelling.HOLocation.OverrideWindpoolvalue_Ext"
-          id="WindpoolvalueMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueMatchlevel_Ext"
-          value="dwelling.HOLocation.WindpoolvalueMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideWindpoolvalue_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueOverride_Ext"
-          value="dwelling.HOLocation.OverrideWindpoolvalue_Ext">
-          <PostOnChange
-            target="Windpoolvalue_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.HOLocation.OverrideWindpoolvalue_Ext"
-          editable="true"
-          id="WindpoolvalueUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.WindpoolvalueUserEntered_Ext"
-          required="dwelling.HOLocation.OverrideWindpoolvalue_Ext"
-          value="dwelling.HOLocation.WindpoolvalueOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideWindpoolvalue_Ext"/>
-      </InputSet> -->
-      <!-- <InputDivider/> -->
-      <InputDivider/>
-      <InputSet
-        id="PropFloodVal_Ext">
-        <RangeInput
-          available="!dwelling.OverridePropFloodVal_Ext"
-          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
-          id="PropFloodValTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
-          value="dwelling.PropFloodVal_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
-        <Input
-          available="!dwelling.OverridePropFloodVal_Ext"
-          id="PropFloodValMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PropFloodValMatchlevel_Ext"
-          value="dwelling.PropFloodValMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRidePropFloodVal_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PropFloodValOverride_Ext"
-          value="dwelling.OverridePropFloodVal_Ext">
-          <PostOnChange
-            target="PropFloodVal_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.OverridePropFloodVal_Ext"
-          editable="true"
-          id="PropFloodValUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.PropFloodValUserEntered_Ext"
-          required="dwelling.OverridePropFloodVal_Ext"
-          value="dwelling.PropFloodValOverridden_Ext"
-          visible="dwelling.OverridePropFloodVal_Ext"/>
-      </InputSet>
-      <InputDivider/>
-      <InputSet
-        id="BaseFloodElVal_Ext">
-        <RangeInput
-          available="!dwelling.OverrideBaseFloodElVal_Ext"
-          editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
-          id="BaseFloodElValTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValTunaReturned_Ext"
-          value="dwelling.BaseFloodElVal_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BaseFloodElevation)"/>
-        <Input
-          available="!dwelling.OverrideBaseFloodElVal_Ext"
-          id="BaseFloodElValMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValMatchlevel_Ext"
-          value="dwelling.BaseFloodElValMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideBaseFloodElVal_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValOverride_Ext"
-          value="dwelling.OverrideBaseFloodElVal_Ext">
-          <PostOnChange
-            target="BaseFloodElVal_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.OverrideBaseFloodElVal_Ext"
-          editable="true"
-          id="BaseFloodElValUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValUserEntered_Ext"
-          required="dwelling.OverrideBaseFloodElVal_Ext"
-          value="dwelling.BaseFloodElValOverridden_Ext"
-          visible="dwelling.OverrideBaseFloodElVal_Ext"/>
-      </InputSet>
-      <InputDivider/>
-      <InputSet
         id="iso360_Ext">
         <RangeInput
           available="!dwelling.HOLocation.OverrideISO360_Ext"
@@ -707,7 +572,7 @@
           visible="dwelling.HOLocation.OverrideDistToCoast_Ext"/>
       </InputSet>
       <InputDivider/>
-      <!-- <InputSet
+      <InputSet
         id="DistToMajorBOW_Ext"
         visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
         <RangeInput
@@ -742,10 +607,11 @@
           required="dwelling.HOLocation.OverrideDistBOW_Ext"
           value="dwelling.HOLocation.DistBOWOverridden_Ext"
           visible="dwelling.HOLocation.OverrideDistBOW_Ext"/>
-      </InputSet> -->
+      </InputSet>
       <InputDivider/>
       <InputSet
-        id="DistToMajorBOWNamedVal_Ext">
+        id="DistToMajorBOWNamedVal_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -925,7 +791,7 @@
           required="false"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
           valueRange="typekey.TypeofPolicy_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
-          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod)">
+          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod) &amp;&amp; (dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
           <PostOnChange/>
         </RangeInput>
         <Input
@@ -934,7 +800,7 @@
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
           numEntriesPerColumn="14"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"
-          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext == true"/>
+          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"/>
         <BooleanRadioInput
           editable="true"
           id="InsuredTenantDiscount_Ext"
@@ -1444,15 +1310,86 @@
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.FloodCoverage_Ext"
           value="dwelling.FloodCoverage_Ext"
           visible="(dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_Ext)) &amp;&amp; dwelling.isFloodExcludedZipCode(dwelling)">
-          <PostOnChange/>
+          <PostOnChange
+            target="FloodRelatedQns_Ext"/>
         </BooleanRadioInput>
         <Input
-          editable="true"
-          id="BaseFloodElevation_Ext"
-          label="displaykey.Web.Homeowners.Dwelling.BaseFloodElevation_Ext"
+          id="FloodRiskType_Ext"
+          label="displaykey.Web.Homeowners.DwellingConstruction.FloodRiskType"
           required="false"
-          value="dwelling.BaseFloodElevation_Ext"
-          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.PropFloodVal_Ext!=null &amp;&amp; (!dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
+          value="dwelling.getFloodRiskTypeValue(dwelling)"/>
+        <Input
+          editable="true"
+          id="PostFirm_Ext"
+          label="displaykey.Web.Homeowners.DwellingConstruction.PostFirm"
+          required="false"
+          value="dwelling.PostFIRM_Ext"
+          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT)"/>
+        <InputDivider/>
+        <InputSet
+          id="PropFloodVal_Ext">
+          <RangeInput
+            available="!dwelling.OverridePropFloodVal_Ext"
+            editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+            id="PropFloodValTunaReturned_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
+            value="dwelling.PropFloodVal_Ext"
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
+          <Input
+            available="!dwelling.OverridePropFloodVal_Ext"
+            id="PropFloodValMatchLevel_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PropFloodValMatchlevel_Ext"
+            value="dwelling.PropFloodValMatchLevel_Ext"/>
+          <BooleanRadioInput
+            editable="true"
+            id="OverRidePropFloodVal_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PropFloodValOverride_Ext"
+            value="dwelling.OverridePropFloodVal_Ext">
+            <PostOnChange
+              target="PropFloodVal_Ext"/>
+          </BooleanRadioInput>
+          <Input
+            available="dwelling.OverridePropFloodVal_Ext"
+            editable="true"
+            id="PropFloodValUserEntered_Ext"
+            label="displaykey.Web.Homeowners.HOLocation.PropFloodValUserEntered_Ext"
+            required="dwelling.OverridePropFloodVal_Ext"
+            value="dwelling.PropFloodValOverridden_Ext"
+            visible="dwelling.OverridePropFloodVal_Ext"/>
+          <InputDivider/>
+          <InputSet
+            id="BaseFloodElVal_Ext">
+            <RangeInput
+              available="!dwelling.OverrideBaseFloodElVal_Ext"
+              editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+              id="BaseFloodElValTunaReturned_Ext"
+              label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValTunaReturned_Ext"
+              value="dwelling.BaseFloodElVal_Ext"
+              valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BaseFloodElevation)"/>
+            <Input
+              available="!dwelling.OverrideBaseFloodElVal_Ext"
+              id="BaseFloodElValMatchLevel_Ext"
+              label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValMatchlevel_Ext"
+              value="dwelling.BaseFloodElValMatchLevel_Ext"/>
+            <BooleanRadioInput
+              editable="true"
+              id="OverRideBaseFloodElVal_Ext"
+              label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValOverride_Ext"
+              value="dwelling.OverrideBaseFloodElVal_Ext">
+              <PostOnChange
+                target="BaseFloodElVal_Ext"/>
+            </BooleanRadioInput>
+            <Input
+              available="dwelling.OverrideBaseFloodElVal_Ext"
+              editable="true"
+              id="BaseFloodElValUserEntered_Ext"
+              label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValUserEntered_Ext"
+              required="dwelling.OverrideBaseFloodElVal_Ext"
+              value="dwelling.BaseFloodElValOverridden_Ext"
+              visible="dwelling.OverrideBaseFloodElVal_Ext"/>
+          </InputSet>
+        </InputSet>
+        <InputDivider/>
         <TypeKeyInput
           editable="true"
           id="AbveBlwBaseFldElvtn_Ext"
@@ -1466,9 +1403,7 @@
           label="displaykey.Web.Homeowners.PriorFloodInsProvider_Ext"
           required="false"
           value="dwelling.PriorFloodInsProvider_Ext"
-          visible="dwelling.FloodCoverage_Ext">
-          <PostOnChange/>
-        </TypeKeyInput>
+          visible="dwelling.FloodCoverage_Ext"/>
         <Input
           editable="true"
           id="ExpirationDate_Ext"
@@ -1528,7 +1463,7 @@
           id="EarthquakeZone_Ext"
           label="displaykey.Web.Homeowners.Dwelling.EarthquakeZone_Ext"
           value="dwelling.EarthquakeZone_Ext"
-          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext"/>
+          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext))"/>
         <InputSet
           id="EarthquakeTerritory_Ext">
           <RangeInput

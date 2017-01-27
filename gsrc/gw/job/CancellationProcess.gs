@@ -82,9 +82,6 @@ class CancellationProcess extends JobProcess {
                                  displaykey.Job.Cancellation.CancellationForRenewal,
                                  displaykey.Job.Cancellation.OpenRenewal(_branch.PolicyNumber))
     }
-    if (not Job.MigrationJob) {
-    requestQuote()
-  }
   }
 
   /**
@@ -347,7 +344,7 @@ class CancellationProcess extends JobProcess {
     Job.InitialNotificationDate  = currentDate
     Job.NotificationDate         = currentDate
     JobProcessLogger.logInfo("Sending notice of cancellation on ${Job.NotificationDate} for branch \"${_branch}\"")
-    Job.addToFormsEvents(new FormsEvent(){:EventType = FormsEventType.TC_SENDCANCELLATIONNOTICES})
+    Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCANCELLATIONNOTICES})
   }
 
   /**

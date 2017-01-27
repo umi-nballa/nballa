@@ -50,35 +50,39 @@
                 id="WatercraftName"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.WatercraftName_Ext"
                 required="true"
-                value="schedItem.watercraftName1"/>
+                value="schedItem.watercraftName"/>
               <TypeKeyCell
                 editable="true"
                 id="watercraftType"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.WatercraftType_Ext"
                 required="true"
-                value="schedItem.watercraftType1"/>
-              <TypeKeyCell
+                value="schedItem.watercraftType"/>
+              <RangeCell
                 editable="true"
                 id="OverallLength"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.OverallLength_Ext"
                 required="true"
-                value="schedItem.overallLengthWC"/>
+                value="schedItem.overallLength"
+                valueRange="typekey.OverallLength_Ext.TF_WATERCRAFTLIABILITYTYPES.TypeKeys"/>
               <Cell
                 editable="true"
                 id="WatercraftDescA"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.MotorADesc_Ext"
                 value="schedItem.MotorADesc"/>
-              <TypeKeyCell
+              <RangeCell
                 editable="true"
-                id="HorsepowerA"
+                id="TotalHorse"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.HorsepowerA_Ext"
-                value="schedItem.WCHPA"/>
-              <TypeKeyCell
+                required="true"
+                value="schedItem.horsepower"
+                valueRange="typekey.Horsepower_Ext.TF_WATERCRAFTLIABILITYTYPES.TypeKeys"/>
+              <RangeCell
                 editable="true"
                 id="SpeedRating"
                 label="displaykey.Web.Homeowners.HOCoveragesScreen.SpeedRating_Ext"
                 required="true"
-                value="schedItem.speedRating1"/>
+                value="schedItem.speedRating"
+                valueRange="typekey.SpeedRating_Ext.TF_WATERCRAFTLIABILITYTYPES.TypeKeys"/>
             </Row>
           </RowIterator>
         </ListViewPanel>

@@ -1,0 +1,101 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Clue Report Details"
+  entity="ClueReport_Ext"
+  exportable="true"
+  final="false"
+  table="cluereport_ext"
+  type="retireable">
+  <column
+    desc="Requester identification code for this report"
+    name="QuotebackID"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="CLUE Property Identification Number"
+    name="ReferenceNumber"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="Date report ordered"
+    name="OrderDate"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="Person who requested the report"
+    name="Requestor"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="Date report ordered"
+    name="CompleteDate"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="Requesting Agency LexisNexis Account number"
+    name="AccountNumber"
+    nullok="true"
+    type="shorttext"/>
+  <array
+    arrayentity="PriorLoss_Ext"
+    desc="Prior Losses from CLUE Report"
+    name="PriorLosses"/>
+  <foreignkey
+    fkentity="Address"
+    name="PriorAddress"
+    nullok="true"/>
+  <foreignkey
+    fkentity="PolicyLocation"
+    name="RiskAddress"
+    nonEffDated="true"
+    nullok="true"/>
+  <foreignkey
+    fkentity="Address"
+    name="MailAddress"
+    nullok="true"/>
+  <foreignkey
+    fkentity="Person"
+    name="Subject1"
+    nullok="true"/>
+  <foreignkey
+    fkentity="Person"
+    name="Subject2"
+    nullok="true"/>
+  <implementsEntity
+    name="Extractable"/>
+  <array
+    arrayentity="Note"
+    name="messages"/>
+  <column
+    name="PolicyNumber"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="PolicyType"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="PolicyCompany"
+    nullok="true"
+    type="shorttext"/>
+  <array
+    arrayentity="Note"
+    name="narratives"/>
+  <column
+    name="ProcessingStatus"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="RiskClaims"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="SubjectClaims"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="NodeLocation"
+    nullok="true"
+    type="shorttext"/>
+</entity>

@@ -259,8 +259,8 @@ abstract class AbstractRatingEngineBase<SL> {
       for (costEntity in untouchedCurrentCostEntities) {
         removeCost = true
         if(line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE or line.Branch.Job.Subtype == typekey.Job.TC_CANCELLATION)
-          if(costEntity typeis HomeownersLineCost_EXT){
-            if(costEntity.HOCostType == HOCostType_Ext.TC_POLICYFEE)
+          if(costEntity typeis HOTaxCost_HOE){
+            if(costEntity.ChargePattern == ChargePattern.TC_POLICYFEES)
               removeCost = false
           }
         if(removeCost)

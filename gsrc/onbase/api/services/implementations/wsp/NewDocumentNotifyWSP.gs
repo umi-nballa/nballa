@@ -148,7 +148,6 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
       doc.Account = policy.Account
       doc.Name = properties.DocName
       doc.Description = keywords.StandAlone.Description_Collection.Description.first()
-      //doc.Author = user
       doc.Status = typekey.DocumentStatusType.TC_APPROVED
       doc.Type = typekey.DocumentType.TC_ONBASE
       doc.MimeType = properties.MimeType

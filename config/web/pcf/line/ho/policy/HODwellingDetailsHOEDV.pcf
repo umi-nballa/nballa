@@ -572,7 +572,7 @@
           visible="dwelling.HOLocation.OverrideDistToCoast_Ext"/>
       </InputSet>
       <InputDivider/>
-      <!-- <InputSet
+      <InputSet
         id="DistToMajorBOW_Ext"
         visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
         <RangeInput
@@ -607,10 +607,11 @@
           required="dwelling.HOLocation.OverrideDistBOW_Ext"
           value="dwelling.HOLocation.DistBOWOverridden_Ext"
           visible="dwelling.HOLocation.OverrideDistBOW_Ext"/>
-      </InputSet> -->
+      </InputSet>
       <InputDivider/>
       <InputSet
-        id="DistToMajorBOWNamedVal_Ext">
+        id="DistToMajorBOWNamedVal_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -790,7 +791,7 @@
           required="false"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
           valueRange="typekey.TypeofPolicy_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
-          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod)">
+          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod) &amp;&amp; (dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
           <PostOnChange/>
         </RangeInput>
         <Input
@@ -799,7 +800,7 @@
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
           numEntriesPerColumn="14"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"
-          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext == true"/>
+          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"/>
         <BooleanRadioInput
           editable="true"
           id="InsuredTenantDiscount_Ext"

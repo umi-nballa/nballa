@@ -60,7 +60,7 @@
       <InputDivider/>
       <InputSet
         id="ConstructionType_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ">
         <RangeInput
           available="!dwelling.OverrideConstructionType_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -98,10 +98,10 @@
         id="ConstTypeo_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeIfOther_Ext"
         value="dwelling.ConstructionTypeOther"
-        visible="dwelling.OverrideConstructionType_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ) &amp;&amp; (dwelling.ConstructionTypeOrOverride.Code==&quot;Other&quot;)"/>
+        visible="dwelling.OverrideConstructionType_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!= typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!= typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ) &amp;&amp; (dwelling.ConstructionTypeOrOverride.Code==&quot;Other&quot;)"/>
       <InputSet
         id="ConstructionTypeL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ">
         <RangeInput
           available="!dwelling.OverrideConstructionTypeL1_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE// &amp;&amp; !dwelling.OverrideConstructionTypeL1_Ext"
@@ -139,10 +139,10 @@
         id="ConstTypeoL1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeL1IfOther_Ext"
         value="dwelling.ConstructionTypeLevel1Other"
-        visible="dwelling.OverrideConstructionTypeL1_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ) &amp;&amp; (dwelling.ConstructionTypeL1OrOverride.Code==&quot;Other&quot;)"/>
+        visible="dwelling.OverrideConstructionTypeL1_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ) &amp;&amp; (dwelling.ConstructionTypeL1OrOverride.Code==&quot;Other&quot;)"/>
       <InputSet
         id="ConstructionTypeL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ">
         <RangeInput
           available="!dwelling.OverrideConstructionTypeL2_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE// &amp;&amp; !dwelling.OverrideConstructionTypeL2_Ext"
@@ -180,39 +180,11 @@
         id="ConstTypeoL2_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeL2IfOther_Ext"
         value="dwelling.ConstructionTypeLevel2Other"
-        visible="dwelling.OverrideConstructionTypeL2_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL2OrOverride==typekey.ConstructionType_HOE.TC_OTHER)"/>
-      <!-- Input
-        editable="true"
-        id="ConstType1_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1_Ext"
-        value="dwelling.ConstructionTypeL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
-        <PostOnChange/>
-      </Input>
-      <Input
-        editable="true"
-        id="ConstType1o_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel1O_Ext"
-        value="dwelling.ConstructionTypeLevel1Other"
-        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL1_Ext==typekey.ConstructionTypeL1_Ext.TC_OTHER)"/>
-      <Input
-        editable="true"
-        id="ConstType2_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2_Ext"
-        value="dwelling.ConstructionTypeL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
-        <PostOnChange/>
-      </Input>
-      <Input
-        editable="true"
-        id="ConstType2o_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeLevel2O_Ext"
-        value="dwelling.ConstructionTypeLevel2Other"
-        visible="(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; (dwelling.ConstructionTypeL2_Ext==typekey.ConstructionTypeL2_Ext.TC_OTHER)"/ -->
+        visible="dwelling.OverrideConstructionTypeL2_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code) &amp;&amp; (dwelling.ConstructionTypeL2OrOverride==typekey.ConstructionType_HOE.TC_OTHER)"/>
       <InputDivider/>
       <InputSet
         id="ExteriorWFval_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code">
         <RangeInput
           available="!dwelling.OverrideExteriorWFval_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -251,10 +223,10 @@
         id="ExtWallfinishOther_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther_Ext"
         value="dwelling.ExteriorWallFinishOther"
-        visible="dwelling.OverrideExteriorWFval_Ext==true &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishOrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+        visible="dwelling.OverrideExteriorWFval_Ext==true &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!= typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code &amp;&amp; gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)!=typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishOrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
       <InputSet
         id="ExteriorWFvalL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code">
         <RangeInput
           available="!dwelling.OverrideExteriorWFvalL1_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -293,10 +265,10 @@
         id="ExtWallfinishOtherL1_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOtherL1_Ext"
         value="dwelling.ExteriorWallFinishLevel1Other"
-        visible="dwelling.OverrideExteriorWFvalL1_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL1OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
+        visible="dwelling.OverrideExteriorWFvalL1_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL1OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
       <InputSet
         id="ExteriorWFvalL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
+        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)== typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code">
         <RangeInput
           available="!dwelling.OverrideExteriorWFvalL2_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -335,37 +307,7 @@
         id="ExtWallfinishOtherL2_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOtherL2_Ext"
         value="dwelling.ExteriorWallFinishLevel2Other"
-        visible="dwelling.OverrideExteriorWFvalL2_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL2OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
-      <!-- Input
-        editable="true"
-        id="ExteriorWFva1_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish1"
-        value="dwelling.ExteriorWallFinishL1_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
-        <PostOnChange/>
-      </Input>
-      <Input
-        available="dwelling.ExteriorWallFinishL1_Ext.Code==&quot;Other&quot;"
-        editable="true"
-        id="ExtWallfinishOther1_Ext"
-        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther1_Ext"
-        value="dwelling.ExteriorWallFinishLevel1Other"
-        visible="dwelling.ExteriorWallFinishL1_Ext.Code==&quot;Other&quot;"/>
-      <Input
-        editable="true"
-        id="ExteriorWFval2_Ext"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ExteriorWallFinish2"
-        value="dwelling.ExteriorWallFinishL2_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT">
-        <PostOnChange/>
-      </Input>
-      <Input
-        available="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"
-        editable="true"
-        id="ExtWallfinishOther2_Ext"
-        label="displaykey.Web.Homeowners.HOLocation.ExteriorWFvalOther2_Ext"
-        value="dwelling.ExteriorWallFinishLevel2Other"
-        visible="dwelling.ExteriorWallFinishL2_Ext.Code==&quot;Other&quot;"/ -->
+        visible="dwelling.OverrideExteriorWFvalL2_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL2OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
       <InputDivider/>
       <InputSet
         id="TotalSqFtVal_Ext">
@@ -420,23 +362,6 @@
         required="true"
         value="dwelling.UpstairsLndrySurcharge_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isUpstairsLaundrySurchargeVisible(dwelling)"/>
-      <!-- <Input
-        editable="true"
-        id="ConstructionTypeDesc"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.ConstructionTypeDescription"
-        visible="dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_OTHER"/> -->
-      <!-- <TypeKeyInput
-        editable="true"
-        id="Garage"
-        label="displaykey.Web.Homeowners.DwellingConstruction.Garage"
-        numCols="5"
-        required="true"
-        value="dwelling.Garage"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3">
-        <PostOnChange/>
-      </TypeKeyInput> -->
       <Input
         editable="true"
         id="GarageArea"
@@ -445,23 +370,6 @@
         required="false"
         value="dwelling.GarageArea"
         visible="(dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3) and (dwelling.Garage != typekey.GarageType_HOE.TC_NONE and dwelling.Garage != null)"/>
-      <!-- <BooleanRadioInput
-        editable="true"
-        id="CoveredPorches"
-        label="displaykey.Web.Homeowners.DwellingConstruction.CoveredPorches"
-        required="false"
-        value="dwelling.CoveredPorch"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3">
-        <PostOnChange/>
-      </BooleanRadioInput> -->
-      <!-- <Input
-        editable="true"
-        id="PorchArea"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.PorchArea, ScriptParameters.HOChildQuestionIndent)"
-        numCols="7"
-        required="false"
-        value="dwelling.CoveredPorchArea"
-        visible="(dwelling.CoveredPorch and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2) )"/> -->
       <TypeKeyInput
         editable="true"
         id="FoundationType"
@@ -495,22 +403,6 @@
         visible="dwelling.PolicyPeriod.PrimaryLocation.State==typekey.State.TC_HI &amp;&amp; (dwelling.Foundation==typekey.FoundationType_HOE.TC_STILTSPILINGS_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT||dwelling.Foundation==typekey.FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT)">
         <PostOnChange/>
       </TypeKeyInput>
-      <!-- <Input
-        editable="true"
-        id="BasementAreaFinished"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.BasementAreaFinished, ScriptParameters.HOChildQuestionIndent)"
-        numCols="7"
-        required="false"
-        value="dwelling.BasementFinishedArea"
-        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
-      <!-- <Input
-        editable="true"
-        id="BasementAreaUnFinished"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.BasementAreaUnFinished, ScriptParameters.HOChildQuestionIndent)"
-        numCols="7"
-        required="false"
-        value="dwelling.BasementUnfinishedArea"
-        visible="(dwelling.Foundation == FoundationType_HOE.TC_FULLBASEMENT and  (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2 ))"/> -->
       <Input
         editable="true"
         id="RoofTypeDesc"
@@ -518,14 +410,6 @@
         required="true"
         value="dwelling.RoofTypeDescription"
         visible="dwelling.RoofType == typekey.RoofType.TC_OTHER"/>
-      <!-- <TypeKeyInput
-        editable="true"
-        id="PrimaryHeating"
-        label="displaykey.Web.Homeowners.DwellingConstruction.PrimaryHeating"
-        required="false"
-        value="dwelling.PrimaryHeating">
-        <PostOnChange/>
-      </TypeKeyInput> -->
       <Label
         label="&quot;Heat Source (Select all that apply)&quot;"/>
       <CheckBoxInput
@@ -573,13 +457,6 @@
         id="heat7"
         label="&quot;Portable - All Fuel Types&quot;"
         value="dwelling.HeatSrcPortableAllFuelTypes"/>
-      <!-- <TypeKeyInput
-        editable="true"
-        id="FuelStorageTankLocation"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.FuelStorageTankLocation, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.PrimaryHeatingFuelTankLocation"
-        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
       <BooleanRadioInput
         editable="true"
         id="Installedlicensed"
@@ -598,35 +475,6 @@
         label="displaykey.Web.Homeowners.DwellingConstruction.Sittingonnoncombase"
         value="dwelling.Sittingonnoncombustiblebase"
         visible="dwelling.HeatSrcCentralElectric &amp;&amp; dwelling.HeatSrcCentralNaturalGas &amp;&amp; dwelling.HeatSrcCentralPropane &amp;&amp; dwelling.HeatSrcCentralOther &amp;&amp; dwelling.HeatSrcWoodBurningStove"/>
-      <!-- <TypeKeyInput
-        actionAvailable="false"
-        editable="true"
-        id="FuelLineLocation"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DwellingConstruction.FuelLineLocation, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.PrimaryHeatingFuelLineLocation"
-        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_HEATINGOIL and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/> -->
-      <Input
-        editable="true"
-        id="PrimaryHeatingTypeDesc"
-        label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
-        required="true"
-        value="dwelling.PrimaryHeatingDescription"
-        visible="(dwelling.PrimaryHeating == typekey.HeatingType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <!-- <BooleanRadioInput
-        editable="true"
-        id="SecondaryHeatingExists"
-        label="displaykey.Web.Homeowners.DwellingConstruction.SecondaryHeatingExists"
-        required="false"
-        value="dwelling.SecondaryHeatingExists"/> -->
-      <!-- <TypeKeyInput
-        editable="true"
-        id="PlumbingSystem"
-        label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingSystem"
-        required="false"
-        value="dwelling.PlumbingType">
-        <PostOnChange/>
-      </TypeKeyInput> -->
       <RangeInput
         editable="true"
         id="plumbing"
@@ -640,15 +488,7 @@
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.PlumbingTypeDescription"
-        visible="(dwelling.PlumbingType == PlumbingType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <!-- <TypeKeyInput
-        editable="true"
-        id="Wiring"
-        label="displaykey.Web.Homeowners.DwellingConstruction.Wiring"
-        required="false"
-        value="dwelling.WiringType">
-        <PostOnChange/>
-      </TypeKeyInput> -->
+        visible="(dwelling.PlumbingType == PlumbingType_HOE.TC_OTHER and dwelling.HOLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)"/>
       <RangeInput
         editable="true"
         id="wiringRangeInput"
@@ -661,16 +501,7 @@
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.WiringTypeDescription"
-        visible="(dwelling.WiringType == typekey.WiringType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <!-- <TypeKeyInput
-        editable="true"
-        id="ElectricalSystem"
-        label="displaykey.Web.Homeowners.DwellingConstruction.ElectricalSystem"
-        required="true"
-        value="dwelling.ElectricalType"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)">
-        <PostOnChange/>
-      </TypeKeyInput> -->
+        visible="(dwelling.WiringType == typekey.WiringType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3))"/>
       <RangeInput
         editable="true"
         id="electricalsysRange"
@@ -684,13 +515,7 @@
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.ElectricalTypeDescription"
-        visible="(dwelling.ElectricalType == typekey.BreakerType_HOE.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <!-- <TypeKeyInput
-        editable="true"
-        id="panelManufacturer"
-        label="displaykey.Web.Homeowners.DwellingConstruction.PanelManufacturer"
-        required="true"
-        value="dwelling.PanelManufacturer_Ext"/> -->
+        visible="false"/>
       <RangeInput
         editable="true"
         id="panelRangeInput"
@@ -698,15 +523,6 @@
         required="true"
         value="dwelling.PanelManufacturer_Ext"
         valueRange="gw.lob.ho.HODwellingUtil_HOE.getPanelManufacturingRange(dwelling)"/>
-      <!-- <Input
-        editable="true"
-        id="NumberofAmps"
-        label="displaykey.Web.Homeowners.DwellingConstruction.NumberOfAmps"
-        numCols="5"
-        required="false"
-        value="dwelling.Amperage"
-        visible="dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2"/> -->
-      <!-- Dwelling Construction: changed field type to Typelist -->
       <TypeKeyInput
         editable="true"
         id="numberOfAmps"
@@ -714,7 +530,6 @@
         required="true"
         value="dwelling.NumberofAmps_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/>
-      <!-- Being used in rating, making visible as false as per story dwelling construction -->
       <TypeKeyInput
         editable="true"
         id="WindClass"
@@ -730,8 +545,7 @@
         label="gw.api.web.HtmlUtil.indent(displaykey.Web.Homeowners.DescribeOther, ScriptParameters.HOChildQuestionIndent)"
         required="true"
         value="dwelling.WindClassDescription"
-        visible="(dwelling.WindClass == typekey.WindRating.TC_OTHER and (dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2))"/>
-      <!-- Being used in rating, making visible as false as per story dwelling construction -->
+        visible="(dwelling.WindClass == typekey.WindRating.TC_OTHER and dwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3)"/>
       <Input
         editable="true"
         id="ConstructionClass"
@@ -770,13 +584,6 @@
           value="dwelling.RoofingMaterialOverridden_Ext"
           visible="dwelling.OverrideRoofType_Ext"/>
       </InputSet>
-      <!-- TypeKeyInput
-        editable="true"
-        id="roofshareInput"
-        label="displaykey.Web.Homeowners.DwellingConstruction.RoofShape"
-        required="true"
-        value="dwelling.RoofShape_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/ -->
       <InputDivider/>
       <InputSet
         id="RoofingShape_Ext">
@@ -856,13 +663,6 @@
           required="true"
           value="dwelling.RoofDecking_Ext"
           visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code"/>
-        <!-- <TypeKeyInput
-          editable="true"
-          id="openingProtection"
-          label="displaykey.Web.Homeowners.DwellingConstruction.OpeningProtection"
-          required="true"
-          value="dwelling.OpeningProtection_Ext"
-          visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/> -->
         <RangeInput
           editable="true"
           id="openProtectionInputRange"
@@ -871,7 +671,6 @@
           value="dwelling.OpeningProtection_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getOpeningProtectionRange(dwelling)"
           visible="gw.lob.ho.HODwellingUtil_HOE.isAllHoDp(dwelling.Branch.HomeownersLine_HOE.HOPolicyType)"/>
-        <!-- Only Applicable to FL - Dwelling Construction story -->
         <TypeKeyInput
           editable="true"
           id="fbcWindProtection"
@@ -879,7 +678,6 @@
           required="true"
           value="dwelling.FBCWindSpeed_Ext"
           visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code"/>
-        <!-- Only applicable to FL -->
         <TypeKeyInput
           editable="true"
           id="windspeedDesign"
@@ -887,7 +685,6 @@
           required="true"
           value="dwelling.WindSpeedOfDesign_Ext"
           visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code"/>
-        <!-- Only applicable to FL - Dwelling construction -->
         <TypeKeyInput
           editable="true"
           id="wbdr"
@@ -908,12 +705,6 @@
           label="displaykey.Web.Homeowners.DwellingConstruction.SWR"
           required="true"
           value="dwelling.SecondaryWaterResis_Ext"/>
-        <!-- <TypeKeyInput
-          editable="true"
-          id="roofwallconnection"
-          label="displaykey.Web.Homeowners.DwellingConstruction.RoofWallConnection"
-          required="true"
-          value="dwelling.RoofWallConnection_Ext"/> -->
         <RangeInput
           editable="true"
           id="roofWallConnectionRange"
@@ -929,13 +720,6 @@
           required="true"
           value="dwelling.RoofCover_Ext"
           visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and gw.lob.ho.HODwellingUtil_HOE.getYearBuilt(dwelling) &lt; 2002) or (dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code)"/>
-        <!-- <TypeKeyInput
-          editable="true"
-          id="roofDeckattachement"
-          label="displaykey.Web.Homeowners.DwellingConstruction.RoofDeckAttachment"
-          required="true"
-          value="dwelling.RoofDeckAttachment_Ext"
-          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_SC.Code or (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code and dwelling.YearBuilt &lt; 2002))"/> -->
         <RangeInput
           editable="true"
           id="roofDeckingInput"
@@ -1028,13 +812,6 @@
         <PostOnChange
           onChange="if(dwelling.PlumbingUpgrade != null and !dwelling.PlumbingUpgrade) {dwelling.PlumbingUpgradeDate = null}"/>
       </CheckBoxInput>
-      <!-- <TextInput
-        editable="true"
-        id="plumbingReplaced"
-        label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingReplaced"
-        required="true"
-        value="dwelling.PlumbingReplaced_Ext"
-        visible="gw.lob.ho.HODwellingUtil_HOE.isPlumbingReplacedVisible(dwelling)"/> -->
       <Input
         editable="true"
         id="PlumbingUpgradeDate"
@@ -1053,12 +830,6 @@
         <PostOnChange
           onChange="if(dwelling.RoofingUpgrade != null and !dwelling.RoofingUpgrade){dwelling.RoofingUpgradeDate = null}"/>
       </CheckBoxInput>
-      <!-- <TextInput
-        editable="true"
-        id="roofindReplaced"
-        label="displaykey.Web.Homeowners.DwellingConstruction.RoofingReplaced"
-        required="true"
-        value="dwelling.RoofingReplaced_Ext"/> -->
       <Input
         editable="true"
         id="RoofingUpgradeDate"

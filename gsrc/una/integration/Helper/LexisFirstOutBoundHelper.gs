@@ -55,7 +55,7 @@ class LexisFirstOutBoundHelper {
    */
    function createLexisFirstTransaction(message: Message){
 
-    if(message.policyPeriod.Policy.Product == HOME_OWNER){
+    if(message.PolicyPeriod.Policy.Product == HOME_OWNER){
       var servicePayload = new LexisFirstServicePayload()
       var lexisFirstFileData = servicePayload.payLoadXML(message.PolicyPeriod,message.EventName)
       insertOutBoundFileData(lexisFirstFileData)

@@ -73,8 +73,7 @@ class HOBasePremiumRaterTX {
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
     if (_dwelling.HODW_Dwelling_Cov_HOEExists){
-      var dwellingValuation = _dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOETerm.DisplayValue
-      if (dwellingValuation == "Replacement Cost") {
+      if (_dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOE_ExtTerm.Value == ValuationMethod.TC_REPLCOST) {
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTONDWELLING)
       } else {
@@ -87,8 +86,7 @@ class HOBasePremiumRaterTX {
       }
     }
     if (_dwelling.HODW_Personal_Property_HOEExists){
-      var personalPropertyValuation = _dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOETerm.DisplayValue
-      if (personalPropertyValuation == "Replacement Cost"){
+      if (_dwelling.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost){
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY)
       }

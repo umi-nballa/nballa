@@ -528,6 +528,7 @@
 			<xsd:element name="LocationNo" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClassificationNo" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="NewlyAdded" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="CoverageType">
@@ -535,10 +536,13 @@
 			<xsd:element name="CoverageCd" type="xsd:string"/>
 			<xsd:element name="IterationNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageDesc" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ExclusionDesc" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="PolicyConditionDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Limit" type="LimitType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Deductible" type="DeductibleType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Option" type="OptionType" minOccurs="0"/>
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
+            <xsd:element name="ConsentToRatePremiumAmt" type="AdditionalPremiumAmtType" minOccurs="0"/>
 			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
 			<xsd:element name="WrittenAmt" type="WrittenAmtType"/>
 			<xsd:element name="CreditOrSurcharge" type="CreditOrSurchargeType" minOccurs="0"/>
@@ -1897,11 +1901,12 @@
 	<xsd:complexType name="ConstructionType">
 		<xsd:sequence>
 			<xsd:element name="ConstructionCd" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ConstructionType" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ConstructionPct" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="EIFSInstalledYr" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="SidingCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="SidingPct" type="xsd:byte" minOccurs="0"/>
-			<xsd:element name="Description" type="xsd:string"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="InsurerConstructionClassCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="InsurerConstructionClassDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ConstructionBeganDt" type="xsd:date" minOccurs="0"/>
@@ -2003,6 +2008,7 @@
 			<xsd:element name="WindClassCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="RatingMethodCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CrimeIndexCd" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="InflationGuard" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="DistanceType">
@@ -2041,6 +2047,7 @@
 			<xsd:element name="SprinkleredPct" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="NumSmokeAlarms" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="OtherProtectionDesc" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="BCEG" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="OtherImprovementAmtType">
@@ -3471,6 +3478,7 @@
 			<xsd:element name="Age" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OccupationType" type="OccupationTypeType" minOccurs="0"/>
 			<xsd:element name="Employer" type="EmployerType" minOccurs="0"/>
+            <xsd:element name="ClaimNumber" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ClaimantRoleType">
@@ -3501,6 +3509,14 @@
 			<xsd:element name="Employer" type="EmployerType"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="ClueLossSummaryType">
+        <xsd:sequence>
+            <xsd:element name="ClaimNumber" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AmountPaid" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="LossCause" type="LossCauseType" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
     <xsd:complexType name="ClueSearchInfoType">
         <xsd:sequence>
             <xsd:element name="ClueSearchSubject" type="ClueSearchSubjectType" minOccurs="0" maxOccurs="unbounded"/>
@@ -3539,11 +3555,16 @@
     <xsd:complexType name="ClueHeaderType">
         <xsd:sequence>
             <xsd:element name="QuotebackID" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CaseID" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ReferenceNumber" type="xsd:string" minOccurs="0"/>
             <xsd:element name="OrderDate" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Requestor" type="xsd:string" minOccurs="0"/>
             <xsd:element name="AccountNumber" type="xsd:string" minOccurs="0"/>
             <xsd:element name="CompleteDate" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueTotalRiskClaims" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueTotalSubjectClaims" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueProcessingStatus" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="NodeLocation" type="xsd:string" minOccurs="0"/>
         </xsd:sequence>
     </xsd:complexType>
 	<xsd:complexType name="AdjusterRoleType">
@@ -4525,6 +4546,7 @@
 			<xsd:element name="ClaimNoteCreatedOn" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClaimNoteCreatedBy" type="ClaimNoteCreatedByType" minOccurs="0"/>
             <xsd:element name="ClaimNoteCreatedByRelation" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClaimNumber" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="LossLocationType">
@@ -5510,6 +5532,8 @@
             <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueSearchInfo" type="ClueSearchInfoType" minOccurs="0"/>
+            <xsd:element name="ClueMatchIndicator" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClueLossSummary" type="ClueLossSummaryType" minOccurs="0"/>
             <xsd:element name="ClueHeader" type="ClueHeaderType" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>

@@ -67,7 +67,9 @@ class BP7PostOnChangeHandler {
     "BP7OffPremIntrpOfBusnVehiclesAndMobileEquipItem" -> {"BP7Option"},
     "BP7CondoCommlUnitOwnersOptionalCovs" -> {"BP7Limit26"},
     "BP7BuildingBusinessIncomeExtraExpense_EXT" -> {"BP7AnnualBI_EXT"},
-    "BP7Structure" -> {"BP7BuildingOwnerOccupies_EXT"}
+    "BP7Structure" -> {"BP7BuildingOwnerOccupies_EXT"},
+    "BP7EmploymentPracticesLiabilityCov_EXT" -> {"EmployPracLiabCovLimit_EXT"},
+    "BP7CyberOneCov_EXT" -> {"CoverageType_Ext", "CoverageOptions_EXT"}
   }
 
   static public var COVTERMS_WITH_FIELD_LEVEL_VALIDATION : Map<ClausePattern, List<CovTermPattern>> = {

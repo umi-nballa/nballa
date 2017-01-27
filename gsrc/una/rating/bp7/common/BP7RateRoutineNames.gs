@@ -42,4 +42,8 @@ class BP7RateRoutineNames {
   public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_1_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage1RateRoutine"
   public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_2_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage2RateRoutine"
   public static final var BP7_ORDINANCE_OR_LAW_COVERAGE_3_RATE_ROUTINE : String = "BP7OrdinanceOrLawCoverage3RateRoutine"
+  public static final var BP7_TERRORISM_COVERAGE_RATE_ROUTINE : String = "BP7TerrorismCoverageRateRoutine"
+  public static final var BP7_POLICY_FEE_RATE_ROUTINE : String = "BP7PolicyFeeRateRoutine"
+  public static final var BP7_DATA_COMPROMISE_RESPONSE_EXPENSES_FIRST_PARTY_RATE_ROUTINE : String = "BP7DataCompromiseResponseExpensesFirstPartyRateRoutine"
+  public static final var BP7_DATA_COMPROMISE_RESPONSE_EXPENSES_FIRST_THIRD_PARTY_RATE_ROUTINE : String = "BP7DataCompromiseResponseExpensesFirstAndThirdPartyRateRoutine"
 }

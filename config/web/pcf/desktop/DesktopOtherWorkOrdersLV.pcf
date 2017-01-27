@@ -65,6 +65,16 @@
           label="displaykey.Web.DesktopJobsLV.Transaction"
           value="job.Subtype"/>
         <Cell
+          enableSort="false"
+          id="organization"
+          label="displaykey.Web.DesktopJobsLV.Organization"
+          value="job.LatestPeriod.ProducerCodeOfRecord"/>
+        <Cell
+          enableSort="false"
+          id="policyType"
+          label="displaykey.Web.DesktopJobsLV.PolicyType"
+          value="getPolicyType(job.LatestPeriod)"/>
+        <Cell
           id="ProducerCode"
           label="displaykey.Web.DesktopJobsLV.ProducerCode"
           value="job.Policy.ProducerCodeOfService.Code"/>
@@ -72,6 +82,10 @@
           id="Description"
           label="displaykey.Web.DesktopJobsLV.Description"
           value="job.Description"/>
+        <Cell
+          id="substatus"
+          label="displaykey.Web.DesktopJobsLV.SubStatus"
+          value="job.SubStatus"/>
         <Cell
           enableSort="false"
           id="Producer"
@@ -86,5 +100,16 @@
           visible="perm.System.viewproducerstyledesktopdetails"/>
       </Row>
     </RowIterator>
+    <Code><![CDATA[function getPolicyType(period:PolicyPeriod):String
+      {
+        if(period.HomeownersLine_HOEExists)
+          return period.HomeownersLine_HOE.HOPolicyType.DisplayName
+        if(period.BOPLineExists)
+          return "Business Owners"
+        if(period.CPLineExists || period.GLLineExists)
+          return "Commercial Package"
+        return "None"
+
+      }]]></Code>
   </ListViewPanel>
 </PCF>

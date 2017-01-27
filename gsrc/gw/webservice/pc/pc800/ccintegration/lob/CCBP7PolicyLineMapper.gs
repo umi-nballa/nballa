@@ -118,6 +118,13 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
               ru.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
             }
 
+            // Process building-level classification coverages
+            for(classCov in bld.Classifications.Coverages){
+              var ccCov = new CCPropertyCoverage()
+              populateCoverage(ccCov, classCov)
+              ru.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+            }
+
             // For building-level additional interests (e.g., lienholders), add a location-level contact in CC
             for (addInterest in bld.AdditionalInterests) {
               addRULevelAdditionalInterest(addInterest.ID, ru, addInterest.PolicyAddlInterest.ContactDenorm)

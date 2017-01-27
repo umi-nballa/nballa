@@ -52,6 +52,7 @@ public final class HORateRoutineNames {
   public static final var PREFERRED_BUILDER_CREDIT_RATE_ROUTINE : String = "UNAHOPreferredBuilderCreditRateRoutine"
   public static final var MAXIMUM_DISCOUNT_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMaximumDiscountAdjustmentRateRoutine"
   public static final var MULTI_LINE_DISCOUNT_RATE_ROUTINE : String = "UNAHOMultiLineDiscountRateRoutine"
+  public static final var WATERCRAFT_LIABILITY_COVERAGE_RATE_ROUTINE : String = "UNAHOWatercraftLiabilityCoverageRateRoutine"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -90,7 +91,16 @@ public final class HORateRoutineNames {
   public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
   public static final var BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeComplianceGradingCreditRateRoutine"
   public static final var OTHER_STRUCTURES_RENTED_TO_OTHERS_RATE_ROUTINE : String = "UNAHOOtherStructuresRentedToOthersRateRoutine"
+  public static final var NCRB_PREMIUM_RATE_ROUTINE : String = "UNAHONCRatingBureauPremiumRateRoutine"
   public static final var NO_PRIOR_INSURANCE_RATE_ROUTINE : String = "UNAHONoPriorInsuranceRateRoutine"
   public static final var TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE : String = "UNAHOTownhouseOrRowhouseSurchargeRateRoutine"
   public static final var BRUSH_HAZARD_SURCHARGE_RATE_ROUTINE : String = "UNAHOBrushHazardSurchargeRateRoutine"
+
+  public static final var CC_EFT_ACCESSDEVICE_FORGERY_AND_COUNTERFEIT_MONEY : String = "UNAHOCCEFTAccessDeviceForgeryAndCounterfeitMoney"
+  public static final var RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE : String = "UNAHOResidenceHeldInTrustRateRoutine"
+  public static final var PERSONAL_PROPERTY_OFF_RESIDENCE : String = "UNAPersonalPropertyOffResidence"
+
+  public static final var EQ_LIMITED_COV_CA_RATE_ROUTINE : String = "UNAHOEarthquakeLimitedCovRateRoutine"
+  public static final var EQ_COMPREHENSIVE_COV_CA_RATE_ROUTINE :String = "UNAHOEarthquakeComprehensiveCovRateRoutine"
+  public static final var UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE :String = "UNAHOUnitOwnersCovAIncreasedLimitRateRoutine"
 }

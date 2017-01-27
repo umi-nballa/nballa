@@ -32,6 +32,9 @@
     <Variable
       initialValue="(line.HomeownersCosts.whereTypeIs(HomeownersLineCost_EXT).where( \ cost -&gt; cost.HOCostType != null)) as List&lt;entity.HomeownersLineCost_EXT&gt;"
       name="OtherCosts"/>
+    <Variable
+      initialValue="line.HomeownersCosts.whereTypeIs(HOTaxCost_HOE) as List&lt;entity.HOTaxCost_HOE&gt;"
+      name="feeCosts"/>
     <PanelRef>
       <TitleBar
         title="displaykey.Web.Homeowners.PolicyType(line.Pattern.DisplayName, line.HOPolicyType.DisplayName)  "/>
@@ -105,6 +108,17 @@
         </PanelRow>
       </PanelSet>
     </PanelRef>
+    <DetailViewPanel
+      visible="not feeCosts.Empty">
+      <InputColumn>
+        <Label
+          label="&quot;Fees&quot;"/>
+      </InputColumn>
+    </DetailViewPanel>
+    <PanelRef
+      def="HOCostHOEFeesDV(feeCosts)"
+      id="FeeTaxCosts"
+      visible="not feeCosts.Empty"/>
     <Code><![CDATA[function getOtherCosts():List<HomeownersCost_HOE>{
   var allOtherCosts : List<HomeownersCost_HOE>
   allOtherCosts = dwelling.VersionList.Coverages.where( \ c -> not c.AllVersions.first().CoverageCategory.Code.equals("HODW_SectionI_HOE")).flatMap(\ c -> c.Costs).flatMap(\ c -> c.AllVersions).toList()

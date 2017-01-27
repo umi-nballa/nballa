@@ -20,6 +20,7 @@ abstract class HPXPolicyConditionMapper {
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentPolicyCondition.PatternCode
+    cov.PolicyConditionDesc = currentPolicyCondition.Pattern.Description
     var coverableInfo = createCoverableInfo(currentPolicyCondition, previousPolicyCondition)
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))

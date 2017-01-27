@@ -28,6 +28,19 @@ class RateFactorUtil {
   static var _bcegFactor : BigDecimal = 1.0
   static var _windExclusionFactor : BigDecimal = 1.0
 
+  static function setDefaults(){
+    _accountModificationFactor = 1.0
+    _buildingAgeFactor = 1.0
+    _experienceRatingFactor = 1.0
+    _minimumFactor = 0.75
+    _territoryModificationFactor = 1.0
+    _sprinklerFactor = 0.65
+    _buildingDeductibleFactor = 1.0
+    _contentDeductibleFactor = 1.0
+    _bcegFactor = 1.0
+    _windExclusionFactor = 1.0
+  }
+
   /**
   * Sets the Account modification factor by summing up all the scheduled modifiers shown on screen
    */

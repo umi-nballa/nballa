@@ -31,7 +31,25 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     producerChanged()
     blockRewritePolicy()
     blockSpecificConstructionTypes()
+     createOfacUWIssue()
   }
+
+  private function createOfacUWIssue()
+  {
+    var period = _policyEvalContext.Period
+
+    if(period.ofaccontact!=null && period.ofaccontact.length>0)
+      {
+    var shortDescription =
+        \ -> "Underwriting review required for OFAC"
+    var longDescription =
+        \ -> "Underwriting review is required for OFAC "
+    _policyEvalContext.addIssue("OfacCheck","OfacCheck",shortDescription,longDescription)
+       }
+
+
+  }
+
 
   override function onQuestion() {
     QuestionIssueAutoRaiser.autoRaiseIssuesForQuestions(_policyEvalContext)

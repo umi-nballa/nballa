@@ -5,6 +5,7 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses java.lang.IllegalStateException
 uses una.config.ConfigParamsUtil
 uses java.lang.Integer
+uses gw.api.domain.covterm.TypekeyCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,13 +60,13 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
-  property get DwellingValuationMethodCovTerm() : OptionCovTerm{
-    var result : OptionCovTerm
+  property get DwellingValuationMethodCovTerm() : TypekeyCovTerm{
+    var result : TypekeyCovTerm
 
     if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(this.HOPolicyType)){
       result = this.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm
     }else{
-      result = this.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOETerm
+      result = this.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOE_ExtTerm
     }
 
     return result

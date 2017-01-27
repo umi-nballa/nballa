@@ -1,22 +1,19 @@
 package una.rating.ho.tx
 
-uses gw.api.domain.covterm.CovTerm
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.common.util.DateRange
 uses una.logging.UnaLoggerCategory
 uses una.rating.ho.tx.ratinginfos.HODwellingRatingInfo
 uses una.rating.ho.common.UNAHORatingEngine_HOE
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
-uses una.rating.ho.common.HOPersonalPropertyRatingInfo
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.tx.ratinginfos.HODiscountsOrSurchargesRatingInfo
 uses una.rating.ho.tx.ratinginfos.HOLineRatingInfo
 uses una.rating.ho.tx.ratinginfos.HORatingInfo
 uses una.rating.util.HOCreateCostDataUtil
-
-uses java.math.BigDecimal
 uses java.util.Map
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
+uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -71,6 +68,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
           rateUnitOwnersRentalToOthers(lineCov, dateRange, _hoRatingInfo)
           break
+      case HOSL_WatercraftLiabilityCov_HOE_Ext:
+          rateWatercraftLiabilityCoverage(lineCov, dateRange)
+          break
     }
   }
 
@@ -114,6 +114,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_MoldRemediationCov_HOE_Ext:
           rateMoldRemediationCoverage(dwellingCov, dateRange)
           break
+      case HODW_AdditionalInsuredSchedProp:
+          rateAdditionalInsuredCoverage(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -131,9 +134,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     if (PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){
       rateAgeOfHomeDiscount(dateRange)
-    }
-    if (hasAdditionalNamedInsureds()){
-      rateAdditionalInsuredCoverage(dateRange)
     }
     if (dwelling?.HailResistantRoofCredit_Ext){
       rateHailResistantRoofCredit(dateRange)
@@ -315,6 +315,22 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
+   * Rate the watercraft liability coverage for Texas
+   */
+  function rateWatercraftLiabilityCoverage(lineCov: HOSL_WatercraftLiabilityCov_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateOutboardMotorsAndWatercraftCoverage", this.IntrinsicType)
+    for (item in lineCov.scheduledItem_Ext) {
+      var rateRoutineParameterMap = getWatercraftLiabilityCovParameterSet(item, lineCov)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.WATERCRAFT_LIABILITY_COVERAGE_RATE_ROUTINE, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Outboard Motors and Watercraft Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    * Rate the medical payments coverage
    */
   function rateMedicalPayments(lineCov: HOLI_Med_Pay_HOE, dateRange: DateRange) {
@@ -475,16 +491,17 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-   * Rate the Addition insured
+   * Rate the Addition insured coverage
    */
-  function rateAdditionalInsuredCoverage(dateRange: DateRange) {
+  function rateAdditionalInsuredCoverage(dwellingCov: HODW_AdditionalInsuredSchedProp, dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredCoverage to rate Additional Insured Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, HOCostType_Ext.TC_ADDITIONALINSURED,
-        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
-      addCost(costData)
+    if(dwellingCov?.ScheduledItems?.Count > 0) {
+      var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
     if(_logger.DebugEnabled)
       _logger.debug("Additional Insured Coverage Rated Successfully", this.IntrinsicType)
   }
@@ -630,6 +647,16 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   /**
    * Returns the parameter set for the Dwelling level coverages
    */
+  private function getWatercraftLiabilityCovParameterSet(item: HOscheduleItem_HOE_Ext, lineCov: HOSL_WatercraftLiabilityCov_HOE_Ext): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> PolicyLine,
+        TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOWatercraftLiabilityCovRatingInfo(item, lineCov)
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Dwelling level coverages
+   */
   private function getDwellingCovParameterSet(line: PolicyLine, dwellingRatingInfo: HODwellingRatingInfo, stateCode: String): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
@@ -669,11 +696,5 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium += (_hoRatingInfo.FinalAdjustedBaseClassPremium + _hoRatingInfo.ReplacementCostDwellingPremium +
         _hoRatingInfo.ReplacementCostPersonalPropertyPremium + _hoRatingInfo.HOAPlusCoveragePremium)
-  }
-
-  private function hasAdditionalNamedInsureds() : boolean{
-    var period = PolicyLine.Dwelling.PolicyPeriod
-    var additionalNamedInsureds = period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)
-    return additionalNamedInsureds?.HasElements
   }
 }

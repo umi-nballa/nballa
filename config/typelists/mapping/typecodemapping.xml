@@ -1,217 +1,233 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE typecodemapping [
+        <!ELEMENT typecodemapping (namespacelist|typelist)*>
+        <!ELEMENT namespacelist (namespace)*>
+        <!ELEMENT namespace (#PCDATA)>
+        <!ATTLIST namespace
+                name CDATA #REQUIRED>
+        <!ELEMENT typelist (mapping)*>
+        <!ATTLIST typelist
+                name CDATA #REQUIRED>
+        <!ELEMENT mapping (#PCDATA)>
+        <!ATTLIST mapping
+                alias CDATA #REQUIRED
+                namespace CDATA #REQUIRED
+                typecode CDATA #REQUIRED>
+        ]>
 <typecodemapping>
-  <namespacelist>
-    <namespace name="hpx" />
-    <namespace name="tuna" />
-    <namespace name="tuna_CA" />
-    <namespace name="tuna_FL" />
-    <namespace name="tuna_NC" />
-    <namespace name="tuna_NV" />
-    <namespace name="tuna_TX" />
-    <namespace name="tuna_HI" />
-    <namespace name="lexisFirst" />
-  </namespacelist>
-  <typelist name="DwellingOccupancyType_HOE">
-    <mapping typecode="owner" namespace="hpx" alias="OWNER" />
-    <mapping typecode="tenant" namespace="hpx" alias="TENAN" />
-    <mapping typecode="vacant" namespace="hpx" alias="UNOCC" />
-    <mapping typecode="nonown" namespace="hpx" alias="UNOCC" />
-    <mapping typecode="inconst" namespace="hpx" alias="UNOCC" />
-  </typelist>
-  <typelist name="NumUnits_HOE">
-    <mapping typecode="One" namespace="hpx" alias="1" />
-    <mapping typecode="Two" namespace="hpx" alias="2" />
-    <mapping typecode="Three" namespace="hpx" alias="3" />
-    <mapping typecode="Four" namespace="hpx" alias="4" />
-    <mapping typecode="FiveToFifteen" namespace="hpx" alias="5" />
-    <mapping typecode="SixteeenToTwentyFive" namespace="hpx" alias="16" />
-    <mapping typecode="TwentySixPlus" namespace="hpx" alias="26" />
-  </typelist>
-  <typelist name="ResidenceType_HOE">
-    <mapping typecode="Fam1" namespace="hpx" alias="DW" />
-    <mapping typecode="Fam2" namespace="hpx" alias="DW" />
-    <mapping typecode="Fam3" namespace="hpx" alias="DW" />
-    <mapping typecode="Fam4" namespace="hpx" alias="DW" />
-    <mapping typecode="Fam5" namespace="hpx" alias="DW" />
-    <mapping typecode="Apt" namespace="hpx" alias="APT" />
-    <mapping typecode="Condo" namespace="hpx" alias="CD" />
-    <mapping typecode="Coop" namespace="hpx" alias="CO" />
-    <mapping typecode="Mobile" namespace="hpx" alias="MH" />
-    <mapping typecode="townhouseRowhouse_Ext" namespace="hpx" alias="TH" />
-    <mapping typecode="Duplex" namespace="hpx" alias="OTH" />
-  </typelist>
-  <typelist name="BP7PredominentOccType_Ext">
-    <mapping typecode="BuildingOwner" namespace="hpx" alias="OWNER" />
-    <mapping typecode="BOOccupant" namespace="hpx" alias="OCC" />
-    <mapping typecode="CondominiumAssociation" namespace="hpx" alias="COA" />
-    <mapping typecode="CondominiumUnitOwner" namespace="hpx" alias="CO" />
-    <mapping typecode="CondoUnitOwnerOccupant" namespace="hpx" alias="COC" />
-    <mapping typecode="Tenant" namespace="hpx" alias="TENAN" />
-  </typelist>
+    <namespacelist>
+        <namespace name="hpx"/>
+        <namespace name="tuna"/>
+        <namespace name="tuna_CA"/>
+        <namespace name="tuna_FL"/>
+        <namespace name="tuna_NC"/>
+        <namespace name="tuna_NV"/>
+        <namespace name="tuna_TX"/>
+        <namespace name="tuna_HI"/>
+        <namespace name="lexisFirst"/>
+        <namespace name="clue"/>
+    </namespacelist>
+    <typelist name="DwellingOccupancyType_HOE">
+        <mapping typecode="owner" namespace="hpx" alias="OWNER"/>
+        <mapping typecode="tenant" namespace="hpx" alias="TENAN"/>
+        <mapping typecode="vacant" namespace="hpx" alias="UNOCC"/>
+        <mapping typecode="nonown" namespace="hpx" alias="UNOCC"/>
+        <mapping typecode="inconst" namespace="hpx" alias="UNOCC"/>
+    </typelist>
+    <typelist name="NumUnits_HOE">
+        <mapping typecode="One" namespace="hpx" alias="1"/>
+        <mapping typecode="Two" namespace="hpx" alias="2"/>
+        <mapping typecode="Three" namespace="hpx" alias="3"/>
+        <mapping typecode="Four" namespace="hpx" alias="4"/>
+        <mapping typecode="FiveToFifteen" namespace="hpx" alias="5"/>
+        <mapping typecode="SixteeenToTwentyFive" namespace="hpx" alias="16"/>
+        <mapping typecode="TwentySixPlus" namespace="hpx" alias="26"/>
+    </typelist>
+    <typelist name="ResidenceType_HOE">
+        <mapping typecode="Fam1" namespace="hpx" alias="DW"/>
+        <mapping typecode="Fam2" namespace="hpx" alias="DW"/>
+        <mapping typecode="Fam3" namespace="hpx" alias="DW"/>
+        <mapping typecode="Fam4" namespace="hpx" alias="DW"/>
+        <mapping typecode="Fam5" namespace="hpx" alias="DW"/>
+        <mapping typecode="Apt" namespace="hpx" alias="APT"/>
+        <mapping typecode="Condo" namespace="hpx" alias="CD"/>
+        <mapping typecode="Coop" namespace="hpx" alias="CO"/>
+        <mapping typecode="Mobile" namespace="hpx" alias="MH"/>
+        <mapping typecode="townhouseRowhouse_Ext" namespace="hpx" alias="TH"/>
+        <mapping typecode="Duplex" namespace="hpx" alias="OTH"/>
+    </typelist>
+    <typelist name="BP7PredominentOccType_Ext">
+        <mapping typecode="BuildingOwner" namespace="hpx" alias="OWNER"/>
+        <mapping typecode="BOOccupant" namespace="hpx" alias="OCC"/>
+        <mapping typecode="CondominiumAssociation" namespace="hpx" alias="COA"/>
+        <mapping typecode="CondominiumUnitOwner" namespace="hpx" alias="CO"/>
+        <mapping typecode="CondoUnitOwnerOccupant" namespace="hpx" alias="COC"/>
+        <mapping typecode="Tenant" namespace="hpx" alias="TENAN"/>
+    </typelist>
     <typelist name="RoofShape_Ext">
-        <mapping typecode="Complex" namespace="tuna" alias="C" />
-        <mapping typecode="Flat" namespace="tuna" alias="F" />
-        <mapping typecode="Gable" namespace="tuna" alias="G" />
-        <mapping typecode="Gambrel" namespace="tuna" alias="GM" />
-        <mapping typecode="Hip" namespace="tuna" alias="H" />
-        <mapping typecode="Mansard" namespace="tuna" alias="M" />
-        <mapping typecode="UnknownOther" namespace="tuna" alias="S" />
+        <mapping typecode="Complex" namespace="tuna" alias="C"/>
+        <mapping typecode="Flat" namespace="tuna" alias="F"/>
+        <mapping typecode="Gable" namespace="tuna" alias="G"/>
+        <mapping typecode="Gambrel" namespace="tuna" alias="GM"/>
+        <mapping typecode="Hip" namespace="tuna" alias="H"/>
+        <mapping typecode="Mansard" namespace="tuna" alias="M"/>
+        <mapping typecode="UnknownOther" namespace="tuna" alias="S"/>
     </typelist>
     <typelist name="RoofingMaterial_HOE">
-        <mapping typecode="A_COMP" namespace="tuna" alias="A_COMP" />
-        <mapping typecode="BUP" namespace="tuna" alias="BUP" />
-        <mapping typecode="BUP" namespace="tuna" alias="BUPNG" />
-        <mapping typecode="COMP" namespace="tuna" alias="COMP" />
-        <mapping typecode="COP" namespace="tuna" alias="COP" />
-        <mapping typecode="COP" namespace="tuna" alias="COPS" />
-        <mapping typecode="ICOMP" namespace="tuna" alias="ICOMP" />
-        <mapping typecode="MEME" namespace="tuna" alias="MEME" />
-        <mapping typecode="Other" namespace="tuna" alias="MT" />
-        <mapping typecode="Other" namespace="tuna" alias="MTLC" />
-        <mapping typecode="RR" namespace="tuna" alias="RR" />
-        <mapping typecode="COMP" namespace="tuna" alias="SCOMP" />
-        <mapping typecode="Slate" namespace="tuna" alias="SL" />
-        <mapping typecode="SPF" namespace="tuna" alias="SPF" />
-        <mapping typecode="TIL" namespace="tuna" alias="TIL" />
-        <mapping typecode="TILC" namespace="tuna" alias="TILC" />
-        <mapping typecode="TILC" namespace="tuna" alias="TILF" />
-        <mapping typecode="Other" namespace="tuna" alias="TILG" />
-        <mapping typecode="Woodshake" namespace="tuna" alias="W" />
-        <mapping typecode="Woodshake" namespace="tuna" alias="WD" />
+        <mapping typecode="A_COMP" namespace="tuna" alias="A_COMP"/>
+        <mapping typecode="BUP" namespace="tuna" alias="BUP"/>
+        <mapping typecode="BUP" namespace="tuna" alias="BUPNG"/>
+        <mapping typecode="COMP" namespace="tuna" alias="COMP"/>
+        <mapping typecode="COP" namespace="tuna" alias="COP"/>
+        <mapping typecode="COP" namespace="tuna" alias="COPS"/>
+        <mapping typecode="ICOMP" namespace="tuna" alias="ICOMP"/>
+        <mapping typecode="MEME" namespace="tuna" alias="MEME"/>
+        <mapping typecode="Other" namespace="tuna" alias="MT"/>
+        <mapping typecode="Other" namespace="tuna" alias="MTLC"/>
+        <mapping typecode="RR" namespace="tuna" alias="RR"/>
+        <mapping typecode="COMP" namespace="tuna" alias="SCOMP"/>
+        <mapping typecode="Slate" namespace="tuna" alias="SL"/>
+        <mapping typecode="SPF" namespace="tuna" alias="SPF"/>
+        <mapping typecode="TIL" namespace="tuna" alias="TIL"/>
+        <mapping typecode="TILC" namespace="tuna" alias="TILC"/>
+        <mapping typecode="TILC" namespace="tuna" alias="TILF"/>
+        <mapping typecode="Other" namespace="tuna" alias="TILG"/>
+        <mapping typecode="Woodshake" namespace="tuna" alias="W"/>
+        <mapping typecode="Woodshake" namespace="tuna" alias="WD"/>
     </typelist>
     <typelist name="NumberOfStories_HOE">
-        <mapping typecode="OneStory_Ext" namespace="tuna" alias="1" />
-        <mapping typecode="OneAndHalfStories_Ext" namespace="tuna" alias="1.5" />
-        <mapping typecode="TwoStories_Ext" namespace="tuna" alias="2" />
-        <mapping typecode="TwoAndHalfStories_Ext" namespace="tuna" alias="2.5" />
-        <mapping typecode="ThreeStories_Ext" namespace="tuna" alias="3" />
-        <mapping typecode="ThreeAndHalfStories_Ext" namespace="tuna" alias="3.5" />
-        <mapping typecode="FourStories_Ext" namespace="tuna" alias="4" />
-        <mapping typecode="FourAndHalfStories_Ext" namespace="tuna" alias="4.5" />
-        <mapping typecode="FiveStories_Ext" namespace="tuna" alias="5" />
-        <mapping typecode="TwoStories_Ext" namespace="tuna" alias="BI" />
-        <mapping typecode="TwoStories_Ext" namespace="tuna" alias="SPLIT" />
+        <mapping typecode="OneStory_Ext" namespace="tuna" alias="1"/>
+        <mapping typecode="OneAndHalfStories_Ext" namespace="tuna" alias="1.5"/>
+        <mapping typecode="TwoStories_Ext" namespace="tuna" alias="2"/>
+        <mapping typecode="TwoAndHalfStories_Ext" namespace="tuna" alias="2.5"/>
+        <mapping typecode="ThreeStories_Ext" namespace="tuna" alias="3"/>
+        <mapping typecode="ThreeAndHalfStories_Ext" namespace="tuna" alias="3.5"/>
+        <mapping typecode="FourStories_Ext" namespace="tuna" alias="4"/>
+        <mapping typecode="FourAndHalfStories_Ext" namespace="tuna" alias="4.5"/>
+        <mapping typecode="FiveStories_Ext" namespace="tuna" alias="5"/>
+        <mapping typecode="TwoStories_Ext" namespace="tuna" alias="BI"/>
+        <mapping typecode="TwoStories_Ext" namespace="tuna" alias="SPLIT"/>
     </typelist>
     <typelist name="RoofType">
-        <mapping typecode="compositionArchitecturalShingle_Ext" namespace="tuna" alias="A_COMP" />
-        <mapping typecode="compositionArchitecturalShingle_Ext" namespace="tuna_FL" alias="A_COMP" />
-        <mapping typecode="BuiltUpGravel_Ext" namespace="tuna" alias="BUP" />
-        <mapping typecode="BuiltUpRoofGravel_Ext" namespace="tuna_FL" alias="BUP" />
-        <mapping typecode="BuiltUpGravel_Ext" namespace="tuna" alias="BUPNG" />
-        <mapping typecode="BuiltUpGravel_Ext" namespace="tuna_FL" alias="BUPNG" />
-        <mapping typecode="compositionThreeTab_Ext" namespace="tuna" alias="COMP" />
-        <mapping typecode="compositionThreeTab_Ext" namespace="tuna_FL" alias="COMP" />
-        <mapping typecode="copper" namespace="tuna" alias="COP" />
-        <mapping typecode="copper" namespace="tuna_FL" alias="COP" />
-        <mapping typecode="copper" namespace="tuna" alias="COPS" />
-        <mapping typecode="copper" namespace="tuna_FL" alias="COPS" />
-        <mapping typecode="compositionImpactResistShingles_Ext" namespace="tuna" alias="ICOMP" />
-        <mapping typecode="compositionImpactResistShingles_Ext" namespace="tuna_FL" alias="ICOMP" />
-        <mapping typecode="membrane_Ext" namespace="tuna" alias="MEME" />
-        <mapping typecode="membrane_Ext" namespace="tuna_FL" alias="MEME" />
-        <mapping typecode="other" namespace="tuna" alias="MT" />
-        <mapping typecode="other" namespace="tuna_FL" alias="MT" />
-        <mapping typecode="steel_Ext" namespace="tuna" alias="MTL" />
-        <mapping typecode="steel_Ext" namespace="tuna_FL" alias="MTL" />
-        <mapping typecode="other" namespace="tuna" alias="MTLC" />
-        <mapping typecode="other" namespace="tuna_FL" alias="MTLC" />
-        <mapping typecode="compositionRollRoofing_Ext" namespace="tuna" alias="RR" />
-        <mapping typecode="compositionRollRoofing_Ext" namespace="tuna_FL" alias="RR" />
-        <mapping typecode="compositionThreeTab_Ext" namespace="tuna" alias="SCOMP" />
-        <mapping typecode="compositionThreeTab_Ext" namespace="tuna_FL" alias="SCOMP" />
-        <mapping typecode="compositionThreeTab_Ext" namespace="tuna_CA" alias="SCOMP" />
-        <mapping typecode="slate_Ext" namespace="tuna" alias="SL" />
-        <mapping typecode="slate_Ext" namespace="tuna_FL" alias="SL" />
-        <mapping typecode="sprayedPolyurethaneFoam_Ext" namespace="tuna" alias="SPF" />
-        <mapping typecode="sprayedPolyurethaneFoam_Ext" namespace="tuna_FL" alias="SPF" />
-        <mapping typecode="tileClay_Ext" namespace="tuna" alias="TIL" />
-        <mapping typecode="tileClay_Ext" namespace="tuna_NV" alias="TIL" />
-        <mapping typecode="tileClay_Ext" namespace="tuna_FL" alias="TIL" />
-        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILC" />
-        <mapping typecode="tile_Concrete_Ext" namespace="tuna_FL" alias="TILC" />
-        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILF" />
-        <mapping typecode="ClayConcreteExt" namespace="tuna_FL" alias="TILF" />
-        <mapping typecode="other" namespace="tuna" alias="TILG" />
-        <mapping typecode="other" namespace="tuna_FL" alias="TILG" />
-        <mapping typecode="woodShake_Ext" namespace="tuna" alias="W" />
-        <mapping typecode="WoodShingles_Ext" namespace="tuna_FL" alias="W" />
-        <mapping typecode="woodShake_Ext" namespace="tuna_CA" alias="W" />
-        <mapping typecode="woodShake_Ext" namespace="tuna" alias="WD" />
-        <mapping typecode="woodShake_Ext" namespace="tuna_FL" alias="WD" />
-        <mapping typecode="woodShake_Ext" namespace="tuna_CA" alias="WD" />
+        <mapping typecode="compositionArchitecturalShingle_Ext" namespace="tuna" alias="A_COMP"/>
+        <mapping typecode="compositionArchitecturalShingle_Ext" namespace="tuna_FL" alias="A_COMP"/>
+        <mapping typecode="BuiltUpGravel_Ext" namespace="tuna" alias="BUP"/>
+        <mapping typecode="BuiltUpRoofGravel_Ext" namespace="tuna_FL" alias="BUP"/>
+        <mapping typecode="BuiltUpGravel_Ext" namespace="tuna" alias="BUPNG"/>
+        <mapping typecode="BuiltUpGravel_Ext" namespace="tuna_FL" alias="BUPNG"/>
+        <mapping typecode="compositionThreeTab_Ext" namespace="tuna" alias="COMP"/>
+        <mapping typecode="compositionThreeTab_Ext" namespace="tuna_FL" alias="COMP"/>
+        <mapping typecode="copper" namespace="tuna" alias="COP"/>
+        <mapping typecode="copper" namespace="tuna_FL" alias="COP"/>
+        <mapping typecode="copper" namespace="tuna" alias="COPS"/>
+        <mapping typecode="copper" namespace="tuna_FL" alias="COPS"/>
+        <mapping typecode="compositionImpactResistShingles_Ext" namespace="tuna" alias="ICOMP"/>
+        <mapping typecode="compositionImpactResistShingles_Ext" namespace="tuna_FL" alias="ICOMP"/>
+        <mapping typecode="membrane_Ext" namespace="tuna" alias="MEME"/>
+        <mapping typecode="membrane_Ext" namespace="tuna_FL" alias="MEME"/>
+        <mapping typecode="other" namespace="tuna" alias="MT"/>
+        <mapping typecode="other" namespace="tuna_FL" alias="MT"/>
+        <mapping typecode="steel_Ext" namespace="tuna" alias="MTL"/>
+        <mapping typecode="steel_Ext" namespace="tuna_FL" alias="MTL"/>
+        <mapping typecode="other" namespace="tuna" alias="MTLC"/>
+        <mapping typecode="other" namespace="tuna_FL" alias="MTLC"/>
+        <mapping typecode="compositionRollRoofing_Ext" namespace="tuna" alias="RR"/>
+        <mapping typecode="compositionRollRoofing_Ext" namespace="tuna_FL" alias="RR"/>
+        <mapping typecode="compositionThreeTab_Ext" namespace="tuna" alias="SCOMP"/>
+        <mapping typecode="compositionThreeTab_Ext" namespace="tuna_FL" alias="SCOMP"/>
+        <mapping typecode="compositionThreeTab_Ext" namespace="tuna_CA" alias="SCOMP"/>
+        <mapping typecode="slate_Ext" namespace="tuna" alias="SL"/>
+        <mapping typecode="slate_Ext" namespace="tuna_FL" alias="SL"/>
+        <mapping typecode="sprayedPolyurethaneFoam_Ext" namespace="tuna" alias="SPF"/>
+        <mapping typecode="sprayedPolyurethaneFoam_Ext" namespace="tuna_FL" alias="SPF"/>
+        <mapping typecode="tileClay_Ext" namespace="tuna" alias="TIL"/>
+        <mapping typecode="tileClay_Ext" namespace="tuna_NV" alias="TIL"/>
+        <mapping typecode="tileClay_Ext" namespace="tuna_FL" alias="TIL"/>
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILC"/>
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna_FL" alias="TILC"/>
+        <mapping typecode="tile_Concrete_Ext" namespace="tuna" alias="TILF"/>
+        <mapping typecode="ClayConcreteExt" namespace="tuna_FL" alias="TILF"/>
+        <mapping typecode="other" namespace="tuna" alias="TILG"/>
+        <mapping typecode="other" namespace="tuna_FL" alias="TILG"/>
+        <mapping typecode="woodShake_Ext" namespace="tuna" alias="W"/>
+        <mapping typecode="WoodShingles_Ext" namespace="tuna_FL" alias="W"/>
+        <mapping typecode="woodShake_Ext" namespace="tuna_CA" alias="W"/>
+        <mapping typecode="woodShake_Ext" namespace="tuna" alias="WD"/>
+        <mapping typecode="woodShake_Ext" namespace="tuna_FL" alias="WD"/>
+        <mapping typecode="woodShake_Ext" namespace="tuna_CA" alias="WD"/>
     </typelist>
     <typelist name="ConstructionType_HOE">
-        <mapping typecode="ConcreteBlock_Ext" namespace="tuna" alias="BL" />
-        <mapping typecode="Concrete_Ext" namespace="tuna" alias="CONC" />
+        <mapping typecode="ConcreteBlock_Ext" namespace="tuna" alias="BL"/>
+        <mapping typecode="Concrete_Ext" namespace="tuna" alias="CONC"/>
         <mapping typecode="OTHER" namespace="tuna_HI" alias="FRP"/>
         <mapping typecode="S" namespace="tuna" alias="FRS"/>
-        <mapping typecode="Frame_Ext" namespace="tuna" alias="FRW" />
-        <mapping typecode="S" namespace="tuna" alias="MP" />
-        <mapping typecode="OTHER" namespace="tuna" alias="SADB" />
-        <mapping typecode="SolidBrickStone_Ext" namespace="tuna" alias="SBR" />
-        <mapping typecode="Icf_Ext" namespace="tuna" alias="SIP" />
-        <mapping typecode="Frame_Ext" namespace="tuna_HI" alias="TMB" />
-        <mapping typecode="Icf_Ext" namespace="tuna_HI" alias="ICF" />
-        <mapping typecode="OTHER" namespace="tuna" alias="N" />
+        <mapping typecode="Frame_Ext" namespace="tuna" alias="FRW"/>
+        <mapping typecode="S" namespace="tuna" alias="MP"/>
+        <mapping typecode="OTHER" namespace="tuna" alias="SADB"/>
+        <mapping typecode="SolidBrickStone_Ext" namespace="tuna" alias="SBR"/>
+        <mapping typecode="Icf_Ext" namespace="tuna" alias="SIP"/>
+        <mapping typecode="Frame_Ext" namespace="tuna_HI" alias="TMB"/>
+        <mapping typecode="Icf_Ext" namespace="tuna_HI" alias="ICF"/>
+        <mapping typecode="OTHER" namespace="tuna" alias="N"/>
     </typelist>
     <typelist name="ExteriorWallFinish_Ext">
-        <mapping typecode="Aluminum" namespace="tuna" alias="AL" />
-        <mapping typecode="Aluminum" namespace="tuna_HI" alias="AL" />
-        <mapping typecode="Aluminum" namespace="tuna" alias="ALB" />
+        <mapping typecode="Aluminum" namespace="tuna" alias="AL"/>
+        <mapping typecode="Aluminum" namespace="tuna_HI" alias="AL"/>
+        <mapping typecode="Aluminum" namespace="tuna" alias="ALB"/>
         <mapping typecode="Hardiplank" namespace="tuna" alias="ASB"/>
         <mapping typecode="Hardiplank" namespace="tuna_HI" alias="ASB"/>
         <mapping typecode="Hardiplank" namespace="tuna" alias="ASBB"/>
-        <mapping typecode="WoodSiding" namespace="tuna" alias="BAB" />
-        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="BAB" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BLD" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BPIN" />
-        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="BPIN" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BR" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BR_BL" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BRC" />
-        <mapping typecode="WoodSiding" namespace="tuna" alias="BRED" />
-        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="BRED" />
-        <mapping typecode="Tin" namespace="tuna" alias="COP" />
-        <mapping typecode="Tin" namespace="tuna_HI" alias="COP" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="CSTN" />
-        <mapping typecode="WoodSiding" namespace="tuna" alias="CTG" />
-        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="CTG" />
-        <mapping typecode="Hardiplank" namespace="tuna" alias="FCEM" />
-        <mapping typecode="Hardiplank" namespace="tuna_TX" alias="FCEM" />
-        <mapping typecode="Hardiplank" namespace="tuna_HI" alias="FCEM" />
-        <mapping typecode="Hardiplank" namespace="tuna" alias="FCEMB" />
-        <mapping typecode="Hardiplank" namespace="tuna" alias="FCEMS" />
-        <mapping typecode="Hardiplank" namespace="tuna_TX" alias="FCEMS" />
-        <mapping typecode="Hardiplank" namespace="tuna_HI" alias="FCEMS" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="LIME" />
-        <mapping typecode="Other" namespace="tuna" alias="LOG" />
-        <mapping typecode="Other" namespace="tuna_HI" alias="LOG" />
-        <mapping typecode="WoodSiding" namespace="tuna" alias="RC" />
-        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="RC" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="RMP" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna_HI" alias="RMP" />
-        <mapping typecode="Other" namespace="tuna" alias="SADB" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SBC" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna_TX" alias="SBC" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SBR" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna_TX" alias="SBR" />
-        <mapping typecode="WoodShakeSiding" namespace="tuna" alias="SHN" />
-        <mapping typecode="WoodShakeSiding" namespace="tuna_HI" alias="SHN" />
-        <mapping typecode="Other" namespace="tuna" alias="SLOG" />
-        <mapping typecode="Other" namespace="tuna" alias="SLOG13" />
-        <mapping typecode="Other" namespace="tuna" alias="SLOG6" />
-        <mapping typecode="EfisSyntheticStucco" namespace="tuna" alias="SSTN" />
-        <mapping typecode="EfisSyntheticStucco" namespace="tuna" alias="SSTU" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STU" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SSTU_BL" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SSTU_FRM" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STN" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STN_FRM" />
-        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STNC_FRM" />
-        <mapping typecode="Stucco" namespace="tuna" alias="STU_BL" />
-        <mapping typecode="Stucco" namespace="tuna" alias="STU_FRM" />
-        <mapping typecode="Stucco" namespace="tuna_TX" alias="STU_FRM" />
-        <mapping typecode="Stucco" namespace="tuna_HI" alias="STU_FRM" />
+        <mapping typecode="WoodSiding" namespace="tuna" alias="BAB"/>
+        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="BAB"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BLD"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BPIN"/>
+        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="BPIN"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BR"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BR_BL"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="BRC"/>
+        <mapping typecode="WoodSiding" namespace="tuna" alias="BRED"/>
+        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="BRED"/>
+        <mapping typecode="Tin" namespace="tuna" alias="COP"/>
+        <mapping typecode="Tin" namespace="tuna_HI" alias="COP"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="CSTN"/>
+        <mapping typecode="WoodSiding" namespace="tuna" alias="CTG"/>
+        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="CTG"/>
+        <mapping typecode="Hardiplank" namespace="tuna" alias="FCEM"/>
+        <mapping typecode="Hardiplank" namespace="tuna_TX" alias="FCEM"/>
+        <mapping typecode="Hardiplank" namespace="tuna_HI" alias="FCEM"/>
+        <mapping typecode="Hardiplank" namespace="tuna" alias="FCEMB"/>
+        <mapping typecode="Hardiplank" namespace="tuna" alias="FCEMS"/>
+        <mapping typecode="Hardiplank" namespace="tuna_TX" alias="FCEMS"/>
+        <mapping typecode="Hardiplank" namespace="tuna_HI" alias="FCEMS"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="LIME"/>
+        <mapping typecode="Other" namespace="tuna" alias="LOG"/>
+        <mapping typecode="Other" namespace="tuna_HI" alias="LOG"/>
+        <mapping typecode="WoodSiding" namespace="tuna" alias="RC"/>
+        <mapping typecode="WoodSiding" namespace="tuna_HI" alias="RC"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="RMP"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna_HI" alias="RMP"/>
+        <mapping typecode="Other" namespace="tuna" alias="SADB"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SBC"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna_TX" alias="SBC"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SBR"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna_TX" alias="SBR"/>
+        <mapping typecode="WoodShakeSiding" namespace="tuna" alias="SHN"/>
+        <mapping typecode="WoodShakeSiding" namespace="tuna_HI" alias="SHN"/>
+        <mapping typecode="Other" namespace="tuna" alias="SLOG"/>
+        <mapping typecode="Other" namespace="tuna" alias="SLOG13"/>
+        <mapping typecode="Other" namespace="tuna" alias="SLOG6"/>
+        <mapping typecode="EfisSyntheticStucco" namespace="tuna" alias="SSTN"/>
+        <mapping typecode="EfisSyntheticStucco" namespace="tuna" alias="SSTU"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STU"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SSTU_BL"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="SSTU_FRM"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STN"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STN_FRM"/>
+        <mapping typecode="BrickStoneMasonry" namespace="tuna" alias="STNC_FRM"/>
+        <mapping typecode="Stucco" namespace="tuna" alias="STU_BL"/>
+        <mapping typecode="Stucco" namespace="tuna" alias="STU_FRM"/>
+        <mapping typecode="Stucco" namespace="tuna_TX" alias="STU_FRM"/>
+        <mapping typecode="Stucco" namespace="tuna_HI" alias="STU_FRM"/>
         <mapping typecode="WoodSiding" namespace="tuna" alias="T111"/>
         <mapping typecode="WoodSiding" namespace="tuna_HI" alias="T111"/>
         <mapping typecode="WoodSiding" namespace="tuna" alias="TPIN"/>
@@ -231,124 +247,171 @@
 
 
     <typelist name="BP7FireProtectionClassPPC">
-        <mapping typecode="1" namespace="tuna" alias="1" />
-        <mapping typecode="2" namespace="tuna" alias="2" />
-        <mapping typecode="3" namespace="tuna" alias="3" />
-        <mapping typecode="4" namespace="tuna" alias="4" />
-        <mapping typecode="5" namespace="tuna" alias="5" />
-        <mapping typecode="6" namespace="tuna" alias="6" />
-        <mapping typecode="7" namespace="tuna" alias="7" />
-        <mapping typecode="8" namespace="tuna" alias="8" />
-        <mapping typecode="9" namespace="tuna" alias="9" />
-        <mapping typecode="10" namespace="tuna" alias="10" />
+        <mapping typecode="1" namespace="tuna" alias="1"/>
+        <mapping typecode="2" namespace="tuna" alias="2"/>
+        <mapping typecode="3" namespace="tuna" alias="3"/>
+        <mapping typecode="4" namespace="tuna" alias="4"/>
+        <mapping typecode="5" namespace="tuna" alias="5"/>
+        <mapping typecode="6" namespace="tuna" alias="6"/>
+        <mapping typecode="7" namespace="tuna" alias="7"/>
+        <mapping typecode="8" namespace="tuna" alias="8"/>
+        <mapping typecode="9" namespace="tuna" alias="9"/>
+        <mapping typecode="10" namespace="tuna" alias="10"/>
     </typelist>
     <typelist name="BP7BldgCodeEffectivenessGrade">
-        <mapping typecode="1" namespace="tuna" alias="1" />
-        <mapping typecode="2" namespace="tuna" alias="2" />
-        <mapping typecode="3" namespace="tuna" alias="3" />
-        <mapping typecode="4" namespace="tuna" alias="4" />
-        <mapping typecode="5" namespace="tuna" alias="5" />
-        <mapping typecode="6" namespace="tuna" alias="6" />
-        <mapping typecode="7" namespace="tuna" alias="7" />
-        <mapping typecode="8" namespace="tuna" alias="8" />
-        <mapping typecode="9" namespace="tuna" alias="9" />
-        <mapping typecode="10" namespace="tuna" alias="10" />
+        <mapping typecode="1" namespace="tuna" alias="1"/>
+        <mapping typecode="2" namespace="tuna" alias="2"/>
+        <mapping typecode="3" namespace="tuna" alias="3"/>
+        <mapping typecode="4" namespace="tuna" alias="4"/>
+        <mapping typecode="5" namespace="tuna" alias="5"/>
+        <mapping typecode="6" namespace="tuna" alias="6"/>
+        <mapping typecode="7" namespace="tuna" alias="7"/>
+        <mapping typecode="8" namespace="tuna" alias="8"/>
+        <mapping typecode="9" namespace="tuna" alias="9"/>
+        <mapping typecode="10" namespace="tuna" alias="10"/>
     </typelist>
     <typelist name="BP7ConstructionType">
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="BL" />
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="CONC" />
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="BL"/>
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="CONC"/>
         <mapping typecode="FrameConstruction" namespace="tuna" alias="FRP"/>
         <mapping typecode="Noncombustible" namespace="tuna" alias="FRS"/>
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="FRW" />
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="ICF" />
-        <mapping typecode="MasonryNoncombustible" namespace="tuna" alias="MP" />
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="SADB" />
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="SBR" />
-        <mapping typecode="FrameConstruction" namespace="tuna_HI" alias="SIP" />
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="SIP" />
-        <mapping typecode="FrameConstruction" namespace="tuna" alias="N" />
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="FRW"/>
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="ICF"/>
+        <mapping typecode="MasonryNoncombustible" namespace="tuna" alias="MP"/>
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="SADB"/>
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="SBR"/>
+        <mapping typecode="FrameConstruction" namespace="tuna_HI" alias="SIP"/>
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="SIP"/>
+        <mapping typecode="FrameConstruction" namespace="tuna" alias="N"/>
     </typelist>
     <typelist name="CPRoofShape_Ext">
-        <mapping typecode="Flat" namespace="tuna" alias="C" />
-        <mapping typecode="Flat" namespace="tuna" alias="F" />
-        <mapping typecode="Gable" namespace="tuna" alias="G" />
-        <mapping typecode="Gable" namespace="tuna_CA" alias="G" />
-        <mapping typecode="Gable" namespace="tuna" alias="GM" />
-        <mapping typecode="Hip" namespace="tuna" alias="H" />
-        <mapping typecode="Gable" namespace="tuna" alias="M" />
-        <mapping typecode="other" namespace="tuna" alias="X" />
+        <mapping typecode="Flat" namespace="tuna" alias="C"/>
+        <mapping typecode="Flat" namespace="tuna" alias="F"/>
+        <mapping typecode="Gable" namespace="tuna" alias="G"/>
+        <mapping typecode="Gable" namespace="tuna_CA" alias="G"/>
+        <mapping typecode="Gable" namespace="tuna" alias="GM"/>
+        <mapping typecode="Hip" namespace="tuna" alias="H"/>
+        <mapping typecode="Gable" namespace="tuna" alias="M"/>
+        <mapping typecode="other" namespace="tuna" alias="X"/>
     </typelist>
     <typelist name="RoofType_CP">
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="A_COMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="A_COMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="BUP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="BUP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="BUPNG" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="BUPNG" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="COMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="COMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="COP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="COP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="COPS" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="COPS" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="ICOMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="ICOMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MEME" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MEME" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MT" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MT" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MTL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MTL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MTLC" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MTLC" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MTLP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_NC" alias="MTLP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MTLP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="RR" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="RR" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="SCOMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="SCOMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_CA" alias="SCOMP" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="SL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="SL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="SPF" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="SPF" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TIL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_NV" alias="TIL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TIL" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TILC" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TILC" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TILF" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TILF" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TILG" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TILG" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="W" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="W" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_CA" alias="W" />
-        <mapping typecode="aluminum_Ext" namespace="tuna" alias="WD" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="WD" />
-        <mapping typecode="aluminum_Ext" namespace="tuna_CA" alias="WD" />
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="A_COMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="A_COMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="BUP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="BUP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="BUPNG"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="BUPNG"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="COMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="COMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="COP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="COP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="COPS"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="COPS"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="ICOMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="ICOMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MEME"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MEME"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MT"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MT"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MTL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MTL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MTLC"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MTLC"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="MTLP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_NC" alias="MTLP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="MTLP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="RR"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="RR"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="SCOMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="SCOMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_CA" alias="SCOMP"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="SL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="SL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="SPF"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="SPF"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TIL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_NV" alias="TIL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TIL"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TILC"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TILC"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TILF"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TILF"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="TILG"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="TILG"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="W"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="W"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_CA" alias="W"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna" alias="WD"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_FL" alias="WD"/>
+        <mapping typecode="aluminum_Ext" namespace="tuna_CA" alias="WD"/>
     </typelist>
     <typelist name="ConstructionType">
-        <mapping typecode="F" namespace="tuna" alias="BL" />
-        <mapping typecode="F" namespace="tuna" alias="CONC" />
+        <mapping typecode="F" namespace="tuna" alias="BL"/>
+        <mapping typecode="F" namespace="tuna" alias="CONC"/>
         <mapping typecode="F" namespace="tuna_HI" alias="FRP"/>
         <mapping typecode="F" namespace="tuna" alias="FRP"/>
         <mapping typecode="F" namespace="tuna" alias="FRS"/>
-        <mapping typecode="F" namespace="tuna_HI" alias="FRW" />
-        <mapping typecode="F" namespace="tuna" alias="FRW" />
-        <mapping typecode="F" namespace="tuna" alias="ICF" />
-        <mapping typecode="F" namespace="tuna" alias="MP" />
-        <mapping typecode="F" namespace="tuna" alias="SADB" />
-        <mapping typecode="F" namespace="tuna" alias="SBR" />
-        <mapping typecode="F" namespace="tuna_HI" alias="SIP" />
-        <mapping typecode="F" namespace="tuna" alias="SIP" />
-        <mapping typecode="F" namespace="tuna" alias="N" />
+        <mapping typecode="F" namespace="tuna_HI" alias="FRW"/>
+        <mapping typecode="F" namespace="tuna" alias="FRW"/>
+        <mapping typecode="F" namespace="tuna" alias="ICF"/>
+        <mapping typecode="F" namespace="tuna" alias="MP"/>
+        <mapping typecode="F" namespace="tuna" alias="SADB"/>
+        <mapping typecode="F" namespace="tuna" alias="SBR"/>
+        <mapping typecode="F" namespace="tuna_HI" alias="SIP"/>
+        <mapping typecode="F" namespace="tuna" alias="SIP"/>
+        <mapping typecode="F" namespace="tuna" alias="N"/>
     </typelist>
     <typelist name="AdditionalInterestType">
-        <mapping typecode="firstMortgagee_Ext" namespace="lexisFirst" alias="FM" />
-        <mapping typecode="secondMortgagee_Ext" namespace="lexisFirst" alias="SM" />
-        <mapping typecode="thirdMortgagee_Ext" namespace="lexisFirst" alias="TM" />
-        <mapping typecode="other_Ext" namespace="lexisFirst" alias="OT" />
+        <mapping typecode="firstMortgagee_Ext" namespace="lexisFirst" alias="FM"/>
+        <mapping typecode="secondMortgagee_Ext" namespace="lexisFirst" alias="SM"/>
+        <mapping typecode="thirdMortgagee_Ext" namespace="lexisFirst" alias="TM"/>
+        <mapping typecode="other_Ext" namespace="lexisFirst" alias="OT"/>
+    </typelist>
+    <typelist name="LossCause_Ext">
+        <mapping typecode="ACCDL" namespace="clue" alias="Accidental Discharge/Leakage"/>
+        <mapping typecode="OTHER" namespace="clue" alias="All Other"/>
+        <mapping typecode="appliancerelatedwater" namespace="clue" alias="Appliance Related Water Damage"/>
+        <mapping typecode="COLL" namespace="clue" alias="Collision, Upset, Overturn"/>
+        <mapping typecode="CONTA" namespace="clue" alias="Contamination, Pollution"/>
+        <mapping typecode="CREDIT" namespace="clue" alias="Credit Card"/>
+        <mapping typecode="DAMAG" namespace="clue" alias="Damage to Property of Others"/>
+        <mapping typecode="dogbite_liability" namespace="clue" alias="Dog bite (Liability)"/>
+        <mapping typecode="earthmovementorsettlement" namespace="clue" alias="Earth movement"/>
+        <mapping typecode="QUAKE" namespace="clue" alias="Earthquake"/>
+        <mapping typecode="EXTEN" namespace="clue" alias="Extended Coverage Perils"/>
+        <mapping typecode="Fire" namespace="clue" alias="Fire"/>
+        <mapping typecode="FLOOD" namespace="clue" alias="Flood"/>
+        <mapping typecode="FREEZ" namespace="clue" alias="Freezing Water and Subsequent Water Damage"/>
+        <mapping typecode="HAIL" namespace="clue" alias="Hail"/>
+        <mapping typecode="IDTHF" namespace="clue" alias="Identity Theft Restoration"/>
+        <mapping typecode="FOROB" namespace="clue" alias="Intake of Foreign Object"/>
+        <mapping typecode="LIAB" namespace="clue" alias="Liability (All Other)"/>
+        <mapping typecode="LIGHT" namespace="clue" alias="Lightning"/>
+        <mapping typecode="livestock" namespace="clue" alias="Livestock"/>
+        <mapping typecode="LAE" namespace="clue" alias="Loss Adjustment Expense"/>
+        <mapping typecode="MEDIC" namespace="clue" alias="Medical Payments"/>
+        <mapping typecode="MOLD" namespace="clue" alias="Mold"/>
+        <mapping typecode="DISAP" namespace="clue" alias="Mysterious Disappearance"/>
+        <mapping typecode="DISSC" namespace="clue" alias="Mysterious Disappearance Involving Scheduled Property"/>
+        <mapping typecode="PHYDA" namespace="clue" alias="All Other Physical Damage"/>
+        <mapping typecode="SINK" namespace="clue" alias="Sink Hole"/>
+        <mapping typecode="sliporfallliability" namespace="clue" alias="Slip/Fall (Liability)"/>
+        <mapping typecode="SMOKE" namespace="clue" alias="Smoke"/>
+        <mapping typecode="THFSC" namespace="clue" alias="Theft, Involving Scheduled Property"/>
+        <mapping typecode="THEFT" namespace="clue" alias="Theft/Burglary"/>
+        <mapping typecode="VMM" namespace="clue" alias="Vandalism and Malicious Mischief"/>
+        <mapping typecode="CRAFT" namespace="clue" alias="Watercraft"/>
+        <mapping typecode="WATER" namespace="clue" alias="Water Damage"/>
+        <mapping typecode="WEATH" namespace="clue" alias="Weather Related Water Damage"/>
+        <mapping typecode="WIND" namespace="clue" alias="Wind"/>
+        <mapping typecode="WC" namespace="clue" alias="Workers’ Compensation"/>
+    </typelist>
+    <typelist name="Status_Ext">
+        <mapping typecode="Open" namespace="clue" alias="Open" />
+        <mapping typecode="Closed" namespace="clue" alias="Closed" />
+        <mapping typecode="Subrogation" namespace="clue" alias="Subrogation" />
+        <mapping typecode="UnderDeductible" namespace="clue" alias="Under Deductible" />
+        <mapping typecode="PerilNotCovered" namespace="clue" alias="Peril Not Covered" />
+        <mapping typecode="Withdrawn" namespace="clue" alias="Withdrawn" />
     </typelist>
 </typecodemapping>

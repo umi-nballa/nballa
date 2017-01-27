@@ -23,6 +23,9 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
   var _ordinanceOrLawLimit : BigDecimal as OrdinanceOrLawLimit
+  var _earthquakeLimitedLimit : BigDecimal as EarthquakeLimitedLimit
+  var _earthquakeComprehensiveLimit : BigDecimal as EarthquakeComprehensiveLimit
+  var _earthquakeTerritoryValue :  String as  EarthquakeTerritoryValue
   construct(dwellingCov: DwellingCov_HOE) {
     super(dwellingCov)
     var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
@@ -60,6 +63,28 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
     if (dwellingCov typeis HODW_BuildingAdditions_HOE_Ext){
       _buildingAdditionsAndAlterationsLimit = dwellingCov.HODW_BuildAddInc_HOETerm?.Value
+    }
+    if (dwellingCov typeis HODW_Limited_Earthquake_CA_HOE){
+      if(PolicyType == HOPolicyType_HOE.TC_HO4 or PolicyType == HOPolicyType_HOE.TC_HO6){
+        _earthquakeLimitedLimit = dwellingCov?.HODW_EQCovCPersonalProperty_HOE_ExtTerm?.Value
+      } else if(PolicyType == HOPolicyType_HOE.TC_HO3){
+        _earthquakeLimitedLimit = dwellingCov?.HODW_EQDwellingLimit_HOE_ExtTerm?.Value
+      }
+    }
+    if (dwellingCov typeis HODW_Comp_Earthquake_CA_HOE_Ext){
+      if(PolicyType == HOPolicyType_HOE.TC_HO6){
+        _earthquakeComprehensiveLimit = dwellingCov?.HODW_CompEarthquakeCovC_ExtTerm?.Value
+      } else if(PolicyType == HOPolicyType_HOE.TC_HO3){
+        _earthquakeComprehensiveLimit = dwellingCov?.HODW_EQCovA_HOETerm?.Value
+      }
+    }
+
+    if(dwellingCov typeis HODW_Limited_Earthquake_CA_HOE or dwellingCov typeis HODW_Comp_Earthquake_CA_HOE_Ext){
+        if(dwellingCov?.Dwelling?.OverrideEarthquakeTer_Ext){
+             _earthquakeTerritoryValue = dwellingCov?.Dwelling?.EarthquakeTerOverridden_Ext
+        } else {
+            _earthquakeTerritoryValue = dwellingCov?.Dwelling?.EarthQuakeTer_Ext
+        }
     }
   }
 }

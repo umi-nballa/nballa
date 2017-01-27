@@ -32,7 +32,7 @@
       initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl()"
       name="propertyInformationCompletePluginImpl"/>
     <Variable
-      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(location.Branch)"
+      initialValue="new una.pageprocess.PropertyInformationCompletePluginImpl().getBOPInformation(building)"
       name="tunaAppResponse"/>
     <Variable
       initialValue="gw.lob.bp7.location.BP7LocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,location,building)"
@@ -224,7 +224,7 @@
                     editable="true"
                     id="WindpoolvalueTunaReturned_Ext"
                     label="displaykey.Web.BOP.BP7Location.WindpoolvalueTunaReturned_Ext"
-                    value="building.Windpoolvalue_Ext"
+                    value="building.WindPool_Ext"
                     valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
                   <Input
                     available="!building.OverrideWindPool_Ext"
@@ -327,10 +327,11 @@
                     editable="true"
                     id="PCCodeTunaReturned_Ext"
                     label="displaykey.Web.BOP.BP7Location.ProtectionClass"
+                    required="true"
                     value="building.DwellingProtectionClassCode"
                     valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
                     <PostOnChange
-                      onChange="building.Firedeptnmval_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(building.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
+                      onChange="building.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCode(building.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
                   </RangeInput>
                   <Input
                     available="!building.OverrideDwellingPCCode_Ext"
@@ -380,33 +381,33 @@
                 <InputSet
                   id="Firedeptnamedval_Ext">
                   <RangeInput
-                    available="!building.OverrideFiredeptnamedval_Ext"
+                    available="!building.OverrideResFireDept_Ext"
                     editable="true"
                     id="FiredeptnamedvalTunaReturned_Ext"
                     label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalTunaReturned_Ext"
-                    value="building.Firedeptnmval_Ext"
+                    value="building.ResFireDept_Ext"
                     valueRange="gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass)"/>
                   <Input
-                    available="!building.OverrideFiredeptnamedval_Ext"
+                    available="!building.OverrideResFireDept_Ext"
                     id="FiredeptnamedvalMatchLevel_Ext"
                     label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalMatchlevel_Ext"
-                    value="building.FiredeptnamedvalMatchLevel_Ext"/>
+                    value="building.ResFireDeptMatchLevel_Ext"/>
                   <BooleanRadioInput
                     editable="true"
                     id="OverRideFiredeptnamedval_Ext"
                     label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalOverride_Ext"
-                    value="building.OverrideFiredeptnamedval_Ext">
+                    value="building.OverrideResFireDept_Ext">
                     <PostOnChange
                       target="Firedeptnamedval_Ext"/>
                   </BooleanRadioInput>
                   <Input
-                    available="building.OverrideFiredeptnamedval_Ext"
+                    available="building.OverrideResFireDept_Ext"
                     editable="true"
                     id="FiredeptnamedvalUserEntered_Ext"
                     label="displaykey.Web.BOP.BP7Location.FiredeptnamedvalUserEntered_Ext"
-                    required="building.OverrideFiredeptnamedval_Ext"
-                    value="building.FiredeptnamedvalOverridden_Ext"
-                    visible="building.OverrideFiredeptnamedval_Ext"/>
+                    required="building.OverrideResFireDept_Ext"
+                    value="building.ResFireDeptOverridden_Ext"
+                    visible="building.OverrideResFireDept_Ext"/>
                 </InputSet>
                 <InputDivider/>
                 <InputSet

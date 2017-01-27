@@ -2,6 +2,7 @@ package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXStructureMapper
+uses una.integration.mapping.hpx.helper.HPXJobHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +25,7 @@ class HPXCPBuildingMapper implements HPXStructureMapper  {
     dwell.Description = bldg.Building.Description
     dwell.addChild(new XmlElement("DwellRating", buildingMapper.createDwellRating(bldg)))
 //    dwell.addChild(buildingMapper.createDwellInspectionValuation(bldg))
-//    dwell.addChild(buildingMapper.createDwellOccupancy(bldg))
+    dwell.addChild(new XmlElement("DwellOccupancy",buildingMapper.createDwellOccupancy(bldg)))
     dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(bldg)))
     dwell.addChild(new XmlElement("Construction", buildingConstructionMapper.createBuildingConstructionInfo(bldg)))
     dwell.addChild(new XmlElement("BuildingKey", createCoverableInfo(bldg)))
@@ -38,13 +39,18 @@ class HPXCPBuildingMapper implements HPXStructureMapper  {
       coverable.BuildingNo = building?.Building?.BuildingNum != null ? building.Building.BuildingNum : ""
       coverable.LocationNo = building?.CPLocation?.Location.LocationNum != null ? building?.CPLocation?.Location.LocationNum : ""
       coverable.Description = building?.Building?.Description
+      var jobHelper = new HPXJobHelper()
+      coverable.NewlyAdded = jobHelper.isNewlyAddedBuilding(building.PolicyLine.AssociatedPolicyPeriod, building.Building)
     }
     return coverable
   }
 
   function createDwellRating(bldg : CPBuilding) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType {
     var dwellRating = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType()
-    dwellRating.TerritoryCd = bldg.PolicyLocations[0].TerritoryCodes[0] != null ? bldg.PolicyLocations[0].TerritoryCodes[0].Code : ""
+    dwellRating.TerritoryCd = bldg.Building.PolicyLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode.equals("CPLine")).Code != null ?
+          bldg.Building.PolicyLocation.TerritoryCodes.firstWhere( \ elt -> elt.PolicyLinePatternCode.equals("CPLine")).Code : null
+    dwellRating.ClassSpecificRatedCd = bldg.ClassCode != null ? bldg.ClassCode.Code : ""
+    dwellRating.InflationGuard = bldg.CPBldgCov.CPBldgCovAutoIncreaseTerm != null ? bldg.CPBldgCov.CPBldgCovAutoIncreaseTerm.Value : null
     return dwellRating
   }
 
@@ -52,5 +58,12 @@ class HPXCPBuildingMapper implements HPXStructureMapper  {
     var masterPolicyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.MasterPolicyInfoType()
     masterPolicyInfo.PolicyNumber = policyPeriod.PolicyTerm.PolicyNumber != null ? policyPeriod.PolicyTerm.PolicyNumber : ""
     return masterPolicyInfo
+  }
+
+  function createDwellOccupancy(bldg : CPBuilding) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellOccupancyType {
+    var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+    var dwellOccupancy = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellOccupancyType()
+    dwellOccupancy.OccupancyTypeDesc = bldg.OccupancyType.Description
+    return dwellOccupancy
   }
 }

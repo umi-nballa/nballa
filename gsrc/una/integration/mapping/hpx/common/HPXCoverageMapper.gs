@@ -22,7 +22,7 @@ abstract class HPXCoverageMapper {
                 : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentCoverage.PatternCode
-    cov.CoverageDesc = currentCoverage.DisplayName
+    cov.CoverageDesc = currentCoverage.Pattern.Description
     cov.CategoryCd = (currentCoverage.CoverageCategory as String).compareTo("Optional") > 0 ? "Optional" : "Base"
     var coverableInfo = createCoverableInfo(currentCoverage, previousCoverage)
     if (coverableInfo != null) {

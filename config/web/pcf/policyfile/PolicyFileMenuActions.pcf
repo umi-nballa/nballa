@@ -154,7 +154,7 @@
         label="displaykey.Web.PolicyFile.RenewPolicy"
         visible="perm.PolicyPeriod.renew(policyPeriod) and policyPeriod.Policy.canStartRenewal() == null"/>
       <MenuItem
-        action="RenewalWizard.go(policyPeriod.Policy.OpenRenewalJob, policyPeriod.Policy.OpenRenewalJob.LatestPeriod)"
+        action="RenewalWizard.go(policyPeriod.Policy.OpenRenewalJob, policyPeriod.Policy.OpenRenewalJob.LatestPeriod);una.integration.lexisnexis.util.ClueUtilInfo.copyClueReport(policyPeriod,policyPeriod.Policy.OpenRenewalJob.LatestPeriod)"
         id="PolicyFileMenuActions_ViewRenewal"
         label="displaykey.Accelerator.FutureDatedChanges.PolicyFile.ViewRenewal"
         showConfirmMessage="false"

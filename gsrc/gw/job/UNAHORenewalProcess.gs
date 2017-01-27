@@ -22,16 +22,18 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     super(period)
   }
 
-  public function onUploadConsentToRateForm(){  //TODO tlv need to check how to detect this, if it is registered when it is sent out and when to confirm it was returned and how to tell the difference between the two
+  public function onUploadConsentToRateForm(){
     if(JobProcessLogger.DebugEnabled){
       JobProcessLogger.logDebug("Begin 'onUploadConsentToRateForm' for transaction ${this.Job.JobNumber}.  Current Renewal Job Status is %{this.Job.SelectedVersion.Status}")
     }
 
     if(ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)){
-      editRenewalWithActions(\ -> {
-        this._branch.ConsentToRateReceived_Ext = true
-        this.Job.AllOpenActivities?.atMostOneWhere( \ activity -> activity.ActivityPattern.Code?.equalsIgnoreCase(CONSENT_TO_RATE_ACTIVITY_PATTERN))?.complete()
-      }, displaykey.una.historyevent.ConsentToRateReceived)
+      if(java.util.Date.CurrentDate.afterOrEqualsIgnoreTime(PendingRenewalFirstCheckDate) and !this._branch.ConsentToRateReceived_Ext){ //consent to rate has previously been sent out and not yet received
+        editRenewalWithActions(\ -> {
+          this._branch.ConsentToRateReceived_Ext = true
+          this.Job.AllOpenActivities?.atMostOneWhere( \ activity -> activity.ActivityPattern.Code?.equalsIgnoreCase(CONSENT_TO_RATE_ACTIVITY_PATTERN))?.complete()
+        }, displaykey.una.historyevent.ConsentToRateReceived)
+      }
     }
 
     if(JobProcessLogger.DebugEnabled){
@@ -94,6 +96,17 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     }
   }
 
+  override function startPendingRenewal(){
+
+    if(_branch.HomeownersLine_HOE.Dwelling.HODW_DifferenceConditions_HOE_ExtExists){
+      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEANDCONDITIONS}
+      Job.addToFormsEvents(event)
+    }
+
+    super.startPendingRenewal()
+
+  }
+
   private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{
     return new CreditReportRequestDispatcher(namedInsured, _branch).orderNewCreditReport(namedInsured.ContactDenorm.PrimaryAddress, namedInsured.FirstName, namedInsured.MiddleName, namedInsured.LastName, namedInsured.DateOfBirth)
   }
@@ -105,16 +118,14 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
       var activity = this.Job?.createRoleActivity(typekey.UserRole.TC_UNDERWRITER, consentToRateActivityPattern, consentToRateActivityPattern.Subject, consentToRateActivityPattern.Description)
       activity.TargetDate = _branch.PeriodStart.addDays(-CONSENT_TO_RATE_LEAD_TIME)
 
-      Job.addToFormsEvents(new FormsEvent(){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
+      Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
 
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)
     }
   }
 
   private function shouldRequestConsentToRate(): boolean {
-    var isConsentToRateEligible = ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
-    var policyDeviationFactor = 1.1
-    //TODO tlv this is temporary.  waiting on NC HO Rating requirements
-    return isConsentToRateEligible and !_branch.ConsentToRateReceived_Ext and policyDeviationFactor > 1.0
+    return ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
+       and _branch.ConsentToRate_Ext and !_branch.ConsentToRateReceived_Ext
   }
 }

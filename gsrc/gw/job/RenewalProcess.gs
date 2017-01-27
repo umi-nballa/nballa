@@ -369,11 +369,6 @@ class RenewalProcess extends NewTermProcess {
    */
   function assertNonRenewLeadTime() {
     if (not this.canNonRenew()) {
-      var periodEnd = _branch.BasedOn.PeriodEnd
-      var date = periodEnd.addDays(-NonRenewLeadTime)
-      var currentDate = Date.CurrentDate
-      print(periodEnd.addDays(-NonRenewLeadTime))
-      print(NonRenewLeadTime)
       throw new DisplayableException(displaykey.Web.Renewal.Warning.NonRenewLeadTime)
     }
   }
@@ -785,7 +780,9 @@ class RenewalProcess extends NewTermProcess {
     canSendNonRenewalDocuments().assertOkay()
     JobProcessLogger.logInfo("Sending non-renewal documents for renewal branch: " + _branch)
     Job.NonRenewalNotifDate = Date.CurrentDate
-    _branch.addEvent(FormsEventType.TC_SENDNONRENEWALDOCUMENTS.Code)
+    var formsEvent = new FormsEvent(Job)
+    formsEvent.EventType = TC_SENDNONRENEWALDOCUMENTS
+    Job.addToFormsEvents(formsEvent)
   }
 
   /**

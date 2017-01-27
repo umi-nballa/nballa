@@ -135,4 +135,38 @@
     name="Statements"
     nullok="true"
     type="shorttext"/>
+  <column
+    name="ReportedDate"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    name="IgnoreUW"
+    nullok="true"
+    type="bit"/>
+  <column
+    name="Disposition"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="ClueFileNumber"
+    nullok="true"
+    type="shorttext"/>
+  <foreignkey
+    fkentity="ClueReport_Ext"
+    name="ClueReport"
+    nullok="true"/>
+  <foreignkey
+    fkentity="Person"
+    name="Claimant"
+    nullok="true"/>
+  <implementsEntity
+    name="Extractable"/>
+  <foreignkey
+    fkentity="Person"
+    name="PolicyHolder"
+    nullok="true"/>
+  <foreignkey
+    fkentity="Person"
+    name="ClaimIssuer"
+    nullok="true"/>
 </entity>

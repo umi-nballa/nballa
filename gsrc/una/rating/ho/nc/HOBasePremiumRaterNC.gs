@@ -9,6 +9,7 @@ uses gw.lob.common.util.DateRange
 uses gw.rating.CostData
 uses una.rating.ho.nc.ratinginfos.HOBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
+uses gw.rating.worksheet.domain.WorksheetEntry
 
 /**
  * Created with IntelliJ IDEA.
@@ -41,9 +42,18 @@ class HOBasePremiumRaterNC {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
+    var nonCostRoutinesToExecute: List<String> = {HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE}
+    var costDatas = executeRoutines(nonCostRoutinesToExecute, dateRange, numDaysInCoverageRatedTerm)
+    var wsc: List<WorksheetEntry> = {}
+    for (costData in costDatas)
+      if (costData.WorksheetEntries.Count > 0)
+        wsc.add(costData.WorksheetEntries.first())
     routinesToExecute.addAll(baseRoutinesToExecute)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
+    costs.each(\cost -> cost.addWorksheetEntries(wsc))
     return costs
+
+
   }
 
   /**
@@ -72,7 +82,7 @@ class HOBasePremiumRaterNC {
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    routines.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
+    routines.add(HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE)
     return routines
   }
 

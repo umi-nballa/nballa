@@ -260,8 +260,7 @@ abstract class AbstractRatingEngineBase<SL> {
         removeCost = true
         if(line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE or line.Branch.Job.Subtype == typekey.Job.TC_CANCELLATION)
           if(costEntity typeis HOTaxCost_HOE){
-            if(costEntity.ChargePattern == ChargePattern.TC_POLICYFEES)
-              removeCost = false
+            removeCost = false
           }
         if(removeCost)
           costEntity.removeFromTerm()  // removes the cost entirely

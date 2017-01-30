@@ -24,7 +24,8 @@ class HomeownersLineValidation_HOE extends PolicyLineValidation<entity.Homeowner
     var policyTypeValid : Boolean = true
     
     Context.addToVisited(this, "validatePolicyType")
-    if (hoLine.HOPolicyType != "DP2"and hoLine.Dwelling.DwellingUsage == "rent") {
+    if ((hoLine.HOPolicyType != "DP2" || hoLine.HOPolicyType != "DP3_Ext" || hoLine.HOPolicyType != "TDP1_Ext"
+        || hoLine.HOPolicyType != "TDP2_Ext" || hoLine.HOPolicyType != "TDP3_Ext" || hoLine.HOPolicyType != "LPP_Ext") and hoLine.Dwelling.DwellingUsage == "rent") {
       policyTypeValid = false
       addErrorOrWarning(displaykey.Web.Policy.HomeownersLine.Validation.DwellingBeingRented(hoLine.HOPolicyType))
     }

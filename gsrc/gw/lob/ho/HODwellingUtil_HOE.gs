@@ -319,7 +319,7 @@ class HODwellingUtil_HOE {
        if(dwelling.InternalPressureDsgn_Ext == null){dwelling.InternalPressureDsgn_Ext = typekey.InternalPressureDsgn_Ext.TC_ENCLOSED}
        //Defect De372 : set value based roof type
        if(dwelling.SecondaryWaterResis_Ext == null){
-         if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT){
+         if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT || (dwelling.OverrideRoofType_Ext && dwelling.RoofingMaterialOverridden_Ext == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT)){
            dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_NOSWR
          } else {
            dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_UNKNOWN

@@ -1,4 +1,5 @@
 package una.integration.lexisnexis.util
+
 /**
  * Created with IntelliJ IDEA.
  * User: ptheegala
@@ -6,17 +7,14 @@ package una.integration.lexisnexis.util
  *
  */
 class ClueUtilInfo {
-
-  static function copyClueReport(oldPeriod:PolicyPeriod,newPeriod:PolicyPeriod)  {
+  static function copyClueReport(oldPeriod: PolicyPeriod, newPeriod: PolicyPeriod) {
     //Copy Clue Data
     var prevPriorLoss = oldPeriod.HomeownersLine_HOE.HOPriorLosses_Ext
-    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-    for(res in prevPriorLoss){
-      var priorLoss = new HOPriorLoss_Ext()
-      priorLoss.sync(res)
-      priorLoss.HomeownersLineID = newPeriod.HomeownersLine_HOE.PublicID
-    }
-  },"su")
-
- }
+    gw.transaction.Transaction.runWithNewBundle(\bundle -> {
+      for (res in prevPriorLoss) {
+        var priorLoss = new HOPriorLoss_Ext()
+        priorLoss.Bundle.add(res).HomeownersLineID = newPeriod.HomeownersLine_HOE.PublicID
+      }
+    }, "su")
+  }
 }

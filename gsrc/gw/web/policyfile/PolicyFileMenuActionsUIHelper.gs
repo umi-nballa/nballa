@@ -5,6 +5,7 @@ uses pcf.ReinstatementWizard
 uses pcf.IssuanceWizard
 uses pcf.RenewalWizard
 uses pcf.api.Location
+uses una.integration.lexisnexis.util.ClueUtilInfo
 
 @Export
 class PolicyFileMenuActionsUIHelper {
@@ -25,6 +26,8 @@ class PolicyFileMenuActionsUIHelper {
     var job = new Reinstatement(policyPeriod.Bundle)
     if (job.startJobAndCommit(policyPeriod, CurrentLocation)) {
       ReinstatementWizard.go(job, job.LatestPeriod)
+      //Copying Clue Data
+      ClueUtilInfo.copyClueReport(policyPeriod,job.LatestPeriod)
     }
   }
 
@@ -53,6 +56,8 @@ class PolicyFileMenuActionsUIHelper {
     var renewal = new Renewal(policyPeriod.Bundle)
     if (renewal.startJobAndCommit(policyPeriod.Policy, CurrentLocation)) {
       RenewalWizard.go(renewal, renewal.LatestPeriod)
+      //Copying Clue Data
+      ClueUtilInfo.copyClueReport(policyPeriod,renewal.LatestPeriod)
     }
   }
 

@@ -19,7 +19,8 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyInOtherStructures: boolean as IsPermittedIncidentalOccupancyInOtherStructures = false
   var _permittedIncidentalOccupancyOtherStructuresLimit: BigDecimal as PermittedIncidentalOccupancyOtherStructuresLimit
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
-
+  var _lossAssessmentLimit: BigDecimal as LossAssessmentLimit
+  var _unitOwnersCoverageASpecialLimitsExists : boolean as UnitOwnersCoverageASpecialLimitsExists = false
   construct(dwellingCov: DwellingCov_HOE){
       super(dwellingCov)
 
@@ -37,5 +38,13 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
       _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
     }
+
+    if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
+      _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value
+      if(dwellingCov.Dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+        _unitOwnersCoverageASpecialLimitsExists = true
+      }
+    }
+
   }
 }

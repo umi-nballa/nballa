@@ -1,6 +1,7 @@
 package gw.job
 
 uses gw.api.util.DisplayableException
+uses una.integration.lexisnexis.util.ClueUtilInfo
 
 enhancement SubmissionEnhancement : Submission {
   
@@ -42,9 +43,12 @@ enhancement SubmissionEnhancement : Submission {
     var policy = period.Policy
     var copyPolicy = policy.clonePolicy()
     copyPolicy.OriginalEffectiveDate = null
-    
+
     // clone policy period
-    var copyPeriod = period.copyBranchIntoNewPolicy(copyPolicy)    
+    var copyPeriod = period.copyBranchIntoNewPolicy(copyPolicy)
+
+    //Copying Clue Data
+    ClueUtilInfo.copyClueReport(period,copyPeriod)
 
     // copy submission and its state
     var copySubmission = new Submission(bundle)

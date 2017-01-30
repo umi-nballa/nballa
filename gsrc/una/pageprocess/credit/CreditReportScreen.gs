@@ -67,6 +67,8 @@ class CreditReportScreen {
     return period
   }
 
+  //This method is not called any more because of the update in the requirement that the
+  // default value will not be set on UI.
   static function setDefaultCreditReport(period:PolicyPeriod):boolean
   {
     /*

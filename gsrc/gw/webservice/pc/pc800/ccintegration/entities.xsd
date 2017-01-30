@@ -224,6 +224,15 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="CCScheduledItem">
+    <xs:complexContent>
+     <xs:extension base="tns:CCRUCoverage">
+        <xs:attribute name="ItemNumber" use="optional" type="xs:int"/>
+        <xs:attribute name="Description" use="optional" type="xs:string"/>
+        <xs:attribute name="ScheduleTypeDescription" use="optional" type="xs:string"/>
+     </xs:extension>
+  </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="CCRUCoverage">
     <xs:complexContent>
       <xs:extension base="tns:CCCoverage">
@@ -432,6 +441,7 @@
     <xs:sequence>
       <xs:element name="ClassCode" minOccurs="0" type="xs:IDREF" gw:itype="CCClassCode"/>
       <xs:element name="Coverages" minOccurs="0" maxOccurs="unbounded" type="tns:CCRUCoverage"/>
+      <xs:element name="ScheduledItems" minOccurs="0" maxOccurs="unbounded" type="tns:CCScheduledItem"/>
     </xs:sequence>
     <xs:attribute name="Description" use="optional" type="xs:string"/>
     <xs:attribute name="PolicySystemID" use="optional" type="xs:string"/>

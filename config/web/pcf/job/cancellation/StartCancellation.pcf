@@ -54,7 +54,7 @@
       id="StartCancellationScreen">
       <Toolbar>
         <ToolbarButton
-          action="if (job.startJobAndCommit(policy, effectiveDate, pcfController.CancellationRefundMethod, CurrentLocation)) {CancellationWizard.go(job, job.LatestPeriod)                         }"
+          action="if (job.startJobAndCommit(policy, effectiveDate, pcfController.CancellationRefundMethod, CurrentLocation)) {CancellationWizard.go(job, job.LatestPeriod)     ;  una.integration.lexisnexis.util.ClueUtilInfo.copyClueReport(policyPeriod,job.LatestPeriod)                      }"
           available="policy.canStartCancellation(effectiveDate) == null"
           confirmMessage="confirmationMessage()"
           id="NewCancellation"

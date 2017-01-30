@@ -23,7 +23,8 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
     MaxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState, line.HOPolicyType.Code)
-    //_bcegGrade = line.Dwelling?.HOLocation?.OverrideBCEG_Ext? line.Dwelling?.HOLocation?.BCEGOverridden_Ext?.toInt() : line.Dwelling.HOLocation?.BCEG_Ext?.toInt()
+
+    _bcegGrade = line.Dwelling?.HOLocation?.OverrideBCEG_Ext? line.Dwelling?.HOLocation?.BCEGOverridden_Ext?.Code?.toInt() : line.Dwelling.HOLocation?.BCEG_Ext?.Code?.toInt()
 
     _yearOfConstructionMaxLimit = ConfigParamsUtil.getInt(TC_YearOfConstructionMaxLimit, line.BaseState, line.HOPolicyType.Code)
     _yearOfConstructionMinLimit = ConfigParamsUtil.getInt(TC_YearOfConstructionMinLimit, line.BaseState, line.HOPolicyType.Code)

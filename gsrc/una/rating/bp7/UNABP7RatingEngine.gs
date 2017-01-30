@@ -194,7 +194,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function ratePolicyFee(line: BP7Line){
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
-    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_POLICYFEES)
+    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_POLICYFEES_EXT)
     costData.init(line)
     costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
@@ -202,6 +202,25 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
         TC_COSTDATA   -> costData
     }
     _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_POLICY_FEE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+    costData.StandardAmount = costData.StandardTermAmount
+    costData.ActualAmount = costData.StandardAmount
+    costData.copyStandardColumnsToActualColumns()
+    addCost(costData)
+  }
+
+  /**
+   * rate the EMPA Surcharge
+   */
+  override function rateEMPASurcharge(line: BP7Line){
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_EMPASURCHARGE_EXT)
+    costData.init(line)
+    costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_COSTDATA   -> costData
+    }
+    _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_EMPA_SURCHARGE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
     costData.StandardAmount = costData.StandardTermAmount
     costData.ActualAmount = costData.StandardAmount
     costData.copyStandardColumnsToActualColumns()

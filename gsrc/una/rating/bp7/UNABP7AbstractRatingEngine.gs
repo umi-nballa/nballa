@@ -75,7 +75,7 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     // for Tax
     assertSliceMode(lineVersion)
     ratePolicyFee(lineVersion)
-    //rateEMPASurcharge(lineVersion)
+    rateEMPASurcharge(lineVersion)
   }
 
   /******

@@ -21,6 +21,8 @@ uses gw.api.util.DisplayableException
 uses gw.webservice.pc.pc800.ccintegration.entities.anonymous.elements.CCPolicy_RiskUnits
 uses gw.webservice.pc.pc800.ccintegration.entities.anonymous.elements.CCRiskUnit_Coverages
 uses gw.webservice.pc.pc800.ccintegration.ProductModelTypelistGenerator
+uses gw.webservice.pc.pc800.ccintegration.entities.types.complex.CCScheduledItem
+uses gw.webservice.pc.pc800.ccintegration.entities.anonymous.elements.CCRiskUnit_ScheduledItems
 
 class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   var _hoLine : HomeownersLine_HOE
@@ -99,7 +101,25 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
       dwellingRU.Coverages.add(new CCRiskUnit_Coverages(ccCov))
     }
 
+    for(scheduledCov in dwelling.Coverages.ScheduledItems){
+      var ccCov = new CCScheduledItem()
+      populateScheduledItems(ccCov, scheduledCov)
+      dwellingRU.ScheduledItems.add(new CCRiskUnit_ScheduledItems(ccCov))
+    }
+
     addToPropertiesCount(_RUCount - startingCount + skipCount);
+  }
+
+  /*This function populates coverages of type ScheduledItems from PC to CC.
+  * Defect fix DE-1597 - Mapping Scheduled Personal Property*/
+  protected function populateScheduledItems(ccCov : CCScheduledItem, pcCov : ScheduledItem_HOE) {
+    ccCov.Description = pcCov.Description
+    ccCov.ItemNumber = pcCov.ItemNumber
+    ccCov.ScheduleTypeDescription = pcCov.ScheduleType.Code
+    ccCov.EffectiveDate = pcCov.EffectiveDate
+    ccCov.ExpirationDate = pcCov.ExpirationDate
+    ccCov.PolicySystemID = pcCov.TypeIDString
+    ccCov.Type = mapToCCCoverageCode(pcCov.DwellingCov)
   }
   
   override function handleCovTermSpecialCases(pcCov : Coverage, pcCovTerm : CovTerm, ccCov : CCCoverage, ccCovTerms : CCCovTerm[]) {

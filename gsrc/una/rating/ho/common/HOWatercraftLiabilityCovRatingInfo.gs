@@ -8,7 +8,7 @@ class HOWatercraftLiabilityCovRatingInfo {
 
   var _watercraftType : WatercraftType_Ext as WatercraftType
   var _overallLength : OverallLength_Ext as OverallLength
-  var _totalHorsePower : HorsePower_Ext as TotalHorsePower
+  var _totalHorsePower : Horsepower_Ext as TotalHorsePower
   var _speedRating : SpeedRating_Ext as SpeedRating
   var _medPayLimit: int as MedPayLimit
   var _personalLiabilityLimit: int as PersonalLiabilityLimit

@@ -63,7 +63,6 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_AddResidenceRentedtoOthers_HOE:
-          //rateAdditionalResidenceRentedToOthersCoverage(lineCov, dateRange)
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
@@ -115,7 +114,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           ratePersonalPropertyOffResidenceCoverage(dwellingCov, dateRange)
           break
       case HODW_SpecialLimitsPP_HOE_Ext:
-          //rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
           break
       case HODW_LossAssessmentCov_HOE_Ext:
             rateLossAssessmentCoverage(dwellingCov, dateRange)

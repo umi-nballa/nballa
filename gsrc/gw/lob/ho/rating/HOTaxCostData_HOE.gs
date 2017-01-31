@@ -3,6 +3,7 @@ package gw.lob.ho.rating
 uses gw.pl.persistence.core.effdate.EffDatedVersionList
 uses java.util.Date
 uses gw.financials.PolicyPeriodFXRateCache
+uses entity.windowed.HOTaxCost_HOEVersionList
 
 @Export
 class HOTaxCostData_HOE extends HOCostData_HOE<HOTaxCost_HOE>  {
@@ -19,12 +20,23 @@ class HOTaxCostData_HOE extends HOCostData_HOE<HOTaxCost_HOE>  {
     ChargePattern = chargePatternType
   }
 
+  construct(cost : HOTaxCost_HOE, rateCache : PolicyPeriodFXRateCache){
+    super(cost, rateCache)
+  }
+
   override function getVersionedCosts(line : HomeownersLine_HOE) : List<EffDatedVersionList> {
-    return line.VersionList.HomeownersCosts.where(\ costVL -> costVL.AllVersions.first() typeis HOTaxCost_HOE).toList()
+    var homeownersCosts = line.VersionList.HomeownersCosts.whereTypeIs(HOTaxCost_HOEVersionList)
+    return homeownersCosts.where( \ vl -> versionListMatches(vl)).toList()
+    //return line.VersionList.HomeownersCosts.where(\ costVL -> costVL.AllVersions.first() typeis HOTaxCost_HOE).toList()
+  }
+
+  private function versionListMatches(costVL : HOTaxCost_HOEVersionList) : boolean {
+    var first = costVL.AllVersions.first()
+    return first typeis HOTaxCost_HOE and first.ChargePattern == ChargePattern
   }
 
   protected override property get KeyValues() : List<Object> {
-    return {}
+    return {ChargePattern}
   }
 
 }

@@ -53,6 +53,8 @@ public final class HORateRoutineNames {
   public static final var MAXIMUM_DISCOUNT_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMaximumDiscountAdjustmentRateRoutine"
   public static final var MULTI_LINE_DISCOUNT_RATE_ROUTINE : String = "UNAHOMultiLineDiscountRateRoutine"
   public static final var WATERCRAFT_LIABILITY_COVERAGE_RATE_ROUTINE : String = "UNAHOWatercraftLiabilityCoverageRateRoutine"
+  public static final var FIGA_SURCHARGE_RATE_ROUTINE : String = "UNAHOFIGASurchargeRateRoutine"
+  public static final var EMPA_SURCHARGE_RATE_ROUTINE : String = "UNAHOEMPASurchargeRateRoutine"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -75,6 +77,7 @@ public final class HORateRoutineNames {
   public static final var ADDITIONAL_RESIDENCES_OCCUPIED_BY_INSURED_RATE_ROUTINE : String ="UNAHOAdditionalResidenceOccupiedByInsuredRateRoutine"
   public static final var PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE : String = "UNAHOPermittedIncidentalOccupanciesRateRoutine"
   public static final var BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE : String = "UNAHOBuildingAdditionsAndAlterationsIncreasedLimitsRateRoutine"
+  public static final var FLOOD_COVERAGE_RATE_ROUTINE : String = "UNAHOFloodCoverageRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"
@@ -90,6 +93,7 @@ public final class HORateRoutineNames {
   public static final var MATURE_HOME_OWNER_DISCOUNT_RATE_ROUTINE : String = "UNAHOMatureHomeOwnerDiscountRateRoutine"
   public static final var BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE : String = "UNAHOBuildingCodeNonParticipatingRisksSurchargeRateRoutine"
   public static final var BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE : String = "UNAHOBuildingCodeComplianceGradingCreditRateRoutine"
+  public static final var WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE : String = "UNAHOWindstormResistiveFeaturesOfResidentialConstructionCreditRateRoutine"
   public static final var OTHER_STRUCTURES_RENTED_TO_OTHERS_RATE_ROUTINE : String = "UNAHOOtherStructuresRentedToOthersRateRoutine"
   public static final var NCRB_PREMIUM_RATE_ROUTINE : String = "UNAHONCRatingBureauPremiumRateRoutine"
   public static final var NO_PRIOR_INSURANCE_RATE_ROUTINE : String = "UNAHONoPriorInsuranceRateRoutine"

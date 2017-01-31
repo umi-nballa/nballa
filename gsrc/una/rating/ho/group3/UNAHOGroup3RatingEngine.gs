@@ -16,8 +16,11 @@ uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOGroup3DiscountsOrSurchargeRatingInfo
 uses una.config.ConfigParamsUtil
-uses com.sun.java.swing.plaf.windows.resources.windows
 uses una.rating.ho.group3.ratinginfos.HOGroup3ScheduledPersonalPropertyRatingInfo
+uses una.rating.ho.group3.ratinginfos.HOFloodCoverageRatingInfo
+uses gw.rating.CostData
+uses una.rating.ho.group3.ratinginfos.HOGroup3LineLevelRatingInfo
+uses una.rating.ho.group3.ratinginfos.HOWindResistiveFeaturesCreditRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -104,7 +107,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateLossAssessmentCoverage(dwellingCov, dateRange)
         break
       case HODW_SpecialComp_HOE_Ext:
-        //rateSpecialComputerCoverage(dwellingCov, dateRange)
+        rateSpecialComputerCoverage(dwellingCov, dateRange)
         break
       case HODW_SinkholeLoss_HOE_Ext:
         rateSinkholeLossCoverage(dwellingCov, dateRange)
@@ -137,6 +140,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HODW_PermittedIncOcp_HOE_Ext:
         ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
+        break
+      case HODW_FloodCoverage_HOE_Ext:
+        rateFloodCoverage(dwellingCov, dateRange)
         break
     }
   }
@@ -182,8 +188,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
       if(constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT.Code)
         rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTWINDPREMIUM)
-      /*if(dwelling?.HOLocation?.BCEG_Ext == BCEG_CODE_FOR_NON_PARTICIPATION)
-        rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)*/
+      if(_discountsOrSurchargeRatingInfo.BCEGGrade == BCEG_CODE_FOR_NON_PARTICIPATION)
+        rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)
 
       if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
         if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
@@ -200,6 +206,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     if(!windOrHailExcluded){
       rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
+      //rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
     }
 
     rateMaximumDiscountAdjustmentForAOP(dateRange)
@@ -214,12 +221,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
     //TODO : Need to update for policy type HO3
-    if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4)
-      if (dwelling?.HODW_Personal_Property_HOEExists){
-        if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value == tc_PersProp_ReplCost){
-          //ratePersonalPropertyReplacementCost(dateRange)
-        }
+    if (dwelling?.HODW_Personal_Property_HOEExists){
+      if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value != ValuationMethod.TC_PERSPROP_ACV){
+        ratePersonalPropertyReplacementCost(dateRange)
       }
+    }
   }
 
   /**
@@ -399,7 +405,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialComputerCoverage to rate Special Computer Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_COMPUTER_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
@@ -448,6 +455,21 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Rate the Flood Coverage
+   */
+  function rateFloodCoverage(dwellingCov: HODW_FloodCoverage_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateFloodCoverage ", this.IntrinsicType)
+    var floodCovRatingInfo = new HOFloodCoverageRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getFloodCovParameterSet(PolicyLine, floodCovRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.FLOOD_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Flood Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    * Rate the Special Limits Personal property coverage
    */
   function rateSpecialLimitsPersonalPropertyCoverage(dwellingCov: HODW_SpecialLimitsPP_HOE_Ext, dateRange: DateRange) {
@@ -478,16 +500,24 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    * Function which rates the Personal property replacement cost
    */
-  /*function ratePersonalPropertyReplacementCost(dateRange: DateRange) {
+  function ratePersonalPropertyReplacementCost(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyReplacementCost", this.IntrinsicType)
-    var rateRoutineParameterMap = null//getHOLineParameterSet(PolicyLine, lineLevelRatingInfo, PolicyLine.BaseState.Code)
+    var costDataForIncreasedPersonalProperty : CostData = null
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+      var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE)
+      var rateRoutineParameter = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+      costDataForIncreasedPersonalProperty = HOCreateCostDataUtil.createCostDataForDwellingCoverage(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameter, Executor, this.NumDaysInCoverageRatedTerm)
+    }
+    var lineLevelRatingInfo = new HOGroup3LineLevelRatingInfo(PolicyLine)
+    lineLevelRatingInfo.IncreasedPersonalPropertyPremium = costDataForIncreasedPersonalProperty?.ActualTermAmount
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, lineLevelRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Personal Property Replacement Cost Rated Successfully", this.IntrinsicType)
-  }*/
+  }
 
   /**
    *  Function to rate the Superior Construction Discount
@@ -629,6 +659,23 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Function to rate the BWindstorm Resistive Features Of Residential Construction Credit
+   */
+  function rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWindstormResistiveFeaturesOfResidentialConstructionCredit", this.IntrinsicType)
+    var windResistiveFeaturesCreditRatingInfo = new HOWindResistiveFeaturesCreditRatingInfo(PolicyLine.Dwelling)
+    windResistiveFeaturesCreditRatingInfo.WindPremium = basePremium
+    var rateRoutineParameterMap = getWPDCParameterSet(PolicyLine, windResistiveFeaturesCreditRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction = costData?.ActualTermAmount
+      addCost(costData)
+    }
+    _logger.debug("Windstorm Resistive Features Of Residential Construction Credit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    *  Function to rate the Seasonal Or Secondary Residence Surcharge
    */
   function rateSeasonalOrSecondaryResidenceSurcharge(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
@@ -766,6 +813,16 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   *  Returns the parameter set for the flood coverage
+   */
+  private function getFloodCovParameterSet(line : PolicyLine, floodCovRatingInfo : HOFloodCoverageRatingInfo) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_DWELLINGRATINGINFO_EXT -> floodCovRatingInfo
+    }
+  }
+
+  /**
   *  Returns the parameter set with rating info and dwelling rating info
   */
   private function getRatingInfoParameterSet(line : PolicyLine, dwellingRatingInfo : HOGroup3DwellingRatingInfo) : Map<CalcRoutineParamName, Object>{
@@ -810,12 +867,33 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   * Returns the parameter set for the Discounts / surcharges
+   */
+  private function getWPDCParameterSet(line : PolicyLine, windResistiveFeaturesCreditRatingInfo : HOWindResistiveFeaturesCreditRatingInfo) : Map<CalcRoutineParamName, Object>{
+    return {
+        TC_POLICYLINE -> line,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> windResistiveFeaturesCreditRatingInfo
+    }
+  }
+
+  /**
    * Returns the parameter set for the Scheduled Personal Property Cov
    */
   private function getScheduledPersonalPropertyCovParameterSet(line: PolicyLine, item: ScheduledItem_HOE): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
         TC_SCHEDULEDPERSONALPROPERTYRATINGINFO_Ext -> new HOGroup3ScheduledPersonalPropertyRatingInfo(item,item.DwellingCov.Dwelling.HOLocation.PolicyLocation.County)
+    }
+  }
+
+  /**
+   * Returns the parameter set for the HO Line param set
+   */
+  private function getHOLineParameterSet(line: PolicyLine, hoLineLevelRatingInfo: HOGroup3LineLevelRatingInfo): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_LINERATINGINFO_EXT -> hoLineLevelRatingInfo,
+        TC_RATINGINFO -> _hoRatingInfo
     }
   }
 

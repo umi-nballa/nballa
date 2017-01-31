@@ -3,6 +3,7 @@ package gw.pcf.policyfile
 uses gw.util.concurrent.LockingLazyVar
 uses pcf.api.Location
 uses pcf.JobForward
+uses una.integration.lexisnexis.util.ClueUtilInfo
 
 @Export
 class StartRewriteMenuItemSetUIHelper {
@@ -26,6 +27,8 @@ class StartRewriteMenuItemSetUIHelper {
     var job = new Rewrite() {:RewriteType = rewriteType}
     if (job.startJobAndCommit(inForcePeriod.Policy, inForcePeriod.CancellationDate, expirationDate, CurrentLocation)) {
       JobForward.go(job, job.Periods[0])
+      //Copy Clue Data
+      ClueUtilInfo.copyClueReport(inForcePeriod,job.LatestPeriod)
     }
   }
 

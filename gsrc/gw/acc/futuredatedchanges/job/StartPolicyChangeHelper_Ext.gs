@@ -5,6 +5,7 @@
   uses java.util.Date
   uses pcf.RenewalWizard
   uses gw.api.util.DisplayableException
+  uses una.integration.lexisnexis.util.ClueUtilInfo
 
   /**
    * Provides utility methods to start a policy change
@@ -46,7 +47,8 @@
             job = bundle.add(job)
             job.LatestPeriod?.setSERPIndicator(initiateSERP)
           })
-
+          //Copy Clue Data
+          ClueUtilInfo.copyClueReport(inForcePeriod,job.LatestPeriod)
           pcf.PolicyChangeWizard.go(job, job.LatestPeriod)
         }
       }

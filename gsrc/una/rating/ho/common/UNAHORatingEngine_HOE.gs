@@ -20,6 +20,7 @@ uses gw.job.RenewalProcess
 uses gw.rating.rtm.query.RatingQueryFacade
 uses una.rating.util.HOCreateCostDataUtil
 uses java.math.BigDecimal
+uses gw.lob.ho.rating.HOTaxCostData_HOE
 
 /**
  * User: bduraiswamy
@@ -86,9 +87,16 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   override protected function rateWindow(line: HomeownersLine_HOE) {
     assertSliceMode(line)
     // we need to be in slice mode to create costs, but we're creating costs for the whole window
+    if(isFIGASurchargeApplicable()){
+      rateFIGASurcharge(line)
+    }
     //rate policyFee
     if (isPolicyFeeApplicable(line)){
       ratePolicyFee(line)
+    }
+
+    if(isEMPASurchargeApplicable()){
+      rateEMPASurcharge(line)
     }
     if (_baseState == typekey.Jurisdiction.TC_TX and line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE){
       waiveAdditionalPremiumForPolicyChangeTX(line)
@@ -100,9 +108,11 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     var costsWithNoWindowCosts: List<Cost> = new List<Cost>()
     for (cost in costs) {
       if (cost typeis HomeownersLineCost_EXT){
-        if (cost.HOCostType == HOCostType_Ext.TC_POLICYFEE or cost.HOCostType == HOCostType_Ext.TC_ADDITIONALPREMIUMWAIVED)
+        if (cost.HOCostType == HOCostType_Ext.TC_ADDITIONALPREMIUMWAIVED)
           continue
       }
+      if(cost typeis HOTaxCost_HOE)
+        continue
       costsWithNoWindowCosts.add(cost)
     }
     return costsWithNoWindowCosts
@@ -128,6 +138,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
           break
       case ScheduleLineCovCost_HOE_Ext:
           cd = new ScheduleLineCovCostData_HOE_Ext(c, RateCache)
+          break
+      case HOTaxCost_HOE:
+          cd = new HOTaxCostData_HOE(c, RateCache)
           break
         default:
         throw "unknown type of cost " + typeof c
@@ -163,7 +176,19 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
    * Rate the manual premium Adjustment
    */
   function rateManualPremiumAdjustment(dateRange: DateRange) {
-    var totalPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
+    var totalPremium : BigDecimal = 0.0
+    if(BaseState == Jurisdiction.TC_FL){
+      for(costData in CostDatas){
+        if(costData typeis DwellingCovCostData_HOE){
+          var cost = costData.getPopulatedCost(PolicyLine)
+          if(cost.Coverage.PatternCode == "HODW_FloodCoverage_HOE_Ext")
+            continue
+        }
+        totalPremium += costData?.ActualTermAmount
+      }
+    } else{
+      totalPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
+    }
     var minimumPremium = 0
     var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
         {: Jurisdiction = BaseState,
@@ -223,13 +248,55 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         TC_STATE -> _baseState.Code
     }
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
-    var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES)
+    var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES_EXT)
     if (costData != null and costData.ActualTermAmount != 0){
       costData.ActualAmount = costData.ActualTermAmount
       addCost(costData)
     }
     if(_logger.isDebugEnabled())
       _logger.debug("Policy fee added Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the FIGA Surcharge
+   */
+  function rateFIGASurcharge(line: HomeownersLine_HOE) {
+    if(_logger.isDebugEnabled())
+      _logger.debug("Entering :: rateFIGASurcharge:", this.IntrinsicType)
+    var totalPolicyPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_TOTALPOLICYPREMIUM_EXT -> totalPolicyPremium
+    }
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.FIGA_SURCHARGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_FIGASURCHARGE_EXT)
+    if (costData != null){
+      costData.ActualAmount = costData.ActualTermAmount
+      addCost(costData)
+    }
+    if(_logger.isDebugEnabled())
+      _logger.debug("FIGA surcharge added Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the EMPA Surcharge
+   */
+  function rateEMPASurcharge(line: HomeownersLine_HOE) {
+    if(_logger.isDebugEnabled())
+      _logger.debug("Entering :: rateEMPASurcharge:", this.IntrinsicType)
+    var totalPolicyPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_STATE -> _baseState.Code
+    }
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.EMPA_SURCHARGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_EMPASURCHARGE_EXT)
+    if (costData != null){
+      costData.ActualAmount = costData.ActualTermAmount
+      addCost(costData)
+    }
+    if(_logger.isDebugEnabled())
+      _logger.debug("EMPA surcharge added Successfully", this.IntrinsicType)
   }
 
   /**
@@ -268,6 +335,22 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         return true
     } else if (_baseState == typekey.Jurisdiction.TC_NV){
       if (line.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION)
+        return true
+    }
+    return false
+  }
+
+  private function isFIGASurchargeApplicable() : boolean{
+    if(_baseState == typekey.Jurisdiction.TC_FL){
+      if (PolicyLine.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION || PolicyLine.Branch.Job.Subtype == typekey.Job.TC_RENEWAL)
+        return true
+    }
+    return false
+  }
+
+  private function isEMPASurchargeApplicable() : boolean{
+    if(_baseState == typekey.Jurisdiction.TC_FL){
+      if (PolicyLine.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION)
         return true
     }
     return false

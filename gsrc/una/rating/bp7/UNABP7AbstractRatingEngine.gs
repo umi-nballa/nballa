@@ -75,6 +75,7 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     // for Tax
     assertSliceMode(lineVersion)
     ratePolicyFee(lineVersion)
+    rateEMPASurcharge(lineVersion)
   }
 
   /******
@@ -111,4 +112,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
   abstract function rateManualPremiumAdjustment(sliceRange : DateRange)
 
   abstract function ratePolicyFee(lineVersion: BP7Line)
+
+  abstract function rateEMPASurcharge(lineVersion: BP7Line)
 }

@@ -72,7 +72,7 @@ class HOConstructionTypeMapper {
         constructionType == typekey.ConstructionType_HOE.TC_POUREDCONCRETE_EXT || constructionType == typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
         constructionType == typekey.ConstructionType_HOE.TC_S || constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT) {
       return RateTableConstructionType_Ext.TC_MASONRY
-    } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT) {
+    } else if (constructionType == typekey.ConstructionType_HOE.TC_FRAME_EXT || constructionType == typekey.ConstructionType_HOE.TC_OTHER) {
       return RateTableConstructionType_Ext.TC_FRAME
     } else {
       return RateTableConstructionType_Ext.TC_NA

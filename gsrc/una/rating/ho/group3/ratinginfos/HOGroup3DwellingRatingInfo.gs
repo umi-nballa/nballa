@@ -26,6 +26,7 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
   var _ordinanceOrLawCovLimit : BigDecimal as ordinanceOrLawCovLimit
+  var _specialComputerCoverageLimit : BigDecimal as SpecialComputerCoverageLimit
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)
@@ -69,6 +70,9 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
     }
     if (dwellingCov typeis HODW_OrdinanceCov_HOE){
       _ordinanceOrLawCovLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.Value
+    }
+    if(dwellingCov typeis HODW_SpecialComp_HOE_Ext){
+      _specialComputerCoverageLimit = dwellingCov?.HODW_SpecialComputerCoverageLimit_ExtTerm?.Value
     }
   }
 }

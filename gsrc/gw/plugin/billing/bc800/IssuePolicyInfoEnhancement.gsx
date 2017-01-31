@@ -65,10 +65,9 @@ enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
         this.YearBuilt = period.HomeownersLine_HOE.Dwelling.YearBuilt
       else
         this.YearBuilt = period.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext
-      if(period.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE?.HasHODW_WindHail_Ded_HOETerm && period.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value != null)
-        this.CoastalWind = period.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value > 0 ? true:false
-      else
-        this.CoastalWind = false
+
+        this.CoastalWind = period.HomeownersLine_HOE.Dwelling.WHurricaneHailExclusion_Ext
+
     }
     // PC-BC Integration: Adding Bankruptcy Flag
     this.BankruptcyFlag = period.bankruptcy_Ext

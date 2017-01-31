@@ -14,8 +14,7 @@ uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 class HPXPremiumMapper {
   function createTransactionPremiumInfo(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType> {
     var premiumInfos = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType>()
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    var previousPeriod = policyPeriod.BasedOn
     var transactions = policyPeriod.AllTransactions
     for (transaction in transactions) {
       var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
@@ -39,11 +38,10 @@ class HPXPremiumMapper {
 
   function createEndorsementPremiumInfo(policyPeriod: PolicyPeriod): wsi.schema.una.hpx.hpx_application_request.types.complex.EndorsementInfoType {
     var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.EndorsementInfoType()
-    var policyPeriodHelper = new HPXPolicyPeriodHelper()
     endorsementInfo.ProRateFactor = 1.0 // TODO revisit
     endorsementInfo.NewPremiumAmt.Amt = policyPeriod.TotalPremiumRPT.Amount != null ? policyPeriod.TotalPremiumRPT.Amount : 0.00
     // any previous period premiums
-    var previousPeriod = policyPeriodHelper.getPreviousBranch(policyPeriod)
+    var previousPeriod = policyPeriod.BasedOn
     endorsementInfo.PreviousPremiumAmt.Amt = previousPeriod != null and previousPeriod.TotalPremiumRPT != null ? previousPeriod.TotalPremiumRPT.Amount : 0.00
     var currentPremiumAmount = policyPeriod.TotalPremiumRPT != null ? policyPeriod.TotalPremiumRPT.Amount : 0.00
     // change in total premiums

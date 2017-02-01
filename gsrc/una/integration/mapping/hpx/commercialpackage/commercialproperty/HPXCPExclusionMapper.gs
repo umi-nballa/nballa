@@ -12,16 +12,16 @@ uses una.integration.mapping.hpx.common.HPXExclusionMapper
  */
 class HPXCPExclusionMapper extends HPXExclusionMapper {
 
-  override function createCoverableInfo(currentExclusion: Exclusion, previousExclusion: Exclusion): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+  override function createCoverableInfo(currentExclusion: Exclusion): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     return null
   }
 
-  function createScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+  function createScheduleList(currentExclusion: Exclusion, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
      return null
   }
 
-  override function createDeductibleScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+  override function createDeductibleScheduleList(currentExclusion: Exclusion, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
     return null
   }

@@ -12,39 +12,39 @@ uses una.integration.mapping.hpx.common.HPXExclusionMapper
  */
 class HPXGLExclusionMapper extends HPXExclusionMapper {
 
-  override function createCoverableInfo(currentExclusion: Exclusion, previousExclusion: Exclusion): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+  override function createCoverableInfo(currentExclusion: Exclusion): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     return null
   }
 
-  function createScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+  function createScheduleList(currentExclusion: Exclusion, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     switch (currentExclusion.PatternCode) {
       case "CPAddPropExclusion_EXT" :
-          var additionalPropertyNotCoveredExclusion = createAdditionalPropertyNotCoveredExclusion(currentExclusion, previousExclusion, transactions)
+          var additionalPropertyNotCoveredExclusion = createAdditionalPropertyNotCoveredExclusion(currentExclusion, transactions)
           for (item in additionalPropertyNotCoveredExclusion) { limits.add(item)}
           break
     }
     return limits
   }
 
-  function createAdditionalPropertyNotCoveredExclusion(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+  private function createAdditionalPropertyNotCoveredExclusion(currentExclusion: Exclusion, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.CoverageCd = currentExclusion.PatternCode
     limit.CoverageSubCd = ""
-    limit.CurrentTermAmt.Amt = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     limits.add(limit)
     return limits
   }
 
-  override function createDeductibleScheduleList(currentExclusion: Exclusion, previousExclusion: Exclusion, transactions : java.util.List<Transaction>)
+  override function createDeductibleScheduleList(currentExclusion: Exclusion, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
     return null
   }

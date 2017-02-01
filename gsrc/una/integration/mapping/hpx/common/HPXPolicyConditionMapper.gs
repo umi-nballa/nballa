@@ -3,7 +3,6 @@ package una.integration.mapping.hpx.common
 uses gw.api.domain.covterm.GenericCovTerm
 uses gw.api.domain.covterm.DirectCovTerm
 uses gw.api.domain.covterm.OptionCovTerm
-uses java.math.BigDecimal
 uses gw.xml.XmlElement
 uses gw.xml.date.XmlDate
 uses gw.api.domain.covterm.TypekeyCovTerm
@@ -16,26 +15,26 @@ uses gw.api.domain.covterm.TypekeyCovTerm
  * To change this template use File | Settings | File Templates.
  */
 abstract class HPXPolicyConditionMapper {
-  function createPolicyConditionInfo(currentPolicyCondition : PolicyCondition, previousPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>)
+  function createPolicyConditionInfo(currentPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>)
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentPolicyCondition.PatternCode
     cov.PolicyConditionDesc = currentPolicyCondition.Pattern.Description
-    var coverableInfo = createCoverableInfo(currentPolicyCondition, previousPolicyCondition)
+    var coverableInfo = createCoverableInfo(currentPolicyCondition)
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
     }
     var costInfo = createCoverageCostInfo(transactions)
     for (child in costInfo.$Children) { cov.addChild(child) }
-    var scheduleList = createScheduleList(currentPolicyCondition, previousPolicyCondition, transactions)
+    var scheduleList = createScheduleList(currentPolicyCondition, transactions)
     for (item in scheduleList) {cov.addChild(new XmlElement("Limit", item))}
-    var deductibleScheduleList = createDeductibleScheduleList(currentPolicyCondition, previousPolicyCondition, transactions)
+    var deductibleScheduleList = createDeductibleScheduleList(currentPolicyCondition, transactions)
     for (item in deductibleScheduleList) {cov.addChild(new XmlElement("Deductible", item))}
     if (currentPolicyCondition.OwningCoverable typeis PolicyLine) {
-      var covTermInfo = createCovTermInfo(currentPolicyCondition, previousPolicyCondition, transactions)
+      var covTermInfo = createCovTermInfo(currentPolicyCondition, transactions)
       for (child in covTermInfo.$Children) { cov.addChild(child) }
     } else {
-      var covTermInfo = createCovTermInfo(currentPolicyCondition, previousPolicyCondition, transactions)
+      var covTermInfo = createCovTermInfo(currentPolicyCondition, transactions)
       for (child in covTermInfo.$Children) { cov.addChild(child) }
     }
     var effectiveDates = createEffectivePeriod(currentPolicyCondition)
@@ -43,51 +42,23 @@ abstract class HPXPolicyConditionMapper {
     return cov
   }
 
-  function createCovTermInfo(currentPolicyCondition : PolicyCondition, previousPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
+  function createCovTermInfo(currentPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     var currCovTerms = currentPolicyCondition.CovTerms
     for (currCovTerm in currCovTerms) {
       if (currCovTerm typeis DirectCovTerm) {
-        if (previousPolicyCondition != null) {
-          var prevCovTerm = previousPolicyCondition.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
-          var covTerms = createDirectCovTermInfo(currentPolicyCondition, currCovTerm, prevCovTerm as DirectCovTerm, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
-        else {
-          var covTerms = createDirectCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
+        var covTerms = createDirectCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
+        for (child in covTerms.$Children) { cov.addChild(child) }
       }
       else if (currCovTerm typeis OptionCovTerm) {
-        if (previousPolicyCondition != null) {
-          var prevCovTerm = previousPolicyCondition.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
-          var covTerms = createOptionCovTermInfo(currentPolicyCondition, currCovTerm, prevCovTerm as OptionCovTerm, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
-        else {
-          var covTerms = createOptionCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
+        var covTerms = createOptionCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
+        for (child in covTerms.$Children) { cov.addChild(child) }
       } else if (currCovTerm typeis GenericCovTerm) {
-        if (previousPolicyCondition != null) {
-          var prevCovTerm = previousPolicyCondition.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
-          var covTerms = createGenericCovTermInfo(currentPolicyCondition, currCovTerm, prevCovTerm as GenericCovTerm, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
-        else {
-          var covTerms = createGenericCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
+        var covTerms = createGenericCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
+        for (child in covTerms.$Children) { cov.addChild(child) }
       } else if (currCovTerm typeis TypekeyCovTerm) {
-        if (previousPolicyCondition != null) {
-          var prevCovTerm = previousPolicyCondition.CovTerms.firstWhere( \ elt -> elt.PatternCode.equals(currCovTerm.PatternCode))
-          var covTerms = createTypekeyCovTermInfo(currentPolicyCondition, currCovTerm, prevCovTerm as TypekeyCovTerm, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
-        else {
-          var covTerms = createTypekeyCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
-          for (child in covTerms.$Children) { cov.addChild(child) }
-        }
+        var covTerms = createTypekeyCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)
+        for (child in covTerms.$Children) { cov.addChild(child) }
       }
     }
     return cov
@@ -96,11 +67,11 @@ abstract class HPXPolicyConditionMapper {
   function createDirectCovTermInfo(currentPolicyCondition : PolicyCondition, currCovTerm : DirectCovTerm, prevCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
-      cov.addChild(new XmlElement("Limit", createDirectLimitInfo(currentPolicyCondition, currCovTerm, prevCovTerm as DirectCovTerm, transactions)))
+      cov.addChild(new XmlElement("Limit", createDirectLimitInfo(currentPolicyCondition, currCovTerm, transactions)))
     } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
-      cov.addChild(new XmlElement("Deductible", createDirectDeductibleInfo(currentPolicyCondition, currCovTerm, prevCovTerm as DirectCovTerm, transactions)))
+      cov.addChild(new XmlElement("Deductible", createDirectDeductibleInfo(currentPolicyCondition, currCovTerm, transactions)))
     } else {
-      cov.addChild(new XmlElement("Limit", createOtherDirectCovTerm(currentPolicyCondition, currCovTerm, prevCovTerm as DirectCovTerm, transactions)))
+      cov.addChild(new XmlElement("Limit", createOtherDirectCovTerm(currentPolicyCondition, currCovTerm, transactions)))
     }
     return cov
   }
@@ -108,78 +79,71 @@ abstract class HPXPolicyConditionMapper {
   function createOptionCovTermInfo(currentPolicyCondition : PolicyCondition, currCovTerm : OptionCovTerm, prevCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     if (currCovTerm.ModelType == typekey.CovTermModelType.TC_LIMIT) {
-      cov.addChild(new XmlElement("Limit", createOptionLimitInfo(currentPolicyCondition, currCovTerm, prevCovTerm as OptionCovTerm, transactions)))
+      cov.addChild(new XmlElement("Limit", createOptionLimitInfo(currentPolicyCondition, currCovTerm, transactions)))
     } else if (currCovTerm.ModelType == typekey.CovTermModelType.TC_DEDUCTIBLE ) {
-      cov.addChild(new XmlElement("Deductible", createOptionDeductibleInfo(currentPolicyCondition, currCovTerm, prevCovTerm as OptionCovTerm, transactions)))
+      cov.addChild(new XmlElement("Deductible", createOptionDeductibleInfo(currentPolicyCondition, currCovTerm, transactions)))
     } else {
-      cov.addChild(new XmlElement("Limit", createOtherOptionCovTerm(currentPolicyCondition, currCovTerm, prevCovTerm as OptionCovTerm, transactions)))
+      cov.addChild(new XmlElement("Limit", createOtherOptionCovTerm(currentPolicyCondition, currCovTerm, transactions)))
     }
     return cov
   }
 
   function createGenericCovTermInfo(currentPolicyCondition : PolicyCondition, currCovTerm : GenericCovTerm, prevCovTerm : GenericCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
-    cov.addChild(new XmlElement("Limit", createOtherGenericCovTerm(currentPolicyCondition, currCovTerm, prevCovTerm as GenericCovTerm, transactions)))
+    cov.addChild(new XmlElement("Limit", createOtherGenericCovTerm(currentPolicyCondition, currCovTerm, transactions)))
     return cov
   }
 
   function createTypekeyCovTermInfo(currentPolicyCondition : PolicyCondition, currCovTerm : TypekeyCovTerm, prevCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>)  : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
-    cov.addChild(new XmlElement("Limit", createTypekeyCovTerm(currentPolicyCondition, currCovTerm, prevCovTerm, transactions)))
+    cov.addChild(new XmlElement("Limit", createTypekeyCovTerm(currentPolicyCondition, currCovTerm, transactions)))
     return cov
   }
 
-  function createDirectLimitInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  function createDirectLimitInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-    var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-    var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-    limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
-    limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
+    limit.CurrentTermAmt.Amt = 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
     limit.CoverageCd = currentPolicyCondition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.FormatText = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     return limit
   }
 
-  function createOptionLimitInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  function createOptionLimitInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-    var value = currentCovTerm.OptionValue != null ? new BigDecimal(currentCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-    var orignalValue = previousCovTerm != null ? new BigDecimal(previousCovTerm.OptionValue.Value as double).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-    limit.CurrentTermAmt.Amt = !(value == null || value == "") ? value : 0.00
-    limit.NetChangeAmt.Amt = previousCovTerm != null ? value - orignalValue : 0.00
+
+    limit.CurrentTermAmt.Amt = 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
     limit.CoverageCd = currentPolicyCondition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.FormatText = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     return limit
   }
-  function createOptionDeductibleInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+  function createOptionDeductibleInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
-    var value = currentCovTerm.OptionValue.Value as double
-    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
-    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var value = currentCovTerm.OptionValue.Value
     deductible.FormatCurrencyAmt.Amt = value
-    deductible.FormatPct = pctValue
+    deductible.FormatPct = 0
     deductible.CoverageCd = currentPolicyCondition.PatternCode
     deductible.CoverageSubCd = currentCovTerm.PatternCode
     deductible.DeductibleDesc = ""
     deductible.FormatText = ""
     return deductible
   }
-  function createDirectDeductibleInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+  function createDirectDeductibleInfo(currentPolicyCondition : PolicyCondition, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
-    var value = currentCovTerm.Value as double
-    var pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
-    value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
+    var value = currentCovTerm.Value
     deductible.FormatCurrencyAmt.Amt = value
-    deductible.FormatPct = pctValue
+    deductible.FormatPct = 0
     deductible.CoverageCd = currentPolicyCondition.PatternCode
     deductible.CoverageSubCd = currentCovTerm.PatternCode
     deductible.DeductibleDesc = ""
@@ -187,59 +151,59 @@ abstract class HPXPolicyConditionMapper {
     return deductible
   }
 
-  function createOtherOptionCovTerm(currentPolicyCondition : PolicyCondition, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  function createOtherOptionCovTerm(currentPolicyCondition : PolicyCondition, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.FormatText = currentCovTerm?.OptionValue?.Value != null ? currentCovTerm.OptionValue.Value : ""
-    limit.CurrentTermAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0
     limit.CoverageCd = currentPolicyCondition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     return limit
   }
 
-  function createOtherDirectCovTerm(currentPolicyCondition : PolicyCondition, currentCovTerm : DirectCovTerm, previousCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  function createOtherDirectCovTerm(currentPolicyCondition : PolicyCondition, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
-    limit.CurrentTermAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0
     limit.CoverageCd = currentPolicyCondition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     return limit
   }
 
-  function createOtherGenericCovTerm(currentPolicyCondition : PolicyCondition, currentCovTerm : GenericCovTerm, previousCovTerm : GenericCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  function createOtherGenericCovTerm(currentPolicyCondition : PolicyCondition, currentCovTerm : GenericCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
-    limit.CurrentTermAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0
     limit.CoverageCd = currentPolicyCondition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     return limit
   }
 
-  function createTypekeyCovTerm(condition : PolicyCondition, currentCovTerm : TypekeyCovTerm, previousCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+  function createTypekeyCovTerm(condition : PolicyCondition, currentCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
-    limit.CurrentTermAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.NetChangeAmt.Amt = 0
     limit.CoverageCd = condition.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     return limit
   }
 
@@ -267,13 +231,13 @@ abstract class HPXPolicyConditionMapper {
     return cov
   }
 
-  abstract function createScheduleList(currentPolicyCondition : PolicyCondition, previousPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>)
+  abstract function createScheduleList(currentPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
 
 
-  abstract function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+  abstract function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
         : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType>
 
-  abstract function createCoverableInfo(currentPolicyCondition : PolicyCondition, previousPolicyCondition : PolicyCondition) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
+  abstract function createCoverableInfo(currentPolicyCondition : PolicyCondition) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType
 
 }

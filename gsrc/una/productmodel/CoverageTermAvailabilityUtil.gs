@@ -221,6 +221,14 @@ class CoverageTermAvailabilityUtil {
     return (dwelling.HODW_DifferenceConditions_HOE_ExtExists) ? ExistenceType.TC_ELECTABLE : ExistenceType.TC_REQUIRED
   }
 
+  //CPBuilding CPNewlyAcquiredConstructedProp_EXT Coverage Terms availability business rule
+  public static function isCPNewlyAcquiredConstructedProp_EXTCovTermsAvailable(cpBuilding:CPBuilding):boolean{
+    if(cpBuilding.CPBPPCovExists){
+      return true
+    }
+    return false
+  }
+
   private static function isMedPayOptionAvailable(_option: gw.api.productmodel.CovTermOpt, _hoLine: entity.HomeownersLine_HOE) : boolean {
     var result = true
     var state = _hoLine.Branch.BaseState
@@ -371,11 +379,11 @@ class CoverageTermAvailabilityUtil {
     return false
   }
   private static function isBP7OrdinanceLawCov1LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line!=null && bp7Line.BP7OrdinanceOrLawCov_EXTExists && bp7Line.BP7OrdinanceOrLawCov_EXT!=null &&
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm!=null && bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue!=null &&
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1Only_EXT") ||
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
-          bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT")){
+      if(bp7Line.BP7OrdinanceOrLawCov_EXTExists && bp7Line.BP7OrdinanceOrLawCov_EXT.HasBP7OrdinLawCov_EXTTerm &&
+          bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode!=null &&
+          (bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1Only_EXT") ||
+          bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
+          bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT"))){
       return true
     }
     return false
@@ -386,18 +394,20 @@ class CoverageTermAvailabilityUtil {
   }
   
   private static function isBP7OrdinanceLawCov2LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm!=null && bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue!=null &&
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT")){
+    if(bp7Line.BP7OrdinanceOrLawCov_EXTExists && bp7Line.BP7OrdinanceOrLawCov_EXT.HasBP7OrdinLawCov_EXTTerm &&
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode!=null &&
+        (bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT"))){
       return true
     }
     return false
   }
 
   private static function isBP7OrdinanceLawCov3LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm!=null && bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue!=null &&
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov3Only_EXT") ||
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
-        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT")){
+    if(bp7Line.BP7OrdinanceOrLawCov_EXTExists && bp7Line.BP7OrdinanceOrLawCov_EXT.HasBP7OrdinLawCov_EXTTerm &&
+        bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode!=null &&
+        (bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov3Only_EXT") ||
+            bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov12and3_EXT") ||
+            bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Cov1and3_EXT"))){
       return true
     }
     return false

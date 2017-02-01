@@ -13,6 +13,7 @@ uses javax.xml.namespace.QName
 uses gw.xml.XmlNamespace
 uses gw.xml.XmlSimpleValue
 uses javax.xml.bind.annotation.XmlAttribute
+uses una.logging.UnaLoggerCategory
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,19 +60,18 @@ class HPXRequestMapper {
       var compositionUnit = compositionUnitMapper.createCompositionUnit(policyPeriod, forms)
       returnString = createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy, compositionUnit)
     }
+    var _logger =
+        /*Logger.forCategory("HPX")*/ UnaLoggerCategory.UNA_HPX
+    _logger.debug(returnString)
     return returnString
   }
 
   function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType,
                                  compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : String {
     var hpxRequestType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType()
-    //var hpxRequest = new XmlElement("PublishDocumentRequest", hpxRequestType)
-
     var ns = new XmlNamespace("http://wservices.universalpr.com/standards/pcnew/", "")
     var noNameSpace = new XmlAttribute()
     var hpxRequest = new XmlElement(ns.qualify("PublishDocumentRequest"), hpxRequestType)
-   // var hpxRequest = new XmlElement("PublishDocumentRequest", hpxRequestType)
-
     var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
     hpxRequestType.PublishingEngineFileKey = "PolicyCenterNA.pub"
     policyDocumentPublish.addChild(new XmlElement("DwellingPolicy", dwellingPolicy))
@@ -80,10 +80,6 @@ class HPXRequestMapper {
     hpxRequest.addChild(new XmlElement("PublishingDocumentOutput", createPublishingDocumentOutput()))
     hpxRequestType.Transaction = "Policy Dwelling"
     hpxRequest.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
-    /*for (att in hpxRequest.AttributeNames) {
-      hpxRequest.removeChildren(att)
-    }  */
-
     return hpxRequest.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"", "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
   }
 

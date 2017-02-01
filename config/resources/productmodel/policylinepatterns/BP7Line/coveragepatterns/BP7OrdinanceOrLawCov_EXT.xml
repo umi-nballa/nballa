@@ -24,6 +24,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("Cov3Limit_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
       <LimitsSet/>
     </DirectCovTermPattern>
     <OptionCovTermPattern
@@ -73,6 +74,7 @@
       </Options>
     </OptionCovTermPattern>
     <DirectCovTermPattern
+      aggregationModel="po"
       codeIdentifier="Cov1Limit_EXT"
       coverageColumn="DirectTerm1"
       lookupTableName="BP7LineCovTerm"
@@ -80,7 +82,9 @@
       priority="200"
       public-id="Cov1Limit_EXT"
       required="true"
+      restrictionModel="bipd"
       valueType="money">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("Cov1Limit_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
       <LimitsSet/>
     </DirectCovTermPattern>
     <OptionCovTermPattern
@@ -121,6 +125,7 @@
       required="true"
       restrictionModel="bipd"
       valueType="money">
+      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("Cov2Limit_EXT", BP7BusinessOwnersLine)]]></AvailabilityScript>
       <LimitsSet/>
     </DirectCovTermPattern>
   </CovTerms>

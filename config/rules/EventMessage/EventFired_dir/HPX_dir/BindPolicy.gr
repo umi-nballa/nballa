@@ -17,7 +17,6 @@ var ewsRequestMapper = new HPXRequestMapper()
 var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
   if (period.NewlyAddedForms.Count > 0) {
     var ewsRequestXML = ewsRequestMapper.createForms(period, period.NewlyAddedForms)
-    print(ewsRequestXML)
     messageContext.createMessage(ewsRequestXML)
   }
 /*end00rule*/

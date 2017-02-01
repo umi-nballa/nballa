@@ -16,7 +16,6 @@ class BP7LineRatingInfo {
   var _cyberOneComputerAttackLimit : int as CyberOneComputerAttackLimit
   var _employeeDishonestyLimit : int as EmployeeDishonestyLimit
   var _numOfEmployees : int as NumOfEmployees
-  var _forgeryOrAlterationLimit : BigDecimal as ForgeryOrAlterationLimit
   var _equipmentBreakdownEndorsementLimit : BigDecimal as EquipmentBreakdownEndorsementLimit
   var _hiredNonOwnedAutoLimit : BigDecimal as HiredNonOwnedAutoLimit
   var _numOfAdditionalInterestsFranchisors : int as NumOfAdditionalInterestsFranchisors
@@ -40,6 +39,7 @@ class BP7LineRatingInfo {
   var _employmentPracticesLiabilityDeductible : int as EmploymentPracticesLiabilityDeductible
   var _numberOfFullTimeEmployees : int as NumberOfFullTimeEmployees
   var _numberOfPartTimeEmployees : int as NumberOfPartTimeEmployees
+  var _employeeDishonestyPremium : BigDecimal as EmployeeDishonestyPremium = 0.0
 
   construct(lineCov: BP7LineCov) {
     if(lineCov typeis BP7CyberOneCov_EXT){
@@ -51,9 +51,6 @@ class BP7LineRatingInfo {
     if(lineCov typeis BP7EmployeeDishty){
       _employeeDishonestyLimit = lineCov.BP7Limit6Term?.Value.intValue()
       _numOfEmployees = lineCov?.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm?.Value.intValue()
-    }
-    if(lineCov typeis BP7ForgeryAlteration){
-      _forgeryOrAlterationLimit = lineCov?.BP7Limit7Term?.Value
     }
     if(lineCov typeis BP7EquipBreakEndor_EXT){
       _equipmentBreakdownEndorsementLimit = lineCov?.BP7EquipBreakEndorLimit_ExtTerm?.Value

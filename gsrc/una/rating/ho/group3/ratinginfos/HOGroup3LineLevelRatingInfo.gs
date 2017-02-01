@@ -23,7 +23,6 @@ class HOGroup3LineLevelRatingInfo {
     if (lineVersion.Dwelling.HODW_Personal_Property_HOEExists){
       _valuationMethod = lineVersion.Dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value.DisplayName
     }
-
     _yearOfConstructionMaxLimit = ConfigParamsUtil.getInt(TC_YearOfConstructionMaxLimit, lineVersion.BaseState, lineVersion.HOPolicyType.Code)
     _yearOfConstructionMinLimit = ConfigParamsUtil.getInt(TC_YearOfConstructionMinLimit, lineVersion.BaseState, lineVersion.HOPolicyType.Code)
   }

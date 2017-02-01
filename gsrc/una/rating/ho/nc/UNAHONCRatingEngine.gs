@@ -50,6 +50,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
     var rater = new HOBasePremiumRaterNC(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
+
     addCosts(costs)
   }
 
@@ -119,6 +120,10 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_LossAssessmentCov_HOE_Ext:
             rateLossAssessmentCoverage(dwellingCov, dateRange)
           break
+      case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
+        //  rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
+          break
+
 
 
 
@@ -141,6 +146,22 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }*/
+
+
+  function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnerCovASpecialLimitsCoverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HONCDwellingRatingInfo(dwellingCov)
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("rateUnitOwnerCovASpecialLimitsCoverage Rated Successfully", this.IntrinsicType)
+
+  }
+
+
 
   /**
    * Rate the watercraft liability coverage for Texas

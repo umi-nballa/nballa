@@ -73,6 +73,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_FungiCov_HOE:
         rateLimitedFungiWetOrDryRotOrBacteriaSectionIICoverage(lineCov, dateRange)
         break
+      case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
+        rateUnitOwnersRentedToOthersCoverage(lineCov, dateRange)
+        break
     }
   }
 
@@ -164,22 +167,25 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(PolicyLine.Dwelling?.PolicyPeriod?.Policy?.PriorPolicies?.Count == 0)
       rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
 
-    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
       if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
         rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
       }
-      if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-        _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
-        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
-      }
 
-      if(isMatureHomeOwnerDiscountApplicable(PolicyLine)){
-        rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
-      }
       rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
 
       if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountsOrSurchargeRatingInfo.AgeOfHome < 10)
         ratePreferredBuilderCredit(dateRange)
+
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+        if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+          _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+          rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
+        }
+        if(isMatureHomeOwnerDiscountApplicable(PolicyLine)){
+          rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
+        }
+      }
     }
 
 
@@ -191,9 +197,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       if(_discountsOrSurchargeRatingInfo.BCEGGrade == BCEG_CODE_FOR_NON_PARTICIPATION)
         rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)
 
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)
         if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
           rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEWINDPREMIUM)
+
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
         rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
         if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
           _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
@@ -324,6 +332,21 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Limited Fungi Wet Or Dry Rot Or Bacteria SectionII Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Unit Owners Rented To Others Coverage
+   */
+  function rateUnitOwnersRentedToOthersCoverage(lineCov: HOLI_UnitOwnersRentedtoOthers_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersRentedToOthersCoverage to rate Unit Owners Rented To Others Coverage", this.IntrinsicType)
+    var lineRatingInfo = new HOGroup3LineRatingInfo (lineCov)
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+                                   TC_POLICYLINE -> PolicyLine,
+                                   TC_RATINGINFO -> _hoRatingInfo}
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Unit Owners Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -504,7 +527,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyReplacementCost", this.IntrinsicType)
     var costDataForIncreasedPersonalProperty : CostData = null
-    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
       var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE)
       var rateRoutineParameter = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
       costDataForIncreasedPersonalProperty = HOCreateCostDataUtil.createCostDataForDwellingCoverage(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameter, Executor, this.NumDaysInCoverageRatedTerm)
@@ -716,8 +739,14 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateOrdinanceOrLawCoverage(dwellingCov: HODW_OrdinanceCov_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateOrdinanceOrLawCoverage to rate Ordinance Or Law Coverage", this.IntrinsicType)
+    var costDataForIncreasedPersonalProperty : CostData = null
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+      var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE)
+      var rateRoutineParameter = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+      costDataForIncreasedPersonalProperty = HOCreateCostDataUtil.createCostDataForDwellingCoverage(PolicyLine.Dwelling?.HODW_Dwelling_Cov_HOE, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameter, Executor, this.NumDaysInCoverageRatedTerm)
+    }
     var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
-    dwellingRatingInfo.PPIncreasedLimit = dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
+    dwellingRatingInfo.IncreasedPersonalPropertyPremium = costDataForIncreasedPersonalProperty?.ActualTermAmount
     var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)

@@ -27,6 +27,7 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
   var _ordinanceOrLawCovLimit : BigDecimal as ordinanceOrLawCovLimit
   var _specialComputerCoverageLimit : BigDecimal as SpecialComputerCoverageLimit
+  var _increasedPersonalPropertyPremium: BigDecimal as IncreasedPersonalPropertyPremium = 0.0
 
   construct(dwellingCov : DwellingCov_HOE){
     super(dwellingCov)

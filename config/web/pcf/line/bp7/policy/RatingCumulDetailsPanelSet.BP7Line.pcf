@@ -205,5 +205,55 @@
         </ListViewInput>
       </InputColumn>
     </DetailViewPanel>
+    <PanelRef>
+      <Toolbar/>
+      <ListViewPanel>
+        <RowIterator
+          editable="false"
+          elementName="building"
+          id="lineBuildings"
+          value="line.AllBuildings"
+          visible="true">
+          <Row>
+            <Cell
+              id="buildingDesc"
+              label="&quot;Building&quot;"
+              value="building.DisplayName"/>
+            <Cell
+              id="accountModificationFactor"
+              label="&quot;Account Modification Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setAccountModificationFactor(line)"/>
+            <Cell
+              id="buildingAgeFactor"
+              label="&quot;Building Age Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setBuildingAgeFactor(line,RateBookStatus.TC_DRAFT, building)"/>
+            <Cell
+              id="experienceRatingFactor"
+              label="&quot;Experience Rating Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setExperienceRatingFactor(line, RateBookStatus.TC_DRAFT)"/>
+            <Cell
+              id="territoryModificationFactor"
+              label="&quot;Territory Modification Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setTerritoryModificationFactor(line, RateBookStatus.TC_DRAFT, building)"/>
+            <Cell
+              id="windExclusionFactor"
+              label="&quot;Wind Exclusion Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setWindExclusionFactor(line, RateBookStatus.TC_DRAFT, building)"/>
+            <Cell
+              id="bcegFactor"
+              label="&quot;BCEG Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setBCEGFactor(line, RateBookStatus.TC_DRAFT, building)"/>
+            <Cell
+              id="buildingDeductibleFactor"
+              label="&quot;Building Deductible Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setBuildingDeductibleFactor(line, RateBookStatus.TC_DRAFT, building)"/>
+            <Cell
+              id="netAdjustmentFactor"
+              label="&quot;Net Adjustment Factor&quot;"
+              value="una.rating.bp7.util.RateFactorUtil.setNetAdjustmentFactor(line, RateBookStatus.TC_DRAFT, building)"/>
+          </Row>
+        </RowIterator>
+      </ListViewPanel>
+    </PanelRef>
   </PanelSet>
 </PCF>

@@ -54,7 +54,6 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "IdentityRecovCoverage_EXT" :
       case "BP7CyberOneCov_EXT" :
       case "BP7EmployeeDishty" :
-      case "BP7ForgeryAlteration" :
       case "BP7EquipBreakEndor_EXT" :
       case "BP7HiredNonOwnedAuto" :
       case "BP7AddlInsdGrantorOfFranchiseLine_EXT" :
@@ -69,6 +68,9 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "BP7BusinessLiability" :
         if(lineRatingInfo.MedicalExpensesPerPersonLimit == 10000)
           addCost(step.rateBusinessLiabilityMedicalPaymentIncrease(lineCov, sliceToRate))
+        break
+      case "BP7ForgeryAlteration" :
+        addCost(step.rateForgeryOrAlterationCoverage(lineCov, sliceToRate))
         break
       case "BP7OrdinanceOrLawCov_EXT" :
         addCosts(step.rateOrdinanceOrLawCoverage(lineCov, sliceToRate))
@@ -146,6 +148,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
+    _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification.Building)
     _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){

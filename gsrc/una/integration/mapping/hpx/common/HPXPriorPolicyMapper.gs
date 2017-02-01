@@ -1,4 +1,6 @@
 package una.integration.mapping.hpx.common
+
+uses gw.xml.date.XmlDate
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -14,17 +16,8 @@ class HPXPriorPolicyMapper {
       var otherOrPriorPolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.OtherOrPriorPolicyType()
       otherOrPriorPolicy.NameInfo.CommlName.CommercialName = priorPol.Carrier != null ? priorPol.Carrier : ""
       otherOrPriorPolicy.PolicyNumber = priorPol.PolicyNumber != null ? priorPol.PolicyNumber : ""
-      if (priorPol.EffectiveDate != null) {
-        otherOrPriorPolicy.OriginalInceptionDt.Day = priorPol.EffectiveDate.DayOfMonth
-        otherOrPriorPolicy.OriginalInceptionDt.Month = priorPol.EffectiveDate.MonthOfYear
-        otherOrPriorPolicy.OriginalInceptionDt.Year = priorPol.EffectiveDate.YearOfDate
-      }
-      if (priorPol.ExpirationDate != null) {
-        otherOrPriorPolicy.CancelDeclineDt.Day = priorPol.ExpirationDate.DayOfMonth
-        otherOrPriorPolicy.CancelDeclineDt.Month = priorPol.ExpirationDate.MonthOfYear
-        otherOrPriorPolicy.CancelDeclineDt.Year = priorPol.ExpirationDate.YearOfDate
-      }
-
+      otherOrPriorPolicy.OriginalInceptionDt = new XmlDate(priorPol.EffectiveDate)
+      otherOrPriorPolicy.CancelDeclineDt = new XmlDate(priorPol.ExpirationDate)
       otherOrPriorPolicy.PolicyAmt.Amt = priorPol.TotalPremium_amt != null ? priorPol.TotalPremium_amt : 0.00
       otherOrPriorPolicy.NumLosses = priorPol.NumLosses != null ? priorPol.NumLosses : 0
       otherOrPriorPolicy.TotalPaidLossesAmt.Amt = priorPol.TotalLosses_amt != null ? priorPol.TotalLosses_amt : 0.00

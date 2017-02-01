@@ -105,6 +105,23 @@ class BP7LineStep extends BP7RatingStep {
     return costDatas
   }
 
+  function rateForgeryOrAlterationCoverage(lineCov : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine>{
+    var employeeDishonestyPremium : BigDecimal = 0.0
+    if(_line.BP7EmployeeDishtyExists){
+      var costDataForEmployeeDishonesty = createCostData(_line.BP7EmployeeDishty, sliceToRate)
+      var parameterSetForEmployeeDishonesty = createLineRatingInfoParameterSet(costDataForEmployeeDishonesty)
+      _executor.execute(BP7RateRoutineNames.BP7_LINE_EMPLOYEE_DISHONESTY_RATE_ROUTINE, _line.BP7EmployeeDishty, parameterSetForEmployeeDishonesty, costDataForEmployeeDishonesty)
+      employeeDishonestyPremium = costDataForEmployeeDishonesty?.ActualTermAmount
+    }
+    _lineRatingInfo.EmployeeDishonestyPremium = employeeDishonestyPremium
+    var costData = createCostData(lineCov, sliceToRate)
+    var parameterSet = createParameterSet(lineCov, costData)
+    _executor.execute(getRateRoutineCode(lineCov.Pattern), lineCov, parameterSet, costData)
+
+    return costData
+
+  }
+
   function rateTerrorismCoverageRateRoutine(lineCov : Coverage, sliceToRate : DateRange, basePremiumForTerrorismCoverage : BigDecimal) : CostData<Cost, PolicyLine>{
     var costData = createCostData(lineCov, sliceToRate)
     var termAmount : BigDecimal = 100.0

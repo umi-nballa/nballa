@@ -64,10 +64,10 @@ class CPLocationUtil {
 
   static function getTunaResponse(polLocation:PolicyLocation)  : TunaAppResponse
   {
-    if(polLocation.AssociatedPolicyPeriod.CPLineExists)
-     return new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(polLocation.AssociatedPolicyPeriod)
-
-    else return null
+    if(polLocation.AssociatedPolicyPeriod.CPLineExists){
+      return new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(polLocation.AssociatedPolicyPeriod)
+    }else{
+      return new TunaAppResponse()
+    }
   }
-
 }

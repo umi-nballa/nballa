@@ -1334,7 +1334,9 @@
             id="PropFloodValTunaReturned_Ext"
             label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
             value="dwelling.PropFloodVal_Ext"
-            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)">
+            <PostOnChange/>
+          </RangeInput>
           <Input
             available="!dwelling.OverridePropFloodVal_Ext"
             id="PropFloodValMatchLevel_Ext"
@@ -1355,7 +1357,9 @@
             label="displaykey.Web.Homeowners.HOLocation.PropFloodValUserEntered_Ext"
             required="dwelling.OverridePropFloodVal_Ext"
             value="dwelling.PropFloodValOverridden_Ext"
-            visible="dwelling.OverridePropFloodVal_Ext"/>
+            visible="dwelling.OverridePropFloodVal_Ext">
+            <PostOnChange/>
+          </TypeKeyInput>
           <InputDivider/>
           <InputSet
             id="BaseFloodElVal_Ext">
@@ -1396,7 +1400,7 @@
           label="displaykey.Web.Homeowners.AbveBlwBaseFldElvtn_Ext"
           required="false"
           value="dwelling.AbveBlwBaseFldElvtn_Ext"
-          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.PropFloodVal_Ext!=null &amp;&amp; (!dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
+          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.FloodZoneOrOverride!=null &amp;&amp; (!dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;X&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;B&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;C&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
         <TypeKeyInput
           editable="true"
           id="PriorFloodInsProvider_Ext"

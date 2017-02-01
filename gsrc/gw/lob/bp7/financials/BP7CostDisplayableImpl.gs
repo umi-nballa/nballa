@@ -82,6 +82,8 @@ class BP7CostDisplayableImpl implements BP7CostDisplayable {
         return _cost.Coverage.DisplayName + " - " + _cost.BP7CostType.Description
       }
     }
+    if(_cost typeis BP7TaxCost_Ext)
+      return ""
     return _cost.Coverage.DisplayName
   }
   

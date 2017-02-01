@@ -106,5 +106,8 @@ public final class HORateRoutineNames {
 
   public static final var EQ_LIMITED_COV_CA_RATE_ROUTINE : String = "UNAHOEarthquakeLimitedCovRateRoutine"
   public static final var EQ_COMPREHENSIVE_COV_CA_RATE_ROUTINE :String = "UNAHOEarthquakeComprehensiveCovRateRoutine"
+  public static final var EQ_COVERAGE_RATE_ROUTINE_HO3 :String = "UNAHO3EarthquakeCoverageRateRoutine"
+  public static final var EQ_COVERAGE_RATE_ROUTINE_HO4 :String = "UNAHO4EarthquakeCoverageRateRoutine"
+  public static final var EQ_COVERAGE_RATE_ROUTINE_HO6 :String = "UNAHO6EarthquakeCoverageRateRoutine"
   public static final var UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE :String = "UNAHOUnitOwnersCovAIncreasedLimitRateRoutine"
 }

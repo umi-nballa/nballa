@@ -14,42 +14,42 @@ uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
  */
 class HPXGLPolicyConditionMapper extends HPXPolicyConditionMapper {
 
-  override function createCoverableInfo(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+  override function createCoverableInfo(currentPolicyCondition: PolicyCondition): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     return null
   }
 
-  override function createScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
 
     switch (currentPolicyCondition.PatternCode) {
       case "LimitationofCovDesignatedPremises_EXT" :
-          var limitationOfCovToDesigPremisesOrProject = createlimitationOfCovToDesigPremisesOrProjectSchedule(currentPolicyCondition, previousPolicyCondition, transactions)
+          var limitationOfCovToDesigPremisesOrProject = createlimitationOfCovToDesigPremisesOrProjectSchedule(currentPolicyCondition, transactions)
           for (item in limitationOfCovToDesigPremisesOrProject) { limits.add(item)}
           break
     }
     return limits
   }
 
-  override function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
+  override function createDeductibleScheduleList(currentPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
     return null
   }
 
-  function createlimitationOfCovToDesigPremisesOrProjectSchedule(currentPolicyCondition: PolicyCondition, previousPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+  function createlimitationOfCovToDesigPremisesOrProjectSchedule(currentPolicyCondition: PolicyCondition, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.CoverageCd = currentPolicyCondition.PatternCode
     limit.CoverageSubCd = ""
-    limit.CurrentTermAmt.Amt = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Premises: " + currentPolicyCondition.OwningCoverable.PolicyLocations.first().addressString(",", true, true) +
                       "| Project: " + (currentPolicyCondition.OwningCoverable as GLLine).Exposures.first().ClassCode + " - " +
                                       (currentPolicyCondition.OwningCoverable as GLLine).Exposures.first().ClassCode.Classification
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     limits.add(limit)
     return limits
   }

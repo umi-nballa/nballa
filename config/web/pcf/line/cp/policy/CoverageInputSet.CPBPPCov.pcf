@@ -127,6 +127,8 @@
         value="building.CPBPPCov.CPBPPCovReportingFormTerm.Value"
         valueRange="building.CPBPPCov.CPBPPCovReportingFormTerm?.Pattern.OrderedAvailableValues"
         visible="building.CPBPPCov.hasCovTerm(&quot;CPBPPCovReportingForm&quot;)"/>
+      <PostOnChange
+        onChange="una.productmodel.CoverageTermAvailabilityUtil.isCPNewlyAcquiredConstructedProp_EXTCovTermsAvailable(building)"/>
     </InputGroup>
     <InputDivider
       visible="openForEdit or coverable.getCoverageConditionOrExclusion(coveragePattern) != null"/>

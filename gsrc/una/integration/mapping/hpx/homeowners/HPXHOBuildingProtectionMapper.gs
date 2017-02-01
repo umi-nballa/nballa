@@ -11,7 +11,7 @@ class HPXHOBuildingProtectionMapper {
   function createBuildingProtection(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType {
     var bldgProtection = new wsi.schema.una.hpx.hpx_application_request.types.complex.BldgProtectionType()
     bldgProtection.ProtectionClassGradeCd = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode != null ?
-                                                policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode : ""
+                                                policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClassCode : null
     bldgProtection.ProtectionDeviceFireInd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireExtinguishers != null ?
                                                 policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireExtinguishers : false
     bldgProtection.ProtectionDeviceFireCd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SmokeAlarm != null ?

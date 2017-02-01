@@ -7,6 +7,6 @@ enhancement CancelPolicyInfoEnhancement : CancelPolicyInfo {
   function sync(period : PolicyPeriod) {
     this.syncBasicPolicyInfo(period)
     this.CancellationType = period.RefundCalcMethod.Code
-    this.CancellationReason = period.Cancellation.CancelReasonCode.Description
+    this.CancellationReason = period.Cancellation.CancelReasonCode.Code
   }
 }

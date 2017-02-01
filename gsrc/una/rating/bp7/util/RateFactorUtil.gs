@@ -46,6 +46,7 @@ class RateFactorUtil {
   * Sets the Account modification factor by summing up all the scheduled modifiers shown on screen
    */
   static function setAccountModificationFactor(line : BP7Line) : BigDecimal{
+    _accountModificationFactor = 1.0
     var modifiers = line.Modifiers
     var scheduledRate = modifiers.where( \ m -> m.ScheduleRate)
     var rateFactors = scheduledRate*.RateFactors
@@ -151,6 +152,7 @@ class RateFactorUtil {
    */
   static function setBuildingDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     var windOrHailPercentage = line.BP7LocationPropertyDeductibles_EXT?.BP7WindHailDeductible_EXTTerm?.DisplayValue
+    _buildingDeductibleFactor = 1.0
     if(windOrHailPercentage != "Not Applicable"){
       var optionalDeductible = line.BP7LocationPropertyDeductibles_EXT?.BP7OptionalDeductible_EXTTerm?.Value
       var buildingLimit = building?.BP7Structure?.BP7BuildingLimitTerm?.Value
@@ -166,6 +168,7 @@ class RateFactorUtil {
   */
   static function setContentDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, classification : BP7Classification){
     var windOrHailPercentage = line.BP7LocationPropertyDeductibles_EXT?.BP7WindHailDeductible_EXTTerm?.DisplayValue
+    _contentDeductibleFactor = 1.0
     if(windOrHailPercentage != "Not Applicable"){
       var optionalDeductible = line.BP7LocationPropertyDeductibles_EXT?.BP7OptionalDeductible_EXTTerm?.Value
       var bppLimit = classification?.BP7ClassificationBusinessPersonalProperty?.BP7BusnPrsnlPropLimitTerm?.Value

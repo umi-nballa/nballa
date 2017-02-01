@@ -148,6 +148,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
+    _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification.Building)
     _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){

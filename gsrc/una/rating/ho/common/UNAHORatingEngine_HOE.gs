@@ -142,7 +142,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       case HOTaxCost_HOE:
           cd = new HOTaxCostData_HOE(c, RateCache)
           break
-        default:
+      default:
         throw "unknown type of cost " + typeof c
     }
     return cd

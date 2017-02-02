@@ -120,6 +120,7 @@ class PropertyInformationCompletePluginImpl {
     //Remove from session
     tunaAppSession.removeFromSession(policyPeriod)
     //Dwelling Details
+    if(policyPeriod.HomeownersLine_HOE != null)   {
     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = null
     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideYearbuilt_Ext = false
@@ -261,6 +262,7 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevelL1_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevelL2_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.TotalSqFtValMatchLevel_Ext = null
+   }
   }
 
   /**

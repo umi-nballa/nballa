@@ -128,7 +128,8 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Properties with on premises adult daycare or assisted living activities are not eligible for coverage")
     }
 
-    if(HODwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE  && !HODwelling.HOLocation.PolicyLocation.State.Code=="FL")
+    if((HODwelling.HOUWQuestions.typebusiness==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE || HODwelling.HOUWQuestions.whattypeofbus==typekey.HOTypeofbusiness_Ext.TC_CHILDDAYCARE)
+        && HODwelling.HOLocation.PolicyLocation.State.Code!="FL")
     {
       //policyTypeValid = false
       addErrorOrWarning("Properties  with on premises daycare operations are not eligible for coverage")

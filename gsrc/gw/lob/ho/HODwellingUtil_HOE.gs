@@ -817,6 +817,7 @@ class HODwellingUtil_HOE {
 
   static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, dwelling:Dwelling_HOE) : boolean {
     /************ dwelling.HOLocation entity *****/
+    if(tunaAppResponse != null){
     dwelling.HOLocation.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
     dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
     dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext // named value of protection class
@@ -859,6 +860,7 @@ class HODwellingUtil_HOE {
 
 
     dwelling.TotalSqFtValMatchLevel_Ext = getMatchLevel(tunaAppResponse.SquareFootage)
+    }
 
     return true
   }

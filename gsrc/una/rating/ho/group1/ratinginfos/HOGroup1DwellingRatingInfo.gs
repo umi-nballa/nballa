@@ -32,6 +32,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _earthquakeGrading : int as EarthquakeGrading
   var _lossAssessmentCoverageForEQ : BigDecimal as LossAssessmentCoverageForEQ
   var _hasAssessmentCoverageForEQ : boolean as HasAssessmentCoverageForEQ = false
+  var _hasOtherStructuresRentedToOthersLimit : boolean as HasOtherStructuresRentedToOthersLimit = false
   var _yearBuilt : int as YearBuilt
   var _isEQCompCovConstructionRetrofit : boolean as IsEQCompConstructionRetrofit = false
   var _isEQLtdCovConstructionRetrofit : boolean as IsEQLtdConstructionRetrofit = false
@@ -121,6 +122,12 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
           dwellingCov?.Dwelling?.HODW_LossAssEQEndorsement_HOE_Ext?.HasHODW_LossAssEQLimit_HOETerm){
           _hasAssessmentCoverageForEQ = dwellingCov?.Dwelling?.HODW_LossAssEQEndorsement_HOE_Ext?.HasHODW_LossAssEQLimit_HOETerm
           _lossAssessmentCoverageForEQ = dwellingCov?.Dwelling?.HODW_LossAssEQEndorsement_HOE_Ext?.HODW_LossAssEQLimit_HOETerm?.Value
+      }
+      if(dwellingCov?.Dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists){
+        _hasOtherStructuresRentedToOthersLimit = dwellingCov?.Dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HasHODW_IncreasedLimit_HOETerm
+        if(_hasOtherStructuresRentedToOthersLimit){
+            _otherStructuresRentedToOthersLimit = dwellingCov?.Dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
+        }
       }
     }
   }

@@ -57,21 +57,21 @@ class HPXShuttersRatingHelper {
   function getShuttersConnectionPost2001None(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var estimatedDiscount = new HPXEstimatedDiscount()
     var ratingHelper = new HPXRatingHelper()
-    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_credits_new_construction_other_roof_shape_nonhvhz", typekey.Jurisdiction.TC_FL, {"other roof deck", "Terrain B", "100", "Greater Than Or Equal to 110", "Enclosed", "NO", "No SWR", "None"})
+    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_credits_new_construction_other_roof_shape_nonhvhz", typekey.Jurisdiction.TC_FL, {"Other Roof Deck", "Terrain B", "110", "Greater Than Or Equal to 110", "Enclosed", "NO", "No SWR", "None"})
     return estimatedDiscount.getEstimatedDiscount(ratingFactor, 0.00, "POST_2001_MAX_SHUTTERS_NONE", "Maximum Discount for Shutters None")
   }
 
   function getShuttersConnectionPost2001Intermediate(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var estimatedDiscount = new HPXEstimatedDiscount()
     var ratingHelper = new HPXRatingHelper()
-    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_credits_new_construction_other_roof_shape_nonhvhz", typekey.Jurisdiction.TC_FL, {"other roof deck", "Terrain B", "100", "Greater Than Or Equal to 110", "Enclosed", "NO", "NO SWR", "Windows"})
+    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_credits_new_construction_other_roof_shape_nonhvhz", typekey.Jurisdiction.TC_FL, {"Other Roof Deck", "Terrain B", "110", "Greater Than Or Equal to 110", "Enclosed", "NO", "NO SWR", "Windows"})
     return estimatedDiscount.getEstimatedDiscount(ratingFactor, 0.00, "POST_2001_MAX_SHUTTERS_INTERMEDIATE", "Maximum Discount for Shutters Intermediate")
   }
 
   function getShuttersConnectionPost2001HurricaneProtection(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var estimatedDiscount = new HPXEstimatedDiscount()
     var ratingHelper = new HPXRatingHelper()
-    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_credits_new_construction_other_roof_shape_nonhvhz", typekey.Jurisdiction.TC_FL, {"other roof deck", "Terrain B", "100", "Greater Than Or Equal to 110", "Enclosed", "NO", "NO SWR", "ALL"})
+    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_credits_new_construction_other_roof_shape_nonhvhz", typekey.Jurisdiction.TC_FL, {"Other Roof Deck", "Terrain B", "110", "Greater Than Or Equal to 110", "Enclosed", "NO", "NO SWR", "ALL"})
     return estimatedDiscount.getEstimatedDiscount(ratingFactor, 0.00, "POST_2001_MAX_SHUTTERS_HURRICANE", "Maximum Discount for Shutters Hurricane Grade")
   }
 }

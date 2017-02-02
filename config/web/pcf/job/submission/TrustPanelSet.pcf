@@ -3,7 +3,8 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
   <PanelSet
-    id="TrustPanelSet">
+    id="TrustPanelSet"
+    visible="true">
     <Require
       name="policyPeriod"
       type="PolicyPeriod"/>
@@ -16,7 +17,7 @@
           label="&quot;Is Multiple Trust Involved&quot;"
           trueLabel="&quot;Yes&quot;"
           value="policyPeriod.isMultipleTrust"
-          visible="(policyPeriod.isHOType() or policyPeriod.isDFType()) and policyPeriod.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT">
+          visible="true">
           <PostOnChange/>
         </BooleanRadioInput>
         <TypeKeyInput
@@ -24,7 +25,7 @@
           id="TrustInvolved"
           label="&quot;How many Trusts Involved&quot;"
           value="policyPeriod.NoOfTrustInvolved"
-          visible="(policyPeriod.isHOType() or policyPeriod.isDFType()) and policyPeriod.isMultipleTrust">
+          visible="true">
           <PostOnChange
             onChange="createTrustResidings()"/>
         </TypeKeyInput>

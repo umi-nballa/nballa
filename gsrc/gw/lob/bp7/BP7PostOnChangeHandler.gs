@@ -114,12 +114,25 @@ class BP7PostOnChangeHandler {
     if (coverable typeis FieldDependency) {
       coverable.updateDependentFields(null, helper)
     }
+
+    //setting up BP7 Hired Auto And Non-Owned Auto Liability Coverage - Limit Covterm value
+    if(coverable typeis BP7BusinessOwnersLine && coverable.BP7BusinessLiability.BP7EachOccLimitTerm!=null && coverable.BP7HiredNonOwnedAutoExists){
+      if(coverable.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("300000")){
+        coverable.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("300000_EXT")
+      }else if(coverable.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("500000")){
+        coverable.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("500000_EXT")
+      }else if(coverable.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("1000000")){
+        coverable.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("1000000_EXT")
+      }else if(coverable.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("2000000")){
+        coverable.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("2000000_EXT")
+      }
+    }
   }
 
   static function handleLineEachOccurrenceLimit(term : CovTerm){
     var coverable = term.Clause.OwningCoverable
     if (coverable typeis BP7BusinessOwnersLine) {
-      var liabilityCov = coverable.BP7BusinessLiability
+      var liabilityCov = coverable.BP7BusinessLiability      
       if (term == liabilityCov.BP7EachOccLimitTerm) {
         updateProdComplOpsAggrLimit(coverable)
       }

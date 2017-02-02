@@ -13,26 +13,23 @@ enhancement UNACoveragePatternEnhacement : gw.api.productmodel.ClausePattern {
 
   function GetCoverageName(coverable: entity.Coverable): String{
 
-    var policyType: typekey.HOPolicyType_HOE
+    var displayName = this.DisplayName
 
-    if(coverable typeis Dwelling_HOE) {
+    if((coverable typeis Dwelling_HOE) == false) {
 
-      policyType = (coverable as Dwelling_HOE).HOPolicyType
-    } else{
-
-      policyType = (coverable as HomeownersLine_HOE).HOPolicyType
+      return displayName
     }
 
-    var criteriaTest =  ConfigParamsUtil.getString(tc_AlternateDisplayName, coverable.PolicyLine.BaseState, "${this.CodeIdentifier}_${policyType.Code}")
+    var policyType = (coverable as Dwelling_HOE).HOPolicyType
 
-    if(StringUtils.isEmpty(criteriaTest) == false){
+    var queriedDisplayName =  ConfigParamsUtil.getString(tc_AlternateDisplayName, coverable.PolicyLine.BaseState, "${this.CodeIdentifier}_${policyType.Code}")
 
-       return displaykey.una.productmodel.coverages.ModifiedReplacementCostName
-    }else{
+    if(StringUtils.isEmpty(queriedDisplayName) == false){
 
-        return this.DisplayName
+       return queriedDisplayName
     }
 
+    return displayName
   }
 
 

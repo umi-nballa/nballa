@@ -281,6 +281,6 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
 
   override function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal {
     var windPremium = policyPeriod.AllCosts.where( \ elt -> elt typeis HomeownersBaseCost_HOE and elt.HOCostType.equals(HOCostType_Ext.TC_WINDBASEPREMIUM))
-    return windPremium.first().ActualTermAmount.Amount
+    return windPremium != null and windPremium.first() != null ? windPremium.first().ActualTermAmount.Amount : 0
   }
 }

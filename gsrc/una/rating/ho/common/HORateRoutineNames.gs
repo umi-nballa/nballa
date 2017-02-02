@@ -99,6 +99,7 @@ public final class HORateRoutineNames {
   public static final var NO_PRIOR_INSURANCE_RATE_ROUTINE : String = "UNAHONoPriorInsuranceRateRoutine"
   public static final var TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE : String = "UNAHOTownhouseOrRowhouseSurchargeRateRoutine"
   public static final var BRUSH_HAZARD_SURCHARGE_RATE_ROUTINE : String = "UNAHOBrushHazardSurchargeRateRoutine"
+  public static final var ADJUSTMENT_TO_BCEG_AND_WPDC_CREDIT_RATE_ROUTINE : String = "UNAHOAdjustmentToBCEGAndWPDCCreditRateRoutine"
 
   public static final var CC_EFT_ACCESSDEVICE_FORGERY_AND_COUNTERFEIT_MONEY : String = "UNAHOCCEFTAccessDeviceForgeryAndCounterfeitMoney"
   public static final var RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE : String = "UNAHOResidenceHeldInTrustRateRoutine"
@@ -110,4 +111,5 @@ public final class HORateRoutineNames {
   public static final var EQ_COVERAGE_RATE_ROUTINE_HO4 :String = "UNAHO4EarthquakeCoverageRateRoutine"
   public static final var EQ_COVERAGE_RATE_ROUTINE_HO6 :String = "UNAHO6EarthquakeCoverageRateRoutine"
   public static final var UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE :String = "UNAHOUnitOwnersCovAIncreasedLimitRateRoutine"
+  public static final var UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE :String = "UNAHOUnitOwnersCovASpecialLimitsRateRoutine"
 }

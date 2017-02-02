@@ -14,6 +14,12 @@
       signature="NewAdditionalInsuredPopup(line: PolicyLine, contactType: typekey.ContactType)"/>
     <LocationEntryPoint
       signature="NewAdditionalInsuredPopup(line: PolicyLine, contactType: typekey.ContactType, additionalInsuredType: typekey.AdditionalInsuredType)"/>
+    <LocationEntryPoint
+      signature="NewAdditionalInsuredPopup(line: PolicyLine, contactType: typekey.ContactType, trustFlag : boolean)"/>
+    <Variable
+      initialValue="false"
+      name="trustFlag"
+      type="boolean"/>
     <Variable
       name="line"
       type="PolicyLine"/>
@@ -21,6 +27,7 @@
       name="contactType"
       type="typekey.ContactType"/>
     <Variable
+      initialValue="trustFlag ? typekey.AdditionalInsuredType.TC_TRUESTEE_EXT : null"
       name="additionalInsuredType"
       type="typekey.AdditionalInsuredType"/>
     <Variable
@@ -64,5 +71,10 @@
       <PanelRef
         def="NewPolicyContactRoleDetailsCV(policyAddlInsured, false)"/>
     </Screen>
+    <Code><![CDATA[function setPolicyAddInsuredDetail ():PolicyAddlInsuredDetail{  
+  var AddInsured = line.addNewAdditionalInsuredDetailOfContactType(contactType, additionalInsuredType)
+    if(trustFlag)
+     { AddInsured.AdditionalInsuredType = typekey.AdditionalInsuredType.TC_TRUESTEE_EXT }
+    return AddInsured }]]></Code>
   </Popup>
 </PCF>

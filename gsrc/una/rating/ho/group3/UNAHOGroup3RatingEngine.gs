@@ -147,6 +147,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_FloodCoverage_HOE_Ext:
         rateFloodCoverage(dwellingCov, dateRange)
         break
+      case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
+        rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov, dateRange)
+        break
     }
   }
 
@@ -215,13 +218,14 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(!windOrHailExcluded){
       rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
       //rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
+     // rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
     }
 
     rateMaximumDiscountAdjustmentForAOP(dateRange)
 
     updateFinalAdjustedAOPBasePremium()
 
-    _hoRatingInfo.FinalAdjustedWindBasePremium = _hoRatingInfo.AdjustedWindBasePremium + _hoRatingInfo.BuildingCodeComplianceGradingCredit + _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction
+    _hoRatingInfo.FinalAdjustedWindBasePremium = _hoRatingInfo.AdjustedWindBasePremium + _hoRatingInfo.BuildingCodeComplianceGradingCredit + _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction + _hoRatingInfo.AdjustmentToBCEGAndWPDCCredit
     //TODO : Need to update the final adjusted wind premium
     _hoRatingInfo.TotalBasePremium = _hoRatingInfo.FinalAdjustedAOPBasePremium + _hoRatingInfo.FinalAdjustedWindBasePremium
 
@@ -682,7 +686,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   *  Function to rate the BWindstorm Resistive Features Of Residential Construction Credit
+   *  Function to rate the Windstorm Resistive Features Of Residential Construction Credit
    */
   function rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateWindstormResistiveFeaturesOfResidentialConstructionCredit", this.IntrinsicType)
@@ -696,6 +700,23 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     }
     _logger.debug("Windstorm Resistive Features Of Residential Construction Credit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Adjustment To BCEG And WPDC Credit
+   */
+  function rateAdjustmentToBCEGAndWPDCCredit(dateRange: DateRange, costType : HOCostType_Ext) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateAdjustmentToBCEGAndWindstormResistiveCredit", this.IntrinsicType)
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+                                            TC_POLICYLINE -> PolicyLine,
+                                            TC_RATINGINFO -> _hoRatingInfo }
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADJUSTMENT_TO_BCEG_AND_WPDC_CREDIT_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null and  costData.ActualTermAmount != 0){
+      _hoRatingInfo.AdjustmentToBCEGAndWPDCCredit = costData?.ActualTermAmount
+      addCost(costData)
+    }
+    _logger.debug("Adjustment To BCEG And WPDC Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -791,6 +812,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Other Structures Rented To Others Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Unit Owners CovA Special Limits Coverage
+   */
+  function rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext, dateRange: DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovASpecialLimitsCoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup3DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Unit Owners CovA Special Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

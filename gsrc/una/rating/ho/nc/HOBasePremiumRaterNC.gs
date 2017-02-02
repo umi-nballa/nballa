@@ -28,12 +28,15 @@ class HOBasePremiumRaterNC {
       HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
 
   }
+  private var _basePremiumRatingInfo : HOBasePremiumRatingInfo
+
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
     _rateCache = rateCache
     _executor = executor
     _hoRatingInfo = hoRatingInfo
     _line = line
+    _basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
   }
 
   /**
@@ -50,6 +53,9 @@ class HOBasePremiumRaterNC {
         wsc.add(costData.WorksheetEntries.first())
     routinesToExecute.addAll(baseRoutinesToExecute)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
+    if(_basePremiumRatingInfo.ConsentToRate){
+      _dwelling.Branch.ConsentToRate_Ext = true
+    }
     costs.each(\cost -> cost.addWorksheetEntries(wsc))
     return costs
 
@@ -63,11 +69,10 @@ class HOBasePremiumRaterNC {
     var costs: List<CostData> = {}
     if (!routinesToExecute.Empty) {
       for (routine in routinesToExecute) {
-        var basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
         var costData = new HomeownersBaseCostData_HOE(dateRange.start, dateRange.end, _line.Branch.PreferredCoverageCurrency, _rateCache, _routinesToCostTypeMapping.get(routine))
         costData.init(_line)
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
-        var rateRoutineParameterMap = createParameterSet(costData, basePremiumRatingInfo)
+        var rateRoutineParameterMap = createParameterSet(costData, _basePremiumRatingInfo)
         _executor.executeBasedOnSliceDate(routine, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
         if (costData != null){
           costs.add(costData)

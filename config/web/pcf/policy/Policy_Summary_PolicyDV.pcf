@@ -113,12 +113,18 @@
         id="RiskLocation"
         label="displaykey.Web.PolicyFile.Summary.RiskLocation"
         value="policyPeriod.getLocationValue(policyPeriod)"/>
-      <CheckBoxInput
+      <!-- <CheckBoxInput
         id="ConsenttoRate_Ext"
         label="displaykey.Web.ModifiersScreen.ConsenttoRate_Ext"
         value="policyPeriod.ConsentToRateReceived_Ext">
         <PostOnChange/>
-      </CheckBoxInput>
+      </CheckBoxInput> -->
+      <BooleanRadioInput
+        id="ConsentToRate"
+        label="displaykey.Web.Policy.UWCompanies.ConsentToRate_Ext"
+        required="true"
+        value="policyPeriod.ConsentToRate_Ext"
+        visible="policyPeriod.HomeownersLine_HOEExists and policyPeriod.BaseState==typekey.Jurisdiction.TC_NC"/>
       <Input
         id="ReInsuFacultative"
         label="displaykey.Web.PolicyFile.Summary.Facultative"

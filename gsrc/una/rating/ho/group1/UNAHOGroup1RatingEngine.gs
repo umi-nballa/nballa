@@ -73,7 +73,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_FungiCov_HOE:
-          updateLineCostData(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          if(PolicyLine.BaseState != Jurisdiction.TC_CA)
+            updateLineCostData(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_PersonalInjury_HOE:
           if (!HasExecutiveCoverage)
@@ -147,7 +148,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateScheduledPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_FungiCov_HOE:
-          rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
+          if(PolicyLine.BaseState != Jurisdiction.TC_CA)
+            rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
           break
       case HODW_SpecialPersonalProperty_HOE_Ext:
           rateSpecialPersonalPropertyCoverage(dwellingCov, dateRange)

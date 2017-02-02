@@ -453,7 +453,7 @@ class PropertyInformationCompletePluginImpl {
     _address.YearBuilt = cpBuilding.Building.YearBuilt
     try {
       tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
-      cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation",tunaResponse.MetricsVersion.first().NamedValue))
+      cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation" ,""))
 
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
     } catch (exp: Exception) {

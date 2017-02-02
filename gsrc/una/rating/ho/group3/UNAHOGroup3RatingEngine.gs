@@ -217,8 +217,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     if(!windOrHailExcluded){
       rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
-      rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
-      rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
+      //rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
+     // rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
     }
 
     rateMaximumDiscountAdjustmentForAOP(dateRange)

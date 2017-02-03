@@ -1,4 +1,6 @@
 package una.rating.ho.nc.ratinginfos
+
+uses java.math.BigDecimal
 /**
  * Created with IntelliJ IDEA.
  * User: ssok
@@ -10,6 +12,7 @@ class HONCLineRatingInfo {
   var _personalInjuryAgg : boolean as PersonalInjuryAggregate
   var _personalInjuryPer : boolean as PersonalInjuryPerOffense
   var _numberOfResidenceFamily : int as NumberOfResidenceFamily
+  var _totalBasePremium: BigDecimal as TotalBasePremium
 
   construct(line: HomeownersLine_HOE){
     _personalInjuryAgg = line.HOLI_PersonalInjuryAggregate_NC_HOE_ExtExists

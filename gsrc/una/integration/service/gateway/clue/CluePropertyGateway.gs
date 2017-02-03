@@ -470,14 +470,13 @@ class CluePropertyGateway implements CluePropertyInterface {
     var subject1 = new SubjectListType_Subject()
     i = i + 1
     subject1.Id = subId + i
-    subject1.Quoteback = pHolder.PublicID
 
     var subType = mapSubject(pHolder.FirstName, pHolder.LastName)
     subject1.Name.add(subType)
 
     if (pHolder.DateOfBirth != null)
       subject1.Birthdate = DateUtil.formatDateTime(pHolder.DateOfBirth)
-      subject1.Ssn = "000000000"
+    //  subject1.Ssn = "000000000"
 
 
     var address = new AddressListType_Address()
@@ -499,7 +498,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       }
       address.City = location.City
       address.State = location.State.Code
-      address.Postalcode = location.PostalCode
+      address.Postalcode = location.PostalCode.substring(0,5)
       address.Id = addId + x
     }
     lexOrderAddress.Address.add(address)
@@ -517,8 +516,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       subject.Id = subId + i
       if (addIns.DateOfBirth != null)
         subject.Birthdate = DateUtil.formatDateTime(addIns.DateOfBirth)
-        subject.Ssn = "000000000"
-      subject.Quoteback = addIns.PublicID
+     //   subject.Ssn = "000000000"
 
       var subType1 = mapSubject(addIns.FirstName, addIns.LastName)
 
@@ -565,6 +563,10 @@ class CluePropertyGateway implements CluePropertyInterface {
       priorRiskAddress.Id = addId + x
 
       addressSub2 = mapSubjectAddress(priorRiskAddress, "Former")
+
+      if(addIns != null)
+        subject.Address.add(addressSub2)
+
       subject1.Address.add(addressSub2)
       lexOrderAddress.Address.add(priorRiskAddress)
       lexOrder.Products.ClueProperty[0].FormerAddress = address2
@@ -583,13 +585,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
 
     var formatter = new SimpleDateFormat(DATE_FORMAT)
-    if (pHolder.DateOfBirth != null){
-      subject1.Birthdate = formatter.format(pHolder.DateOfBirth)
-    }
-    if (pHolder.ContactDenorm.SSNOfficialID != null) {
-      subject1.Ssn = pHolder.ContactDenorm.SSNOfficialID.replaceAll("-", "")
-    }
-    subject1.Description.Sex = getSex(pHolder)
+  //  subject1.Description.Sex = getSex(pHolder)
 
     lexOrder.Products.ClueProperty[0].PrimarySubject = subject1
     lexOrder.Products.ClueProperty[0].RiskAddress = address
@@ -643,7 +639,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     }
     address.City = pAddress.City
     address.State = pAddress.State.Code
-    address.Postalcode = pAddress.PostalCode
+    address.Postalcode = pAddress.PostalCode.substring(0,5)
 
 
     return address

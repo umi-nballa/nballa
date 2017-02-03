@@ -332,7 +332,8 @@
       </InputColumn>
     </DetailViewPanel>
     <Code><![CDATA[function Initialize () : boolean {
-  period.CreditInfoExt.CreditMode= true
+  if(period.CreditInfoExt.CreditMode == null)
+      period.CreditInfoExt.CreditMode= true
   return true
 }
 function updateFormerNameFields() {

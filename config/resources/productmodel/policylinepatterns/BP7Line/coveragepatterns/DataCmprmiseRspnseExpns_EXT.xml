@@ -11,7 +11,6 @@
   priority="6660"
   public-id="DataCmprmiseRspnseExpns_EXT"
   referenceDateByType="PolicyTerm">
-  <InitializeScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="ag"
@@ -48,7 +47,7 @@
       codeIdentifier="DataCmprmseRspnseExpnsLimit_EXT"
       coverageColumn="ChoiceTerm1"
       lookupTableName="BP7LineCovTerm"
-      modelType="Deductible"
+      modelType="Limit"
       priority="100"
       public-id="DataCmprmseRspnseExpnsLimit_EXT"
       required="true"
@@ -158,13 +157,16 @@
       </Options>
     </OptionCovTermPattern>
     <OptionCovTermPattern
+      aggregationModel="ag"
       choiceLookupTableName="BP7LineCovOpt"
       codeIdentifier="DataCmprmseRspnseExpnsDeduc_EXT"
       coverageColumn="ChoiceTerm2"
       lookupTableName="BP7LineCovTerm"
+      modelType="Deductible"
       priority="200"
       public-id="DataCmprmseRspnseExpnsDeduc_EXT"
       required="true"
+      restrictionModel="bipd"
       valueType="money">
       <DefaultsSet>
         <CovTermDefault

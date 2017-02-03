@@ -3,6 +3,7 @@ package una.integration.mapping.hpx.common
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.businessowners.HPXBP7BuildingMapper
 uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
+uses una.integration.mapping.hpx.helper.HPXRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,6 +50,12 @@ class HPXPremiumMapper {
     endorsementInfo.AdditionalPremiumAmt.Amt = premiumDifference >= 0 ? premiumDifference : 0.00
     endorsementInfo.ReturnPremiumAmt.Amt = premiumDifference < 0 ? premiumDifference : 0.00
     endorsementInfo.NetPremiumAmt.Amt = premiumDifference
+    var ratingHelper = new HPXRatingHelper()
+    var baseCost = policyPeriod.AllCosts.firstWhere( \ elt -> elt typeis HomeownersBaseCost_HOE and elt.HOCostType == typekey.HOCostType_Ext.TC_BASEPREMIUM)
+    var consentToRate = ratingHelper.getRate(policyPeriod, baseCost.NameOfCoverable, "NCRB")
+    var consentToRateTotalDeviationFactor = ratingHelper.getRate(policyPeriod, baseCost.NameOfCoverable, "TotalDeviationFactor")
+    endorsementInfo.ConsentToRatePremiumAmt.Amt = consentToRate
+    endorsementInfo.ConsentToRateTotalDeviationPercentage = consentToRateTotalDeviationFactor * 100
     var premiumChanges = createTransactionPremiumInfo(policyPeriod)
     for (premiumChange in premiumChanges) {
       endorsementInfo.addChild(new XmlElement("PremiumInfo", premiumChange))

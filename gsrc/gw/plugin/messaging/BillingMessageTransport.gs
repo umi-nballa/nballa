@@ -268,12 +268,16 @@ class BillingMessageTransport implements MessageTransport {
     var basedOnPeriod = policyPeriod.BasedOn
     var newPrimaryNamedInsured = policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.PublicID
     var oldPrimaryNamedInsured = basedOnPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.PublicID
+    var newProducerCode = policyPeriod.Policy.ProducerCodeOfService.PublicID
+    var oldProducerCode = policyPeriod.BasedOn.EffectiveDatedFields.ProducerCode.PublicID
+
     return transactions.countWhere(\ t -> t.Charged) > 0
       or policyPeriod.BaseState != basedOnPeriod.BaseState
       or policyPeriod.PeriodStart != basedOnPeriod.PeriodStart
       or policyPeriod.PeriodEnd != basedOnPeriod.PeriodEnd
       or newPrimaryNamedInsured != oldPrimaryNamedInsured
       or PolicyInfoUtil.hasAddlInterestsUpdated(policyPeriod)
+      or newProducerCode != oldProducerCode
   }
 
   private function getTransactionId(message : Message) : String {

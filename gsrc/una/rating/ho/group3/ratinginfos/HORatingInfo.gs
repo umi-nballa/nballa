@@ -42,4 +42,5 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _townHouseOrRowHouseSurchargeWind : BigDecimal as TownHouseOrRowHouseSurchargeWind = 0.0
   var _buildingCodeComplianceGradingCredit : BigDecimal as BuildingCodeComplianceGradingCredit = 0.0
   var _windstormResistiveFeaturesOfResidentialConstruction : BigDecimal as WindstormResistiveFeaturesOfResidentialConstruction = 0.0
+  var _adjustmentToBCEGAndWPDCCredit : BigDecimal as AdjustmentToBCEGAndWPDCCredit = 0.0
 }

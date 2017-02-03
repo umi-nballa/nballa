@@ -6,6 +6,9 @@ uses java.util.Map
 uses gw.rating.rtm.query.RateBookQueryFilter
 uses java.math.BigDecimal
 uses gw.rating.rtm.query.RatingQueryFacade
+uses gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
+uses gw.rating.worksheet.treenode.WorksheetTreeNodeLeaf
+uses java.util.HashMap
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,60 +18,47 @@ uses gw.rating.rtm.query.RatingQueryFacade
  * To change this template use File | Settings | File Templates.
  */
 class HPXRatingHelper {
-  function getBaseRate(policyPeriod : PolicyPeriod, ratedItem : String) : double {
+
+  function getRate(policyPeriod : PolicyPeriod, ratedItem : String, rateVariable : String) : double {
     var baseRate : double = null
-    var worksheets = policyPeriod.Lines*.getWorksheetRootNode(true)
-    for (worksheet in worksheets) {
-      worksheet.Children.each( \ elt -> {
-        var container = elt.Data as gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
-        if (container.Description.equals(ratedItem)) {
-          var items = container.Children
-          for (item in items) {
-            if (item typeis gw.rating.worksheet.treenode.WorksheetTreeNodeLeaf) {
-              if (item.Instruction?.equals("BaseRate")) {
-                baseRate = item.Result
-                break
-              }
-            }
-          }
+    var containers = getWorksheetContainers(policyPeriod)
+    if (ratedItem != null and containers.containsKey(ratedItem)) {
+      var container = containers.get(ratedItem)
+      var items = getWorksheetVariables(container)
+      baseRate = items.get(rateVariable).Result
+    } else {
+      for (container in containers.values()) {
+        var items = getWorksheetVariables(container)
+        var item = items.get(rateVariable)
+        if (item != null) {
+          baseRate = item.Result
+          break
         }
-      })
+      }
     }
     return baseRate
   }
 
-  function getBasis(policyPeriod : PolicyPeriod, ratedItem : String) : double {
-    var baseRate : double = null
+  private function getWorksheetContainers(policyPeriod : PolicyPeriod) : Map<String, WorksheetTreeNodeContainer> {
+    var containers = new HashMap<String, WorksheetTreeNodeContainer>()
     var worksheets = policyPeriod.Lines*.getWorksheetRootNode(true)
     for (worksheet in worksheets) {
       worksheet.Children.each( \ elt -> {
-        var container = elt.Data as gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
-        if (container.Description.equals(ratedItem)) {
-          var items = container.Children
-          for (item in items) {
-            if (item typeis gw.rating.worksheet.treenode.WorksheetTreeNodeLeaf) {
-              if (item.Instruction?.equals("Basis")) {
-                baseRate = item.Result
-                break
-              }
-            }
-          }
-        }
-      })
-    }
-    return baseRate
-  }
-
-  function getContainers(policyPeriod : PolicyPeriod) : java.util.List<String> {
-    var containers = new java.util.ArrayList<String>()
-    var worksheets = policyPeriod.Lines*.getWorksheetRootNode(true)
-    for (worksheet in worksheets) {
-      worksheet.Children.each( \ elt -> {
-        var container = elt.Data as gw.rating.worksheet.treenode.WorksheetTreeNodeContainer
-        containers.add(container.Description)
+        var container = elt.Data as WorksheetTreeNodeContainer
+        containers.put(container.Description, container)
       })
     }
     return containers
+  }
+
+  private function getWorksheetVariables(container : WorksheetTreeNodeContainer) : Map<String,WorksheetTreeNodeLeaf> {
+    var worksheetItems = new HashMap<String,WorksheetTreeNodeLeaf>()
+    for (item in container.Children) {
+      if (item typeis gw.rating.worksheet.treenode.WorksheetTreeNodeLeaf) {
+        worksheetItems.put(item.Instruction, item)
+      }
+    }
+    return worksheetItems
   }
 
 

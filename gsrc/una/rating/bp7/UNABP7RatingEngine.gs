@@ -54,7 +54,6 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "IdentityRecovCoverage_EXT" :
       case "BP7CyberOneCov_EXT" :
       case "BP7EmployeeDishty" :
-      case "BP7ForgeryAlteration" :
       case "BP7EquipBreakEndor_EXT" :
       case "BP7HiredNonOwnedAuto" :
       case "BP7AddlInsdGrantorOfFranchiseLine_EXT" :
@@ -69,6 +68,9 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "BP7BusinessLiability" :
         if(lineRatingInfo.MedicalExpensesPerPersonLimit == 10000)
           addCost(step.rateBusinessLiabilityMedicalPaymentIncrease(lineCov, sliceToRate))
+        break
+      case "BP7ForgeryAlteration" :
+        addCost(step.rateForgeryOrAlterationCoverage(lineCov, sliceToRate))
         break
       case "BP7OrdinanceOrLawCov_EXT" :
         addCosts(step.rateOrdinanceOrLawCoverage(lineCov, sliceToRate))
@@ -146,6 +148,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
+    _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification.Building)
     _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){
@@ -194,7 +197,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function ratePolicyFee(line: BP7Line){
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
-    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_POLICYFEES)
+    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_POLICYFEES_EXT)
     costData.init(line)
     costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
@@ -202,6 +205,25 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
         TC_COSTDATA   -> costData
     }
     _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_POLICY_FEE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+    costData.StandardAmount = costData.StandardTermAmount
+    costData.ActualAmount = costData.StandardAmount
+    costData.copyStandardColumnsToActualColumns()
+    addCost(costData)
+  }
+
+  /**
+   * rate the EMPA Surcharge
+   */
+  override function rateEMPASurcharge(line: BP7Line){
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = new BP7TaxCostData_Ext(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_EMPASURCHARGE_EXT)
+    costData.init(line)
+    costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_COSTDATA   -> costData
+    }
+    _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_EMPA_SURCHARGE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
     costData.StandardAmount = costData.StandardTermAmount
     costData.ActualAmount = costData.StandardAmount
     costData.copyStandardColumnsToActualColumns()

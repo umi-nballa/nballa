@@ -61,7 +61,7 @@ class SubmissionWizardHelper {
     if(line.BP7EmployeeDishtyExists){
       line.BP7EmployeeDishty.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm.setValue(fullTimeEmployees + partialEmp)
     }
-    if(line.BP7EmploymentPracticesLiabilityCov_EXTExists){
+    if(line.BP7EmploymentPracticesLiabilityCov_EXTExists && line.BP7EmploymentPracticesLiabilityCov_EXT.HasNumbOfEmployees_EXTTerm ){
       line.BP7EmploymentPracticesLiabilityCov_EXT.NumbOfEmployees_EXTTerm.setValue(fullTimeEmployees + partialEmp)
     }
     return fullTimeEmployees + partialEmp

@@ -319,7 +319,7 @@ class HODwellingUtil_HOE {
        if(dwelling.InternalPressureDsgn_Ext == null){dwelling.InternalPressureDsgn_Ext = typekey.InternalPressureDsgn_Ext.TC_ENCLOSED}
        //Defect De372 : set value based roof type
        if(dwelling.SecondaryWaterResis_Ext == null){
-         if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT){
+         if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT || (dwelling.OverrideRoofType_Ext && dwelling.RoofingMaterialOverridden_Ext == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT)){
            dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_NOSWR
          } else {
            dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_UNKNOWN
@@ -817,6 +817,7 @@ class HODwellingUtil_HOE {
 
   static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, dwelling:Dwelling_HOE) : boolean {
     /************ dwelling.HOLocation entity *****/
+    if(tunaAppResponse != null){
     dwelling.HOLocation.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
     dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
     dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext = dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext // named value of protection class
@@ -859,6 +860,7 @@ class HODwellingUtil_HOE {
 
 
     dwelling.TotalSqFtValMatchLevel_Ext = getMatchLevel(tunaAppResponse.SquareFootage)
+    }
 
     return true
   }

@@ -21,7 +21,6 @@ class HPXEstimatedDiscount {
     this.Code = code
     this.Amount = amount
     this.Description = description
-    print(this.Percent)
     return this
   }
 }

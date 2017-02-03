@@ -162,7 +162,7 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
     var bp7Line = filter.children(new BP7Qualifier("/"))
     bp7Line.each( \ line -> {
       var lineCosts = filter.lineCoverageCosts(line)*.RelatedWorksheetCost.toList()
-      var lineDescription = lineCosts.first().DisplayDescription
+      var lineDescription = lineCosts.whereTypeIs(BP7LineCovCost).first().DisplayDescription
 
       var lineContainer = createTitleContainer(lineDescription)
       treeNodes.add(lineContainer)
@@ -207,7 +207,11 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   }
   
   private function createCostContainer(parent : WorksheetTreeNodeContainer, cost : BP7CostDisplayable, showConditionals : boolean) {
-    var costContainer = new WorksheetTreeNodeContainer(cost.DisplayDescription + ": " + cost.DisplayCoverageName)
+    var costContainer : WorksheetTreeNodeContainer = null
+    if(cost typeis BP7TaxCost_Ext)
+      costContainer = new WorksheetTreeNodeContainer(cost.DisplayDescription)
+    else
+      costContainer = new WorksheetTreeNodeContainer(cost.DisplayDescription + ": " + cost.DisplayCoverageName)
     parent.addChild(costContainer)
     costContainer.addChildren(WorksheetTreeNodeUtil.buildTreeNodes(cost as Cost, showConditionals))
   }

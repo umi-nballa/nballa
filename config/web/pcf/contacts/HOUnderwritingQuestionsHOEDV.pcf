@@ -108,7 +108,7 @@
         id="swimmingpool"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.swimmingpool"
         value="dwelling.HOUWQuestions.swimmingpool"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType)">
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)">
         <PostOnChange/>
       </BooleanRadioInput>
       <TypeKeyInput
@@ -128,7 +128,7 @@
         id="floodcovnfip"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.floodcovnfip"
         value="dwelling.HOUWQuestions.floodcovnfip"
-        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.PropFloodVal_Ext?.equalsIgnoreCase(&quot;A&quot;) || dwelling.PropFloodVal_Ext?.equalsIgnoreCase(&quot;V&quot;)"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.FloodZoneOrOverride?.Code?.containsIgnoreCase(&quot;A&quot;) || dwelling.FloodZoneOrOverride?.Code?.containsIgnoreCase(&quot;V&quot;)"/>
       <BooleanRadioInput
         editable="true"
         id="structincl"
@@ -282,7 +282,7 @@
         id="floodcov"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.floodcov"
         value="dwelling.HOUWQuestions.floodcov"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.PolicyPeriod.PrimaryLocation.State!=typekey.State.TC_CA"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; dwelling.FloodZoneOrOverride?.Code?.containsIgnoreCase(&quot;A&quot;) || dwelling.FloodZoneOrOverride?.Code?.containsIgnoreCase(&quot;V&quot;)// &amp;&amp; dwelling.PolicyPeriod.PrimaryLocation.State!=typekey.State.TC_CA "/>
       <TypeKeyInput
         editable="true"
         id="tanklocal2"
@@ -346,7 +346,7 @@
         id="buspolicy"
         label="displaykey.Web.Homeowners.Dwelling.UWQuestions.buspolicy"
         value="dwelling.HOUWQuestions.buspolicy"
-        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType)&amp;&amp; dwelling.HOUWQuestions.businesscond"/>
+        visible="typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType)&amp;&amp; dwelling.HOUWQuestions.businesscond &amp;&amp; (dwelling.HOUWQuestions.whattypeofbus==typekey.HOTypeofbusiness_Ext.TC_HOMEOFFICE || dwelling.HOUWQuestions.whattypeofbus==typekey.HOTypeofbusiness_Ext.TC_SERVICE || dwelling.HOUWQuestions.whattypeofbus==typekey.HOTypeofbusiness_Ext.TC_RETAIL || dwelling.HOUWQuestions.whattypeofbus==typekey.HOTypeofbusiness_Ext.TC_OTHER)"/>
       <Input
         editable="true"
         id="busname"

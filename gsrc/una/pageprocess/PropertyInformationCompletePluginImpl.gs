@@ -120,6 +120,7 @@ class PropertyInformationCompletePluginImpl {
     //Remove from session
     tunaAppSession.removeFromSession(policyPeriod)
     //Dwelling Details
+    if(policyPeriod.HomeownersLine_HOE != null)   {
     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt = null
     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideYearbuilt_Ext = false
@@ -261,6 +262,7 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevelL1_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ExteriorWFvalMatchLevelL2_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.TotalSqFtValMatchLevel_Ext = null
+   }
   }
 
   /**
@@ -451,7 +453,7 @@ class PropertyInformationCompletePluginImpl {
     _address.YearBuilt = cpBuilding.Building.YearBuilt
     try {
       tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
-      cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation",tunaResponse.MetricsVersion.first().NamedValue))
+      cpBuilding.CPLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation" ,""))
 
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
     } catch (exp: Exception) {

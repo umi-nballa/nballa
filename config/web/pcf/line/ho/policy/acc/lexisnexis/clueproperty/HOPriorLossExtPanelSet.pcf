@@ -57,6 +57,7 @@
           <ToolbarButton
             action="orderClue()"
             available="CurrentLocation.InEditMode &amp;&amp; openForEdit "
+            confirmMessage="getMsg()"
             id="ClueButton"
             label="displaykey.Accelerator.LexisNexis.Clue.Property.RetrieveClueLabel"
             visible="policyPeriod.Submission?.QuoteType != typekey.QuoteType.TC_QUICK"/>
@@ -170,6 +171,12 @@
     <Code><![CDATA[function orderClue(){
   HOFCRADisclosurePopup.push(null,null,null,policyPeriod.Submission.JobNumber,policyPeriod.PeriodStart,policyPeriod,null,null,null,null,ClueProperty,jobWizardHelper);
 }
-]]></Code>
+
+function getMsg():String {
+  if (policyPeriod.HomeownersLine_HOE.ClueHit_Ext)
+    return "Are you sure you want to reorder the CLUE report?"
+  else 
+    return null
+}]]></Code>
   </PanelSet>
 </PCF>

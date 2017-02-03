@@ -15,6 +15,7 @@ uses una.rating.ho.nc.ratinginfos.HONCDwellingRatingInfo
 uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
+uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -49,6 +50,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
     var rater = new HOBasePremiumRaterNC(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
+
     addCosts(costs)
   }
 
@@ -62,12 +64,13 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_AddResidenceRentedtoOthers_HOE:
-          //rateAdditionalResidenceRentedToOthersCoverage(lineCov, dateRange)
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
-
+          break
+      case HOSL_OutboardMotorsWatercraft_HOE_Ext:
+          rateWatercraftLiabilityCoverage(lineCov, dateRange)
           break
 /*      default:
           throw new Exception("Cov rate routine note found")*/
@@ -112,8 +115,15 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           ratePersonalPropertyOffResidenceCoverage(dwellingCov, dateRange)
           break
       case HODW_SpecialLimitsPP_HOE_Ext:
-          //rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+          rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
           break
+      case HODW_LossAssessmentCov_HOE_Ext:
+            rateLossAssessmentCoverage(dwellingCov, dateRange)
+          break
+      case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
+        //  rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
+          break
+
 
 
 
@@ -136,6 +146,57 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }*/
+
+
+  function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnerCovASpecialLimitsCoverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HONCDwellingRatingInfo(dwellingCov)
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("rateUnitOwnerCovASpecialLimitsCoverage Rated Successfully", this.IntrinsicType)
+
+  }
+
+
+
+  /**
+   * Rate the watercraft liability coverage for Texas
+   */
+  function rateWatercraftLiabilityCoverage(lineCov: HOSL_OutboardMotorsWatercraft_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateOutboardMotorsAndWatercraftCoverage", this.IntrinsicType)
+    for (item in lineCov.scheduledItem_Ext) {
+      var rateRoutineParameterMap = getWatercraftLiabilityCovParameterSet(item, lineCov)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.WATERCRAFT_LIABILITY_COVERAGE_RATE_ROUTINE, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Outboard Motors and Watercraft Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Loss assessment Coverage
+   */
+  function rateLossAssessmentCoverage(dwellingCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
+    var dwellingRatingInfo = new HONCDwellingRatingInfo(dwellingCov)
+    if (dwellingRatingInfo.LossAssessmentLimit > dwellingCov.HOPL_LossAssCovLimit_HOETerm.RuntimeDefault){
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Loss Asssessment Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
 
   /**
    * Rate the Special Limits Personal property coverage
@@ -349,6 +410,16 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     return {
         TC_POLICYLINE -> line,
         TC_SPECIALLIMITSPERSONALPROPERTYRATINGINFO_Ext -> new HOSpecialLimitsPersonalPropertyRatingInfo(dwellingCov)
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Dwelling level coverages
+   */
+  private function getWatercraftLiabilityCovParameterSet(item: HOscheduleItem_HOE_Ext, lineCov: HOSL_OutboardMotorsWatercraft_HOE_Ext): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> PolicyLine,
+        TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOWatercraftLiabilityCovRatingInfo(item, lineCov)
     }
   }
 }

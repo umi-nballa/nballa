@@ -39,7 +39,7 @@ class AffinityGroupUtil {
 
 
   public static function getAffinityDiscountByCategory(affinityDiscountCategory : AffinityDisCategory_Ext,
-                                              jurisdiction : Jurisdiction, effectiveDate : Date) : List<String>{
+                                                       jurisdiction : Jurisdiction, effectiveDate : Date) : List<String>{
     var result : List<String>
     var currentDate = Date.CurrentDate
 
@@ -63,16 +63,16 @@ class AffinityGroupUtil {
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDBUILDER)) {
         var preferredBuilderMap = new HashMap<String, Date>()
         queryResults.each( \ elt -> {
-          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null)
-          preferredBuilderMap.put(elt.AffinityDescription,
-              elt.getFieldValue(START_DATE) as java.util.Date)
+          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null && elt.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDBUILDER)
+            preferredBuilderMap.put(elt.AffinityDescription,
+                elt.getFieldValue(START_DATE) as java.util.Date)
         })
         _lazyPreferredBuilder.get().put(jurisdiction, preferredBuilderMap)
       }
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDFININST)) {
         var preferredFinInstMap = new HashMap<String, Date>()
         queryResults.each( \ elt -> {
-          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null) {
+          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null && elt.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDFININST) {
             preferredFinInstMap.put(elt.AffinityDescription,
                 elt.getFieldValue(START_DATE) as java.util.Date)
           }
@@ -82,7 +82,7 @@ class AffinityGroupUtil {
       if(queryResults.hasMatch( \ elt1 -> elt1.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER)) {
         var preferredEmployerMap = new HashMap<String, Date>()
         queryResults.each( \ elt -> {
-          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null) {
+          if(elt.AffinityDescription != null && elt.getFieldValue(START_DATE) != null && elt.AffinityDiscountCategory == AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER) {
             preferredEmployerMap.put(elt.AffinityDescription,
                 elt.getFieldValue(START_DATE) as java.util.Date)
           }

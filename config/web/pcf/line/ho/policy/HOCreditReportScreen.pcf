@@ -42,10 +42,6 @@
       name="formerLastName"
       type="String"/>
     <Variable
-      initialValue="setCreditRecordandDefaultValue()"
-      name="creditLevelModeInd1"
-      type="boolean"/>
-    <Variable
       initialValue="una.integration.framework.util.CreditReportUtil.isCreditReportRequired(period)"
       name="isCreditReportRequired"
       type="boolean"/>
@@ -74,7 +70,7 @@
             id="Label3"
             label="&quot;In order to bind the policy, an actual credit score will be required.&quot;"/>
           <BooleanRadioInput
-            editable="!period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext || period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext== null"
+            editable="true"
             falseLabel="&quot;Credit Record&quot;"
             id="CreditLevelRecordSelector"
             label="displaykey.Web.SubmissionWizard.CreditReporting.CreditLevelReportSelector"
@@ -354,9 +350,6 @@ function updateFormerNameFields() {
   }
 }
 
-function setCreditRecordandDefaultValue():Boolean{
-  una.pageprocess.credit.CreditReportScreen.setDefaultCreditReport(period)
-  return period.CreditInfoExt.CreditReport == null ||  (!period.HomeownersLine_HOE?.Dwelling?.FirstTimeDeededHome_Ext)  ? true : false
-}]]></Code>
+]]></Code>
   </Screen>
 </PCF>

@@ -678,15 +678,6 @@
       name="size"
       value="100"/>
   </column>
-  <column
-    desc="PropFloodVal Returned by Tuna"
-    name="PropFloodVal_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="3"/>
-  </column>
   <typekey
     desc="PropFloodVal Match Level from TUNA"
     name="PropFloodValMatchLevel_Ext"
@@ -698,15 +689,6 @@
     name="OverridePropFloodVal_Ext"
     nullok="true"
     type="bit"/>
-  <column
-    desc="PropFloodVal Entered by User"
-    name="PropFloodValOverridden_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="3"/>
-  </column>
   <column
     desc="BaseFloodElVal Returned by Tuna"
     name="BaseFloodElVal_Ext"
@@ -1255,4 +1237,16 @@
     fkentity="DwellingUWQuestions_Ext"
     name="HOUWQuestions"
     nullok="true"/>
+  <typekey
+    columnName="PropFloodValOverridden_Ext"
+    desc="Flood Zone Overridden"
+    name="PropFloodValOverridden_Ext"
+    nullok="true"
+    typelist="FloodZoneOverridden_Ext"/>
+  <typekey
+    columnName="PropFloodVal_Ext"
+    desc="PropFloodVal_Ext"
+    name="PropFloodVal_Ext"
+    nullok="true"
+    typelist="FloodZoneOverridden_Ext"/>
 </entity>

@@ -719,7 +719,7 @@
           value="dwelling.DwellingUsage"
           valueRange="return (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO4) ? DwellingUsage_HOE.TF_ALLEXCEPTRENTAL.TypeKeys : typekey.DwellingUsage_HOE.TF_ALL.TypeKeys ">
           <PostOnChange
-            onChange="if(dwelling.NumOfMonthsConsUnOccupancy_Ext != null &amp;&amp; (dwelling.DwellingUsage != TC_SEC or dwelling.DwellingUsage != TC_SEC)) dwelling.NumOfMonthsConsUnOccupancy_Ext = null"/>
+            onChange="if(dwelling.NumOfMonthsConsUnOccupancy_Ext != null &amp;&amp; (dwelling.DwellingUsage != typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage != TC_SEAS)) dwelling.NumOfMonthsConsUnOccupancy_Ext = null"/>
         </RangeInput>
         <Input
           editable="true"
@@ -1310,14 +1310,14 @@
           label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.FloodCoverage_Ext"
           value="dwelling.FloodCoverage_Ext"
           visible="(dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_Ext)) &amp;&amp; dwelling.isFloodExcludedZipCode(dwelling)">
-          <PostOnChange
-            target="FloodRelatedQns_Ext"/>
+          <PostOnChange/>
         </BooleanRadioInput>
         <Input
           id="FloodRiskType_Ext"
           label="displaykey.Web.Homeowners.DwellingConstruction.FloodRiskType"
           required="false"
-          value="dwelling.getFloodRiskTypeValue(dwelling)"/>
+          value="dwelling.getFloodRiskTypeValue(dwelling)"
+          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT) &amp;&amp; dwelling.HODW_FloodCoverage_HOE_ExtExists"/>
         <Input
           editable="true"
           id="PostFirm_Ext"
@@ -1334,7 +1334,9 @@
             id="PropFloodValTunaReturned_Ext"
             label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
             value="dwelling.PropFloodVal_Ext"
-            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)"/>
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)">
+            <PostOnChange/>
+          </RangeInput>
           <Input
             available="!dwelling.OverridePropFloodVal_Ext"
             id="PropFloodValMatchLevel_Ext"
@@ -1348,14 +1350,16 @@
             <PostOnChange
               target="PropFloodVal_Ext"/>
           </BooleanRadioInput>
-          <Input
+          <TypeKeyInput
             available="dwelling.OverridePropFloodVal_Ext"
             editable="true"
             id="PropFloodValUserEntered_Ext"
             label="displaykey.Web.Homeowners.HOLocation.PropFloodValUserEntered_Ext"
             required="dwelling.OverridePropFloodVal_Ext"
             value="dwelling.PropFloodValOverridden_Ext"
-            visible="dwelling.OverridePropFloodVal_Ext"/>
+            visible="dwelling.OverridePropFloodVal_Ext">
+            <PostOnChange/>
+          </TypeKeyInput>
           <InputDivider/>
           <InputSet
             id="BaseFloodElVal_Ext">
@@ -1396,7 +1400,7 @@
           label="displaykey.Web.Homeowners.AbveBlwBaseFldElvtn_Ext"
           required="false"
           value="dwelling.AbveBlwBaseFldElvtn_Ext"
-          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.PropFloodVal_Ext!=null &amp;&amp; (!dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;X&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;B&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;C&quot;) || !dwelling.PropFloodVal_Ext.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
+          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.FloodZoneOrOverride!=null &amp;&amp; (!dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;X&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;B&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;C&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
         <TypeKeyInput
           editable="true"
           id="PriorFloodInsProvider_Ext"
@@ -1445,7 +1449,8 @@
           value="dwelling.ElevatedRiskCredit_Ext"
           visible="dwelling.FloodCoverage_Ext"/>
       </InputSet>
-      <InputDivider/>
+      <InputDivider
+        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)"/>
       <InputSet
         id="EarthquakeCovQns_Ext">
         <BooleanRadioInput

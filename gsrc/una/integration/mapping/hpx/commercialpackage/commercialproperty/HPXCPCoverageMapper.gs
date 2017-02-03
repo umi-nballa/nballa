@@ -13,28 +13,28 @@ uses java.math.BigDecimal
  * To change this template use File | Settings | File Templates.
  */
 class HPXCPCoverageMapper extends HPXCoverageMapper{
-  override function createScheduleList(currentCoverage : Coverage, previousCoverage : Coverage,  transactions : java.util.List<Transaction>)
+  override function createScheduleList(currentCoverage : Coverage, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     switch (currentCoverage.PatternCode) {
       case "CPWindstormProtectiveDevices_EXT" :
-          var cpWindstormProtectiveDevices = createCPWindstormProtectiveDevices(currentCoverage, previousCoverage, transactions)
+          var cpWindstormProtectiveDevices = createCPWindstormProtectiveDevices(currentCoverage, transactions)
           for (item in cpWindstormProtectiveDevices) { limits.add(item)}
           break
       case "CPProtectiveSafeguards_EXT" :
-          var cpProtectiveSafeguards = createCPProtectiveSafeguards(currentCoverage, previousCoverage, transactions)
+          var cpProtectiveSafeguards = createCPProtectiveSafeguards(currentCoverage, transactions)
           for (item in cpProtectiveSafeguards) { limits.add(item)}
           break
     }
     return limits
   }
 
-  override function createDeductibleScheduleList(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)
+  override function createDeductibleScheduleList(currentCoverage : Coverage, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
     return null
   }
 
-  override function createCoverableInfo(currentCoverage: Coverage, previousCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
+  override function createCoverableInfo(currentCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {
     var coverable = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType()
     if (currentCoverage.OwningCoverable typeis CPBuilding) {
       var building = currentCoverage.OwningCoverable as CPBuilding
@@ -71,60 +71,53 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
   function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     if(currentCovTerm.PatternCode == "CPBldgCovHurricaneDeductible_EXT") {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+
+      var value = currentCovTerm.OptionValue.Value
       var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
-      var value = currentCovTerm.OptionValue.Value as double
-      var pctValue = 0
-      value = (value == null || value == "") ? 0.00 : value > 1 ? new BigDecimal(value).setScale(2, BigDecimal.ROUND_HALF_UP) : 0.00
-      if (valueType.Value == typekey.CovTermModelVal.TC_PERCENT) {
-        pctValue = value
-      } else {
-        pctValue = (value == null || value == "") ? 0 : (value <= 1) ? value*100.00 : 0
-        value = 0.00
-      }
-      deductible.FormatCurrencyAmt.Amt = value
-      deductible.FormatPct = pctValue
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
+      deductible.FormatPct = getCovTermPercentage(value, valueType)
       deductible.CoverageCd = coverage.PatternCode
       deductible.CoverageSubCd = currentCovTerm.PatternCode
       deductible.DeductibleDesc = (coverage.OwningCoverable as CPBuilding).CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.DisplayValue
       deductible.FormatText = (coverage.OwningCoverable as CPBuilding).CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.Value
-      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage, null)))
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return deductible
     }  else {
-      return super.createOptionDeductibleInfo(coverage, currentCovTerm, previousCovTerm, transactions)
+      return super.createOptionDeductibleInfo(coverage, currentCovTerm, transactions)
     }
   }
 
-  function createCPWindstormProtectiveDevices(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+  private function createCPWindstormProtectiveDevices(currentCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
     limit.CoverageCd = currentCoverage.PatternCode
     limit.CoverageSubCd = ""
-    limit.CurrentTermAmt.Amt = 0.00
-    limit.NetChangeAmt.Amt = 0.00
+    limit.CurrentTermAmt.Amt = 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = 0
     limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "PropertyDescription:" + (currentCoverage.OwningCoverable as CPBuilding).Building.Description +
                       "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + " |"
-    limit.WrittenAmt.Amt = 0.00
+    limit.WrittenAmt.Amt = 0
     limits.add(limit)
     return limits
   }
 
-  function createCPProtectiveSafeguards(currentCoverage : Coverage, previousCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
+  private function createCPProtectiveSafeguards(currentCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
-    var scheduleItems = (currentCoverage.OwningCoverable as coverable as CPBuilding).CPProtectiveSafeguards_EXT.scheduledItem_Ext
+    var scheduleItems = (currentCoverage.OwningCoverable as CPBuilding).CPProtectiveSafeguards_EXT.scheduledItem_Ext
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.CPProtectiveSafeguard_EXT
-      limit.CurrentTermAmt.Amt = 0.00
-      limit.NetChangeAmt.Amt = 0.00
+      limit.CurrentTermAmt.Amt = 0
+      limit.NetChangeAmt.Amt = 0
       limit.FormatPct = 0
       limit.Rate = 0.00
       limit.FormatText = ""
       limit.LimitDesc = ""
-      limit.WrittenAmt.Amt = 0.00
+      limit.WrittenAmt.Amt = 0
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
@@ -142,7 +135,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
           }
         }
       }
-      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage, previousCoverage)))
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits

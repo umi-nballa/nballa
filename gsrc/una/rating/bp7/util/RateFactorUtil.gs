@@ -5,6 +5,7 @@ uses gw.api.util.DateUtil
 uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.rating.rtm.query.RatingQueryFacade
 uses java.lang.Comparable
+uses java.lang.Math
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,12 +16,12 @@ uses java.lang.Comparable
 class RateFactorUtil {
 
   static var _accountModificationFactor : BigDecimal as AccountModificationFactor = 1.0
-  static var _buildingAgeFactor : BigDecimal = 1.0
-  static var _experienceRatingFactor : BigDecimal = 1.0
+  static var _buildingAgeFactor : BigDecimal as BuildingAgeFactor= 1.0
+  static var _experienceRatingFactor : BigDecimal as ExperienceRatingFactor= 1.0
   static var _minimumFactor : BigDecimal = 0.75
-  static var _territoryModificationFactor : BigDecimal = 1.0
+  static var _territoryModificationFactor : BigDecimal as TerritoryModificationFactor= 1.0
 
-  static var _sprinklerFactor : BigDecimal = 0.65
+  static var _sprinklerFactor : BigDecimal as SprinklerFactor= 0.65
 
   static var _buildingDeductibleFactor : BigDecimal = 1.0
   static var _contentDeductibleFactor : BigDecimal = 1.0
@@ -44,19 +45,21 @@ class RateFactorUtil {
   /**
   * Sets the Account modification factor by summing up all the scheduled modifiers shown on screen
    */
-  static function setAccountModificationFactor(line : BP7Line){
+  static function setAccountModificationFactor(line : BP7Line) : BigDecimal{
+    _accountModificationFactor = 1.0
     var modifiers = line.Modifiers
     var scheduledRate = modifiers.where( \ m -> m.ScheduleRate)
     var rateFactors = scheduledRate*.RateFactors
     for(factor in rateFactors){
       _accountModificationFactor += factor.AssessmentWithinLimits
     }
+    return _accountModificationFactor
   }
 
   /**
    * Sets the Building age factor
   */
-  static function setBuildingAgeFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building){
+  static function setBuildingAgeFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     var currentYear = DateUtil.getYear(DateUtil.currentDate())
     var buildingYearBuilt = building.YearBuilt_Ext
     var buildingAge = currentYear - buildingYearBuilt
@@ -66,28 +69,31 @@ class RateFactorUtil {
     } else{
       _buildingAgeFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_building_age_greater_than", {11})
     }
+      return _buildingAgeFactor
   }
 
   /**
   * Sets the experience rating factor
    */
-  static function setExperienceRatingFactor(line : BP7Line, minimumRatingLevel : RateBookStatus){
+  static function setExperienceRatingFactor(line : BP7Line, minimumRatingLevel : RateBookStatus) : BigDecimal{
     var _claimFreeYear = line.AssociatedPolicyPeriod?.ClaimFreeYear
     if(_claimFreeYear == NoClaimFreeYears_Ext.TC_0 || _claimFreeYear == NoClaimFreeYears_Ext.TC_1 || _claimFreeYear == NoClaimFreeYears_Ext.TC_2){
       _experienceRatingFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_experience_rating", {_claimFreeYear.Value as int})
     } else{
       _experienceRatingFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_experience_rating_greater_than", {3})
     }
+    return _experienceRatingFactor
   }
 
   /**
   *  Sets the territory modification factor
    */
-  static function setTerritoryModificationFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building){
+  static function setTerritoryModificationFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     var territoryCode = building?.Location?.OverrideTerritoryCode_Ext? building?.Location?.TerritoryCodeOverridden_Ext : building?.Location?.TerritoryCodeTunaReturned_Ext
     _territoryModificationFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_territory_definitions_multipier_table", {territoryCode})
     if(_territoryModificationFactor == null)
       _territoryModificationFactor = 1.0
+    return _territoryModificationFactor
   }
 
   /**
@@ -101,13 +107,14 @@ class RateFactorUtil {
     var totalFactor = _accountModificationFactor * _experienceRatingFactor * _buildingAgeFactor
     if(totalFactor < _minimumFactor)
       totalFactor = _minimumFactor
-    return (totalFactor * _territoryModificationFactor)
+    var netAdjustmentFactor = (totalFactor * _territoryModificationFactor)
+    return Math.round((netAdjustmentFactor*100) as float)/100
   }
 
   /**
   *  Sets the bceg factor
    */
-  static function setBCEGFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building){
+  static function setBCEGFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     if(line.BP7WindstormOrHailExcl_EXTExists){
       _bcegFactor = 1.0
     } else{
@@ -121,12 +128,13 @@ class RateFactorUtil {
       if(_bcegFactor == null)
         _bcegFactor = 1.0
     }
+    return _bcegFactor
   }
 
   /**
   *  Sets the wind exclusion factor, if the wind exclusion is applicable
    */
-  static function setWindExclusionFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building){
+  static function setWindExclusionFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     if(line.BP7WindstormOrHailExcl_EXTExists){
       var constructionType = building?.ConstructionType
       var territoryCode = building?.Location?.OverrideTerritoryCode_Ext? building?.Location?.TerritoryCodeOverridden_Ext : building?.Location?.TerritoryCodeTunaReturned_Ext
@@ -136,13 +144,15 @@ class RateFactorUtil {
     } else{
       _windExclusionFactor = 1.0
     }
+    return _windExclusionFactor
   }
 
   /**
   *  Sets the deductible factor for building
    */
-  static function setBuildingDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building){
+  static function setBuildingDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     var windOrHailPercentage = line.BP7LocationPropertyDeductibles_EXT?.BP7WindHailDeductible_EXTTerm?.DisplayValue
+    _buildingDeductibleFactor = 1.0
     if(windOrHailPercentage != "Not Applicable"){
       var optionalDeductible = line.BP7LocationPropertyDeductibles_EXT?.BP7OptionalDeductible_EXTTerm?.Value
       var buildingLimit = building?.BP7Structure?.BP7BuildingLimitTerm?.Value
@@ -150,6 +160,7 @@ class RateFactorUtil {
       if(_buildingDeductibleFactor == null)
         _buildingDeductibleFactor = 1.0
     }
+    return _buildingDeductibleFactor
   }
 
   /**
@@ -157,6 +168,7 @@ class RateFactorUtil {
   */
   static function setContentDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, classification : BP7Classification){
     var windOrHailPercentage = line.BP7LocationPropertyDeductibles_EXT?.BP7WindHailDeductible_EXTTerm?.DisplayValue
+    _contentDeductibleFactor = 1.0
     if(windOrHailPercentage != "Not Applicable"){
       var optionalDeductible = line.BP7LocationPropertyDeductibles_EXT?.BP7OptionalDeductible_EXTTerm?.Value
       var bppLimit = classification?.BP7ClassificationBusinessPersonalProperty?.BP7BusnPrsnlPropLimitTerm?.Value
@@ -173,7 +185,8 @@ class RateFactorUtil {
     setBuildingDeductibleFactor(line, minimumRatingLevel, building)
     setBCEGFactor(line, minimumRatingLevel, building)
     setWindExclusionFactor(line, minimumRatingLevel, building)
-    return _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
+    var propertyBuildingAdjustmentFactor = _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
+    return Math.round((propertyBuildingAdjustmentFactor*100) as float)/100
   }
 
   /**
@@ -183,7 +196,8 @@ class RateFactorUtil {
     setContentDeductibleFactor(line, minimumRatingLevel, classification)
     setBCEGFactor(line, minimumRatingLevel, classification?.building)
     setWindExclusionFactor(line, minimumRatingLevel, classification?.building)
-    return _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
+    var propertyContentAdjustmentFactor = _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
+    return Math.round((propertyContentAdjustmentFactor*100) as float)/100
   }
 
   /**

@@ -36,6 +36,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private var _hasExecutiveCoverage: boolean as HasExecutiveCoverage
   private var _hasEarthquakeLimitedCoverage: boolean as HasEarthquakeLimitedCoverage
   private var _hasEarthquakeComprehensiveCoverage: boolean as HasEarthquakeComprehensiveCoverage
+  private var _hasEarthquakeCoverage: boolean as HasEarthquakeCoverage
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -48,6 +49,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _hasExecutiveCoverage = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HasHODW_ExecutiveCov_HOE_ExtTerm ? line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_ExecutiveCov_HOE_ExtTerm?.Value : false
     _hasEarthquakeLimitedCoverage = line?.Dwelling?.HODW_Limited_Earthquake_CA_HOEExists
     _hasEarthquakeComprehensiveCoverage = line?.Dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists
+    _hasEarthquakeCoverage = line?.Dwelling?.HODW_Earthquake_HOEExists
   }
 
   /**
@@ -71,7 +73,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.ANIMAL_LIABILITY_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_FungiCov_HOE:
-          updateLineCostData(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          if(PolicyLine.BaseState != Jurisdiction.TC_CA)
+            updateLineCostData(lineCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONII_GROUP1_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_PersonalInjury_HOE:
           if (!HasExecutiveCoverage)
@@ -98,7 +101,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if (HasExecutiveCoverage){
             rateExecutiveCoverage(dwellingCov, dateRange)
           }
-          if(PolicyLine.BaseState == Jurisdiction.TC_AZ and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+          if((PolicyLine.BaseState == Jurisdiction.TC_AZ or PolicyLine.BaseState == Jurisdiction.TC_NV) and
+              PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
             rateUnitOwnersCovAIncreasedLimit(dwellingCov, dateRange)
           }
           break
@@ -144,7 +148,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateScheduledPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_FungiCov_HOE:
-          rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
+          if(PolicyLine.BaseState != Jurisdiction.TC_CA)
+            rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage(dwellingCov, dateRange)
           break
       case HODW_SpecialPersonalProperty_HOE_Ext:
           rateSpecialPersonalPropertyCoverage(dwellingCov, dateRange)
@@ -168,14 +173,21 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_Limited_Earthquake_CA_HOE:
           if (HasEarthquakeLimitedCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA and
-             (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)){
+             (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6
+             or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)){
             rateEarthquakeLimitedCovCA(dwellingCov, dateRange)
           }
           break
       case HODW_Comp_Earthquake_CA_HOE_Ext:
           if (HasEarthquakeComprehensiveCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA
-              and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+              and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
             rateEarthquakeComprehensiveCovCA(dwellingCov, dateRange)
+          }
+          break
+      case HODW_Earthquake_HOE:
+          if (HasEarthquakeCoverage and (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ)
+              and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+            rateEarthquakeCoverage(dwellingCov, dateRange)
           }
           break
     }
@@ -625,6 +637,26 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       _logger.debug("Earthquake Comprehensive Coverage CA Rated Successfully", this.IntrinsicType)
   }
 
+  function rateEarthquakeCoverage(dwellingCov : HODW_Earthquake_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateEarthquakeCoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+    var rateRoutineName = ""
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+        rateRoutineName = HORateRoutineNames.EQ_COVERAGE_RATE_ROUTINE_HO3
+    } else if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4){
+      rateRoutineName = HORateRoutineNames.EQ_COVERAGE_RATE_ROUTINE_HO4
+    } else if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+      rateRoutineName = HORateRoutineNames.EQ_COVERAGE_RATE_ROUTINE_HO6
+    }
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, rateRoutineName, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Earthquake Coverage Rated Successfully", this.IntrinsicType)
+  }
+
   function rateUnitOwnersCovAIncreasedLimit(dwellingCov : HODW_Dwelling_Cov_HOE, dateRange : DateRange){
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovAIncreasedLimit ", this.IntrinsicType)
@@ -720,7 +752,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateLimitedFungiWetOrDryRotOrBacteriaSectionICoverage ", this.IntrinsicType)
     var dwellingRatingInfo = new HOGroup1DwellingRatingInfo(dwellingCov)
-    if (!dwellingRatingInfo.IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium){
+    if (dwellingRatingInfo.IsLimitedFungiWetOrDryRotOrBacteriaSectionICovInBasePremium){
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LIMITED_FUNGI_WET_OR_DRY_ROT_OR_BACTERIA_SECTIONI_GROUP1_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)

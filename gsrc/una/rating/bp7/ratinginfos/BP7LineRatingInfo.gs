@@ -40,6 +40,7 @@ class BP7LineRatingInfo {
   var _numberOfFullTimeEmployees : int as NumberOfFullTimeEmployees
   var _numberOfPartTimeEmployees : int as NumberOfPartTimeEmployees
   var _employeeDishonestyPremium : BigDecimal as EmployeeDishonestyPremium = 0.0
+  var _forgeryOrAlterationLimit : int as ForgeryOrAlterationLimit
 
   construct(lineCov: BP7LineCov) {
     if(lineCov typeis BP7CyberOneCov_EXT){
@@ -51,6 +52,14 @@ class BP7LineRatingInfo {
     if(lineCov typeis BP7EmployeeDishty){
       _employeeDishonestyLimit = lineCov.BP7Limit6Term?.Value.intValue()
       _numOfEmployees = lineCov?.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm?.Value.intValue()
+    }
+    if(lineCov typeis BP7ForgeryAlteration){
+      _forgeryOrAlterationLimit = lineCov?.BP7Limit7Term?.Value?.intValue()
+      var line = lineCov.BP7Line
+      if(line.BP7EmployeeDishtyExists){
+        _employeeDishonestyLimit = line.BP7EmployeeDishty?.BP7Limit6Term?.Value.intValue()
+        _numOfEmployees = line.BP7EmployeeDishty?.BP7NoOfEmployeesEmployeeDishonesty_EXTTerm?.Value.intValue()
+      }
     }
     if(lineCov typeis BP7EquipBreakEndor_EXT){
       _equipmentBreakdownEndorsementLimit = lineCov?.BP7EquipBreakEndorLimit_ExtTerm?.Value

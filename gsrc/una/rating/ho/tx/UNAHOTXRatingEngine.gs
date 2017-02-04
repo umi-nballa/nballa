@@ -142,10 +142,10 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_discountOrSurchargeRatingInfo.FireAlarmReportFireStn || _discountOrSurchargeRatingInfo.FireAlarmReportCntlStn || _discountOrSurchargeRatingInfo.SprinklerSystemAllAreas)
       rateFireProtectiveDevicesCredit(dateRange)
 
-    if(PolicyLine.Branch.QualifiesAffinityDisc_Ext)
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT and PolicyLine.Branch.QualifiesAffinityDisc_Ext)
       rateAffinityDiscount(dateRange)
 
-    if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT and PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
       ratePreferredBuilderCredit(dateRange)
 
     if(PolicyLine.MultiPolicyDiscount_Ext){

@@ -16,12 +16,13 @@ abstract class EventTriggeredAvailability extends AbstractSimpleAvailabilityForm
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean{
     var result : boolean
 
-    var formsEvents = context.Period.Job.FormsEvents.where(\ formsEvent -> formsEvent.EventType == CustomEventType)
+    var formsEvents = context.Period.Job.FormsEvents.where(\ formsEvent -> formsEvent.EventType == CustomEventType
+                                                                      and !formsEvent.Processed)
 
     if(formsEvents.HasElements){
       result = true
-      context.Period.addEvent(CustomEventType.Code)
-      formsEvents?.each( \ formsEvent -> formsEvent.remove()) //clear the events to disable accidentally triggering on the next inference event
+      context.Period.addEvent(CustomEventType.Code)  // trigger for event messaging to HPX
+      formsEvents?.each( \ formsEvent -> {formsEvent.Processed = true}) //marking to true disables from accidentally processing twice
     }
 
     return result

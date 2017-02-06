@@ -17,8 +17,9 @@ class UNABOPRenewalProcess extends AbstractUNARenewalProcess {
   }
 
 
-  //Intentionally override and do nothing.  BOP does not do anything for the "first check".  By still hitting the step but
-  //intentionally doing nothing, we bypass having to use different workflows which just complicates things
+  //Bypassing first logic in base class to immediately schedule the issue automated renewal step without processing any data
+  //IMPORTANT:  If any logic is needed in the future for the first check, you must ensure that the first check date is appropriately set in config parameters using the
+  //renewal first check lead time config parameter.  Also call super.pendingRenwealFirstCheck after executing any code needed here.
   override function pendingRenewalFirstCheck() {
     if(JobProcessLogger.DebugEnabled){
       JobProcessLogger.logDebug("Bypassing pending renewal first check execution for Renewal job number ${_branch.PolicyNumber} because BOP only has two renewal steps:  Start and Issue.")

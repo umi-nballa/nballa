@@ -17,6 +17,7 @@ class BP7BuildingRatingInfo {
   var _sinkholeDeductible : String as SinkholeDeductible
   var _territoryCode : String as TerritoryCode
   var _damageToPremisesRentedLimit : BigDecimal as DamageToPremisesRentedLimit
+  var _classificationClassCode : String as ClassificationClassCode
 
   construct(building : BP7Building) {
     _buildingPropertyType = building?.PropertyType
@@ -33,6 +34,7 @@ class BP7BuildingRatingInfo {
     }
     if(building.BP7DamagePremisisRentedToYou_EXTExists){
       _damageToPremisesRentedLimit = building?.BP7DamagePremisisRentedToYou_EXT?.BP7DamagetoPremLimit_EXTTerm?.Value
+      _classificationClassCode = building?.Classifications?.first().ClassCode_Ext
     }
   }
 }

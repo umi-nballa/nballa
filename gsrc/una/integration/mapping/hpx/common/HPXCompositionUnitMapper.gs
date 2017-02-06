@@ -3,8 +3,6 @@ package una.integration.mapping.hpx.common
 uses java.util.Date
 uses gw.xml.XmlElement
 uses gw.xml.date.XmlDate
-uses java.lang.Exception
-uses una.integration.mapping.hpx.common.composition.HPXInsuredCompositionUnitMapper
 uses una.integration.mapping.hpx.common.composition.HPXRecipientMapper
 
 /**
@@ -51,8 +49,6 @@ abstract class HPXCompositionUnitMapper {
     for (form in documentForms) {
       documentComposition.addChild(new XmlElement("DocumentForm", form))
     }
-    var documentForm1 = createDocumentForm("DP04731202","English","DP04731202", new java.util.Date(),"07-02", false)
-    documentComposition.addChild(new XmlElement("DocumentForm", documentForm1))
     return documentComposition
   }
 

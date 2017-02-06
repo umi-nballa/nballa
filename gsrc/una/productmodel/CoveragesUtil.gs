@@ -40,9 +40,6 @@ class CoveragesUtil {
       case "HODW_FloodCoverage_HOE_Ext":
         result = isFloodCoverageAvailable(coverable as Dwelling_HOE)
         break
-      case "HODW_SpecialPersonalProperty_HOE_Ext":
-        result = isSpecialPersonalPropertyAvailable(coverable as Dwelling_HOE)
-        break
 	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
@@ -57,9 +54,6 @@ class CoveragesUtil {
         break
       case "BP7CapLossesFromCertfdActsTerrsm":
         result = isBP7CapLossesFromCertfdActsTerrsmCovAvailable(coverable as BP7BusinessOwnersLine)
-        break
-      case "HODW_PremisesLiability_HOE_Ext":
-        result = isPremiseLiabilityCoverageAvailable(coverable as HomeownersLine_HOE)
         break
       case "BP7CondoCommlUnitOwnersOptionalCovsLossAssess":
       case "BP7CondoCommlUnitOwnersOptionalCovMiscRealProp":
@@ -85,6 +79,9 @@ class CoveragesUtil {
         break
       case "HODW_LossAssessmentCov_HOE_Ext":
         result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
+        break
+      case "HODW_Comp_Earthquake_CA_HOE_Ext":
+        result = isComprehensiveEarthquakeCoverageAvailable(coverable as Dwelling_HOE)
         break
       default:
         break
@@ -212,9 +209,6 @@ class CoveragesUtil {
       case "HOLI_AnimalLiabilityCov_HOE_Ext":
         covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm)
         break
-      case "HOLI_UnitOwnersRentedtoOthers_HOE_Ext":
-        covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm)
-        break
       case "HODW_Limited_Earthquake_CA_HOE":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm)
         break
@@ -235,6 +229,9 @@ class CoveragesUtil {
         break
       case "HOLI_Med_Pay_HOE":
         covTermsToInitialize.add((coverable as HomeownersLine_HOE).HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm)
+        break
+      case "HODW_SinkholeLoss_HOE_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm)
         break
       default:
         break
@@ -321,21 +318,27 @@ class CoveragesUtil {
     return result
   }
 
-  private static function isSpecialPersonalPropertyAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = true
-
-    if(dwelling.PolicyLine.BaseState == TC_FL){
-      result = dwelling.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value
-    }
-
-    return result
-  }
-
   private static function isLossAssessmentCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
     var result = true
 
     if(dwelling.Branch.BaseState == TC_FL and dwelling.HOPolicyType == TC_DP3_Ext){
       result = dwelling.HOLine.DPLI_Personal_Liability_HOEExists or dwelling.HOLine.Dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO
+    }
+
+    return result
+  }
+
+  private static function isComprehensiveEarthquakeCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
+    var result = false
+    var numberOfStories = dwelling.NumberStoriesOrOverride
+    var yearBuilt = dwelling.YearBuiltOrOverride
+    var isQualifyingConstructionType = typekey.ConstructionType_HOE.TF_WOODFRAMECONSTRUCTIONTYPES.TypeKeys.contains(dwelling.ConstructionType)
+    var isQualifyingResidenceType = {ResidenceType_HOE.TC_SINGLEFAMILY_EXT, ResidenceType_HOE.TC_DUPLEX}.contains(dwelling.ResidenceType)
+    var isQualifyingFoundationType = dwelling.Foundation != TC_StiltsPilings_Ext
+
+    if(isQualifyingFoundationType and isQualifyingResidenceType and isQualifyingConstructionType){
+      result = ((yearBuilt >= 1931 and yearBuilt <= 1972) and typekey.NumberOfStories_HOE.TF_TWOORLESSSTORIES.TypeKeys.contains(dwelling.NumberStoriesOrOverride))
+            or (yearBuilt > 1972 and typekey.NumberOfStories_HOE.TF_THREESTORIESORLESS.TypeKeys.contains(dwelling.NumberStoriesOrOverride))
     }
 
     return result
@@ -537,23 +540,5 @@ class CoveragesUtil {
       }
     }
     return false
-  }
-
-  private static function isPremiseLiabilityCoverageAvailable(line: HomeownersLine_HOE) : boolean {
-    var result : boolean
-
-    switch(line.HOPolicyType){
-      case TC_HO3:
-      case TC_DP3_Ext:
-        result = line.Dwelling.IsSecondaryOrSeasonal
-        break
-      case TC_HO6:
-        result = line.Dwelling.Occupancy == TC_NonOwn  //the description for this code is (don't ask me why) is tenant / non owner  Had to do this because someone retired the original code :/
-        break
-      default:
-        break
-    }
-
-    return result
   }
 }

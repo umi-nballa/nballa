@@ -297,4 +297,16 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     }
   }
 
+  property get isEarthQuakeConstructionVisible():boolean
+  {
+    if((this.HOLocation.PolicyLocation.State.Code=="NV" || this.HOLocation.PolicyLocation.State.Code=="NC"  ||
+        this.HOLocation.PolicyLocation.State.Code=="SC" )&& typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType))
+      return true
+
+    if(this.HOLocation.PolicyLocation.State.Code=="NV" && typekey.HOPolicyType_HOE.TC_LPP_EXT==this.HOPolicyType)
+      return true
+
+    return false
+  }
+
 }

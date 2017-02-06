@@ -1,5 +1,6 @@
 package rules.EventMessage.EventFired_dir.HPX_dir
 uses una.integration.mapping.hpx.common.HPXRequestMapper
+uses una.integration.mapping.hpx.common.composition.HPXRecipientMapper
 
 
 @gw.rules.RuleName("Bind Policy")
@@ -13,11 +14,13 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
 
   static function doAction(messageContext  :  entity.MessageContext, actions : gw.rules.Action) {
 /*start00rule*/
-var ewsRequestMapper = new HPXRequestMapper()
 var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
+var hpxRecipientMapper = new HPXRecipientMapper()
   if (period.NewlyAddedForms.Count > 0) {
-    var ewsRequestXML = ewsRequestMapper.createForms(period, period.NewlyAddedForms)
-    messageContext.createMessage(ewsRequestXML)
+    var ewsRequestXMLs = hpxRecipientMapper.createFormsForRecipients(period, period.NewlyAddedForms)
+    for (ewsRequestXML in ewsRequestXMLs) {
+      messageContext.createMessage(ewsRequestXML)
+    }
   }
 /*end00rule*/
   }

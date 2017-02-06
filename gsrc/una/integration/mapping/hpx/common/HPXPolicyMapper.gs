@@ -128,7 +128,6 @@ abstract class HPXPolicyMapper {
 
   /*************************************  Policy Detail ************************************************************/
   function createPolicyDetails(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyInfoType {
-    var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var transactionMapper = new HPXJobMapper ()
     var billingInfoMapper = new HPXBillingInfoMapper()

@@ -10,6 +10,7 @@ uses wsi.schema.una.inscore.cprulesorderschema.enums.NameType_Type
 uses wsi.schema.una.inscore.cprulesresultschema.anonymous.elements.MessageListType_Message
 
 uses java.text.SimpleDateFormat
+uses una.integration.framework.util.PropertiesHolder
 
 /**
  * Created with IntelliJ IDEA.
@@ -182,7 +183,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     priorLoss.ClaimStatus = claim.Disposition_elem.$Value as String
     priorLoss.AmBest = claim.ContributorAmbest
     priorLoss.LocationOfLoss = claim.LocationOfLoss_elem.$Value as String
-    priorLoss.CatastropheInica = claim.CatastropheIndicator.toString()
+    priorLoss.CatastropheIndCd = claim.CatastropheIndicator.toString()
     priorLoss.mortgageComp = claim.Mortgage.Company
     priorLoss.mortgageNum = claim.Mortgage.Number
 
@@ -322,15 +323,15 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
   }
 
   /**
-   * Reads in various properties from the lexisnexis.properties file
+   * Reads in various properties from the ApplicationProperties.properties file
    */
   private function setProperties() {
-    LEX_CLIENT_ID = una.integration.lexisnexis.properties.lexisnexis.clientID
-    LEX_ACCOUNT_NUMBER = una.integration.lexisnexis.properties.lexisnexis.accountNumber
-    LEX_INTERNET_CONNECTIVITY = new Boolean(una.integration.lexisnexis.properties.lexisnexis.publicInternetConnectivity)
+    LEX_CLIENT_ID = PropertiesHolder.getProperty("clientID")
+    LEX_ACCOUNT_NUMBER = PropertiesHolder.getProperty("accountNumber")
+    LEX_INTERNET_CONNECTIVITY = new Boolean(PropertiesHolder.getProperty("publicInternetConnectivity"))
     if (LEX_INTERNET_CONNECTIVITY) {
-      LEX_HTTP_USERNAME = una.integration.lexisnexis.properties.lexisnexis.httpUsername
-      LEX_HTTP_PASSWORD = una.integration.lexisnexis.properties.lexisnexis.httpPassword
+      LEX_HTTP_USERNAME = PropertiesHolder.getProperty("httpUsername")
+      LEX_HTTP_PASSWORD = PropertiesHolder.getProperty("httpPassword")
     }
   }
 

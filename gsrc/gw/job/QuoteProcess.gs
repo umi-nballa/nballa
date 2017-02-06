@@ -89,6 +89,9 @@ class QuoteProcess {
           var activity =  pattern.createJobActivity(_branch.Bundle, _branch.Job, null, null, null, null, null, null, null)
           activity.assign(user.RootGroup,user)
          }
+
+       //create custom history event
+       _branch.createCustomHistoryEvent(CustomHistoryType.TC_OFACSUBMITTEDTOCOMPLIANCE,\->" identified on OFAC list and submitted to Compliance ")
      } //}
       PCProfilerTag.QUOTE_SYNC.execute(\ -> {
       _oosSliceDates = _branch.OOSSliceDates

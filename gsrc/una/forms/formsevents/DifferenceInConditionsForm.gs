@@ -9,6 +9,6 @@ package una.forms.formsevents
 class DifferenceInConditionsForm extends EventTriggeredAvailability {
 
   override property get CustomEventType(): FormsEventType {
-    return tc_SendDifferenceAndConditions
+    return tc_SendDifferenceInConditions
   }
 }

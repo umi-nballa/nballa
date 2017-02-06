@@ -2,6 +2,7 @@ package una.rating.ho.nc.ratinginfos
 
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
 uses java.math.BigDecimal
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +33,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _affinityDiscount : boolean as AffinityDiscount
   var _insuranceScore : int as InsuranceScore
   var _consentToRate: boolean as ConsentToRate
+  var _maxAgeOfHomeLimit : int as MaxAgeOfHomeLimit
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling
@@ -66,6 +68,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     }
 
     _consentToRate = Dwelling.Branch.ConsentToRate_Ext
+    _maxAgeOfHomeLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, _dwelling.HOLine.BaseState)
+
   }
 
   property get AgeOfHome() : int {

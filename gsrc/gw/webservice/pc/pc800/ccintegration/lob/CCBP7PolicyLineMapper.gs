@@ -167,7 +167,36 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
       // Map the values in PC that have corresponding values in CC
       (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as TypekeyCovTerm).Value.Code)
     }
+    }
 
+  /**
+  * This method will be used to add BP7 Excluded Coverages
+  */
+  private function isCoverageToExcludeFromMapping(cov : Coverage) : Boolean {
+    if((cov.PatternCode == "BP7AddlInsdControllingInterest") or
+      (cov.PatternCode == "BP7ClassificationAccountsReceivable") or
+      (cov.PatternCode == "BP7LocationPropertyDeductibles") or
+      (cov.PatternCode == "BP7LocationPropertyDeductibles_EXT") or
+      (cov.PatternCode == "BP7DisclosurePursuantToTRIA2002") or
+      (cov.PatternCode == "BP7AddlInsdOwnersLandLeasedToInsuredLine_EXT") or
+      (cov.PatternCode == "BP7AddlInsdOwnersLandLeasedToInsuredLocation_EXT") or
+      (cov.PatternCode == "BP7AddlInsdMortgageeAssigneeReceiver") or
+      (cov.PatternCode == "BP7AddlInsdMortgageeAsigneeReceiverLine_EXT") or
+      (cov.PatternCode == "BP7AddlInsdManagersLessorsPremises") or
+      (cov.PatternCode == "BP7AddlInsdManagersLessorsPremisesLine_EXT") or
+      (cov.PatternCode == "BP7AddlInsdManagersLessorsPremisesItem") or
+      (cov.PatternCode == "BP7AddlInsdLessorsLeasedEquipmt") or
+      (cov.PatternCode == "BP7AddlInsdLessorsLeasedEquipmtLine_EXT") or
+      (cov.PatternCode == "BP7AddlInsdGrantorOfFranchiseEndorsement") or
+      (cov.PatternCode == "BP7AddlInsdDesignatedPersonOrg") or
+      (cov.PatternCode == "BP7AddlInsdDesignatedPersonOrgLocation_EXT") or
+      (cov.PatternCode == "BP7AddlInsdCoOwnerInsdPremises") or
+      (cov.PatternCode == "BP7AddlInsdCoOwnerInsdPremisesLine_EXT") or
+      (cov.PatternCode == "BP7DamagePremisisRentedToYou_EXT") or
+      (cov.PatternCode == "BP7ClassificationValuablePapers")){
+      return true
+  }
+    return false
   }
 
   /**

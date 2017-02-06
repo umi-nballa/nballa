@@ -40,7 +40,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     super(line, minimumRatingLevel)
     _hoRatingInfo = new HORatingInfo()
     _lineRatingInfo = new HONCLineRatingInfo(line)
-    _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
+
 
   }
 
@@ -58,7 +58,10 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    * Rate the line level coverages
    */
   override function rateLineCoverages(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
+    _lineRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+    _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
     switch (typeof lineCov) {
+
       case HOLI_PersonalInjuryAggregate_NC_HOE_Ext:
       case HOLI_PersonalInjury_NC_HOE_Ext:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
@@ -388,7 +391,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
   function updateLineCostData(lineCov: HomeownersLineCov_HOE, dateRange: DateRange, rateRoutine : String, rateRoutineMap : Map<CalcRoutineParamName, Object>  ){
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, rateRoutine, RateCache, PolicyLine, rateRoutineMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null and costData.ActualTermAmount != 0) {
+    if (costData != null){
       addCost(costData)
     }
   }

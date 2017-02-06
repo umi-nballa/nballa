@@ -1,14 +1,13 @@
 package una.forms.formsevents
 /**
  * Created with IntelliJ IDEA.
- * User: akhovyev
- * Date: 1/26/17
- * Time: 10:26 AM
+ * User: TVang
+ * Date: 1/30/17
+ * Time: 1:49 PM
  * To change this template use File | Settings | File Templates.
  */
-class DifferenceInConditionsForm extends EventTriggeredAvailability {
-
+class AlarmDiscountRemovalLetter extends EventTriggeredAvailability {
   override property get CustomEventType(): FormsEventType {
-    return tc_SendDifferenceInConditions
+    return TC_SendAlarmCreditRemovalLetter
   }
 }

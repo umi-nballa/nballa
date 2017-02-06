@@ -233,6 +233,20 @@ class CoveragesUtil {
       case "HODW_SinkholeLoss_HOE_Ext":
         covTermsToInitialize.add((coverable as Dwelling_HOE).HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm)
         break
+	    case "BP7HiredNonOwnedAuto":
+        var bp7Line = coverable as BP7BusinessOwnersLine
+        if(bp7Line.BP7HiredNonOwnedAutoExists){
+          if(bp7Line.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("300000")){
+            bp7Line.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("300000_EXT")
+          }else if(bp7Line.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("500000")){
+            bp7Line.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("500000_EXT")
+          }else if(bp7Line.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("1000000")){
+            bp7Line.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("1000000_EXT")
+          }else if(bp7Line.BP7BusinessLiability.BP7EachOccLimitTerm.OptionValue.OptionCode.equalsIgnoreCase("2000000")){
+            bp7Line.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("2000000_EXT")
+          }
+        }
+        break	
       default:
         break
     }

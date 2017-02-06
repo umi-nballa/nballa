@@ -40,7 +40,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
     _isAdditionalPerilCoverageExist = dwelling.HODW_AdditionalPerilCov_HOE_ExtExists
 
     _county = (dwelling?.HOLocation?.PolicyLocation?.County != null) ? dwelling?.HOLocation?.PolicyLocation?.County : ""
-    _windOrHailExclusion = dwelling.HOLine?.HODW_WindHurricaneHailExc_HOE_ExtExists
+    _windOrHailExclusion = (dwelling.HOLine?.HODW_WindHurricaneHailExc_HOE_ExtExists || dwelling?.WHurricaneHailExclusion_Ext)
 
     if (dwelling?.HODW_SectionI_Ded_HOEExists){
       _allOtherPerils = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm?.DisplayValue
@@ -50,6 +50,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo {
       if (dwelling?.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
         _namedStormPercentage = dwelling.HODW_SectionI_Ded_HOE?.HODW_NamedStrom_Ded_HOE_ExtTerm?.DisplayValue
       }
+      if(PolicyType == HOPolicyType_HOE.TC_HCONB_EXT.Code and !_windOrHailExclusion)
+        _windOrHailPercentage = "500"
     }
   }
 }

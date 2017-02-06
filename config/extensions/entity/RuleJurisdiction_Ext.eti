@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Association between a rules framework accelerator rule and the jursidictions in which it should apply"
+  entity="RuleJurisdiction_Ext"
+  exportable="true"
+  extendable="false"
+  table="rulejurisdiction_ext"
+  type="joinarray">
+  <foreignkey
+    columnName="Rule_ExtID"
+    desc="The rule that owns this relationship"
+    fkentity="Rule_Ext"
+    name="Rule"
+    nullok="false"/>
+  <typekey
+    desc="The jurisdiction in which this rule applies"
+    name="Jurisdiction"
+    nullok="false"
+    typelist="Jurisdiction"/>
+  <index
+    desc="A unique index to ensure that each rule is associated with each jurisdiction at most once."
+    name="rulejuris_extu1"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="Rule_ExtID"/>
+    <indexcol
+      keyposition="2"
+      name="Jurisdiction"/>
+  </index>
+</entity>

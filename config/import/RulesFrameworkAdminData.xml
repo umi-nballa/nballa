@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<import xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="http://www.guidewire.com/cc/import/cc_import.xsd" usePeriodicFlushes="true">
+  <ActivityPattern public-id="RulesFrameworkActivityPattern:1">
+    <ActivityClass>task</ActivityClass>
+    <AutomatedOnly>true</AutomatedOnly>
+    <Category>request</Category>
+    <Code>excludeddriver</Code>
+    <Command/>
+    <Description>ExclDriver</Description>
+    <Description_L10N_ARRAY/>
+    <DocumentTemplate/>
+    <EmailTemplate/>
+    <EscBusCalLocPath/>
+    <EscalationBusCalTag/>
+    <EscalationDays>6</EscalationDays>
+    <EscalationHours/>
+    <EscalationInclDays>businessdays</EscalationInclDays>
+    <EscalationStartPt>activitycreation</EscalationStartPt>
+    <Mandatory>false</Mandatory>
+    <PatternLevel>Job</PatternLevel>
+    <Priority>high</Priority>
+    <Recurring>false</Recurring>
+    <ShortSubject>ExclDriver</ShortSubject>
+    <Subject>Excluded Driver</Subject>
+    <Subject_L10N_ARRAY/>
+    <TargetBusCalLocPath/>
+    <TargetBusCalTag/>
+    <TargetDays>5</TargetDays>
+    <TargetHours/>
+    <TargetIncludeDays>businessdays</TargetIncludeDays>
+    <TargetStartPoint>activitycreation</TargetStartPoint>
+    <Type>general</Type>
+  </ActivityPattern>
+  <Role public-id="RulesFrameworkRole:1">
+    <CarrierInternalRole>true</CarrierInternalRole>
+    <Description/>
+    <Name>AdminRuleAdminPrivs</Name>
+    <Privileges>
+      <RolePrivilege public-id="RulesFrameworkRole1RolePriv:1">
+        <Permission>devruleadmin</Permission>
+        <Role public-id="RulesFrameworkRole:1"/>
+      </RolePrivilege>
+    </Privileges>
+    <ReportPrivileges/>
+    <RoleType>user</RoleType>
+  </Role>
+  <Role public-id="RulesFrameworkRole:2">
+    <CarrierInternalRole>true</CarrierInternalRole>
+    <Description/>
+    <Name>StdRuleAdminPrivs</Name>
+    <Privileges>
+      <RolePrivilege public-id="RulesFrameworkRole2RolePriv:1">
+        <Permission>editbusinessruleadmin</Permission>
+        <Role public-id="RulesFrameworkRole:2"/>
+      </RolePrivilege>
+      <RolePrivilege public-id="RulesFrameworkRole2RolePriv:2">
+        <Permission>deletebusinessruleadmin</Permission>
+        <Role public-id="RulesFrameworkRole:2"/>
+      </RolePrivilege>
+      <RolePrivilege public-id="RulesFrameworkRole2RolePriv:3">
+        <Permission>viewbusinessruleadmin</Permission>
+        <Role public-id="RulesFrameworkRole:2"/>
+      </RolePrivilege>
+    </Privileges>
+    <ReportPrivileges/>
+    <RoleType>user</RoleType>
+  </Role>
+</import>

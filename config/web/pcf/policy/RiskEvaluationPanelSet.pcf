@@ -39,7 +39,7 @@
     <PanelRef>
       <Toolbar>
         <CheckedValuesToolbarButton
-          allCheckedRowsAction="var issues = new java.util.ArrayList&lt;UWIssue&gt;(); CheckedValues.each(\ u -&gt; issues.add(u.Item)); RiskApprovalDetailsPopup.push(issues as UWIssue[], true, false)"
+          allCheckedRowsAction="var issues = new java.util.ArrayList&lt;UWIssue&gt;(); CheckedValues.each(\ u -&gt; issues.add(u.Item)); RiskApprovalDetailsPopup.push(issues as UWIssue[], true, false);createClearedHistoryEventForOfac(issues)"
           flags="all approvable"
           hideIfReadOnly="true"
           id="Approve"
@@ -151,6 +151,16 @@ function decisionCode() : typekey.UWDecisonCode_Ext {
       default :return  typekey.UWDecisonCode_Ext.TC_UESPENDING
   }
 
+}
+
+function createClearedHistoryEventForOfac(checkedvalues:java.util.ArrayList<UWIssue>)
+{
+  checkedvalues.each( \ elt -> 
+  {
+    if(elt.IssueType.Code=="OfacCheck")
+      elt.PolicyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_OFACSUBMITTEDTOCOMPLIANCE,\->" identified but cleared - OFAC list ")
+  }
+  )
 }]]></Code>
   </PanelSet>
 </PCF>

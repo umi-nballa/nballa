@@ -514,9 +514,9 @@ class RenewalProcess extends NewTermProcess {
     } else {
       var plugin = Plugins.get(IPolicyRenewalPlugin)
       if(plugin.isRenewalOffered(_branch)){
-        _timeoutHandler.scheduleTimeoutOperation(_branch, SendNotTakenDate, "sendNotTakenForRenewalOffer", true)
+        _timeoutHandler.scheduleTimeoutOperation(_branch, SendNotTakenDate, "review_renewal", true)
       }else{
-        _timeoutHandler.scheduleTimeoutOperation(_branch, IssueAutomatedRenewalDate, "issueAutomatedRenewal", false)
+        _timeoutHandler.scheduleTimeoutOperation(_branch, PendingRenewalFinalCheckDate, "pendingRenewalFinalCheck", false)
       }
     }
   }
@@ -539,21 +539,8 @@ class RenewalProcess extends NewTermProcess {
    * Looks for a reason to escalate the renewal to an underwriter.  If not, proceeds to finalize
    * the renewal.
    */
-  function pendingRenewalFinalCheck() {
-    var escalationReasonChecker = shouldEscalatePendingRenewal()
-    if (escalationReasonChecker.ShouldEscalate) {
-      escalate(escalationReasonChecker.ActivitySubject, escalationReasonChecker.ActivityDescription)
-    } else {
-      if (Job.RenewalNotifDate == null) {
-        sendRenewalDocuments()
-      }
-      var plugin = Plugins.get(IPolicyRenewalPlugin)
-      if(plugin.isRenewalOffered(_branch)){
-        _timeoutHandler.scheduleTimeoutOperation(_branch, SendNotTakenDate, "sendNotTakenForRenewalOffer", true)
-      }else{
-        _timeoutHandler.scheduleTimeoutOperation(_branch, IssueAutomatedRenewalDate, "issueAutomatedRenewal", false)
-      }
-    }
+  protected function pendingRenewalFinalCheck() {
+    //do nothing.  not made abstract because we can't
   }
 
   public property get IssueAutomatedRenewalDate() : Date {
@@ -572,6 +559,7 @@ class RenewalProcess extends NewTermProcess {
 
   /**
    * Sends renewal documents.
+   * removed this call from pendingRenewalFinalCheck.  Only called in issueAutomatedRenewal now.
    */
   function sendRenewalDocuments() {
     canSendRenewalDocuments().assertOkay()
@@ -598,6 +586,7 @@ class RenewalProcess extends NewTermProcess {
   function issueAutomatedRenewal() {
     try {
       canIssueAutomatedRenewal().assertOkay()
+
       _branch.onBeginIssueJob()
 
       if (Job.RenewalNotifDate == null) {

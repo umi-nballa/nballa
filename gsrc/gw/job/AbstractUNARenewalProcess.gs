@@ -21,7 +21,7 @@ uses gw.api.web.job.JobWizardHelper
  * Intentionally made abstract to disable instantiation.
  */
 abstract class AbstractUNARenewalProcess extends RenewalProcess{
-  private static final var RENEWAL_USER: String = "renewal_daemon"
+  protected static final var RENEWAL_USER: String = "renewal_daemon"
   private var _resumeStatus : PolicyPeriodStatus
   private var _resumeRenewalCode : String
 
@@ -48,8 +48,8 @@ abstract class AbstractUNARenewalProcess extends RenewalProcess{
     return getOffsetDate(TC_RenewalFirstCheckLeadTime)
   }
 
-  override final property get PendingRenewalFinalCheckDate() : Date{
-    return PendingRenewalFirstCheckDate
+  override property get PendingRenewalFinalCheckDate() : Date{
+    return PendingRenewalFirstCheckDate  //BOP and CPP policies bypass final check because they perform all functions needed in first check, if any
   }
 
   override final property get IssueAutomatedRenewalDate() : Date{
@@ -78,8 +78,8 @@ abstract class AbstractUNARenewalProcess extends RenewalProcess{
     super.pendingRenewalFirstCheck()
   }
 
-  override final function pendingRenewalFinalCheck(){
-    //do nothing.  UNA only has one check (first)  bypassing final check for that reason
+  override function pendingRenewalFinalCheck(){
+    //do nothing for BOP and CPP.  HO has a first and final check.
     if(JobProcessLogger.DebugEnabled){
       JobProcessLogger.logDebug("Bypassing final check for renewal process.")
     }
@@ -174,13 +174,22 @@ abstract class AbstractUNARenewalProcess extends RenewalProcess{
   }
 
   protected function retrieveTunaData(){
-    //TODO tlv implement retrieval for tuna data and persistence if needed
+    //TODO tlv decision was made to not integrate TUNA on initial release
   }
 
   protected final function editRenewalWithActions(actionsToExecute(), historyEvent : String){
     if(_branch.checkBaseEditability()){
       executeEditAction(actionsToExecute, historyEvent)
     }
+  }
+
+  protected final function createRenewalActivity(role : typekey.UserRole, pattern : String) : Activity{
+    var result : Activity
+
+    var activityPattern = ActivityPattern.finder.findActivityPatternsByCode(pattern).single()
+    result = this.Job?.createRoleActivity(typekey.UserRole.TC_UNDERWRITER, activityPattern, activityPattern.Subject, activityPattern.Description)
+
+    return result
   }
 
   private function applyInflationFactor(){
@@ -190,7 +199,7 @@ abstract class AbstractUNARenewalProcess extends RenewalProcess{
     }
   }
 
-  private function getOffsetDate(configParameter : ConfigParameterType_Ext) : Date{
+  protected function getOffsetDate(configParameter : ConfigParameterType_Ext) : Date{
     var daysOffset = ConfigParamsUtil.getInt(configParameter, _branch.BaseState, RenewalLeadTimeConfigFilter)
     return _branch.PeriodStart.addDays(-daysOffset)
   }

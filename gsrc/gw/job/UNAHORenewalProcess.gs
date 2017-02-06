@@ -4,8 +4,12 @@ uses una.config.ConfigParamsUtil
 uses java.util.Date
 uses una.integration.mapping.creditreport.CreditReportResponse
 uses una.integration.mapping.creditreport.CreditReportRequestDispatcher
-uses java.lang.Exception
 uses gw.api.job.JobProcessLogger
+uses gw.plugin.job.IPolicyRenewalPlugin
+uses gw.plugin.Plugins
+uses gw.plugin.note.impl.LocalNoteTemplateSource
+uses una.utils.EmailUtil
+uses gw.api.email.EmailContact
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,7 +19,6 @@ uses gw.api.job.JobProcessLogger
  * To change this template use File | Settings | File Templates.
  */
 class UNAHORenewalProcess extends AbstractUNARenewalProcess {
-  private static final var CONSENT_TO_RATE_LEAD_TIME : int = 60
   private static final var CONSENT_TO_RATE_ACTIVITY_PATTERN : String = "upload_consent_to_rate_confirm"
 
   construct(period : PolicyPeriod){
@@ -46,13 +49,30 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
       JobProcessLogger.logDebug("Begin 'pendingRenewalFirstCheck' for transaction ${this.Job.JobNumber}.")
     }
 
-    retrieveIntegratedPolicyData({INSURANCE_CREDIT_SCORE, CLAIMS})
-    handleConsentToRateProcess()
+    handleAlarmDiscountRemovalProcess()
     super.pendingRenewalFirstCheck()
 
     if(JobProcessLogger.DebugEnabled){
       JobProcessLogger.logDebug("End 'pendingRenewalFirstCheck' for transaction ${this.Job.JobNumber}.")
     }
+  }
+
+  override function pendingRenewalFinalCheck(){
+    if(JobProcessLogger.DebugEnabled){
+      JobProcessLogger.logDebug("Begin 'pendingRenewalFinalCheck' for transaction ${this.Job.JobNumber}.")
+    }
+
+    retrieveIntegratedPolicyData({INSURANCE_CREDIT_SCORE, CLAIMS})
+    handleConsentToRateProcess()
+    executeOOTBFinalCheckCode()
+
+    if(JobProcessLogger.DebugEnabled){
+      JobProcessLogger.logDebug("End 'pendingRenewalFinalCheck' for transaction ${this.Job.JobNumber}.")
+    }
+  }
+
+  override property get PendingRenewalFinalCheckDate() : Date{
+    return getOffsetDate(TC_RenewalFinalCheckLeadTime)
   }
 
   protected override property get RenewalLeadTimeConfigFilter() : String{
@@ -78,19 +98,15 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
       var secondPersonToOrderFor = _branch.NamedInsureds.firstWhere( \ namedInsured -> namedInsured.AccountContactRole.AccountContact.Contact.ID != creditNamedInsured.AccountContactRole.AccountContact.Contact.ID)
       var response : CreditReportResponse
 
-      if((lastReceivedCreditReport != null and lastReceivedCreditReport.CreditScoreDate.afterIgnoreTime(Date.CurrentDate.addYears(-1)) or this.Job.IsCreditOrderingRenewal)){
+      if(shouldOrderCreditReport(lastReceivedCreditReport)){
         response = orderCreditReport(creditNamedInsured)
 
-        if(!typekey.CreditStatusExt.TF_RECEIVEDCREDITSTATUSES.TypeKeys.contains(response.StatusCode) and secondPersonToOrderFor != null){
+        if(shouldOrderCreditReportForSNI(response, secondPersonToOrderFor)){
           response = orderCreditReport(secondPersonToOrderFor)
         }
 
-        if(_branch.CreditInfoExt.CreditReport.CreditStatus == null or _branch.CreditInfoExt.CreditReport.CreditStatus == TC_NOT_ORDERED){
-          var creditReportNotOrderedIssue = _branch.UWIssuesIncludingSoftDeleted.atMostOneWhere( \ uwIssue -> uwIssue.IssueType.Code == "CreditReportNotOrdered")
-
-          if(creditReportNotOrderedIssue.HasApprovalOrRejection){
-            creditReportNotOrderedIssue.reopen()
-          }
+        if(shouldReopenCreditUWIssue()){
+          reopenCreditUWIssue()
         }
       }
     }
@@ -99,27 +115,62 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
   override function startPendingRenewal(){
 
     if(_branch.HomeownersLine_HOE.Dwelling.HODW_DifferenceConditions_HOE_ExtExists){
-      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEANDCONDITIONS}
+      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEINCONDITIONS}
       Job.addToFormsEvents(event)
     }
 
     super.startPendingRenewal()
+  }
 
+  /**
+   *  This is the OOTB final check code.  I made the original function abstract "pendingRenewalFinalCheck".  The abstract class implements this as a "do nothing" step for CPP and BOP to share
+   *  Here, we do need to execute things in the final step because we also needed to make use of the first check for HO Renewals
+  */
+  private function executeOOTBFinalCheckCode() {
+    var escalationReasonChecker = shouldEscalatePendingRenewal()
+    if (escalationReasonChecker.ShouldEscalate) {
+      escalate(escalationReasonChecker.ActivitySubject, escalationReasonChecker.ActivityDescription)
+    } else {
+      var plugin = Plugins.get(IPolicyRenewalPlugin)
+      if(plugin.isRenewalOffered(_branch)){
+        _timeoutHandler.scheduleTimeoutOperation(_branch, SendNotTakenDate, "sendNotTakenForRenewalOffer", true)
+      }else{
+        _timeoutHandler.scheduleTimeoutOperation(_branch, IssueAutomatedRenewalDate, "issueAutomatedRenewal", false)
+      }
+    }
+  }
+
+  private function shouldOrderCreditReport(lastReceivedCreditReport : CreditReportExt) : boolean{
+    return (lastReceivedCreditReport != null and lastReceivedCreditReport.CreditScoreDate.afterIgnoreTime(Date.CurrentDate.addYears(-1)) or this.Job.IsCreditOrderingRenewal)
   }
 
   private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{
     return new CreditReportRequestDispatcher(namedInsured, _branch).orderNewCreditReport(namedInsured.ContactDenorm.PrimaryAddress, namedInsured.FirstName, namedInsured.MiddleName, namedInsured.LastName, namedInsured.DateOfBirth)
   }
 
+  private function shouldOrderCreditReportForSNI(response: CreditReportResponse, secondPersonToOrderFor: PolicyContactRole) : boolean{
+    return !typekey.CreditStatusExt.TF_RECEIVEDCREDITSTATUSES.TypeKeys.contains(response.StatusCode) and secondPersonToOrderFor != null
+  }
+
+  private function shouldReopenCreditUWIssue() : boolean {
+    return _branch.CreditInfoExt.CreditReport.CreditStatus == null or _branch.CreditInfoExt.CreditReport.CreditStatus == TC_NOT_ORDERED
+  }
+
+  private function reopenCreditUWIssue(){
+    var creditReportNotOrderedIssue = _branch.UWIssuesIncludingSoftDeleted.atMostOneWhere( \ uwIssue -> uwIssue.IssueType.Code == "CreditReportNotOrdered")
+
+    if(creditReportNotOrderedIssue.HasApprovalOrRejection){
+      creditReportNotOrderedIssue.reopen()
+    }
+  }
+
   private function handleConsentToRateProcess() {
     var consentToRateActivityPattern = ActivityPattern.finder.findActivityPatternsByCode(CONSENT_TO_RATE_ACTIVITY_PATTERN).atMostOne()
 
     if(shouldRequestConsentToRate()){
-      var activity = this.Job?.createRoleActivity(typekey.UserRole.TC_UNDERWRITER, consentToRateActivityPattern, consentToRateActivityPattern.Subject, consentToRateActivityPattern.Description)
-      activity.TargetDate = _branch.PeriodStart.addDays(-CONSENT_TO_RATE_LEAD_TIME)
+      var consentToRateActivity = createRenewalActivity(TC_UNDERWRITER, CONSENT_TO_RATE_ACTIVITY_PATTERN)
 
       Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
-
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)
     }
   }
@@ -127,5 +178,54 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
   private function shouldRequestConsentToRate(): boolean {
     return ConfigParamsUtil.getBoolean(TC_IsConsentToRateRequired, _branch.BaseState, _branch.HomeownersLine_HOE.HOPolicyType)
        and _branch.ConsentToRate_Ext and !_branch.ConsentToRateReceived_Ext
+  }
+
+  private function handleAlarmDiscountRemovalProcess(){
+    if(shouldProceedWithAlarmDiscountRemoval()){
+      resetAlarmFlags()
+      sendAlarmDiscountRemovalLetter()
+      createAlarmDiscountRemovalNote()
+      sendEmailToAgentOfRecord()
+    }
+  }
+
+  private function shouldProceedWithAlarmDiscountRemoval() : boolean{
+    var renewalEffectiveDate = this._branch.PeriodStart
+    var lastAlarmDocumentReceivedDate = this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.AlarmDocumentReceivedDate
+
+    return !this.Job.AlarmCreditRemovalLetterSent and (lastAlarmDocumentReceivedDate == null or lastAlarmDocumentReceivedDate <= renewalEffectiveDate.addYears(-3))
+  }
+
+  private function resetAlarmFlags(){
+    this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireAlarmReportCntlStn = false
+    this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.BurglarAlarmReportCntlStn = false
+    this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireAlarmReportFireStn = false
+    this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.FireAlarmReportPoliceStn = false
+  }
+
+  private function sendAlarmDiscountRemovalLetter(){
+    this.Job.addToFormsEvents(new FormsEvent(Job){:EventType = tc_SendAlarmCreditRemovalLetter})
+    this.Job.AlarmCreditRemovalLetterSent = true
+  }
+
+  private function createAlarmDiscountRemovalNote(){
+    var plugin = new LocalNoteTemplateSource()
+    plugin.setParameters({})
+    var noteTemplate = plugin.getNoteTemplate("AlarmCreditRemoved.gosu")
+
+    var note = new Note(Job)
+    note.useTemplate(noteTemplate)
+    note.Policy = this._branch.Policy
+    note.Level = this._branch.Policy
+  }
+
+  private function sendEmailToAgentOfRecord(){
+    var subject = "Alarm discount removed Policy # ${this._branch.PolicyNumber}"  //TODO tlv subject and message still need to be confirmed
+    var message = "Alarm discount has been removed from Policy # ${this._branch.PolicyNumber} and a request for documentation has been sent to the insured."
+    var emailContact = new EmailContact()
+    emailContact.Contact = this._branch.ProducerOfRecord.Contact
+    emailContact.EmailAddress = this._branch.ProducerOfRecord.Contact.EmailAddress1
+
+    EmailUtil.sendEmail(message, emailContact, subject)
   }
 }

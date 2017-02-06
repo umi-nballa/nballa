@@ -1,0 +1,44 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Popup
+    afterCommit="gw.api.util.SearchUtil.search(TopLocation)"
+    beforeCommit="uiController.beforeCommit(rule, jurisdictionList, vehicleTypeList)"
+    canEdit="perm.System.editbusinessruleadmin"
+    id="RuleAdminDetailPopup"
+    startInEditMode="perm.System.editbusinessruleadmin"
+    title="(callersToolbarAction == CREATE) ? displaykey.Accelerator.RulesFramework.NewRule : displaykey.Accelerator.RulesFramework.RuleDetail">
+    <LocationEntryPoint
+      signature="RuleAdminDetailPopup(sourceRule : Rule_Ext, ruleType : typekey.Rule_Ext, callersToolbarAction : gw.accelerator.ruleeng.RuleAdminUIController.ToolbarAction, uiController : gw.accelerator.ruleeng.RuleAdminUIController)"/>
+    <Variable
+      name="uiController"
+      type="gw.accelerator.ruleeng.RuleAdminUIController"/>
+    <Variable
+      name="ruleType"
+      type="typekey.Rule_Ext"/>
+    <Variable
+      name="callersToolbarAction"
+      type="gw.accelerator.ruleeng.RuleAdminUIController.ToolbarAction"/>
+    <Variable
+      name="sourceRule"
+      type="entity.Rule_Ext"/>
+    <Variable
+      initialValue="uiController.findRuleToEdit(sourceRule, ruleType, callersToolbarAction)"
+      name="rule"
+      type="Rule_Ext"/>
+    <Variable
+      initialValue="rule.JurisdictionSelections"
+      name="jurisdictionList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.JurisdictionSelection&gt;"/>
+    <Variable
+      initialValue="(rule typeis ValidationRule_Ext) ? rule.SelectedVehicleTypes : java.util.Collections.emptyList()"
+      name="vehicleTypeList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.VehicleTypeSelection&gt;"/>
+    <Variable
+      name="rSearchCriteria"
+      type="gw.accelerator.ruleeng.RuleSearchCriteria"/>
+    <ScreenRef
+      def="RuleAdminDetailScreen(rule, callersToolbarAction, jurisdictionList, vehicleTypeList, uiController)"/>
+  </Popup>
+</PCF>

@@ -5,6 +5,7 @@ uses gw.policy.PolicyLineValidation
 uses java.util.Set
 uses entity.windowed.CPBldgAddlInterestVersionList
 uses java.lang.UnsupportedOperationException
+uses gw.accelerator.ruleeng.RulesEngineInterface
 
 @Export
 class CPLineValidation extends PolicyLineValidation<entity.CommercialPropertyLine> {
@@ -29,6 +30,11 @@ class CPLineValidation extends PolicyLineValidation<entity.CommercialPropertyLin
    * </ul>
    */
   override function doValidate() {
+    /********************************************************************************************************************
+    * Rules Engine Subscriber Example
+    *********************************************************************************************************************/
+    invokeRulesEngine()
+
     validateBlanketLimit()
     atLeastOneBuildingPerLocation()
     validateAtleastTwoCoveragePerBlanket()
@@ -43,6 +49,15 @@ class CPLineValidation extends PolicyLineValidation<entity.CommercialPropertyLin
     cpLine.CPBlankets.each( \ blanket -> new CPBlanketValidation(Context, blanket).validate())
   }
   
+  /********************************************************************************************************************
+   * Rules Framework Invocation
+   *********************************************************************************************************************/
+  public function invokeRulesEngine() {
+    Context.addToVisited(this, "invokeRulesEngine")
+    RulesEngineInterface.validate(cpLine.Branch, Context, "CPLocations",
+        "CPLine")
+  }
+
   /**
    * Validates sum of blanketed coverage limits is same as the sum of building Coverage limits
    */
@@ -113,6 +128,10 @@ class CPLineValidation extends PolicyLineValidation<entity.CommercialPropertyLin
     PCValidationContext.doPageLevelValidation( \context ->{
       var validation = new CPLineValidation(context, line)
       validation.atLeastOneBuildingPerLocation()
+      /****************************************************************************************************************
+       * Rules Engine Subscriber Example
+       ****************************************************************************************************************/
+      validation.invokeRulesEngine()
     })
   }
   

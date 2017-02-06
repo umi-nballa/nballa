@@ -1,0 +1,341 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Screen
+    id="RuleAdminDetailScreen">
+    <Require
+      name="rule"
+      type="Rule_Ext"/>
+    <Require
+      name="callersToolbarAction"
+      type="gw.accelerator.ruleeng.RuleAdminUIController.ToolbarAction"/>
+    <Require
+      name="jurisdictionList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.JurisdictionSelection&gt;"/>
+    <Require
+      name="vehicleTypeList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.VehicleTypeSelection&gt;"/>
+    <Require
+      name="uiController"
+      type="gw.accelerator.ruleeng.RuleAdminUIController"/>
+    <Variable
+      initialValue="callersToolbarAction == CREATE"
+      name="newRule"
+      type="boolean"/>
+    <Variable
+      initialValue="rule.PolicyLine"
+      name="rulePolicyLine"
+      recalculateOnRefresh="true"
+      type="typekey.PolicyLine"/>
+    <Toolbar>
+      <EditButtons/>
+    </Toolbar>
+    <DetailViewPanel>
+      <InputColumn
+        id="RuleDetails1">
+        <Input
+          helpText="displaykey.Accelerator.RulesFramework.Help.RuleType"
+          id="RuleType"
+          label="displaykey.Accelerator.RulesFramework.RuleType"
+          required="true"
+          value="rule.Subtype"/>
+        <Input
+          available="true"
+          editable="true"
+          id="entityGraphNode"
+          label="displaykey.Accelerator.RulesFramework.EntityGraphNode"
+          outputConversion="VALUE == null ? &quot;&quot; : VALUE.Path.replace(gw.accelerator.ruleeng.RuleEntityGraphNode.ROOT_NODE_NAME + &quot;.&quot;, &quot;&quot;)"
+          required="true"
+          value="rule.GraphNode">
+          <MenuItemIterator
+            elementName="selectedNode"
+            type="gw.accelerator.ruleeng.RuleEntityGraphNode"
+            value="gw.accelerator.ruleeng.RuleEntityGraph.Instance.Root.Children.orderBy(\ elt -&gt; elt.NodeName)"
+            visible="true">
+            <MenuItem
+              action="rule.GraphNode = selectedNode"
+              available="true"
+              checked="rule.GraphNodePath == selectedNode.Path"
+              id="rootMenuItem"
+              label="selectedNode.NodeName"
+              visible="true">
+              <MenuItemIterator
+                elementName="selectedNode"
+                type="gw.accelerator.ruleeng.RuleEntityGraphNode"
+                value="selectedNode.Children.orderBy(\ elt -&gt; elt.NodeName)"
+                visible="true">
+                <MenuItem
+                  action="rule.GraphNode = selectedNode"
+                  available="true"
+                  checked="rule.GraphNodePath == selectedNode.Path"
+                  id="L2menuItem"
+                  label="selectedNode.NodeName">
+                  <MenuItemIterator
+                    elementName="selectedNode"
+                    type="gw.accelerator.ruleeng.RuleEntityGraphNode"
+                    value="selectedNode.Children.orderBy(\ elt -&gt; elt.NodeName)"
+                    visible="true">
+                    <MenuItem
+                      action="rule.GraphNode = selectedNode"
+                      available="true"
+                      checked="rule.GraphNodePath == selectedNode.Path"
+                      id="L3menuItem"
+                      label="selectedNode.NodeName">
+                      <MenuItemIterator
+                        elementName="selectedNode"
+                        type="gw.accelerator.ruleeng.RuleEntityGraphNode"
+                        value="selectedNode.Children.orderBy(\ elt -&gt; elt.NodeName)"
+                        visible="true">
+                        <MenuItem
+                          action="rule.GraphNode = selectedNode"
+                          available="true"
+                          checked="rule.GraphNodePath == selectedNode.Path"
+                          id="L4menuItem"
+                          label="selectedNode.NodeName">
+                          <MenuItemIterator
+                            elementName="selectedNode"
+                            type="gw.accelerator.ruleeng.RuleEntityGraphNode"
+                            value="selectedNode.Children.orderBy(\ elt -&gt; elt.NodeName)"
+                            visible="true">
+                            <MenuItem
+                              action="rule.GraphNode = selectedNode"
+                              available="true"
+                              checked="rule.GraphNodePath == selectedNode.Path"
+                              id="L5menuItem"
+                              label="selectedNode.NodeName"/>
+                          </MenuItemIterator>
+                        </MenuItem>
+                      </MenuItemIterator>
+                    </MenuItem>
+                  </MenuItemIterator>
+                </MenuItem>
+              </MenuItemIterator>
+            </MenuItem>
+          </MenuItemIterator>
+          <PostOnChange
+            target="ruleTypeDetail"/>
+        </Input>
+        <Input
+          available="true"
+          id="policyLineWidget"
+          label="displaykey.Accelerator.RulesFramework.PolicyLine"
+          outputConversion="VALUE.Code"
+          value="rulePolicyLine"
+          visible="true"/>
+        <RangeInput
+          editable="true"
+          id="ruleValidationApplyMethod"
+          label="displaykey.Accelerator.RulesFramework.RuleAppliesTo"
+          required="true"
+          value="rule.RuleApplyMethod"
+          valueRange="rule.RuleValidationApplyMethods"/>
+      </InputColumn>
+    </DetailViewPanel>
+    <PanelSet
+      id="ruleDetailMainPanelSet">
+      <DetailViewPanel>
+        <InputColumn>
+          <TextInput
+            id="RulePackage"
+            label="displaykey.Accelerator.RulesFramework.RulePackage"
+            maxChars="255"
+            numCols="50"
+            value="rule.RulePackage"
+            visible="true"/>
+          <TextInput
+            editable="true"
+            helpText="displaykey.Accelerator.RulesFramework.Help.RuleClass"
+            id="RuleClass"
+            label="displaykey.Accelerator.RulesFramework.RuleClass"
+            maxChars="255"
+            numCols="50"
+            required="true"
+            value="rule.RuleClass"/>
+          <InputSetRef
+            def="RuleAdminDetailInputSet(rule, rulePolicyLine)"
+            mode="rule.Subtype"
+            widgets="ruleValidationApplyMethod"/>
+          <DateInput
+            editable="true"
+            helpText="displaykey.Accelerator.RulesFramework.Help.RuleEffDate"
+            id="effDate"
+            label="displaykey.Accelerator.RulesFramework.RuleEffDate"
+            required="true"
+            value="rule.EffectiveDate"/>
+          <DateInput
+            editable="true"
+            helpText="displaykey.Accelerator.RulesFramework.Help.RuleExpDate"
+            id="expDate"
+            label="displaykey.Accelerator.RulesFramework.RuleExpDate"
+            value="rule.ExpirationDate"/>
+        </InputColumn>
+        <InputColumn>
+          <TextAreaInput
+            editable="true"
+            id="RuleCondition"
+            label="displaykey.Accelerator.RulesFramework.RuleCond"
+            numRows="3"
+            required="true"
+            value="rule.RuleCondition"/>
+          <TextAreaInput
+            editable="true"
+            helpText="displaykey.Accelerator.RulesFramework.Help.RuleMsg"
+            id="RuleMessage"
+            label="displaykey.Accelerator.RulesFramework.RuleMsg"
+            numRows="3"
+            required="true"
+            value="rule.RuleMessage"/>
+          <Input
+            editable="true"
+            id="RulePriority"
+            label="displaykey.Accelerator.RulesFramework.Priority"
+            required="true"
+            value="rule.Priority"/>
+        </InputColumn>
+      </DetailViewPanel>
+      <DetailViewPanel
+        columnDivider="false">
+        <InputColumn>
+          <CheckBoxInput
+            editable="true"
+            id="FullApplication"
+            label="displaykey.Accelerator.RulesFramework.RuleAdminDetailScreen.JobTypes"
+            value="rule.FullApplication"
+            valueLabel="typekey.QuoteType.TC_FULL.DisplayName"/>
+          <CheckBoxInput
+            editable="true"
+            id="QuickQuote"
+            value="rule.QuickQuote"
+            valueLabel="typekey.QuoteType.TC_QUICK.DisplayName"/>
+          <CheckBoxInput
+            editable="true"
+            id="Cancellation"
+            value="rule.Cancellation"
+            valueLabel="typekey.Job.TC_CANCELLATION.DisplayName"/>
+          <CheckBoxInput
+            editable="true"
+            id="Rewrite"
+            value="rule.Rewrite"
+            valueLabel="typekey.Job.TC_REWRITE.DisplayName"/>
+        </InputColumn>
+        <InputColumn>
+          <CheckBoxInput
+            editable="true"
+            id="PolicyChange"
+            value="rule.PolicyChange"
+            valueLabel="typekey.Job.TC_POLICYCHANGE.DisplayName"/>
+          <CheckBoxInput
+            editable="true"
+            id="Renewal"
+            value="rule.Renewal"
+            valueLabel="typekey.Job.TC_RENEWAL.DisplayName"/>
+          <CheckBoxInput
+            editable="true"
+            id="Reinstatement"
+            value="rule.Reinstatement"
+            valueLabel="typekey.Job.TC_REINSTATEMENT.DisplayName"/>
+          <CheckBoxInput
+            editable="true"
+            id="RewriteNewAccount"
+            value="rule.RewriteNewAccount"
+            valueLabel="typekey.Job.TC_REWRITENEWACCOUNT.DisplayName"/>
+        </InputColumn>
+        <InputColumn>
+          <CheckBoxInput
+            editable="true"
+            id="Audit"
+            value="rule.Audit"
+            valueLabel="typekey.Job.TC_AUDIT.DisplayName"
+            visible="typekey.Job.TF_RULEJOB.TypeKeys. hasMatch(\ j -&gt; j == typekey.Job.TC_AUDIT)"/>
+          <CheckBoxInput
+            editable="true"
+            id="Issuance"
+            value="rule.Issuance"
+            valueLabel="typekey.Job.TC_ISSUANCE.DisplayName"
+            visible="typekey.Job.TF_RULEJOB.TypeKeys. hasMatch(\ j -&gt; j == typekey.Job.TC_ISSUANCE)"/>
+        </InputColumn>
+      </DetailViewPanel>
+      <PanelRef
+        def="RuleDetailPanelSet(rule, rulePolicyLine, jurisdictionList, vehicleTypeList)"
+        editable="true"
+        id="ruleTypeDetail"
+        mode="rule.Subtype">
+        <ListViewPanel>
+          <Row>
+            <LinkCell/>
+          </Row>
+        </ListViewPanel>
+      </PanelRef>
+      <DetailViewPanel
+        columnDivider="false">
+        <Variable
+          initialValue="jurisdictionList.Count / 3"
+          name="partitionSize"
+          type="int"/>
+        <InputHeaderSection>
+          <BooleanRadioInput
+            editable="true"
+            falseLabel="displaykey.Accelerator.RulesFramework.RuleAdminDetailScreen.Jurisdictions.SelectIndividual"
+            id="allJurisdictionsInput"
+            label="displaykey.Accelerator.RulesFramework.RuleState"
+            trueLabel="displaykey.Java.Select.All"
+            value="rule.AllJurisdictions"/>
+        </InputHeaderSection>
+        <InputColumn>
+          <InputIterator
+            elementName="ruleStateHelper"
+            id="StateList1"
+            value="jurisdictionList.subList(0, partitionSize)">
+            <CheckBoxInput
+              available="not rule.AllJurisdictions"
+              editable="true"
+              id="StateCheckbox"
+              value="ruleStateHelper.Selected"
+              valueLabel="ruleStateHelper.Jurisdiction">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allJurisdictionsInput"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+        <InputColumn>
+          <InputIterator
+            elementName="ruleStateHelper"
+            id="StateList2"
+            value="jurisdictionList.subList(partitionSize, partitionSize * 2)">
+            <CheckBoxInput
+              available="not rule.AllJurisdictions"
+              editable="true"
+              id="StateCheckbox"
+              value="ruleStateHelper.Selected"
+              valueLabel="ruleStateHelper.Jurisdiction">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allJurisdictionsInput"
+                value="false"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+        <InputColumn>
+          <InputIterator
+            elementName="ruleStateHelper"
+            id="StateList"
+            value="jurisdictionList.subList(partitionSize * 2, jurisdictionList.Count)">
+            <CheckBoxInput
+              available="not rule.AllJurisdictions"
+              editable="true"
+              id="StateCheckbox"
+              value="ruleStateHelper.Selected"
+              valueLabel="ruleStateHelper.Jurisdiction">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allJurisdictionsInput"
+                value="false"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelSet>
+  </Screen>
+</PCF>

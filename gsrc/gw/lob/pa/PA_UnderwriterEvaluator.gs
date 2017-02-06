@@ -1,12 +1,15 @@
 package gw.lob.pa
 
+uses gw.accelerator.ruleeng.RuleEntityGraph
+uses gw.accelerator.ruleeng.RulesEngineInterface
+uses gw.api.util.CurrencyUtil
 uses gw.lang.reflect.IType
 uses gw.lob.common.AbstractUnderwriterEvaluator
+uses gw.pl.currency.MonetaryAmount
 uses gw.policy.PolicyEvalContext
 
 uses java.util.Set
-uses gw.pl.currency.MonetaryAmount
-uses gw.api.util.CurrencyUtil
+
 
 @Export
 class PA_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
@@ -21,7 +24,9 @@ class PA_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
 
   override function onPrequote() {
-    fiveOrMoreVehicles()
+    invokeRulesEngine()
+
+/*    fiveOrMoreVehicles()
     vehicleVINBeginsWithFRE()
     zipOfPrimaryGaraging()
     otherVehicleType()
@@ -36,6 +41,7 @@ class PA_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     stateOfGaraging()
     excludedDriver()
     producerChanged()
+ */
   }
 
   override function onDefault() {
@@ -58,7 +64,7 @@ class PA_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       if (v.Vin != null && v.Vin.startsWithIgnoreCase( "FRE" )) {
         var shortDescription = \ -> displaykey.UWIssue.PersonalAuto.Ferrari.ShortDesc
         var longDescription = \ -> displaykey.UWIssue.PersonalAuto.Ferrari.LongDesc(v.Vin)
-        _policyEvalContext.addIssue("PAVINStartsWithFRE", "Vehicle:${v.FixedId.toString()}",
+        _policyEvalContext.addIssue("PAVINStartsWithFRE", "Vehicle:${v.FixedId.Value}",
            shortDescription, longDescription)
       }
     }
@@ -262,5 +268,14 @@ class PA_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         }
       }
     }
+  }
+
+  /**
+   * Rules Framework:  Example PolicyEval Rules Engine Hook
+   */
+  function invokeRulesEngine() {
+    RulesEngineInterface.evaluatePolicy(
+        _policyEvalContext,
+        "PersonalAutoLine")
   }
 }

@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="A join table for associating rules with vehicle types"
+  entity="ValidationRuleVehType_Ext"
+  exportable="true"
+  extendable="false"
+  table="ValidationRuleVehType_Ext"
+  type="joinarray">
+  <foreignkey
+    columnName="RuleID"
+    desc="The validation rule that owns this relationship"
+    fkentity="ValidationRule_Ext"
+    name="Rule"
+    nullok="false"/>
+  <typekey
+    desc="The type of vehicle"
+    name="VehicleType"
+    nullok="false"
+    typelist="VehicleType"/>
+  <index
+    desc="Ensures that each vehicle type is associated with a rule at most once."
+    name="valrulevehty_extu1"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="RuleID"/>
+    <indexcol
+      keyposition="2"
+      name="VehicleType"/>
+  </index>
+</entity>

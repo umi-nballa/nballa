@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  abstract="true"
+  admin="true"
+  entity="Rule_Ext"
+  exportable="true"
+  final="false"
+  table="Rule_Ext"
+  type="retireable">
+  <column
+    desc="The name of the class where this rule is located"
+    name="RuleClass"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="32"/>
+  </column>
+  <column
+    default="1/1/1900"
+    desc="effective date of the rule"
+    name="EffectiveDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="expiration date of the rule"
+    name="ExpirationDate"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Condition of the rule."
+    name="RuleCondition"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="250"/>
+  </column>
+  <column
+    desc="Rule message."
+    name="RuleMessage"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="250"/>
+  </column>
+  <column
+    default="0"
+    desc="Used to order the rules during execution"
+    name="Priority"
+    nullok="false"
+    type="integer"/>
+  <typekey
+    desc="Indicates how the rule should be applied"
+    name="RuleApplyMethod"
+    nullok="true"
+    typelist="RuleApplyMethod_Ext"/>
+  <array
+    arrayentity="RuleJob_Ext"
+    cascadeDelete="true"
+    name="Jobs"/>
+  <array
+    arrayentity="RuleJurisdiction_Ext"
+    cascadeDelete="true"
+    desc="The jurisdictions in which this rule applies."
+    name="Jurisdictions"/>
+  <column
+    default="true"
+    desc="If true, this rule applies in all jurisdictions, and the Jurisdictions array will be empty."
+    name="AllJurisdictions"
+    nullok="false"
+    type="bit"/>
+  <implementsInterface
+    iface="gw.accelerator.ruleeng.IExecutableRule"
+    impl="gw.accelerator.ruleeng.BaseRuleExecution"/>
+  <column
+    desc="The entity graph node to which this rule applies"
+    name="GraphNodePath"
+    nullok="false"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="512"/>
+  </column>
+  <index
+    desc="Index on the Path column, the primary lookup mode"
+    name="rule_ext1">
+    <indexcol
+      keyposition="1"
+      name="GraphNodePath"/>
+  </index>
+</entity>

@@ -81,6 +81,7 @@ abstract class HPXPolicyMapper {
   function createPriorLossPolicyHolder(priorLoss : HOPriorLoss_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyHolderType {
     var policyHolderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyHolderType()
     policyHolderType.FullName = priorLoss.PolicyHolderName != null ? priorLoss.PolicyHolderName : ""
+    policyHolderType.ClueMatchIndicator = priorLoss.CluePropertyMatch.InsuredMatchIndicator != null ? priorLoss.CluePropertyMatch.InsuredMatchIndicator.Code : ""
     policyHolderType.addChild(new XmlElement("PersonHolder", createPriorLossPersonHolderType(priorLoss.PolicyHolder)))
     return policyHolderType
   }

@@ -1,0 +1,72 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <ToolbarButtonSet
+    id="RuleAdminRuleLVToolbarButtonSet">
+    <Require
+      name="searchResults"
+      type="java.util.List&lt;Rule_Ext&gt;"/>
+    <Require
+      name="uiController"
+      type="gw.accelerator.ruleeng.RuleAdminUIController"/>
+    <ReferencedIterator
+      flags="CanCopyRule"
+      valueType="Rule_Ext"
+      widget="searchResultsLV"/>
+    <ToolbarButton
+      available="gw.api.system.PLDependenciesGateway.getServerMode().isDev()"
+      id="Rules_NewRuleButton"
+      label="displaykey.Accelerator.RulesFramework.NewRule">
+      <MenuItem
+        action="RuleAdminDetailPopup.push(null, typekey.Rule_Ext.TC_VALIDATIONRULE_EXT, CREATE, uiController) "
+        id="newValidationRule"
+        label="typekey.Rule_Ext.TC_VALIDATIONRULE_EXT.DisplayName"/>
+      <MenuItem
+        action="RuleAdminDetailPopup.push(null, typekey.Rule_Ext.TC_AUTOUPDATERULE_EXT, CREATE, uiController)"
+        id="newAutoupdateRule"
+        label="typekey.Rule_Ext.TC_AUTOUPDATERULE_EXT.DisplayName"/>
+      <MenuItem
+        action="RuleAdminDetailPopup.push(null, typekey.Rule_Ext.TC_UWRULE_EXT, CREATE, uiController)"
+        id="newUWRule"
+        label="typekey.Rule_Ext.TC_UWRULE_EXT.DisplayName"/>
+    </ToolbarButton>
+    <ToolbarDivider/>
+    <CheckedValuesToolbarButton
+      available="gw.api.system.PLDependenciesGateway.getServerMode().isDev()"
+      checkedRowAction="uiController.copyRule(CheckedValue)"
+      flags="one CanCopyRule"
+      id="copyRuleButton"
+      iterator="searchResultsLV"
+      label="displaykey.Accelerator.RulesFramework.RuleAdminExt.CopyRuleButton"/>
+    <ToolbarDivider/>
+    <CheckedValuesToolbarButton
+      allCheckedRowsAction="uiController.deleteRules(CheckedValues as java.util.List&lt;Rule_Ext&gt;)"
+      available="gw.api.system.PLDependenciesGateway.getServerMode().isDev()"
+      id="DeleteCheckValuesButton"
+      iterator="searchResultsLV"
+      label="displaykey.Accelerator.RulesFramework.RuleAdminExt.DeleteRuleButton"
+      visible="perm.System.deletebusinessruleadmin"/>
+    <ToolbarDivider/>
+    <ToolbarButton
+      action="uiController.deleteRules(searchResults)"
+      available="not searchResults.Empty and gw.api.system.PLDependenciesGateway.getServerMode().isDev()"
+      confirmMessage="displaykey.Accelerator.RulesFramework.RuleAdminExt.DeleteAllButton.Confirm"
+      id="DeleteAll"
+      iterator="rulelist"
+      label="displaykey.Accelerator.RulesFramework.RuleAdminExt.DeleteAllButton"
+      visible="perm.System.deletebusinessruleadmin"/>
+    <ToolbarDivider/>
+    <ToolbarButton
+      action="uiController.exportRules(CurrentLocation)"
+      id="Export"
+      label="displaykey.Accelerator.RulesFramework.RuleAdminExt.ExtractButton"/>
+    <ToolbarDivider/>
+    <ToolbarButton
+      action="ImportResultsWorksheet.goInWorkspace(gw.accelerator.ruleeng.RuleImportExport.importRules()); gw.api.util.SearchUtil.search()"
+      available="gw.accelerator.ruleeng.RuleImportExport.validFilePath() and (perm.System.devruleadmin or gw.api.system.PLDependenciesGateway.getServerMode().isDev())"
+      confirmMessage="displaykey.Accelerator.RulesFramework.Import.Confirm(gw.accelerator.ruleeng.RuleImportExport.ImportFile.AbsolutePath)"
+      id="Import"
+      label="displaykey.Accelerator.RulesFramework.RuleAdminExt.ImportButton"/>
+  </ToolbarButtonSet>
+</PCF>

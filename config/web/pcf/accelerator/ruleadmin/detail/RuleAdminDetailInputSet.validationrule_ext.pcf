@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="RuleAdminDetailInputSet"
+    mode="validationrule_ext">
+    <Require
+      name="rule"
+      type="Rule_Ext"/>
+    <Require
+      name="rulePolicyLine"
+      type="typekey.PolicyLine"/>
+    <Variable
+      initialValue="rule as ValidationRule_Ext"
+      name="validationRule"
+      type="ValidationRule_Ext"/>
+    <TypeKeyInput
+      editable="true"
+      id="warningLevel"
+      label="displaykey.Accelerator.RulesFramework.ValWarningLevel"
+      required="false"
+      value="validationRule.WarningLevel"/>
+    <TypeKeyInput
+      editable="true"
+      id="errorLevel"
+      label="displaykey.Accelerator.RulesFramework.ValErrorLevel"
+      required="false"
+      value="validationRule.ErrorLevel"/>
+  </InputSet>
+</PCF>

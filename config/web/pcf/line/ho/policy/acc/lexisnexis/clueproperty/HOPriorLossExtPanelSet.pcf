@@ -88,9 +88,26 @@
                 action="HOPriorLossExtPopup.push(loss, policyPeriod, true, true)"
                 actionAvailable="perm.System.cluepropertyedit_ext &amp;&amp; openForEdit"
                 align="left"
+                id="MultipleLossCause"
+                label="&quot;Multiple Loss Codes&quot;"
+                value="loss.ClaimPayment.length &lt;= 1 ? &quot;No&quot; : &quot;Yes&quot;"/>
+              <Cell
+                action="HOPriorLossExtPopup.push(loss, policyPeriod, true, true)"
+                actionAvailable="perm.System.cluepropertyedit_ext &amp;&amp; openForEdit"
+                align="left"
                 id="Source"
                 label="&quot;Source&quot;"
                 value="loss.Source_Ext"/>
+              <Cell
+                align="left"
+                id="lossCause"
+                label="displaykey.Accelerator.LexisNexis.Clue.Property.LossCause"
+                value="loss.ClaimPayment?.first()?.LossCause_Ext"/>
+              <Cell
+                align="left"
+                id="ExpLossCause"
+                label="displaykey.Accelerator.LexisNexis.Clue.Property.ExpandedLossCause"
+                value="loss.ClaimPayment?.first()?.ExpandedLossCause_Ext"/>
               <Cell
                 action="HOPriorLossExtPopup.push(loss, policyPeriod, true, true)"
                 actionAvailable="perm.System.cluepropertyedit_ext &amp;&amp; openForEdit"

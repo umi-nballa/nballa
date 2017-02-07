@@ -223,7 +223,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     priorLoss.ClaimStatus = claim.Disposition_elem.$Value as String
     priorLoss.AmBest = claim.ContributorAmbest
     priorLoss.LocationOfLoss = claim.LocationOfLoss_elem.$Value as String
-    priorLoss.CatastropheIndCd = claim.CatastropheIndicator.toString()
+    priorLoss.CatastropheInica = claim.CatastropheIndicator.toString()
     priorLoss.mortgageComp = claim.Mortgage.Company
     priorLoss.mortgageNum = claim.Mortgage.Number
 

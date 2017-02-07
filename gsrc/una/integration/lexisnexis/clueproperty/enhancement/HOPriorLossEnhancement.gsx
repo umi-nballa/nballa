@@ -23,7 +23,7 @@ enhancement HOPriorLossEnhancement : entity.HOPriorLoss_Ext {
       this.ClaimStatus = priorLoss.ClaimStatus
       this.AmBest = priorLoss.AmBest
       this.LocationOfLoss = priorLoss.LocationOfLoss
-      this.CatastropheIndCd = priorLoss.CatastropheIndCd
+      this.CatastropheInica = priorLoss.CatastropheInica
       this.mortgageComp = priorLoss.mortgageComp
       this.mortgageNum = priorLoss.mortgageNum
       this.PolicyHolderName = priorLoss.PolicyHolderName

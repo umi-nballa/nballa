@@ -37,6 +37,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private var _hasEarthquakeLimitedCoverage: boolean as HasEarthquakeLimitedCoverage
   private var _hasEarthquakeComprehensiveCoverage: boolean as HasEarthquakeComprehensiveCoverage
   private var _hasEarthquakeCoverage: boolean as HasEarthquakeCoverage
+  private var _hasSeasonalOrSecondaryResidenceSurcharge: boolean as HasSeasonalOrSecondaryResidenceSurcharge = false
+
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -50,6 +52,17 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _hasEarthquakeLimitedCoverage = line?.Dwelling?.HODW_Limited_Earthquake_CA_HOEExists
     _hasEarthquakeComprehensiveCoverage = line?.Dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists
     _hasEarthquakeCoverage = line?.Dwelling?.HODW_Earthquake_HOEExists
+
+    if(line?.Dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+      if(PolicyLine.BaseState == Jurisdiction.TC_AZ){
+        if(line?.Dwelling?.DwellingProtectionDetails?.GatedCommunity or (line?.Dwelling?.DwellingProtectionDetails?.FireAlarmReportCntlStn and
+            line?.Dwelling?.DwellingProtectionDetails?.BurglarAlarmReportCntlStn)){
+           _hasSeasonalOrSecondaryResidenceSurcharge = true
+  }
+      }else{
+          _hasSeasonalOrSecondaryResidenceSurcharge = true
+      }
+    }
   }
 
   /**
@@ -88,6 +101,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HOLI_WC_PrivateResidenceEmployee_HOE_Ext:
           rateWCPrivateResidenceEmployeeCoverage(lineCov, dateRange)
+          break
+      case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
+          rateUnitOwnersRentalToOthers(lineCov, dateRange)
           break
     }
   }
@@ -213,10 +229,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA))
         rateDifferenceInConditions(dwelling.HODW_DifferenceConditions_HOE_Ext, dateRange)
     }
-    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+    if (HasSeasonalOrSecondaryResidenceSurcharge){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
-          _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6)
+          _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
         rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
+    }
     }
     var constructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
     if (constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT and
@@ -972,6 +989,29 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     updateLineCostData(lineCov, dateRange, HORateRoutineNames.WC_PRIVATE_RESIDENCE_EMPLOYEES_CA_RATE_ROUTINE, rateRoutineParameterMap)
     if (_logger.DebugEnabled)
       _logger.debug("Workers compensation - Private Residence Employee Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the unit owners - Rental to other coverage
+   */
+  function rateUnitOwnersRentalToOthers(lineCov: HOLI_UnitOwnersRentedtoOthers_HOE_Ext, dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersRentalToOthers to rate Unit Owners Rental To Others Coverage", this.IntrinsicType)
+
+    //need to update with the total base premium
+    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_STATE -> PolicyLine.BaseState.Code,
+        TC_BASEPREMIUM -> _hoRatingInfo.TotalBasePremium}
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      if (costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Unit Owners Rental To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /*private function addWorksheetForCoverage(coverage : EffDated, costData : HOCostData_HOE){

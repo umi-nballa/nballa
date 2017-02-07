@@ -257,7 +257,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateHigherAllPerilDeductible(dateRange)
 
     if ((_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
-        _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6) and PolicyLine.BaseState == Jurisdiction.TC_AZ) {
+        _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6) and
+        (PolicyLine.BaseState == Jurisdiction.TC_AZ or PolicyLine.BaseState == Jurisdiction.TC_CA)) {
       rateLossHistoryCredit(dateRange)
      }
 

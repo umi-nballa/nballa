@@ -509,7 +509,8 @@
       </InputSet>
       <InputDivider/>
       <InputSet
-        id="WindPool_Ext">
+        id="WindPool_Ext"
+        visible="dwelling.isBCEGVisible //visibility conditions similar to bceg">
         <RangeInput
           available="!dwelling.HOLocation.OverrideWindPool_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -681,6 +682,11 @@
           label="displaykey.Web.Homeowners.HOLocation.MetricsVersionValue_Ext"
           value="dwelling.MetricsVersionValue_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.MetricsVersion)"/>
+        <Input
+          editable="true"
+          id="MetricsVersionDateTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.MetricsVersionDate_Ext"
+          value="dwelling.MetricsVersionDate_Ext"/>
         <InputDivider/>
       </InputSet>
       <InputSet
@@ -1469,10 +1475,10 @@
           id="EarthquakeZone_Ext"
           label="displaykey.Web.Homeowners.Dwelling.EarthquakeZone_Ext"
           value="dwelling.EarthquakeZone_Ext"
-          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext))"/>
+          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; dwelling.isEarthQuakeTerritoryVisible//(dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext))"/>
         <InputSet
           id="EarthquakeTerritory_Ext"
-          visible="dwelling.HOLocation.PolicyLocation.State.Code==&quot;NC&quot; &amp;&amp; (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT)">
+          visible="dwelling.isEarthQuakeTerritoryVisible//dwelling.HOLocation.PolicyLocation.State.Code==&quot;NC&quot; &amp;&amp; (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT)">
           <RangeInput
             available="!dwelling.OverrideEarthquakeTer_Ext"
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"

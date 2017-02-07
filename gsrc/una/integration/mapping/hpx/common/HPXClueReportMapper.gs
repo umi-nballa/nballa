@@ -42,7 +42,6 @@ class HPXClueReportMapper {
     claimElement.addChild(new XmlElement("ClaimPropertyIncident", createClaimPropertyIncident(priorLoss)))
     claimElement.LossDescription = priorLoss.LocationOfLoss != null ? priorLoss.LocationOfLoss : ""
     claimElement.ClueFileNumber = priorLoss.ClueFileNumber != null ? priorLoss.ClueFileNumber : ""
-    claimElement.ClueMatchIndicator = priorLoss.SearchMatchIndicator != null ? priorLoss.SearchMatchIndicator : ""
     for(clueNarrative in priorLoss.ClueReport.narratives)
     {
       var narrativeNote = noteMapper.createClueNarrativeNote(clueNarrative)
@@ -181,6 +180,7 @@ class HPXClueReportMapper {
     claimantType.FullName = person.DisplayName != null ? person.DisplayName : ""
     claimantType.SSN = person.SSNOfficialID != null ? person.SSNOfficialID : ""
     claimantType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
+    claimantType.ClueMatchIndicator = priorLoss.CluePropertyMatch.ClaimantMatchIndicator != null ?  priorLoss.CluePropertyMatch.ClaimantMatchIndicator.Code : ""
     physicalAddressType.AddressLine1 = person.PrimaryAddress.AddressLine1 != null ? person.PrimaryAddress.AddressLine1 : ""
     physicalAddressType.City = person.PrimaryAddress.City != null ? person.PrimaryAddress.City : ""
     physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State.Code : ""
@@ -202,6 +202,7 @@ class HPXClueReportMapper {
     lossLocationType.City = priorLoss.City != null ? priorLoss.City : ""
     lossLocationType.State = priorLoss.State != null ? priorLoss.State : ""
     lossLocationType.PostalCode = priorLoss.Zip != null ? priorLoss.Zip : ""
+    lossLocationType.ClueMatchIndicator = priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator != null ? priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator.Code : ""
     return lossLocationType
   }
 

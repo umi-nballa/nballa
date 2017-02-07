@@ -302,7 +302,10 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var lineRatingInfo = new HOLineRatingInfo(lineCov)
     lineRatingInfo.TotalBasePremium = hoRatingInfo.TotalBasePremium
     //need to update with the total base premium
-    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
+    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_STATE -> PolicyLine.BaseState.Code,
+        TC_BASEPREMIUM -> lineRatingInfo.TotalBasePremium}
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){

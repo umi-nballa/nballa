@@ -118,6 +118,7 @@ class CovTermInputSetPCFController {
         break
       case "DPDW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
         break
       case "HODW_PersonalPropertyLimit_HOE":

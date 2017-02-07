@@ -224,6 +224,16 @@
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
+      <RangeInput
+        editable="true"
+        id="QualifiedAgent"
+        label="displaykey.Web.Admin.AffinityGroup.QualifiedExclAgent_Ext"
+        value="policyPeriod.QualifiedExclAgent_Ext"
+        valueRange="typekey.QualifiedExclAgent_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
+        visible="policyPeriod.affinityVisible() &amp;&amp; (policyPeriod.BaseState== typekey.Jurisdiction.TC_CA || policyPeriod.BaseState == typekey.Jurisdiction.TC_NC)">
+        <PostOnChange
+          target="affinityGroupInputSet"/>
+      </RangeInput>
       <BooleanRadioInput
         id="QualifiesDiscount"
         label="displaykey.Web.Admin.AffinityGroup.AffinityDiscount_Ext"

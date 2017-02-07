@@ -1471,7 +1471,8 @@
           value="dwelling.EarthquakeZone_Ext"
           visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext))"/>
         <InputSet
-          id="EarthquakeTerritory_Ext">
+          id="EarthquakeTerritory_Ext"
+          visible="dwelling.HOLocation.PolicyLocation.State.Code==&quot;NC&quot; &amp;&amp; (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT)">
           <RangeInput
             available="!dwelling.OverrideEarthquakeTer_Ext"
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"

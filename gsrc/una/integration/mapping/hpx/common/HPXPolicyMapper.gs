@@ -24,6 +24,7 @@ uses gw.xml.date.XmlDate
 uses una.integration.mapping.hpx.helper.HPXJobHelper
 uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses java.math.BigDecimal
+uses una.utils.PropertiesHolder
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,6 +54,10 @@ abstract class HPXPolicyMapper {
     policySummaryInfo.RecoveryAssessmentPct = 0
     policySummaryInfo.QuoteInd = false
     policySummaryInfo.FileNumber = ""
+    var uwCompany = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
+    uwCompany.UWCompanyRoleID = "InsuranceCarrier"
+    uwCompany.addChild(new XmlElement("InsuranceProvider", createInsuranceProvider()))
+    policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompanyInfo(policyPeriod)))
     return policySummaryInfo
   }
 
@@ -109,7 +114,12 @@ abstract class HPXPolicyMapper {
     return personHolderType
   }
 
-
+  function createUWCompanyInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType {
+    var uwCompany = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
+    uwCompany.UWCompanyRoleID = policyPeriod.UWCompany
+    uwCompany.addChild(new XmlElement("InsuranceProvider", createInsuranceProvider()))
+    return uwCompany
+  }
 
   function createUWCompany(policyCompany : String) : wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType {
     var uwCompanyType = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
@@ -119,6 +129,26 @@ abstract class HPXPolicyMapper {
     return uwCompanyType
   }
 
+  function createInsuranceProvider() : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuranceProviderType {
+    var carrier = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuranceProviderType()
+    carrier.OrganizationName = "Universal North America"
+    carrier.OfficeLocation.LocationID = 1
+    carrier.OfficeLocation.LocationCode = PropertiesHolder.getProperty("HPX_Carrier_Address_City")
+    carrier.OfficeLocation.LocationName = PropertiesHolder.getProperty("HPX_Carrier_Name")
+    carrier.OfficeLocation.IsPrincipalLocation = true
+    carrier.OfficeLocation.addChild(new XmlElement("PhysicalAddress", createCarrierPhyiscalAddress()))
+    return carrier
+  }
+
+  function createCarrierPhyiscalAddress() : wsi.schema.una.hpx.hpx_application_request.types.complex.PhysicalAddressType {
+    var address = new wsi.schema.una.hpx.hpx_application_request.types.complex.PhysicalAddressType()
+    address.AddressLine1 = PropertiesHolder.getProperty("HPX_Carrier_Address_Street")
+    address.City = PropertiesHolder.getProperty("HPX_Carrier_Address_City")
+    address.State = PropertiesHolder.getProperty("HPX_Carrier_Address_State")
+    address.Country = PropertiesHolder.getProperty("HPX_Carrier_Address_Country")
+    address.PostalCode = PropertiesHolder.getProperty("HPX_Carrier_Address_Zipcode")
+    return address
+  }
 
   /************************************** Insured Or Principal ******************************************************/
   function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {

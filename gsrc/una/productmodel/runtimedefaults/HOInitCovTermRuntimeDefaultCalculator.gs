@@ -176,7 +176,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     if((line.HOPolicyType == TC_HO3 or  line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm != null){
       result = line.Dwelling.DwellingLimitCovTerm.Value * .10bd
     }else if(line.HOPolicyType == TC_HO4 or line.HOPolicyType == TC_HO6){
-      result = line.Dwelling.OtherStructuresLimitCovTerm.Value
+      result = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     }
 
     return result

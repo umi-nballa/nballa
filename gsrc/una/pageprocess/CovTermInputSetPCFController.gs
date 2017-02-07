@@ -85,6 +85,8 @@ class CovTermInputSetPCFController {
         if(matchingValue != null){
           hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)
         }
+      }else if(term.PatternCode == "HODW_OtherPerils_Ded_HOE"){
+        hoLine.Dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
       }
     }
   }

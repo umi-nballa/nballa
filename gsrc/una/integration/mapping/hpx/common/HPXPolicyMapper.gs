@@ -55,7 +55,7 @@ abstract class HPXPolicyMapper {
     policySummaryInfo.QuoteInd = false
     policySummaryInfo.FileNumber = ""
     var uwCompany = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
-    uwCompany.UWCompanyRoleID = policyPeriod.UWCompany
+    uwCompany.UWCompanyRoleID = "InsuranceCarrier"
     uwCompany.addChild(new XmlElement("InsuranceProvider", createInsuranceProvider()))
     policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompanyInfo(policyPeriod)))
     return policySummaryInfo

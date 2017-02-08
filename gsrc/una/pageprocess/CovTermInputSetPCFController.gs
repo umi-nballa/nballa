@@ -98,11 +98,7 @@ class CovTermInputSetPCFController {
       dwelling = term.Clause.OwningCoverable
     }
 
-    if(term.PatternCode == "HODW_BuildAddInc_HOE"){
-      term.round(ROUND_UP)
-    }else{
-      term.round(ROUND_NEAREST)
-    }
+    term.round(ROUND_NEAREST)
 
     switch(term.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":

@@ -202,7 +202,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_Earthquake_HOE:
           if (HasEarthquakeCoverage and (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ)
-              and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+              and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4)){
             rateEarthquakeCoverage(dwellingCov, dateRange)
           }
           break

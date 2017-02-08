@@ -12,32 +12,15 @@
   public-id="HODW_LossSettlementWindstorm_HOE_Ext"
   referenceDateByType="PolicyTerm">
   <CovTerms>
-    <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="HODW_LossRoofSurfValMethod_HOE"
-      coverageColumn="ChoiceTerm1"
+    <TypekeyCovTermPattern
+      codeIdentifier="HODW_LossRoofSurfValMethod_HOE_Ext"
+      coverageColumn="TypeKeyTerm1"
+      defaultValue="RoofSurfacing_ACV"
       lookupTableName="DwellingCovTerm"
-      modelType="Other"
-      priority="100"
-      public-id="HODW_LossRoofSurfValMethod_HOE"
+      priority="200"
+      public-id="HODW_LossRoofSurfValMethod_HOE_Ext"
       required="true"
-      restrictionModel="bld"
-      valueType="count">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="zvtj4e3btjnme1rb2sol76lnpu8"
-          defaultValue="ACV"
-          public-id="zvtj4e3btjnme1rb2sol76lnpu8"/>
-      </DefaultsSet>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zbahc6r14mg1rdj325ar0qu18l9"
-          optionCode="ACV"
-          priority="100"
-          public-id="zbahc6r14mg1rdj325ar0qu18l9"
-          value="1.0"/>
-      </Options>
-    </OptionCovTermPattern>
+      typefilter="ACValueLossSettlementWindstormorHailLossestoRoofSurfacing"
+      typelist="ValuationMethod"/>
   </CovTerms>
 </CoveragePattern>

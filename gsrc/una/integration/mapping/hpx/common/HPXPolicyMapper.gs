@@ -137,6 +137,7 @@ abstract class HPXPolicyMapper {
     carrier.OfficeLocation.LocationName = PropertiesHolder.getProperty("HPX_Carrier_Name")
     carrier.OfficeLocation.IsPrincipalLocation = true
     carrier.OfficeLocation.addChild(new XmlElement("PhysicalAddress", createCarrierPhyiscalAddress()))
+    carrier.OfficeLocation.addChild(new XmlElement("ContactMechanisms", createCarrierContactMechanisms()))
     return carrier
   }
 
@@ -148,6 +149,12 @@ abstract class HPXPolicyMapper {
     address.Country = PropertiesHolder.getProperty("HPX_Carrier_Address_Country")
     address.PostalCode = PropertiesHolder.getProperty("HPX_Carrier_Address_Zipcode")
     return address
+  }
+
+  function createCarrierContactMechanisms() : wsi.schema.una.hpx.hpx_application_request.types.complex.ContactMechanismsType {
+    var contactMechanisms = new wsi.schema.una.hpx.hpx_application_request.types.complex.ContactMechanismsType()
+    contactMechanisms.WorkPhone = PropertiesHolder.getProperty("HPX_Carrier_Phone_Number")
+    return contactMechanisms
   }
 
   /************************************** Insured Or Principal ******************************************************/
@@ -280,7 +287,6 @@ abstract class HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var jobHelper = new HPXJobHelper()
     var changedCoveragePatterns = jobHelper.getChangedCoveragePatterns(currentCoverages?.first().PolicyLine.AssociatedPolicyPeriod, currentCoverages?.first().OwningCoverable)
-    // added or changed coverages
     for (cov in currentCoverages) {
       var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
       if (cov.PolicyLine.AssociatedPolicyPeriod.BasedOn == null or changedCoveragePatterns.contains(cov.PatternCode)) {

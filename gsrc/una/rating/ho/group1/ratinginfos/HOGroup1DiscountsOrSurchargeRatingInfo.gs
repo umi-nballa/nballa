@@ -42,7 +42,7 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
 
     if(line?.HOPriorLosses_Ext != null){
-      _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim.Value == true).length
+      _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
 
     }
 

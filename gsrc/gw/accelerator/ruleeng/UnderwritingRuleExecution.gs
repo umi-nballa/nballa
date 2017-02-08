@@ -29,7 +29,7 @@ class UnderwritingRuleExecution<T>
     var msgSubject = \ -> Rule.UWIssueType.Name
     var msgBody = \ -> {
       return displaykey.Accelerator.RulesFramework.UWIssueRaised(
-          result.PrimaryValue, Rule.RuleMessage, Rule.RuleClass)
+           Rule.RuleMessage, Rule.RuleClass)
     }
     var value = result.SecondaryValue
     if (value != null) {

@@ -85,6 +85,8 @@ class CovTermInputSetPCFController {
         if(matchingValue != null){
           hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)
         }
+      }else if(term.PatternCode == "HODW_OtherPerils_Ded_HOE"){
+        hoLine.Dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
       }
     }
   }
@@ -96,11 +98,7 @@ class CovTermInputSetPCFController {
       dwelling = term.Clause.OwningCoverable
     }
 
-    if(term.PatternCode == "HODW_BuildAddInc_HOE"){
-      term.round(ROUND_UP)
-    }else{
-      term.round(ROUND_NEAREST)
-    }
+    term.round(ROUND_NEAREST)
 
     switch(term.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
@@ -116,6 +114,7 @@ class CovTermInputSetPCFController {
         break
       case "DPDW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
+        dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
         break
       case "HODW_PersonalPropertyLimit_HOE":
@@ -239,9 +238,11 @@ class CovTermInputSetPCFController {
     if(isExecutiveCoverage){
       coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
     }else{
-      var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
-      if(coverageExistence == TC_ELECTABLE){
-        coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+      if(coverable.hasCoverage(patternCode) == true){
+        var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
+        if(coverageExistence == TC_ELECTABLE){
+          coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+        }
       }
     }
   }

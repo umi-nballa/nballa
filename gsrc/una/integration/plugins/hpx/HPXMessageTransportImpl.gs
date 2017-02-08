@@ -5,6 +5,7 @@ uses una.integration.service.gateway.plugin.GatewayPlugin
 uses java.util.Map
 uses gw.plugin.InitializablePlugin
 uses java.lang.Exception
+uses gw.xml.XmlElement
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,6 +29,7 @@ class HPXMessageTransportImpl extends  AbstractMessageTransport implements Initi
       ewsRequest.IncludeHeader = true
       ewsRequest.IncludeMessageFile = true
       ewsRequest.PubFile = "PolicyCenterNA.pub"
+      //ewsRequest.OutputFile.Directory = "North_America//PC"
       var ewsResponse = sendToHPX(ewsRequest)
       message.reportAck()
     }

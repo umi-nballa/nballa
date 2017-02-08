@@ -363,8 +363,7 @@ class CoveragesUtil {
     var dependentCovTerm = ConfigParamsUtil.getString(TC_WindHailExclusionCoverageTermPair, hoLine.BaseState)
     var dependentCovTermTerritories = ConfigParamsUtil.getList(tc_WindHailExclusionRestrictionTerritories, hoLine.BaseState)
 
-    result = (hoLine.Dwelling.HODW_SectionI_Ded_HOE.hasCovTerm(dependentCovTerm) or hoLine.hasExclusion(dependentCovTerm))
-         and dependentCovTermTerritories?.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
+    result = !hoLine.hasExclusion(dependentCovTerm) and dependentCovTermTerritories.contains(hoLine.Dwelling.TerritoryCodeOrOverride)
 
     return result
   }

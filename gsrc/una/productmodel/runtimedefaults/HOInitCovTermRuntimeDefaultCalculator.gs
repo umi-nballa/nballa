@@ -173,7 +173,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
   private static function getSinkholeDeductibleValue(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
 
-    if((line.HOPolicyType == TC_HO3 or  line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm != null){
+    if((line.HOPolicyType == TC_HO3 or  line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm.Value != null){
       result = line.Dwelling.DwellingLimitCovTerm.Value * .10bd
     }else if(line.HOPolicyType == TC_HO4 or line.HOPolicyType == TC_HO6){
       result = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value

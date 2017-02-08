@@ -28,7 +28,17 @@
     <PanelRef
       def="RewriteWizard_PolicyInfoDV(period, rewrite)"/>
     <PanelRef
+      def="TrustPanelSet(period)"
+      id="TrustPanel1"/>
+    <PanelRef
       def="AdditionalNamedInsuredsDV(period, openForEdit)"/>
+    <PanelRef
+      def="AdditionalInsuredsDV(period.HomeownersLine_HOE, true, true)"
+      visible="period.HomeownersLine_HOEExists"/>
+    <PanelRef
+      def="AdditionalInsureds_ExtDV(period.HomeownersLine_HOE, true, true) "
+      id="AddIntTruestee"
+      visible="period.HomeownersLine_HOEExists"/>
     <PanelRef
       def="PolicyDBAsDV(period,true)"
       id="listOfDBAs"/>

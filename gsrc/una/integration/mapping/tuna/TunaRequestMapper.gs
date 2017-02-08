@@ -143,6 +143,7 @@ class TunaRequestMapper {
       message.Coordinates.Longitude = DEFAULT_VALUE as Double
       message.Owner = DEFAULT_VALUE as String
       message.Coordinates.Precision = DEFAULT_VALUE
+      message.RunNormalization = true
     } catch (exp: Exception) {
       logger.error(CLASS_NAME + " :: " + "payloadRequestMapping : DefaultMapping ", exp)
       throw exp

@@ -41,13 +41,13 @@ class HPXRequestMapper {
     var returnModel : XmlElement
     if (policyPeriod.HomeownersLine_HOEExists) {
       var dwellingPolicy = dwellingPolicyMapper.createDwellingPolicy(policyPeriod)
-      returnModel = createHPXDwellingPolicyRequestModel(dwellingPolicy, compositionUnit)
+      returnModel = createHPXDwellingPolicyRequestModel(dwellingPolicy, compositionUnit, policyPeriod)
     } else if (policyPeriod.BP7LineExists) {
       var businessOwnersPolicy = businessOwnersPolicyMapper.createBusinessOwnersPolicy(policyPeriod)
-      returnModel = createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy, compositionUnit)
+      returnModel = createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy, compositionUnit, policyPeriod)
     } else if (policyPeriod.CPLineExists) {
       var commercialPackagePolicy = commercialPackagePolicyMapper.createCommercialPackagePolicy(policyPeriod)
-      returnModel = createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy, compositionUnit)
+      returnModel = createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy, compositionUnit, policyPeriod)
     }
     returnString = returnModel.asUTFString().replace("ns0:", "" ).replace("xmlns:ns0=\"http://wservices.universalpr.com/standards/pcnew/\"",
                                                                           "xsi:noNamespaceSchemaLocation=\"HPX_Application_Request.xsd\"")
@@ -56,13 +56,17 @@ class HPXRequestMapper {
     return returnString
   }
 
-  function createHPXRequestModel(compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : XmlElement {
+  function createHPXRequestModel(compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType, policyPeriod : PolicyPeriod) : XmlElement {
     var hpxRequestType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType()
     var ns = new XmlNamespace("http://wservices.universalpr.com/standards/pcnew/", "")
     var hpxRequest = new XmlElement(ns.qualify("PublishDocumentRequest"), hpxRequestType)
     var policyDocumentPublish = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyDocumentPublishType()
+    var HPXClueReportMapper = new HPXClueReportMapper()
     hpxRequestType.PublishingEngineFileKey = "PolicyCenterNA.pub"
     hpxRequestType.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
+    foreach(cluePriorLoss in policyPeriod.HomeownersLine_HOE.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null)) {
+      hpxRequest.addChild(new XmlElement("ClaimsDocumentPublish", HPXClueReportMapper.createClueReport(cluePriorLoss)))
+    }
     hpxRequestType.addChild(new XmlElement("CompositionUnit", compositionUnit))
     hpxRequestType.addChild(new XmlElement("PublishingDocumentOutput", createPublishingDocumentOutput()))
     hpxRequestType.addChild(new XmlElement("PublishingConsumerAppKey", createPublishingConsumerAppKey()))
@@ -70,8 +74,9 @@ class HPXRequestMapper {
   }
 
   function createHPXDwellingPolicyRequestModel(dwellingPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellingPolicyType,
-                                 compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : XmlElement {
-    var hpxRequest = createHPXRequestModel(compositionUnit)
+                                 compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType,
+                                 policyPeriod : PolicyPeriod) : XmlElement {
+    var hpxRequest = createHPXRequestModel(compositionUnit, policyPeriod)
     if (hpxRequest.TypeInstance typeis wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType) {
       var hpxRequestType = (hpxRequest.TypeInstance as wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType)
       hpxRequestType.Transaction = "Policy Dwelling"
@@ -82,8 +87,9 @@ class HPXRequestMapper {
   }
 
   function createHPXBusinessOwnersPolicyRequestModel(businessOwnersPolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessOwnerPolicyType,
-                                               compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : XmlElement {
-    var hpxRequest = createHPXRequestModel(compositionUnit)
+                                               compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType,
+                                               policyPeriod : PolicyPeriod) : XmlElement {
+    var hpxRequest = createHPXRequestModel(compositionUnit, policyPeriod)
     if (hpxRequest.TypeInstance typeis wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType) {
       var hpxRequestType = (hpxRequest.TypeInstance as wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType)
       hpxRequestType.Transaction = "Policy Business Owners"
@@ -94,8 +100,9 @@ class HPXRequestMapper {
   }
 
   function createHPXCommercialPackagePolicyRequestModel(commercialPackagePolicy : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType,
-                                                     compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType) : XmlElement {
-    var hpxRequest = createHPXRequestModel(compositionUnit)
+                                                     compositionUnit : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType,
+                                                     policyPeriod : PolicyPeriod) : XmlElement {
+    var hpxRequest = createHPXRequestModel(compositionUnit, policyPeriod)
     if (hpxRequest.TypeInstance typeis wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType) {
       var hpxRequestType = (hpxRequest.TypeInstance as wsi.schema.una.hpx.hpx_application_request.types.complex.PublishDocumentRequestType)
       hpxRequestType.Transaction = "Policy Commercial Package"
@@ -115,6 +122,7 @@ class HPXRequestMapper {
   function createPublishingDocumentOutput() : wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingDocumentOutputType {
     var publishingDocumentOutput = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingDocumentOutputType()
     publishingDocumentOutput.FileName = java.util.UUID.randomUUID().toString()
+    publishingDocumentOutput.Directory = "North_America\\PC"
     return publishingDocumentOutput
   }
 }

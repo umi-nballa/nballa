@@ -777,7 +777,34 @@ class HODwellingUtil_HOE {
     return residenceType.orderBy( \ rt -> rt.DisplayName)
   }
 
-  static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
+  /*
+   * FLOOD should be available - CA HO, AZ HO, TX HO, SC HO, HI HO, NV HO, HI DP
+   * Homeowners should be available - SC HO, NV HO, HI DP
+   * Dwelling Fire should be available -  TX HO, CA HO, SC HO, HI HO, NV HO, HI DP
+   */
+  static function getTypeOfPolicy(dwelling:Dwelling_HOE) : List<TypeofPolicy_Ext>{
+    var typeOfPolicy = new ArrayList<TypeofPolicy_Ext>()
+    var typeOfPolicyValues = TypeofPolicy_Ext.getTypeKeys(false)
+    typeOfPolicyValues.each( \ elt -> {
+      if(elt.Categories.contains(dwelling.PolicyPeriod.BaseState)) {
+        if(elt.Code == TypeofPolicy_Ext.TC_FLOOD && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+            (dwelling.PolicyPeriod.BaseState==TC_AZ || dwelling.PolicyPeriod.BaseState==TC_CA || dwelling.PolicyPeriod.BaseState==TC_TX || dwelling.PolicyPeriod.BaseState==TC_SC
+                || dwelling.PolicyPeriod.BaseState==TC_HI || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+          typeOfPolicy.add(elt)
+        }else if(elt.Code == TypeofPolicy_Ext.TC_HOMEOWNER && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+            (dwelling.PolicyPeriod.BaseState==TC_SC || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+            typeOfPolicy.add(elt)
+        }else if(elt.Code == TypeofPolicy_Ext.TC_DWELLINGFIRE && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+            (dwelling.PolicyPeriod.BaseState==TC_CA || dwelling.PolicyPeriod.BaseState==TC_TX || dwelling.PolicyPeriod.BaseState==TC_SC || dwelling.PolicyPeriod.BaseState==TC_HI
+                || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+            typeOfPolicy.add(elt)
+        }
+      }
+    })
+    return typeOfPolicy
+  }
+
+  static function isMultiPolicyDiscountAvailable(policyPeriod:PolicyPeriod):boolean{
     if( (policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
@@ -785,9 +812,8 @@ class HODwellingUtil_HOE {
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT) &&
         (policyPeriod.BaseState==TC_AZ || policyPeriod.BaseState==TC_CA || policyPeriod.BaseState==TC_TX || policyPeriod.BaseState==TC_SC || policyPeriod.BaseState==TC_HI || policyPeriod.BaseState==TC_NV) ){
-      return true
-    }
-    if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
+          return true
+    }else if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT && policyPeriod.BaseState==typekey.Jurisdiction.TC_HI){
       return true
     }
     return false

@@ -62,6 +62,29 @@
           value="displaykey.Web.Policy.UWCompanies.AutoSelect"
           visible="not perm.System.multicompquote"/>
       </InputSet>
+      <BooleanRadioInput
+        editable="true"
+        id="Bankruptcy"
+        label="displaykey.Web.Policy.UWCompanies.Bankruptcy_Ext"
+        value="policyPeriod.bankruptcy_Ext"/>
+      <BooleanRadioInput
+        id="ConsentToRate"
+        label="displaykey.Web.Policy.UWCompanies.ConsentToRate_Ext"
+        required="true"
+        value="policyPeriod.ConsentToRate_Ext"
+        visible="policyPeriod.HomeownersLine_HOEExists and policyPeriod.BaseState==typekey.Jurisdiction.TC_NC"/>
+      <BooleanRadioInput
+        editable="true"
+        id="riskIndicator"
+        label="displaykey.Web.Policy.UWCompanies.RiskIndicator_Ext"
+        required="true"
+        value="policyPeriod.RiskIndicator_Ext"/>
+      <BooleanRadioInput
+        editable="true"
+        id="Reinsurance_Ext"
+        label="displaykey.Web.Policy.UWCompanies.Reinsurance_Ext"
+        required="true"
+        value="policyPeriod.Reinsurance_Ext"/>
       <InputSetRef
         def="PreferredCurrencyInputSet(policyPeriod)"/>
     </InputColumn>

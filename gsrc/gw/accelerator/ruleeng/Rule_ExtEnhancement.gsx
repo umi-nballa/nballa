@@ -69,7 +69,7 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
     var policyLine = this.PolicyLine
     return (policyLine == null)
         ? displaykey.Accelerator.RulesFramework.PolicyLineAbbrev.All
-        : typekey.ProductLookup.get(policyLine.Code.remove("Line")).Code
+        : typekey.ProductLookup_Ext.get(policyLine.Code.remove("Line")).Code
         //: Product.getByCode(policyLine.Code.remove("Line")).Abbreviation
   }
 

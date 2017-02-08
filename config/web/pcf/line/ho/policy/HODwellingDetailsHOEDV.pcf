@@ -678,7 +678,7 @@
           id="MultiPolicyDiscount_Ext"
           label="displaykey.Web.Homeowners.HODwelling.MultiPolicyDiscount_Ext"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"
-          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod)">
+          visible="gw.lob.ho.HODwellingUtil_HOE.isMultiPolicyDiscountAvailable(policyPeriod)">
           <PostOnChange/>
         </BooleanRadioInput>
         <RangeInput
@@ -687,8 +687,8 @@
           label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
           required="false"
           value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
-          valueRange="typekey.TypeofPolicy_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
-          visible="gw.lob.ho.HODwellingUtil_HOE.allHomeowners_Ext(policyPeriod) &amp;&amp; (dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTypeOfPolicy(dwelling)"
+          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
           <PostOnChange/>
         </RangeInput>
         <Input
@@ -1599,21 +1599,6 @@ function getTaxLocation(code : String, policyLocation : PolicyLocation) : TaxLoc
   }
 }
 
-function getResidenceType() : List<ResidenceType_HOE>{
-  var residenceType = new ArrayList<ResidenceType_HOE>()
-  var values = ResidenceType_HOE.getTypeKeys(false)
-  values.each( \ elt -> {
-    if(elt.Categories.contains(dwelling.HOPolicyType)) {
-      residenceType.add(elt)  
-    }
-  })
-  residenceType.add(ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT)
-  return residenceType
-}
-
-
-
-
 function initializeTunaCodes() : TunaCodesBO {
   var initialTunaCodesBO = new TunaCodesBO()
 
@@ -1631,21 +1616,6 @@ function initializeTunaCodes() : TunaCodesBO {
   
   initialTunaCodesBO.BCEGValues = bcegCodes
   return initialTunaCodesBO
-}
-
-function allHomeowners_Ext():boolean{
-  if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
-      policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT){
-    return true    
-  }
-  if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
-    return true
-  }  
-  return false
 }]]></Code>
   </DetailViewPanel>
 </PCF>

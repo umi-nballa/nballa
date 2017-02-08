@@ -242,9 +242,11 @@ class CovTermInputSetPCFController {
     if(isExecutiveCoverage){
       coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
     }else{
-      var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
-      if(coverageExistence == TC_ELECTABLE){
-        coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+      if(coverable.hasCoverage(patternCode) == true){
+        var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
+        if(coverageExistence == TC_ELECTABLE){
+          coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+        }
       }
     }
   }

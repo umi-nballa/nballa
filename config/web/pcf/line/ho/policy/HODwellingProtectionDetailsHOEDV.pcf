@@ -88,7 +88,7 @@
         label="displaykey.Web.Homeowners.DwellingProtection.FireAlarmReportingCentralStation_Ext"
         required="false"
         value="dwelling.DwellingProtectionDetails.FireAlarmReportCntlStn"
-        visible="baseState == TC_SC or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_FL or baseState == TC_HI or baseState == TC_NV or baseState == TC_NC or baseState == TC_TX))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_CA or baseState == TC_FL or baseState == TC_HI))"/>
+        visible="typekey.ProtectionClassCode_Ext.TF_DWELLINGFIREALARMVISIBLE.TypeKeys.contains(dwelling.HOLocation.protectionClassOrOverride) &amp;&amp;  baseState == TC_SC or ((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (baseState == TC_AZ or baseState == TC_CA or baseState == TC_FL or baseState == TC_HI or baseState == TC_NV or baseState == TC_NC or baseState == TC_TX))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (baseState == TC_CA or baseState == TC_FL or baseState == TC_HI))"/>
       <CheckBoxInput
         editable="true"
         id="burglarAlarmReportingCtrl_Ext"

@@ -122,6 +122,7 @@ class HPXRequestMapper {
   function createPublishingDocumentOutput() : wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingDocumentOutputType {
     var publishingDocumentOutput = new wsi.schema.una.hpx.hpx_application_request.types.complex.PublishingDocumentOutputType()
     publishingDocumentOutput.FileName = java.util.UUID.randomUUID().toString()
+    publishingDocumentOutput.Directory = "North_America\\PC"
     return publishingDocumentOutput
   }
 }

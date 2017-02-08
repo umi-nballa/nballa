@@ -39,8 +39,8 @@ class OFACCommunicator {
      _logger.info(CLASS_NAME + " : Exiting from method returnOFACSearchResults ")
       return result
     } catch (e: Exception) {
-      _logger.error(CLASS_NAME + " : Exception while retrieving information from OFAC : ", e.StackTraceAsString)
-      throw new DisplayableException(WS_NOT_AVAILABLE)
+      _logger.error(CLASS_NAME + " : Exception while retrieving information from OFAC ")
+      throw new Exception(e)
     }
   }
 }

@@ -341,7 +341,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
         _policyEvalContext.addIssue("CreditReportErrors","CreditReportErrors", creditReportErrors,creditReportErrors)
       }
-      if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+      if ((creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED) && (!_policyEvalContext.Period.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext)){
         //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
         var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
         _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)

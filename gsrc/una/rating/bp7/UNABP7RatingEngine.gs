@@ -27,9 +27,8 @@ uses una.rating.bp7.common.BP7RateRoutineNames
 *  Class which extends the bp7 abstract rating engine and implements the rating for all the available BP7 coverages
  */
 class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
-  var _minimumRatingLevel: RateBookStatus
+
   var _executor: BP7RateRoutineExecutor
-  var _bp7RatingInfo : BP7RatingInfo
   final static var _logger = UnaLoggerCategory.UNA_RATING
   construct(line: BP7Line) {
     this(line, RateBookStatus.TC_ACTIVE)
@@ -38,9 +37,9 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   construct(line: BP7Line, minimumRatingLevel: RateBookStatus) {
     super(line)
     _logger.info("Initializing the " + line.BaseState.Code + " BOP Rating Engine")
-    _minimumRatingLevel = minimumRatingLevel
+    MinimumRatingLevel = minimumRatingLevel
     _executor = new BP7RateRoutineExecutor(ReferenceDatePlugin, PolicyLine, minimumRatingLevel)
-    _bp7RatingInfo = new BP7RatingInfo(line)
+    BP7RatingInfo = new BP7RatingInfo(line)
     _logger.info(line.BaseState.Code + " BOP Rating Engine initialized")
   }
 
@@ -49,7 +48,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange) {
     var lineRatingInfo = new BP7LineRatingInfo(lineCov)
-    var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, lineRatingInfo)
+    var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, lineRatingInfo)
     switch(lineCov.Pattern){
       case "IdentityRecovCoverage_EXT" :
       case "BP7CyberOneCov_EXT" :
@@ -88,7 +87,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateLocationCoverage(locationCov: BP7LocationCov, sliceToRate: DateRange) {
     var locationRatingInfo = new BP7LocationRatingInfo(locationCov)
-    var step = new BP7LocationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, locationRatingInfo)
+    var step = new BP7LocationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, locationRatingInfo)
     switch(locationCov.Pattern){
       case "BP7AddlInsdGrantorOfFranchiseEndorsement":
       case "BP7AddlInsdDesignatedPersonOrgLocation_EXT":
@@ -125,9 +124,8 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   *  Function which rates all the building coverages
    */
   override function rateBuilding(building: BP7Building, sliceToRate: DateRange) {
-    _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
-    _bp7RatingInfo.PropertyBuildingAdjustmentFactor = RateFactorUtil.setPropertyBuildingAdjustmentFactor(PolicyLine, _minimumRatingLevel, building)
-    var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo)
+    BP7RatingInfo.PropertyBuildingAdjustmentFactor = RateFactorUtil.setPropertyBuildingAdjustmentFactor(PolicyLine, MinimumRatingLevel, building)
+    var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo)
     var buildingRatingInfo = new BP7BuildingRatingInfo(building)
     if (building.BP7StructureExists) {
       var bp7StructureRatingInfo = new BP7StructureRatingInfo(building.BP7Structure)
@@ -148,9 +146,8 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
-    _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification.Building)
-    _bp7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, _minimumRatingLevel, classification)
-    var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, classificationRatingInfo)
+    BP7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, MinimumRatingLevel, classification)
+    var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){
       var businessPersonalPropertyRatingInfo = new BP7BusinessPersonalPropertyRatingInfo(classification?.BP7ClassificationBusinessPersonalProperty)
       addCost(step.rateBP7BusinessPersonalProperty(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate, businessPersonalPropertyRatingInfo))
@@ -188,7 +185,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   }
 
   override function rateTerrorismCoverage(lineCov: BP7CapLossesFromCertfdActsTerrsm, sliceToRate: DateRange){
-    var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, _bp7RatingInfo, null)
+    var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, null)
     addCost(step.rateTerrorismCoverageRateRoutine(lineCov, sliceToRate, totalCostWithoutOptionalCoverages()))
   }
 

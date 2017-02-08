@@ -60,7 +60,7 @@ class BP7ClassificationRatingInfo {
       _optProfLiabLimit = classification?.BP7OptProfLiabCov_EXT?.BP7OptProfLiabCovLimit_EXTTerm?.Value
     }
     if(classification.BP7FuneralDirectorsProflLiab_EXTExists){
-      _numOfFuneralsAnnually = classification?.BP7FuneralDirectorsProflLiab_EXT?.BP7FuneralLimit_EXTTerm?.Value.intValue()
+      _numOfFuneralsAnnually = classification?.BP7FuneralDirectorsProflLiab_EXT?.NumberofFunerals_EXTTerm?.Value.intValue()
       _funeralDirectorsProfLiabLimit = classification?.BP7FuneralDirectorsProflLiab_EXT?.BP7FuneralLimit_EXTTerm?.Value
     }
   }

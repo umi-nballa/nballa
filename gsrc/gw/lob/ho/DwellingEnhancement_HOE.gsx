@@ -309,4 +309,41 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     return false
   }
 
+  property get isBCEGVisible():boolean
+  {
+    //ok to set all BCEG fields to display for LOB :  FL HO, FL DP, NC HO, NC LPP, NV HO, SC HO, TX HO or TX DP
+
+    if(this.HOLocation.PolicyLocation.State.Code=="FL" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) || this.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT))
+      return true
+
+    if(this.HOLocation.PolicyLocation.State.Code=="NC" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) || this.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT))
+      return true
+
+    if((this.HOLocation.PolicyLocation.State.Code=="NV" || this.HOLocation.PolicyLocation.State.Code=="SC" )&& typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType))
+      return true
+
+    if(this.HOLocation.PolicyLocation.State.Code=="TX" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) || this.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT))
+      return true
+
+    return false
+  }
+
+  property get isEarthQuakeTerritoryVisible():boolean
+  {
+    if(this.HOLocation.PolicyLocation.State.Code=="NC" && this.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT)
+      return true
+
+    if(this.HOLocation.PolicyLocation.State.Code=="CA" && this.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT)
+      return true
+
+    // HO: AZ, CA, NV, NC, SC
+    if((this.HOLocation.PolicyLocation.State.Code=="AZ" || this.HOLocation.PolicyLocation.State.Code=="CA"  || this.HOLocation.PolicyLocation.State.Code=="NV"
+        || this.HOLocation.PolicyLocation.State.Code=="NC" || this.HOLocation.PolicyLocation.State.Code=="SC" )
+     && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType)))
+      return true
+
+
+        return false
+  }
+
 }

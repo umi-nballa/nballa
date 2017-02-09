@@ -29,7 +29,9 @@ class HPXMessageTransportImpl extends  AbstractMessageTransport implements Initi
       ewsRequest.IncludeHeader = true
       ewsRequest.IncludeMessageFile = true
       ewsRequest.PubFile = "PolicyCenterNA.pub"
-      //ewsRequest.OutputFile.Directory = "North_America//PC"
+      ewsRequest.OutputFile.Directory = "North_America//PC"
+      var xmlNode = wsi.schema.una.hpx.hpx_application_request.PublishDocumentRequest.parse(payload)
+      ewsRequest.OutputFile.FileName = xmlNode.PublishingDocumentOutput.FileName
       var ewsResponse = sendToHPX(ewsRequest)
       message.reportAck()
     }

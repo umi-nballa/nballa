@@ -18,12 +18,21 @@ class HPXAddlIntLienHolderCompositionUnitMapper extends HPXCompositionUnitMapper
 
   override function getRecipients(policyPeriod: PolicyPeriod, recipientMapper : HPXRecipientMapper): List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {
     var recipients = new List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType>()
-    var recipient = recipientMapper.createRecipient("INSURED_PDF",
-        "Insured",
-        policyPeriod.PrimaryNamedInsured.DisplayName,
-        policyPeriod.PolicyAddress.Address,
-        policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.EmailAddress1,
-        1)
+    var additionalInterests = recipientMapper.getAdditionalInterests(policyPeriod)
+    return createAdditionalInterestRecipients(additionalInterests.where( \ elt -> elt.AdditionalInterestType == typekey.AdditionalInterestType.TC_LIEN), recipientMapper)
+  }
+
+  private function createAdditionalInterestRecipients(additionalInterests : AddlInterestDetail [], recipientMapper : HPXRecipientMapper) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {
+    var recipients = new List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType>()
+    for (additionalInterest in additionalInterests) {
+      var recipient = recipientMapper.createRecipient("LIEN_HOLDER_PDF",
+          "Lienholder",
+          additionalInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.DisplayName,
+          additionalInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.PrimaryAddress,
+          additionalInterest.PolicyAddlInterest.AccountContactRole.AccountContact.Contact.EmailAddress1,
+          1)
+      recipients.add(recipient)
+    }
     return recipients
   }
 }

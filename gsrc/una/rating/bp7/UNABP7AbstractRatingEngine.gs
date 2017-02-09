@@ -28,8 +28,8 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       RateFactorUtil.setDefaults()
-      var primaryLocation = lineVersion.Branch.PrimaryLocation
-      RateFactorUtil.FirstBuilding = lineVersion.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings.where( \ building -> building.Building.BuildingNum == 1).first()
+      //var primaryLocation = lineVersion.Branch.PrimaryLocation
+      //RateFactorUtil.FirstBuilding = lineVersion.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings.where( \ building -> building.Building.BuildingNum == 1).first()
       _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel)
 
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))

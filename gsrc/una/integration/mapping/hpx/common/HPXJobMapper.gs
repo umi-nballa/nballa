@@ -73,11 +73,17 @@ class HPXJobMapper {
     for (child in endorsementPremiumInfo.$Children) {
       endorsementInfo.addChild(child)
     }
-    endorsementInfo.addChild(new XmlElement("PremiumInfo", createInsuredNameChangeInfo(policyPeriod)))
-    endorsementInfo.addChild(new XmlElement("PremiumInfo", createInsuredMailingAddressChangeInfo(policyPeriod)))
-    endorsementInfo.addChild(new XmlElement("PremiumInfo", createPolicyNumberChangeInfo(policyPeriod)))
-    endorsementInfo.addChild(new XmlElement("PremiumInfo", createCompanyChangeInfo(policyPeriod)))
-    endorsementInfo.addChild(new XmlElement("PremiumInfo", createEffectivePeriodChangeInfo(policyPeriod)))
+    var insuredNameChange = createInsuredNameChangeInfo(policyPeriod)
+    var mailingAddressChange = createInsuredMailingAddressChangeInfo(policyPeriod)
+    var companyChange = createCompanyChangeInfo(policyPeriod)
+    var effectivePeriodChange = createEffectivePeriodChangeInfo(policyPeriod)
+    var policyNumberChange = createPolicyNumberChangeInfo(policyPeriod)
+    var createPolicyNumberChangeInfo(policyPeriod)
+    if(insuredNameChange != null) endorsementInfo.addChild(new XmlElement("PremiumInfo", insuredNameChange))
+    if(mailingAddressChange != null) endorsementInfo.addChild(new XmlElement("PremiumInfo", mailingAddressChange))
+    if(companyChange != null) endorsementInfo.addChild(new XmlElement("PremiumInfo", companyChange))
+    if(effectivePeriodChange != null) endorsementInfo.addChild(new XmlElement("PremiumInfo", effectivePeriodChange))
+    if(policyNumberChange != null) endorsementInfo.addChild(new XmlElement("PremiumInfo", policyNumberChange))
     var additionalInterestsAdded = createAdditionalInterestedPartiesAddedInfo(policyPeriod, policyMapper)
     for (additionalInterest in additionalInterestsAdded) {
       endorsementInfo.addChild(new XmlElement("PremiumInfo", additionalInterest))

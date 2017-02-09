@@ -18,8 +18,8 @@ class HPXPremiumMapper {
     var previousPeriod = policyPeriod.BasedOn
     var transactions = policyPeriod.AllTransactions
     for (transaction in transactions) {
-      var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
       if (transaction.Cost != null) {
+        var premiumInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PremiumInfoType()
         premiumInfo.ChangeDisplayNameDesc = transaction.Cost.ChargePattern
         premiumInfo.ChangeTypeDesc = transaction.Cost.RateAmountType != null ? transaction.Cost.RateAmountType : ""
         premiumInfo.SequenceNumber = transaction.Cost.ID != null ? transaction.Cost.ID.toString().Bytes[0] : ""

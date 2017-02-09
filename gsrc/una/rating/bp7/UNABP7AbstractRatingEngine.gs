@@ -28,8 +28,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       RateFactorUtil.setDefaults()
-      //var primaryLocation = lineVersion.Branch.PrimaryLocation
-      //RateFactorUtil.FirstBuilding = lineVersion.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings.where( \ building -> building.Building.BuildingNum == 1).first()
       _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel)
 
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
@@ -41,19 +39,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
           building.Classifications.each(\classification -> rateClassification(classification, sliceRange))
         })
       })
-      /*
-      lineVersion.AllBuildings.each(\building -> {
-        rateBuilding(building, sliceRange)
-      })
-
-      lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
-
-      lineVersion.BP7Locations*.Coverages?.each(\locationCov -> rateLocationCoverage(locationCov, sliceRange))
-      rateLiability(lineVersion, sliceRange)
-
-      lineVersion.AllClassifications.each(\classification -> {
-        rateClassification(classification, sliceRange)
-      })*/
 
       var terrorismCov = lineVersion.BP7LineCoverages?.where( \ cov -> cov.PatternCode == "BP7CapLossesFromCertfdActsTerrsm").first()
       if(terrorismCov != null){

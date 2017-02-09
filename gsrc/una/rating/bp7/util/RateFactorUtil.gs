@@ -20,7 +20,7 @@ class RateFactorUtil {
   static var _experienceRatingFactor : BigDecimal as ExperienceRatingFactor= 1.0
   static var _minimumFactor : BigDecimal = 0.75
   static var _territoryModificationFactor : BigDecimal as TerritoryModificationFactor= 1.0
-  static var _firstBuilding : BP7Building as FirstBuilding
+  private static var _firstBuilding : BP7Building as FirstBuilding
 
   static var _sprinklerFactor : BigDecimal as SprinklerFactor= 0.65
 
@@ -101,8 +101,7 @@ class RateFactorUtil {
   *  Sets the net adjustment factor
    */
   static function setNetAdjustmentFactor(line : BP7Line, minimumRatingLevel : RateBookStatus) : BigDecimal{
-    var primaryLocation = line.Branch.PrimaryLocation
-    _firstBuilding = line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings.where( \ building -> building.Building.BuildingNum == 1).first()
+    setFirstBuilding(line)
     setAccountModificationFactor(line)
     setBuildingAgeFactor(line, minimumRatingLevel,_firstBuilding)
     setExperienceRatingFactor(line, minimumRatingLevel)
@@ -212,5 +211,11 @@ class RateFactorUtil {
             : MinimumRatingLevel = minimumRatingLevel}
     var factor = new RatingQueryFacade().getFactor(filter, rateTableName, params).Factor
     return factor as BigDecimal
+  }
+
+  private static function setFirstBuilding(line : BP7Line){
+    var primaryLocation = line.Branch.PrimaryLocation
+    var buildingsInPrimaryLocation = line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
+    _firstBuilding = buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
   }
 }

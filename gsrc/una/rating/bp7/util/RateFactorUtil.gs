@@ -101,6 +101,8 @@ class RateFactorUtil {
   *  Sets the net adjustment factor
    */
   static function setNetAdjustmentFactor(line : BP7Line, minimumRatingLevel : RateBookStatus) : BigDecimal{
+    var primaryLocation = line.Branch.PrimaryLocation
+    _firstBuilding = line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings.where( \ building -> building.Building.BuildingNum == 1).first()
     setAccountModificationFactor(line)
     setBuildingAgeFactor(line, minimumRatingLevel,_firstBuilding)
     setExperienceRatingFactor(line, minimumRatingLevel)

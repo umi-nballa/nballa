@@ -77,7 +77,7 @@ class CoverageTermAvailabilityUtil {
         result = isOptionAvailableForComputerAttackLimit(option, coverable as BP7BusinessOwnersLine)
         break
       case "NetworkSecuLimit_EXT":
-        result = isOptionAvailableForNetworkSecurityLimit(coverable as BP7BusinessOwnersLine)
+        result = isOptionAvailableForNetworkSecurityLimit(option, coverable as BP7BusinessOwnersLine)
         break
       case "BP7NumberOfMonths_EXT":
         result = isOptionAvailableForNumberOfMonths(option,coverable as BP7BusinessOwnersLine)
@@ -315,12 +315,22 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isOptionAvailableForNetworkSecurityLimit(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm != null && bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_LIMITED){
+  private static function isOptionAvailableForNetworkSecurityLimit(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
+    var result = true
+    var limitMap : HashMap<typekey.BP7CoverageOptions_Ext, String> = {TC_Limited -> "50000_EXT",
+                                                                      TC_Full -> "100000_EXT"
+                                                                     }
+
+    if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value != null){
+      result = limitMap.get(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value).contains(option.OptionCode)
+    }
+    return result
+  }
+    /*if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm != null && bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_LIMITED){
       return true
     }
     return false
-  }
+  }*/
 
   private static function isOptionAvailableForCyberOneCovDeduct(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
     var result = true

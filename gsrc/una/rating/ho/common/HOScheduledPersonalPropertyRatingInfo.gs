@@ -1,5 +1,8 @@
 package una.rating.ho.common
 
+uses java.math.BigDecimal
+
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -9,7 +12,7 @@ package una.rating.ho.common
 class HOScheduledPersonalPropertyRatingInfo {
 
   var _itemType: typekey.ScheduleType_HOE as ItemType
-  var _exposureValue: int as ExposureValue
+  var _exposureValue: BigDecimal as ExposureValue
 
   construct(item: ScheduledItem_HOE) {
     _exposureValue = item.ExposureValue

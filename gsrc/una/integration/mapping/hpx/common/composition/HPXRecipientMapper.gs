@@ -52,33 +52,33 @@ class HPXRecipientMapper {
   }
 
   private function createFormsRequestForInsuredRecipientType(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    var isInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.InsuredRecType == true)
-    return createFormsForRecipientType(policyPeriod, forms, new HPXInsuredCompositionUnitMapper())
+    var hasInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.InsuredRecType == true)
+    return hasInsuredForms ? createFormsForRecipientType(policyPeriod, forms, new HPXInsuredCompositionUnitMapper()) : null
   }
 
   private function createFormsRequestForAddlInsuredRecipientType(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    var isInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AddnlInsuredRecType == true)
-    return createFormsForRecipientType(policyPeriod, forms, new HPXAddlInsuredCompositionUnitMapper())
+    var hasAddlInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AddnlInsuredRecType == true)
+    return hasAddlInsuredForms ? createFormsForRecipientType(policyPeriod, forms, new HPXAddlInsuredCompositionUnitMapper()) : null
   }
 
   private function createFormsRequestForAddlIntLeinHolderRecipientType(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    var isInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AddnlIntLienholderRecType == true)
-    return createFormsForRecipientType(policyPeriod, forms, new HPXAddlIntLienHolderCompositionUnitMapper())
+    var hasAddlIntLienHolderForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AddnlIntLienholderRecType == true)
+    return hasAddlIntLienHolderForms ? createFormsForRecipientType(policyPeriod, forms, new HPXAddlIntLienHolderCompositionUnitMapper()) : null
   }
 
   private function createFormsRequestForAddlIntMortgageeRecipientType(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    var isInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AddnlIntMortgageeRecType == true)
-    return createFormsForRecipientType(policyPeriod, forms, new HPXAddlIntMortgageeCompositionUnitMapper())
+    var hasAddlIntLienHolderMortgagee = forms.hasMatch( \ elt1 -> elt1.Pattern.AddnlIntMortgageeRecType == true)
+    return hasAddlIntLienHolderMortgagee ? createFormsForRecipientType(policyPeriod, forms, new HPXAddlIntMortgageeCompositionUnitMapper()) : null
   }
 
   private function createFormsRequestForAgentRecipientType(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    var isInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AgentRecType == true)
-    return createFormsForRecipientType(policyPeriod, forms, new HPXAgentCompositionUnitMapper())
+    var hasAgentForms = forms.hasMatch( \ elt1 -> elt1.Pattern.AgentRecType == true)
+   return hasAgentForms ? createFormsForRecipientType(policyPeriod, forms, new HPXAgentCompositionUnitMapper()) : null
   }
 
   private function createFormsRequestForMasterAgentRecipientType(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    var isInsuredForms = forms.hasMatch( \ elt1 -> elt1.Pattern.MasterAgentRecType == true)
-    return createFormsForRecipientType(policyPeriod, forms, new HPXMasterAgentCompositionUnitMapper())
+    var hasMasterAgentForms = forms.hasMatch( \ elt1 -> elt1.Pattern.MasterAgentRecType == true)
+   return hasMasterAgentForms ? createFormsForRecipientType(policyPeriod, forms, new HPXMasterAgentCompositionUnitMapper()) : null
   }
 
   function getAdditionalInterests(policyPeriod : PolicyPeriod) : AddlInterestDetail [] {

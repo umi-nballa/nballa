@@ -64,8 +64,10 @@ class HPXRequestMapper {
     var HPXClueReportMapper = new HPXClueReportMapper()
     hpxRequestType.PublishingEngineFileKey = "PolicyCenterNA.pub"
     hpxRequestType.addChild(new XmlElement("PolInfoTypeRq", policyDocumentPublish))
-    foreach(cluePriorLoss in policyPeriod.HomeownersLine_HOE.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null)) {
-      hpxRequest.addChild(new XmlElement("ClaimsDocumentPublish", HPXClueReportMapper.createClueReport(cluePriorLoss)))
+    if (policyPeriod.HomeownersLine_HOEExists) {
+      foreach(cluePriorLoss in policyPeriod.HomeownersLine_HOE.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null)) {
+        hpxRequest.addChild(new XmlElement("ClaimsDocumentPublish", HPXClueReportMapper.createClueReport(cluePriorLoss)))
+      }
     }
     hpxRequestType.addChild(new XmlElement("CompositionUnit", compositionUnit))
     hpxRequestType.addChild(new XmlElement("PublishingDocumentOutput", createPublishingDocumentOutput()))

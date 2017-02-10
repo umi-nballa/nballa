@@ -3,37 +3,48 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
   <PanelSet
-    id="TrustResidingPanelSet">
+    id="TrustResidingPanelSet"
+    visible="true">
     <Require
       name="TrustResidings"
       type="List&lt;HOTrustResiding_Ext&gt;"/>
+    <Require
+      name="period"
+      type="PolicyPeriod"/>
     <PanelIterator
       elementName="TrustResidings"
       value="TrustResidings">
       <PanelSet
-        id="PanelSet">
+        id="PanelSet"
+        visible="true">
         <DetailViewPanel>
           <InputColumn>
             <BooleanRadioInput
               editable="true"
               id="TypeOfTrustRevocable_Ext"
               label="displaykey.Web.PolicyInfo.HOTrustResiding.IsTheTypeOfTrustLivingAndRevocable"
-              value="TrustResidings.TypeOfTrustRevocable"/>
+              value="TrustResidings.TypeOfTrustRevocable"
+              visible="period.isHOType() or period.isDFType()"/>
             <TypeKeyInput
               editable="true"
               id="TrustResides"
               label="&quot;Which party to the trust resides in the dwelling?&quot;"
-              value="TrustResidings.TrustResident"/>
+              value="TrustResidings.TrustResident"
+              visible="period.isHOType()">
+              <PostOnChange/>
+            </TypeKeyInput>
             <Input
               editable="true"
               id="grantor1"
               label="&quot;Name Of Grantor&quot;"
-              value="TrustResidings.NameOfGrantor"/>
+              value="TrustResidings.NameOfGrantor"
+              visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT and period.BaseState == typekey.Jurisdiction.TC_CA and period.isHOType() and TrustResidings.TrustResident == typekey.TrustResident_Ext.TC_GRANTOR"/>
             <Input
               editable="true"
               id="beneficiary"
               label="&quot;Name Of Beneficiary&quot;"
-              value="TrustResidings.NameOfBeneficiary"/>
+              value="TrustResidings.NameOfBeneficiary"
+              visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT and period.BaseState == typekey.Jurisdiction.TC_CA and period.isHOType() and TrustResidings.TrustResident == typekey.TrustResident_Ext.TC_BENEFICIARY"/>
             <BooleanRadioInput
               editable="true"
               id="isTrustOrg"

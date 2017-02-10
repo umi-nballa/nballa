@@ -202,6 +202,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }
 
+  //Flood Risk Type field on the dwelling screen will have value when Flood Coverage Question in dwelling Screen is Yes
   function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
     if(coverable.HODW_FloodCoverage_HOE_ExtExists){
       if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
@@ -211,6 +212,8 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
       }
+    }else{
+      coverable.FloodRiskType_Ext = null
     }
     return coverable.FloodRiskType_Ext
   }

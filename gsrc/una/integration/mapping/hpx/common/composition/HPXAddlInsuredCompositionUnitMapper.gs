@@ -18,12 +18,16 @@ class HPXAddlInsuredCompositionUnitMapper extends HPXCompositionUnitMapper {
 
   override function getRecipients(policyPeriod: PolicyPeriod, recipientMapper : HPXRecipientMapper): List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {
     var recipients = new List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType>()
-    var recipient = recipientMapper.createRecipient("INSURED_PDF",
-        "Insured",
-        policyPeriod.PrimaryNamedInsured.DisplayName,
-        policyPeriod.PolicyAddress.Address,
-        policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.EmailAddress1,
-        1)
+    var additionalInsureds = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlInsured).PolicyAdditionalInsuredDetails
+    for (additionalInsured in additionalInsureds) {
+      var recipient = recipientMapper.createRecipient("ADDITIONAL_INSURED_PDF",
+          "AdditionalInsured",
+          additionalInsured.DisplayName,
+          additionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.PrimaryAddress,
+          additionalInsured.PolicyAddlInsured.AccountContactRole.AccountContact.Contact.EmailAddress1,
+          1)
+      recipients.add(recipient)
+    }
     return recipients
   }
 }

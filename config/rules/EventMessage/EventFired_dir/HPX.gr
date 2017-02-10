@@ -5,7 +5,7 @@ package rules.EventMessage.EventFired_dir
 internal class HPX {
   static function doCondition(messageContext : entity.MessageContext) : boolean {
 /*start00rule*/
-return messageContext.DestID == 70
+return messageContext.DestID == 70 and !ScriptParameters.DisableHPX
 /*end00rule*/
 }
 

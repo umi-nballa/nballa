@@ -25,14 +25,14 @@
           id="TrustInvolved"
           label="&quot;How many Trusts Involved&quot;"
           value="policyPeriod.NoOfTrustInvolved"
-          visible="true">
+          visible="policyPeriod.isMultipleTrust">
           <PostOnChange
             onChange="createTrustResidings()"/>
         </TypeKeyInput>
       </InputColumn>
     </DetailViewPanel>
     <PanelRef
-      def="TrustResidingPanelSet(policyPeriod.TrustResidings)"
+      def="TrustResidingPanelSet(policyPeriod.TrustResidings, policyPeriod)"
       id="TrustList"/>
     <Code><![CDATA[function createTrustResidings(){
   var countTrust =policyPeriod.NoOfTrustInvolved.Code.toInt()

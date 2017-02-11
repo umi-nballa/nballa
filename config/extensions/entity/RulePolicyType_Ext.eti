@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  entity="RulePolicyType_Ext"
+  exportable="true"
+  extendable="false"
+  table="rulepolicytype_ext"
+  type="joinarray">
+  <foreignkey
+    columnName="Rule_ExtID"
+    desc="The rule that owns this relationship"
+    fkentity="Rule_Ext"
+    name="Rule"
+    nullok="false"/>
+  <typekey
+    desc="The PolicyType in which this rule applies"
+    name="PolicyType"
+    nullok="true"
+    typelist="HOPolicyType_HOE"/>
+  <index
+    desc="A unique index to ensure that each rule is associated with each jurisdiction at most once."
+    name="rulepoltype_extu1"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="Rule_ExtID"/>
+    <indexcol
+      keyposition="2"
+      name="PolicyType"/>
+  </index>
+</entity>

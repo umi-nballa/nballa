@@ -66,6 +66,11 @@
     cascadeDelete="true"
     desc="The jurisdictions in which this rule applies."
     name="Jurisdictions"/>
+  <array
+    arrayentity="RulePolicyType_Ext"
+    cascadeDelete="true"
+    desc="The PolicyTypes in which this rule applies."
+    name="PolicyTypes"/>
   <column
     default="true"
     desc="If true, this rule applies in all jurisdictions, and the Jurisdictions array will be empty."
@@ -91,4 +96,10 @@
       keyposition="1"
       name="GraphNodePath"/>
   </index>
+  <column
+    default="true"
+    desc="If the Rule applies to all the policy types"
+    name="AllPolicyTypes"
+    nullok="true"
+    type="bit"/>
 </entity>

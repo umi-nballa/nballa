@@ -19,6 +19,9 @@
     <Require
       name="uiController"
       type="gw.accelerator.ruleeng.RuleAdminUIController"/>
+    <Require
+      name="policyTypeList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.PolicyTypeSelection&gt;"/>
     <Variable
       initialValue="callersToolbarAction == CREATE"
       name="newRule"
@@ -331,6 +334,75 @@
               <Reflect
                 available="not VALUE"
                 triggerIds="allJurisdictionsInput"
+                value="false"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+      </DetailViewPanel>
+      <DetailViewPanel
+        columnDivider="false">
+        <Variable
+          initialValue="policyTypeList.Count / 2"
+          name="Size"
+          type="int"/>
+        <InputHeaderSection>
+          <BooleanRadioInput
+            editable="true"
+            falseLabel="displaykey.Accelerator.RulesFramework.RuleAdminDetailScreen.PolicyType.SelectIndividual"
+            id="allPolicyTypeInput"
+            label="displaykey.Accelerator.RulesFramework.PolicyType"
+            trueLabel="displaykey.Java.Select.All"
+            value="rule.AllPolicyTypes"/>
+        </InputHeaderSection>
+        <InputColumn>
+          <InputIterator
+            elementName="rulepoltypeHelper"
+            id="PolTypeList1"
+            value="policyTypeList.subList(0, Size)">
+            <CheckBoxInput
+              available="not rule.AllPolicyTypes"
+              editable="true"
+              id="PolicyTypebox"
+              value="rulepoltypeHelper.Selected"
+              valueLabel="rulepoltypeHelper.polType">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allPolicyTypeInput"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+        <InputColumn>
+          <InputIterator
+            elementName="rulepoltypeHelper"
+            id="PolTypeList2"
+            value="policyTypeList.subList(Size, Size * 2)">
+            <CheckBoxInput
+              available="not rule.AllPolicyTypes"
+              editable="true"
+              id="PolicyTypebox"
+              value="rulepoltypeHelper.Selected"
+              valueLabel="rulepoltypeHelper.polType">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allPolicyTypeInput"
+                value="false"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+        <InputColumn>
+          <InputIterator
+            elementName="rulepoltypeHelper"
+            id="PolTypeList"
+            value="policyTypeList.subList(Size * 2, policyTypeList.Count)">
+            <CheckBoxInput
+              available="not rule.AllPolicyTypes"
+              editable="true"
+              id="PolicyTypebox"
+              value="rulepoltypeHelper.Selected"
+              valueLabel="rulepoltypeHelper.polType">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allPolicyTypeInput"
                 value="false"/>
             </CheckBoxInput>
           </InputIterator>

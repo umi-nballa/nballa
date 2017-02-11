@@ -140,6 +140,20 @@ abstract public class RulesEngine<R extends KeyableBean, C, RT extends Rule_Ext>
         })
       })
 
+     var policytype = _rootObject.HomeownersLine_HOEExists ?  _rootObject.HomeownersLine_HOE?.HOPolicyType : null
+      if(policytype != null ){
+        availQuery.and(\ poltype -> {
+          poltype.or(\ type -> {
+            // Either flagged for all jurisdictions
+            type.compare(UWRule_Ext#AllPolicyTypes, Relop.Equals, true)
+            // or valid for the current jurisdiction
+            // Can't do a join inside an OR, so we use a subselect.
+            var typeQuery = Query.make(RulePolicyType_Ext)
+                .compare(RulePolicyType_Ext#PolicyType, Equals, policytype)
+            type.subselect(Rule_Ext#ID, InOperation.CompareIn, typeQuery, RulePolicyType_Ext#Rule)
+          })
+        })
+      }
       effDate = _rootObject.EditEffectiveDate
 
     } else {

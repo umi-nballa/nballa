@@ -11,6 +11,7 @@ uses java.math.BigDecimal
 uses java.math.RoundingMode
 uses java.util.Date
 uses java.util.Map
+uses gw.api.util.CurrencyUtil
 
 @Export
 class ProrationPlugin implements IProrationPlugin {
@@ -93,11 +94,17 @@ class ProrationPlugin implements IProrationPlugin {
     }
 
     override function scaleAmount(amount : BigDecimal) : BigDecimal {
-      return amount.setScale(RoundingLevel, RoundingMode)
+      if(amount < 0.5)
+        return amount.setScale(RoundingLevel, RoundingMode.UP)
+      else
+        return amount.setScale(RoundingLevel, RoundingMode)
     }
 
     override function scaleAmount(amount : MonetaryAmount) : MonetaryAmount {
-      return amount.setScale(RoundingLevel, RoundingMode)
+      if(amount < new MonetaryAmount(0.5,CurrencyUtil.getDefaultCurrency()))
+        return amount.setScale(RoundingLevel, RoundingMode.UP)
+      else
+        return amount.setScale(RoundingLevel, RoundingMode)
     }
   }
 }

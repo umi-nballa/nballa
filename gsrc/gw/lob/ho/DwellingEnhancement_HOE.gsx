@@ -299,11 +299,13 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
 
   property get isEarthQuakeConstructionVisible():boolean
   {
+    //NV HO, SC HO, NC HO or NC LPP
+
     if((this.HOLocation.PolicyLocation.State.Code=="NV" || this.HOLocation.PolicyLocation.State.Code=="NC"  ||
         this.HOLocation.PolicyLocation.State.Code=="SC" )&& typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType))
       return true
 
-    if(this.HOLocation.PolicyLocation.State.Code=="NV" && typekey.HOPolicyType_HOE.TC_LPP_EXT==this.HOPolicyType)
+    if(this.HOLocation.PolicyLocation.State.Code=="NC" && typekey.HOPolicyType_HOE.TC_LPP_EXT==this.HOPolicyType)
       return true
 
     return false

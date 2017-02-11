@@ -18,12 +18,14 @@ class HPXMasterAgentCompositionUnitMapper extends HPXCompositionUnitMapper {
 
   override function getRecipients(policyPeriod: PolicyPeriod, recipientMapper : HPXRecipientMapper): List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {
     var recipients = new List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType>()
-    var recipient = recipientMapper.createRecipient("INSURED_PDF",
-        "Insured",
-        policyPeriod.PrimaryNamedInsured.DisplayName,
-        policyPeriod.PolicyAddress.Address,
-        policyPeriod.PrimaryNamedInsured.AccountContactRole.AccountContact.Contact.EmailAddress1,
+    var masterAgent = policyPeriod.ProducerOfRecord.MasterOrganization_Ext
+    var recipient = recipientMapper.createRecipient("MASTER_AGENT_PDF",
+        "MasterAgent",
+        masterAgent.DisplayName,
+        masterAgent.Contact.PrimaryAddress,
+        masterAgent.Contact.EmailAddress1,
         1)
+    recipients.add(recipient)
     return recipients
   }
 }

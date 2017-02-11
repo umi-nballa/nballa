@@ -12,7 +12,10 @@ class HPXHODwellConstructionMapper {
 
   function createDwellConstruction(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType {
     var construction = new wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType()
-    construction.YearBuilt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt : ""
+    construction.YearBuilt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltOverridden_Ext :
+                        policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt : ""
+    construction.YearBuilt.setMonth(1)
+    construction.YearBuilt.setDay(1)
     //construction.addChild(new XmlElement("Construction", createConstructionCd(policyPeriod)))
     construction.ConstructionCd = createConstructionCd(policyPeriod) != null ? createConstructionCd(policyPeriod) : ""
     construction.Description = policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType.Description : ""

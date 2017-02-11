@@ -43,7 +43,7 @@ class HPXGateway implements HPXInterface {
           var hpxComm = new HPXCommunicator()
           var ewsResponse = hpxComm.ewsEngineService(ewsRequestXML)
           var responseMapper = new HPXResponseMapper()
-          responseMapper.updateResponseModel(ewsResponse)
+          //responseMapper.updateResponseModel(ewsResponse)
 
       return ewsResponse
     } catch (exp: Exception) {

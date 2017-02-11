@@ -1358,7 +1358,7 @@
           label="displaykey.Web.Homeowners.DwellingConstruction.FloodRiskType"
           required="false"
           value="dwelling.getFloodRiskTypeValue(dwelling)"
-          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT) &amp;&amp; dwelling.HODW_FloodCoverage_HOE_ExtExists"/>
+          visible="(dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT)) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)"/>
         <Input
           editable="true"
           id="PostFirm_Ext"

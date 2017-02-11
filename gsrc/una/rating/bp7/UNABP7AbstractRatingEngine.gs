@@ -12,8 +12,13 @@ uses gw.lob.bp7.rating.BP7BuildingCovCostData
 uses gw.lob.bp7.rating.BP7ClassificationCovCostData
 uses gw.lob.bp7.rating.BP7TaxCostData_Ext
 uses java.util.ArrayList
+uses una.rating.bp7.ratinginfos.BP7RatingInfo
 
 abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRatingEngine<BP7Line> {
+
+  var _bp7RatingInfo : BP7RatingInfo as BP7RatingInfo
+  var _minimumRatingLevel: RateBookStatus as MinimumRatingLevel
+
   construct(line: T) {
     super(line)
   }
@@ -23,18 +28,16 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       RateFactorUtil.setDefaults()
-
-      lineVersion.AllBuildings.each(\building -> {
-        rateBuilding(building, sliceRange)
-      })
+      _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel)
 
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
 
-      lineVersion.BP7Locations*.Coverages?.each(\locationCov -> rateLocationCoverage(locationCov, sliceRange))
-      rateLiability(lineVersion, sliceRange)
-
-      lineVersion.AllClassifications.each(\classification -> {
-        rateClassification(classification, sliceRange)
+      lineVersion.BP7Locations.each( \ location -> {
+        location.Coverages?.each(\locationCov -> rateLocationCoverage(locationCov, sliceRange))
+        location.Buildings?.each(\building -> {
+          rateBuilding(building, sliceRange)
+          building.Classifications.each(\classification -> rateClassification(classification, sliceRange))
+        })
       })
 
       var terrorismCov = lineVersion.BP7LineCoverages?.where( \ cov -> cov.PatternCode == "BP7CapLossesFromCertfdActsTerrsm").first()

@@ -6,14 +6,12 @@ uses gw.rating.CostData
 
 uses java.lang.Iterable
 uses una.logging.UnaLoggerCategory
-uses gw.lob.gl.rating.GLCovExposureCostData
-uses una.rating.gl.common.GLLineCovCostData
-uses java.util.Map
 uses una.rating.gl.ratingInfos.GLLineRatingInfo
-uses una.rating.gl.common.GLRateRoutineNames
 uses gw.lob.cp.rating.CPBuildingCovGroup1CostData
 uses gw.lob.cp.rating.CPBuildingCovGroup2CostData
 uses gw.lob.cp.rating.CPBuildingCovSpecialCostData
+uses una.rating.cp.common.CPBuildingCovOtherThanHurricaneCostData
+uses una.rating.cp.common.CPBuildingCovHurricaneCostData
 
 class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   var _minimumRatingLevel: RateBookStatus
@@ -39,7 +37,13 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       _logger.info("Rating CP Line Coverages")
-      //lineVersion.GLLineCoverages.each( \ cov -> rateLineCoverages(cov, sliceRange))
+      lineVersion.CPLocations.each( \ location -> {
+        location.Buildings.each( \ building -> {
+          building.Coverages.each( \ buildingCov -> {
+            rateCPBuildingCov(buildingCov, sliceRange)
+          })
+        })
+      })
       _logger.info("Done Rating CP Line Coverages")
     }
   }
@@ -50,6 +54,8 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
       case CPBuildingCovGrp1Cost:  return new CPBuildingCovGroup1CostData(c, RateCache)
       case CPBuildingCovGrp2Cost:  return new CPBuildingCovGroup2CostData(c, RateCache)
       case CPBuildingCovSpecCost:  return new CPBuildingCovSpecialCostData(c, RateCache)
+      case CPBuildingCovOtherThanHurricaneCost: return new CPBuildingCovOtherThanHurricaneCostData(c, RateCache)
+      case CPBuildingCovHurricaneCost: return new CPBuildingCovHurricaneCostData(c, RateCache)
       default:
         throw "unknown type of cost " + typeof c
     }
@@ -69,5 +75,9 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
    ******/
   override protected function existingSliceModeCosts(): Iterable<Cost> {
     return PolicyLine.Costs
+  }
+
+  function rateCPBuildingCov(buildingCov : CPBuildingCov, sliceRange : DateRange){
+
   }
 }

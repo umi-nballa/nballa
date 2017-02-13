@@ -76,7 +76,7 @@ class QuoteProcess {
 
    if(_branch.ofaccontact!=null && _branch.ofaccontact.length>0)
      {
-       var pattern = ActivityPattern.finder.findActivityPatternsByCode("ofac_csr").atMostOne()
+       var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC1").atMostOne()
        var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
        print("in quoteprocess, user is " + user)
        if(user==null)
@@ -84,7 +84,7 @@ class QuoteProcess {
          user = una.config.activity.OfacUtil.findUserByUsername("su")
        }
          //_branch.Job.createRoleActivity(typekey.UserRole.TC_CUSTOMERREP,pattern,"Ofac Check","Please check for OFAC hit",user)//,una.config.activity.OfacUtil.findUserByUsername("ofaccsr"))
-       if(_branch.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="ofac_csr")==null)
+       if(_branch.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC1")==null)
          {
           var activity =  pattern.createJobActivity(_branch.Bundle, _branch.Job, null, null, null, null, null, null, null)
           activity.assign(user.RootGroup,user)

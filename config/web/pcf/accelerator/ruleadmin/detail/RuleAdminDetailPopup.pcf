@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
   <Popup
     afterCommit="gw.api.util.SearchUtil.search(TopLocation)"
-    beforeCommit="uiController.beforeCommit(rule, jurisdictionList, vehicleTypeList)"
+    beforeCommit="uiController.beforeCommit(rule, jurisdictionList, vehicleTypeList ,policytypeList)"
     canEdit="perm.System.editbusinessruleadmin"
     id="RuleAdminDetailPopup"
     startInEditMode="perm.System.editbusinessruleadmin"
@@ -38,7 +38,11 @@
     <Variable
       name="rSearchCriteria"
       type="gw.accelerator.ruleeng.RuleSearchCriteria"/>
+    <Variable
+      initialValue="rule.PolicyTypeSelections"
+      name="policytypeList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.PolicyTypeSelection&gt;"/>
     <ScreenRef
-      def="RuleAdminDetailScreen(rule, callersToolbarAction, jurisdictionList, vehicleTypeList, uiController)"/>
+      def="RuleAdminDetailScreen(rule, callersToolbarAction, jurisdictionList, vehicleTypeList, uiController ,policytypeList)"/>
   </Popup>
 </PCF>

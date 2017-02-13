@@ -169,7 +169,13 @@ class FileBackedRuleRepository implements IRuleRepository {
         // TODO: Temp workaround
         // log error
         rule.AllJurisdictions = true
-      }
+      } })
+      rulesList.each(\ rule -> {
+        if (!rule.AllPolicyTypes and rule.PolicyTypes.IsEmpty) {
+          // TODO: Temp workaround
+          // log error
+          rule.AllPolicyTypes = true
+        }
     })
 
     // Map vehicle types for validation rules

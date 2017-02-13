@@ -19,6 +19,34 @@ uses java.util.HashMap
  */
 class HPXRatingHelper {
 
+  function getConsentToRateTotalPremium(policyPeriod : PolicyPeriod) : double {
+    var consentToRate : double = 0.00
+    if (policyPeriod.HomeownersLine_HOEExists) {
+      var baseCost = policyPeriod.AllCosts.firstWhere( \ elt -> elt typeis HomeownersBaseCost_HOE and elt.HOCostType == typekey.HOCostType_Ext.TC_BASEPREMIUM)
+      consentToRate = getRate(policyPeriod, baseCost.NameOfCoverable, "NCRB")
+    } else {
+      for (cost in policyPeriod.AllCosts) {
+        var amount = getRate(policyPeriod, cost.NameOfCoverable, "amountWithNoCTR")
+        if (amount == null) {
+          amount = getRate(policyPeriod, cost.NameOfCoverable, "TermAmount")
+        }
+        consentToRate = consentToRate + amount
+      }
+    }
+    return consentToRate
+  }
+
+  function getConsentToRateTotalDeviationPercent(policyPeriod : PolicyPeriod) : double {
+    var totalDeviationFactor : double = 0.00
+    if (policyPeriod.HomeownersLine_HOEExists) {
+      var baseCost = policyPeriod.AllCosts.firstWhere( \ elt -> elt typeis HomeownersBaseCost_HOE and elt.HOCostType == typekey.HOCostType_Ext.TC_BASEPREMIUM)
+      totalDeviationFactor = getRate(policyPeriod, baseCost.NameOfCoverable, "TotalDeviationFactor")
+    } else {
+      totalDeviationFactor = policyPeriod?.Factor_Ext
+    }
+    return totalDeviationFactor*100
+  }
+
   function getRate(policyPeriod : PolicyPeriod, ratedItem : String, rateVariable : String) : double {
     var baseRate : double = null
     var containers = getWorksheetContainers(policyPeriod)

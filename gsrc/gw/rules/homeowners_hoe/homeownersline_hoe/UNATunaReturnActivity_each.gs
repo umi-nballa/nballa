@@ -18,28 +18,32 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
 
     if(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade).size()>1)
     {
-      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("ofac_csr")
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_MultipleBCEGFound")
 
-      var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
-      if(user==null)
-      {
-        user = una.config.activity.OfacUtil.findUserByUsername("su")
-      }
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="ofac_csr")==null)
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_MultipleBCEGFound")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
-        activity.assign(user.RootGroup,user)
       }
     }
 
     if(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)==null || gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade).size()==0)
     {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_NoBCEGFound")
 
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_NoBCEGFound")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
     }
 
     if(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast).size()>1 && holine.HOLocation.PolicyLocation.State.Code=="HI")
     {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_MultipleDistanceToCoastFound")
 
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_MultipleDistanceToCoastFound")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
     }
 
 

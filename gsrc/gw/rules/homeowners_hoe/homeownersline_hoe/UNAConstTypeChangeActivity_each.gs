@@ -16,17 +16,11 @@ class UNAConstTypeChangeActivity_each implements IRuleCondition<HomeownersLine_H
 
     if(holine.Dwelling.OverrideConstructionType_Ext && holine.Dwelling.FloodCoverage_Ext)
     {
-      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("ofac_csr")
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_ConstructionTypeChanged")
 
-      var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
-      if(user==null)
-      {
-        user = una.config.activity.OfacUtil.findUserByUsername("su")
-      }
-      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="ofac_csr")==null)
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_ConstructionTypeChanged")==null)
       {
         var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
-        activity.assign(user.RootGroup,user)
       }
     }
 

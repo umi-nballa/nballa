@@ -5,8 +5,13 @@
     <Column
       beanPath="GLLineCovCost.GeneralLiabilityCov"
       name="pattern"/>
+    <Column
+      beanPath="GLLineCovCost.GLCostType"
+      name="costType"/>
   </Columns>
-  <DisplayName><![CDATA[
-pattern.Pattern
+  <DisplayName><![CDATA[if(costType != null){
+  return pattern.Pattern + " : " + costType.DisplayName  
+}
+return pattern.Pattern
   ]]></DisplayName>
 </Entity>

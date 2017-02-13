@@ -64,7 +64,7 @@ class OFACRequestMapper {
    *  This Method sets required configurational inputs and returns SearchConfiguration Instance
    */
   @Returns("SearchConfiguration")
-  function buildSearchConfiguration(): SearchConfiguration
+  public function buildSearchConfiguration(): SearchConfiguration
   {
     _logger.info(CLASS_NAME + ": Entering buildSearchConfiguration method")
     searchConfiguration.PredefinedSearchName = PREDEFINED_SEARCH_NAME
@@ -111,21 +111,6 @@ class OFACRequestMapper {
   }
 
   /**
-   * This method loads basic ofac properties
-   */
-  private function setProperties()
-  {
-    _logger.info(CLASS_NAME + ": Entering setProperties method")
-    CLIENT_ID = PropertiesHolder.getProperty("CLIENT_ID")
-    USER_ID = PropertiesHolder.getProperty("USER_ID")
-    PASSWORD = PropertiesHolder.getProperty("OFAC_PASSWORD")
-    GLB = PropertiesHolder.getProperty("GLB").toInt()
-    PREDEFINED_SEARCH_NAME = PropertiesHolder.getProperty("PREDEFINED_SEARCH_NAME")
-    ROLES_OR_USER = PropertiesHolder.getProperty("ROLES_OR_USER")
-    _logger.info(CLASS_NAME + ": Exiting setProperties method")
-  }
-
-  /**
    * This method is to create List of OfacDTO
    */
   @Param("insuredList", "List of insured to be checked against OFAC")
@@ -158,4 +143,20 @@ class OFACRequestMapper {
     _logger.info(CLASS_NAME + ": Exiting buildOFACInput method")
     return ofacDTOList
   }
+
+  /**
+   * This method loads basic ofac properties
+   */
+  private function setProperties()
+  {
+    _logger.info(CLASS_NAME + ": Entering setProperties method")
+    CLIENT_ID = PropertiesHolder.getProperty("OFAC_CLIENT_ID")
+    USER_ID = PropertiesHolder.getProperty("OFAC_USER_ID")
+    PASSWORD = PropertiesHolder.getProperty("OFAC_PASSWORD")
+    GLB = PropertiesHolder.getProperty("OFAC_GLB").toInt()
+    PREDEFINED_SEARCH_NAME = PropertiesHolder.getProperty("OFAC_PREDEFINED_SEARCH_NAME")
+    ROLES_OR_USER = PropertiesHolder.getProperty("OFAC_ROLES_OR_USER")
+    _logger.info(CLASS_NAME + ": Exiting setProperties method")
+  }
+
 }

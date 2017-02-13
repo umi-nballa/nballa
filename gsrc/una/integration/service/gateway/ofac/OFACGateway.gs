@@ -13,13 +13,17 @@ uses una.logging.UnaLoggerCategory
  * This class provides Implementation to OFACInterface methods
  */
 class OFACGateway implements OFACInterface {
-  var ofacCommunicator: OFACCommunicator
-  var ofacRequestMapper: OFACRequestMapper
-  var ofacResponseMapper: OFACResponseMapper
-  var ofacHelper: OFACGatewayHelper
-  var timeout = "500"
-  static var _logger = UnaLoggerCategory.UNA_INTEGRATION
+  private var ofacCommunicator: OFACCommunicator
+  private var ofacRequestMapper: OFACRequestMapper
+  private var ofacResponseMapper: OFACResponseMapper
+  private var ofacHelper: OFACGatewayHelper
+  private var timeout = "500"
+  private static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   private static final var CLASS_NAME = OFACGateway.Type.DisplayName
+
+  /**
+   *  This customized constructor is to instantiate OFACCommunicator, OFACRequestMapper, OFACResponseMapper, OFACGatewayHelper Class
+   */
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     ofacCommunicator = new OFACCommunicator()

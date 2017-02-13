@@ -37,9 +37,6 @@ class CoveragesUtil {
       case "HOLI_WC_PrivateResidenceEmployee_HOE_Ext":
         result = isWorkersCompForEmployeesAvailable(coverable as HomeownersLine_HOE)
         break
-      case "HODW_FloodCoverage_HOE_Ext":
-        result = isFloodCoverageAvailable(coverable as Dwelling_HOE)
-        break
 	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
@@ -312,22 +309,6 @@ class CoveragesUtil {
     if(hoLine.HOPolicyType == TC_DP3_Ext){
       result =  hoLine.DPLI_Personal_Liability_HOEExists
     }
-
-    return result
-  }
-
-  private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = (dwelling.HOPolicyType == TC_HO3) ? dwelling.FloodCoverage_Ext : true
-    var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
-
-   if(result and floodIneligibleZips.HasElements){
-     var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
-
-     if(zipCode.length >= 5){
-       zipCode = zipCode.substring(0, 5)
-       result = !floodIneligibleZips.contains(zipCode)
-     }
-   }
 
     return result
   }

@@ -120,10 +120,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   property get FloodZoneOrOverride() : typekey.FloodZoneOverridden_Ext
   {
-    if(this.OverridePropFloodVal_Ext and this.PropFloodValOverridden_Ext!=null)
-      return this.PropFloodValOverridden_Ext
-    else
-      return this.PropFloodVal_Ext
+    var floodZoneOverrideValue:FloodZoneOverridden_Ext
+    if(this.OverridePropFloodVal_Ext and this.PropFloodValOverridden_Ext!=null){
+      floodZoneOverrideValue = this.PropFloodValOverridden_Ext
+    }
+    else if(!this.OverridePropFloodVal_Ext){
+      floodZoneOverrideValue = this.PropFloodVal_Ext
+    }
+    return floodZoneOverrideValue
   }
 
   property get NumberStoriesOrOverride() : typekey.NumberOfStories_HOE{

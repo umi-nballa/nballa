@@ -1365,10 +1365,14 @@
           label="displaykey.Web.Homeowners.DwellingConstruction.PostFirm"
           required="false"
           value="dwelling.PostFIRM_Ext"
-          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT)"/>
-        <InputDivider/>
+          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO6 || dwelling.HOPolicyType == TC_DP3_EXT)">
+          <PostOnChange/>
+        </Input>
+        <InputDivider
+          visible="gw.lob.ho.HODwellingUtil_HOE.isElevnAvailable(dwelling)"/>
         <InputSet
-          id="BaseFloodElVal_Ext">
+          id="BaseFloodElVal_Ext"
+          visible="gw.lob.ho.HODwellingUtil_HOE.isElevnAvailable(dwelling)">
           <RangeInput
             available="!dwelling.OverrideBaseFloodElVal_Ext"
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -1405,7 +1409,7 @@
           label="displaykey.Web.Homeowners.AbveBlwBaseFldElvtn_Ext"
           required="false"
           value="dwelling.AbveBlwBaseFldElvtn_Ext"
-          visible="(dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) || (dwelling.FloodZoneOrOverride!=null &amp;&amp; (!dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;X&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;B&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;C&quot;) || !dwelling.FloodZoneOrOverride.Code.equalsIgnoreCase(&quot;D&quot;)))|| (dwelling.PostFIRM_Ext!=null &amp;&amp; dwelling.PostFIRM_Ext)"/>
+          visible="gw.lob.ho.HODwellingUtil_HOE.isElevnAvailable(dwelling)"/>
         <TypeKeyInput
           editable="true"
           id="PriorFloodInsProvider_Ext"

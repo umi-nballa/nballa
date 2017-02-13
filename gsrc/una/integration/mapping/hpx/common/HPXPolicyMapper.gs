@@ -193,6 +193,10 @@ abstract class HPXPolicyMapper {
     policyInfo.TierCd = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier
     policyInfo.TierDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier.Description
     policyInfo.BranchDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Branch
+    var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
+    for (paymentOption in paymentOptions) {
+      policyInfo.addChild(new XmlElement("PaymentOption", paymentOption))
+    }
     return policyInfo
   }
 

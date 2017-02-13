@@ -1,6 +1,8 @@
 package una.integration.mapping.hpx.common
 
 uses java.lang.Throwable
+uses gw.web.policy.BillingAdjustmentsUIHelper
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -10,21 +12,24 @@ uses java.lang.Throwable
  */
 class HPXPaymentOptionMapper {
 
-  function createPaymentOptions(policyPeriod : PolicyPeriod) : java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType> {
+ function createPaymentOptions(policyPeriod : PolicyPeriod) : java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType> {
     var paymentOptions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType>()
-    try {
-      var billingSummaryPlugin = gw.plugin.Plugins.get( gw.plugin.billing.IBillingSummaryPlugin )
-      var billingSummary = billingSummaryPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, policyPeriod.PolicyTerm.MostRecentTerm)
-      var sortedInvoices = billingSummary.Invoices.sort( \ elt1, elt2 -> elt1.InvoiceDueDate.before(elt2.InvoiceDueDate))
-      for (invoice in sortedInvoices) {
-        var paymentOption = new wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType()
-        paymentOption.InstallmentInfo.InstallmentDesc = billingSummary.PaymentPlanName
-        paymentOption.InstallmentInfo.InstallmentDownPaymentAmt.Amt = sortedInvoices.first().Amount.Amount
-        paymentOption.InstallmentInfo.InstallmentAmt.Amt = invoice.Amount.Amount
-        paymentOption.InstallmentInfo.InstallmentTotalAmt.Amt = billingSummary.TotalCharges.Amount
-        paymentOptions.add(paymentOption)
+    var paymntOptions = policyPeriod.retrievePaymentPlans()    //retrievePaymentPlansWithoutSettingBillingAmounts()
+    var installmentOptions = paymntOptions.InstallmentPlans
+    for (installmentOption in installmentOptions) {
+      var paymentOption = new wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType()
+      paymentOption.InstallmentInfo.InstallmentDesc = installmentOption.Name
+      var numberOfInstallments = 0
+      if (!installmentOption.Name.equals("Annual")) {
+        numberOfInstallments = installmentOption.Name.substring(0,2)
       }
-    } catch (e : Throwable) {}
+      paymentOption.InstallmentInfo.InstallmentNumber = numberOfInstallments
+      paymentOption.InstallmentInfo.InstallmentDownPaymentAmt.Amt = installmentOption.DownPayment
+      paymentOption.InstallmentInfo.InstallmentAmt.Amt = installmentOption.Installment
+      var fee = installmentOption.Notes != null and installmentOption.Notes.contains("Installment Fee:") ? installmentOption.Notes.substring(17) : 0
+      paymentOption.InstallmentFeeAmt.Amt = fee
+      paymentOptions.add(paymentOption)
+    }
     return paymentOptions
   }
 }

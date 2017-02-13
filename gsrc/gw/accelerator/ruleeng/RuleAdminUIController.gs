@@ -127,8 +127,10 @@ class RuleAdminUIController {
   @Param("ruleVehicleTypeList", "The vehicle types for the rule")
   function beforeCommit(rule : Rule_Ext,
                         ruleStateList : List<JurisdictionSelection>,
-                        ruleVehicleTypeList : List<VehicleTypeSelection>) {
-    updateNewRule(rule, ruleStateList, ruleVehicleTypeList)
+                        ruleVehicleTypeList : List<VehicleTypeSelection>,
+                        policyTypeList : List<PolicyTypeSelection>) {
+
+    updateNewRule(rule, ruleStateList, ruleVehicleTypeList,policyTypeList)
 
     _repository.beforeCommit(rule)
   }
@@ -142,7 +144,8 @@ class RuleAdminUIController {
   @Param("vehicleTypesList", "vehicle types selected for the rule")
   function updateNewRule(rule : Rule_Ext,
                          jurisdictionList : List<JurisdictionSelection>,
-                         vehicleTypesList : List<VehicleTypeSelection>) {
+                         vehicleTypesList : List<VehicleTypeSelection>,
+                         policyTypeList : List<PolicyTypeSelection>) {
     // Populate jurisdictions
     rule.updateJurisdictions(jurisdictionList)
 
@@ -150,7 +153,7 @@ class RuleAdminUIController {
       // And vehicle types for validation rules
       rule.updateVehicleTypes(vehicleTypesList)
     }
-
+      rule.updatePolicyTypes(policyTypeList)
     _repository.addRule(rule)
   }
 

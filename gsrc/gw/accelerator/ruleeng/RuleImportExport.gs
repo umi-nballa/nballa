@@ -46,6 +46,7 @@ class RuleImportExport {
     rules.each(\ rule -> {
       writer.addAll(rule.Jobs.toList())
       writer.addAll(rule.Jurisdictions.toList())
+      writer.addAll(rule.PolicyTypes.toList())
       if (rule typeis ValidationRule_Ext) {
         writer.addAll(rule.VehicleTypes.toList())
       }

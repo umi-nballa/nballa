@@ -271,6 +271,31 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
     }
   }
 
+  function updatePolicyTypes(policyTypes : Collection<PolicyTypeSelection>) {
+    if (not this.AllPolicyTypes) {
+      if (not policyTypes.hasMatch(\ j -> j.Selected)) {
+        throw new DisplayableException(
+            displaykey.Accelerator.RulesFramework.Rule_Ext.PolicyTypeRequired)
+      }
+      var toRemove = this.PolicyTypes.mapToKeyAndValue(
+          \ entry -> entry.PolicyType,
+              \ entry -> entry
+      )
+      for (var entry in policyTypes.where(\ j -> j.Selected)) {
+        if (toRemove.remove(entry.polType) == null) {
+          print("Policy Type to be added " + entry.polType)
+          this.addToPolicyTypes(new RulePolicyType_Ext() {
+              :PolicyType = entry.polType
+          })
+        }
+      }
+      toRemove.Values*.remove()
+    } else {
+      // If AllJurisdictions is selected, then we can remove the individual
+      // rows in the join table.
+      this.PolicyTypes*.remove()
+    }
+  }
   /**
    * This property is the set of Jurisdictions with a selected flag.
    */
@@ -298,6 +323,32 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
     return jurisdictionList
   }
 
+  /**
+   * This property is the set of Jurisdictions with a selected flag.
+   */
+  @Returns("A list of jurisdiction selections")
+  property get PolicyTypeSelections() : List<PolicyTypeSelection> {
+    var policyTypeList = new ArrayList<PolicyTypeSelection>()
+
+    var selected : Set<HOPolicyType_HOE>
+    if (this.AllPolicyTypes) {
+      selected = {}
+    } else {
+      selected = this.PolicyTypes.map(\ j -> j.PolicyType).toSet()
+    }
+
+    // TO CONFIGURE: Update this typefileter to include only jurisdictions
+    // supported by your business
+    for (policyType in typekey.HOPolicyType_HOE.TF_RULEPOLICYTYPES.TypeKeys) {
+      var selection = new PolicyTypeSelection() {
+          :polType = policyType,
+          :Selected = selected.contains(policyType)
+      }
+      policyTypeList.add(selection)
+    }
+
+    return policyTypeList
+  }
   /**
    * Constructs an instance of the rule condition configured for this rule.
    */

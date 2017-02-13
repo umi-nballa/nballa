@@ -133,6 +133,9 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
           dwellingCov?.Dwelling?.HODW_BuildingAdditions_HOE_Ext?.HasHODW_BuildAddInc_HOETerm){
           _buildingAdditionsAndAlterationsLimit = dwellingCov?.Dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
       }
+      if(dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOEExists and dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE?.HasHODW_OrdinanceLimit_HOETerm){
+         _ordinanceOrLawLimit = dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value
+      }
     }
   }
 }

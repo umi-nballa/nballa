@@ -96,7 +96,7 @@ class DocumentArchival {
         //NOTE:pendingdocuid needs to be set back to null later so that isDocumentPending doesn't have true in it.
         document.PendingDocUID=UUID.randomUUID().toString();
         keywords.add(new Keyword(KeywordMap.asyncdocumentid.Name, document.PendingDocUID))
-        servicesManager.archiveDocumentAsynchronously(localFile, document.Type.Code, document.MimeType, keywords)
+        servicesManager.archiveDocumentAsynchronously(localFile, document.OnBaseDocumentType.DisplayName, document.MimeType, keywords)
         if (logger.DebugEnabled) {
           logger.debug("Document " + localFile + " has been saved to local folder and waiting for OnBase to pick up later.")
         }

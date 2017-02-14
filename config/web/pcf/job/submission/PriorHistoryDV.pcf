@@ -57,7 +57,7 @@
                 editable="true"
                 id="EffectiveDate"
                 label="displaykey.Web.Policy.PriorPolicy.EffectiveDate"
-                required="false"
+                required="true"
                 value="priorPolicy.EffectiveDate"/>
               <DateCell
                 editable="true"
@@ -112,7 +112,9 @@
         </ListViewPanel>
       </ListViewInput>
     </InputColumn>
-    <Code><![CDATA[function CarrierReq() : boolean{
+    <Code><![CDATA[
+
+function CarrierReq() : boolean{
   for(pp in policyPeriod.Policy.PriorPolicies.CarrierType)   {
      if(pp == typekey.CarrierType_Ext.TC_UNA)
        return true

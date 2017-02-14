@@ -30,6 +30,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
 
   var _executor: BP7RateRoutineExecutor
   final static var _logger = UnaLoggerCategory.UNA_RATING
+  var _buildingForLineCov : BP7Building as BuildingForLineCov
   construct(line: BP7Line) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -39,6 +40,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     _logger.info("Initializing the " + line.BaseState.Code + " BOP Rating Engine")
     MinimumRatingLevel = minimumRatingLevel
     _executor = new BP7RateRoutineExecutor(ReferenceDatePlugin, PolicyLine, minimumRatingLevel)
+    _buildingForLineCov = getFirstBuildingInPrimaryLocation()
     BP7RatingInfo = new BP7RatingInfo(line)
     _logger.info(line.BaseState.Code + " BOP Rating Engine initialized")
   }
@@ -49,6 +51,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   override function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange) {
     var lineRatingInfo = new BP7LineRatingInfo(lineCov)
     var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, lineRatingInfo)
+    BP7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, MinimumRatingLevel, _buildingForLineCov)
     switch(lineCov.Pattern){
       case "IdentityRecovCoverage_EXT" :
       case "BP7CyberOneCov_EXT" :
@@ -124,6 +127,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   *  Function which rates all the building coverages
    */
   override function rateBuilding(building: BP7Building, sliceToRate: DateRange) {
+    BP7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, MinimumRatingLevel, building)
     BP7RatingInfo.PropertyBuildingAdjustmentFactor = RateFactorUtil.setPropertyBuildingAdjustmentFactor(PolicyLine, MinimumRatingLevel, building)
     var step = new BP7BuildingStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo)
     var buildingRatingInfo = new BP7BuildingRatingInfo(building)
@@ -146,6 +150,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
    */
   override function rateClassification(classification: BP7Classification, sliceToRate: DateRange) {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
+    BP7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, MinimumRatingLevel, classification.Building)
     BP7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, MinimumRatingLevel, classification)
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){

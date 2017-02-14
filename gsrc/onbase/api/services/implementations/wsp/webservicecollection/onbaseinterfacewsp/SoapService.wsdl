@@ -31,124 +31,6 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="DocumentBytesOutput" nillable="true" type="tns:DocumentBytesOutput"/>
-      <xs:element name="ArchiveDocument">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element minOccurs="0" name="DocumentArchiveData" nillable="true" type="tns:OBDocumentArchiveArchiveDocument"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
-      <xs:complexType name="OBDocumentArchiveArchiveDocument">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="FileInfo" nillable="true" type="tns:FileInfoArchiveDocument"/>
-          <xs:element minOccurs="0" name="Keywords" nillable="true" type="tns:KeywordsArchiveDocument"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="OBDocumentArchiveArchiveDocument" nillable="true" type="tns:OBDocumentArchiveArchiveDocument"/>
-      <xs:complexType name="FileInfoArchiveDocument">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="MIMEType" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="Base64FileStream" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="FileInfoArchiveDocument" nillable="true" type="tns:FileInfoArchiveDocument"/>
-      <xs:complexType name="KeywordsArchiveDocument">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="Multi_Instance_Keyword_Group" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
-          <xs:element minOccurs="0" name="Single_Instance_Keyword_Group" nillable="true" type="tns:Single_Instance_Keyword_GroupArchiveDocument"/>
-          <xs:element minOccurs="0" name="StandAlone" nillable="true" type="tns:StandAloneArchiveDocument"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="KeywordsArchiveDocument" nillable="true" type="tns:KeywordsArchiveDocument"/>
-      <xs:complexType name="Multi_Instance_Keyword_GroupArchiveDocument">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="PrimaryInsured_Collection" nillable="true" type="tns:ArrayOfPrimaryInsured"/>
-          <xs:element minOccurs="0" name="AdditionalInsured_Collection" nillable="true" type="tns:ArrayOfAdditionalInsured"/>
-          <xs:element minOccurs="0" name="Exposure_Collection" nillable="true" type="tns:ArrayOfExposure"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="Multi_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
-      <xs:complexType name="ArrayOfPrimaryInsured">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="PrimaryInsured" nillable="true" type="tns:PrimaryInsured"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfPrimaryInsured" nillable="true" type="tns:ArrayOfPrimaryInsured"/>
-      <xs:complexType name="PrimaryInsured">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="PrimaryInsuredName" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="PrimaryMiddleName" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="PrimaryLastName" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="PrimaryInsured" nillable="true" type="tns:PrimaryInsured"/>
-      <xs:complexType name="ArrayOfAdditionalInsured">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="AdditionalInsured" nillable="true" type="tns:AdditionalInsured"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfAdditionalInsured" nillable="true" type="tns:ArrayOfAdditionalInsured"/>
-      <xs:complexType name="AdditionalInsured">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="AdditionalFirstName" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="AdditionalMiddleName" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="AdditionalLastName" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="AdditionalInsured" nillable="true" type="tns:AdditionalInsured"/>
-      <xs:complexType name="ArrayOfExposure">
-        <xs:sequence>
-          <xs:element minOccurs="0" maxOccurs="unbounded" name="Exposure" nillable="true" type="tns:Exposure"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="ArrayOfExposure" nillable="true" type="tns:ArrayOfExposure"/>
-      <xs:complexType name="Exposure">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="ExposureDisplayName" nillable="true" type="xs:string"/>
-          <xs:element minOccurs="0" name="ExposureID" nillable="true" type="xs:string"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="Exposure" nillable="true" type="tns:Exposure"/>
-      <xs:complexType name="Single_Instance_Keyword_GroupArchiveDocument">
-        <xs:sequence/>
-      </xs:complexType>
-      <xs:element name="Single_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Single_Instance_Keyword_GroupArchiveDocument"/>
-      <xs:complexType name="StandAloneArchiveDocument">
-        <xs:sequence>
-          <xs:element minOccurs="0" name="PolicyNumber_Collection" nillable="true" type="q1:ArrayOfstring" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="ClaimNumber_Collection" nillable="true" type="q2:ArrayOfstring" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="AccountNumber_Collection" nillable="true" type="q3:ArrayOfstring" xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Description_Collection" nillable="true" type="q4:ArrayOfstring" xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="OnBaseDocumentType_Collection" nillable="true" type="q5:ArrayOfstring" xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Subtype_Collection" nillable="true" type="q6:ArrayOfstring" xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="ProductName_Collection" nillable="true" type="q7:ArrayOfstring" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="PolicyType_Collection" nillable="true" type="q8:ArrayOfstring" xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="PolicyEffectiveDate_Collection" nillable="true" type="q9:ArrayOfstring" xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="PolicyExpirationDate_Collection" nillable="true" type="q10:ArrayOfstring" xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Term_Collection" nillable="true" type="q11:ArrayOfstring" xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="AgencyCode_Collection" nillable="true" type="q12:ArrayOfstring" xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="LegacyPolicyNumber_Collection" nillable="true" type="q13:ArrayOfstring" xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="IssueDate_Collection" nillable="true" type="q14:ArrayOfstring" xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="TransactionEffectiveDate_Collection" nillable="true" type="q15:ArrayOfstring" xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="Underwriter_Collection" nillable="true" type="q16:ArrayOfstring" xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="CSR_Collection" nillable="true" type="q17:ArrayOfstring" xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="ReceivedDate_Collection" nillable="true" type="q18:ArrayOfstring" xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="source_Collection" nillable="true" type="q19:ArrayOfstring" xmlns:q19="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="AsyncDocumentID_Collection" nillable="true" type="q20:ArrayOfstring" xmlns:q20="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="ClaimStatus_Collection" nillable="true" type="q21:ArrayOfstring" xmlns:q21="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="DateofLoss_Collection" nillable="true" type="q22:ArrayOfstring" xmlns:q22="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="ClaimCloseDate_Collection" nillable="true" type="q23:ArrayOfstring" xmlns:q23="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-          <xs:element minOccurs="0" name="CategoryName_Collection" nillable="true" type="q24:ArrayOfstring" xmlns:q24="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
-        </xs:sequence>
-      </xs:complexType>
-      <xs:element name="StandAloneArchiveDocument" nillable="true" type="tns:StandAloneArchiveDocument"/>
-      <xs:element name="ArchiveDocumentResponse">
-        <xs:complexType>
-          <xs:sequence>
-            <xs:element minOccurs="0" name="ArchiveDocumentResult" type="xs:long"/>
-          </xs:sequence>
-        </xs:complexType>
-      </xs:element>
       <xs:element name="CreateUnityForm">
         <xs:complexType>
           <xs:sequence>
@@ -241,6 +123,131 @@
         </xs:sequence>
       </xs:complexType>
       <xs:element name="DisplayColumns" nillable="true" type="tns:DisplayColumns"/>
+      <xs:element name="ArchiveDocument">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="DocumentArchiveData" nillable="true" type="tns:OBDocumentArchiveArchiveDocument"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
+      <xs:complexType name="OBDocumentArchiveArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="FileInfo" nillable="true" type="tns:FileInfoArchiveDocument"/>
+          <xs:element minOccurs="0" name="Keywords" nillable="true" type="tns:KeywordsArchiveDocument"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="OBDocumentArchiveArchiveDocument" nillable="true" type="tns:OBDocumentArchiveArchiveDocument"/>
+      <xs:complexType name="FileInfoArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="MIMEType" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="Base64FileStream" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="FileInfoArchiveDocument" nillable="true" type="tns:FileInfoArchiveDocument"/>
+      <xs:complexType name="KeywordsArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Multi_Instance_Keyword_Group" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
+          <xs:element minOccurs="0" name="Single_Instance_Keyword_Group" nillable="true" type="tns:Single_Instance_Keyword_GroupArchiveDocument"/>
+          <xs:element minOccurs="0" name="StandAlone" nillable="true" type="tns:StandAloneArchiveDocument"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="KeywordsArchiveDocument" nillable="true" type="tns:KeywordsArchiveDocument"/>
+      <xs:complexType name="Multi_Instance_Keyword_GroupArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrimaryInsured_Collection" nillable="true" type="tns:ArrayOfPrimaryInsured"/>
+          <xs:element minOccurs="0" name="AdditionalInsured_Collection" nillable="true" type="tns:ArrayOfAdditionalInsured"/>
+          <xs:element minOccurs="0" name="Exposure_Collection" nillable="true" type="tns:ArrayOfExposure"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Multi_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Multi_Instance_Keyword_GroupArchiveDocument"/>
+      <xs:complexType name="ArrayOfPrimaryInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="PrimaryInsured" nillable="true" type="tns:PrimaryInsured"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfPrimaryInsured" nillable="true" type="tns:ArrayOfPrimaryInsured"/>
+      <xs:complexType name="PrimaryInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PrimaryInsuredFirstName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PrimaryInsuredMiddleName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="PrimaryInsuredLastName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="PrimaryInsured" nillable="true" type="tns:PrimaryInsured"/>
+      <xs:complexType name="ArrayOfAdditionalInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="AdditionalInsured" nillable="true" type="tns:AdditionalInsured"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfAdditionalInsured" nillable="true" type="tns:ArrayOfAdditionalInsured"/>
+      <xs:complexType name="AdditionalInsured">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="AdditionalInsuredFirstName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AdditionalInsuredMiddleName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="AdditionalInsuredLastName" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="AdditionalInsured" nillable="true" type="tns:AdditionalInsured"/>
+      <xs:complexType name="ArrayOfExposure">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="Exposure" nillable="true" type="tns:Exposure"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="ArrayOfExposure" nillable="true" type="tns:ArrayOfExposure"/>
+      <xs:complexType name="Exposure">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="ExposureDisplayName" nillable="true" type="xs:string"/>
+          <xs:element minOccurs="0" name="ExposureID" nillable="true" type="xs:string"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="Exposure" nillable="true" type="tns:Exposure"/>
+      <xs:complexType name="Single_Instance_Keyword_GroupArchiveDocument">
+        <xs:sequence/>
+      </xs:complexType>
+      <xs:element name="Single_Instance_Keyword_GroupArchiveDocument" nillable="true" type="tns:Single_Instance_Keyword_GroupArchiveDocument"/>
+      <xs:complexType name="StandAloneArchiveDocument">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="PolicyNumber_Collection" nillable="true" type="q1:ArrayOfstring" xmlns:q1="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ClaimNumber_Collection" nillable="true" type="q2:ArrayOfstring" xmlns:q2="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="AccountNumber_Collection" nillable="true" type="q3:ArrayOfstring" xmlns:q3="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Description_Collection" nillable="true" type="q4:ArrayOfstring" xmlns:q4="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="OnBaseDocumentType_Collection" nillable="true" type="q5:ArrayOfstring" xmlns:q5="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Subtype_Collection" nillable="true" type="q6:ArrayOfstring" xmlns:q6="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Adjuster_Collection" nillable="true" type="q7:ArrayOfstring" xmlns:q7="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ProductName_Collection" nillable="true" type="q8:ArrayOfstring" xmlns:q8="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyType_Collection" nillable="true" type="q9:ArrayOfstring" xmlns:q9="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyEffectiveDate_Collection" nillable="true" type="q10:ArrayOfstring" xmlns:q10="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="PolicyExpirationDate_Collection" nillable="true" type="q11:ArrayOfstring" xmlns:q11="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Term_Collection" nillable="true" type="q12:ArrayOfstring" xmlns:q12="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="AgencyCode_Collection" nillable="true" type="q13:ArrayOfstring" xmlns:q13="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="LegacyPolicyNumber_Collection" nillable="true" type="q14:ArrayOfstring" xmlns:q14="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="IssueDate_Collection" nillable="true" type="q15:ArrayOfstring" xmlns:q15="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="TransactionEffectiveDate_Collection" nillable="true" type="q16:ArrayOfstring" xmlns:q16="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="Underwriter_Collection" nillable="true" type="q17:ArrayOfstring" xmlns:q17="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="CSR_Collection" nillable="true" type="q18:ArrayOfstring" xmlns:q18="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ReceivedDate_Collection" nillable="true" type="q19:ArrayOfstring" xmlns:q19="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="SYS_MAILFromAddress_Collection" nillable="true" type="q20:ArrayOfstring" xmlns:q20="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="SYS_MAILToAddress_Collection" nillable="true" type="q21:ArrayOfstring" xmlns:q21="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="SYS_MAILDate_Collection" nillable="true" type="q22:ArrayOfstring" xmlns:q22="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="SYS_MAILSubject_Collection" nillable="true" type="q23:ArrayOfstring" xmlns:q23="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="source_Collection" nillable="true" type="q24:ArrayOfstring" xmlns:q24="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="DocumentType_Collection" nillable="true" type="q25:ArrayOfstring" xmlns:q25="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="AsyncDocumentID_Collection" nillable="true" type="q26:ArrayOfstring" xmlns:q26="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ClaimStatus_Collection" nillable="true" type="q27:ArrayOfstring" xmlns:q27="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="DateofLoss_Collection" nillable="true" type="q28:ArrayOfstring" xmlns:q28="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ClaimCloseDate_Collection" nillable="true" type="q29:ArrayOfstring" xmlns:q29="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="CategoryName_Collection" nillable="true" type="q30:ArrayOfstring" xmlns:q30="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+          <xs:element minOccurs="0" name="ClaimID_Collection" nillable="true" type="q31:ArrayOfstring" xmlns:q31="http://schemas.microsoft.com/2003/10/Serialization/Arrays"/>
+        </xs:sequence>
+      </xs:complexType>
+      <xs:element name="StandAloneArchiveDocument" nillable="true" type="tns:StandAloneArchiveDocument"/>
+      <xs:element name="ArchiveDocumentResponse">
+        <xs:complexType>
+          <xs:sequence>
+            <xs:element minOccurs="0" name="ArchiveDocumentResult" type="xs:long"/>
+          </xs:sequence>
+        </xs:complexType>
+      </xs:element>
     </xs:schema>
     <xs:schema targetNamespace="http://schemas.microsoft.com/2003/10/Serialization/" attributeFormDefault="qualified" elementFormDefault="qualified" xmlns:tns="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:xs="http://www.w3.org/2001/XMLSchema">
       <xs:element name="anyType" nillable="true" type="xs:anyType"/>
@@ -298,12 +305,6 @@
   <wsdl:message name="HylandOutBoundContract_GetDocumentContent_OutputMessage">
     <wsdl:part name="parameters" element="tns:GetDocumentContentResponse"/>
   </wsdl:message>
-  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_InputMessage">
-    <wsdl:part name="parameters" element="tns:ArchiveDocument"/>
-  </wsdl:message>
-  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_OutputMessage">
-    <wsdl:part name="parameters" element="tns:ArchiveDocumentResponse"/>
-  </wsdl:message>
   <wsdl:message name="HylandOutBoundContract_CreateUnityForm_InputMessage">
     <wsdl:part name="parameters" element="tns:CreateUnityForm"/>
   </wsdl:message>
@@ -316,14 +317,16 @@
   <wsdl:message name="HylandOutBoundContract_OBQuery_OutputMessage">
     <wsdl:part name="parameters" element="tns:OBQueryResponse"/>
   </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_InputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiveDocument"/>
+  </wsdl:message>
+  <wsdl:message name="HylandOutBoundContract_ArchiveDocument_OutputMessage">
+    <wsdl:part name="parameters" element="tns:ArchiveDocumentResponse"/>
+  </wsdl:message>
   <wsdl:portType name="HylandOutBoundContract">
     <wsdl:operation name="GetDocumentContent">
       <wsdl:input message="tns:HylandOutBoundContract_GetDocumentContent_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/GetDocumentContent"/>
       <wsdl:output message="tns:HylandOutBoundContract_GetDocumentContent_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/GetDocumentContent/response"/>
-    </wsdl:operation>
-    <wsdl:operation name="ArchiveDocument">
-      <wsdl:input message="tns:HylandOutBoundContract_ArchiveDocument_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument"/>
-      <wsdl:output message="tns:HylandOutBoundContract_ArchiveDocument_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument/response"/>
     </wsdl:operation>
     <wsdl:operation name="CreateUnityForm">
       <wsdl:input message="tns:HylandOutBoundContract_CreateUnityForm_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/CreateUnityForm"/>
@@ -333,20 +336,15 @@
       <wsdl:input message="tns:HylandOutBoundContract_OBQuery_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/OBQuery"/>
       <wsdl:output message="tns:HylandOutBoundContract_OBQuery_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/OBQuery/response"/>
     </wsdl:operation>
+    <wsdl:operation name="ArchiveDocument">
+      <wsdl:input message="tns:HylandOutBoundContract_ArchiveDocument_InputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument"/>
+      <wsdl:output message="tns:HylandOutBoundContract_ArchiveDocument_OutputMessage" wsaw:Action="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument/response"/>
+    </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="BasicHttpBinding_HylandOutBoundContract" type="tns:HylandOutBoundContract">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
     <wsdl:operation name="GetDocumentContent">
       <soap:operation soapAction="WebServicePublishing/GWStockServicesV1/Integration/GetDocumentContent" style="document"/>
-      <wsdl:input>
-        <soap:body use="literal"/>
-      </wsdl:input>
-      <wsdl:output>
-        <soap:body use="literal"/>
-      </wsdl:output>
-    </wsdl:operation>
-    <wsdl:operation name="ArchiveDocument">
-      <soap:operation soapAction="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>
@@ -365,6 +363,15 @@
     </wsdl:operation>
     <wsdl:operation name="OBQuery">
       <soap:operation soapAction="WebServicePublishing/GWStockServicesV1/Integration/OBQuery" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ArchiveDocument">
+      <soap:operation soapAction="WebServicePublishing/GWStockServicesV1/Integration/ArchiveDocument" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
       </wsdl:input>

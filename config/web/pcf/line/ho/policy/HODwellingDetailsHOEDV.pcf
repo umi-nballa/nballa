@@ -374,7 +374,8 @@
       </InputSet>
       <InputDivider/>
       <InputSet
-        id="PropFloodVal_Ext">
+        id="PropFloodVal_Ext"
+        visible="policyPeriod.BaseState.Code==&quot;FL&quot; &amp;&amp; (dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO4 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT)">
         <RangeInput
           available="!dwelling.OverridePropFloodVal_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -585,27 +586,27 @@
           label="displaykey.Web.Homeowners.HOLocation.ISO360TunaReturned_Ext"
           value="dwelling.HOLocation.ISO360ValueID_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ISO360Value)"/>
-        <Input
+        <!-- <Input
           available="!dwelling.HOLocation.OverrideISO360_Ext"
           id="ISO360MatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ISO360Matchlevel_Ext"
-          value="dwelling.HOLocation.ISO360MatchLevel_Ext"/>
-        <BooleanRadioInput
+          value="dwelling.HOLocation.ISO360MatchLevel_Ext"/> -->
+        <!-- <BooleanRadioInput
           editable="true"
           id="OverRideISO360_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ISO360Override_Ext"
           value="dwelling.HOLocation.OverrideISO360_Ext">
           <PostOnChange
             target="iso360_Ext"/>
-        </BooleanRadioInput>
-        <Input
+        </BooleanRadioInput> -->
+        <!-- <Input
           available="dwelling.HOLocation.OverrideISO360_Ext"
           editable="true"
           id="ISO360UserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ISO360UserEntered_Ext"
           required="dwelling.HOLocation.OverrideISO360_Ext"
           value="dwelling.HOLocation.ISO360Overridden_Ext"
-          visible="dwelling.HOLocation.OverrideISO360_Ext"/>
+          visible="dwelling.HOLocation.OverrideISO360_Ext"/> -->
       </InputSet>
       <InputDivider/>
       <InputSet
@@ -634,7 +635,7 @@
           numCols="2"
           required="false"
           value="dwelling.NumOfMonthsConsUnOccupancy_Ext"
-          visible="DwellingUsage_HOE.TC_SEAS == dwelling.DwellingUsage or DwellingUsage_HOE.TC_SEC == dwelling.DwellingUsage "/>
+          visible="DwellingUsage_HOE.TC_SEC == dwelling.DwellingUsage //DwellingUsage_HOE.TC_SEAS == dwelling.DwellingUsage or "/>
         <!-- <BooleanRadioInput
           editable="true"
           id="DwellingCoverageInEffect"

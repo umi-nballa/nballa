@@ -246,7 +246,10 @@ abstract class HPXCoverageMapper {
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
       cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
       var ratingHelper = new HPXRatingHelper()
-      var consentToRateAmount = ratingHelper.getRate(currentCoverage.PolicyLine.AssociatedPolicyPeriod, cost.Cost.NameOfCoverable, "amountWithNoCTR")
+      var consentToRateAmount = 0
+      if (cost != null) {
+        consentToRateAmount = cost != null ? ratingHelper.getRate(currentCoverage.PolicyLine.AssociatedPolicyPeriod, cost.Cost, "amountWithNoCTR") : 0
+      }
       cov.ConsentToRatePremiumAmt.Amt = consentToRateAmount != null ? consentToRateAmount : 0
     }
     return cov

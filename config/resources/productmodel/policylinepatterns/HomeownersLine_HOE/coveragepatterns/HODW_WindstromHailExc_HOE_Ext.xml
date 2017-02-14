@@ -11,7 +11,10 @@
   public-id="HODW_WindstromHailExc_HOE_Ext"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isExclusionAvailable("HODW_WindstromHailExc_HOE_Ext", HomeownersLine_HOE)]]></AvailabilityScript>
-  <InitializeScript><![CDATA[HODW_WindstromHailExc_HOE_Ext.HOLine.setExclusionExists("HODW_CitizensInsurancePerilsExclusion_Ext", true)]]></InitializeScript>
-  <ExistenceScript/>
+  <InitializeScript><![CDATA[
+              if (HODW_WindstromHailExc_HOE_Ext.HOLine.BaseState == TC_FL){
+                  HODW_WindstromHailExc_HOE_Ext.HOLine.setExclusionExists("HODW_CitizensInsurancePerilsExclusion_Ext", true)
+              }
+      ]]></InitializeScript>
   <CovTerms/>
 </ExclusionPattern>

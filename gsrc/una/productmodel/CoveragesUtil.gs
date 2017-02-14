@@ -352,7 +352,8 @@ class CoveragesUtil {
   private static function isWindHurricaneAndHailExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
-    return applicableCounties.HasElements
+    return hoLine.Dwelling.WHurricaneHailExclusion_Ext
+       and applicableCounties.HasElements
        and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
   }
 

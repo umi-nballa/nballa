@@ -28,7 +28,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       RateFactorUtil.setDefaults()
-      _bp7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, _minimumRatingLevel)
 
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
 
@@ -98,6 +97,12 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
       costsWithNoWindowCosts.add(cost)
     }
     return costsWithNoWindowCosts
+  }
+
+  function getFirstBuildingInPrimaryLocation() : BP7Building{
+    var primaryLocation = PolicyLine.Branch.PrimaryLocation
+    var buildingsInPrimaryLocation = PolicyLine.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
+    return buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
   }
 
   abstract function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange)

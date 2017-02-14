@@ -4,8 +4,7 @@ uses una.integration.framework.util.PropertiesHolder
 uses una.logging.UnaLoggerCategory
 uses java.util.ArrayList
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchResults
-uses java.util.HashMap
-uses java.lang.Integer
+
 uses wsi.remote.una.ofac.ofac.xgservices_svc.enums.ResultEntityType
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfResultRecord_ResultRecord
 uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfWLMatch_WLMatch
@@ -18,81 +17,13 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.anonymous.elements.ArrayOfWLMatch_W
  */
 class OFACGatewayHelper {
 
-
-    static var _logger = UnaLoggerCategory.UNA_INTEGRATION
-
-  // Function returns List of person contacts
-
-  function retrievePersonContactList(policyContacts: List<Contact>): ArrayList<Person> {
-    var personList = new ArrayList<entity.Person>()
-    var contactItr = policyContacts.iterator()
-    while (contactItr.hasNext()) {
-      var contact = contactItr.next()
-      if (contact typeis Person) {
-        _logger.debug("Adding " + contact.Name + " to the person Contact List")
-        personList.add(contact)
-      }
-    }
-    return personList
-  }
-
-  // function returns List of Company contacts
-
-  function retrieveCompanyContactList(policyContacts: List<Contact>): ArrayList<Company> {
-    var companyList = new ArrayList<Company>()
-    var contactItr = policyContacts.iterator()
-    while (contactItr.hasNext()) {
-      var contact = contactItr.next()
-      if (contact typeis Company){
-        _logger.debug("Adding " + contact.Name + " to the Comapany Contact List")
-        companyList.add(contact)
-      }
-    }
-    return companyList
-  }
-
-
-  // Function to check & add contact to LIST
-  function returnHITList(record: ArrayOfResultRecord_ResultRecord,
-                                policyContacts: List<Contact>, watchList: ArrayOfWLMatch_WLMatch,
-                                   pPeriod: PolicyPeriod): Contact {
-
-    var personList = retrievePersonContactList(policyContacts)
-    var companyList = retrieveCompanyContactList(policyContacts)
-
-    if (record.RecordDetails.EntityType == ResultEntityType.Individual) {
-
-      //add person contact to Map
-      if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.Last != null) {
-        var person = personList?.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase(record.RecordDetails.Name.First)
-            && elt.LastName.equalsIgnoreCase(record.RecordDetails.Name.Last))
-        _logger.debug("Adding " + person.Name + " to the AleretList")
-
-        if(person != null)   {
-          pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(person.DisplayName))
-          return person
-       }
-      }
-    } else {
-      // add company contact to the map
-      if (record.RecordDetails.Name.Full != null && companyList.HasElements) {
-        var company = companyList?.firstWhere(\elt ->
-            elt.Name.equalsIgnoreCase(record.RecordDetails.Name.Full))
-        _logger.debug("Adding " + company.Name  + " to the AleretList")
-
-        if(company != null)       {
-          pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(company.DisplayName))
-          return company
-        }
-        }
-    }
-
-    return null
-  }
+  private static final var CLASS_NAME = OFACGatewayHelper.Type.DisplayName
+  private static var _logger = UnaLoggerCategory.UNA_INTEGRATION
 
 
   // Function checks for FalsePositive and returns a Hashmap with contacts and respective scores
-  function checkAndMapResponseForAlerts(policyContacts: List<Contact>, pPeriod: PolicyPeriod, result: SearchResults): ArrayList<Contact> {
+  public function checkAndMapResponseForAlerts(policyContacts: List<Contact>, pPeriod: PolicyPeriod, result: SearchResults): ArrayList<Contact> {
+    _logger.info(CLASS_NAME + ": Entering checkAndMapResponseForAlerts method")
     var isFalsePositive : boolean
 
     var ofacList = new ArrayList<Contact>()
@@ -114,7 +45,7 @@ class OFACGatewayHelper {
           isFalsePositive = false
 
         if (!isFalsePositive){
-         // Add contact and score to Map
+          // Add contact and score to Map
           var contact = returnHITList(record, policyContacts, watchList,pPeriod)
 
           if(contact != null)
@@ -122,6 +53,80 @@ class OFACGatewayHelper {
         }
       }
     }
+    _logger.info(CLASS_NAME + ": Exiting checkAndMapResponseForAlerts method")
     return ofacList
+  }
+
+  // Function returns List of person contacts
+
+  private function retrievePersonContactList(policyContacts: List<Contact>): ArrayList<Person> {
+    _logger.info(CLASS_NAME + ": Entering retrievePersonContactList method")
+    var personList = new ArrayList<entity.Person>()
+    var contactItr = policyContacts.iterator()
+    while (contactItr.hasNext()) {
+      var contact = contactItr.next()
+      if (contact typeis Person) {
+        _logger.debug("Adding " + contact.Name + " to the person Contact List")
+        personList.add(contact)
+      }
+    }
+    _logger.info(CLASS_NAME + ": Exiting retrievePersonContactList method")
+    return personList
+  }
+
+  // function returns List of Company contacts
+
+  private function retrieveCompanyContactList(policyContacts: List<Contact>): ArrayList<Company> {
+    _logger.info(CLASS_NAME + ": Entering retrieveCompanyContactList method")
+    var companyList = new ArrayList<Company>()
+    var contactItr = policyContacts.iterator()
+    while (contactItr.hasNext()) {
+      var contact = contactItr.next()
+      if (contact typeis Company){
+        _logger.debug("Adding " + contact.Name + " to the Comapany Contact List")
+        companyList.add(contact)
+      }
+    }
+    _logger.info(CLASS_NAME + ": Exiting retrieveCompanyContactList method")
+    return companyList
+  }
+
+
+  // Function to check & add contact to LIST
+  private function returnHITList(record: ArrayOfResultRecord_ResultRecord,
+                                policyContacts: List<Contact>, watchList: ArrayOfWLMatch_WLMatch,
+                                   pPeriod: PolicyPeriod): Contact {
+    _logger.info(CLASS_NAME + ": Entering returnHITContact method")
+    var personList = retrievePersonContactList(policyContacts)
+    var companyList = retrieveCompanyContactList(policyContacts)
+
+    if (record.RecordDetails.EntityType == ResultEntityType.Individual) {
+
+      //add person contact to Map
+      if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.Last != null) {
+        var person = personList?.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase(record.RecordDetails.Name.First)
+            && elt.LastName.equalsIgnoreCase(record.RecordDetails.Name.Last))
+        _logger.debug("Adding " + person.Name + " to the AlertList")
+
+        if(person != null)   {
+          pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(person.DisplayName))
+          return person
+       }
+      }
+    } else {
+      // add company contact to the map
+      if (record.RecordDetails.Name.Full != null && companyList.HasElements) {
+        var company = companyList?.firstWhere(\elt ->
+            elt.Name.equalsIgnoreCase(record.RecordDetails.Name.Full))
+        _logger.debug("Adding " + company.Name  + " to the AlertList")
+
+        if(company != null)       {
+          pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_IDENTIFIEDOFAC, \ -> displaykey.Web.OFAC.History.Event.Msg(company.DisplayName))
+          return company
+        }
+        }
+    }
+    _logger.info(CLASS_NAME + ": Exiting returnHITContact method")
+    return null
   }
 }

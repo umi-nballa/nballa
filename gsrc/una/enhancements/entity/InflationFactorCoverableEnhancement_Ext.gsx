@@ -29,26 +29,41 @@ enhancement InflationFactorCoverableEnhancement_Ext: entity.Coverable {
   }
 
   private property get InflationFactor() : BigDecimal{
-    var result : String
+    var result : BigDecimal
     var inflationFactorEntities = {entity.CPBuilding, entity.BP7Building, entity.Dwelling_HOE}
 
     if(inflationFactorEntities.contains(this.IntrinsicType)){
       switch(this.PolicyLine.Branch.Policy.ProductCode){
         case "CommercialPackage":
-            result = (this.getCoverage("CPBldgCov").getCovTerm("CPBldgCovAutoIncrease") as OptionCovTerm).Value + 1
+            result = getInflationFactorFromInflationCovTerm(\ -> {return this.getCoverage("CPBldgCov")?.getCovTerm("CPBldgCovAutoIncrease")})
             break
         case "Homeowners":
             result = getInflationFactorFromTable()
             break
         case "BP7BusinessOwners":
-            result = (this.getCoverage("BP7Structure").getCovTerm("BP7AutomaticIncreasePct1") as OptionCovTerm).Value + 1
+            result = getInflationFactorFromInflationCovTerm(\ -> {return this.getCoverage("BP7Structure")?.getCovTerm("BP7AutomaticIncreasePct1")})
             break
         default:
           break
       }
     }
 
-    return result?.toBigDecimal()
+    return result
+  }
+
+  private function getInflationFactorFromInflationCovTerm(getCovTermFunction (): gw.api.domain.covterm.CovTerm) : BigDecimal{
+    var result : BigDecimal
+    var term = getCovTermFunction()
+
+    if(term != null){
+      var value = (term as OptionCovTerm).Value
+
+      if(value != null){
+        result = value + 1
+      }
+    }
+
+    return result
   }
 
   private property get InflationFactorEligibleCovTerms() : List<DirectCovTerm>{

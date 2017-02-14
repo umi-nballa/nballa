@@ -60,6 +60,13 @@ class HODwellingUtil_HOE {
      return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
   }
 
+  static function filterTunaConstructionTypeStateSpecific(dwelling : Dwelling_HOE, constype:typekey.ConstructionType_HOE[]) : List<typekey.ConstructionType_HOE> {
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
+      return typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys
+    }
+    return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
+  }
+
   /*
 *  Author: uim-svallabhapurapu
 *  Change Log: New function for Roof Deck TypeList value range based on state

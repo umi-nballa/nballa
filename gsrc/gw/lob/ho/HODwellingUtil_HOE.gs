@@ -685,6 +685,7 @@ class HODwellingUtil_HOE {
     if(tunaValues != null) {
       tunaValues.each( \ elt ->
           {
+            if(elt.Value!=null && elt.Value!="0")
             tunaCodeAndPercent.add(elt.Value)
           })// + " - " +elt.Percent+" %"))
     }

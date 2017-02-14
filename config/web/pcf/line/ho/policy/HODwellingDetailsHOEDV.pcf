@@ -410,7 +410,8 @@
         <InputDivider/>
       </InputSet>
       <InputSet
-        id="DistToCoast_Ext">
+        id="DistToCoast_Ext"
+        visible="((dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT ) || (((dwelling.PolicyPeriod.BaseState == TC_NC || dwelling.PolicyPeriod.BaseState==TC_SC)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)) ||    ((dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState==TC_HI)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType))))//dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;NV&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;CA&quot;">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -444,7 +445,7 @@
       <InputDivider/>
       <InputSet
         id="DistToMajorBOW_Ext"
-        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
+        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"

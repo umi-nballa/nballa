@@ -102,7 +102,11 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _earthquakeConstructionType = dwellingCov?.Dwelling?.EarthquakeConstrn_Ext
     }
     if(dwellingCov typeis HODW_Earthquake_HOE and dwellingCov?.Dwelling?.HODW_Earthquake_HOEExists){
-      _earthquakeConstructionType = dwellingCov?.Dwelling?.EarthquakeConstrn_Ext
+      if(baseState == Jurisdiction.TC_AZ){
+          _earthquakeConstructionType = EarthquakeConstrn_Ext.TC_FRAME
+      } else{
+        _earthquakeConstructionType = dwellingCov?.Dwelling?.EarthquakeConstrn_Ext
+      }
       _earthquakeDeductible = dwellingCov?.Dwelling?.HODW_Earthquake_HOE?.HODW_EarthquakeDed_HOETerm?.Value
       if(dwellingCov?.Dwelling?.OverrideEarthquakeTer_Ext){
         _earthquakeTerritoryValueInt = dwellingCov?.Dwelling?.EarthquakeTerOverridden_Ext.toInt()

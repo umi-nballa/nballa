@@ -20,6 +20,7 @@ uses gw.address.AddressCopier
 uses gw.api.util.RegionCurrencyMappingUtil
 uses gw.api.util.CurrencyUtil
 uses gw.api.system.PCLoggerCategory
+uses gw.api.util.LocationUtil
 
 enhancement AccountBaseEnhancement : Account {
 
@@ -477,4 +478,143 @@ enhancement AccountBaseEnhancement : Account {
       throw new gw.api.util.DisplayableException(e.Message)
     }
   }
+
+
+  /*HO - HO3 HO4 HO6/ Texas - HOA HOB HOCONB
+  DF - DP3/ North Car -  LPP3 / Texas - TDP1 TDP2 TDP3
+  CL - BOP  and  CPP*/
+
+   function raiseWarningForCL(period : PolicyPeriod) {
+     // row 472  - web.Account.AccountOrgType.Warning.ListTheNameOfTheJointVenture
+
+    if(period.BP7LineExists or period.CPLineExists){
+
+     if (this.AccountOrgType == typekey.AccountOrgType.TC_JOINTVENTURE){
+       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.ListTheNameOfTheJointVenture)
+      }
+         // row 473
+      else if(this.AccountOrgType == typekey.AccountOrgType.TC_GENERALPARTNERSHIP_EXT) {
+         LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.ListTheNameOfTheGeneralPartnership)
+       }
+           // row 474
+      else if (this.AccountOrgType == typekey.AccountOrgType.TC_LIMITEDLIABILITYPARTNERSHIP_EXT) {
+         LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.LimitedLiabilityPartnershipAsThePrimaryNamedInsured)
+       }
+           // row 475 (web.Account.AccountOrgType.Warning.ListTheNameOfTheSoleProprietor)
+      else if (this.AccountOrgType == typekey.AccountOrgType.TC_SOLEPROPSHIP) {
+          LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.ListTheNameOfTheSoleProprietor)
+       }
+         // row 476 (web.Account.AccountOrgType.Warning.CorporationAsThePrimaryNamedInsured)
+      else if (this.AccountOrgType == typekey.AccountOrgType.TC_CORPORATION_EXT){
+          LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.CorporationAsThePrimaryNamedInsured)
+       }
+           // row 477
+      else if(this.AccountOrgType == typekey.AccountOrgType.TC_SCORP_EXT){
+        LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.SCorpAsPNI)
+       }
+             // row 478
+      else if(this.AccountOrgType == typekey.AccountOrgType.TC_CCORP_EXT){
+          LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.CCorpAsPNI)
+       }
+              // row 479
+      else if (this.AccountOrgType == typekey.AccountOrgType.TC_LLC){
+            LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.LLCAsPNI)
+       }
+              // row 480
+       else if (this.AccountOrgType == typekey.AccountOrgType.TC_RESIDENTIALCONDOASSOCIATION_EXT){
+              LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.ResidentialCondominiumAssociation)
+       }
+                // row 481
+       else if (this.AccountOrgType == typekey.AccountOrgType.TC_COMMERCIALCONDOASSOCIATION_EXT) {
+                LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.CommercialCondominiumAssociation)
+       }
+                 // row 482
+       else if(this.AccountOrgType == typekey.AccountOrgType.TC_COOPERATIVE_EXT) {
+                  LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.CooperativeAsPNI)
+       }
+                      // row 48
+       else if (this.AccountOrgType == typekey.AccountOrgType.TC_NONPROFIT) {
+                    LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+        }
+                      // row 484
+       else if (this.AccountOrgType == typekey.AccountOrgType.TC_GOVERNMENTAL_EXT){
+                      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+        }
+
+      }
+   }
+
+  // Sunil
+
+  function raiseWarning(period : PolicyPeriod) {
+    // row number 405 , HO , DF
+
+
+    if(this.AccountOrgType == typekey.AccountOrgType.TC_MORETHAN2IND_EXT
+          and (period.isHOType() or period.isDFType())){
+        LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+      }
+    // row 411 , HO , DF
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT
+        and (period.isHOType() or period.isDFType())){
+      LocationUtil.addRequestScopedWarningMessage("Please list the Name of the Trust as an Additional Insured (company) with the type as Trust")
+    }
+    // row 412
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_ESTATE_EXT
+        and (period.isHOType() or period.isDFType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+    // row 413
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_LLC
+        and (period.isHOType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+    // row 414
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_LLC
+        and (period.isDFType())){
+      LocationUtil.addRequestScopedWarningMessage("Please list LLC owner/managing partner as Primary Named Insured and add the LLC as an Additional Insured with type LLC")
+    }
+    // row 415
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_PARTNERSHIP
+        and (period.isHOType() or period.isDFType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+    // row 416
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_CORPORATION_EXT
+        and (period.isHOType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+    // row 417
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_IRA_EXT
+        and (period.isHOType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+    // row 418
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_ASSOCIATION_EXT
+        and (period.isHOType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+    // row 419
+    else if(this.AccountOrgType == typekey.AccountOrgType.TC_CHURCH_EXT
+        and (period.isHOType())){
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+  }
+    // row 420   - call on post on change of field
+  function raiseWarning_LLC(period : PolicyPeriod) {
+     if(typekey.NumberPrptiesCmmnOwnr_Ext.TF_ENTITYLLC.TypeKeys.contains(this.MajorityOwnerLLC_Ext)
+         and this.AccountOrgType == typekey.AccountOrgType.TC_LLC) {
+       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible )
+     }
+  }
+
+  // row 421
+    // UnderCommonOwnership_Ext
+  function raiseWarning_NonLLC(period : PolicyPeriod) {
+    if(typekey.NumberPrptiesCmmnOwnr_Ext.TF_ENTITYLLC.TypeKeys.contains(this.UnderCommonOwnership_Ext)
+        and this.AccountOrgType != typekey.AccountOrgType.TC_LLC) {
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
+  }
+
 }

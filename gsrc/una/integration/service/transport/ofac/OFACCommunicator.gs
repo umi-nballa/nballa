@@ -18,7 +18,7 @@ uses java.lang.Exception
  * This Class communicates with OFAC
  */
 class OFACCommunicator {
-  private final static var WS_NOT_AVAILABLE: String = "Failed to connect to the OFAC web service."
+  private final static var WS_NOT_AVAILABLE= "Failed to connect to the OFAC web service."
   private static final var CLASS_NAME = OFACCommunicator.Type.DisplayName
   private static var _logger = UnaLoggerCategory.UNA_INTEGRATION
 
@@ -35,7 +35,9 @@ class OFACCommunicator {
     try
     {
       var xsService = new XGServices_BasicHttpBinding_ISearch()
+      _logger.info(CLASS_NAME + "OFAC Request :" + clientContext.toString() + searchInput.toString() + searchInput.toString())
       var result = xsService.Search(clientContext, searchConfiguration, searchInput)
+      _logger.info(CLASS_NAME + "OFAC Response :" + result.toString())
      _logger.info(CLASS_NAME + " : Exiting from method returnOFACSearchResults ")
       return result
     } catch (e: Exception) {

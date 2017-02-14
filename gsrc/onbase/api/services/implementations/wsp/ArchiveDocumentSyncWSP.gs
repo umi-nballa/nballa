@@ -11,11 +11,7 @@ uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfac
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.AdditionalInsured
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.PrimaryInsured
 uses org.apache.commons.codec.binary.Base64
-uses java.io.File
-uses java.lang.Exception
-uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.ArchiveDocumentResponse
-uses java.lang.Long
-uses java.text.SimpleDateFormat
+
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -97,9 +93,9 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
       archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured = new List<PrimaryInsured>()
       for(namedInsured in adaptor.PrimaryNamedInsureds index i) {
         var primaryInsured = new PrimaryInsured()
-        primaryInsured.PrimaryInsuredName= namedInsured.FirstName
-        primaryInsured.PrimaryMiddleName = namedInsured.MiddleName
-        primaryInsured.PrimaryLastName = namedInsured.LastName
+        primaryInsured.PrimaryInsuredFirstName= namedInsured.FirstName
+        primaryInsured.PrimaryInsuredMiddleName = namedInsured.MiddleName
+        primaryInsured.PrimaryInsuredLastName = namedInsured.LastName
         archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured.add(primaryInsured)
       }
     }
@@ -108,9 +104,9 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
       archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured = new List<AdditionalInsured>()
       for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
         var addNamedInsured = new AdditionalInsured()
-        addNamedInsured.AdditionalFirstName = namedInsured.FirstName
-        addNamedInsured.AdditionalMiddleName = namedInsured.MiddleName
-        addNamedInsured.AdditionalLastName = namedInsured.LastName
+        addNamedInsured.AdditionalInsuredFirstName = namedInsured.FirstName
+        addNamedInsured.AdditionalInsuredMiddleName = namedInsured.MiddleName
+        addNamedInsured.AdditionalInsuredLastName = namedInsured.LastName
         archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured.add(addNamedInsured)
       }
     }

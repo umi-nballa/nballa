@@ -2,6 +2,7 @@ package una.model
 
 uses una.integration.framework.file.outbound.persistence.OutboundFileData
 uses java.util.Date
+uses java.lang.Integer
 
 /**
  * Created for Property Inspections  Mapping
@@ -35,16 +36,17 @@ class PropertyInspectionData extends OutboundFileData{
   var effDate : Date as EffDate
   var priorExp : DateTime as PriorExp
   var creditScore : String as CreditScore
+  // Count of ChargableLoss as Yes
   var chargableLoss : String as ChargableLoss
   var anyLoss : String as AnyLoss
   var windHailLoss : String as WindHailLoss
   var form : String as Form
-  var homeAge : String as HomeAge
-  var roofAge : String as RoofAge
+  var homeAge : Integer as HomeAge
+  var roofAge : Integer as RoofAge
   var construction : String as Construction
-  var yearBuilt : String as YearBuilt
+  var yearBuilt : Integer as YearBuilt
   var ppc : String as PPC
-  var sqFeet : String as SqFeet
+  var sqFeet : Integer as SqFeet
   var fireLineScore : String as FireLineScore
   var shia : String as SHIA
   var inspecttedYears : String as InspecttedYears
@@ -61,7 +63,7 @@ class PropertyInspectionData extends OutboundFileData{
   var roofShape : String as  RoofShape
   var roofTypeDesc : String as RoofTypeDesc
   var constructionDesc : String as ConstructionDesc
-  var numUnit : String as NumUnit
+  var numUnit : Integer as NumUnit
   var numStories : String as NumStories
   var mailingLine2 : String as MailingLine2
   var locationLine2 : String as LocationLine2

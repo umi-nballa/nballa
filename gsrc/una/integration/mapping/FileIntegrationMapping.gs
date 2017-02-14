@@ -16,13 +16,13 @@ enum FileIntegrationMapping implements IFileDataMapping {
 //  LockboxWholeSaleInbound(LockboxWholeSaleInboundData,DataTable.WholesaleLockBoxFileThree,BeanIOStream.LockboxWholeSaleInboundIntegration),
 //  LockboxRetailInbound (LockboxRetailInboundData, DataTable.RetailLockBoxFileThree, BeanIOStream.LockboxRetailInboundIntegration)
     LexisFirstOutbound(LexisFirstFileData,DataTable.LexisFirstOutboundFileData,BeanIOStream.LexisFirstOutBoundIntegration),
-    PropertyInspectionNewBusiness(PropertyInspectionData,DataTable.PropertyInspectionNBData,BeanIOStream.PropertyInspectionNewBusinessIntegration)
+    PropertyInspectionNewBusiness(PropertyInspectionData,DataTable.PropertyInspectionsNBData,BeanIOStream.PropertyInspectionNewBusinessIntegration)
 
   enum DataTable {
    RetailLockBoxFileThree ,
    WholesaleLockBoxFileThree,
    LexisFirstOutboundFileData,
-   PropertyInspectionNBData
+   PropertyInspectionsNBData
   }
 
   enum BeanIOStream {

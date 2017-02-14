@@ -36,6 +36,43 @@ class HPXRatingHelper {
     return consentToRate
   }
 
+  function getRate(policyPeriod : PolicyPeriod, cost : Cost, variable : String) : double {
+    var container : WorksheetTreeNodeContainer
+    var locationContainer : WorksheetTreeNodeContainer
+    var lineContainer : WorksheetTreeNodeContainer
+    var coverageContainer : WorksheetTreeNodeContainer
+    var rate : double
+    switch(typeof cost){
+      case BP7LineCovCost:
+        container = getWorksheetContainer(policyPeriod, cost.PolicyLine.DisplayName)
+        var item = cost.PolicyLine.DisplayName + ": " +  cost.Coverage.DisplayName
+        rate = getRate(container, item, variable)
+        break
+      case BP7LocationCovCost:
+        lineContainer = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
+        container = getWorksheetContainerFromParent(lineContainer, cost.Location.DisplayName)
+        var item = cost.NameOfCoverable
+        rate = getRate(container, item, variable)
+        break
+      case BP7BuildingCovCost:
+        lineContainer = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
+        locationContainer = getWorksheetContainerFromParent(lineContainer, cost.DisplayLocation.DisplayName)
+        var buildingsContainer = getWorksheetContainerFromParent(locationContainer, "Buildings")
+        var item = cost.Building.Building.DisplayName + ": " + cost.Coverage.DisplayName
+        rate = getRate(container, item, variable)
+        break
+      case BP7ClassificationCovCost:
+        lineContainer = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
+        locationContainer = getWorksheetContainerFromParent(lineContainer, cost.DisplayLocation.DisplayName)
+        var classificationsContainer = getWorksheetContainerFromParent(locationContainer, "Classifications")
+        var item = cost.Classification.Building.Building.DisplayName + ": " + cost.Classification.DisplayName + ": " + cost.Coverage.DisplayName
+        container = getWorksheetContainerFromParent(classificationsContainer, item )
+        rate = getRate(container, variable)
+        break
+    }
+    return rate
+  }
+
   function getConsentToRateTotalDeviationPercent(policyPeriod : PolicyPeriod) : double {
     var totalDeviationFactor : double = 0.00
     if (policyPeriod.HomeownersLine_HOEExists) {
@@ -67,6 +104,31 @@ class HPXRatingHelper {
     return baseRate
   }
 
+  function getRate(container : WorksheetTreeNodeContainer, rateVariable : String) : double {
+    var items = getWorksheetVariables(container)
+    return items.get(rateVariable).Result
+  }
+
+  function getRate(container : WorksheetTreeNodeContainer, ratedItem : String, rateVariable : String) : double {
+    var rate : double = null
+    var containers = getWorksheetContainers(container)
+    if (ratedItem != null and containers.containsKey(ratedItem)) {
+      var childContainer = containers.get(ratedItem)
+      var items = getWorksheetVariables(container)
+      rate = items.get(rateVariable).Result
+    } else {
+      for (childContainer in containers.values()) {
+        var items = getWorksheetVariables(container)
+        var item = items.get(rateVariable)
+        if (item != null) {
+          rate = item.Result
+          break
+        }
+      }
+    }
+    return rate
+  }
+
   private function getWorksheetContainers(policyPeriod : PolicyPeriod) : Map<String, WorksheetTreeNodeContainer> {
     var containers = new HashMap<String, WorksheetTreeNodeContainer>()
     var worksheets = policyPeriod.Lines*.getWorksheetRootNode(true)
@@ -77,6 +139,31 @@ class HPXRatingHelper {
       })
     }
     return containers
+  }
+
+  private function getWorksheetContainers(worksheetContainer : WorksheetTreeNodeContainer) : Map<String, WorksheetTreeNodeContainer> {
+    var containers = new HashMap<String, WorksheetTreeNodeContainer>()
+    for (worksheet in worksheetContainer.Children) {
+        var container = worksheet as WorksheetTreeNodeContainer
+        containers.put(container.Description, container)
+    }
+    return containers
+  }
+
+  private function getWorksheetContainer(policyPeriod : PolicyPeriod, container : String) : WorksheetTreeNodeContainer {
+    var containers = getWorksheetContainers(policyPeriod)
+    return containers.get(container)
+  }
+
+  private function getWorksheetContainerFromParent(parentContainer : WorksheetTreeNodeContainer, containerName : String) : WorksheetTreeNodeContainer {
+    var container : WorksheetTreeNodeContainer = null
+    for (worksheet in parentContainer.Children) {
+      container = worksheet as WorksheetTreeNodeContainer
+      if (container.Description.equals(containerName)) {
+        break
+      }
+    }
+    return container
   }
 
   private function getWorksheetVariables(container : WorksheetTreeNodeContainer) : Map<String,WorksheetTreeNodeLeaf> {

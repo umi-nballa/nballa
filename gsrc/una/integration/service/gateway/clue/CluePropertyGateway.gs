@@ -26,6 +26,14 @@ uses java.math.BigInteger
 uses java.text.SimpleDateFormat
 uses una.integration.framework.util.PropertiesHolder
 
+uses wsi.schema.una.inscore.xsd.cluecommonelements.types.complex.NameType
+
+
+uses java.sql.Timestamp
+uses java.text.DateFormat
+uses java.sql.Date
+uses java.util.Currency
+
 class CluePropertyGateway implements CluePropertyInterface {
   private static var KEY_STORE_PATH: String
   private static var LEX_CLIENT_ID: String
@@ -57,7 +65,8 @@ class CluePropertyGateway implements CluePropertyInterface {
   function orderClueProperty(pPeriod: PolicyPeriod) {
     //attempt to create the order xml
     _logger.debug("Entering orderClueProperty to order CLUE Report ")
-    var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
+    var clueReportExt = new ClueReport_Ext()
+    var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER, clueReportExt)
     var result: String
     _logger.info("CLUE Request or sending order :" + orderXml)
     try {
@@ -65,7 +74,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       pPeriod.createCustomHistoryEvent(CustomHistoryType.TC_CLUE_ORDERED_EXT, \-> displaykey.Web.SubmissionWizard.Clue.EventMsg)
       _logger.info("CLUE Response or received result :" + result)
       _logger.debug("Mapping XML to Objects")
-      mapXmlToObject(pPeriod, result)
+      mapXmlToObject(pPeriod, result, clueReportExt)
       _logger.info("finished ordering CLUE")
     }
         catch (wse: WebServiceException) {
@@ -78,9 +87,18 @@ class CluePropertyGateway implements CluePropertyInterface {
    */
   @Param("pPeriod", " The resulting prior losses are mapped to this period.")
   @Param("responseXml", " The XML to parse.")
-  private function mapXmlToObject(pPeriod: PolicyPeriod, responseXml: String) {
+  private function mapXmlToObject(pPeriod: PolicyPeriod, responseXml: String, clueReportExt: ClueReport_Ext) {
     var clueResponseXml = wsi.schema.una.inscore.cprulesresultschema.Result.parse(responseXml)
     var messages = clueResponseXml.Messages.Message_elem
+    foreach(message in messages) {
+      var note = new Note()
+      note.Confidential = false
+      note.Account = pPeriod.Policy.Account
+      note.Body = message.$Value != null ? message.$Value : ""
+      note.Subject = message.Type != null ? message.Type : ""
+      clueReportExt.addToMessages(note)
+    }
+
     var clueProductReports = clueResponseXml.ProductResults.CluePersonalProperty
     // code for Clue Check to Check Ordered Status
     pPeriod.HomeownersLine_HOE.ClueHit_Ext = true
@@ -110,12 +128,20 @@ class CluePropertyGateway implements CluePropertyInterface {
 
           if (totalClaims > 0){
             var cHistories = clueReport.Report.ResultsDataset.ClaimsHistory
+            clueReportExt.QuotebackID = clueReport.Admin.Quoteback
+            clueReportExt.Requestor = pPeriod.UpdateUser.Credential.UserName
+            clueReportExt.ReferenceNumber = clueReport.Admin.ProductReference
+            clueReportExt.AccountNumber = clueReport.Admin.PncAccount
+            clueReportExt.OrderDate = clueReport.Admin.DateRequestOrdered
+            clueReportExt.CompleteDate = clueReport.Admin.DateRequestCompleted
+            clueReportExt.ProcessingStatus = clueReport.Admin.Status.toString()
+            clueReportExt.NodeLocation = clueReport.Admin.ReportCode
             for (cHistory in cHistories) {
               var claims = cHistory.Claim
               var cHistoryType = cHistory.Type
               for (claim in claims) {
                 //for every claim reported, create a PAPriorLossExt entity and attach it to the PA line
-                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType, reference, pPeriod))
+                addOrUpdatePriorLoss(pPeriod, extractClaimDetails(claim, cHistoryType, reference, clueReportExt, pPeriod))
                 _logger.debug("A claim has been added to the priorLoss array " + claim.Number)
               }
             }
@@ -147,8 +173,8 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Param("claim", " The prior loss or claim element")
   @Param("cHistoryType", " The claim--History_Type element ")
   private  function extractClaimDetails(claim: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.anonymous.elements.ResultsDataset_ClaimsHistory_Claim,
-                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type, referenceNumber: String,
-                                        period: PolicyPeriod): HOPriorLoss_Ext {
+                                        cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String,
+                                        clueReport: ClueReport_Ext, period: PolicyPeriod): HOPriorLoss_Ext {
     var priorLoss = new HOPriorLoss_Ext()
     //get claim details
     priorLoss.Reference = referenceNumber
@@ -156,6 +182,9 @@ class CluePropertyGateway implements CluePropertyInterface {
     priorLoss.ClaimAge = claim.ClaimAge.Years as java.lang.String
     priorLoss.ClaimNum = claim.Number
     priorLoss.ClaimType = cHistoryType.toString()
+    priorLoss.ClueFileNumber = claim.ClueFileNumber
+    priorLoss.ClueReport = clueReport
+
 
     _logger.debug("A Claim has been found " + claim.Number)
 
@@ -210,12 +239,31 @@ class CluePropertyGateway implements CluePropertyInterface {
     priorLoss.PolicyNum = claim.Policy.Number
     priorLoss.PolicyCompany = claim.PropertyPolicy.Issuer
     //Statement field map
+    var insuredType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
+    var insured = claim.Subject.firstWhere(\c -> c.Classification == insuredType)
+
+
+
+
+
     var consumerNarrative = claim.ConsumerNarrative?.first().Message
     var statement = ""
-    if (consumerNarrative != null && consumerNarrative.size() > 0)
+    if (consumerNarrative != null && consumerNarrative.size() > 0) {
+      var narrativeNote = new Note()
+      narrativeNote.Confidential = false
+      narrativeNote.Account = period.Policy.Account
+      //var author = new User()
+      //author.Contact.Name = claim.ConsumerNarrative?.first().Name != null ? claim.ConsumerNarrative.first().Name : ""
+      //narrativeNote.Author = author
+      narrativeNote.Subject = claim.ConsumerNarrative?.first() != null ? "Refers to claim " + priorLoss.ClaimNum : ""
+      narrativeNote.AuthoringDate = claim.ConsumerNarrative?.first().DateFiled != null ? claim.ConsumerNarrative.first().DateFiled : ""
+      narrativeNote.NarrativeRelation = claim.ConsumerNarrative?.first().Relationship != null ? claim.ConsumerNarrative.first().Relationship : ""
       for (message in consumerNarrative) {
         statement = statement.concat(message)
       }
+      narrativeNote.Body = statement
+      clueReport.addToNarratives(narrativeNote)
+    }
     priorLoss.Statements = statement
 
     priorLoss.PropertyPolicyNum = claim.PropertyPolicy.Number
@@ -233,15 +281,39 @@ class CluePropertyGateway implements CluePropertyInterface {
     var pHolderType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
     var policyHolder = claim.Subject.firstWhere(\c -> c.Classification == pHolderType)
     if (policyHolder != null){
-      priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + (policyHolder.Name.Middle != null ? policyHolder.Name.Middle : "")
-      var phAddress = policyHolder.Address.first()
-      priorLoss.AddressType = phAddress.Type as String
-      priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")
-      priorLoss.City = phAddress.City
-      priorLoss.State = phAddress.State
-      priorLoss.Zip = phAddress.Postalcode
-      priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
-      priorLoss.PhoneNumber = policyHolder.Telephone
+		priorLoss.PolicyHolderName = policyHolder.Name.Last + ", " + policyHolder.Name.First + " " + (policyHolder.Name.Middle != null ? policyHolder.Name.Middle : "")
+		var phAddress = policyHolder.Address.first()
+		priorLoss.AddressType = phAddress.Type as String
+		priorLoss.Address = (phAddress.House != null ? phAddress.House : "") + " " + (phAddress.Street1 != null ? phAddress.Street1 : "")
+		priorLoss.City = phAddress.City
+		priorLoss.State = phAddress.State
+		priorLoss.Zip = phAddress.Postalcode
+		priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
+		priorLoss.PhoneNumber = policyHolder.Telephone
+
+		priorLoss.PolicyHolder.FirstName = policyHolder.Name.First
+		priorLoss.PolicyHolder.LastName = policyHolder.Name.Last
+		priorLoss.PolicyHolder.PrimaryAddress.AddressLine1 = priorLoss.Address
+		priorLoss.PolicyHolder.PrimaryAddress.City = priorLoss.City
+		priorLoss.PolicyHolder.PrimaryAddress.State = priorLoss.State
+		priorLoss.PolicyHolder.PrimaryAddress.PostalCode = priorLoss.Zip
+		priorLoss.PolicyHolder.HomePhone = priorLoss.PhoneNumber
+		priorLoss.PolicyHolder.SSNOfficialID = policyHolder.Ssn != null ? String.valueOf(policyHolder.Ssn).replaceFirst("(\\d{3})(\\d{2})(\\d+)", "$1-$2-$3") : ""
+    if(policyHolder.Gender != null && policyHolder.Gender.name() != "") {
+      priorLoss.PolicyHolder.Gender = policyHolder.Gender.name() == GenderType.TC_F.DisplayName ? GenderType.TC_F : GenderType.TC_M
+    }
+		priorLoss.PolicyHolder.DateOfBirth = policyHolder.Birthdate
+
+		var claimantType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Claimant
+		var claimant = claim.Subject.firstWhere(\c -> c.Classification == claimantType)
+		priorLoss.ClaimIssuer.FirstName = claimant.Name.First
+		priorLoss.ClaimIssuer.LastName = claimant.Name.Last
+		priorLoss.ClaimIssuer.HomePhone = claimant.Telephone
+		priorLoss.ClaimIssuer.SSNOfficialID = claimant.Ssn != null ? String.valueOf(claimant.Ssn).replaceFirst("(\\d{3})(\\d{2})(\\d+)", "$1-$2-$3") : ""
+    if(claimant.Gender != null && claimant.Gender.name() != "") {
+      priorLoss.ClaimIssuer.Gender = claimant.Gender.name() == GenderType.TC_F.DisplayName ? GenderType.TC_F : GenderType.TC_M
+    }
+		priorLoss.ClaimIssuer.DateOfBirth = claimant.Birthdate
     }
 
     //This loss was retrieved from LexisNexis
@@ -436,12 +508,19 @@ class CluePropertyGateway implements CluePropertyInterface {
   @Param("pPeriod", "The Policy Period with homeowner details from which to create the order ")
   @Param("lexClientID", " The client ID provided by LexisNexis")
   @Param("lexAccountNumber", "The account number provided by LexisNexis")
-  private function createOrderXml(pPeriod: PolicyPeriod, lexClientID: String, lexAccountNumber: String): String {
+  private function createOrderXml(pPeriod: PolicyPeriod, lexClientID: String, lexAccountNumber: String, clueReportExt: ClueReport_Ext): String {
     var orderXml: String = null
     var lexOrder = new Order()
     var lexOrderAddress = new DatasetType_Addresses()
     var lexOrderSubject = new DatasetType_Subjects()
 
+
+    clueReportExt.PolicyNumber = pPeriod.PolicyNumber
+    clueReportExt.PolicyType = pPeriod.HomeownersLine_HOEExists != null ? typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE :
+                              pPeriod.BP7LineExists != null ? typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
+                              pPeriod.CPLineExists != null ? typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :
+                                  pPeriod.GLLineExists != null ? typekey.PolicyLine.TC_GENERALLIABILITYLINE : ""
+    clueReportExt.PolicyCompany = pPeriod.UWCompany.Name
     lexOrder.Client.Id = lexClientID
     lexOrder.Client.Quoteback_elem[0].Name = "orderClueProperty"
 
@@ -476,17 +555,30 @@ class CluePropertyGateway implements CluePropertyInterface {
     var subType = mapSubject(pHolder.FirstName, pHolder.LastName)
     subject1.Name.add(subType)
 
+
     if (pHolder.DateOfBirth != null)
       subject1.Birthdate = DateUtil.formatDateTime(pHolder.DateOfBirth)
     //  subject1.Ssn = "000000000"
 
 
     var address = new AddressListType_Address()
+    clueReportExt.Subject1.FirstName = pHolder.FirstName
+    clueReportExt.Subject1.LastName = pHolder.LastName
+    if(pHolder.DateOfBirth != null)   {
+      subject1.Birthdate = DateUtil.formatDateTime(pHolder.DateOfBirth)
+      clueReportExt.Subject1.DateOfBirth = subject1.Birthdate
+    }
+
+    if(pHolder.ContactDenorm typeis Person && (pHolder.ContactDenorm as Person).Gender != null) {
+          clueReportExt.Subject1.Gender = (pHolder.ContactDenorm as Person).Gender
+
+    }
+    clueReportExt.Subject1.SSNOfficialID = pHolder.ContactDenorm.SSNOfficialID != null ? pHolder.ContactDenorm.SSNOfficialID : ""
+    clueReportExt.Subject1.HomePhone  = pHolder.ContactDenorm.PrimaryPhoneValue != null ? pHolder.ContactDenorm.PrimaryPhoneValue : ""
     var location = pPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation
 
     if (location != null){
       x = x + 1
-
 
       var houseAndStreet = location.AddressLine1.split(" ", 2)
       if (houseAndStreet.length == 2) {
@@ -502,6 +594,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       address.State = location.State.Code
       address.Postalcode = location.PostalCode.substring(0,5)
       address.Id = addId + x
+    clueReportExt.RiskAddress = location
     }
     lexOrderAddress.Address.add(address)
     var addressSub = mapSubjectAddress(address, "Primary")
@@ -523,6 +616,17 @@ class CluePropertyGateway implements CluePropertyInterface {
       var subType1 = mapSubject(addIns.FirstName, addIns.LastName)
 
       subject.Name.add(subType1)
+
+      clueReportExt.Subject2.FirstName = addIns.FirstName
+      clueReportExt.Subject2.LastName = addIns.LastName
+      clueReportExt.Subject2.DateOfBirth = subject.Birthdate
+      if(addIns.ContactDenorm typeis Person && (addIns.ContactDenorm as Person).Gender != null) {
+        clueReportExt.Subject1.Gender = (addIns.ContactDenorm as Person).Gender
+
+      }
+      clueReportExt.Subject2.SSNOfficialID = addIns.ContactDenorm.SSNOfficialID != null ? addIns.ContactDenorm.SSNOfficialID : ""
+      clueReportExt.Subject2.HomePhone  = addIns.ContactDenorm.PrimaryPhoneValue != null ? addIns.ContactDenorm.PrimaryPhoneValue : ""
+
     }
 
     var mailingAddress: Address
@@ -533,7 +637,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     } else {
       mailingAddress = pPeriod.PrimaryNamedInsured.ContactDenorm?.AllAddresses.firstWhere(\elt -> elt.AddressType == AddressType.TC_BILLING)
       _logger.debug("**************CLUE Mailing Address ***********************: : " + mailingAddress.AddressLine1)
-    }
+     }
 
     var addressSub1: SubjectType_Address
     var address1 = new AddressListType_Address()
@@ -549,7 +653,7 @@ class CluePropertyGateway implements CluePropertyInterface {
         subject.Address.add(addressSub)
         subject.Address.add(addressSub1)
       }
-
+	  clueReportExt.MailAddress = mailingAddress
       lexOrderAddress.Address.add(address1)
       lexOrder.Products.ClueProperty[0].MailingAddress = address1
     }
@@ -564,11 +668,13 @@ class CluePropertyGateway implements CluePropertyInterface {
       var priorRiskAddress = mapAddress(address2, priorAddress)
       priorRiskAddress.Id = addId + x
 
-      addressSub2 = mapSubjectAddress(priorRiskAddress, "Former")
 
+      addressSub2 = mapSubjectAddress(priorRiskAddress, "Former")
+	  
       if(addIns != null)
         subject.Address.add(addressSub2)
 
+      clueReportExt.PriorAddress = priorAddress
       subject1.Address.add(addressSub2)
       lexOrderAddress.Address.add(priorRiskAddress)
       lexOrder.Products.ClueProperty[0].FormerAddress = address2
@@ -581,6 +687,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       lexOrderSubject.Subject.add(subject)
       lexOrder.Products.ClueProperty[0].JointSubject = subject
     }
+
 
     lexOrder.Dataset.Addresses = lexOrderAddress
     lexOrder.Dataset.Subjects = lexOrderSubject

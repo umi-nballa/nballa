@@ -24,6 +24,7 @@ class PALineQuickQuoteValidation extends PALineValidation {
   override function doValidate() {
     policyPeriodOneYearMax()
 
+    PolicyInfoValidation.validate()
     CoveragesValidator.doValidate()
     AssignmentValidator.doValidate()
     VehiclesValidator.validateQQ()

@@ -20,6 +20,7 @@ class RateFactorUtil {
   static var _experienceRatingFactor : BigDecimal as ExperienceRatingFactor= 1.0
   static var _minimumFactor : BigDecimal = 0.75
   static var _territoryModificationFactor : BigDecimal as TerritoryModificationFactor= 1.0
+  private static var _firstBuilding : BP7Building as FirstBuilding
 
   static var _sprinklerFactor : BigDecimal as SprinklerFactor= 0.65
 
@@ -99,16 +100,17 @@ class RateFactorUtil {
   /**
   *  Sets the net adjustment factor
    */
-  static function setNetAdjustmentFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
+  static function setNetAdjustmentFactor(line : BP7Line, minimumRatingLevel : RateBookStatus) : BigDecimal{
+    setFirstBuilding(line)
     setAccountModificationFactor(line)
-    setBuildingAgeFactor(line, minimumRatingLevel,building)
+    setBuildingAgeFactor(line, minimumRatingLevel,_firstBuilding)
     setExperienceRatingFactor(line, minimumRatingLevel)
-    setTerritoryModificationFactor(line, minimumRatingLevel, building)
+    setTerritoryModificationFactor(line, minimumRatingLevel, _firstBuilding)
     var totalFactor = _accountModificationFactor * _experienceRatingFactor * _buildingAgeFactor
     if(totalFactor < _minimumFactor)
       totalFactor = _minimumFactor
     var netAdjustmentFactor = (totalFactor * _territoryModificationFactor)
-    return Math.round((netAdjustmentFactor*100) as float)/100
+    return (Math.round((netAdjustmentFactor*100) as float))/100.00
   }
 
   /**
@@ -186,7 +188,7 @@ class RateFactorUtil {
     setBCEGFactor(line, minimumRatingLevel, building)
     setWindExclusionFactor(line, minimumRatingLevel, building)
     var propertyBuildingAdjustmentFactor = _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
-    return Math.round((propertyBuildingAdjustmentFactor*100) as float)/100
+    return (Math.round((propertyBuildingAdjustmentFactor*100) as float))/100.00
   }
 
   /**
@@ -197,7 +199,7 @@ class RateFactorUtil {
     setBCEGFactor(line, minimumRatingLevel, classification?.building)
     setWindExclusionFactor(line, minimumRatingLevel, classification?.building)
     var propertyContentAdjustmentFactor = _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
-    return Math.round((propertyContentAdjustmentFactor*100) as float)/100
+    return (Math.round((propertyContentAdjustmentFactor*100) as float))/100.00
   }
 
   /**
@@ -209,5 +211,11 @@ class RateFactorUtil {
             : MinimumRatingLevel = minimumRatingLevel}
     var factor = new RatingQueryFacade().getFactor(filter, rateTableName, params).Factor
     return factor as BigDecimal
+  }
+
+  private static function setFirstBuilding(line : BP7Line){
+    var primaryLocation = line.Branch.PrimaryLocation
+    var buildingsInPrimaryLocation = line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
+    _firstBuilding = buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
   }
 }

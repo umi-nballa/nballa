@@ -170,7 +170,7 @@
       </PanelRow>
       <PanelRef
         def="SelectedNonRenewalExplanationsLV(policy, policyPeriod, descriptions)"
-        visible="policyTerm.PreRenewalDirection==&quot;nonrenew&quot; or policyTerm.PreRenewalDirection==&quot;nonrenewrefer&quot;">
+        visible="(policyTerm.PreRenewalDirection==&quot;nonrenew&quot; or policyTerm.PreRenewalDirection==&quot;nonrenewrefer&quot;) and policyTerm.NonRenewReason != null">
         <TitleBar
           appendListViewPaging="true"
           title="displaykey.Web.PreRenewalDirection.SelectedNonRenewalExplanations"/>

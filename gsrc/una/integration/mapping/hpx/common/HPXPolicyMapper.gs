@@ -24,6 +24,7 @@ uses gw.xml.date.XmlDate
 uses una.integration.mapping.hpx.helper.HPXJobHelper
 uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses java.math.BigDecimal
+uses una.utils.PropertiesHolder
 
 /**
  * Created with IntelliJ IDEA.
@@ -53,6 +54,10 @@ abstract class HPXPolicyMapper {
     policySummaryInfo.RecoveryAssessmentPct = 0
     policySummaryInfo.QuoteInd = false
     policySummaryInfo.FileNumber = ""
+    var uwCompany = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
+    uwCompany.UWCompanyRoleID = "InsuranceCarrier"
+    uwCompany.addChild(new XmlElement("InsuranceProvider", createInsuranceProvider()))
+    policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompanyInfo(policyPeriod)))
     return policySummaryInfo
   }
 
@@ -109,7 +114,12 @@ abstract class HPXPolicyMapper {
     return personHolderType
   }
 
-
+  function createUWCompanyInfo(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType {
+    var uwCompany = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
+    uwCompany.UWCompanyRoleID = policyPeriod.UWCompany
+    uwCompany.addChild(new XmlElement("InsuranceProvider", createInsuranceProvider()))
+    return uwCompany
+  }
 
   function createUWCompany(policyCompany : String) : wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType {
     var uwCompanyType = new wsi.schema.una.hpx.hpx_application_request.types.complex.UWCompanyType()
@@ -119,6 +129,33 @@ abstract class HPXPolicyMapper {
     return uwCompanyType
   }
 
+  function createInsuranceProvider() : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuranceProviderType {
+    var carrier = new wsi.schema.una.hpx.hpx_application_request.types.complex.InsuranceProviderType()
+    carrier.OrganizationName = "Universal North America"
+    carrier.OfficeLocation.LocationID = 1
+    carrier.OfficeLocation.LocationCode = PropertiesHolder.getProperty("HPX_Carrier_Address_City")
+    carrier.OfficeLocation.LocationName = PropertiesHolder.getProperty("HPX_Carrier_Name")
+    carrier.OfficeLocation.IsPrincipalLocation = true
+    carrier.OfficeLocation.addChild(new XmlElement("PhysicalAddress", createCarrierPhyiscalAddress()))
+    carrier.OfficeLocation.addChild(new XmlElement("ContactMechanisms", createCarrierContactMechanisms()))
+    return carrier
+  }
+
+  function createCarrierPhyiscalAddress() : wsi.schema.una.hpx.hpx_application_request.types.complex.PhysicalAddressType {
+    var address = new wsi.schema.una.hpx.hpx_application_request.types.complex.PhysicalAddressType()
+    address.AddressLine1 = PropertiesHolder.getProperty("HPX_Carrier_Address_Street")
+    address.City = PropertiesHolder.getProperty("HPX_Carrier_Address_City")
+    address.State = PropertiesHolder.getProperty("HPX_Carrier_Address_State")
+    address.Country = PropertiesHolder.getProperty("HPX_Carrier_Address_Country")
+    address.PostalCode = PropertiesHolder.getProperty("HPX_Carrier_Address_Zipcode")
+    return address
+  }
+
+  function createCarrierContactMechanisms() : wsi.schema.una.hpx.hpx_application_request.types.complex.ContactMechanismsType {
+    var contactMechanisms = new wsi.schema.una.hpx.hpx_application_request.types.complex.ContactMechanismsType()
+    contactMechanisms.WorkPhone = PropertiesHolder.getProperty("HPX_Carrier_Phone_Number")
+    return contactMechanisms
+  }
 
   /************************************** Insured Or Principal ******************************************************/
   function createInsuredOrPrincipal(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.InsuredOrPrincipalType {
@@ -129,7 +166,6 @@ abstract class HPXPolicyMapper {
 
   /*************************************  Policy Detail ************************************************************/
   function createPolicyDetails(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyInfoType {
-    var compositionUnitMapper = new HPXCompositionUnitMapper()
     var dwellingPolicyMapper = new HPXDwellingPolicyMapper()
     var transactionMapper = new HPXJobMapper ()
     var billingInfoMapper = new HPXBillingInfoMapper()
@@ -157,6 +193,10 @@ abstract class HPXPolicyMapper {
     policyInfo.TierCd = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier
     policyInfo.TierDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier.Description
     policyInfo.BranchDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Branch
+    var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
+    for (paymentOption in paymentOptions) {
+      policyInfo.addChild(new XmlElement("PaymentOption", paymentOption))
+    }
     return policyInfo
   }
 
@@ -251,7 +291,6 @@ abstract class HPXPolicyMapper {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var jobHelper = new HPXJobHelper()
     var changedCoveragePatterns = jobHelper.getChangedCoveragePatterns(currentCoverages?.first().PolicyLine.AssociatedPolicyPeriod, currentCoverages?.first().OwningCoverable)
-    // added or changed coverages
     for (cov in currentCoverages) {
       var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
       if (cov.PolicyLine.AssociatedPolicyPeriod.BasedOn == null or changedCoveragePatterns.contains(cov.PatternCode)) {

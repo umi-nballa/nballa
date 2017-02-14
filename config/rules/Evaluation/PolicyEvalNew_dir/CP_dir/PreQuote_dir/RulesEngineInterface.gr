@@ -1,0 +1,17 @@
+package rules.Evaluation.PolicyEvalNew_dir.CP_dir.PreQuote_dir
+uses gw.accelerator.ruleeng.RulesEngineInterface
+
+@gw.rules.RuleName("RulesEngineInterface")
+internal class RulesEngineInterface {
+  static function doCondition(policyEvalContext : gw.policy.PolicyEvalContext) : boolean {
+/*start00rule*/
+return true
+/*end00rule*/
+}
+
+  static function doAction(policyEvalContext : gw.policy.PolicyEvalContext, actions : gw.rules.Action) {
+/*start00rule*/
+RulesEngineInterface.evaluatePolicy(policyEvalContext, "CPLine")
+/*end00rule*/
+  }
+}

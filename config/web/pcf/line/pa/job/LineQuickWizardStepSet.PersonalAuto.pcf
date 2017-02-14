@@ -18,6 +18,7 @@
       name="openForEdit"
       type="boolean"/>
     <JobWizardStep
+      beforeSave="gw.policy.PolicyPeriodValidation.validatePeriod(policyPeriod, typekey.ValidationLevel.TC_QUICKQUOTABLE)"
       id="PAQuickSubmission_Info"
       save="policyPeriod.OpenForEdit"
       screen="PAQuickSubmission_InfoScreen(job, policyPeriod, openForEdit, jobWizardHelper)"

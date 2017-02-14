@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="RuleSearchDetailInputSet"
+    mode="validationrule_ext">
+    <Require
+      name="rule"
+      type="Rule_Ext"/>
+    <TypeKeyInput
+      id="warningLevel"
+      label="displaykey.Accelerator.RulesFramework.ValWarningLevel"
+      value="(rule as ValidationRule_Ext).WarningLevel"/>
+    <TypeKeyInput
+      id="errorLevel"
+      label="displaykey.Accelerator.RulesFramework.ValErrorLevel"
+      value="(rule as ValidationRule_Ext).ErrorLevel"/>
+    <Input
+      id="vehicleTypes"
+      label="displaykey.Accelerator.RulesFramework.VehicleType"
+      value="(rule as ValidationRule_Ext).VehicleTypes.map(\ vt -&gt; vt.VehicleType.DisplayName).join(&quot;, &quot;)"/>
+  </InputSet>
+</PCF>

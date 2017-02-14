@@ -1,0 +1,95 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <PanelSet
+    id="RuleAdminLineDetailPanelSet"
+    mode="PersonalAutoLine|BusinessAutoLine">
+    <Require
+      name="rule"
+      type="Rule_Ext"/>
+    <Require
+      name="rulePolicyLine"
+      type="typekey.PolicyLine"/>
+    <Require
+      name="vehicleTypeList"
+      type="java.util.List&lt;gw.accelerator.ruleeng.VehicleTypeSelection&gt;"/>
+    <Variable
+      initialValue="vehicleTypeList.allMatch(\ vehType -&gt; vehType.Selected)"
+      name="allVehicleTypes"/>
+    <PanelRef
+      id="vehiclePanelRef">
+      <DetailViewPanel>
+        <Variable
+          initialValue="vehicleTypeList.Count / 3"
+          name="partitionSize"/>
+        <InputHeaderSection>
+          <BooleanRadioInput
+            editable="true"
+            falseLabel="displaykey.Accelerator.RulesFramework.RuleAdminDetailScreen.JobTypes.Selected"
+            id="allVehicleTypesInput"
+            label="displaykey.Accelerator.RulesFramework.RuleAdminDetailScreen.JobTypes"
+            trueLabel="displaykey.Accelerator.RulesFramework.RuleAdminDetailScreen.JobTypes.All"
+            value="allVehicleTypes">
+            <PostOnChange
+              onChange="if (allVehicleTypes) { for (vehType in vehicleTypeList) { vehType.Selected = allVehicleTypes } }"/>
+          </BooleanRadioInput>
+        </InputHeaderSection>
+        <InputColumn>
+          <InputIterator
+            elementName="vehicle"
+            id="vehicleTypeColumnOne"
+            value="vehicleTypeList.subList(0, partitionSize)">
+            <CheckBoxInput
+              available="not allVehicleTypes"
+              editable="true"
+              id="vehicleTypeCheckboxOne"
+              value="vehicle.Selected"
+              valueLabel="vehicle.VehicleType">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allVehicleTypesInput"
+                value="VALUE"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+        <InputColumn>
+          <InputIterator
+            elementName="vehicle"
+            id="vehicleTypeColumnTwo"
+            value="vehicleTypeList.subList(partitionSize, partitionSize * 2)">
+            <CheckBoxInput
+              available="not allVehicleTypes"
+              editable="true"
+              id="vehicleTypeCheckboxTwo"
+              value="vehicle.Selected"
+              valueLabel="vehicle.VehicleType">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allVehicleTypesInput"
+                value="VALUE"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+        <InputColumn>
+          <InputIterator
+            elementName="vehicle"
+            id="vehicleTypeColumnThree"
+            value="vehicleTypeList.subList(partitionSize * 2, vehicleTypeList.Count)">
+            <CheckBoxInput
+              available="not allVehicleTypes"
+              editable="true"
+              id="vehicleTypeCheckboxTwo"
+              value="vehicle.Selected"
+              valueLabel="vehicle.VehicleType">
+              <Reflect
+                available="not VALUE"
+                triggerIds="allVehicleTypesInput"
+                value="VALUE"/>
+            </CheckBoxInput>
+          </InputIterator>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
+  </PanelSet>
+</PCF>

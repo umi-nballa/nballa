@@ -68,10 +68,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
         break
       case "HODW_CompEarthquakeCovC_Ext":
         result = getEarthquakeCompCovCLimitDefault(line)
-		break
-      case "HOLI_UnitOwnersRentedOthers_Deductible_HOE_Ext":
-        result = getUnitRentedToOthersDeductibleDefault(line)
-        break
+		    break
       case "HOPL_Deductible_HOE":
         result = getLossAssessmentDefaultDeductible(covTerm, line)
         break
@@ -83,6 +80,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
           break
       case "HODW_OffPremises_Limit_HOE":
         result = getOffPremisesLimitDefault(line)
+        break
+      case "HODW_SinkholeLossDeductible_Ext":
+        result = getSinkholeDeductibleValue(line)
         break
       default:
         break
@@ -170,13 +170,13 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getUnitRentedToOthersDeductibleDefault(line : entity.HomeownersLine_HOE) : Double{
+  private static function getSinkholeDeductibleValue(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
 
-    if((line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm.Value != null){
-      result = line.Dwelling.DwellingLimitCovTerm.Value.multiply(0.10)
-    }else{
-      result = line.Dwelling.AllPerilsOrAllOtherPerilsCovTerm.Value
+    if((line.HOPolicyType == TC_HO3 or  line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm.Value != null){
+      result = line.Dwelling.DwellingLimitCovTerm.Value * .10bd
+    }else if(line.HOPolicyType == TC_HO4 or line.HOPolicyType == TC_HO6){
+      result = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
     }
 
     return result

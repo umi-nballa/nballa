@@ -1,9 +1,12 @@
 package una.integration.service.gateway.ofac
 
-uses una.integration.mapping.ofac.OFACRequestMapper
-uses una.integration.mapping.ofac.OFACResponseMapper
 uses una.integration.service.transport.ofac.OFACCommunicator
 uses una.logging.UnaLoggerCategory
+
+uses una.integration.mapping.ofac.OFACRequestMapper
+uses una.integration.mapping.ofac.OFACResponseMapper
+uses java.lang.Exception
+uses gw.api.util.DisplayableException
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,13 +16,15 @@ uses una.logging.UnaLoggerCategory
  * This class provides Implementation to OFACInterface methods
  */
 class OFACGateway implements OFACInterface {
-  private var ofacCommunicator: OFACCommunicator
-  private var ofacRequestMapper: OFACRequestMapper
-  private var ofacResponseMapper: OFACResponseMapper
-  private var ofacHelper: OFACGatewayHelper
-  private var timeout = "500"
-  private static var _logger = UnaLoggerCategory.UNA_INTEGRATION
+
+  var ofacCommunicator: OFACCommunicator
+  var ofacRequestMapper: OFACRequestMapper
+  var ofacResponseMapper: OFACResponseMapper
+  var ofacHelper: OFACGatewayHelper
+  var timeout = "500"
+  static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   private static final var CLASS_NAME = OFACGateway.Type.DisplayName
+  private final static var WS_NOT_AVAILABLE = "Failed to connect to the OFAC web service. Please reach out to the Support Team."
 
   /**
    *  This customized constructor is to instantiate OFACCommunicator, OFACRequestMapper, OFACResponseMapper, OFACGatewayHelper Class
@@ -41,21 +46,29 @@ class OFACGateway implements OFACInterface {
     _logger.info("Entering Inside method validateOFACEntity")
     //building OFAC input
 
-    var clientContext = ofacRequestMapper.buildClientContext()
-    var searchConfiguration = ofacRequestMapper.buildSearchConfiguration()
-    var ofacDTOList = ofacRequestMapper.buildOFACInput(policyContacts, policyPeriod)
-    var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
-    //Call to OFAC service
-    var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
-    _logger.debug("result:" + result)
+    try {
+      var clientContext = ofacRequestMapper.buildClientContext()
+      var searchConfiguration = ofacRequestMapper.buildSearchConfiguration()
+      var ofacDTOList = ofacRequestMapper.buildOFACInput(policyContacts, policyPeriod)
+      var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
+      //Call to OFAC service
+      var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
+      _logger.debug("result:" + result)
 
-    if (result != null) {
+      if(result != null) {
       var contactList = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
 
       policyPeriod.ofacdetails.isOFACOrdered = true
+
+
       //contactAndScoreMap should be null in case of no - HIT only
       if (contactList.Count >= 1)
         ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
-    }
+
+        }
+    } catch (exp: Exception) {
+      _logger.error(CLASS_NAME + " :: " + "validateOFACEntity" + " : StackTrace = " + exp.StackTraceAsString)
+      throw new DisplayableException(WS_NOT_AVAILABLE)
+     }
   }
 }

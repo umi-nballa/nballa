@@ -23,13 +23,16 @@ uses gw.webservice.pc.pc800.ccintegration.entities.anonymous.elements.CCRiskUnit
 uses gw.webservice.pc.pc800.ccintegration.ProductModelTypelistGenerator
 uses gw.webservice.pc.pc800.ccintegration.entities.types.complex.CCScheduledItem
 uses gw.webservice.pc.pc800.ccintegration.entities.anonymous.elements.CCRiskUnit_ScheduledItems
+uses una.logging.UnaLoggerCategory
 
 class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   var _hoLine : HomeownersLine_HOE
   var _RUCount : int
   var _dwellingBasisForPercentage: BigDecimal = 0
   var _propertyBasisForPercentage: BigDecimal = 0
-  
+
+  static final var _logger = UnaLoggerCategory.UNA_CLAIMSMAPPING
+
   construct(line : PolicyLine, policyGen : CCPolicyGenerator) {
   super(line, policyGen)
   _hoLine = line as HomeownersLine_HOE;
@@ -127,13 +130,13 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     super.handleCovTermSpecialCases(pcCov, pcCovTerm, ccCov, ccCovTerms);
 
     // Handle valuation method (Actual Cash Value vs. Replacement Cost)
-    if ((pcCov.PatternCode == "DPDW_Dwelling_Cov_HOE") and (pcCovTerm.PatternCode == "DPDW_ValuationMethod_HOE"))   {
+    if ((pcCov.PatternCode == "DPDW_Dwelling_Cov_HOE") and (pcCovTerm.PatternCode == "DPDW_ValuationMethod_HOE_Ext"))   {
       // Map the values in PC that have corresponding values in CC
-      (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as TypekeyCovTerm).Value.Code)
+      (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as TypekeyCovTerm))
     }
-    if (isValuationMethodOptionCovTerm(pcCovTerm)){
+    if (isValuationMethodCovTerm(pcCovTerm)){
       // Map the values in PC that have corresponding values in CC
-      (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as OptionCovTerm).OptionValue.OptionCode)
+      (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as TypekeyCovTerm))
     }
     
     //Handle dwelling theft basis (Broad vs. Limited)
@@ -147,19 +150,20 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   //shouldn't need this, these should be typekeys
   //also need to map over DPDW_TheftBasis_HOE
   //The return values map to typekey codes in CC.  If a typekey does not exist then nothing will be displayed in CC
-  override protected function mapValuationMethod(pcValMethod : String) : String {
-    switch (pcValMethod) {
-      //Valuation basis
-      case HOValuationMethod_HOE.TC_HOACTUAL_HOE.Code:  
-      case "Actual":         
-        return "ACV";
-      case HOValuationMethod_HOE.TC_HOREPLACEMENT_HOE.Code:  
-      case "Replacement": 
-        return "Replacement";
-      default:
-        // By default, return null if it cannot be mapped to any corresponding CC value
-        return null;  
+  protected function mapValuationMethod(pcValMethod : TypekeyCovTerm) : String {
+
+    if(typekey.ValuationMethod.TF_REPLCOST_TYPE.TypeKeys.contains(pcValMethod.Value)){
+
+      return "Replacement";
+    } else if(typekey.ValuationMethod.TF_ACV_TYPE.TypeKeys.contains(pcValMethod.Value)){
+
+      return "ACV";
+    }else{
+
+      _logger.info("mapValuationMethod couldn't map ${pcValMethod.Pattern.CodeIdentifier} - ${pcValMethod.Value.Code}")
+      return null;
     }
+
   }
 
   //The return values map to typekey codes in CC.  If a typekey does not exist then nothing will be displayed in CC  
@@ -186,7 +190,7 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
 
     var ccCovTerms: CCCovTerm[]
     
-    if(isValuationMethodOptionCovTerm(covTerm) or isTheftBasisOptionCovTerm(covTerm)){
+    if(isTheftBasisOptionCovTerm(covTerm)){
       ccCovTerms = createClassificationTermFromOption(covTerm as OptionCovTerm)
     }else if(isLimitOrDeductiblePercentage(covTerm)){
       ccCovTerms = createDollarAmountFromPercentage(covTerm)
@@ -197,10 +201,14 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   }
   
   /* Functions to determine cov term type */    
-  private function isValuationMethodOptionCovTerm(pcCovTerm : CovTerm): boolean{
-    return (pcCovTerm.PatternCode == "DPDW_PropertyValuation_HOE" or
-        pcCovTerm.PatternCode == "HODW_DwellingValuation_HOE" or
-        pcCovTerm.PatternCode == "HODW_PropertyValuation_HOE") and pcCovTerm typeis OptionCovTerm
+  private function isValuationMethodCovTerm(pcCovTerm : CovTerm): boolean{
+    return {"DPDW_ValuationMethod_HOE_Ext",
+            "DPDW_PropertyValuation_HOE_Ext",
+            "HODW_DwellingValuation_HOE_Ext",
+            "HODW_PropertyValuation_HOE_Ext",
+            "HODW_LossRoofSurfValMethod_HOE_Ext"
+           }.contains(pcCovTerm.PatternCode)
+
   }
   
   private function isTheftBasisOptionCovTerm(pcCovTerm : CovTerm): boolean{

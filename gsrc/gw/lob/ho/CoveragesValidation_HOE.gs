@@ -195,7 +195,7 @@ class CoveragesValidation_HOE extends PCValidationBase {
     }
   }
 
-  private function validateNamedStormDollarAmount(covTerm : OptionCovTerm, territoryCodes : List<String>){  //todo tlv not available for NC.  Need answer from Sen/business
+  private function validateNamedStormDollarAmount(covTerm : OptionCovTerm, territoryCodes : List<String>){
     var policyTypesToValidate = ConfigParamsUtil.getList(TC_NamedStormValuePolicyTypes, _holine.BaseState)
     var covAValue = _holine.Dwelling.DwellingLimitCovTerm.Value
 

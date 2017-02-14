@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <InputSet
+    id="RuleAdminDetailInputSet"
+    mode="uwrule_ext">
+    <Require
+      name="rule"
+      type="Rule_Ext"/>
+    <Require
+      name="rulePolicyLine"
+      type="typekey.PolicyLine"/>
+    <ReferencedWidget
+      widget="ruleValidationApplyMethod"/>
+    <PickerInput
+      editable="true"
+      id="uwIssueType"
+      label="displaykey.Accelerator.RulesFramework.UWIssueType"
+      pickLocation="UWIssueTypeSearchPopup.push(java.util.Collections.emptySet(), (rule as UWRule_Ext).UWIssueType.Name)"
+      required="true"
+      value="(rule as UWRule_Ext).UWIssueType">
+      <PostOnChange
+        target="ruleValidationApplyMethod"/>
+    </PickerInput>
+  </InputSet>
+</PCF>

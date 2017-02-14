@@ -22,10 +22,31 @@
     <Require
       name="activity"
       type="Activity"/>
+    <Require
+      name="emailTemplate"
+      type="String"/>
+    <Require
+      name="documentsToSend"
+      type="Document[]"/>
+    <Require
+      name="symbolTable"
+      type="java.util.Map&lt;String, Object&gt;"/>
     <Variable
       initialValue="document.Language"
       name="language"
       type="LanguageType"/>
+    <Variable
+      initialValue="null"
+      name="docContainer"
+      type="gw.api.domain.document.DocumentContainer"/>
+    <Variable
+      initialValue="gw.web.email.CreateEmailsScreenUIHelper.initNewEmail(emailTemplate, noDefaultTemplate, language,  symbolTable, documentsToSend)"
+      name="newEmail"
+      type="gw.api.email.Email"/>
+    <Variable
+      initialValue="emailTemplate == null"
+      name="noDefaultTemplate"
+      type="Boolean"/>
     <InputColumn>
       <Label
         label="displaykey.Web.DocumentCreation.DocumentContents.Header"/>
@@ -76,24 +97,73 @@
           id="CreateDocument"
           value="displaykey.Java.Document.Creation.CreateDocument"
           visible="!web.document.DocumentsHelper.isDocumentAssistantEnabled()"/>
-        <Label
+        <!-- <Label
           label="displaykey.Java.Document.Creation.Template.Step4"
-          visible="!web.document.DocumentsHelper.isDocumentAssistantEnabled()"/>
-        <!-- This widget is always rendered hidden -->
-        <DocumentFilePathInput
+          visible="!web.document.DocumentsHelper.isDocumentAssistantEnabled()"/> -->
+        <!-- <DocumentFilePathInput
           editable="true"
           id="DocumentFilePath"
-          value="DocumentCreationInfo.DocumentFilePath"/>
-        <!-- When the Document Assistant is enabled, this widget will be rendered hidden. The end user should
-             not see nor need to edit the client-side path used by the Document Assistant -->
-        <DocumentScript
+          value="DocumentCreationInfo.DocumentFilePath"/> -->
+        <!-- <DocumentScript
           available="(!web.document.DocumentsHelper.isDocumentAssistantEnabled()) or (DocumentCreationInfo.File != null) or (DocumentCreationInfo.DocumentCreationScript != null)"
           editable="true"
           id="DocumentFile"
           label="displaykey.Java.Document.Creation.FileLocation"
           required="!web.document.DocumentsHelper.isDocumentAssistantEnabled()"
-          value="DocumentCreationInfo.File"/>
+          value="DocumentCreationInfo.File"/> -->
       </InputSet>
+      <CheckBoxInput
+        editable="true"
+        id="certifiedmail"
+        label="displaykey.Web.Document.CertifiedMail"
+        value="document.CertifiedMail_Ext"/>
+      <CheckBoxInput
+        editable="true"
+        id="carboncopy"
+        label="displaykey.Web.Document.Carboncopy"
+        value="document.CarbonCopy_Ext"/>
+      <CheckBoxInput
+        editable="true"
+        id="enclosures"
+        label="displaykey.Web.Document.Enclosures"
+        value="document.Enclosures_Ext">
+        <PostOnChange/>
+      </CheckBoxInput>
+      <ListViewInput
+        editable="true"
+        label="displaykey.Web.Email.AttachedDocuments"
+        labelAbove="true"
+        visible="document.Enclosures_Ext">
+        <Toolbar>
+          <PickerToolbarButton
+            action="PickExistingDocumentPopup.push(docContainer)"
+            id="AddDocumentButton"
+            label="displaykey.Web.Email.AddDocument"
+            onPick="newEmail.addDocument(PickedValue)"
+            shortcut="A"
+            visible="true"/>
+          <IteratorButtons
+            addVisible="false"
+            iterator="AttachedDocumentsLV"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="true"
+          id="AttachedDocumentsLV">
+          <RowIterator
+            editable="true"
+            elementName="attachedDocument"
+            toRemove="newEmail.removeDocument( attachedDocument )"
+            value="newEmail.Documents as DocumentBase[]">
+            <Row>
+              <Cell
+                editable="true"
+                id="Document"
+                label="displaykey.Web.Email.DocumentName"
+                value="attachedDocument.Name"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
     </InputColumn>
     <InputColumn>
       <InputSetRef

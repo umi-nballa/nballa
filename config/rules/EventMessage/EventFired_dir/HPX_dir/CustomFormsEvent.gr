@@ -1,6 +1,7 @@
 package rules.EventMessage.EventFired_dir.HPX_dir
 uses una.integration.mapping.hpx.common.HPXRequestMapper
 uses una.forms.formsevents.EventTriggeredAvailability
+uses una.integration.mapping.hpx.common.composition.HPXRecipientMapper
 
 @gw.rules.RuleName("Custom Forms Event")
 internal class CustomFormsEvent {
@@ -14,13 +15,14 @@ return FormsEventType.getTypeKeys(false).hasMatch( \ event -> event.Code.equalsI
 /*start00rule*/
 var period = (messageContext.Root as PolicyPeriod)
 period = period.getSlice(period.EditEffectiveDate)
-var ewsRequestMapper = new HPXRequestMapper()
+var hpxRecipientMapper = new HPXRecipientMapper()
 var eventMessageForms = period.NewlyAddedForms.where( \ form -> form.Pattern.InferenceClass.Supertype == EventTriggeredAvailability)
-
-if (eventMessageForms.Count > 0) {
-  var ewsRequestXML = ewsRequestMapper.createForms(period, eventMessageForms)
-  messageContext.createMessage(ewsRequestXML)
-}
+  if (eventMessageForms.Count > 0) {
+    var ewsRequestXMLs = hpxRecipientMapper.createFormsForRecipients(period, eventMessageForms)
+    for (ewsRequestXML in ewsRequestXMLs) {
+      messageContext.createMessage(ewsRequestXML)
+    }
+  }
 /*end00rule*/
   }
 }

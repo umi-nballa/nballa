@@ -685,6 +685,7 @@ class HODwellingUtil_HOE {
     if(tunaValues != null) {
       tunaValues.each( \ elt ->
           {
+            if(elt.Value!=null && elt.Value!="0")
             tunaCodeAndPercent.add(elt.Value)
           })// + " - " +elt.Percent+" %"))
     }
@@ -937,6 +938,11 @@ class HODwellingUtil_HOE {
       dwelling.PropertyCovByStateWndstorm_Ext = false
       dwelling.WHurricaneHailExclusion_Ext = false
     }
+  }
+  //Availability business rule for the Base Flood Elevation fields in the Dwelling screen
+  static function isElevnAvailable(dwelling:Dwelling_HOE):boolean{
+    var floodZoneOverideTypes : List<FloodZoneOverridden_Ext> = {TC_X, TC_B, TC_C, TC_D}
+    return (dwelling.FloodCoverage_Ext != null and dwelling.FloodCoverage_Ext) or !floodZoneOverideTypes.contains(dwelling.FloodZoneOrOverride) or (dwelling.PostFIRM_Ext != null and dwelling.PostFIRM_Ext)
   }
 
 }// End of class

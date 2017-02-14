@@ -167,7 +167,8 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
       // Map the values in PC that have corresponding values in CC
       (ccCov as CCPropertyCoverage).CoverageBasis = mapValuationMethod((pcCovTerm as TypekeyCovTerm).Value.Code)
     }
-    }
+
+  }
 
   /**
   * This method will be used to add BP7 Excluded Coverages
@@ -195,7 +196,7 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
       (cov.PatternCode == "BP7DamagePremisisRentedToYou_EXT") or
       (cov.PatternCode == "BP7ClassificationValuablePapers")){
       return true
-  }
+    }
     return false
   }
 

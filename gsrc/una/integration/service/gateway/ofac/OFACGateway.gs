@@ -26,7 +26,9 @@ class OFACGateway implements OFACInterface {
   private static final var CLASS_NAME = OFACGateway.Type.DisplayName
   private final static var WS_NOT_AVAILABLE = "Failed to connect to the OFAC web service. Please reach out to the Support Team."
 
-
+  /**
+   *  This customized constructor is to instantiate OFACCommunicator, OFACRequestMapper, OFACResponseMapper, OFACGatewayHelper Class
+   */
   construct(thresholdTimeout: String) {
     timeout = thresholdTimeout
     ofacCommunicator = new OFACCommunicator()

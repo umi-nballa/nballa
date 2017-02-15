@@ -5,6 +5,7 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.DirectCovTerm
 uses java.math.BigDecimal
 uses una.integration.mapping.hpx.helper.HPXRatingHelper
+uses gw.xml.XmlElement
 
 /**
  * Created with IntelliJ IDEA.
@@ -83,6 +84,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createLossAssessmentLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Description
     var value = currentCovTerm.OptionValue.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
@@ -99,6 +101,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createOrdinanceLawLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Description
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
@@ -117,6 +120,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createAdditionalDwellingCovLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Description
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
@@ -174,6 +178,42 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     } else {
       return super.createOtherDirectCovTerm(coverage, currentCovTerm, transactions)
     }
+  }
+
+  override function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+    if(currentCovTerm.PatternCode == "HODW_OtherPerils_Ded_HOE") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Description
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
+      deductible.FormatPct = getCovTermPercentage(value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      deductible.WrittenAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP).ActualTermAmount.Amount
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
+    } else if(currentCovTerm.PatternCode == "HODW_Hurricane_Ded_HOE") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Description
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
+      deductible.FormatPct = getCovTermPercentage(value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      deductible.WrittenAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND).ActualTermAmount.Amount
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
+    } else {
+    return super.createOptionDeductibleInfo(coverage, currentCovTerm, transactions)
+  }
   }
 
   private function createOtherStructuresOnPremisesSchedule(currentCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {

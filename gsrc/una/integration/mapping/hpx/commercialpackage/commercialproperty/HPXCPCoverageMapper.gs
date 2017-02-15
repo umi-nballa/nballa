@@ -71,7 +71,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
   function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     if(currentCovTerm.PatternCode == "CPBldgCovHurricaneDeductible_EXT") {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
-
+      deductible.Description = currentCovTerm.Pattern.Description
       var value = currentCovTerm.OptionValue.Value
       var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
       deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)

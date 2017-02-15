@@ -466,7 +466,7 @@ class CoveragesUtil {
   }
 
   private static function isReplaceCostWithRoofPayScheduleConditionAvailable(hoLine : HomeownersLine_HOE) : boolean{
-    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
+    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.contains(hoLine.Dwelling.TerritoryCodeOrOverride)
   }
 
   private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{

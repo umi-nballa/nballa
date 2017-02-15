@@ -3,6 +3,7 @@ uses gw.validation.PCValidationContext
 uses gw.policy.PolicyLineValidation
 uses gw.api.util.StateJurisdictionMappingUtil
 uses java.lang.UnsupportedOperationException
+uses gw.accelerator.ruleeng.RulesEngineInterface
 
 @Export
 class PALineVehiclesValidator extends PolicyLineValidation<entity.PersonalAutoLine>  {
@@ -28,11 +29,29 @@ class PALineVehiclesValidator extends PolicyLineValidation<entity.PersonalAutoLi
    * </ul>
    */
   override function doValidate() {
-    atLeastOneVehicle()
+  /********************************************************************************************************************
+  *
+  * Rules Framework:  PALineVehiclesValidator's atLeastOneVehicle validation is implemented
+  *                   under the Rules Framework via the Rules Engine call below.
+  *
+  *********************************************************************************************************************/
+    invokeRulesEngine()
+
+/*    atLeastOneVehicle()
     allGaragesInSameState()
     vinIsUniqueInPeriod()
-    validateEachVehicle()
+    validateEachVehicle()*/
   }
+
+
+  /********************************************************************************************************************
+  * Rules Framework:  Example LOB validation Rules Engine Hook
+  *********************************************************************************************************************/
+  public function invokeRulesEngine(){
+    RulesEngineInterface.validate(paLine.Branch, Context, "Vehicles",
+        "PersonalAutoLine")
+  }
+
 
   /**
    * Quick Quote Personal Auto Vehicle Validation - At least one Vehicle is required. Validates each Vehicle by calling the private function <code>validateVehicleQQ</code>.
@@ -47,6 +66,7 @@ class PALineVehiclesValidator extends PolicyLineValidation<entity.PersonalAutoLi
     Context.addToVisited(this, "validateQQ")
     atLeastOneVehicle()
     paLine.Vehicles.each(\ vehicle -> validateVehicleQQ(vehicle))
+    invokeRulesEngine()
   }
 
   private function validateVehicleQQ(vehicle : entity.PersonalVehicle) {

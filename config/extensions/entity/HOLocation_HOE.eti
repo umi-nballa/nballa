@@ -87,7 +87,7 @@
     type="varchar">
     <columnParam
       name="size"
-      value="100"/>
+      value="7"/>
   </column>
   <typekey
     desc="ISO360 Match Level from TUNA"
@@ -141,7 +141,7 @@
     type="varchar">
     <columnParam
       name="size"
-      value="100"/>
+      value="3"/>
   </column>
   <column
     default="0"
@@ -170,7 +170,7 @@
     type="varchar">
     <columnParam
       name="size"
-      value="100"/>
+      value="3"/>
   </column>
   <column
     default="0"
@@ -330,7 +330,7 @@
     type="varchar">
     <columnParam
       name="size"
-      value="100"/>
+      value="3"/>
   </column>
   <column
     desc="FirelinePropHaz Returned by Tuna"
@@ -339,7 +339,7 @@
     type="varchar">
     <columnParam
       name="size"
-      value="100"/>
+      value="2"/>
   </column>
   <typekey
     desc="FirelinePropHaz Match Level from TUNA"
@@ -361,15 +361,6 @@
       name="size"
       value="100"/>
   </column>
-  <column
-    desc="FirelineAdjHaz Returned by Tuna"
-    name="FirelineAdjHaz_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
   <typekey
     desc="FirelineAdjHaz Match Level from TUNA"
     name="FirelineAdjHazMatchLevel_Ext"
@@ -381,15 +372,6 @@
     name="OverrideFirelineAdjHaz_Ext"
     nullok="true"
     type="bit"/>
-  <column
-    desc="FirelineAdjHaz Entered by User"
-    name="FirelineAdjHazOverridden_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
   <column
     desc="ACVValue Returned by Tuna"
     name="ACVValue_Ext"
@@ -591,4 +573,16 @@
     name="DwellingPCCodeOverridden_Ext"
     nullok="true"
     typelist="ProtectionClassCode_Ext"/>
+  <typekey
+    columnName="FirelineAdjHaz_Ext"
+    desc="FirelineAdjHaz_Ext"
+    name="FirelineAdjHaz_Ext"
+    nullok="true"
+    typelist="HOAdjustedHazardScore_Ext"/>
+  <typekey
+    columnName="FirelineAdjHazOverridden_Ext"
+    desc="FirelineAdjHazOverridden_Ext"
+    name="FirelineAdjHazOverridden_Ext"
+    nullok="true"
+    typelist="HOAdjustedHazardScore_Ext"/>
 </entity>

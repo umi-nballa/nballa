@@ -60,6 +60,13 @@ class HODwellingUtil_HOE {
      return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
   }
 
+  static function filterTunaConstructionTypeStateSpecific(dwelling : Dwelling_HOE, constype:typekey.ConstructionType_HOE[]) : List<typekey.ConstructionType_HOE> {
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
+      return typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys
+    }
+    return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
+  }
+
   /*
 *  Author: uim-svallabhapurapu
 *  Change Log: New function for Roof Deck TypeList value range based on state
@@ -685,6 +692,7 @@ class HODwellingUtil_HOE {
     if(tunaValues != null) {
       tunaValues.each( \ elt ->
           {
+            if(elt.Value!=null && elt.Value!="0")
             tunaCodeAndPercent.add(elt.Value)
           })// + " - " +elt.Percent+" %"))
     }
@@ -767,8 +775,10 @@ class HODwellingUtil_HOE {
     var values = ResidenceType_HOE.getTypeKeys(false)
     values.each( \ elt -> {
       if(elt.Categories.contains(dwelling.HOPolicyType)) {
-        //'Condo' should be available in ResidenceType_HOE typelist For DP/LPP: Allow in FL OR NC ONLY
+        //'Condo' should be available in the ResidenceType_HOE typelist For DP/LPP: Allow in FL OR NC ONLY
         if(elt.Code == ResidenceType_HOE.TC_CONDO && ((dwelling.HOPolicyType == TC_DP3_Ext || dwelling.HOPolicyType == TC_LPP_Ext) && (dwelling.PolicyPeriod.BaseState==TC_NC || dwelling.PolicyPeriod.BaseState==TC_FL))){
+          residenceType.add(elt)
+        }else if(elt.Code != ResidenceType_HOE.TC_CONDO){
           residenceType.add(elt)
         }
       }
@@ -777,7 +787,34 @@ class HODwellingUtil_HOE {
     return residenceType.orderBy( \ rt -> rt.DisplayName)
   }
 
-  static function allHomeowners_Ext(policyPeriod:PolicyPeriod):boolean{
+  /*
+   * FLOOD should be available - CA HO, AZ HO, TX HO, SC HO, HI HO, NV HO, HI DP
+   * Homeowners should be available - SC HO, NV HO, HI DP
+   * Dwelling Fire should be available -  TX HO, CA HO, SC HO, HI HO, NV HO, HI DP
+   */
+  static function getTypeOfPolicy(dwelling:Dwelling_HOE) : List<TypeofPolicy_Ext>{
+    var typeOfPolicy = new ArrayList<TypeofPolicy_Ext>()
+    var typeOfPolicyValues = TypeofPolicy_Ext.getTypeKeys(false)
+    typeOfPolicyValues.each( \ elt -> {
+      if(elt.Categories.contains(dwelling.PolicyPeriod.BaseState)) {
+        if(elt.Code == TypeofPolicy_Ext.TC_FLOOD && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+            (dwelling.PolicyPeriod.BaseState==TC_AZ || dwelling.PolicyPeriod.BaseState==TC_CA || dwelling.PolicyPeriod.BaseState==TC_TX || dwelling.PolicyPeriod.BaseState==TC_SC
+                || dwelling.PolicyPeriod.BaseState==TC_HI || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+          typeOfPolicy.add(elt)
+        }else if(elt.Code == TypeofPolicy_Ext.TC_HOMEOWNER && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+            (dwelling.PolicyPeriod.BaseState==TC_SC || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+            typeOfPolicy.add(elt)
+        }else if(elt.Code == TypeofPolicy_Ext.TC_DWELLINGFIRE && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+            (dwelling.PolicyPeriod.BaseState==TC_CA || dwelling.PolicyPeriod.BaseState==TC_TX || dwelling.PolicyPeriod.BaseState==TC_SC || dwelling.PolicyPeriod.BaseState==TC_HI
+                || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+            typeOfPolicy.add(elt)
+        }
+      }
+    })
+    return typeOfPolicy
+  }
+
+  static function isMultiPolicyDiscountAvailable(policyPeriod:PolicyPeriod):boolean{
     if( (policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HCONB_EXT||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4||
@@ -785,9 +822,8 @@ class HODwellingUtil_HOE {
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOA_EXT||
         policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HOB_EXT) &&
         (policyPeriod.BaseState==TC_AZ || policyPeriod.BaseState==TC_CA || policyPeriod.BaseState==TC_TX || policyPeriod.BaseState==TC_SC || policyPeriod.BaseState==TC_HI || policyPeriod.BaseState==TC_NV) ){
-      return true
-    }
-    if(policyPeriod.BaseState==typekey.Jurisdiction.TC_HI && policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT){
+          return true
+    }else if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT && policyPeriod.BaseState==typekey.Jurisdiction.TC_HI){
       return true
     }
     return false
@@ -911,6 +947,11 @@ class HODwellingUtil_HOE {
       dwelling.PropertyCovByStateWndstorm_Ext = false
       dwelling.WHurricaneHailExclusion_Ext = false
     }
+  }
+  //Availability business rule for the Base Flood Elevation fields in the Dwelling screen
+  static function isElevnAvailable(dwelling:Dwelling_HOE):boolean{
+    var floodZoneOverideTypes : List<FloodZoneOverridden_Ext> = {TC_X, TC_B, TC_C, TC_D}
+    return (dwelling.FloodCoverage_Ext != null and dwelling.FloodCoverage_Ext) or !floodZoneOverideTypes.contains(dwelling.FloodZoneOrOverride) or (dwelling.PostFIRM_Ext != null and dwelling.PostFIRM_Ext)
   }
 
 }// End of class

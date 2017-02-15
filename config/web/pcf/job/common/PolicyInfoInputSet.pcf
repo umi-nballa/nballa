@@ -175,7 +175,7 @@
       visible="dividedSourcePolicy != null and showSplitSource"/>
     <InputSet
       id="affinityGroupInputSet"
-      visible="policyPeriod.HomeownersLine_HOEExists and (policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT) and !policyPeriod.BP7LineExists and !policyPeriod.CPLineExists">
+      visible="policyPeriod.HomeownersLine_HOEExists">
       <Variable
         initialValue="una.config.AffinityGroupUtil.setAffinityDiscountEligibility(policyPeriod)"
         name="affinityDiscount"
@@ -184,7 +184,7 @@
       <InputDivider/>
       <Label
         label="displaykey.Web.Admin.AffinityGroup"
-        visible="!policyPeriod.BP7LineExists or !policyPeriod.CPLineExists"/>
+        visible="policyPeriod.HomeownersLine_HOEExists"/>
       <PickerInput
         editable="true"
         id="AffinityGroup"
@@ -193,14 +193,14 @@
         pickLocation="AffinityGroupSearchPopup.push(policyPeriod)"
         required="false"
         value="policyPeriod.PolicyTerm.AffinityGroup"
-        visible="policyPeriod.HomeownersLine_HOEExists and !(policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HOB_EXT)"/>
+        visible="policyPeriod.HomeownersLine_HOEExists"/>
       <RangeInput
         editable="true"
         id="PreferredBuilder"
         label="displaykey.Web.Admin.AffinityGroup.PreferredBuilder_Ext"
         value="policyPeriod.PreferredBuilder_Ext"
         valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDBUILDER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
-        visible="policyPeriod.affinityVisible()">
+        visible="policyPeriod.HomeownersLine_HOEExists">
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
@@ -210,7 +210,7 @@
         label="displaykey.Web.Admin.AffinityGroup.PreferredFinInst_Ext"
         value="policyPeriod.PreferredFinInst_Ext"
         valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDFININST, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
-        visible="(policyPeriod.BaseState != TC_AZ or policyPeriod.BaseState != TC_NC or policyPeriod.BaseState != TC_SC) and policyPeriod.affinityVisible()">
+        visible="policyPeriod.HomeownersLine_HOEExists">
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
@@ -220,7 +220,17 @@
         label="displaykey.Web.Admin.AffinityGroup.PreferredEmployerGroup_Ext"
         value="policyPeriod.PreferredEmpGroup_Ext"
         valueRange="una.config.AffinityGroupUtil.getAffinityDiscountByCategory(AffinityDisCategory_Ext.TC_PREFERREDEMPLOYER, policyPeriod.BaseState, policyPeriod.EditEffectiveDate)"
-        visible="policyPeriod.affinityVisible()">
+        visible="policyPeriod.HomeownersLine_HOEExists">
+        <PostOnChange
+          target="affinityGroupInputSet"/>
+      </RangeInput>
+      <RangeInput
+        editable="true"
+        id="QualifiedAgent"
+        label="displaykey.Web.Admin.AffinityGroup.QualifiedExclAgent_Ext"
+        value="policyPeriod.QualifiedExclAgent_Ext"
+        valueRange="typekey.QualifiedExclAgent_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"
+        visible="policyPeriod.HomeownersLine_HOEExists">
         <PostOnChange
           target="affinityGroupInputSet"/>
       </RangeInput>
@@ -228,7 +238,7 @@
         id="QualifiesDiscount"
         label="displaykey.Web.Admin.AffinityGroup.AffinityDiscount_Ext"
         value="policyPeriod.QualifiesAffinityDisc_Ext"
-        visible="policyPeriod.affinityVisible()"/>
+        visible="policyPeriod.HomeownersLine_HOEExists"/>
     </InputSet>
     <Code><![CDATA[function printVal() : boolean{
   print("Job Type : "+typeof policyPeriod.Job)

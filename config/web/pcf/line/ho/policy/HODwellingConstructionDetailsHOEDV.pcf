@@ -23,6 +23,44 @@
       name="setTunaFieldsMatchLevel"/>
     <InputColumn
       labelWidth="350">
+      <InputSet
+        id="Yearbuilt_Ext">
+        <RangeInput
+          available="!dwelling.OverrideYearbuilt_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+          id="yearbuiltTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltTunaReturned_Ext"
+          required="!dwelling.OverrideYearbuilt_Ext"
+          value="dwelling.Yearbuilt"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.YearBuilt)">
+          <PostOnChange
+            onChange="gw.lob.ho.HODwellingUtil_HOE.applyReset(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling);pageProcess.retrieveBCEG360Value(dwelling)"/>
+        </RangeInput>
+        <Input
+          available="!dwelling.OverrideYearbuilt_Ext"
+          id="yearbuiltMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltMatchlevel_Ext"
+          value="dwelling.YearbuiltMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideYearbuilt_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltOverride_Ext"
+          value="dwelling.OverrideYearbuilt_Ext">
+          <PostOnChange
+            target="Yearbuilt_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.OverrideYearbuilt_Ext"
+          editable="true"
+          id="yearbuiltUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.YearbuiltUserEntered_Ext"
+          required="dwelling.OverrideYearbuilt_Ext"
+          value="dwelling.YearBuiltOverridden_Ext"
+          visible="dwelling.OverrideYearbuilt_Ext">
+          <PostOnChange
+            onChange="pageProcess.retrieveBCEG360Value(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"/>
+        </Input>
+      </InputSet>
       <InputDivider/>
       <InputSet
         id="NumberOfStories_Ext">
@@ -188,7 +226,7 @@
           available="dwelling.OverrideConstructionTypeL2_Ext"
           editable="true"
           id="ConstructionTypeL2UserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2UserEntered_Ext"
           required="dwelling.OverrideConstructionTypeL2_Ext"
           value="dwelling.ConstTypeOverriddenL2_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling)">
@@ -339,42 +377,6 @@
         value="dwelling.ExteriorWallFinishLevel2Other"
         visible="dwelling.OverrideExteriorWFvalL2_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code) &amp;&amp; ( dwelling.ExteriorWallFinish_Ext.Code==&quot;Other&quot; || dwelling.ExteriorWallFinishL2OrOverride==typekey.ExteriorWallFinish_Ext.TC_OTHER)"/>
       <InputDivider/>
-      <InputSet
-        id="TotalSqFtVal_Ext">
-        <RangeInput
-          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideTotalSqFtVal_Ext"
-          id="TotalSqFtValTunaReturned_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
-          value="dwelling.SquareFootage_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)">
-          <PostOnChange
-            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
-        </RangeInput>
-        <Input
-          available="!dwelling.OverrideTotalSqFtVal_Ext"
-          id="TotalSqFtValMatchLevel_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValMatchlevel_Ext"
-          value="dwelling.TotalSqFtValMatchLevel_Ext"/>
-        <BooleanRadioInput
-          editable="true"
-          id="OverRideTotalSqFtVal_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValOverride_Ext"
-          value="dwelling.OverrideTotalSqFtVal_Ext">
-          <PostOnChange
-            target="TotalSqFtVal_Ext"/>
-        </BooleanRadioInput>
-        <Input
-          available="dwelling.OverrideTotalSqFtVal_Ext"
-          editable="true"
-          id="TotalSqFtValUserEntered_Ext"
-          label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValUserEntered_Ext"
-          required="dwelling.OverrideTotalSqFtVal_Ext"
-          value="dwelling.TotalSqFtValOverridden_Ext"
-          visible="dwelling.OverrideTotalSqFtVal_Ext">
-          <PostOnChange
-            onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
-        </Input>
-      </InputSet>
       <InputDivider/>
       <TextInput
         editable="true"
@@ -605,13 +607,14 @@
           <PostOnChange
             target="RoofingMaterial_Ext"/>
         </BooleanRadioInput>
-        <Input
+        <RangeInput
           available="dwelling.OverrideRoofType_Ext"
           editable="true"
           id="RoofingMaterialUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.RoofingMaterialUserEntered_Ext"
           required="dwelling.OverrideRoofType_Ext"
           value="dwelling.RoofingMaterialOverridden_Ext"
+          valueRange="typekey.RoofType.TF_HODWELLINGCONSTRSPECIFIC.TypeKeys"
           visible="dwelling.OverrideRoofType_Ext"/>
       </InputSet>
       <InputDivider/>
@@ -664,6 +667,40 @@
         <PostOnChange
           onChange="if(dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = true} else if(!dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = null}"/>
       </BooleanRadioInput>
+      <InputSet
+        id="WindPool_Ext"
+        visible="dwelling.isBCEGVisible //visibility conditions similar to bceg">
+        <InputDivider/>
+        <RangeInput
+          available="!dwelling.HOLocation.OverrideWindPool_Ext"
+          editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+          id="WindPoolTunaReturned_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolTunaReturned_Ext"
+          value="dwelling.HOLocation.WindPool_Ext"
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
+        <Input
+          available="!dwelling.HOLocation.OverrideWindPool_Ext"
+          id="WindPoolMatchLevel_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolMatchlevel_Ext"
+          value="dwelling.HOLocation.WindPoolMatchLevel_Ext"/>
+        <BooleanRadioInput
+          editable="true"
+          id="OverRideTunaWindPool_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolOverride_Ext"
+          value="dwelling.HOLocation.OverrideWindPool_Ext">
+          <PostOnChange
+            target="WindPool_Ext"/>
+        </BooleanRadioInput>
+        <Input
+          available="dwelling.HOLocation.OverrideWindPool_Ext"
+          editable="true"
+          id="bcegUserEntered_Ext"
+          label="displaykey.Web.Homeowners.HOLocation.WindPoolUserEntered_Ext"
+          required="dwelling.HOLocation.OverrideWindPool_Ext"
+          value="dwelling.HOLocation.WindPoolOverridden_Ext"
+          visible="dwelling.HOLocation.OverrideWindPool_Ext"/>
+        <InputDivider/>
+      </InputSet>
       <BooleanRadioInput
         editable="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code"
         id="windstormExclusion"

@@ -101,14 +101,14 @@ class RateFactorUtil {
    */
   static function setNetAdjustmentFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     setAccountModificationFactor(line)
-    setBuildingAgeFactor(line, minimumRatingLevel,building)
+    setBuildingAgeFactor(line, minimumRatingLevel, building)
     setExperienceRatingFactor(line, minimumRatingLevel)
     setTerritoryModificationFactor(line, minimumRatingLevel, building)
     var totalFactor = _accountModificationFactor * _experienceRatingFactor * _buildingAgeFactor
     if(totalFactor < _minimumFactor)
       totalFactor = _minimumFactor
     var netAdjustmentFactor = (totalFactor * _territoryModificationFactor)
-    return Math.round((netAdjustmentFactor*100) as float)/100
+    return (Math.round((netAdjustmentFactor*100) as float))/100.00
   }
 
   /**
@@ -186,7 +186,7 @@ class RateFactorUtil {
     setBCEGFactor(line, minimumRatingLevel, building)
     setWindExclusionFactor(line, minimumRatingLevel, building)
     var propertyBuildingAdjustmentFactor = _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
-    return Math.round((propertyBuildingAdjustmentFactor*100) as float)/100
+    return (Math.round((propertyBuildingAdjustmentFactor*100) as float))/100.00
   }
 
   /**
@@ -197,7 +197,7 @@ class RateFactorUtil {
     setBCEGFactor(line, minimumRatingLevel, classification?.building)
     setWindExclusionFactor(line, minimumRatingLevel, classification?.building)
     var propertyContentAdjustmentFactor = _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
-    return Math.round((propertyContentAdjustmentFactor*100) as float)/100
+    return (Math.round((propertyContentAdjustmentFactor*100) as float))/100.00
   }
 
   /**

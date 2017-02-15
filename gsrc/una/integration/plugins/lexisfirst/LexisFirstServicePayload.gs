@@ -272,10 +272,10 @@ class LexisFirstServicePayload {
 
       lexisFirstFileData.LegalDescription = ""
       lexisFirstFileData.InsuranceCarrier = policyPeriod.UWCompany.DisplayName
-      lexisFirstFileData.InsuranceCarrierNAIC = policyPeriod.UWCompany.Code as String
+      lexisFirstFileData.InsuranceCarrierNAIC = policyPeriod.UWCompany.Code == "01"? "11986":"10759"
 
       //Producer Details
-      lexisFirstFileData.ProducerName = policyPeriod.ProducerCodeOfRecord.DisplayName
+      lexisFirstFileData.ProducerName = policyPeriod.ProducerCodeOfRecord.OrganizationWithUpdate
       lexisFirstFileData.ProducerCode = policyPeriod.ProducerCodeOfRecord.Code
       lexisFirstFileData.ProducerStreet = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.AddressLine1
       lexisFirstFileData.ProducerCity = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.City

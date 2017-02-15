@@ -24,7 +24,7 @@ class CovTermInputSetPCFController {
     //sync coverages
     ProductModelSyncIssuesHandler.syncCoverages(coverable.PolicyLine.AllCoverables, null)
 
-    if(coverable typeis Dwelling_HOE){
+    if(coverable typeis Dwelling_HOE or coverable typeis HomeownersLine_HOE){
       if(covTerm typeis DirectCovTerm){
         onChangeDirectCovTerm(covTerm)
       }else if(covTerm typeis OptionCovTerm){
@@ -59,20 +59,34 @@ class CovTermInputSetPCFController {
 
   private static function onChangeOptionCovTerm(term : OptionCovTerm) {
     var coverable = term.Clause.OwningCoverable
+    var hoLine : entity.HomeownersLine_HOE
+
+    if(coverable typeis Dwelling_HOE){
+      hoLine = coverable.HOLine
+    }else if(coverable typeis entity.HomeownersLine_HOE){
+      hoLine = coverable
+    }
 
     onChangeOptionCovTerm_OnPremisesLimit(term)
 
-    if(coverable typeis Dwelling_HOE){
+    if(hoLine != null){
       if(term.PatternCode == "HODW_WindHail_Ded_HOE"){
-        (coverable.PolicyLine as HomeownersLine_HOE).setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
-      }else if({"HODW_OtherPerils_Ded_HOE", "HODW_AllPeril_HOE_Ext"}.contains(term.PatternCode)){
-        coverable.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
-      }else if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
-        if(coverable.HOPolicyType == TC_HO6 and coverable.HODW_LossAssessmentCov_HOE_Ext.HasHOPL_Deductible_HOETerm){
-          coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = coverable.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
-        }else if(coverable.HOPolicyType == TC_DP3_Ext and coverable.ResidenceType == TC_CONDO){
-          coverable.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
+        hoLine.setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
+      }else if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
+        if(hoLine.HOPolicyType == TC_HO6 and hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HasHOPL_Deductible_HOETerm){
+          hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+        }else if(hoLine.HOPolicyType == TC_DP3_Ext and hoLine.Dwelling.ResidenceType == TC_CONDO){
+          hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
         }
+      }else if(term.PatternCode == "DPLI_LiabilityLimit_HOE" or term.PatternCode == "HOLI_Liability_Limit_HOE"){
+        var availableOptions = hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.AvailableOptions
+        var matchingValue = availableOptions.atMostOneWhere( \ option -> option.Value.doubleValue() == term.Value.doubleValue())
+
+        if(matchingValue != null){
+          hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)
+        }
+      }else if(term.PatternCode == "HODW_OtherPerils_Ded_HOE"){
+        hoLine.Dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
       }
     }
   }
@@ -84,27 +98,34 @@ class CovTermInputSetPCFController {
       dwelling = term.Clause.OwningCoverable
     }
 
-    if(term.PatternCode == "HODW_BuildAddInc_HOE"){
-      term.round(ROUND_UP)
-    }else{
-      term.round(ROUND_NEAREST)
-    }
+    term.round(ROUND_NEAREST)
 
     switch(term.PatternCode) {
       case "HODW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
         dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm?.onInit()
         dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovD_HOE_ExtTerm?.onInit()
+        dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
+
+        if((term.Clause.OwningCoverable as Dwelling_HOE).HOPolicyType == TC_HO3){
+          dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
+        }
         break
       case "DPDW_Dwelling_Limit_HOE":
         dwelling.HODW_Limited_Earthquake_CA_HOE.HODW_EQDwellingLimit_HOE_ExtTerm?.onInit()
-        dwelling.HOLine.HOLI_UnitOwnersRentedtoOthers_HOE_Ext.HOLI_UnitOwnersRentedOthers_Deductible_HOE_ExtTerm?.onInit()
+        dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
         new CoverageTermsRuntimeDefaultController ().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
         break
       case "HODW_PersonalPropertyLimit_HOE":
         new CoverageTermsRuntimeDefaultController().setDefaults(new CovTermDefaultContext(SECTION_I, dwelling, term))
         dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.onInit()
+        break
+      case "HODW_OtherStructures_Limit_HOE":
+        var hoPolicyType = (term.Clause.OwningCoverable as Dwelling_HOE).HOPolicyType
+        if(hoPolicyType == TC_HO6 or hoPolicyType == TC_HO4 or hoPolicyType == TC_DP3_Ext){
+          dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
+        }
         break
       default:
         break
@@ -217,9 +238,11 @@ class CovTermInputSetPCFController {
     if(isExecutiveCoverage){
       coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
     }else{
-      var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
-      if(coverageExistence == TC_ELECTABLE){
-        coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+      if(coverable.hasCoverage(patternCode) == true){
+        var coverageExistence = coverable.getCoverage(patternCode).Pattern.getExistence(coverable)
+        if(coverageExistence == TC_ELECTABLE){
+          coverable.setCoverageConditionOrExclusionExists(patternCode, isExecutiveCoverage)
+        }
       }
     }
   }

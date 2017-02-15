@@ -13,39 +13,6 @@
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
   <CovTerms>
-    <OptionCovTermPattern
-      aggregationModel="po"
-      choiceLookupTableName="DwellingCovCovOpt"
-      codeIdentifier="DPDW_PropertyValuation_HOE"
-      coverageColumn="ChoiceTerm2"
-      lookupTableName="DwellingCovTerm"
-      modelType="Other"
-      priority="1720"
-      public-id="DPDW_PropertyValuation_HOE"
-      required="true"
-      restrictionModel="pd"
-      valueType="count">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="DPDW_PropertyValuation_HOEnocurrency"
-          defaultValue="Actual"
-          public-id="DPDW_PropertyValuation_HOEnocurrency"/>
-      </DefaultsSet>
-      <Options>
-        <CovTermOpt
-          codeIdentifier="zkqj4pm9pbjebcponp490o0umeb"
-          optionCode="Replacement"
-          priority="1721"
-          public-id="zkqj4pm9pbjebcponp490o0umeb"
-          value="2.0"/>
-        <CovTermOpt
-          codeIdentifier="z4jjad9v10smkdtsrcd1u64jtdb"
-          optionCode="Actual"
-          priority="1621"
-          public-id="z4jjad9v10smkdtsrcd1u64jtdb"
-          value="1.0"/>
-      </Options>
-    </OptionCovTermPattern>
     <DirectCovTermPattern
       aggregationModel="po"
       codeIdentifier="DPDW_PersonalPropertyLimit_HOE"
@@ -116,5 +83,15 @@
           value="500000.0000"/>
       </Options>
     </OptionCovTermPattern>
+    <TypekeyCovTermPattern
+      codeIdentifier="DPDW_PropertyValuation_HOE_Ext"
+      coverageColumn="TypeKeyTerm1"
+      defaultValue="PersProp_ACV"
+      lookupTableName="DwellingCovTerm"
+      priority="1920"
+      public-id="DPDW_PropertyValuation_HOE_Ext"
+      required="true"
+      typefilter="PersonalPropertyFilter"
+      typelist="ValuationMethod"/>
   </CovTerms>
 </CoveragePattern>

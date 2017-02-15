@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="Describes a rule evaluated during validation"
+  displayName="Validation Rule"
+  entity="ValidationRule_Ext"
+  final="true"
+  supertype="Rule_Ext">
+  <typekey
+    name="WarningLevel"
+    nullok="true"
+    typelist="ValidationLevel"/>
+  <typekey
+    name="ErrorLevel"
+    nullok="true"
+    typelist="ValidationLevel"/>
+  <array
+    arrayentity="ValidationRuleVehType_Ext"
+    cascadeDelete="true"
+    desc="The vehicle types for which this rule should be evaluated"
+    name="VehicleTypes"/>
+  <implementsInterface
+    iface="gw.accelerator.ruleeng.IExecutableRule"
+    impl="gw.accelerator.ruleeng.ValidationRuleExecution"/>
+  <index
+    desc="Validation rules are always queried by warning and error level."
+    name="valrule_ext1">
+    <indexcol
+      keyposition="1"
+      name="WarningLevel"/>
+    <indexcol
+      keyposition="2"
+      name="ErrorLevel"/>
+  </index>
+</subtype>

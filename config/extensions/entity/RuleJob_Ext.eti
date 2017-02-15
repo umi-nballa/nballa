@@ -1,0 +1,40 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="Association between a rules framework accelerator Rule and the Job types to which it applies"
+  entity="RuleJob_Ext"
+  exportable="true"
+  table="rulejob_ext"
+  type="joinarray">
+  <foreignkey
+    columnName="RuleID"
+    desc="The rules framework accelerator rule that owns this relationship"
+    fkentity="Rule_Ext"
+    name="Rule"
+    nullok="false"/>
+  <typekey
+    desc="A Job type for which this rule should be applied"
+    name="JobType"
+    nullok="false"
+    typelist="Job"/>
+  <column
+    default="false"
+    desc="When JobType is Submission, this flag indicates whether it applies to a full application or a quick quote."
+    name="FullApplication"
+    nullok="false"
+    type="bit"/>
+  <index
+    desc="Ensures that the same job type can't be associated to a rule than once"
+    name="rulejob_extu1"
+    unique="true">
+    <indexcol
+      keyposition="1"
+      name="RuleID"/>
+    <indexcol
+      keyposition="2"
+      name="JobType"/>
+    <indexcol
+      keyposition="3"
+      name="FullApplication"/>
+  </index>
+</entity>

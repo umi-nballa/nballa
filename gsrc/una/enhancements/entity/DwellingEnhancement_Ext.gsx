@@ -120,10 +120,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   property get FloodZoneOrOverride() : typekey.FloodZoneOverridden_Ext
   {
-    if(this.OverridePropFloodVal_Ext and this.PropFloodValOverridden_Ext!=null)
-      return this.PropFloodValOverridden_Ext
-    else
-      return this.PropFloodVal_Ext
+    var floodZoneOverrideValue:FloodZoneOverridden_Ext
+    if(this.OverridePropFloodVal_Ext and this.PropFloodValOverridden_Ext!=null){
+      floodZoneOverrideValue = this.PropFloodValOverridden_Ext
+    }
+    else if(!this.OverridePropFloodVal_Ext){
+      floodZoneOverrideValue = this.PropFloodVal_Ext
+    }
+    return floodZoneOverrideValue
   }
 
   property get NumberStoriesOrOverride() : typekey.NumberOfStories_HOE{
@@ -202,6 +206,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }
 
+  //Flood Risk Type field on the dwelling screen will have value when Flood Coverage Question in dwelling Screen is Yes
   function getFloodRiskTypeValue(coverable:Dwelling_HOE):FloodRiskType_Ext{
     if(coverable.HODW_FloodCoverage_HOE_ExtExists){
       if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
@@ -211,6 +216,8 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
       }else if(coverable.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
         coverable.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
       }
+    }else{
+      coverable.FloodRiskType_Ext = null
     }
     return coverable.FloodRiskType_Ext
   }

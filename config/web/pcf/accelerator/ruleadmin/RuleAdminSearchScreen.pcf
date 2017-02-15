@@ -1,0 +1,60 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <Screen
+    id="RuleAdminSearchScreen">
+    <Variable
+      initialValue="gw.accelerator.ruleeng.RuleRepositoryFactory.RuleRepository.Database"
+      name="repositoryClass"/>
+    <Variable
+      initialValue="new gw.accelerator.ruleeng.RuleAdminUIController(repositoryClass)"
+      name="uiController"/>
+    <Toolbar
+      visible="false /*gw.api.system.PLDependenciesGateway.getServerMode().isDev()*/">
+      <ToolbarRangeInput
+        editable="true"
+        id="repositoryClass"
+        label="displaykey.Accelerator.RulesFramework.RuleAdminExt.DataSource"
+        optionLabel="VALUE.Label"
+        required="true"
+        value="repositoryClass"
+        valueRange="gw.accelerator.ruleeng.RuleRepositoryFactory.RuleRepository.AllValues"
+        visible="false">
+        <PostOnChange
+          onChange="onRepositoryChange()"
+          target="RuleSearchResultsLV"/>
+      </ToolbarRangeInput>
+    </Toolbar>
+    <SearchPanel
+      criteriaName="searchCriteria"
+      id="ruleSearchPanel"
+      resultsName="searchResults"
+      search="searchCriteria.searchRules(uiController.Repository)"
+      searchCriteria="new gw.accelerator.ruleeng.RuleSearchCriteria()"
+      searchOnEnter="true"
+      searchResultsType="java.util.List&lt;Rule_Ext&gt;">
+      <PanelRef
+        def="RuleSearchDV(uiController, searchCriteria)">
+        <TitleBar
+          title="&quot;Search&quot;"/>
+      </PanelRef>
+      <PanelRef
+        def="RuleSearchResultsLV(searchResults, uiController)"
+        id="RuleSearchResultsLV"
+        widgets="RuleSearchResultsLV">
+        <TitleBar
+          title="displaykey.Accelerator.RulesFramework.RuleAdminExt.SearchResults"/>
+        <Toolbar>
+          <ToolbarButtonSetRef
+            iterators="RuleSearchResultsLV.searchResultsLV"
+            toolbarButtonSet="RuleAdminRuleLVToolbarButtonSet(searchResults, uiController)"/>
+        </Toolbar>
+      </PanelRef>
+    </SearchPanel>
+    <Code><![CDATA[function onRepositoryChange() {
+  uiController.changeRepositoryType(repositoryClass)
+  util.SearchUtil.search()
+}]]></Code>
+  </Screen>
+</PCF>

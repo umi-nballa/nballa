@@ -11,6 +11,14 @@ uses com.guidewire.pl.web.controller.UserDisplayableException
 
 enhancement NoteEnhancement : Note {
 
+  public function useTemplate(template : gw.plugin.note.INoteTemplateDescriptor) {
+    this.SecurityType = NoteSecurityType.get(template)
+    this.Topic = template.Topic
+    this.Subject = template.Subject
+    this.Author = User.util.CurrentUser
+    this.Body = template.Body
+  }
+
   static function getLevelDisplayString(value : Object) : String {
     if(value typeis Account) {
       return displaykey.Java.Note.AccountLevelNote(value)
@@ -120,7 +128,7 @@ enhancement NoteEnhancement : Note {
   }
   // uim-svallabhapurapu
   private function policyTemplates() : String[]{
-      return {"New Bsuiness","Inspection Review","Renewal Review"}
+      return {"New Bsuiness","Inspection Review","Renewal Review", "Alarm Credit Removed"}
   }
 
 }

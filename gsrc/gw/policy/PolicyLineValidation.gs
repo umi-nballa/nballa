@@ -1,11 +1,14 @@
 package gw.policy
 
+uses com.guidewire.pl.system.dependency.PLDependencies
 uses gw.api.system.PCDependenciesGateway
+uses gw.accelerator.ruleeng.RulesEngineInterface
 uses gw.plugin.exchangerate.IFXRatePlugin
 uses gw.validation.PCValidationBase
 uses gw.validation.PCValidationContext
 
 uses java.util.HashSet
+uses gw.lob.common.PolicyInfoValidation
 
 /**
  * Base implementation for {@link gw.validation.PCValidation PCValidation} for {@link PolicyLine PolicyLines}
@@ -14,6 +17,7 @@ uses java.util.HashSet
 abstract class PolicyLineValidation<T extends PolicyLine> extends PCValidationBase {
 
   var _line : T as Line
+  var _policyInfoValidation : PolicyInfoValidation as PolicyInfoValidation
 
   /**
    * @param valContext a context to store validation issues
@@ -22,6 +26,7 @@ abstract class PolicyLineValidation<T extends PolicyLine> extends PCValidationBa
   construct(valContext : PCValidationContext, polLine : T) {
     super(valContext)
     _line = polLine
+    _policyInfoValidation = new PolicyInfoValidation(valContext, polLine.Branch)
   }
 
   /**
@@ -36,6 +41,7 @@ abstract class PolicyLineValidation<T extends PolicyLine> extends PCValidationBa
     checkCoverageCurrenciesOnEachCoverableAreSelfConsistent()
     checkAffinityGroupSelectedIsWithinPolicyTerm()
     checkAffinityGroupSelectedIsAvailableInPolicyPeriodBaseState()
+    PolicyInfoValidation.validate()
     doValidate()
   }
 

@@ -161,7 +161,7 @@ class SubmissionTestUtil_HOE {
       var dwellingCov = new CoverageBuilder(DwellingCov_HOE)
         .withPatternCode("HODW_Personal_Property_HOE")
         .withOptionCovTerm("HODW_PropertyHO4_6Limit_HOE", "25,000")
-        .withOptionCovTerm("HODW_PropertyValuation_HOE", "Actual Cash Value")
+        .withOptionCovTerm("HODW_PropertyValuation_HOE_Ext", "Actual Cash Value")
       dwelling = dwelling.withCoverage(dwellingCov)
     } else if (policyType.equalsIgnoreCase("HO3")) {
       var dwellingCov = new CoverageBuilder(DwellingCov_HOE)
@@ -171,7 +171,7 @@ class SubmissionTestUtil_HOE {
       dwellingCov = new CoverageBuilder(DwellingCov_HOE)
         .withPatternCode("HODW_Personal_Property_HOE")
         .withOptionCovTerm("HODW_PersonalPropertyLimit_HOE", "50%")
-        .withOptionCovTerm("HODW_PropertyValuation_HOE", "Actual Cash Value")
+        .withOptionCovTerm("HODW_PropertyValuation_HOE_Ext", "Actual Cash Value")
       dwelling = dwelling.withCoverage(dwellingCov)
     }
     var dwellingCov = new CoverageBuilder(DwellingCov_HOE)

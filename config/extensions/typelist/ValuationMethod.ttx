@@ -233,10 +233,25 @@
     <category
       code="AZ"
       typelist="Jurisdiction"/>
+    <category
+      code="DP3_Ext"
+      typelist="HOPolicyType_HOE"/>
+    <category
+      code="LPP_Ext"
+      typelist="HOPolicyType_HOE"/>
+    <category
+      code="TDP1_Ext"
+      typelist="HOPolicyType_HOE"/>
+    <category
+      code="TDP2_Ext"
+      typelist="HOPolicyType_HOE"/>
+    <category
+      code="TDP3_Ext"
+      typelist="HOPolicyType_HOE"/>
   </typecode>
   <typecode
     code="PersProp_ReplCost"
-    desc="Replacement Cost Replacement cost"
+    desc="Personal Property Replacement cost"
     name="Replacement Cost"
     priority="7">
     <category
@@ -281,5 +296,46 @@
     <category
       code="AZ"
       typelist="Jurisdiction"/>
+    <category
+      code="DP3_Ext"
+      typelist="HOPolicyType_HOE"/>
+    <category
+      code="LPP_Ext"
+      typelist="HOPolicyType_HOE"/>
+    <category
+      code="TDP3_Ext"
+      typelist="HOPolicyType_HOE"/>
   </typecode>
+  <typecode
+    code="RoofSurfacing_ACV"
+    desc="Roof Surfacing Actual Cash Value"
+    name="Actual Cash Value"/>
+  <typefilter
+    desc="Valuation Method to Actual Cash Value Loss Settlement Windstorm or Hail Losses to Roof Surfacing"
+    name="ACValueLossSettlementWindstormorHailLossestoRoofSurfacing">
+    <include
+      code="RoofSurfacing_ACV"/>
+  </typefilter>
+  <typefilter
+    desc="ACV Type Filter"
+    name="ACV_Type">
+    <include
+      code="ACV"/>
+    <include
+      code="PersProp_ACV"/>
+    <include
+      code="RoofSurfacing_ACV"/>
+  </typefilter>
+  <typefilter
+    desc="Replacement Cost Type Filter"
+    name="ReplCost_Type">
+    <include
+      code="PersProp_ReplCost"/>
+    <include
+      code="PersProp_ReplCostValWACVHoldback"/>
+    <include
+      code="ReplCost"/>
+    <include
+      code="ReplWRoof"/>
+  </typefilter>
 </typelistextension>

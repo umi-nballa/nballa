@@ -102,7 +102,11 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _earthquakeConstructionType = dwellingCov?.Dwelling?.EarthquakeConstrn_Ext
     }
     if(dwellingCov typeis HODW_Earthquake_HOE and dwellingCov?.Dwelling?.HODW_Earthquake_HOEExists){
-      _earthquakeConstructionType = dwellingCov?.Dwelling?.EarthquakeConstrn_Ext
+      if(baseState == Jurisdiction.TC_AZ){
+          _earthquakeConstructionType = EarthquakeConstrn_Ext.TC_FRAME
+      } else{
+        _earthquakeConstructionType = dwellingCov?.Dwelling?.EarthquakeConstrn_Ext
+      }
       _earthquakeDeductible = dwellingCov?.Dwelling?.HODW_Earthquake_HOE?.HODW_EarthquakeDed_HOETerm?.Value
       if(dwellingCov?.Dwelling?.OverrideEarthquakeTer_Ext){
         _earthquakeTerritoryValueInt = dwellingCov?.Dwelling?.EarthquakeTerOverridden_Ext.toInt()
@@ -128,6 +132,13 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
         if(_hasOtherStructuresRentedToOthersLimit){
             _otherStructuresRentedToOthersLimit = dwellingCov?.Dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
         }
+      }
+      if(dwellingCov?.Dwelling?.HODW_BuildingAdditions_HOE_ExtExists and
+          dwellingCov?.Dwelling?.HODW_BuildingAdditions_HOE_Ext?.HasHODW_BuildAddInc_HOETerm){
+          _buildingAdditionsAndAlterationsLimit = dwellingCov?.Dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
+      }
+      if(dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOEExists and dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE?.HasHODW_OrdinanceLimit_HOETerm){
+         _ordinanceOrLawLimit = dwellingCov?.Dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value
       }
     }
   }

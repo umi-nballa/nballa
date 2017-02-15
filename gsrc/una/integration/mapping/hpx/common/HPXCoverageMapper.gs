@@ -8,6 +8,7 @@ uses gw.api.domain.covterm.GenericCovTerm
 uses gw.xml.XmlElement
 uses gw.xml.date.XmlDate
 uses gw.api.domain.covterm.TypekeyCovTerm
+uses una.integration.mapping.hpx.helper.HPXRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -244,6 +245,12 @@ abstract class HPXCoverageMapper {
       cov.WrittenAmt.Amt = currentPremium != null ? currentPremium : 0.00
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
       cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
+      var ratingHelper = new HPXRatingHelper()
+      var consentToRateAmount = 0
+      if (cost != null) {
+        consentToRateAmount = cost != null ? ratingHelper.getRate(currentCoverage.PolicyLine.AssociatedPolicyPeriod, cost.Cost, "amountWithNoCTR") : 0
+      }
+      cov.ConsentToRatePremiumAmt.Amt = consentToRateAmount != null ? consentToRateAmount : 0
     }
     return cov
   }

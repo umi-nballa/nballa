@@ -55,6 +55,7 @@ public final class HORateRoutineNames {
   public static final var WATERCRAFT_LIABILITY_COVERAGE_RATE_ROUTINE : String = "UNAHOWatercraftLiabilityCoverageRateRoutine"
   public static final var FIGA_SURCHARGE_RATE_ROUTINE : String = "UNAHOFIGASurchargeRateRoutine"
   public static final var EMPA_SURCHARGE_RATE_ROUTINE : String = "UNAHOEMPASurchargeRateRoutine"
+  public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP2_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovGroup2RateRoutine"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -112,4 +113,5 @@ public final class HORateRoutineNames {
   public static final var EQ_COVERAGE_RATE_ROUTINE_HO6 :String = "UNAHO6EarthquakeCoverageRateRoutine"
   public static final var UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE :String = "UNAHOUnitOwnersCovAIncreasedLimitRateRoutine"
   public static final var UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE :String = "UNAHOUnitOwnersCovASpecialLimitsRateRoutine"
+  public static final var LOSS_HISTORY_CREDIT_RATE_ROUTINE :String = "UNAHOLossHistoryCreditRateRoutine"
 }

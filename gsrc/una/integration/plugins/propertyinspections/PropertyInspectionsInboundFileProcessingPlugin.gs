@@ -12,6 +12,7 @@ uses una.model.PropertyInspectionsInboundData
 uses java.text.SimpleDateFormat
 uses java.util.Date
 uses una.integration.framework.file.inbound.model.FileRecords
+uses una.utils.ActivityUtil
 
 /**
  * The InboundFileProcessingPlugin implementation to process Inspection Vendors inbound files
@@ -24,6 +25,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
    final static var DATE_FORMAT_RECEIVED = "MMddyyyy"
    final static var LAST_INSPECTION_DATE_FORMAT = "yyyy-MM-dd"
    final static var NOTES_SUBJECT = "Inspection Vendors"
+   var CLASS_NAME=PropertyInspectionsInboundFileProcessingPlugin.Type.DisplayName
 
   /**
    * The BeanIO Stream Name to read the inbound file
@@ -33,13 +35,13 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
   }
 
   /**
-   * Validates the fileName format for lockbox integration.
+   * Validates the fileName format for Property Inspections integration.
    */
   override function validateFile(fileName: String, fileRecords: FileRecords) {
-    LOGGER.debug("Entering the function validateFile() of LockboxRetailFileProcessingPlugin")
+    LOGGER.debug("Entering the function validateFile() of "+CLASS_NAME)
     // Validates the file name and extract required data from file name and add it to the header record.
     PropertyInspectionsInboundUtil.validateFileName(fileName)
-    LOGGER.debug("Exiting the function validateFile() of LockboxRetailFileProcessingPlugin")
+    LOGGER.debug("Exiting the function validateFile() of "+CLASS_NAME)
   }
 
 
@@ -48,7 +50,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
    * This function runs in a transaction
    */
   override function processDetailRecord(fileName: String, headerRecord: FileRecordInfo, batchHeaderRecord: FileRecordInfo, detailRecord: FileRecordInfo, bundle: Bundle) {
-    LOGGER.debug("Entering the function processDetailRecord() ")
+    LOGGER.debug("Entering the function processDetailRecord() of "+CLASS_NAME)
 
     // Retrieving required data from the Detail Record and processing the data
     var policyRecord = detailRecord.RecordObject as PropertyInspectionsInboundData
@@ -71,7 +73,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var formatter = new SimpleDateFormat(DATE_FORMAT_RECEIVED)
       var date = formatter.parse((FilenameUtils.removeExtension(fileName)).substring(17,25))
       var sdf= new SimpleDateFormat(LAST_INSPECTION_DATE_FORMAT)
-      var lastInspectionDate=sdf.format(date)
+      var lastInspectionDate : Date = (sdf.format(date)) as Date
       var policyChange = new PolicyChange()
       policyChange = bundle.add(policyChange)
       policyChange.Description = POLICY_CHANGE_DESCRIPTION
@@ -80,11 +82,14 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var policyChangePeriod = policyChange.Periods.length == 1 ? policyChange.Periods[0] : null
       policyChangePeriod.DateLastInspection_Ext= lastInspectionDate
       policyChangePeriod.addNote(NoteTopicType.TC_GENERAL, NOTES_SUBJECT,policyRecord.Notes)
+      var activity=ActivityUtil.createActivityAutomatically(policyChangePeriod, "PIO")
+
       policyChangePeriod.PolicyChangeProcess.requestQuote()
       policyChangePeriod.markValidQuote()
       policyChangePeriod.PolicyChangeProcess.bind()
+
       LOGGER.debug("The Policy Change transaction successfully completed : "+policyNumber)
     }
-    LOGGER.debug("Exiting the function processDetailRecord() ")
+    LOGGER.debug("Exiting the function processDetailRecord() of "+CLASS_NAME)
   }
 }

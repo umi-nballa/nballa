@@ -19,6 +19,7 @@ uses gw.api.policy.AbstractPolicyLineMethodsImpl
 uses gw.rating.AbstractRatingEngine
 uses gw.lob.gl.rating.GLSysTableRatingEngine
 uses java.util.Map
+uses una.rating.gl.UNAGLRatingEngine
 
 @Export
 class GLPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
@@ -243,11 +244,11 @@ class GLPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
     exposure.BasisAmount = Math.round((exposure.BasisAmount.doubleValue() * ratio)) as int
   }
 
-  override function createRatingEngine(method: RateMethod, parameters: Map<RateEngineParameter, Object>): AbstractRatingEngine<GLLine> {
+  override function createRatingEngine(method: RateMethod, parameters: Map<RateEngineParameter, Object>): AbstractRatingEngine<GeneralLiabilityLine> {
     if (RateMethod.TC_SYSTABLE == method) {
       return new GLSysTableRatingEngine(_line as GLLine)
     }
-    return null
+    return null//new UNAGLRatingEngine(_line as GLLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }
 
   override property get BaseStateRequired(): boolean {

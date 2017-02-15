@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="pcf.xsd">
+  <Worksheet
+    id="ImportResultsWorksheet"
+    tabLabel="&quot;Import Results&quot;"
+    title="&quot;Import Results&quot;">
+    <LocationEntryPoint
+      signature="ImportResultsWorksheet(message : String)"/>
+    <Scope
+      location="RuleAdmin()"/>
+    <Variable
+      name="message"
+      type="String"/>
+    <Screen>
+      <Toolbar>
+        <ToolbarButton
+          action="CurrentLocation.cancel()"
+          id="closeButton"
+          label="displaykey.Button.Close"/>
+      </Toolbar>
+      <Verbatim
+        label="message"/>
+    </Screen>
+  </Worksheet>
+</PCF>

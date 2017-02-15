@@ -21,6 +21,13 @@ class PALineStepsValidator {
     context.raiseExceptionIfProblemsFound()
   }
 
+  static function validatePolicyInfoStep(paLine : PersonalAutoLine) {
+    PCValidationContext.doPageLevelValidation(\ context -> {
+      var validator = new PALineValidation(context, paLine)
+      validator.PolicyInfoValidation.validate()
+    })
+  }
+
   /**
    * Driver validation
    * Validates the Drivers in the policy.

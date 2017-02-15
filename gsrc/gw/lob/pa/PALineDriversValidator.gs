@@ -1,4 +1,7 @@
 package gw.lob.pa
+
+uses gw.accelerator.ruleeng.RulesEngineInterface
+uses gw.api.util.Logger
 uses gw.policy.PolicyLineValidation
 uses gw.validation.PCValidationContext
 uses java.lang.UnsupportedOperationException
@@ -42,7 +45,15 @@ class PALineDriversValidator extends PolicyLineValidation<entity.PersonalAutoLin
    * </ul>
    */
   override function doValidate() {
-    qualifiedGoodDriver()
+
+	/********************************************************************************************************************
+    * Rules Framework:  PALineDriversValidator's qualifiedGoodDriver validation implemented
+    *                   under the Rules Framework via the Rules Engine call below.
+    *********************************************************************************************************************/
+
+    invokeRulesEngine()
+
+/*    qualifiedGoodDriver()
     appliedGoodDriverDiscount()
     licenseInfoRequired()
     licenseNumberUnique()
@@ -50,7 +61,14 @@ class PALineDriversValidator extends PolicyLineValidation<entity.PersonalAutoLin
     primaryAddressRequiredFields()
     accountDriverNumberOfIncidents()
     verifyAndOrderMVRs()
-    verifyBirthDateAndIncidents()
+    verifyBirthDateAndIncidents()*/
+  }
+
+  /********************************************************************************************************************
+  * Rules Framework:  Example LOB validation Rules Engine Hook
+  *********************************************************************************************************************/
+  public function invokeRulesEngine() {
+    RulesEngineInterface.validate(paLine.Branch, Context, "PolicyDrivers", "PersonalAutoLine")
   }
 
   /**
@@ -65,6 +83,7 @@ class PALineDriversValidator extends PolicyLineValidation<entity.PersonalAutoLin
   function validateQQ() {
     Context.addToVisited(this, "validateQQ")
     verifyBirthDateAndIncidents()
+    invokeRulesEngine()
   }
 
 

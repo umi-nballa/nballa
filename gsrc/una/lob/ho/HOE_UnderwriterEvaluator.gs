@@ -5,7 +5,15 @@ uses gw.lob.common.AbstractUnderwriterEvaluator
 uses gw.policy.PolicyEvalContext
 uses java.util.Set
 uses gw.lang.reflect.IType
+uses gw.api.database.Query
+uses java.lang.reflect.Method
+uses java.lang.reflect.Constructor
+uses gw.accelerator.ruleeng.RulesEngineInterface
 uses gw.lob.ho.HODwellingUtil_HOE
+uses java.lang.Class
+uses java.lang.NoSuchMethodException
+uses java.lang.Exception
+
 /**
  * User: dvillapakkam
  * Date: 5/18/16
@@ -71,15 +79,20 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
   }
   override function onPrequote() {
     relatedPriorLossforHomeownersOrDwelling()
-    //Sunil
-     submissionUWIssues()
-    createDwellingRelatedUwIssuesForHO()
+    // executeUWIssues()
+   invokeRulesEngine()
+     createDwellingRelatedUwIssuesForHO()
+  }
 
-
+  function invokeRulesEngine() {
+    RulesEngineInterface.evaluatePolicy(
+        _policyEvalContext,
+            "HomeownersLine_HOE")
   }
 
   override function onPreBind(){
     validateQuestions()
+    invokeRulesEngine()
     //This method will be called to create UW Issues related to Credit
     createsCreditRelatedUwIssuesForHO()
     createDwellingRelatedUwIssuesForHOPB()
@@ -328,7 +341,7 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         var creditReportErrors =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditReportErrors(creditStatus)
         _policyEvalContext.addIssue("CreditReportErrors","CreditReportErrors", creditReportErrors,creditReportErrors)
       }
-      if (creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED){
+      if ((creditStatus == null || creditStatus == CreditStatusExt.TC_NOT_ORDERED) && (!_policyEvalContext.Period.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext)){
         //adds below UW Issue if the CreditStatus is NULL or has NOT ORDERED yet
         var creditScoreRequiredForBinding =  \ -> displaykey.Web.SubmissionWizard.CreditReporting.Validation.CreditScoreRequiredForBinding
         _policyEvalContext.addIssue("CreditReportNotOrdered", "CreditReportNotOrdered", creditScoreRequiredForBinding, creditScoreRequiredForBinding)

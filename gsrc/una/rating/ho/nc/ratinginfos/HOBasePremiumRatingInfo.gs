@@ -56,6 +56,9 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     _acvSettlement = dwelling?.HODW_LossSettlementWindstorm_HOE_ExtExists
     if(dwelling.HODW_Personal_Property_HOEExists){
       _increasedPersonalProperty = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0
+      if(_increasedPersonalProperty){
+        _increasedPersonalPropertyValue = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
+      }
     }
 
     _ordinanceOrLawValue = dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm?.Value

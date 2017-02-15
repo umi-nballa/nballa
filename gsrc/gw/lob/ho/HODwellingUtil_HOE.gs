@@ -60,6 +60,13 @@ class HODwellingUtil_HOE {
      return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
   }
 
+  static function filterTunaConstructionTypeStateSpecific(dwelling : Dwelling_HOE, constype:typekey.ConstructionType_HOE[]) : List<typekey.ConstructionType_HOE> {
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
+      return typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys
+    }
+    return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
+  }
+
   /*
 *  Author: uim-svallabhapurapu
 *  Change Log: New function for Roof Deck TypeList value range based on state
@@ -768,8 +775,10 @@ class HODwellingUtil_HOE {
     var values = ResidenceType_HOE.getTypeKeys(false)
     values.each( \ elt -> {
       if(elt.Categories.contains(dwelling.HOPolicyType)) {
-        //'Condo' should be available in ResidenceType_HOE typelist For DP/LPP: Allow in FL OR NC ONLY
+        //'Condo' should be available in the ResidenceType_HOE typelist For DP/LPP: Allow in FL OR NC ONLY
         if(elt.Code == ResidenceType_HOE.TC_CONDO && ((dwelling.HOPolicyType == TC_DP3_Ext || dwelling.HOPolicyType == TC_LPP_Ext) && (dwelling.PolicyPeriod.BaseState==TC_NC || dwelling.PolicyPeriod.BaseState==TC_FL))){
+          residenceType.add(elt)
+        }else if(elt.Code != ResidenceType_HOE.TC_CONDO){
           residenceType.add(elt)
         }
       }

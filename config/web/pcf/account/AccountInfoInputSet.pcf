@@ -196,7 +196,8 @@
         required="true"
         value="period.Policy.Account.AccountOrgType"
         valueRange="period.entityValueRange()">
-        <PostOnChange/>
+        <PostOnChange
+          onChange="period.Policy.Account.raiseWarning(period); period.Policy.Account.raiseWarningForCL(period)"/>
       </RangeInput>
       <Input
         editable="period.Policy.Account.Editable"
@@ -240,14 +241,20 @@
         label="displaykey.Web.PolicyInfo.HowManyPropertiesOfAnyTypeAreUnderCommonOwnershipWithTheMajorityOwnerOfTheLLC"
         required="true"
         value="period.Policy.Account.MajorityOwnerLLC_Ext"
-        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC"/>
+        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC">
+        <PostOnChange
+          onChange="period.Policy.Account.raiseWarning_LLC(period)"/>
+      </TypeKeyInput>
       <!-- row 42 -->
       <TypeKeyInput
         editable="true"
         id="UnderCommonOwnership"
         label="displaykey.Web.PolicyInfo.HowManyPropertiesOfAnyTypeAreUnderCommonOwnership"
         value="period.Policy.Account.UnderCommonOwnership_Ext"
-        visible="typekey.AccountOrgType.TF_COMMONOWNERSHIP_EXT.TypeKeys.contains(period.Policy.Account.AccountOrgType)"/>
+        visible="typekey.AccountOrgType.TF_COMMONOWNERSHIP_EXT.TypeKeys.contains(period.Policy.Account.AccountOrgType)">
+        <PostOnChange
+          onChange="period.Policy.Account.raiseWarning_NonLLC(period)"/>
+      </TypeKeyInput>
       <!-- row 43 -->
       <Input
         editable="true"

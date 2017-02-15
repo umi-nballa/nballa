@@ -174,6 +174,9 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       case BP7LineCovCost:
           result = cost.Coverage
           break
+      case BP7ClassificationCovCost:
+          result = cost.Coverage
+          break
     }
     return result
   }

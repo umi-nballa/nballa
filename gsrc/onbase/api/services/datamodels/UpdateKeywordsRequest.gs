@@ -172,7 +172,7 @@ class UpdateKeywordsRequest {
         updateRequest.addUpdateAction(ActionType.ADD, KeywordMap.legacypolicynumber.OnBaseName, newLegacyPolicyNumber)
       }
     }
-    return updateRequest
+    return !updateRequest.Actions.Empty ? updateRequest : null
   }
 
   private static function findInsuredDiffs(insuredsOnNewPeriod: PolicyAddlNamedInsured[], insuredsOnOldPeriod: PolicyAddlNamedInsured[]) : PolicyAddlNamedInsured[]{

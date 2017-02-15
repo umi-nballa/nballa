@@ -665,4 +665,36 @@ class PolicyPeriodValidation extends PCValidationBase {
     }
   }
 
+  // uim svallabhapurapu - policy info story line number 438 validation of ownership %  (only for CL lines)
+    public static function validatePolicyInfoScreen(period : PolicyPeriod){
+       PCValidationContext.doPageLevelValidation( \ context -> {
+           var val = new PolicyPeriodValidation(context, period)
+
+         if(period.BP7LineExists or period.CPLineExists){
+           val.ownershipPercentage(period)
+          }
+         val.trusteeOccupant(period)
+       })
+  }
+   private function ownershipPercentage(period : PolicyPeriod){
+
+     for(ani in period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured) ){
+        if(ani.OwnershipPercntge < 100){
+          Result.addWarning(period,TC_DEFAULT,"If Ownership % is < 100 for Primary Named Insured, then Additional Named Insureds required until total ownership % = 100")
+          break
+          }
+   }
+
+   }
+   // function to trigger error - line number 295
+  private function trusteeOccupant(period : PolicyPeriod) {
+    for(tr in period.TrustResidings){
+        if(tr.TrustResident == typekey.TrustResident_Ext.TC_OCCUPANTNOTPARTYTOTRUST) {
+          Result.addError(period,TC_DEFAULT, "Dwelling Fire policy may be better suited for this risk")
+          break
+        }
+    }
+
+  }
+
 }

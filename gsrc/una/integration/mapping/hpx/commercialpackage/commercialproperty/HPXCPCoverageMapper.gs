@@ -71,7 +71,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
   function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, previousCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     if(currentCovTerm.PatternCode == "CPBldgCovHurricaneDeductible_EXT") {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
-
+      deductible.Description = currentCovTerm.Pattern.Name
       var value = currentCovTerm.OptionValue.Value
       var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
       deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
@@ -90,6 +90,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
   private function createCPWindstormProtectiveDevices(currentCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = ""
     limit.CoverageCd = currentCoverage.PatternCode
     limit.CoverageSubCd = ""
     limit.CurrentTermAmt.Amt = 0
@@ -109,6 +110,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as CPBuilding).CPProtectiveSafeguards_EXT.scheduledItem_Ext
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.CPProtectiveSafeguard_EXT
       limit.CurrentTermAmt.Amt = 0

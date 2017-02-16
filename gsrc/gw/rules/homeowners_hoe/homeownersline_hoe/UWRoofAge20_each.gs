@@ -12,7 +12,7 @@ uses gw.plugin.util.CurrentUserUtil
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWQuestionRoofAge20_each implements IRuleCondition<HomeownersLine_HOE>{
+class UWRoofAge20_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
    if((typekey.RoofType.TF_COMPROOFTYPES.TypeKeys.contains(homeowner.Dwelling.RoofingMaterialOverridden_Ext)  ||
         typekey.RoofType.TF_COMPROOFTYPES.TypeKeys.contains(homeowner.Dwelling.RoofType)) &&

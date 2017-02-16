@@ -37,37 +37,42 @@ class HPXRatingHelper {
   }
 
   function getRate(policyPeriod : PolicyPeriod, cost : Cost, variable : String) : double {
-    var container : WorksheetTreeNodeContainer
-    var locationContainer : WorksheetTreeNodeContainer
-    var lineContainer : WorksheetTreeNodeContainer
-    var coverageContainer : WorksheetTreeNodeContainer
+    var container1 : WorksheetTreeNodeContainer
+    var container2 : WorksheetTreeNodeContainer
+    var item : String
+//    var locationContainer : WorksheetTreeNodeContainer
+//    var lineContainer : WorksheetTreeNodeContainer
+//    var coverageContainer : WorksheetTreeNodeContainer
     var rate : double
     switch(typeof cost){
       case BP7LineCovCost:
-        container = getWorksheetContainer(policyPeriod, cost.PolicyLine.DisplayName)
-        var item = cost.PolicyLine.DisplayName + ": " +  cost.Coverage.DisplayName
-        rate = getRate(container, item, variable)
+        container1 = getWorksheetContainer(policyPeriod, cost.PolicyLine.DisplayName)
+        item = cost.PolicyLine.DisplayName + ": " +  cost.Coverage.DisplayName
+        container2 = getWorksheetContainerFromParent(container1, item)
+        rate = getRate(container1, variable)
         break
       case BP7LocationCovCost:
-        lineContainer = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
-        container = getWorksheetContainerFromParent(lineContainer, cost.Location.DisplayName)
-        var item = cost.NameOfCoverable
-        rate = getRate(container, item, variable)
+        container1 = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
+        container2 = getWorksheetContainerFromParent(container1, cost.Location.DisplayName)
+        item = cost.NameOfCoverable
+        container2 = getWorksheetContainerFromParent(container1, item)
+        rate = getRate(container2, variable)
         break
       case BP7BuildingCovCost:
-        lineContainer = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
-        locationContainer = getWorksheetContainerFromParent(lineContainer, cost.DisplayLocation.DisplayName)
-        var buildingsContainer = getWorksheetContainerFromParent(locationContainer, "Buildings")
-        var item = cost.Building.Building.DisplayName + ": " + cost.Coverage.DisplayName
-        rate = getRate(container, item, variable)
+        container1 = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
+        container2 = getWorksheetContainerFromParent(container1, cost.DisplayLocation.DisplayName)
+        container1 = getWorksheetContainerFromParent(container2, "Buildings")
+        item = cost.Building.Building.DisplayName + ": " + cost.Coverage.DisplayName
+        container2 = getWorksheetContainerFromParent(container1, item)
+        rate = getRate(container2, variable)
         break
       case BP7ClassificationCovCost:
-        lineContainer = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
-        locationContainer = getWorksheetContainerFromParent(lineContainer, cost.DisplayLocation.DisplayName)
-        var classificationsContainer = getWorksheetContainerFromParent(locationContainer, "Classifications")
-        var item = cost.Classification.Building.Building.DisplayName + ": " + cost.Classification.DisplayName + ": " + cost.Coverage.DisplayName
-        container = getWorksheetContainerFromParent(classificationsContainer, item )
-        rate = getRate(container, variable)
+        container1 = getWorksheetContainer(policyPeriod, cost.Line.DisplayName)
+        container2 = getWorksheetContainerFromParent(container1, cost.DisplayLocation.DisplayName)
+        container1 = getWorksheetContainerFromParent(container2, "Classifications")
+        item = cost.Classification.Building.Building.DisplayName + ": " + cost.Classification.DisplayName + ": " + cost.Coverage.DisplayName
+        container2 = getWorksheetContainerFromParent(container1, item)
+        rate = getRate(container2, variable)
         break
     }
     return rate

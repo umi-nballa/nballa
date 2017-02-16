@@ -98,9 +98,11 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
 
         // Create location-level coverages
         for (cov in boploc.Coverages.sortBy(\ c -> c.Pattern.Priority)) {
-          var ccCov = new CCPropertyCoverage()
-          populateCoverage(ccCov, cov)
-          locRU.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+          if (!isCoverageExcluded(cov)) {
+            var ccCov = new CCPropertyCoverage()
+            populateCoverage(ccCov, cov)
+            locRU.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+          }
         }
 
         // Process all the buildings on location
@@ -121,16 +123,20 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
 
             // Process building-level coverages
             for (cov in bld.Coverages.sortBy(\ c -> c.Pattern.Priority)) {
-              var ccCov = new CCPropertyCoverage()
-              populateCoverage(ccCov, cov)
-              ru.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+              if (!isCoverageExcluded(cov)) {
+                var ccCov = new CCPropertyCoverage()
+                populateCoverage(ccCov, cov)
+                ru.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+              }
             }
 
             // Process building-level classification coverages
             for(classCov in bld.Classifications.Coverages){
-              var ccCov = new CCPropertyCoverage()
-              populateCoverage(ccCov, classCov)
-              ru.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+              if (!isCoverageExcluded(classCov)) {
+                var ccCov = new CCPropertyCoverage()
+                populateCoverage(ccCov, classCov)
+                ru.Coverages.add(new CCRiskUnit_Coverages( ccCov ))
+              }
             }
 
             // For building-level additional interests (e.g., lienholders), add a location-level contact in CC

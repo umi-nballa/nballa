@@ -196,8 +196,13 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     var renewalPeriod = _policyEvalContext.Period
     var basedOn = renewalPeriod.BasedOn
 
+
     try {
-      var result = searchForClaims(basedOn)
+
+      if(renewalPeriod.PolicyNumber != null )  {
+       var result = searchForClaims(basedOn)
+
+
       var totalIncurred = result.Claims.where(\ c -> c.TotalIncurred != null).sum(_policyEvalContext.Period.PreferredSettlementCurrency, \ c -> c.TotalIncurred)
       var claimCount = result.Claims.Count
 
@@ -208,6 +213,7 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       var writtenPremium = basedOn.TotalPremiumRPT
       if (writtenPremium != null and not writtenPremium.IsZero and claimCount != 0 ) {
         createIncidenceOfClaim(totalIncurred, writtenPremium, claimCount, basedOn)
+        }
       }
     } catch (ex : NoResultsClaimSearchException) {
       // No actions necessary
@@ -238,6 +244,7 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     })
     return result
   }
+
 
   private function sumOfPreQuoteRiskFactor() {
     if(_policyEvalContext.Period.Job?.createsNewPolicy() and

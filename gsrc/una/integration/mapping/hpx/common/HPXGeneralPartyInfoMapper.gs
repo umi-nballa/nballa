@@ -34,6 +34,7 @@ class HPXGeneralPartyInfoMapper {
     addr.Addr2 = address.AddressLine2 != null ? address.AddressLine2 : ""
     addr.Addr3 = address.AddressLine3 != null ? address.AddressLine3 : ""
     addr.City = address.City
+    addr.County = address.County
     addr.StateProvCd = address.State.Code
     addr.StateProv = address.State.Description
     addr.PostalCode = address.PostalCode
@@ -43,8 +44,10 @@ class HPXGeneralPartyInfoMapper {
   function createProducerOrganization(organization : Organization) : wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType {
     var generalPartyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.GeneralPartyInfoType()
     generalPartyInfo.NameInfo.CommlName.CommercialName = organization.Name
+    generalPartyInfo.NameInfo.CommlName.IndexName = organization.AgenyNumber_Ext
     generalPartyInfo.Communications.PhoneInfo.PhoneTypeCd = organization.Contact.PrimaryPhone != null ? organization.Contact.PrimaryPhone : null
     generalPartyInfo.Communications.PhoneInfo.PhoneNumber = organization.Contact.PrimaryPhoneValue != null ? organization.Contact.PrimaryPhoneValue : ""
+    generalPartyInfo.addChild(new XmlElement("Addr", createAddr(organization.Contact.PrimaryAddress)))
     return generalPartyInfo
   }
 

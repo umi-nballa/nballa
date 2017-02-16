@@ -107,6 +107,7 @@ abstract class HPXCoverageMapper {
 
   function createDirectLimitInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.Pattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
@@ -124,6 +125,7 @@ abstract class HPXCoverageMapper {
 
   function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.OptionValue.Value as double
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
@@ -140,6 +142,7 @@ abstract class HPXCoverageMapper {
   }
   function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+    deductible.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.OptionValue.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
@@ -148,11 +151,14 @@ abstract class HPXCoverageMapper {
     deductible.CoverageSubCd = currentCovTerm.PatternCode
     deductible.DeductibleDesc = ""
     deductible.FormatText = ""
+    deductible.NetChangeAmt.Amt = 0
+    deductible.WrittenAmt.Amt = 0
     deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
     return deductible
   }
   function createDirectDeductibleInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
     var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+    deductible.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.Pattern.ValueType
     deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
@@ -161,12 +167,15 @@ abstract class HPXCoverageMapper {
     deductible.CoverageSubCd = currentCovTerm.PatternCode
     deductible.DeductibleDesc = ""
     deductible.FormatText = ""
+    deductible.NetChangeAmt.Amt = 0
+    deductible.WrittenAmt.Amt = 0
     deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
     return deductible
   }
 
   function createOtherOptionCovTerm(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     limit.FormatText = currentCovTerm?.OptionValue?.Value != null ? currentCovTerm.OptionValue.Value : ""
     limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
@@ -182,6 +191,7 @@ abstract class HPXCoverageMapper {
 
   function createOtherDirectCovTerm(coverage : Coverage, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
@@ -197,6 +207,7 @@ abstract class HPXCoverageMapper {
 
   function createOtherGenericCovTerm(coverage : Coverage, currentCovTerm : GenericCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0
@@ -212,6 +223,7 @@ abstract class HPXCoverageMapper {
 
   function createTypekeyCovTerm(coverage : Coverage, currentCovTerm : TypekeyCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     limit.FormatText = currentCovTerm?.Value != null ? currentCovTerm.Value : ""
     limit.CurrentTermAmt.Amt = 0
     limit.FormatPct = 0

@@ -16,9 +16,8 @@ class HPXHODwellConstructionMapper {
                         policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearBuilt : ""
     construction.YearBuilt.setMonth(1)
     construction.YearBuilt.setDay(1)
-    //construction.addChild(new XmlElement("Construction", createConstructionCd(policyPeriod)))
-    construction.ConstructionCd = createConstructionCd(policyPeriod) != null ? createConstructionCd(policyPeriod) : ""
-    construction.Description = policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType.Description : ""
+    construction.ConstructionCd = policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext : policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType
+    construction.Description = policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext.Description : policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType.Description
     construction.NumStories = policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber != null ? policyPeriod.HomeownersLine_HOE.Dwelling.StoriesNumber : 0
     construction.BldgArea.NumUnits = policyPeriod.HomeownersLine_HOE.Dwelling.ApproxSquareFootage != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ApproxSquareFootage : 0
     construction.BldgArea.UnitMeasurementCd = "Sqft"
@@ -32,11 +31,5 @@ class HPXHODwellConstructionMapper {
     roofingMaterial.RoofMaterialCd = policyPeriod.HomeownersLine_HOE.Dwelling.RoofType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.RoofType : typekey.RoofType.TC_OTHER
     roofingMaterial.RoofMaterialDesc = policyPeriod.HomeownersLine_HOE.Dwelling.RoofType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.RoofType.Description : ""
     return roofingMaterial
-  }
-
-  function createConstructionCd(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType {
-    var constructionCd = new wsi.schema.una.hpx.hpx_application_request.types.complex.ConstructionType()
-    constructionCd.ConstructionCd = policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType : null
-    return constructionCd
   }
 }

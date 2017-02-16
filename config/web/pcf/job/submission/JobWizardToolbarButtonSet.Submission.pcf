@@ -60,6 +60,12 @@
       showConfirmMessage="releaseLockShowConfirmMessage"
       visible="submissionProcess.canReleaseLock()"/>
     <ToolbarButton
+      action="jobWizardHelper.invalidateIterators(); jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod),true) "
+      id="QuickRate"
+      label="displaykey.Accelerator.QuickRate.Button"
+      shortcut="Q"
+      visible="submissionProcess.canRequestQuote().Okay &amp;&amp; una.utils.EnvironmentUtil.isLocal()"/>
+    <ToolbarButton
       action="jobWizardHelper.invalidateIterators(); jobWizardHelper.requestQuote(policyPeriod, jobWizardHelper.getQuoteStep(policyPeriod)) "
       id="QuoteOrReview"
       label="displaykey.Job.Operation.Quote"

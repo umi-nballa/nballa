@@ -135,7 +135,7 @@ class RateFactorUtil {
   *  Sets the wind exclusion factor, if the wind exclusion is applicable
    */
   static function setWindExclusionFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
-    if(line.BP7WindstormOrHailExcl_EXTExists){
+    if(!line.BP7WindstormOrHailExcl_EXTExists){
       var constructionType = building?.ConstructionType
       var territoryCode = building?.Location?.OverrideTerritoryCode_Ext? building?.Location?.TerritoryCodeOverridden_Ext : building?.Location?.TerritoryCodeTunaReturned_Ext
       _windExclusionFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_windstorm_and_hail_exclusion", {constructionType, territoryCode})

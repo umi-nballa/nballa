@@ -118,7 +118,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "BP7OnPremisesLimit_EXT") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
-      limit.Description = currentCovTerm.Pattern.Description
+      limit.Description = currentCovTerm.Pattern.Name
       limit.CurrentTermAmt.Amt = 0
       limit.NetChangeAmt.Amt = 0
       limit.FormatPct = 0
@@ -136,6 +136,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
   override function createOtherOptionCovTerm(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "BP7OrdinLawCov_EXT") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = currentCovTerm.Pattern.Name
       limit.FormatText = currentCovTerm?.OptionValue?.OptionCode != null ? currentCovTerm.OptionValue.OptionCode : ""
       limit.CurrentTermAmt.Amt = 0
       limit.FormatPct = 0
@@ -188,6 +189,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdOwnersLandLeasedToInsuredLocation_EXT.ScheduledItems
     for (item in scheduleItems) {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = ""
     limit.CoverageCd = currentCoverage.PatternCode
     limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
     limit.CurrentTermAmt.Amt = 0
@@ -220,6 +222,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdOwnersLandLeasedToInsuredLine_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -252,6 +255,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdControllingInterestLocation_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -283,6 +287,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdControllingInterest.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -315,6 +320,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdDesignatedPersonOrgLocation_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -345,6 +351,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdDesignatedPersonOrg.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -375,6 +382,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdCoOwnerInsdPremises.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -406,6 +414,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdCoOwnerInsdPremisesLine_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -437,6 +446,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdGrantorOfFranchiseEndorsement.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -468,6 +478,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdGrantorOfFranchiseLine_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -499,6 +510,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdLessorsLeasedEquipmt.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -530,6 +542,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdLessorsLeasedEquipmtLine_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = ""
       limit.CurrentTermAmt.Amt = 0
@@ -561,6 +574,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdManagersLessorsPremises.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -592,6 +606,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdManagersLessorsPremisesLine_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -623,6 +638,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Location).BP7AddlInsdMortgageeAssigneeReceiver.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -654,6 +670,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Line).BP7AddlInsdMortgageeAsigneeReceiverLine_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInsured.AdditionalInsuredType != null ? item.AdditionalInsured.AdditionalInsuredType : ""
       limit.CurrentTermAmt.Amt = 0
@@ -685,6 +702,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as BP7Building).BP7AddlIntrstLosspyblprovi_EXT.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.AdditionalInterest.AdditionalInterestType != null ? item.AdditionalInterest.AdditionalInterestType : ""
       limit.CurrentTermAmt.Amt = 0

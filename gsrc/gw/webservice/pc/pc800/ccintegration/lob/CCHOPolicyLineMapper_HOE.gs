@@ -195,7 +195,7 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     }else if(isLimitOrDeductiblePercentage(covTerm)){
       ccCovTerms = createDollarAmountFromPercentage(covTerm)
     }else if (isIdentityTheftPerDayTLIncomeSubLimit(covTerm)){
-      //Fix for defect
+      //Fix for defect DE1223 # New Coverages added - HO Product Model
       ccCovTerms = createCCClassificationCovTermLessDetails(covTerm as OptionCovTerm)
     } else{ //is another covTerm handled by the super class
       ccCovTerms = super.getCCCovTerms(covTerm)

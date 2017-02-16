@@ -10,7 +10,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWQuestionFloor1Costal_each implements IRuleCondition<HomeownersLine_HOE>{
+class UWFloor1Costal_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
    if((homeowner.Dwelling.FloorLocation_Ext == "1") &&
         (homeowner.Dwelling.HOLocation.DistToCoast_Ext == typekey.DistToCoastOverridden_Ext.TC_0TO500FT ||

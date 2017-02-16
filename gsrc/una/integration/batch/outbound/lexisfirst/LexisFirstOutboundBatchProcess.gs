@@ -31,7 +31,7 @@ class LexisFirstOutboundBatchProcess extends FileCreationBatch {
     var fileNameTimestamp = PropertiesHolder.getProperty(Lexis_First_FILENAME_TIMESTAMP_KEY)
     var fileExt = PropertiesHolder.getProperty(Lexis_First_FILE_EXT_KEY)
 
-    return "${folder}${fileName}-${startTime.toStringWithFormat(fileNameTimestamp)}.${fileExt}"
+    return "${folder}${fileName}_${startTime.toStringWithFormat(fileNameTimestamp)}.${fileExt}"
   }
 
   /**

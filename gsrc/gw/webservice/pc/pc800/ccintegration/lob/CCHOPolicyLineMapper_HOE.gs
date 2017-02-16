@@ -194,7 +194,10 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
       ccCovTerms = createClassificationTermFromOption(covTerm as OptionCovTerm)
     }else if(isLimitOrDeductiblePercentage(covTerm)){
       ccCovTerms = createDollarAmountFromPercentage(covTerm)
-    }else{ //is another covTerm handled by the super class
+    }else if (isIdentityTheftPerDayTLIncomeSubLimit(covTerm)){
+      //Fix for defect DE1223 # New Coverages added - HO Product Model
+      ccCovTerms = createCCClassificationCovTermLessDetails(covTerm as OptionCovTerm)
+    } else{ //is another covTerm handled by the super class
       ccCovTerms = super.getCCCovTerms(covTerm)
     }
     return ccCovTerms
@@ -210,7 +213,11 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
            }.contains(pcCovTerm.PatternCode)
 
   }
-  
+
+  private function isIdentityTheftPerDayTLIncomeSubLimit(pcCovTerm : CovTerm) : boolean{
+    return (pcCovTerm.PatternCode == "HODW_PerDayTLIncomeSublimit_HOE") and pcCovTerm typeis OptionCovTerm
+  }
+
   private function isTheftBasisOptionCovTerm(pcCovTerm : CovTerm): boolean{
     return (pcCovTerm.PatternCode == "DPDW_TheftBasis_HOE") and pcCovTerm typeis OptionCovTerm
   }
@@ -243,6 +250,19 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   private function choosePercentageBasis(){
     _dwellingBasisForPercentage = _hoLine.Dwelling.DwellingLimitCovTerm.Value
     _propertyBasisForPercentage = _hoLine.Dwelling.PersonalPropertyLimitCovTerm.Value
+  }
+
+  private function createCCClassificationCovTermLessDetails(covTerm: OptionCovTerm): CCCovTerm[]{
+    var ccCovTerms: CCCovTerm[]
+    var ccCovTermsList = new ArrayList<CCCovTerm>()
+
+    var ccStrCovTerm = new CCClassificationCovTerm()
+    setBasicCovTermFields(ccStrCovTerm, covTerm)
+    ccStrCovTerm.Description = covTerm.OptionValue.Description
+    ccCovTermsList.add(ccStrCovTerm)
+    ccCovTerms = ccCovTermsList.toTypedArray()
+
+    return ccCovTerms
   }
 
   /* covers the special case where an option cov term is used as classification.

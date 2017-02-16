@@ -54,7 +54,12 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
       for (pLoc in policyPeriod.BP7Line.BP7Locations*.PolicyLocation){
           location = pLoc.DisplayName + " " + pLoc.PostalCode
         }
-      }
+      } else if (policyPeriod.CPLineExists) {
+         location = policyPeriod.PrimaryLocation.AddressLine1 + "," +
+                    policyPeriod.PrimaryLocation.City + "," +
+                    policyPeriod.PrimaryLocation.State + " " +
+                    policyPeriod.PrimaryLocation.PostalCode
+    }
     return location
   }
 }

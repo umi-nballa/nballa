@@ -14,7 +14,7 @@ class HPXPaymentOptionMapper {
 
  function createPaymentOptions(policyPeriod : PolicyPeriod) : java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType> {
     var paymentOptions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType>()
-    var paymntOptions = policyPeriod.retrievePaymentPlans()    //retrievePaymentPlansWithoutSettingBillingAmounts()
+    var paymntOptions = policyPeriod.retrievePaymentPlans()
     var installmentOptions = paymntOptions.InstallmentPlans
     for (installmentOption in installmentOptions) {
       var paymentOption = new wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType()

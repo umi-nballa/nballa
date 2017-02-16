@@ -27,13 +27,10 @@ class HPXDwellMapper implements HPXStructureMapper {
     var dwell = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellType()
     dwell.addChild(new XmlElement("DwellRating", createDwellRating(policyPeriod)))
     dwell.addChild(new XmlElement("BldgProtection", buildingProtectionMapper.createBuildingProtection(policyPeriod)))
-    //dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased : null
     dwell.PurchaseDt = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? new XmlDate(policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased) : null
-    /*
-    if (policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null) {
-      dwell.PurchaseDt.Year = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased
+    if (policyPeriod.HomeownersLine_HOEExists) {
+      dwell.PolicyTypeCd = policyPeriod.HomeownersLine_HOE.HOPolicyType
     }
-    */
     dwell.addChild(new XmlElement("Construction", dwellConstructionMapper.createDwellConstruction(policyPeriod)))
     dwell.addChild(new XmlElement("DwellInspectionValuation", createDwellInspectionValuation(policyPeriod)))
     dwell.addChild(new XmlElement("DwellOccupancy", createDwellOccupancy(policyPeriod)))

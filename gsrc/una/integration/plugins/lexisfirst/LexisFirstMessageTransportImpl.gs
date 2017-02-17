@@ -20,6 +20,12 @@ class LexisFirstMessageTransportImpl implements MessageTransport {
   public static final var CHANGEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnChangePeriod"
   public static final var REINSTATEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnReinstatePeriod"
   public static final var RENEWPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnRenewPeriod"
+
+  /**
+   * This function is invoked during the LexisFirst Custom event
+   * @param message
+   * @param payLoad
+   */
   override function send(message: Message, payLoad: String) {
     _logger.info(" Entering  " + CLASS_NAME + " :: " + "" + "For LexisFirst Message Transport  ")
     try {

@@ -19,7 +19,7 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-20 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2017-02-16 14:34:10.603</LastStatusChangeDate>
+    <LastStatusChangeDate>2017-02-17 16:16:37.454</LastStatusChangeDate>
     <LastTableRowEdit>2016-11-11 11:38:50.073</LastTableRowEdit>
     <PolicyLine>CPLine</PolicyLine>
     <RateBookCalcRoutines>
@@ -19682,22 +19682,22 @@
     <str8/>
   </DefaultRateFactorRow>
   <CalcRoutineDefinition public-id="pcdb:18101">
-    <Code>CPEquipmentBreakdownEndorsementRateRoutine</Code>
-    <Description>CP Equipment Breakdown Endorsement Rate Routine</Description>
+    <Code>CPEquipmentBreakdownEndorsementGroupIIRateRoutine</Code>
+    <Description>CP Equipment Breakdown Endorsement Group II Rate Routine</Description>
     <Description_L10N_ARRAY>
       <CalcRoutineDefinition_Description_L10N public-id="pcdb:4701">
         <Language>en_US_edg</Language>
         <Owner public-id="pcdb:18101"/>
-        <Value>CP Equipment Breakdown Endorsement Rate Routine</Value>
+        <Value>CP Equipment Breakdown Endorsement Group II Rate Routine</Value>
       </CalcRoutineDefinition_Description_L10N>
     </Description_L10N_ARRAY>
     <Jurisdiction>FL</Jurisdiction>
-    <Name>CP Equipment Breakdown Endorsement Rate Routine</Name>
+    <Name>CP Equipment Breakdown Endorsement Group II Rate Routine</Name>
     <Name_L10N_ARRAY>
       <CalcRoutineDefinition_Name_L10N public-id="pcdb:9601">
         <Language>en_US_edg</Language>
         <Owner public-id="pcdb:18101"/>
-        <Value>CP Equipment Breakdown Endorsement Rate Routine</Value>
+        <Value>CP Equipment Breakdown Endorsement Group II Rate Routine</Value>
       </CalcRoutineDefinition_Name_L10N>
     </Name_L10N_ARRAY>
     <ParameterSet public-id="pcdb:6001"/>
@@ -20648,9 +20648,9 @@
     <Version>1</Version>
   </CalcRoutineDefinition>
   <CalcRoutineParameterSet public-id="pcdb:6001">
-    <Code>CPBuildingParameterSet</Code>
+    <Code>CPGroupIIBuildingParameterSet</Code>
     <IncludesCost>true</IncludesCost>
-    <Name>CP Building Parameter Set</Name>
+    <Name>CP Building Group II Parameter Set</Name>
     <Name_L10N_ARRAY>
       <CalcRoutineParameterSet_Name_L10N public-id="pcdb:2401">
         <Language>en_US_edg</Language>
@@ -20672,7 +20672,7 @@
         <CalcRoutineParameterSet public-id="pcdb:6001"/>
         <Code>buildingRatingInfo_Ext</Code>
         <CoveragePattern/>
-        <ParamType>una.rating.cp.common.CPBuildingRatingInfo</ParamType>
+        <ParamType>una.rating.cp.common.CPGroupIIBuildingRatingInfo</ParamType>
         <UseWrapper>false</UseWrapper>
         <WrapperClass/>
         <Writable>false</Writable>
@@ -20680,20 +20680,20 @@
     </Parameters>
     <PolicyLinePatternCode>CPLine</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pcdb:6602">
+    <CalcRoutineParameterSet public-id="pcdb:6001"/>
+    <Code>buildingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.cp.common.CPGroupIIBuildingRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcdb:6601">
     <CalcRoutineParameterSet public-id="pcdb:6001"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcdb:6602">
-    <CalcRoutineParameterSet public-id="pcdb:6001"/>
-    <Code>buildingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.cp.common.CPBuildingRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>

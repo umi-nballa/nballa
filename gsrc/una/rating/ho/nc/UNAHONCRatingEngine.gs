@@ -126,6 +126,9 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
         //  rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
           break
+      case HODW_PermittedIncOcp_HOE_Ext:
+          ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
+          break
 
 
 
@@ -262,6 +265,24 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       addCost(costData)
     _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
   }
+
+  /**
+   *  Rate the Permitted Incidental Occupancies Coverage
+   */
+  function ratePermittedIncidentalOccupanciesCoverage(dwellingCov: HODW_PermittedIncOcp_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: ratePermittedIncidentalOccupanciesCoverage ", this.IntrinsicType)
+    var dwellingRatingInfo = new HONCDwellingRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+
+    if (_logger.DebugEnabled)
+      _logger.debug("Permitted Incidental Occupancies Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
 
 
   /**

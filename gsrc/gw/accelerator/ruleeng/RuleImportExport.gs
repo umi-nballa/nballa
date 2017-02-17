@@ -71,6 +71,8 @@ class RuleImportExport {
 
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       // Retire all rules in the system to replace them with the imported file
+      print("Path is " + new File("").AbsolutePath)
+      print("Path is " + new File("").CanonicalPath)
       Query.make(Rule_Ext).select().each(
           \rule -> bundle.add(rule).remove())
       bundle.commit()

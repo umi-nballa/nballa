@@ -21,20 +21,20 @@ class CPRatingStep {
   var _executor : CPRateRoutineExecutor
   var _daysInTerm : int
   var _rateCache : PolicyPeriodFXRateCache
-  var _buildingRatingInfo : CPBuildingRatingInfo
+  var _groupIIBuildingRatingInfo : CPGroupIIBuildingRatingInfo
 
   construct(line : CPLine, building : CPBuilding, executor : CPRateRoutineExecutor, daysInTerm : int, rateCache : PolicyPeriodFXRateCache){
     _line = line
     _executor = executor
     _daysInTerm = daysInTerm
     _rateCache = rateCache
-    _buildingRatingInfo = new CPBuildingRatingInfo(building)
+    _groupIIBuildingRatingInfo = new CPGroupIIBuildingRatingInfo(building)
   }
 
   function getRateRoutineCode(coveragePattern : ClausePattern) : String {
     switch (coveragePattern) {
       case "CPEquipmentBreakdownEnhance_EXT":
-        return CPRateRoutineNames.CP_EQUIPMENT_BREAKDOWN_ENDORSEMENT_RATE_ROUTINE
+        return CPRateRoutineNames.CP_EQUIPMENT_BREAKDOWN_ENDORSEMENT_GROUPII_RATE_ROUTINE
       default :
         throw "Rating is not supported for ${coveragePattern.ClauseName}"
     }
@@ -45,7 +45,7 @@ class CPRatingStep {
     var costData = new CPBuildingCovGroup2CostData(sliceToRate.start, sliceToRate.end, buildingCov.Currency, _rateCache, buildingCov.FixedId, state)
     costData.init(_line)
     costData.NumDaysInRatedTerm = _daysInTerm
-    var rateRoutineParameterMap = createBuildingParameterSet(costData)
+    var rateRoutineParameterMap = createGroupIIBuildingParameterSet(costData)
     _executor.execute(getRateRoutineCode(buildingCov.Pattern), buildingCov, rateRoutineParameterMap, costData)
     costData.copyStandardColumnsToActualColumns()
     return costData
@@ -54,10 +54,10 @@ class CPRatingStep {
   /**
    * creates the parameter set with building rating infos
    */
-  private function createBuildingParameterSet(costData : CPCostData<CPCost>) : Map<CalcRoutineParamName, Object>{
+  private function createGroupIIBuildingParameterSet(costData : CPCostData<CPCost>) : Map<CalcRoutineParamName, Object>{
     return
         {TC_POLICYLINE         -> _line,
-         TC_BUILDINGRATINGINFO_EXT -> _buildingRatingInfo,
+         TC_BUILDINGRATINGINFO_EXT -> _groupIIBuildingRatingInfo,
          TC_COSTDATA           -> costData}
   }
 }

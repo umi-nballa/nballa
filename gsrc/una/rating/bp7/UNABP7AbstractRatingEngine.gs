@@ -99,12 +99,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     return costsWithNoWindowCosts
   }
 
-  function getFirstBuildingInPrimaryLocation() : BP7Building{
-    var primaryLocation = PolicyLine.Branch.PrimaryLocation
-    var buildingsInPrimaryLocation = PolicyLine.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
-    return buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
-  }
-
   abstract function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange)
 
   abstract function rateLocationCoverage(location: BP7LocationCov, sliceToRate: DateRange)

@@ -299,8 +299,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     if(PolicyLine.BaseState == Jurisdiction.TC_CA){
       var firelineAdjustedHazardScore = dwelling?.HOLocation?.OverrideFirelineAdjHaz_Ext ? dwelling?.HOLocation?.FirelineAdjHazOverridden_Ext : dwelling?.HOLocation?.FirelineAdjHaz_Ext
-      if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )//Numeric and firelineAdjustedHazardScore?.toInt() > 6)
-        rateBrushHazardSurcharge(dateRange)
+      if(firelineAdjustedHazardScore != null)
+        if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )
+          rateBrushHazardSurcharge(dateRange)
     }
 
 

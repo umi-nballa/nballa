@@ -10,7 +10,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWQuestionSingleWallCostal_each implements IRuleCondition<HomeownersLine_HOE>{
+class UWSingleWallCostal_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
     if((homeowner.Dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||

@@ -5,11 +5,9 @@ uses gw.api.system.PLConfigParameters
 uses gw.plugin.Plugins
 uses gw.plugin.billing.IBillingSystemPlugin
 uses gw.plugin.billing.bc800.PolicyInfoUtil
-
-
 uses java.lang.Exception
 uses java.lang.IllegalStateException
-
+uses una.integration.plugins.lexisfirst.LexisFirstMessageTransportImpl
 
 @Export
 class BillingMessageTransport implements MessageTransport {
@@ -29,12 +27,7 @@ class BillingMessageTransport implements MessageTransport {
   public static final var WAIVEFINALAUDIT_MSG : String = "WaiveFinalAudit"
   public static final var NEWFINALAUDIT_MSG : String = "ScheduleFinalAudit"
   public static final var UPDATECONTACT_MSG : String = "ContactChanged"
-  public static final var CREATEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnCreatePeriod"
-  public static final var ISSUEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnIssuePeriod"
-  public static final var CHANGEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnChangePeriod"
-  public static final var REINSTATEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnReinstatePeriod"
-  public static final var REWRITEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnRewritePeriod"
-  public static final var RENEWPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnRenewPeriod"
+
 
 
 
@@ -73,7 +66,7 @@ class BillingMessageTransport implements MessageTransport {
           plugin.createPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
           //Added below code for lexis First Integration
           if(!(policyPeriod.Submission.BindOption.Code == typekey.BindOption.TC_BINDONLY))
-          policyPeriod.addEvent(CREATEPERIOD_LEXIS_FIRST_MSG)
+          policyPeriod.addEvent(LexisFirstMessageTransportImpl.CREATEPERIOD_LEXIS_FIRST_MSG)
           break
         case CANCELPERIOD_MSG:
           if(not (policyPeriod.Job typeis Cancellation)){
@@ -88,7 +81,7 @@ class BillingMessageTransport implements MessageTransport {
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
             //Added below code for lexis First Integration
-            policyPeriod.addEvent(CHANGEPERIOD_LEXIS_FIRST_MSG)
+            policyPeriod.addEvent(LexisFirstMessageTransportImpl.CHANGEPERIOD_LEXIS_FIRST_MSG)
           }
 
           break
@@ -100,7 +93,7 @@ class BillingMessageTransport implements MessageTransport {
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
           }
             //Added below code for lexis First Integration
-            policyPeriod.addEvent(ISSUEPERIOD_LEXIS_FIRST_MSG)
+            policyPeriod.addEvent(LexisFirstMessageTransportImpl.ISSUEPERIOD_LEXIS_FIRST_MSG)
 
           break
 
@@ -110,7 +103,7 @@ class BillingMessageTransport implements MessageTransport {
           }
           plugin.issueReinstatement(policyPeriod, getTransactionId(message))
           //Added below code for lexis First Integration
-          policyPeriod.addEvent(REINSTATEPERIOD_LEXIS_FIRST_MSG)
+          policyPeriod.addEvent(LexisFirstMessageTransportImpl.REINSTATEPERIOD_LEXIS_FIRST_MSG)
           break
         case RENEWPERIOD_MSG:
           if(not (policyPeriod.Job typeis Renewal)){
@@ -120,7 +113,7 @@ class BillingMessageTransport implements MessageTransport {
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.renewPolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
           //Added below code for lexis First Integration
-          policyPeriod.addEvent(RENEWPERIOD_LEXIS_FIRST_MSG)
+          policyPeriod.addEvent(LexisFirstMessageTransportImpl.RENEWPERIOD_LEXIS_FIRST_MSG)
           break
         case REWRITEPERIOD_MSG:
           if(not (policyPeriod.Job typeis Rewrite)){
@@ -128,8 +121,6 @@ class BillingMessageTransport implements MessageTransport {
           }
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.rewritePolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
-          //Added below code for lexis First Integration
-          policyPeriod.addEvent(REWRITEPERIOD_LEXIS_FIRST_MSG)
           break
         case FINALAUDIT_MSG:
           if(not (policyPeriod.Job typeis Audit)){

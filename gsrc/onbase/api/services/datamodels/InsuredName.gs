@@ -23,9 +23,4 @@ class InsuredName {
     _lastName = lastName
     _middleName = middleName
   }
-
-/*  override function toString() : String {
-
-    return ((_firstName != null ? _firstName + " " : "") + (_middleName  != null ? _middleName + " " : "") + (_lastName ?: "")).trim()
-  }*/
 }

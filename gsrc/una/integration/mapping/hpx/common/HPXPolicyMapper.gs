@@ -25,6 +25,7 @@ uses una.integration.mapping.hpx.helper.HPXJobHelper
 uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses java.math.BigDecimal
 uses una.utils.PropertiesHolder
+uses java.util.Date
 
 /**
  * Created with IntelliJ IDEA.
@@ -193,6 +194,13 @@ abstract class HPXPolicyMapper {
     policyInfo.TierCd = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier
     policyInfo.TierDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier.Description
     policyInfo.BranchDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Branch
+    var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
+    for (paymentOption in paymentOptions) {
+      policyInfo.addChild(new XmlElement("PaymentOption", paymentOption))
+    }
+    var quoteMapper = new HPXQuoteMapper()
+    var quote = quoteMapper.createQuote(policyPeriod)
+    policyInfo.addChild(new XmlElement("QuoteInfo", quote))
     return policyInfo
   }
 

@@ -5,6 +5,7 @@ uses gw.api.domain.covterm.OptionCovTerm
 uses gw.api.domain.covterm.DirectCovTerm
 uses java.math.BigDecimal
 uses una.integration.mapping.hpx.helper.HPXRatingHelper
+uses gw.xml.XmlElement
 
 /**
  * Created with IntelliJ IDEA.
@@ -83,6 +84,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createLossAssessmentLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.OptionValue.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
@@ -99,6 +101,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createOrdinanceLawLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
@@ -117,6 +120,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
 
   function createAdditionalDwellingCovLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
@@ -136,6 +140,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
   override function createDirectLimitInfo(coverage : Coverage, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(currentCovTerm.PatternCode == "HODW_BuildAddInc_HOE") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = currentCovTerm.Pattern.Name
       var personalPropertyLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm
       var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double - personalPropertyLimit.Value as double *0.10) : 0.00
       limit.CurrentTermAmt.Amt = value
@@ -156,6 +161,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
   override function createOtherDirectCovTerm(coverage : Coverage, currentCovTerm : DirectCovTerm, transactions : java.util.List<Transaction>): wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     if(coverage.PatternCode == "HOLI_BusinessPursuits_HOE_Ext") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = currentCovTerm.Pattern.Name
       var value = currentCovTerm.Value
       var valueType = currentCovTerm.Pattern.ValueType
       limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
@@ -176,11 +182,48 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     }
   }
 
+  override function createOptionDeductibleInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType {
+    if(currentCovTerm.PatternCode == "HODW_OtherPerils_Ded_HOE") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Name
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
+      deductible.FormatPct = getCovTermPercentage(value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      deductible.WrittenAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP).ActualTermAmount.Amount
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
+    } else if(currentCovTerm.PatternCode == "HODW_Hurricane_Ded_HOE") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Name
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
+      deductible.FormatPct = getCovTermPercentage(value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      deductible.WrittenAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND).ActualTermAmount.Amount
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
+    } else {
+    return super.createOptionDeductibleInfo(coverage, currentCovTerm, transactions)
+  }
+  }
+
   private function createOtherStructuresOnPremisesSchedule(currentCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {
     var limits = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>()
     var scheduleItems = (currentCoverage.OwningCoverable as Dwelling_HOE).HODW_OtherStructuresOnPremise_HOE.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.ScheduleType
       limit.CurrentTermAmt.Amt = 0
@@ -220,6 +263,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var costs = transactions.Cost
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.ScheduleType
       limit.CurrentTermAmt.Amt = item.ExposureValue != null ? item.ExposureValue : 0.00
@@ -257,6 +301,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as Dwelling_HOE).HODW_PersonalPropertyOffResidence_HOE.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = item.ScheduleType
       limit.CurrentTermAmt.Amt = item.ExposureValue != null ? item.ExposureValue : 0.00
@@ -293,6 +338,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as HomeownersLine_HOE).HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = ""
       limit.CurrentTermAmt.Amt = 0
@@ -329,6 +375,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as Dwelling_HOE).HODW_AdditionalInsuredSchedResidencePremises.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = "AdditionalInsured"
       limit.CurrentTermAmt.Amt = 0
@@ -360,6 +407,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as Dwelling_HOE).HODW_AdditionalInsuredSchedProp.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = "AdditionalInsured"
       limit.CurrentTermAmt.Amt = 0
@@ -392,6 +440,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as Dwelling_HOE).HODW_AdditionalInsuredSchedDescribedLocation.ScheduledItems
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = "AdditionalInsured"
       limit.CurrentTermAmt.Amt = 0
@@ -423,6 +472,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as HomeownersLine_HOE).HOLI_AdditionalInsuredSchedPersonalLiability.scheduledItem_Ext
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = "AdditionalInsured"
       limit.CurrentTermAmt.Amt = 0
@@ -454,6 +504,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = (currentCoverage.OwningCoverable as HomeownersLine_HOE).HOLI_AdditionalInsuredSchedPropertyManager.scheduledItem_Ext
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = "AdditionalInsured"
       limit.CurrentTermAmt.Amt = 0
@@ -485,6 +536,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var scheduleItems = currentCoverage.PolicyLine.AssociatedPolicyPeriod.TrustResidings
     for (item in scheduleItems) {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+      limit.Description = ""
       limit.CoverageCd = currentCoverage.PatternCode
       limit.CoverageSubCd = "ResidenceHeldInTrust" + item.ID
       limit.CurrentTermAmt.Amt = 0

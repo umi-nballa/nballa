@@ -11,7 +11,8 @@
       <Label
         label="displaykey.Web.Policy.PriorHistory.PriorPolicies"/>
       <ListViewInput
-        labelAbove="true">
+        labelAbove="true"
+        validationExpression="validate()">
         <Toolbar>
           <IteratorButtons
             iterator="PriorPolicyLV"/>
@@ -112,7 +113,13 @@
         </ListViewPanel>
       </ListViewInput>
     </InputColumn>
-    <Code><![CDATA[function CarrierReq() : boolean{
+    <Code><![CDATA[function validate():String{
+  if (policyPeriod.Policy.PriorPolicies.HasElements &&  policyPeriod.Policy.PriorPolicies.first()?.EffectiveDate  == null)
+    return "Please enter Prior Policy Information"
+  else return null
+}
+
+function CarrierReq() : boolean{
   for(pp in policyPeriod.Policy.PriorPolicies.CarrierType)   {
      if(pp == typekey.CarrierType_Ext.TC_UNA)
        return true

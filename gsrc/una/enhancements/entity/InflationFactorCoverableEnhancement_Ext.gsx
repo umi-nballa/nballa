@@ -29,35 +29,55 @@ enhancement InflationFactorCoverableEnhancement_Ext: entity.Coverable {
   }
 
   private property get InflationFactor() : BigDecimal{
-    var result : String
+    var result : BigDecimal
     var inflationFactorEntities = {entity.CPBuilding, entity.BP7Building, entity.Dwelling_HOE}
 
     if(inflationFactorEntities.contains(this.IntrinsicType)){
       switch(this.PolicyLine.Branch.Policy.ProductCode){
         case "CommercialPackage":
-            result = (this.getCoverage("CPBldgCov")?.getCovTerm("CPBldgCovAutoIncrease") as OptionCovTerm)?.Value
+            result = getInflationFactorFromInflationCovTerm(\ -> {return this.getCoverage("CPBldgCov")?.getCovTerm("CPBldgCovAutoIncrease")})
             break
         case "Homeowners":
             result = getInflationFactorFromTable()
             break
         case "BP7BusinessOwners":
-            result = (this.getCoverage("BP7Structure")?.getCovTerm("BP7AutomaticIncreasePct1") as OptionCovTerm)?.Value
+            result = getInflationFactorFromInflationCovTerm(\ -> {return this.getCoverage("BP7Structure")?.getCovTerm("BP7AutomaticIncreasePct1")})
             break
         default:
           break
       }
     }
 
-    return result?.toBigDecimal()
+    return result
+  }
+
+  private function getInflationFactorFromInflationCovTerm(getCovTermFunction (): gw.api.domain.covterm.CovTerm) : BigDecimal{
+    var result : BigDecimal
+    var term = getCovTermFunction()
+
+    if(term != null){
+      var value = (term as OptionCovTerm).Value
+
+      if(value != null){
+        result = value + 1
+      }
+    }
+
+    return result
   }
 
   private property get InflationFactorEligibleCovTerms() : List<DirectCovTerm>{
-    var covTermPatterns = ConfigParamsUtil.getList(TC_InflationFactorApplicableCovTerms, this.PolicyLine.BaseState, InflationFactorFilter)
+    var covTermPatterns = ConfigParamsUtil.getList(TC_InflationFactorApplicableCovTerms, this.PolicyLine.BaseState, PrimaryInflationFactor)
+
+    if(!covTermPatterns.HasElements){
+      covTermPatterns = ConfigParamsUtil.getList(TC_InflationFactorApplicableCovTerms, this.PolicyLine.BaseState, SecondaryInflationFactorFilter)
+    }
+
     return this.CoveragesFromCoverable*.CovTerms.whereTypeIs(DirectCovTerm)?.where( \ covTerm -> covTermPatterns.contains(covTerm.PatternCode))
   }
 
   private function getFactor(argumentMap : Map<String, Object>) : String{
-    return UNASystemTableQueryUtil.query(InflationFactorLookup_Ext, argumentMap).atMostOne()
+    return UNASystemTableQueryUtil.query(InflationFactorLookup_Ext, argumentMap, true).atMostOne()
   }
 
   private function getInflationFactorFromTable() : BigDecimal{
@@ -88,21 +108,31 @@ enhancement InflationFactorCoverableEnhancement_Ext: entity.Coverable {
     return result
   }
 
-  private property get InflationFactorFilter() : String{
+  private property get PrimaryInflationFactor() : String{
     var result : String
 
     switch(typeof this){
       case Dwelling_HOE:
-        result = this.HOPolicyType.Code
-        break
+          result = this.HOPolicyType.Code + this.ResidenceType.Code
+          break
       case BP7Building:
-        result = this.Branch.Policy.ProductCode
-        break
+          result = this.Branch.Policy.ProductCode
+          break
       case CPBuilding:
-        result = this.Branch.Policy.ProductCode
-        break
-      default:
+          result = this.Branch.Policy.ProductCode
+          break
+        default:
         //do nothing
+    }
+
+    return result
+  }
+
+  private property get SecondaryInflationFactorFilter() : String{
+    var result : String
+
+    if(this typeis Dwelling_HOE){
+      result = this.HOPolicyType.Code
     }
 
     return result

@@ -407,6 +407,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="LimitType">
 		<xsd:sequence>
+            <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="FormatInteger" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="FormatCurrencyAmt" type="FormatCurrencyAmtType" minOccurs="0"/>
 			<xsd:element name="FormatModFactor" type="xsd:float" minOccurs="0"/>
@@ -421,7 +422,7 @@
 			<xsd:element name="LimitDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CurrentTermAmt" type="CurrentTermAmtType"/>
 			<xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
-			<xsd:element name="WrittenAmt" type="WrittenAmtType" minOccurs="0"/>
+			<xsd:element name="WrittenAmt" type="WrittenAmtType"/>
 			<xsd:element name="Rate" type="xsd:double"/>
 			<xsd:element name="BaseRateAmt" type="BaseRateAmtType" minOccurs="0"/>
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
@@ -431,6 +432,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="DeductibleType">
 		<xsd:sequence>
+            <xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="FormatInteger" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="FormatCurrencyAmt" type="FormatCurrencyAmtType" minOccurs="0"/>
 			<xsd:element name="FormatModFactor" type="xsd:float" minOccurs="0"/>
@@ -441,6 +443,8 @@
 			<xsd:element name="DeductibleAppliesToCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="IndexAdjustment" type="IndexAdjustmentType" minOccurs="0"/>
 			<xsd:element name="DeductibleDesc" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="NetChangeAmt" type="NetChangeAmtType"/>
+            <xsd:element name="WrittenAmt" type="WrittenAmtType"/>
 			<xsd:element name="TransactionSeqNumber" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="CoverageCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="CoverageSubCd" type="xsd:string" minOccurs="0"/>
@@ -986,9 +990,9 @@
 	</xsd:complexType>
 	<xsd:complexType name="InstallmentAmtType">
 		<xsd:sequence>
-			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="Amt" type="xsd:float" minOccurs="0"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="TaxAmtType">
@@ -1000,16 +1004,16 @@
 	</xsd:complexType>
 	<xsd:complexType name="InstallmentFeeAmtType">
 		<xsd:sequence>
-			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="Amt" type="xsd:float" minOccurs="0"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InstallmentDownPaymentAmtType">
 		<xsd:sequence>
-			<xsd:element name="Amt" type="xsd:float"/>
-			<xsd:element name="CurCd" type="xsd:string"/>
-			<xsd:element name="Precision" type="xsd:byte"/>
+			<xsd:element name="Amt" type="xsd:float" minOccurs="0"/>
+			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InstallmentTotalAmtType">
@@ -1021,16 +1025,16 @@
 	</xsd:complexType>
 	<xsd:complexType name="InstallmentInfoType">
 		<xsd:sequence>
-			<xsd:element name="InstallmentAmt" type="InstallmentAmtType"/>
-			<xsd:element name="InstallmentDueDt" type="xsd:date"/>
-			<xsd:element name="InstallmentNumber" type="xsd:byte"/>
-			<xsd:element name="FirstInstallmentPct" type="xsd:byte"/>
-			<xsd:element name="TaxAmt" type="TaxAmtType"/>
-			<xsd:element name="TaxIncludedInFirstInstallmentInd" type="xsd:string"/>
-			<xsd:element name="InstallmentFeeAmt" type="InstallmentFeeAmtType"/>
+			<xsd:element name="InstallmentAmt" type="InstallmentAmtType" minOccurs="0"/>
+			<xsd:element name="InstallmentDueDt" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="InstallmentNumber" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="FirstInstallmentPct" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="TaxAmt" type="TaxAmtType" minOccurs="0"/>
+			<xsd:element name="TaxIncludedInFirstInstallmentInd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="InstallmentFeeAmt" type="InstallmentFeeAmtType" minOccurs="0"/>
 			<xsd:element name="InstallmentDesc" type="xsd:string"/>
-			<xsd:element name="InstallmentDownPaymentAmt" type="InstallmentDownPaymentAmtType"/>
-			<xsd:element name="InstallmentTotalAmt" type="InstallmentTotalAmtType"/>
+			<xsd:element name="InstallmentDownPaymentAmt" type="InstallmentDownPaymentAmtType" minOccurs="0"/>
+			<xsd:element name="InstallmentTotalAmt" type="InstallmentTotalAmtType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="BillingInfoType">
@@ -1516,31 +1520,31 @@
 	</xsd:complexType>
 	<xsd:complexType name="PaymentOptionType">
 		<xsd:sequence>
-			<xsd:element name="PaymentPlanCd" type="xsd:string"/>
-			<xsd:element name="DayMonthDue" type="xsd:byte"/>
-			<xsd:element name="CollectedByAgentAmt" type="CollectedByAgentAmtType"/>
-			<xsd:element name="MethodPaymentCd" type="xsd:string"/>
-			<xsd:element name="NextTermPaymentPlanCd" type="xsd:string"/>
-			<xsd:element name="DepositAmt" type="DepositAmtType"/>
-			<xsd:element name="DownPaymentPct" type="xsd:byte"/>
-			<xsd:element name="InstallmentFeeAmt" type="InstallmentFeeAmtType"/>
-			<xsd:element name="InstallmentPct" type="xsd:byte"/>
+			<xsd:element name="PaymentPlanCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DayMonthDue" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="CollectedByAgentAmt" type="CollectedByAgentAmtType" minOccurs="0"/>
+			<xsd:element name="MethodPaymentCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NextTermPaymentPlanCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DepositAmt" type="DepositAmtType" minOccurs="0"/>
+			<xsd:element name="DownPaymentPct" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="InstallmentFeeAmt" type="InstallmentFeeAmtType" minOccurs="0"/>
+			<xsd:element name="InstallmentPct" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="InstallmentInfo" type="InstallmentInfoType"/>
-			<xsd:element name="FirstPaymentDueDt" type="xsd:date"/>
-			<xsd:element name="PaymentIntervalCd" type="xsd:string"/>
-			<xsd:element name="NumPayments" type="xsd:byte"/>
-			<xsd:element name="Description" type="xsd:string"/>
-			<xsd:element name="CheckNumber" type="xsd:string"/>
-			<xsd:element name="CheckDt" type="xsd:date"/>
-			<xsd:element name="ElectronicFundsTransfer" type="ElectronicFundsTransferType"/>
-			<xsd:element name="LOBCd" type="xsd:string"/>
-			<xsd:element name="LOBSubCd" type="xsd:string"/>
-			<xsd:element name="PayorPhysicalRecordInd" type="xsd:string"/>
-			<xsd:element name="DepositMethodPaymentCd" type="xsd:string"/>
-			<xsd:element name="TaxExemptStateProvCd" type="xsd:string"/>
-			<xsd:element name="BillingPeriod" type="BillingPeriodType"/>
-			<xsd:element name="SignatureInfo" type="SignatureInfoType"/>
-			<xsd:element name="PostmarkDt" type="xsd:date"/>
+			<xsd:element name="FirstPaymentDueDt" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="PaymentIntervalCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="NumPayments" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CheckNumber" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CheckDt" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="ElectronicFundsTransfer" type="ElectronicFundsTransferType" minOccurs="0"/>
+			<xsd:element name="LOBCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="LOBSubCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PayorPhysicalRecordInd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DepositMethodPaymentCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="TaxExemptStateProvCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="BillingPeriod" type="BillingPeriodType" minOccurs="0"/>
+			<xsd:element name="SignatureInfo" type="SignatureInfoType" minOccurs="0"/>
+			<xsd:element name="PostmarkDt" type="xsd:date" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InsuredFullToBePaidAmtType">
@@ -1553,21 +1557,21 @@
 	<xsd:complexType name="QuoteInfoType">
 		<xsd:sequence>
 			<xsd:element name="CompanysQuoteNumber" type="xsd:string"/>
-			<xsd:element name="ItemIdInfo" type="ItemIdInfoType"/>
-			<xsd:element name="IterationNumber" type="xsd:byte"/>
-			<xsd:element name="InsuredFullToBePaidAmt" type="InsuredFullToBePaidAmtType"/>
-			<xsd:element name="QuoteDeclinedInd" type="xsd:string"/>
-			<xsd:element name="QuoteDeclinationReason" type="xsd:string"/>
-			<xsd:element name="QuoteConditionsInd" type="xsd:string"/>
-			<xsd:element name="QuoteConditionsReason" type="xsd:string"/>
-			<xsd:element name="CoverageDeclinedInd" type="xsd:string"/>
-			<xsd:element name="CoverageDeclinationReason" type="xsd:string"/>
-			<xsd:element name="CoverageConditionsInd" type="xsd:string"/>
-			<xsd:element name="CoverageConditionsReason" type="xsd:string"/>
+			<xsd:element name="ItemIdInfo" type="ItemIdInfoType" minOccurs="0"/>
+			<xsd:element name="IterationNumber" type="xsd:byte" minOccurs="0"/>
+			<xsd:element name="InsuredFullToBePaidAmt" type="InsuredFullToBePaidAmtType" minOccurs="0"/>
+			<xsd:element name="QuoteDeclinedInd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="QuoteDeclinationReason" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="QuoteConditionsInd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="QuoteConditionsReason" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CoverageDeclinedInd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CoverageDeclinationReason" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CoverageConditionsInd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="CoverageConditionsReason" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="InitialQuoteRequestDt" type="xsd:date"/>
 			<xsd:element name="QuotePreparedDt" type="xsd:date"/>
 			<xsd:element name="QuoteValidUntilDt" type="xsd:date"/>
-			<xsd:element name="Description" type="xsd:string"/>
+			<xsd:element name="Description" type="xsd:string" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="FinancedAmtType">
@@ -1734,7 +1738,7 @@
 			<xsd:element name="NumLosses" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="NumLossesYrs" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="OtherOrPriorPolicy" type="OtherOrPriorPolicyType" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="PaymentOption" type="PaymentOptionType" minOccurs="0"/>
+			<xsd:element name="PaymentOption" type="PaymentOptionType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="QuoteInfo" type="QuoteInfoType" minOccurs="0"/>
 			<xsd:element name="AdditionalInterest" type="AdditionalInterestType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="CreditScoreInfo" type="CreditScoreInfoType" minOccurs="0"/>

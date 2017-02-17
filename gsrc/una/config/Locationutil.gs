@@ -15,7 +15,7 @@ class Locationutil {
     else
       {
         if(territoryCode.PolicyLinePattern.CodeIdentifier=="GLLine")
-          territoryCode.Code="55"
+          territoryCode.Code="5"
       return false
       }
   }

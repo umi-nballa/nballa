@@ -79,7 +79,7 @@ class RateRoutinePlugin implements IRateRoutinePlugin, InitializablePlugin {
 
 
   override function worksheetsEnabledForLine(linePatternCode : String) : boolean {
-    if (linePatternCode == null) {
+    if (linePatternCode == null || linePatternCode == "GLLine") {
       return _useWorksheets
     }
     var lobClass = getLOBClassForCode(linePatternCode)

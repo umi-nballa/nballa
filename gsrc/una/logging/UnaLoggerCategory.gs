@@ -26,6 +26,7 @@ class UnaLoggerCategory extends PCLoggerCategory {
   public static final var UNA_BATCH_PROCESS : ILogger = createLogger("UniversalBatchProcess")
   public static final var UNA_FORMS : ILogger = createLogger("UniversalForms")
   public static final var UNA_HPX : ILogger = createLogger("HPX")
+  public static final var UNA_CLAIMSMAPPING : ILogger = createLogger("ClaimsMapping")
   public static function load() : void {
   }
 }

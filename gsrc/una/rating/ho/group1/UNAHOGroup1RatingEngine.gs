@@ -19,6 +19,7 @@ uses una.rating.util.HOCreateCostDataUtil
 uses java.util.Map
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 uses gw.rating.CostData
+uses java.lang.Integer
 
 /**
  * Created with IntelliJ IDEA.
@@ -202,7 +203,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_Earthquake_HOE:
           if (HasEarthquakeCoverage and (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ)
-              and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4)){
+              and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)){
             rateEarthquakeCoverage(dwellingCov, dateRange)
           }
           break
@@ -298,7 +299,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     if(PolicyLine.BaseState == Jurisdiction.TC_CA){
       var firelineAdjustedHazardScore = dwelling?.HOLocation?.OverrideFirelineAdjHaz_Ext ? dwelling?.HOLocation?.FirelineAdjHazOverridden_Ext : dwelling?.HOLocation?.FirelineAdjHaz_Ext
-      if(firelineAdjustedHazardScore?.Numeric and firelineAdjustedHazardScore?.toInt() > 6)
+      if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )//Numeric and firelineAdjustedHazardScore?.toInt() > 6)
         rateBrushHazardSurcharge(dateRange)
     }
 

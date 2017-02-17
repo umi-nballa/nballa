@@ -37,9 +37,6 @@ class CoveragesUtil {
       case "HOLI_WC_PrivateResidenceEmployee_HOE_Ext":
         result = isWorkersCompForEmployeesAvailable(coverable as HomeownersLine_HOE)
         break
-      case "HODW_FloodCoverage_HOE_Ext":
-        result = isFloodCoverageAvailable(coverable as Dwelling_HOE)
-        break
 	    case "BP7ForgeryAlteration":
         result = isEmployDishonestCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
@@ -316,22 +313,6 @@ class CoveragesUtil {
     return result
   }
 
-  private static function isFloodCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
-    var result = (dwelling.HOPolicyType == TC_HO3) ? dwelling.FloodCoverage_Ext : true
-    var floodIneligibleZips = ConfigParamsUtil.getList(TC_FloodCoverageIneligibleZipCodes, dwelling.PolicyLine.BaseState)
-
-   if(result and floodIneligibleZips.HasElements){
-     var zipCode = dwelling.HOLocation.PolicyLocation.PostalCode?.trim()
-
-     if(zipCode.length >= 5){
-       zipCode = zipCode.substring(0, 5)
-       result = !floodIneligibleZips.contains(zipCode)
-     }
-   }
-
-    return result
-  }
-
   private static function isLossAssessmentCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
     var result = true
 
@@ -371,7 +352,8 @@ class CoveragesUtil {
   private static function isWindHurricaneAndHailExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
-    return applicableCounties.HasElements
+    return hoLine.Dwelling.WHurricaneHailExclusion_Ext
+       and applicableCounties.HasElements
        and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
   }
 
@@ -484,7 +466,7 @@ class CoveragesUtil {
   }
 
   private static function isReplaceCostWithRoofPayScheduleConditionAvailable(hoLine : HomeownersLine_HOE) : boolean{
-    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.intersect(hoLine.Dwelling.HOLocation.PolicyLocation.TerritoryCodes*.Code).Count > 0
+    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.contains(hoLine.Dwelling.TerritoryCodeOrOverride)
   }
 
   private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{

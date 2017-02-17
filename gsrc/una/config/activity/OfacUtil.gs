@@ -30,9 +30,9 @@ class OfacUtil {
   {
     var csrowner = activity.AssignedUser.Contact as Person
     var period = activity.PolicyPeriod
-    if(activity.ActivityPattern.Code.equalsIgnoreCase("ofac_csr"))
+    if(activity.ActivityPattern.Code.equalsIgnoreCase("OFAC1"))
     {
-      var pattern = ActivityPattern.finder.findActivityPatternsByCode("ofac_compliance").atMostOne()//ompliance").atMostOne()
+      var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC2").atMostOne()//ompliance").atMostOne()
       var user = una.config.activity.OfacUtil.findUserByUsername("compuser")
       //print("compliance user is "+ user)
       if(user==null)
@@ -40,7 +40,7 @@ class OfacUtil {
         user = una.config.activity.OfacUtil.findUserByUsername("su")
       }
 
-      if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="ofac_compliance")==null)
+      if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC2")==null)
       {
       var cactivity = pattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
       cactivity.assign(user.RootGroup,user)
@@ -49,11 +49,11 @@ class OfacUtil {
       sendEmailForActivity(activity, csrowner, "csrtocomp")
     }
 
-    if(activity.ActivityPattern.Code.equalsIgnoreCase("ofac_compliance"))
+    if(activity.ActivityPattern.Code.equalsIgnoreCase("OFAC2"))
       {
           {
 
-            var pattern = ActivityPattern.finder.findActivityPatternsByCode("ofac_uw").atMostOne()
+            var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC3").atMostOne()
             var user = activity.Job.Underwriter
             //print("uwreview activity user is "+ user)
 
@@ -61,7 +61,7 @@ class OfacUtil {
             {
               user = una.config.activity.OfacUtil.findUserByUsername("su")
             }
-            if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="ofac_uw")==null)
+            if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC3")==null)
             {
 
               var cactivity = pattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)

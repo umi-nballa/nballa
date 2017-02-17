@@ -278,8 +278,8 @@ class CPPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
     if (RateMethod.TC_SYSTABLE == method) {
       return new CPSysTableRatingEngine(_line)
     }
-    return new UNACPRatingEngine(_line as CPLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-    //return new CPSysTableRatingEngine(_line)
+    //return new UNACPRatingEngine(_line as CPLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    return new CPSysTableRatingEngine(_line)
   }
 
   override property get BaseStateRequired(): boolean {

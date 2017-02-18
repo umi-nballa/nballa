@@ -11,11 +11,13 @@ uses gw.wsi.pl.ImportToolsAPI
 uses java.io.File
 uses java.lang.StringBuilder
 uses java.util.Collection
+uses una.logging.UnaLoggerCategory
 
 /**
  * Class RuleImportExport manages importing and exporting Rule_Ext instances.
  */
 class RuleImportExport {
+  final static var _logger = UnaLoggerCategory.UNA_RATING
   /** The script parameter that specifies the PC installation location. */
   //static final var PC_ROOT = ScriptParameters.$PC_ROOT.trim()
   /** The local rule file, configured by script parameters. */
@@ -71,8 +73,9 @@ class RuleImportExport {
 
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       // Retire all rules in the system to replace them with the imported file
-      print("Path is " + new File("").AbsolutePath)
-      print("Path is " + new File("").CanonicalPath)
+      _logger.info("Path is " + new File("").AbsolutePath)
+      _logger.info("Path is " + new File("").CanonicalPath)
+      _logger.info("RULE_FILE_LOCAL" +RULE_FILE_LOCAL)
       Query.make(Rule_Ext).select().each(
           \rule -> bundle.add(rule).remove())
       bundle.commit()

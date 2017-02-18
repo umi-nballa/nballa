@@ -27,7 +27,7 @@ class RuleImportExport {
   static final var RULE_FILE_TMP =
       ScriptParameters.RuleImportExportPathTmp + "/Rule_Ext.xml"
 
-  static final var  RULE_FILE_LOCAL   = "./modules/configuration/config/resources/rulesframework/Rule_Ext.xml"
+  static final var  RULE_FILE_LOCAL   = "../webapps/pc/modules/configuration/config/resources/rulesframework/Rule_Ext.xml"
 
   @Returns("An import file, based on the permissions of the current user")
   static property get ImportFile() : File {

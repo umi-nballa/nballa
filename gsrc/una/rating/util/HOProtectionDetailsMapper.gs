@@ -88,18 +88,24 @@ class HOProtectionDetailsMapper {
 
     switch(state){
       case TC_NV:
-           protectionDetails = extractProtectionDetails(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
+           protectionDetails = extractProtectionDetailsGroup1(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
                fireAlarmReportCntlStn, completeLocalBurglarAlarm, completeHomeSprinklerSystem)
            return protectionDetails
+
       case TC_AZ:
-          protectionDetails = extractProtectionDetails(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
+          protectionDetails = extractProtectionDetailsGroup1(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
+              fireAlarmReportCntlStn, completeLocalBurglarAlarm, completeHomeSprinklerSystem)
+          return protectionDetails
+
+      case TC_CA:
+          protectionDetails = extractProtectionDetailsGroup1(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
               fireAlarmReportCntlStn, completeLocalBurglarAlarm, completeHomeSprinklerSystem)
           return protectionDetails
     }
     return protectionDetails
   }
 
-  private static function extractProtectionDetails(localFireAlarm : boolean, localSmokeAlarm : boolean, fireExtinguishers : boolean, deadbolts :
+  private static function extractProtectionDetailsGroup1(localFireAlarm : boolean, localSmokeAlarm : boolean, fireExtinguishers : boolean, deadbolts :
       boolean, burglarAlarmReportCntlStn : boolean, fireAlarmReportCntlStn : boolean, completeLocalBurglarAlarm : boolean, completeHomeSprinklerSystem : boolean) : String {
 
         if((localFireAlarm or localSmokeAlarm) and fireExtinguishers and deadbolts and burglarAlarmReportCntlStn){

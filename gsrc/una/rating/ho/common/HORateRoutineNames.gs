@@ -114,4 +114,5 @@ public final class HORateRoutineNames {
   public static final var UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE :String = "UNAHOUnitOwnersCovAIncreasedLimitRateRoutine"
   public static final var UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE :String = "UNAHOUnitOwnersCovASpecialLimitsRateRoutine"
   public static final var LOSS_HISTORY_CREDIT_RATE_ROUTINE :String = "UNAHOLossHistoryCreditRateRoutine"
+  public static final var PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE :String = "UNAHOProtectiveDeviceCreditRateRoutine"
 }

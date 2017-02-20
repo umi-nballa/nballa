@@ -276,10 +276,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateHigherAllPerilDeductible(dateRange)
 
     if ((_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
-        _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6) and
-        (PolicyLine.BaseState == Jurisdiction.TC_AZ or PolicyLine.BaseState == Jurisdiction.TC_CA)) {
+        _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6) and (PolicyLine.BaseState == Jurisdiction.TC_AZ or PolicyLine.BaseState == Jurisdiction.TC_CA)) {
       rateLossHistoryCredit(dateRange)
-     }
+    }
 
     if (dwelling.DwellingProtectionDetails.GatedCommunity){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
@@ -299,10 +298,14 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     if(PolicyLine.BaseState == Jurisdiction.TC_CA){
       var firelineAdjustedHazardScore = dwelling?.HOLocation?.OverrideFirelineAdjHaz_Ext ? dwelling?.HOLocation?.FirelineAdjHazOverridden_Ext : dwelling?.HOLocation?.FirelineAdjHaz_Ext
-      if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )//Numeric and firelineAdjustedHazardScore?.toInt() > 6)
-        rateBrushHazardSurcharge(dateRange)
+      if(firelineAdjustedHazardScore != null)
+        if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )
+          rateBrushHazardSurcharge(dateRange)
     }
 
+    if(PolicyLine.BaseState == Jurisdiction.TC_NV or PolicyLine.BaseState == Jurisdiction.TC_AZ){
+      rateProtectiveDeviceCredit(dateRange)
+    }
 
     if(PolicyLine.MultiPolicyDiscount_Ext){
       _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
@@ -354,6 +357,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Loss History Credit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate Protection Devices Credit
+   */
+  function rateProtectiveDeviceCredit(dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateProtectiveDeviceCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.LossHistoryRatingPlan = costData?.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Protection Devices Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**

@@ -1,10 +1,11 @@
 package una.integration.plugins.lexisfirst
 
-uses gw.xml.ws.WsdlConfig
+uses gw.plugin.Plugins
+uses gw.plugin.billing.IBillingSummaryPlugin
+uses gw.plugin.billing.bc800.BCBillingSystemPlugin
 uses una.logging.UnaLoggerCategory
 uses una.model.LexisFirstFileData
 uses una.utils.PropertiesHolder
-uses wsi.remote.gw.webservice.bc.bc800.billingapi.BillingAPI
 uses java.lang.Exception
 uses java.text.SimpleDateFormat
 
@@ -50,9 +51,8 @@ class LexisFirstServicePayload {
   var endorseFormNumbers = PropertiesHolder.getProperty("EndorsmentDetails")
   var lexisFirstFileData: LexisFirstFileData
   var sdf = new SimpleDateFormat("MMddyyyy")
-  var config = createWsiConfig()
-  var billingAPI = new BillingAPI(config)
-  var billingSummaryPlugin = gw.plugin.Plugins.get(gw.plugin.billing.IBillingSummaryPlugin)
+  var billingSystemPlugin = new BCBillingSystemPlugin()
+  var billingSummaryPlugin = Plugins.get(IBillingSummaryPlugin)
   var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
 
   /**
@@ -202,7 +202,7 @@ class LexisFirstServicePayload {
    */
   private function mortgageInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
     //Fetching Primary payer Details from Billing Center
-    var primaryPayer = billingAPI.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
+    var primaryPayer = billingSystemPlugin.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
     if (primaryPayer != null) {
       var fetchContact = gw.api.database.Query.make(Contact).compare(Contact#AddressBookUID, Equals, primaryPayer).select().AtMostOneRow
       var addInterest = policyPeriod.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
@@ -417,17 +417,6 @@ class LexisFirstServicePayload {
     } else {
       lexisDTO.Notes = ""
     }
-
   }
 
-  /**
-   *   This method is to get the user name and password
-   */
-  private function createWsiConfig(): WsdlConfig {
-    var conf = new gw.xml.ws.WsdlConfig()
-    conf.Guidewire.Locale = User.util.CurrentLocale.Code
-    conf.Guidewire.Authentication.Username = PropertiesHolder.getProperty("INTEGRATION_USER")
-    conf.Guidewire.Authentication.Password = PropertiesHolder.getProperty("INTEGRATION_PASSWORD")
-    return conf
-  }
 }

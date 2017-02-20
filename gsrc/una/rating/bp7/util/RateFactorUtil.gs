@@ -135,7 +135,7 @@ class RateFactorUtil {
   *  Sets the wind exclusion factor, if the wind exclusion is applicable
    */
   static function setWindExclusionFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
-    if(line.BP7WindstormOrHailExcl_EXTExists){
+    if(!line.BP7WindstormOrHailExcl_EXTExists){
       var constructionType = building?.ConstructionType
       var territoryCode = building?.Location?.OverrideTerritoryCode_Ext? building?.Location?.TerritoryCodeOverridden_Ext : building?.Location?.TerritoryCodeTunaReturned_Ext
       _windExclusionFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_windstorm_and_hail_exclusion", {constructionType, territoryCode})
@@ -209,5 +209,14 @@ class RateFactorUtil {
             : MinimumRatingLevel = minimumRatingLevel}
     var factor = new RatingQueryFacade().getFactor(filter, rateTableName, params).Factor
     return factor as BigDecimal
+  }
+
+  /**
+  * Returns the first building in the primary location
+   */
+  static function getFirstBuildingInPrimaryLocation(line : BP7Line) : BP7Building{
+    var primaryLocation = line.Branch.PrimaryLocation
+    var buildingsInPrimaryLocation = line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
+    return buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
   }
 }

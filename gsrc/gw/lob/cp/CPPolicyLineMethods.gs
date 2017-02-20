@@ -26,6 +26,7 @@ uses java.util.TreeMap
 uses una.lob.cpp.CPP_UnderwriterEvaluator
 uses gw.policy.PolicyEvalContext
 uses gw.lob.common.UnderwriterEvaluator
+uses una.rating.cp.UNACPRatingEngine
 
 @Export
 class CPPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
@@ -274,10 +275,10 @@ class CPPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   }
 
   override function createRatingEngine(method: RateMethod, parameters: Map<RateEngineParameter, Object>): AbstractRatingEngine {
-    /*if (RateMethod.TC_SYSTABLE == method) {
+    if (RateMethod.TC_SYSTABLE == method) {
       return new CPSysTableRatingEngine(_line)
     }
-    return new CPRatingEngine(_line as CPLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)*/
+    //return new UNACPRatingEngine(_line as CPLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     return new CPSysTableRatingEngine(_line)
   }
 

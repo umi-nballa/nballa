@@ -10,14 +10,15 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWQuestionRoofAge25_each implements IRuleCondition<HomeownersLine_HOE>{
+class UWFloor2Costal_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-   if((typekey.RoofType.TF_COMPROOFTYPES.TypeKeys.contains(homeowner.Dwelling.RoofingMaterialOverridden_Ext)  ||
-        typekey.RoofType.TF_COMPROOFTYPES.TypeKeys.contains(homeowner.Dwelling.RoofType)) &&
-        (homeowner.Dwelling.RoofingUpgradeDate != null &&
-            homeowner.Dwelling.RoofingUpgradeDate.compareTo(gw.api.util.DateUtil.getYear(gw.api.util.DateUtil.currentDate())) > 25) ) {
+   if((homeowner.Dwelling.FloorLocation_Ext == "2" ) &&
+        (homeowner.Dwelling.HOLocation.DistToCoast_Ext == typekey.DistToCoastOverridden_Ext.TC_0TO500FT ||
+            homeowner.Dwelling.HOLocation.DistToCoastOverridden_Ext == typekey.DistToCoastOverridden_Ext.TC_0TO500FT) ){
         return RuleEvaluationResult.execute()
     }
    return RuleEvaluationResult.skip()
   }
+
+
 }

@@ -92,6 +92,8 @@ class CCPolicyGenerator {
     _policy.ExpirationDate = pcPolicyPeriod.PeriodEnd
     _policy.PolicyNumber = pcPolicyPeriod.PolicyNumber
     _policy.PolicyType = mapPolicyType(pcPolicyPeriod)
+    //fix for defect DE 1758 : Product Type - Policy general screen - HO
+    _policy.ProductType = mapProductType(pcPolicyPeriod)
     _policy.Status = mapPolicyStatus(pcPolicyPeriod)
     _policy.ProducerCode = pcPolicyPeriod.ProducerCodeOfRecord.Code
     _policy.Account = pcPolicyPeriod.Policy.Account.AccountNumber
@@ -180,6 +182,7 @@ class CCPolicyGenerator {
         endorsement.PolicySystemID = form.TypeIDString
         endorsement.FormNumber = form.FormNumber
         endorsement.Description = form.FormDescription
+        //endorsement.EditionDate_Ext = form.Pattern.Edition
         endorsement.EffectiveDate = form.EffectiveDate
         endorsement.ExpirationDate = form.ExpirationDate
         if( form.EndorsementNumber != null ) {

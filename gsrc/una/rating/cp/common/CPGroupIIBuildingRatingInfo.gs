@@ -8,7 +8,7 @@ uses una.rating.cp.util.CPRatingUtil
  * User: bduraiswam007
  * Date: 2/14/17
  */
-class CPBuildingRatingInfo {
+class CPGroupIIBuildingRatingInfo {
 
   var _equipmentBreakdownEndorsementLimit : BigDecimal as EquipmentBreakdownEndorsementLimit
   var _scheduledRatingModifier : BigDecimal as ScheduledRatingModifier
@@ -19,8 +19,16 @@ class CPBuildingRatingInfo {
     _scheduledRatingModifier = CPRatingUtil.ScheduledRatingModifier
     _aopDeductible = building.CPLocation.CPLine.allotherperilded.Code.toInt()
     if(building.CPEquipmentBreakdownEnhance_EXTExists){
-      //TODO : Need to update the limit
-      _equipmentBreakdownEndorsementLimit = 100.0
+      _equipmentBreakdownEndorsementLimit = totalInsuredValueLimit(building)
     }
+  }
+
+  private function totalInsuredValueLimit(building : CPBuilding) : BigDecimal {
+    var insuredValueLimit : BigDecimal = 0.0
+    if(building.CPBldgCovExists)
+      insuredValueLimit += building.CPBldgCov?.CPBldgCovLimitTerm?.Value
+    if(building.CPBPPCovExists)
+      insuredValueLimit += building.CPBPPCov?.CPBPPCovLimitTerm?.Value
+    return insuredValueLimit
   }
 }

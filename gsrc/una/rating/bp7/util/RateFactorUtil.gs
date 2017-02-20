@@ -210,4 +210,13 @@ class RateFactorUtil {
     var factor = new RatingQueryFacade().getFactor(filter, rateTableName, params).Factor
     return factor as BigDecimal
   }
+
+  /**
+  * Returns the first building in the primary location
+   */
+  static function getFirstBuildingInPrimaryLocation(line : BP7Line) : BP7Building{
+    var primaryLocation = line.Branch.PrimaryLocation
+    var buildingsInPrimaryLocation = line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
+    return buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
+  }
 }

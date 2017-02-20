@@ -5,5 +5,5 @@ package una.rating.cp.common
  */
 class CPRateRoutineNames {
 
-  public static final var CP_EQUIPMENT_BREAKDOWN_ENDORSEMENT_RATE_ROUTINE : String = "CPEquipmentBreakdownEndorsementRateRoutine"
+  public static final var CP_EQUIPMENT_BREAKDOWN_ENDORSEMENT_GROUPII_RATE_ROUTINE : String = "CPEquipmentBreakdownEndorsementGroupIIRateRoutine"
 }

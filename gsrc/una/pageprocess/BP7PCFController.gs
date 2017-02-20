@@ -2,10 +2,8 @@ package una.pageprocess
 
 uses gw.api.web.job.JobWizardHelper
 uses gw.api.productmodel.ClausePattern
-uses gw.api.util.DisplayableException
 uses java.math.BigDecimal
 uses gw.api.domain.covterm.CovTerm
-uses gw.api.domain.covterm.DirectCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -30,6 +28,14 @@ class BP7PCFController {
       }else{
         line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
       }
+    }
+  }
+
+  static function removeProductsCompletedOpernsUnrelatedtoBuilOwnersExcl(bp7Building:BP7Building){
+    if(bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER || bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT ||
+        bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION || bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER &&
+          !bp7Building.BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXTExists){
+          (bp7Building.PolicyLine as BP7BusinessOwnersLine).BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.setValueFromString("Included_EXT")
     }
   }
 

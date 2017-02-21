@@ -194,13 +194,17 @@ abstract class HPXPolicyMapper {
     policyInfo.TierCd = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier
     policyInfo.TierDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Organization.Tier.Description
     policyInfo.BranchDesc = policyPeriod.EffectiveDatedFields.ProducerCode.Branch
-    var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
-    for (paymentOption in paymentOptions) {
-      policyInfo.addChild(new XmlElement("PaymentOption", paymentOption))
+    if (policyPeriod.Job.Subtype == typekey.Job.TC_ISSUANCE or policyPeriod.Job.Subtype == typekey.Job.TC_RENEWAL or
+        policyPeriod.Job.Subtype == typekey.Job.TC_SUBMISSION or policyPeriod.Job.Subtype == typekey.Job.TC_REWRITENEWACCOUNT or
+        policyPeriod.Job.Subtype == typekey.Job.TC_REWRITE) {
+      var paymentOptions = paymentOptionMapper.createPaymentOptions(policyPeriod)
+      for (paymentOption in paymentOptions) {
+        policyInfo.addChild(new XmlElement("PaymentOption", paymentOption))
+      }
+      var quoteMapper = new HPXQuoteMapper()
+      var quote = quoteMapper.createQuote(policyPeriod)
+      policyInfo.addChild(new XmlElement("QuoteInfo", quote))
     }
-    var quoteMapper = new HPXQuoteMapper()
-    var quote = quoteMapper.createQuote(policyPeriod)
-    policyInfo.addChild(new XmlElement("QuoteInfo", quote))
     return policyInfo
   }
 

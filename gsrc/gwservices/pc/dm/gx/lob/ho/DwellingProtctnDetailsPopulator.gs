@@ -14,7 +14,7 @@ uses gw.xml.XmlElement
  */
 class DwellingProtctnDetailsPopulator extends BaseEntityPopulator<HODwellingProtDetails_Ext,KeyableBean>{
 
-  override function create(model: XmlElement, parent: KeyableBean, bundle: Bundle): HODwellingProtDetails_Ext {
+  override function findEntity(model: XmlElement, parent: KeyableBean, bundle: Bundle): HODwellingProtDetails_Ext {
     if (model typeis Dwelling_HOE_DwellingProtectionDetails) {
       var dwellingProtctnDtls = new HODwellingProtDetails_Ext(Branch)
       return dwellingProtctnDtls

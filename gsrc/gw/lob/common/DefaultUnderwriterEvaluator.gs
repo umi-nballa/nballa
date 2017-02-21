@@ -199,7 +199,7 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
 
     try {
 
-      if(renewalPeriod.PolicyNumber != null )  {
+      if(renewalPeriod.SourceSystem_Ext != typekey.SourceSystem_Ext.TC_LEGACY )  {
        var result = searchForClaims(basedOn)
 
 

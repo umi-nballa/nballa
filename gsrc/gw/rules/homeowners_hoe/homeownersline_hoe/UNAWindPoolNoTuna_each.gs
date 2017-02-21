@@ -10,11 +10,12 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNADistCoastMultipleTuna_each implements IRuleCondition<HomeownersLine_HOE>{
+class UNAWindPoolNoTuna_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner?.Dwelling.FloodCoverage_Ext && homeowner?.Dwelling.HOLocation.DistToCoastMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_USERSELECTED &&  homeowner?.Dwelling.FloodCoverage_Ext &&
-    homeowner.HOLocation.PolicyLocation.State.Code=="FL")
+    if(homeowner?.dwelling.HOLocation.WindPool_Ext == null && homeowner.dwelling.HOLocation.WindPoolMatchLevel_Ext==typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
+        && homeowner.HOLocation.PolicyLocation.State.Code=="TX" && homeowner.HOLocation.PolicyLocation.County.equalsIgnoreCase("Harris"))
+
       return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()

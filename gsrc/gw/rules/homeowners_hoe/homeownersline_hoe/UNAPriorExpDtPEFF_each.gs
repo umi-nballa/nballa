@@ -10,21 +10,19 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAUWClueResult_each implements IRuleCondition<HomeownersLine_HOE>{
+class UNAPriorExpDtPEFF_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
 
+    if(homeowner.AssociatedPolicyPeriod.PeriodStart.compareTo(homeowner.AssociatedPolicyPeriod.BasedOn.PeriodEnd)>0)
 
-    //if(
-         homeowner.HOPriorLosses_Ext.each( \ elt ->
-         {
-           if(elt.OriginLoss==typekey.OriginOfLoss_Ext.TC_AGENT && homeowner.ClueHit_Ext)
-             return RuleEvaluationResult.execute()
-
-         })
-
-   return RuleEvaluationResult.skip()
-  }
+        return RuleEvaluationResult.execute()
 
 
+
+
+
+    return RuleEvaluationResult.skip()
+
+}
 }

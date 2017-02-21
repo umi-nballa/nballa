@@ -15,12 +15,7 @@ class UNAUWReplacementPerProp_each implements IRuleCondition<HomeownersLine_HOE>
 
 
 
-    if( /*(homeowner.AssociatedPolicyPeriod.BaseState.Code=="TX"
-        ) &&
-        (homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HOA_EXT ||
-            homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HOB_EXT ||
-            typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(homeowner.HOPolicyType)) && */
-        homeowner.Dwelling?.HODW_Personal_Property_HOEExists &&
+    if( homeowner.Dwelling?.HODW_Personal_Property_HOEExists &&
          homeowner.Dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm.Value == TC_PersProp_ReplCost)
       return RuleEvaluationResult.execute()
 

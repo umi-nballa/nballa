@@ -30,6 +30,7 @@ class HPXDwellMapper implements HPXStructureMapper {
     dwell.PurchaseDt = policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased != null ? new XmlDate(policyPeriod.HomeownersLine_HOE.Dwelling.YearPurchased) : null
     if (policyPeriod.HomeownersLine_HOEExists) {
       dwell.PolicyTypeCd = policyPeriod.HomeownersLine_HOE.HOPolicyType
+      dwell.PolicyTypeDesc = policyPeriod.HomeownersLine_HOE.HOPolicyType.Name
     }
     dwell.addChild(new XmlElement("Construction", dwellConstructionMapper.createDwellConstruction(policyPeriod)))
     dwell.addChild(new XmlElement("DwellInspectionValuation", createDwellInspectionValuation(policyPeriod)))

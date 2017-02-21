@@ -307,6 +307,9 @@
   <xs:complexType name="CCEndorsement">
     <xs:attribute name="Comments" use="optional" type="xs:string"/>
     <xs:attribute name="Description" use="optional" type="xs:string"/>
+    <xs:attribute name="EditionDate_Ext" use="optional" type="xs:string"/>
+    <!-- Remove above line and uncomment below line once the datatype of form.Pattern.Edition is changed from shorttext to datetime -->
+    <!--<xs:attribute name="EditionDate_Ext" use="optional" type="xs:dateTime" gw:type="java.util.Date"/>-->
     <xs:attribute name="EffectiveDate" use="optional" type="xs:dateTime" gw:type="java.util.Date"/>
     <xs:attribute name="ExpirationDate" use="optional" type="xs:dateTime" gw:type="java.util.Date"/>
     <xs:attribute name="FormNumber" use="optional" type="xs:string"/>
@@ -512,6 +515,8 @@
     <xs:attribute name="PolicySuffix" use="optional" type="xs:string"/>
     <xs:attribute name="PolicySystemPeriodID" use="optional" type="xs:long"/>
     <xs:attribute name="PolicyType" use="optional" type="xs:string"/>
+    <!-- Added ProductType Attribute as fix for defect DE 1758 : Product Type - Policy general screen - HO -->
+    <xs:attribute name="ProductType" type="xs:string" use="optional"/>
     <xs:attribute name="ProducerCode" use="optional" type="xs:string"/>
     <xs:attribute name="ReportingDate" use="optional" type="xs:dateTime" gw:type="java.util.Date"/>
     <xs:attribute name="RetroactiveDate" use="optional" type="xs:dateTime" gw:type="java.util.Date"/>

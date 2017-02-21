@@ -3,7 +3,6 @@
 BEGIN:
 >>DocTypeName: GW - SYS - Archive Document
 >>DocDate:${ new java.text.SimpleDateFormat("MM/dd/yyyy").format(new java.util.Date()) }
->>FileTypeNum: 16
 >>FileName:${filename}
 MIME Type:${mimeType}
 AsyncDocumentID:${keywords.AysncDocumentID ?: ""}

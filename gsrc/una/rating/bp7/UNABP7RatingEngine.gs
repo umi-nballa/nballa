@@ -40,7 +40,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     _logger.info("Initializing the " + line.BaseState.Code + " BOP Rating Engine")
     MinimumRatingLevel = minimumRatingLevel
     _executor = new BP7RateRoutineExecutor(ReferenceDatePlugin, PolicyLine, minimumRatingLevel)
-    _buildingForLineCov = getFirstBuildingInPrimaryLocation()
+    _buildingForLineCov = RateFactorUtil.getFirstBuildingInPrimaryLocation(PolicyLine)
     BP7RatingInfo = new BP7RatingInfo(line)
     _logger.info(line.BaseState.Code + " BOP Rating Engine initialized")
   }

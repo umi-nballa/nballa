@@ -23,9 +23,8 @@ if(not (policyPeriod.Job typeis Issuance) && not (policyPeriod.Job typeis Policy
 var newPeriod = policyPeriod.getSlice(policyPeriod.EditEffectiveDate)
 
   var updateRequest = UpdateKeywordsRequest.fromPolicyPeriod(newPeriod)
-
-  var payload = new onbase.api.messaging.updatekeywordsrequestmodel.UpdateKeywordsRequest(updateRequest)
-  if(payload != null) {
+  if(updateRequest != null) {
+    var payload = new onbase.api.messaging.updatekeywordsrequestmodel.UpdateKeywordsRequest(updateRequest)
     messageContext.createMessage(Base64Util.encode(payload.bytes()))
   } 
 /*end00rule*/

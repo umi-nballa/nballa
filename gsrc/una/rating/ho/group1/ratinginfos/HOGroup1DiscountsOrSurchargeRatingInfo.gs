@@ -5,6 +5,7 @@ uses una.config.ConfigParamsUtil
 uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.util.Date
 uses java.math.BigDecimal
+uses una.rating.util.HOProtectionDetailsMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,7 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _preferredFinancialInstitutionExists : boolean as PreferredFinancialInstitutionExists
   var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
   var _priorLosses : int as PriorLosses = 0
+  var _protectionDetails : String as ProtectionDetails
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
@@ -44,6 +46,9 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     if(line?.HOPriorLosses_Ext != null){
       _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
     }
+    var dwelling = line?.Dwelling
+    var state = line?.BaseState
+    _protectionDetails = HOProtectionDetailsMapper.getProtectionDetails(dwelling, state)
   }
 
   override property get YearForAgeOfHomeCalc() : int{

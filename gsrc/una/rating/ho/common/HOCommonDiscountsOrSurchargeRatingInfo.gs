@@ -4,6 +4,7 @@ uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses gw.api.util.DateUtil
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: ssok
@@ -20,6 +21,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _policyType : HOPolicyType_HOE as PolicyType
   var _typeOfPolicyForMultiLine : TypeofPolicy_Ext as TypeOfPolicyForMultiLine
   var _territoryCode : String as TerritoryCode
+  var _territoryCodeInt : int as TerritoryCodeInt
   var _numOfUnitsWithinFireDivision : int as NumOfUnitsWithinFireDivision
   var _protectionClassCode: String as ProtectionClassCode
   var _bcegGrade : int as BCEGGrade
@@ -34,6 +36,9 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _policyType = line.HOPolicyType
     _protectionClassCode = line.Dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? line.Dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : line.Dwelling?.HOLocation?.DwellingProtectionClassCode
     _territoryCode = line.Dwelling?.HOLocation?.OverrideTerritoryCode_Ext?  line.Dwelling?.HOLocation?.TerritoryCodeOverridden_Ext : line.Dwelling?.HOLocation?.TerritoryCodeTunaReturned_Ext
+    if((_territoryCode != null or _territoryCode != "") and _territoryCode.Numeric){
+      _territoryCodeInt = _territoryCode.toInt()
+    }
     _bcegGrade = line.Dwelling?.HOLocation?.OverrideBCEG_Ext? line?.Dwelling?.HOLocation?.BCEGOverridden_Ext?.Code?.toInt() : line?.Dwelling?.HOLocation?.BCEG_Ext?.Code?.toInt()
   }
 

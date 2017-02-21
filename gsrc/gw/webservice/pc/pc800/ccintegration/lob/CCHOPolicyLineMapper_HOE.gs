@@ -38,6 +38,13 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   _hoLine = line as HomeownersLine_HOE;
   choosePercentageBasis()
 }
+  // Returns true if the Coverage should be excluded from what is sent to CC
+  override function isCoverageExcluded(cov : Coverage) : Boolean {
+    if(isCoverageToExcludeFromMapping(cov)){
+      _excludedCoverages.add(cov.PatternCode)
+    }
+    return _excludedCoverages.contains(cov.PatternCode)
+  }
 
   // Create a summary list of covered buildings for the PolicySummary that is returned for a search result (not a full policy mapping)
   override function mapPropertySummaries(propertyList : ArrayList<CCPolicySummaryProperty>) {
@@ -99,9 +106,11 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     
     // Create dwelling-level coverages
     for (cov in dwelling.Coverages) {
-      var ccCov = new CCPropertyCoverage()
-      populateCoverage(ccCov, cov)
-      dwellingRU.Coverages.add(new CCRiskUnit_Coverages(ccCov))
+      if (!isCoverageExcluded(cov)) {
+        var ccCov = new CCPropertyCoverage()
+        populateCoverage(ccCov, cov)
+        dwellingRU.Coverages.add(new CCRiskUnit_Coverages(ccCov))
+      }
     }
 
     for(scheduledCov in dwelling.Coverages.ScheduledItems){
@@ -332,25 +341,28 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   
   private function dollarValueFromPercent(covTerm: CovTerm, percent: BigDecimal) : BigDecimal{
     var dollarValue : BigDecimal = 0
-    
-    if(_dwellingBasisForPercentage == null and _propertyBasisForPercentage == null){
-      throw new DisplayableException(displaykey.Web.Homeowners.CCMapping.DwellingPersonalPropertyLimitNotSet)
-    }
-    else if(_propertyBasisForPercentage == null){
-      if(percent != null)
-      dollarValue = _dwellingBasisForPercentage * percent / 100
-    }
-    else if(_dwellingBasisForPercentage == null){
-      //should only be for HO4
-      if(_hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or _hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT){
-        if(percent != null)
-        dollarValue = _propertyBasisForPercentage * percent / 100
-      } else {
-        throw new DisplayableException(displaykey.Web.Homeowners.CCMapping.DwellingBasisNeededButNotSetForPolicyType(_hoLine.HOPolicyType.DisplayName))
+    if(percent < 100){
+      if(_dwellingBasisForPercentage == null and _propertyBasisForPercentage == null){
+        throw new DisplayableException(displaykey.Web.Homeowners.CCMapping.DwellingPersonalPropertyLimitNotSet)
       }
-    } else{ //both _propertyBasisForPercentage and _dwellingBasisForPercentage are set
-      dollarValue = dollarValueFromPercentChosenFromPropertyOrDwelling(covTerm, percent)
-    }
+      else if(_propertyBasisForPercentage == null){
+        if(percent != null)
+        dollarValue = _dwellingBasisForPercentage * percent
+      }
+      else if(_dwellingBasisForPercentage == null){
+        //should only be for HO4
+        if(_hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or _hoLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT){
+          if(percent != null)
+          dollarValue = _propertyBasisForPercentage * percent
+        } else {
+          throw new DisplayableException(displaykey.Web.Homeowners.CCMapping.DwellingBasisNeededButNotSetForPolicyType(_hoLine.HOPolicyType.DisplayName))
+        }
+      } else{ //both _propertyBasisForPercentage and _dwellingBasisForPercentage are set
+        dollarValue = dollarValueFromPercentChosenFromPropertyOrDwelling(covTerm, percent)
+      }
+     } else {
+        dollarValue = percent
+     }
     return dollarValue
   }
   
@@ -362,7 +374,7 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
       switch(covTerm.PatternCode){
         //The following limits are based off of the personal property limit
         case "HODW_LossOfUsePropLimit_HOE":
-          dollarValue = _propertyBasisForPercentage * percent / 100
+          dollarValue = _propertyBasisForPercentage * percent
           break
         //Coverages that do not have cov terms in the product model but still the personal property basis.  
         //Currently these terms will never make it into this method
@@ -370,14 +382,24 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
         case "HODW_ScheduledProperty_HOE":
         case "HODW_SpecialLimitsCovC_HOE":
         case "HOSL_OutboardMotorsWatercraft_HOE_Ext":
-          dollarValue = _propertyBasisForPercentage * percent / 100
+          dollarValue = _propertyBasisForPercentage * percent
           break
         //The following are based off of the dwelling limit
         default:
-          dollarValue = _dwellingBasisForPercentage * percent / 100
+          dollarValue = _dwellingBasisForPercentage * percent
           break
       }
       }
       return dollarValue
+  }
+
+  /**
+   * This method will be used to add BP7 Excluded Coverages
+   */
+  private function isCoverageToExcludeFromMapping(cov : Coverage) : Boolean {
+    if((cov.PatternCode == "HODW_FireDepartmentService_HOE_Ext")){
+      return true
+    }
+    return false
   }
 }

@@ -719,7 +719,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
 
     if(dwelling.PolicyLine.BaseState == TC_FL){
-      result = dwelling.HOPolicyType == TC_HO3 and !dwelling.IsSecondaryOrSeasonal
+      result = dwelling.HOPolicyType == TC_HO3 and !dwelling.IsSecondary
     }
 
     return result

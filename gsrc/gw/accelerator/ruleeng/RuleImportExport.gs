@@ -11,20 +11,23 @@ uses gw.wsi.pl.ImportToolsAPI
 uses java.io.File
 uses java.lang.StringBuilder
 uses java.util.Collection
+uses una.logging.UnaLoggerCategory
 
 /**
  * Class RuleImportExport manages importing and exporting Rule_Ext instances.
  */
 class RuleImportExport {
+  final static var _logger = UnaLoggerCategory.UNA_RATING
   /** The script parameter that specifies the PC installation location. */
-  static final var PC_ROOT = ScriptParameters.$PC_ROOT.trim()
+  //static final var PC_ROOT = ScriptParameters.$PC_ROOT.trim()
   /** The local rule file, configured by script parameters. */
-  static final var RULE_FILE_LOCAL =
-      ScriptParameters.RuleImportExportPathLocal.replace("$PC_ROOT", PC_ROOT)
-          + "/Rule_Ext.xml"
+  //static final var RULE_FILE_LOCAL =
+    //  ScriptParameters.RuleImportExportPathLocal + "/Rule_Ext.xml"
   /** A temporary rule file, also configured by script parameters. */
   static final var RULE_FILE_TMP =
       ScriptParameters.RuleImportExportPathTmp + "/Rule_Ext.xml"
+
+  static final var  RULE_FILE_LOCAL   = "../webapps/pc/modules/configuration/config/resources/rulesframework/Rule_Ext.xml"
 
   @Returns("An import file, based on the permissions of the current user")
   static property get ImportFile() : File {
@@ -70,10 +73,13 @@ class RuleImportExport {
 
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       // Retire all rules in the system to replace them with the imported file
+      _logger.info("Path is " + new File("").AbsolutePath)
+      _logger.info("Path is " + new File("").CanonicalPath)
+      _logger.info("RULE_FILE_LOCAL" +RULE_FILE_LOCAL)
       Query.make(Rule_Ext).select().each(
           \rule -> bundle.add(rule).remove())
       bundle.commit()
-
+     //"./modules/configuration/config/resources/rulesframework/Rule_Ext.xml"
       var rulesFile = new File(RULE_FILE_LOCAL)
       var fullstr = rulesFile.read()
 

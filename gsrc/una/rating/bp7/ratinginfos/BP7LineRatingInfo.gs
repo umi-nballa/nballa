@@ -92,13 +92,13 @@ class BP7LineRatingInfo {
       _dataCompromiseFirstPartyLimit = lineCov.DataCmprmseRspnseExpnsLimit_EXTTerm?.Value
       _dataCompromiseFirstPartyDeductible = lineCov.DataCmprmseRspnseExpnsDeduc_EXTTerm?.Value
       _dataCompromiseFirstPartyForensicITLegalReviewLimit = lineCov.ForensicITLegalRvwSublimits_EXTTerm?.DisplayValue
-      _classificationClassCode = lineCov.BP7Line.AllBuildings*.Classifications?.first().ClassCode_Ext
+      _classificationClassCode = getFirstBuildingInPrimaryLocation(lineCov)?.Classifications?.first().ClassCode_Ext
     }
     if(lineCov typeis BP7DataCompromiseDfnseandLiabCov_EXT){
       _dataCompromiseFirstThirdPartyLimit = lineCov.DataCompromiseDfnseandLiabCovLimit_EXTTerm?.Value
       _dataCompromiseFirstThirdPartyDeductible = lineCov.DataCompromiseDfnseandLiabCovDeduc_EXTTerm?.Value
       _dataCompromiseFirstThirdPartyForensicITLegalReviewLimit = lineCov.DfnseLiabForensicITLegalRvwSublimits_EXTTerm?.DisplayValue
-      _classificationClassCode = lineCov.BP7Line.AllBuildings*.Classifications?.first().ClassCode_Ext
+      _classificationClassCode = getFirstBuildingInPrimaryLocation(lineCov)?.Classifications?.first().ClassCode_Ext
     }
     if(lineCov typeis BP7EmploymentPracticesLiabilityCov_EXT){
       _employmentPracticesLiabilityLimit = lineCov?.EmployPracLiabCovLimit_EXTTerm?.Value?.intValue()
@@ -107,5 +107,14 @@ class BP7LineRatingInfo {
       _numberOfFullTimeEmployees = lineCov?.BP7Line?.NoOfEmployees_Ext?.intValue()
       _numberOfPartTimeEmployees = lineCov?.BP7Line?.NoOfPartEmployee_Ext?.intValue()
     }
+  }
+
+  /**
+   * Returns the first building in the primary location
+   */
+  private function getFirstBuildingInPrimaryLocation(lineCov: BP7LineCov) : BP7Building{
+    var primaryLocation = lineCov.Branch.PrimaryLocation
+    var buildingsInPrimaryLocation = lineCov.BP7Line.BP7Locations.where( \ elt -> elt.Location == primaryLocation).first().Buildings
+    return buildingsInPrimaryLocation.orderBy( \ elt -> elt.Building.BuildingNum).first()
   }
 }

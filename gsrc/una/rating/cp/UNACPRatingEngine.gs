@@ -12,6 +12,8 @@ uses gw.lob.cp.rating.CPBuildingCovGroup2CostData
 uses gw.lob.cp.rating.CPBuildingCovSpecialCostData
 uses una.rating.cp.common.CPBuildingCovOtherThanHurricaneCostData
 uses una.rating.cp.common.CPBuildingCovHurricaneCostData
+uses una.rating.cp.common.CPRatingStep
+uses una.rating.cp.util.CPRatingUtil
 
 class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   var _minimumRatingLevel: RateBookStatus
@@ -29,6 +31,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     _logger.info("Initializing the " + line.BaseState.Code + " CP Rating Engine")
     _minimumRatingLevel = minimumRatingLevel
     _executor = new CPRateRoutineExecutor(ReferenceDatePlugin, PolicyLine, minimumRatingLevel)
+    CPRatingUtil.Line = PolicyLine
     _logger.info(line.BaseState.Code + " CP Rating Engine initialized")
   }
 
@@ -39,9 +42,10 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
       _logger.info("Rating CP Line Coverages")
       lineVersion.CPLocations.each( \ location -> {
         location.Buildings.each( \ building -> {
-          building.Coverages.each( \ buildingCov -> {
+          rateCPBuilding(building, sliceRange)
+          /*building.Coverages.each( \ buildingCov -> {
             rateCPBuildingCov(buildingCov, sliceRange)
-          })
+          })  */
         })
       })
       _logger.info("Done Rating CP Line Coverages")
@@ -77,7 +81,10 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     return PolicyLine.Costs
   }
 
-  function rateCPBuildingCov(buildingCov : CPBuildingCov, sliceRange : DateRange){
-
+  function rateCPBuilding(building : CPBuilding, sliceRange : DateRange){
+    var ratingStep = new CPRatingStep(PolicyLine, building, _executor, this.NumDaysInCoverageRatedTerm, RateCache)
+    if(building.CPEquipmentBreakdownEnhance_EXTExists){
+      addCost(ratingStep.rateGroup2(building.CPEquipmentBreakdownEnhance_EXT, sliceRange))
+    }
   }
 }

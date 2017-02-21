@@ -38,6 +38,8 @@
       type="Policy"/>
     <ReferencedWidget
       widget="UWCompanyInputSet"/>
+    <Label
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.PolicyPeriod"/>
     <DateInput
       id="originalInceptionDate_Ext"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.OriginalInceptionDate_Ext"
@@ -64,13 +66,17 @@
       id="DateLastInspection"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.DateLastInspection_Ext"
       value="policyPeriod.DateLastInspection_Ext"/>
-    <Label
-      label="displaykey.Web.SubmissionWizard.PolicyInfo.PolicyPeriod"/>
     <!-- <DateInput
       editable="true"
       id="lastInspectionDate_Ext"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.DateLastInspection_Ext"
       value="policyPeriod.DateLastInspection_Ext"/> -->
+    <DateInput
+      editable="true"
+      id="TenantInspOrderDate"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.TenantInspectionOrderDate"
+      value="policyPeriod.TenantInspectionOrderDate_Ext "
+      visible="policyPeriod.BOPLineExists"/>
     <DateInput
       editable="true"
       id="UNAWindMitReInspec_Ext"
@@ -193,7 +199,7 @@
         pickLocation="AffinityGroupSearchPopup.push(policyPeriod)"
         required="false"
         value="policyPeriod.PolicyTerm.AffinityGroup"
-        visible="policyPeriod.HomeownersLine_HOEExists"/>
+        visible="false"/>
       <RangeInput
         editable="true"
         id="PreferredBuilder"
@@ -240,9 +246,5 @@
         value="policyPeriod.QualifiesAffinityDisc_Ext"
         visible="policyPeriod.HomeownersLine_HOEExists"/>
     </InputSet>
-    <Code><![CDATA[function printVal() : boolean{
-  print("Job Type : "+typeof policyPeriod.Job)
-  return true
-}]]></Code>
   </InputSet>
 </PCF>

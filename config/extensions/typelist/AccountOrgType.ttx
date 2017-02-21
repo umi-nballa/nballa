@@ -6,15 +6,18 @@
   <typecode
     code="individual"
     desc="Individual"
-    name="Individual"/>
+    name="Individual"
+    priority="1"/>
   <typecode
     code="solepropship"
     desc="Sole proprietorship"
-    name="Sole proprietorship"/>
+    name="Sole proprietorship"
+    priority="1"/>
   <typecode
     code="partnership"
     desc="Partnership"
-    name="Partnership"/>
+    name="Partnership"
+    priority="8"/>
   <typecode
     code="corporation"
     desc="Corporation - public"
@@ -26,7 +29,8 @@
   <typecode
     code="llc"
     desc="Limited liability company"
-    name="LLC"/>
+    name="LLC"
+    priority="7"/>
   <typecode
     code="jointventure"
     desc="Joint venture"
@@ -67,15 +71,18 @@
   <typecode
     code="other"
     desc="Other"
-    name="Other"/>
+    name="Other"
+    priority="13"/>
   <typecode
     code="trust_Ext"
     desc="Trust"
-    name="Trust"/>
+    name="Trust"
+    priority="5"/>
   <typecode
     code="estate_Ext"
     desc="Estate"
-    name="Estate"/>
+    name="Estate"
+    priority="6"/>
   <typefilter
     desc="List Of Entities for Person Contact type"
     name="personEntityList">
@@ -136,31 +143,38 @@
   <typecode
     code="individualSpouse_Ext"
     desc="Individual and Spouse"
-    name="Individual and Spouse"/>
+    name="Individual and Spouse"
+    priority="2"/>
   <typecode
     code="twoIndOtherThanSpousal_Ext"
     desc="2 individuals other than Spousal relationship"
-    name="2 individuals other than Spousal relationship"/>
+    name="2 individuals other than Spousal relationship"
+    priority="3"/>
   <typecode
     code="moreThan2Ind_Ext"
     desc="More than 2 individual"
-    name="More than 2 individual"/>
+    name="More than 2 individual"
+    priority="4"/>
   <typecode
     code="Corporation_Ext"
     desc="Corporation"
-    name="Corporation"/>
+    name="Corporation"
+    priority="9"/>
   <typecode
     code="ira_Ext"
     desc="IRA"
-    name="IRA"/>
+    name="IRA"
+    priority="10"/>
   <typecode
     code="association_Ext"
     desc="Association"
-    name="Association"/>
+    name="Association"
+    priority="11"/>
   <typecode
     code="church_Ext"
     desc="Church"
-    name="Church"/>
+    name="Church"
+    priority="12"/>
   <typecode
     code="soleProprietor_Ext"
     desc="Sole Proprietor"
@@ -168,47 +182,58 @@
   <typecode
     code="generalPartnership_Ext"
     desc="General Partnership"
-    name="General Partnership"/>
+    name="General Partnership"
+    priority="2"/>
   <typecode
     code="limitedLiabilityPartnership_Ext"
     desc="Limited Liability Partnership"
-    name="Limited Liability Partnership"/>
+    name="Limited Liability Partnership"
+    priority="3"/>
   <typecode
     code="jointVenture_Ext"
     desc="Joint Venture"
-    name="Joint Venture"/>
+    name="Joint Venture"
+    priority="4"/>
   <typecode
     code="corporationAllOther_Ext"
     desc="Corporation- all other"
-    name="Corporation- all other"/>
+    name="Corporation- all other"
+    priority="5"/>
   <typecode
     code="sCorp_Ext"
     desc="S Corp"
-    name="S Corp"/>
+    name="S Corp"
+    priority="6"/>
   <typecode
     code="cCorp_Ext"
     desc="C Corp"
-    name="C Corp"/>
+    name="C Corp"
+    priority="7"/>
   <typecode
     code="residentialCondoAssociation_Ext"
     desc="Residential Condominium Association"
-    name="Residential Condominium Association"/>
+    name="Residential Condominium Association"
+    priority="9"/>
   <typecode
     code="commercialCondoAssociation_Ext"
     desc="Commercial Condominium Association"
-    name="Commercial Condominium Association"/>
+    name="Commercial Condominium Association"
+    priority="10"/>
   <typecode
     code="cooperative_Ext"
     desc="Cooperative"
-    name="Cooperative"/>
+    name="Cooperative"
+    priority="12"/>
   <typecode
     code="governmental_Ext"
     desc="Governmental"
-    name="Governmental"/>
+    name="Governmental"
+    priority="13"/>
   <typecode
     code="nonProfit_Ext"
     desc="Non profit"
-    name="Non profit"/>
+    name="Non profit"
+    priority="14"/>
   <typefilter
     desc="HO Person filter values"
     name="HOPerson_Ext">
@@ -222,6 +247,8 @@
       code="twoIndOtherThanSpousal_Ext"/>
     <include
       code="other"/>
+    <include
+      code="partnership"/>
   </typefilter>
   <typefilter
     desc="HO Company Filter values"
@@ -230,8 +257,6 @@
       code="association_Ext"/>
     <include
       code="church_Ext"/>
-    <include
-      code="corporation"/>
     <include
       code="estate_Ext"/>
     <include
@@ -244,6 +269,8 @@
       code="partnership"/>
     <include
       code="trust_Ext"/>
+    <include
+      code="Corporation_Ext"/>
   </typefilter>
   <typefilter
     desc="BOP or CPP Person filter"
@@ -280,6 +307,8 @@
       code="sCorp_Ext"/>
     <include
       code="trust_Ext"/>
+    <include
+      code="llc"/>
   </typefilter>
   <typefilter
     desc="Filter used in field How many properties of any type are under common ownership?"

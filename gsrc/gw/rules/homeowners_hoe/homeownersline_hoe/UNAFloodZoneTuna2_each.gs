@@ -5,16 +5,15 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 
 /**
  * Created with IntelliJ IDEA.
- * User: skashyap
+ * User: parumugam
  * Date: 2/7/17
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNADistCoastMultipleTuna_each implements IRuleCondition<HomeownersLine_HOE>{
+class UNAFloodZoneTuna2_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner?.Dwelling.FloodCoverage_Ext && homeowner?.Dwelling.HOLocation.DistToCoastMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_USERSELECTED &&  homeowner?.Dwelling.FloodCoverage_Ext &&
-    homeowner.HOLocation.PolicyLocation.State.Code=="FL")
+    if(homeowner?.Dwelling.PropFloodVal_Ext==null && homeowner.Dwelling.FloodCoverage_Ext)
       return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()

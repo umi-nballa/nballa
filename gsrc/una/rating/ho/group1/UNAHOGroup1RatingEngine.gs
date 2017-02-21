@@ -118,8 +118,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if (HasExecutiveCoverage){
             rateExecutiveCoverage(dwellingCov, dateRange)
           }
-          if((PolicyLine.BaseState == Jurisdiction.TC_AZ or PolicyLine.BaseState == Jurisdiction.TC_NV) and
-              PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+          if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
             rateUnitOwnersCovAIncreasedLimit(dwellingCov, dateRange)
           }
           break
@@ -303,7 +302,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateBrushHazardSurcharge(dateRange)
     }
 
-    if(PolicyLine.BaseState == Jurisdiction.TC_NV or PolicyLine.BaseState == Jurisdiction.TC_AZ){
+    if(PolicyLine.BaseState == Jurisdiction.TC_NV or PolicyLine.BaseState == Jurisdiction.TC_AZ or
+        PolicyLine.BaseState == Jurisdiction.TC_CA){
       rateProtectiveDeviceCredit(dateRange)
     }
 

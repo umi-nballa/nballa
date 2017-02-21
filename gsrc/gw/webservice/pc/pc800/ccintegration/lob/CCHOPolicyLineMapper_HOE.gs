@@ -38,6 +38,13 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
   _hoLine = line as HomeownersLine_HOE;
   choosePercentageBasis()
 }
+  // Returns true if the Coverage should be excluded from what is sent to CC
+  override function isCoverageExcluded(cov : Coverage) : Boolean {
+    if(isCoverageToExcludeFromMapping(cov)){
+      _excludedCoverages.add(cov.PatternCode)
+    }
+    return _excludedCoverages.contains(cov.PatternCode)
+  }
 
   // Create a summary list of covered buildings for the PolicySummary that is returned for a search result (not a full policy mapping)
   override function mapPropertySummaries(propertyList : ArrayList<CCPolicySummaryProperty>) {
@@ -99,9 +106,11 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
     
     // Create dwelling-level coverages
     for (cov in dwelling.Coverages) {
-      var ccCov = new CCPropertyCoverage()
-      populateCoverage(ccCov, cov)
-      dwellingRU.Coverages.add(new CCRiskUnit_Coverages(ccCov))
+      if (!isCoverageExcluded(cov)) {
+        var ccCov = new CCPropertyCoverage()
+        populateCoverage(ccCov, cov)
+        dwellingRU.Coverages.add(new CCRiskUnit_Coverages(ccCov))
+      }
     }
 
     for(scheduledCov in dwelling.Coverages.ScheduledItems){
@@ -382,5 +391,15 @@ class CCHOPolicyLineMapper_HOE extends CCBasePolicyLineMapper {
       }
       }
       return dollarValue
+  }
+
+  /**
+   * This method will be used to add BP7 Excluded Coverages
+   */
+  private function isCoverageToExcludeFromMapping(cov : Coverage) : Boolean {
+    if((cov.PatternCode == "HODW_FireDepartmentService_HOE_Ext")){
+      return true
+    }
+    return false
   }
 }

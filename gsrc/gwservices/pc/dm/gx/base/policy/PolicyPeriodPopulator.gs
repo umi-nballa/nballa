@@ -13,6 +13,7 @@ uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.Policy
 uses gwservices.pc.dm.gx.base.policy.policyperiodmodel.anonymous.elements.PolicyPeriod_UWCompany
 uses gwservices.pc.dm.gx.entitypopulators.BaseEntityPopulator
 uses gw.pl.currency.MonetaryAmount
+uses una.integration.plugins.numbergeneration.PolicyNumGenPluginImpl
 
 class PolicyPeriodPopulator extends BaseEntityPopulator<PolicyPeriod, KeyableBean> {
   /* Logging prefix */
@@ -85,6 +86,13 @@ class PolicyPeriodPopulator extends BaseEntityPopulator<PolicyPeriod, KeyableBea
       var estimatedAmount = child.EstimatedPremium_amt
       var EstimatedPremium = new MonetaryAmount(estimatedAmount, Currency.TC_USD)
       child.EstimatedPremium = EstimatedPremium
+    }
+    // Need to override policy number
+    var policyNumber: String;
+    var plugin = new PolicyNumGenPluginImpl();
+    policyNumber = plugin.genNewPeriodPolicyNumber(child)
+    if (child typeis PolicyPeriod){
+        child.PolicyNumber = policyNumber
     }
   }
 }

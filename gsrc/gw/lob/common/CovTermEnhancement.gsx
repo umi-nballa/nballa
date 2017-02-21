@@ -83,12 +83,12 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
     var result : Range
 
     var condoUnitRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.ResidenceType.Code)
-    var seasonSecondaryRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.IsSecondaryOrSeasonal)
+    var secondaryRange = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType.Code + hoLine.Dwelling.IsSecondary)
 
     if(condoUnitRange != null){
       result = condoUnitRange
-    }else if(seasonSecondaryRange != null){
-      result = seasonSecondaryRange
+    }else if(secondaryRange != null){
+      result = secondaryRange
     }else{
       result = ConfigParamsUtil.getRange(TC_DwellingLimitAcceptableRange, hoLine.BaseState, hoLine.HOPolicyType)
     }

@@ -72,8 +72,8 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return result
   }
 
-  property get IsSecondaryOrSeasonal() : boolean {
-    return this.DwellingUsage != null and DwellingUsage_HOE.TF_SECONDARYORSEASONAL.TypeKeys.contains(this.DwellingUsage)
+  property get IsSecondary() : boolean {
+    return this.DwellingUsage != null and this.DwellingUsage == DwellingUsage_HOE.TC_SEC
   }
 
   /*

@@ -13,6 +13,7 @@ public final class HORateRoutineNames {
   public static final var HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE : String = "UNAHOReplacementCostRateRoutine"
   public static final var HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHOReplacementCostPersonalPropertyRateRoutine"
   public static final var HOA_PLUS_COVERAGE_RATE_ROUTINE : String = "UNAHOAPlusCoverageRateRoutine"
+  public static final var DP_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHODPBasePremiumRateRoutine"
 
   //base premium routines for group 2 states
   public static final var BASE_PREMIUM_SC_RATE_ROUTINE : String = "UNAHOBasePremiumRateRoutine"
@@ -115,4 +116,5 @@ public final class HORateRoutineNames {
   public static final var UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE :String = "UNAHOUnitOwnersCovASpecialLimitsRateRoutine"
   public static final var LOSS_HISTORY_CREDIT_RATE_ROUTINE :String = "UNAHOLossHistoryCreditRateRoutine"
   public static final var PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE :String = "UNAHOProtectiveDeviceCreditRateRoutine"
+  public static final var ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE : String = "UNADPAdditionalInsuredPropertyManagerCovRateRoutine"
 }

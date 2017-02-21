@@ -195,7 +195,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       deductible.DeductibleDesc = ""
       deductible.FormatText = ""
       deductible.NetChangeAmt.Amt = 0
-      deductible.WrittenAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP).ActualTermAmount.Amount
+      var amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP).ActualTermAmount.Amount
+      deductible.WrittenAmt.Amt = amt != null ? amt : 0
       deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return deductible
     } else if(currentCovTerm.PatternCode == "HODW_Hurricane_Ded_HOE") {
@@ -210,7 +211,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       deductible.DeductibleDesc = ""
       deductible.FormatText = ""
       deductible.NetChangeAmt.Amt = 0
-      deductible.WrittenAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND).ActualTermAmount.Amount
+      var amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND).ActualTermAmount.Amount
+      deductible.WrittenAmt.Amt = amt != null ? amt : 0
       deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return deductible
     } else {

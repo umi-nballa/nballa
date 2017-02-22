@@ -3,7 +3,7 @@ package una.rating.ho.group3.ratinginfos
 uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
-
+uses una.rating.util.HOProtectionDetailsMapper
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -19,6 +19,7 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _aopDeductibleLimit : BigDecimal as AOPDeductibleLimit
   var _hurricanePercentage : String as HurricanePercentage
   var _bcegGrade : int as BCEGGrade
+  var _protectionDetails : String as ProtectionDetails
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
@@ -30,6 +31,10 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     _yearOfConstructionMinLimit = ConfigParamsUtil.getInt(TC_YearOfConstructionMinLimit, line.BaseState, line.HOPolicyType.Code)
     _yearOfConstruction = Line.Dwelling.OverrideYearbuilt_Ext? Line.Dwelling.YearBuiltOverridden_Ext : Line.Dwelling.YearBuilt
     _windOrHailExcluded = line.Dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists
+
+    var dwelling = line?.Dwelling
+    var state = line?.BaseState
+    _protectionDetails = HOProtectionDetailsMapper.getProtectionDetails(dwelling, state)
 
     if(PolicyType == typekey.HOPolicyType_HOE.TC_HO3)
       _coverageLimitForDeductible = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm.Value

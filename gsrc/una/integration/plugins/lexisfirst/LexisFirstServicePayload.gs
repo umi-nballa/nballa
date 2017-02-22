@@ -212,7 +212,6 @@ class LexisFirstServicePayload {
           addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
           addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
         lexisDTO.MortgageeName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
-        lexisDTO.PayableName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
         lexisDTO.MortgageeCity = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.City
         lexisDTO.MortgageeCountry = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.Country.Code
         lexisDTO.MortgageeStreet = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine1 + " " +
@@ -359,6 +358,7 @@ class LexisFirstServicePayload {
     lexisDTO.MaximumPremiumAmountDue = ""
     lexisDTO.LegalDescription = ""
     lexisDTO.InsuranceCarrier = policyPeriod.UWCompany.DisplayName
+    lexisDTO.PayableName = policyPeriod.UWCompany.DisplayName
     lexisDTO.InsuranceCarrierNAIC = policyPeriod.UWCompany.Code == "01"? "11986":"10759"
   }
 

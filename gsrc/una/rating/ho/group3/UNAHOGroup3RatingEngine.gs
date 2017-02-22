@@ -221,6 +221,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
     }
 
+    if(PolicyLine.BaseState == Jurisdiction.TC_FL){
+      rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT)
+    }
+
     rateMaximumDiscountAdjustmentForAOP(dateRange)
 
     updateFinalAdjustedAOPBasePremium()
@@ -979,6 +983,22 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         return true
     }
     return false
+  }
+
+  /**
+   *  Function to rate Protection Devices Credit
+   */
+  function rateProtectiveDeviceCredit(dateRange: DateRange, costType : HOCostType_Ext) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateProtectiveDeviceCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.ProtectiveDevicesDiscount = costData?.ActualTermAmount
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Protection Devices Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**

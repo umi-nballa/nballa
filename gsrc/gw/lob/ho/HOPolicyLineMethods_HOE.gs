@@ -26,6 +26,7 @@ uses una.rating.ho.tx.UNAHOTXRatingEngine
 uses una.rating.ho.group2.UNAHOGroup2RatingEngine
 uses una.rating.ho.group3.UNAHOGroup3RatingEngine
 uses una.rating.ho.nc.UNAHONCRatingEngine
+uses una.rating.ho.dwellingfire.UNAHODwellingFireRatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -233,7 +234,7 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
    if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     } else if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_line.Dwelling?.HOPolicyType)){
-      return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+      return new UNAHODwellingFireRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     } else {
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)

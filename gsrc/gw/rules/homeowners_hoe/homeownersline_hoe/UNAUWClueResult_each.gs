@@ -18,7 +18,7 @@ class UNAUWClueResult_each implements IRuleCondition<HomeownersLine_HOE>{
     //if(
          homeowner.HOPriorLosses_Ext.each( \ elt ->
          {
-           if(elt.OriginLoss==typekey.OriginOfLoss_Ext.TC_CLUE)
+           if(elt.OriginLoss==typekey.OriginOfLoss_Ext.TC_AGENT && homeowner.ClueHit_Ext)
              return RuleEvaluationResult.execute()
 
          })

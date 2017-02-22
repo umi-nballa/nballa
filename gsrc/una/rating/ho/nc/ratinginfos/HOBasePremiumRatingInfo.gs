@@ -16,7 +16,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _secondaryOccupancyCredit : boolean as SecondaryOccupancyCredit = false
   var _ordinanceOrLawValue : BigDecimal as OrdinanceOrLaw = 0.0
   var _deductibleFactor : boolean as DeductibleFactor = false
-  var _acvSettlement : boolean as ACVSettlement = false
   var _acvLossSettlementWindstormHail : boolean as ACVLossSettlementWindstormHail = false
   var _increasedPersonalProperty : boolean as IncreasedPersonalProperty = false
   var _townHouseOrRowHouse : boolean as TownHouseOrRowHouse = false
@@ -34,6 +33,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _insuranceScore : int as InsuranceScore
   var _consentToRate: boolean as ConsentToRate
   var _maxAgeOfHomeLimit : int as MaxAgeOfHomeLimit
+  var _acvLossSettlement : boolean as ACVLossSettlement
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling
@@ -52,8 +52,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
         _specifiedAdditionalAmount = dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
-
-    _acvSettlement = dwelling?.HODW_LossSettlementWindstorm_HOE_ExtExists
+    _acvLossSettlement = _dwelling?.HODW_ActualCashValueLossSettlementExists
+    _acvLossSettlementWindstormHail = dwelling?.HODW_LossSettlementWindstorm_HOE_ExtExists
     if(dwelling.HODW_Personal_Property_HOEExists){
       _increasedPersonalProperty = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0
       if(_increasedPersonalProperty){
@@ -69,9 +69,16 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     } else if (dwelling.HOLine.Branch?.CreditInfoExt?.CreditLevel != null){
       _insuranceScore = dwelling.HOLine.Branch.CreditInfoExt.CreditLevel.Description.toInt()
     }
+    if (dwelling.HOLine.Branch?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_HIT or
+        dwelling.HOLine.Branch?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_SCORE){
+      _insuranceScore = 0
+    }
 
     _consentToRate = Dwelling.Branch.ConsentToRate_Ext
     _maxAgeOfHomeLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, _dwelling.HOLine.BaseState)
+
+
+
 
   }
 

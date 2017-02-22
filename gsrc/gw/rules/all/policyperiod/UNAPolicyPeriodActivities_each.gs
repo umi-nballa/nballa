@@ -8,22 +8,22 @@ class UNAPolicyPeriodActivities_each implements IRuleCondition<PolicyPeriod> {
   override function evaluateRuleCriteria(policyPeriod : PolicyPeriod) : RuleEvaluationResult {
     if(policyPeriod.ofaccontact!=null && policyPeriod.ofaccontact.length>0)
     {
-      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("ofac_csr")
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("OFAC1")
 
       var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
       if(user==null)
       {
         user = una.config.activity.OfacUtil.findUserByUsername("su")
       }
-      if(policyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="ofac_csr")==null)
+      if(policyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC1")==null)
       {
         var activity =  activityPattern.createJobActivity(policyPeriod.Bundle, policyPeriod.Job, null, null, null, null, null, null, null)
         activity.assign(user.RootGroup,user)
       }
 
-      return RuleEvaluationResult.skip()//execute(activityPattern)
+     //execute(activityPattern)
     } //}
-    else
+   /* else
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("ofac_csr")
 
@@ -39,8 +39,8 @@ class UNAPolicyPeriodActivities_each implements IRuleCondition<PolicyPeriod> {
       }
 
       return RuleEvaluationResult.skip()//execute(activityPattern)
-    }
+    }*/
 
-
+    return RuleEvaluationResult.skip()
   }
 }

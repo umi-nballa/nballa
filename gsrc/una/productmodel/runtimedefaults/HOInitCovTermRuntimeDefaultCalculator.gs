@@ -39,7 +39,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return _applicableCovTerms
   }
 
-  private static function getSpecialLogicDefault(covTerm : CovTerm) : Double{
+  private function getSpecialLogicDefault(covTerm : CovTerm) : Double{
     var result : Double
 
     var line : entity.HomeownersLine_HOE

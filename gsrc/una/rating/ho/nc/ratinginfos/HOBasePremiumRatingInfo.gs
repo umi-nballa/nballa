@@ -69,6 +69,10 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     } else if (dwelling.HOLine.Branch?.CreditInfoExt?.CreditLevel != null){
       _insuranceScore = dwelling.HOLine.Branch.CreditInfoExt.CreditLevel.Description.toInt()
     }
+    if (dwelling.HOLine.Branch?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_HIT or
+        dwelling.HOLine.Branch?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_SCORE){
+      _insuranceScore = 0
+    }
 
     _consentToRate = Dwelling.Branch.ConsentToRate_Ext
     _maxAgeOfHomeLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, _dwelling.HOLine.BaseState)

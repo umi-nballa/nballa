@@ -33,13 +33,9 @@ class HOCommonBasePremiumRatingInfo {
     _territoryCode = hoLocation?.OverrideTerritoryCode_Ext? hoLocation?.TerritoryCodeOverridden_Ext : hoLocation?.TerritoryCodeTunaReturned_Ext
 
     _policyType = dwelling?.HOLine.HOPolicyType.Code
-    if (dwelling.HODW_Dwelling_Cov_HOEExists){
-      _dwellingLimit = dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value as int
-    }
+    _dwellingLimit = dwelling?.DwellingLimitCovTerm.Value as int
 
-    if (dwelling.HODW_Personal_Property_HOEExists){
-      _personalPropertyLimit = dwelling?.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm?.Value as int
-    }
+    _personalPropertyLimit = dwelling.PersonalPropertyLimitCovTerm.Value as int
 
     var policyPeriod = dwelling?.PolicyPeriod
     var originalEffectiveDate = policyPeriod?.Policy.OriginalEffectiveDate

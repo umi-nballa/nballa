@@ -318,8 +318,8 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     if(this.HOLocation.PolicyLocation.State.Code=="FL" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) || this.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT))
       return true
 
-    if(this.HOLocation.PolicyLocation.State.Code=="NC" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) || this.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT))
-      return true
+  //  if(this.HOLocation.PolicyLocation.State.Code=="NC" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) || this.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT))
+   //   return true
 
     if(this.HOLocation.PolicyLocation.State.Code=="NV" && (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType)))
       return true

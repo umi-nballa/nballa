@@ -146,6 +146,8 @@ uses gwservices.pc.dm.gx.lob.bop.BP7BldngUnitsPopulator
 uses gwservices.pc.dm.gx.shared.policy.policylinemodel.anonymous.elements.PolicyLine_Entity_GeneralLiabilityLine_Exposures_Entry
 uses gwservices.pc.dm.gx.lob.bop.bp7linecovmodel.anonymous.elements.BP7LineCov_CovTerms_Entry
 uses gwservices.pc.dm.gx.lob.bop.bp7classificationcovmodel.anonymous.elements.BP7ClassificationCov_CovTerms_Entry
+uses gwservices.pc.dm.gx.lob.ho.dwelling_hoemodel.anonymous.elements.Dwelling_HOE_DwellingProtectionDetails
+uses gwservices.pc.dm.gx.lob.ho.DwellingProtctnDetailsPopulator
 
 /**
  * Entity populator registry
@@ -218,6 +220,7 @@ class Registry {
       Account_IndustryCode -> getConstructor(IndustryCodePopulator),
       PolicyLine_Entity_HomeownersLine_HOE_HOLineCoverages_Entry -> getConstructor(CoveragePopulator),
       Dwelling_HOE_Coverages_Entry -> getConstructor(CoveragePopulator),
+      Dwelling_HOE_DwellingProtectionDetails -> getConstructor(DwellingProtctnDetailsPopulator),
       CPBuilding_AdditionalInterests_Entry -> getConstructor(CPBldngAddlPopulator),
       CPBuilding_Coverages_Entry -> getConstructor(CoveragePopulator),
       PolicyLine_Entity_CommercialPropertyLine_CPLocations_Entry -> getConstructor(CPLocationPopluator),

@@ -14,7 +14,7 @@ uses java.util.Date
 class HPXQuoteMapper {
   function createQuote(policyPeriod : PolicyPeriod) : QuoteInfoType {
     var quote = new wsi.schema.una.hpx.hpx_application_request.types.complex.QuoteInfoType()
-    quote.CompanysQuoteNumber = policyPeriod.Submission.JobNumber
+    quote.CompanysQuoteNumber = policyPeriod.Job.JobNumber
     quote.InitialQuoteRequestDt = new XmlDate(policyPeriod.PeriodStart)
     quote.QuoteValidUntilDt = new XmlDate(policyPeriod.PeriodEnd)
     quote.QuotePreparedDt = new XmlDate(new Date())

@@ -203,7 +203,8 @@ class CCBP7PolicyLineMapper extends CCBasePolicyLineMapper {
       (cov.PatternCode == "BP7ClassificationValuablePapers") or
       (cov.PatternCode == "BP7AddlInsdControllingInterestLocation_EXT") or
       (cov.PatternCode == "BP7AddlInsdGrantorOfFranchiseLine_EXT") or
-      (cov.PatternCode == "BP7VacancyPermit")
+      (cov.PatternCode == "BP7VacancyPermit") or
+      (cov.PatternCode == "BP7FireDeptServiceContract")
     ){
       return true
     }

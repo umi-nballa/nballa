@@ -17,4 +17,14 @@ enhancement HOLocationEnhancement_Ext : entity.HOLocation_HOE
       return this.DwellingProtectionClasscode
   }
 
+
+
+  property get territoryCodeOrOverride(): String
+  {
+    if(this.OverrideTerritoryCode_Ext && this.TerritoryCodeOverridden_Ext!=null)
+      return this.TerritoryCodeOverridden_Ext
+    else
+      return this.TerritoryCodeTunaReturned_Ext
+  }
+
 }

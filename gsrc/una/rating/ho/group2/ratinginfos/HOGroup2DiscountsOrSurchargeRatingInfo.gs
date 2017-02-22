@@ -42,8 +42,6 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     if(line?.HOPriorLosses_Ext != null){
       _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
     }
-
-
   }
 
   private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {

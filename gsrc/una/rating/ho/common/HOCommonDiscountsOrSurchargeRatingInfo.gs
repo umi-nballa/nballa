@@ -50,5 +50,4 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     return Line.Dwelling.OverrideYearbuilt_Ext? Line.Dwelling.YearBuiltOverridden_Ext : Line.Dwelling.YearBuilt
   }
 
-
 }

@@ -150,7 +150,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     if(this.OverrideConstructionTypeL1_Ext and this.ConstTypeOverriddenL1_Ext != null){
       return this.ConstTypeOverriddenL1_Ext
     }else{
-      return this.ConstructionTypeL1_Ext
+      return this.ConstructionType
     }
   }
 

@@ -10,7 +10,7 @@ class HOConstructionTypeMapper {
 
   static function setConstructionType(dwelling : Dwelling_HOE, state: Jurisdiction): RateTableConstructionType_Ext {
     if(gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT ){
-      var dwellingConstructionTypeL1 = dwelling.OverrideConstructionTypeL1_Ext? dwelling.ConstTypeOverriddenL1_Ext : dwelling.ConstructionTypeL1_Ext
+      var dwellingConstructionTypeL1 = dwelling.OverrideConstructionTypeL1_Ext? dwelling.ConstTypeOverriddenL1_Ext : dwelling.ConstructionType
       var exteriorWallFinishL1 = dwelling.OverrideExteriorWFvalL1_Ext? dwelling.ExteriorWFvalueOverridL1_Ext : dwelling.ExteriorWallFinishL1_Ext
       var dwellingConstructionTypeL2 = dwelling.OverrideConstructionTypeL2_Ext? dwelling.ConstTypeOverriddenL2_Ext : dwelling.ConstructionTypeL2_Ext
       var exteriorWallFinishL2 = dwelling.OverrideExteriorWFvalL2_Ext? dwelling.ExteriorWFvalueOverridL2_Ext : dwelling.ExteriorWallFinishL2_Ext

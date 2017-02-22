@@ -243,7 +243,10 @@ class CoveragesUtil {
             bp7Line.BP7HiredNonOwnedAuto.BP7HiredAutoLimit_EXTTerm.setValueFromString("2000000_EXT")
           }
         }
-        break	
+        break
+      case "DPLI_Med_Pay_HOE":
+        covTermsToInitialize.add((coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm)
+        break
       default:
         break
     }
@@ -466,7 +469,7 @@ class CoveragesUtil {
   }
 
   private static function isReplaceCostWithRoofPayScheduleConditionAvailable(hoLine : HomeownersLine_HOE) : boolean{
-    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.contains(hoLine.Dwelling.TerritoryCodeOrOverride)
+    return REPLACEMENT_COST_CONDITION_ELIGIBLE_TERRITORY_CODES.containsIgnoreCase(hoLine.Dwelling.TerritoryCodeOrOverride)
   }
 
   private static function isFloridaChangesCondoAssociationConditionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{

@@ -15,7 +15,7 @@ class UWSingleWallCostal_each implements IRuleCondition<HomeownersLine_HOE>{
 
     if((homeowner.Dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||
         homeowner.Dwelling.ConstructionTypeOrOverride == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||
-        homeowner.Dwelling.ConstructionTypeL1_Ext == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||
+        //homeowner.Dwelling.ConstructionTypeL1_Ext == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||
         homeowner.Dwelling.ConstructionTypeL1OrOverride == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||
         homeowner.Dwelling.ConstructionTypeL2_Ext == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT ||
         homeowner.Dwelling.ConstructionTypeL2OrOverride == typekey.ConstructionType_HOE.TC_LIGHTFRAMESINGLEWALL_EXT) &&

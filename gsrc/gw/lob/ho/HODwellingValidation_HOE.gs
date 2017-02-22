@@ -293,8 +293,8 @@ class HODwellingValidation_HOE extends PCValidationBase {
     if (HODwelling.YearBuilt == null and HODwelling.YearBuiltOverridden_Ext == null) {
         addErrorOrWarning("YearBuilt", displaykey.Web.Policy.HomeownersLine.Validation.YearBuilt, "HomeownersDwellingConstruction")
     }
-    if ((HODwelling.ConstructionType == null and HODwelling.ConstTypeOverridden_Ext == null) and ((HODwelling.ConstructionTypeL1_Ext == null and HODwelling.ConstTypeOverriddenL1_Ext == null)
-         or (HODwelling.ConstructionTypeL2_Ext == null and HODwelling.ConstTypeOverriddenL2_Ext == null))) {
+    if ((HODwelling.ConstructionType == null and HODwelling.ConstTypeOverridden_Ext == null) and (//(HODwelling.ConstructionTypeL1_Ext == null and HODwelling.ConstTypeOverriddenL1_Ext == null) or
+         (HODwelling.ConstructionTypeL2_Ext == null and HODwelling.ConstTypeOverriddenL2_Ext == null))) {
         addErrorOrWarning("ConstructionType", displaykey.Web.Policy.HomeownersLine.Validation.ConstructionTypeRequired, "HomeownersDwellingConstruction")
     }
     if (HODwelling.StoriesNumber == null and HODwelling.NoofStoriesOverridden_Ext == null) {

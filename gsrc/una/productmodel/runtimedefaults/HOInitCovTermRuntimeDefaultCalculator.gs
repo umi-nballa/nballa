@@ -84,6 +84,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
       case "HODW_SinkholeLossDeductible_Ext":
         result = getSinkholeDeductibleValue(line)
         break
+      case "DPDW_FairRentalValue_Ext":
+        result = line.Dwelling.DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm.RuntimeDefault
+        break
       default:
         break
     }

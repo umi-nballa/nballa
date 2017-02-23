@@ -28,7 +28,7 @@ class TunaScrubOnlyResponseMapper extends TunaResponseMapper {
       response.ScrubStatus = tunaResponse.Address.ScrubStatus
       response.AddressLine1 = tunaResponse.Address.Street.Number + " " + tunaResponse.Address.Street.Name + " " + tunaResponse.Address.Street.Type
       response.City = tunaResponse.Address.City
-      response.PostalCode = tunaResponse.Address.Zipcode.Major + "-" + tunaResponse.Address.Zipcode.Minor
+      response.PostalCode = tunaResponse.Address.Zipcode.Minor.length != 0 ? tunaResponse.Address.Zipcode.Major + "-" + tunaResponse.Address.Zipcode.Minor :tunaResponse.Address.Zipcode.Major
       response.State = tunaResponse.Address.State
       response.Note = tunaResponse.Address.Note
       response.NoteDetail = tunaResponse.Address.NoteDetail

@@ -61,6 +61,12 @@
       label="displaykey.Web.SubmissionWizard.PolicyInfo.PriorLegacyPolicyNumber_Ext"
       required="policyPeriod.SourceSystem_Ext == TC_LEGACY"
       value="policyPeriod.LegacyPolicyNumber_Ext"/>
+    <TextInput
+      editable="true"
+      id="agentContactInfo"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.AgentContactInfo"
+      required="false"
+      value="policyPeriod.AgentContactInfo_Ext"/>
     <DateInput
       editable="!policyPeriod.HomeownersLine_HOEExists"
       id="DateLastInspection"
@@ -76,7 +82,7 @@
       id="TenantInspOrderDate"
       label="displaykey.Web.SubmissionWizard.PolicyInfo.TenantInspectionOrderDate"
       value="policyPeriod.TenantInspectionOrderDate_Ext "
-      visible="policyPeriod.BOPLineExists"/>
+      visible="policyPeriod.Policy.Product.Name==&quot;Businessowners (v7)&quot;"/>
     <DateInput
       editable="true"
       id="UNAWindMitReInspec_Ext"
@@ -151,6 +157,13 @@
       <PostOnChange
         target="PolicyInfoInputSet"/>
     </DateInput>
+    <DateInput
+      editable="perm.System.editwrittendate &amp;&amp; policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
+      id="AppraisalDate"
+      label="displaykey.Web.SubmissionWizard.PolicyInfo.AppraisalDate"
+      required="false"
+      value="policyPeriod.AppraisalDate_Ext"
+      visible="policyPeriod.Policy.Product.Name==&quot;Commercial Package&quot; || policyPeriod.Policy.Product.Name==&quot;Businessowners (v7)&quot;"/>
     <TypeKeyInput
       editable="policyPeriod.Job typeis Issuance"
       id="BaseState"

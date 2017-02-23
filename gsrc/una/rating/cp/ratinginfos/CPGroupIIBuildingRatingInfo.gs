@@ -1,23 +1,20 @@
-package una.rating.cp.common
+package una.rating.cp.ratinginfos
 
 uses java.math.BigDecimal
-uses una.rating.cp.util.CPRatingUtil
+uses una.rating.cp.common.CPCommonBuildingRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswam007
  * Date: 2/14/17
  */
-class CPGroupIIBuildingRatingInfo {
+class CPGroupIIBuildingRatingInfo extends CPCommonBuildingRatingInfo{
 
   var _equipmentBreakdownEndorsementLimit : BigDecimal as EquipmentBreakdownEndorsementLimit
-  var _scheduledRatingModifier : BigDecimal as ScheduledRatingModifier
-  var _consentToRateFactor : BigDecimal as ConsentToRateFactor = 1.0
-  var _aopDeductible : int as AOPDeductible
+
 
   construct(building : CPBuilding){
-    _scheduledRatingModifier = CPRatingUtil.ScheduledRatingModifier
-    _aopDeductible = building.CPLocation.CPLine.allotherperilded.Code.toInt()
+    super(building)
     if(building.CPEquipmentBreakdownEnhance_EXTExists){
       _equipmentBreakdownEndorsementLimit = totalInsuredValueLimit(building)
     }

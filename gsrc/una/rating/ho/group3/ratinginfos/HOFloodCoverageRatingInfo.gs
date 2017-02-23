@@ -37,7 +37,7 @@ class HOFloodCoverageRatingInfo {
   }
 
   property get isUnnumberedAZone() : boolean{
-    if(_floodZone.startsWith("A"))
+    if(_floodZone?.startsWith("A"))
       if(_floodZone != "AE" && _floodZone != "AO" && _floodZone != "AH"){
         var str = _floodZone?.substring(1, _floodZone.length())
         if(!str?.Numeric)

@@ -30,6 +30,7 @@ class TunaAppResponse {
   var _latitude :String                     as Latitude
   var _longitude :String                    as Longitude
   var _propertyLine:String                  as Line
+  var _countyName : String                  as CountyName
 
   /*Property Information complete*/
   var _counties: List                                          as Counties

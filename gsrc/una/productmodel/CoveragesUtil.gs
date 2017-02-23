@@ -328,13 +328,16 @@ class CoveragesUtil {
 
   private static function isComprehensiveEarthquakeCoverageAvailable(dwelling : Dwelling_HOE) : boolean{
     var result = false
+    var earthquakeCoverageElected = dwelling.EarthquakeCoverage_Ext
     var numberOfStories = dwelling.NumberStoriesOrOverride
     var yearBuilt = dwelling.YearBuiltOrOverride
-    var isQualifyingConstructionType = typekey.ConstructionType_HOE.TF_WOODFRAMECONSTRUCTIONTYPES.TypeKeys.contains(dwelling.ConstructionType)
     var isQualifyingResidenceType = {ResidenceType_HOE.TC_SINGLEFAMILY_EXT, ResidenceType_HOE.TC_DUPLEX}.contains(dwelling.ResidenceType)
     var isQualifyingFoundationType = dwelling.Foundation != TC_StiltsPilings_Ext
+    var constructionTypes = {dwelling.ConstructionTypeOrOverride, dwelling.ConstructionTypeL1OrOverride, dwelling.ConstructionTypeL2OrOverride}
+    constructionTypes.removeWhere( \ elt -> elt == null)
+    var isQualifyingConstructionType = constructionTypes.subtract(typekey.ConstructionType_HOE.TF_WOODFRAMECONSTRUCTIONTYPES.TypeKeys).Count == 0
 
-    if(isQualifyingFoundationType and isQualifyingResidenceType and isQualifyingConstructionType){
+    if(earthquakeCoverageElected and isQualifyingFoundationType and isQualifyingResidenceType and isQualifyingConstructionType){
       result = ((yearBuilt >= 1931 and yearBuilt <= 1972) and typekey.NumberOfStories_HOE.TF_TWOORLESSSTORIES.TypeKeys.contains(dwelling.NumberStoriesOrOverride))
             or (yearBuilt > 1972 and typekey.NumberOfStories_HOE.TF_THREESTORIESORLESS.TypeKeys.contains(dwelling.NumberStoriesOrOverride))
     }

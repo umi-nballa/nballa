@@ -80,7 +80,7 @@ class CovTermInputSetPCFController {
         }
       }else if(term.PatternCode == "DPLI_LiabilityLimit_HOE" or term.PatternCode == "HOLI_Liability_Limit_HOE"){
         var availableOptions = hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.AvailableOptions
-        var matchingValue = availableOptions.atMostOneWhere( \ option -> option.Value.doubleValue() == term.Value.doubleValue())
+        var matchingValue = availableOptions?.atMostOneWhere( \ option -> option.Value?.doubleValue() == term.Value?.doubleValue())
 
         if(matchingValue != null){
           hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)

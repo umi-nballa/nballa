@@ -203,7 +203,7 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionType = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideConstructionType_Ext = false
-    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL1_Ext  = null
+    //policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL1_Ext  = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverriddenL1_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideConstructionTypeL1_Ext = false
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL2_Ext  = null

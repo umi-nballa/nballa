@@ -12,6 +12,7 @@
   public-id="DPLI_Med_Pay_HOE"
   rICoverageGroupType="Liability"
   referenceDateByType="PolicyTerm">
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage("DPLI_Med_Pay_HOE", DPLI_Med_Pay_HOE.HOLine)]]></InitializeScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -22,16 +23,10 @@
       modelType="Limit"
       priority="11110"
       public-id="DPLI_MedPay_Limit_HOE"
-      required="false"
+      required="true"
       restrictionModel="med"
       valueType="money">
-      <DefaultsSet>
-        <CovTermDefault
-          codeIdentifier="DPLI_MedPay_Limit_HOEusd"
-          currency="usd"
-          defaultValue="1000"
-          public-id="DPLI_MedPay_Limit_HOEusd"/>
-      </DefaultsSet>
+      <DefaultsSet/>
       <Options>
         <CovTermOpt
           codeIdentifier="zm2i04ltljj3k3ecglm4ngad5fb"

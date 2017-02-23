@@ -156,7 +156,7 @@
           id="ConstructionTypeL1L1TunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1_Ext"
           required="!dwelling.OverrideConstructionTypeL1_Ext"
-          value="dwelling.ConstructionTypeL1_Ext"
+          value="dwelling.ConstructionType"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]">
           <PostOnChange/>
         </RangeInput>
@@ -745,14 +745,14 @@
           label="displaykey.Web.Homeowners.DwellingConstruction.FBCWindSpeed"
           required="true"
           value="dwelling.FBCWindSpeed_Ext"
-          visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code"/>
+          visible="dwelling.Branch.BaseState.Code!=&quot;FL &quot; || (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002)"/>
         <TypeKeyInput
           editable="true"
           id="windspeedDesign"
           label="displaykey.Web.Homeowners.DwellingConstruction.WindSpeedOfDesign"
           required="true"
           value="dwelling.WindSpeedOfDesign_Ext"
-          visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code"/>
+          visible="dwelling.Branch.BaseState.Code!=&quot;FL &quot; || (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002)"/>
         <TypeKeyInput
           editable="true"
           id="wbdr"

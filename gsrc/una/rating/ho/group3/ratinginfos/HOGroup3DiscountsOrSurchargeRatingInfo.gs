@@ -3,7 +3,7 @@ package una.rating.ho.group3.ratinginfos
 uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
-
+uses una.rating.util.HOProtectionDetailsMapper
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy

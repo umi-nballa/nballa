@@ -111,8 +111,10 @@ class AffinityGroupUtil {
   /**
   * Method to set the Affinity Discount Eligibility based on the Jurisdiction
   */
+  //Changes for CR 22  for CA
   public static function setAffinityDiscountEligibility(polPeriod : PolicyPeriod) : boolean {
-    var yearBuilt = polPeriod.HomeownersLine_HOE?.Dwelling?.YearBuilt != null ? polPeriod.HomeownersLine_HOE?.Dwelling?.YearBuilt : 0
+    var yearBuilt = polPeriod.HomeownersLine_HOE?.Dwelling?.OverrideYearbuilt_Ext ? polPeriod.HomeownersLine_HOE?.Dwelling?.YearBuiltOverridden_Ext : polPeriod.HomeownersLine_HOE?.Dwelling?.YearBuilt
+    yearBuilt =   yearBuilt != null ? yearBuilt : 0
     var ageOfHome = Calendar.getInstance().get(Calendar.YEAR) - yearBuilt
     var affinityDiscount = false
     switch(polPeriod.BaseState){
@@ -125,8 +127,13 @@ class AffinityGroupUtil {
           }
       break
       case Jurisdiction.TC_CA :
-          if(ageOfHome < 11 or polPeriod.PreferredBuilder_Ext != null or polPeriod.PreferredFinInst_Ext != null ) {
+          if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO4) && ((ageOfHome < 11 && polPeriod.PreferredBuilder_Ext != null) or
+              polPeriod.PreferredFinInst_Ext != null or polPeriod.QualifiedExclAgent_Ext!= null )) {
             affinityDiscount = true
+          }else if(polPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT && polPeriod.QualifiedExclAgent_Ext == QualifiedExclAgent_Ext.TC_0017  ){
+             affinityDiscount = true
           }
       break
       case Jurisdiction.TC_FL :

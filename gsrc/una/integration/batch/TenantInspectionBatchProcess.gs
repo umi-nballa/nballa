@@ -12,7 +12,7 @@ uses java.util.Date
  * To change this template use File | Settings | File Templates.
  */
 class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
-  static final var ACTIVITY_PATTERN : String = "order_tenant_inspection"
+  static final var ACTIVITY_PATTERN : String = "BOP_order_tenant_insp"
 
   construct(){
     super(TC_TenantInspection)
@@ -39,7 +39,7 @@ class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
 
     policyPeriodResults.removeWhere( \ policyPeriod -> policyPeriod.Policy.AllOpenActivities?.hasMatch( \ activity -> activity.ActivityPattern.Code == ACTIVITY_PATTERN)
                                                    or  policyPeriod.Policy.LatestBoundPeriod != policyPeriod
-                                                   or  policyPeriod.BP7Line.AllExclusions.hasMatch( \ exclusion -> exclusion.PatternCode == "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"))
+                                                   or  !policyPeriod.BP7Line.AllExclusions.hasMatch( \ exclusion -> exclusion.PatternCode == "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"))
 
     return policyPeriodResults
   }

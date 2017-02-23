@@ -13,7 +13,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNADistCoastMultipleTuna_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner?.Dwelling.HOLocation.DistToCoastMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_USERSELECTED &&  homeowner?.Dwelling.FloodCoverage_Ext &&
+    if(homeowner?.Dwelling.FloodCoverage_Ext && homeowner?.Dwelling.HOLocation.DistToCoastMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_USERSELECTED &&  homeowner?.Dwelling.FloodCoverage_Ext &&
     homeowner.HOLocation.PolicyLocation.State.Code=="FL")
       return RuleEvaluationResult.execute()
 

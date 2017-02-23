@@ -86,5 +86,57 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     if(building.CPEquipmentBreakdownEnhance_EXTExists){
       addCost(ratingStep.rateGroup2(building.CPEquipmentBreakdownEnhance_EXT, sliceRange))
     }
+    if(building.CPFence_ExtExists){
+      addCost(ratingStep.rateGroup2(building.CPFence_Ext, sliceRange))
+      addCost(ratingStep.rateGroup1(building.CPFence_Ext, sliceRange))
+    }
+    if(building.CPFlagPole_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPFlagPole_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPFlagPole_Ext, sliceRange))
+    }
+    if(building.CPEntryGates_EXTExists){
+      addCost(ratingStep.rateGroup1(building.CPEntryGates_EXT, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPEntryGates_EXT, sliceRange))
+    }
+    if(building.CPCarport_EXTExists){
+      addCost(ratingStep.rateGroup1(building.CPCarport_EXT, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPCarport_EXT, sliceRange))
+    }
+    if(building.CPPlayGround_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPPlayGround_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPPlayGround_Ext, sliceRange))
+    }
+    if(building.CPLights_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPLights_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPLights_Ext, sliceRange))
+    }
+    if(building.CPMailbox_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPMailbox_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPMailbox_Ext, sliceRange))
+    }
+    if(building.CPGazebo_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPGazebo_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPGazebo_Ext, sliceRange))
+    }
+    if(building.CPSigns_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPSigns_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPSigns_Ext, sliceRange))
+    }
+    if(building.CPOther_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPOther_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPOther_Ext, sliceRange))
+    }
+    if(building.CPTrash_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPTrash_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPTrash_Ext, sliceRange))
+    }
+    if(building.CPFurniture_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPFurniture_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPFurniture_Ext, sliceRange))
+    }
+    if(building.CPShade_ExtExists){
+      addCost(ratingStep.rateGroup1(building.CPShade_Ext, sliceRange))
+      addCost(ratingStep.rateGroup2(building.CPShade_Ext, sliceRange))
+    }
   }
 }

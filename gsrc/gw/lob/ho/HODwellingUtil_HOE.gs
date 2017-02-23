@@ -947,7 +947,41 @@ class HODwellingUtil_HOE {
       dwelling.PropertyCovByStateWndstorm_Ext = false
       dwelling.WHurricaneHailExclusion_Ext = false
     }
+    setWindStormAssociation(dwelling)
   }
+
+
+  public static function setWindStormAssociation(dwelling: Dwelling_HOE){
+
+    var TerritoryCode = dwelling.HOLocation.OverrideTerritoryCode_Ext ? dwelling.HOLocation.TerritoryCodeOverridden_Ext : dwelling.HOLocation.TerritoryCodeTunaReturned_Ext
+    if (TerritoryCode != null && dwelling.Branch.BaseState == typekey.Jurisdiction.TC_NC ) {
+      if (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.Branch.HomeownersLine_HOE?.HOPolicyType) &&
+          (TerritoryCode == "110" ||
+           TerritoryCode == "120" ||
+           TerritoryCode == "130" ||
+           TerritoryCode == "140"  ||
+           TerritoryCode == "150"  ||
+           TerritoryCode == "160" )){
+              dwelling.PropertyCovByStateWndstorm_Ext = true
+      }
+      else if (dwelling.Branch.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT &&
+          (TerritoryCode == "07" ||
+           TerritoryCode == "08" ||
+           TerritoryCode == "48" ||
+           TerritoryCode == "49"  ||
+           TerritoryCode == "52")){
+                dwelling.PropertyCovByStateWndstorm_Ext = true
+      }
+      else  {
+          dwelling.PropertyCovByStateWndstorm_Ext = false
+
+      }
+
+    }
+
+  }
+
+
   //Availability business rule for the Base Flood Elevation fields in the Dwelling screen
   static function isElevnAvailable(dwelling:Dwelling_HOE):boolean{
     var floodZoneOverideTypes : List<FloodZoneOverridden_Ext> = {TC_X, TC_B, TC_C, TC_D}

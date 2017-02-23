@@ -550,4 +550,13 @@ class BCBillingSystemPlugin implements IBillingSystemPlugin {
   private function getBCCurrencyEnumFor(currency: typekey.Currency) : wsi.remote.gw.webservice.bc.bc800.billingapi.enums.Currency {
     return wsi.remote.gw.webservice.bc.bc800.billingapi.enums.Currency.forGosuValue(currency.Code)
   }
+
+  /**
+   * Custom method written for retrieving Primary payer from BC.
+   * @param accountNumber
+   */
+   function searchPrimaryPayer(accountNumber : String) : String {
+    PCLoggerCategory.BILLING_SYSTEM_PLUGIN.info("Sending account ${accountNumber} to Billing System")
+    return callUpdate(\ b -> BillingAPIWithLanguage.searchPrimaryPayer(accountNumber))
+  }
 }

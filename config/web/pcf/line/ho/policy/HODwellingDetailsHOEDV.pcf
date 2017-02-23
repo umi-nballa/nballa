@@ -138,7 +138,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="TerritoryCodeTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TerritoryCodeTunaReturned_Ext"
-          required="false//!dwelling.HOLocation.OverrideTerritoryCode_Ext"
+          required="!dwelling.HOLocation.OverrideTerritoryCode_Ext"
           value="dwelling.HOLocation.TerritoryCodeTunaReturned_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTerritoryCodes(tunaAppResponse, dwelling.HOPolicyType)//tunaAppResponse.TerritoryCodes"/>
         <Input
@@ -375,7 +375,7 @@
       <InputDivider/>
       <InputSet
         id="PropFloodVal_Ext"
-        visible="policyPeriod.BaseState.Code==&quot;FL&quot; &amp;&amp; (dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO4 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT)">
+        visible="policyPeriod.BaseState.Code==&quot;FL&quot; &amp;&amp; (dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT)">
         <RangeInput
           available="!dwelling.OverridePropFloodVal_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -412,7 +412,7 @@
       </InputSet>
       <InputSet
         id="DistToCoast_Ext"
-        visible="((dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT ) || (((dwelling.PolicyPeriod.BaseState == TC_NC || dwelling.PolicyPeriod.BaseState==TC_SC)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)) ||    ((dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState==TC_HI)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType))))//dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;NV&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;CA&quot;">
+        visible="((dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT ) || (dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT ) ||  (((dwelling.PolicyPeriod.BaseState == TC_NC || dwelling.PolicyPeriod.BaseState==TC_SC)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)) ||    ((dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState==TC_HI)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType)))) &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;NV&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;AZ&quot;">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -850,7 +850,7 @@
             id="homePurchaseMMYYYY_Ext"
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseMMYYYY_Ext"
             value="dwelling.HomePurchaseMMYYYY_Ext"
-            visible="!dwelling.HomeNewPurchase_Ext"/>
+            visible="true//!dwelling.HomeNewPurchase_Ext"/>
         </InputSet>
         <InputDivider/>
         <InputSet
@@ -1473,12 +1473,12 @@
           <PostOnChange
             target="EarthquakeCovQns_Ext"/>
         </BooleanRadioInput>
-        <Input
+        <!-- <Input
           editable="true"
           id="EarthquakeZone_Ext"
           label="displaykey.Web.Homeowners.Dwelling.EarthquakeZone_Ext"
           value="dwelling.EarthquakeZone_Ext"
-          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; dwelling.isEarthQuakeTerritoryVisible//(dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext))"/>
+          visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; dwelling.isEarthQuakeTerritoryVisible//(dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext))"/> -->
         <InputSet
           id="EarthquakeTerritory_Ext"
           visible="dwelling.isEarthQuakeTerritoryVisible//dwelling.HOLocation.PolicyLocation.State.Code==&quot;NC&quot; &amp;&amp; (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT)">

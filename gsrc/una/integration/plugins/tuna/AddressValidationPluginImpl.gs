@@ -59,6 +59,9 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
             //Converting String to TypeKey State
             address.State = typekey.State.getState(address.Country, finalRes.State)
             address.PostalCode = finalRes.PostalCode
+            // Commenting the below line due to blocker while creating account. This line will be uncommented once the issue is fixed.
+            //address.County = finalRes.CountyName
+
             logger.debug("Converting String to State Type " + finalRes.State)
           } else {
             throw new gw.api.util.DisplayableException (finalRes.Note)

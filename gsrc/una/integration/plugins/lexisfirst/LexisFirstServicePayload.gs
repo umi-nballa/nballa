@@ -1,14 +1,13 @@
 package una.integration.plugins.lexisfirst
 
-uses gw.xml.ws.WsdlConfig
+uses gw.plugin.Plugins
+uses gw.plugin.billing.IBillingSummaryPlugin
+uses gw.plugin.billing.bc800.BCBillingSystemPlugin
 uses una.logging.UnaLoggerCategory
 uses una.model.LexisFirstFileData
-uses wsi.remote.gw.webservice.bc.bc800.billingapi.BillingAPI
-
+uses una.utils.PropertiesHolder
 uses java.lang.Exception
 uses java.text.SimpleDateFormat
-uses gw.plugin.messaging.BillingMessageTransport
-uses una.utils.PropertiesHolder
 
 /**
  * Created for LexisFirst Integration
@@ -52,10 +51,10 @@ class LexisFirstServicePayload {
   var endorseFormNumbers = PropertiesHolder.getProperty("EndorsmentDetails")
   var lexisFirstFileData: LexisFirstFileData
   var sdf = new SimpleDateFormat("MMddyyyy")
-  var config = createWsiConfig()
-  var billingAPI = new BillingAPI(config)
-  var billingSummaryPlugin = gw.plugin.Plugins.get(gw.plugin.billing.IBillingSummaryPlugin)
+  var billingSystemPlugin = new BCBillingSystemPlugin()
+  var billingSummaryPlugin = Plugins.get(IBillingSummaryPlugin)
   var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+
   /**
    * This function  creates payload to process LexisFirst transaction.
    * @param policyPeriod
@@ -64,285 +63,18 @@ class LexisFirstServicePayload {
   function payLoadXML(policyPeriod: PolicyPeriod, eventName: String): LexisFirstFileData {
     _logger.info(" Entering  " + CLASS_NAME + " :: " + "" + "For LexisFirst payload service  ")
     _logger.info("Lexis First generating payload XML for event ::" + eventName)
+    lexisFirstFileData = new LexisFirstFileData()
     try {
       policyPeriod = policyPeriod.getSlice(policyPeriod.EditEffectiveDate)
-      lexisFirstFileData = new LexisFirstFileData()
-      lexisFirstFileData.RecordTypeIndicator = "1"
-      lexisFirstFileData.CustomerTransactionID = ""
-      lexisFirstFileData.TransactionCreationDate = policyPeriod.CreateTime != null ? sdf.format(policyPeriod.CreateTime) : ""
-      lexisFirstFileData.ActionEffectiveDate = policyPeriod.EditEffectiveDate != null ? sdf.format(policyPeriod.EditEffectiveDate) : ""
-      lexisFirstFileData.PolicyEffectiveFromDate = policyPeriod.PolicyStartDate != null ? sdf.format(policyPeriod.PolicyStartDate) : ""
-      lexisFirstFileData.PolicyExpirationDate = policyPeriod.PolicyEndDate != null ? sdf.format(policyPeriod.PolicyEndDate) : ""
-      lexisFirstFileData.PolicyNumber = policyPeriod.PolicyNumber
-      if (policyPeriod.HomeownersLine_HOEExists) {
-        lexisFirstFileData.CommercialPolicy = FALSE
-      } else {
-        lexisFirstFileData.CommercialPolicy = TRUE
-      }
-
-      //Action Code for Business Transactions
-      if (eventName == BillingMessageTransport.CREATEPERIOD_LEXIS_FIRST_MSG || eventName == BillingMessageTransport.ISSUEPERIOD_LEXIS_FIRST_MSG) {
-          lexisFirstFileData.ActionCode = NEW_BUSINESS
-      }
-      else if (eventName == BillingMessageTransport.CHANGEPERIOD_LEXIS_FIRST_MSG) {
-          lexisFirstFileData.ActionCode = POLICY_CHANGE
-      }
-      else if (eventName == BillingMessageTransport.REINSTATEPERIOD_LEXIS_FIRST_MSG) {
-          lexisFirstFileData.ActionCode = REINSTATE_POLICY
-      }
-      else if (eventName == BillingMessageTransport.RENEWPERIOD_LEXIS_FIRST_MSG) {
-         lexisFirstFileData.ActionCode = RENEWAL_POLICY
-      }
-      else if (eventName == BillingMessageTransport.REWRITEPERIOD_LEXIS_FIRST_MSG) {
-         lexisFirstFileData.ActionCode = NEW_BUSINESS
-      }
-      else {
-        lexisFirstFileData.ActionCode = ""
-      }
-      //Policy type Mapping
-      if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3) {
-         lexisFirstFileData.PolicyTypeCode = HOME_OWNERS
-      }
-      else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO4) {
-         lexisFirstFileData.PolicyTypeCode = RENTERS
-      }
-      else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6) {
-         lexisFirstFileData.PolicyTypeCode = CONDOMINIUM
-      }
-      else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == DP3) {
-         lexisFirstFileData.PolicyTypeCode = DWELLING_FIRE
-      }
-      else {
-        lexisFirstFileData.PolicyTypeCode = ""
-      }
-
-      //Primary Insured details
-      for (policyPriNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyNamedInsured)) {
-
-        if (policyPriNamedInsured.Subtype == PRIMARY_NAMED_INSURED){
-          if (policyPriNamedInsured.AccountContactRole.AccountContact.ContactType == PERSON) {
-            lexisFirstFileData.InsuredName1Type = INDIVIDUAL
-          }
-          else {
-            lexisFirstFileData.InsuredName1Type = BUSINESS
-          }
-          lexisFirstFileData.InsuredName1LastName = policyPriNamedInsured.LastName
-          lexisFirstFileData.InsuredName1FirstName = policyPriNamedInsured.FirstName
-          lexisFirstFileData.InsuredStreet = policyPriNamedInsured.ContactDenorm.PrimaryAddress.AddressLine1
-              + " " + (policyPriNamedInsured.ContactDenorm.PrimaryAddress.AddressLine2 != null ? policyPriNamedInsured.ContactDenorm.PrimaryAddress.AddressLine2 : "")
-          lexisFirstFileData.InsuredCountry = policyPriNamedInsured.ContactDenorm.PrimaryAddress.Country.Code
-          lexisFirstFileData.InsuredCity = policyPriNamedInsured.ContactDenorm.PrimaryAddress.City
-          lexisFirstFileData.InsuredState = (policyPriNamedInsured.ContactDenorm.PrimaryAddress.State) as String
-          lexisFirstFileData.InsuredZip = policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode?.length > 5 ? policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode.substring(0, 5)
-              : policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode
-        }
-      }
-      for (PolicyAddlNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)) {
-        lexisFirstFileData.InsuredName2FirstName = PolicyAddlNamedInsured.FirstName
-        lexisFirstFileData.InsuredName2LastName = PolicyAddlNamedInsured.LastName
-        if (PolicyAddlNamedInsured.AccountContactRole.AccountContact.ContactType == PERSON) {
-          lexisFirstFileData.InsuredName2Type = INDIVIDUAL
-        }
-        else {
-          lexisFirstFileData.InsuredName2Type = BUSINESS
-        }
-      }
-      //Risk Location Details
-      lexisFirstFileData.PropertyStreet = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine1
-          + " " + (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2 != null ? policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2 : "")
-      lexisFirstFileData.PropertyCity = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City
-      lexisFirstFileData.PropertyCountry = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Country.Code
-      lexisFirstFileData.PropertyState = (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State) as String
-      lexisFirstFileData.PropertyZip = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode?.length > 5 ? policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode.substring(0, 5)
-          : policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode
-      //Fetching Primary payer Details from Billing Center
-
-      var primaryPayer = billingAPI.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
-      if (primaryPayer != null) {
-        var fetchContact = gw.api.database.Query.make(Contact).compare(Contact#AddressBookUID, Equals, primaryPayer).select().AtMostOneRow
-        var addInterest = policyPeriod.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
-        var addInterestContact = addInterest?.firstWhere(\addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == fetchContact.AddressBookUID)
-        if (addInterestContact != null && (addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
-            addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
-            addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
-            addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
-          lexisFirstFileData.MortgageeName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
-          lexisFirstFileData.PayableName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
-          lexisFirstFileData.MortgageeCity = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.City
-          lexisFirstFileData.MortgageeCountry = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.Country.Code
-          lexisFirstFileData.MortgageeStreet = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine1 + " " +
-              (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 != null ?
-                  addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 : "")
-          lexisFirstFileData.MortgageeState = (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.State) as String
-          lexisFirstFileData.MortgageeZip = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode?.length > 5 ? addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode.substring(0, 5)
-              : addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode
-          lexisFirstFileData.LoanNumber = addInterestContact.ContractNumber
-          lexisFirstFileData.MortgageeInterestType = typecodeMapper.getAliasByInternalCode(AdditionalInterestType.Type.RelativeName, EXTERNAL_SYSTEM, addInterestContact.AdditionalInterestType.Code)
-        }
-      }
-
-      //Mapping Coverage Details
-      if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6) {
-        lexisFirstFileData.CoverageTypeCode1 = COVERAGE_DWELLING
-        lexisFirstFileData.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
-        if (!(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6)){
-          lexisFirstFileData.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
-          lexisFirstFileData.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != null ?
-              policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value : "") as String
-          lexisFirstFileData.Deductible3 = ""
-        }
-        lexisFirstFileData.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
-        lexisFirstFileData.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible2 = ""
-        lexisFirstFileData.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
-        lexisFirstFileData.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible4 = ""
-      } else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO4) {
-        lexisFirstFileData.CoverageTypeCode1 = COVERAGE_PERSONAL_PROPERTY
-        lexisFirstFileData.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
-        lexisFirstFileData.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
-        lexisFirstFileData.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible4 = ""
-      } else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == DP3) {
-        lexisFirstFileData.CoverageTypeCode1 = COVERAGE_DWELLING_FIRE
-        lexisFirstFileData.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
-        lexisFirstFileData.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
-        lexisFirstFileData.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value) as String
-        lexisFirstFileData.Deductible3 = ""
-        lexisFirstFileData.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
-        lexisFirstFileData.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible2 = ""
-      } else {
-        lexisFirstFileData.CoverageTypeCode1 = COVERAGE_DWELLING
-        lexisFirstFileData.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
-        lexisFirstFileData.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
-        lexisFirstFileData.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible3 = ""
-        lexisFirstFileData.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
-        lexisFirstFileData.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible2 = ""
-        lexisFirstFileData.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
-        lexisFirstFileData.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
-        lexisFirstFileData.Deductible4 = ""
-      }
-
-      lexisFirstFileData.CoverageTypeCode5 = COVERAGE_PERSONAL_LIABILITY
-      lexisFirstFileData.CoverageAmount5 = (policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value : "") as String
-      lexisFirstFileData.Deductible5 = ""
-      lexisFirstFileData.CoverageTypeCode6 = COVERAGE_MEDICAL_PAYMENTS
-      lexisFirstFileData.CoverageAmount6 = (policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value : "") as String
-      lexisFirstFileData.Deductible6 = ""
-      lexisFirstFileData.CoverageTypeCode7 = COVERAGE_HURRICANE
-      lexisFirstFileData.CoverageAmount7 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value : "") as String
-      lexisFirstFileData.Deductible7 = ""
-      lexisFirstFileData.CoverageTypeCode8 = COVERAGE_FLOOD
-      lexisFirstFileData.CoverageAmount8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FllodCovPP_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FllodCovPP_HOETerm.Value : "") as String
-
-      lexisFirstFileData.Deductible8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value : "") as String
-      lexisFirstFileData.CoverageTypeCode9 = ""
-      lexisFirstFileData.CoverageAmount9 = ""
-      lexisFirstFileData.Deductible9 = ""
-      lexisFirstFileData.CoverageTypeCode10 = ""
-      lexisFirstFileData.CoverageAmount10 = ""
-      lexisFirstFileData.Deductible10 = ""
-
-      lexisFirstFileData.LegalDescription = ""
-      lexisFirstFileData.InsuranceCarrier = policyPeriod.UWCompany.DisplayName
-      lexisFirstFileData.InsuranceCarrierNAIC = policyPeriod.UWCompany.Code == "01"? "11986":"10759"
-
-      //Producer Details
-      lexisFirstFileData.ProducerName = policyPeriod.ProducerCodeOfRecord.OrganizationWithUpdate
-      lexisFirstFileData.ProducerCode = policyPeriod.ProducerCodeOfRecord.Code
-      lexisFirstFileData.ProducerStreet = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.AddressLine1
-      lexisFirstFileData.ProducerCity = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.City
-      lexisFirstFileData.ProducerState = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.State.Code
-      lexisFirstFileData.ProducerCountry = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.Country.Code
-      lexisFirstFileData.ProducerZip = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode?.length > 5 ? policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode.substring(0, 5)
-          : policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode
-      lexisFirstFileData.ProducerPhone = policyPeriod.ProducerCodeOfRecord.Contact_Ext.WorkPhone
-
-      //Endorsement Details
-      lexisFirstFileData.EndorsementState1 = policyPeriod.BaseState.Code
-      lexisFirstFileData.EndorsementState2 = policyPeriod.BaseState.Code
-      lexisFirstFileData.EndorsementState3 = policyPeriod.BaseState.Code
-      lexisFirstFileData.EndorsementState4 = policyPeriod.BaseState.Code
-      lexisFirstFileData.EndorsementState5 = policyPeriod.BaseState.Code
-      for (endorseNumber in policyPeriod.Forms) {
-        if (endorseFormNumbers.contains(endorseNumber.FormNumber)) {
-          lexisFirstFileData.Endorsement1 = endorseNumber.FormNumber
-        }
-        else if (endorseFormNumbers.contains(endorseNumber.FormNumber)) {
-          lexisFirstFileData.Endorsement2 = endorseNumber.FormNumber
-        }
-        else if (endorseFormNumbers.contains(endorseNumber.FormNumber)) {
-            lexisFirstFileData.Endorsement3 = endorseNumber.FormNumber
-          }
-          else if (endorseFormNumbers.contains(endorseNumber.FormNumber)) {
-              lexisFirstFileData.Endorsement4 = endorseNumber.FormNumber
-            }
-            else if (endorseFormNumbers.contains(endorseNumber.FormNumber)){
-                lexisFirstFileData.Endorsement5 = endorseNumber.FormNumber
-              }
-      }
-
-      //Mapping Billing related details
-      lexisFirstFileData.TotalPolicyPremium = policyPeriod.TotalPremiumRPT_amt
-
-      var billingSummary = billingSummaryPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, (policyPeriod.PolicyTerm.MostRecentTerm) as int)
-      var sortedInvoices = billingSummary.Invoices.sort(\elt1, elt2 -> elt1.InvoiceDueDate.before(elt2.InvoiceDueDate))
-      var firstUnpaidInvoice = sortedInvoices.firstWhere(\elt -> elt.Unpaid.Amount > 0)
-      if (billingSummary.BillingMethod.DisplayName == DIRECT_BILL_PAYMENT) {
-        lexisFirstFileData.PremiumAmountDue = firstUnpaidInvoice.Amount.Amount
-        lexisFirstFileData.PremiumAmountDueDate = firstUnpaidInvoice.InvoiceDueDate != null ? sdf.format(firstUnpaidInvoice.InvoiceDueDate) : ""
-      } else {
-        lexisFirstFileData.PremiumAmountDue = 0
-        lexisFirstFileData.PremiumAmountDueDate = ""
-      }
-
-      lexisFirstFileData.IncreasedPremiumAmountDue = ""
-      lexisFirstFileData.MaximumPremiumAmountDue = ""
-      //Remittance Details
-      lexisFirstFileData.RemittanceStreet = ""
-      lexisFirstFileData.RemittanceCity = ""
-      lexisFirstFileData.RemittanceState = ""
-      lexisFirstFileData.RemittanceZip = ""
-      lexisFirstFileData.RemittanceCountry = ""
-      lexisFirstFileData.RemittancePhone = ""
-      lexisFirstFileData.FloodZoneRated = ""
-      lexisFirstFileData.FloodZoneCurrent = ""
-      lexisFirstFileData.Grandfathered = ""
-      lexisFirstFileData.CommunityName = ""
-      lexisFirstFileData.CommunityNumberORMapNumber = ""
-      lexisFirstFileData.Elevation = ""
-      if (policyPeriod.Notes*.DisplayName.first() != null) {
-        lexisFirstFileData.Notes = policyPeriod.Notes*.DisplayName.first()
-      } else {
-        lexisFirstFileData.Notes = ""
-      }
+      policyInfo(policyPeriod,eventName,lexisFirstFileData)
+      policyInsuredInfo(policyPeriod,lexisFirstFileData)
+      producerInfo(policyPeriod,lexisFirstFileData)
+      mortgageInfo(policyPeriod,lexisFirstFileData)
+      coverageInfo(policyPeriod,lexisFirstFileData)
+      dwellingInfo(policyPeriod,lexisFirstFileData)
+      paymentInfo(policyPeriod,lexisFirstFileData)
+      endorsementInfo(policyPeriod,lexisFirstFileData)
+      remittanceInfo(policyPeriod,lexisFirstFileData)
       var payload = new una.gxmodels.lexisfirstfiledatamodel.LexisFirstFileData(lexisFirstFileData)
       _logger.info("Lexis First payload XML ::" + payload.asUTFString())
       _logger.info(" Leaving  " + CLASS_NAME + " :: " + "" + "For LexisFirst payload service  ")
@@ -354,13 +86,337 @@ class LexisFirstServicePayload {
   }
 
   /**
-   *   This method is to get the user name and password
+   * This function returns policyInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param eventName
+   * @param lexisDTO
    */
-  private function createWsiConfig(): WsdlConfig {
-    var conf = new gw.xml.ws.WsdlConfig()
-    conf.Guidewire.Locale = User.util.CurrentLocale.Code
-    conf.Guidewire.Authentication.Username = "su"
-    conf.Guidewire.Authentication.Password = "gw"
-    return conf
+  private function policyInfo(policyPeriod: PolicyPeriod, eventName: String,lexisDTO: LexisFirstFileData) {
+    lexisDTO.RecordTypeIndicator = "1"
+    lexisDTO.CustomerTransactionID = ""
+    lexisDTO.TransactionCreationDate = policyPeriod.CreateTime != null ? sdf.format(policyPeriod.CreateTime) : ""
+    lexisDTO.ActionEffectiveDate = policyPeriod.EditEffectiveDate != null ? sdf.format(policyPeriod.EditEffectiveDate) : ""
+    lexisDTO.PolicyEffectiveFromDate = policyPeriod.PolicyStartDate != null ? sdf.format(policyPeriod.PolicyStartDate) : ""
+    lexisDTO.PolicyExpirationDate = policyPeriod.PolicyEndDate != null ? sdf.format(policyPeriod.PolicyEndDate) : ""
+    lexisDTO.PolicyNumber = policyPeriod.PolicyNumber
+    if(policyPeriod.HomeownersLine_HOEExists){
+      lexisDTO.CommercialPolicy = FALSE
+    } else{
+      lexisDTO.CommercialPolicy = TRUE
+    }
+    //Action Code for Business Transactions
+    if(eventName == LexisFirstMessageTransportImpl.CREATEPERIOD_LEXIS_FIRST_MSG || eventName == LexisFirstMessageTransportImpl.ISSUEPERIOD_LEXIS_FIRST_MSG) {
+      lexisDTO.ActionCode = NEW_BUSINESS
+    }
+    else if(eventName == LexisFirstMessageTransportImpl.CHANGEPERIOD_LEXIS_FIRST_MSG){
+      lexisDTO.ActionCode = POLICY_CHANGE
+    }
+    else if(eventName == LexisFirstMessageTransportImpl.REINSTATEPERIOD_LEXIS_FIRST_MSG){
+      lexisDTO.ActionCode = REINSTATE_POLICY
+    }
+    else if(eventName == LexisFirstMessageTransportImpl.RENEWPERIOD_LEXIS_FIRST_MSG){
+      lexisDTO.ActionCode = RENEWAL_POLICY
+    }
+    else{
+      lexisDTO.ActionCode = ""
+    }
+    //Policy type Mapping
+    if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3){
+      lexisDTO.PolicyTypeCode = HOME_OWNERS
+    }
+    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO4){
+      lexisDTO.PolicyTypeCode = RENTERS
+    }
+    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6){
+      lexisDTO.PolicyTypeCode = CONDOMINIUM
+    }
+    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == DP3){
+      lexisDTO.PolicyTypeCode = DWELLING_FIRE
+    }
+    else{
+     lexisDTO.PolicyTypeCode = ""
+     }
   }
+
+  /**
+   * This function returns policyInsuredInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function policyInsuredInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData) {
+    //Primary Insured details
+    for (policyPriNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyNamedInsured)) {
+
+      if (policyPriNamedInsured.Subtype == PRIMARY_NAMED_INSURED){
+        if (policyPriNamedInsured.AccountContactRole.AccountContact.ContactType == PERSON) {
+          lexisDTO.InsuredName1Type = INDIVIDUAL
+        }
+        else {
+          lexisDTO.InsuredName1Type = BUSINESS
+        }
+        lexisDTO.InsuredName1LastName = policyPriNamedInsured.LastName
+        lexisDTO.InsuredName1FirstName = policyPriNamedInsured.FirstName
+        lexisDTO.InsuredStreet = policyPriNamedInsured.ContactDenorm.PrimaryAddress.AddressLine1
+            + " " + (policyPriNamedInsured.ContactDenorm.PrimaryAddress.AddressLine2 != null ? policyPriNamedInsured.ContactDenorm.PrimaryAddress.AddressLine2 : "")
+        lexisDTO.InsuredCountry = policyPriNamedInsured.ContactDenorm.PrimaryAddress.Country.Code
+        lexisDTO.InsuredCity = policyPriNamedInsured.ContactDenorm.PrimaryAddress.City
+        lexisDTO.InsuredState = (policyPriNamedInsured.ContactDenorm.PrimaryAddress.State) as String
+        lexisDTO.InsuredZip = policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode?.length > 5 ? policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode.substring(0, 5)
+            : policyPriNamedInsured.ContactDenorm.PrimaryAddress.PostalCode
+      }
+    }
+    for (PolicyAddlNamedInsured in policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)) {
+      lexisDTO.InsuredName2FirstName = PolicyAddlNamedInsured.FirstName
+      lexisDTO.InsuredName2LastName = PolicyAddlNamedInsured.LastName
+      if (PolicyAddlNamedInsured.AccountContactRole.AccountContact.ContactType == PERSON) {
+        lexisDTO.InsuredName2Type = INDIVIDUAL
+      }
+      else {
+        lexisDTO.InsuredName2Type = BUSINESS
+      }
+    }
+  }
+
+  /**
+   * This function returns producerInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function producerInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Producer Details
+    lexisDTO.ProducerName = (policyPeriod.ProducerCodeOfRecord.OrganizationWithUpdate) as String
+    lexisDTO.ProducerCode = policyPeriod.ProducerCodeOfRecord.Code
+    lexisDTO.ProducerStreet = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.AddressLine1
+    lexisDTO.ProducerCity = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.City
+    lexisDTO.ProducerState = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.State.Code
+    lexisDTO.ProducerCountry = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.Country.Code
+    lexisDTO.ProducerZip = policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode?.length > 5 ? policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode.substring(0, 5)
+        : policyPeriod.ProducerCodeOfRecord.Contact_Ext.PrimaryAddress.PostalCode
+    lexisDTO.ProducerPhone = policyPeriod.ProducerCodeOfRecord.Contact_Ext.WorkPhone
+  }
+
+  /**
+   * This function returns mortgageInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function mortgageInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Fetching Primary payer Details from Billing Center
+    var primaryPayer = billingSystemPlugin.searchPrimaryPayer(policyPeriod.Policy.Account.AccountNumber)
+    if (primaryPayer != null) {
+      var fetchContact = gw.api.database.Query.make(Contact).compare(Contact#AddressBookUID, Equals, primaryPayer).select().AtMostOneRow
+      var addInterest = policyPeriod.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
+      var addInterestContact = addInterest?.firstWhere(\addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == fetchContact.AddressBookUID)
+      if (addInterestContact != null && (addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
+          addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
+          addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
+          addInterestContact.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
+        lexisDTO.MortgageeName = addInterestContact.PolicyAddlInterest.ContactDenorm.DisplayName
+        lexisDTO.MortgageeCity = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.City
+        lexisDTO.MortgageeCountry = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.Country.Code
+        lexisDTO.MortgageeStreet = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine1 + " " +
+            (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 != null ?
+                addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.AddressLine2 : "")
+        lexisDTO.MortgageeState = (addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.State) as String
+        lexisDTO.MortgageeZip = addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode?.length > 5 ? addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode.substring(0, 5)
+            : addInterestContact.PolicyAddlInterest.ContactDenorm.PrimaryAddress.PostalCode
+        lexisDTO.LoanNumber = addInterestContact.ContractNumber
+        lexisDTO.MortgageeInterestType = typecodeMapper.getAliasByInternalCode(AdditionalInterestType.Type.RelativeName, EXTERNAL_SYSTEM, addInterestContact.AdditionalInterestType.Code)
+      }
+    }
+  }
+
+  /**
+   * This function returns coverageInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function coverageInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Mapping Coverage Details
+    if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6) {
+      lexisDTO.CoverageTypeCode1 = COVERAGE_DWELLING
+      lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value : "") as String
+      lexisDTO.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
+      if (!(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6)){
+        lexisDTO.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
+        lexisDTO.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != null ?
+            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value : "") as String
+        lexisDTO.Deductible3 = ""
+      }
+      lexisDTO.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
+      lexisDTO.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible2 = ""
+      lexisDTO.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
+      lexisDTO.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible4 = ""
+    } else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO4) {
+      lexisDTO.CoverageTypeCode1 = COVERAGE_PERSONAL_PROPERTY
+      lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
+      lexisDTO.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
+      lexisDTO.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible4 = ""
+    } else if (policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == DP3) {
+      lexisDTO.CoverageTypeCode1 = COVERAGE_DWELLING_FIRE
+      lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value : "") as String
+      lexisDTO.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
+      lexisDTO.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
+      lexisDTO.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value) as String
+      lexisDTO.Deductible3 = ""
+      lexisDTO.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
+      lexisDTO.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible2 = ""
+    } else {
+      lexisDTO.CoverageTypeCode1 = COVERAGE_DWELLING
+      lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value : "") as String
+      lexisDTO.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
+      lexisDTO.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
+      lexisDTO.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value : "") as String
+      lexisDTO.Deductible3 = ""
+      lexisDTO.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
+      lexisDTO.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible2 = ""
+      lexisDTO.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
+      lexisDTO.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
+          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
+      lexisDTO.Deductible4 = ""
+    }
+    lexisDTO.CoverageTypeCode5 = COVERAGE_PERSONAL_LIABILITY
+    lexisDTO.CoverageAmount5 = (policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value != null ?
+        policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value : "") as String
+    lexisDTO.Deductible5 = ""
+    lexisDTO.CoverageTypeCode6 = COVERAGE_MEDICAL_PAYMENTS
+    lexisDTO.CoverageAmount6 = (policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value != null ?
+        policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value : "") as String
+    lexisDTO.Deductible6 = ""
+    lexisDTO.CoverageTypeCode7 = COVERAGE_HURRICANE
+    lexisDTO.CoverageAmount7 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value != null ?
+        policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value : "") as String
+    lexisDTO.Deductible7 = ""
+    lexisDTO.CoverageTypeCode8 = COVERAGE_FLOOD
+    lexisDTO.CoverageAmount8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FllodCovPP_HOETerm.Value != null ?
+        policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FllodCovPP_HOETerm.Value : "") as String
+    lexisDTO.Deductible8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value != null ?
+        policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value : "") as String
+    lexisDTO.CoverageTypeCode9 = ""
+    lexisDTO.CoverageAmount9 = ""
+    lexisDTO.Deductible9 = ""
+    lexisDTO.CoverageTypeCode10 = ""
+    lexisDTO.CoverageAmount10 = ""
+    lexisDTO.Deductible10 = ""
+  }
+
+  /**
+   * This function returns dwellingInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function dwellingInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Risk Location Details
+    lexisDTO.PropertyStreet = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine1
+        + " " + (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2 != null ? policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.AddressLine2 : "")
+    lexisDTO.PropertyCity = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.City
+    lexisDTO.PropertyCountry = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.Country.Code
+    lexisDTO.PropertyState = (policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.State) as String
+    lexisDTO.PropertyZip = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode?.length > 5 ? policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode.substring(0, 5)
+        : policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.PolicyLocation.PostalCode
+  }
+
+  /**
+   * This function returns paymentInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param eventName
+   */
+  private function paymentInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Mapping Billing related details
+    lexisDTO.TotalPolicyPremium = policyPeriod.TotalPremiumRPT_amt
+    var billingSummary = billingSummaryPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, (policyPeriod.PolicyTerm.MostRecentTerm) as int)
+    var sortedInvoices = billingSummary.Invoices.sort(\elt1, elt2 -> elt1.InvoiceDueDate.before(elt2.InvoiceDueDate))
+    var firstUnpaidInvoice = sortedInvoices.firstWhere(\elt -> elt.Unpaid.Amount > 0)
+    if (billingSummary.BillingMethod.DisplayName == DIRECT_BILL_PAYMENT) {
+      lexisDTO.PremiumAmountDue = firstUnpaidInvoice.Amount.Amount
+      lexisDTO.PremiumAmountDueDate = firstUnpaidInvoice.InvoiceDueDate != null ? sdf.format(firstUnpaidInvoice.InvoiceDueDate) : ""
+    } else {
+      lexisDTO.PremiumAmountDue = 0
+      lexisDTO.PremiumAmountDueDate = ""
+    }
+    lexisDTO.IncreasedPremiumAmountDue = ""
+    lexisDTO.MaximumPremiumAmountDue = ""
+    lexisDTO.LegalDescription = ""
+    lexisDTO.InsuranceCarrier = policyPeriod.UWCompany.DisplayName
+    lexisDTO.PayableName = policyPeriod.UWCompany.DisplayName
+    lexisDTO.InsuranceCarrierNAIC = policyPeriod.UWCompany.Code == "01"? "11986":"10759"
+  }
+
+  /**
+   * This function returns endorsementInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function endorsementInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Endorsement Details
+    lexisDTO.EndorsementState1 = policyPeriod.BaseState.Code
+    lexisDTO.EndorsementState2 = policyPeriod.BaseState.Code
+    lexisDTO.EndorsementState3 = policyPeriod.BaseState.Code
+    lexisDTO.EndorsementState4 = policyPeriod.BaseState.Code
+    lexisDTO.EndorsementState5 = policyPeriod.BaseState.Code
+    for (endorseNumber in policyPeriod.Forms) {
+      if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+        lexisDTO.Endorsement1 = endorseNumber.FormNumber
+      }
+      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)) {
+        lexisDTO.Endorsement2 = endorseNumber.FormNumber
+      }
+      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)) {
+        lexisDTO.Endorsement3 = endorseNumber.FormNumber
+      }
+      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)) {
+       lexisDTO.Endorsement4 = endorseNumber.FormNumber
+      }
+      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
+       lexisDTO.Endorsement5 = endorseNumber.FormNumber
+       }
+    }
+  }
+
+  /**
+   * This function returns remittanceInfo data to lexisDTO.
+   * @param policyPeriod
+   * @param lexisDTO
+   */
+  private function remittanceInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
+    //Remittance Details
+    lexisDTO.RemittanceStreet = ""
+    lexisDTO.RemittanceCity = ""
+    lexisDTO.RemittanceState = ""
+    lexisDTO.RemittanceZip = ""
+    lexisDTO.RemittanceCountry = ""
+    lexisDTO.RemittancePhone = ""
+    lexisDTO.FloodZoneRated = ""
+    lexisDTO.FloodZoneCurrent = ""
+    lexisDTO.Grandfathered = ""
+    lexisDTO.CommunityName = ""
+    lexisDTO.CommunityNumberORMapNumber = ""
+    lexisDTO.Elevation = ""
+    if (policyPeriod.Notes*.DisplayName.first() != null) {
+      lexisDTO.Notes = policyPeriod.Notes*.DisplayName.first()
+    } else {
+      lexisDTO.Notes = ""
+    }
+  }
+
 }

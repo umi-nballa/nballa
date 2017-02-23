@@ -68,10 +68,9 @@ function createCriteria() : DocumentSearchCriteria {
 
 function constructUploadUrl() : String {
   var dataMap = {
-      "KT152_0_0_0" -> account.AccountNumber
+     ScriptParameters.OnBaseAccountNumberQueryKey -> account.AccountNumber
   }
-  var customQueryId = "101"
-  return DocPopUtils.generateCustomQueryURL(dataMap, customQueryId)
+  return DocPopUtils.generateCustomQueryURL(dataMap, ScriptParameters.OnBasePolicyDocumentsCustomQueryId)
 }]]></Code>
   </Screen>
 </PCF>

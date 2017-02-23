@@ -15,7 +15,17 @@ class LexisFirstMessageTransportImpl implements MessageTransport {
   final static  var _logger = UnaLoggerCategory.INTEGRATION
   private static final var CLASS_NAME = LexisFirstMessageTransportImpl.Type.DisplayName
   public final static var DEST_ID: int = 90
+  public static final var CREATEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnCreatePeriod"
+  public static final var ISSUEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnIssuePeriod"
+  public static final var CHANGEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnChangePeriod"
+  public static final var REINSTATEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnReinstatePeriod"
+  public static final var RENEWPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnRenewPeriod"
 
+  /**
+   * This function is invoked during the LexisFirst Custom event
+   * @param message
+   * @param payLoad
+   */
   override function send(message: Message, payLoad: String) {
     _logger.info(" Entering  " + CLASS_NAME + " :: " + "" + "For LexisFirst Message Transport  ")
     try {
@@ -26,7 +36,6 @@ class LexisFirstMessageTransportImpl implements MessageTransport {
     } catch (exp: Exception) {
       _logger.error("Lexis First Messaging Error", exp)
       message.ErrorDescription = exp.Message
-
     }
   }
 

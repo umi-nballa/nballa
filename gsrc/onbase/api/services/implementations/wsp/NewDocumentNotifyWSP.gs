@@ -114,7 +114,7 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
         : MessageInstanceNumber = response.MessageInstanceNumber,
         : ResponseCode = status,
         : MessagePayload = response.MessageResponse ?: '',
-        : ErrorMessage = response.MessageError ?: ''
+        : ErrorMessage = response.MessageError ? displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NewDocumentNotifyException(Settings.CurrentCenter.Name, response.MessageError) : ''
     }
 
     service.UpdateMessageStatus(update)

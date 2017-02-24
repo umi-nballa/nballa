@@ -5,23 +5,19 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 
 /**
  * Created with IntelliJ IDEA.
- * User: skashyap
+ * User: parumugam
  * Date: 2/7/17
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAScheduledPersProp1_each implements IRuleCondition<HomeownersLine_HOE>{
+class UWDUseOccHO6Tenant_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
+    if(homeowner.Dwelling.DwellingUsage == DwellingUsage_HOE.TC_SEC &&
+        homeowner.Dwelling.Occupancy ==	DwellingOccupancyType_HOE.TC_NONOWN){
+       return RuleEvaluationResult.execute()
+      }
 
-
-  /*  if( homeowner.Dwelling.HODW_ScheduledProperty_HOEExists && (
-        homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES
-    ||
-            homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES))
-
-      return RuleEvaluationResult.execute()
-     */
    return RuleEvaluationResult.skip()
   }
 

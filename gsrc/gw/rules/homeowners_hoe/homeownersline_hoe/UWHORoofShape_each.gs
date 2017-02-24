@@ -15,7 +15,7 @@ class UWHORoofShape_each implements IRuleCondition<HomeownersLine_HOE>{
 
     var roofShape = homeowners.Dwelling.OverrideRoofShape_Ext ? homeowners.Dwelling.RoofShapeOverridden_Ext : homeowners.Dwelling.RoofShape_Ext
     var constructionType = homeowners.Dwelling.OverrideConstructionType_Ext ? homeowners.Dwelling.ConstTypeOverridden_Ext : homeowners.Dwelling.ConstructionType
-    var conTypeL1 = homeowners.Dwelling.OverrideConstructionTypeL1_Ext ? homeowners.Dwelling.ConstTypeOverriddenL1_Ext : homeowners.Dwelling.ConstructionType
+  //  var conTypeL1 = homeowners.Dwelling.OverrideConstructionTypeL1_Ext ? homeowners.Dwelling.ConstTypeOverriddenL1_Ext : homeowners.Dwelling.ConstructionType
     var contypeL2 = homeowners.Dwelling.OverrideConstructionTypeL2_Ext ? homeowners.Dwelling.ConstTypeOverriddenL2_Ext : homeowners.Dwelling.ConstructionTypeL2_Ext
 
     var roofType =     homeowners.Dwelling.OverrideRoofType_Ext ? homeowners.Dwelling.RoofingMaterialOverridden_Ext : homeowners.Dwelling.RoofType
@@ -24,9 +24,7 @@ class UWHORoofShape_each implements IRuleCondition<HomeownersLine_HOE>{
      ( (constructionType != null &&
           (constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ||
               constructionType == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY))  ||
-      (conTypeL1 != null &&
-        (conTypeL1 == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ||
-            conTypeL1 == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY)) ||
+      //(conTypeL1 != null &&(conTypeL1 == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT || conTypeL1 == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY)) ||
       (contypeL2 != null &&
         (contypeL2 == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ||
             contypeL2 == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY)))  &&

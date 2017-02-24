@@ -35,6 +35,7 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
       response.City = tunaResponse.Address.City
       response.PostalCode = tunaResponse.Address.Zipcode.Major + "-" + tunaResponse.Address.Zipcode.Minor
       response.State = tunaResponse.Address.State
+      response.CountyName = tunaResponse.Address.CountyName
       response.Note = tunaResponse.Address.Note
       response.NoteDetail = tunaResponse.Address.NoteDetail
       response.IsExact = tunaResponse.IsExact

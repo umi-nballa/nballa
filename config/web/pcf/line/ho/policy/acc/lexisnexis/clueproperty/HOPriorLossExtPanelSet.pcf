@@ -60,7 +60,7 @@
             confirmMessage="getMsg()"
             id="ClueButton"
             label="displaykey.Accelerator.LexisNexis.Clue.Property.RetrieveClueLabel"
-            visible="policyPeriod.Submission?.QuoteType != typekey.QuoteType.TC_QUICK"/>
+            visible="policyPeriod.Submission?.QuoteType != typekey.QuoteType.TC_QUICK and policyPeriod.HomeownersLine_HOEExists"/>
           <ToolbarRangeInput
             id="NoOfClaimYears"
             label="displaykey.Accelerator.LexisNexis.Clue.Property.ClaimFreeYears"
@@ -149,12 +149,14 @@
                 align="left"
                 id="chargeable"
                 label="displaykey.Accelerator.LexisNexis.Clue.Property.Chargeable"
-                value="loss.ChargeableClaim"/>
+                value="loss.ChargeableClaim"
+                visible="policyPeriod.HomeownersLine_HOEExists"/>
               <Cell
                 align="left"
                 id="ignoreUW"
                 label="displaykey.Accelerator.LexisNexis.Clue.Property.IgnoreUW"
-                value="loss.IgnoreUW"/>
+                value="loss.IgnoreUW"
+                visible="policyPeriod.HomeownersLine_HOEExists"/>
             </Row>
           </RowIterator>
         </ListViewPanel>

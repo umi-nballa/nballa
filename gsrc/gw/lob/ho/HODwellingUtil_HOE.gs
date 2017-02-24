@@ -972,9 +972,12 @@ class HODwellingUtil_HOE {
     var values = ResidenceType_HOE.getTypeKeys(false)
     values.each( \ elt -> {
       if(elt.Categories.contains(dwelling.HOPolicyType)) {
-        //'Condo' should be available in the ResidenceType_HOE typelist For DP/LPP: Allow in FL OR NC ONLY
-        if(elt.Code == ResidenceType_HOE.TC_CONDO && ((dwelling.HOPolicyType == TC_DP3_Ext || dwelling.HOPolicyType == TC_LPP_Ext) && (dwelling.PolicyPeriod.BaseState==TC_NC || dwelling.PolicyPeriod.BaseState==TC_FL))){
-          residenceType.add(elt)
+        //'Condo' should be available in the ResidenceType_HOE typelist if is HO4 or HO6 or For DP/LPP: Allow in FL OR NC ONLY
+        if(elt.Code == ResidenceType_HOE.TC_CONDO){
+         if(dwelling.HOPolicyType == TC_HO4 || dwelling.HOPolicyType == TC_HO6 ||
+             ((dwelling.HOPolicyType == TC_DP3_Ext || dwelling.HOPolicyType == TC_LPP_Ext) && (dwelling.PolicyPeriod.BaseState==TC_NC || dwelling.PolicyPeriod.BaseState==TC_FL))){
+            residenceType.add(elt)
+          }
         }else if(elt.Code != ResidenceType_HOE.TC_CONDO){
           residenceType.add(elt)
         }

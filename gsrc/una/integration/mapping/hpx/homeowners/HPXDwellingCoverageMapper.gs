@@ -199,6 +199,22 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       deductible.WrittenAmt.Amt = amt != null ? amt : 0
       deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return deductible
+    } else if(currentCovTerm.PatternCode == "HODW_AllPeril_HOE_Ext") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Name
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
+      deductible.FormatPct = getCovTermPercentage(value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      var amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE).ActualTermAmount.Amount
+      deductible.WrittenAmt.Amt = amt != null ? amt : 0
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
     } else if(currentCovTerm.PatternCode == "HODW_Hurricane_Ded_HOE") {
       var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
       deductible.Description = currentCovTerm.Pattern.Name
@@ -216,8 +232,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return deductible
     } else {
-    return super.createOptionDeductibleInfo(coverage, currentCovTerm, transactions)
-  }
+      return super.createOptionDeductibleInfo(coverage, currentCovTerm, transactions)
+    }
   }
 
   private function createOtherStructuresOnPremisesSchedule(currentCoverage : Coverage, transactions : java.util.List<Transaction>)  : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType> {

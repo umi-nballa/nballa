@@ -331,8 +331,8 @@ class PropertyInspectionsBRHelper {
           policyPeriod.HomeownersLine_HOE.Dwelling?.ExteriorWFvalueOverridL1_Ext.Code :
           policyPeriod.HomeownersLine_HOE.Dwelling?.ExteriorWallFinishL1_Ext.Code
 
-      constructionType = (policyPeriod.HomeownersLine_HOE.Dwelling?.OverrideConstructionTypeL1_Ext) ?
-          policyPeriod.HomeownersLine_HOE.Dwelling?.ConstTypeOverriddenL1_Ext?.Code :
+      constructionType = (policyPeriod.HomeownersLine_HOE.Dwelling?.OverrideConstructionType_Ext) ?
+          policyPeriod.HomeownersLine_HOE.Dwelling?.ConstTypeOverridden_Ext?.Code :
           policyPeriod.HomeownersLine_HOE.Dwelling?.ConstructionType?.Code
     }else{
       exteriorWallFinishType = (policyPeriod.HomeownersLine_HOE.Dwelling?.OverrideExteriorWFval_Ext) ?

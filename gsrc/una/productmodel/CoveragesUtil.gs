@@ -247,6 +247,9 @@ class CoveragesUtil {
       case "DPLI_Med_Pay_HOE":
         covTermsToInitialize.add((coverable as HomeownersLine_HOE).DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm)
         break
+      case "DPDW_FairRentalValue_Ext":
+        covTermsToInitialize.add((coverable as Dwelling_HOE).DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm)
+        break
       default:
         break
     }

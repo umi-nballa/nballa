@@ -216,6 +216,21 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
          return true
       }
     }*/
+
+    if(formCode.equals(FormPatternConstants.BOP_REWRITE_FOR_RENEWALS_FORM)){
+      if(bownerline != null and  bopbuildings != null ){
+        var jobType= bownerline.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var renewal = typekey.Job.TC_RENEWAL.Code
+        var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        if(jobType == rewrite or jobType == renewal or jobType == account){
+          var transactionTypeCount = bownerline.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
+          if(transactionTypeCount > 0){
+            return true
+          }
+        }
+      }
+    }
     return false
   }
 }

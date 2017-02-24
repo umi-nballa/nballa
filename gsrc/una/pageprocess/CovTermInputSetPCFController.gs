@@ -80,7 +80,7 @@ class CovTermInputSetPCFController {
         }
       }else if(term.PatternCode == "DPLI_LiabilityLimit_HOE" or term.PatternCode == "HOLI_Liability_Limit_HOE"){
         var availableOptions = hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.AvailableOptions
-        var matchingValue = availableOptions.atMostOneWhere( \ option -> option.Value.doubleValue() == term.Value.doubleValue())
+        var matchingValue = availableOptions?.atMostOneWhere( \ option -> option.Value?.doubleValue() == term.Value?.doubleValue())
 
         if(matchingValue != null){
           hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)
@@ -224,6 +224,10 @@ class CovTermInputSetPCFController {
 
     if(booleanCovTerm.Value){
       CoverageTermsRuntimeDefaultController.setDefaults(new CovTermDefaultContext(EXECUTIVE_COVERAGE, dwelling))
+
+      if(dwelling.HODW_Personal_Property_HOEExists){
+        dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value = TC_PersProp_ReplCost
+      }
     }else{//reset defaults to non-executive coverage
       var executiveCoverageDefaultPatterns = ConfigParamsUtil.getList(TC_DefaultedExecutiveCoveragePatterns, dwelling.PolicyLine.BaseState)
       var executiveCoverageCovTerms = dwelling.PolicyLine.AllCoverables*.CoveragesFromCoverable*.CovTerms.where( \ covTerm -> executiveCoverageDefaultPatterns?.contains(covTerm.PatternCode))

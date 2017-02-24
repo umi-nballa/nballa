@@ -330,7 +330,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   private function isPolicyFeeApplicable(line: HomeownersLine_HOE): boolean {
     if (_baseState == typekey.Jurisdiction.TC_AZ and  _baseState == typekey.Jurisdiction.TC_SC) {
       return false
-    } else if (_baseState == typekey.Jurisdiction.TC_TX or _baseState == typekey.Jurisdiction.TC_CA or  _baseState == typekey.Jurisdiction.TC_FL) {
+    } else if (_baseState == typekey.Jurisdiction.TC_TX or _baseState == typekey.Jurisdiction.TC_CA or  _baseState == typekey.Jurisdiction.TC_FL or _baseState == typekey.Jurisdiction.TC_NC) {
       if (line.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE and line.Branch.Job.Subtype != typekey.Job.TC_CANCELLATION)
         return true
     } else if (_baseState == typekey.Jurisdiction.TC_NV){

@@ -112,16 +112,6 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     }
   }
 
-  override function startPendingRenewal(){
-
-    if(_branch.HomeownersLine_HOE.Dwelling.HODW_DifferenceConditions_HOE_ExtExists){
-      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEINCONDITIONS}
-      Job.addToFormsEvents(event)
-    }
-
-    super.startPendingRenewal()
-  }
-
   /**
    *  This is the OOTB final check code.  I made the original function abstract "pendingRenewalFinalCheck".  The abstract class implements this as a "do nothing" step for CPP and BOP to share
    *  Here, we do need to execute things in the final step because we also needed to make use of the first check for HO Renewals
@@ -141,7 +131,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
   }
 
   private function shouldOrderCreditReport(lastReceivedCreditReport : CreditReportExt) : boolean{
-    return (lastReceivedCreditReport != null and lastReceivedCreditReport.CreditScoreDate.afterIgnoreTime(Date.CurrentDate.addYears(-1)) or this.Job.IsCreditOrderingRenewal)
+    return lastReceivedCreditReport.CreditScoreDate == null or lastReceivedCreditReport.CreditScoreDate?.addYears(1)?.afterOrEqualsIgnoreTime(Date.CurrentDate)
   }
 
   private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{

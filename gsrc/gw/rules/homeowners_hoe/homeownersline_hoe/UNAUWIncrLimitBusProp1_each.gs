@@ -24,9 +24,9 @@ class UNAUWIncrLimitBusProp1_each implements IRuleCondition<HomeownersLine_HOE>{
         || homeowner.AssociatedPolicyPeriod.BaseState.Code=="NV") &&
         (homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO3 ||
             homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO4 ||
-        homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO6) &&
-        (homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
-        homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES)&&
+        homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO6)&&
+       // (homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
+      //  homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES)&&
     homeowner.Dwelling.HODW_BusinessProperty_HOE_ExtExists)
       return RuleEvaluationResult.execute()
 

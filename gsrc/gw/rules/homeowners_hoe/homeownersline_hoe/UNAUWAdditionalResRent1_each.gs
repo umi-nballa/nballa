@@ -15,9 +15,9 @@ class UNAUWAdditionalResRent1_each implements IRuleCondition<HomeownersLine_HOE>
 
 
 
-    if(homeowner.HOLI_AddResidenceRentedtoOthers_HOEExists && (homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
-        homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES))
-      return RuleEvaluationResult.execute()
+  //  if(homeowner.HOLI_AddResidenceRentedtoOthers_HOEExists && (homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
+   ///     homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES))
+   //   return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()
   }

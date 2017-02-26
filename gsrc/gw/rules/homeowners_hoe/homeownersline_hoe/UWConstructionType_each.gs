@@ -14,12 +14,12 @@ class UWConstructionType_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
     var constructionType = homeowner.Dwelling.OverrideConstructionType_Ext ? homeowner.Dwelling.ConstTypeOverridden_Ext : homeowner.Dwelling.ConstructionType
-    var conTypeL1 = homeowner.Dwelling.OverrideConstructionTypeL1_Ext ? homeowner.Dwelling.ConstTypeOverriddenL1_Ext : homeowner.Dwelling.ConstructionType
+    //var conTypeL1 = homeowner.Dwelling.OverrideConstructionTypeL1_Ext ? homeowner.Dwelling.ConstTypeOverriddenL1_Ext : homeowner.Dwelling.ConstructionType
     var contypeL2 = homeowner.Dwelling.OverrideConstructionTypeL2_Ext ? homeowner.Dwelling.ConstTypeOverriddenL2_Ext : homeowner.Dwelling.ConstructionTypeL2_Ext
     if((constructionType != null && constructionType == typekey.ConstructionType_HOE.TC_ICF_EXT
     || constructionType == typekey.ConstructionType_HOE.TC_L ) ||
-       (conTypeL1!= null &&  conTypeL1 == typekey.ConstructionType_HOE.TC_ICF_EXT
-        || conTypeL1 == typekey.ConstructionType_HOE.TC_L ) ||
+
+           //(conTypeL1!= null &&  conTypeL1 == typekey.ConstructionType_HOE.TC_ICF_EXT || conTypeL1 == typekey.ConstructionType_HOE.TC_L ) ||
        (contypeL2 != null &&  contypeL2 == typekey.ConstructionType_HOE.TC_ICF_EXT
         || contypeL2 == typekey.ConstructionType_HOE.TC_L )){
         return RuleEvaluationResult.execute()

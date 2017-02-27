@@ -1,12 +1,13 @@
-package gw.lob.cp.rating
+package una.rating.cp.costdatas
 
+uses gw.lob.cp.rating.CPBuildingCovCostData
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.api.effdate.EffDatedUtil
 uses entity.windowed.CPBuildingCovVersionList
-uses entity.windowed.CPBuildingCovGrp1CostVersionList
+uses entity.windowed.CPBuildingCovHurricaneCostVersionList
 
 @Export
-class CPBuildingCovGroup1CostData extends CPBuildingCovCostData<CPBuildingCovGrp1Cost>
+class CPBuildingCovHurricaneCostData extends CPBuildingCovCostData<CPBuildingCovHurricaneCost>
 {
   var _costType : CPCostType_Ext as CostType
 
@@ -23,22 +24,22 @@ class CPBuildingCovGroup1CostData extends CPBuildingCovCostData<CPBuildingCovGrp
     _costType = costType
   }
 
-  construct(cost : CPBuildingCovGrp1Cost) {
+  construct(cost : CPBuildingCovHurricaneCost) {
     super(cost)
   }
 
-  construct(cost : CPBuildingCovGrp1Cost, rateCache : PolicyPeriodFXRateCache) {
+  construct(cost : CPBuildingCovHurricaneCost, rateCache : PolicyPeriodFXRateCache) {
     super(cost, rateCache)
   }
 
-  override function setSpecificFieldsOnCost(line : CommercialPropertyLine, cost : CPBuildingCovGrp1Cost) {
+  override function setSpecificFieldsOnCost(line : CommercialPropertyLine, cost : CPBuildingCovHurricaneCost) {
     super.setSpecificFieldsOnCost(line, cost)
     if(_costType != null)
       cost.CostType = _costType
   }
 
   override function toString() : String {
-    return super.toString() + " Coverage : Group I"  // no need for i18n
+    return super.toString() + " Coverage : Hurricane"  // no need for i18n
   }
 
   override property get KeyValues() : List<Object> {
@@ -49,11 +50,11 @@ class CPBuildingCovGroup1CostData extends CPBuildingCovCostData<CPBuildingCovGrp
 
   override function getVersionedCosts(line : CommercialPropertyLine) : List<gw.pl.persistence.core.effdate.EffDatedVersionList> {
     var covVL = EffDatedUtil.createVersionList( line.Branch, CoverageID ) as CPBuildingCovVersionList
-    return covVL.Costs.whereTypeIs(CPBuildingCovGrp1CostVersionList)
+    return covVL.Costs.whereTypeIs(CPBuildingCovHurricaneCostVersionList)
         .where(\ costVL -> isCostVersionListForThisCostData(costVL))
   }
 
-  private function isCostVersionListForThisCostData(costVL : CPBuildingCovGrp1CostVersionList) : boolean {
+  private function isCostVersionListForThisCostData(costVL : CPBuildingCovHurricaneCostVersionList) : boolean {
     var v1 = costVL.AllVersions.first()
     if(v1.CostType != null){
       return (this.CoverageID == v1.Coverage.FixedId and

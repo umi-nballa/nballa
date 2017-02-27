@@ -1,34 +1,36 @@
-package gw.lob.cp.rating
-uses entity.windowed.CPBuildingCovVersionList
+package una.rating.cp.costdatas
+
+uses entity.windowed.CommercialPropertyCovVersionList
 uses gw.api.effdate.EffDatedUtil
 uses gw.financials.PolicyPeriodFXRateCache
+uses gw.lob.cp.rating.CPCostData
 
 @Export
-abstract class CPBuildingCovCostData<T extends CPBuildingCovCost> extends CPCostData<T>
+abstract class CPLineCovCostData<T extends CPLineCovCost> extends CPCostData<T>
 {
   private var _covID : Key
   private var _state : Jurisdiction as State
   
   construct(effDate : DateTime, expDate : DateTime, covID : Key, stateArg : Jurisdiction) {
     super(effDate, expDate)
-    assertKeyType(covID, CPBuildingCov)
+    assertKeyType(covID, CommercialPropertyCov)
     init(covID, stateArg)
   }
 
   construct(effDate : DateTime, expDate : DateTime, c : Currency, rateCache : PolicyPeriodFXRateCache, covID : Key, stateArg : Jurisdiction) {
     super(effDate, expDate, c, rateCache)
-    assertKeyType(covID, CPBuildingCov)
+    assertKeyType(covID, CommercialPropertyCov)
     init(covID, stateArg)
   }
 
   construct(cost : T) {
     super(cost)
-    init(cost.CPBuildingCov.FixedId, cost.State)
+    init(cost.LineCov.FixedId, cost.State)
   }
 
   construct(cost : T, rateCache : PolicyPeriodFXRateCache) {
     super(cost, rateCache)
-    init(cost.CPBuildingCov.FixedId, cost.State)
+    init(cost.LineCov.FixedId, cost.State)
   }
 
   private function init(covID : Key, stateArg : Jurisdiction) {
@@ -38,12 +40,12 @@ abstract class CPBuildingCovCostData<T extends CPBuildingCovCost> extends CPCost
 
   override function setSpecificFieldsOnCost(line : CommercialPropertyLine, cost : T) {
     super.setSpecificFieldsOnCost(line, cost)
-    cost.setFieldValue("CPBuildingCov", _covID)
+    cost.setFieldValue("LineCov", _covID)
   }
 
   override function getVersionedCosts(line : CommercialPropertyLine) : List<gw.pl.persistence.core.effdate.EffDatedVersionList> {
-    var covVL = EffDatedUtil.createVersionList( line.Branch, _covID ) as CPBuildingCovVersionList
-    var costs = covVL.Costs.allVersions<CPBuildingCovCost>(true) // warm up the bundle and global cache
+    var covVL = EffDatedUtil.createVersionList( line.Branch, _covID ) as CommercialPropertyCovVersionList
+    var costs = covVL.LineCosts.allVersions<CPLineCovCost>(true) // warm up the bundle and global cache
     return costs.Keys.where(\ VL -> costs[VL].first() typeis T)
   }
 

@@ -17,7 +17,7 @@ class UNAConstType1_each implements IRuleCondition<HomeownersLine_HOE>{
 
     if(homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
         homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ||
-    homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY)
+    homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_CONCRETE_EXT || homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY)
 
         return RuleEvaluationResult.execute()
 

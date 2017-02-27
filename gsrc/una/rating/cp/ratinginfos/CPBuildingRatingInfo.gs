@@ -1,4 +1,4 @@
-package una.rating.cp.common
+package una.rating.cp.ratinginfos
 
 uses java.math.BigDecimal
 uses una.rating.cp.util.CPRatingUtil
@@ -7,7 +7,7 @@ uses una.rating.cp.util.CPRatingUtil
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
  */
-class CPCommonBuildingRatingInfo {
+class CPBuildingRatingInfo {
 
   private var _building : CPBuilding
   var _aopDeductible : int as AOPDeductible
@@ -15,12 +15,21 @@ class CPCommonBuildingRatingInfo {
   var _constructionType : String as ConstructionType
   var _protectionClassCode : String as ProtectionClassCode
   var _yearBuilt : int as YearBuilt
-  var _buildingLimit : BigDecimal as BuildingLimit
+  var _buildingLimit : BigDecimal as BuildingLimit = 0.0
+  var _buildingCovCauseOfLoss : CPCauseOfLoss as BuildingCovCauseOfLoss
+  var _personalPropertyLimit : BigDecimal as PersonalPropertyLimit = 0.0
+  var _personalPropertyCovCauseOfLoss : CPCauseOfLoss as PersonalPropertyCovCauseOfLoss
   var _inflationGuard : String as InflationGuard
   var _territoryCode : String as TerritoryCode
   var _ordinanceOrLawCovAAvailable : boolean as OrdinanceOrLawCovAAvailable= false
+  var _isSprinklerAvailable : boolean as IsSprinklerAvailable
+  var _actualCashValueRoofEndorsement : boolean as ActualCashValueRoofEndorsement
+  var _hurricanePercentage : String as HurricanePercentage
+  var _hurricaneDedType : CPHurricaneDedType_Ext as HurricaneDeductibleType
+
   var _scheduledRatingModifier : BigDecimal as ScheduledRatingModifier
-  var _consentToRateFactor : BigDecimal as ConsentToRateFactor = 1.0
+  var _consentToRateFactor : BigDecimal as ConsentToRateFactor
+
   var _fenceLimit : BigDecimal as FenceLimit
   var _fenceConstructionType : ConstructionType_CP as FenceConstructionType
   var _flagPoleLimit : BigDecimal as FlagPoleLimit
@@ -48,24 +57,51 @@ class CPCommonBuildingRatingInfo {
   var _otherNOCConstructionType : ConstructionType_CP as OtherNOCConstructionType
   var _signsDetachedOutdoorLimit : BigDecimal as SignsDetachedOutdoorLimit
   var _signsDetachedOutdoorConstructionType : ConstructionType_CP as SignsDetachedOutdoorConstructionType
+  var _equipmentBreakdownEndorsementLimit : BigDecimal as EquipmentBreakdownEndorsementLimit
   //TODO : Update the zone number
   var _zoneNumber : int as ZoneNumber = 1
+  //ordinance or law limits
+  var _ordOrLawCovALimit : BigDecimal as OrdOrLawCovALimit
+  var _ordOrLawCovBLimit : BigDecimal as OrdOrLawCovBLimit
+  var _ordOrLawCovCLimit : BigDecimal as OrdOrLawCovCLimit
+  var _ordOrLawCovBCCombinedLimit : BigDecimal as OrdOrLawCovBCCombinedLimit
+  var _ordOrLawCovABCCombinedLimit : BigDecimal as OrdOrLawCovABCCombinedLimit
 
   construct(building : CPBuilding){
+    _building = building
     _scheduledRatingModifier = CPRatingUtil.ScheduledRatingModifier
+    _consentToRateFactor = CPRatingUtil.ConsentToRateFactor
     _riskType = building.CPLocation.CPLine.Branch?.Policy.PackageRisk
     _constructionType = building.Building.ConstructionType.DisplayName
     _aopDeductible = building.CPLocation.CPLine.allotherperilded.Code.toInt()
     _protectionClassCode = building?.OverrideFirePCCode_Ext? building.FirePCCodeOverridden_Ext : building.FireProtectionClassCode
     _yearBuilt = building?.Building.YearBuilt
-    _territoryCode = building?.CPLocation?.TerritoryCode?.Code//TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="GLLine").first().Code
+    _territoryCode = building?.CPLocation?.TerritoryCode?.Code
+    _inflationGuard = building.CPLocation.CPLine.Inflationguard?.DisplayName
+    _isSprinklerAvailable = building?.AutomaticFireSuppress
+    _actualCashValueRoofEndorsement = building.CPRoofACVEndorsement_EXTExists
+
+    if(building.CPLocation.CPLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT){
+      _hurricanePercentage = building.CPLocation.CPLine.hurricanepercded?.DisplayName
+      _hurricaneDedType = building.CPLocation.CPLine.hurricanededtype
+    }
+
     if(building.CPBldgCovExists){
       _buildingLimit = building?.CPBldgCov?.CPBldgCovLimitTerm?.Value
-      _inflationGuard = building?.CPBldgCov?.CPBldgCovAutoIncreaseTerm?.DisplayValue
+      _buildingCovCauseOfLoss = building?.CPBldgCov?.CPBldgCovCauseOfLossTerm?.Value
+    }
+    if(building.CPBPPCovExists){
+      _personalPropertyLimit = building?.CPBPPCov?.CPBPPCovLimitTerm?.Value
+      _personalPropertyCovCauseOfLoss = building?.CPBPPCov?.CPBPPCovCauseOfLossTerm?.Value
     }
     if(building.CPOrdinanceorLaw_EXTExists){
       if(building.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCoverage_EXTTerm?.Value != CPOutdoorPropCovType_EXT.TC_COVCONLY_EXT)
         _ordinanceOrLawCovAAvailable = true
+      _ordOrLawCovALimit = building.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovALimit_EXTTerm?.Value
+      _ordOrLawCovBLimit = building.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBLimit_EXTTerm?.Value
+      _ordOrLawCovCLimit = building.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovCLimit_EXTTerm?.Value
+      _ordOrLawCovBCCombinedLimit = building.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovBCLimit_EXTTerm?.Value
+      _ordOrLawCovABCCombinedLimit = building.CPOrdinanceorLaw_EXT?.CPOrdinanceorLawCovABCLimit_EXTTerm?.Value
     }
     if(building.CPFence_ExtExists){
       _fenceLimit = building.CPFence_Ext?.CPFenceLimit_ExtTerm?.Value
@@ -122,9 +158,21 @@ class CPCommonBuildingRatingInfo {
       _signsDetachedOutdoorLimit = building.CPSigns_Ext?.CPSignsLimit_ExtTerm?.Value
       _signsDetachedOutdoorConstructionType = building.CPSigns_Ext?.CPSignsConst_ExtTerm?.Value
     }
+    if(building.CPEquipmentBreakdownEnhance_EXTExists){
+      _equipmentBreakdownEndorsementLimit = totalInsuredValueLimit(building)
+    }
   }
 
   property get AgeOfHome() : int {
-    return  _building.CPLocation.CPLine.Branch?.EditEffectiveDate?.YearOfDate -  YearBuilt
+    return  _building.CPLocation.CPLine.Branch?.EditEffectiveDate?.YearOfDate - YearBuilt
+  }
+
+  private function totalInsuredValueLimit(building : CPBuilding) : BigDecimal {
+    var insuredValueLimit : BigDecimal = 0.0
+    if(building.CPBldgCovExists)
+      insuredValueLimit += building.CPBldgCov?.CPBldgCovLimitTerm?.Value
+    if(building.CPBPPCovExists)
+      insuredValueLimit += building.CPBPPCov?.CPBPPCovLimitTerm?.Value
+    return insuredValueLimit
   }
 }

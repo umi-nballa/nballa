@@ -1,4 +1,4 @@
-package una.rating.ho.dwellingfire
+package una.rating.ho.hawaii
 
 uses una.rating.ho.common.HORateRoutineExecutor
 uses gw.financials.PolicyPeriodFXRateCache
@@ -7,9 +7,9 @@ uses una.rating.ho.common.HORateRoutineNames
 uses gw.rating.CostData
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
 uses gw.lob.ho.rating.HomeownersBaseCostData_HOE
-uses una.rating.ho.dwellingfire.ratinginfos.HORatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HORatingInfo
 uses gw.lob.common.util.DateRange
-uses una.rating.ho.dwellingfire.ratinginfos.HODPBasePremiumRatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HOHIBasePremiumRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -18,7 +18,7 @@ uses una.rating.ho.dwellingfire.ratinginfos.HODPBasePremiumRatingInfo
  * Time: 2:21 PM
  * To change this template use File | Settings | File Templates.
  */
-class HOBasePremiumRaterDwellingFire {
+class HOBasePremiumRaterHI {
   private var _executor: HORateRoutineExecutor
   private var _rateCache: PolicyPeriodFXRateCache
   private var _dwelling: Dwelling_HOE
@@ -53,7 +53,7 @@ class HOBasePremiumRaterDwellingFire {
     var costs: List<CostData> = {}
     if (!routinesToExecute.Empty) {
       for (routine in routinesToExecute) {
-        var basePremiumRatingInfo = new HODPBasePremiumRatingInfo(_dwelling)
+        var basePremiumRatingInfo = new HOHIBasePremiumRatingInfo(_dwelling)
         var costData = new HomeownersBaseCostData_HOE(dateRange.start, dateRange.end, _line.Branch.PreferredCoverageCurrency, _rateCache, _routinesToCostTypeMapping.get(routine))
         costData.init(_line)
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm

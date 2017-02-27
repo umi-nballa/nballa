@@ -1,4 +1,4 @@
-package una.rating.ho.dwellingfire.ratinginfos
+package una.rating.ho.hawaii.ratinginfos
 
 uses java.math.BigDecimal
 

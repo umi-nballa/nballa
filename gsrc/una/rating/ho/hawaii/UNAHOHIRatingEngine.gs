@@ -1,16 +1,16 @@
-package una.rating.ho.dwellingfire
+package una.rating.ho.hawaii
 
 uses una.rating.ho.common.UNAHORatingEngine_HOE
 uses una.logging.UnaLoggerCategory
 uses java.util.Map
 uses gw.financials.PolicyPeriodFXRateCache
 uses gw.lob.common.util.DateRange
-uses una.rating.ho.dwellingfire.ratinginfos.HORatingInfo
-uses una.rating.ho.dwellingfire.ratinginfos.HODPDiscountsOrSurchargeRatingInfo
-uses una.rating.ho.dwellingfire.ratinginfos.HOLineRatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HORatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HOHIDiscountsOrSurchargeRatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HOLineRatingInfo
 uses una.rating.util.HOCreateCostDataUtil
 uses una.rating.ho.common.HORateRoutineNames
-uses una.rating.ho.dwellingfire.ratinginfos.HODPDwellingRatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HOHIDwellingRatingInfo
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 
 /**
@@ -20,14 +20,14 @@ uses una.rating.ho.common.HOCommonRateRoutinesExecutor
  * Time: 2:17 PM
  * To change this template use File | Settings | File Templates.
  */
-class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
+class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     final static var _logger = UnaLoggerCategory.UNA_RATING
-    private static final var CLASS_NAME = UNAHODwellingFireRatingEngine.Type.DisplayName
+    private static final var CLASS_NAME = UNAHOHIRatingEngine.Type.DisplayName
     private var _hoRatingInfo: HORatingInfo
-    private var _discountsOrSurchargeRatingInfo : HODPDiscountsOrSurchargeRatingInfo
+    private var _discountsOrSurchargeRatingInfo : HOHIDiscountsOrSurchargeRatingInfo
     private var _lineRateRoutineParameterMap : Map<CalcRoutineParamName, Object>
     private var _lineRatingInfo : HOLineRatingInfo
-
+    private var _dwellingRatingInfo : HOHIDwellingRatingInfo
     construct(line: HomeownersLine_HOE) {
       this(line, RateBookStatus.TC_ACTIVE)
     }
@@ -37,14 +37,15 @@ class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine
       _hoRatingInfo = new HORatingInfo()
       _lineRatingInfo = new HOLineRatingInfo(line)
       _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
-
+      _dwellingRatingInfo = new HOHIDwellingRatingInfo(line.Dwelling)
+      _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     }
 
 /**
  * Rate the base premium
  */
     override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
-      var rater = new HOBasePremiumRaterDwellingFire(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
+      var rater = new HOBasePremiumRaterHI (dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
       var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
       addCosts(costs)
     }
@@ -52,7 +53,7 @@ class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine
 
     override function rateHOLineCosts(dateRange: DateRange){
       var dwelling = PolicyLine.Dwelling
-      _discountsOrSurchargeRatingInfo = new HODPDiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
+      _discountsOrSurchargeRatingInfo = new HOHIDiscountsOrSurchargeRatingInfo (PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
 
       if (PolicyLine.Branch.QualifiesAffinityDisc_Ext) {
         rateAffinityDiscount(dateRange)
@@ -140,9 +141,7 @@ class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine
 
   function rateIncreasedPersonalProperty(dwellingCov: DPDW_Personal_Property_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedPersonalProperty to rate Personal Property Increased Limit Coverage", this.IntrinsicType)
-    var dwellingRatingInfo = new HODPDwellingRatingInfo(dwellingCov)
-    dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
@@ -185,9 +184,7 @@ class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine
   function rateOrdinanceOrLawCoverage(dwellingCov: DPDW_OrdinanceCov_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateOrdinanceOrLawCoverage to rate Ordinance Or Law Coverage", this.IntrinsicType)
     if (dwellingCov?.Dwelling?.DPDW_OrdinanceCov_HOE.DPDW_OrdinanceLimit_HOETerm.DisplayValue == "25%"){
-      var dwellingRatingInfo = new HODPDwellingRatingInfo(dwellingCov)
-      dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-      var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, dwellingRatingInfo)
+      var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)
         addCost(costData)
@@ -254,7 +251,7 @@ class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine
     }
   }
 
-    private function getHOLineDiscountsOrSurchargesParameterSet(line: PolicyLine, discountOrSurchargeRatingInfo: HODPDiscountsOrSurchargeRatingInfo, state: Jurisdiction): Map<CalcRoutineParamName, Object> {
+    private function getHOLineDiscountsOrSurchargesParameterSet(line: PolicyLine, discountOrSurchargeRatingInfo: HOHIDiscountsOrSurchargeRatingInfo, state: Jurisdiction): Map<CalcRoutineParamName, Object> {
       return {
           TC_POLICYLINE -> line,
           TC_STATE -> state,
@@ -267,7 +264,7 @@ class UNAHODwellingFireRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine
   /**
    * Returns the parameter set with a rating info
    */
-  private function getHOParameterSet(line: PolicyLine, stateCode: Jurisdiction, dwellingRatingInfo : HODPDwellingRatingInfo): Map<CalcRoutineParamName, Object> {
+  private function getHOParameterSet(line: PolicyLine, stateCode: Jurisdiction, dwellingRatingInfo : HOHIDwellingRatingInfo): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,

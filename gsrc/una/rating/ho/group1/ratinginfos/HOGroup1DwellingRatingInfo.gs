@@ -38,7 +38,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isEQLtdCovConstructionRetrofit : boolean as IsEQLtdConstructionRetrofit = false
 
   construct(dwellingCov: DwellingCov_HOE) {
-    super(dwellingCov)
+    super(dwellingCov.Dwelling)
     var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
 
     if (dwellingCov typeis HODW_FungiCov_HOE){

@@ -1,4 +1,4 @@
-package una.rating.ho.dwellingfire.ratinginfos
+package una.rating.ho.hawaii.ratinginfos
 
 uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
 
@@ -11,7 +11,7 @@ uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
  * Time: 1:15 PM
  * To change this template use File | Settings | File Templates.
  */
-class HODPBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
+class HOHIBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _dwelling : Dwelling_HOE as Dwelling
   var _townhouseOrRowhouse : boolean as TownHouseOrRowHouse
   var _numberOfFamilies: int as NumberOfFamilies

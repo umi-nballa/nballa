@@ -250,11 +250,21 @@ class HODwellingUtil_HOE {
     return false
   }
 
-  static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
+  /*static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
     if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
        return typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys
     }
      return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
+  }*/
+
+  static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
+    var tempList = new ArrayList<typekey.ConstructionType_HOE>()
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
+      tempList.addAll(typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys)
+      return tempList.sortBy(\typeCodeName -> typeCodeName.DisplayName)
+    }
+    tempList.addAll(typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys)
+    return tempList.sortBy(\typeCodeName -> typeCodeName.DisplayName)
   }
 
   static function filterTunaConstructionTypeStateSpecific(dwelling : Dwelling_HOE, constype:typekey.ConstructionType_HOE[]) : List<typekey.ConstructionType_HOE> {

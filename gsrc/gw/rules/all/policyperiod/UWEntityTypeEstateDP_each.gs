@@ -1,4 +1,4 @@
-package gw.rules.homeowners_hoe.homeownersline_hoe
+package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult

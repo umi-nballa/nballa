@@ -1,4 +1,4 @@
-package gw.rules.homeowners_hoe.homeownersline_hoe
+package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
@@ -10,10 +10,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWEntityTypeTrust_each implements IRuleCondition<PolicyPeriod>{
+class UWEntityTypeOther_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
-    if(period.Policy.Account.AccountOrgType == AccountOrgType.TC_TRUST_EXT
-      && period.TrustResidings.where( \ elt -> elt.TypeOfTrustRevocable).HasElements ){
+    if(period.Policy.Account.AccountOrgType == AccountOrgType.TC_OTHER ){
         return RuleEvaluationResult.execute()
       }
    return RuleEvaluationResult.skip()

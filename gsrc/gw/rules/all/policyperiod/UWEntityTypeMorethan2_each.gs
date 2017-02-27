@@ -1,4 +1,4 @@
-package gw.rules.homeowners_hoe.homeownersline_hoe
+package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
@@ -10,9 +10,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWNoPriorInsLapsedOver30Days_each implements IRuleCondition<PolicyPeriod>{
+class UWEntityTypeMorethan2_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
-    if(period.Policy.PriorPolicies.where( \ elt -> elt.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_PRIORCOVERAGELAPSEDOVER30DAYS).Count > 0  ){
+    if(period.Policy.Account.AccountOrgType == AccountOrgType.TC_MORETHAN2IND_EXT){
         return RuleEvaluationResult.execute()
       }
    return RuleEvaluationResult.skip()

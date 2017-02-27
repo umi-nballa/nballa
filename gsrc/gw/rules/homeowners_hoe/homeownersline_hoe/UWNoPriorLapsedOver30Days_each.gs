@@ -10,9 +10,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UW2IndOwnerNo_each implements IRuleCondition<PolicyPeriod>{
+class UWNoPriorLapsedOver30Days_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
-    if(period.Policy.Account.AccountOrgType == AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT && !period.Policy.Account.OccupyPrimaryResidence_Ext ){
+    if(period.Policy.PriorPolicies.where( \ elt -> elt.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_PRIORCOVERAGELAPSEDOVER30DAYS).Count > 0  ){
         return RuleEvaluationResult.execute()
       }
    return RuleEvaluationResult.skip()

@@ -170,7 +170,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000)
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
 
-    if(PolicyLine.Dwelling?.PolicyPeriod?.Policy?.PriorPolicies?.Count == 0)
+    if(hasNoPriorInsurance())
       rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
 
     if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
@@ -1018,5 +1018,18 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _hoRatingInfo.FinalAdjustedAOPBasePremium = _hoRatingInfo.AdjustedAOPBasePremium + _hoRatingInfo.NoPriorInsurance + _hoRatingInfo.SuperiorConstructionDiscountForAOP + _hoRatingInfo.TownHouseOrRowHouseSurchargeAOP +
                                                 _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.HigherAllPerilDeductibleAOP + _hoRatingInfo.AgeOfHomeDiscountAOP + _hoRatingInfo.SeasonalSecondaryResidenceSurchargeForAOP +
                                                 _hoRatingInfo.PreferredBuilderCredit + _hoRatingInfo.MatureHomeOwnerDiscountAOP + _hoRatingInfo.DiscountAdjustment
+  }
+
+  private function hasNoPriorInsurance() : boolean {
+    var priorPoliciesWithNoPriorInsurance = PolicyLine.Branch?.Policy?.PriorPolicies?.where( \ pp -> pp.CarrierType == CarrierType_Ext.TC_NOPRIORINS)
+    if(priorPoliciesWithNoPriorInsurance.Count > 0){
+      for(priorPolicy in priorPoliciesWithNoPriorInsurance){
+        if(priorPolicy.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_PRIORCOVERAGELAPSEDOVER45DAYS ||
+           priorPolicy.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_PRIORCOVERAGELAPSEDOVER60DAYS ||
+           priorPolicy.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_NOINSURANCEEVERCARRIEDATTHISPROPERTY)
+          return true
+      }
+    }
+    return false
   }
 }

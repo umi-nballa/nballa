@@ -22,6 +22,7 @@ uses una.rating.cp.common.CPRateRoutineNames
 uses java.util.ArrayList
 uses gw.lob.cp.rating.CPBuildingCovCostData
 uses java.math.BigDecimal
+uses una.rating.cp.common.CPRateRoutineExecutor
 
 class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   var _minimumRatingLevel: RateBookStatus

@@ -109,6 +109,10 @@ class HOProtectionDetailsMapper {
           protectionDetails = extractProtectionDetailsFL(fireAlarmReportCntlStn, fireAlarmReportFireStn, localFireAlarm, burglarAlarmReportCntlStn,
               completeLocalBurglarAlarm, burglarAlarmReportPoliceStn, completeHomeSprinklerSystem, automaticSprinklerSystem)
           return protectionDetails
+      case TC_SC:
+          protectionDetails = extractProtectionDetailsSC(fireAlarmReportCntlStn, fireAlarmReportFireStn, localFireAlarm, burglarAlarmReportCntlStn,
+              completeLocalBurglarAlarm, burglarAlarmReportPoliceStn, completeHomeSprinklerSystem, automaticSprinklerSystem)
+          return protectionDetails
     }
     return protectionDetails
   }
@@ -164,6 +168,33 @@ class HOProtectionDetailsMapper {
     } else if(automaticSprinklerSystem){
       return AUTO_HOME_SPRINKLER_SYSTEM
     }  else
+      return NO_PROTECTIVE_DEVICE
+  }
+
+  private static function extractProtectionDetailsSC(localFireAlarm : boolean, localSmokeAlarm : boolean, fireExtinguishers : boolean, deadbolts :
+      boolean, burglarAlarmReportCntlStn : boolean, fireAlarmReportCntlStn : boolean, completeLocalBurglarAlarm : boolean, completeHomeSprinklerSystem : boolean) : String {
+
+    if((localFireAlarm or localSmokeAlarm) and fireExtinguishers and deadbolts and burglarAlarmReportCntlStn){
+      return SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT_PLUS_BURGLAR_ALARM_TO_CNTL_STN
+    } else if((localFireAlarm or localSmokeAlarm) and fireExtinguishers and deadbolts and fireAlarmReportCntlStn){
+      return SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT_PLUS_FIRE_ALARM_TO_CNTL_STN
+    } else if((localFireAlarm or localSmokeAlarm) and fireExtinguishers and deadbolts and completeLocalBurglarAlarm){
+      return SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT_PLUS_CMPLT_BURGLAR_ALARM
+    } else if((localFireAlarm or localSmokeAlarm) and fireExtinguishers and deadbolts and completeHomeSprinklerSystem){
+      return SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT_PLUS_CMPLT_HOME_SPRINKLER_SYSTEM
+    } else if((localFireAlarm or localSmokeAlarm) and fireExtinguishers and deadbolts){
+      return SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT
+    } else if(localFireAlarm or localSmokeAlarm){
+      return SMOKE_OR_FIRE_ALARM
+    } else if(completeLocalBurglarAlarm){
+      return CMPLT_BURGLAR_ALARM
+    } else if(burglarAlarmReportCntlStn){
+      return BURGLAR_ALARM_TO_CNTL_STN
+    } else if(fireAlarmReportCntlStn){
+      return FIRE_ALARM_TO_CNTL_STN
+    } else if(completeHomeSprinklerSystem){
+      return CMPLT_HOME_SPRINKLER_SYSTEM
+    } else
       return NO_PROTECTIVE_DEVICE
   }
 }

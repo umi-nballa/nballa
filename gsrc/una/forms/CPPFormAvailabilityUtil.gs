@@ -105,6 +105,23 @@ class CPPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm {
         return true
       }
     }
+
+    if(formCode.equals(FormPatternConstants.CPP_REWRITE_FOR_RENEWALS_FORM)){
+      if(cppLine != null ){
+        var jobType= cppLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var renewal = typekey.Job.TC_RENEWAL.Code
+        var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        if(jobType == rewrite or jobType == renewal or jobType == account){
+          var transactionTypeCount = cppLine.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
+          if(transactionTypeCount > 0){
+            return true
+          }
+        }
+      }
+    }
+
+
     return false
   }
 

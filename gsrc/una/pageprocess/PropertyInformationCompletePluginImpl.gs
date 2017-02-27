@@ -204,8 +204,8 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideConstructionType_Ext = false
     //policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL1_Ext  = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverriddenL1_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.OverrideConstructionTypeL1_Ext = false
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverridden_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.OverrideConstructionType_Ext = false
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeL2_Ext  = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstTypeOverriddenL2_Ext  = null
     policyPeriod.HomeownersLine_HOE.Dwelling.OverrideConstructionTypeL2_Ext = false
@@ -252,7 +252,7 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.RoofTypeMatchLevel_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.RoofShapeMatchLevel_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLevel_Ext = null
-    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLvlL1_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLevel_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionTypeMatchLvlL2_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.YearBuiltMatchLevel_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.BaseFloodElValMatchLevel_Ext = null

@@ -15,6 +15,8 @@ interface FormPatternConstants {
   static final var CPP_ADDL_INSURED_MGR_OR_LESSER_FORM : String = "CG20110196"
   static final var CPP_ADDL_INSURED_DESIGNATED_PERSON_OR_ORG_FORM : String = "CG20260704"
   static final var CPP_ADDL_INSURED_LESSER_OF_LEASED_EQUIPMENT_FORM : String = "CG20280704"
+  static final var CPP_INSURED_CONSENT_EXCESS_RATE_FORM : String = "IL09320702"
+  static final var CPP_REWRITE_FOR_RENEWALS_FORM : String = "INCRP051016"
 
 
 
@@ -53,6 +55,41 @@ interface FormPatternConstants {
   static final var HO_HO3_HO4_HO6_PROTECTION_SYSTEM_HI_FORM : String = "HO04161000"
   static final var HO_LOSS_ASSESSMENT_COVERAGE_FORM : String = "HO04351000"
   static final var HO_NO_DWELLING_FIRE_OTHER_STRUCTURE_FORM : String = "UIDPCOVBX0916"
+  static final var HO_BUSINESS_PROPERTY_INCREASED_LIMITS_FORM : String = "HO04121000"
+  static final var HO_HOMEOWENERS_ORDIANCE_LAW_FORM : String = "HO04771000"
+  static final var HO_RESIDENCE_HELD_IN_TRUST_FORM : String = "HO05431000"
+  static final var HO_RESIDENCE_HELD_IN_TRUST_ONLY_FORM : String = "HO32120612"
+   static final var HO_LOSS_ASSESSMENT_RES_TYPE_FORM : String = "UI04471208"
+  static final var HO_PERSONAL_PROPERTY_VALUATION_METHOD_FORM : String = "UI04900412"
+  static final var HO_OTHER_STRUCTURES_DECREASED_LIMIT_FORM : String = "UIOSDL0607"
+  static final var HO_HOMEOWNERS_OTHER_STRUCTURES_DECREASED_LIMIT_FORM : String = "UIOSDLAZ0707"
+  static final var HO_HURRICANE_DEDUCTIBLE_FORM : String = "UICNA03510117"
+  static final var HO_HURRICANE_DEDUCTIBLE_EXCLUDE_DP3_FORM : String = "UICNA04510117"
+  static final var HO_CARLIFORNIA_EARTHQUAKE_FORM : String = "UN3030a0116"
+  static final var HO_DWELLING_FIRE_FORM : String = "UNLPP04761202"
+   static final var HO_DWELLING_FIRE_PERSONAL_LIABILITY_FORM : String = "UNTXDL24100788"
+  static final var  HO_DWELLING_FIRE_SIGNATURE_PAGE_FORM : String = "USP000911"
+  static final var  HO_DIFFERENCE_COVERAGE_NOTSELECTD_FORM : String = "UN10070314"
+  static final var HO_CARLIFORNIA_EARTHQUAKE_COVERAGE_NOTSELECTD_FORM : String = "UN30300116"
+  static final var HO_PREMISES_LIABILITY_SELECTED_FORM : String = "UNTXDL24110788"
+   static final var HO_HOMEOWNERS_OTHERSTRUCTURES_FORM : String = "UICOVBX0916"
+  static final var HO_REWRITE_FOR_RENEWALS_FORM : String = "INEBEE1116"
+  static final var HO_REWRITE_FOR_RENEWALS_TX_FORM : String = "INTXHO1216"
+   static final var HO_REWRITE_FOR_RENEWALS_HOB_FORM : String = "INRCSR1116"
+  static final var HO_DWELLING_FIRE_ORDIANCE_LAW1_FORM : String = "DP04711202"
+  static final var HO_DWELLING_FIRE_ORDIANCE_LAW2_FORM : String = "UNLPP04711202"
+  static final var HO_FUNGI_WET_DRY1_FORM : String = "UN09820915"
+   static final var HO_FUNGI_WET_DRY2_FORM : String = "UN09830915"
+  static final var HO_CARLIFORNIA_EARTHQUAKE_COV_FORM : String = "ASP1100116"
+  static final var HO_LOSS_ASSESSMENT_FORM : String = "UI04640410"
+  static final var HO_FUNGI_WET_FORM : String = "HO03330503"
+  static final var HO_ADDNL_INSURED_FORM : String = "HO3011095"
+  static final var HO_DWELLING_FIRE_TX1_FORM : String = "TDP0260401"
+  static final var HO_DWELLING_FIRE_TX2_FORM : String = "TDP0270401"
+  static final var HO_UNSCHEDULE_LIMIT_FORM : String = "HO1100792"
+
+
+
 
   // BOP Form Codes
   static final var BOP_ADDL_INSURED_MGR_OR_LESSOR_FORM : String = "BP04020106"
@@ -64,6 +101,7 @@ interface FormPatternConstants {
   static final var BOP_ADDL_INSURED_DESIGNATED_PERSON_FORM : String = "BP04480106"
   static final var BOP_CONDO_COMMERCIAL_UNIT_OWNERS_OPT_COVERAGES_FORM : String = "BP17030106"
   static final var BOP_ADDL_INSURED_GRANTOR_OF_FRANCHISE_FORM : String = "UIBP01840108"
+  static final var BOP_REWRITE_FOR_RENEWALS_FORM : String = "INBOP051016"
 
 
 }

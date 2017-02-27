@@ -220,7 +220,8 @@
           id="DistToFireHydrant"
           label="displaykey.Web.Homeowners.HOLocation.DisToFireHydrant"
           required="true"
-          value="dwelling.HOLocation.DistanceToFireHydrant">
+          value="dwelling.HOLocation.DistanceToFireHydrant"
+          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass))">
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
@@ -229,7 +230,8 @@
           id="DistToFireStation"
           label="displaykey.Web.Homeowners.HOLocation.DisToFireStation"
           required="true"
-          value="dwelling.HOLocation.DistanceToFireStation">
+          value="dwelling.HOLocation.DistanceToFireStation"
+          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass))">
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>

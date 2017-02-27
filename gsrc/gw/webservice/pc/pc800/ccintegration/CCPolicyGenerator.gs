@@ -182,9 +182,9 @@ class CCPolicyGenerator {
         endorsement.PolicySystemID = form.TypeIDString
         endorsement.FormNumber = form.FormNumber
         endorsement.Description = form.FormDescription
-        //endorsement.EditionDate_Ext = form.FormPatternCode
         endorsement.EffectiveDate = form.EffectiveDate
         endorsement.ExpirationDate = form.ExpirationDate
+        endorsement.EditionDate_Ext = form.Pattern.Edition
         if( form.EndorsementNumber != null ) {
           endorsement.Comments = displaykey.CCPolicySearchIntegration.Endorsement.Comment(form.EndorsementNumber)
         }

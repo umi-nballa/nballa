@@ -15,10 +15,10 @@ class UNAUWExecutiveEndOccu_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
 
-  //  if((homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
-  //      homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES)&&
-  //  homeowner.Dwelling.HODW_Dwelling_Cov_HOEExists && homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HasHODW_ExecutiveCov_HOE_ExtTerm )
-  //    return RuleEvaluationResult.execute()
+   if((homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES ||
+       homeowner?.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES)&&
+   homeowner.Dwelling.HODW_Dwelling_Cov_HOEExists && homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HasHODW_ExecutiveCov_HOE_ExtTerm )
+     return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()
   }

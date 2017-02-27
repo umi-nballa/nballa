@@ -39,6 +39,21 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
+  static function isFHFSvisible(tunaresponse:List<String>):boolean
+  {
+    var retval = false
+    tunaresponse.each( \ elt ->
+    {
+      if(elt.indexOf("/")!=-1)
+        {
+          retval = true
+        }
+    }
+    )
+
+    return retval
+  }
+
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
      if(policyType == null){
        return false

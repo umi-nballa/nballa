@@ -197,4 +197,154 @@
       name="size"
       value="60"/>
   </column>
+  <!-- The fields below this line are added to replace in memory cache to store credit reports.
+		This is just an example for convenience so one does not have to configure external DB for accelerator, 
+		but on actual project change this persistence to use table in an external DB. -->
+  <column
+    desc="First Name of the customer"
+    name="SearchFirstName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Middle name"
+    name="SearchMiddleName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Last name"
+    name="SearchLastName"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    desc="Address Line 1"
+    name="SearchAddressLine1"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="Address City"
+    name="SearchAddressCity"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <!-- <column
+    desc="Address State"
+	name="AddressState"
+	type="varchar" exportable="true" loadable="true">
+	<columnParam
+	  name="size"
+	  value="2"/>
+  </column> -->
+  <typekey
+    desc="Sate code"
+    name="SearchAddressState"
+    nullok="true"
+    typelist="State"/>
+  <column
+    desc="Address Zip/postal code"
+    name="SearchAddressZip"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    name="OrderDate"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    name="CompleterDate"
+    nullok="true"
+    type="dateonly"/>
+  <!-- The fields below this line are added to replace in memory cache to store credit reports.
+		This is just an example for convenience so one does not have to configure external DB for accelerator, 
+		but on actual project change this persistence to use table in an external DB. -->
+  <column
+    desc="First Name of the customer"
+    name="SSN"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <!-- The fields below this line are added to replace in memory cache to store credit reports.
+		This is just an example for convenience so one does not have to configure external DB for accelerator, 
+		but on actual project change this persistence to use table in an external DB. -->
+  <column
+    desc="First Name of the customer"
+    name="SearchSSN"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="20"/>
+  </column>
+  <column
+    name="PncAccount"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="ProductReference"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="Quoteback"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="DateRequestOrdered"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="DateRequestCompleted"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="Status"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="ReportCode"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="UserID"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="SearchGender"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="Gender"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    name="SearchDateOfBirth"
+    nullok="true"
+    type="dateonly"/>
+  <column
+    name="DateOfBirth"
+    nullok="true"
+    type="dateonly"/>
 </entity>

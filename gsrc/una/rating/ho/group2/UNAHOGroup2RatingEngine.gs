@@ -204,8 +204,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateGatedCommunityDiscount(dateRange)
     }
 
-    //if(!dwelling.WHurricaneHailExclusion_Ext)
-      //rateWindStormMitigationCredit(dateRange)
+    if(PolicyLine.HOPolicyType != HOPolicyType_HOE.TC_HO4 and !dwelling.WHurricaneHailExclusion_Ext)
+      rateWindStormMitigationCredit(dateRange)
 
     rateHigherAllPerilDeductible(dateRange)
 
@@ -286,6 +286,21 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     }
     _logger.debug("Gated Community Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the windstorm mitigation credit
+   */
+  function rateWindStormMitigationCredit(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWindStormMitigationCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WINDSTORM_MITIGATION_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_WINDSTORMMITIGATIONCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.WindstormMitigationCredit = costData?.ActualTermAmount
+    if (costData != null){
+      addCost(costData)
+    }
+    _logger.debug("Windstorm Mitigation Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**

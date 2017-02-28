@@ -31,11 +31,12 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
-    if(line.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
-      _namedStormDeductible = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
+    var dwelling = line?.Dwelling
+    if(dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){
+      _namedStormDeductible = dwelling.HODW_SectionI_Ded_HOE.HODW_NamedStrom_Ded_HOE_ExtTerm.Value
     }
-    _personalPropertyLimit = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
-    _increasedPersonalPropertyLimit = line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference  > 0 ? line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference : 0
+    _personalPropertyLimit = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
+    _increasedPersonalPropertyLimit = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference  > 0 ? line.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference : 0
 
     
       if(line.Branch.PreferredBuilder_Ext != null)
@@ -43,13 +44,26 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
       if(line.Branch.PreferredFinInst_Ext != null)
         _preferredFinancialInstitutionExists = true
 
-    var policyPeriod = line?.Dwelling?.PolicyPeriod
+    var policyPeriod = dwelling?.PolicyPeriod
     var originalEffectiveDate = policyPeriod?.Policy.OriginalEffectiveDate
     var editEffectiveDate = policyPeriod?.EditEffectiveDate
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
 
     if(line?.HOPriorLosses_Ext != null){
       _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
+    }
+
+    if(!dwelling.WHurricaneHailExclusion_Ext){
+      _swr = dwelling?.SecondaryWaterResis_Ext?.DisplayName
+      _roofDeckAttachment = dwelling?.RoofDeckAttachment_Ext?.DisplayName
+      _roofToWallConnection = dwelling?.RoofWallConnection_Ext?.DisplayName
+      _roofCover = dwelling?.RoofCover_Ext?.DisplayName
+      _openingProtection = dwelling?.OpeningProtection_Ext?.DisplayName
+      _doorStrength = dwelling?.DoorStrength_Ext?.DisplayName
+      if(dwelling?.RoofShape_Ext != RoofShape_Ext.TC_HIP)
+        _roofShape = "Other"
+      else
+        _roofShape = dwelling?.RoofShape_Ext?.DisplayName
     }
   }
 

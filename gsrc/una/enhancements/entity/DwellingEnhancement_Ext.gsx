@@ -194,6 +194,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
+  property get RoofTypeOrOverride():typekey.RoofType
+  {
+    if(this.OverrideRoofType_Ext && this.RoofingMaterialOverridden_Ext!=null)
+      return this.RoofingMaterialOverridden_Ext
+    else
+      return this.RoofType
+  }
+
   property get isPolicyHOTypes() : boolean {
     return typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }

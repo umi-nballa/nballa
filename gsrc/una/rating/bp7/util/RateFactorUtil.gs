@@ -29,6 +29,8 @@ class RateFactorUtil {
   static var _bcegFactor : BigDecimal = 1.0
   static var _windExclusionFactor : BigDecimal = 1.0
 
+  static var _useDefaultIRPMFactor : boolean as UseDefaultIRPMFactor = false
+
   static function setDefaults(){
     _accountModificationFactor = 1.0
     _buildingAgeFactor = 1.0
@@ -40,6 +42,7 @@ class RateFactorUtil {
     _contentDeductibleFactor = 1.0
     _bcegFactor = 1.0
     _windExclusionFactor = 1.0
+    _useDefaultIRPMFactor = false
   }
 
   /**
@@ -47,6 +50,8 @@ class RateFactorUtil {
    */
   static function setAccountModificationFactor(line : BP7Line) : BigDecimal{
     _accountModificationFactor = 1.0
+    if(_useDefaultIRPMFactor)
+      return _accountModificationFactor
     var modifiers = line.Modifiers
     var scheduledRate = modifiers.where( \ m -> m.ScheduleRate)
     var rateFactors = scheduledRate*.RateFactors

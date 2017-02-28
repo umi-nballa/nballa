@@ -33,7 +33,10 @@
                 id="CarrierTypenew"
                 label="displaykey.Web.Policy.PriorPolicy.CarrierType "
                 value="priorPolicy.CarrierType"
-                valueRange="edge.capabilities.helpers.PolicyUtil.getValuesByFilter(policyPeriod)"/>
+                valueRange="edge.capabilities.helpers.PolicyUtil.getValuesByFilter(policyPeriod)">
+                <PostOnChange
+                  onChange="CarrierReq();otherReq();noPriorIns()"/>
+              </RangeCell>
               <Cell
                 editable="true"
                 id="carrierOther"
@@ -64,6 +67,7 @@
                 editable="true"
                 id="ExpirationDate"
                 label="displaykey.Web.Policy.PriorPolicy.ExpirationDate"
+                required="!noPriorIns()"
                 value="priorPolicy.ExpirationDate"/>
               <TypeKeyCell
                 editable="true"

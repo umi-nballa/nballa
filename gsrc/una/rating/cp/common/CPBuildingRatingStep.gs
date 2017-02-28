@@ -1,6 +1,5 @@
 package una.rating.cp.common
 
-uses una.rating.cp.CPRateRoutineExecutor
 uses gw.lob.cp.rating.CPBuildingCovGroup2CostData
 uses gw.lob.common.util.DateRange
 uses gw.financials.PolicyPeriodFXRateCache

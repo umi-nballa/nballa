@@ -1,4 +1,4 @@
-package una.rating.ho.dwellingfire.ratinginfos
+package una.rating.ho.hawaii.ratinginfos
 
 uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.math.BigDecimal
@@ -11,7 +11,7 @@ uses una.utils.DateUtil
  * Time: 1:15 PM
  * To change this template use File | Settings | File Templates.
  */
-class HODPDiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo{
+class HOHIDiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRatingInfo{
   var _claimFreeYears: int as ClaimFreeYears = 0
   var _priorLosses : int as PriorLosses = 0
   var _dwellingOccupancy : DwellingOccupancyType_HOE as DwellingOccupancy

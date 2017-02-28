@@ -39,6 +39,21 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
+  static function isFHFSvisible(tunaresponse:List<String>):boolean
+  {
+    var retval = false
+    tunaresponse.each( \ elt ->
+    {
+      if(elt.indexOf("/")!=-1)
+        {
+          retval = true
+        }
+    }
+    )
+
+    return retval
+  }
+
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
      if(policyType == null){
        return false
@@ -542,8 +557,14 @@ class HODwellingUtil_HOE {
 
        // Set default value based on county
        if(result != null){
-         if(dwelling.FBCWindSpeed_Ext == null){dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())}//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
-         if(dwelling.WindSpeedOfDesign_Ext == null){dwelling.WindSpeedOfDesign_Ext = getAssociatedWindSpeedOfDesign(result.WindSpeedOfDesign.intValue())}
+         if(dwelling.FBCWindSpeed_Ext == null)
+         {
+           dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())
+         }//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
+         if(dwelling.WindSpeedOfDesign_Ext == null)
+         {
+           dwelling.WindSpeedOfDesign_Ext = getAssociatedWindSpeedOfDesign(result.WindSpeedOfDesign.intValue())
+         }
          if(dwelling.WindBorneDebrisRegion_Ext == null){dwelling.WindBorneDebrisRegion_Ext = typekey.WindBorneDebrisRegion_Ext.get(result.WindBorneDebrisRegion.toLowerCase())}
        }
      }
@@ -565,8 +586,8 @@ class HODwellingUtil_HOE {
 
       dwelling.RoofDecking_Ext = null
       dwelling.OpeningProtection_Ext = null
-      dwelling.FBCWindSpeed_Ext = null
-      dwelling.WindSpeedOfDesign_Ext = null
+     // dwelling.FBCWindSpeed_Ext = null
+     // dwelling.WindSpeedOfDesign_Ext = null
       dwelling.WindBorneDebrisRegion_Ext = null
       dwelling.InternalPressureDsgn_Ext = null
       dwelling.SecondaryWaterResis_Ext = null

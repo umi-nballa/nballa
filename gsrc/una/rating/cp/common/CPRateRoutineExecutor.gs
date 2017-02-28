@@ -1,16 +1,16 @@
-package una.rating.cp
+package una.rating.cp.common
 
-uses java.util.Date
 uses java.util.Map
 uses gw.rating.CostData
 uses gw.plugin.productmodel.IReferenceDatePlugin
-uses gw.api.productmodel.CoveragePattern
-uses gw.job.RenewalProcess
 uses una.logging.UnaLoggerCategory
 uses java.lang.Exception
+uses gw.api.productmodel.CoveragePattern
+uses java.util.Date
 uses gw.rating.rtm.NoSuitableRateBookFoundException
 uses gw.rating.flow.util.QueryUtils
 uses gw.api.rating.RatingException
+uses gw.job.RenewalProcess
 uses java.lang.IllegalStateException
 
 class CPRateRoutineExecutor {

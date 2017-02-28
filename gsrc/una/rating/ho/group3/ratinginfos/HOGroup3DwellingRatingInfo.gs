@@ -29,51 +29,33 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _specialComputerCoverageLimit : BigDecimal as SpecialComputerCoverageLimit
   var _increasedPersonalPropertyPremium: BigDecimal as IncreasedPersonalPropertyPremium = 0.0
 
-  construct(dwellingCov : DwellingCov_HOE){
-    super(dwellingCov)
-    _covALimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
-    if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
-      _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
-    }
+  construct(dwelling : Dwelling_HOE){
+    super(dwelling)
+    _covALimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
 
-    if(dwellingCov typeis HODW_SinkholeLoss_HOE_Ext){
-      _county = (dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County != null)? dwellingCov.Dwelling?.HOLocation?.PolicyLocation?.County : ""
+      _county = (dwelling?.HOLocation?.PolicyLocation?.County != null)? dwelling?.HOLocation?.PolicyLocation?.County : ""
       _territoryCodeForSinkholeLossCov = TerritoryCode.toInt()
 
-    }
 
-    if(dwellingCov typeis HODW_OrdinanceCov_HOE){
-      _ordinanceOrLawLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.DisplayValue
-    }
+      _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm.DisplayValue
 
-    if(dwellingCov typeis HODW_LimitedScreenCov_HOE_Ext){
-      _limitedScreenCovLimit = dwellingCov.HODW_LimitedScreenLimit_HOETerm?.Value.intValue()
-      var dwelling = dwellingCov.Dwelling
+      if(dwelling?.HODW_LimitedScreenCov_HOE_ExtExists and dwelling?.HODW_LimitedScreenCov_HOE_Ext?.HasHODW_LimitedScreenLimit_HOETerm){
+        _limitedScreenCovLimit = dwelling?.HODW_LimitedScreenCov_HOE_Ext?.HODW_LimitedScreenLimit_HOETerm?.Value.intValue()
+      }
       _hurricanePercentage = dwelling.HODW_SectionI_Ded_HOE?.HasHODW_Hurricane_Ded_HOETerm? dwelling.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm.DisplayValue : ""
-    }
 
-    if(dwellingCov typeis HODW_FungiCov_HOE){
-      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
-    }
+      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
 
-    if(dwellingCov typeis HODW_SpecificOtherStructure_HOE_Ext){
-      _otherStructuresRentedToOthersLimit = dwellingCov.HODW_IncreasedLimit_HOETerm?.Value
-    }
+      _otherStructuresRentedToOthersLimit = dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
 
-    if (dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
-      _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value
-      _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
-      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
-      _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
-    }
-    if (dwellingCov typeis HODW_BuildingAdditions_HOE_Ext){
-      _buildingAdditionsAndAlterationsLimit = dwellingCov.HODW_BuildAddInc_HOETerm?.Value
-    }
-    if (dwellingCov typeis HODW_OrdinanceCov_HOE){
-      _ordinanceOrLawCovLimit = dwellingCov.HODW_OrdinanceLimit_HOETerm.Value
-    }
-    if(dwellingCov typeis HODW_SpecialComp_HOE_Ext){
-      _specialComputerCoverageLimit = dwellingCov?.HODW_SpecialComputerCoverageLimit_ExtTerm?.Value
-    }
+      _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value
+      _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_OtherStructure_HOETerm?.Value
+      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
+      _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
+
+      _buildingAdditionsAndAlterationsLimit = dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
+      _ordinanceOrLawCovLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm.Value
+      _specialComputerCoverageLimit = dwelling?.HODW_SpecialComp_HOE_Ext?.HODW_SpecialComputerCoverageLimit_ExtTerm?.Value
   }
 }

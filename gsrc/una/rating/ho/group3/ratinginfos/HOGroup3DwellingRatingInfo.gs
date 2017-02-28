@@ -40,7 +40,9 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
       _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.DisplayValue
 
-      _limitedScreenCovLimit = dwelling?.HODW_LimitedScreenCov_HOE_Ext.HODW_LimitedScreenLimit_HOETerm?.Value.intValue()
+      if(dwelling?.HODW_LimitedScreenCov_HOE_ExtExists and dwelling?.HODW_LimitedScreenCov_HOE_Ext?.HasHODW_LimitedScreenLimit_HOETerm){
+        _limitedScreenCovLimit = dwelling?.HODW_LimitedScreenCov_HOE_Ext?.HODW_LimitedScreenLimit_HOETerm?.Value.intValue()
+      }
       _hurricanePercentage = dwelling.HODW_SectionI_Ded_HOE?.HasHODW_Hurricane_Ded_HOETerm? dwelling.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm.DisplayValue : ""
 
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm?.Value.intValue()

@@ -22,39 +22,33 @@ class HOCommonDwellingRatingInfo {
   var _otherStructuresIncreasedLimit: BigDecimal as OtherStructuresIncreasedLimit
   var _isPersonalLiabilityLimitIncreased : boolean as IsPersonalLiabilityLimitIncreased
 
-  construct(lineVersion: HomeownersLine_HOE){
-    if(lineVersion.Dwelling?.HODW_Personal_Property_HOEExists){
-      _personalPropertyLimit = lineVersion.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
-    }
-  }
 
-  construct(dwellingCov : DwellingCov_HOE){
-    _dwellingLimit = ((dwellingCov.Dwelling.HODW_Dwelling_Cov_HOEExists)? dwellingCov.Dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
-    _personalPropertyLimit = (dwellingCov.Dwelling.HODW_Personal_Property_HOEExists)? dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0
-    _policyType = dwellingCov.Dwelling?.HOLine.HOPolicyType
-    if(dwellingCov.Dwelling?.HODW_Personal_Property_HOEExists){
-      _personalPropertyLimit = dwellingCov.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
+  construct(dwelling : Dwelling_HOE ){
+    _dwellingLimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
+    _personalPropertyLimit = (dwelling.HODW_Personal_Property_HOEExists)? dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0
+    _policyType = dwelling?.HOLine.HOPolicyType
+    if(dwelling?.HODW_Personal_Property_HOEExists){
+      _personalPropertyLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
     }
-    if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
-      if(dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){
-        _specifiedAdditionalAmount = dwellingCov.Dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
+    if(dwelling?.HODW_SpecificAddAmt_HOE_ExtExists){
+      if(dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HasHODW_AdditionalAmtInsurance_HOETerm){
+        _specifiedAdditionalAmount = dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
-    if(dwellingCov.Dwelling.HODW_Personal_Property_HOEExists){
-      _personalPropertyIncreasedLimit = dwellingCov.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
+    if(dwelling.HODW_Personal_Property_HOEExists){
+      _personalPropertyIncreasedLimit = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
     }
-    if(dwellingCov.Dwelling.HODW_Other_Structures_HOEExists){
-      _otherStructuresIncreasedLimit = dwellingCov.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
+    if(dwelling.HODW_Other_Structures_HOEExists){
+      _otherStructuresIncreasedLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
     }
 
-    if (dwellingCov typeis HODW_BusinessProperty_HOE_Ext){
-      _businessPropertyIncreasedLimit = (dwellingCov?.HODW_OnPremises_Limit_HOETerm?.LimitDifference?.intValue())
-    }
-    if(dwellingCov.Dwelling.HOLine?.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.LimitDifference > 0)
+    _businessPropertyIncreasedLimit = (dwelling?.HODW_BusinessProperty_HOE_Ext?.HODW_OnPremises_Limit_HOETerm?.LimitDifference?.intValue())
+    if(dwelling.HOLine?.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.LimitDifference > 0)
       _isPersonalLiabilityLimitIncreased = true
 
-    _otherStructuresLimit = ((dwellingCov.Dwelling.HODW_Other_Structures_HOEExists)? dwellingCov.Dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
+    _otherStructuresLimit = ((dwelling.HODW_Other_Structures_HOEExists)? dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
 
-    _territoryCode = (dwellingCov.Dwelling.HOLocation?.OverrideTerritoryCode_Ext)? dwellingCov.Dwelling.HOLocation?.TerritoryCodeOverridden_Ext : dwellingCov.Dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
+    _territoryCode = (dwelling.HOLocation?.OverrideTerritoryCode_Ext)? dwelling.HOLocation?.TerritoryCodeOverridden_Ext : dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
   }
+
 }

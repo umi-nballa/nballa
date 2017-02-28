@@ -34,6 +34,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _consentToRate: boolean as ConsentToRate
   var _maxAgeOfHomeLimit : int as MaxAgeOfHomeLimit
   var _acvLossSettlement : boolean as ACVLossSettlement
+  var _dwellingRatingInfo : HONCDwellingRatingInfo as DwellingRatingInfo
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling

@@ -5,8 +5,13 @@
     <Column
       beanPath="CPBuildingCovGrp2Cost.CPBuildingCov"
       name="coverage"/>
+    <Column
+      beanPath="CPBuildingCovGrp1Cost.CostType"
+      name="costType"/>
   </Columns>
-  <DisplayName><![CDATA[
-displaykey.Web.Financials.CP.CPBuildingCovGrp2Cost(coverage)
+  <DisplayName><![CDATA[if(costType != null)
+  return displaykey.Web.Financials.CP.CPBuildingCovGrp2Cost(coverage) + " : " + costType.DisplayName
+else
+  return displaykey.Web.Financials.CP.CPBuildingCovGrp2Cost(coverage)
   ]]></DisplayName>
 </Entity>

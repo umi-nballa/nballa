@@ -33,8 +33,8 @@ class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
                                     //this chunk filters for tenant report received dates that
                                     //are older than 1 year old or are null.
                                     .or(\ orCriteria -> {
-                                      orCriteria.compare(PolicyPeriod#DateLastInspection_Ext, Equals, null)
-                                      orCriteria.compare(PolicyPeriod#DateLastInspection_Ext, LessThan, currentDate.addYears(-1))
+                                      orCriteria.compare(PolicyPeriod#TenantReportLastReceivedDate_Ext, Equals, null)
+                                      orCriteria.compare(PolicyPeriod#TenantReportLastReceivedDate_Ext, LessThan, currentDate.addYears(-1))
                                     }).select()?.toList()
 
     policyPeriodResults.removeWhere( \ policyPeriod -> policyPeriod.Policy.AllOpenActivities?.hasMatch( \ activity -> activity.ActivityPattern.Code == ACTIVITY_PATTERN)

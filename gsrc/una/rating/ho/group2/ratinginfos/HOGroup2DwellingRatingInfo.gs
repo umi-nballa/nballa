@@ -20,31 +20,22 @@ class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _lossAssessmentLimit: int as LossAssessmentLimit
   var _unitOwnersCoverageASpecialLimitsExists : boolean as UnitOwnersCoverageASpecialLimitsExists = false
 
-  construct(lineVersion: HomeownersLine_HOE) {
-    super(lineVersion)
-  }
 
-  construct(dwellingCov: DwellingCov_HOE){
-    super(dwellingCov)
-    var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
+  construct(dwelling: Dwelling_HOE){
+    super(dwelling)
 
-    if(dwellingCov typeis HODW_FungiCov_HOE){
-      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwellingCov.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
-    }
-    if(dwellingCov.Dwelling.HODW_BuildingAdditions_HOE_ExtExists){
-      _buildingAdditionsAndAlterationsIncreasedLimit = dwellingCov.Dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.Value
-    }
+      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
+      _buildingAdditionsAndAlterationsIncreasedLimit = dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.Value
 
-    if (dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
-      _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value
-      _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
-      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
-      _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
-    }
+    _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm?.Value
+    _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm?.Value
+    _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODW_ExtendSectionCov_HOETerm?.Value
+    _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm?.Value
 
-    if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
-      _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value
-      if(dwellingCov.Dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+
+    if(dwelling.HODW_LossAssessmentCov_HOE_ExtExists){
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value
+      if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }
     }

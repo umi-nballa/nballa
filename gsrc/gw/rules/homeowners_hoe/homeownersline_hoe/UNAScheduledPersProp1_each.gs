@@ -15,13 +15,13 @@ class UNAScheduledPersProp1_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
 
-    if( homeowner.Dwelling.HODW_ScheduledProperty_HOEExists && (
+  /*  if( homeowner.Dwelling.HODW_ScheduledProperty_HOEExists && (
         homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SECONDARYRES
     ||
             homeowner.Dwelling.Occupancy==typekey.DwellingOccupancyType_HOE.TC_SEASONALRES))
 
       return RuleEvaluationResult.execute()
-
+     */
    return RuleEvaluationResult.skip()
   }
 

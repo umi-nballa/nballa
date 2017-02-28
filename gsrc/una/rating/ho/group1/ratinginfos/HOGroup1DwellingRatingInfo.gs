@@ -38,7 +38,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isEQLtdCovConstructionRetrofit : boolean as IsEQLtdConstructionRetrofit = false
 
   construct(dwellingCov: DwellingCov_HOE) {
-    super(dwellingCov)
+    super(dwellingCov.Dwelling)
     var baseState = dwellingCov.Dwelling?.PolicyLine.BaseState
 
     if (dwellingCov typeis HODW_FungiCov_HOE){
@@ -52,10 +52,17 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
     if (dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
       _lossAssessmentPolicyForm = this.PolicyType.Code
-      if (baseState == Jurisdiction.TC_CA and PolicyType == HOPolicyType_HOE.TC_HO3){
-        if (dwellingCov.Dwelling?.HODW_Dwelling_Cov_HOEExists){
-          if (dwellingCov.Dwelling?.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value)
-            _lossAssessmentPolicyForm += "_ExecCov"
+      if (baseState == Jurisdiction.TC_CA){
+        if(PolicyType == HOPolicyType_HOE.TC_HO3){
+          if (dwellingCov.Dwelling?.HODW_Dwelling_Cov_HOEExists){
+            if (dwellingCov.Dwelling?.HODW_Dwelling_Cov_HOE.HODW_ExecutiveCov_HOE_ExtTerm.Value)
+              _lossAssessmentPolicyForm += "_ExecCov"
+          }
+        }
+        if(PolicyType == HOPolicyType_HOE.TC_HO6){
+           if(dwellingCov.Dwelling?.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+              _lossAssessmentPolicyForm += "_SpecCov"
+           }
         }
       }
       _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value.intValue()

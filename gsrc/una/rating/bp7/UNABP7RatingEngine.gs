@@ -22,6 +22,9 @@ uses java.math.BigDecimal
 uses java.util.Map
 uses gw.lob.bp7.rating.BP7TaxCostData_Ext
 uses una.rating.bp7.common.BP7RateRoutineNames
+uses gw.rating.rtm.query.RateBookQueryFilter
+uses gw.job.RenewalProcess
+uses gw.rating.rtm.query.RatingQueryFacade
 
 /**
 *  Class which extends the bp7 abstract rating engine and implements the rating for all the available BP7 coverages
@@ -42,6 +45,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     _executor = new BP7RateRoutineExecutor(ReferenceDatePlugin, PolicyLine, minimumRatingLevel)
     _buildingForLineCov = RateFactorUtil.getFirstBuildingInPrimaryLocation(PolicyLine)
     BP7RatingInfo = new BP7RatingInfo(line)
+    TotalAnnualPremiumBeforeActualIRPM = 0.0
     _logger.info(line.BaseState.Code + " BOP Rating Engine initialized")
   }
 
@@ -65,26 +69,43 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "DataCmprmiseRspnseExpns_EXT" :
       case "BP7DataCompromiseDfnseandLiabCov_EXT" :
       case "BP7EmploymentPracticesLiabilityCov_EXT" :
-          addCost(step.rate(lineCov, sliceToRate))
+          addCostToDB(step.rate(lineCov, sliceToRate))
           break
       case "BP7BusinessLiability" :
-        if(lineRatingInfo.MedicalExpensesPerPersonLimit == 10000)
-          addCost(step.rateBusinessLiabilityMedicalPaymentIncrease(lineCov, sliceToRate))
+        if(lineRatingInfo.MedicalExpensesPerPersonLimit == 10000){
+          addCostToDB(step.rateBusinessLiabilityMedicalPaymentIncrease(lineCov, sliceToRate))
+        }
         break
       case "BP7ForgeryAlteration" :
-        addCost(step.rateForgeryOrAlterationCoverage(lineCov, sliceToRate))
+        addCostToDB(step.rateForgeryOrAlterationCoverage(lineCov, sliceToRate))
         break
       case "BP7OrdinanceOrLawCov_EXT" :
-        addCosts(step.rateOrdinanceOrLawCoverage(lineCov, sliceToRate))
+        addCostToDB(step.rateOrdinanceOrLawCoverage(lineCov, sliceToRate))
         break
       case "BP7AddlInsdMortgageeAsigneeReceiverLine_EXT" :
       case "BP7AddlInsdOwnersLandLeasedToInsuredLine_EXT" :
       case "BP7AddlInsdCoOwnerInsdPremisesLine_EXT" :
       case "BP7AddlInsdControllingInterest" :
-        addCost(step.rateNonPremiumAdditionalInsuredCoverages(lineCov, sliceToRate))
+        addCostToDB(step.rateNonPremiumAdditionalInsuredCoverages(lineCov, sliceToRate))
     }
   }
 
+  /**
+  * function adds the cost to DB
+   */
+  private function addCostToDB(cost : CostData<Cost, PolicyLine>){
+    if(AddCostToDB)
+      addCost(cost)
+    else
+      TotalAnnualPremiumBeforeActualIRPM += cost.ActualTermAmount.roundDollar()
+  }
+
+  private function addCostToDB(costs : List<CostData<Cost, PolicyLine>>){
+    if(AddCostToDB)
+      addCosts(costs)
+    else
+      TotalAnnualPremiumBeforeActualIRPM += costs.sum( \ elt -> elt.ActualTermAmount).roundDollar()
+  }
   /**
   *  function which rates the location coverages
    */
@@ -96,13 +117,13 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "BP7AddlInsdDesignatedPersonOrgLocation_EXT":
       case "BP7AddlInsdManagersLessorsPremises" :
       case "BP7AddlInsdLessorsLeasedEquipmt" :
-        addCost(step.rate(locationCov, sliceToRate))
+        addCostToDB(step.rate(locationCov, sliceToRate))
         break
       case "BP7AddlInsdControllingInterestLocation_EXT" :
       case "BP7AddlInsdOwnersLandLeasedToInsuredLocation_EXT" :
       case "BP7AddlInsdMortgageeAssigneeReceiver" :
       case "BP7AddlInsdCoOwnerInsdPremises" :
-        addCost(step.rateNonPremiumAdditionalInsuredCoverages(locationCov, sliceToRate))
+        addCostToDB(step.rateNonPremiumAdditionalInsuredCoverages(locationCov, sliceToRate))
     }
   }
 
@@ -133,16 +154,16 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     var buildingRatingInfo = new BP7BuildingRatingInfo(building)
     if (building.BP7StructureExists) {
       var bp7StructureRatingInfo = new BP7StructureRatingInfo(building.BP7Structure)
-      addCost(step.rateBP7Structure(building.BP7Structure, sliceToRate, bp7StructureRatingInfo))
+      addCostToDB(step.rateBP7Structure(building.BP7Structure, sliceToRate, bp7StructureRatingInfo))
     }
     if(building.BP7BuildingMoneySecurities_EXTExists)
-      addCost(step.rate(building.BP7BuildingMoneySecurities_EXT, sliceToRate, buildingRatingInfo))
+      addCostToDB(step.rate(building.BP7BuildingMoneySecurities_EXT, sliceToRate, buildingRatingInfo))
     if(building.BP7LocationOutdoorSigns_EXTExists)
-      addCost(step.rate(building.BP7LocationOutdoorSigns_EXT, sliceToRate, buildingRatingInfo))
+      addCostToDB(step.rate(building.BP7LocationOutdoorSigns_EXT, sliceToRate, buildingRatingInfo))
     if(building.BP7SinkholeLossCoverage_EXTExists)
-      addCost(step.rate(building.BP7SinkholeLossCoverage_EXT, sliceToRate, buildingRatingInfo))
+      addCostToDB(step.rate(building.BP7SinkholeLossCoverage_EXT, sliceToRate, buildingRatingInfo))
     if(building.BP7DamagePremisisRentedToYou_EXTExists)
-      addCost(step.rate(building.BP7DamagePremisisRentedToYou_EXT, sliceToRate, buildingRatingInfo))
+      addCostToDB(step.rate(building.BP7DamagePremisisRentedToYou_EXT, sliceToRate, buildingRatingInfo))
   }
 
   /**
@@ -155,43 +176,46 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){
       var businessPersonalPropertyRatingInfo = new BP7BusinessPersonalPropertyRatingInfo(classification?.BP7ClassificationBusinessPersonalProperty)
-      addCost(step.rateBP7BusinessPersonalProperty(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate, businessPersonalPropertyRatingInfo))
+      addCostToDB(step.rateBP7BusinessPersonalProperty(classification.BP7ClassificationBusinessPersonalProperty, sliceToRate, businessPersonalPropertyRatingInfo))
     }
     if (classification.BP7SpoilgCovExists) {
-      addCost(step.rate(classification.BP7SpoilgCov, sliceToRate))
+      addCostToDB(step.rate(classification.BP7SpoilgCov, sliceToRate))
     }
     if(classification.BP7ClassificationAccountsReceivableExists){
-      addCost(step.rate(classification.BP7ClassificationAccountsReceivable, sliceToRate))
+      addCostToDB(step.rate(classification.BP7ClassificationAccountsReceivable, sliceToRate))
     }
     if(classification.BP7ClassificationValuablePapersExists){
-      addCost(step.rate(classification.BP7ClassificationValuablePapers, sliceToRate))
+      addCostToDB(step.rate(classification.BP7ClassificationValuablePapers, sliceToRate))
     }
     if(classification.BP7CondoCommlUnitOwnersOptionalCovsLossAssessExists){
-      addCost(step.rate(classification.BP7CondoCommlUnitOwnersOptionalCovsLossAssess, sliceToRate))
+      addCostToDB(step.rate(classification.BP7CondoCommlUnitOwnersOptionalCovsLossAssess, sliceToRate))
     }
     if(classification.BP7CondoCommlUnitOwnersOptionalCovMiscRealPropExists){
-      addCost(step.rate(classification.BP7CondoCommlUnitOwnersOptionalCovMiscRealProp, sliceToRate))
+      addCostToDB(step.rate(classification.BP7CondoCommlUnitOwnersOptionalCovMiscRealProp, sliceToRate))
     }
     if(classification.BP7ClassificationBusinessIncomeFromDependentPropsExists){
-      addCost(step.rate(classification.BP7ClassificationBusinessIncomeFromDependentProps, sliceToRate))
+      addCostToDB(step.rate(classification.BP7ClassificationBusinessIncomeFromDependentProps, sliceToRate))
     }
     if(classification.BP7BarbersBeauticiansProfessionalLiability_EXTExists){
-      addCost(step.rate(classification.BP7BarbersBeauticiansProfessionalLiability_EXT, sliceToRate))
+      addCostToDB(step.rate(classification.BP7BarbersBeauticiansProfessionalLiability_EXT, sliceToRate))
     }
     if(classification.BP7FuneralDirectorsProflLiab_EXTExists){
-      addCost(step.rate(classification.BP7FuneralDirectorsProflLiab_EXT, sliceToRate))
+      addCostToDB(step.rate(classification.BP7FuneralDirectorsProflLiab_EXT, sliceToRate))
     }
     if(classification.BP7OptProfLiabCov_EXTExists){
-      addCost(step.rate(classification.BP7OptProfLiabCov_EXT, sliceToRate))
+      addCostToDB(step.rate(classification.BP7OptProfLiabCov_EXT, sliceToRate))
     }
     if(classification.BP7HearingAidSvcsProfLiab_EXTExists){
-      addCost(step.rate(classification.BP7HearingAidSvcsProfLiab_EXT, sliceToRate))
+      addCostToDB(step.rate(classification.BP7HearingAidSvcsProfLiab_EXT, sliceToRate))
     }
   }
 
+  /**
+   * function which rates the terrorism coverage
+   */
   override function rateTerrorismCoverage(lineCov: BP7CapLossesFromCertfdActsTerrsm, sliceToRate: DateRange){
     var step = new BP7LineStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, null)
-    addCost(step.rateTerrorismCoverageRateRoutine(lineCov, sliceToRate, totalCostWithoutOptionalCoverages()))
+    addCostToDB(step.rateTerrorismCoverageRateRoutine(lineCov, sliceToRate, totalCostWithoutOptionalCoverages()))
   }
 
   /**
@@ -233,15 +257,47 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
   }
 
   override function rateManualPremiumAdjustment(sliceRange : DateRange){
-
+    /*var totalPremium : BigDecimal = 0.0
+    if(AddCostToDB){
+      totalPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
+    } else{
+      totalPremium = TotalAnnualPremiumBeforeActualIRPM
+    }
+    var minimumPremium = 0
+    var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
+                                      {: Jurisdiction = PolicyLine.BaseState,
+                                        : MinimumRatingLevel = MinimumRatingLevel,
+                                        : RenewalJob = (PolicyLine.Branch.JobProcess typeis RenewalProcess)}
+    var params = {"Y"}
+    minimumPremium = new RatingQueryFacade().getFactor(filter, "bp7_minimum_premium_table", params).Factor
+    if (minimumPremium > totalPremium){
+      if(_logger.isDebugEnabled())
+        _logger.debug("Entering :: rateManualPremiumAdjustment:", this.IntrinsicType)
+      var premiumAdjustment = (minimumPremium - totalPremium)
+      var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+          TC_POLICYLINE -> PolicyLine,
+          TC_MINIMUMPREMIUMADJUSTMENT_EXT -> premiumAdjustment
+      }
+      var costData = new BP7LineCovCostData(coverage, sliceToRate, costType)
+          HOCreateCostDataUtil.createCostDataForHOLineCosts(sliceRange, BP7RateRoutineNames.BP7_MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE, HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
+      if (costData != null)
+        addCost(costData)
+      if(_logger.isDebugEnabled())
+        _logger.debug("Minimum Premium Adjustment added Successfully", this.IntrinsicType)
+    }  */
   }
 
   function hasRateForClassGroup(classification: BP7Classification): boolean {
     return not {"17", "19", "20", "21"}.contains(classification.ClassificationClassGroup)
   }
-
+  /**
+  * function that returns the total cost to calculate the terrorism coverage
+   */
   private function totalCostWithoutOptionalCoverages() : BigDecimal{
     var costDatasForTerrorism : List<CostData> = {}
+    if(!AddCostToDB)
+      return TotalAnnualPremiumBeforeActualIRPM
     for(costData in CostDatas){
       if(costData typeis BP7LineCovCostData){
         var cost = costData.getPopulatedCost(PolicyLine)

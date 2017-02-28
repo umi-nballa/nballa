@@ -39,6 +39,21 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
+  static function isFHFSvisible(tunaresponse:List<String>):boolean
+  {
+    var retval = false
+    tunaresponse.each( \ elt ->
+    {
+      if(elt.indexOf("/")!=-1)
+        {
+          retval = true
+        }
+    }
+    )
+
+    return retval
+  }
+
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
      if(policyType == null){
        return false
@@ -250,11 +265,21 @@ class HODwellingUtil_HOE {
     return false
   }
 
-  static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
+  /*static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
     if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
        return typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys
     }
      return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
+  }*/
+
+  static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
+    var tempList = new ArrayList<typekey.ConstructionType_HOE>()
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
+      tempList.addAll(typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys)
+      return tempList.sortBy(\typeCodeName -> typeCodeName.DisplayName)
+    }
+    tempList.addAll(typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys)
+    return tempList.sortBy(\typeCodeName -> typeCodeName.DisplayName)
   }
 
   static function filterTunaConstructionTypeStateSpecific(dwelling : Dwelling_HOE, constype:typekey.ConstructionType_HOE[]) : List<typekey.ConstructionType_HOE> {
@@ -532,8 +557,14 @@ class HODwellingUtil_HOE {
 
        // Set default value based on county
        if(result != null){
-         if(dwelling.FBCWindSpeed_Ext == null){dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())}//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
-         if(dwelling.WindSpeedOfDesign_Ext == null){dwelling.WindSpeedOfDesign_Ext = getAssociatedWindSpeedOfDesign(result.WindSpeedOfDesign.intValue())}
+         if(dwelling.FBCWindSpeed_Ext == null)
+         {
+           dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())
+         }//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
+         if(dwelling.WindSpeedOfDesign_Ext == null)
+         {
+           dwelling.WindSpeedOfDesign_Ext = getAssociatedWindSpeedOfDesign(result.WindSpeedOfDesign.intValue())
+         }
          if(dwelling.WindBorneDebrisRegion_Ext == null){dwelling.WindBorneDebrisRegion_Ext = typekey.WindBorneDebrisRegion_Ext.get(result.WindBorneDebrisRegion.toLowerCase())}
        }
      }
@@ -555,8 +586,8 @@ class HODwellingUtil_HOE {
 
       dwelling.RoofDecking_Ext = null
       dwelling.OpeningProtection_Ext = null
-      dwelling.FBCWindSpeed_Ext = null
-      dwelling.WindSpeedOfDesign_Ext = null
+     // dwelling.FBCWindSpeed_Ext = null
+     // dwelling.WindSpeedOfDesign_Ext = null
       dwelling.WindBorneDebrisRegion_Ext = null
       dwelling.InternalPressureDsgn_Ext = null
       dwelling.SecondaryWaterResis_Ext = null
@@ -972,9 +1003,12 @@ class HODwellingUtil_HOE {
     var values = ResidenceType_HOE.getTypeKeys(false)
     values.each( \ elt -> {
       if(elt.Categories.contains(dwelling.HOPolicyType)) {
-        //'Condo' should be available in the ResidenceType_HOE typelist For DP/LPP: Allow in FL OR NC ONLY
-        if(elt.Code == ResidenceType_HOE.TC_CONDO && ((dwelling.HOPolicyType == TC_DP3_Ext || dwelling.HOPolicyType == TC_LPP_Ext) && (dwelling.PolicyPeriod.BaseState==TC_NC || dwelling.PolicyPeriod.BaseState==TC_FL))){
-          residenceType.add(elt)
+        //'Condo' should be available in the ResidenceType_HOE typelist if is HO4 or HO6 or For DP/LPP: Allow in FL OR NC ONLY
+        if(elt.Code == ResidenceType_HOE.TC_CONDO){
+         if(dwelling.HOPolicyType == TC_HO4 || dwelling.HOPolicyType == TC_HO6 ||
+             ((dwelling.HOPolicyType == TC_DP3_Ext || dwelling.HOPolicyType == TC_LPP_Ext) && (dwelling.PolicyPeriod.BaseState==TC_NC || dwelling.PolicyPeriod.BaseState==TC_FL))){
+            residenceType.add(elt)
+          }
         }else if(elt.Code != ResidenceType_HOE.TC_CONDO){
           residenceType.add(elt)
         }

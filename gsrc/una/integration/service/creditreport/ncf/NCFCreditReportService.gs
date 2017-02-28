@@ -48,7 +48,6 @@ class NCFCreditReportService implements ICreditReportService {
          
     // Check for a cached credit score
     var creditReportResponse = _creditReportDataMgr.getRecordFromLocalDataStore(creditReportRequest)
-    
     // Nothing stored, eligible or available from datastore
     if(creditReportResponse == null) {
       try {
@@ -68,7 +67,6 @@ class NCFCreditReportService implements ICreditReportService {
             //var alertScoring = ncfReport.Report.AlertsScoring.Scoring
             var subject = ncfReport.Report.SearchDataset.Subjects.firstWhere(\ s -> s.Subject.Type == SearchDataset_Subjects_Subject_Type.Primary)
             var address = ncfReport.Report.SearchDataset.Addresses.Address.firstWhere(\ s -> s.Ref == "1")
-
             /**
              * Reported current address from vendor dataset may need to be persisted 
              * for clarification purposes by Reps with the customer. For this purpose,
@@ -124,6 +122,13 @@ class NCFCreditReportService implements ICreditReportService {
                 .withScoreDate(ncfReport.Admin.DateRequestCompleted as java.util.Date)
                 .withReferenceNumber(ncfReport.Admin.ProductReference)
                 .withAddressDiscrepancyInd( isOrderCurrentAddressDiffThanVendors )
+                .withPncAccount(ncfReport.Admin.PncAccount)
+                .withProductReference(ncfReport.Admin.ProductReference)
+                .withQuoteback(ncfReport.Admin.Quoteback)
+                .withDateRequestOrdered(ncfReport.Admin.DateRequestOrdered)
+                .withDateRequestCompleted(ncfReport.Admin.DateRequestCompleted)
+                .withStatus(ncfReport.Admin.Status.toString())
+                .withReportCode(ncfReport.Admin.ReportCode)
                 .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
                 .create()
           }

@@ -66,6 +66,10 @@ class CPBuildingRatingInfo {
   var _ordOrLawCovCLimit : BigDecimal as OrdOrLawCovCLimit
   var _ordOrLawCovBCCombinedLimit : BigDecimal as OrdOrLawCovBCCombinedLimit
   var _ordOrLawCovABCCombinedLimit : BigDecimal as OrdOrLawCovABCCombinedLimit
+  //bceg factor
+  //TODO : Update the bceg terriory name
+  var _bcegFactor : String as BCEGFactor
+  var _bcegTerritory : String as BCEGTerritory = "Inland (4)"
 
   construct(building : CPBuilding){
     _building = building
@@ -80,6 +84,7 @@ class CPBuildingRatingInfo {
     _inflationGuard = building.CPLocation.CPLine.Inflationguard?.DisplayName
     _isSprinklerAvailable = building?.AutomaticFireSuppress
     _actualCashValueRoofEndorsement = building.CPRoofACVEndorsement_EXTExists
+    _bcegFactor = building?.OverrideBCEG_Ext? building.BCEGOverridden_Ext : building.BCEG_Ext
 
     if(building.CPLocation.CPLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT){
       _hurricanePercentage = building.CPLocation.CPLine.hurricanepercded?.DisplayName

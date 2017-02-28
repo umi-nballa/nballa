@@ -20,10 +20,13 @@ class HPXPrimaryNamedInsuredMapper {
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = entityType
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = entityType.Description
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYPRINAMEDINSURED
-    var creditScores = creditScoreMapper.createCreditScoreInfo(policyContactRole.CreditReportsExt)
     var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
-    for (score in creditScores) {
-      principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+    if(policyContactRole.CreditReportsExt != null and policyContactRole.CreditReportsExt.length > 0)   {
+      var creditScores = creditScoreMapper.createCreditScoreInfo(policyContactRole.CreditReportsExt)
+
+      for (score in creditScores) {
+        principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+      }
     }
     insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
     return insuredOrPrincipal

@@ -178,9 +178,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
      rateBuildingCodeEffectivenessGradingCredit(dateRange)
 
-
      rateLossHistoryCredit(dateRange)
-
 
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
         _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 ||
@@ -206,8 +204,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateGatedCommunityDiscount(dateRange)
     }
 
+    if(PolicyLine.HOPolicyType != HOPolicyType_HOE.TC_HO4 and !dwelling.WHurricaneHailExclusion_Ext)
+      rateWindStormMitigationCredit(dateRange)
+
     rateHigherAllPerilDeductible(dateRange)
 
+    rateMaximumDiscountAdjustment(dateRange)
 
     updateTotalBasePremium()
   }
@@ -284,6 +286,21 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     }
     _logger.debug("Gated Community Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the windstorm mitigation credit
+   */
+  function rateWindStormMitigationCredit(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWindStormMitigationCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WINDSTORM_MITIGATION_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_WINDSTORMMITIGATIONCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.WindstormMitigationCredit = costData?.ActualTermAmount
+    if (costData != null){
+      addCost(costData)
+    }
+    _logger.debug("Windstorm Mitigation Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -775,8 +792,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Adjusting the total discount if it exceeds the maximum discount
    */
   function rateMaximumDiscountAdjustment(dateRange: DateRange) {
-    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.AffinityDiscount +
-        _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.ConcreteTileRoofDiscount
+    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.AffinityDiscount + _hoRatingInfo.NamedStormDeductibleCredit +
+                              _hoRatingInfo.WindstormMitigationCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount
     if (_hoRatingInfo.AgeOfHomeDiscount < 0)
       totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
     if (_hoRatingInfo.LossHistoryRatingPlan < 0)
@@ -789,9 +806,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-  _hoRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount +
-  _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.DiscountAdjustment +
-  _hoRatingInfo.AffinityDiscount
+    _hoRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.TownhouseOrRowhouseSurcharge + _hoRatingInfo.ProtectiveDevicesDiscount +
+                                     _hoRatingInfo.AffinityDiscount + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.NamedStormDeductibleCredit + _hoRatingInfo.LossHistoryRatingPlan +
+                                     _hoRatingInfo.BuildingCodeEffectivenessGradingCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.WindstormMitigationCredit +
+                                     _hoRatingInfo.DiscountAdjustment
   }
-
 }

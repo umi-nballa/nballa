@@ -136,6 +136,8 @@ class CluePropertyGateway implements CluePropertyInterface {
             clueReportExt.CompleteDate = clueReport.Admin.DateRequestCompleted
             clueReportExt.ProcessingStatus = clueReport.Admin.Status.toString()
             clueReportExt.NodeLocation = clueReport.Admin.ReportCode
+            clueReportExt.RiskClaims = totalRiskClaims.toString()
+            clueReportExt.SubjectClaims = totalSubjectClaims.toString()
             for (cHistory in cHistories) {
               var claims = cHistory.Claim
               var cHistoryType = cHistory.Type
@@ -288,9 +290,12 @@ class CluePropertyGateway implements CluePropertyInterface {
 		priorLoss.City = phAddress.City
 		priorLoss.State = phAddress.State
 		priorLoss.Zip = phAddress.Postalcode
-		priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator as String
-		priorLoss.PhoneNumber = policyHolder.Telephone
-
+		priorLoss.SearchMatchIndicator = phAddress.SearchMatchIndicator.Code as String
+    priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator =   phAddress.Type.Code.contains("Risk") && phAddress.FsiStreet1.Code == typekey.ClueMatchIndicator_Ext.TC_MATCH && phAddress.FsiPostalcode.Code == typekey.ClueMatchIndicator_Ext.TC_MATCH  ? typekey.ClueMatchIndicator_Ext.TC_RISK :
+                                                                          phAddress.Type.Code.contains("Mail") && phAddress.FsiStreet1.Code == typekey.ClueMatchIndicator_Ext.TC_MATCH && phAddress.FsiPostalcode.Code == typekey.ClueMatchIndicator_Ext.TC_MATCH ? typekey.ClueMatchIndicator_Ext.TC_MAILING :
+                                                                          phAddress.Type.Code.contains("Former") && phAddress.FsiStreet1.Code == typekey.ClueMatchIndicator_Ext.TC_MATCH && phAddress.FsiPostalcode.Code == typekey.ClueMatchIndicator_Ext.TC_MATCH ? typekey.ClueMatchIndicator_Ext.TC_FORMER :  typekey.ClueMatchIndicator_Ext.TC_NOMATCH
+		priorLoss.CluePropertyMatch.InsuredMatchIndicator = typekey.ClueMatchIndicator_Ext.TC_MATCH
+    priorLoss.PhoneNumber = policyHolder.Telephone
 		priorLoss.PolicyHolder.FirstName = policyHolder.Name.First
 		priorLoss.PolicyHolder.LastName = policyHolder.Name.Last
 		priorLoss.PolicyHolder.PrimaryAddress.AddressLine1 = priorLoss.Address
@@ -308,6 +313,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 		var claimant = claim.Subject.firstWhere(\c -> c.Classification == claimantType)
 		priorLoss.ClaimIssuer.FirstName = claimant.Name.First
 		priorLoss.ClaimIssuer.LastName = claimant.Name.Last
+    priorLoss.CluePropertyMatch.ClaimantMatchIndicator = priorLoss.PolicyHolder.FirstName == priorLoss.ClaimIssuer.FirstName && priorLoss.PolicyHolder.LastName == priorLoss.ClaimIssuer.LastName ? typekey.ClueMatchIndicator_Ext.TC_MATCH : typekey.ClueMatchIndicator_Ext.TC_NOMATCH
 		priorLoss.ClaimIssuer.HomePhone = claimant.Telephone
 		priorLoss.ClaimIssuer.SSNOfficialID = claimant.Ssn != null ? String.valueOf(claimant.Ssn).replaceFirst("(\\d{3})(\\d{2})(\\d+)", "$1-$2-$3") : ""
     if(claimant.Gender != null && claimant.Gender.name() != "") {

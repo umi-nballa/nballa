@@ -31,7 +31,7 @@ class HPXClueReportMapper {
     claimElement.ClaimID = priorLoss.ID != null ? priorLoss.ID : ""
     claimElement.addChild(new XmlElement("ClueSearchInfo", createClueSearchInfo(priorLoss)))
     claimElement.addChild(new XmlElement("ClueHeader", createClueHeader(priorLoss.ClueReport)))
-    claimElement.ClaimDate = priorLoss.ClaimDate != null ? new XmlDateTime(sourceFormat.parse(priorLoss.ClaimDate).toCalendar(), true) : new XmlDateTime()
+    claimElement.ClaimDate = priorLoss.ClaimDate != null ? new XmlDate(sourceFormat.parse(priorLoss.ClaimDate)) : new XmlDate()
     claimElement.ClaimAge = priorLoss.ClaimAge != null ? priorLoss.ClaimAge : ""
     claimElement.ClaimNumber = priorLoss.ClaimNum != null ? priorLoss.ClaimNum : ""
     claimElement.addChild(new XmlElement("PolicySummary", policyMapper.createPriorLossPolicySummaryInfo(priorLoss)))
@@ -79,8 +79,12 @@ class HPXClueReportMapper {
     mortgageInformationType.LoanNumber = priorLoss.mortgageNum != null ? priorLoss.mortgageNum : ""
     mortgageInformationType.MortgageCompanyName = priorLoss.mortgageComp != null ? priorLoss.mortgageComp : ""
     clueSearchInfoType.addChild(new XmlElement("MortgageInformation", mortgageInformationType))
-    clueSearchInfoType.addChild(new XmlElement("ClueSearchSubject", createClueSearchSubject(priorLoss.ClueReport.Subject1)))
-    clueSearchInfoType.addChild(new XmlElement("ClueSearchSubject", createClueSearchSubject(priorLoss.ClueReport.Subject2)))
+    if(priorLoss.ClueReport.Subject1 != null) {
+      clueSearchInfoType.addChild(new XmlElement("ClueSearchSubject", createClueSearchSubject(priorLoss.ClueReport.Subject1)))
+    }
+    if(priorLoss.ClueReport.Subject2 != null) {
+      clueSearchInfoType.addChild(new XmlElement("ClueSearchSubject", createClueSearchSubject(priorLoss.ClueReport.Subject2)))
+    }
     clueSearchInfoType.addChild(new XmlElement("ClueSearchAddress", createClueSearchAddress(priorLoss.ClueReport)))
     clueSearchInfoType.addChild(new XmlElement("PolicySummary", policyMapper.createCluePolicySummaryInfo(priorLoss.ClueReport)))
     return clueSearchInfoType
@@ -180,7 +184,7 @@ class HPXClueReportMapper {
     claimantType.FullName = person.DisplayName != null ? person.DisplayName : ""
     claimantType.SSN = person.SSNOfficialID != null ? person.SSNOfficialID : ""
     claimantType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
-    claimantType.ClueMatchIndicator = priorLoss.CluePropertyMatch.ClaimantMatchIndicator != null ?  priorLoss.CluePropertyMatch.ClaimantMatchIndicator.Code : ""
+    claimantType.ClueMatchIndicator = priorLoss.CluePropertyMatch.ClaimantMatchIndicator != null ?  priorLoss.CluePropertyMatch.ClaimantMatchIndicator.Code : typekey.ClueMatchIndicator_Ext.TC_NOMATCH
     physicalAddressType.AddressLine1 = person.PrimaryAddress.AddressLine1 != null ? person.PrimaryAddress.AddressLine1 : ""
     physicalAddressType.City = person.PrimaryAddress.City != null ? person.PrimaryAddress.City : ""
     physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State.Code : ""
@@ -202,7 +206,7 @@ class HPXClueReportMapper {
     lossLocationType.City = priorLoss.City != null ? priorLoss.City : ""
     lossLocationType.State = priorLoss.State != null ? priorLoss.State : ""
     lossLocationType.PostalCode = priorLoss.Zip != null ? priorLoss.Zip : ""
-    lossLocationType.ClueMatchIndicator = priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator != null ? priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator.Code : ""
+    lossLocationType.ClueMatchIndicator = priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator  != null ?  priorLoss.CluePropertyMatch.LocationOfLossMatchIndicator.Code : typekey.ClueMatchIndicator_Ext.TC_NOMATCH
     return lossLocationType
   }
 

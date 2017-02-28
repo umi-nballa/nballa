@@ -19,7 +19,7 @@ class HPXAddlIntLienHolderCompositionUnitMapper extends HPXCompositionUnitMapper
   override function getRecipients(policyPeriod: PolicyPeriod, recipientMapper : HPXRecipientMapper): List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {
     var recipients = new List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType>()
     var additionalInterests = recipientMapper.getAdditionalInterests(policyPeriod)
-    return createAdditionalInterestRecipients(additionalInterests.where( \ elt -> elt.AdditionalInterestType == typekey.AdditionalInterestType.TC_LIEN), recipientMapper)
+    return createAdditionalInterestRecipients(additionalInterests?.where( \ elt -> elt.AdditionalInterestType == typekey.AdditionalInterestType.TC_LIEN), recipientMapper)
   }
 
   private function createAdditionalInterestRecipients(additionalInterests : AddlInterestDetail [], recipientMapper : HPXRecipientMapper) : List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {

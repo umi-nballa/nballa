@@ -233,8 +233,10 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
    if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
-    } else if(_line.BaseState == typekey.Jurisdiction.TC_HI){
+    } else if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_line.Dwelling?.HOPolicyType)){
+     if(_line.BaseState == typekey.Jurisdiction.TC_HI)
       return new UNAHOHIRatingEngine (_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     } else {
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)

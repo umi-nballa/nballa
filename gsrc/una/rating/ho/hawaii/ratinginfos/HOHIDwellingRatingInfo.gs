@@ -16,7 +16,7 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   construct(dwelling: Dwelling_HOE){
     super(dwelling)
 
-    PersonalPropertyIncreasedLimit = dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value
+    PersonalPropertyIncreasedLimit = dwelling?.DPDW_Personal_Property_HOE?.DPDW_PersonalPropertyLimit_HOETerm?.Value
 
   }
 

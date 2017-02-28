@@ -57,6 +57,8 @@ enhancement PolicyChangeInfoEnhancement : PolicyChangeInfo
     // PC-BC Integration: Mapping Producer Info
     this.UnaProducerCodeOfRecordId = period.ProducerCodeOfRecord.PublicID
     this.UnaProducerCodeOfServiceId = period.Policy.ProducerCodeOfService.PublicID
+    // PC-BC Integration: Adding Bankruptcy Flag
+    this.BankruptcyFlag = period.bankruptcy_Ext
   }
 
 

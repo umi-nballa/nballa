@@ -24,8 +24,8 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   construct(dwelling : Dwelling_HOE){
       super(dwelling)
 
-      _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwelling.HODW_CC_EFT_HOE_Ext.HODW_CC_EFTLimit_HOETerm.Value
-      _waterBackupSumpOverflowCovLimit = dwelling.HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext.HODW_LimWaterbackup_Limit_HOETerm.Value
+      _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwelling?.HODW_CC_EFT_HOE_Ext?.HODW_CC_EFTLimit_HOETerm?.Value
+      _waterBackupSumpOverflowCovLimit = dwelling?.HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext?.HODW_LimWaterbackup_Limit_HOETerm?.Value
       _personalPropertyOffResidence = dwelling?.HODW_PersonalPropertyOffResidence_HOE?.HOLI_PPOtherResidence_Limit_HOETerm?.Value
     if (dwelling?.HODW_SpecialLimitsPP_HOE_ExtExists){
       if (dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HasHODW_JewelryWatchesFursLimit_HOETerm){
@@ -37,7 +37,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
       _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
 
-      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value
       if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }

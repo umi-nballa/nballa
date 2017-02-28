@@ -98,9 +98,11 @@ public class CreditReportUtil {
                  .withAddresscity(address.City)
                  .withAddressState(address.State as java.lang.String )
                  .withAddressZip(address.PostalCode)
+                 .withSocialSecurityNumber(period.PrimaryNamedInsured.ContactDenorm.SSNOfficialID.replace("-", ""))
                  .withCacheExpireDate(cacheExpireDate)
                  .withPublicId(publicId)
                  .withDateOfBirth(period.PrimaryNamedInsured.DateOfBirth)
+                 .withGender((period.PrimaryNamedInsured.ContactDenorm as Person).Gender.Code)
                  .withCreditReportService(creditReportParameters.CreditReportService)
                  .create()
         }

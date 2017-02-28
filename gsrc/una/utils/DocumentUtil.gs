@@ -19,11 +19,12 @@ uses java.lang.IllegalArgumentException
 class DocumentUtil {
   final static var LOGGER = UnaLoggerCategory.INTEGRATION
 
+  @Throws(java.lang.IllegalArgumentException, "If DocumentDTO, File, OnBaseDocumentType, or policy and account are null, will throw IllegalArgumentException")
   static function createDocument(docDTO: DocumentDTO): Document {
 
     var doc: Document = null
 
-    if(docDTO == null || docDTO.Policy == null || docDTO.File == null || docDTO.OnBaseDocumentType == null) {
+    if(docDTO == null || (docDTO.Policy == null && docDTO.Account == null) || docDTO.File == null || docDTO.OnBaseDocumentType == null) {
        throw new IllegalArgumentException("Not enough information was provided to create document.")
     }
 
@@ -33,6 +34,7 @@ class DocumentUtil {
       doc = new Document()
       bundle.add(doc)
 
+      doc.Account = docDTO.Account
       doc.Policy = docDTO.Policy
       doc.Name = docDTO.File.Name
       doc.Description = docDTO.Description

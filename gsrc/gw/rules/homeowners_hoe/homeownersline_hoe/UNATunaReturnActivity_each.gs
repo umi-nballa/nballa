@@ -46,6 +46,60 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       }
     }
 
+    //1
+    if(holine.Dwelling.OverrideBaseFloodElVal_Ext && holine.Dwelling.FloodCoverage_Ext)
+    {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_BaseFloodElevationChanged")
+
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_BaseFloodElevationChanged")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
+    }
+
+    //2
+    if(holine.Dwelling.OverrideConstructionType_Ext && holine.Dwelling.FloodCoverage_Ext)
+    {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_ConstructionTypeChanged")
+
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_ConstructionTypeChanged")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
+    }
+    //3
+    if(holine.Dwelling.OverrideRoofShape_Ext && (holine.HOLocation.PolicyLocation.State.Code=="FL" || holine.HOLocation.PolicyLocation.State.Code=="SC")  )
+    {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_RoofShapeChanged")
+
+
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_RoofShapeChanged")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
+    }
+    //5
+    if(holine.Dwelling.YearBuilt==null)
+    {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasNullFromTuna")
+
+
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_YearBuiltWasNullFromTuna")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
+    }
+    //6
+    if(holine.Dwelling.OverrideYearbuilt_Ext)
+    {
+      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasChanged")
+
+
+      if(holine.AssociatedPolicyPeriod.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="TUNA_YearBuiltWasChanged")==null)
+      {
+        var activity =  activityPattern.createJobActivity(holine.AssociatedPolicyPeriod.Bundle, holine.AssociatedPolicyPeriod.Job, null, null, null, null, null, null, null)
+      }
+    }
 
 
     return RuleEvaluationResult.skip()

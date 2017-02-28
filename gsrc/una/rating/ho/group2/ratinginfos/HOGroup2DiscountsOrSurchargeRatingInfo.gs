@@ -20,6 +20,15 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
   var _priorLosses : int as PriorLosses = 0
 
+  //windstorm mitigation credit
+  var _roofShape : String as RoofShape
+  var _swr : String as SWR
+  var _roofCover : String as RoofCover
+  var _roofDeckAttachment : String as RoofDeckAttachment
+  var _roofToWallConnection : String as RoofToWallConnection
+  var _openingProtection : String as OpeningProtection
+  var _doorStrength : String as DoorStrength
+
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
     if(line.Dwelling.HODW_SectionI_Ded_HOE.HasHODW_NamedStrom_Ded_HOE_ExtTerm){

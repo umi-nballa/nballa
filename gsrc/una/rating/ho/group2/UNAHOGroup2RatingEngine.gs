@@ -178,9 +178,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
      rateBuildingCodeEffectivenessGradingCredit(dateRange)
 
-
      rateLossHistoryCredit(dateRange)
-
 
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
         _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 ||
@@ -206,8 +204,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateGatedCommunityDiscount(dateRange)
     }
 
+    //if(!dwelling.WHurricaneHailExclusion_Ext)
+      //rateWindStormMitigationCredit(dateRange)
+
     rateHigherAllPerilDeductible(dateRange)
 
+    rateMaximumDiscountAdjustment(dateRange)
 
     updateTotalBasePremium()
   }
@@ -775,8 +777,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Adjusting the total discount if it exceeds the maximum discount
    */
   function rateMaximumDiscountAdjustment(dateRange: DateRange) {
-    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.AffinityDiscount +
-        _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.ConcreteTileRoofDiscount
+    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.AffinityDiscount + _hoRatingInfo.NamedStormDeductibleCredit +
+                              _hoRatingInfo.WindstormMitigationCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount
     if (_hoRatingInfo.AgeOfHomeDiscount < 0)
       totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
     if (_hoRatingInfo.LossHistoryRatingPlan < 0)
@@ -789,9 +791,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-  _hoRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount +
-  _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.DiscountAdjustment +
-  _hoRatingInfo.AffinityDiscount
+    _hoRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.TownhouseOrRowhouseSurcharge + _hoRatingInfo.ProtectiveDevicesDiscount +
+                                     _hoRatingInfo.AffinityDiscount + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.NamedStormDeductibleCredit + _hoRatingInfo.LossHistoryRatingPlan +
+                                     _hoRatingInfo.BuildingCodeEffectivenessGradingCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.WindstormMitigationCredit +
+                                     _hoRatingInfo.DiscountAdjustment
   }
-
 }

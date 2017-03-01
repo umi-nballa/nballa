@@ -166,6 +166,19 @@ class CovTermInputSetPCFController {
     return result
   }
 
+  public static function onAddOptionalCoverage(clausePattern: gw.api.productmodel.ClausePattern, coverable: Coverable){
+    switch(clausePattern.CodeIdentifier){
+      case "HODW_Comp_Earthquake_CA_HOE_Ext":
+        var limitedEarthquake = coverable.getCoverage("HODW_Limited_Earthquake_CA_HOE")
+        if(limitedEarthquake != null){
+          coverable.removeCoverageFromCoverable(limitedEarthquake)
+        }
+        break
+      default:
+        break
+    }
+  }
+
   private static function validateCalculatedLimits(covTerm: DirectCovTerm, coverable: Dwelling_HOE) : String {
     var result : String
 

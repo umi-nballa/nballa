@@ -46,7 +46,6 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _lineRatingInfo = new HOGroup2LineRatingInfo(line)
     _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
     _dwellingRatingInfo = new HOGroup2DwellingRatingInfo(line.Dwelling)
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
   }
 
   /**
@@ -56,6 +55,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var rater = new HOBasePremiumRaterGroup2(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
     addCosts(costs)
+
   }
 
   /**
@@ -810,5 +810,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
                                      _hoRatingInfo.AffinityDiscount + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.NamedStormDeductibleCredit + _hoRatingInfo.LossHistoryRatingPlan +
                                      _hoRatingInfo.BuildingCodeEffectivenessGradingCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.WindstormMitigationCredit +
                                      _hoRatingInfo.DiscountAdjustment
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
   }
 }

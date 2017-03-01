@@ -269,6 +269,7 @@ class BillingMessageTransport implements MessageTransport {
       or newPrimaryNamedInsured != oldPrimaryNamedInsured
       or PolicyInfoUtil.hasAddlInterestsUpdated(policyPeriod)
       or newProducerCode != oldProducerCode
+      or policyPeriod.bankruptcy_Ext != basedOnPeriod.bankruptcy_Ext
   }
 
   private function getTransactionId(message : Message) : String {

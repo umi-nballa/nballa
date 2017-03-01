@@ -18,6 +18,7 @@ class HPXCreditScoreMapper {
     var creditScores = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType>()
     var report = creditReports.where( \ report -> report != null && report.ProductReference != null) .last()
     var creditScoreInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditScoreInfoType()
+    var sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
     creditScoreInfo.CreditScore = report.CreditScore != null ? report.CreditScore : ""
     creditScoreInfo.ReferenceNumber = report.ProductReference != null ?  report.ProductReference : ""
     creditScoreInfo.CreditScoreDt = report.CreditScoreDate != null ? new XmlDate(report.CreditScoreDate) : null
@@ -35,8 +36,8 @@ class HPXCreditScoreMapper {
     creditScoreInfo.InquiryOptions = ""
     creditScoreInfo.AKA = ""
     creditScoreInfo.SpecialBillingID = ""
-    creditScoreInfo.OrderDate = report.DateRequestOrdered != null ? report.DateRequestOrdered : ""
-    creditScoreInfo.CompleteDate = report.DateRequestCompleted != null ? report.DateRequestCompleted : ""
+    creditScoreInfo.OrderDate = report.DateRequestOrdered != null ? new XmlDate(sourceFormat.parse(report.DateRequestOrdered)) : new XmlDate()
+    creditScoreInfo.CompleteDate = report.DateRequestCompleted != null ? new XmlDate(sourceFormat.parse(report.DateRequestCompleted)) : new XmlDate()
     var creditMsgs = new List<String>()
     for(message in report.CreditStatusReasons) {
       creditMsgs.add(message.CreditStatusReasonCode + " - " + message.CreditStatusReasonDesc)
@@ -59,7 +60,7 @@ class HPXCreditScoreMapper {
     physicalSearchAddressType.City = report.SearchAddressCity != null ? report.SearchAddressCity : ""
     physicalSearchAddressType.State = report.SearchAddressState != null ? report.SearchAddressState.Code : ""
     physicalSearchAddressType.PostalCode = report.SearchAddressZip != null ? report.SearchAddressZip : ""
-    clueSearchSubjectGenderType.addChild(new XmlElement("PhysicalAddress", physicalSearchAddressType))
+    creditSearchSubjectType.addChild(new XmlElement("PhysicalAddress", physicalSearchAddressType))
     creditScoreInfo.addChild(new XmlElement("CreditSearchSubject", creditSearchSubjectType))
 
     var clueResponseSubjectType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClueSearchSubjectType()

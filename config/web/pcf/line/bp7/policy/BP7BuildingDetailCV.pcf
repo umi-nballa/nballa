@@ -80,7 +80,7 @@
                   required="true"
                   value="building.PredominentOccType_Ext">
                   <PostOnChange
-                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;setDefaultClassificationArea();una.pageprocess.BP7PCFController.removeProductsCompletedOpernsUnrelatedtoBuilOwnersExcl(building);synchPM()"/>
+                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;;building.setDefaultClassificationArea();una.pageprocess.BP7PCFController.removeProductsCompletedOpernsUnrelatedtoBuilOwnersExcl(building);synchPM()"/>
                 </TypeKeyInput>
                 <TypeKeyInput
                   editable="true"
@@ -554,6 +554,7 @@
             <CardViewPanel>
               <Card
                 id="GeneralInfoCard"
+                onSelect="building.setDefaultClassificationArea()"
                 title="displaykey.Web.Policy.BP7.Classification.Details">
                 <PanelSet>
                   <PanelRow>
@@ -839,14 +840,6 @@ function predominantConfirmationMessage(classification : BP7Classification) : St
   gw.web.productmodel.ProductModelSyncIssuesHandler.sync({building}, null, null, null, jobWizardHelper)
    if(building.Classifications != null and building.Classifications.length == 1)
    {gw.web.productmodel.ProductModelSyncIssuesHandler.sync({building.Classifications[0]}, null, null, null, jobWizardHelper)}  
- }
- //DE226 fix - Defaulting to 1 when occ type is Tenant and looks like it is being used in rating ootb, when bop rating gets implemented this can be removed 
- function setDefaultClassificationArea(){
-   if(building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){
-     for(cl in building.Classifications){
-       cl.Area = 1
-     }
-   }
  }]]></Code>
   </CardViewPanel>
 </PCF>

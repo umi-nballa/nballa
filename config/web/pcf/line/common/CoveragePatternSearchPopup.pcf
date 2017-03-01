@@ -45,7 +45,7 @@
           def="CoveragePatternSearchResultsLV(coveragePatterns, coverable)">
           <Toolbar>
             <CheckedValuesToolbarButton
-              allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues ); CheckedValues.each(\ value -&gt; gw.lob.bp7.BP7PostOnChangeHandler.handleClause(coverable, value, true, jobWizardHelper));una.pageprocess.BP7PCFController.dataCompromiseCoverageRestriction(coverable,CheckedValues,jobWizardHelper)"
+              allCheckedRowsAction="CurrentLocation.pickValueAndCommit( CheckedValues ); onAddCheckedValues(CheckedValues); una.pageprocess.BP7PCFController.dataCompromiseCoverageRestriction(coverable,CheckedValues,jobWizardHelper);"
               id="AddCoverageButton"
               iterator="CoveragePatternSearchResultsLV.CoveragePatternSearchResultsLV"
               label="searchType == CoveragePatternSearchType.TC_COVERAGE ? displaykey.Web.Coverage.SearchPage.AddSelectedCoverages : displaykey.Web.Coverage.SearchPage.AddSelectedExclusionsAndConditions"/>
@@ -53,16 +53,32 @@
         </PanelRef>
       </SearchPanel>
     </Screen>
-    <Code><![CDATA[function filteredSearchResults(searchCriteria : gw.productmodel.ClausePatternSearchCriteria) : productmodel.ClausePattern[] {
-  var results = searchCriteria.performSearch()
-  results = results.where(\ c -> coverable.isCoverageConditionOrExclusionAvailable(c) and coverable.getCoverageConditionOrExclusion(c) == null)
-  
-  if (includeElseExclude) {
-    return results.where(\ c -> coverageCategories.contains(c.CoverageCategory.Code))
-  }
-  else {
-    return results.where(\ c -> not coverageCategories.contains(c.CoverageCategory.Code))
-  }
-}]]></Code>
+    <Code><![CDATA[
+                uses gw.api.productmodel.ClausePattern
+
+                function filteredSearchResults(searchCriteria: gw.productmodel.ClausePatternSearchCriteria): productmodel.ClausePattern[] {
+                    var results = searchCriteria.performSearch()
+                    results = results.where(\c -> coverable.isCoverageConditionOrExclusionAvailable(c) and coverable.getCoverageConditionOrExclusion(c) == null)
+
+                    if (includeElseExclude) {
+                        return results.where(\c -> coverageCategories.contains(c.CoverageCategory.Code))
+                    }
+                    else {
+                        return results.where(\c -> not coverageCategories.contains(c.CoverageCategory.Code))
+                    }
+                }
+
+                function onAddCheckedValues(checkedValues: ClausePattern[]) {
+                    if (coverable.PolicyLine typeis entity.BP7BusinessOwnersLine) {
+                        checkedValues.each(\value -> {
+                            gw.lob.bp7.BP7PostOnChangeHandler.handleClause(coverable, value, true, jobWizardHelper)
+                        })
+                    } else if (coverable.PolicyLine typeis entity.HomeownersLine_HOE){
+                        checkedValues.each(\value -> {
+                            una.pageprocess.CovTermInputSetPCFController.onAddOptionalCoverage(value, coverable)
+                        })
+                    }
+                }
+        ]]></Code>
   </Popup>
 </PCF>

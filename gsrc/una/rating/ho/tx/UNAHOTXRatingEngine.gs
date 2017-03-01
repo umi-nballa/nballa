@@ -34,7 +34,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     super(line, minimumRatingLevel)
     _hoRatingInfo = new HORatingInfo()
     _dwellingRatingInfo = new HODwellingRatingInfo(line.Dwelling)
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
   }
 
   /**
@@ -692,5 +692,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private function updateTotalBasePremium() {
     _hoRatingInfo.TotalBasePremium += (_hoRatingInfo.FinalAdjustedBaseClassPremium + _hoRatingInfo.ReplacementCostDwellingPremium +
         _hoRatingInfo.ReplacementCostPersonalPropertyPremium + _hoRatingInfo.HOAPlusCoveragePremium)
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
   }
+
 }

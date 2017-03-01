@@ -57,7 +57,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="WrittenAmtType">
 		<xsd:sequence>
-			<xsd:element name="Amt" type="xsd:long"/>
+			<xsd:element name="Amt" type="xsd:long" minOccurs="0"/>
 			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
@@ -834,6 +834,8 @@
             <xsd:element name="CreditResponseSubject" type="ClueSearchSubjectType" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="CreditResponseAddress" type="ClueSearchAddressType" minOccurs="0"/>
             <xsd:element name="CaseID" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="OrderDate" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CompleteDate" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Quoteback" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Account" type="xsd:string" minOccurs="0"/>
             <xsd:element name="NodeLocation" type="xsd:string" minOccurs="0"/>
@@ -5554,13 +5556,13 @@
 			<xsd:element name="LossDescription" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="LossLocation" type="LossLocationType" minOccurs="0"/>
 			<xsd:element name="LossDate" type="xsd:date" minOccurs="0"/>
-            <xsd:element name="ClaimDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimDate" type="xsd:date" minOccurs="0"/>
             <xsd:element name="ClaimAge" type="xsd:string" minOccurs="0"/>
             <xsd:element name="AMB" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueSearchInfo" type="ClueSearchInfoType" minOccurs="0"/>
-            <xsd:element name="ClueLossSummary" type="ClueLossSummaryType" minOccurs="0"/>
+            <xsd:element name="ClueLossSummary" type="ClueLossSummaryType" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="ClueHeader" type="ClueHeaderType" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>

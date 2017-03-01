@@ -27,8 +27,8 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
 
     if (dwelling?.HODW_UnitOwnersOutbuildingCov_HOE_ExtExists){
-      if (dwelling.HODW_UnitOwnersOutbuildingCov_HOE_Ext?.HasHODW_UnitOwnersLimit_HOETerm) {
-        _unitOwnersOutbuildingAndOtherStructuresLimit = dwelling.HODW_UnitOwnersOutbuildingCov_HOE_Ext?.HODW_UnitOwnersLimit_HOETerm?.Value
+      if (dwelling?.HODW_UnitOwnersOutbuildingCov_HOE_Ext?.HasHODW_UnitOwnersLimit_HOETerm) {
+        _unitOwnersOutbuildingAndOtherStructuresLimit = dwelling?.HODW_UnitOwnersOutbuildingCov_HOE_Ext?.HODW_UnitOwnersLimit_HOETerm?.Value
       } else {
         _unitOwnersOutbuildingAndOtherStructuresLimit = 0
       }
@@ -41,10 +41,10 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
 
     if (dwelling?.HODW_MoldRemediationCov_HOE_ExtExists){
-      _moldRemediationLimit = dwelling?.HODW_MoldRemediationCov_HOE_Ext.HODW_MoldRemedCovLimit_HOETerm.DisplayValue
+      _moldRemediationLimit = dwelling?.HODW_MoldRemediationCov_HOE_Ext?.HODW_MoldRemedCovLimit_HOETerm.DisplayValue
     }
 
-    _lossAssessmentLimit = (dwelling.HODW_LossAssessmentCov_HOE_ExtExists) ? dwelling.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
+    _lossAssessmentLimit = (dwelling?.HODW_LossAssessmentCov_HOE_ExtExists) ? dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
 
     _county = (dwelling?.HOLocation?.PolicyLocation?.County != null) ? dwelling?.HOLocation?.PolicyLocation?.County : ""
   }

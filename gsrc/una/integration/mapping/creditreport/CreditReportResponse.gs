@@ -50,6 +50,16 @@ class CreditReportResponse {
   private var _addressState : State as AddressState
   private var _addressZip : String as AddressZip
 
+  // Header fields from credit report
+  private var _pncAccount : String as PncAccount
+  private var _productReference : String as ProductReference
+  private var _quoteback  : String as Quoteback
+  private var _dateRequestOrdered : String as DateRequestOrdered
+  private var _dateRequestCompleted : String as DateRequestCompleted
+  private var _status : String as Status
+  private var _reportCode : String as ReportCode
+
+
   construct() {
   }
   
@@ -92,6 +102,14 @@ class CreditReportResponse {
     private var _statusCode : CreditStatusExt
     private var _statusDescription : String    
     private var _reasons : Map<String, String> = new HashMap<String, String>()
+    // Header fields from credit report
+    private var _pncAccount : String
+    private var _productReference : String
+    private var _quoteback  : String
+    private var _dateRequestOrdered : String
+    private var _dateRequestCompleted : String
+    private var _status : String
+    private var _reportCode : String
 
     private var _referenceNumber : String
  
@@ -260,6 +278,55 @@ class CreditReportResponse {
       return this
     }
 
+    public function withPncAccount(pncAccount:String) : Builder {
+
+      this._pncAccount = pncAccount
+
+      return this
+    }
+
+    public function withProductReference(productReference:String) : Builder {
+
+      this._productReference = productReference
+
+      return this
+    }
+
+    public function withQuoteback(quoteback:String) : Builder {
+
+      this._quoteback = quoteback
+
+      return this
+    }
+
+    public function withDateRequestOrdered(dateRequestOrdered:String) : Builder {
+
+      this._dateRequestOrdered = dateRequestOrdered
+
+      return this
+    }
+
+    public function withDateRequestCompleted(dateRequestCompleted:String) : Builder {
+
+      this._dateRequestCompleted = dateRequestCompleted
+
+      return this
+    }
+
+    public function withStatus(status:String) : Builder {
+
+      this._status = status
+
+      return this
+    }
+
+    public function withReportCode(reportCode:String) : Builder {
+
+      this._reportCode = reportCode
+
+      return this
+    }
+
     public function create() : CreditReportResponse {
         
       return new CreditReportResponse(this)
@@ -293,7 +360,13 @@ class CreditReportResponse {
     this.FolderID = builder._folderId
     this.StatusCode = builder._statusCode
     this.StatusDescription = builder._statusDescription
-
+    this.PncAccount = builder._pncAccount
+    this.ProductReference = builder._productReference
+    this.Quoteback = builder._quoteback
+    this.DateRequestOrdered = builder._dateRequestOrdered
+    this.DateRequestCompleted = builder._dateRequestCompleted
+    this.Status = builder._status
+    this.ReportCode = builder._reportCode
     this._reasons.putAll(builder._reasons)
     builder._reasons.clear()
     builder._reasons = null

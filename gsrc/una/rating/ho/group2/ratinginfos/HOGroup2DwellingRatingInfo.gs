@@ -24,18 +24,18 @@ class HOGroup2DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   construct(dwelling: Dwelling_HOE){
     super(dwelling)
 
-      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
-      _buildingAdditionsAndAlterationsIncreasedLimit = dwelling.HODW_BuildingAdditions_HOE_Ext.HODW_BuildAddInc_HOETerm?.Value
+      _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
+      _buildingAdditionsAndAlterationsIncreasedLimit = dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
 
-    _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODWDwelling_HOETerm?.Value
-    _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODW_OtherStructure_HOETerm?.Value
-    _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODW_ExtendSectionCov_HOETerm?.Value
-    _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext.HODW_Limit_HOETerm?.Value
+    _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value
+    _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_OtherStructure_HOETerm?.Value
+    _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
+    _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
 
 
     if(dwelling.HODW_LossAssessmentCov_HOE_ExtExists){
-      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value
-      if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value
+      if(dwelling?.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }
     }

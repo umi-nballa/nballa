@@ -1,12 +1,12 @@
 package una.integration.service.gateway.ofac
 
+uses gw.api.util.DisplayableException
+uses una.integration.mapping.ofac.OFACRequestMapper
+uses una.integration.mapping.ofac.OFACResponseMapper
 uses una.integration.service.transport.ofac.OFACCommunicator
 uses una.logging.UnaLoggerCategory
 
-uses una.integration.mapping.ofac.OFACRequestMapper
-uses una.integration.mapping.ofac.OFACResponseMapper
 uses java.lang.Exception
-uses gw.api.util.DisplayableException
 
 /**
  * Created with IntelliJ IDEA.
@@ -44,31 +44,32 @@ class OFACGateway implements OFACInterface {
   @Param("policyPeriod", "Policy Period")
   override function validateOFACEntity(policyContacts: List<Contact>, policyPeriod: PolicyPeriod) {
     _logger.info("Entering Inside method validateOFACEntity")
-    //building OFAC input
-
     try {
-      var clientContext = ofacRequestMapper.buildClientContext()
-      var searchConfiguration = ofacRequestMapper.buildSearchConfiguration()
-      var ofacDTOList = ofacRequestMapper.buildOFACInput(policyContacts, policyPeriod)
-      var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
-      //Call to OFAC service
-      var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
-      _logger.debug("result:" + result)
+      // Skip the OFAC check and log a warning message if the script parameter 'RunOFACCheck' is set to false.
+      if (ScriptParameters.RunOFACCheck) {
+        var clientContext = ofacRequestMapper.buildClientContext()
+        var searchConfiguration = ofacRequestMapper.buildSearchConfiguration()
+        var ofacDTOList = ofacRequestMapper.buildOFACInput(policyContacts, policyPeriod)
+        var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
+        //Call to OFAC service
+        var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
+        _logger.debug("result:" + result)
 
-      if(result != null) {
-      var contactList = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
-
-      policyPeriod.ofacdetails.isOFACOrdered = true
-
-
-      //contactAndScoreMap should be null in case of no - HIT only
-      if (contactList.Count >= 1)
-        ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
-
+        if(result != null) {
+          var contactList = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
+          policyPeriod.ofacdetails.isOFACOrdered = true
+          //contactAndScoreMap should be null in case of no - HIT only
+          if (contactList.Count >= 1) {
+            ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
+          }
         }
+      } else {
+        _logger.warn("OFAC Check is skipped because the script parameter 'RunOFACCheck' is set to false.")
+      }
     } catch (exp: Exception) {
       _logger.error(CLASS_NAME + " :: " + "validateOFACEntity" + " : StackTrace = " + exp.StackTraceAsString)
       throw new DisplayableException(WS_NOT_AVAILABLE)
-     }
+    }
   }
+
 }

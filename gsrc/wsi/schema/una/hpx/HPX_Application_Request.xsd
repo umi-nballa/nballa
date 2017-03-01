@@ -3717,10 +3717,25 @@
 			<xsd:element name="ClaimPaymentDetailLineItemsCategoryTypeDesc" type="xsd:string"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="ClaimPaymentDetailLineItemsCostTypeType">
+        <xsd:sequence>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostTypeID" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostTypeCode" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostTypeDesc" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ClaimPaymentDetailLineItemsCostCategoryType">
+        <xsd:sequence>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategoryTypeID" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategoryTypeCode" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategoryTypeDesc" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="LineItemsType">
 		<xsd:sequence>
 			<xsd:element name="ClaimPaymentDetailLineItemsID" type="xsd:string"/>
 			<xsd:element name="Amount" type="xsd:string"/>
+            <xsd:element name="Deductible" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClaimPaymentDetailLineItemsCategory" type="ClaimPaymentDetailLineItemsCategoryType"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -3732,6 +3747,9 @@
 			<xsd:element name="ClaimPaymentType" type="ClaimPaymentTypeType"/>
 			<xsd:element name="AvailableReservesAmt" type="xsd:byte"/>
 			<xsd:element name="isEroding" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostType" type="ClaimPaymentDetailLineItemsCostTypeType" minOccurs="0"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategory" type="ClaimPaymentDetailLineItemsCostCategoryType" minOccurs="0"/>
+            <xsd:element name="CoverageType" type="CoverageTypeType" minOccurs="0"/>
 			<xsd:element name="Comments" type="xsd:string"/>
 			<xsd:element name="LineItems" type="LineItemsType"/>
 		</xsd:sequence>

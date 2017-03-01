@@ -60,7 +60,7 @@ class HPXCreditScoreMapper {
     physicalSearchAddressType.City = report.SearchAddressCity != null ? report.SearchAddressCity : ""
     physicalSearchAddressType.State = report.SearchAddressState != null ? report.SearchAddressState.Code : ""
     physicalSearchAddressType.PostalCode = report.SearchAddressZip != null ? report.SearchAddressZip : ""
-    clueSearchSubjectGenderType.addChild(new XmlElement("PhysicalAddress", physicalSearchAddressType))
+    creditSearchSubjectType.addChild(new XmlElement("PhysicalAddress", physicalSearchAddressType))
     creditScoreInfo.addChild(new XmlElement("CreditSearchSubject", creditSearchSubjectType))
 
     var clueResponseSubjectType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClueSearchSubjectType()

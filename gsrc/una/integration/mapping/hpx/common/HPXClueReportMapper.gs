@@ -14,7 +14,7 @@ uses java.text.SimpleDateFormat
  * To change this template use File | Settings | File Templates.
  */
 class HPXClueReportMapper {
-  function createClueReport(priorLoss: HOPriorLoss_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.ClaimsDocumentPublishType {
+  function createClueReport(priorLoss: HOPriorLoss_Ext, clueClaimInstance : int) : wsi.schema.una.hpx.hpx_application_request.types.complex.ClaimsDocumentPublishType {
     var claimElement = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClaimsDocumentPublishType()
     var claimPropertyIncidentType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClaimPropertyIncidentType()
     var mortgageInformationType = new wsi.schema.una.hpx.hpx_application_request.types.complex.MortgageInformationType()
@@ -22,14 +22,17 @@ class HPXClueReportMapper {
     var policyMapper = new HPXDwellingPolicyMapper()
     var sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
 
-    for(clueMessage in priorLoss.ClueReport.messages)
+    if(clueClaimInstance == 0)
     {
-      var messageNote = noteMapper.createClueMessageNote(clueMessage)
-      messageNote.ClaimNumber = priorLoss.ClaimNum != null ? priorLoss.ClaimNum : ""
-      claimElement.addChild(new XmlElement("ClaimNotes", messageNote))
+      for(clueMessage in priorLoss.ClueReport.messages)
+      {
+        var messageNote = noteMapper.createClueMessageNote(clueMessage)
+        messageNote.ClaimNumber = priorLoss.ClaimNum != null ? priorLoss.ClaimNum : ""
+        claimElement.addChild(new XmlElement("ClaimNotes", messageNote))
+      }
+      claimElement.addChild(new XmlElement("ClueSearchInfo", createClueSearchInfo(priorLoss)))
     }
     claimElement.ClaimID = priorLoss.ID != null ? priorLoss.ID : ""
-    claimElement.addChild(new XmlElement("ClueSearchInfo", createClueSearchInfo(priorLoss)))
     claimElement.addChild(new XmlElement("ClueHeader", createClueHeader(priorLoss.ClueReport)))
     claimElement.ClaimDate = priorLoss.ClaimDate != null ? new XmlDate(sourceFormat.parse(priorLoss.ClaimDate)) : new XmlDate()
     claimElement.ClaimAge = priorLoss.ClaimAge != null ? priorLoss.ClaimAge : ""
@@ -58,13 +61,14 @@ class HPXClueReportMapper {
 
   function createClueHeader(clueReport : ClueReport_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.ClueHeaderType {
     var clueHeaderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClueHeaderType()
+    var sourceFormat = new SimpleDateFormat("dd/MM/yyyy");
     clueHeaderType.QuotebackID = clueReport.QuotebackID != null ? clueReport.QuotebackID : ""
     clueHeaderType.CaseID = clueReport.QuotebackID != null ? clueReport.QuotebackID : ""
     clueHeaderType.ReferenceNumber = clueReport.ReferenceNumber != null ? clueReport.ReferenceNumber : ""
-    clueHeaderType.OrderDate = clueReport.OrderDate != null ? clueReport.OrderDate : ""
+    clueHeaderType.OrderDate = clueReport.OrderDate != null ? new XmlDate(sourceFormat.parse(clueReport.OrderDate)) : new XmlDate()
     clueHeaderType.Requestor = clueReport.Requestor != null ? clueReport.Requestor : ""
     clueHeaderType.AccountNumber = clueReport.AccountNumber != null ? clueReport.AccountNumber : ""
-    clueHeaderType.CompleteDate = clueReport.CompleteDate != null ? clueReport.CompleteDate : ""
+    clueHeaderType.CompleteDate = clueReport.CompleteDate != null ? new XmlDate(sourceFormat.parse(clueReport.CompleteDate)) : new XmlDate()
     clueHeaderType.ClueProcessingStatus = clueReport.ProcessingStatus != null ? clueReport.ProcessingStatus : ""
     clueHeaderType.ClueTotalRiskClaims = clueReport.RiskClaims != null ? clueReport.RiskClaims : ""
     clueHeaderType.ClueTotalSubjectClaims = clueReport.SubjectClaims != null ? clueReport.SubjectClaims : ""

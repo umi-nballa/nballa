@@ -63,11 +63,6 @@ class HODwellingUtil_HOE {
     }
     return false
   }
-  /*
-*  Author: uim-svallabhapurapu
-*  Change Log: New function for Construction TypeList value range based on state
-*  HO Line of business
-*/
 
   static function initializeSingleReturnTypelists(dwelling:Dwelling_HOE, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse):boolean
   {

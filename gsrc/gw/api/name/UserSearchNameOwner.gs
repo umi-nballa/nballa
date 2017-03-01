@@ -27,7 +27,11 @@ class UserSearchNameOwner extends NameOwnerBase {
     return displaykey.Web.ContactCriteria.CompanyNamePhonetic
   }
 
-  override property get ShowNameSummary() : boolean {
+  override property get ShowNameSummary(): boolean {
     return false
+  }
+
+  override property get Suffix(): NameSuffix {
+    return null
   }
 }

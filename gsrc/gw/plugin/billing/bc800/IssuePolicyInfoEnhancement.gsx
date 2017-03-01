@@ -69,8 +69,6 @@ enhancement IssuePolicyInfoEnhancement : IssuePolicyInfo
         this.CoastalWind = period.HomeownersLine_HOE.Dwelling.WHurricaneHailExclusion_Ext
 
     }
-    // PC-BC Integration: Adding Bankruptcy Flag
-    this.BankruptcyFlag = period.bankruptcy_Ext
 
     var plugin = Plugins.get(IPolicyRenewalPlugin)
     if(plugin.isRenewalOffered(period)){

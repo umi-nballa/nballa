@@ -12,7 +12,7 @@ uses java.util.Date
  * To change this template use File | Settings | File Templates.
  */
 class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
-  static final var ACTIVITY_PATTERN : String = "order_tenant_inspection"
+  static final var ACTIVITY_PATTERN : String = "BOP_order_tenant_insp"
 
   construct(){
     super(TC_TenantInspection)
@@ -33,13 +33,13 @@ class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
                                     //this chunk filters for tenant report received dates that
                                     //are older than 1 year old or are null.
                                     .or(\ orCriteria -> {
-                                      orCriteria.compare(PolicyPeriod#DateLastInspection_Ext, Equals, null)
-                                      orCriteria.compare(PolicyPeriod#DateLastInspection_Ext, LessThan, currentDate.addYears(-1))
+                                      orCriteria.compare(PolicyPeriod#TenantReportLastReceivedDate_Ext, Equals, null)
+                                      orCriteria.compare(PolicyPeriod#TenantReportLastReceivedDate_Ext, LessThan, currentDate.addYears(-1))
                                     }).select()?.toList()
 
     policyPeriodResults.removeWhere( \ policyPeriod -> policyPeriod.Policy.AllOpenActivities?.hasMatch( \ activity -> activity.ActivityPattern.Code == ACTIVITY_PATTERN)
                                                    or  policyPeriod.Policy.LatestBoundPeriod != policyPeriod
-                                                   or  policyPeriod.BP7Line.AllExclusions.hasMatch( \ exclusion -> exclusion.PatternCode == "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"))
+                                                   or  !policyPeriod.BP7Line.AllExclusions.hasMatch( \ exclusion -> exclusion.PatternCode == "BP7ExclusionProductsCompletedOpernsUnrelatedtoBuilOwners_EXT"))
 
     return policyPeriodResults
   }

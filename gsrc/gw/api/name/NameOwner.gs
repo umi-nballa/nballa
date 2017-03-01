@@ -100,4 +100,10 @@ interface NameOwner {
    */
   property get MiddleNameLabel() : String
 
+
+  /**
+   * label to use for the  suffix of a Person contact
+   */
+  property get Suffix() : NameSuffix
+
 }

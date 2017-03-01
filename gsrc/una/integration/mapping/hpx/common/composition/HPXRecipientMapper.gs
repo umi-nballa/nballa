@@ -90,7 +90,7 @@ class HPXRecipientMapper {
       for (coverable in coverables) {
         if (coverable typeis BP7Building) {
           var addInts = ((coverable as BP7Building).AdditionalInterests)
-          additionalInterests.union(addInts)
+          additionalInterests?.union(addInts)
         }
       }
     } else if (policyPeriod.CPLineExists or policyPeriod.GLLineExists) {
@@ -98,7 +98,7 @@ class HPXRecipientMapper {
       for (coverable in coverables) {
         if (coverable typeis CPBuilding) {
           var addInts = ((coverable as CPBuilding).AdditionalInterests)
-          additionalInterests.union(addInts)
+          additionalInterests?.union(addInts)
         }
       }
     }

@@ -147,8 +147,8 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
   }
 
   property get ConstructionTypeL1OrOverride() : typekey.ConstructionType_HOE{
-    if(this.OverrideConstructionTypeL1_Ext and this.ConstTypeOverriddenL1_Ext != null){
-      return this.ConstTypeOverriddenL1_Ext
+    if(this.OverrideConstructionType_Ext and this.ConstTypeOverridden_Ext != null){
+      return this.ConstTypeOverridden_Ext
     }else{
       return this.ConstructionType
     }
@@ -192,6 +192,32 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }else{
       return this.HOLocation.TerritoryCodeTunaReturned_Ext
     }
+  }
+
+ property get RoofTypeOrOverride():typekey.RoofType
+  {
+    if(this.OverrideRoofType_Ext && this.RoofingMaterialOverridden_Ext!=null)
+      return this.RoofingMaterialOverridden_Ext
+    else
+      return this.RoofType
+  }
+      
+  property get EarthQuakeTerritoryOrOverride() : String{
+    if(this.OverrideEarthquakeTer_Ext and this.OverrideEarthquakeTer_Ext != null){
+      return this.EarthquakeTerOverridden_Ext
+    }else{
+      return this.EarthQuakeTer_Ext
+    }
+  }
+
+  property get BCEGOrOverride() : typekey.BCEGGrade_Ext{
+    if(this.HOLocation.OverrideBCEG_Ext and this.HOLocation.OverrideBCEG_Ext != null){
+      return this.HOLocation.BCEGOverridden_Ext
+    }else{
+      return this.HOLocation.BCEG_Ext
+    }
+
+
   }
 
   property get isPolicyHOTypes() : boolean {

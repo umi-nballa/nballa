@@ -47,4 +47,5 @@ class BP7RateRoutineNames {
   public static final var BP7_EMPA_SURCHARGE_RATE_ROUTINE : String = "BP7EMPASurchargeRateRoutine"
   public static final var BP7_DATA_COMPROMISE_RESPONSE_EXPENSES_FIRST_PARTY_RATE_ROUTINE : String = "BP7DataCompromiseResponseExpensesFirstPartyRateRoutine"
   public static final var BP7_DATA_COMPROMISE_RESPONSE_EXPENSES_FIRST_THIRD_PARTY_RATE_ROUTINE : String = "BP7DataCompromiseResponseExpensesFirstAndThirdPartyRateRoutine"
+  public static final var BP7_MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE : String = "BP7MinimumPremiumAdjustmentRateRoutine"
 }

@@ -21,30 +21,26 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _lossAssessmentLimit: BigDecimal as LossAssessmentLimit
   var _unitOwnersCoverageASpecialLimitsExists : boolean as UnitOwnersCoverageASpecialLimitsExists = false
-  construct(dwellingCov: DwellingCov_HOE){
-      super(dwellingCov)
+  construct(dwelling : Dwelling_HOE){
+      super(dwelling)
 
-      _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwellingCov.Dwelling.HODW_CC_EFT_HOE_Ext.HODW_CC_EFTLimit_HOETerm.Value
-      _waterBackupSumpOverflowCovLimit = dwellingCov.Dwelling.HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext.HODW_LimWaterbackup_Limit_HOETerm.Value
-      _personalPropertyOffResidence = dwellingCov.Dwelling?.HODW_PersonalPropertyOffResidence_HOE?.HOLI_PPOtherResidence_Limit_HOETerm?.Value
-    if (dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_ExtExists){
-      if (dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HasHODW_JewelryWatchesFursLimit_HOETerm){
-        _increasedLimitsJewelryWatchesFurs = dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.Value
+      _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwelling?.HODW_CC_EFT_HOE_Ext?.HODW_CC_EFTLimit_HOETerm?.Value
+      _waterBackupSumpOverflowCovLimit = dwelling?.HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext?.HODW_LimWaterbackup_Limit_HOETerm?.Value
+      _personalPropertyOffResidence = dwelling?.HODW_PersonalPropertyOffResidence_HOE?.HOLI_PPOtherResidence_Limit_HOETerm?.Value
+    if (dwelling?.HODW_SpecialLimitsPP_HOE_ExtExists){
+      if (dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HasHODW_JewelryWatchesFursLimit_HOETerm){
+        _increasedLimitsJewelryWatchesFurs = dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.Value
       }
     }
-    if (dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
-      _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value
-      _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
-      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
-      _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
-    }
+      _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value
+      _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_OtherStructure_HOETerm?.Value
+      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
+      _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
 
-    if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
-      _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value
-      if(dwellingCov.Dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value
+      if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }
-    }
 
   }
 }

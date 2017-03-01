@@ -5,6 +5,12 @@
     <Column
       beanPath="CPBuildingCovHurricaneCost.CPBuildingCov"
       name="coverage"/>
+    <Column
+      beanPath="CPBuildingCovHurricaneCost.CostType"
+      name="costType"/>
   </Columns>
-  <DisplayName><![CDATA[coverage + " Hurricane"]]></DisplayName>
+  <DisplayName><![CDATA[if(costType != null)
+  return coverage + " Hurricane : " + costType.DisplayName
+else
+  return coverage + " Hurricane"]]></DisplayName>
 </Entity>

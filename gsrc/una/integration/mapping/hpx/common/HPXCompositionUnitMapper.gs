@@ -17,17 +17,12 @@ abstract class HPXCompositionUnitMapper {
   function createDocumentForms(forms : Form[])  : List<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType> {
     var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>()
     for (form in forms) {
-      var formNumber = form.FormNumber.replace(" ", "")
-
-      if(form.Pattern != null){
-        formNumber += form.Pattern.Edition.replace(" ", "")
-      }
-      documentForms.add(createDocumentForm(formNumber, "English", form.FormDescription, form.EffectiveDate, form.Pattern.Edition, false) )
+      documentForms.add(createDocumentForm(form.Pattern.Code, "English", form.Pattern.FormNumber, form.EffectiveDate, form.Pattern.Edition, false, form.Pattern.ClausePatternCode,form.FormDescription) )
     }
     return documentForms
   }
 
-  function createDocumentForm(formId : String, formLanguage : String, formName : String, formEffectiveDate : Date, formEdition : String, isDeclarationOrSchedule : Boolean)
+  function createDocumentForm(formId : String, formLanguage : String, formName : String, formEffectiveDate : Date, formEdition : String, isDeclarationOrSchedule : Boolean, formPattern : String, formDescription : String)
                 : wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType {
     var documentForm = new wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType()
     documentForm.FormID = formId
@@ -38,6 +33,8 @@ abstract class HPXCompositionUnitMapper {
     }
     documentForm.FormEdition = formEdition
     documentForm.IsDeclarationOrSchedule = isDeclarationOrSchedule
+    documentForm.FormPattern = formPattern
+    documentForm.Description = formDescription
     return documentForm
   }
 

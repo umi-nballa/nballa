@@ -89,6 +89,13 @@ class KeywordAdaptor {
   }
 
   /**
+   * Value for keyword AccountNumber or null if unset.
+   */
+  property get AccountNumber(): String {
+    return _keywordMap.get(KeywordMap.accountnumber) as String
+  }
+
+  /**
    * Value for keyword AgencyCode or null if unset.
    */
   property get AgencyCode(): String {

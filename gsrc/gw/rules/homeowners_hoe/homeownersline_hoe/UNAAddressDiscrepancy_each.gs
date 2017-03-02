@@ -19,8 +19,8 @@ class UNAAddressDiscrepancy_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
 
-    if(homeowner.Dwelling.HODW_DifferenceConditions_HOE_ExtExists  )
-      return RuleEvaluationResult.execute()
+   // if(homeowner.Dwelling.HODW_DifferenceConditions_HOE_ExtExists  )
+   //   return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()
   }

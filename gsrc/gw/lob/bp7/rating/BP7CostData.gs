@@ -2,6 +2,7 @@ package gw.lob.bp7.rating
 
 uses gw.rating.CostDataWithOverrideSupport
 uses gw.lob.common.util.DateRange
+uses gw.financials.PolicyPeriodFXRateCache
 
 abstract class BP7CostData<R extends BP7Cost> extends CostDataWithOverrideSupport<R, BP7Line> {
 
@@ -14,6 +15,14 @@ abstract class BP7CostData<R extends BP7Cost> extends CostDataWithOverrideSuppor
     super(sliceRange.start, sliceRange.end)
     _coverageID = coverage
     _coverableID = coverable
+  }
+
+  construct(effDate : DateTime, expDate : DateTime, asRatedCurrency : Currency, rateCache : PolicyPeriodFXRateCache) {
+    super(effDate, expDate, asRatedCurrency, rateCache)
+  }
+
+  construct(cost : R, rateCache : PolicyPeriodFXRateCache) {
+    super(cost, rateCache)
   }
 
   construct(c : R) {

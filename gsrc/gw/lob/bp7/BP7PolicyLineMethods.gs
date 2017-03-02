@@ -208,7 +208,7 @@ class BP7PolicyLineMethods extends AbstractPolicyLineMethodsImpl {
   
   private function createCostContainer(parent : WorksheetTreeNodeContainer, cost : BP7CostDisplayable, showConditionals : boolean) {
     var costContainer : WorksheetTreeNodeContainer = null
-    if(cost typeis BP7TaxCost_Ext)
+    if(cost typeis BP7TaxCost_Ext || cost typeis BP7LineCost_Ext)
       costContainer = new WorksheetTreeNodeContainer(cost.DisplayDescription)
     else
       costContainer = new WorksheetTreeNodeContainer(cost.DisplayDescription + ": " + cost.DisplayCoverageName)

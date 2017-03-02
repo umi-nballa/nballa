@@ -60,14 +60,13 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         if(line?.Dwelling?.DwellingProtectionDetails?.GatedCommunity or (line?.Dwelling?.DwellingProtectionDetails?.FireAlarmReportCntlStn and
             line?.Dwelling?.DwellingProtectionDetails?.BurglarAlarmReportCntlStn)){
            _hasSeasonalOrSecondaryResidenceSurcharge = true
-  }
+        }
       }else{
           _hasSeasonalOrSecondaryResidenceSurcharge = true
       }
     }
 
     _dwellingRatingInfo = new HOGroup1DwellingRatingInfo(line.Dwelling)
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
 
   }
 
@@ -1150,5 +1149,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.PrivateFireCompanyDiscount + _hoRatingInfo.VacancySurcharge + _hoRatingInfo.BuildingCodeEffectivenessGradingCredit +
         _hoRatingInfo.AffinityDiscount + _hoRatingInfo.DiscountAdjustment
     )
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
   }
 }

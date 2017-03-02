@@ -66,7 +66,7 @@ class HODwellingUtil_HOE {
 
   static function initializeSingleReturnTypelists(dwelling:Dwelling_HOE, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse):boolean
   {
-    if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
+  /*  if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
       {
          dwelling.HOLocation.BCEG_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade) as typekey.BCEGGrade_Ext[]).first()
       }
@@ -254,7 +254,7 @@ class HODwellingUtil_HOE {
     if(dwelling.TotalSqFtValMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
-    }
+    }      */
 
 
 

@@ -226,7 +226,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-    _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Building Additions and Alterations Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

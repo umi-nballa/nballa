@@ -128,7 +128,7 @@ class CPAutoPopulateUtil {
   {
 
     //Increased cost of construction limit to 5% of building coverage or 10000 whichever is minimum
-    if(cBuilding?.CPBldgCov?.CPBldgCovLimitTerm!=null && 0.05*cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value<(new BigDecimal(10000)))
+    if(cBuilding.CPBldgCovExists && cBuilding.CPBldgCov.HasCPBldgCovLimitTerm && cBuilding?.CPBldgCov?.CPBldgCovLimitTerm!=null && 0.05*cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value<(new BigDecimal(10000)))
     {
       cBuilding.CPIncreasedCostConst_EXT.CPIncreasedCostLimit_EXTTerm.Value= 0.05*cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value
     }

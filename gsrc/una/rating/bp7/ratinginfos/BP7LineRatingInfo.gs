@@ -5,7 +5,6 @@ uses java.math.BigDecimal
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
- * Date: 12/7/16
  * Rating info for the BP7 Line coverages
  */
 class BP7LineRatingInfo {

@@ -348,4 +348,22 @@ enhancement BP7BuildingEnhancement : entity.BP7Building {
     }
     return false
   }
+
+  //DE226 fix - Defaulting to 1 when occ type is Tenant and looks like it is being used in rating ootb, when bop rating gets implemented this can be removed
+  /*
+   * DE2186 - When occ type is 1st time TENANT value (or) occ type is changed from some other value to TENANT, Vacant Sqr footage is defaulted to 1
+   * When occ type is changed to some other value from TENANT, Vacant Sqr footage(=1) should be cleared off to accept a NEW value on it
+   */
+  function setDefaultClassificationArea(){
+    if((this.getOriginalValue("PredominentOccType_Ext")==null && this.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT)||
+        (this.getOriginalValue("PredominentOccType_Ext")!=typekey.BP7PredominentOccType_Ext.TC_TENANT && this.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT)){
+      for(cl in this.Classifications){
+        cl.Area = 1
+      }
+    }else if(this.getOriginalValue("PredominentOccType_Ext")==typekey.BP7PredominentOccType_Ext.TC_TENANT && this.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT){
+      for(classifn in this.Classifications){
+        classifn.Area = null
+      }
+    }
+  }
 }

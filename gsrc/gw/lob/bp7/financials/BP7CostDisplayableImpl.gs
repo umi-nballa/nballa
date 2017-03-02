@@ -62,6 +62,8 @@ class BP7CostDisplayableImpl implements BP7CostDisplayable {
           return _cost.Location.DisplayName
       case BP7TaxCost_Ext:
           return _cost.ChargePattern.DisplayName
+      case BP7LineCost_Ext:
+          return _cost.BP7CostType.DisplayName
         default:
         throw "unknown cost type " + typeof _cost
     }

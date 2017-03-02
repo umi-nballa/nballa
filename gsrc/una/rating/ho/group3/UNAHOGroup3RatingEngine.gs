@@ -153,6 +153,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
         rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov, dateRange)
         break
+      case HODW_BuildingAdditions_HOE_Ext:
+        if(dwellingCov.HODW_BuildAddInc_HOETerm.LimitDifference > 0){
+          //rateBuildingAdditionsCoverage(dwellingCov, dateRange)
+        }
+        break
     }
   }
 
@@ -239,7 +244,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
       ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
     }
-    //TODO : Need to update for policy type HO3
+
     if (dwelling?.HODW_Personal_Property_HOEExists){
       if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value != ValuationMethod.TC_PERSPROP_ACV){
         ratePersonalPropertyReplacementCost(dateRange)
@@ -453,6 +458,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Sinkhole Loss Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+  /**
+   * Rate Building Additions Coverage
+   */
+  function rateBuildingAdditionsCoverage(dwellingCov: HODW_BuildingAdditions_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingAdditionsCoverage to rate Building Additions Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Building Additions and Alterations Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

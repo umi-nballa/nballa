@@ -24,10 +24,12 @@ class HPXAdditionalNameInsuredMapper {
       insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = ""
       insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = addtlNamedInsured.ContactRelationship_Ext != null ? addtlNamedInsured.ContactRelationship_Ext.DisplayName : ""
       insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYADDLNAMEDINSURED
-      var creditScores = creditScoreMapper.createCreditScoreInfo(addtlNamedInsured.CreditReportsExt)
       var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
-      for (score in creditScores) {
-        principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+      if(addtlNamedInsured.CreditReportsExt != null and addtlNamedInsured.CreditReportsExt.length > 0) {
+        var creditScores = creditScoreMapper.createCreditScoreInfo(addtlNamedInsured.CreditReportsExt)
+        for (score in creditScores) {
+          principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+        }
       }
       insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
       additionalNameInsureds.add(insuredOrPrincipal)

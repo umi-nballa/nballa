@@ -17,7 +17,11 @@ class PLPersonNameSearchOwner extends NameOwnerBase {
     return NameOwnerFieldId.HIDDEN_FOR_SEARCH
   }
 
-  override property get ShowNameSummary() : boolean {
+  override property get ShowNameSummary(): boolean {
     return false
+  }
+
+  override property get Suffix(): NameSuffix {
+    return null
   }
 }

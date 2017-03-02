@@ -259,7 +259,7 @@ abstract class AbstractRatingEngineBase<SL> {
       for (costEntity in untouchedCurrentCostEntities) {
         removeCost = true
         if(line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE or line.Branch.Job.Subtype == typekey.Job.TC_CANCELLATION)
-          if(costEntity typeis HOTaxCost_HOE){
+          if(costEntity typeis HOTaxCost_HOE || costEntity typeis CPStateTaxCost || costEntity typeis BP7TaxCost_Ext){
             removeCost = false
           }
         if(removeCost)

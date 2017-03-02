@@ -8,8 +8,9 @@ uses gw.api.job.JobProcessLogger
 uses gw.plugin.job.IPolicyRenewalPlugin
 uses gw.plugin.Plugins
 uses gw.plugin.note.impl.LocalNoteTemplateSource
-uses una.utils.EmailUtil
 uses gw.api.email.EmailContact
+uses gw.api.email.EmailUtil
+uses gw.api.util.SymbolTableUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -112,16 +113,6 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     }
   }
 
-  override function startPendingRenewal(){
-
-    if(_branch.HomeownersLine_HOE.Dwelling.HODW_DifferenceConditions_HOE_ExtExists){
-      var event = new FormsEvent(Job){:EventType = FormsEventType.TC_SENDDIFFERENCEINCONDITIONS}
-      Job.addToFormsEvents(event)
-    }
-
-    super.startPendingRenewal()
-  }
-
   /**
    *  This is the OOTB final check code.  I made the original function abstract "pendingRenewalFinalCheck".  The abstract class implements this as a "do nothing" step for CPP and BOP to share
    *  Here, we do need to execute things in the final step because we also needed to make use of the first check for HO Renewals
@@ -141,7 +132,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
   }
 
   private function shouldOrderCreditReport(lastReceivedCreditReport : CreditReportExt) : boolean{
-    return (lastReceivedCreditReport != null and lastReceivedCreditReport.CreditScoreDate.afterIgnoreTime(Date.CurrentDate.addYears(-1)) or this.Job.IsCreditOrderingRenewal)
+    return lastReceivedCreditReport.CreditScoreDate == null or lastReceivedCreditReport.CreditScoreDate?.addYears(1)?.afterOrEqualsIgnoreTime(Date.CurrentDate)
   }
 
   private function orderCreditReport(namedInsured : PolicyContactRole) : CreditReportResponse{
@@ -219,13 +210,25 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     note.Level = this._branch.Policy
   }
 
-  private function sendEmailToAgentOfRecord(){
-    var subject = "Alarm discount removed Policy # ${this._branch.PolicyNumber}"  //TODO tlv subject and message still need to be confirmed
-    var message = "Alarm discount has been removed from Policy # ${this._branch.PolicyNumber} and a request for documentation has been sent to the insured."
-    var emailContact = new EmailContact()
-    emailContact.Contact = this._branch.ProducerOfRecord.Contact
-    emailContact.EmailAddress = this._branch.ProducerOfRecord.Contact.EmailAddress1
+  function sendEmailToAgentOfRecord(){
+    var template =  gw.plugin.Plugins.get(gw.plugin.email.IEmailTemplateSource).getEmailTemplate("AlarmCreditRemovedEmailTemplate.gosu")
 
-    EmailUtil.sendEmail(message, emailContact, subject)
+    var email = new gw.api.email.Email()
+    email.addToRecipient(new EmailContact(this._branch.ProducerCodeOfRecord.Contact_Ext))
+    email.Sender = getSender()
+    email.Html = true
+    email.useEmailTemplate(template, {"pni" -> this._branch.PrimaryNamedInsured.DisplayName, "policyNumber" -> this._branch.PolicyNumber})
+
+    EmailUtil.sendEmailWithBody(null, email)
+    email.saveAsDocument(this._branch, this._branch.Policy, tc_out_corr, tc_outcorr_remove_protective_device_credit)
+  }
+
+  private function getSender() : EmailContact{
+    var sender = new EmailContact()
+    var user = edge.util.helper.UserUtil.getUserByName("ghopkins")
+    sender.EmailAddress = "underwriting@uihna.com"
+    sender.Name = user.Contact.FirstName + " " + user.Contact.LastName
+
+    return sender
   }
 }

@@ -21,6 +21,9 @@
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
       name="setTunaFieldsMatchLevel"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
+      name="initializeTunaSingleReturns"/>
     <InputColumn
       labelWidth="350">
       <InputSet
@@ -151,11 +154,11 @@
         id="ConstructionTypeL1_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ">
         <RangeInput
-          available="!dwelling.OverrideConstructionTypeL1_Ext"
+          available="!dwelling.OverrideConstructionType_Ext"
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE// &amp;&amp; !dwelling.OverrideConstructionTypeL1_Ext"
           id="ConstructionTypeL1L1TunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1_Ext"
-          required="!dwelling.OverrideConstructionTypeL1_Ext"
+          required="!dwelling.OverrideConstructionType_Ext"
           value="dwelling.ConstructionType"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ConstructionType) as typekey.ConstructionType_HOE[]">
           <PostOnChange/>
@@ -163,21 +166,22 @@
         <Input
           id="ConstructionTypeL1MatchLevel_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1MatchLevel_Ext"
-          value="dwelling.ConstructionTypeMatchLvlL1_Ext"/>
+          value="dwelling.ConstructionTypeMatchLevel_Ext"/>
         <BooleanRadioInput
           editable="true"
           id="OverRideConstructionTypeL1l_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1Override_Ext"
-          value="dwelling.OverrideConstructionTypeL1_Ext">
+          value="dwelling.OverrideConstructionType_Ext">
           <PostOnChange/>
         </BooleanRadioInput>
         <RangeInput
-          available="dwelling.OverrideConstructionTypeL1_Ext"
+          available="dwelling.OverrideConstructionType_Ext"
           editable="true"
           id="ConstructionTypeL1UserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL1UserEntered_Ext"
-          required="dwelling.OverrideConstructionTypeL1_Ext"
-          value="dwelling.ConstTypeOverriddenL1_Ext"
+          required="dwelling.OverrideConstructionType_Ext"
+          sortValueRange="false"
+          value="dwelling.ConstTypeOverridden_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling)">
           <PostOnChange/>
         </RangeInput>
@@ -196,8 +200,8 @@
         editable="true"
         id="ConstTypeoL1_Ext"
         label="displaykey.Web.Homeowners.DwellingConstruction.ConstructionTypeL1IfOther_Ext"
-        value="dwelling.ConstructionTypeLevel1Other"
-        visible="dwelling.OverrideConstructionTypeL1_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ) &amp;&amp; (dwelling.ConstructionTypeL1OrOverride.Code==&quot;Other&quot;)"/>
+        value="dwelling.ConstructionTypeOther"
+        visible="dwelling.OverrideConstructionType_Ext &amp;&amp; (gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ) &amp;&amp; (dwelling.ConstructionTypeL1OrOverride.Code==&quot;Other&quot;)"/>
       <InputSet
         id="ConstructionTypeL2_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT.Code || gw.lob.ho.HODwellingUtil_HOE.getNumStories(dwelling)==typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT.Code ">
@@ -228,6 +232,7 @@
           id="ConstructionTypeL2UserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeL2UserEntered_Ext"
           required="dwelling.OverrideConstructionTypeL2_Ext"
+          sortValueRange="false"
           value="dwelling.ConstTypeOverriddenL2_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling)">
           <PostOnChange/>

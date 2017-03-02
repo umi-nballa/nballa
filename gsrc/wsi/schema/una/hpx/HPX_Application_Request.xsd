@@ -57,7 +57,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="WrittenAmtType">
 		<xsd:sequence>
-			<xsd:element name="Amt" type="xsd:long"/>
+			<xsd:element name="Amt" type="xsd:long" minOccurs="0"/>
 			<xsd:element name="CurCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Precision" type="xsd:byte" minOccurs="0"/>
 		</xsd:sequence>
@@ -834,6 +834,8 @@
             <xsd:element name="CreditResponseSubject" type="ClueSearchSubjectType" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="CreditResponseAddress" type="ClueSearchAddressType" minOccurs="0"/>
             <xsd:element name="CaseID" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="OrderDate" type="xsd:date" minOccurs="0"/>
+            <xsd:element name="CompleteDate" type="xsd:date" minOccurs="0"/>
             <xsd:element name="Quoteback" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Account" type="xsd:string" minOccurs="0"/>
             <xsd:element name="NodeLocation" type="xsd:string" minOccurs="0"/>
@@ -3578,10 +3580,10 @@
             <xsd:element name="QuotebackID" type="xsd:string" minOccurs="0"/>
             <xsd:element name="CaseID" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ReferenceNumber" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="OrderDate" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="OrderDate" type="xsd:date" minOccurs="0"/>
             <xsd:element name="Requestor" type="xsd:string" minOccurs="0"/>
             <xsd:element name="AccountNumber" type="xsd:string" minOccurs="0"/>
-            <xsd:element name="CompleteDate" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CompleteDate" type="xsd:date" minOccurs="0"/>
             <xsd:element name="ClueTotalRiskClaims" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueTotalSubjectClaims" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueProcessingStatus" type="xsd:string" minOccurs="0"/>
@@ -3715,10 +3717,25 @@
 			<xsd:element name="ClaimPaymentDetailLineItemsCategoryTypeDesc" type="xsd:string"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="ClaimPaymentDetailLineItemsCostTypeType">
+        <xsd:sequence>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostTypeID" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostTypeCode" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostTypeDesc" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    <xsd:complexType name="ClaimPaymentDetailLineItemsCostCategoryType">
+        <xsd:sequence>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategoryTypeID" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategoryTypeCode" type="xsd:string"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategoryTypeDesc" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="LineItemsType">
 		<xsd:sequence>
 			<xsd:element name="ClaimPaymentDetailLineItemsID" type="xsd:string"/>
 			<xsd:element name="Amount" type="xsd:string"/>
+            <xsd:element name="Deductible" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClaimPaymentDetailLineItemsCategory" type="ClaimPaymentDetailLineItemsCategoryType"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -3730,6 +3747,9 @@
 			<xsd:element name="ClaimPaymentType" type="ClaimPaymentTypeType"/>
 			<xsd:element name="AvailableReservesAmt" type="xsd:byte"/>
 			<xsd:element name="isEroding" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostType" type="ClaimPaymentDetailLineItemsCostTypeType" minOccurs="0"/>
+            <xsd:element name="ClaimPaymentDetailLineItemsCostCategory" type="ClaimPaymentDetailLineItemsCostCategoryType" minOccurs="0"/>
+            <xsd:element name="CoverageType" type="CoverageTypeType" minOccurs="0"/>
 			<xsd:element name="Comments" type="xsd:string"/>
 			<xsd:element name="LineItems" type="LineItemsType"/>
 		</xsd:sequence>
@@ -5182,6 +5202,7 @@
 			<xsd:element name="ReportNumber" type="xsd:string"/>
 			<xsd:element name="ClaimOfficialType" type="ClaimOfficialTypeType"/>
 			<xsd:element name="ShieldNumber" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="PostalAddress" type="PostalAddressType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ClaimVehicleIncidentType">
@@ -5554,13 +5575,13 @@
 			<xsd:element name="LossDescription" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="LossLocation" type="LossLocationType" minOccurs="0"/>
 			<xsd:element name="LossDate" type="xsd:date" minOccurs="0"/>
-            <xsd:element name="ClaimDate" type="xsd:dateTime" minOccurs="0"/>
+            <xsd:element name="ClaimDate" type="xsd:date" minOccurs="0"/>
             <xsd:element name="ClaimAge" type="xsd:string" minOccurs="0"/>
             <xsd:element name="AMB" type="xsd:string" minOccurs="0"/>
             <xsd:element name="Disposition" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueFileNumber" type="xsd:string" minOccurs="0"/>
             <xsd:element name="ClueSearchInfo" type="ClueSearchInfoType" minOccurs="0"/>
-            <xsd:element name="ClueLossSummary" type="ClueLossSummaryType" minOccurs="0"/>
+            <xsd:element name="ClueLossSummary" type="ClueLossSummaryType" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="ClueHeader" type="ClueHeaderType" minOccurs="0"/>
 			<xsd:element name="NotificationDate" type="xsd:dateTime" minOccurs="0"/>
 			<xsd:element name="CreatedDate" type="xsd:dateTime" minOccurs="0"/>

@@ -248,7 +248,7 @@ class GLPolicyLineMethods extends AbstractPolicyLineMethodsImpl {
     if (RateMethod.TC_SYSTABLE == method) {
       return new GLSysTableRatingEngine(_line as GLLine)
     }
-    return null//new UNAGLRatingEngine(_line as GLLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    return new UNAGLRatingEngine(_line as GLLine, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
   }
 
   override property get BaseStateRequired(): boolean {

@@ -80,6 +80,7 @@ public final class HORateRoutineNames {
   public static final var PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE : String = "UNAHOPermittedIncidentalOccupanciesRateRoutine"
   public static final var BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE : String = "UNAHOBuildingAdditionsAndAlterationsIncreasedLimitsRateRoutine"
   public static final var FLOOD_COVERAGE_RATE_ROUTINE : String = "UNAHOFloodCoverageRateRoutine"
+  public static final var WINDSTORM_MITIGATION_CREDIT_RATE_ROUTINE : String = "UNAHOWindstormMitigationCreditRateRoutine"
 
   // group3 states
   public static final var WIND_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHOWindBasePremiumRateRoutine"

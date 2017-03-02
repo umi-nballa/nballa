@@ -94,13 +94,12 @@ class CreditReportRequestDispatcher extends PCValidationBase {
     creditReportExt.CreditReportOrder = creditReportExt.PolicyContactRole.CreditReportsExt.length + 1
     
     var rqst = CreditReportUtil.createCreditReportRequest(address, firstName, middleName, lastName, _policyPeriod, this._policyContact)
-    
     // Delegates request to a credit reporting service
     var service = CreditReportServiceFactory.getCreditReportService(rqst.CreditReportService)
     LOGGER.debug("getCreditReportResponse(): Sending request: " + rqst.toString())
     var creditReportResponse : CreditReportResponse = service.getCreditReport(rqst)
     
-    populateCreditReportExt(creditReportExt, creditReportResponse)
+    populateCreditReportExt(creditReportExt, creditReportResponse, rqst, _policyPeriod)
     _policyContact.addToCreditReportsExt(creditReportExt)
     _policyPeriod.CreditInfoExt.CreditReport = creditReportExt
 
@@ -119,8 +118,8 @@ class CreditReportRequestDispatcher extends PCValidationBase {
    */
   @Param("creditReportExt", "Target CreditReportExt instance to populate" )
   @Param("creditReportResponse", "Source creditReportResponse instance" )
-  private function populateCreditReportExt(creditReportExt : CreditReportExt, creditReportResponse : CreditReportResponse ) {
-    
+  private function populateCreditReportExt(creditReportExt : CreditReportExt, creditReportResponse : CreditReportResponse, creditReportRequest : CreditReportRequest, pPeriod : PolicyPeriod) {
+    //creditReportResponse.
     creditReportExt.CreditScore = creditReportResponse.Score
     creditReportExt.CreditBureau = creditReportResponse.CreditBureau
     creditReportExt.CreditScoreDate = creditReportResponse.ScoreDate
@@ -136,12 +135,38 @@ class CreditReportRequestDispatcher extends PCValidationBase {
           creditReportExt.addToCreditStatusReasons(creditStatReason)
         })
      }
+
     creditReportExt.FirstName = creditReportResponse.FirstName
     creditReportExt.MiddleName = creditReportResponse.MiddleName
     creditReportExt.LastName = creditReportResponse.LastName
     creditReportExt.AddressLine1 = creditReportResponse.AddressLine1
     creditReportExt.AddressCity = creditReportResponse.AddressCity
     creditReportExt.AddressState = creditReportResponse.AddressState
-    creditReportExt.AddressZip = creditReportResponse.AddressZip    
+    creditReportExt.AddressZip = creditReportResponse.AddressZip
+    creditReportExt.SearchFirstName = creditReportRequest.FirstName
+    creditReportExt.SearchMiddleName = creditReportRequest.MiddleName
+    creditReportExt.SearchLastName = creditReportRequest.LastName
+    creditReportExt.SearchAddressLine1 = creditReportRequest.AddressLine1
+    creditReportExt.SearchAddressCity = creditReportRequest.AddressCity
+    creditReportExt.SearchAddressState = creditReportRequest.AddressState
+    creditReportExt.SearchAddressZip = creditReportRequest.AddressZip
+    creditReportExt.SearchSSN = creditReportRequest.SocialSecurityNumber
+    creditReportExt.SearchDateOfBirth = creditReportRequest.DateOfBirth
+    creditReportExt.SearchGender = creditReportRequest.Gender
+
+
+
+    // credit report header
+    creditReportExt.UserID = pPeriod.UpdateUser.Credential.UserName
+    creditReportExt.PncAccount = creditReportResponse.PncAccount
+    creditReportExt.ProductReference = creditReportResponse.ProductReference
+    creditReportExt.Quoteback = creditReportResponse.Quoteback
+    creditReportExt.DateRequestOrdered = creditReportResponse.DateRequestOrdered
+    creditReportExt.DateRequestCompleted = creditReportResponse.DateRequestCompleted
+    creditReportExt.Status = creditReportResponse.Status
+    creditReportExt.ReportCode = creditReportResponse.ReportCode
+    creditReportExt.DateOfBirth = creditReportResponse.DateOfBirth
+    creditReportExt.Gender = creditReportResponse.Gender
+
   }
 }

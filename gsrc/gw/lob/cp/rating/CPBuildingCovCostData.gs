@@ -50,5 +50,9 @@ abstract class CPBuildingCovCostData<T extends CPBuildingCovCost> extends CPCost
   protected override property get KeyValues() : List<Object> {
     return {_covID}
   }
+
+  protected property get CoverageID() : Key {
+    return _covID
+  }
  
 }

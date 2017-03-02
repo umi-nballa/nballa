@@ -76,6 +76,19 @@ interface FormPatternConstants {
   static final var HO_REWRITE_FOR_RENEWALS_FORM : String = "INEBEE1116"
   static final var HO_REWRITE_FOR_RENEWALS_TX_FORM : String = "INTXHO1216"
    static final var HO_REWRITE_FOR_RENEWALS_HOB_FORM : String = "INRCSR1116"
+  static final var HO_DWELLING_FIRE_ORDIANCE_LAW1_FORM : String = "DP04711202"
+  static final var HO_DWELLING_FIRE_ORDIANCE_LAW2_FORM : String = "UNLPP04711202"
+  static final var HO_FUNGI_WET_DRY1_FORM : String = "UN09820915"
+   static final var HO_FUNGI_WET_DRY2_FORM : String = "UN09830915"
+  static final var HO_CARLIFORNIA_EARTHQUAKE_COV_FORM : String = "ASP1100116"
+  static final var HO_LOSS_ASSESSMENT_FORM : String = "UI04640410"
+  static final var HO_FUNGI_WET_FORM : String = "HO03330503"
+  static final var HO_ADDNL_INSURED_FORM : String = "HO3011095"
+  static final var HO_DWELLING_FIRE_TX1_FORM : String = "TDP0260401"
+  static final var HO_DWELLING_FIRE_TX2_FORM : String = "TDP0270401"
+  static final var HO_UNSCHEDULE_LIMIT_FORM : String = "HO1100792"
+
+
 
 
   // BOP Form Codes
@@ -88,6 +101,7 @@ interface FormPatternConstants {
   static final var BOP_ADDL_INSURED_DESIGNATED_PERSON_FORM : String = "BP04480106"
   static final var BOP_CONDO_COMMERCIAL_UNIT_OWNERS_OPT_COVERAGES_FORM : String = "BP17030106"
   static final var BOP_ADDL_INSURED_GRANTOR_OF_FRANCHISE_FORM : String = "UIBP01840108"
+  static final var BOP_REWRITE_FOR_RENEWALS_FORM : String = "INBOP051016"
 
 
 }

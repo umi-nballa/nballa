@@ -14,6 +14,7 @@ uses java.io.File
  */
 class DocumentDTO {
 
+  var _account: entity.Account as Account
   var _policy: entity.Policy  as Policy
   var _description: String as Description
   var _file: File as File
@@ -22,11 +23,13 @@ class DocumentDTO {
 
   construct() {}
 
-  construct(policy: Policy, file: File, docType: OnBaseDocumentType_Ext, docSubType: OnBaseDocumentSubtype_Ext) {
+  construct(account: Account, policy: Policy, file: File, docType: OnBaseDocumentType_Ext, docSubType: OnBaseDocumentSubtype_Ext, description: String) {
+    _account = account
     _policy = policy
     _file = file
     _onBaseDocType = docType
     _onBaseDocSubtype = docSubType
+    _description = description
   }
 
 }

@@ -18,9 +18,12 @@ class ContactNameOwner extends NameOwnerBase {
   override property get HiddenFields() : Set<NameOwnerFieldId> {
     return NameOwnerFieldId.NO_FIELDS
   }
-  
-  override function isHideIfReadOnly(fieldId : NameOwnerFieldId) : boolean {
+
+  override function isHideIfReadOnly(fieldId: NameOwnerFieldId): boolean {
     return false
   }
 
+  override property get Suffix(): NameSuffix {
+    return null
+  }
 }

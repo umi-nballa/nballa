@@ -11,7 +11,8 @@ uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfac
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.AdditionalInsured
 uses onbase.api.services.implementations.wsp.webservicecollection.onbaseinterfacewsp.soapservice.elements.PrimaryInsured
 uses org.apache.commons.codec.binary.Base64
-
+uses una.logging.UnaLoggerCategory
+uses java.util.ArrayList
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -41,6 +42,7 @@ uses org.apache.commons.codec.binary.Base64
  */
 class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
   private var logger = Logger.forCategory(Settings.ServicesLoggerCategory)
+
 
   /**
    * Archive document synchronously.
@@ -72,10 +74,13 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     // Standalone Keywords
     var archiveKeywords = new KeywordsArchiveDocument_StandAlone()
 
+    archiveKeywords.AccountNumber_Collection.String[0] = adaptor.AccountNumber
     archiveKeywords.AgencyCode_Collection.String[0] = adaptor.AgencyCode
     archiveKeywords.Description_Collection.String[0] = adaptor.Description
     archiveKeywords.LegacyPolicyNumber_Collection.String[0] = adaptor.LegacyPolicyNumber
     archiveKeywords.OnBaseDocumentType_Collection.String[0] = documentType
+    archiveKeywords.IssueDate_Collection.String[0] = adaptor.IssueDate
+    archiveKeywords.TransactionEffectiveDate_Collection.String[0] = adaptor.TransactionEffectiveDate
     archiveKeywords.PolicyEffectiveDate_Collection.String[0] = adaptor.PolicyEffectiveDate
     archiveKeywords.PolicyExpirationDate_Collection.String[0] = adaptor.PolicyExpirationDate
     archiveKeywords.PolicyNumber_Collection.String[0] = adaptor.PolicyNumber
@@ -90,7 +95,7 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     // MIKG keywords
     var archiveMIKGs = new KeywordsArchiveDocument_Multi_Instance_Keyword_Group()
     if(!adaptor.PrimaryNamedInsureds.Empty) {
-      archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured = new List<PrimaryInsured>()
+      archiveMIKGs.PrimaryInsured_Collection.PrimaryInsured = new ArrayList<PrimaryInsured>()
       for(namedInsured in adaptor.PrimaryNamedInsureds index i) {
         var primaryInsured = new PrimaryInsured()
         primaryInsured.PrimaryInsuredFirstName= namedInsured.FirstName
@@ -101,7 +106,7 @@ class ArchiveDocumentSyncWSP implements ArchiveDocumentSyncInterface {
     }
 
     if(!adaptor.AdditionalNamedInsureds.Empty) {
-      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured = new List<AdditionalInsured>()
+      archiveMIKGs.AdditionalInsured_Collection.AdditionalInsured = new ArrayList<AdditionalInsured>()
       for(namedInsured in adaptor.AdditionalNamedInsureds index i) {
         var addNamedInsured = new AdditionalInsured()
         addNamedInsured.AdditionalInsuredFirstName = namedInsured.FirstName

@@ -18,6 +18,10 @@ uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.job.RenewalProcess
 uses gw.rating.rtm.query.RatingQueryFacade
 
+/**
+ * Rating engine which rates all the BP7 policies
+*/
+
 abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRatingEngine<BP7Line> {
 
   var _bp7RatingInfo : BP7RatingInfo as BP7RatingInfo
@@ -61,6 +65,9 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     }
   }
 
+  /**
+  *  function which gets the total premium with default IRPM Value
+   */
   private function getTotalPremiumWithDefaultIRPMValue(lineVersion: BP7Line, sliceRange : DateRange){
     lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
 
@@ -145,8 +152,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
   abstract function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange)
 
   abstract function rateLocationCoverage(location: BP7LocationCov, sliceToRate: DateRange)
-
-  abstract function rateLiability(line : BP7BusinessOwnersLine, sliceToRate : DateRange)
 
   abstract function rateBuilding(building: BP7Building, sliceToRate: DateRange)
 

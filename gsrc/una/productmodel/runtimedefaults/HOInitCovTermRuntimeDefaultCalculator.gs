@@ -4,7 +4,6 @@ uses java.lang.Double
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses gw.api.domain.covterm.CovTerm
 uses una.config.ConfigParamsUtil
-uses java.math.MathContext
 uses una.utils.MathUtil
 
 /**
@@ -85,7 +84,9 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
         result = getSinkholeDeductibleValue(line)
         break
       case "DPDW_FairRentalValue_Ext":
-        result = line.Dwelling.DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm.RuntimeDefault
+        if(line.Dwelling.DwellingLimitCovTerm.Value != null){
+          result = line.Dwelling.DPDW_FairRentalValue_Ext.DPDW_FairRentalValue_ExtTerm.RuntimeDefault
+        }
         break
       default:
         break
@@ -94,7 +95,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getLossAssessmentDefaultDeductible(covTerm: CovTerm, line : entity.HomeownersLine_HOE) : Double{
+  private function getLossAssessmentDefaultDeductible(covTerm: CovTerm, line : entity.HomeownersLine_HOE) : Double{
     var result : Double
 
     if(line.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HasHOPL_Deductible_HOETerm){
@@ -108,7 +109,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getLossAssessmentDefaultDeductibleFL(value: Double, line: entity.HomeownersLine_HOE) : Double{
+  private function getLossAssessmentDefaultDeductibleFL(value: Double, line: entity.HomeownersLine_HOE) : Double{
     var result : Double
 
     if(line.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000){
@@ -122,7 +123,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getEarthquakeCompCovDLimitDefault(line: entity.HomeownersLine_HOE) : Double{
+  private function getEarthquakeCompCovDLimitDefault(line: entity.HomeownersLine_HOE) : Double{
     var result : Double
     var maxAllowed : Double = 25000
     var factor : Double = 0.2
@@ -138,7 +139,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getEarthquakeCompCovCLimitDefault(line : entity.HomeownersLine_HOE) : Double{
+  private function getEarthquakeCompCovCLimitDefault(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
     var factor = ConfigParamsUtil.getDouble(TC_LimitDefaultFactor, line.BaseState, line.HOPolicyType.Code + "HODW_CompEarthquakeCovC_Ext")
 
@@ -151,7 +152,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getBuildingAddAltLimitDefault(line: entity.HomeownersLine_HOE) : Double{
+  private function getBuildingAddAltLimitDefault(line: entity.HomeownersLine_HOE) : Double{
     var result : Double
     var factor : Double = 0.1
 
@@ -163,7 +164,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getOffPremisesLimitDefault(line : entity.HomeownersLine_HOE) : Double{
+  private function getOffPremisesLimitDefault(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
     var factor = (line.BaseState == TC_NC) ? 0.60bd : 0.20bd
     if(line.Dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.Value != null){
@@ -173,7 +174,7 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
     return result
   }
 
-  private static function getSinkholeDeductibleValue(line : entity.HomeownersLine_HOE) : Double{
+  private function getSinkholeDeductibleValue(line : entity.HomeownersLine_HOE) : Double{
     var result : Double
 
     if((line.HOPolicyType == TC_HO3 or  line.HOPolicyType == TC_DP3_Ext) and line.Dwelling.DwellingLimitCovTerm.Value != null){

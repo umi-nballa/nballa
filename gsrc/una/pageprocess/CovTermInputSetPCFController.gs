@@ -79,14 +79,20 @@ class CovTermInputSetPCFController {
           hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
         }
       }else if(term.PatternCode == "DPLI_LiabilityLimit_HOE" or term.PatternCode == "HOLI_Liability_Limit_HOE"){
-        var availableOptions = hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.AvailableOptions
-        var matchingValue = availableOptions?.atMostOneWhere( \ option -> option.Value?.doubleValue() == term.Value?.doubleValue())
-
-        if(matchingValue != null){
-          hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)
-        }
+        var covTerm = (HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(hoLine.HOPolicyType)) ? hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm : hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm
+        hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.matchOptionValue(covTerm)
       }else if(term.PatternCode == "HODW_OtherPerils_Ded_HOE"){
         hoLine.Dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
+      }else if(term.PatternCode == "HOLI_Liability_Limit_HOE" and hoLine.BaseState == TC_HI){
+        switch(term.Value.doubleValue()){
+          case 100000:
+          case 300000:
+            hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.matchOptionValue(term)
+            break
+          case 500000:
+            hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setOptionValue(hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.AvailableOptions.firstWhere( \ elt -> elt.Value.doubleValue() == 300000))
+            break
+        }
       }
     }
   }
@@ -164,6 +170,19 @@ class CovTermInputSetPCFController {
     }
 
     return result
+  }
+
+  public static function onAddOptionalCoverage(clausePattern: gw.api.productmodel.ClausePattern, coverable: Coverable){
+    switch(clausePattern.CodeIdentifier){
+      case "HODW_Comp_Earthquake_CA_HOE_Ext":
+        var limitedEarthquake = coverable.getCoverage("HODW_Limited_Earthquake_CA_HOE")
+        if(limitedEarthquake != null){
+          coverable.removeCoverageFromCoverable(limitedEarthquake)
+        }
+        break
+      default:
+        break
+    }
   }
 
   private static function validateCalculatedLimits(covTerm: DirectCovTerm, coverable: Dwelling_HOE) : String {

@@ -17,6 +17,7 @@ public class CreditReportRequest {
   private var _addressState : State as AddressState
   private var _addressZip : String as AddressZip
   private var _dateOfBirth : Date as DateOfBirth
+  private var _gender : String as Gender
   private var _createdDate : Date as CreatedDate = gw.api.util.DateUtil.currentDate()
   
   // If previous address is provided, typically needed when the applicant
@@ -66,7 +67,8 @@ public class CreditReportRequest {
     private var _addressLine2 : String 
     private var _addressZip : String 
     private var _dateOfBirth : Date 
-    private var _publicId : String 
+    private var _publicId : String
+    private var _gender : String
     
     private var _priorAddressLine1 : String 
     private var _priorAddressLine2 : String 
@@ -166,7 +168,14 @@ public class CreditReportRequest {
       this._publicId = publicId     
       
       return this
-    } 
+    }
+
+    public function withGender(gender : String) : Builder {
+
+      this._gender = gender
+
+      return this
+    }
 
     public function withPriorAddressLine1(priorAddressLine1 : String) : Builder {
       
@@ -231,6 +240,7 @@ public class CreditReportRequest {
     this._policyState = builder._policyState
     this._cacheExpireDate = builder._cacheExpireDate    
     this._publicId = builder._publicId
+    this._gender = builder._gender
     
     this._priorAddressLine1 = builder._priorAddressLine1
     this._priorAddressLine2 = builder._priorAddressLine2

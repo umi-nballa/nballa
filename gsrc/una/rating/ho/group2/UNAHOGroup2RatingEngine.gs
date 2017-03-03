@@ -46,7 +46,6 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _lineRatingInfo = new HOGroup2LineRatingInfo(line)
     _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
     _dwellingRatingInfo = new HOGroup2DwellingRatingInfo(line.Dwelling)
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
   }
 
   /**
@@ -56,6 +55,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var rater = new HOBasePremiumRaterGroup2(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
     addCosts(costs)
+
   }
 
   /**
@@ -134,6 +134,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if(dwellingCov.HODW_BuildAddInc_HOETerm.LimitDifference > 0){
             rateBuildingAdditionsCoverage(dwellingCov, dateRange)
           }
+          else
+            rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
       case HODW_Other_Structures_HOE:
           rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
@@ -178,9 +180,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
      rateBuildingCodeEffectivenessGradingCredit(dateRange)
 
-
      rateLossHistoryCredit(dateRange)
-
 
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
         _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 ||
@@ -206,8 +206,12 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateGatedCommunityDiscount(dateRange)
     }
 
+    if(PolicyLine.HOPolicyType != HOPolicyType_HOE.TC_HO4 and !dwelling.WHurricaneHailExclusion_Ext)
+      rateWindStormMitigationCredit(dateRange)
+
     rateHigherAllPerilDeductible(dateRange)
 
+    rateMaximumDiscountAdjustment(dateRange)
 
     updateTotalBasePremium()
   }
@@ -222,7 +226,21 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-    _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Building Additions and Alterations Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Building Additions And Alterations Increased Limits Coverage
+   */
+  function rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov: HODW_BuildingAdditions_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState.Code, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Building Additions And Alterations Increased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -284,6 +302,21 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     }
     _logger.debug("Gated Community Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the windstorm mitigation credit
+   */
+  function rateWindStormMitigationCredit(dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWindStormMitigationCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WINDSTORM_MITIGATION_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_WINDSTORMMITIGATIONCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _hoRatingInfo.WindstormMitigationCredit = costData?.ActualTermAmount
+    if (costData != null){
+      addCost(costData)
+    }
+    _logger.debug("Windstorm Mitigation Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -775,8 +808,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    * Adjusting the total discount if it exceeds the maximum discount
    */
   function rateMaximumDiscountAdjustment(dateRange: DateRange) {
-    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.AffinityDiscount +
-        _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.ConcreteTileRoofDiscount
+    var totalDiscountAmount = _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount + _hoRatingInfo.AffinityDiscount + _hoRatingInfo.NamedStormDeductibleCredit +
+                              _hoRatingInfo.WindstormMitigationCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount
     if (_hoRatingInfo.AgeOfHomeDiscount < 0)
       totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
     if (_hoRatingInfo.LossHistoryRatingPlan < 0)
@@ -789,9 +822,11 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   private function updateTotalBasePremium() {
-  _hoRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.ProtectiveDevicesDiscount +
-  _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.DiscountAdjustment +
-  _hoRatingInfo.AffinityDiscount
-  }
+    _hoRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium + _hoRatingInfo.SuperiorConstructionDiscount + _hoRatingInfo.TownhouseOrRowhouseSurcharge + _hoRatingInfo.ProtectiveDevicesDiscount +
+                                     _hoRatingInfo.AffinityDiscount + _hoRatingInfo.AgeOfHomeDiscount + _hoRatingInfo.HigherAllPerilDeductible + _hoRatingInfo.NamedStormDeductibleCredit + _hoRatingInfo.LossHistoryRatingPlan +
+                                     _hoRatingInfo.BuildingCodeEffectivenessGradingCredit + _hoRatingInfo.MultiLineDiscount + _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.WindstormMitigationCredit +
+                                     _hoRatingInfo.DiscountAdjustment
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
 
+  }
 }

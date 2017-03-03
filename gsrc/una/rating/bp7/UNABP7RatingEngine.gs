@@ -9,7 +9,6 @@ uses una.rating.bp7.common.BP7LineStep
 uses una.rating.bp7.ratinginfos.BP7ClassificationRatingInfo
 uses una.rating.bp7.ratinginfos.BP7RatingInfo
 uses una.rating.bp7.ratinginfos.BP7LineRatingInfo
-uses gw.lob.bp7.rating.BP7LiabilityLessorStep
 uses una.rating.bp7.ratinginfos.BP7StructureRatingInfo
 uses una.rating.bp7.ratinginfos.BP7BuildingRatingInfo
 uses una.rating.bp7.ratinginfos.BP7BusinessPersonalPropertyRatingInfo
@@ -25,6 +24,7 @@ uses una.rating.bp7.common.BP7RateRoutineNames
 uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.job.RenewalProcess
 uses gw.rating.rtm.query.RatingQueryFacade
+uses gw.lob.bp7.rating.BP7LineCostData_Ext
 
 /**
 *  Class which extends the bp7 abstract rating engine and implements the rating for all the available BP7 coverages
@@ -125,23 +125,6 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       case "BP7AddlInsdCoOwnerInsdPremises" :
         addCostToDB(step.rateNonPremiumAdditionalInsuredCoverages(locationCov, sliceToRate))
     }
-  }
-
-  override function rateLiability(line : BP7BusinessOwnersLine, sliceToRate : DateRange) {
-    PolicyLine.AllBuildings.each(\ building -> {
-      if (building.LessorOccupied) {
-        var step = new BP7LiabilityLessorStep(PolicyLine, building, _executor, NumDaysInCoverageRatedTerm)
-        addCost(step.rate(PolicyLine.BP7BusinessLiability, sliceToRate))
-      }
-      else {
-        building.Classifications.each(\ classification -> {
-          if(classification.BPPOrFunctionalValuationExists and hasRateForClassGroup(classification)){
-            //var step = new BP7LiabilityOccupantStep(PolicyLine, classification, _executor, NumDaysInCoverageRatedTerm)
-            //addCost(step.rate(PolicyLine.BP7BusinessLiability, sliceToRate))
-          }
-        })        
-      }      
-    })
   }
 
   /**
@@ -256,8 +239,11 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     addCost(costData)
   }
 
+  /**
+   * function which add the adjustment amount if the total premium is less than minimum
+  */
   override function rateManualPremiumAdjustment(sliceRange : DateRange){
-    /*var totalPremium : BigDecimal = 0.0
+    var totalPremium : BigDecimal = 0.0
     if(AddCostToDB){
       totalPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
     } else{
@@ -274,18 +260,21 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       if(_logger.isDebugEnabled())
         _logger.debug("Entering :: rateManualPremiumAdjustment:", this.IntrinsicType)
       var premiumAdjustment = (minimumPremium - totalPremium)
+      var costData = new BP7LineCostData_Ext(sliceRange, PolicyLine.PreferredCoverageCurrency, RateCache, BP7CostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT)
+      costData.init(PolicyLine)
+      costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
+      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
       var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
           TC_POLICYLINE -> PolicyLine,
-          TC_MINIMUMPREMIUMADJUSTMENT_EXT -> premiumAdjustment
+          TC_MINIMUMPREMIUMADJUSTMENT_EXT -> premiumAdjustment,
+          TC_COSTDATA           -> costData
       }
-      var costData = new BP7LineCovCostData(coverage, sliceToRate, costType)
-          HOCreateCostDataUtil.createCostDataForHOLineCosts(sliceRange, BP7RateRoutineNames.BP7_MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE, HOCostType_Ext.TC_MINIMUMPREMIUMADJUSTMENT, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
+      _executor.executeBasedOnSliceDate(BP7RateRoutineNames.BP7_MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE, rateRoutineParameterMap, costData, sliceRange.start, sliceRange.end)
       if (costData != null)
-        addCost(costData)
+        addCostToDB(costData)
       if(_logger.isDebugEnabled())
         _logger.debug("Minimum Premium Adjustment added Successfully", this.IntrinsicType)
-    }  */
+    }
   }
 
   function hasRateForClassGroup(classification: BP7Classification): boolean {

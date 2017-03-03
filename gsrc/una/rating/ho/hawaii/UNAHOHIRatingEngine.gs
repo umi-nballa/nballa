@@ -38,7 +38,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _lineRatingInfo = new HOLineRatingInfo(line)
       _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
       _dwellingRatingInfo = new HOHIDwellingRatingInfo(line.Dwelling)
-      _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
     }
 
 /**
@@ -99,10 +99,10 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
 
   override function rateLineCoverages(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
-    switch (typeof lineCov) {
-      case HOLI_AdditionalInsuredSchedPropertyManager:
-          rateAdditionalInsuredPropertyManager(lineCov, dateRange)
-          break
+    switch (typeof lineCov) {         //TODO addins_update
+//      case HOLI_AdditionalInsuredSchedPropertyManager:
+//          rateAdditionalInsuredPropertyManager(lineCov, dateRange)
+//          break
     }
   }
 
@@ -116,18 +116,19 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
   }
 
-  function rateAdditionalInsuredPropertyManager(lineCov: HOLI_AdditionalInsuredSchedPropertyManager, dateRange: DateRange) {
-    if (_logger.DebugEnabled)
-      _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredPropertyManager", this.IntrinsicType)
-    for (item in lineCov.scheduledItem_Ext) {
-      var rateRoutineParameterMap = _lineRateRoutineParameterMap
-      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
-        addCost(costData)
-    }
-    if (_logger.DebugEnabled)
-      _logger.debug("rateAdditionalInsuredPropertyManager Rated Successfully", this.IntrinsicType)
-  }
+  //TODO addins_update
+//  function rateAdditionalInsuredPropertyManager(lineCov: HOLI_AdditionalInsuredSchedPropertyManager, dateRange: DateRange) {
+//    if (_logger.DebugEnabled)
+//      _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredPropertyManager", this.IntrinsicType)
+//    for (item in lineCov.scheduledItem_Ext) {
+//      var rateRoutineParameterMap = _lineRateRoutineParameterMap
+//      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+//      if (costData != null)
+//        addCost(costData)
+//    }
+//    if (_logger.DebugEnabled)
+//      _logger.debug("rateAdditionalInsuredPropertyManager Rated Successfully", this.IntrinsicType)
+//  }
   function rateWaterBackupSumpOverflowCoverage(dwellingCov: HODW_WaterBackUpSumpOverflow_HOE_Ext, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateWaterBackupSumpOverflowCoverage to rate Water Backup Sump Overflow Coverage", this.IntrinsicType)
@@ -277,5 +278,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _hoRatingInfo.TotalBasePremium = (_hoRatingInfo.AdjustedBaseClassPremium +_hoRatingInfo.VacancySurcharge  +
         _hoRatingInfo.AffinityDiscount + _hoRatingInfo.DiscountAdjustment  + _hoRatingInfo.MultiLineDiscount
     )
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
   }
 }

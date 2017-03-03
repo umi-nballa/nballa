@@ -41,7 +41,6 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _hoRatingInfo = new HORatingInfo()
     _lineRatingInfo = new HONCLineRatingInfo(line)
     _dwellingRatingInfo = new HONCDwellingRatingInfo(line.Dwelling)
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
 
   }
 
@@ -51,7 +50,6 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
     var rater = new HOBasePremiumRaterNC(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
-
     addCosts(costs)
   }
 
@@ -130,6 +128,9 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_PermittedIncOcp_HOE_Ext:
           ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
           break
+      case HODW_Earthquake_HOE:
+          rateEarthquakeCoverage(dwellingCov, dateRange)
+          break
 
 
 
@@ -154,6 +155,17 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }*/
 
+  function rateEarthquakeCoverage(dwellingCov : HODW_Earthquake_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateEarthquakeCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var rateRoutineName = ""
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, rateRoutineName, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Earthquake Coverage Rated Successfully", this.IntrinsicType)
+  }
 
   function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){
     if (_logger.DebugEnabled)
@@ -437,6 +449,18 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     return {
         TC_POLICYLINE -> PolicyLine,
         TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOWatercraftLiabilityCovRatingInfo(item, lineCov)
+    }
+  }
+
+  /**
+   * Returns the parameter set with a rating info
+   */
+  private function getHOParameterSet(line: PolicyLine, stateCode: Jurisdiction, dwellingRatingInfo: HONCDwellingRatingInfo): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> stateCode,
+        TC_RATINGINFO -> _hoRatingInfo,
+        TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
     }
   }
 }

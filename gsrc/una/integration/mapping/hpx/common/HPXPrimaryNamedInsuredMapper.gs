@@ -1,6 +1,9 @@
 package una.integration.mapping.hpx.common
 uses java.util.ArrayList
 uses gw.xml.XmlElement
+uses gw.xml.date.XmlDate
+uses java.util.Date
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -19,11 +22,17 @@ class HPXPrimaryNamedInsuredMapper {
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = ""
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = entityType
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = entityType.Description
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.BirthDt = (contact typeis Person) ? new XmlDate(contact.DateOfBirth) : new XmlDate(new Date().addYears(-100))
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.MaritalStatusCd = (contact typeis Person) ? contact.MaritalStatus : ""
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.MaritalStatusDesc = (contact typeis Person) ? contact.MaritalStatus.Description : ""
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYPRINAMEDINSURED
-    var creditScores = creditScoreMapper.createCreditScoreInfo(policyContactRole.CreditReportsExt)
     var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
-    for (score in creditScores) {
-      principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+    if(policyContactRole.CreditReportsExt != null and policyContactRole.CreditReportsExt.length > 0)   {
+      var creditScores = creditScoreMapper.createCreditScoreInfo(policyContactRole.CreditReportsExt)
+
+      for (score in creditScores) {
+        principalInfo.addChild(new XmlElement("CreditScoreInfo", score))
+      }
     }
     insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
     return insuredOrPrincipal

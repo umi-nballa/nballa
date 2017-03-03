@@ -21,8 +21,10 @@ class HPXRecipientMapper {
     formsRequests.addAll(createFormsRequestForAddlIntMortgageeRecipientType(policyPeriod, forms))
     formsRequests.addAll(createFormsRequestForAgentRecipientType(policyPeriod, forms))
     formsRequests.addAll(createFormsRequestForMasterAgentRecipientType(policyPeriod, forms))
+    formsRequests.addAll(createFormsRequestForOnBaseOnly(policyPeriod, forms))
     return formsRequests
   }
+
 
   private function createFormsForRecipientType(policyPeriod : PolicyPeriod, forms : form[], compositionUnitMapper : HPXCompositionUnitMapper) : List<String> {
     var hpxRequestMapper = new HPXRequestMapper()
@@ -81,6 +83,20 @@ class HPXRecipientMapper {
    return hasMasterAgentForms ? createFormsForRecipientType(policyPeriod, forms, new HPXMasterAgentCompositionUnitMapper()) : new List<String>()
   }
 
+  private function createFormsRequestForOnBaseOnly(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
+    if (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0 or
+        policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0) {
+        var hpxRequestMapper = new HPXRequestMapper()
+        var formsRequestsForRecipientType : List<String> = new()
+        var compositionUnitMapper = new HPXOnBaseOnlyCompositionUnitMapper()
+        var compositionUnit = compositionUnitMapper.createCompositionUnitForRecipient(policyPeriod, forms, new wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType())
+        formsRequestsForRecipientType.add(hpxRequestMapper.createFormsRequest(policyPeriod, compositionUnit))
+        return formsRequestsForRecipientType
+    } else   {
+         return new List<String>()
+    }
+  }
+
   function getAdditionalInterests(policyPeriod : PolicyPeriod) : AddlInterestDetail [] {
     var additionalInterests : AddlInterestDetail []
     if (policyPeriod.HomeownersLine_HOEExists) {
@@ -90,7 +106,7 @@ class HPXRecipientMapper {
       for (coverable in coverables) {
         if (coverable typeis BP7Building) {
           var addInts = ((coverable as BP7Building).AdditionalInterests)
-          additionalInterests.union(addInts)
+          additionalInterests?.union(addInts)
         }
       }
     } else if (policyPeriod.CPLineExists or policyPeriod.GLLineExists) {
@@ -98,7 +114,7 @@ class HPXRecipientMapper {
       for (coverable in coverables) {
         if (coverable typeis CPBuilding) {
           var addInts = ((coverable as CPBuilding).AdditionalInterests)
-          additionalInterests.union(addInts)
+          additionalInterests?.union(addInts)
         }
       }
     }

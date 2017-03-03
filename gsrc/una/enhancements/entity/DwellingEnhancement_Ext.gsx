@@ -194,6 +194,32 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
   }
 
+ property get RoofTypeOrOverride():typekey.RoofType
+  {
+    if(this.OverrideRoofType_Ext && this.RoofingMaterialOverridden_Ext!=null)
+      return this.RoofingMaterialOverridden_Ext
+    else
+      return this.RoofType
+  }
+      
+  property get EarthQuakeTerritoryOrOverride() : String{
+    if(this.OverrideEarthquakeTer_Ext and this.OverrideEarthquakeTer_Ext != null){
+      return this.EarthquakeTerOverridden_Ext
+    }else{
+      return this.EarthQuakeTer_Ext
+    }
+  }
+
+  property get BCEGOrOverride() : typekey.BCEGGrade_Ext{
+    if(this.HOLocation.OverrideBCEG_Ext and this.HOLocation.OverrideBCEG_Ext != null){
+      return this.HOLocation.BCEGOverridden_Ext
+    }else{
+      return this.HOLocation.BCEG_Ext
+    }
+
+
+  }
+
   property get isPolicyHOTypes() : boolean {
     return typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  desc="cost attached to line"
+  entity="BP7LineCost_Ext"
+  supertype="BP7Cost">
+  <typekey
+    name="BP7CostType"
+    nullok="true"
+    typelist="BP7CostType_Ext"/>
+  <implementsEntity
+    adapter="gw.lob.bp7.financials.BP7CostAdapter"
+    name="Cost"/>
+  <implementsInterface
+    iface="gw.lob.bp7.financials.BP7CostMethods"
+    impl="gw.lob.bp7.financials.BP7LineCostMethods_Ext"/>
+</subtype>

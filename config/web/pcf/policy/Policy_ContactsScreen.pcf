@@ -28,7 +28,7 @@
             <Cell
               id="Name"
               label="displaykey.Web.PolicyFile.Contacts.Name"
-              value="acctContactRoleMap.get(accountContact).first().DisplayName"/>
+              value="accountContact.Contact.DisplayName"/>
             <Cell
               id="Roles"
               label="displaykey.Web.PolicyFile.Contacts.Roles"
@@ -47,7 +47,7 @@
       </ListViewPanel>
       <CardViewPanel>
         <Variable
-          initialValue="acctContactRoleMap.get(selectedAccountContact) == null ? null : acctContactRoleMap.get(selectedAccountContact).first()"
+          initialValue="getpolicycontactRole(selectedAccountContact)"
           name="policyContactRole"
           recalculateOnRefresh="true"/>
         <Card
@@ -79,5 +79,14 @@
         </Card>
       </CardViewPanel>
     </ListDetailPanel>
+    <Code><![CDATA[function getpolicycontactRole(selectedAccountContact : AccountContact): PolicyContactRole{
+if (acctContactRoleMap.get(selectedAccountContact) == null) {
+  return null
+} 
+if(acctContactRoleMap.get(selectedAccountContact).Count >1 )
+        return acctContactRoleMap.get(selectedAccountContact).firstWhere( \ elt -> elt.FirstName != null)
+  return acctContactRoleMap.get(selectedAccountContact).first()
+
+}]]></Code>
   </Screen>
 </PCF>

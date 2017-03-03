@@ -63,22 +63,18 @@ class HODwellingUtil_HOE {
     }
     return false
   }
-  /*
-*  Author: uim-svallabhapurapu
-*  Change Log: New function for Construction TypeList value range based on state
-*  HO Line of business
-*/
 
   static function initializeSingleReturnTypelists(dwelling:Dwelling_HOE, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse):boolean
   {
-    if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
+  /*  if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
       {
          dwelling.HOLocation.BCEG_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade) as typekey.BCEGGrade_Ext[]).first()
       }
 
     if(dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
-      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
+
+      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
     }
 
     if(dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
@@ -194,7 +190,7 @@ class HODwellingUtil_HOE {
     if(dwelling.RoofShapeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.RoofShape_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover) as typekey.RoofShape_Ext[]).first()
+      dwelling.RoofType = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover) as typekey.RoofType[]).first()
     }
     if(dwelling.ConstructionTypeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -258,7 +254,7 @@ class HODwellingUtil_HOE {
     if(dwelling.TotalSqFtValMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
-    }
+    }      */
 
 
 

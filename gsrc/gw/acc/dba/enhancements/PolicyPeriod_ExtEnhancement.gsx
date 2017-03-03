@@ -62,4 +62,17 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
     }
     return location
   }
+
+  /*DE2142 Fix - Endorse SERP option will be available when:
+   * a.)In PolicyChange AND
+   * b.)if it is BOP Policy AND
+   * c.)If Cyber One or EPL coverage was available in the Original Policy AND
+   * d.)If when the term of the policy is over/ policy is cancelled and within 30 days.
+   */
+  function isEndorseSERPAvailable(policyPeriod : PolicyPeriod):boolean{
+    var isCyberOrEPLSERPWasAvailInOrigPolicy = (policyPeriod.BasedOn!=null and (policyPeriod.BasedOn.BP7Line.BP7CyberOneCov_EXTExists or
+                                          policyPeriod.BasedOn.BP7Line.BP7EmploymentPracticesLiabilityCov_EXTExists))
+    var isBasedOnWithin30Days = policyPeriod.BasedOn!=null and policyPeriod.BasedOn.Canceled and (policyPeriod.BasedOn.CancellationDate.differenceInDays(java.util.Date.CurrentDate)<=30)
+      return perm.PolicyPeriod.change(policyPeriod) and policyPeriod.Policy.Issued and policyPeriod.BP7LineExists and isCyberOrEPLSERPWasAvailInOrigPolicy and (policyPeriod.BasedOn.Status==TC_Expired or isBasedOnWithin30Days)
+  }
 }

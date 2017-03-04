@@ -9,7 +9,7 @@
   priority="1499"
   public-id="HODW_AckNoWindstromHail_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[return HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value < 0]]></AvailabilityScript>
+  <AvailabilityScript><![CDATA[return HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value == null or HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.Value < 0]]></AvailabilityScript>
   <ExistenceScript><![CDATA[return una.productmodel.CoveragesUtil.getExistence("HODW_AckNoWindstromHail_HOE_Ext", HomeownersLine_HOE)]]></ExistenceScript>
   <CovTerms/>
 </ExclusionPattern>

@@ -72,11 +72,11 @@ class HOInitCovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCalcu
         result = getLossAssessmentDefaultDeductible(covTerm, line)
         break
       case "HODW_BuildAddInc_HOE":
-          result = getBuildingAddAltLimitDefault(line)
-          break
+        result = getBuildingAddAltLimitDefault(line)
+        break
       case "HODW_EQDwellingLimit_HOE_Ext":
-          result = line.Dwelling.DwellingLimitCovTerm.Value
-          break
+        result = line.Dwelling.DwellingLimitCovTerm.Value
+        break
       case "HODW_OffPremises_Limit_HOE":
         result = getOffPremisesLimitDefault(line)
         break

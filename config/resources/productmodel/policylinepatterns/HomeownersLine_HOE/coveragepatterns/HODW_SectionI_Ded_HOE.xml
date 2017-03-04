@@ -148,7 +148,7 @@
       required="true"
       restrictionModel="pd"
       valueType="percent">
-      <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCoverageTermAvailable("HODW_Hurricane_Ded_HOE", Dwelling_HOE)]]></AvailabilityScript>
+      <AvailabilityScript><![CDATA[return !Dwelling_HOE.WHurricaneHailExclusion_Ext]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt
@@ -349,6 +349,7 @@ and una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTe
       required="true"
       restrictionModel="prp"
       valueType="percent">
+      <AvailabilityScript><![CDATA[return !Dwelling_HOE.WHurricaneHailExclusion_Ext]]></AvailabilityScript>
       <DefaultsSet/>
       <Options>
         <CovTermOpt

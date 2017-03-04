@@ -11,7 +11,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * To change this template use File | Settings | File Templates.
  * US4849.19
  */
-class UNAWindpoolNoneFLTuna_each implements IRuleCondition<PolicyPeriod>
+class UNAUWI484919_each implements IRuleCondition<PolicyPeriod>
 {
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult
   {
@@ -31,14 +31,18 @@ class UNAWindpoolNoneFLTuna_each implements IRuleCondition<PolicyPeriod>
             })
           }
 
-        /*if(period.BOPLineExists)
+        if(period.BP7LineExists)
           {
-            period.BOPLine.BOPLocations.each( \ elt ->
+            period.BP7Line.BP7Locations.each( \ elt ->
             {
-               //BOP does not have windpool
+              elt.Buildings.each( \ elt2 ->
+              {
+                if(elt2.WindPool_Ext==null)
+                  return RuleEvaluationResult.execute()
+              } )
             }
             )
-          }  */
+          }
         //homeowner?.Dwelling.HOLocation.WindPool_Ext==null)
 
       }

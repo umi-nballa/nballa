@@ -155,7 +155,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         break
       case HODW_BuildingAdditions_HOE_Ext:
         if(dwellingCov.HODW_BuildAddInc_HOETerm.LimitDifference > 0){
-          //rateBuildingAdditionsCoverage(dwellingCov, dateRange)
+          rateBuildingAdditionsCoverage(dwellingCov, dateRange)
         }
         break
     }
@@ -466,7 +466,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateBuildingAdditionsCoverage(dwellingCov: HODW_BuildingAdditions_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingAdditionsCoverage to rate Building Additions Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo)
+    var rateRoutineParameterMap = getRatingInfoParameterSet(PolicyLine, _dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)

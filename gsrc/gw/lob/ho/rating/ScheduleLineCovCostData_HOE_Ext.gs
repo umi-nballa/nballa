@@ -11,11 +11,13 @@ uses gw.financials.PolicyPeriodFXRateCache
 class ScheduleLineCovCostData_HOE_Ext extends HomeownersCovCostData_HOE<ScheduleLineCovCost_HOE_Ext> {
   
   var _covID : Key
-  var _itemID : Key
-  construct(effDate : Date, expDate : Date, c : Currency, rateCache : PolicyPeriodFXRateCache, covID : Key, itemID : Key) {
+  var _scheduleItemID : Key
+  var _coveredLocationItem : Key
+  construct(effDate : Date, expDate : Date, c : Currency, rateCache : PolicyPeriodFXRateCache, covID : Key, scheduleItemID : Key, coveredLocationItem : Key) {
     super(effDate, expDate, c, rateCache, covID)
     _covID = covID
-    _itemID = itemID
+    _scheduleItemID = scheduleItemID
+    _coveredLocationItem = coveredLocationItem
   }
 
   construct(cost : ScheduleLineCovCost_HOE_Ext, rateCache : PolicyPeriodFXRateCache){
@@ -25,11 +27,12 @@ class ScheduleLineCovCostData_HOE_Ext extends HomeownersCovCostData_HOE<Schedule
   override function setSpecificFieldsOnCost(line : HomeownersLine_HOE, cost : ScheduleLineCovCost_HOE_Ext) {
     super.setSpecificFieldsOnCost(line, cost)
     cost.setFieldValue("HomeownersLineCov", _covID)
-    cost.setFieldValue("LineScheduledItem", _itemID)
+    cost.setFieldValue("LineScheduledItem", _scheduleItemID)
+    cost.setFieldValue("CoveredLocationItem", _coveredLocationItem)
   }
 
   override property get KeyValues() : List<Object> {
-    return {_itemID, _covID}
+    return {_scheduleItemID, _coveredLocationItem, _covID}
   }
 
   override function getVersionedCosts(line : HomeownersLine_HOE) : List<EffDatedVersionList> {
@@ -39,6 +42,7 @@ class ScheduleLineCovCostData_HOE_Ext extends HomeownersCovCostData_HOE<Schedule
   
   private function isCostVersionListForItem(costVL : HomeownersCovCost_HOEVersionList) : boolean {
     var firstVersion = costVL.AllVersions.first()
-    return firstVersion typeis ScheduleLineCovCost_HOE_Ext and firstVersion.LineScheduledItem.FixedId == _itemID
+    return firstVersion typeis ScheduleLineCovCost_HOE_Ext and firstVersion.LineScheduledItem?.FixedId == _scheduleItemID
+           and firstVersion.CoveredLocationItem?.FixedId == _coveredLocationItem
   }
 }

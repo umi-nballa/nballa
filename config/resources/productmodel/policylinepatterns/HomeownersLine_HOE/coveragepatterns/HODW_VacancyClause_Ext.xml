@@ -11,6 +11,7 @@
   priority="20400"
   public-id="HODW_VacancyClause_Ext"
   referenceDateByType="PolicyTerm">
+  <AvailabilityScript><![CDATA[return Dwelling_HOE.Branch.Job.Subtype == TC_SUBMISSION or Dwelling_HOE.Branch.Job.Subtype == TC_POLICYCHANGE]]></AvailabilityScript>
   <CovTerms>
     <GenericCovTermPattern
       codeIdentifier="HODW_VacancyToDate"
@@ -24,6 +25,7 @@
       codeIdentifier="HODW_VacancyFromDate"
       coverageColumn="DateTerm1"
       lookupTableName="DwellingCovTerm"
+      modelType="Other"
       priority="100"
       public-id="HODW_VacancyFromDate"
       required="true"/>

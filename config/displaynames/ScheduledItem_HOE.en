@@ -14,15 +14,10 @@
     <Column
       beanPath="ScheduledItem_HOE.PolicyLocation"
       name="location"/>
-    <Column
-      beanPath="ScheduledItem_HOE.AdditionalInsured"
-      name="additionalInsured"/>
   </Columns>
   <DisplayName><![CDATA[var name = "Item"
 
-if(additionalInsured != null){
-  name = additionalInsured.DisplayName
-}else if(location != null){
+if(location != null){
   name = location.DisplayName
   if (description != null){
     name += ": " + description

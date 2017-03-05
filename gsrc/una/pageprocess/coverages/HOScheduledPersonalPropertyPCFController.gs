@@ -1,6 +1,5 @@
 package una.pageprocess.coverages
 
-uses java.lang.Integer
 uses una.productmodel.CoveragesUtil
 
 /**

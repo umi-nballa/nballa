@@ -116,9 +116,12 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_MoldRemediationCov_HOE_Ext:
           rateMoldRemediationCoverage(dwellingCov, dateRange)
           break
+    //TODO addins_update
+    /**
       case HODW_AdditionalInsuredSchedProp:
           rateAdditionalInsuredCoverage(dwellingCov, dateRange)
           break
+      **/ //commenting out due to deleted coverage
     }
   }
 
@@ -491,6 +494,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
 
+  //TODO addins_update
+  /**
   /**
    * Rate the Addition insured coverage
    */
@@ -506,7 +511,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Additional Insured Coverage Rated Successfully", this.IntrinsicType)
   }
-
+**/// commenting out due to deleted coverage
   /**
    * Rate Identity Theft Expense Coverage coverage
    */

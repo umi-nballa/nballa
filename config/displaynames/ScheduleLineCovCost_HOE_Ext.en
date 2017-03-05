@@ -7,7 +7,14 @@
       name="pattern"/>
     <Column
       beanPath="ScheduleLineCovCost_HOE_Ext.LineScheduledItem"
-      name="item"/>
+      name="lineScheduledItem"/>
+    <Column
+      beanPath="ScheduleLineCovCost_HOE_Ext.CoveredLocationItem"
+      name="coveredLocationItem"/>
   </Columns>
-  <DisplayName><![CDATA[displaykey.EntityName.ScheduleLineCovCost(pattern.Pattern, item.DisplayName)]]></DisplayName>
+  <DisplayName><![CDATA[if(lineScheduledItem != null){
+  return displaykey.EntityName.ScheduleLineCovCost(pattern.Pattern, lineScheduledItem.DisplayName) }
+else { 
+  return displaykey.EntityName.ScheduleLineCovCost(pattern.Pattern, coveredLocationItem?.PolicyLocation?.DisplayName)
+}]]></DisplayName>
 </Entity>

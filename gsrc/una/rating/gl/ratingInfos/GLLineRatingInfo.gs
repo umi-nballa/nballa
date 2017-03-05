@@ -17,6 +17,7 @@ class GLLineRatingInfo {
   var _glAggregateLimit : int as GLAggregateLimit
   var _territoryCode : String as TerritoryCode
   var _riskType : PackageRisk as RiskType
+  var _numOfExposureUnits : int as NumOfExposureUnits
 
   construct(line: GeneralLiabilityLine) {
     _line = line
@@ -24,6 +25,7 @@ class GLLineRatingInfo {
     _glAggregateLimit = line.GLCGLCov?.GLCGLAggLimitTerm?.Value?.intValue()
     _territoryCode = line.Branch?.PrimaryLocation?.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="GLLine").first().Code
     _riskType = line.Branch?.Policy.PackageRisk
+    _numOfExposureUnits = line.GLExposuresWM?.sum( \ exposure -> exposure.BasisAmount)
 
     if (line.GLRecFacilities_EXTExists){
       _numOfSwimmingPools = line.GLRecFacilities_EXT?.RecFacilitiesNumSwimmingPools_EXTTerm?.Value?.intValue()

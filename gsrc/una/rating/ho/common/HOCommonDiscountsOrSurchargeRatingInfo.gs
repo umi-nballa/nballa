@@ -37,8 +37,8 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _policyType = line.HOPolicyType
     _protectionClassCode = line.Dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? line.Dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : line.Dwelling?.HOLocation?.DwellingProtectionClassCode
     _territoryCode = line.Dwelling?.HOLocation?.OverrideTerritoryCode_Ext?  line.Dwelling?.HOLocation?.TerritoryCodeOverridden_Ext : line.Dwelling?.HOLocation?.TerritoryCodeTunaReturned_Ext
-    if((_territoryCode != null or _territoryCode != "") and _territoryCode.Numeric){
-      _territoryCodeInt = _territoryCode.toInt()
+    if((_territoryCode != null or _territoryCode != "") and _territoryCode?.Numeric){
+      _territoryCodeInt = _territoryCode?.toInt()
     }
     _bcegGrade = line.Dwelling?.HOLocation?.OverrideBCEG_Ext? line?.Dwelling?.HOLocation?.BCEGOverridden_Ext?.Code?.toInt() : line?.Dwelling?.HOLocation?.BCEG_Ext?.Code?.toInt()
     var dwelling = line?.Dwelling

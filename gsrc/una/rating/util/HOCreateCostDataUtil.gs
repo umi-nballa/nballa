@@ -53,7 +53,21 @@ class HOCreateCostDataUtil {
    */
   public static function createCostDataForScheduledLineCoverage(lineCov: HomeownersLineCov_HOE, dateRange: DateRange, routineName: String, item: HOscheduleItem_HOE_Ext, rateCache: PolicyPeriodFXRateCache,
                                                                 line: PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor: HORateRoutineExecutor, numDaysInCoverageRatedTerm: int): CostData {
-    var costData = new ScheduleLineCovCostData_HOE_Ext(dateRange.start, dateRange.end, lineCov.Currency, rateCache, lineCov.FixedId, item.FixedId)
+    var costData = new ScheduleLineCovCostData_HOE_Ext(dateRange.start, dateRange.end, lineCov.Currency, rateCache, lineCov.FixedId, item.FixedId, null)
+    costData.init(line as HomeownersLine_HOE)
+    costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
+    rateRoutineParameterMap.put(TC_COSTDATA, costData)
+    executor.execute(routineName, lineCov, rateRoutineParameterMap, costData)
+    costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  /**
+   * creates cost data for the Additional scheduled location line coverages
+   */
+  public static function createCostDataForAdditionalScheduledLineCoverage(lineCov: HomeownersLineCov_HOE, dateRange: DateRange, routineName: String, item: CoveredLocation_HOE, rateCache: PolicyPeriodFXRateCache,
+                                                                line: PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor: HORateRoutineExecutor, numDaysInCoverageRatedTerm: int): CostData {
+    var costData = new ScheduleLineCovCostData_HOE_Ext(dateRange.start, dateRange.end, lineCov.Currency, rateCache, lineCov.FixedId, null, item.FixedId)
     costData.init(line as HomeownersLine_HOE)
     costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
     rateRoutineParameterMap.put(TC_COSTDATA, costData)

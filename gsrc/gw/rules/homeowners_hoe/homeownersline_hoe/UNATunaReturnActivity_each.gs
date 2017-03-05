@@ -16,6 +16,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
 
     var tunaAppResponse = new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(holine.AssociatedPolicyPeriod)
 
+    //US4846.BR.32	If there are multiple values returned for BCEG with the GetPropertyInformationComplete call, then there will be an activity post binding for UW review.
     if(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade).size()>1)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_MultipleBCEGFound")
@@ -26,6 +27,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       }
     }
 
+    //US4846.BR.33	If there are no values for BCEG returned after the GetPropertyInformationISOLookUpOnly call is made, then create an activity post binding for an UW to review
     if(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade)==null || gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade).size()==0)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_NoBCEGFound")
@@ -36,6 +38,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       }
     }
 
+    //US4846.BR.32	If there are multiple values returned for Distance To Coast with the GetPropertyInformationComplete call and the risk location is in HI, then there will be an activity post binding for UW review.
     if(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast).size()>1 && holine.HOLocation.PolicyLocation.State.Code=="HI")
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_MultipleDistanceToCoastFound")
@@ -47,6 +50,8 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     }
 
     //1
+    //US4846.BR.20	If there is a change to the Base Flood Elevation field and flood coverage is selected, then create a post binding activity.
+
     if(holine.Dwelling.OverrideBaseFloodElVal_Ext && holine.Dwelling.FloodCoverage_Ext)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_BaseFloodElevationChanged")
@@ -58,6 +63,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
     }
 
     //2
+    //US4846.BR.27	If there is a change to the Type Of Construction field and flood coverage is selected, then create a post binding activity.
     if(holine.Dwelling.OverrideConstructionType_Ext && holine.Dwelling.FloodCoverage_Ext)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_ConstructionTypeChanged")
@@ -68,6 +74,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       }
     }
     //3
+    //US4846.BR.31	If there is a change to the Roof Shape field and the risk location is in FL or SC, then create a post binding activity.
     if(holine.Dwelling.OverrideRoofShape_Ext && (holine.HOLocation.PolicyLocation.State.Code=="FL" || holine.HOLocation.PolicyLocation.State.Code=="SC")  )
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_RoofShapeChanged")
@@ -79,7 +86,13 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       }
     }
     //5
-    if(holine.Dwelling.YearBuilt==null)
+    //US4846.BR.23	If there is no Year Built returned in the GetPropertyInformationComplete call then prompt the user to enter the Year Built Value. Message Display for users:
+    // "enter year built to continue" upon entering year built (the sq. ft. field must also be filled), make calls to the following methods: GetPropertyInformationISOLookUpOnly &
+    // GetPropertyInformation360ValueLookUpOnly (including square ft. and year built) - (just for BCEG and estimated replacement cost)
+
+    //If the return is Null  then activity for post bind to validate year built.
+
+        if(holine.Dwelling.YearBuilt==null)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasNullFromTuna")
 
@@ -90,6 +103,7 @@ class UNATunaReturnActivity_each implements IRuleCondition<HomeownersLine_HOE> {
       }
     }
     //6
+    //US4846.BR.24	If there is a change to the Year Built, then call the GetPropertyInformationLookUpOnly for a new BCEG value and create post binding activity.
     if(holine.Dwelling.OverrideYearbuilt_Ext)
     {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("TUNA_YearBuiltWasChanged")

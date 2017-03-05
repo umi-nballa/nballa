@@ -224,9 +224,9 @@
           label="displaykey.Web.Homeowners.HOLocation.DisToFireHydrant"
           required="true"
           value="dwelling.HOLocation.DistanceToFireHydrant"
-          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass))">
+          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass))// &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext==typekey.TunaMatchLevel_Ext.TC_EXACT">
           <PostOnChange
-            onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
+            onChange="dwelling.HOLocation.DwellingProtectionClassCode = null;if(dwelling.HOLocation.DistanceToFireHydrant&gt;1000){dwelling.HOLocation.OverrideDwellingPCCode_Ext=true}"/>
         </Input>
         <Input
           editable="true"
@@ -234,7 +234,7 @@
           label="displaykey.Web.Homeowners.HOLocation.DisToFireStation"
           required="true"
           value="dwelling.HOLocation.DistanceToFireStation"
-          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass))">
+          visible="(gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass)) &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT) || (dwelling.HOLocation.DwellingProtectionClasscode!=null &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT)">
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
@@ -285,6 +285,7 @@
           label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
           value="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext"/>
         <BooleanRadioInput
+          available="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT &amp;&amp; dwelling.HOLocation.DwellingProtectionClasscode!=dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
           editable="true"
           id="OverRideTunaBCEG_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PCCodeOverride_Ext"
@@ -299,7 +300,10 @@
           label="displaykey.Web.Homeowners.HOLocation.PCCodeUserEntered_Ext"
           required="dwelling.HOLocation.OverrideDwellingPCCode_Ext"
           value="dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
-          visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext"/>
+          visible="dwelling.HOLocation.OverrideDwellingPCCode_Ext">
+          <PostOnChange
+            onChange="if(dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext==typekey.TunaMatchLevel_Ext.TC_EXACT &amp;&amp; dwelling.HOLocation.DwellingProtectionClasscode==dwelling.HOLocation.DwellingPCCodeOverridden_Ext){dwelling.HOLocation.OverrideDwellingPCCode_Ext=false;dwelling.HOLocation.DwellingPCCodeOverridden_Ext=null}"/>
+        </TypeKeyInput>
       </InputSet>
       <InputSet
         id="Yearbuilt_Ext">
@@ -347,6 +351,7 @@
           editable="dwelling.PolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE &amp;&amp; !dwelling.OverrideTotalSqFtVal_Ext"
           id="TotalSqFtValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValTunaReturned_Ext"
+          required="!dwelling.OverrideTotalSqFtVal_Ext//US4846.BR.22"
           value="dwelling.SquareFootage_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)">
           <PostOnChange

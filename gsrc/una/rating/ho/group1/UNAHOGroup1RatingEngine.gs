@@ -12,6 +12,7 @@ uses una.rating.ho.group1.ratinginfos.HOGroup1DwellingRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineLevelRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOGroup1LineRatingInfo
 uses una.rating.ho.group1.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
+uses una.rating.ho.group1.ratinginfos.HOAddResidenceRentedToOthersCovRatingInfo
 uses una.rating.ho.group1.ratinginfos.HORatingInfo
 uses una.rating.ho.group1.ratinginfos.HOWCPrivateResidenceEmployeeRatingInfo
 uses una.rating.util.HOCreateCostDataUtil
@@ -102,7 +103,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)
           break
       case HOLI_AddResidenceRentedtoOthers_HOE:
-          updateLineCostData(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_GROUP1_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          rateAddResidenceRentedToOthersCoverage(lineCov, dateRange)
           break
       case HOLI_WC_PrivateResidenceEmployee_HOE_Ext:
           rateWCPrivateResidenceEmployeeCoverage(lineCov, dateRange)
@@ -903,6 +904,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
+   * Additional Residence - Rented To Others Coverage
+   */
+  function rateAddResidenceRentedToOthersCoverage(lineCov: HOLI_AddResidenceRentedtoOthers_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateAddResidenceRentedToOthersCoverage", this.IntrinsicType)
+    for (item in lineCov.CoveredLocations) {
+      var rateRoutineParameterMap = getAddResidenceRentedToOthersCovParameterSet(PolicyLine, item)
+      var costData = HOCreateCostDataUtil.createCostDataForAdditionalScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Additional Residence - Rented To Others Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    * Rate ACV loss settlement on Roof surfacing for HO3 policy types
    */
   function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange) {
@@ -1134,12 +1151,22 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
- * Returns the parameter set for the Dwelling level coverages
+ * Returns the parameter set for the OutboardMotors And Watercraft Coverages
  */
   private function getOutboardMotorsAndWatercraftCovParameterSet(line: PolicyLine, item: HOscheduleItem_HOE_Ext, lineCov: HOSL_OutboardMotorsWatercraft_HOE_Ext): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> line,
         TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOOutboardMotorsAndWatercraftRatingInfo(item, lineCov)
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Additional Residence Rented To Others
+   */
+  private function getAddResidenceRentedToOthersCovParameterSet(line: PolicyLine, item: CoveredLocation_HOE): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_ADDRESIDENCERENTEDTOOTHERSRATINGINFO_EXT -> new HOAddResidenceRentedToOthersCovRatingInfo(item)
     }
   }
 

@@ -298,6 +298,7 @@ abstract class HPXPolicyMapper {
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var jobHelper = new HPXJobHelper()
+    currentCoverages?.sortBy(\ elt -> elt?.Pattern?.Name)
     var changedCoveragePatterns = jobHelper.getChangedCoveragePatterns(currentCoverages?.first().PolicyLine.AssociatedPolicyPeriod, currentCoverages?.first().OwningCoverable)
     for (cov in currentCoverages) {
       var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))

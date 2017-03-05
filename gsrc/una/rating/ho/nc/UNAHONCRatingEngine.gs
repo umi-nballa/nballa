@@ -104,9 +104,9 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext:
           rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
           break
-      case HODW_ResidenceHeldTrust_NC_HOE_Ext:
-          rateResidenceHeldInTrust(dwellingCov, dateRange)
-          break
+//      case HODW_ResidenceHeldTrust_NC_HOE_Ext:                              //TODO refactor code because this is taken care of in policy info
+        //          rateResidenceHeldInTrust(dwellingCov, dateRange)
+//          break
       case HODW_EquipBreakdown_HOE_Ext:
           rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
           break
@@ -266,14 +266,15 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   /**
    * Rate Water backup Sump Overflow coverage
    */
-  function rateResidenceHeldInTrust(dwellingCov: HODW_ResidenceHeldTrust_NC_HOE_Ext, dateRange: DateRange) {
-    _logger.debug("Entering " + CLASS_NAME + ":: rateResidenceHeldInTrust to rate Residence Held in Trust Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null)
-      addCost(costData)
-    _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
-  }
+  //TODO refactor code because this is taken care of in policy info
+//  function rateResidenceHeldInTrust(dwellingCov: HODW_ResidenceHeldTrust_NC_HOE_Ext, dateRange: DateRange) {
+//    _logger.debug("Entering " + CLASS_NAME + ":: rateResidenceHeldInTrust to rate Residence Held in Trust Coverage", this.IntrinsicType)
+//    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+//    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+//    if (costData != null)
+//      addCost(costData)
+//    _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
+//  }
 
   /**
    *  Rate the Permitted Incidental Occupancies Coverage

@@ -268,22 +268,30 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 //    }
 
     if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_CA_FL_FORM)){
-      if(hoeLine != null and dwelling != null and (dwelling.DwellingProtectionDetails?.FireAlarm or
-          dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
-          dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
-          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL or
-          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_PARTIAL)){
-        return true
+      if(hoeLine != null and dwelling != null) {
+        var policyType = hoeLine.HOPolicyType.Code
+        var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
+        if( policyType == DP3typeKeyCode and (dwelling.DwellingProtectionDetails?.FireAlarm or
+            dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
+            dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
+            dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL or
+            dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_PARTIAL)){
+          return true
+        }
       }
     }
 
     if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_HI_FORM)){
-      if(hoeLine != null and dwelling != null and (dwelling.DwellingProtectionDetails?.FireAlarm or
-          dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
-          dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
-          dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL)){
-        return true
-      }
+      if(hoeLine != null and dwelling != null) {
+        var policyType = hoeLine.HOPolicyType.Code
+        var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
+        if( policyType == DP3typeKeyCode and (dwelling.DwellingProtectionDetails?.FireAlarm or
+            dwelling.DwellingProtectionDetails?.FireAlarmReportFireStn or dwelling.DwellingProtectionDetails?.FireAlarmReportCntlStn or
+            dwelling.DwellingProtectionDetails?.FireAlarmReportPoliceStn or
+            dwelling.DwellingProtectionDetails?.SprinklerSystemType == typekey.SprinklerSystemType_HOE.TC_FULL)){
+          return true
+        }
+        }
     }
 
     if(formCode.equals(FormPatternConstants.HO_HO3_HO4_HO6_PROTECTION_SYSTEM_HI_FORM)){
@@ -318,11 +326,15 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
 
     if(formCode.equals(FormPatternConstants.HO_NO_DWELLING_FIRE_OTHER_STRUCTURE_FORM)){
-      if(hoeLine != null and dwelling != null and !dwelling?.DPDW_Other_Structures_HOEExists){
-        return true
+      if(hoeLine != null and dwelling != null){
+        var policyType = hoeLine.HOPolicyType.Code
+        var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
+        var isCovExists = dwelling.DPDW_Other_Structures_HOEExists
+        if(policyType == DP3typeKeyCode and !isCovExists){
+          return true
+        }
       }
     }
-
 
     if(formCode.equals(FormPatternConstants.HO_BUSINESS_PROPERTY_INCREASED_LIMITS_FORM)){
       var policyType = hoeLine.HOPolicyType.Code
@@ -331,7 +343,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
       var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
       if(hoeLine != null and dwelling != null and( policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and dwelling.HODW_BusinessProperty_HOE_ExtExists
           and dwelling.HODW_BusinessProperty_HOE_Ext?.HasHODW_OnPremises_Limit_HOETerm
-          and dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.OptionValue.OptionCode == "2500") {
+          and dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.OptionValue.Value > 2500) {
         return true
       }
       }
@@ -615,15 +627,13 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
         var isCovPresent = dwelling.HODW_EquipBreakdown_HOE_ExtExists
         if((jobType == rewrite or jobType == renewal or jobType == account ) and (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode or policyType == HCONBtypeKeyCode or policyType == TDP1typeKeyCode or policyType == TDP2typeKeyCode or policyType == TDP3typeKeyCode) and isCovPresent ){
-          var transactionTypeCount = hoeLine.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
-          if(transactionTypeCount > 0){
-               return true
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+            return true
           }
         }
       }
     }
-
-
 
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS_TX_FORM)){
       if(hoeLine != null and  dwelling != null ){
@@ -635,8 +645,8 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var renewal = typekey.Job.TC_RENEWAL.Code
         var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
         if((jobType == rewrite or jobType == renewal or jobType == account ) and (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode) ){
-          var transactionTypeCount = hoeLine.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
-          if(transactionTypeCount > 0){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
             return true
           }
         }
@@ -710,10 +720,14 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var territoryCodeArray : String [] = {"2", "3", "4","16C","17","19C","19N"}
         var isConditionPresent = hoeLine.HODW_ReplaceCostCovAPaymentSched_HOEExists
         if((jobType == rewrite or jobType == renewal or jobType == account) and  policyType == HOBtypeKeyCode and territoryCodeArray.contains(territoryCode) and !isConditionPresent ){
-          var transactionTypeCount = hoeLine.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
-          if(transactionTypeCount > 0){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
             return true
           }
+          /*var transactionTypeCount = hoeLine.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
+          if(transactionTypeCount > 0){
+            return true
+          }*/
         }
       }
     }
@@ -813,6 +827,197 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         }
       }
     }
+
+
+    if(formCode.equals(FormPatternConstants.HO_SECTION1_DEDUCTIBLE_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HOAtypeKeyCode = typekey.HOPolicyType_HOE.TC_HOA_EXT.Code
+        var HOBtypeKeyCode = typekey.HOPolicyType_HOE.TC_HOB_EXT.Code
+        var HCOtypeKeyCode = typekey.HOPolicyType_HOE.TC_HCONB_EXT.Code
+        var isCovExists = dwelling.HODW_SectionI_Ded_HOEExists
+        var isTermPresent = dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm
+        var limitValue = dwelling.HODW_SectionI_Ded_HOE.HODW_WindHail_Ded_HOETerm.OptionValue.Value
+        if( isCovExists and isTermPresent and  (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode  or policyType == HCOtypeKeyCode ) and limitValue > 0 )  {
+          return true
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_PROPERTY_INCREASED_LIMITS_FORM)){
+      if(hoeLine != null and dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
+        var HO4typeKeyCode = typekey.HOPolicyType_HOE.TC_HO4.Code
+        var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
+        if(( policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and dwelling.HODW_BusinessProperty_HOE_ExtExists
+            and dwelling.HODW_BusinessProperty_HOE_Ext?.HasHODW_OnPremises_Limit_HOETerm
+            and dwelling.HODW_BusinessProperty_HOE_Ext.HODW_OnPremises_Limit_HOETerm.OptionValue.Value > 2500) {
+          return true
+        }
+    }
+    }
+    if(formCode.equals(FormPatternConstants.HO_SPECIAL_LIMITS_PERSONAL_PROPERTY_FORM)){
+      if(hoeLine != null and dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
+        var HO4typeKeyCode = typekey.HOPolicyType_HOE.TC_HO4.Code
+        var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
+
+        var isCovExists = dwelling.HODW_SpecialLimitsCovC_HOEExists
+        var isTermsExists = dwelling.HODW_SpecialLimitsCovC_HOE.HasHODW_ElectronicApparatus_Limit_HOETerm or dwelling.HODW_SpecialLimitsCovC_HOE.HasHODW_Firearms_Limit_HOETerm or dwelling.HODW_SpecialLimitsCovC_HOE.HasHODW_JewelryWatchesFurs_Limit_HOETerm or dwelling.HODW_SpecialLimitsCovC_HOE.HasHODW_Money_Limit_HOETerm or dwelling.HODW_SpecialLimitsCovC_HOE.HasHODW_Securties_Limit_HOETerm or dwelling.HODW_SpecialLimitsCovC_HOE.HasHODW_SilverGoldPewter_Limit_HOETerm
+
+        var termValue1 =  dwelling.HODW_SpecialLimitsCovC_HOE.HODW_ElectronicApparatus_Limit_HOETerm.OptionValue.Value
+        var termValue2 =   dwelling.HODW_SpecialLimitsCovC_HOE.HODW_Firearms_Limit_HOETerm.OptionValue.Value
+        var termValue3 =   dwelling.HODW_SpecialLimitsCovC_HOE.HODW_JewelryWatchesFurs_Limit_HOETerm.OptionValue.Value
+        var termValue4 =   dwelling.HODW_SpecialLimitsCovC_HOE.HODW_Money_Limit_HOETerm.OptionValue.Value
+        var termValue5 =   dwelling.HODW_SpecialLimitsCovC_HOE.HODW_SilverGoldPewter_Limit_HOETerm.OptionValue.Value
+        var termValue6 =  dwelling.HODW_SpecialLimitsCovC_HOE.HODW_Securties_Limit_HOETerm.OptionValue.Value
+
+        if(( policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and  isCovExists and isTermsExists and
+             (termValue1 > 1000   or termValue2 > 2000 or termValue3 > 1000 or   termValue4 > 200 or  termValue5 > 2500 or  termValue6 > 1000 )
+            ) {
+          return true
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS2_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
+        var HO4typeKeyCode = typekey.HOPolicyType_HOE.TC_HO4.Code
+        var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var renewal = typekey.Job.TC_RENEWAL.Code
+        if( jobType == rewrite  and (policyType == HO3typeKeyCode or policyType == HO4typeKeyCode or policyType== HO6typeKeyCode) ){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+            return true
+          }
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_SUBMISSION_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var sub = typekey.Job.TC_SUBMISSION.Code
+        var rewriteNewAcc = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        if( ( jobType == rewrite or  jobType == sub or jobType == rewriteNewAcc ) and policyType == DP3typeKeyCode  ){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
+            return true
+          }
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS3_FORM)){
+      if(hoeLine != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var renewal = typekey.Job.TC_RENEWAL.Code
+        var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        if((jobType == rewrite or jobType == renewal or jobType == account) and policyType == DP3typeKeyCode){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+            return true
+          }
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_SUBMISSION2_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HOATXtypeKeyCode = typekey.HOPolicyType_HOE.TC_HOA_EXT.Code
+        var HCONBtypeKeyCode = typekey.HOPolicyType_HOE.TC_HCONB_EXT.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var sub = typekey.Job.TC_SUBMISSION.Code
+        var rewriteNewAcc = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        var cancellation = typekey.Job.TC_CANCELLATION.Code
+        if( ( jobType == rewrite or  jobType == sub or jobType == rewriteNewAcc ) and (policyType == HOATXtypeKeyCode  or policyType == HCONBtypeKeyCode)){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
+            return true
+          }
+        }
+        }
+      }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS4_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HOATXtypeKeyCode = typekey.HOPolicyType_HOE.TC_HOA_EXT.Code
+        var HCONBtypeKeyCode = typekey.HOPolicyType_HOE.TC_HCONB_EXT.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var renewal = typekey.Job.TC_RENEWAL.Code
+        var rewriteNewAcc = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        var cancellation = typekey.Job.TC_CANCELLATION.Code
+        if( ( jobType == rewrite or  jobType == renewal or jobType == rewriteNewAcc ) and (policyType == HOATXtypeKeyCode  or policyType == HCONBtypeKeyCode)){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+            return true
+          }
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_SUBMISSION3_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HOBtypeKeyCode = typekey.HOPolicyType_HOE.TC_HOB_EXT.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var sub = typekey.Job.TC_SUBMISSION.Code
+        var cancellation = typekey.Job.TC_CANCELLATION.Code
+        if( ( jobType == rewrite or  jobType == sub ) and  policyType == HOBtypeKeyCode){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
+            return true
+          }
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS5_FORM)){
+      if(hoeLine != null and  dwelling != null ){
+        var policyType = hoeLine.HOPolicyType.Code
+        var HOBtypeKeyCode = typekey.HOPolicyType_HOE.TC_HOB_EXT.Code
+        var jobType= hoeLine.Branch.Job.Subtype.Code
+        var rewrite = typekey.Job.TC_REWRITE.Code
+        var cancellation = typekey.Job.TC_CANCELLATION.Code
+        var renewal = typekey.Job.TC_RENEWAL.Code
+        if( jobType == rewrite and  policyType == HOBtypeKeyCode ){
+          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods.Job.Subtype.Code
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+            return true
+          }
+        }
+      }
+    }
+
+    if(formCode.equals(FormPatternConstants.HO_ORDIANCE_LAW_FORM)){
+      var policyType = hoeLine.HOPolicyType.Code
+      var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
+      var HO4typeKeyCode = typekey.HOPolicyType_HOE.TC_HO4.Code
+      var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
+      if(hoeLine != null and dwelling != null and( policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and dwelling.HODW_OrdinanceCov_HOEExists
+          and dwelling.HODW_OrdinanceCov_HOE?.HasHODW_OrdinanceLimit_HOETerm
+          and dwelling.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm.OptionValue.Value > 0.10) {
+        return true
+      }
+    }
+
       return false
   }
 }

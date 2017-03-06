@@ -41,6 +41,10 @@
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
       name="initializeSingleValueReturns"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
+      name="setProtectionClassValue"
+      type="boolean"/>
     <InputColumn
       labelWidth="250">
       <Label
@@ -285,7 +289,7 @@
           label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
           value="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext"/>
         <BooleanRadioInput
-          available="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT &amp;&amp; dwelling.HOLocation.DwellingProtectionClasscode!=dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
+          available="true//dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT &amp;&amp; !(dwelling.HOLocation.DwellingProtectionClasscode.Code&lt;=dwelling.HOLocation.DwellingPCCodeOverridden_Ext.Code)"
           editable="true"
           id="OverRideTunaBCEG_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PCCodeOverride_Ext"

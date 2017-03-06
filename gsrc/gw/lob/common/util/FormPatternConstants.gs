@@ -87,6 +87,17 @@ interface FormPatternConstants {
   static final var HO_DWELLING_FIRE_TX1_FORM : String = "TDP0260401"
   static final var HO_DWELLING_FIRE_TX2_FORM : String = "TDP0270401"
   static final var HO_UNSCHEDULE_LIMIT_FORM : String = "HO1100792"
+  static final var HO_SECTION1_DEDUCTIBLE_FORM : String = "HO03120511"
+  static final var HO_PROPERTY_INCREASED_LIMITS_FORM : String = "HO04120511"
+  static final var HO_SPECIAL_LIMITS_PERSONAL_PROPERTY_FORM : String = "HO32880612"
+  static final var HO_REWRITE_FOR_RENEWALS2_FORM : String = "UIIN1100215"
+  static final var HO_REWRITE_FOR_SUBMISSION_FORM : String = "USP000117"
+  static final var HO_REWRITE_FOR_RENEWALS3_FORM : String = "PAN0000"
+  static final var HO_REWRITE_FOR_SUBMISSION2_FORM : String = "SPACONBN1116"
+  static final var HO_REWRITE_FOR_SUBMISSION3_FORM : String = "SPBN1116"
+  static final var HO_REWRITE_FOR_RENEWALS4_FORM : String = "SPACONBR1116"
+  static final var HO_REWRITE_FOR_RENEWALS5_FORM : String = "SPBR1116"
+  static final var HO_ORDIANCE_LAW_FORM : String = "UICOL1005"
 
 
 

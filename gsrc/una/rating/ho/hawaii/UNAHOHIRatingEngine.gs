@@ -12,6 +12,7 @@ uses una.rating.util.HOCreateCostDataUtil
 uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.hawaii.ratinginfos.HOHIDwellingRatingInfo
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
+uses una.rating.ho.hawaii.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -91,9 +92,31 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_EquipBreakdown_HOE_Ext:
             rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
             break
-
-
-
+        case HODW_Personal_Property_HOE:
+            if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 and dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+              rateIncreasedPersonalPropertyHO(dwellingCov, dateRange)
+            break
+        case HODW_Other_Structures_HOE:
+            rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
+            break
+        case HODW_LossAssessmentCov_HOE_Ext:
+              rateLossAssessmentCoverage(dwellingCov, dateRange)
+            break
+        case HODW_PermittedIncOcp_HOE_Ext:
+            ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
+            break
+        case HODW_SpecialComp_HOE_Ext:
+            rateSpecialComputerCoverage(dwellingCov, dateRange)
+            break
+        case HODW_RefrigeratedPP_HOE_Ext:
+            rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
+            break
+        case HODW_IdentityTheftExpenseCov_HOE_Ext:
+            rateIdentityTheftExpenseCoverage(dwellingCov, dateRange)
+            break
+        case HODW_CC_EFT_HOE_Ext:
+            rateCreditCardEFTCoverage(dwellingCov, dateRange)
+            break
       }
 
     }
@@ -103,6 +126,10 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 //      case HOLI_AdditionalInsuredSchedPropertyManager:
 //          rateAdditionalInsuredPropertyManager(lineCov, dateRange)
 //          break
+      case HOSL_OutboardMotorsWatercraft_HOE_Ext:
+          if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
+          rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)
+          break
     }
   }
 
@@ -147,6 +174,119 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (costData != null)
       addCost(costData)
     _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateIncreasedPersonalPropertyHO(dwellingCov: HODW_Personal_Property_HOE, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateIncreasedPersonalProperty to rate Personal Property Increased Limit Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+  * Rate Other structures - Increased or decreased Limits coverage
+  */
+  function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
+    if (_dwellingRatingInfo.OtherStructuresIncreasedLimit != 0){
+      var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null){
+        addCost(costData)
+      }
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+  /**
+   * Rate the Loss assessment Coverage
+   */
+  function rateLossAssessmentCoverage(dwellingCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
+    if (_dwellingRatingInfo.LossAssessmentLimit > dwellingCov.HOPL_LossAssCovLimit_HOETerm.RuntimeDefault){
+      var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Loss Asssessment Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Permitted Incidental Occupancies Coverage
+   */
+  function ratePermittedIncidentalOccupanciesCoverage(dwellingCov: HODW_PermittedIncOcp_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: ratePermittedIncidentalOccupanciesCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERMITTED_INCIDENTAL_OCCUPANCIES_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Permitted Incidental Occupancies Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Special Computer coverage
+   */
+  function rateSpecialComputerCoverage(dwellingCov: HODW_SpecialComp_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateSpecialComputerCoverage to rate Special Computer Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.SPECIAL_COMPUTER_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Special Computer Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Refrigerated Personal Property coverage
+   */
+  function rateRefrigeratedPersonalPropertyCoverage(dwellingCov: HODW_RefrigeratedPP_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateRefrigeratedPersonalPropertyCoverage to rate Refrigerated Personal Property Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Refrigerated Personal Property Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Identity Theft Expense Coverage coverage
+   */
+  function rateIdentityTheftExpenseCoverage(dwellingCov: HODW_IdentityTheftExpenseCov_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateIdentityTheftExpenseCoverage to rate Identity Theft Expense Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateIdentityTheftExpenseCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Identity Theft Expense Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+  /**
+   * Rate the Credit Card, EFT, Access Device, Forgery and Counterfeit Money
+   */
+  function rateCreditCardEFTCoverage(dwellingCov: HODW_CC_EFT_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateCreditCardEFTCoverage to rate the Credit Card, EFT, Access Device, Forgery and Counterfeit Money", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.CC_EFT_ACCESSDEVICE_FORGERY_AND_COUNTERFEIT_MONEY, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Business Property Increased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
   function rateMultiLineDiscount(dateRange: DateRange) {
@@ -241,6 +381,36 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if (_logger.DebugEnabled)
       _logger.debug("Affinity Discount Rated Successfully", this.IntrinsicType)
   }
+
+
+  /**
+   * Rate the Outboard Motors and Watercraft coverage
+   */
+  function rateOutboardMotorsAndWatercraftCoverage(lineCov: HOSL_OutboardMotorsWatercraft_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateOutboardMotorsAndWatercraftCoverage", this.IntrinsicType)
+    for (item in lineCov.scheduledItem_Ext) {
+      var rateRoutineParameterMap = getOutboardMotorsAndWatercraftCovParameterSet(PolicyLine, item, lineCov)
+      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP2_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Outboard Motors and Watercraft Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+  /**
+   * Returns the parameter set for Outboard Motor coverages
+   */
+  private function getOutboardMotorsAndWatercraftCovParameterSet(line: PolicyLine, item: HOscheduleItem_HOE_Ext, lineCov: HOSL_OutboardMotorsWatercraft_HOE_Ext): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOOutboardMotorsAndWatercraftRatingInfo(item, lineCov)
+    }
+  }
+
+
   /**
    *  Returns the parameter set for the line level coverages
    */

@@ -326,10 +326,11 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
 
     if(formCode.equals(FormPatternConstants.HO_NO_DWELLING_FIRE_OTHER_STRUCTURE_FORM)){
-      if(hoeLine != null){
+      if(hoeLine != null and dwelling != null){
         var policyType = hoeLine.HOPolicyType.Code
         var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
-        if(policyType == DP3typeKeyCode and dwelling != null and !dwelling?.DPDW_Other_Structures_HOEExists){
+        var isCovExists = dwelling.DPDW_Other_Structures_HOEExists
+        if(policyType == DP3typeKeyCode and !isCovExists){
           return true
         }
       }

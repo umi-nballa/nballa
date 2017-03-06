@@ -5,6 +5,7 @@
   <Popup
     afterCommit="TopLocation.commit(); TopLocation.startEditing(); "
     afterEnter="if (thisLoss == null and startInEdit == true and openForEdit)                       { thisLoss = createNewLoss(policyPeriod); }"
+    beforeCommit="thisLoss.ChargeableClaim = una.integration.lexisnexis.util.ClueUtilInfo.calculateChargeable(thisLoss,policyPeriod)"
     canEdit="openForEdit"
     id="HOPriorLossExtPopup"
     returnType="HOPriorLoss_Ext"
@@ -60,7 +61,7 @@
   var newLoss = new HOPriorLoss_Ext()
   newLoss.ManuallyAddedLoss = true
   pPeriod.HomeownersLine_HOE.addToHOPriorLosses_Ext(newLoss)
-  
+
   return newLoss
 }
 

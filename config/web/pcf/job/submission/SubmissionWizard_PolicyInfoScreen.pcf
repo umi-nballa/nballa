@@ -29,6 +29,17 @@
           def="SubmissionWizard_PolicyInfoDV(period, submission)">
           <Toolbar/>
         </PanelRef>
+        <DetailViewPanel>
+          <InputColumn>
+            <BooleanRadioInput
+              editable="true"
+              id="anyotherbusiness"
+              label="&quot;Any Other Business Under Common Ownership with any named insured&quot;"
+              required="true"
+              value="period.CommonOwenership_Ext"
+              visible="!period.HomeownersLine_HOEExists"/>
+          </InputColumn>
+        </DetailViewPanel>
       </PanelSet>
     </PanelRef>
     <PanelRef
@@ -84,20 +95,6 @@
               </RowIterator>
             </ListViewPanel>
           </ListViewInput>
-        </InputColumn>
-      </DetailViewPanel>
-    </PanelRef>
-    <PanelRef
-      visible="!period.HomeownersLine_HOEExists">
-      <DetailViewPanel>
-        <InputColumn>
-          <BooleanRadioInput
-            editable="true"
-            id="anyotherbusiness"
-            label="&quot;Any Other Business Under Common Ownership with any named insured&quot;"
-            required="true"
-            value="period.CommonOwenership_Ext"
-            visible="!period.HomeownersLine_HOEExists"/>
         </InputColumn>
       </DetailViewPanel>
     </PanelRef>

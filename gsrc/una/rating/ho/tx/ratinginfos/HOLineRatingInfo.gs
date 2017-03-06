@@ -17,6 +17,7 @@ class HOLineRatingInfo {
   var _personalInjuryLimit: int as PersonalInjuryLimit
   var _animalLiabilityLimit: int as AnimalLiabilityLimit
   var _totalBasePremium: BigDecimal as TotalBasePremium
+  var _numberOfLocations : int as NumberOfLocations
   construct() {
   }
 
@@ -25,5 +26,8 @@ class HOLineRatingInfo {
     _personalLiabilityLimit = (lineCov.HOLine.HOLI_Personal_Liability_HOEExists) ? lineCov.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.Value?.intValue() : 0
     _personalInjuryLimit = (lineCov.HOLine.HOLI_PersonalInjury_HOEExists) ? lineCov.HOLine.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue() : 0
     _animalLiabilityLimit = ((lineCov.HOLine.HOLI_AnimalLiabilityCov_HOE_ExtExists) ? lineCov.HOLine.HOLI_AnimalLiabilityCov_HOE_Ext?.HOLI_AnimalLiabLimit_HOETerm?.Value : 0) as int
+
+    if(lineCov typeis HOLI_AddResidenceRentedtoOthers_HOE)
+      _numberOfLocations = lineCov?.CoveredLocations?.Count
   }
 }

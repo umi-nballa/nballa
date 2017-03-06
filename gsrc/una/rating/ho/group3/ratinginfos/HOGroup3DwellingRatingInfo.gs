@@ -37,7 +37,8 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
       _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
 
       _county = (dwelling?.HOLocation?.PolicyLocation?.County != null)? dwelling?.HOLocation?.PolicyLocation?.County : ""
-      _territoryCodeForSinkholeLossCov = TerritoryCode.toInt()
+     if(TerritoryCode != null and TerritoryCode.Numeric)
+      _territoryCodeForSinkholeLossCov = TerritoryCode?.toInt()
 
 
       _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm.DisplayValue

@@ -69,12 +69,19 @@
                 label="displaykey.Web.Policy.PriorPolicy.ExpirationDate"
                 required="!noPriorIns()"
                 value="priorPolicy.ExpirationDate"/>
-              <TypeKeyCell
+              <!-- <TypeKeyCell
                 editable="true"
                 id="nopriorins"
                 label="displaykey.Web.Policy.PriorPolicy.ReasonNoPriorIns"
                 required="noPriorIns()"
-                value="priorPolicy.ReasonNoPriorIns_Ext"/>
+                value="priorPolicy.ReasonNoPriorIns_Ext"/> -->
+              <RangeCell
+                editable="true"
+                id="nopriorins"
+                label="displaykey.Web.Policy.PriorPolicy.ReasonNoPriorIns"
+                required="noPriorIns()"
+                value="priorPolicy.ReasonNoPriorIns_Ext"
+                valueRange="typekey.ReasonNoPriorIns_Ext.Type.getTypeKeysByCategory(policyPeriod.BaseState)"/>
               <MonetaryAmountCell
                 align="right"
                 currency="policyPeriod.PreferredSettlementCurrency"

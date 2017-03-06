@@ -169,9 +169,6 @@ class CoverageTermAvailabilityUtil {
       case "BP7ProdCompldOpsAggregateLimit":
           result = isProductsCompletedOpsAggrLimitCovTermAvailable(coverable as BP7BusinessOwnersLine)
           break
-      case "HODW_Hurricane_Ded_HOE":
-        result = isHurricanePercentageAvailable(coverable as Dwelling_HOE)
-        break
       case "DPLI_Premise_Liability_HOE_Ext":
         result = isDwellingFirePremiseLiabilityAvailable(coverable as HomeownersLine_HOE)
         break
@@ -397,10 +394,6 @@ class CoverageTermAvailabilityUtil {
       return true
     }
     return false
-  }
-
-  private static function isHurricanePercentageAvailable(dwelling : Dwelling_HOE) : boolean{
-    return dwelling.HOLine.BaseState != TC_FL or !dwelling.WHurricaneHailExclusion_Ext
   }
   
   private static function isBP7OrdinanceLawCov2LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{

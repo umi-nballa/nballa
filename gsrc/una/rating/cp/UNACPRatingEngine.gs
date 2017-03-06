@@ -55,9 +55,6 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
         location.Buildings.each( \ building -> {
           _logger.info("Rating CP Building Coverages")
           rateCPBuilding(building, sliceRange)
-          /*building.Coverages.each( \ buildingCov -> {
-            rateCPBuildingCov(buildingCov, sliceRange)
-          })  */
           _logger.info("Done Rating CP Building Coverages")
         })
       })

@@ -28,6 +28,8 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _ordinanceOrLawCovLimit : BigDecimal as ordinanceOrLawCovLimit
   var _specialComputerCoverageLimit : BigDecimal as SpecialComputerCoverageLimit
   var _increasedPersonalPropertyPremium: BigDecimal as IncreasedPersonalPropertyPremium = 0.0
+  var _coverageLimitForDeductible : BigDecimal as CoverageLimitForDeductible = 0
+  var _aopDeductibleLimit : BigDecimal as AOPDeductibleLimit
 
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
@@ -35,7 +37,8 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
       _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
 
       _county = (dwelling?.HOLocation?.PolicyLocation?.County != null)? dwelling?.HOLocation?.PolicyLocation?.County : ""
-      _territoryCodeForSinkholeLossCov = TerritoryCode.toInt()
+     if(TerritoryCode != null and TerritoryCode.Numeric)
+      _territoryCodeForSinkholeLossCov = TerritoryCode?.toInt()
 
 
       _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm.DisplayValue
@@ -57,5 +60,14 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
       _buildingAdditionsAndAlterationsLimit = dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
       _ordinanceOrLawCovLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value
       _specialComputerCoverageLimit = dwelling?.HODW_SpecialComp_HOE_Ext?.HODW_SpecialComputerCoverageLimit_ExtTerm?.Value
+
+    if(PolicyType == typekey.HOPolicyType_HOE.TC_HO3)
+      _coverageLimitForDeductible = dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm.Value
+    else if(PolicyType == typekey.HOPolicyType_HOE.TC_HO4 || PolicyType == typekey.HOPolicyType_HOE.TC_HO6)
+      _coverageLimitForDeductible = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
+
+    if(dwelling.HODW_SectionI_Ded_HOEExists){
+      _aopDeductibleLimit = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm?.Value
+    }
   }
 }

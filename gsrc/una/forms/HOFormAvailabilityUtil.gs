@@ -131,12 +131,13 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
            return true
        }
     }
-    if(formCode.equals(FormPatternConstants.HO_ADDL_DESC_LOCATION_0788_FORM) or
-        formCode.equals(FormPatternConstants.HO_ADDL_DESC_LOCATION_1202_FORM)){
-      if(hoeLine != null and dwelling != null and dwelling.HODW_AdditionalInsuredSchedDescribedLocationExists){
-        return true
-      }
-    }
+
+//    if(formCode.equals(FormPatternConstants.HO_ADDL_DESC_LOCATION_0788_FORM) or
+//        formCode.equals(FormPatternConstants.HO_ADDL_DESC_LOCATION_1202_FORM)){
+//      if(hoeLine != null and dwelling != null){
+//        return true
+//      }
+//    }  This must be updated
 
     if(formCode.equals(FormPatternConstants.HO_CONDO_UNIT_OWNER_COV_FORM)){
       if(hoeLine != null and dwelling != null and (dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO or
@@ -259,11 +260,12 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
       }
     }
 
-    if(formCode.equals(FormPatternConstants.HO_ADDL_INSURED_DESCRIBED_LOCATION_FORM)){
-      if(hoeLine != null and dwelling != null and dwelling.HODW_AdditionalInsuredSchedDescribedLocationExists){
-        return true
-      }
-    }
+      //TODO addins_update
+//    if(formCode.equals(FormPatternConstants.HO_ADDL_INSURED_DESCRIBED_LOCATION_FORM)){
+//      if(hoeLine != null and dwelling != null and dwelling.HODW_AdditionalInsuredSchedDescribedLocationExists){
+//        return true
+//      }
+//    }
 
     if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_CA_FL_FORM)){
       if(hoeLine != null and dwelling != null and (dwelling.DwellingProtectionDetails?.FireAlarm or

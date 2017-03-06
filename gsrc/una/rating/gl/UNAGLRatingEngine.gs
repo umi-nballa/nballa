@@ -104,8 +104,7 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
       if(lineCov.HasRecFacilitiesNumFitnessCenters_EXTTerm)
         addCost(rateFitnessCentersLiability(lineCov, sliceRange))
       if(lineCov.HasRecFacilitiesNumSwimmingPools_EXTTerm)
-        return
-        //addCost(rateSwimmingPoolLiability(lineCov, sliceRange))
+        addCost(rateSwimmingPoolLiability(lineCov, sliceRange))
     }
   }
 

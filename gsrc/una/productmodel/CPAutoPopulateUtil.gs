@@ -124,6 +124,22 @@ class CPAutoPopulateUtil {
 
   }
 
+public static function setSinkholeLimit (coverable:Coverable):void
+{
+  if(coverable typeis CPBuilding)
+    {
+      var cBuilding = coverable as CPBuilding
+  if(cBuilding.CPBldgCovExists && cBuilding.CPBldgCov.HasCPBldgCovLimitTerm)
+  {
+    if(cBuilding.CPSinkholeLossCoverage_EXTExists)
+    {
+      cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm.Value=cBuilding.CPBldgCov.CPBldgCovLimitTerm.Value
+      cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeDed_EXTTerm?.Value = cBuilding?.CPSinkholeLossCoverage_EXT?.SinkholeLimit_EXTTerm?.Value * 0.10
+    }
+  }
+    }
+}
+
   public static function setIncreasedCostLimit (cLine:CommercialPropertyLine, cBuilding:CPBuilding):void
   {
 

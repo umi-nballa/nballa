@@ -25,7 +25,7 @@ class HOBasePremiumRaterHI {
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.DP_BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -41,7 +41,7 @@ class HOBasePremiumRaterHI {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    routinesToExecute.add(HORateRoutineNames.DP_BASE_PREMIUM_RATE_ROUTINE)
+    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
     return costs
   }

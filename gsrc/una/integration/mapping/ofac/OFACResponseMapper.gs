@@ -22,17 +22,14 @@ class OFACResponseMapper {
   function mapOFACResponse(contactList: ArrayList<Contact>, policyPeriod: PolicyPeriod)
   {
     _logger.info(CLASS_NAME + ": Entering Inside method mapOFACResponse")
-
-    for (record in contactList)
-    {
-
+    contactList?.toSet()?.each( \ record -> {
       var ofacContact = policyPeriod.ofaccontact?.firstWhere(\elt -> elt.Contact == record)
       if (ofacContact == null) {
         var ofacEntity = new OfacContact_Ext(policyPeriod)
         ofacEntity.Contact = record
         ofacEntity.OfacHit = true
       }
-    }
+    })
     _logger.info(CLASS_NAME + ": Exting from the method mapOFACResponse")
   }
 }

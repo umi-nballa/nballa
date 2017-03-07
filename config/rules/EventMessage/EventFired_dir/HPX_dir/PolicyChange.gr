@@ -13,12 +13,10 @@ return messageContext.EventName == gw.plugin.messaging.BillingMessageTransport.C
 /*start00rule*/
 var period = (messageContext.Root as PolicyPeriod)?.LatestPeriod
 var hpxRecipientMapper = new HPXRecipientMapper()
-  if (period.NewlyAddedForms.Count > 0) {
-    var ewsRequestXMLs = hpxRecipientMapper.createFormsForRecipients(period, period.NewlyAddedForms)
-    for (ewsRequestXML in ewsRequestXMLs) {
-      messageContext.createMessage(ewsRequestXML)
-    }
-  }
+var ewsRequestXMLs = hpxRecipientMapper.createFormsForRecipients(period, period.NewlyAddedForms)
+for (ewsRequestXML in ewsRequestXMLs) {
+  messageContext.createMessage(ewsRequestXML)
+}
 /*end00rule*/
   }
 }

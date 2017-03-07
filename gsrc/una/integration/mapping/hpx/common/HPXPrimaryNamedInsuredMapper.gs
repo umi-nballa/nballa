@@ -22,7 +22,12 @@ class HPXPrimaryNamedInsuredMapper {
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = ""
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = entityType
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = entityType.Description
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.BirthDt = (contact typeis Person) ? new XmlDate(contact.DateOfBirth) : null
+    if (contact typeis Person) {
+      var dob = contact.DateOfBirth
+      if (dob != null) {
+        insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.BirthDt = new XmlDate(contact.DateOfBirth)
+      }
+    }
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.MaritalStatusCd = (contact typeis Person) ? contact.MaritalStatus : ""
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.MaritalStatusDesc = (contact typeis Person) ? contact.MaritalStatus.Description : ""
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYPRINAMEDINSURED

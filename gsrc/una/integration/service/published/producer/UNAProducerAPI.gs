@@ -1,6 +1,12 @@
-package una.integration.service.published
+package una.integration.service.published.producer
 
-
+uses gw.xml.ws.annotation.WsiWebService
+uses gw.xml.ws.annotation.WsiPermissions
+uses gw.api.webservice.exception.BadIdentifierException
+uses gw.webservice.SOAPUtil
+uses gw.xml.ws.annotation.WsiExposeEnumAsString
+uses gw.api.database.PCBeanFinder
+uses una.integration.service.published.producer.datamodel.OrgDTO
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +22,6 @@ package una.integration.service.published
 @WsiExposeEnumAsString(typekey.ProducerStatus)
 @WsiExposeEnumAsString(typekey.BusinessType)
 @WsiExposeEnumAsString(typekey.Tier)
-@WsiExposeEnumAsString(typekey.GroupType)
 @Export
 class UNAProducerAPI {
 
@@ -32,8 +37,8 @@ class UNAProducerAPI {
 
     var createdPublicID : String
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-      var newOrg = orgModel.createOrganization(bundle)
-      createdPublicID = newOrg.PublicID
+    //  var newOrg = orgModel.createOrganization(bundle)
+    //  createdPublicID = newOrg.PublicID
     })
 
     return createdPublicID
@@ -53,8 +58,5 @@ class UNAProducerAPI {
   private function loadProducerCodeByPublicID(publicID : String) : entity.ProducerCode {
     return publicID == null ? null : PCBeanFinder.loadBeanByPublicID<entity.ProducerCode>(publicID, entity.ProducerCode)
   }
-
-
-
 
 }

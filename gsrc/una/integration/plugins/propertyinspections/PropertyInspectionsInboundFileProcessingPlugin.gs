@@ -13,6 +13,10 @@ uses java.text.SimpleDateFormat
 uses java.util.Date
 uses una.integration.framework.file.inbound.model.FileRecords
 uses una.utils.ActivityUtil
+uses gw.api.email.EmailContact
+uses una.utils.EmailUtil
+uses una.integration.emailtemplate.InspectionsOrderedEmail
+uses java.lang.Exception
 
 /**
  * The InboundFileProcessingPlugin implementation to process Inspection Vendors inbound files
@@ -25,7 +29,10 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
    final static var DATE_FORMAT_RECEIVED = "MMddyyyy"
    final static var LAST_INSPECTION_DATE_FORMAT = "yyyy-MM-dd"
    final static var NOTES_SUBJECT = "Inspection Vendors"
-   var CLASS_NAME=PropertyInspectionsInboundFileProcessingPlugin.Type.DisplayName
+  final static var UNIVERSAL_INSURANCE_MANAGERS_GROUP = "Universal Insurance Manager's Inc"
+  final static var CSR_FOLLOW_UP_QUEUE = "CSR Follow up Queue"
+  final static var INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE = "inspection_ordered"
+  var CLASS_NAME=PropertyInspectionsInboundFileProcessingPlugin.Type.DisplayName
 
   /**
    * The BeanIO Stream Name to read the inbound file
@@ -82,11 +89,23 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var policyChangePeriod = policyChange.Periods.length == 1 ? policyChange.Periods[0] : null
       policyChangePeriod.DateLastInspection_Ext= lastInspectionDate
       policyChangePeriod.addNote(NoteTopicType.TC_GENERAL, NOTES_SUBJECT,policyRecord.Notes)
-      var activity=ActivityUtil.createActivityAutomatically(policyChangePeriod, "PIO")
-
       policyChangePeriod.PolicyChangeProcess.requestQuote()
       policyChangePeriod.markValidQuote()
       policyChangePeriod.PolicyChangeProcess.bind()
+      var activity = ActivityUtil.createActivityAutomatically(policyChangePeriod, INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE)
+      if(activity.canAssign()){
+        ActivityUtil.assignActivityToQueue(CSR_FOLLOW_UP_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+      }
+
+      if(policyPeriod.AllContacts*.EmailAddress1!=null){
+        var subject = "Policy Inspection -- "+policyPeriod.PrimaryInsuredName +" "+policyPeriod.PolicyNumber
+        var emailBody = InspectionsOrderedEmail.renderToString()
+        var emailContact = new EmailContact()
+        emailContact.EmailAddress = policyPeriod.AllContacts*.EmailAddress1 as String
+        emailContact.Name=policyPeriod.PrimaryInsuredName
+        EmailUtil.sendEmail(emailBody ,emailContact, subject)
+      }
+
 
       LOGGER.debug("The Policy Change transaction successfully completed : "+policyNumber)
     }

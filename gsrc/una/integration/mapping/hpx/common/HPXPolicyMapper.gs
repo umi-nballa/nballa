@@ -100,10 +100,10 @@ abstract class HPXPolicyMapper {
     personHolderType.FirstName = person.FirstName != null ? person.FirstName : ""
     personHolderType.LastName = person.LastName != null ? person.LastName : ""
     personHolderType.SSN = person.SSNOfficialID != null ? person.SSNOfficialID : ""
-    personHolderType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
+    personHolderType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : null
     physicalAddressType.AddressLine1 = person.PrimaryAddress.AddressLine1 != null ? person.PrimaryAddress.AddressLine1 : ""
     physicalAddressType.City = person.PrimaryAddress.City != null ? person.PrimaryAddress.City : ""
-    physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State : ""
+    physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State : null
     physicalAddressType.PostalCode = person.PrimaryAddress.PostalCode != null ? person.PrimaryAddress.PostalCode : ""
     genderType.GenderID = person.Gender.Code != null ? person.Gender.Code : ""
     genderType.GenderCode = person.Gender.Code != null ? person.Gender.Code : ""

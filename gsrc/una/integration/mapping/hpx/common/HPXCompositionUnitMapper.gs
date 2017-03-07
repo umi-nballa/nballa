@@ -16,6 +16,7 @@ abstract class HPXCompositionUnitMapper {
 
   function createDocumentForms(forms : Form[])  : List<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType> {
     var documentForms = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>()
+    forms?.sortBy(\ elt -> elt?.Pattern?.Priority)
     for (form in forms) {
       documentForms.add(createDocumentForm(form.Pattern.Code, "English", form.Pattern.FormNumber, form.EffectiveDate, form.Pattern.Edition, false, form.Pattern.ClausePatternCode,form.FormDescription) )
     }

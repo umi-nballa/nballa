@@ -21,7 +21,7 @@
           hideIfReadOnly="true"
           id="Add"
           label="displaykey.Web.Policy.Coverages.AddCoverages"
-          onPick="createCoverageList(PickedValue.whereTypeIs( gw.api.productmodel.CoveragePattern ).toList())"/>
+          onPick="createCoverageList(PickedValue.whereTypeIs( gw.api.productmodel.CoveragePattern ).toList());una.productmodel.CPAutoPopulateUtil.setSinkholeLimit(coverable)"/>
       </Toolbar>
     </PanelRef>
     <Code><![CDATA[function createCoverageList(patterns: java.util.List<gw.api.productmodel.CoveragePattern>) {

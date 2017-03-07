@@ -102,4 +102,5 @@ class CPRateRoutineNames {
   //Taxes and fees
   public static final var CP_EMPA_SURCHARGE_RATE_ROUTINE : String = "CPEMPASurchargeRateRoutine"
   public static final var CP_POLICY_FEES_RATE_ROUTINE : String = "CPPolicyFeesRateRoutine"
+  public static final var CP_FIRE_COLLEGE_SURCHARGE_RATE_ROUTINE : String = "CPFireCollegeSurchargeRateRoutine"
 }

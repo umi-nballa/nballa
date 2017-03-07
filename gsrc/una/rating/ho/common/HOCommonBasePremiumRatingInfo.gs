@@ -17,7 +17,7 @@ class HOCommonBasePremiumRatingInfo {
   var _territoryCode: String as TerritoryCode
   var _dwellingLimit: int as DwellingLimit
   var _personalPropertyLimit: int as PersonalPropertyLimit
-  var _policyType: String as PolicyType
+  var _policyType : HOPolicyType_HOE as PolicyType
   var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
   var _creditScore: int as CreditScore = 0
   var _priorLosses: int as PriorLosses = 0
@@ -31,8 +31,7 @@ class HOCommonBasePremiumRatingInfo {
   construct(dwelling: Dwelling_HOE) {
     var hoLocation = dwelling?.HOLocation
     _territoryCode = hoLocation?.OverrideTerritoryCode_Ext? hoLocation?.TerritoryCodeOverridden_Ext : hoLocation?.TerritoryCodeTunaReturned_Ext
-
-    _policyType = dwelling?.HOLine.HOPolicyType.Code
+    _policyType = dwelling?.HOLine.HOPolicyType
     _dwellingLimit = dwelling?.DwellingLimitCovTerm.Value as int
 
     _personalPropertyLimit = dwelling.PersonalPropertyLimitCovTerm.Value as int

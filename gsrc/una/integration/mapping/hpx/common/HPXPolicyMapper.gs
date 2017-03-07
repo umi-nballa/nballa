@@ -312,6 +312,7 @@ abstract class HPXPolicyMapper {
   function createExclusionsInfo (currentExclusions : java.util.List<Exclusion>, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    currentExclusions?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (excl in currentExclusions) {
       var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
         coverages.add(getExclusionMapper().createExclusionInfo(excl, trxs))
@@ -322,6 +323,7 @@ abstract class HPXPolicyMapper {
   function createPolicyConditionsInfo (currentPolicyConditions : java.util.List<PolicyCondition>, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    currentPolicyConditions?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (cond in currentPolicyConditions) {
       var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
         coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, trxs))

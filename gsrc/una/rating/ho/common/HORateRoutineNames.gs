@@ -118,4 +118,5 @@ public final class HORateRoutineNames {
   public static final var LOSS_HISTORY_CREDIT_RATE_ROUTINE :String = "UNAHOLossHistoryCreditRateRoutine"
   public static final var PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE :String = "UNAHOProtectiveDeviceCreditRateRoutine"
   public static final var ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE : String = "UNADPAdditionalInsuredPropertyManagerCovRateRoutine"
+  public static final var EQ_COVERAGE_RATE_ROUTINE : String = "UNAHOEarthquakeCoverageRateRoutine"
 }

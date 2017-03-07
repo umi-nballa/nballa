@@ -50,6 +50,7 @@ abstract class HPXCoverageMapper {
   function createCovTermInfo(currentCoverage : Coverage, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     var currCovTerms = currentCoverage.CovTerms
+    currCovTerms?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (currCovTerm in currCovTerms) {
       if (currCovTerm typeis DirectCovTerm) {
         var covTerms = createDirectCovTermInfo(currentCoverage, currCovTerm, transactions)

@@ -21,6 +21,12 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _lossAssessmentLimit: BigDecimal as LossAssessmentLimit
   var _unitOwnersCoverageASpecialLimitsExists : boolean as UnitOwnersCoverageASpecialLimitsExists = false
+  var _higherEQDeductible : boolean as HigherEQDeductible = false
+  var _eqZone : String as EQZone
+  var _eqConstruction : typekey.EarthquakeConstrn_Ext as EQConstruction
+  var _eqDeductible : BigDecimal as EQDeductible
+  var _ordinanceOrLawLimit : BigDecimal as OrdinanceOrLawLimit
+  var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
   construct(dwelling : Dwelling_HOE){
       super(dwelling)
 
@@ -41,6 +47,30 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }
+
+    if(dwelling.HODW_Earthquake_HOEExists){
+      _eqDeductible = dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.Value
+      if( _eqDeductible> 0.05){
+        _higherEQDeductible = true
+      }
+      _eqZone = dwelling.EarthQuakeTerritoryOrOverride
+      _eqConstruction = dwelling.EarthquakeConstrn_Ext
+      if(_eqConstruction != typekey.EarthquakeConstrn_Ext.TC_SUPERIOR and dwelling?.HODW_Earthquake_HOE?.HODW_EarthquakeMason_HOETerm?.Value){
+        _eqConstruction = typekey.EarthquakeConstrn_Ext.TC_MASONRY
+      }
+    }
+
+    if(PolicyType == typekey.HOPolicyType_HOE.TC_HO3){
+      _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value  * dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value
+    }
+    if(PolicyType == typekey.HOPolicyType_HOE.TC_HO4){
+      _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value  * dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
+    }
+
+
+    _otherStructuresRentedToOthersLimit = dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value
+
+
 
   }
 }

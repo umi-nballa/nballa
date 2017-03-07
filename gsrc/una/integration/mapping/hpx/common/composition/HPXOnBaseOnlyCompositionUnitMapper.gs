@@ -13,22 +13,14 @@ uses gw.xml.XmlElement
 class HPXOnBaseOnlyCompositionUnitMapper extends HPXCompositionUnitMapper {
   override function createCompositionUnitForRecipient(policyPeriod: PolicyPeriod, forms: Form[], recipient : wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType)
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
-    var compositionUnit = addFormsToOnBaseOnlyCompositionUnit(recipient, new List<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>(), policyPeriod)
+    var documentForms = createDocumentForms(forms.where( \ elt1 -> elt1.Pattern.InsuredRecType == false and
+        elt1.Pattern.AddnlInsuredRecType == false and
+        elt1.Pattern.AddnlIntLienholderRecType == false and
+        elt1.Pattern.AddnlIntMortgageeRecType == false and
+        elt1.Pattern.AgentRecType == false and
+        elt1.Pattern.MasterAgentRecType == false))
+    var compositionUnit = addFormsToCompositionUnit(recipient, documentForms)
     return compositionUnit
-  }
-
-  function addFormsToOnBaseOnlyCompositionUnit(recipient : wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType,
-                                                documentForms : List<wsi.schema.una.hpx.hpx_application_request.types.complex.DocumentFormType>,
-                                                policyPeriod  : PolicyPeriod)
-      : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
-    var documentComposition = new wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType()
-    if (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0) {
-      documentComposition.addChild(new XmlElement("DocumentForm", createDocumentForm("CLUEREPORT", "English", "CLUEREPORT", null, "1", false,"CLUEREPORT","LexisNexis Clue Report")))
-    }
-    if(policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0){
-      documentComposition.addChild(new XmlElement("DocumentForm", createDocumentForm("NCRREPORT", "English", "NCRREPORT", null, "1", false,"NCRREPORT","LexisNexis National Credit Report")))
-    }
-    return documentComposition
   }
 
   override function getRecipients(policyPeriod: PolicyPeriod, recipientMapper : HPXRecipientMapper): List<wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType> {

@@ -13,11 +13,21 @@ uses gw.lob.bp7.rating.BP7ClassificationCovCostData
 uses gw.lob.bp7.rating.BP7TaxCostData_Ext
 uses java.util.ArrayList
 uses una.rating.bp7.ratinginfos.BP7RatingInfo
+uses java.math.BigDecimal
+uses gw.rating.rtm.query.RateBookQueryFilter
+uses gw.job.RenewalProcess
+uses gw.rating.rtm.query.RatingQueryFacade
+
+/**
+ * Rating engine which rates all the BP7 policies
+*/
 
 abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRatingEngine<BP7Line> {
 
   var _bp7RatingInfo : BP7RatingInfo as BP7RatingInfo
   var _minimumRatingLevel: RateBookStatus as MinimumRatingLevel
+  var _totalAnnualPremiumBeforeActualIRPM : BigDecimal as TotalAnnualPremiumBeforeActualIRPM
+  var _addCostToDB : boolean as AddCostToDB
 
   construct(line: T) {
     super(line)
@@ -28,6 +38,12 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       RateFactorUtil.setDefaults()
+
+      _addCostToDB = false
+      RateFactorUtil.UseDefaultIRPMFactor = true
+      getTotalPremiumWithDefaultIRPMValue(lineVersion, sliceRange)
+      RateFactorUtil.UseDefaultIRPMFactor = (TotalAnnualPremiumBeforeActualIRPM < 1000)
+      _addCostToDB = true
 
       lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
 
@@ -47,6 +63,40 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
       //Add the minimum premium adjustment, if the total premium is less than minimum premium
       rateManualPremiumAdjustment(sliceRange)
     }
+  }
+
+  /**
+  *  function which gets the total premium with default IRPM Value
+   */
+  private function getTotalPremiumWithDefaultIRPMValue(lineVersion: BP7Line, sliceRange : DateRange){
+    lineVersion.BP7LineCoverages?.each(\lineCov -> rateLineCoverage(lineCov, sliceRange))
+
+    lineVersion.BP7Locations.each( \ location -> {
+      location.Coverages?.each(\locationCov -> rateLocationCoverage(locationCov, sliceRange))
+      location.Buildings?.each(\building -> {
+        rateBuilding(building, sliceRange)
+        building.Classifications.each(\classification -> rateClassification(classification, sliceRange))
+      })
+    })
+
+    var terrorismCov = lineVersion.BP7LineCoverages?.where( \ cov -> cov.PatternCode == "BP7CapLossesFromCertfdActsTerrsm").first()
+    if(terrorismCov != null){
+      rateTerrorismCoverage(terrorismCov as BP7CapLossesFromCertfdActsTerrsm, sliceRange)
+    }
+
+    //Add the minimum premium adjustment, if the total premium is less than minimum premium
+    rateManualPremiumAdjustment(sliceRange)
+    getFactorFromRateTable("bp7_policy_fee_table")
+    getFactorFromRateTable("bp7_empa_surcharge_table")
+  }
+
+  private function getFactorFromRateTable(rateTableCode : String){
+    var filter = new RateBookQueryFilter(PolicyLine.Branch.PeriodStart, PolicyLine.Branch.PeriodEnd, PolicyLine.PatternCode)
+        {: Jurisdiction = PolicyLine.BaseState,
+            : MinimumRatingLevel = MinimumRatingLevel,
+            : RenewalJob = (PolicyLine.Branch.JobProcess typeis RenewalProcess)}
+    var params = {"Y"}
+    _totalAnnualPremiumBeforeActualIRPM += new RatingQueryFacade().getFactor(filter, rateTableCode, params).Factor as BigDecimal
   }
 
   override protected function createCostDataForCost(c: Cost): CostData {
@@ -102,8 +152,6 @@ abstract class UNABP7AbstractRatingEngine<T extends BP7Line> extends AbstractRat
   abstract function rateLineCoverage(lineCov: BP7LineCov, sliceToRate: DateRange)
 
   abstract function rateLocationCoverage(location: BP7LocationCov, sliceToRate: DateRange)
-
-  abstract function rateLiability(line : BP7BusinessOwnersLine, sliceToRate : DateRange)
 
   abstract function rateBuilding(building: BP7Building, sliceToRate: DateRange)
 

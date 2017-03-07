@@ -111,7 +111,7 @@
         visible="policyPeriod.HomeownersLine_HOEExists"/>
       <Input
         id="RiskLocation"
-        label="displaykey.Web.PolicyFile.Summary.RiskLocation"
+        label="riskAddress()"
         value="policyPeriod.getLocationValue(policyPeriod)"/>
       <!-- <CheckBoxInput
         id="ConsenttoRate_Ext"
@@ -125,6 +125,11 @@
         required="true"
         value="policyPeriod.ConsentToRate_Ext"
         visible="policyPeriod.HomeownersLine_HOEExists and policyPeriod.BaseState==typekey.Jurisdiction.TC_NC"/>
+      <BooleanRadioInput
+        id="bankruptcy"
+        label="displaykey.Web.Policy.UWCompanies.Bankruptcy_Ext"
+        required="false"
+        value="policyPeriod.bankruptcy_Ext"/>
       <Input
         id="ReInsuFacultative"
         label="displaykey.Web.PolicyFile.Summary.Facultative"
@@ -137,6 +142,12 @@
     <Code><![CDATA[function shouldDisplayRewritePolicyLink() : boolean {
   var rewrite = policyPeriod.Policy.RewrittenToNewAccountDestination
   return  rewrite.BoundPeriods.HasElements
+}
+
+function riskAddress() : String{
+  if(policyPeriod.HomeownersLine_HOEExists)
+    return displaykey.Web.PolicyFile.Summary.RiskLocationHO
+  return displaykey.Web.PolicyFile.Summary.RiskLocation
 }]]></Code>
   </DetailViewPanel>
 </PCF>

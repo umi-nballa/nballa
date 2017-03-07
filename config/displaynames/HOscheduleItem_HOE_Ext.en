@@ -17,13 +17,8 @@
     <Column
       beanPath="HOscheduleItem_HOE_Ext.homeOwnersCov"
       name="coverage"/>
-    <Column
-      beanPath="HOScheduleItem_HOE_Ext.AdditionalInsured"
-      name="additionalInsured"/>
   </Columns>
-  <DisplayName><![CDATA[if(additionalInsured != null){
-  return coverage.scheduledItem_Ext.AdditionalInsured.DisplayName
-}else if({"HOSL_OutboardMotorsWatercraft_HOE_Ext", "HOSL_WatercraftLiabilityCov_HOE_Ext"}.contains(coverage.PatternCode)){
+  <DisplayName><![CDATA[if({"HOSL_OutboardMotorsWatercraft_HOE_Ext", "HOSL_WatercraftLiabilityCov_HOE_Ext"}.contains(coverage.PatternCode)){
   return outboardWCName + " (" + outboardWCType.DisplayName + " - " + overallLength.DisplayName + " - " + horsepower.DisplayName + ")"  
 }else{
   return null

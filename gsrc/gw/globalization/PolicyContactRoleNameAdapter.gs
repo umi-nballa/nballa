@@ -80,4 +80,12 @@ class PolicyContactRoleNameAdapter extends UnsupportedPersonNameFields {
     _policyContactRole.CompanyNameKanji = value
   }
 
+
+  override property get Suffix(): NameSuffix {
+    return _policyContactRole.Suffix
+  }
+
+  override property set Suffix(value: NameSuffix) {
+    _policyContactRole.Suffix = value
+  }
 }

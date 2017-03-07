@@ -26,7 +26,7 @@ uses una.rating.ho.tx.UNAHOTXRatingEngine
 uses una.rating.ho.group2.UNAHOGroup2RatingEngine
 uses una.rating.ho.group3.UNAHOGroup3RatingEngine
 uses una.rating.ho.nc.UNAHONCRatingEngine
-uses una.rating.ho.dwellingfire.UNAHODwellingFireRatingEngine
+uses una.rating.ho.hawaii.UNAHOHIRatingEngine
 
 @Export
 class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
@@ -233,14 +233,16 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
    if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
-    } else if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_line.Dwelling?.HOPolicyType)){
-      return new UNAHODwellingFireRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+    } else if(_line.BaseState == typekey.Jurisdiction.TC_HI){
+     if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_line.Dwelling?.HOPolicyType) or _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3)
+      return new UNAHOHIRatingEngine (_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     } else {
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       if(_line.BaseState == typekey.Jurisdiction.TC_AZ || _line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_CA)
         return new UNAHOGroup1RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-      if(_line.BaseState == typekey.Jurisdiction.TC_SC && _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3)
+      if(_line.BaseState == typekey.Jurisdiction.TC_SC)
         return new UNAHOGroup2RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       if((_line.BaseState == typekey.Jurisdiction.TC_FL)
           and (_line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||

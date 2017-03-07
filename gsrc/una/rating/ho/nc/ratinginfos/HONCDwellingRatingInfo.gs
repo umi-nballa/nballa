@@ -21,30 +21,56 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _lossAssessmentLimit: BigDecimal as LossAssessmentLimit
   var _unitOwnersCoverageASpecialLimitsExists : boolean as UnitOwnersCoverageASpecialLimitsExists = false
-  construct(dwellingCov: DwellingCov_HOE){
-      super(dwellingCov)
+  var _higherEQDeductible : boolean as HigherEQDeductible = false
+  var _eqZone : String as EQZone
+  var _eqConstruction : typekey.EarthquakeConstrn_Ext as EQConstruction
+  var _eqDeductible : BigDecimal as EQDeductible
+  var _ordinanceOrLawLimit : BigDecimal as OrdinanceOrLawLimit
+  var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
+  construct(dwelling : Dwelling_HOE){
+      super(dwelling)
 
-      _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwellingCov.Dwelling.HODW_CC_EFT_HOE_Ext.HODW_CC_EFTLimit_HOETerm.Value
-      _waterBackupSumpOverflowCovLimit = dwellingCov.Dwelling.HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext.HODW_LimWaterbackup_Limit_HOETerm.Value
-      _personalPropertyOffResidence = dwellingCov.Dwelling?.HODW_PersonalPropertyOffResidence_HOE?.HOLI_PPOtherResidence_Limit_HOETerm?.Value
-    if (dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_ExtExists){
-      if (dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HasHODW_JewelryWatchesFursLimit_HOETerm){
-        _increasedLimitsJewelryWatchesFurs = dwellingCov.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.Value
+      _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwelling?.HODW_CC_EFT_HOE_Ext?.HODW_CC_EFTLimit_HOETerm?.Value
+      _waterBackupSumpOverflowCovLimit = dwelling?.HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext?.HODW_LimWaterbackup_Limit_HOETerm?.Value
+      _personalPropertyOffResidence = dwelling?.HODW_PersonalPropertyOffResidence_HOE?.HOLI_PPOtherResidence_Limit_HOETerm?.Value
+    if (dwelling?.HODW_SpecialLimitsPP_HOE_ExtExists){
+      if (dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HasHODW_JewelryWatchesFursLimit_HOETerm){
+        _increasedLimitsJewelryWatchesFurs = dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.Value
       }
     }
-    if (dwellingCov typeis HODW_PermittedIncOcp_HOE_Ext){
-      _isPermittedIncidentalOccupancyInDwelling = dwellingCov.HODWDwelling_HOETerm?.Value
-      _isPermittedIncidentalOccupancyInOtherStructures = dwellingCov.HODW_OtherStructure_HOETerm?.Value
-      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwellingCov.HODW_ExtendSectionCov_HOETerm?.Value
-      _permittedIncidentalOccupancyOtherStructuresLimit = dwellingCov.HODW_Limit_HOETerm?.Value
-    }
+      _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value
+      _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_OtherStructure_HOETerm?.Value
+      _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
+      _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
 
-    if(dwellingCov typeis HODW_LossAssessmentCov_HOE_Ext){
-      _lossAssessmentLimit = dwellingCov.HOPL_LossAssCovLimit_HOETerm.Value
-      if(dwellingCov.Dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value
+      if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }
+
+    if(dwelling.HODW_Earthquake_HOEExists){
+      _eqDeductible = dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.Value
+      if( _eqDeductible> 0.05){
+        _higherEQDeductible = true
+      }
+      _eqZone = dwelling.EarthQuakeTerritoryOrOverride
+      _eqConstruction = dwelling.EarthquakeConstrn_Ext
+      if(_eqConstruction != typekey.EarthquakeConstrn_Ext.TC_SUPERIOR and dwelling?.HODW_Earthquake_HOE?.HODW_EarthquakeMason_HOETerm?.Value){
+        _eqConstruction = typekey.EarthquakeConstrn_Ext.TC_MASONRY
+      }
     }
+
+    if(PolicyType == typekey.HOPolicyType_HOE.TC_HO3){
+      _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value  * dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value
+    }
+    if(PolicyType == typekey.HOPolicyType_HOE.TC_HO4){
+      _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value  * dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
+    }
+
+
+    _otherStructuresRentedToOthersLimit = dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value
+
+
 
   }
 }

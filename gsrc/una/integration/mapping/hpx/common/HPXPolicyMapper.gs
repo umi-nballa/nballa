@@ -87,7 +87,7 @@ abstract class HPXPolicyMapper {
   function createPriorLossPolicyHolder(priorLoss : HOPriorLoss_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyHolderType {
     var policyHolderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyHolderType()
     policyHolderType.FullName = priorLoss.PolicyHolderName != null ? priorLoss.PolicyHolderName : ""
-    policyHolderType.ClueMatchIndicator = priorLoss.CluePropertyMatch.InsuredMatchIndicator != null ? priorLoss.CluePropertyMatch.InsuredMatchIndicator.Code : ""
+    policyHolderType.ClueMatchIndicator = priorLoss.CluePropertyMatch.InsuredMatchIndicator != null ? priorLoss.CluePropertyMatch.InsuredMatchIndicator.Code : typekey.ClueMatchIndicator_Ext.TC_NOMATCH
     policyHolderType.addChild(new XmlElement("PersonHolder", createPriorLossPersonHolderType(priorLoss.PolicyHolder)))
     return policyHolderType
   }
@@ -100,10 +100,10 @@ abstract class HPXPolicyMapper {
     personHolderType.FirstName = person.FirstName != null ? person.FirstName : ""
     personHolderType.LastName = person.LastName != null ? person.LastName : ""
     personHolderType.SSN = person.SSNOfficialID != null ? person.SSNOfficialID : ""
-    personHolderType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
+    personHolderType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : null
     physicalAddressType.AddressLine1 = person.PrimaryAddress.AddressLine1 != null ? person.PrimaryAddress.AddressLine1 : ""
     physicalAddressType.City = person.PrimaryAddress.City != null ? person.PrimaryAddress.City : ""
-    physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State : ""
+    physicalAddressType.State = person.PrimaryAddress.State != null ? person.PrimaryAddress.State : null
     physicalAddressType.PostalCode = person.PrimaryAddress.PostalCode != null ? person.PrimaryAddress.PostalCode : ""
     genderType.GenderID = person.Gender.Code != null ? person.Gender.Code : ""
     genderType.GenderCode = person.Gender.Code != null ? person.Gender.Code : ""
@@ -298,6 +298,7 @@ abstract class HPXPolicyMapper {
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
     var jobHelper = new HPXJobHelper()
+    currentCoverages?.sortBy(\ elt -> elt?.Pattern?.Name)
     var changedCoveragePatterns = jobHelper.getChangedCoveragePatterns(currentCoverages?.first().PolicyLine.AssociatedPolicyPeriod, currentCoverages?.first().OwningCoverable)
     for (cov in currentCoverages) {
       var trxs = transactions.where( \ elt -> cov.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
@@ -311,6 +312,7 @@ abstract class HPXPolicyMapper {
   function createExclusionsInfo (currentExclusions : java.util.List<Exclusion>, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    currentExclusions?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (excl in currentExclusions) {
       var trxs = transactions.where( \ elt -> excl.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
         coverages.add(getExclusionMapper().createExclusionInfo(excl, trxs))
@@ -321,6 +323,7 @@ abstract class HPXPolicyMapper {
   function createPolicyConditionsInfo (currentPolicyConditions : java.util.List<PolicyCondition>, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     var coverages = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType>()
+    currentPolicyConditions?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (cond in currentPolicyConditions) {
       var trxs = transactions.where( \ elt -> cond.PatternCode.equals(getCoverageMapper().getCostCoverage(elt.Cost).PatternCode))
         coverages.add(getPolicyConditionMapper().createPolicyConditionInfo(cond, trxs))

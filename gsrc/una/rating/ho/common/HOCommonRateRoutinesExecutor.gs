@@ -52,9 +52,9 @@ class HOCommonRateRoutinesExecutor {
   /**
    * Rate ACV loss settlement on Roof surfacing for HO3 policy types
    */
-  static function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange, line : PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int, hoRatingInfo : HORatingInfo) : CostData{
+  static function rateACVLossSettlementOnRoofSurfacing(dateRange: DateRange, line : PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int, hoRatingInfo : HORatingInfo, costType : HOCostType_Ext) : CostData{
     var rateRoutineParameterMap = getHOCommonRatingInfoParameterSet(line, hoRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ACV_LOSS_SETTLEMENT_ON_ROOF_SURFACING_ROUTINE_NAME, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ACV_LOSS_SETTLEMENT_ON_ROOF_SURFACING_ROUTINE_NAME, costType, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
     return costData
   }
 

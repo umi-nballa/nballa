@@ -27,4 +27,20 @@ enhancement HOLocationEnhancement_Ext : entity.HOLocation_HOE
       return this.TerritoryCodeTunaReturned_Ext
   }
 
+  property get FirelineAdjustedHazardScoreOrOverride():typekey.HOAdjustedHazardScore_Ext
+  {
+    if(this.OverrideFirelineAdjHaz_Ext && this.FirelineAdjHazOverridden_Ext!=null)
+      return this.FirelineAdjHazOverridden_Ext
+    else
+      return this.FirelineAdjHaz_Ext
+  }
+
+  property get FirelineSHIAorOverride():String
+  {
+    if(this.OverrideFirelineSHIA_Ext && this.FirelineSHIAOverridden_Ext!=null)
+      return this.FirelineSHIAOverridden_Ext
+    else
+      return this.FirelineSHIA_Ext
+  }
+
 }

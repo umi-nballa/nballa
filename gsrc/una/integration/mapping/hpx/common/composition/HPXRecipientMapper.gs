@@ -21,8 +21,12 @@ class HPXRecipientMapper {
     formsRequests.addAll(createFormsRequestForAddlIntMortgageeRecipientType(policyPeriod, forms))
     formsRequests.addAll(createFormsRequestForAgentRecipientType(policyPeriod, forms))
     formsRequests.addAll(createFormsRequestForMasterAgentRecipientType(policyPeriod, forms))
+    formsRequests.addAll(createFormsRequestForOnBaseOnly(policyPeriod, forms))
+    formsRequests.addAll(createFormsRequestForCLUEReport(policyPeriod, forms))
+    formsRequests.addAll(createFormsRequestForCreditReport(policyPeriod, forms))
     return formsRequests
   }
+
 
   private function createFormsForRecipientType(policyPeriod : PolicyPeriod, forms : form[], compositionUnitMapper : HPXCompositionUnitMapper) : List<String> {
     var hpxRequestMapper = new HPXRequestMapper()
@@ -81,6 +85,44 @@ class HPXRecipientMapper {
    return hasMasterAgentForms ? createFormsForRecipientType(policyPeriod, forms, new HPXMasterAgentCompositionUnitMapper()) : new List<String>()
   }
 
+  private function createFormsRequestForOnBaseOnly(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
+    var onbaseOnlyForms = forms.hasMatch( \ elt1 -> elt1.Pattern.InsuredRecType == false and
+                                                    elt1.Pattern.AddnlInsuredRecType == false and
+                                                    elt1.Pattern.AddnlIntLienholderRecType == false and
+                                                    elt1.Pattern.AddnlIntMortgageeRecType == false and
+                                                    elt1.Pattern.AgentRecType == false and
+                                                    elt1.Pattern.MasterAgentRecType == false)
+    return onbaseOnlyForms ? createFormsForRecipientType(policyPeriod, forms, new HPXOnBaseOnlyCompositionUnitMapper()) : new List<String>()
+  }
+
+  private function createFormsRequestForCLUEReport(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
+    if (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0 or
+        policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0) {
+        var hpxRequestMapper = new HPXRequestMapper()
+        var formsRequestsForRecipientType : List<String> = new()
+        var compositionUnitMapper = new HPXCLUEReportCompositionUnitMapper()
+        var compositionUnit = compositionUnitMapper.createCompositionUnitForRecipient(policyPeriod, forms, new wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType())
+        formsRequestsForRecipientType.add(hpxRequestMapper.createFormsRequest(policyPeriod, compositionUnit))
+        return formsRequestsForRecipientType
+    } else   {
+         return new List<String>()
+    }
+  }
+
+  private function createFormsRequestForCreditReport(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
+    if (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0 or
+        policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0) {
+      var hpxRequestMapper = new HPXRequestMapper()
+      var formsRequestsForRecipientType : List<String> = new()
+      var compositionUnitMapper = new HPXCreditReportCompositionUnitMapper()
+      var compositionUnit = compositionUnitMapper.createCompositionUnitForRecipient(policyPeriod, forms, new wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType())
+      formsRequestsForRecipientType.add(hpxRequestMapper.createFormsRequest(policyPeriod, compositionUnit))
+      return formsRequestsForRecipientType
+    } else   {
+      return new List<String>()
+    }
+  }
+
   function getAdditionalInterests(policyPeriod : PolicyPeriod) : AddlInterestDetail [] {
     var additionalInterests : AddlInterestDetail []
     if (policyPeriod.HomeownersLine_HOEExists) {
@@ -90,7 +132,7 @@ class HPXRecipientMapper {
       for (coverable in coverables) {
         if (coverable typeis BP7Building) {
           var addInts = ((coverable as BP7Building).AdditionalInterests)
-          additionalInterests.union(addInts)
+          additionalInterests?.union(addInts)
         }
       }
     } else if (policyPeriod.CPLineExists or policyPeriod.GLLineExists) {
@@ -98,7 +140,7 @@ class HPXRecipientMapper {
       for (coverable in coverables) {
         if (coverable typeis CPBuilding) {
           var addInts = ((coverable as CPBuilding).AdditionalInterests)
-          additionalInterests.union(addInts)
+          additionalInterests?.union(addInts)
         }
       }
     }

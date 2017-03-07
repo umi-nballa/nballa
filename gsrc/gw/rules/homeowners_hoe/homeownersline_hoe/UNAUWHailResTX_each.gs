@@ -15,9 +15,9 @@ class UNAUWHailResTX_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
 
-    if( /*(homeowner.AssociatedPolicyPeriod.BaseState.Code=="TX"
+    if( (homeowner.AssociatedPolicyPeriod.BaseState.Code=="TX"
         ) &&
-        (homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HOA_EXT ||
+        /*(homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HOA_EXT ||
             homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HOB_EXT ||
             typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(homeowner.HOPolicyType)) && */
          homeowner.Dwelling.HailResistantRoofCredit_Ext &&

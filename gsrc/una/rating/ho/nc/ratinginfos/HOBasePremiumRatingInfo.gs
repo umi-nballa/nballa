@@ -34,6 +34,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _consentToRate: boolean as ConsentToRate
   var _maxAgeOfHomeLimit : int as MaxAgeOfHomeLimit
   var _acvLossSettlement : boolean as ACVLossSettlement
+  var _dwellingRatingInfo : HONCDwellingRatingInfo as DwellingRatingInfo
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling
@@ -52,8 +53,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
         _specifiedAdditionalAmount = dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
-    _acvLossSettlement = _dwelling?.HODW_ActualCashValueLossSettlementExists
-    _acvLossSettlementWindstormHail = dwelling?.HODW_LossSettlementWindstorm_HOE_ExtExists
+    _acvLossSettlement = _dwelling.HOLine.HOLI_ActualCashValueLossSettlement_ExtExists
+    _acvLossSettlementWindstormHail = dwelling?.HOLine?.HODW_CashSettlementWindOrHailRoofSurfacing_HOEExists
     if(dwelling.HODW_Personal_Property_HOEExists){
       _increasedPersonalProperty = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0
       if(_increasedPersonalProperty){

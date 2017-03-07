@@ -20,6 +20,7 @@ class UNAConstType2_each implements IRuleCondition<HomeownersLine_HOE>{
     homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_SOLIDBRICKSTONE_EXT ||
         homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT ||
         homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ||
+        homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_CONCRETE_EXT  ||
         homeowner.Dwelling.ConstructionTypeOrOverride==typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY
     )
 

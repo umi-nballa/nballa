@@ -14,7 +14,8 @@ class UNAPriorExpDtPEFF_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
 
-    if(homeowner.AssociatedPolicyPeriod.PeriodStart.compareTo(homeowner.AssociatedPolicyPeriod.BasedOn.PeriodEnd)>0)
+    if(homeowner?.AssociatedPolicyPeriod?.BasedOn?.PeriodEnd!=null &&
+        homeowner?.AssociatedPolicyPeriod?.PeriodStart?.compareTo(homeowner?.AssociatedPolicyPeriod?.BasedOn?.PeriodEnd)>0)
 
         return RuleEvaluationResult.execute()
 

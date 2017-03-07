@@ -223,11 +223,12 @@ class BOPFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var rewrite = typekey.Job.TC_REWRITE.Code
         var renewal = typekey.Job.TC_RENEWAL.Code
         var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        var cancellation = typekey.Job.TC_CANCELLATION.Code
         if(jobType == rewrite or jobType == renewal or jobType == account){
-          var transactionTypeCount = bownerline.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
-          if(transactionTypeCount > 0){
-            return true
-          }
+          var allPreviousJobTypeNames = bownerline.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+          return true
+        }
         }
       }
     }

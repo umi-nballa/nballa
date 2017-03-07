@@ -39,6 +39,21 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
+  static function isFHFSvisible(tunaresponse:List<String>):boolean
+  {
+    var retval = false
+    tunaresponse.each( \ elt ->
+    {
+      if(elt.indexOf("/")!=-1)
+        {
+          retval = true
+        }
+    }
+    )
+
+    return retval
+  }
+
   static function isAllHoDp(policyType : typekey.HOPolicyType_HOE) : boolean {
      if(policyType == null){
        return false
@@ -48,22 +63,18 @@ class HODwellingUtil_HOE {
     }
     return false
   }
-  /*
-*  Author: uim-svallabhapurapu
-*  Change Log: New function for Construction TypeList value range based on state
-*  HO Line of business
-*/
 
   static function initializeSingleReturnTypelists(dwelling:Dwelling_HOE, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse):boolean
   {
-    if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
+  /*  if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
       {
          dwelling.HOLocation.BCEG_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade) as typekey.BCEGGrade_Ext[]).first()
       }
 
     if(dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
-      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
+
+      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
     }
 
     if(dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
@@ -179,7 +190,7 @@ class HODwellingUtil_HOE {
     if(dwelling.RoofShapeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.RoofShape_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover) as typekey.RoofShape_Ext[]).first()
+      dwelling.RoofType = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover) as typekey.RoofType[]).first()
     }
     if(dwelling.ConstructionTypeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -243,18 +254,28 @@ class HODwellingUtil_HOE {
     if(dwelling.TotalSqFtValMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
-    }
+    }      */
 
 
 
     return false
   }
 
-  static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
+  /*static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
     if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
        return typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys
     }
      return typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys
+  }*/
+
+  static function getConstructionTypeStateSpecific(dwelling : Dwelling_HOE) : List<typekey.ConstructionType_HOE> {
+    var tempList = new ArrayList<typekey.ConstructionType_HOE>()
+    if(dwelling.Branch.BaseState.Code == typekey.State.TC_HI.Code){
+      tempList.addAll(typekey.ConstructionType_HOE.TF_HI_EXT.TypeKeys)
+      return tempList.sortBy(\typeCodeName -> typeCodeName.DisplayName)
+    }
+    tempList.addAll(typekey.ConstructionType_HOE.TF_ALLHODP_EXT.TypeKeys)
+    return tempList.sortBy(\typeCodeName -> typeCodeName.DisplayName)
   }
 
   static function filterTunaConstructionTypeStateSpecific(dwelling : Dwelling_HOE, constype:typekey.ConstructionType_HOE[]) : List<typekey.ConstructionType_HOE> {
@@ -532,8 +553,14 @@ class HODwellingUtil_HOE {
 
        // Set default value based on county
        if(result != null){
-         if(dwelling.FBCWindSpeed_Ext == null){dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())}//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
-         if(dwelling.WindSpeedOfDesign_Ext == null){dwelling.WindSpeedOfDesign_Ext = getAssociatedWindSpeedOfDesign(result.WindSpeedOfDesign.intValue())}
+         if(dwelling.FBCWindSpeed_Ext == null)
+         {
+           dwelling.FBCWindSpeed_Ext = getAssociatedFBCWindSpeed(result.FBCWindSpeed.intValue())
+         }//typekey.FBCWindSpeed_Ext.getTypeKeys().firstWhere( \ elt -> elt.Code == result.FBCWindSpeed.toString())}
+         if(dwelling.WindSpeedOfDesign_Ext == null)
+         {
+           dwelling.WindSpeedOfDesign_Ext = getAssociatedWindSpeedOfDesign(result.WindSpeedOfDesign.intValue())
+         }
          if(dwelling.WindBorneDebrisRegion_Ext == null){dwelling.WindBorneDebrisRegion_Ext = typekey.WindBorneDebrisRegion_Ext.get(result.WindBorneDebrisRegion.toLowerCase())}
        }
      }
@@ -555,8 +582,8 @@ class HODwellingUtil_HOE {
 
       dwelling.RoofDecking_Ext = null
       dwelling.OpeningProtection_Ext = null
-      dwelling.FBCWindSpeed_Ext = null
-      dwelling.WindSpeedOfDesign_Ext = null
+     // dwelling.FBCWindSpeed_Ext = null
+     // dwelling.WindSpeedOfDesign_Ext = null
       dwelling.WindBorneDebrisRegion_Ext = null
       dwelling.InternalPressureDsgn_Ext = null
       dwelling.SecondaryWaterResis_Ext = null

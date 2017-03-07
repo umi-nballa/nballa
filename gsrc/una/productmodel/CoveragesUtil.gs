@@ -74,6 +74,9 @@ class CoveragesUtil {
       case "SupplExtendedReportingPeriodEndrsmnt_EXT":
         result = isCyberOneSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "EPLSupplExtendedReportingPeriodEndrsmnt_EXT":
+        result = isEPLSERPCoverageAvailable(coverable as BP7BusinessOwnersLine)
+        break
       case "HODW_LossAssessmentCov_HOE_Ext":
         result = isLossAssessmentCoverageAvailable(coverable as Dwelling_HOE)
         break
@@ -336,7 +339,7 @@ class CoveragesUtil {
     var yearBuilt = dwelling.YearBuiltOrOverride
     var isQualifyingResidenceType = {ResidenceType_HOE.TC_SINGLEFAMILY_EXT, ResidenceType_HOE.TC_DUPLEX}.contains(dwelling.ResidenceType)
     var isQualifyingFoundationType = dwelling.Foundation != TC_StiltsPilings_Ext
-    var constructionTypes = {dwelling.ConstructionTypeOrOverride, dwelling.ConstructionTypeL1OrOverride, dwelling.ConstructionTypeL2OrOverride}
+    var constructionTypes = {dwelling.ConstructionTypeOrOverride, dwelling.ConstructionTypeL1OrOverride}
     constructionTypes.removeWhere( \ elt -> elt == null)
     var isQualifyingConstructionType = constructionTypes.subtract(typekey.ConstructionType_HOE.TF_WOODFRAMECONSTRUCTIONTYPES.TypeKeys).Count == 0
 
@@ -362,8 +365,7 @@ class CoveragesUtil {
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
     return hoLine.Dwelling.WHurricaneHailExclusion_Ext
-       and applicableCounties.HasElements
-       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
+       and applicableCounties?.containsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim())
   }
 
   /*Available when the Occupancy type is:
@@ -515,10 +517,24 @@ class CoveragesUtil {
     return false
   }
 
+  //Should be available only when Cyber one Coverage is selected and when Coverage Type is 'Network Security Liability' or ' Computer Attack and Network Security Limit' in the original policy
+  //Should be available in PolicyChange ONLY
   private static function isCyberOneSERPCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if( bp7Line.BP7CyberOneCov_EXTExists && bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value!=null &&
-        (bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
-            bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT) ){
+    var basedOnBP7Line = bp7Line.Branch.BasedOn.BP7Line
+    var isCyberOneCovAvailableInOrigPolicy = (basedOnBP7Line!=null && basedOnBP7Line.BP7CyberOneCov_EXTExists && basedOnBP7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value!=null &&
+        (basedOnBP7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_NETWORKSECURITYLIAB_EXT ||
+            basedOnBP7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT))
+    if(bp7Line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE && basedOnBP7Line!=null && isCyberOneCovAvailableInOrigPolicy){
+      return true
+    }
+    return false
+  }
+
+  //Should be available only when EPL Coverage is added to the original policy
+  //Should be available in PolicyChange ONLY
+  private static function isEPLSERPCoverageAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    var basedOnBP7Line = bp7Line.Branch.BasedOn.BP7Line
+    if(bp7Line.Branch.Job.Subtype == typekey.Job.TC_POLICYCHANGE && basedOnBP7Line!=null && basedOnBP7Line.BP7EmploymentPracticesLiabilityCov_EXTExists){
       return true
     }
     return false

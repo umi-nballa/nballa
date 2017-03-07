@@ -13,6 +13,8 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNAEarthquakeMultipleTuna_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
+    //UW Code UNAUWIEarthQuakeTunaMultiple_Ext
+
     if(homeowner?.Dwelling.EarthquakeTerMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_USERSELECTED)
       return RuleEvaluationResult.execute()
 

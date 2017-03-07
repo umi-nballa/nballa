@@ -21,7 +21,8 @@ class RateFactorUtil {
   static var _minimumFactor : BigDecimal = 0.75
   static var _territoryModificationFactor : BigDecimal as TerritoryModificationFactor= 1.0
 
-  static var _sprinklerFactor : BigDecimal as SprinklerFactor= 0.65
+  static var _sprinklerFactorForBuildings : BigDecimal as SprinklerFactorForBuildings = 0.65
+  static var _sprinklerFactorForBPP : BigDecimal as SprinklerFactorForBPP = 0.80
 
   static var _buildingDeductibleFactor : BigDecimal = 1.0
   static var _contentDeductibleFactor : BigDecimal = 1.0
@@ -29,17 +30,21 @@ class RateFactorUtil {
   static var _bcegFactor : BigDecimal = 1.0
   static var _windExclusionFactor : BigDecimal = 1.0
 
+  static var _useDefaultIRPMFactor : boolean as UseDefaultIRPMFactor = false
+
   static function setDefaults(){
     _accountModificationFactor = 1.0
     _buildingAgeFactor = 1.0
     _experienceRatingFactor = 1.0
     _minimumFactor = 0.75
     _territoryModificationFactor = 1.0
-    _sprinklerFactor = 0.65
+    _sprinklerFactorForBuildings = 0.65
+    _sprinklerFactorForBPP = 0.80
     _buildingDeductibleFactor = 1.0
     _contentDeductibleFactor = 1.0
     _bcegFactor = 1.0
     _windExclusionFactor = 1.0
+    _useDefaultIRPMFactor = false
   }
 
   /**
@@ -47,6 +52,8 @@ class RateFactorUtil {
    */
   static function setAccountModificationFactor(line : BP7Line) : BigDecimal{
     _accountModificationFactor = 1.0
+    if(_useDefaultIRPMFactor)
+      return _accountModificationFactor
     var modifiers = line.Modifiers
     var scheduledRate = modifiers.where( \ m -> m.ScheduleRate)
     var rateFactors = scheduledRate*.RateFactors
@@ -185,7 +192,7 @@ class RateFactorUtil {
     setBuildingDeductibleFactor(line, minimumRatingLevel, building)
     setBCEGFactor(line, minimumRatingLevel, building)
     setWindExclusionFactor(line, minimumRatingLevel, building)
-    var propertyBuildingAdjustmentFactor = _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
+    var propertyBuildingAdjustmentFactor = _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactorForBuildings * _bcegFactor
     return (Math.round((propertyBuildingAdjustmentFactor*100) as float))/100.00
   }
 
@@ -196,7 +203,7 @@ class RateFactorUtil {
     setContentDeductibleFactor(line, minimumRatingLevel, classification)
     setBCEGFactor(line, minimumRatingLevel, classification?.building)
     setWindExclusionFactor(line, minimumRatingLevel, classification?.building)
-    var propertyContentAdjustmentFactor = _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactor * _bcegFactor
+    var propertyContentAdjustmentFactor = _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactorForBPP * _bcegFactor
     return (Math.round((propertyContentAdjustmentFactor*100) as float))/100.00
   }
 

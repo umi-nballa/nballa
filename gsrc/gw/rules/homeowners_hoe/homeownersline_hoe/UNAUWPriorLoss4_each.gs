@@ -5,6 +5,8 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 uses gw.api.util.DateUtil
 uses java.lang.Double
 uses java.util.Date
+uses java.lang.Exception
+uses gw.api.util.DisplayableException
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +16,8 @@ uses java.util.Date
  * To change this template use File | Settings | File Templates.
  */
 class UNAUWPriorLoss4_each implements IRuleCondition<HomeownersLine_HOE>{
-  override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+  override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult
+  {
 
    // Loss /Claim Date  -  HOPriorLoss_Ext.ClaimDate
    // Loss cause –  HOPriorLosses_Ext.ClaimPayment.LossCause_Ext
@@ -24,19 +27,27 @@ class UNAUWPriorLoss4_each implements IRuleCondition<HomeownersLine_HOE>{
    // Claim Amount - HOPriorLosses_Ext.ClaimPayment. ClaimAmount
    //1  or more non weather  losses in the last 3 years with > $0 paid with Loss Cause = "Water",  "Appl", or "Mold"
 
+    try
+    {
 
         homeowner.HOPriorLosses_Ext.each( \ elt ->
         {
           elt.ClaimPayment.each( \ elt1 ->
           {
             if((!typekey.LossCause_Ext.TF_NONWEATHERUW.TypeKeys.contains(elt1.LossCause_Ext))
-              && elt1.ClaimAmount!=null && Double.parseDouble(elt1.ClaimAmount)>0 && elt.ClaimDate!=null && DateUtil.addYears(elt.ClaimDate as Date, 3)<new java.util.Date())
+              && elt1?.ClaimAmount!=null && Double.parseDouble(elt1?.ClaimAmount)>0 && elt?.ClaimDate!=null && DateUtil.addYears(elt?.ClaimDate as Date, 3)<new java.util.Date())
               return RuleEvaluationResult.execute()
           }
           )
         }
         )
+    }
+    catch(e)
+    {
 
+            throw new DisplayableException("Prior Loss Screen data needs to be revisited")
+
+    }
 
     return RuleEvaluationResult.skip()
 

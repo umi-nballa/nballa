@@ -169,8 +169,8 @@ class PolicyUtil {
          policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT)
     return typekey.CarrierType_Ext.TF_FL_HO_DP.TypeKeys
    } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_CA) {
-       if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||
-           policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT)
+      if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||
+          policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_DP3_EXT)
           return typekey.CarrierType_Ext.TF_CA_HO_TDP.TypeKeys
        } else if (policyPeriod.BaseState==typekey.Jurisdiction.TC_NV){
          if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6)
@@ -216,5 +216,7 @@ class PolicyUtil {
       }
     return false
   }
+
+
 
   }

@@ -14,10 +14,10 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class DocSPP implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("consent_to_rate_follow_up")
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("appraisal_for_spp_followup")
 
     var TotalCovAmount = 0
-    if (period.HomeownersLine_HOEExists){
+    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
               for ( item in period.HomeownersLine_HOE.Dwelling.HODW_ScheduledProperty_HOE?.ScheduledItems){
                 TotalCovAmount += item.ExposureValue
               }

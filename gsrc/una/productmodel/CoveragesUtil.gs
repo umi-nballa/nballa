@@ -365,8 +365,7 @@ class CoveragesUtil {
     var applicableCounties = ConfigParamsUtil.getList(tc_WindstormHurricaneAndHailExclusionCounties, hoLine.BaseState)
 
     return hoLine.Dwelling.WHurricaneHailExclusion_Ext
-       and applicableCounties.HasElements
-       and applicableCounties.hasMatch( \ county -> county.equalsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim()))
+       and applicableCounties?.containsIgnoreCase(hoLine.HOLocation.PolicyLocation.County?.trim())
   }
 
   /*Available when the Occupancy type is:

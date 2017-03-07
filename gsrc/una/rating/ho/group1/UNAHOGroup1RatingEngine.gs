@@ -151,9 +151,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if (!HasExecutiveCoverage)
             rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
           break
-      //case HODW_LossSettlementWindstorm_HOE_Ext:
-          //rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
-          //break
       case HODW_Personal_Property_HOE:
           if (dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0 and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
             rateIncreasedPersonalProperty(dwellingCov, dateRange)
@@ -330,6 +327,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         }
       }
     }
+    if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 and PolicyLine.HODW_CashSettlementWindOrHailRoofSurfacing_HOEExists)
+      rateACVLossSettlementOnRoofSurfacing(dateRange)
   }
 
   /**
@@ -922,15 +921,15 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    * Rate ACV loss settlement on Roof surfacing for HO3 policy types
    */
-  /*function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange) {
+  function rateACVLossSettlementOnRoofSurfacing(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateACVLossSettlementOnRoofSurfacing to rate ACV loss settlement on roof surfacing", this.IntrinsicType)
-    var costData = HOCommonRateRoutinesExecutor.rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, _hoRatingInfo)
+    var costData = HOCommonRateRoutinesExecutor.rateACVLossSettlementOnRoofSurfacing(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, _hoRatingInfo, HOCostType_Ext.TC_ACVLOSSSETTLEMENTWINDORHAILLOSSESTOROOFSURFACING)
     if (costData != null)
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("ACV loss settlement on Roof Surfacing Rated Successfully", this.IntrinsicType)
-  } */
+  }
 
   /**
    * Rate Refrigerated Personal Property coverage

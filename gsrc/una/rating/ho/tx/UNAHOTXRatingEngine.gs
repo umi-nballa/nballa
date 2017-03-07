@@ -118,12 +118,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_MoldRemediationCov_HOE_Ext:
           rateMoldRemediationCoverage(dwellingCov, dateRange)
           break
-    //TODO addins_update
-    /**
-      case HODW_AdditionalInsuredSchedProp:
-          rateAdditionalInsuredCoverage(dwellingCov, dateRange)
-          break
-      **/ //commenting out due to deleted coverage
     }
   }
 
@@ -161,6 +155,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
 
     rateMaximumDiscountAdjustment(dateRange)
+
+    if(!PolicyLine.AdditionalInsureds.IsEmpty)
+      rateAdditionalInsuredCoverage(dateRange)
   }
 
   /**
@@ -487,24 +484,19 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
   }
 
-  //TODO addins_update
-  /**
   /**
    * Rate the Addition insured coverage
    */
-  function rateAdditionalInsuredCoverage(dwellingCov: HODW_AdditionalInsuredSchedProp, dateRange: DateRange) {
+  function rateAdditionalInsuredCoverage(dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredCoverage to rate Additional Insured Coverage", this.IntrinsicType)
-    if(dwellingCov?.ScheduledItems?.Count > 0) {
-      var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null)
-        addCost(costData)
-    }
+    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE, HOCostType_Ext.TC_ADDITIONALINSURED, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
     if(_logger.DebugEnabled)
       _logger.debug("Additional Insured Coverage Rated Successfully", this.IntrinsicType)
   }
-**/// commenting out due to deleted coverage
   /**
    * Rate Identity Theft Expense Coverage coverage
    */

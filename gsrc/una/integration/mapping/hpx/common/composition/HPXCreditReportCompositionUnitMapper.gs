@@ -22,7 +22,9 @@ class HPXCreditReportCompositionUnitMapper extends HPXCompositionUnitMapper {
                                                 policyPeriod  : PolicyPeriod)
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType {
     var documentComposition = new wsi.schema.una.hpx.hpx_application_request.types.complex.CompositionUnitType()
-    if(policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0){
+    if(policyPeriod.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured).CreditReportsExt?.length > 0){
+      documentComposition.addChild(new XmlElement("DocumentForm", createDocumentForm("NCRREPORT", "English", "NCRREPORT", null, "1", false,"NCRREPORT","LexisNexis National Credit Report")))
+    } else if(policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0){
       documentComposition.addChild(new XmlElement("DocumentForm", createDocumentForm("NCRREPORT", "English", "NCRREPORT", null, "1", false,"NCRREPORT","LexisNexis National Credit Report")))
     }
     return documentComposition

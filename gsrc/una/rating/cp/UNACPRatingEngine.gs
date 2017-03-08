@@ -24,6 +24,9 @@ uses gw.lob.cp.rating.CPBuildingCovCostData
 uses java.math.BigDecimal
 uses una.rating.cp.common.CPRateRoutineExecutor
 
+/**
+*  rating engine to rate the CP policy line
+ */
 class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   var _minimumRatingLevel: RateBookStatus
   var _executor: CPRateRoutineExecutor
@@ -80,7 +83,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   override function rateWindow(lineVersion: CPLine) {
     // for Tax
     assertSliceMode(lineVersion)
-    //rateFireCollegeSurcharge(lineVersion)
+    rateFireCollegeSurcharge(lineVersion)
     ratePolicyFee(lineVersion)
     rateEMPASurcharge(lineVersion)
   }
@@ -118,7 +121,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
    */
   function rateCPBuilding(building : CPBuilding, sliceRange : DateRange){
     var ratingStep = new CPBuildingRatingStep (PolicyLine, building, _executor, this.NumDaysInCoverageRatedTerm, RateCache)
-    var windStormApplicable = (!PolicyLine.CPWindorHailExclusion_EXTExists)
+    var windStormApplicable = !(building.windstormexcl)
     var hurricaneIncluded = (PolicyLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT)
 
     if(building.CPBldgCovExists){
@@ -126,6 +129,8 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
       if(windStormApplicable){
         if(hurricaneIncluded)
           addCost(ratingStep.rateBuildingCoverageWithHurricane(building.CPBldgCov, sliceRange))
+        else
+          addCost(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBldgCov, sliceRange))
       }
     }
     if(building.CPBPPCovExists){
@@ -133,6 +138,8 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
       if(windStormApplicable){
         if(hurricaneIncluded)
           addCost(ratingStep.rateBuildingCoverageWithHurricane(building.CPBPPCov, sliceRange))
+        else
+          addCost(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBPPCov, sliceRange))
       }
     }
     if(building.CPOrdinanceorLaw_EXTExists){

@@ -16,7 +16,7 @@ class DocElevationFlood implements IRuleCondition<PolicyPeriod>{
 
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("flood_elevation_follow_up")
 
-    if (period.HomeownersLine_HOEExists){
+    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_FL ){
              if (period.HomeownersLine_HOE?.Dwelling.AbveBlwBaseFldElvtn_Ext != null &&
              typekey.AbveBlwBaseFldElvtn_Ext.TF_DOCLISTFILTER.TypeKeys.contains(period.HomeownersLine_HOE?.Dwelling.AbveBlwBaseFldElvtn_Ext))  {

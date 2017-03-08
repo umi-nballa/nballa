@@ -266,7 +266,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateAffinityDiscount(dateRange)
       }
     }
-    if (PolicyLine.BaseState != Jurisdiction.TC_CA){
+    if (PolicyLine.BaseState != Jurisdiction.TC_CA and _discountsOrSurchargeRatingInfo.BCEGFactor != "99" and _discountsOrSurchargeRatingInfo.BCEGFactor != "98"){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
           (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and (PolicyLine.BaseState == Jurisdiction.TC_AZ or PolicyLine.BaseState == Jurisdiction.TC_NV)))
         rateBuildingCodeEffectivenessGradingCredit(dateRange)

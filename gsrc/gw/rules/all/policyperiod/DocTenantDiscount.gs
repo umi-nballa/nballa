@@ -17,7 +17,7 @@ class DocTenantDiscount implements IRuleCondition<PolicyPeriod>{
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("insured_tenant_discount_follow_up_nc")
     var list = new AgentDocList_Ext(period)
     list.DocumentName = "Insured Tenant Discount"
-    if (period.HomeownersLine_HOEExists){
+    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_NC ){
              if (period.HomeownersLine_HOE?.Dwelling.InsuredTenantDiscount_Ext)  {
                var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)

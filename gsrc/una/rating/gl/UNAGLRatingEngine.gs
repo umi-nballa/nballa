@@ -11,6 +11,7 @@ uses una.rating.gl.common.GLLineCovCostData
 uses java.util.Map
 uses una.rating.gl.ratingInfos.GLLineRatingInfo
 uses una.rating.gl.common.GLRateRoutineNames
+uses java.math.BigDecimal
 
 class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
   var _minimumRatingLevel: RateBookStatus
@@ -37,7 +38,10 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
     if (!lineVersion.Branch.isCanceledSlice()) {
       var sliceRange = new DateRange(lineVersion.SliceDate, getNextSliceDateAfter(lineVersion.SliceDate))
       _logger.info("Rating GL Line Coverages")
-      lineVersion.GLLineCoverages.each( \ cov -> rateLineCoverages(cov, sliceRange))
+      var glBaseCov = lineVersion.GLLineCoverages.whereTypeIs(GLCGLCov).first()
+      if(glBaseCov != null)
+        rateGeneralLiabilityCoverage(glBaseCov, sliceRange)
+      lineVersion.GLLineCoverages.where( \ lineCov -> lineCov.Pattern != "GLCGLCov").each( \ cov -> rateLineCoverages(cov, sliceRange))
       _logger.info("Done Rating GL Line Coverages")
     }
   }
@@ -49,8 +53,8 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
         cd = new GLCovExposureCostData(c, RateCache)
         break
       case GLLineCovCost:
-          cd = new GLLineCovCostData(c, RateCache)
-          break
+        cd = new GLLineCovCostData(c, RateCache)
+        break
       default:
         throw "unknown type of cost " + typeof c
     }
@@ -79,17 +83,16 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
    *  @param sliceRange - slice range of the period
    */
   private function rateLineCoverages(lineCov : GeneralLiabilityCov, sliceRange : DateRange){
-    switch(lineCov.Pattern){
-      case "GLRecFacilities_EXT":
+    switch(typeof lineCov){
+      case GLRecFacilities_EXT:
         rateRecreationalFacilitiesCoverage(lineCov, sliceRange)
         break
-      //case "GLHiredAutoNonOwnedLiab_EXT":
-        //rateNonOwnedAutoLiabilityCoverage(lineCov as GLHiredAutoNonOwnedLiab_EXT, sliceRange)
-        //break
-      case "GLCGLCov":
-        rateGeneralLiabilityCoverage(lineCov, sliceRange)
+      case GLHiredAutoNonOwnedLiab_EXT:
+        rateNonOwnedAutoLiabilityCoverage(lineCov, sliceRange)
         break
-
+      case GLTerrorCov_EXT:
+        rateTerrorismCoverage(lineCov, sliceRange)
+        break
     }
   }
 
@@ -98,22 +101,20 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
    *  @param lineCov - general liability line coverage
    *  @param sliceRange - slice range of the period
    */
-  private function rateRecreationalFacilitiesCoverage(lineCov : GeneralLiabilityCov, sliceRange : DateRange){
-    if(lineCov typeis GLRecFacilities_EXT){
-      if(lineCov.HasRecFacilitiesNumPlaygrounds_EXTTerm)
-        addCost(ratePlaygroundLiability(lineCov, sliceRange))
-      if(lineCov.HasRecFacilitiesNumDocksandBoats_EXTTerm)
-        addCost(rateDocksOrBoatsLiability(lineCov, sliceRange))
-      if(lineCov.HasRecFacilitiesNumFitnessCenters_EXTTerm)
-        addCost(rateFitnessCentersLiability(lineCov, sliceRange))
-      if(lineCov.HasRecFacilitiesNumSwimmingPools_EXTTerm)
-        addCost(rateSwimmingPoolLiability(lineCov, sliceRange))
-    }
+  private function rateRecreationalFacilitiesCoverage(lineCov : GLRecFacilities_EXT, sliceRange : DateRange){
+    if(lineCov.HasRecFacilitiesNumPlaygrounds_EXTTerm)
+      addCost(ratePlaygroundLiability(lineCov, sliceRange))
+    if(lineCov.HasRecFacilitiesNumDocksandBoats_EXTTerm)
+      addCost(rateDocksOrBoatsLiability(lineCov, sliceRange))
+    if(lineCov.HasRecFacilitiesNumFitnessCenters_EXTTerm)
+      addCost(rateFitnessCentersLiability(lineCov, sliceRange))
+    if(lineCov.HasRecFacilitiesNumSwimmingPools_EXTTerm)
+      addCost(rateSwimmingPoolLiability(lineCov, sliceRange))
   }
 
   /**
    *  Rate the General Liability Coverage
-   *  @param lineCov - general liability line coverage
+   *  @param lineCov - non owned auto liability coverage
    *  @param sliceRange - slice range of the period
    */
   private function rateNonOwnedAutoLiabilityCoverage(lineCov : GLHiredAutoNonOwnedLiab_EXT, sliceRange : DateRange){
@@ -121,11 +122,11 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
       _logger.debug("Entering " + CLASS_NAME + ":: rateNonOwnedAutoLiabilityCoverage", this.IntrinsicType)
     var costData = createCostData(lineCov, sliceRange, null)
     var parameterSet = createLineParameterSet(costData)
-    _executor.execute(GLRateRoutineNames.GL_GENERAL_LIABILITY_BASE_RATE_ROUTINE, lineCov, parameterSet, costData)
+    _executor.execute(GLRateRoutineNames.GL_NON_OWNED_AUTO_LIABILITY_RATE_ROUTINE, lineCov, parameterSet, costData)
     costData.copyStandardColumnsToActualColumns()
     addCost(costData)
     if(_logger.DebugEnabled)
-      _logger.debug("General Liability Coverage Rated Successfully", this.IntrinsicType)
+      _logger.debug("Non owned Auto Liability Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -133,13 +134,31 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
    *  @param lineCov - general liability line coverage
    *  @param sliceRange - slice range of the period
    */
-  private function rateGeneralLiabilityCoverage(lineCov : GeneralLiabilityCov, sliceRange : DateRange){
+  private function rateTerrorismCoverage(lineCov : GLTerrorCov_EXT, sliceRange : DateRange){
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateTerrorismCoverage", this.IntrinsicType)
+    var costData = createCostData(lineCov, sliceRange, null)
+    var parameterSet = createLineParameterSet(costData)
+    _executor.execute(GLRateRoutineNames.GL_TERRORISM_RATE_ROUTINE, lineCov, parameterSet, costData)
+    costData.copyStandardColumnsToActualColumns()
+    addCost(costData)
+    if(_logger.DebugEnabled)
+      _logger.debug("Terrorism Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the General Liability Coverage
+   *  @param lineCov - general liability line coverage
+   *  @param sliceRange - slice range of the period
+   */
+  private function rateGeneralLiabilityCoverage(lineCov : GLCGLCov, sliceRange : DateRange){
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateGeneralLiabilityCoverage", this.IntrinsicType)
     var costData = createCostData(lineCov, sliceRange, null)
     var parameterSet = createLineParameterSet(costData)
     _executor.execute(GLRateRoutineNames.GL_GENERAL_LIABILITY_BASE_RATE_ROUTINE, lineCov, parameterSet, costData)
     costData.copyStandardColumnsToActualColumns()
+    _lineRatingInfo.GLLinePremiumAmount = costData?.ActualTermAmount
     addCost(costData)
     if(_logger.DebugEnabled)
       _logger.debug("General Liability Coverage Rated Successfully", this.IntrinsicType)
@@ -150,7 +169,7 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
   *  @param lineCov - general liability line coverage
    *  @param sliceRange - slice range of the period
    */
-  private function rateSwimmingPoolLiability(lineCov : GeneralLiabilityCov, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
+  private function rateSwimmingPoolLiability(lineCov : GLRecFacilities_EXT, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateSwimmingPoolLiability", this.IntrinsicType)
     var costData = createCostData(lineCov, sliceRange, GLCostType_Ext.TC_SWIMMINGPOOLLIABILITY)
@@ -167,7 +186,7 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
    *  @param lineCov - general liability line coverage
    *  @param sliceRange - slice range of the period
    */
-  private function ratePlaygroundLiability(lineCov : GeneralLiabilityCov, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
+  private function ratePlaygroundLiability(lineCov : GLRecFacilities_EXT, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePlaygroundLiability", this.IntrinsicType)
     var costData = createCostData(lineCov, sliceRange, GLCostType_Ext.TC_PLAYGROUNDLIABILITY)
@@ -184,7 +203,7 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
    *  @param lineCov - general liability line coverage
    *  @param sliceRange - slice range of the period
    */
-  private function rateDocksOrBoatsLiability(lineCov : GeneralLiabilityCov, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
+  private function rateDocksOrBoatsLiability(lineCov : GLRecFacilities_EXT, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateDocksOrBoatsLiability", this.IntrinsicType)
     var costData = createCostData(lineCov, sliceRange, GLCostType_Ext.TC_DOCKSORBOATSLIABILITY)
@@ -201,7 +220,7 @@ class UNAGLRatingEngine extends AbstractRatingEngine<GLLine> {
    *  @param lineCov - general liability line coverage
    *  @param sliceRange - slice range of the period
    */
-  private function rateFitnessCentersLiability(lineCov : GeneralLiabilityCov, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
+  private function rateFitnessCentersLiability(lineCov : GLRecFacilities_EXT, sliceRange : DateRange) :  CostData<Cost, PolicyLine>{
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateFitnessCentersLiability", this.IntrinsicType)
     var costData = createCostData(lineCov, sliceRange, GLCostType_Ext.TC_FITNESSCENTERSLIABILITY)

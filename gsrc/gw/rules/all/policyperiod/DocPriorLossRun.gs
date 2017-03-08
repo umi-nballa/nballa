@@ -11,17 +11,16 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class DocConsenttoRate implements IRuleCondition<PolicyPeriod>{
+class DocPriorLossRun implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("consent_to_rate_follow_up")
-
-    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
-          if(period.BaseState.Code == typekey.State.TC_NC){
-             if (period.ConsentToRate_Ext && period.ConsentToRateReceived_Ext)  {
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_prior_loss_runs_required")
+   if (!period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
+          if(period.BaseState.Code == typekey.State.TC_FL  ){
+             if (period.Policy.PriorPolicies.Count > 0 && period.Policy.PriorPolicies.hasMatch( \ elt1 ->  elt1.CarrierType == typekey.CarrierType_Ext.TC_NOPRIORINS))  {
                var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
                var list = new AgentDocList_Ext(period)
-               list.DocumentName = "Consent to Rate"
+               list.DocumentName = "Prior Loss Runs"
                period.addToAgentDocs(list)
              }
             }

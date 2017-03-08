@@ -25,11 +25,10 @@ class DocAlarmCertificate implements IRuleCondition<PolicyPeriod>{
     //Fire Alarm Reporting to Police Station
     var FirePoliceStn = period.HomeownersLine_HOE?.dwelling.DwellingProtectionDetails.FireAlarmReportPoliceStn
 
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("uw_period_30")
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("protective_device_follow_up")
 //protective_device_follow_up
-         //period.Status == Quoted
 
-    if (period.HomeownersLine_HOEExists){
+    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_AZ &&
               (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
                   period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
@@ -51,7 +50,7 @@ class DocAlarmCertificate implements IRuleCondition<PolicyPeriod>{
                     period.addToAgentDocs(list)
                   }
 
-                }else if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
+                }else if (
                     period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ||
                     period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT||
                     period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT||
@@ -102,7 +101,7 @@ class DocAlarmCertificate implements IRuleCondition<PolicyPeriod>{
                 period.addToAgentDocs(list)
               }
 
-            }else if (period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
+            }else if (
                 period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ||
                 period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_LPP_EXT||
                 period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_TDP1_EXT||

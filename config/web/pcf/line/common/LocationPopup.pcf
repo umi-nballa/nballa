@@ -48,10 +48,11 @@
           hideIfReadOnly="true"
           pickValue="thePolicyLocation"/>
         <ToolbarButton
-          action="setAddressScrubbed()"
+          action="setAddressOverride()"
           available="thePolicyLocation.AccountLocation.addressScrub_Ext == null ? false : thePolicyLocation.AccountLocation.addressScrub_Ext"
           id="AddressOverride"
-          label="displaykey.Web.Account.Locations.AddressOverride"/>
+          label="displaykey.Web.Account.Locations.AddressOverride"
+          visible="false"/>
       </Toolbar>
       <AlertBar
         allowDismiss="false"
@@ -103,9 +104,12 @@ function maybeCreateWCJurisdiction(location : PolicyLocation) {
   }
 }
 
+function setAddressScrubbed(booleanValue : boolean){
+  thePolicyLocation.AccountLocation.addressScrub_Ext =  booleanValue
+}
 
-function setAddressScrubbed(){
-  thePolicyLocation.AccountLocation.addressScrub_Ext =  false
+function setAddressOverride(){
+  thePolicyLocation.AccountLocation.addressOverride_Ext =  true
 }]]></Code>
   </Popup>
 </PCF>

@@ -25,6 +25,10 @@ class HOScheduledPersonalPropertyPCFController {
       results.removeAll(ScheduleType_HOE.TF_EXECUTIVEENDORSEMENTONLYTYPES.TypeKeys)
     }
 
+    if(_dwelling.Branch.Job.Subtype != TC_Renewal or !_dwelling.HODW_ScheduledProperty_HOE.ScheduledItems?.hasMatch( \ item -> item.ScheduleType == TC_Bicycles_Ext)){
+      results.removeWhere( \ key -> key == TC_Bicycles_Ext)
+    }
+
     return results
   }
 

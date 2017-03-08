@@ -4,6 +4,7 @@ uses java.lang.Double
 uses java.lang.Integer
 uses una.model.PropertyDataModel
 uses una.model.PropertyTerritoryModel
+uses java.util.ArrayList
 
 /**
  * Created for Response mapping for TUNA.
@@ -69,4 +70,6 @@ class TunaAppResponse {
   var _hoTerritoryCode :List<PropertyDataModel>                as HOTerritoryCode
   var _dfTerritoryCode :List<PropertyDataModel>                as DFTerritoryCode
   var _territoryCode :List<PropertyDataModel>                  as TerritoryCode
+  var _cppTerritoryCodes : ArrayList<String>                   as CPPTerritoryCodes
+  var _bopTerritoryCodes : ArrayList<String>                   as BOPTerritoryCodes
 }

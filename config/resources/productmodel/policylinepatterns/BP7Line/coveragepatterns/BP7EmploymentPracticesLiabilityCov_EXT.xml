@@ -11,7 +11,6 @@
   priority="6860"
   public-id="BP7EmploymentPracticesLiabilityCov_EXT"
   referenceDateByType="PolicyTerm">
-  <InitializeScript/>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="ag"
@@ -77,7 +76,9 @@
           optionCode="10000_EXT"
           priority="300"
           public-id="z4vh2sbkdgca62e4jvqqpmrq0kb"
-          value="10000"/>
+          value="10000">
+          <AvailabilityScript><![CDATA[return una.productmodel.CoverageTermAvailabilityUtil.isCovTermOptionAvailable(CovTermOpt, CovTerm, (CovTerm.Coverage as BP7EmploymentPracticesLiabilityCov_EXT).BP7Line)]]></AvailabilityScript>
+        </CovTermOpt>
         <CovTermOpt
           codeIdentifier="zfrhqr1nago7beve2ne9qv61gnb"
           currency="usd"

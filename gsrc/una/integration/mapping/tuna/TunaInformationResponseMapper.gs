@@ -56,7 +56,22 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
         territoryCodeList.add(detail.Code)
       }
       response.TerritoryCodes = territoryCodeList
-      //Map datums
+
+      var comTerritoryLine = tunaResponse.CommercialLines?.PropertyLine?.firstWhere( \ elt -> elt.Line == "C")
+      if(comTerritoryLine != null){
+      for(tTory in comTerritoryLine.Territories.PropertyTerritory){
+        response.CPPTerritoryCodes.add(tTory.Code)
+       }
+      }
+
+
+      var bopTerritoryLine = tunaResponse.CommercialLines?.PropertyLine?.firstWhere( \ elt -> elt.Line == "B")
+      if(bopTerritoryLine != null){
+      for(tTory in comTerritoryLine.Territories.PropertyTerritory){
+        response.BOPTerritoryCodes.add(tTory.Code)
+      }
+     }
+
       response = helper.mapDatumsTunaResponse(tunaResponse,response)
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " tunaAppResponse" + "For response Mapping ", this.IntrinsicType)
     } catch (exp: Exception) {

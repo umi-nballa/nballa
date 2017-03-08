@@ -6,7 +6,7 @@ uses gw.api.webservice.exception.BadIdentifierException
 uses gw.webservice.SOAPUtil
 uses gw.xml.ws.annotation.WsiExposeEnumAsString
 uses gw.api.database.PCBeanFinder
-uses una.integration.service.published.producer.datamodel.OrgDTO
+uses una.integration.service.published.datamodel.OrgDTO
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,19 +29,20 @@ class UNAProducerAPI {
   @Returns("The PublicID of the newly created Organization")
   @WsiPermissions({})
   function createUNAOrganization(orgModel : OrgDTO) : String {
-    SOAPUtil.require(orgModel, "orgModel")
-    var foundOrg = loadOrgByPublicID(orgModel.PublicID)
-    if (foundOrg != null) {
-      throw new BadIdentifierException(displaykey.ProducerAPI.Error.CreateOrganization.OrgWithPublicIDAlreadyExists(orgModel.PublicID))
-    }
-
-    var createdPublicID : String
-    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-    //  var newOrg = orgModel.createOrganization(bundle)
-    //  createdPublicID = newOrg.PublicID
-    })
-
-    return createdPublicID
+//    SOAPUtil.require(orgModel, "orgModel")
+//  //  var foundOrg = loadOrgByPublicID(orgModel.PublicID)
+//  //  if (foundOrg != null) {
+//  //    throw new BadIdentifierException(displaykey.ProducerAPI.Error.CreateOrganization.OrgWithPublicIDAlreadyExists(orgModel.PublicID))
+//    }
+//
+//    var createdPublicID : String
+//    gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+//    //  var newOrg = orgModel.createOrganization(bundle)
+//    //  createdPublicID = newOrg.PublicID
+//    })
+//
+//    return createdPublicID
+    return null
   }
 
 

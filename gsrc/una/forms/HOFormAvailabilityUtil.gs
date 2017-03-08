@@ -273,7 +273,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
           formAttachFlag= ordianceLaw(context,availableStates)
           break
 
-         default : return false
+         default : return formAttachFlag
     }
     return formAttachFlag
   }

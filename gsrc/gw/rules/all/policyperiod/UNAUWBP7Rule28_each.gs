@@ -10,7 +10,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAUWBP7Rule4_each implements IRuleCondition<PolicyPeriod>{
+class UNAUWBP7Rule28_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
     var questionSet = period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == "BP7_Prequal_Ext")
@@ -18,7 +18,7 @@ class UNAUWBP7Rule4_each implements IRuleCondition<PolicyPeriod>{
     {
       if (elt != null)
       {
-        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="BP7_Q1_Businesshours_Ext")
+        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="BP7_Q6_Pincode_Ext")
         {
           var answeredTrue = period.getAnswerValue(elt)?.toString() as boolean
           if (null != answeredTrue && answeredTrue )

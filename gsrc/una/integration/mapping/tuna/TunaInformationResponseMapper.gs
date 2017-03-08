@@ -59,7 +59,7 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
 
       var comTerritoryLine = tunaResponse.CommercialLines?.PropertyLine?.firstWhere( \ elt -> elt.Line == "C")
       if(comTerritoryLine != null){
-      for(tTory in comTerritoryLine.Territories.PropertyTerritory){
+      for(tTory in comTerritoryLine.Territories?.PropertyTerritory){
         response.CPPTerritoryCodes.add(tTory.Code)
        }
       }
@@ -67,7 +67,7 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
 
       var bopTerritoryLine = tunaResponse.CommercialLines?.PropertyLine?.firstWhere( \ elt -> elt.Line == "B")
       if(bopTerritoryLine != null){
-      for(tTory in comTerritoryLine.Territories.PropertyTerritory){
+      for(tTory in bopTerritoryLine.Territories?.PropertyTerritory){
         response.BOPTerritoryCodes.add(tTory.Code)
       }
      }

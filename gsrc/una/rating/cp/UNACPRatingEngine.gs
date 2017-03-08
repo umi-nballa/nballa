@@ -24,6 +24,9 @@ uses gw.lob.cp.rating.CPBuildingCovCostData
 uses java.math.BigDecimal
 uses una.rating.cp.common.CPRateRoutineExecutor
 
+/**
+*  rating engine to rate the CP policy line
+ */
 class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   var _minimumRatingLevel: RateBookStatus
   var _executor: CPRateRoutineExecutor
@@ -55,9 +58,6 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
         location.Buildings.each( \ building -> {
           _logger.info("Rating CP Building Coverages")
           rateCPBuilding(building, sliceRange)
-          /*building.Coverages.each( \ buildingCov -> {
-            rateCPBuildingCov(buildingCov, sliceRange)
-          })  */
           _logger.info("Done Rating CP Building Coverages")
         })
       })
@@ -83,6 +83,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
   override function rateWindow(lineVersion: CPLine) {
     // for Tax
     assertSliceMode(lineVersion)
+    rateFireCollegeSurcharge(lineVersion)
     ratePolicyFee(lineVersion)
     rateEMPASurcharge(lineVersion)
   }
@@ -120,7 +121,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
    */
   function rateCPBuilding(building : CPBuilding, sliceRange : DateRange){
     var ratingStep = new CPBuildingRatingStep (PolicyLine, building, _executor, this.NumDaysInCoverageRatedTerm, RateCache)
-    var windStormApplicable = (!PolicyLine.CPWindorHailExclusion_EXTExists)
+    var windStormApplicable = !(building.windstormexcl)
     var hurricaneIncluded = (PolicyLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT)
 
     if(building.CPBldgCovExists){
@@ -128,6 +129,8 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
       if(windStormApplicable){
         if(hurricaneIncluded)
           addCost(ratingStep.rateBuildingCoverageWithHurricane(building.CPBldgCov, sliceRange))
+        else
+          addCost(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBldgCov, sliceRange))
       }
     }
     if(building.CPBPPCovExists){
@@ -135,6 +138,8 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
       if(windStormApplicable){
         if(hurricaneIncluded)
           addCost(ratingStep.rateBuildingCoverageWithHurricane(building.CPBPPCov, sliceRange))
+        else
+          addCost(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBPPCov, sliceRange))
       }
     }
     if(building.CPOrdinanceorLaw_EXTExists){
@@ -303,6 +308,27 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
         TC_COSTDATA   -> costData
     }
     _executor.executeBasedOnSliceDate(CPRateRoutineNames.CP_POLICY_FEES_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+    costData.StandardAmount = costData.StandardTermAmount
+    costData.ActualAmount = costData.StandardAmount
+    costData.copyStandardColumnsToActualColumns()
+    addCost(costData)
+  }
+
+  /**
+   * rate the Fire College Surcharge
+   */
+  function rateFireCollegeSurcharge(line: CPLine){
+    var totalBuildingAndContentPremium = totalBuildingPremium() + totalContentsPremium()
+    var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
+    var costData = new CPStateTaxCostData(dateRange.start,dateRange.end,line.PreferredCoverageCurrency, RateCache, line.BaseState, ChargePattern.TC_FIRECOLLEGESURCHARGE_EXT)
+    costData.init(line)
+    costData.NumDaysInRatedTerm = NumDaysInCoverageRatedTerm
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_TOTALPOLICYPREMIUM_EXT ->  totalBuildingAndContentPremium,
+        TC_COSTDATA   -> costData
+    }
+    _executor.executeBasedOnSliceDate(CPRateRoutineNames.CP_FIRE_COLLEGE_SURCHARGE_RATE_ROUTINE, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
     costData.StandardAmount = costData.StandardTermAmount
     costData.ActualAmount = costData.StandardAmount
     costData.copyStandardColumnsToActualColumns()

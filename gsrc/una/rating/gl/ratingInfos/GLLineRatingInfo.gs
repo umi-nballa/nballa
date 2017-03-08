@@ -17,6 +17,9 @@ class GLLineRatingInfo {
   var _glAggregateLimit : int as GLAggregateLimit
   var _territoryCode : String as TerritoryCode
   var _riskType : PackageRisk as RiskType
+  var _numOfExposureUnits : int as NumOfExposureUnits
+  var _nonOwnedAutoLiabilityLimit : BigDecimal as NonOwnedAutoLiabilityLimit
+  var _glLinePremium : BigDecimal as GLLinePremiumAmount = 0.0
 
   construct(line: GeneralLiabilityLine) {
     _line = line
@@ -24,6 +27,7 @@ class GLLineRatingInfo {
     _glAggregateLimit = line.GLCGLCov?.GLCGLAggLimitTerm?.Value?.intValue()
     _territoryCode = line.Branch?.PrimaryLocation?.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="GLLine").first().Code
     _riskType = line.Branch?.Policy.PackageRisk
+    _numOfExposureUnits = line.GLExposuresWM?.sum( \ exposure -> exposure.BasisAmount)
 
     if (line.GLRecFacilities_EXTExists){
       _numOfSwimmingPools = line.GLRecFacilities_EXT?.RecFacilitiesNumSwimmingPools_EXTTerm?.Value?.intValue()
@@ -31,6 +35,8 @@ class GLLineRatingInfo {
       _numOfDucksAndBoats = line.GLRecFacilities_EXT?.RecFacilitiesNumDocksandBoats_EXTTerm?.Value?.intValue()
       _numOfFitnessCenters = line.GLRecFacilities_EXT?.RecFacilitiesNumFitnessCenters_EXTTerm?.Value?.intValue()
     }
+    if(line.GLHiredAutoNonOwnedLiab_EXTExists)
+      _nonOwnedAutoLiabilityLimit = line.GLHiredAutoNonOwnedLiab_EXT?.HiredAutoNonOwnedLimit_EXTTerm?.Value
   }
 
   property get ScheduledRatingModifier(): BigDecimal {

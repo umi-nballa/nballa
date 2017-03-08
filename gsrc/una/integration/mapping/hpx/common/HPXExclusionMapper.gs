@@ -19,7 +19,7 @@ abstract class HPXExclusionMapper {
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentExclusion.PatternCode
-    cov.ExclusionDesc = currentExclusion.Pattern.Description
+    cov.ExclusionDesc = currentExclusion.Pattern.Name
     var coverableInfo = createCoverableInfo(currentExclusion)
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
@@ -45,6 +45,7 @@ abstract class HPXExclusionMapper {
   function createCovTermInfo(currentExclusion : Exclusion, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     var currCovTerms = currentExclusion.CovTerms
+    currCovTerms?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (currCovTerm in currCovTerms) {
       if (currCovTerm typeis DirectCovTerm) {
         var covTerms = createDirectCovTermInfo(currentExclusion, currCovTerm, transactions)

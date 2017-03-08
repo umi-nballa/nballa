@@ -132,26 +132,18 @@
   return map 
 }
 
-function decisionCode() : typekey.UWDecisonCode_Ext {
- var bp: typekey.UWIssueBlockingPoint 
-  switch(bp) {
-
-    case "BlocksBind" : 
-      return typekey.UWDecisonCode_Ext.TC_SYSTEMREJECT_BLOCKBINDWEBEDITDECLINATION
-     
-         
-
-    case  "BlocksIssuance": 
-      return typekey.UWDecisonCode_Ext.TC_SYSTEMACCEPT_BLOCKISSUE
-      
-        
-
-    case "NonBlocking" : 
-      return typekey.UWDecisonCode_Ext.TC_SYSTEMACCEPT_NOREFERRAL
-      default :return  typekey.UWDecisonCode_Ext.TC_UESPENDING
+function decisionCode() : typekey.UWDecisonCode_Ext{
+   var bp=policyPeriod.UWIssuesActiveOnly
+  
+  for(bp1 in bp){
+    if(bp1.CurrentBlockingPoint== typekey.UWIssueBlockingPoint.TC_NONBLOCKING) {return typekey.UWDecisonCode_Ext.TC_SYSTEMACCEPT_NOREFERRAL}
+    if(bp1.CurrentBlockingPoint == typekey.UWIssueBlockingPoint.TC_BLOCKSISSUANCE ){return typekey.UWDecisonCode_Ext.TC_SYSTEMACCEPT_BLOCKISSUE} // set code 98
+    if(bp1.CurrentBlockingPoint == typekey.UWIssueBlockingPoint.TC_BLOCKSBIND or bp1.Rejected) {return typekey.UWDecisonCode_Ext.TC_SYSTEMREJECT_BLOCKBINDWEBEDITDECLINATION} // set code to 86
+    }
+  
+ return  typekey.UWDecisonCode_Ext.TC_UESPENDING
   }
 
-}
 
 function createClearedHistoryEventForOfac(checkedvalues:java.util.ArrayList<UWIssue>)
 {

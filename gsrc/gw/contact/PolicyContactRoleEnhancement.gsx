@@ -237,5 +237,14 @@ enhancement PolicyContactRoleEnhancement : PolicyContactRole {
     return false
   }
 
+  function isContactDobMandatory() : boolean {
+    if(this.AccountContactRole.AccountContact.Contact typeis Person){
+      if((this typeis PolicyAddlNamedInsured) and (this.ContactRelationship_Ext ==typekey.ContactRelationship_Ext.TC_SPOUSE ||this.ContactRelationship_Ext ==typekey.ContactRelationship_Ext.TC_COOWNER )){
+        return true
+
+  }
+}return false
+}
 
 }
+

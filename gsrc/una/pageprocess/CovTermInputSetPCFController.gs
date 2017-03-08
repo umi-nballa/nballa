@@ -69,25 +69,20 @@ class CovTermInputSetPCFController {
 
     onChangeOptionCovTerm_OnPremisesLimit(term)
 
-    if(hoLine != null){
-      if(term.PatternCode == "HODW_WindHail_Ded_HOE"){
-        hoLine.setCoverageConditionOrExclusionExists("HODW_AckNoWindstromHail_HOE_Ext", term.Value == null or term.Value < 0)
-      }else if(term.PatternCode == "HOPL_LossAssCovLimit_HOE" and hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
-        if(hoLine.HOPolicyType == TC_HO6 and hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HasHOPL_Deductible_HOETerm){
-          hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
-        }else if(hoLine.HOPolicyType == TC_DP3_Ext and hoLine.Dwelling.ResidenceType == TC_CONDO){
-          hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
-        }
-      }else if(term.PatternCode == "DPLI_LiabilityLimit_HOE" or term.PatternCode == "HOLI_Liability_Limit_HOE"){
-        var availableOptions = hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.AvailableOptions
-        var matchingValue = availableOptions?.atMostOneWhere( \ option -> option.Value?.doubleValue() == term.Value?.doubleValue())
-
-        if(matchingValue != null){
-          hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.setOptionValue(matchingValue)
-        }
-      }else if(term.PatternCode == "HODW_OtherPerils_Ded_HOE"){
+    switch(term.PatternCode){
+      case "HOPL_LossAssCovLimit_HOE":
+        onLossAssessmentCovLimitChanged(term, hoLine)
+        break
+      case "DPLI_LiabilityLimit_HOE":
+      case "HOLI_Liability_Limit_HOE":
+        onPersonalLiabilityChanged(term, hoLine)
+        break
+      case "HODW_OtherPerils_Ded_HOE":
         hoLine.Dwelling.HODW_SinkholeLoss_HOE_Ext.HODW_SinkholeLossDeductible_ExtTerm?.onInit()
-      }
+        break
+      case "HODW_FungiSectionILimit_HOE":
+        hoLine.Dwelling.HODW_FungiCov_HOE.HODW_FungiSectionII_HOETerm.matchOptionValue(term)
+        break
     }
   }
 
@@ -272,6 +267,25 @@ class CovTermInputSetPCFController {
       var factor = ConfigParamsUtil.getDouble(ConfigParameterType_Ext.TC_OFFPREMISESLIMITFACTOR, coverable.PolicyLine.BaseState)
 
       coverable.HODW_BusinessProperty_HOE_Ext.HODW_OffPremises_Limit_HOETerm.Value = onPremisesValue * factor
+    }
+  }
+
+  private static function onLossAssessmentCovLimitChanged(term : OptionCovTerm, hoLine : entity.HomeownersLine_HOE){
+    if(hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
+      if(hoLine.HOPolicyType == TC_HO6 and hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HasHOPL_Deductible_HOETerm){
+        hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value
+      }else if(hoLine.HOPolicyType == TC_DP3_Ext and hoLine.Dwelling.ResidenceType == TC_CONDO){
+        hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = 250bd
+      }
+    }
+  }
+
+  private static function onPersonalLiabilityChanged(term : OptionCovTerm, hoLine : entity.HomeownersLine_HOE){
+    if(term.PatternCode == "HOLI_Liability_Limit_HOE" and hoLine.BaseState == TC_HI and term.Value.doubleValue() == 500000){
+      hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.setOptionValue(hoLine.HOLI_AnimalLiabilityCov_HOE_Ext.HOLI_AnimalLiabLimit_HOETerm.AvailableOptions.firstWhere( \ elt -> elt.Value.doubleValue() == 300000))
+    }else{
+      var covTerm = (HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(hoLine.HOPolicyType)) ? hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm : hoLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm
+      hoLine.HOLI_PersonalInjury_HOE.HOLI_PersonalInjuryLimit_HOE_ExtTerm.matchOptionValue(covTerm)
     }
   }
 

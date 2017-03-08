@@ -1,5 +1,9 @@
 package una.utils
 
+uses java.util.Queue
+uses gw.api.database.Query
+uses java.lang.Exception
+
 /**
  * Created with IntelliJ IDEA.
  * User: pyerrumsetty
@@ -37,9 +41,19 @@ class ActivityUtil {
 
 
   //Function to complete/close open activities
-  public function completeActivity(activity:Activity, note:Note, pp:PolicyPeriod){
+  public static function completeActivity(activity:Activity, note:Note, pp:PolicyPeriod){
     gw.api.web.activity.ActivityUtil.completeActivity(activity, note);
     activity.Bundle.commit()
+  }
+
+  public static function assignActivityToQueue(queueName : String, groupName : String, activity : Activity){
+    var group = Query.make(Group).compare(Group#Name, Equals, groupName).select().AtMostOneRow
+    var assignableQueue= group.AssignableQueues.firstWhere( \ elt -> elt.Name==queueName)
+    try {
+      activity.assignActivityToQueue(assignableQueue,group)
+    }  catch  (var e: Exception)  {
+      e.printStackTrace()
+    }
   }
 
 }

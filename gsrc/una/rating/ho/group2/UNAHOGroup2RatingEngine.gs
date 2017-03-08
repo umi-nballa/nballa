@@ -87,9 +87,6 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   override function rateDwellingCoverages(dwellingCov: DwellingCov_HOE, dateRange: DateRange) {
     switch (typeof dwellingCov) {
-      case HODW_LossSettlementWindstorm_HOE_Ext:
-          rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
-          break
       case HODW_OrdinanceCov_HOE:
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
@@ -134,6 +131,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if(dwellingCov.HODW_BuildAddInc_HOETerm.LimitDifference > 0){
             rateBuildingAdditionsCoverage(dwellingCov, dateRange)
           }
+          else
+            rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
       case HODW_Other_Structures_HOE:
           rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
@@ -212,6 +211,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     rateMaximumDiscountAdjustment(dateRange)
 
     updateTotalBasePremium()
+
+    if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 and PolicyLine.HODW_CashSettlementWindOrHailRoofSurfacing_HOEExists)
+      rateACVLossSettlementOnRoofSurfacing(dateRange)
   }
 
   /**
@@ -224,7 +226,21 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-    _logger.debug("Personal Property Increased Limit Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Building Additions and Alterations Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Building Additions And Alterations Increased Limits Coverage
+   */
+  function rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov: HODW_BuildingAdditions_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState.Code, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Building Additions And Alterations Increased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -619,9 +635,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    * Rate ACV loss settlement on Roof surfacing for HO3 policy types
    */
-  function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange) {
+  function rateACVLossSettlementOnRoofSurfacing(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateACVLossSettlementOnRoofSurfacing to rate ACV loss settlement on roof surfacing", this.IntrinsicType)
-    var costData = HOCommonRateRoutinesExecutor.rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm,_hoRatingInfo)
+    var costData = HOCommonRateRoutinesExecutor.rateACVLossSettlementOnRoofSurfacing(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm,_hoRatingInfo, HOCostType_Ext.TC_ACVLOSSSETTLEMENTWINDORHAILLOSSESTOROOFSURFACING)
     if (costData != null)
       addCost(costData)
     _logger.debug("ACV loss settlement on Roof Surfacing Rated Successfully", this.IntrinsicType)

@@ -19,7 +19,7 @@ abstract class HPXPolicyConditionMapper {
       : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     cov.CoverageCd = currentPolicyCondition.PatternCode
-    cov.PolicyConditionDesc = currentPolicyCondition.Pattern.Description
+    cov.PolicyConditionDesc = currentPolicyCondition.Pattern.Name
     var coverableInfo = createCoverableInfo(currentPolicyCondition)
     if (coverableInfo != null) {
       cov.addChild(new XmlElement("Coverable", coverableInfo))
@@ -45,6 +45,7 @@ abstract class HPXPolicyConditionMapper {
   function createCovTermInfo(currentPolicyCondition : PolicyCondition, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType {
     var cov = new wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType()
     var currCovTerms = currentPolicyCondition.CovTerms
+    currCovTerms?.sortBy(\ elt -> elt?.Pattern?.Name)
     for (currCovTerm in currCovTerms) {
       if (currCovTerm typeis DirectCovTerm) {
         var covTerms = createDirectCovTermInfo(currentPolicyCondition, currCovTerm, null, transactions)

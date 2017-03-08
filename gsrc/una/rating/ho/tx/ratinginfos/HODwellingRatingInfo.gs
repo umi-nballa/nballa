@@ -17,10 +17,8 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _increasedLimitsJewelryWatchesFurs: BigDecimal as IncreasedLimitsJewelryWatchesFurs
   var _lossAssessmentLimit: int as LossAssessmentLimit
   var _moldRemediationLimit: String as MoldRemediationLimit
-
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
-
 
     if (dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists){
       _otherStructuresIncreasedOrDecreasedLimit = (this.OtherStructuresLimit - (this.DwellingLimit * 0.1)) as int

@@ -66,7 +66,7 @@
             label="displaykey.Accelerator.LexisNexis.Clue.Property.ClaimFreeYears"
             value="policyPeriod.ClaimFreeYear"
             valueRange="typekey.NoClaimFreeYears_Ext.getTypeKeys(false)"
-            visible="edge.capabilities.helpers.PolicyUtil.getValuesByVisibility(policyPeriod)"/>
+            visible="getValuesByVisibility()"/>
         </Toolbar>
         <ListViewPanel
           id="LossesLV">
@@ -196,6 +196,21 @@ function getMsg():String {
     return "Are you sure you want to reorder the CLUE report?"
   else 
     return null
-}]]></Code>
+}  
+ //author aranjan
+
+  static function getValuesByVisibility() :boolean{
+    if(policyPeriod.BOPLineExists == "True")
+      return true
+    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_NC){
+      if(policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO4 || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_HO6 ||policyPeriod.HomeownersLine_HOE.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
+        return true
+    }
+    else if(policyPeriod.BaseState == typekey.Jurisdiction.TC_TX) {
+        if( policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP1_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP2_EXT || policyPeriod.HomeownersLine_HOE.HOPolicyType==HOPolicyType_HOE.TC_TDP3_EXT)
+          return true
+      }
+    return false
+  }]]></Code>
   </PanelSet>
 </PCF>

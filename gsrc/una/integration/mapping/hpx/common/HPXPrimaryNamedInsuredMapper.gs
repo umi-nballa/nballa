@@ -1,6 +1,8 @@
 package una.integration.mapping.hpx.common
-uses java.util.ArrayList
+
 uses gw.xml.XmlElement
+uses gw.xml.date.XmlDate
+
 /**
  * Created with IntelliJ IDEA.
  * User: ANanayakkara
@@ -17,9 +19,17 @@ class HPXPrimaryNamedInsuredMapper {
     insuredOrPrincipal.addChild(new XmlElement("GeneralPartyInfo", generalPartyInfoMapper.createGeneralPartyInfo(contact,
         policyContactRole)))
     insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredInterestDesc = ""
-    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = entityType
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipCd = entityType.Code
     insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.TitleRelationshipDesc = entityType.Description
-    insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYPRINAMEDINSURED
+    if (contact typeis Person) {
+      var dob = contact.DateOfBirth
+      if (dob != null) {
+        insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.BirthDt = new XmlDate(contact.DateOfBirth)
+      }
+    }
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.MaritalStatusCd = (contact typeis Person) ? contact.MaritalStatus.Code : ""
+    insuredOrPrincipal.InsuredOrPrincipalInfo.PersonInfo.MaritalStatusDesc = (contact typeis Person) ? contact.MaritalStatus.Description : ""
+    insuredOrPrincipal.InsuredOrPrincipalInfo.InsuredOrPrincipalRoleCd = typekey.PolicyContactRole.TC_POLICYPRINAMEDINSURED.Code
     var principalInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PrincipalInfoType()
     if(policyContactRole.CreditReportsExt != null and policyContactRole.CreditReportsExt.length > 0)   {
       var creditScores = creditScoreMapper.createCreditScoreInfo(policyContactRole.CreditReportsExt)

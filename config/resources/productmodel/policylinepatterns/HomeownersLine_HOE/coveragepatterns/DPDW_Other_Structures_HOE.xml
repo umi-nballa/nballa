@@ -12,8 +12,8 @@
   public-id="DPDW_Other_Structures_HOE"
   rICoverageGroupType="Property"
   referenceDateByType="ApplicableObject">
-  <AvailabilityScript><![CDATA[return (Dwelling_HOE.HOLine.BaseState == typekey.Jurisdiction.TC_FL and 
-         Dwelling_HOE.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO) == false ]]></AvailabilityScript>
+  <AvailabilityScript><![CDATA[return   Dwelling_HOE.HOLine.BaseState != typekey.Jurisdiction.TC_FL or 
+         Dwelling_HOE.ResidenceType != typekey.ResidenceType_HOE.TC_CONDO ]]></AvailabilityScript>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"

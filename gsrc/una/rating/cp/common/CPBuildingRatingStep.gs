@@ -140,6 +140,10 @@ class CPBuildingRatingStep {
           return CPRateRoutineNames.CP_GAZEBO_WINDSTORM_NO_HURRICANE_RATE_ROUTINE
       case "CPFurniture_Ext":
           return CPRateRoutineNames.CP_OUTDOOR_FURNITURE_WINDSTORM_NO_HURRICANE_RATE_ROUTINE
+      case "CPBldgCov":
+          return CPRateRoutineNames.CP_BUILDING_COVERAGE_WINDSTORM_NO_HURRICANE_RATE_ROUTINE
+      case "CPBPPCov":
+          return CPRateRoutineNames.CP_PERSONAL_PROPERTY_COVERAGE_WINDSTORM_NO_HURRICANE_RATE_ROUTINE
       default:
         throw "Rating is not supported for ${coveragePattern.ClauseName}"
     }

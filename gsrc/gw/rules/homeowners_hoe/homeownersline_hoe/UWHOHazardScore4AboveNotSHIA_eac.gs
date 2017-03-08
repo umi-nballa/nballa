@@ -11,7 +11,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UWHOHazardScore4AboveNotSHIA_each implements IRuleCondition<HomeownersLine_HOE>{
+class UWHOHazardScore4AboveNotSHIA_eac implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowners : HomeownersLine_HOE) : RuleEvaluationResult {
 
     var hazardScore = homeowners.Dwelling.HOLocation.OverrideFirelineAdjHaz_Ext ? homeowners.Dwelling.HOLocation.FirelineAdjHazOverridden_Ext : homeowners.Dwelling.HOLocation.FirelineAdjHaz_Ext

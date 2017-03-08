@@ -17,12 +17,10 @@ var period = (messageContext.Root as PolicyPeriod)
 period = period.getSlice(period.EditEffectiveDate)
 var hpxRecipientMapper = new HPXRecipientMapper()
 var eventMessageForms = period.NewlyAddedForms.where( \ form -> form.Pattern.InferenceClass.Supertype == EventTriggeredAvailability)
-  if (eventMessageForms.Count > 0) {
-    var ewsRequestXMLs = hpxRecipientMapper.createFormsForRecipients(period, eventMessageForms)
-    for (ewsRequestXML in ewsRequestXMLs) {
-      messageContext.createMessage(ewsRequestXML)
-    }
-  }
+var ewsRequestXMLs = hpxRecipientMapper.createFormsForRecipients(period, eventMessageForms)
+for (ewsRequestXML in ewsRequestXMLs) {
+  messageContext.createMessage(ewsRequestXML)
+}
 /*end00rule*/
   }
 }

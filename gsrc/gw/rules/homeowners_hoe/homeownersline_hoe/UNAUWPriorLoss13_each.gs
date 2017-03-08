@@ -22,8 +22,8 @@ class UNAUWPriorLoss13_each implements IRuleCondition<HomeownersLine_HOE>{
 
     homeowner.HOPriorLosses_Ext.each( \ elt ->
     {
-      if(elt.ClaimStatus.equalsIgnoreCase("open") || elt.ClaimStatus.equalsIgnoreCase("pending") || elt.ClaimStatus.equalsIgnoreCase("unresolved") ||
-      (homeowner.AssociatedPolicyPeriod.BaseState.Code=="TX" && elt.ClaimStatus.equalsIgnoreCase("break")))
+      if(elt?.ClaimStatus?.equalsIgnoreCase("open") || elt?.ClaimStatus?.equalsIgnoreCase("pending") || elt?.ClaimStatus?.equalsIgnoreCase("unresolved") ||
+      (homeowner?.AssociatedPolicyPeriod?.BaseState.Code=="TX" && elt?.ClaimStatus?.equalsIgnoreCase("break")))
         return RuleEvaluationResult.execute()
     }
       )

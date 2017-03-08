@@ -29,11 +29,11 @@ class UNAUWPriorLoss18_each implements IRuleCondition<HomeownersLine_HOE>{
 
     homeowner.HOPriorLosses_Ext.each( \ elt ->
     {
-      elt.ClaimPayment.each( \ elt1 ->
+      elt?.ClaimPayment.each( \ elt1 ->
       {
-        if(elt.ClaimType.equalsIgnoreCase("risk") && (elt1.LossCause_Ext==typekey.LossCause_Ext.TC_THEFT || elt1.LossCause_Ext==typekey.LossCause_Ext.TC_THFSC || elt1.LossCause_Ext==typekey.LossCause_Ext.TC_VMM )
-        && DateUtil.addYears(elt.ClaimDate as java.util.Date,3)>new java.util.Date() && homeowner.Dwelling.HomePurchaseDate_Ext>elt.ClaimDate && (!homeowner.Dwelling.DwellingProtectionDetails.BurglarAlarm
-        && homeowner.Dwelling.DwellingProtectionDetails.BurglarAlarmType!=typekey.BurglarAlarmType_HOE.TC_CENTRAL) && elt.LocationOfLoss.containsIgnoreCase("onpremises"))
+        if(elt?.ClaimType?.equalsIgnoreCase("risk") && (elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_THEFT || elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_THFSC || elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_VMM )
+        && elt?.ClaimDate!=null && DateUtil.addYears(elt?.ClaimDate as java.util.Date,3)>new java.util.Date() && homeowner?.Dwelling?.HomePurchaseDate_Ext>elt.ClaimDate && (!homeowner?.Dwelling?.DwellingProtectionDetails?.BurglarAlarm
+        && homeowner?.Dwelling?.DwellingProtectionDetails?.BurglarAlarmType!=typekey.BurglarAlarmType_HOE.TC_CENTRAL) && elt.LocationOfLoss?.containsIgnoreCase("onpremises"))
           return RuleEvaluationResult.execute()
       }
 

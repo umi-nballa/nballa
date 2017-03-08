@@ -136,10 +136,9 @@ class BP7PCFController {
 
   //DataRecreationCosts_EXT/LossofBusiness_EXT/PublicRelationsSvcs_EXT CovTerms Availability
   static function isCyberOneCovTermsAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7CyberOneCov_EXTExists && bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value!=null &&
-        bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value!=null &&
-        (bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_FULL &&
-        bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
+    if(bp7Line.BP7CyberOneCov_EXTExists && (bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value!=null &&
+        bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_FULL) &&
+        (bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value!=null && bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTACK_EXT ||
         bp7Line.BP7CyberOneCov_EXT.CoverageType_ExtTerm.Value == typekey.BP7CoverageType_Ext.TC_COMPUTERATTCKANDNWSECURLIAB_EXT)){
       return true
     }

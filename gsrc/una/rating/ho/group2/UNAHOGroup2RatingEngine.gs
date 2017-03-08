@@ -87,9 +87,6 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   override function rateDwellingCoverages(dwellingCov: DwellingCov_HOE, dateRange: DateRange) {
     switch (typeof dwellingCov) {
-      case HODW_LossSettlementWindstorm_HOE_Ext:
-          rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange)
-          break
       case HODW_OrdinanceCov_HOE:
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
@@ -214,6 +211,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     rateMaximumDiscountAdjustment(dateRange)
 
     updateTotalBasePremium()
+
+    if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 and PolicyLine.HODW_CashSettlementWindOrHailRoofSurfacing_HOEExists)
+      rateACVLossSettlementOnRoofSurfacing(dateRange)
   }
 
   /**
@@ -635,9 +635,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    * Rate ACV loss settlement on Roof surfacing for HO3 policy types
    */
-  function rateACVLossSettlementOnRoofSurfacing(dwellingCov: HODW_LossSettlementWindstorm_HOE_Ext, dateRange: DateRange) {
+  function rateACVLossSettlementOnRoofSurfacing(dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateACVLossSettlementOnRoofSurfacing to rate ACV loss settlement on roof surfacing", this.IntrinsicType)
-    var costData = HOCommonRateRoutinesExecutor.rateACVLossSettlementOnRoofSurfacing(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm,_hoRatingInfo)
+    var costData = HOCommonRateRoutinesExecutor.rateACVLossSettlementOnRoofSurfacing(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm,_hoRatingInfo, HOCostType_Ext.TC_ACVLOSSSETTLEMENTWINDORHAILLOSSESTOROOFSURFACING)
     if (costData != null)
       addCost(costData)
     _logger.debug("ACV loss settlement on Roof Surfacing Rated Successfully", this.IntrinsicType)

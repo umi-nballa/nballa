@@ -22,6 +22,8 @@ class HPXRecipientMapper {
     formsRequests.addAll(createFormsRequestForAgentRecipientType(policyPeriod, forms))
     formsRequests.addAll(createFormsRequestForMasterAgentRecipientType(policyPeriod, forms))
     formsRequests.addAll(createFormsRequestForOnBaseOnly(policyPeriod, forms))
+    formsRequests.addAll(createFormsRequestForCLUEReport(policyPeriod, forms))
+    formsRequests.addAll(createFormsRequestForCreditReport(policyPeriod, forms))
     return formsRequests
   }
 
@@ -84,16 +86,40 @@ class HPXRecipientMapper {
   }
 
   private function createFormsRequestForOnBaseOnly(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
+    var onbaseOnlyForms = forms.hasMatch( \ elt1 -> elt1.Pattern.InsuredRecType == false and
+                                                    elt1.Pattern.AddnlInsuredRecType == false and
+                                                    elt1.Pattern.AddnlIntLienholderRecType == false and
+                                                    elt1.Pattern.AddnlIntMortgageeRecType == false and
+                                                    elt1.Pattern.AgentRecType == false and
+                                                    elt1.Pattern.MasterAgentRecType == false)
+    return onbaseOnlyForms ? createFormsForRecipientType(policyPeriod, forms, new HPXOnBaseOnlyCompositionUnitMapper()) : new List<String>()
+  }
+
+  private function createFormsRequestForCLUEReport(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
     if (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0 or
         policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0) {
         var hpxRequestMapper = new HPXRequestMapper()
         var formsRequestsForRecipientType : List<String> = new()
-        var compositionUnitMapper = new HPXOnBaseOnlyCompositionUnitMapper()
+        var compositionUnitMapper = new HPXCLUEReportCompositionUnitMapper()
         var compositionUnit = compositionUnitMapper.createCompositionUnitForRecipient(policyPeriod, forms, new wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType())
         formsRequestsForRecipientType.add(hpxRequestMapper.createFormsRequest(policyPeriod, compositionUnit))
         return formsRequestsForRecipientType
     } else   {
          return new List<String>()
+    }
+  }
+
+  private function createFormsRequestForCreditReport(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
+    if (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0 or
+        policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0) {
+      var hpxRequestMapper = new HPXRequestMapper()
+      var formsRequestsForRecipientType : List<String> = new()
+      var compositionUnitMapper = new HPXCreditReportCompositionUnitMapper()
+      var compositionUnit = compositionUnitMapper.createCompositionUnitForRecipient(policyPeriod, forms, new wsi.schema.una.hpx.hpx_application_request.types.complex.RecipientType())
+      formsRequestsForRecipientType.add(hpxRequestMapper.createFormsRequest(policyPeriod, compositionUnit))
+      return formsRequestsForRecipientType
+    } else   {
+      return new List<String>()
     }
   }
 

@@ -41,6 +41,10 @@
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
       name="initializeSingleValueReturns"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
+      name="setProtectionClassValue"
+      type="boolean"/>
     <InputColumn
       labelWidth="250">
       <Label
@@ -117,7 +121,6 @@
           label="displaykey.Web.Homeowners.HOLocation.NoteDetail_Ext"
           value="dwelling.NoteDetail_Ext"
           valueRange="{tunaAppResponse.NoteDetail}"/>
-        <InputDivider/>
       </InputSet>
       <!-- <Input
         editable="true"
@@ -250,7 +253,6 @@
           label="displaykey.Web.Homeowners.HOLocation.WithinCommercialProperty"
           required="true"
           value="dwelling.HOLocation.NearCommercial"/> -->
-        <InputDivider/>
       </InputSet>
       <!-- <Input
         id="distanceToCoast"
@@ -285,7 +287,7 @@
           label="displaykey.Web.Homeowners.HOLocation.PCCodeMatchlevel_Ext"
           value="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext"/>
         <BooleanRadioInput
-          available="dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT &amp;&amp; dwelling.HOLocation.DwellingProtectionClasscode!=dwelling.HOLocation.DwellingPCCodeOverridden_Ext"
+          available="true//dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT &amp;&amp; !(dwelling.HOLocation.DwellingProtectionClasscode.Code&lt;=dwelling.HOLocation.DwellingPCCodeOverridden_Ext.Code)"
           editable="true"
           id="OverRideTunaBCEG_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PCCodeOverride_Ext"
@@ -382,10 +384,10 @@
             onChange="pageProcess.retrieveBCEG360Value(dwelling)"/>
         </Input>
       </InputSet>
-      <InputDivider/>
       <InputSet
         id="PropFloodVal_Ext"
         visible="policyPeriod.BaseState.Code==&quot;FL&quot; &amp;&amp; (dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT)">
+        <InputDivider/>
         <RangeInput
           available="!dwelling.OverridePropFloodVal_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -422,7 +424,7 @@
       </InputSet>
       <InputSet
         id="DistToCoast_Ext"
-        visible="((dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT ) || (dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_DP3_EXT ) ||  (((dwelling.PolicyPeriod.BaseState == TC_NC || dwelling.PolicyPeriod.BaseState==TC_SC)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)) ||    ((dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState==TC_HI)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType)))) &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;NV&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;AZ&quot;">
+        visible="((dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT ) || (dwelling.PolicyPeriod.BaseState == TC_CA ) ||  (((dwelling.PolicyPeriod.BaseState == TC_NC || dwelling.PolicyPeriod.BaseState==TC_SC)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType)) ||    ((dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState==TC_HI)  &amp;&amp;  typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType)))) &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;NV&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;AZ&quot;">
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -452,8 +454,8 @@
           required="dwelling.HOLocation.OverrideDistToCoast_Ext"
           value="dwelling.HOLocation.DistToCoastOverridden_Ext"
           visible="dwelling.HOLocation.OverrideDistToCoast_Ext"/>
+        <InputDivider/>
       </InputSet>
-      <InputDivider/>
       <InputSet
         id="DistToMajorBOW_Ext"
         visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)">
@@ -489,8 +491,8 @@
           required="dwelling.HOLocation.OverrideDistBOW_Ext"
           value="dwelling.HOLocation.DistBOWOverridden_Ext"
           visible="dwelling.HOLocation.OverrideDistBOW_Ext"/>
+        <InputDivider/>
       </InputSet>
-      <InputDivider/>
       <InputSet
         id="DistToMajorBOWNamedVal_Ext"
         visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)&amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext)">
@@ -768,8 +770,8 @@
             required="dwelling.HOLocation.OverrideBCEG_Ext"
             value="dwelling.HOLocation.BCEGOverridden_Ext"
             visible="dwelling.HOLocation.OverrideBCEG_Ext"/>
+          <InputDivider/>
         </InputSet>
-        <InputDivider/>
         <Label
           label="displaykey.Web.Homeowners.Dwelling.OccupancyInfo_Ext"/>
         <RangeInput

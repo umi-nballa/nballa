@@ -112,7 +112,7 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
 
   public property get Required() : Boolean{
     if(this.PatternCode == "HODW_ElectronicApparatusLimit_HOE"){
-      return typekey.Jurisdiction.TC_FL == this.Clause.OwningCoverable.PolicyLine.BaseState
+      return typekey.Jurisdiction.TC_FL != this.Clause.OwningCoverable.PolicyLine.BaseState
     }else{
       return this.Pattern.Required
     }

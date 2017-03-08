@@ -26,6 +26,21 @@
       initialValue="if (addressOwner != null) addressOwner.InEditMode = CurrentLocation.InEditMode; return 0"
       name="saveEditMode"
       recalculateOnRefresh="true"/>
+    <BooleanRadioInput
+      editable="true"
+      id="AddressOverridden"
+      label="displaykey.Web.Account.Locations.AddressOverride"
+      required="false"
+      value="addressOwner.Address.addressOverride_Ext">
+      <PostOnChange/>
+    </BooleanRadioInput>
+    <BooleanRadioInput
+      id="AddressScrubbed"
+      label="displaykey.Web.Account.Locations.AddressScrubbed"
+      required="false"
+      value="addressOwner.Address.addressScrub_Ext">
+      <PostOnChange/>
+    </BooleanRadioInput>
     <Input
       id="AddressSummary"
       label="addressOwner.AddressNameLabel"

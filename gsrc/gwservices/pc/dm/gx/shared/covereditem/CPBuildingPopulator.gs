@@ -15,10 +15,10 @@ uses gw.pl.persistence.core.Bundle
 class CPBuildingPopulator extends BaseEntityPopulator<CPBuilding, KeyableBean> {
   override function findEntity(model: XmlElement, parent: KeyableBean, bundle: Bundle) : CPBuilding{
     if (model typeis CPLocation_Buildings_Entry) {
-      var b = new CPBuilding(Branch)
+      var cpBuilding = new CPBuilding(this.Branch)
       if (parent typeis CPLocation)
-        b.CPLocation = parent
-      return b
+        cpBuilding.CPLocation = parent
+      return cpBuilding
     }
     return null
   }

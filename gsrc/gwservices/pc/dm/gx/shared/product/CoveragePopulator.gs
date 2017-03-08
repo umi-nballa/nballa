@@ -19,14 +19,16 @@ class CoveragePopulator extends AbstractCovTermPopulator<Coverage, Coverable> {
     var patternCode = findElement(Coverage#PatternCode, model).SimpleValue.GosuValue as String
     var covPattern = ClausePatternLookup.getCoveragePatternByCode(patternCode)
     if (covPattern == null) {
-      throw new DataMigrationNonFatalException(CODE.INVALID_COVERAGE, covPattern.PublicID)
+      var msg = "${Coverage#PatternCode} not available"
+      throw new DataMigrationNonFatalException(CODE.INVALID_COVERAGE, msg)
     }
     if (_logger.DebugEnabled) {
       _logger.debug(_LOG_TAG + "findEntity coverage pattern ${covPattern.Code}, parent ${parent}")
     }
     var coverage = parent.getOrCreateCoverage(covPattern)
     if (coverage == null) {
-      throw new DataMigrationNonFatalException(CODE.MISSING_COVERAGE, coverage.PublicID)
+      var msg = "${Coverage#PatternCode} not available"
+      throw new DataMigrationNonFatalException(CODE.MISSING_COVERAGE, msg)
     }
     return coverage
   }

@@ -46,9 +46,12 @@ class ActivityUtil {
     activity.Bundle.commit()
   }
 
+  /**
+   * The Activity gets assigned to queue.  Takes queue name, group name and the activity as parameters
+   */
   public static function assignActivityToQueue(queueName : String, groupName : String, activity : Activity){
     var group = Query.make(Group).compare(Group#Name, Equals, groupName).select().AtMostOneRow
-    var assignableQueue= group.AssignableQueues.firstWhere( \ elt -> elt.Name==queueName)
+    var assignableQueue= group.AssignableQueues.where( \ elt -> elt.Name == queueName).last()
     try {
       activity.assignActivityToQueue(assignableQueue,group)
     }  catch  (var e: Exception)  {

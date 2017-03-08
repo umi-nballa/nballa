@@ -29,6 +29,7 @@ class DocumentUtil {
     }
 
     var docContentSource =  Plugins.get("IDocumentContentSource") as IDocumentContentSource
+    var inputStream : FileInputStream
     Transaction.runWithNewBundle(\bundle -> {
 
       doc = new Document()
@@ -47,9 +48,10 @@ class DocumentUtil {
       doc.MimeType = Files.probeContentType(docDTO.File.toPath())
       doc.DMS = true
       //  Archive file with DMS
-      docContentSource.addDocument(new FileInputStream(docDTO.File), doc)
+      inputStream = new FileInputStream(docDTO.File)
+      docContentSource.addDocument(inputStream, doc)
     }, User.util.UnrestrictedUser)
-
+    inputStream.close()
     return doc
   }
 

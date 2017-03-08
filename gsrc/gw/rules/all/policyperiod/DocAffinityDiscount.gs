@@ -16,7 +16,7 @@ class DocAffinityDiscount implements IRuleCondition<PolicyPeriod>{
 
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("affinity_discount_follow_up")
 
-    if (period.HomeownersLine_HOEExists){
+    if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_TX ){
              if (period.PreferredEmpGroup_Ext != null)  {
                var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)

@@ -31,10 +31,10 @@ class UNAUWPriorLoss31_each implements IRuleCondition<HomeownersLine_HOE>{
     {
       elt.ClaimPayment.each( \ elt1 ->
       {
-        if(DateUtil.addYears(elt.ClaimDate as Date, 3)<new java.util.Date())
+        if(elt?.ClaimDate!=null && DateUtil.addYears(elt?.ClaimDate as Date, 3)<new java.util.Date())
           cond1=true
 
-          if(DateUtil.addYears(elt.ClaimDate as Date, 4)<new java.util.Date() && DateUtil.addYears(elt.ClaimDate as Date, 5)<new java.util.Date()
+          if(elt?.ClaimDate!=null && DateUtil.addYears(elt?.ClaimDate as Date, 4)<new java.util.Date() && DateUtil.addYears(elt?.ClaimDate as Date, 5)<new java.util.Date()
         && elt1.LossCause_Ext!=typekey.LossCause_Ext.TC_BROKENGLASS || (homeowner.AssociatedPolicyPeriod.BaseState.Code=="TX" && elt1.LossCause_Ext==typekey.LossCause_Ext.TC_BROKENGLASS))
             cond2=true
 

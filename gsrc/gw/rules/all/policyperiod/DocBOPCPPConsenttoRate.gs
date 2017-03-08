@@ -14,9 +14,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class DocBOPCPPConsenttoRate implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("consent_to_rate_follow_up")
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_ctr_required")
 
-    if (!period.HomeownersLine_HOEExists){
+    if (!period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_FL){
              if (period.ConsentToRate_Ext )  {
                var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)

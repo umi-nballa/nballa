@@ -19,261 +19,262 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
     var formAttachFlag : boolean  = false
-    switch(formCode){
-      case "HO04811000" :
-          formAttachFlag = dwellingCoverageValuationMethod1(context,availableStates)
-          break
-      /*case "UNLPP04761202" :
-          formAttachFlag = dwellingCoverageValuationMethod2(context,availableStates)
-          break*/
-      case "HO04901000" :
-          formAttachFlag= personalPropertyCoveragePropertyValuation1(context,availableStates)
-          break
-      case "HO1011093" :
-          formAttachFlag= personalPropertyCoveragePropertyValuation2(context,availableStates)
-          break
-      /*case "UI04900412" :
-          formAttachFlag= personalPropertyCoveragePropertyValuation3(context,availableStates)
-          break*/
-      case "TDP0021093" :
-          formAttachFlag= dwellingCoveragePropertyValuation(context,availableStates)
-          break
-      /*case "UN09560409" :
-          formAttachFlag= dwellingCoverage(context,availableStates)
-          break*/
-      case "UNLPP03121202" :
-          formAttachFlag= section1DeductibleCoverage1(context,availableStates)
-          break
-      case "UNLPP03510111" :
-          formAttachFlag= section1DeductibleCoverage2(context,availableStates)
-          break
-      case "HO04610511" :
-           formAttachFlag= scheduledPropertyCoverage(context,availableStates)
-          break
-      case "ASP110A0116" :
-          formAttachFlag= carliforniaEarthQuakeCoverage(context,availableStates)
-          break
-      case "DL24100788" :
-          formAttachFlag= addnlInsuredLiability(context,availableStates)
-          break
-      case "DL24101202" :
-          formAttachFlag= addnlInsuredLiability(context,availableStates)
-          break
-      case "DL24110788" :
-          formAttachFlag= homeOwnersRental(context,availableStates)
-          break
-      case "HO17331000" :
-          formAttachFlag= homeOwnersRental(context,availableStates)
-          break
-      case "HO17330511" :
-          formAttachFlag= homeOwnersRental(context,availableStates)
-          break
-      case "HO3801093" :
-          formAttachFlag= homeOwnersRental(context,availableStates)
-          break
-      case "DP17670788" :
-          formAttachFlag= condoUnitOwnerCoverage(context,availableStates)
-          break
-      /*case "HO03120511" :
-          formAttachFlag= windHallDeductible(context,availableStates)
-          break*/
-      case "HO03170901" :
-          formAttachFlag= windHallDeductible(context,availableStates)
-          break
-      case "HO04071205" :
-         formAttachFlag= personalPropertyReplacementCost(context,availableStates)
-          break
-      case "HO04350511" :
-          formAttachFlag= suppLossAssessmentCov(context,availableStates)
-          break
-      case "HO04500511" :
-           formAttachFlag= personalPropertyOtherResidenes(context,availableStates)
-          break
-      case "HO04531000" :
-          formAttachFlag= ccIncreased(context,availableStates)
-          break
-      case "INUN10150316" :
-          formAttachFlag= firstTimeIMPNotice(context,availableStates)
-          break
-      case "UI1100117" :
-           formAttachFlag= namedStorm(context,availableStates)
-          break
-      case "HO03630612" :
-          formAttachFlag= namedStorm(context,availableStates)
-          break
-      case "UITX1100117" :
-          formAttachFlag= namedStorm(context,availableStates)
-          break
-      case "UICOVB0117" :
-          formAttachFlag= covDecreasedLimit1(context,availableStates)
-          break
-      case "UICOVBD0308" :
-          formAttachFlag= covDecreasedLimit1(context,availableStates)
-          break
-      case "UIDPCOVB0307" :
-          formAttachFlag= covDecreasedLimit2(context,availableStates)
-          break
-      case "UN09560409" :
-          formAttachFlag= exclusiveCoverage(context,availableStates)
-          break
-      case "UN10050308" :
-          formAttachFlag= addlnInsuredPropertyManager(context,availableStates)
-          break
-      case "UNCTRHO30411" :
-          formAttachFlag= CTR(context,availableStates)
-          break
-      case "UNCTRHO40411" :
-          formAttachFlag= CTR(context,availableStates)
-          break
-      case "UNCTRHO60411" :
-          formAttachFlag= CTR(context,availableStates)
-          break
-      case "DP04700788" :
-          formAttachFlag= protectionSystemForCA(context,availableStates)
-          break
-      case "DP04701202" :
-          formAttachFlag= protectionSystemHI(context,availableStates)
-          break
-      case "HO04161000" :
-          formAttachFlag= protectionSystem(context,availableStates)
-          break
-      case "HO04351000" :
-          formAttachFlag= lossAssessmentCoverage(context,availableStates)
-          break
-      case "UIDPCOVBX0916" :
-          formAttachFlag= noDwellingFireOtherStructures(context,availableStates)
-          break
-      case "HO04121000" :
-         formAttachFlag= businessPropertyIncreasedLimits(context,availableStates)
-          break
-      case "HO04771000" :
-          formAttachFlag= homeOwnersOrdianceLaw(context,availableStates)
-          break
-      case "HO05431000" :
-          formAttachFlag= residenceHeldOnTrust(context,availableStates)
-          break
-      case "HO32120612" :
-          formAttachFlag= residenceHeldOnTrustOnly(context,availableStates)
-          break
-      case "UI04471208" :
-          formAttachFlag= lossAssessmentResType(context,availableStates)
-          break
-      case "UI04900412" :
-          formAttachFlag= personalPropertyValuationMethod(context,availableStates)
-          break
-      case "UIOSDL0607" :
-          formAttachFlag= otherStructuresDecreasedLimit(context,availableStates)
-          break
-      case "UIOSDLAZ0707" :
-          formAttachFlag= homeOwnersOtherStructuresDecreasedLimit(context,availableStates)
-          break
-      case "UICNA03510117" :
-          formAttachFlag= hurricaneDeductible(context,availableStates)
-          break
-      case "UICNA04510117" :
-          formAttachFlag= hurricaneDeductibleForDP3(context,availableStates)
-          break
-      case "UN3030a0116" :
-          formAttachFlag= limitedEarthQuake(context,availableStates)
-          break
-      case "UNLPP04761202" :
-          formAttachFlag= dwellingFire(context,availableStates)
-          break
-      case "UNTXDL24100788" :
-          formAttachFlag= dwellingFirePersonalLiability(context,availableStates)
-          break
-      case "USP000911" :
-         formAttachFlag= dwellingFireSignaturePage(context,availableStates)
-          break
-      case "UN10070314" :
-         formAttachFlag= diffCovNotSelected(context,availableStates)
-          break
-      case "UN30300116" :
-          formAttachFlag= carliforniaEarthQuakeCovNotSelected(context,availableStates)
-          break
-      case "UNTXDL24110788" :
-          formAttachFlag= premisesLiability(context,availableStates)
-          break
-      case "UICOVBX0916" :
-          formAttachFlag= homeOwnersOtherStructures(context,availableStates)
-          break
-      case "INEBEE1116" :
-         formAttachFlag= rewriteForRenewals(context,availableStates)
-          break
-      case "INTXHO1216" :
-          formAttachFlag= rewriteForRenewalsForTX(context,availableStates)
-          break
-      case "DP04711202" :
-          formAttachFlag= dwellingFireOrdianceLaw1(context,availableStates)
-          break
-      case "UNLPP04711202" :
-          formAttachFlag= dwellingFireOrdianceLaw2(context,availableStates)
-          break
-      case "UN09820915" :
-          formAttachFlag= fungiWetDry1(context,availableStates)
-          break
-      case "UN09830915" :
-          formAttachFlag= fungiWetDry2(context,availableStates)
-          break
-      case "INRCSR1116" :
-          formAttachFlag= rewriteForRenewalsForHOB(context,availableStates)
-          break
-      case "ASP1100116" :
-          formAttachFlag= carliforniaEarthQuakeCov(context,availableStates)
-          break
-      case "UI04640410" :
-          formAttachFlag= lossAssessment(context,availableStates)
-          break
-      case "HO03330503" :
-          formAttachFlag= fungiWetForm(context,availableStates)
-          break
-      case "HO3011095" :
-         formAttachFlag= additionalInsured(context,availableStates)
-          break
-      case "TDP0260401" :
-          formAttachFlag= dwellingFireForTX1(context,availableStates)
-          break
-      case "TDP0270401" :
-          formAttachFlag= dwellingFireForTX2(context,availableStates)
-          break
-      case "HO1100792" :
-         formAttachFlag= unscheduleLimit(context,availableStates)
-          break
-      case "HO03120511" :
-          formAttachFlag= section1Deductible(context,availableStates)
-          break
-      case "HO32880612" :
-          formAttachFlag= specialLimitsPersonalProperty(context,availableStates)
-          break
-      case "HO04120511" :
-          formAttachFlag= propertyIncreasedLimits(context,availableStates)
-          break
-      case "UIIN1100215" :
-          formAttachFlag= rewriteForRenewals2(context,availableStates)
-          break
-      case "USP000117" :
-          formAttachFlag= rewriteForSubmission(context,availableStates)
-          break
-      case "PAN0000" :
-          formAttachFlag= rewriteForRenewals3(context,availableStates)
-          break
-      case "SPACONBN1116" :
-          formAttachFlag= rewriteForSubmission2(context,availableStates)
-          break
-      case "SPACONBR1116" :
-          formAttachFlag= rewriteForRenewals4(context,availableStates)
-          break
-      case "SPBN1116" :
-          formAttachFlag= rewriteForSubmission3(context,availableStates)
-          break
-      case "SPBR1116" :
-          formAttachFlag= rewriteForRenewals5(context,availableStates)
-          break
-      case "UICOL1005" :
-          formAttachFlag= ordianceLaw(context,availableStates)
-          break
-
-         default : return formAttachFlag
+    if(formCode != null){
+      switch(formCode){
+        case "HO04811000" :
+            formAttachFlag = dwellingCoverageValuationMethod1(context,availableStates)
+            break
+          /*case "UNLPP04761202" :
+              formAttachFlag = dwellingCoverageValuationMethod2(context,availableStates)
+              break*/
+        case "HO04901000" :
+            formAttachFlag= personalPropertyCoveragePropertyValuation1(context,availableStates)
+            break
+        case "HO1011093" :
+            formAttachFlag= personalPropertyCoveragePropertyValuation2(context,availableStates)
+            break
+          /*case "UI04900412" :
+              formAttachFlag= personalPropertyCoveragePropertyValuation3(context,availableStates)
+              break*/
+        case "TDP0021093" :
+            formAttachFlag= dwellingCoveragePropertyValuation(context,availableStates)
+            break
+          /*case "UN09560409" :
+              formAttachFlag= dwellingCoverage(context,availableStates)
+              break*/
+        case "UNLPP03121202" :
+            formAttachFlag= section1DeductibleCoverage1(context,availableStates)
+            break
+        case "UNLPP03510111" :
+            formAttachFlag= section1DeductibleCoverage2(context,availableStates)
+            break
+        case "HO04610511" :
+            formAttachFlag= scheduledPropertyCoverage(context,availableStates)
+            break
+        case "ASP110A0116" :
+            formAttachFlag= carliforniaEarthQuakeCoverage(context,availableStates)
+            break
+        case "DL24100788" :
+            formAttachFlag= addnlInsuredLiability(context,availableStates)
+            break
+        case "DL24101202" :
+            formAttachFlag= addnlInsuredLiability(context,availableStates)
+            break
+        case "DL24110788" :
+            formAttachFlag= homeOwnersRental(context,availableStates)
+            break
+        case "HO17331000" :
+            formAttachFlag= homeOwnersRental(context,availableStates)
+            break
+        case "HO17330511" :
+            formAttachFlag= homeOwnersRental(context,availableStates)
+            break
+        case "HO3801093" :
+            formAttachFlag= homeOwnersRental(context,availableStates)
+            break
+        case "DP17670788" :
+            formAttachFlag= condoUnitOwnerCoverage(context,availableStates)
+            break
+          /*case "HO03120511" :
+              formAttachFlag= windHallDeductible(context,availableStates)
+              break*/
+        case "HO03170901" :
+            formAttachFlag= windHallDeductible(context,availableStates)
+            break
+        case "HO04071205" :
+            formAttachFlag= personalPropertyReplacementCost(context,availableStates)
+            break
+        case "HO04350511" :
+            formAttachFlag= suppLossAssessmentCov(context,availableStates)
+            break
+        case "HO04500511" :
+            formAttachFlag= personalPropertyOtherResidenes(context,availableStates)
+            break
+        case "HO04531000" :
+            formAttachFlag= ccIncreased(context,availableStates)
+            break
+        case "INUN10150316" :
+            formAttachFlag= firstTimeIMPNotice(context,availableStates)
+            break
+        case "UI1100117" :
+            formAttachFlag= namedStorm(context,availableStates)
+            break
+        case "HO03630612" :
+            formAttachFlag= namedStorm(context,availableStates)
+            break
+        case "UITX1100117" :
+            formAttachFlag= namedStorm(context,availableStates)
+            break
+        case "UICOVB0117" :
+            formAttachFlag= covDecreasedLimit1(context,availableStates)
+            break
+        case "UICOVBD0308" :
+            formAttachFlag= covDecreasedLimit1(context,availableStates)
+            break
+        case "UIDPCOVB0307" :
+            formAttachFlag= covDecreasedLimit2(context,availableStates)
+            break
+        case "UN09560409" :
+            formAttachFlag= exclusiveCoverage(context,availableStates)
+            break
+        case "UN10050308" :
+            formAttachFlag= addlnInsuredPropertyManager(context,availableStates)
+            break
+        case "UNCTRHO30411" :
+            formAttachFlag= CTR(context,availableStates)
+            break
+        case "UNCTRHO40411" :
+            formAttachFlag= CTR(context,availableStates)
+            break
+        case "UNCTRHO60411" :
+            formAttachFlag= CTR(context,availableStates)
+            break
+        case "DP04700788" :
+            formAttachFlag= protectionSystemForCA(context,availableStates)
+            break
+        case "DP04701202" :
+            formAttachFlag= protectionSystemHI(context,availableStates)
+            break
+        case "HO04161000" :
+            formAttachFlag= protectionSystem(context,availableStates)
+            break
+        case "HO04351000" :
+            formAttachFlag= lossAssessmentCoverage(context,availableStates)
+            break
+        case "UIDPCOVBX0916" :
+            formAttachFlag= noDwellingFireOtherStructures(context,availableStates)
+            break
+        case "HO04121000" :
+            formAttachFlag= businessPropertyIncreasedLimits(context,availableStates)
+            break
+        case "HO04771000" :
+            formAttachFlag= homeOwnersOrdianceLaw(context,availableStates)
+            break
+        case "HO05431000" :
+            formAttachFlag= residenceHeldOnTrust(context,availableStates)
+            break
+        case "HO32120612" :
+            formAttachFlag= residenceHeldOnTrustOnly(context,availableStates)
+            break
+        case "UI04471208" :
+            formAttachFlag= lossAssessmentResType(context,availableStates)
+            break
+        case "UI04900412" :
+            formAttachFlag= personalPropertyValuationMethod(context,availableStates)
+            break
+        case "UIOSDL0607" :
+            formAttachFlag= otherStructuresDecreasedLimit(context,availableStates)
+            break
+        case "UIOSDLAZ0707" :
+            formAttachFlag= homeOwnersOtherStructuresDecreasedLimit(context,availableStates)
+            break
+        case "UICNA03510117" :
+            formAttachFlag= hurricaneDeductible(context,availableStates)
+            break
+        case "UICNA04510117" :
+            formAttachFlag= hurricaneDeductibleForDP3(context,availableStates)
+            break
+        case "UN3030a0116" :
+            formAttachFlag= limitedEarthQuake(context,availableStates)
+            break
+        case "UNLPP04761202" :
+            formAttachFlag= dwellingFire(context,availableStates)
+            break
+        case "UNTXDL24100788" :
+            formAttachFlag= dwellingFirePersonalLiability(context,availableStates)
+            break
+        case "USP000911" :
+            formAttachFlag= dwellingFireSignaturePage(context,availableStates)
+            break
+        case "UN10070314" :
+            formAttachFlag= diffCovNotSelected(context,availableStates)
+            break
+        case "UN30300116" :
+            formAttachFlag= carliforniaEarthQuakeCovNotSelected(context,availableStates)
+            break
+        case "UNTXDL24110788" :
+            formAttachFlag= premisesLiability(context,availableStates)
+            break
+        case "UICOVBX0916" :
+            formAttachFlag= homeOwnersOtherStructures(context,availableStates)
+            break
+        case "INEBEE1116" :
+            formAttachFlag= rewriteForRenewals(context,availableStates)
+            break
+        case "INTXHO1216" :
+            formAttachFlag= rewriteForRenewalsForTX(context,availableStates)
+            break
+        case "DP04711202" :
+            formAttachFlag= dwellingFireOrdianceLaw1(context,availableStates)
+            break
+        case "UNLPP04711202" :
+            formAttachFlag= dwellingFireOrdianceLaw2(context,availableStates)
+            break
+        case "UN09820915" :
+            formAttachFlag= fungiWetDry1(context,availableStates)
+            break
+        case "UN09830915" :
+            formAttachFlag= fungiWetDry2(context,availableStates)
+            break
+        case "INRCSR1116" :
+            formAttachFlag= rewriteForRenewalsForHOB(context,availableStates)
+            break
+        case "ASP1100116" :
+            formAttachFlag= carliforniaEarthQuakeCov(context,availableStates)
+            break
+        case "UI04640410" :
+            formAttachFlag= lossAssessment(context,availableStates)
+            break
+        case "HO03330503" :
+            formAttachFlag= fungiWetForm(context,availableStates)
+            break
+        case "HO3011095" :
+            formAttachFlag= additionalInsured(context,availableStates)
+            break
+        case "TDP0260401" :
+            formAttachFlag= dwellingFireForTX1(context,availableStates)
+            break
+        case "TDP0270401" :
+            formAttachFlag= dwellingFireForTX2(context,availableStates)
+            break
+        case "HO1100792" :
+            formAttachFlag= unscheduleLimit(context,availableStates)
+            break
+        case "HO03120511" :
+            formAttachFlag= section1Deductible(context,availableStates)
+            break
+        case "HO32880612" :
+            formAttachFlag= specialLimitsPersonalProperty(context,availableStates)
+            break
+        case "HO04120511" :
+            formAttachFlag= propertyIncreasedLimits(context,availableStates)
+            break
+        case "UIIN1100215" :
+            formAttachFlag= rewriteForRenewals2(context,availableStates)
+            break
+        case "USP000117" :
+            formAttachFlag= rewriteForSubmission(context,availableStates)
+            break
+        case "PAN0000" :
+            formAttachFlag= rewriteForRenewals3(context,availableStates)
+            break
+        case "SPACONBN1116" :
+            formAttachFlag= rewriteForSubmission2(context,availableStates)
+            break
+        case "SPACONBR1116" :
+            formAttachFlag= rewriteForRenewals4(context,availableStates)
+            break
+        case "SPBN1116" :
+            formAttachFlag= rewriteForSubmission3(context,availableStates)
+            break
+        case "SPBR1116" :
+            formAttachFlag= rewriteForRenewals5(context,availableStates)
+            break
+        case "UICOL1005" :
+            formAttachFlag= ordianceLaw(context,availableStates)
+            break
+        default : return formAttachFlag
+      }
     }
     return formAttachFlag
   }

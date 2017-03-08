@@ -20,7 +20,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
 
-    var formAttachFlag : boolean
+    var formAttachFlag : boolean    = false
 
     formAttachFlag= dwellingCoverageValuationMethod(context,availableStates)
     formAttachFlag= personalPropertyCoveragePropertyValuation(context,availableStates)

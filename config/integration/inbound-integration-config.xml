@@ -17,6 +17,18 @@
         <threadpool name="propertyinspections" disabled="false">
             <gwthreadpooltype>FORKJOIN</gwthreadpooltype>
         </threadpool>
+        <threadpool name="propertyinspectionsreportsmajorissue" disabled="false">
+            <gwthreadpooltype>FORKJOIN</gwthreadpooltype>
+        </threadpool>
+        <threadpool name="propertyinspectionsreportsminorissue" disabled="false">
+            <gwthreadpooltype>FORKJOIN</gwthreadpooltype>
+        </threadpool>
+        <threadpool name="propertyinspectionsreportsnouwissue" disabled="false">
+            <gwthreadpooltype>FORKJOIN</gwthreadpooltype>
+        </threadpool>
+        <threadpool name="propertyinspectionsreportsratingorcoverageissue" disabled="false">
+            <gwthreadpooltype>FORKJOIN</gwthreadpooltype>
+        </threadpool>
     </threadpools>
     <integrations>
         <cii:file-integration name="PropertyInspectionsInbound" disabled="false">
@@ -173,5 +185,580 @@
                 <value>2</value>
             </parameters>
         </cii:custom-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInbound" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>/tmp/FileIntegrations/propertyinspections/inbound/reports/Major UW Inspection Issues/incoming</incoming>
+            <processing>/tmp/FileIntegrations/propertyinspections/inbound/reports/Major UW Inspection Issues/processing</processing>
+            <error>/tmp/FileIntegrations/propertyinspections/inbound/reports/Major UW Inspection Issues/error</error>
+            <done>/tmp/FileIntegrations/propertyinspections/inbound/reports/Major UW Inspection Issues/done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundDev" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundDevInt" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundDevCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundDev02" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundASM" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundAsmCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMajorIssueInboundQAT" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsmajorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Major UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInbound" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>/tmp/FileIntegrations/propertyinspections/inbound/reports/Minor UW Inspection Issues/incoming</incoming>
+            <processing>/tmp/FileIntegrations/propertyinspections/inbound/reports/Minor UW Inspection Issues/processing</processing>
+            <error>/tmp/FileIntegrations/propertyinspections/inbound/reports/Minor UW Inspection Issues/error</error>
+            <done>/tmp/FileIntegrations/propertyinspections/inbound/reports/Minor UW Inspection Issues/done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundDev" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundDevInt" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundDevCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundDev02" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundASM" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundAsmCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportMinorIssueInboundQAT" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsminorissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Minor UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInbound" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>/tmp/FileIntegrations/propertyinspections/inbound/reports/No UW Inspection Issues/incoming</incoming>
+            <processing>/tmp/FileIntegrations/propertyinspections/inbound/reports/No UW Inspection Issues/processing</processing>
+            <error>/tmp/FileIntegrations/propertyinspections/inbound/reports/No UW Inspection Issues/error</error>
+            <done>/tmp/FileIntegrations/propertyinspections/inbound/reports/No UW Inspection Issues/done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundDev" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundDevInt" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundDevCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundDev02" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundASM" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundAsmCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportNoUWIssueInboundQAT" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsnouwissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\No UW Inspection Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInbound" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>/tmp/FileIntegrations/propertyinspections/inbound/reports/Rating or Coverage Issues/incoming</incoming>
+            <processing>/tmp/FileIntegrations/propertyinspections/inbound/reports/Rating or Coverage Issues/processing</processing>
+            <error>/tmp/FileIntegrations/propertyinspections/inbound/reports/Rating or Coverage Issues/error</error>
+            <done>/tmp/FileIntegrations/propertyinspections/inbound/reports/Rating or Coverage Issues/done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundDev" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundDevInt" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevIntServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundDevCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\DevCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundDev02" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\Dev02Server\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundASM" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\ASMServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundAsmCnv" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\AsmCnvServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
+
+        <cii:file-integration name="PropertyInspectionsReportRatingOrCoverageIssueInboundQAT" disabled="false">
+            <pluginhandler>PropertyInspectionsReportFileHandler</pluginhandler>
+            <pollinginterval>20</pollinginterval>
+            <throttleinterval>20</throttleinterval>
+            <threadpool>propertyinspectionsreportsratingorcoverageissue</threadpool>
+            <ordered>true</ordered>
+            <stoponerror>false</stoponerror>
+            <transactional>false</transactional>
+            <osgiservice>true</osgiservice>
+            <processingmode>file</processingmode>
+            <incoming>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\incoming</incoming>
+            <processing>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\processing</processing>
+            <error>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\error</error>
+            <done>\\\\uimfs02\\users\\Shared_Documents\\tmp\\FileIntegrations\\QATServer\\propertyinspections\\inbound\\reports\\Rating or Coverage Issues\\done</done>
+            <charset>UTF-8</charset>
+            <createdirectories>true</createdirectories>
+        </cii:file-integration>
     </integrations>
 </cii:integration>

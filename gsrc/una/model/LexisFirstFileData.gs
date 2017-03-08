@@ -10,8 +10,6 @@ uses java.math.BigDecimal
  *
  */
 class LexisFirstFileData extends OutboundFileData {
-
-
   var recordTypeIndicator: String as RecordTypeIndicator
   var customerTransactionID: String as CustomerTransactionID
   var transactionCreationDate: String as TransactionCreationDate
@@ -116,8 +114,4 @@ class LexisFirstFileData extends OutboundFileData {
   var communityNumberORMapNumber: String as CommunityNumberORMapNumber
   var elevation: String as Elevation
   var notes: String as Notes
-
-
-
-
 }

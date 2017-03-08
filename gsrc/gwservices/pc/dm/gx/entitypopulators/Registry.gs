@@ -100,9 +100,6 @@ uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_B
 uses gwservices.pc.dm.gx.shared.covereditem.BuildingPopulator
 uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_ClassCode
 uses gwservices.pc.dm.gx.shared.covereditem.CPBuildingClassCodePopulator
-uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_CPLocation
-uses gwservices.pc.dm.gx.shared.covereditem.CPBuildingLocationPopulator
-uses gwservices.pc.dm.gx.shared.covereditem.buildingmodel.anonymous.elements.Building_PolicyLocation
 uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_Coverages_Entry
 uses gwservices.pc.dm.gx.lob.cpp.cpbuildingcovmodel.anonymous.elements.CPBuildingCov_CovTerms_Entry
 uses gwservices.pc.dm.gx.lob.cpp.cpbuildingmodel.anonymous.elements.CPBuilding_AdditionalInterests_Entry

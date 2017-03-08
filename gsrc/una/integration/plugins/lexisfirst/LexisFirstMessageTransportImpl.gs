@@ -20,6 +20,7 @@ class LexisFirstMessageTransportImpl implements MessageTransport {
   public static final var CHANGEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnChangePeriod"
   public static final var REINSTATEPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnReinstatePeriod"
   public static final var RENEWPERIOD_LEXIS_FIRST_MSG: String = "LexisFirstOnRenewPeriod"
+  public static final var REWRITEPERIOD_LEXIS_FIRST_MSG : String = "LexisFirstOnRewritePeriod"
 
   /**
    * This function is invoked during the LexisFirst Custom event
@@ -27,12 +28,12 @@ class LexisFirstMessageTransportImpl implements MessageTransport {
    * @param payLoad
    */
   override function send(message: Message, payLoad: String) {
-    _logger.info(" Entering  " + CLASS_NAME + " :: " + "" + "For LexisFirst Message Transport  ")
+    _logger.info(" Entering send method in  " + CLASS_NAME + " :: " + "" + "For LexisFirst Message Transport  ")
     try {
       var lexisFirstOutBoundHelper = new LexisFirstOutBoundHelper()
       lexisFirstOutBoundHelper.createLexisFirstTransaction(message)
       message.reportAck()
-      _logger.info(" Leaving  " + CLASS_NAME + " :: " + "" + "For LexisFirst  Message Transport  ")
+      _logger.info(" Leaving send method in  " + CLASS_NAME + " :: " + "" + "For LexisFirst  Message Transport  ")
     } catch (exp: Exception) {
       _logger.error("Lexis First Messaging Error", exp)
       message.ErrorDescription = exp.Message

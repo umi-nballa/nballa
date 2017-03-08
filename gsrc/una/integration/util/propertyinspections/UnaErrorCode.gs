@@ -10,7 +10,8 @@ uses una.integration.framework.exception.IErrorCode
  */
 enum UnaErrorCode implements IErrorCode {
   INVALID_PI_FILENAME ("ERR-PROPERTY-INSPECTIONS-001", "Inavalid File Name Format"),
-  DATA_INSERTION_FAILURE("ERR-PROPERTY-INSPECTIONS-002", "Unable to Insert data into Integration db on the first Payment")
+  DATA_INSERTION_FAILURE("ERR-PROPERTY-INSPECTIONS-002", "Unable to Insert data into Integration db on the first Payment"),
+  DOCUMENT_UPLOAD_FAILURE("ERR-PROPERTY-INSPECTIONS-003", "Unable to Upload the Inspections ordered report to Onbase")
 
   var _number: String
   var _message: String

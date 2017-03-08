@@ -15,92 +15,274 @@ uses java.math.BigDecimal
  */
 class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 {
-    var formNumber = this.Pattern.FormNumber//Code
     var formCode = this.Pattern.Code
 
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
+    var formAttachFlag : boolean  = false
+    switch(formCode){
+      case "HO04811000" :
+          formAttachFlag = dwellingCoverageValuationMethod1(context,availableStates)
+          break
+      /*case "UNLPP04761202" :
+          formAttachFlag = dwellingCoverageValuationMethod2(context,availableStates)
+          break*/
+      case "HO04901000" :
+          formAttachFlag= personalPropertyCoveragePropertyValuation1(context,availableStates)
+          break
+      case "HO1011093" :
+          formAttachFlag= personalPropertyCoveragePropertyValuation2(context,availableStates)
+          break
+      /*case "UI04900412" :
+          formAttachFlag= personalPropertyCoveragePropertyValuation3(context,availableStates)
+          break*/
+      case "TDP0021093" :
+          formAttachFlag= dwellingCoveragePropertyValuation(context,availableStates)
+          break
+      /*case "UN09560409" :
+          formAttachFlag= dwellingCoverage(context,availableStates)
+          break*/
+      case "UNLPP03121202" :
+          formAttachFlag= section1DeductibleCoverage1(context,availableStates)
+          break
+      case "UNLPP03510111" :
+          formAttachFlag= section1DeductibleCoverage2(context,availableStates)
+          break
+      case "HO04610511" :
+           formAttachFlag= scheduledPropertyCoverage(context,availableStates)
+          break
+      case "ASP110A0116" :
+          formAttachFlag= carliforniaEarthQuakeCoverage(context,availableStates)
+          break
+      case "DL24100788" :
+          formAttachFlag= addnlInsuredLiability(context,availableStates)
+          break
+      case "DL24101202" :
+          formAttachFlag= addnlInsuredLiability(context,availableStates)
+          break
+      case "DL24110788" :
+          formAttachFlag= homeOwnersRental(context,availableStates)
+          break
+      case "HO17331000" :
+          formAttachFlag= homeOwnersRental(context,availableStates)
+          break
+      case "HO17330511" :
+          formAttachFlag= homeOwnersRental(context,availableStates)
+          break
+      case "HO3801093" :
+          formAttachFlag= homeOwnersRental(context,availableStates)
+          break
+      case "DP17670788" :
+          formAttachFlag= condoUnitOwnerCoverage(context,availableStates)
+          break
+      /*case "HO03120511" :
+          formAttachFlag= windHallDeductible(context,availableStates)
+          break*/
+      case "HO03170901" :
+          formAttachFlag= windHallDeductible(context,availableStates)
+          break
+      case "HO04071205" :
+         formAttachFlag= personalPropertyReplacementCost(context,availableStates)
+          break
+      case "HO04350511" :
+          formAttachFlag= suppLossAssessmentCov(context,availableStates)
+          break
+      case "HO04500511" :
+           formAttachFlag= personalPropertyOtherResidenes(context,availableStates)
+          break
+      case "HO04531000" :
+          formAttachFlag= ccIncreased(context,availableStates)
+          break
+      case "INUN10150316" :
+          formAttachFlag= firstTimeIMPNotice(context,availableStates)
+          break
+      case "UI1100117" :
+           formAttachFlag= namedStorm(context,availableStates)
+          break
+      case "HO03630612" :
+          formAttachFlag= namedStorm(context,availableStates)
+          break
+      case "UITX1100117" :
+          formAttachFlag= namedStorm(context,availableStates)
+          break
+      case "UICOVB0117" :
+          formAttachFlag= covDecreasedLimit1(context,availableStates)
+          break
+      case "UICOVBD0308" :
+          formAttachFlag= covDecreasedLimit1(context,availableStates)
+          break
+      case "UIDPCOVB0307" :
+          formAttachFlag= covDecreasedLimit2(context,availableStates)
+          break
+      case "UN09560409" :
+          formAttachFlag= exclusiveCoverage(context,availableStates)
+          break
+      case "UN10050308" :
+          formAttachFlag= addlnInsuredPropertyManager(context,availableStates)
+          break
+      case "UNCTRHO30411" :
+          formAttachFlag= CTR(context,availableStates)
+          break
+      case "UNCTRHO40411" :
+          formAttachFlag= CTR(context,availableStates)
+          break
+      case "UNCTRHO60411" :
+          formAttachFlag= CTR(context,availableStates)
+          break
+      case "DP04700788" :
+          formAttachFlag= protectionSystemForCA(context,availableStates)
+          break
+      case "DP04701202" :
+          formAttachFlag= protectionSystemHI(context,availableStates)
+          break
+      case "HO04161000" :
+          formAttachFlag= protectionSystem(context,availableStates)
+          break
+      case "HO04351000" :
+          formAttachFlag= lossAssessmentCoverage(context,availableStates)
+          break
+      case "UIDPCOVBX0916" :
+          formAttachFlag= noDwellingFireOtherStructures(context,availableStates)
+          break
+      case "HO04121000" :
+         formAttachFlag= businessPropertyIncreasedLimits(context,availableStates)
+          break
+      case "HO04771000" :
+          formAttachFlag= homeOwnersOrdianceLaw(context,availableStates)
+          break
+      case "HO05431000" :
+          formAttachFlag= residenceHeldOnTrust(context,availableStates)
+          break
+      case "HO32120612" :
+          formAttachFlag= residenceHeldOnTrustOnly(context,availableStates)
+          break
+      case "UI04471208" :
+          formAttachFlag= lossAssessmentResType(context,availableStates)
+          break
+      case "UI04900412" :
+          formAttachFlag= personalPropertyValuationMethod(context,availableStates)
+          break
+      case "UIOSDL0607" :
+          formAttachFlag= otherStructuresDecreasedLimit(context,availableStates)
+          break
+      case "UIOSDLAZ0707" :
+          formAttachFlag= homeOwnersOtherStructuresDecreasedLimit(context,availableStates)
+          break
+      case "UICNA03510117" :
+          formAttachFlag= hurricaneDeductible(context,availableStates)
+          break
+      case "UICNA04510117" :
+          formAttachFlag= hurricaneDeductibleForDP3(context,availableStates)
+          break
+      case "UN3030a0116" :
+          formAttachFlag= limitedEarthQuake(context,availableStates)
+          break
+      case "UNLPP04761202" :
+          formAttachFlag= dwellingFire(context,availableStates)
+          break
+      case "UNTXDL24100788" :
+          formAttachFlag= dwellingFirePersonalLiability(context,availableStates)
+          break
+      case "USP000911" :
+         formAttachFlag= dwellingFireSignaturePage(context,availableStates)
+          break
+      case "UN10070314" :
+         formAttachFlag= diffCovNotSelected(context,availableStates)
+          break
+      case "UN30300116" :
+          formAttachFlag= carliforniaEarthQuakeCovNotSelected(context,availableStates)
+          break
+      case "UNTXDL24110788" :
+          formAttachFlag= premisesLiability(context,availableStates)
+          break
+      case "UICOVBX0916" :
+          formAttachFlag= homeOwnersOtherStructures(context,availableStates)
+          break
+      case "INEBEE1116" :
+         formAttachFlag= rewriteForRenewals(context,availableStates)
+          break
+      case "INTXHO1216" :
+          formAttachFlag= rewriteForRenewalsForTX(context,availableStates)
+          break
+      case "DP04711202" :
+          formAttachFlag= dwellingFireOrdianceLaw1(context,availableStates)
+          break
+      case "UNLPP04711202" :
+          formAttachFlag= dwellingFireOrdianceLaw2(context,availableStates)
+          break
+      case "UN09820915" :
+          formAttachFlag= fungiWetDry1(context,availableStates)
+          break
+      case "UN09830915" :
+          formAttachFlag= fungiWetDry2(context,availableStates)
+          break
+      case "INRCSR1116" :
+          formAttachFlag= rewriteForRenewalsForHOB(context,availableStates)
+          break
+      case "ASP1100116" :
+          formAttachFlag= carliforniaEarthQuakeCov(context,availableStates)
+          break
+      case "UI04640410" :
+          formAttachFlag= lossAssessment(context,availableStates)
+          break
+      case "HO03330503" :
+          formAttachFlag= fungiWetForm(context,availableStates)
+          break
+      case "HO3011095" :
+         formAttachFlag= additionalInsured(context,availableStates)
+          break
+      case "TDP0260401" :
+          formAttachFlag= dwellingFireForTX1(context,availableStates)
+          break
+      case "TDP0270401" :
+          formAttachFlag= dwellingFireForTX2(context,availableStates)
+          break
+      case "HO1100792" :
+         formAttachFlag= unscheduleLimit(context,availableStates)
+          break
+      case "HO03120511" :
+          formAttachFlag= section1Deductible(context,availableStates)
+          break
+      case "HO32880612" :
+          formAttachFlag= specialLimitsPersonalProperty(context,availableStates)
+          break
+      case "HO04120511" :
+          formAttachFlag= propertyIncreasedLimits(context,availableStates)
+          break
+      case "UIIN1100215" :
+          formAttachFlag= rewriteForRenewals2(context,availableStates)
+          break
+      case "USP000117" :
+          formAttachFlag= rewriteForSubmission(context,availableStates)
+          break
+      case "PAN0000" :
+          formAttachFlag= rewriteForRenewals3(context,availableStates)
+          break
+      case "SPACONBN1116" :
+          formAttachFlag= rewriteForSubmission2(context,availableStates)
+          break
+      case "SPACONBR1116" :
+          formAttachFlag= rewriteForRenewals4(context,availableStates)
+          break
+      case "SPBN1116" :
+          formAttachFlag= rewriteForSubmission3(context,availableStates)
+          break
+      case "SPBR1116" :
+          formAttachFlag= rewriteForRenewals5(context,availableStates)
+          break
+      case "UICOL1005" :
+          formAttachFlag= ordianceLaw(context,availableStates)
+          break
 
-    var formAttachFlag : boolean    = false
-
-    formAttachFlag= dwellingCoverageValuationMethod(context,availableStates)
-    formAttachFlag= personalPropertyCoveragePropertyValuation(context,availableStates)
-    formAttachFlag= dwellingCoveragePropertyValuation(context,availableStates)
-    formAttachFlag= dwellingCoverage(context,availableStates)
-    formAttachFlag= section1DeductibleCoverage(context,availableStates)
-    formAttachFlag= scheduledPropertyCoverage(context,availableStates)
-    formAttachFlag= carliforniaEarthQuakeCoverage(context,availableStates)
-    formAttachFlag= addnlInsuredLiability(context,availableStates)
-    formAttachFlag= homeOwnersRental(context,availableStates)
-    formAttachFlag= condoUnitOwnerCoverage(context,availableStates)
-    formAttachFlag= windHallDeductible(context,availableStates)
-    formAttachFlag= personalPropertyReplacementCost(context,availableStates)
-    formAttachFlag= suppLossAssessmentCov(context,availableStates)
-    formAttachFlag= personalPropertyOtherResidenes(context,availableStates)
-    formAttachFlag= ccIncreased(context,availableStates)
-    formAttachFlag= firstTimeIMPNotice(context,availableStates)
-    formAttachFlag= namedStorm(context,availableStates)
-    formAttachFlag= covDecreasedLimit1(context,availableStates)
-    formAttachFlag= covDecreasedLimit2(context,availableStates)
-    formAttachFlag= exclusiveCoverage(context,availableStates)
-    formAttachFlag= addlnInsuredPropertyManager(context,availableStates)
-    formAttachFlag= CTR(context,availableStates)
-    formAttachFlag= protectionSystemForCA(context,availableStates)
-    formAttachFlag= protectionSystemHI(context,availableStates)
-    formAttachFlag= protectionSystem(context,availableStates)
-    formAttachFlag= lossAssessmentCoverage(context,availableStates)
-    formAttachFlag= noDwellingFireOtherStructures(context,availableStates)
-    formAttachFlag= businessPropertyIncreasedLimits(context,availableStates)
-    formAttachFlag= homeOwnersOrdianceLaw(context,availableStates)
-    formAttachFlag= residenceHeldOnTrust(context,availableStates)
-    formAttachFlag= residenceHeldOnTrustOnly(context,availableStates)
-    formAttachFlag= lossAssessmentResType(context,availableStates)
-    formAttachFlag= personalPropertyValuationMethod(context,availableStates)
-    formAttachFlag= otherStructuresDecreasedLimit(context,availableStates)
-    formAttachFlag= homeOwnersOtherStructuresDecreasedLimit(context,availableStates)
-    formAttachFlag= hurricaneDeductible(context,availableStates)
-    formAttachFlag= hurricaneDeductibleForDP3(context,availableStates)
-    formAttachFlag= limitedEarthQuake(context,availableStates)
-    formAttachFlag= dwellingFire(context,availableStates)
-    formAttachFlag= dwellingFirePersonalLiability(context,availableStates)
-    formAttachFlag= dwellingFireSignaturePage(context,availableStates)
-    formAttachFlag= diffCovNotSelected(context,availableStates)
-    formAttachFlag= carliforniaEarthQuakeCovNotSelected(context,availableStates)
-    formAttachFlag= premisesLiability(context,availableStates)
-    formAttachFlag= homeOwnersOtherStructures(context,availableStates)
-    formAttachFlag= rewriteForRenewals(context,availableStates)
-    formAttachFlag= rewriteForRenewalsForTX(context,availableStates)
-    formAttachFlag= dwellingFireOrdianceLaw1(context,availableStates)
-    formAttachFlag= dwellingFireOrdianceLaw2(context,availableStates)
-    formAttachFlag= fungiWetDry1(context,availableStates)
-    formAttachFlag= fungiWetDry2(context,availableStates)
-    formAttachFlag= rewriteForRenewalsForHOB(context,availableStates)
-    formAttachFlag= carliforniaEarthQuakeCov(context,availableStates)
-    formAttachFlag= lossAssessment(context,availableStates)
-    formAttachFlag= fungiWetForm(context,availableStates)
-    formAttachFlag= additionalInsured(context,availableStates)
-    formAttachFlag= dwellingFireForTX1(context,availableStates)
-    formAttachFlag= dwellingFireForTX2(context,availableStates)
-    formAttachFlag= unscheduleLimit(context,availableStates)
-    formAttachFlag= section1Deductible(context,availableStates)
-    formAttachFlag= specialLimitsPersonalProperty(context,availableStates)
-    formAttachFlag= propertyIncreasedLimits(context,availableStates)
-    formAttachFlag= rewriteForRenewals2(context,availableStates)
-    formAttachFlag= rewriteForSubmission(context,availableStates)
-    formAttachFlag= rewriteForRenewals3(context,availableStates)
-    formAttachFlag= rewriteForSubmission2(context,availableStates)
-    formAttachFlag= rewriteForRenewals4(context,availableStates)
-    formAttachFlag= rewriteForSubmission3(context,availableStates)
-    formAttachFlag= rewriteForRenewals5(context,availableStates)
-    formAttachFlag= ordianceLaw(context,availableStates)
-
+         default : return false
+    }
     return formAttachFlag
   }
 
 
-  public  function dwellingCoverageValuationMethod(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function dwellingCoverageValuationMethod1(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("HO 04 81") || formNumber.equals("UN LPP 04 76"))
+    if (formCode.equals("HO04811000"))
     {
       if(hoeLine!= null and dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
           dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
@@ -110,13 +292,53 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
     }
-
-  public function personalPropertyCoveragePropertyValuation(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function dwellingCoverageValuationMethod2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("HO 04 90") || formNumber.equals("HO-101") || formNumber.equals("UI 04 90") )
+    if (formCode.equals("UNLPP04761202"))
+    {
+      if(hoeLine!= null and dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
+          dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
+          && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.Value== tc_ACV)
+
+        return true
+    }
+    return false
+  }
+
+  public function personalPropertyCoveragePropertyValuation1(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("HO04901000") )
     {
 
+      if(hoeLine!= null and dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
+          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
+          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost)
+
+        return true
+    }
+    return false
+  }
+  public function personalPropertyCoveragePropertyValuation2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("HO1011093"))
+    {
+
+      if(hoeLine!= null and dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
+          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
+          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost)
+
+        return true
+    }
+    return false
+  }
+  public function personalPropertyCoveragePropertyValuation3(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("UI04900412") )
+    {
       if(hoeLine!= null and dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
           dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
           && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost)
@@ -129,7 +351,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
   public function dwellingCoveragePropertyValuation(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("TDP-002"))
+    if (formCode.equals("TDP0021093"))
     {
       if(( hoeLine!= null and dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
           dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
@@ -146,7 +368,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
   public function dwellingCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("UN 09 56"))
+    if (formCode.equals("UN09560409"))
     {
       if(hoeLine != null and dwelling!=null && dwelling.HODW_Dwelling_Cov_HOEExists &&
           dwelling.HODW_Dwelling_Cov_HOE.HasHODW_ExecutiveCov_HOE_ExtTerm)
@@ -156,17 +378,23 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function section1DeductibleCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function section1DeductibleCoverage1(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("UN LPP 03 12"))
+    if (formCode.equals("UNLPP03121202"))
     {
       if(hoeLine != null and dwelling!=null && dwelling.HODW_SectionI_Ded_HOEExists &&
           dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm)
 
         return true
     }
-    if (formNumber.equals("UN LPP 03 51"))
+    return false
+  }
+
+  public function section1DeductibleCoverage2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("UNLPP03510111"))
     {
       if(hoeLine != null and dwelling!=null && dwelling.HODW_SectionI_Ded_HOEExists &&
           dwelling.HODW_SectionI_Ded_HOE.HasHODW_Hurricane_Ded_HOETerm)
@@ -176,11 +404,10 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-
   public function scheduledPropertyCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     //Waiting on Faye for Scheduled coverages
-    if (formNumber.equals("HO 04 61"))
+    if (formCode.equals("HO04610511"))
     {
       if(dwelling!=null && dwelling.HODW_ScheduledProperty_HOEExists &&
           dwelling.HODW_ScheduledProperty_HOE.CovTerms.length>0)

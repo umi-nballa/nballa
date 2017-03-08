@@ -18,6 +18,8 @@ class GLLineRatingInfo {
   var _territoryCode : String as TerritoryCode
   var _riskType : PackageRisk as RiskType
   var _numOfExposureUnits : int as NumOfExposureUnits
+  var _nonOwnedAutoLiabilityLimit : BigDecimal as NonOwnedAutoLiabilityLimit
+  var _glLinePremium : BigDecimal as GLLinePremiumAmount = 0.0
 
   construct(line: GeneralLiabilityLine) {
     _line = line
@@ -33,6 +35,8 @@ class GLLineRatingInfo {
       _numOfDucksAndBoats = line.GLRecFacilities_EXT?.RecFacilitiesNumDocksandBoats_EXTTerm?.Value?.intValue()
       _numOfFitnessCenters = line.GLRecFacilities_EXT?.RecFacilitiesNumFitnessCenters_EXTTerm?.Value?.intValue()
     }
+    if(line.GLHiredAutoNonOwnedLiab_EXTExists)
+      _nonOwnedAutoLiabilityLimit = line.GLHiredAutoNonOwnedLiab_EXT?.HiredAutoNonOwnedLimit_EXTTerm?.Value
   }
 
   property get ScheduledRatingModifier(): BigDecimal {

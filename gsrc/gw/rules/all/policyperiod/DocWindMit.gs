@@ -15,7 +15,7 @@ class DocWindMit implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("wind_mit_follow_up")
-   if (period.HomeownersLine_HOEExists){
+   if (period.HomeownersLine_HOEExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_FL || period.BaseState.Code == typekey.State.TC_SC ){
              if (period.HomeownersLine_HOE?.Dwelling.WindMitigation_Ext)  {
                var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)

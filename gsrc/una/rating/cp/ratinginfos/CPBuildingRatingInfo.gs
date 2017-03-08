@@ -30,6 +30,20 @@ class CPBuildingRatingInfo {
   var _scheduledRatingModifier : BigDecimal as ScheduledRatingModifier
   var _consentToRateFactor : BigDecimal as ConsentToRateFactor
 
+  var _windHailExclusion : boolean as WindHailExclusion
+  var _openingProtection : String as OpeningProtection
+  var _roofCover : String as RoofCover
+  var _roofDeckAttachment : String as RoofDeckAttachment
+  var _roofDecking : String as RoofDecking
+  var _roofWallConnection : String as RoofWallConnection
+  var _swr : String as SWR
+  var _terrainExposure : String as TerrainExposure
+  var _windSpeedOfDesign : String as WindSpeedOfDesign
+  var _windSpeedOfLocation : String as WindSpeedOfLocation
+  var _roofShape : String as RoofShape
+  var _windBorneDebris : String as WIndBorneDebris
+  var _designExposure : String as DesignExposure
+
   var _fenceLimit : BigDecimal as FenceLimit
   var _fenceConstructionType : ConstructionType_CP as FenceConstructionType
   var _flagPoleLimit : BigDecimal as FlagPoleLimit
@@ -85,6 +99,33 @@ class CPBuildingRatingInfo {
     _isSprinklerAvailable = building?.AutomaticFireSuppress
     _actualCashValueRoofEndorsement = building.CPRoofACVEndorsement_EXTExists
     _bcegFactor = building?.OverrideBCEG_Ext? building.BCEGOverridden_Ext : building.BCEG_Ext
+
+    _windHailExclusion = building.windstormexcl
+    if(building.openprt == CPOpenProt_Ext.TC_NOOPENINGPROT)
+      _openingProtection = "No"
+    else if(building.openprt == CPOpenProt_Ext.TC_WITHOPENINGPROT)
+      _openingProtection = "Yes"
+    //_roofCover =
+    _roofDeckAttachment = building.roofdecat.DisplayName
+    _roofDecking = building.roofdk.DisplayName
+    _roofWallConnection = building.roofwl.DisplayName
+    if(building.swrr == CPSwr_Ext.TC_NOSWR)
+      _swr = "No"
+    else if(building.swrr == CPSwr_Ext.TC_SWR)
+      _swr = "Yes"
+
+    if(building.terexp == CPTerrainExp_Ext.TC_TERRAINB)
+      _terrainExposure = "B"
+    else if(building.terexp == CPTerrainExp_Ext.TC_TERRAINC)
+      _terrainExposure = "C"
+    else if(building.terexp == CPTerrainExp_Ext.TC_HVHZ)
+      _terrainExposure = "HVHZ"
+
+    //_windSpeedOfDesign
+    //_windSpeedOfLocation
+    //_roofShape
+    //_windBorneDebris
+    //_designExposure
 
     if(building.CPLocation.CPLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT){
       _hurricanePercentage = building.CPLocation.CPLine.hurricanepercded?.DisplayName

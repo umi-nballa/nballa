@@ -14,13 +14,13 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class DocCPPWindMit implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("wind_mit_follow_up")
-   if (period.CPLineExists){
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("CRP_current_wind_mitigation")
+   if (period.CPLineExists && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
           if(period.BaseState.Code == typekey.State.TC_FL  ){
              if (period.CPLine?.CPLocations.hasMatch( \ elt1 ->  elt1.Buildings.hasMatch( \ elt2 -> elt2.windmiti5)) )  {
                var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
                var list = new AgentDocList_Ext(period)
-               list.DocumentName = "Wind Mitigation Form"
+               list.DocumentName = "Wind Mitigation Forms"
                period.addToAgentDocs(list)
              }
             }

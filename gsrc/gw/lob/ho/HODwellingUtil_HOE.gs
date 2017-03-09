@@ -8,6 +8,8 @@ uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
 uses java.util.ArrayList
 uses una.integration.mapping.tuna.TunaAppResponse
+uses java.util.Set
+uses java.util.SortedSet
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,7 +68,7 @@ class HODwellingUtil_HOE {
 
   static function initializeSingleReturnTypelists(dwelling:Dwelling_HOE, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse):boolean
   {
-  /*  if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
+    if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
       {
          dwelling.HOLocation.BCEG_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade) as typekey.BCEGGrade_Ext[]).first()
       }
@@ -223,7 +225,7 @@ class HODwellingUtil_HOE {
     if(dwelling.PropFloodValMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.PropFloodVal_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood) as typekey.FloodZoneOverridden_Ext[]).first()
+      dwelling.PropFloodVal_Ext = gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood).first() as typekey.FloodZoneOverridden_Ext
     }
     if(dwelling.EarthquakeTerMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -254,7 +256,7 @@ class HODwellingUtil_HOE {
     if(dwelling.TotalSqFtValMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
-    }      */
+    }
 
 
 
@@ -913,14 +915,18 @@ class HODwellingUtil_HOE {
 
   static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
     var tunaCodeAndPercent = new ArrayList<String>()
+
     if(tunaValues != null) {
+      print("tuna count "+ tunaValues.size())
       tunaValues.each( \ elt ->
           {
             if(elt.Value!=null && elt.Value!="0")
             tunaCodeAndPercent.add(elt.Value)
+            print("tuna flood zone " + elt.Value)
           })// + " - " +elt.Percent+" %"))
     }
-    return tunaCodeAndPercent.order()
+
+    return tunaCodeAndPercent.order().toSet().toList()
   }
 
   static function getProtectionCodes(theProtectionClassValues: List<PropertyDataModel>) : List<String> {

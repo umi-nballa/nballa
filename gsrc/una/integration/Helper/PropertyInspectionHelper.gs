@@ -146,7 +146,7 @@ class PropertyInspectionHelper {
       if(dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext){
         propertyInspectionData.PPC= dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext.Code
       } else{
-        propertyInspectionData.PPC= dwelling_hoe.HOLocation.DwellingProtectionClasscode.Code
+        propertyInspectionData.PPC= dwelling_hoe.HOLocation.DwellingProtectionClasscode
       }
 
       // Square Feet

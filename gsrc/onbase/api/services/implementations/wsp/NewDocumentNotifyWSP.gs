@@ -114,7 +114,7 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
         : MessageInstanceNumber = response.MessageInstanceNumber,
         : ResponseCode = status,
         : MessagePayload = response.MessageResponse ?: '',
-        : ErrorMessage = response.MessageError ? displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NewDocumentNotifyException(Settings.CurrentCenter.Name, response.MessageError) : ''
+        : ErrorMessage = response.MessageError != null ? displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_NewDocumentNotifyException(Settings.CurrentCenter.Name, response.MessageError) : ''
     }
 
     service.UpdateMessageStatus(update)
@@ -236,7 +236,7 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
     return df.parse(temp_date);
   }
 
-  private function onDocumentAdded(document : Document){
+  private function onDocumentAdded(document : Document) {
     if(document.Type == TC_ONBASE and document.OnBaseDocumentSubtype == tc_incorr_consent_to_rate){
       var openRenewal = document.Policy.OpenRenewalJob
 

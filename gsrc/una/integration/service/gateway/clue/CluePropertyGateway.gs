@@ -8,6 +8,7 @@ package una.integration.service.gateway.clue
 
 uses gw.api.util.DisplayableException
 uses gw.xml.ws.WebServiceException
+uses una.integration.framework.util.PropertiesHolder
 uses una.integration.service.transport.clue.CluePropertyCommunicator
 uses una.logging.UnaLoggerCategory
 uses una.utils.DateUtil
@@ -22,17 +23,11 @@ uses wsi.schema.una.inscore.cprulesorderschema.enums.DescriptionType_Sex
 uses wsi.schema.una.inscore.cprulesorderschema.enums.SubjectAddressType_Type
 uses wsi.schema.una.inscore.cprulesresultschema.anonymous.elements.MessageListType_Message
 
+uses java.lang.Integer
+uses java.math.BigDecimal
 uses java.math.BigInteger
 uses java.text.SimpleDateFormat
-uses una.integration.framework.util.PropertiesHolder
-
-uses wsi.schema.una.inscore.xsd.cluecommonelements.types.complex.NameType
-
-
-uses java.sql.Timestamp
-uses java.text.DateFormat
-uses java.sql.Date
-uses java.util.Currency
+uses java.util.Date
 
 class CluePropertyGateway implements CluePropertyInterface {
   private static var KEY_STORE_PATH: String
@@ -128,6 +123,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
           if (totalClaims > 0){
             var cHistories = clueReport.Report.ResultsDataset.ClaimsHistory
+            // TODO: Receiving list of strings for Quoteback value. Need to analyse the mapping
             clueReportExt.QuotebackID = clueReport.Admin.Quoteback
             clueReportExt.Requestor = pPeriod.UpdateUser.Credential.UserName
             clueReportExt.ReferenceNumber = clueReport.Admin.ProductReference
@@ -180,8 +176,8 @@ class CluePropertyGateway implements CluePropertyInterface {
     var priorLoss = new HOPriorLoss_Ext()
     //get claim details
     priorLoss.Reference = referenceNumber
-    priorLoss.ClaimDate = claim.ClaimDate
-    priorLoss.ClaimAge = claim.ClaimAge.Years as java.lang.String
+    priorLoss.ClaimDate = claim.ClaimDate as Date
+    priorLoss.ClaimAge = claim.ClaimAge.Years as Integer
     priorLoss.ClaimNum = claim.Number
     priorLoss.ClaimType = cHistoryType.toString()
     priorLoss.ClueFileNumber = claim.ClueFileNumber
@@ -203,7 +199,7 @@ class CluePropertyGateway implements CluePropertyInterface {
         var cPayment = new ClaimPayment_Ext()
         cPayment.ClaimType = p.CauseOfLoss.toString()
         cPayment.ClaimDisposition = p.Disposition as String
-        cPayment.ClaimAmount = p.AmountPaid
+        cPayment.ClaimAmount = p.AmountPaid as BigDecimal
         var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
         cPayment.ClaimDisposition_Ext = typecodeMapper.getInternalCodeByAlias(Status_Ext.Type.RelativeName, "clue", p.Disposition.toString())
         cPayment.LossCause_Ext = typecodeMapper.getInternalCodeByAlias(LossCause_Ext.Type.RelativeName, "clue", p.CauseOfLoss.toString())
@@ -236,31 +232,27 @@ class CluePropertyGateway implements CluePropertyInterface {
     priorLoss.ChargeableClaim = una.integration.lexisnexis.util.ClueUtilInfo.calculateChargeable(priorLoss, period)
     _logger.debug("Getting claim scope and dispute date Details ")
     priorLoss.ClaimScope = claim.ScopeOfClaim.toString()
-    priorLoss.DisputeDate = claim.DisputeClearanceDate
+    priorLoss.DisputeDate = claim.DisputeClearanceDate as Date
     //get policy details
     priorLoss.PolicyNum = claim.Policy.Number
     priorLoss.PolicyCompany = claim.PropertyPolicy.Issuer
     //Statement field map
     var insuredType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Insured
     var insured = claim.Subject.firstWhere(\c -> c.Classification == insuredType)
-
-
-
-
-
-    var consumerNarrative = claim.ConsumerNarrative?.first().Message
+    // Consumer Narrative Mapping
+    var consumerNarrative = claim.ConsumerNarrative?.first()
     var statement = ""
-    if (consumerNarrative != null && consumerNarrative.size() > 0) {
+    if (consumerNarrative.Message != null && consumerNarrative.Message.size() > 0) {
       var narrativeNote = new Note()
       narrativeNote.Confidential = false
       narrativeNote.Account = period.Policy.Account
       //var author = new User()
       //author.Contact.Name = claim.ConsumerNarrative?.first().Name != null ? claim.ConsumerNarrative.first().Name : ""
       //narrativeNote.Author = author
-      narrativeNote.Subject = claim.ConsumerNarrative?.first() != null ? "Refers to claim " + priorLoss.ClaimNum : ""
-      narrativeNote.AuthoringDate = claim.ConsumerNarrative?.first().DateFiled != null ? claim.ConsumerNarrative.first().DateFiled : ""
-      narrativeNote.NarrativeRelation = claim.ConsumerNarrative?.first().Relationship != null ? claim.ConsumerNarrative.first().Relationship : ""
-      for (message in consumerNarrative) {
+      narrativeNote.Subject = consumerNarrative != null ? "Refers to claim " + priorLoss.ClaimNum : ""
+      narrativeNote.AuthoringDate = consumerNarrative.DateFiled as Date
+      narrativeNote.NarrativeRelation = consumerNarrative.Relationship?:""
+      for (message in consumerNarrative.Message) {
         statement = statement.concat(message)
       }
       narrativeNote.Body = statement
@@ -307,7 +299,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     if(policyHolder.Gender != null && policyHolder.Gender.name() != "") {
       priorLoss.PolicyHolder.Gender = policyHolder.Gender.name() == GenderType.TC_F.DisplayName ? GenderType.TC_F : GenderType.TC_M
     }
-		priorLoss.PolicyHolder.DateOfBirth = policyHolder.Birthdate
+		priorLoss.PolicyHolder.DateOfBirth = policyHolder.Birthdate as Date
 
 		var claimantType = wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.SubjectTypeEnum.Claimant
 		var claimant = claim.Subject.firstWhere(\c -> c.Classification == claimantType)
@@ -319,7 +311,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     if(claimant.Gender != null && claimant.Gender.name() != "") {
       priorLoss.ClaimIssuer.Gender = claimant.Gender.name() == GenderType.TC_F.DisplayName ? GenderType.TC_F : GenderType.TC_M
     }
-		priorLoss.ClaimIssuer.DateOfBirth = claimant.Birthdate
+		priorLoss.ClaimIssuer.DateOfBirth = claimant.Birthdate as Date
     }
 
     //This loss was retrieved from LexisNexis
@@ -474,7 +466,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
       clueReportExt.Subject2.FirstName = addIns.FirstName
       clueReportExt.Subject2.LastName = addIns.LastName
-      clueReportExt.Subject2.DateOfBirth = subject.Birthdate
+      clueReportExt.Subject2.DateOfBirth = subject.Birthdate as Date
       if(addIns.ContactDenorm typeis Person && (addIns.ContactDenorm as Person).Gender != null) {
         clueReportExt.Subject1.Gender = (addIns.ContactDenorm as Person).Gender
 

@@ -139,7 +139,7 @@ class PropertyInspectionsBRHelper {
       }
 
      //BR.09.10 :: Risk is PC9 or PC10 (excluding CA)
-      var pcCode = dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext ? dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext?.Code : dwelling_hoe.HOLocation.DwellingProtectionClasscode?.Code
+      var pcCode = dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext ? dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext?.Code : dwelling_hoe.HOLocation.DwellingProtectionClasscode
       if(( pcCode == ProtectionClassCode_Ext.TC_9.Code ||
            pcCode == ProtectionClassCode_Ext.TC_10.Code ) &&
            dwelling_State!=(State.TC_CA))  {

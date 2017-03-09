@@ -76,7 +76,7 @@ class HODwellingUtil_HOE {
     if(dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
+      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
     }
 
     if(dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)

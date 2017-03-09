@@ -481,10 +481,11 @@ class CoverageTermAvailabilityUtil {
     if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix)){
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
-      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, namedStormValue, allPerilsValue.asString()}))
-      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, nonHurricaneWindValue, allPerilsValue.asString()}))
-      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()}))
-      var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
+      var namedStormRestrictedOptions = (filterPrefix!=null && namedStormValue!=null && allPerilsValue!=null)?ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, namedStormValue, allPerilsValue.asString()})):null
+
+      var nonHurricaneWindRestrictedOptions =(filterPrefix!=null && allPerilsValue!=null) ?  ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, nonHurricaneWindValue, allPerilsValue.asString()})):null
+      var valueRestrictedOptions = (filterPrefix!=null && allPerilsValue!=null) ? ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()})):null
+      var defaultRestrictedOptions = filterPrefix!=null ?ConfigParamsUtil.getList(configType, state, filterPrefix):null
 
       if(namedStormRestrictedOptions != null){
         result = namedStormRestrictedOptions.contains(optionValue)

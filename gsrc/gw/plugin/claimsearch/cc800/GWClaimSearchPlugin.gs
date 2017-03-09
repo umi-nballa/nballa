@@ -13,6 +13,7 @@ uses wsi.remote.gw.webservice.cc.cc800.pcclaimsearchintegrationapi.anonymous.ele
 uses gw.pl.currency.MonetaryAmount
 uses gw.api.util.LocaleUtil
 uses java.lang.Deprecated
+uses wsi.remote.gw.webservice.cc.cc800.pcclaimsearchintegrationapi.faults.DataConversionException
 
 
 /**
@@ -74,15 +75,19 @@ class GWClaimSearchPlugin implements IClaimSearchPlugin {
    * Intended override point for tests.
    */
   protected function getClaimsFromExternalSystem(specs : List<ClaimSearchSpec>)  : List<PCClaim> {
+    var  claimCount:int
     var criteriaForCC = specs.map(\ c -> toPCClaimSearchCriteria(c)).toTypedArray()
     validateCriteria(criteriaForCC)
-    var claimCount = ClaimSearchServiceWithLanguage.getNumberOfClaimsMultiCriteria(criteriaForCC)
+    try {
+      claimCount = ClaimSearchServiceWithLanguage.getNumberOfClaimsMultiCriteria(criteriaForCC)
+    } catch(exp:DataConversionException) {  //To show DisplayableException
+      throw new gw.api.util.DisplayableException(exp.LocalizedMessage)
+    }
     if (claimCount == 0 ) {
       return null
     } else if (claimCount > MAX_NUMBER_ALLOWABLE) {
       throw new ResultsCappedClaimSearchException()
     }
-
     return ClaimSearchServiceWithLanguage.searchForClaimsMultiCriteria(criteriaForCC).toList()
   }
     /**

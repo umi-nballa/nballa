@@ -31,10 +31,11 @@ class AddressValidationUtil {
       }
      else if (addressOwner.AutofillEnabled && null != addressOwner.Address) {
         try {
-          gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false);
-          if (null != addressOwner.Address.AddressLine1 && null != addressOwner.Address.City && null != addressOwner.Address.State && null != addressOwner.Address.PostalCode)
-            addressOwner.Address.addressScrub_Ext = true
-
+          if(!addressOwner.Address.addressOverride_Ext){
+            gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false);
+            if (null != addressOwner.Address.AddressLine1 && null != addressOwner.Address.City && null != addressOwner.Address.State && null != addressOwner.Address.PostalCode)
+              addressOwner.Address.addressScrub_Ext = true
+          }
         } catch (exp: Exception) {
           addressOwner.Address.addressScrub_Ext = false
           throw exp

@@ -52,8 +52,9 @@ class PropertyInspectionsBRHelper {
   final static var THIRTY = "30|"
   final static var THIRTYONE = "31|"
   final static var THIRTYTWO = "32|"
+  final static var HYPHEN = "-"
   var currentDateYear = DateUtil.currentDate().YearOfDate
-  var zipCode =PropertiesHolder.getProperty("ZipCode")
+  var zipCodeList =PropertiesHolder.getProperty("ZipCode")
   var weatherRelatedLosses ={"flood","freezing water (incl burst pipes)","hail","lightning","weather related water","wind"}
   var report = new HashMap<String, String>()
   var windOrHailLosses = {"wind", "hail"}
@@ -139,7 +140,7 @@ class PropertyInspectionsBRHelper {
       }
 
      //BR.09.10 :: Risk is PC9 or PC10 (excluding CA)
-      var pcCode = dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext ? dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext?.Code : dwelling_hoe.HOLocation.DwellingProtectionClasscode?.Code
+      var pcCode = dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext ? dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext?.Code : dwelling_hoe.HOLocation.DwellingProtectionClasscode
       if(( pcCode == ProtectionClassCode_Ext.TC_9.Code ||
            pcCode == ProtectionClassCode_Ext.TC_10.Code ) &&
            dwelling_State!=(State.TC_CA))  {
@@ -301,7 +302,11 @@ class PropertyInspectionsBRHelper {
       }
 
       //BR.09.29 :: Properties in the zip codes below to supplemental also have a roof top inspection performed, regardless of property age.
-      if(zipCode.contains(dwelling_hoe.HOLocation.PolicyLocation.PostalCode)){
+      var zipCode = dwelling_hoe.HOLocation.PolicyLocation.PostalCode
+      if(zipCode.contains(HYPHEN)){
+        zipCode = zipCode.split(HYPHEN).last()
+      }
+      if(zipCodeList.contains(zipCode)){
         reportOne += THIRTYTWO
       }
       report.put("reportOne",reportOne)

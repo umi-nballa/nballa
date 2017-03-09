@@ -122,9 +122,12 @@ class CoveragesValidation_HOE extends PCValidationBase {
   }
 
   private function validateDeductibleAmounts(){
-    validateNamedStormDeductible()
-    validateHurricaneDeductible()
-    validateMinimumWindHailDeductible()
+    if(!_holine.Dwelling.WHurricaneHailExclusion_Ext){
+      validateNamedStormDeductible()
+      validateHurricaneDeductible()
+      validateMinimumWindHailDeductible()
+    }
+
     validateAllOtherPerilsDeductible()
   }
 

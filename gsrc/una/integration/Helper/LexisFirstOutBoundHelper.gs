@@ -8,7 +8,7 @@ uses una.integration.framework.util.ErrorCode
 uses una.integration.mapping.FileIntegrationMapping
 uses una.logging.UnaLoggerCategory
 uses una.model.LexisFirstFileData
-
+uses gw.plugin.billing.bc800.BCBillingSystemPlugin
 uses java.lang.Exception
 uses una.integration.plugins.lexisfirst.LexisFirstServicePayload
 
@@ -23,6 +23,10 @@ class LexisFirstOutBoundHelper {
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
   private static final var CLASS_NAME = LexisFirstOutBoundHelper.Type.DisplayName
   private static final var HOME_OWNER = "Homeowners"
+  var billingSystemPlugin :BCBillingSystemPlugin
+  var lexisFirstFileData :LexisFirstFileData
+  var servicePayload :LexisFirstServicePayload
+  var policyPeriod:PolicyPeriod
 
 
   /**
@@ -54,12 +58,44 @@ class LexisFirstOutBoundHelper {
    *   @param message  contains event fired messaging details
    */
    function createLexisFirstTransaction(message: Message){
-
-    if(message.PolicyPeriod.Policy.Product == HOME_OWNER){
-      var servicePayload = new LexisFirstServicePayload()
-      var lexisFirstFileData = servicePayload.payLoadXML(message.PolicyPeriod,message.EventName)
-      insertOutBoundFileData(lexisFirstFileData)
+     _logger.debug(" Entering  " + CLASS_NAME + " :: " + "createLexisFirstTransaction" + "For LexisFirst ")
+     var PayerData:AddlInterestDetail
+     policyPeriod = message.PolicyPeriod.getSlice(message.PolicyPeriod.EditEffectiveDate)
+    if(policyPeriod.Policy.Product == HOME_OWNER){
+      var addInterest = policyPeriod.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
+      if(addInterest.length>0){
+         PayerData = primaryPayerAsMortgage(policyPeriod)
+      }
+      for(mortgage in addInterest) {
+        if (mortgage != null && (mortgage.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
+            mortgage.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
+            mortgage.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
+            mortgage.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
+          servicePayload = new LexisFirstServicePayload()
+          lexisFirstFileData = servicePayload.payLoadXML(policyPeriod,message.EventName,mortgage,PayerData)
+          insertOutBoundFileData(lexisFirstFileData)
+        }
+      }
     }
+     _logger.debug(" Leaving  " + CLASS_NAME + " :: " + "createLexisFirstTransaction" + "For LexisFirst ")
+  }
+
+  private function primaryPayerAsMortgage(Period:PolicyPeriod) :AddlInterestDetail{
+    var addlInterestDetail:AddlInterestDetail
+    billingSystemPlugin = new BCBillingSystemPlugin()
+    var primaryPayer = billingSystemPlugin.searchPrimaryPayer(Period.Policy.Account.AccountNumber)
+    if (primaryPayer != null) {
+      var fetchContact = gw.api.database.Query.make(Contact).compare(Contact#AddressBookUID, Equals, primaryPayer).select().AtMostOneRow
+      var addInterest = Period.HomeownersLine_HOE.Dwelling?.AdditionalInterestDetails
+      addlInterestDetail = addInterest?.firstWhere(\addlInt -> addlInt.PolicyAddlInterest.ContactDenorm.AddressBookUID == fetchContact.AddressBookUID)
+      if (addlInterestDetail != null && (addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_MORTGAGEE or
+          addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_FIRSTMORTGAGEE_EXT or
+          addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_SECONDMORTGAGEE_EXT or
+          addlInterestDetail.AdditionalInterestType == typekey.AdditionalInterestType.TC_THIRDMORTGAGEE_EXT)){
+          return addlInterestDetail
+      }
+    }
+    return addlInterestDetail
   }
 
 }

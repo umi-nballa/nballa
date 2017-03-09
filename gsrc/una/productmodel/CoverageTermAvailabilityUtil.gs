@@ -71,7 +71,7 @@ class CoverageTermAvailabilityUtil {
         result = isOptionAvailableForSelectedAOPDeductible(option, coverable as Dwelling_HOE)
         break
       case "EmployPracLiabCovDeduc_EXT":
-        result = isOptionAvailableForSelectedEmployPracLiabCovDeduc(coverable as BP7BusinessOwnersLine)
+        result = isOptionAvailableForEPLDeductible(option, coverable as BP7BusinessOwnersLine)
         break
       case "ComputerAttackLimit_EXT":
         result = isOptionAvailableForComputerAttackLimit(option, coverable as BP7BusinessOwnersLine)
@@ -373,6 +373,20 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
+  private static function isOptionAvailableForEPLDeductible(option : gw.api.productmodel.CovTermOpt, line : BP7BusinessOwnersLine) : boolean {
+    var result = true
+    var eplLimitValue = line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.Value?.intValue()
+    var optionValue = option.Value?.intValue()
+
+    if(optionValue == 10000){
+      result = {100000, 250000}.contains(eplLimitValue)
+    }else if(optionValue == 25000){
+      result = eplLimitValue == 250000
+    }
+
+    return result
+  }
+
   private static function isProductsCompletedOpsAggrLimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
 
     if(bp7Line.AllBuildings.IsEmpty && bp7Line.BP7BusinessLiability.BP7ProdCompldOps_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("Included_EXT")){
@@ -385,6 +399,7 @@ class CoverageTermAvailabilityUtil {
     }
     return false
   }
+
   private static function isBP7OrdinanceLawCov1LimitCovTermAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
       if(bp7Line.BP7OrdinanceOrLawCov_EXTExists && bp7Line.BP7OrdinanceOrLawCov_EXT.HasBP7OrdinLawCov_EXTTerm &&
           bp7Line.BP7OrdinanceOrLawCov_EXT.BP7OrdinLawCov_EXTTerm.OptionValue.OptionCode!=null &&
@@ -453,15 +468,6 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isOptionAvailableForSelectedEmployPracLiabCovDeduc(bp7Line:BP7BusinessOwnersLine):boolean{
-    if(bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue!=null){
-      if( bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue.OptionCode.matches("100000_EXT")||
-          bp7Line.BP7EmploymentPracticesLiabilityCov_EXT.EmployPracLiabCovLimit_EXTTerm.OptionValue.OptionCode.matches("250000_EXT") ){
-        return true
-     }
-    }
-    return false
-  }
   private static function isOptionAvailableForSelectedAOPDeductible(option : CovTermOpt, dwelling : Dwelling_HOE) : boolean{
     var result = true
     var covTermPatternCode = option.CovTermPattern.CodeIdentifier
@@ -475,10 +481,11 @@ class CoverageTermAvailabilityUtil {
     if(ConfigParamsUtil.getBoolean(TC_ShouldLimitDeductibleOptionsForAOP, state, filterPrefix)){
       var optionValue = option.Value?.setScale(3, BigDecimal.ROUND_FLOOR).toString()
 
-      var namedStormRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, namedStormValue, allPerilsValue.asString()}))
-      var nonHurricaneWindRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, nonHurricaneWindValue, allPerilsValue.asString()}))
-      var valueRestrictedOptions = ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()}))
-      var defaultRestrictedOptions = ConfigParamsUtil.getList(configType, state, filterPrefix)
+      var namedStormRestrictedOptions = (filterPrefix!=null && namedStormValue!=null && allPerilsValue!=null)?ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, namedStormValue, allPerilsValue.asString()})):null
+
+      var nonHurricaneWindRestrictedOptions =(filterPrefix!=null && allPerilsValue!=null) ?  ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, nonHurricaneWindValue, allPerilsValue.asString()})):null
+      var valueRestrictedOptions = (filterPrefix!=null && allPerilsValue!=null) ? ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()})):null
+      var defaultRestrictedOptions = filterPrefix!=null ?ConfigParamsUtil.getList(configType, state, filterPrefix):null
 
       if(namedStormRestrictedOptions != null){
         result = namedStormRestrictedOptions.contains(optionValue)

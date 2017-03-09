@@ -15,7 +15,7 @@ class UNAUWInsScoreProtClass9_each implements IRuleCondition<HomeownersLine_HOE>
 
 //If Exterior Wall Construction = "Concrete Block", "Poured Concrete", "Solid Brick/Stone", "Fire Resistive", "Non Combustible", "Masonry Non Combustible"
 
-       if(homeowner.AssociatedPolicyPeriod?.CreditInfoExt?.CreditReport?.CreditScore<626 && homeowner.Dwelling.HOLocation.protectionClassOrOverride==typekey.ProtectionClassCode_Ext.TC_9)
+       if(homeowner.AssociatedPolicyPeriod?.CreditInfoExt?.CreditReport?.CreditScore<626 && homeowner.Dwelling.HOLocation.protectionClassOrOverride==typekey.ProtectionClassCode_Ext.TC_9.Code)
 
 
       return RuleEvaluationResult.execute()

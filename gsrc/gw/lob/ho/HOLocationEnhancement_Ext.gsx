@@ -9,10 +9,10 @@ package gw.lob.ho
 enhancement HOLocationEnhancement_Ext : entity.HOLocation_HOE
 {
 
-  property get protectionClassOrOverride(): typekey.ProtectionClassCode_Ext
+  property get protectionClassOrOverride(): String
   {
     if(this.OverrideDwellingPCCode_Ext && this.DwellingPCCodeOverridden_Ext!=null)
-      return this.DwellingPCCodeOverridden_Ext
+      return this.DwellingPCCodeOverridden_Ext.Code
     else
       return this.DwellingProtectionClasscode
   }

@@ -81,6 +81,7 @@ class BillingMessageTransport implements MessageTransport {
           if(shouldSendPolicyChange(policyPeriod)){
             plugin.issuePolicyChange(policyPeriod, getTransactionId(message))
             //Added below code for lexis First Integration
+            if(!policyPeriod.Job.SupressPrint) // If there is an endorsement of type suppress print,we are not triggering Lexis first
             policyPeriod.addEvent(LexisFirstMessageTransportImpl.CHANGEPERIOD_LEXIS_FIRST_MSG)
           }
 
@@ -121,6 +122,8 @@ class BillingMessageTransport implements MessageTransport {
           }
           createAltBillingAccountIfNecessary(policyPeriod.AltBillingAccountNumber, getTransactionId(message) + "-1")
           plugin.rewritePolicyPeriod(policyPeriod, getTransactionId(message) + "-2")
+          //Added below code for lexis First Integration
+          policyPeriod.addEvent(LexisFirstMessageTransportImpl.REWRITEPERIOD_LEXIS_FIRST_MSG)
           break
         case FINALAUDIT_MSG:
           if(not (policyPeriod.Job typeis Audit)){

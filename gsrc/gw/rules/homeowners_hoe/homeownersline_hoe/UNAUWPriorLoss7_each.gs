@@ -31,7 +31,7 @@ class UNAUWPriorLoss7_each implements IRuleCondition<HomeownersLine_HOE>{
           elt.ClaimPayment.each( \ elt1 ->
           {
             if((!typekey.LossCause_Ext.TF_NONWEATHERUW.TypeKeys.contains(elt1.LossCause_Ext))
-              && elt1.ClaimAmount!=null && Double.parseDouble(elt1.ClaimAmount.remove(","))>0 && elt.ClaimDate!=null && DateUtil.addYears(elt.ClaimDate as Date, 3)<new java.util.Date())
+              && elt1.ClaimAmount!=null && Double.parseDouble(elt1.ClaimAmount)>0 && elt.ClaimDate!=null && DateUtil.addYears(elt.ClaimDate as Date, 3)<new java.util.Date())
               clmcount++
 
           }

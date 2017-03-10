@@ -200,7 +200,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       }
     }
 
-
     //rating all wind hail included, credit and discounts
     if(!windOrHailExcluded){
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
@@ -225,7 +224,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     updateWindBasePremium()
 
     if(!windOrHailExcluded){
-      rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
+      if(_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade !=99)
+        rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
       rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
       rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
     }

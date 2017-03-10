@@ -22,6 +22,13 @@ class LexisFirstServicePayload {
   static final var HO4 = "HO4"
   static final var HO6 = "HO6"
   static final var DP3 = "DP3"
+  static final var HOA_Ext = "HOA_Ext"
+  static final var HOB_Ext = "HOB_Ext"
+  static final var HCONB_Ext = "HCONB_Ext"
+  static final var TDP1_Ext = "TDP1_Ext"
+  static final var TDP2_Ext = "TDP2_Ext"
+  static final var TDP3_Ext = "TDP3_Ext"
+  static final var LPP_Ext = "LPP_Ext"
   static final var TRUE = "Y"
   static final var FALSE = "N"
   static final var NEW_BUSINESS_PAYER = "NBB"
@@ -156,18 +163,20 @@ class LexisFirstServicePayload {
       }
 
     }
-
     //Policy type Mapping
-    if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3){
+    if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO3 || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HOA_Ext ||
+        policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HOB_Ext){
       lexisDTO.PolicyTypeCode = HOME_OWNERS
     }
     else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO4){
       lexisDTO.PolicyTypeCode = RENTERS
     }
-    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6){
+    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HO6 || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == HCONB_Ext){
       lexisDTO.PolicyTypeCode = CONDOMINIUM
     }
-    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == DP3){
+    else if(policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == DP3 || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == TDP1_Ext
+        || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == TDP2_Ext || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == TDP3_Ext
+        || policyPeriod.HomeownersLine_HOE.HOPolicyType.Code == LPP_Ext){
       lexisDTO.PolicyTypeCode = DWELLING_FIRE
     }
     else{
@@ -413,19 +422,11 @@ class LexisFirstServicePayload {
     for (endorseNumber in policyPeriod.Forms) {
       if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
         lexisDTO.Endorsement1 = endorseNumber.FormNumber
-      }
-      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)) {
         lexisDTO.Endorsement2 = endorseNumber.FormNumber
-      }
-      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)) {
         lexisDTO.Endorsement3 = endorseNumber.FormNumber
+        lexisDTO.Endorsement4 = endorseNumber.FormNumber
+        lexisDTO.Endorsement5 = endorseNumber.FormNumber
       }
-      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)) {
-       lexisDTO.Endorsement4 = endorseNumber.FormNumber
-      }
-      else if(endorseFormNumbers.contains(endorseNumber.FormNumber)){
-       lexisDTO.Endorsement5 = endorseNumber.FormNumber
-       }
     }
   }
 

@@ -116,7 +116,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecialComputerCoverage(dwellingCov, dateRange)
         break
       case HODW_SinkholeLoss_HOE_Ext:
-        rateSinkholeLossCoverage(dwellingCov, dateRange)
+        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
+          rateSinkholeLossCoverage(dwellingCov, dateRange)
         break
       case HODW_SpecificAddAmt_HOE_Ext:
         rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)

@@ -352,7 +352,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     var totalBuildingPremium  : BigDecimal = 0.0
     for(costData in CostDatas){
       if(costData typeis CPBuildingCovCostData){
-        var costEntity = costData.getPopulatedCost(PolicyLine)
+        var costEntity = costData.getExistingCost(PolicyLine)
         if(costEntity.Coverage.PatternCode == "CPBldgCov")
           totalBuildingPremium += costData.ActualTermAmount
       }
@@ -367,7 +367,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     var totalContentsPremium  : BigDecimal = 0.0
     for(costData in CostDatas){
       if(costData typeis CPBuildingCovCostData){
-        var costEntity = costData.getPopulatedCost(PolicyLine)
+        var costEntity = costData.getExistingCost(PolicyLine)
         if(costEntity.Coverage.PatternCode == "CPBPPCov")
           totalContentsPremium += costData.ActualTermAmount
       }

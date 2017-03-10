@@ -30,7 +30,7 @@ class UNAUWPriorLoss16_each implements IRuleCondition<HomeownersLine_HOE>{
     {
       elt.ClaimPayment.each( \ elt1 ->
       {
-        if(elt?.ClaimType?.equalsIgnoreCase("subject") && (elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_THEFT || elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_THFSC || elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_VMM )
+        if(elt?.ClaimType!=null && elt?.ClaimType==typekey.ClaimType_Ext.TC_SUBJECT && (elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_THEFT || elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_THFSC || elt1?.LossCause_Ext==typekey.LossCause_Ext.TC_VMM )
         && elt?.ClaimDate!=null && DateUtil.addYears(elt?.ClaimDate as java.util.Date,5)>new java.util.Date() && homeowner?.Dwelling?.HomePurchaseDate_Ext<elt?.ClaimDate && (!homeowner?.Dwelling?.DwellingProtectionDetails?.BurglarAlarm
         && homeowner?.Dwelling?.DwellingProtectionDetails?.BurglarAlarmType!=typekey.BurglarAlarmType_HOE.TC_CENTRAL) && elt?.LocationOfLoss?.containsIgnoreCase("onpremises"))
           return RuleEvaluationResult.execute()

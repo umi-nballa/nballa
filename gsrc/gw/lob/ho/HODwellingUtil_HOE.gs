@@ -76,7 +76,7 @@ class HODwellingUtil_HOE {
     if(dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
+      dwelling.HOLocation.DwellingProtectionClasscode = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass) as typekey.ProtectionClassCode_Ext[]).first()
     }
 
     if(dwelling.HOLocation.FirelinemthlvlMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
@@ -917,12 +917,10 @@ class HODwellingUtil_HOE {
     var tunaCodeAndPercent = new ArrayList<String>()
 
     if(tunaValues != null) {
-      print("tuna count "+ tunaValues.size())
       tunaValues.each( \ elt ->
           {
             if(elt.Value!=null && elt.Value!="0")
             tunaCodeAndPercent.add(elt.Value)
-            print("tuna flood zone " + elt.Value)
           })// + " - " +elt.Percent+" %"))
     }
 
@@ -1063,7 +1061,6 @@ class HODwellingUtil_HOE {
   }
 
   static function totalBCEG(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse) : boolean {
-    print("Total BCEG Returned : "+tunaAppResponse.BCEGGrade.Count)
     return true
   }
 

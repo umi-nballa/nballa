@@ -174,12 +174,13 @@ class CluePropertyGateway implements CluePropertyInterface {
                                         cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String,
                                         clueReport: ClueReport_Ext, period: PolicyPeriod): HOPriorLoss_Ext {
     var priorLoss = new HOPriorLoss_Ext()
+    var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
     //get claim details
     priorLoss.Reference = referenceNumber
     priorLoss.ClaimDate = claim.ClaimDate as Date
     priorLoss.ClaimAge = claim.ClaimAge.Years as Integer
     priorLoss.ClaimNum = claim.Number
-    priorLoss.ClaimType = cHistoryType.toString()
+    priorLoss.ClaimType = typecodeMapper.getInternalCodeByAlias(ClaimType_Ext.Type.RelativeName, "clue", cHistoryType.toString())
     priorLoss.ClueFileNumber = claim.ClueFileNumber
     priorLoss.ClueReport = clueReport
 
@@ -197,10 +198,10 @@ class CluePropertyGateway implements CluePropertyInterface {
         _logger.debug("dis = " + p.Disposition as String)
         _logger.debug("amount = " + p.AmountPaid)
         var cPayment = new ClaimPayment_Ext()
-        cPayment.ClaimType = p.CauseOfLoss.toString()
-        cPayment.ClaimDisposition = p.Disposition as String
+        cPayment.ClaimType = typecodeMapper.getInternalCodeByAlias(ClaimType_Ext.Type.RelativeName, "clue", cHistoryType.toString())
+        //cPayment.ClaimDisposition = p.Disposition as String
         cPayment.ClaimAmount = p.AmountPaid as BigDecimal
-        var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+
         cPayment.ClaimDisposition_Ext = typecodeMapper.getInternalCodeByAlias(Status_Ext.Type.RelativeName, "clue", p.Disposition.toString())
         cPayment.LossCause_Ext = typecodeMapper.getInternalCodeByAlias(LossCause_Ext.Type.RelativeName, "clue", p.CauseOfLoss.toString())
         if (!(period.Job typeis Renewal)) {
@@ -231,7 +232,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     priorLoss.Source_Ext = typekey.Source_Ext.TC_CLUE
     priorLoss.ChargeableClaim = una.integration.lexisnexis.util.ClueUtilInfo.calculateChargeable(priorLoss, period)
     _logger.debug("Getting claim scope and dispute date Details ")
-    priorLoss.ClaimScope = claim.ScopeOfClaim.toString()
+    priorLoss.ClaimScope = typecodeMapper.getInternalCodeByAlias(ClaimScope_Ext.Type.RelativeName, "clue", claim.ScopeOfClaim.toString())
     priorLoss.DisputeDate = claim.DisputeClearanceDate as Date
     //get policy details
     priorLoss.PolicyNum = claim.Policy.Number

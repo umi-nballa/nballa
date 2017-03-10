@@ -23,23 +23,8 @@
     nullok="true"
     type="positiveinteger"/>
   <column
-    desc="The status of the claim"
-    name="ClaimStatus"
-    nullok="true"
-    type="shorttext"/>
-  <column
-    desc="The type of claim"
-    name="ClaimType"
-    nullok="true"
-    type="shorttext"/>
-  <column
     desc="The claim number"
     name="ClaimNum"
-    nullok="true"
-    type="shorttext"/>
-  <column
-    desc="The scope of the claim"
-    name="ClaimScope"
     nullok="true"
     type="shorttext"/>
   <column
@@ -88,11 +73,6 @@
     nullok="true"
     type="shorttext"/>
   <column
-    desc="The policy holder's state"
-    name="State"
-    nullok="true"
-    type="shorttext"/>
-  <column
     desc="The policy holder's zip codec"
     name="Zip"
     nullok="true"
@@ -111,19 +91,12 @@
     desc="The policy holder's phone number"
     name="PhoneNumber"
     nullok="true"
-    type="shorttext"/>
+    type="phone"/>
   <column
     desc="Was this loss created manually?"
     name="ManuallyAddedLoss"
     nullok="true"
     type="bit"/>
-  <column
-    default="M"
-    deprecated="true"
-    desc="Source field displays c if retrieved from CLUE else M,Deprecated this field because of Requirement Changes"
-    name="Source"
-    nullok="true"
-    type="shorttext"/>
   <column
     columnName="Reference"
     desc="C.L.U.E report reference number"
@@ -169,4 +142,24 @@
     fkentity="Person"
     name="ClaimIssuer"
     nullok="true"/>
+  <typekey
+    name="State"
+    nullok="true"
+    typelist="State"/>
+  <typekey
+    name="Source"
+    nullok="true"
+    typelist="Source_Ext"/>
+  <typekey
+    name="ClaimStatus"
+    nullok="true"
+    typelist="Status_Ext"/>
+  <typekey
+    name="ClaimType"
+    nullok="true"
+    typelist="ClaimType_Ext"/>
+  <typekey
+    name="ClaimScope"
+    nullok="true"
+    typelist="ClaimScope_Ext"/>
 </entity>

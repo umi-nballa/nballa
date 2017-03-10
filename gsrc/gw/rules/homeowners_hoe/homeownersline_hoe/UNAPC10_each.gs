@@ -16,7 +16,7 @@ class UNAPC10_each implements IRuleCondition<HomeownersLine_HOE>{
 //Any policy with a Protection Class 10 (Excluding Protected Subdivision)
 
 
-    if(homeowner.Dwelling.HOLocation.protectionClassOrOverride==typekey.ProtectionClassCode_Ext.TC_10)
+    if(homeowner.Dwelling.HOLocation.protectionClassOrOverride==typekey.ProtectionClassCode_Ext.TC_10.Code)
               return RuleEvaluationResult.execute()
 
     return RuleEvaluationResult.skip()

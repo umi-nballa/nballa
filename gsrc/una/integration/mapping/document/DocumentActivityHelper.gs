@@ -9,7 +9,7 @@ package una.integration.mapping.document
 class DocumentActivityHelper {
 
 
-  function checkAgentNumber(document: Document, period: PolicyPeriod): boolean {
+  static function checkAgentNumber(document: Document, period: PolicyPeriod): boolean {
     var agentList = {3668, 28500, 28000, 28300, 28301, 28400, 90194, 29000, 89070, 89076}
 
     for (agentNo in agentList) {

@@ -21,7 +21,8 @@ class UNAUWBP7Rule22_each implements IRuleCondition<PolicyPeriod>{
         {
           elt.Buildings.each( \ elt1 ->
           {
-            if(elt1.PctOwnerOccupied==typekey.BP7PctOwnerOccupied.TC_10ORLESS && period.Forms.firstWhere(  \ elt2 -> elt2.FormNumber=="BP 01 67")!=null)
+            if(elt1.BP7StructureExists && elt1.BP7Structure.HasBP7BuildingOwnerOccupies_EXTTerm && elt1.BP7Structure.BP7BuildingOwnerOccupies_EXTTerm?.OptionValue?.Value?.doubleValue()!=100
+                && period.Forms.firstWhere(  \ elt2 -> elt2.FormNumber=="BP 01 67")!=null)
               return RuleEvaluationResult.execute()
 
           }

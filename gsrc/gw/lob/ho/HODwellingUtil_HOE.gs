@@ -230,7 +230,7 @@ class HODwellingUtil_HOE {
     if(dwelling.EarthquakeTerMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.EarthquakeTer_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.EarthQuakeTerritory) as typekey.BCEGGrade_Ext[]).first()
+      dwelling.EarthquakeTer_Ext = gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.EarthQuakeTerritory).first()
     }
 
 

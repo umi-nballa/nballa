@@ -48,6 +48,7 @@ class CPBuildingRatingInfo {
   var _windMitigationFormDatedWithin5Yrs : boolean as WindMitigationFormDatedWithin5Yrs
   var _internalPressureDesign : String as InternalPressureDesign
   var _buildingLossMitigationCredit : BigDecimal as BuildingLossMitigationCredit = 1.0
+  var _numOfStories : int as NumOfStories
 
   var _fenceLimit : BigDecimal as FenceLimit
   var _fenceConstructionType : ConstructionType_CP as FenceConstructionType
@@ -105,6 +106,7 @@ class CPBuildingRatingInfo {
     _actualCashValueRoofEndorsement = building.CPRoofACVEndorsement_EXTExists
     _bcegFactor = building?.OverrideBCEG_Ext? building.BCEGOverridden_Ext : building.BCEG_Ext
 
+    _numOfStories = building.Building?.NumStories
     _windHailExclusion = building?.windstormexcl
     _windMitigationFormDatedWithin5Yrs = building?.windmiti5
     _openingProtection = building.openprt?.DisplayName

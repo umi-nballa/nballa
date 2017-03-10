@@ -26,7 +26,7 @@ uses java.util.Map
  * WorkAgent Parameters (Found in inbound-integration-config.xml):
  *    - PollingBatchSize : Maximum message count to receive for each polling operation
  */
-class MessageBrokerInboundMessageReceiver implements InboundIntegrationStartablePlugin, InitializablePlugin, Factory{
+class MessageBrokerInboundMessageReceiver implements InboundIntegrationStartablePlugin, InitializablePlugin, Factory {
 
   // Constant name used for logging start/stop
   static final var _name = "MessageBrokerInBoundMessageReceiver"

@@ -25,6 +25,9 @@ class HOProtectionDetailsMapper {
   static final var FIRE_ALARM_TO_FIRE_STN : String = "Fire alarm reporting to Fire Station"
   static final var SMOKE_OR_FIRE_ALARM : String = "Smoke or Fire Alarm"
   static final var CMPLT_BURGLAR_ALARM_OR_FIRE_ALARM : String = "Complete Burglar Alarm and/or Local Fire Alarm"
+  static final var FIRE_ALARM_TO_CNTL_STN_OR_BURGLAR_ALARM_TO_CNTL_STN : String = "Central Station Fire and/or Burglar Alarm"
+  static final var FIRE_ALARM_OR_CMPLT_BURGLAR_ALARM : String = "Local Fire and/or Burglar Alarm Systems"
+  static final var GATED_COMM_ALL_AREA : String = "Gated Community (all entrances secured)"
 
 
   static function getProtectionDetails(dwelling : Dwelling_HOE, state: Jurisdiction): String {
@@ -113,6 +116,13 @@ class HOProtectionDetailsMapper {
           protectionDetails = extractProtectionDetailsSC(fireAlarmReportCntlStn, fireAlarmReportFireStn, localFireAlarm, burglarAlarmReportCntlStn,
               completeLocalBurglarAlarm, burglarAlarmReportPoliceStn, completeHomeSprinklerSystem, automaticSprinklerSystem)
           return protectionDetails
+      case TC_HI:
+          if(dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
+              dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6){
+             protectionDetails = extractProtectionDetailsHIHO(fireAlarmReportCntlStn, localFireAlarm, burglarAlarmReportCntlStn,
+                completeLocalBurglarAlarm, completeHomeSprinklerSystem, gatedCommunity)
+             return protectionDetails
+           }
     }
     return protectionDetails
   }
@@ -196,5 +206,20 @@ class HOProtectionDetailsMapper {
       return CMPLT_HOME_SPRINKLER_SYSTEM
     } else
       return NO_PROTECTIVE_DEVICE
+  }
+
+  private static function extractProtectionDetailsHIHO(fireAlarmReportCntlStn : boolean, localFireAlarm : boolean, burglarAlarmReportCntlStn :
+      boolean, completeLocalBurglarAlarm : boolean, completeHomeSprinklerSystem : boolean, gatedCommunity : boolean) : String {
+
+      if(fireAlarmReportCntlStn or burglarAlarmReportCntlStn){
+        return FIRE_ALARM_TO_CNTL_STN_OR_BURGLAR_ALARM_TO_CNTL_STN
+      } else if(localFireAlarm or completeLocalBurglarAlarm){
+        return FIRE_ALARM_OR_CMPLT_BURGLAR_ALARM
+      } else if(completeHomeSprinklerSystem){
+        return CMPLT_HOME_SPRINKLER_SYSTEM
+      }else if(gatedCommunity){
+        return GATED_COMM_ALL_AREA
+      } else
+        return NO_PROTECTIVE_DEVICE
   }
 }

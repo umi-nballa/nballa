@@ -10,7 +10,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 5:43 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAUWCRPLocationCounty2_PolicyChange implements IRuleCondition<PolicyPeriod>{
+class UNAUWCRPLocationCounty2_PC implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
     if(period.CPLineExists)

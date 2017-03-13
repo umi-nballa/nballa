@@ -38,11 +38,17 @@ class CPBuildingRatingInfo {
   var _roofWallConnection : String as RoofWallConnection
   var _swr : String as SWR
   var _terrainExposure : String as TerrainExposure
-  var _windSpeedOfDesign : String as WindSpeedOfDesign
+  var _windSpeedOfDesign : int as WindSpeedOfDesign
   var _windSpeedOfLocation : String as WindSpeedOfLocation
   var _roofShape : String as RoofShape
   var _windBorneDebris : String as WIndBorneDebris
   var _designExposure : String as DesignExposure
+  var _designCode : String as DesignCode
+  var _newConstruction : boolean as NewConstruction
+  var _windMitigationFormDatedWithin5Yrs : boolean as WindMitigationFormDatedWithin5Yrs
+  var _internalPressureDesign : String as InternalPressureDesign
+  var _buildingLossMitigationCredit : BigDecimal as BuildingLossMitigationCredit = 1.0
+  var _numOfStories : int as NumOfStories
 
   var _fenceLimit : BigDecimal as FenceLimit
   var _fenceConstructionType : ConstructionType_CP as FenceConstructionType
@@ -100,32 +106,42 @@ class CPBuildingRatingInfo {
     _actualCashValueRoofEndorsement = building.CPRoofACVEndorsement_EXTExists
     _bcegFactor = building?.OverrideBCEG_Ext? building.BCEGOverridden_Ext : building.BCEG_Ext
 
-    _windHailExclusion = building.windstormexcl
-    if(building.openprt == CPOpenProt_Ext.TC_NOOPENINGPROT)
-      _openingProtection = "No"
-    else if(building.openprt == CPOpenProt_Ext.TC_WITHOPENINGPROT)
-      _openingProtection = "Yes"
-    //_roofCover =
-    _roofDeckAttachment = building.roofdecat.DisplayName
-    _roofDecking = building.roofdk.DisplayName
-    _roofWallConnection = building.roofwl.DisplayName
-    if(building.swrr == CPSwr_Ext.TC_NOSWR)
-      _swr = "No"
-    else if(building.swrr == CPSwr_Ext.TC_SWR)
-      _swr = "Yes"
-
-    if(building.terexp == CPTerrainExp_Ext.TC_TERRAINB)
-      _terrainExposure = "B"
-    else if(building.terexp == CPTerrainExp_Ext.TC_TERRAINC)
-      _terrainExposure = "C"
-    else if(building.terexp == CPTerrainExp_Ext.TC_HVHZ)
-      _terrainExposure = "HVHZ"
-
-    //_windSpeedOfDesign
-    //_windSpeedOfLocation
-    //_roofShape
-    //_windBorneDebris
-    //_designExposure
+    _numOfStories = building.Building?.NumStories
+    _windHailExclusion = building?.windstormexcl
+    _windMitigationFormDatedWithin5Yrs = building?.windmiti5
+    _openingProtection = building.openprt?.DisplayName
+    _roofCover = building.roofcv?.DisplayName
+    _roofDeckAttachment = building.roofdecat?.DisplayName
+    _roofDecking = building.roofdk?.DisplayName
+    _roofWallConnection = building.roofwl?.DisplayName
+    _swr = building.swrr?.DisplayName
+    _terrainExposure = building.terexp?.DisplayName
+    if(building.guswind == CPGustWindSpeedDes_Ext.TC_100)
+      _windSpeedOfDesign = 100
+    else if(building.guswind == CPGustWindSpeedDes_Ext.TC_90)
+      _windSpeedOfDesign = 90
+    else if(building.guswind == CPGustWindSpeedDes_Ext.TC_110)
+      _windSpeedOfDesign = 110
+    else if(building.guswind == CPGustWindSpeedDes_Ext.TC_130)
+      _windSpeedOfDesign = 130
+    else if(building.guswind == CPGustWindSpeedDes_Ext.TC_LTEQ100)
+      _windSpeedOfDesign = 99
+    else if(building.guswind == CPGustWindSpeedDes_Ext.TC_GTEQ120)
+      _windSpeedOfDesign = 120
+    else if(building.guswind == CPGustWindSpeedDes_Ext.TC_GT120)
+      _windSpeedOfDesign = 121
+    _windSpeedOfLocation = building.guswindloc.DisplayName
+    _roofShape = building.RoofShape?.DisplayName
+    _windBorneDebris = building.wbdr
+    _designExposure = building.desgr3?.DisplayName
+    _newConstruction = (_yearBuilt >= 2002)
+    _internalPressureDesign = building.intpredes?.DisplayName
+    if(!_newConstruction){
+      if(_yearBuilt <= 1982)
+        _designCode = "1982 Or Earlier"
+      else
+        _designCode = "1983 To 2001SSS"
+    }
 
     if(building.CPLocation.CPLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT){
       _hurricanePercentage = building.CPLocation.CPLine.hurricanepercded?.DisplayName

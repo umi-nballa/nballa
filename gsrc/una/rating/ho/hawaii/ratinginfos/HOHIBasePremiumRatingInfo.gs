@@ -36,7 +36,7 @@ class HOHIBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       }
     }
 
-    ProtectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext.Code.toInt() : dwelling?.HOLocation?.DwellingProtectionClassCode.Code.toInt()
+    ProtectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext.Code.toInt() : dwelling?.HOLocation?.DwellingProtectionClassCode.toInt()
 
   }
 

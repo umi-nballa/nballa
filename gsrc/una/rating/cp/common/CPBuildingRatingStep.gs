@@ -353,6 +353,22 @@ class CPBuildingRatingStep {
   }
 
   /**
+   * function to rate the CP Loss mitigation Credit
+   */
+  function rateBuildingLossMitigationCredit(buildingCov: CPBuildingCov, sliceToRate: DateRange): CostData<Cost, PolicyLine> {
+    var state = JurisdictionMappingUtil.getJurisdiction(buildingCov.CPBuilding.CPLocation.Location)
+    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object>
+    var routinesToExecute = CPRateRoutineNames.CP_BUILDING_LOSS_MITIGATION_CREDIT_RATE_ROUTINE
+    var costData = new CPBuildingCovGroup1CostData(sliceToRate.start, sliceToRate.end, buildingCov.Currency, _rateCache, buildingCov.FixedId, state)
+    rateRoutineParameterMap = createBuildingParameterSet(costData)
+    costData.init(_line)
+    costData.NumDaysInRatedTerm = _daysInTerm
+    _executor.execute(routinesToExecute, buildingCov, rateRoutineParameterMap, costData)
+    costData?.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  /**
    * function to rate the CP building coverages with hurricane
    */
   function rateBuildingCoverageWithHurricane(buildingCov: CPBuildingCov, sliceToRate: DateRange): CostData<Cost, PolicyLine> {

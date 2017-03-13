@@ -115,7 +115,10 @@ class HPXClueReportMapper {
 
   function createClueLossSummary(claimPayment : ClaimPayment_Ext) : wsi.schema.una.hpx.hpx_application_request.types.complex.ClueLossSummaryType {
     var clueLossSummaryType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClueLossSummaryType()
-    clueLossSummaryType.Disposition = claimPayment.ClaimDisposition != null ? claimPayment.ClaimDisposition : ""
+    var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
+    if(claimPayment.ClaimDisposition_Ext != null) {
+      clueLossSummaryType.Disposition = claimPayment.ClaimDisposition_Ext != null ? claimPayment.ClaimDisposition_Ext.toString() :""
+    }
     clueLossSummaryType.addChild(new XmlElement("LossCause", createLossCause(claimPayment.LossCause_Ext)))
     clueLossSummaryType.AmountPaid = claimPayment.ClaimAmount != null ? claimPayment.ClaimAmount : ""
     return clueLossSummaryType

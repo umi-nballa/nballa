@@ -31,6 +31,7 @@ class UNAUWBP7Rule20_each implements IRuleCondition<PolicyPeriod>{
 
         })
 
+
        }
     return RuleEvaluationResult.skip()
 

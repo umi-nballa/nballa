@@ -204,8 +204,8 @@ abstract class AbstractUNARenewalProcess extends RenewalProcess{
     return _branch.PeriodStart.addDays(-daysOffset)
   }
 
-  private function shouldApplyInflationFactor() : boolean{
-    var renewalStartDate = Plugins.get(IPolicyRenewalPlugin).getRenewalStartDate(_branch.BasedOn)
+     private function shouldApplyInflationFactor() : boolean{
+    var renewalStartDate = Plugins.get(IPolicyRenewalPlugin).getRenewalStartDate(_branch.BasedOn == null ? _branch : _branch.BasedOn)
 
     return !this.Job.InflationFactorApplied
        and ConfigParamsUtil.getBoolean(TC_ShouldApplyInflationFactor, _branch.BaseState, InflationFactorConfigFilter)

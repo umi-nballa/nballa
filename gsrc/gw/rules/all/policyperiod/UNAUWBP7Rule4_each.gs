@@ -13,17 +13,19 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNAUWBP7Rule4_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
-    if(period.BP7LineExists)
+    var questionSet = period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == "BP7_Prequal_Ext")
+    questionSet.Questions.each( \ elt ->
+    {
+      if (elt != null)
       {
-        period.BP7Line.BP7Locations.each( \ elt ->
+        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="BP7_Q1_Businesshours_Ext")
         {
-          if(elt.Location.County.equalsIgnoreCase("Pasco"))
-
+          var answeredTrue = period.getAnswerValue(elt)?.toString() as boolean
+          if (null != answeredTrue && answeredTrue )
             return RuleEvaluationResult.execute()
-        })
+        }
       }
-
-
+    })
 
    return RuleEvaluationResult.skip()
   }

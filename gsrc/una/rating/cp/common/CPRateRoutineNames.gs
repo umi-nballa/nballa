@@ -5,6 +5,8 @@ package una.rating.cp.common
  */
 class CPRateRoutineNames {
 
+  public static final var CP_BUILDING_LOSS_MITIGATION_CREDIT_RATE_ROUTINE : String = "CPBuildingLossMitigationCreditRateRoutine"
+
   //GroupI rate routine code
   public static final var CP_LIGHTS_GROUPI_RATE_ROUTINE : String = "CPLightstGroupIRateRoutine"
   public static final var CP_FENCE_GROUPI_RATE_ROUTINE : String = "CPFenceGroupIRateRoutine"

@@ -175,7 +175,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateMultiLineDiscount(dateRange)
     }
 
-     rateBuildingCodeEffectivenessGradingCredit(dateRange)
+    if(_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade != 99)
+      rateBuildingCodeEffectivenessGradingCredit(dateRange)
 
      rateLossHistoryCredit(dateRange)
 
@@ -329,8 +330,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
       var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT,
           RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      _hoRatingInfo.BuildingCodeEffectivenessGradingCredit = costData?.ActualTermAmount
       if (costData != null)
+        _hoRatingInfo.BuildingCodeEffectivenessGradingCredit = costData?.ActualTermAmount
         addCost(costData)
     }
     if (_logger.DebugEnabled)

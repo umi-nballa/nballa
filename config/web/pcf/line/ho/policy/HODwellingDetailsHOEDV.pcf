@@ -227,7 +227,7 @@
           label="displaykey.Web.Homeowners.HOLocation.DisToFireHydrant"
           required="true"
           value="dwelling.HOLocation.DistanceToFireHydrant"
-          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass))// &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext==typekey.TunaMatchLevel_Ext.TC_EXACT">
+          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass))// &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext==typekey.TunaMatchLevel_Ext.TC_EXACT">
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null;if(dwelling.HOLocation.DistanceToFireHydrant&gt;1000){dwelling.HOLocation.OverrideDwellingPCCode_Ext=true}"/>
         </Input>
@@ -237,7 +237,7 @@
           label="displaykey.Web.Homeowners.HOLocation.DisToFireStation"
           required="true"
           value="dwelling.HOLocation.DistanceToFireStation"
-          visible="(gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass)) &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT) || (dwelling.HOLocation.DwellingProtectionClasscode!=null &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT)">
+          visible="(gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)) &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT) || (dwelling.HOLocation.DwellingProtectionClasscode!=null &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT)">
           <PostOnChange
             onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
         </Input>
@@ -277,9 +277,9 @@
           label="displaykey.Web.Homeowners.HOLocation.ProtectionClass"
           required="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"
           value="dwelling.HOLocation.DwellingProtectionClassCode"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getProtectionCodes(tunaAppResponse.ProtectionClass)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)">
           <PostOnChange
-            onChange="dwelling.HOLocation.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode.Code,tunaAppResponse.ProtectionClass )"/>
+            onChange="dwelling.HOLocation.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DwellingProtectionClassCode,tunaAppResponse.ProtectionClass )"/>
         </RangeInput>
         <Input
           available="!dwelling.HOLocation.OverrideDwellingPCCode_Ext"

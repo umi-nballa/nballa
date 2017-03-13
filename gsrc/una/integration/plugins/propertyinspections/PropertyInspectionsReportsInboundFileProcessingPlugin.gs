@@ -42,43 +42,49 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
    * Once the upload of the document is done , it will create the activity and assign it to the specified queues
    */
   override function process(data: Object) {
-    LOGGER.info("Entering process() of "+CLASS_NAME)
+    LOGGER.debug("Entering process() of "+CLASS_NAME)
     var fileName = (data as java.nio.file.Path ).toAbsolutePath().getFileName() as String
-    var policyNumber = fileName.substring(0,14)
-    var policyPeriod = Query.make(PolicyPeriod).compare(PolicyPeriod#PolicyNumber, Equals, policyNumber).select().last()
-    uploadDocumentOnbase(data,fileName)
-    gw.transaction.Transaction.runWithNewBundle(\bundle ->{
-      bundle.add(policyPeriod)
-      var filePath = (data as java.nio.file.Path ).toAbsolutePath() as String
-      policyPeriod.addNote(NoteTopicType.TC_GENERAL, "inspection has been received","inspection has been received")
+    try{
+      var policyNumber = fileName.substring(0,14)
+      var policyPeriod = Query.make(PolicyPeriod).compare(PolicyPeriod#PolicyNumber, Equals, policyNumber).select().last()
 
-      if(filePath.containsIgnoreCase(MAJOR_ISSUES_FOLDER)){
-        var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_PRIORITY_PATTERN_CODE)
-        if(activity.canAssign()){
-          ActivityUtil.assignActivityToQueue(PRIORITY_INSPECTION_REVIEW_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+      gw.transaction.Transaction.runWithNewBundle(\bundle ->{
+        bundle.add(policyPeriod)
+        var filePath = (data as java.nio.file.Path ).toAbsolutePath() as String
+        policyPeriod.addNote(NoteTopicType.TC_GENERAL, "Inspection has been received","Inspection has been received")
+        if(filePath.containsIgnoreCase(MAJOR_ISSUES_FOLDER)){
+          var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_PRIORITY_PATTERN_CODE)
+          if(activity.canAssign()){
+            ActivityUtil.assignActivityToQueue(PRIORITY_INSPECTION_REVIEW_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+          }
+        } else if(filePath.containsIgnoreCase(MINOR_ISSUES_FOLDER)){
+          var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_UW_PATTERN_CODE)
+          if(activity.canAssign()){
+            ActivityUtil.assignActivityToQueue(UW_INSPECTION_REVIEW_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+          }
+        } else if(filePath.containsIgnoreCase(RATING_OR_COVERAGE_ISSUES_FOLDER)){
+          var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_CS_PATTERN_CODE)
+          if(activity.canAssign()){
+            ActivityUtil.assignActivityToQueue(CSR_INSPECTION_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+          }
         }
-      } else if(filePath.containsIgnoreCase(MINOR_ISSUES_FOLDER)){
-        var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_UW_PATTERN_CODE)
-        if(activity.canAssign()){
-          ActivityUtil.assignActivityToQueue(UW_INSPECTION_REVIEW_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
-        }
-      } else if(filePath.containsIgnoreCase(RATING_OR_COVERAGE_ISSUES_FOLDER)){
-        var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_CS_PATTERN_CODE)
-        if(activity.canAssign()){
-          ActivityUtil.assignActivityToQueue(CSR_INSPECTION_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
-        }
-      }
-      completeActivity(policyPeriod)
-      bundle.commit()
-    }, SUPER_USER)
+        completeActivity(policyPeriod)
+        bundle.commit()
+        uploadDocumentOnbase(data,fileName)
+      }, SUPER_USER)
+    } catch(ex : Exception){
+      var fieldError = new FieldErrorInformation()  {:FieldName = "Activity and Queue", :FieldValue = fileName.substring(0,14)}
+      ExceptionUtil.throwException(UnaErrorCode.NOT_ABLE_TO_ASSIGN_ACTIVITY_TO_QUEUE, {fieldError})
+    }
 
+   LOGGER.debug("Exiting the process() of "+CLASS_NAME)
   }
 
   /**
    * This function upload the file received from Inspections vendors to Onbase
    */
   private static function uploadDocumentOnbase(data : Object, fileName : String){
-    LOGGER.info("Entering uploadDocumentOnbase() of PropertyInspectionsReportsInboundFileProcessingPlugin")
+    LOGGER.debug("Entering uploadDocumentOnbase() of PropertyInspectionsReportsInboundFileProcessingPlugin")
     var docContentSource =  Plugins.get("IDocumentContentSource") as IDocumentContentSource
     var documentDTO = new DocumentDTO()
     try{
@@ -97,7 +103,7 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
       var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = fileName.substring(0,14)}
       ExceptionUtil.throwException(UnaErrorCode.DOCUMENT_UPLOAD_FAILURE, {fieldError}, ex)
     }
-    LOGGER.debug("Entering uploadDocumentOnbase() of PropertyInspectionsReportsInboundFileProcessingPlugin")
+    LOGGER.debug("Exiting uploadDocumentOnbase() of PropertyInspectionsReportsInboundFileProcessingPlugin")
   }
 
   /**

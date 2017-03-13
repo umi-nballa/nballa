@@ -14,6 +14,8 @@ uses una.rating.util.HOCreateCostDataUtil
 uses java.util.Map
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
+uses una.rating.ho.tx.ratinginfos.HODPBasePremiumRatingInfo
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -43,10 +45,21 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    * Rate the base premium for the TX HO
    */
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
-    var rater = new HOBasePremiumRaterTX(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
-    var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
-    addCosts(costs)
-    updateTotalBasePremium()
+    if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(PolicyLine.Dwelling?.HOPolicyType)){
+      var _basePremiumRatingInfo = new HODPBasePremiumRatingInfo(PolicyLine.Dwelling)
+      var rater = new HODPBasePremiumRaterTX(PolicyLine, Executor, RateCache, _hoRatingInfo, _basePremiumRatingInfo)
+      var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
+      addCosts(costs)
+      if(PolicyLine.Dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_ExtExists){
+        var rateRoutineParameterSet = rater.createParameterSet()
+        rateVMMCoverage(PolicyLine.Dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_Ext, dateRange, rateRoutineParameterSet, HOCostType_Ext.TC_DWELLING, HORateRoutineNames.HO_VMM_DWELLING_RATE_ROUTINE)
+      }
+    } else{
+      var rater = new HOBasePremiumRaterTX(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
+      var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
+      addCosts(costs)
+      updateTotalBasePremium()
+    }
   }
 
   /**
@@ -127,37 +140,42 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     _discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine, _hoRatingInfo.TotalBasePremium)
-    if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
-      rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
+    if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling?.HOPolicyType)){
+      if(dwelling?.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT and dwelling?.DPDW_Personal_Property_HOE?.DPDW_PropertyValuation_HOE_ExtTerm.Value == ValuationMethod.TC_PERSPROP_REPLCOST)
+        rateReplacementCostOnPersonalProperty(dateRange)
+    } else{
+      if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+        rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
+      }
+      if (_discountOrSurchargeRatingInfo.BurglarAlarmReportPoliceStn || _discountOrSurchargeRatingInfo.BurglarAlarmReportCntlStn || _discountOrSurchargeRatingInfo.CompleteLocalBurglarAlarm){
+        rateBurglarProtectiveDevicesCredit(dateRange)
+      }
+      if (PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){
+        rateAgeOfHomeDiscount(dateRange)
+      }
+      if (dwelling?.HailResistantRoofCredit_Ext){
+        rateHailResistantRoofCredit(dateRange)
+      }
+
+      if(_discountOrSurchargeRatingInfo.FireAlarmReportFireStn || _discountOrSurchargeRatingInfo.FireAlarmReportCntlStn || _discountOrSurchargeRatingInfo.SprinklerSystemAllAreas)
+        rateFireProtectiveDevicesCredit(dateRange)
+
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT and PolicyLine.Branch.QualifiesAffinityDisc_Ext)
+        rateAffinityDiscount(dateRange)
+
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT and PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
+        ratePreferredBuilderCredit(dateRange)
+
+      if(PolicyLine.MultiPolicyDiscount_Ext){
+        _discountOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
+        rateMultiLineDiscount(dateRange)
+      }
+
+      rateMaximumDiscountAdjustment(dateRange)
+
+      if(!PolicyLine.AdditionalInsureds.IsEmpty)
+        rateAdditionalInsuredCoverage(dateRange)
     }
-    if (_discountOrSurchargeRatingInfo.BurglarAlarmReportPoliceStn || _discountOrSurchargeRatingInfo.BurglarAlarmReportCntlStn || _discountOrSurchargeRatingInfo.CompleteLocalBurglarAlarm){
-      rateBurglarProtectiveDevicesCredit(dateRange)
-    }
-    if (PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HCONB_EXT){
-      rateAgeOfHomeDiscount(dateRange)
-    }
-    if (dwelling?.HailResistantRoofCredit_Ext){
-      rateHailResistantRoofCredit(dateRange)
-    }
-
-    if(_discountOrSurchargeRatingInfo.FireAlarmReportFireStn || _discountOrSurchargeRatingInfo.FireAlarmReportCntlStn || _discountOrSurchargeRatingInfo.SprinklerSystemAllAreas)
-      rateFireProtectiveDevicesCredit(dateRange)
-
-    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT and PolicyLine.Branch.QualifiesAffinityDisc_Ext)
-      rateAffinityDiscount(dateRange)
-
-    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HOB_EXT and PolicyLine.Branch.PreferredBuilder_Ext != null and _discountOrSurchargeRatingInfo.AgeOfHome < 10)
-      ratePreferredBuilderCredit(dateRange)
-
-    if(PolicyLine.MultiPolicyDiscount_Ext){
-      _discountOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
-      rateMultiLineDiscount(dateRange)
-    }
-
-    rateMaximumDiscountAdjustment(dateRange)
-
-    if(!PolicyLine.AdditionalInsureds.IsEmpty)
-      rateAdditionalInsuredCoverage(dateRange)
   }
 
   /**
@@ -209,6 +227,24 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     if(_logger.DebugEnabled)
       _logger.debug("Affinity Discount Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the replacement Cost On personal property
+   */
+  function rateReplacementCostOnPersonalProperty(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateReplacementCostOnPersonalProperty", this.IntrinsicType)
+    var totalContentsPremium = _hoRatingInfo.DwellingFirePersonalPropertyBasePremium + _hoRatingInfo.VMMDwellingPersonalPropertyPremium
+    var rateRoutineParameterMap = getHOLineParameterSetWithPremium(PolicyLine, totalContentsPremium)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.DP_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_REPLACEMENTCOSTONPERSONALPROPERTY,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Replacement Cost On Personal Property Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -413,8 +449,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-   * Rate Loss Assessment Coverage line coverage
-   */
+ * Rate Loss Assessment Coverage line coverage
+ */
   function rateLossAssessmentCoverage(dwellingCov: HODW_LossAssessmentCov_HOE_Ext, dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentCoverage to rate Loss Assessment Coverage", this.IntrinsicType)
@@ -422,13 +458,25 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null){
-        if (costData.ActualTermAmount == 0)
-          costData.ActualTermAmount = 1
         addCost(costData)
       }
     }
     if(_logger.DebugEnabled)
       _logger.debug("Loss Assessment Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate VMM coverage
+   */
+  function rateVMMCoverage(dwellingCov: HODW_Vandalism_Malicious_Mischief_HOE_Ext, dateRange: DateRange, rateRoutineParameterMap : Map<CalcRoutineParamName, Object>, costType : HOCostType_Ext, rateRoutineName : String) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateVMMCoverage to rate VMM Coverage", this.IntrinsicType)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCovWithCostType(dwellingCov, dateRange, rateRoutineName, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm, costType)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -581,7 +629,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateResidentialGlassCoverage to rate Residential Glass Coverage", this.IntrinsicType)
     if (dwellingCov.Dwelling.HODW_ResidentialGlass_HOE_Ext.HODW_Unscheduled_HOE_ExtTerm?.DisplayValue == "Yes"){
-      var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
+      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.RESIDENTIAL_GLASS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null){
         addCost(costData)
@@ -667,6 +715,16 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set with the prmeium
+   */
+  private function getHOLineParameterSetWithPremium(line: PolicyLine, totalContentsPremium : BigDecimal): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_TOTALPOLICYPREMIUM_EXT -> totalContentsPremium
     }
   }
 

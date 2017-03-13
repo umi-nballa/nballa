@@ -169,7 +169,7 @@
         pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, territoryCode)"
         required="una.config.Locationutil.isTerritoryCodeRequired(territoryCode, line)//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"
         value="territoryCode.Code"
-        visible="polLocation.OverrideTerritoryCode_Ext//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>
+        visible="polLocation.OverrideTerritoryCode_Ext //&amp;&amp; line!=null &amp;&amp; line.equals(&quot;cpline&quot;)// &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>
       <ContentInput
         hideIfReadOnly="true"
         id="AutofillButton"/>
@@ -312,7 +312,7 @@ function getTC():TerritoryCode[]{
     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="HomeownersLine_HOE")
    
   if(polLocation.Branch.CPLineExists)
-     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="CPLine" or  elt.PolicyLinePatternCode=="GLLine")
+     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="CPLine")// or  elt.PolicyLinePatternCode=="GLLine")
 
  // if(polLocation.Branch.CPLineExists)
  //   TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="GLLine")

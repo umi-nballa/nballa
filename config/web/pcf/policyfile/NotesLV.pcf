@@ -28,9 +28,48 @@
     <RowIterator
       editable="false"
       elementName="note"
-      value="notes.toList().sortBy(\ c -&gt; c. Topic)">
+      value="customSort() //notes.toList().sortBy(\ c -&gt; c. Topic)">
       <RowSetRef
         def="NoteRowSet(note, viewOnly, null)"/>
     </RowIterator>
+    <Code><![CDATA[uses java.util.ArrayList
+uses java.util.Collections
+
+public function notesAsArrayListFormat() : ArrayList<Note>{
+  var returnList = new ArrayList<Note>()
+  var notesList = notes.toList().sortBy(\ c -> c. Topic)
+  for (singleValue in notesList) {
+  returnList.add(singleValue)
+}
+ return returnList
+}
+
+public function customSort() : List<Note>{
+  var originalNotesList = notesAsArrayListFormat()
+  var alert = typekey.NoteTopicType.TC_ALERT_EXT.DisplayName
+  var doNotReinstate = typekey.NoteTopicType.TC_DONOTREINSTATE_EXT.DisplayName
+  var doNotRenew = typekey.NoteTopicType.TC_DONOTRENEW_EXT.DisplayName
+  for(var singleValue in originalNotesList){
+    if(singleValue.Topic.DisplayName.equals(doNotRenew)){
+      while (originalNotesList.indexOf(singleValue) != 0) {
+        var indexNo = originalNotesList.indexOf(singleValue);
+        Collections.swap(originalNotesList, indexNo, indexNo - 1);
+      }
+    }
+    if(singleValue.Topic.DisplayName.equals(doNotReinstate)){
+      while (originalNotesList.indexOf(singleValue) != 0) {
+        var indexNo = originalNotesList.indexOf(singleValue);
+        Collections.swap(originalNotesList, indexNo, indexNo - 1);
+      }
+    }
+    if(singleValue.Topic.DisplayName.equals(alert)){
+      while (originalNotesList.indexOf(singleValue) != 0) {
+        var indexNo = originalNotesList.indexOf(singleValue);
+        Collections.swap(originalNotesList, indexNo, indexNo - 1);
+      }
+      }
+  }
+   return  originalNotesList 
+}]]></Code>
   </ListViewPanel>
 </PCF>

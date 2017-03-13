@@ -440,4 +440,13 @@ enhancement PolicyLocationEnhancement : PolicyLocation {
   property set EmployeeCount(arg : Integer) {
     AccountLocationToPolicyLocationSyncedField.EmployeeCount.setValue(this, arg)
   }
+
+  property get CPTerritoryCodeOrOverride():String
+  {
+    if(this.OverrideTerritoryCode_Ext and this.TerritoryCodeOverridden_Ext != null){
+      return this.TerritoryCodeOverridden_Ext
+    }else{
+      return this.TerritoryCodeTunaReturned_Ext
+    }
+  }
 }

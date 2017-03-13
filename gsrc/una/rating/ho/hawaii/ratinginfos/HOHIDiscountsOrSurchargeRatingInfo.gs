@@ -16,10 +16,9 @@ class HOHIDiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurchargeRat
   var _priorLosses : int as PriorLosses = 0
   var _dwellingOccupancy : DwellingOccupancyType_HOE as DwellingOccupancy
   var _tenantSeasonal : RatingDwellingUsage_Ext as tenantSeasonal
+  var _increasedPersonalPropertyPremium: BigDecimal as IncreasedPersonalPropertyPremium = 0.0
  construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal){
    super(line, totalBasePremium)
-
-
    if(line?.HOPriorLosses_Ext != null){
      _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
    } else{

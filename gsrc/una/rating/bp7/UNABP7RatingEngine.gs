@@ -289,7 +289,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
       return TotalAnnualPremiumBeforeActualIRPM
     for(costData in CostDatas){
       if(costData typeis BP7LineCovCostData){
-        var cost = costData.getPopulatedCost(PolicyLine)
+        var cost = costData.getExistingCost(PolicyLine)
         if(cost.Coverage.PatternCode == "IdentityRecovCoverage_EXT" || cost.Coverage.PatternCode == "BP7CyberOneCov_EXT" ||
            cost.Coverage.PatternCode == "DataCmprmiseRspnseExpns_EXT" || cost.Coverage.PatternCode == "BP7EmploymentPracticesLiabilityCov_EXT" ||
            cost.Coverage.PatternCode == "BP7DataCompromiseDfnseandLiabCov_EXT" || cost.Coverage.PatternCode == "BP7CapLossesFromCertfdActsTerrsm")

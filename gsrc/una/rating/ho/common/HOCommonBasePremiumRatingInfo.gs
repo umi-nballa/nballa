@@ -54,6 +54,15 @@ class HOCommonBasePremiumRatingInfo {
       _noHitOrScoreIndicator = true
     }
 
+    if(dwelling.FirstTimeDeededHome_Ext){
+      if(_creditScore == null or _creditScore == 0){
+        if(Jurisdiction.TF_FIRSTTIMEDEEDEDHOMETYPES.TypeKeys.contains(dwelling.HOLine.BaseState)){
+          _noHitOrScoreIndicator = false
+          _creditScore = ConfigParamsUtil.getInt(TC_DEFAULTCREDITSCORE, dwelling.HOLine.BaseState)
+        }
+      }
+    }
+
     _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
 
     //var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType

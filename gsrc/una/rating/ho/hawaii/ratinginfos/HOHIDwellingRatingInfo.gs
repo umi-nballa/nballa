@@ -21,6 +21,7 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _personalLiabilityLimit : BigDecimal as PersonalLiabilityLimit
   var _medicalPaymentsLimit : BigDecimal as MedicalPaymentsLimit
   var _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit : BigDecimal as CCEFTAccessDeviceForgeryCounterfeitMoney
+  var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
 
   construct(dwelling: Dwelling_HOE){
     super(dwelling)
@@ -48,6 +49,9 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
     if(dwelling?.HODW_CC_EFT_HOE_ExtExists and dwelling?.HODW_CC_EFT_HOE_Ext?.HasHODW_CC_EFTLimit_HOETerm){
          _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit = dwelling?.HODW_CC_EFT_HOE_Ext?.HODW_CC_EFTLimit_HOETerm?.Value
+    }
+    if (dwelling?.HODW_BuildingAdditions_HOE_ExtExists){
+      _buildingAdditionsAndAlterationsLimit = dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
     }
   }
 

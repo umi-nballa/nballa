@@ -66,14 +66,15 @@
             id="descOfInterest"
             label="displaykey.Web.Policy.AdditionalInterest.AddlInterestDesc"
             value="policyAddlNamedInsured.DescOfInterest_HOE"/>
-          <TypeKeyInput
+          <RangeInput
             editable="true"
             id="RelationshipTypekey"
             label="displaykey.Web.Policy.NamedInsured.Relationship"
             required="true"
-            value="policyAddlNamedInsured.ContactRelationship_Ext">
+            value="policyAddlNamedInsured.ContactRelationship_Ext"
+            valueRange="getRelationships()">
             <PostOnChange/>
-          </TypeKeyInput>
+          </RangeInput>
           <TextInput
             editable="true"
             id="descritption"
@@ -112,6 +113,16 @@
 
 property get ReferenceDate() : DateTime {
   return ReferenceState == null ? period.EditEffectiveDate : period.getReferenceDateForCurrentJob(ReferenceState)
+}
+
+
+public function getRelationships(): List <ContactRelationship_Ext>{
+  var addnlInsuredType = policyAddlNamedInsured.AccountContactRole.AccountContact.ContactType.Code
+  var addnlInsuredContactType = typekey.Contact.TC_COMPANY.Code
+ if(addnlInsuredType!= null and addnlInsuredType.equalsIgnoreCase(addnlInsuredContactType) ){   //For Company
+            return typekey.ContactRelationship_Ext.TF_COMPANY_RELATIONSHIPS.TypeKeys
+ }
+   return  typekey.ContactRelationship_Ext.getTypeKeys(false)
 }]]></Code>
   </Popup>
 </PCF>

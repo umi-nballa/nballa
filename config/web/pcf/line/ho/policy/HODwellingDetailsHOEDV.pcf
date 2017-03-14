@@ -393,6 +393,7 @@
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="PropFloodValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
+          required="!dwelling.OverridePropFloodVal_Ext"
           value="dwelling.PropFloodVal_Ext"
           valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)">
           <PostOnChange/>
@@ -1132,6 +1133,7 @@
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
             id="FirelineAdjHazTunaReturned_Ext"
             label="displaykey.Web.Homeowners.HOLocation.FirelineAdjHazTunaReturned_Ext"
+            required="!dwelling.HOLocation.OverrideFirelineAdjHaz_Ext"
             value="dwelling.HOLocation.FirelineAdjHaz_Ext"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.FireLinePropertyHazard)"/>
           <Input
@@ -1501,6 +1503,7 @@
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
             id="EarthquakeTerritoryTunaReturned_Ext"
             label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryTunaReturned_Ext"
+            required="!dwelling.OverrideEarthquakeTer_Ext"
             value="dwelling.EarthquakeTer_Ext"
             valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.EarthQuakeTerritory)"/>
           <Input
@@ -1573,7 +1576,7 @@
           editable="true"
           id="EarthquakeConstrn_Ext"
           label="displaykey.Web.Homeowners.Dwelling.EarthquakeConstrn_Ext"
-          required="false"
+          required="true"
           value="dwelling.EarthquakeConstrn_Ext"
           visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; dwelling.isEarthQuakeConstructionVisible"/>
       </InputSet>

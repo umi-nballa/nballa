@@ -649,15 +649,6 @@
     name="YearBuiltOverridden_Ext"
     nullok="true"
     type="year"/>
-  <column
-    desc="EarthquakeTerritory Returned by Tuna"
-    name="EarthQuakeTer_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
   <typekey
     desc="EarthquakeTerritory Match Level from TUNA"
     name="EarthquakeTerMatchLevel_Ext"
@@ -669,15 +660,6 @@
     name="OverrideEarthquakeTer_Ext"
     nullok="true"
     type="bit"/>
-  <column
-    desc="EarthquakeTerritory Entered by User"
-    name="EarthquakeTerOverridden_Ext"
-    nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
   <typekey
     desc="PropFloodVal Match Level from TUNA"
     name="PropFloodValMatchLevel_Ext"
@@ -1225,4 +1207,15 @@
     name="MetricsVersionDate_Ext"
     nullok="true"
     type="datetime"/>
+  <typekey
+    columnName="EarthQuakeTer_Ext"
+    name="EarthQuakeTer_Ext"
+    nullok="true"
+    typelist="EQTerritoryZone_Ext"/>
+  <typekey
+    columnName="EarthquakeTerOverridden_Ext"
+    desc="EarthquakeTerOverridden_Ext"
+    name="EarthquakeTerOverridden_Ext"
+    nullok="true"
+    typelist="EQTerritoryZone_Ext"/>
 </entity>

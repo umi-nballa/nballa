@@ -1052,6 +1052,7 @@ class HODwellingUtil_HOE {
 
   /*
    * FLOOD should be available - CA HO, AZ HO, TX HO, SC HO, HI HO, NV HO, HI DP
+   *                             CA HO, AZ HO, TX HO, SC HO, HI HO, NV HO, HI DP
    * Homeowners should be available - SC HO, NV HO, HI DP
    * Dwelling Fire should be available -  TX HO, CA HO, SC HO, HI HO, NV HO, HI DP
    */

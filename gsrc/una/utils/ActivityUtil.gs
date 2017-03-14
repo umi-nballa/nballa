@@ -3,6 +3,9 @@ package una.utils
 uses java.util.Queue
 uses gw.api.database.Query
 uses java.lang.Exception
+uses una.integration.framework.exception.ExceptionUtil
+uses una.integration.framework.exception.FieldErrorInformation
+uses una.integration.util.propertyinspections.UnaErrorCode
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,6 +38,9 @@ class ActivityUtil {
     if(activityPattern != null)
     {
       activity = activityPattern.createJobActivity(gw.transaction.Transaction.getCurrent(),policyPeriod.Job,null,null,"",null,null,null,null)
+    } else{
+      var fieldError = new FieldErrorInformation()  {:FieldName = "Activity Pattern Code", :FieldValue = patternCode}
+      ExceptionUtil.throwException(UnaErrorCode.PATTERN_CODE_NOT_PRESENT, {fieldError})
     }
     return activity
   }
@@ -50,13 +56,19 @@ class ActivityUtil {
    * The Activity gets assigned to queue.  Takes queue name, group name and the activity as parameters
    */
   public static function assignActivityToQueue(queueName : String, groupName : String, activity : Activity){
-    var group = Query.make(Group).compare(Group#Name, Equals, groupName).select().AtMostOneRow
-    var assignableQueue= group.AssignableQueues.where( \ elt -> elt.Name == queueName).last()
-    try {
-      activity.assignActivityToQueue(assignableQueue,group)
-    }  catch  (var e: Exception)  {
-      e.printStackTrace()
+
+      var group = Query.make(Group).compare(Group#Name, Equals, groupName).select().AtMostOneRow
+      if(group != null){
+        var assignableQueue= group.AssignableQueues.where( \ elt -> elt.Name == queueName).last()
+        if(assignableQueue != null){
+          activity.assignActivityToQueue(assignableQueue,group)
+        } else{
+          var fieldError = new FieldErrorInformation()  {:FieldName = "Assignable Queue", :FieldValue = queueName}
+          ExceptionUtil.throwException(UnaErrorCode.ASSIGNABLE_QUEUE_NOT_PRESENT, {fieldError})
+        }
+      } else {
+        var fieldError = new FieldErrorInformation()  {:FieldName = "Group", :FieldValue = groupName}
+        ExceptionUtil.throwException(UnaErrorCode.GROUP_NOT_PRESENT, {fieldError})
+      }
     }
   }
-
-}

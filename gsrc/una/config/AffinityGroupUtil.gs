@@ -153,10 +153,9 @@ class AffinityGroupUtil {
       break
       case Jurisdiction.TC_NC :
           if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
-              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6
-                or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_DP3_EXT)
-                  and ((ageOfHome < 5 and polPeriod.PreferredBuilder_Ext != null)
-                  or polPeriod.PreferredFinInst_Ext != null)) {
+              or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
+                  and ((ageOfHome < 11 and polPeriod.PreferredBuilder_Ext != null)
+                  or polPeriod.PreferredFinInst_Ext != null or polPeriod.QualifiedExclAgent_Ext!= null )) {
             affinityDiscount = true
           }
       break
@@ -164,7 +163,7 @@ class AffinityGroupUtil {
           if((polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO3
               or polPeriod.HomeownersLine_HOE.HOPolicyType == TC_HO6)
               and ageOfHome < 11 and (polPeriod.PreferredBuilder_Ext != null
-                  or polPeriod.PreferredFinInst_Ext != null)) {
+                  or polPeriod.PreferredFinInst_Ext != null )) {
             affinityDiscount = true
           }
       break

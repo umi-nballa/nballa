@@ -1494,6 +1494,8 @@
         <InputSet
           id="EarthquakeTerritory_Ext"
           visible="dwelling.isEarthQuakeTerritoryVisible//dwelling.HOLocation.PolicyLocation.State.Code==&quot;NC&quot; &amp;&amp; (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) || dwelling.HOPolicyType==typekey.HOPolicyType_HOE.TC_LPP_EXT)">
+          <InputDivider
+            visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)"/>
           <RangeInput
             available="!dwelling.OverrideEarthquakeTer_Ext"
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -1513,15 +1515,18 @@
             value="dwelling.OverrideEarthquakeTer_Ext">
             <PostOnChange/>
           </BooleanRadioInput>
-          <Input
+          <RangeInput
             available="dwelling.OverrideEarthquakeTer_Ext"
             editable="true"
             id="EarthquakeTerritoryUserEntered_Ext"
             label="displaykey.Web.Homeowners.HOLocation.EarthquakeTerritoryUserEntered_Ext"
             required="dwelling.OverrideEarthquakeTer_Ext"
             value="dwelling.EarthquakeTerOverridden_Ext"
+            valueRange="gw.lob.ho.HODwellingUtil_HOE.earthquakezoneValue(dwelling)"
             visible="dwelling.OverrideEarthquakeTer_Ext"/>
         </InputSet>
+        <InputDivider
+          visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)"/>
         <TypeKeyInput
           editable="true"
           id="PreExistingEarthquakeDmg_Ext"

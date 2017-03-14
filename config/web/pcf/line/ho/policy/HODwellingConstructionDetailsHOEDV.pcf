@@ -749,14 +749,14 @@
           label="displaykey.Web.Homeowners.DwellingConstruction.FBCWindSpeed"
           required="true"
           value="dwelling.FBCWindSpeed_Ext"
-          visible="dwelling.Branch.BaseState.Code!=&quot;FL &quot; || (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002)"/>
+          visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002 &amp;&amp; dwelling.WindMitigation_Ext"/>
         <TypeKeyInput
           editable="true"
           id="windspeedDesign"
           label="displaykey.Web.Homeowners.DwellingConstruction.WindSpeedOfDesign"
           required="true"
           value="dwelling.WindSpeedOfDesign_Ext"
-          visible="dwelling.Branch.BaseState.Code!=&quot;FL &quot; || (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002)"/>
+          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002) &amp;&amp; dwelling.WindMitigation_Ext"/>
         <TypeKeyInput
           editable="true"
           id="wbdr"

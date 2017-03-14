@@ -8,6 +8,12 @@
     <Column
       beanPath="DwellingCovCost_HOE.DwellingCov.Dwelling"
       name="location"/>
+    <Column
+      beanPath="DwellingCovCost_HOE.CostType"
+      name="costType"/>
   </Columns>
-  <DisplayName><![CDATA[displaykey.Web.Financials.CostDisplayName.CoverageOn( pattern.Pattern, location )]]></DisplayName>
+  <DisplayName><![CDATA[if(costType != null){
+  return displaykey.Web.Financials.CostDisplayName.CoverageOn( pattern.Pattern, location ) + " : " + costType.Description 
+}
+return displaykey.Web.Financials.CostDisplayName.CoverageOn( pattern.Pattern, location )]]></DisplayName>
 </Entity>

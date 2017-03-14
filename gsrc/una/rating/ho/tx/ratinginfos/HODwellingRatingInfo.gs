@@ -17,6 +17,7 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _increasedLimitsJewelryWatchesFurs: BigDecimal as IncreasedLimitsJewelryWatchesFurs
   var _lossAssessmentLimit: int as LossAssessmentLimit
   var _moldRemediationLimit: String as MoldRemediationLimit
+  var _tierType : String as TierType
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
 
@@ -45,5 +46,7 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
     _lossAssessmentLimit = (dwelling?.HODW_LossAssessmentCov_HOE_ExtExists) ? dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
 
     _county = (dwelling?.HOLocation?.PolicyLocation?.County != null) ? dwelling?.HOLocation?.PolicyLocation?.County : ""
+    //todo: Update the tier
+    _tierType = "Select"
   }
 }

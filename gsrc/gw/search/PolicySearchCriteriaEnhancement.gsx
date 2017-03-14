@@ -50,6 +50,21 @@ enhancement PolicySearchCriteriaEnhancement : entity.PolicySearchCriteria {
       var result = query.select()
       return result
     }
+
+
+    // Adding Search using Risk Address and Billing Address DE 1184
+    if (this.PrimaryInsuredAddressLine1_Ext != null || this.PrimaryInsuredAddressLine2_Ext != null ){
+      var query = this.SummaryQuery
+      var subQuery = gw.api.database.Query.make(PolicyPeriodSummary)
+      var address = subQuery.subselect("ID", CompareIn, PolicyLocation, "ID")
+      address.compareIn("AddressTypeInternal"  ,{typekey.AddressType.TC_BILLING,typekey.AddressType.TC_RISKADDRESS_EXT})
+      address.compareIgnoreCase("AddressLine1Internal", Equals ,this.PrimaryInsuredAddressLine1_Ext)
+      address.compareIgnoreCase("AddressLine2Internal", Equals ,this.PrimaryInsuredAddressLine2_Ext)
+      query = query.union(subQuery)
+      var result = query.select()
+      return result
+   }
+
     var result = this.performSearch()
     return result
   }

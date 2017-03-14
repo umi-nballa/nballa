@@ -12,9 +12,13 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UNAUWBP7Rule28_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
+    if(period.BP7LineExists)
+    {
 
-    var questionSet = period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == "BP7_Prequal_Ext")
-    questionSet.Questions.each( \ elt ->
+      var questionSet = period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == "BP7_Prequal_Ext")
+
+
+      questionSet.Questions.each( \ elt ->
     {
       if (elt != null)
       {
@@ -26,6 +30,7 @@ class UNAUWBP7Rule28_each implements IRuleCondition<PolicyPeriod>{
         }
       }
     })
+    }
 
    return RuleEvaluationResult.skip()
   }

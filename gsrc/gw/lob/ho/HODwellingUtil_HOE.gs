@@ -41,6 +41,34 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
+  static function setProtectionClass(dwelling:Dwelling_HOE):boolean
+  {
+    if(dwelling.HOLocation.DistanceToFireHydrant>1000 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+      {
+        dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+        dwelling.HOLocation.DwellingPCCodeOverridden_Ext= dwelling.HOLocation.DwellingProtectionClasscode.substring(2)
+      }
+
+    if(dwelling.HOLocation.DistanceToFireHydrant<1000 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+    {
+      dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+      dwelling.HOLocation.DwellingPCCodeOverridden_Ext= dwelling.HOLocation.DwellingProtectionClasscode.substring(0,1)
+    }
+
+    if(dwelling.HOLocation.DistanceToFireHydrant<1000 && dwelling.HOLocation.DistanceToFireStation<5 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+    {
+      dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+      dwelling.HOLocation.DwellingPCCodeOverridden_Ext= dwelling.HOLocation.DwellingProtectionClasscode.substring(0,1)
+    }
+
+    if(dwelling.HOLocation.DistanceToFireStation>5 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+    {
+      dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+      dwelling.HOLocation.DwellingPCCodeOverridden_Ext= typekey.ProtectionClassCode_Ext.TC_10
+    }
+    return true
+  }
+
   static function isFHFSvisible(tunaresponse:List<String>):boolean
   {
     var retval = false

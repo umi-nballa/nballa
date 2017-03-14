@@ -16,6 +16,7 @@ uses una.integration.framework.exception.FieldErrorInformation
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.util.propertyinspections.UnaErrorCode
 uses una.logging.UnaLoggerCategory
+uses una.integration.mapping.document.DocumentActivity
 
 /**
 * The InboundFileProcessingPlugin implementation to process Inspection Reports
@@ -35,6 +36,7 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
   final static var MINOR_ISSUES_FOLDER = "Minor UW Inspection Issues"
   final static var RATING_OR_COVERAGE_ISSUES_FOLDER = "Rating or Coverage Issues"
   final static var INSPECTION_ORDERED = "Inspection Ordered"
+  final static var NO_UW_INSPECTION_ISSUES = "No UW Inspection Issues"
   var CLASS_NAME=PropertyInspectionsReportsInboundFileProcessingPlugin.Type.DisplayName
 
   /**
@@ -50,60 +52,45 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
 
       gw.transaction.Transaction.runWithNewBundle(\bundle ->{
         bundle.add(policyPeriod)
-        var filePath = (data as java.nio.file.Path ).toAbsolutePath() as String
+        var filePathString = (data as java.nio.file.Path ).toAbsolutePath() as String
         policyPeriod.addNote(NoteTopicType.TC_GENERAL, "Inspection has been received","Inspection has been received")
-        if(filePath.containsIgnoreCase(MAJOR_ISSUES_FOLDER)){
-          var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_PRIORITY_PATTERN_CODE)
-          if(activity.canAssign()){
-            ActivityUtil.assignActivityToQueue(PRIORITY_INSPECTION_REVIEW_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+        var documentDTO = new DocumentDTO()
+        var documentActivity = new DocumentActivity()
+        var document = new Document()
+        if(Policy.finder.findPolicyByPolicyNumber(fileName.substring(0,14))!=null){
+          documentDTO.Policy = Policy.finder.findPolicyByPolicyNumber(fileName.substring(0,14))
+          documentDTO.Description = "Inspection Report Received"
+          var filePath = (data as java.nio.file.Path ).toAbsolutePath()
+          var file = new File(filePath as String)
+          documentDTO.File = file
+          documentDTO.OnBaseDocumentType = typekey.OnBaseDocumentType_Ext.TC_INSPECTIONS
+          if(filePathString.containsIgnoreCase(MAJOR_ISSUES_FOLDER)){
+            documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION
+            document.OnBaseDocumentSubtype = OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION
+            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+          } else if(filePathString.containsIgnoreCase(MINOR_ISSUES_FOLDER)){
+            documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_UW_INSPECTION
+            document.OnBaseDocumentSubtype = OnBaseDocumentSubtype_Ext.TC_INSP_UW_INSPECTION
+            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+          } else if(filePathString.containsIgnoreCase(RATING_OR_COVERAGE_ISSUES_FOLDER)){
+            documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW
+            document.OnBaseDocumentSubtype = OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW
+            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+          } else if(filePathString.containsIgnoreCase(NO_UW_INSPECTION_ISSUES)){
+            documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_INSPECTION_WITH_NO_CONCERN
           }
-        } else if(filePath.containsIgnoreCase(MINOR_ISSUES_FOLDER)){
-          var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_UW_PATTERN_CODE)
-          if(activity.canAssign()){
-            ActivityUtil.assignActivityToQueue(UW_INSPECTION_REVIEW_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
-          }
-        } else if(filePath.containsIgnoreCase(RATING_OR_COVERAGE_ISSUES_FOLDER)){
-          var activity = ActivityUtil.createActivityAutomatically(policyPeriod, REVIEW_INSPECTION_CS_PATTERN_CODE)
-          if(activity.canAssign()){
-            ActivityUtil.assignActivityToQueue(CSR_INSPECTION_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
-          }
+          DocumentUtil.createDocument(documentDTO)
+          LOGGER.info("Document upload is done :: "+fileName.substring(0,14))
         }
         completeActivity(policyPeriod)
         bundle.commit()
-        uploadDocumentOnbase(data,fileName)
       }, SUPER_USER)
     } catch(ex : Exception){
-      var fieldError = new FieldErrorInformation()  {:FieldName = "Activity and Queue", :FieldValue = fileName.substring(0,14)}
-      ExceptionUtil.throwException(UnaErrorCode.NOT_ABLE_TO_ASSIGN_ACTIVITY_TO_QUEUE, {fieldError})
+      var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = fileName.substring(0,14)}
+      ExceptionUtil.throwException(UnaErrorCode.DOCUMENT_UPLOAD_FAILURE, {fieldError},ex)
     }
 
    LOGGER.debug("Exiting the process() of "+CLASS_NAME)
-  }
-
-  /**
-   * This function upload the file received from Inspections vendors to Onbase
-   */
-  private static function uploadDocumentOnbase(data : Object, fileName : String){
-    LOGGER.debug("Entering uploadDocumentOnbase() of PropertyInspectionsReportsInboundFileProcessingPlugin")
-    var docContentSource =  Plugins.get("IDocumentContentSource") as IDocumentContentSource
-    var documentDTO = new DocumentDTO()
-    try{
-      if(Policy.finder.findPolicyByPolicyNumber(fileName.substring(0,14))!=null){
-        documentDTO.Policy = Policy.finder.findPolicyByPolicyNumber(fileName.substring(0,14))
-        documentDTO.Description = "Inspection Report Received"
-        var filePath = (data as java.nio.file.Path ).toAbsolutePath()
-        var file = new File(filePath as String)
-        documentDTO.File = file
-        documentDTO.OnBaseDocumentType = typekey.OnBaseDocumentType_Ext.TC_OUT_CORR
-        documentDTO.OnBaseDocumentSubype = typekey.OnBaseDocumentSubtype_Ext.TC_OUTCORR_PRIOR_CARRIER
-        DocumentUtil.createDocument(documentDTO)
-        LOGGER.info("Document upload is done :: "+fileName.substring(0,14))
-      }
-    } catch(ex : Exception)  {
-      var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = fileName.substring(0,14)}
-      ExceptionUtil.throwException(UnaErrorCode.DOCUMENT_UPLOAD_FAILURE, {fieldError}, ex)
-    }
-    LOGGER.debug("Exiting uploadDocumentOnbase() of PropertyInspectionsReportsInboundFileProcessingPlugin")
   }
 
   /**

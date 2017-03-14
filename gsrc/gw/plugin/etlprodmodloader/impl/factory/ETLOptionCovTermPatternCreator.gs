@@ -24,7 +24,10 @@ class ETLOptionCovTermPatternCreator extends ETLCovTermPatternCreatorImpl<Option
     var etlOptionCovTermPattern = new ETLOptionCovTermPattern(etlClausePattern.Bundle)
     etlOptionCovTermPattern = super.setCommonCovTermFields(etlOptionCovTermPattern, etlClausePattern)
     etlOptionCovTermPattern.ValueType = OptionCovTermPattern.ValueType.Code
-    
+	//Extended AggregateModel and RestrictionModel fields for PolicyInquiryService
+    etlOptionCovTermPattern.ModelAgg = OptionCovTermPattern.AggregationModel.Code
+    etlOptionCovTermPattern.ModelRest = OptionCovTermPattern.RestrictionModel.Code
+
     for(option in OptionCovTermPattern.Options){
       var etlCovTermOpt = new ETLCovTermOpt(etlClausePattern.Bundle)
       etlCovTermOpt.CoverageTermPattern = etlOptionCovTermPattern

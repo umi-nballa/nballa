@@ -18,6 +18,7 @@ class HOLineRatingInfo {
   var _animalLiabilityLimit: int as AnimalLiabilityLimit = 0
   var _totalBasePremium: BigDecimal as TotalBasePremium
   var _numberOfLocations : int as NumberOfLocations
+
   construct() {
   }
 

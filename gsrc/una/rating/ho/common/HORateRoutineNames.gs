@@ -119,4 +119,11 @@ public final class HORateRoutineNames {
   public static final var PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE :String = "UNAHOProtectiveDeviceCreditRateRoutine"
   public static final var ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE : String = "UNADPAdditionalInsuredPropertyManagerCovRateRoutine"
   public static final var EQ_COVERAGE_RATE_ROUTINE : String = "UNAHOEarthquakeCoverageRateRoutine"
+
+  //base premium rate routines for DP
+  public static final var BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE : String = "UNAHODwellingFireBasePremiumRateRoutine"
+  public static final var BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHODwellingFirePersonalPropertyRateRoutine"
+  public static final var HO_VMM_DWELLING_RATE_ROUTINE : String = "UNAHOVMMDwellingRateRoutine"
+  public static final var HO_VMM_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHOVMMPersonalPropertyRateRoutine"
+  public static final var DP_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNADPReplacementCostPersonalPropertyRateRoutine"
 }

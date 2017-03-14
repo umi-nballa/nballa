@@ -303,6 +303,36 @@ abstract class HPXCoverageMapper {
     return val
   }
 
+  function getCovTermAmountFromMixed(base : BigDecimal, value : BigDecimal, valueType : CovTermModelVal) : BigDecimal {
+    var val : BigDecimal = 0
+    if (value == null || value == "") {
+      val = 0
+    }
+    else if (value < 0) {
+      val = 0
+    } else if (valueType.Value == typekey.CovTermModelVal.TC_PERCENT) {
+      val = value <= 1 ? value * base : value * base / 100
+    } else {
+      val = value <= 1 ? value * base : value
+    }
+    return val
+  }
+
+  function getCovTermPercentageFromMixed(base : BigDecimal, value : BigDecimal, valueType : CovTermModelVal) : BigDecimal {
+    var val : BigDecimal = 0
+    if (value == null || value == "") {
+      val = 0
+    } else if (value < 0) {
+      val = 0
+    }
+    else if (valueType.Value == typekey.CovTermModelVal.TC_PERCENT) {
+      val = value <= 1 ? value*100 : value
+    } else {
+      val = value <= 1 ? value*100 : 0
+    }
+    return val
+  }
+
   abstract function createScheduleList(currentCoverage : Coverage, transactions : java.util.List<Transaction>)
                       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType>
 

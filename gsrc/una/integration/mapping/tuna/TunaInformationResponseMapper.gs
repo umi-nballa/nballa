@@ -59,17 +59,21 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
 
       var comTerritoryLine = tunaResponse.CommercialLines?.PropertyLine?.firstWhere( \ elt -> elt.Line == "C")
       if(comTerritoryLine != null){
+        var commercialTerritoryCodeList = new ArrayList<String>()
       for(tTory in comTerritoryLine.Territories?.PropertyTerritory){
-        response.CPPTerritoryCodes.add(tTory.Code)
+        commercialTerritoryCodeList.add(tTory.Code)
        }
+        response.CPPTerritoryCodes = commercialTerritoryCodeList
       }
 
 
       var bopTerritoryLine = tunaResponse.CommercialLines?.PropertyLine?.firstWhere( \ elt -> elt.Line == "B")
       if(bopTerritoryLine != null){
+        var businessTerritoryCodeList = new ArrayList<String>()
       for(tTory in bopTerritoryLine.Territories?.PropertyTerritory){
-        response.BOPTerritoryCodes.add(tTory.Code)
+        businessTerritoryCodeList.add(tTory.Code)
       }
+        response.BOPTerritoryCodes = businessTerritoryCodeList
      }
 
       response = helper.mapDatumsTunaResponse(tunaResponse,response)

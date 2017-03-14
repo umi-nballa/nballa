@@ -913,6 +913,38 @@ class HODwellingUtil_HOE {
     return false
   }
 
+
+  static function getWindpoolCodes(tunaValues : List<PropertyDataModel>, dwelling:Dwelling_HOE) : List<String>
+  {
+    if(dwelling.PolicyPeriod.BaseState.Code!="NC")
+      return getTunaCodes(tunaValues)
+    else
+    {
+      return null//{"Yes","No"}.toList()
+    }
+  }
+
+  static function isNCWindpool(dwelling:Dwelling_HOE):boolean
+  {
+    var countylist = {"Beaufort", "Brunswick", "Camden", "Carteret", "Chowan", "Craven", "Currituck", "Dare", "Hyde", "Jones", "New Hanover", "Onslow"
+    ,"Pamlico",  "Pasquotank", "Pender", "Perquimans", "Tyrrell", "Washington" }
+    if(dwelling.PolicyPeriod.BaseState.Code=="NC" && countylist.contains(dwelling.PolicyPeriod.PrimaryLocation.County))
+      return true
+    else
+      return false
+  }
+
+  static function setNCWindpool(dwelling:Dwelling_HOE) : boolean
+  {
+    if(isNCWindpool(dwelling))
+      dwelling.HOLocation.WindPool_Ext="Yes"
+   // else
+   //   dwelling.HOLocation.WindPool_Ext="no"
+
+      return true
+  }
+
+
   static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
     var tunaCodeAndPercent = new ArrayList<String>()
 

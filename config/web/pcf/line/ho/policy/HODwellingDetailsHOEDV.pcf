@@ -231,7 +231,7 @@
           value="dwelling.HOLocation.DistanceToFireHydrant"
           visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass))// &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext==typekey.TunaMatchLevel_Ext.TC_EXACT">
           <PostOnChange
-            onChange="dwelling.HOLocation.DwellingProtectionClassCode = null;if(dwelling.HOLocation.DistanceToFireHydrant&gt;1000){dwelling.HOLocation.OverrideDwellingPCCode_Ext=true}"/>
+            onChange="gw.lob.ho.HODwellingUtil_HOE.setProtectionClass(dwelling)//dwelling.HOLocation.DwellingProtectionClassCode = null;"/>
         </Input>
         <Input
           editable="true"
@@ -241,7 +241,7 @@
           value="dwelling.HOLocation.DistanceToFireStation"
           visible="(gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)) &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT) || (dwelling.HOLocation.DwellingProtectionClasscode!=null &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT)">
           <PostOnChange
-            onChange="dwelling.HOLocation.DwellingProtectionClassCode = null"/>
+            onChange="gw.lob.ho.HODwellingUtil_HOE.setProtectionClass(dwelling)"/>
         </Input>
         <!-- <BooleanRadioInput
           editable="true"
@@ -461,7 +461,7 @@
       </InputSet>
       <InputSet
         id="DistToMajorBOW_Ext"
-        visible="dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT)">
+        visible="dwelling.floodZipCodesToWatch(dwelling) &amp;&amp; (dwelling.FloodCoverage_Ext!=null &amp;&amp; dwelling.FloodCoverage_Ext) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL &amp;&amp; (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO3 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO6 || dwelling.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT))">
         <InputDivider/>
         <RangeInput
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"

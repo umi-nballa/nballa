@@ -13,7 +13,8 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNAProtClassSplitDistFD_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner.Dwelling.HOLocation?.DwellingProtectionClassCode.indexOf("/")!=-1  && homeowner.Dwelling.HOLocation?.DistanceToFireStation>5)
+    if(homeowner.Dwelling.HOLocation?.DwellingProtectionClassCode?.indexOf("/")!=-1  && homeowner.Dwelling.HOLocation?.DistanceToFireStation!=null
+        && homeowner.Dwelling.HOLocation?.DistanceToFireStation>5)
       return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()

@@ -745,7 +745,7 @@
         <InputDivider/>
         <InputSet
           id="bceg_Ext"
-          visible="dwelling.HOLocation.PolicyLocation.State.Code!=&quot;CA&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;HI&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; &amp;&amp; dwelling.isBCEGVisible">
+          visible="dwelling.isBCEGVisible//dwelling.HOLocation.PolicyLocation.State.Code!=&quot;CA&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;HI&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; ">
           <RangeInput
             available="!dwelling.HOLocation.OverrideBCEG_Ext"
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -854,7 +854,7 @@
             id="homePurchaseDate_Ext"
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseDate_Ext"
             value="dwelling.HomePurchaseDate_Ext"
-            visible="dwelling.HomeNewPurchase_Ext &amp;&amp; dwelling.HOPolicyType != TC_HO4"/>
+            visible="dwelling.HOPolicyType != TC_HO4//dwelling.HomeNewPurchase_Ext &amp;&amp; "/>
           <Input
             editable="true"
             id="moveInDate_Ext"

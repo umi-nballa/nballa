@@ -132,7 +132,6 @@ public final class HORateRoutineNames {
   public static final var HO_ALL_RISKS_SPECIAL_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOAllRiskSpecialCoverageDwellingRateRoutine"
   public static final var HO_ALL_RISKS_SPECIAL_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOAllRiskSpecialCoverageContentsRateRoutine"
   public static final var DP_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNADPReplacementCostPersonalPropertyRateRoutine"
-  public static final var COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_RATE_ROUTINE : String = "UNAHOCompleteHomeSprinklerSystemRateRoutine"
   public static final var HURRICANE_COV_RATE_ROUTINE : String = "UNAHO3HurricaneCoverageRateRoutine"
   public static final var COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_CONTENTS_RATE_ROUTINE : String = "UNAHOCompleteHomeSprinklerSystemContentsRateRoutine"
   public static final var LOSS_FREE_CREDIT_CONTENTS_RATE_ROUTINE : String = "UNAHOLossFreeCreditContentsRateRoutine"

@@ -674,6 +674,7 @@ class PolicyPeriodValidation extends PCValidationBase {
            val.ownershipPercentage(period)
           }
          val.trusteeOccupant(period)
+         val.validateAccountOrg(period)
        })
   }
    private function ownershipPercentage(period : PolicyPeriod){
@@ -695,6 +696,28 @@ class PolicyPeriodValidation extends PCValidationBase {
         }
     }
 
+  }
+
+  private function validateAccountOrg(period : PolicyPeriod){
+    //row 409 trust party not equal to Occupant
+      if (period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT && period.isHOType()
+        && period.TrustResidings.hasMatch( \ elt1 -> elt1.TrustResident == typekey.TrustResident_Ext.TC_OCCUPANTNOTPARTYTOTRUST)) {
+      Result.addWarning(period , "default",displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+      Result.addError(period , "default","Dwelling Fire policy may be better suited for this risk")
+    }
+    //402 , 403
+    if(period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT &&
+        (period.isHOType() || period.isDFType()) && period.Policy.Account.OccupyPrimaryResidence_Ext != null)  {
+      if(period.Policy.Account.OccupyPrimaryResidence_Ext)
+        Result.addWarning(period , "default","Please one owner as the Primary Named Insured and the other as Additional Named Insured with type Co-Owner")
+      else if (!period.Policy.Account.OccupyPrimaryResidence_Ext)
+        Result.addWarning(period , "default" ,"Please list only the resident owner as named insured.  The non-resident owner should be listed as Additional Insured -  Residence Premises")
+    }
+    //410
+    if (period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT && (period.isHOType() || period.isDFType())
+        && period.TrustResidings.hasMatch( \ elt1 -> !elt1.isTrustPartOfOrg )) {
+      Result.addWarning(period , "default",displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+    }
   }
 
 }

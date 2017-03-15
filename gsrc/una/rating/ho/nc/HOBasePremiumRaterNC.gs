@@ -25,8 +25,8 @@ class HOBasePremiumRaterNC {
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
-
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   private var _basePremiumRatingInfo : HOBasePremiumRatingInfo
 

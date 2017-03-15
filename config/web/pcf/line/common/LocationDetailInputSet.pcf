@@ -328,7 +328,7 @@ function getTC():TerritoryCode[]{
     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="HomeownersLine_HOE")
    
   if(polLocation.Branch.CPLineExists)
-     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="CPLine")// or  elt.PolicyLinePatternCode=="GLLine")
+     TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="CPLine" or  elt.PolicyLinePatternCode=="GLLine")
 
  // if(polLocation.Branch.CPLineExists)
  //   TC = polLocation.TerritoryCodes.where( \ elt -> elt.PolicyLinePatternCode=="GLLine")

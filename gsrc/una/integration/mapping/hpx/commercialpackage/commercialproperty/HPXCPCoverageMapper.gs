@@ -80,6 +80,8 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
       deductible.CoverageSubCd = currentCovTerm.PatternCode
       deductible.DeductibleDesc = (coverage.OwningCoverable as CPBuilding).CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.DisplayValue
       deductible.FormatText = (coverage.OwningCoverable as CPBuilding).CPBldgCov.CPBldgCovHurricaneDedType_EXTTerm.Value
+      deductible.NetChangeAmt.Amt = 0
+      deductible.WrittenAmt.Amt = 0
       deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return deductible
     }  else {

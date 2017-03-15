@@ -10,6 +10,7 @@ uses una.rating.ho.tx.ratinginfos.HOBasePremiumRatingInfo
 uses una.rating.ho.tx.ratinginfos.HORatingInfo
 
 uses java.util.Map
+uses una.rating.ho.tx.ratinginfos.HODPBasePremiumRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,15 +24,23 @@ class HOBasePremiumRaterTX {
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
+  private var _isDPPolicyType : boolean
+  private var _baseDPPremiumRatingInfo : HODPBasePremiumRatingInfo
+  private var _baseHOPremiumRatingInfo : HOBasePremiumRatingInfo
+  private var _rateRoutineParameterMap : Map<CalcRoutineParamName, Object>
+
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE -> HOCostType_Ext.TC_FIREDWELLING,
+      HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE -> HOCostType_Ext.TC_FIREPERSONALPROPERTY
   }
-  construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
-    _dwelling = dwelling
+  construct(line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
+    _dwelling = line.Dwelling
     _rateCache = rateCache
     _executor = executor
     _hoRatingInfo = hoRatingInfo
     _line = line
+    _isDPPolicyType = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.Dwelling?.HOPolicyType)
   }
 
   /**
@@ -40,8 +49,10 @@ class HOBasePremiumRaterTX {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
-    routinesToExecute.addAll(baseRoutinesToExecute)
+    if(_isDPPolicyType)
+      routinesToExecute.addAll(baseDPRoutinesToExecute)
+    else
+      routinesToExecute.addAll(baseHORoutinesToExecute)
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
     return costs
   }
@@ -52,13 +63,19 @@ class HOBasePremiumRaterTX {
   function executeRoutines(routinesToExecute: List<String>, dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var costs: List<CostData> = {}
     if (!routinesToExecute.Empty) {
+      if(_isDPPolicyType){
+        _baseDPPremiumRatingInfo = new HODPBasePremiumRatingInfo(_dwelling)
+        _rateRoutineParameterMap = createDPParameterSet()
+      } else{
+        _baseHOPremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
+        _rateRoutineParameterMap = createHOParameterSet()
+      }
       for (routine in routinesToExecute) {
-        var basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
         var costData = new HomeownersBaseCostData_HOE(dateRange.start, dateRange.end, _line.Branch.PreferredCoverageCurrency, _rateCache, _routinesToCostTypeMapping.get(routine))
         costData.init(_line)
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
-        var rateRoutineParameterMap = createParameterSet(costData, basePremiumRatingInfo)
-        _executor.executeBasedOnSliceDate(routine, rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
+        _rateRoutineParameterMap.put(TC_COSTDATA, costData)
+        _executor.executeBasedOnSliceDate(routine, _rateRoutineParameterMap, costData, dateRange.start, dateRange.end)
         if (costData != null){
           costs.add(costData)
         }
@@ -70,8 +87,9 @@ class HOBasePremiumRaterTX {
   /**
    *  returns the list of routines to execute
    */
-  private property get baseRoutinesToExecute(): List<String> {
+  private property get baseHORoutinesToExecute(): List<String> {
     var routines: List<String> = {}
+    routines.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
     if (_dwelling.HODW_Dwelling_Cov_HOEExists){
       if (_dwelling.HODW_Dwelling_Cov_HOE?.HODW_DwellingValuation_HOE_ExtTerm.Value == ValuationMethod.TC_REPLCOST) {
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
@@ -95,16 +113,36 @@ class HOBasePremiumRaterTX {
   }
 
   /**
+  *  returns the list of routines to execute
+  */
+  private property get baseDPRoutinesToExecute(): List<String> {
+     var routinesToExecute: List<String> = {}
+    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE)
+    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE)
+    return routinesToExecute
+  }
+
+  /**
    * Created parameter set to execute the base premium routines
    */
-  private function createParameterSet(costData: CostData, basePremiumRatingInfo: HOBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
+  private function createHOParameterSet(): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> _line,
         TC_RATINGINFO -> _hoRatingInfo,
         TC_DWELLING_EXT -> _dwelling,
-        TC_DWELLINGRATINGINFO_EXT -> basePremiumRatingInfo,
-        TC_State -> _line.BaseState.Code,
-        TC_COSTDATA -> costData
+        TC_DWELLINGRATINGINFO_EXT -> _baseHOPremiumRatingInfo,
+        TC_State -> _line.BaseState.Code
+    }
+  }
+
+  /**
+   * Created DP parameter set to execute the base premium routines
+   */
+  function createDPParameterSet(): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> _line,
+        TC_RATINGINFO -> _hoRatingInfo,
+        TC_DWELLINGRATINGINFO_EXT -> _baseDPPremiumRatingInfo
     }
   }
 }

@@ -22,6 +22,10 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _medicalPaymentsLimit : BigDecimal as MedicalPaymentsLimit
   var _ccEFTAccessDeviceForgeryCounterfeitMoneyLimit : BigDecimal as CCEFTAccessDeviceForgeryCounterfeitMoney
   var _buildingAdditionsAndAlterationsLimit: BigDecimal as BuildingAdditionsAndAlterationsLimit
+  var _hurricaneConstructionType: String as HurricaneConstructionType
+  var _ageOfHome: int as AgeOfHome = 0
+  var _yearBuilt: int as YearBuilt
+  var _numberOfStories: int as NumberOfStories
 
   construct(dwelling: Dwelling_HOE){
     super(dwelling)
@@ -53,6 +57,40 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
     if (dwelling?.HODW_BuildingAdditions_HOE_ExtExists){
       _buildingAdditionsAndAlterationsLimit = dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
     }
+    if(dwelling?.HODW_HurricaneCov_HOE_ExtExists){
+       if(dwelling?.HODW_HurricaneCov_HOE_Ext.HasHODW_HurricaneConstructionType_HOETerm){
+         _hurricaneConstructionType = dwelling?.HODW_HurricaneCov_HOE_Ext.HODW_HurricaneConstructionType_HOETerm?.DisplayName
+       }
+       _yearBuilt = dwelling?.OverrideYearbuilt_Ext? dwelling?.YearBuiltOverridden_Ext : dwelling?.YearBuilt
+       _ageOfHome = dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate - AgeOfHome
+       _numberOfStories = getNumberOfStoriesForDwelling(dwelling)
+    }
+  }
+
+  private static function getNumberOfStoriesForDwelling(dwelling : Dwelling_HOE) : int{
+    var noOfStories : NumberOfStories_HOE
+    if(dwelling?.OverrideStoriesNumber_Ext){
+       noOfStories = dwelling?.NoofStoriesOverridden_Ext
+    }else{
+       noOfStories = dwelling?.StoriesNumber
+    }
+    if(noOfStories == typekey.NumberOfStories_HOE.TC_ONESTORY_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_ONEANDHALFSTORIES_EXT){
+       return 1
+    } else if(noOfStories == typekey.NumberOfStories_HOE.TC_TWOSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_TWOANDHALFSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_THREESTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_THREEANDHALFSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_FOURSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_FOURANDHALFSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_FIVESTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_SIXSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_SEVENSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_EIGHTSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_NINESTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_TENSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_ELEVENSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_TWELVESTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_THIRTEENSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_FOURTEENSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_FIFTEENSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_SIXTEENSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_SEVENTEENSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_EIGHTEENSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_NINETEENSTORIES_EXT or noOfStories == typekey.NumberOfStories_HOE.TC_TWENTYSTORIES_EXT or
+        noOfStories == typekey.NumberOfStories_HOE.TC_MORETHANTWENTYSTORIES_EXT){
+        return 2
+    }
+    return 0
   }
 
 }

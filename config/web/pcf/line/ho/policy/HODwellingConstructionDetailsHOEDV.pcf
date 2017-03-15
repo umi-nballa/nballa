@@ -20,10 +20,17 @@
       recalculateOnRefresh="true"/>
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
-      name="setTunaFieldsMatchLevel"/>
+      name="setTunaFieldsMatchLevel"
+      recalculateOnRefresh="true"/>
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
-      name="initializeTunaSingleReturns"/>
+      name="initializeTunaSingleReturns"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.setNCWindpool(dwelling)"
+      name="setNCWindpool"
+      recalculateOnRefresh="true"
+      type="String"/>
     <InputColumn
       labelWidth="350">
       <InputSet
@@ -673,7 +680,7 @@
       </BooleanRadioInput>
       <InputSet
         id="WindPool_Ext"
-        visible="dwelling.isBCEGVisible //visibility conditions similar to bceg">
+        visible="dwelling.isWindpoolVisible //visibility conditions similar to bceg">
         <InputDivider/>
         <RangeInput
           available="!dwelling.HOLocation.OverrideWindPool_Ext"
@@ -681,7 +688,7 @@
           id="WindPoolTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.WindPoolTunaReturned_Ext"
           value="dwelling.HOLocation.WindPool_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)//, dwelling)"/>
         <Input
           available="!dwelling.HOLocation.OverrideWindPool_Ext"
           id="WindPoolMatchLevel_Ext"

@@ -26,6 +26,7 @@ uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
 uses java.math.BigDecimal
 uses una.utils.PropertiesHolder
 uses java.util.Date
+uses una.integration.mapping.hpx.common.composition.HPXAllFormsCompositionUnitMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -204,6 +205,11 @@ abstract class HPXPolicyMapper {
       var quoteMapper = new HPXQuoteMapper()
       var quote = quoteMapper.createQuote(policyPeriod)
       policyInfo.addChild(new XmlElement("QuoteInfo", quote))
+    }
+    var policyFormsMapper = new HPXAllFormsCompositionUnitMapper()
+    var allPolicyForms = policyFormsMapper.createDocumentForms(policyPeriod.NewlyAddedForms)
+    for (policyForm in allPolicyForms) {
+      policyInfo.addChild(new XmlElement("Form", policyForm))
     }
     return policyInfo
   }

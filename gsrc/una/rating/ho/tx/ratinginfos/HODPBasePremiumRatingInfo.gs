@@ -1,6 +1,8 @@
 package una.rating.ho.tx.ratinginfos
 
 uses java.math.BigDecimal
+uses una.rating.util.HOConstructionTypeMapper
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -18,6 +20,12 @@ class HODPBasePremiumRatingInfo {
   var _tier : String as Tier
   var _protectionClassCode: String as ProtectionClassCode
   var _aopDeductible : String as AOPDeductible
+  var _constructionType: RateTableConstructionType_Ext as ConstructionType
+  var _dwellingConstructionType : ConstructionType_HOE as DwellingConstructionType
+  var _isHailRoofResistantCreditApplicable : boolean as IsHailRoofResistantCreditApplicable
+  var _windHailExclusion : boolean as WindHailExclusion
+  var _policyType : HOPolicyType_HOE as PolicyType
+  var _dwellingUsage : DwellingUsage_HOE as DwellingUsage
   private var _dwelling : Dwelling_HOE
 
   construct(dwelling: Dwelling_HOE) {
@@ -31,7 +39,12 @@ class HODPBasePremiumRatingInfo {
     _territoryCode = dwelling?.HOLocation?.OverrideTerritoryCode_Ext? (dwelling?.HOLocation?.TerritoryCodeOverridden_Ext) : (dwelling?.HOLocation?.TerritoryCodeTunaReturned_Ext)
     _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
     _aopDeductible = dwelling?.HODW_SectionI_Ded_HOE?.HODW_OtherPerils_Ded_HOETerm?.DisplayValue
-
+    _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
+    _dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
+    _isHailRoofResistantCreditApplicable = dwelling.HailResistantRoofCredit_Ext
+    _windHailExclusion = dwelling.WHurricaneHailExclusion_Ext
+    _policyType = dwelling.HOLine?.HOPolicyType
+    _dwellingUsage = dwelling?.DwellingUsage
     //TODO : need  to update the wind pool,tier for TX state
     _windPool = true
     _tier = "Select"

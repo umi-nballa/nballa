@@ -199,7 +199,6 @@ public static function setSinkholeLimit (coverable:Coverable):void
    //if(coverable typeis CommercialPropertyLine)
   //{
     //var cpline = coverable as CommercialPropertyLine
-    print("### exists " + cpline.CPFloridaChangesCondoCondition_EXT)
      if(cpline.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION &&
          //cpline.CPFloridaChangesCondoCondition_EXT.Pattern.getExistence(cpline)==typekey.ExistenceType.TC_REQUIRED &&
         !cpline.CPFloridaChangesCondoCondition_EXTExists)
@@ -325,7 +324,6 @@ public static function setSinkholeLimit (coverable:Coverable):void
     {
       _logger.info(" covb " +cLine?.CPCoverageB )
       cLine?.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovB_Ext")?.first()?.setValueFromString(cLine.CPCoverageB.Code)
-      print("##### B covterm is " + cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovB_ExtTerm.OptionValue)
 
      }
 
@@ -335,7 +333,6 @@ public static function setSinkholeLimit (coverable:Coverable):void
 
       cLine?.AllCoverages.where( \ elt -> elt.PatternCode=="CPOrdinanceorLaw_EXT")?.first()?.CovTerms?.where( \ elt -> elt.PatternCode=="CPOrdinanceorLawCovC_Ext")?.first()?.setValueFromString(cLine.CPCoverageC.Code)
 
-      print("##### C covterm is " + cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovC_ExtTerm.OptionValue)
     }
 
     if(cLine?.CPCoverageBC!=null)
@@ -347,7 +344,6 @@ public static function setSinkholeLimit (coverable:Coverable):void
             cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovBC_ExtTerm.OptionValue=cLine.CPCoverageBC.Code
       //first()?.setValueFromString(cLine.CPCoverageBC.Code)
 
-      print("##### BC covterm is " + cBuilding.CPOrdinanceorLaw_EXT.CPOrdinanceorLawCovBC_ExtTerm.OptionValue)
 
     }
     if(cBuilding.CPOrdinanceorLaw_EXTExists)

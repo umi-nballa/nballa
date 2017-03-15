@@ -221,8 +221,43 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       deductible.Description = currentCovTerm.Pattern.Name
       var value = currentCovTerm.OptionValue.Value
       var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
-      deductible.FormatCurrencyAmt.Amt = getCovTermAmount(value, valueType)
-      deductible.FormatPct = getCovTermPercentage(value, valueType)
+      var dwellingLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmountFromMixed(dwellingLimit, value, valueType)
+      deductible.FormatPct = getCovTermPercentageFromMixed(dwellingLimit, value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      var amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND).ActualTermAmount.Amount
+      deductible.WrittenAmt.Amt = amt != null ? amt : 0
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
+    } else if(currentCovTerm.PatternCode == "HODW_WindHail_Ded_HOE") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Name
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      var dwellingLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmountFromMixed(dwellingLimit, value, valueType)
+      deductible.FormatPct = getCovTermPercentageFromMixed(dwellingLimit, value, valueType)
+      deductible.CoverageCd = coverage.PatternCode
+      deductible.CoverageSubCd = currentCovTerm.PatternCode
+      deductible.DeductibleDesc = ""
+      deductible.FormatText = ""
+      deductible.NetChangeAmt.Amt = 0
+      var amt = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersLineCost_EXT).firstWhere( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND).ActualTermAmount.Amount
+      deductible.WrittenAmt.Amt = amt != null ? amt : 0
+      deductible.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
+      return deductible
+    } else if(currentCovTerm.PatternCode == "HODW_NamedStrom_Ded_HOE_Ext") {
+      var deductible = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType()
+      deductible.Description = currentCovTerm.Pattern.Name
+      var value = currentCovTerm.OptionValue.Value
+      var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+      var dwellingLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
+      deductible.FormatCurrencyAmt.Amt = getCovTermAmountFromMixed(dwellingLimit, value, valueType)
+      deductible.FormatPct = getCovTermPercentageFromMixed(dwellingLimit, value, valueType)
       deductible.CoverageCd = coverage.PatternCode
       deductible.CoverageSubCd = currentCovTerm.PatternCode
       deductible.DeductibleDesc = ""

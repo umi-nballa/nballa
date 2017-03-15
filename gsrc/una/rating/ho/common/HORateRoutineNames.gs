@@ -124,6 +124,12 @@ public final class HORateRoutineNames {
   public static final var BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE : String = "UNAHODwellingFireBasePremiumRateRoutine"
   public static final var BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHODwellingFirePersonalPropertyRateRoutine"
   public static final var HO_VMM_DWELLING_RATE_ROUTINE : String = "UNAHOVMMDwellingRateRoutine"
-  public static final var HO_VMM_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHOVMMPersonalPropertyRateRoutine"
+  public static final var HO_VMM_CONTENTS_RATE_ROUTINE : String = "UNAHOVMMContentsRateRoutine"
+  public static final var HO_EXTENDED_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOExtendedCoverageDwellingRateRoutine"
+  public static final var HO_EXTENDED_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOExtendedCoverageContentsRateRoutine"
+  public static final var HO_ADDITIONAL_EXTENDED_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOAdditionalExtendedCoverageDwellingRateRoutine"
+  public static final var HO_ADDITIONAL_EXTENDED_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOAdditionalExtendedCoverageContentsRateRoutine"
+  public static final var HO_ALL_RISKS_SPECIAL_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOAllRiskSpecialCoverageDwellingRateRoutine"
+  public static final var HO_ALL_RISKS_SPECIAL_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOAllRiskSpecialCoverageContentsRateRoutine"
   public static final var DP_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNADPReplacementCostPersonalPropertyRateRoutine"
 }

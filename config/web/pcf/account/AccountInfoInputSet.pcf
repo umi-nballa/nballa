@@ -89,6 +89,10 @@
       </MenuItem>
     </Input>
     <Input
+      id="DbaName"
+      label="displaykey.Web.ContactDetail.DBA.Name"
+      value="primaryNamedInsured.ContactDenorm.DbaName_Ext"/>
+    <Input
       action="EditPolicyContactRolePopup.push(primaryNamedInsured, openForEdit)"
       id="Name"
       label="displaykey.Web.Policy.Account.Applicant.Name"
@@ -233,7 +237,7 @@
         label="displaykey.Web.PolicyInfo.AreAllPartiesWithOwnershipInterestInTheLLCNaturalPersons"
         required="true"
         value="period.Policy.Account.OwnershipInterestLLC_Ext"
-        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC"/>
+        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(period.HomeownersLine_HOE?.HOPolicyType)"/>
       <!-- row 41 -->
       <TypeKeyInput
         editable="true"
@@ -241,7 +245,7 @@
         label="displaykey.Web.PolicyInfo.HowManyPropertiesOfAnyTypeAreUnderCommonOwnershipWithTheMajorityOwnerOfTheLLC"
         required="true"
         value="period.Policy.Account.MajorityOwnerLLC_Ext"
-        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC">
+        visible="period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_LLC &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(period.HomeownersLine_HOE?.HOPolicyType)">
         <PostOnChange
           onChange="period.Policy.Account.raiseWarning_LLC(period)"/>
       </TypeKeyInput>
@@ -251,7 +255,7 @@
         id="UnderCommonOwnership"
         label="displaykey.Web.PolicyInfo.HowManyPropertiesOfAnyTypeAreUnderCommonOwnership"
         value="period.Policy.Account.UnderCommonOwnership_Ext"
-        visible="typekey.AccountOrgType.TF_COMMONOWNERSHIP_EXT.TypeKeys.contains(period.Policy.Account.AccountOrgType)">
+        visible="typekey.AccountOrgType.TF_COMMONOWNERSHIP_EXT.TypeKeys.contains(period.Policy.Account.AccountOrgType) &amp;&amp; typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(period.HomeownersLine_HOE?.HOPolicyType)">
         <PostOnChange
           onChange="period.Policy.Account.raiseWarning_NonLLC(period)"/>
       </TypeKeyInput>

@@ -23,6 +23,21 @@
       initialValue="gw.lob.cp.location.CPLocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,polLocation)"
       name="setTunaFieldsMatchLevel"/>
     <BooleanRadioInput
+      editable="true"
+      id="AddressOverride"
+      label="displaykey.Web.Account.Locations.AddressOverride"
+      required="true"
+      value="polLocation.AccountLocation.addressOverride_Ext">
+      <PostOnChange/>
+    </BooleanRadioInput>
+    <BooleanRadioInput
+      id="AddressScrubbed"
+      label="displaykey.Web.Account.Locations.AddressScrubbed"
+      required="true"
+      value="polLocation.AccountLocation.addressScrub_Ext">
+      <PostOnChange/>
+    </BooleanRadioInput>
+    <BooleanRadioInput
       editable="false//polLocation.AccountLocation.New"
       id="NonSpecificLocation"
       label="displaykey.Web.Account.Locations.LocationIsNonSpecific"
@@ -124,6 +139,7 @@
         editable="polLocation.AssociatedPolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE || (polLocation.AssociatedPolicyPeriod.Job.Subtype==typekey.Job.TC_POLICYCHANGE &amp;&amp; polLocation.AssociatedPolicyPeriod.EditEffectiveDate==polLocation.AssociatedPolicyPeriod.PeriodStart)"
         id="TerritoryCodeTunaReturned_Ext"
         label="displaykey.Web.CP.CPLocation.TerritoryCodeTunaReturned_Ext"
+        required="!polLocation.OverrideTerritoryCode_Ext"
         value="polLocation.TerritoryCodeTunaReturned_Ext"
         valueRange="tunaAppResponse.CPPTerritoryCodes"/>
       <Input
@@ -167,7 +183,7 @@
         id="TerritoryCode"
         label="displaykey.Web.Policy.LocationContainer.Location.TerritoryCode(territoryCode.PolicyLinePattern.DisplayName)"
         pickLocation="TerritoryCodeSearchPopup.push(polLocation.Branch, territoryCode)"
-        required="una.config.Locationutil.isTerritoryCodeRequired(territoryCode, line)//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"
+        required="una.config.Locationutil.isTerritoryCodeRequired(territoryCode, line) &amp;&amp; polLocation.OverrideTerritoryCode_Ext//line!=null &amp;&amp; line.equals(&quot;cpline&quot;) &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"
         value="territoryCode.Code"
         visible="polLocation.OverrideTerritoryCode_Ext //&amp;&amp; line!=null &amp;&amp; line.equals(&quot;cpline&quot;)// &amp;&amp; territoryCode.PolicyLinePattern.CodeIdentifier==&quot;CPLine&quot;"/>
       <ContentInput

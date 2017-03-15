@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
   <PanelSet
     id="TrustPanelSet"
-    visible="true">
+    visible="policyPeriod.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT">
     <Require
       name="policyPeriod"
       type="PolicyPeriod"/>
@@ -18,7 +18,8 @@
           trueLabel="&quot;Yes&quot;"
           value="policyPeriod.isMultipleTrust"
           visible="policyPeriod.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT">
-          <PostOnChange/>
+          <PostOnChange
+            onChange="createTrustResidings()"/>
         </BooleanRadioInput>
         <TypeKeyInput
           editable="true"
@@ -32,13 +33,13 @@
       </InputColumn>
     </DetailViewPanel>
     <PanelRef
-      def="TrustResidingPanelSet(policyPeriod.TrustResidings, policyPeriod)"
+      def="TrustResidingPanelSet(policyPeriod.TrustResidings.toList(), policyPeriod)"
       id="TrustList"/>
     <Code><![CDATA[function createTrustResidings(){
-  var countTrust =policyPeriod.NoOfTrustInvolved.Code.toInt()
+  var countTrust =  0 
+  if (policyPeriod.NoOfTrustInvolved.Code != null && policyPeriod.isMultipleTrust)
+   countTrust =policyPeriod.NoOfTrustInvolved.Code.toInt()
   var storedTrust =  policyPeriod.TrustResidings.Count
-   //gw.transaction.Transaction.runWithNewBundle(\bundle -> {
-//  var localaccount = bundle.add(policyPeriod)
   if (countTrust > storedTrust){
     countTrust = countTrust-storedTrust
     while(countTrust > 0) {
@@ -55,6 +56,6 @@
     }
     }
   policyPeriod.refresh()
-  }//)}]]></Code>
+  }]]></Code>
   </PanelSet>
 </PCF>

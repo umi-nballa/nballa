@@ -38,4 +38,5 @@ class HORatingInfo {
   var _additionalExtendedCoverageContentsPremium : BigDecimal as AdditionalExtendedCoverageContentsPremium = 0.0
   var _allRiskSpecialCoverageDwellingPremium : BigDecimal as AllRiskSpecialCoverageDwellingPremium = 0.0
   var _allRiskSpecialCoverageContentsPremium : BigDecimal as AllRiskSpecialCoverageContentsPremium = 0.0
+  var _completeHomeSprinklerSystemCredit : BigDecimal as CompleteHomeSprinklerSystemCredit = 0.0
 }

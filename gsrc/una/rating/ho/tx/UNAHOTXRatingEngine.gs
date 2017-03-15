@@ -139,7 +139,10 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     _discountOrSurchargeRatingInfo = new HODiscountsOrSurchargesRatingInfo(PolicyLine, _hoRatingInfo.TotalBasePremium)
-    if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling?.HOPolicyType)){
+    if(_isDPPolicyType){
+      if(dwelling?.DwellingProtectionDetails?.SprinklerSystemAllAreas)
+        rateCompleteHomeSprinklerSystemCredit(dateRange)
+
       if(dwelling?.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT and dwelling?.DPDW_Personal_Property_HOE?.DPDW_PropertyValuation_HOE_ExtTerm.Value == ValuationMethod.TC_PERSPROP_REPLCOST)
         rateReplacementCostOnPersonalProperty(dateRange)
     } else{
@@ -287,7 +290,6 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   function rateFireProtectiveDevicesCredit(dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateFireProtectiveDevicesCredit", this.IntrinsicType)
-    _discountOrSurchargeRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.FIRE_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_FIREPROTECTIVEDEVICESCREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
@@ -297,6 +299,23 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     if(_logger.DebugEnabled)
       _logger.debug("Fire Protective Devices Credit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Complete Home Sprinkler System Credit
+   */
+  function rateCompleteHomeSprinklerSystemCredit(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateCompleteHomeSprinklerSystemCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_COMPLETEHOMESPRINKLERSYSTEMCREDIT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.CompleteHomeSprinklerSystemCredit = costData?.ActualTermAmount
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Complete Home Sprinkler System Credit Rated Successfully", this.IntrinsicType)
   }
 
   /**

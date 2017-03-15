@@ -229,7 +229,7 @@
         label="displaykey.Web.PolicyInfo.DoAllOwnersOccupyTheDwellingAsTheirPrimaryResidence"
         required="true"
         value="period.Policy.Account.OccupyPrimaryResidence_Ext"
-        visible="period.isHOType() and  (period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_INDIVIDUALSPOUSE_EXT or period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT or period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_MORETHAN2IND_EXT)"/>
+        visible="(period.isHOType() || period.isDFType())and  (period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_INDIVIDUALSPOUSE_EXT or period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT or period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_MORETHAN2IND_EXT)"/>
       <!-- row 40 -->
       <BooleanRadioInput
         editable="true"

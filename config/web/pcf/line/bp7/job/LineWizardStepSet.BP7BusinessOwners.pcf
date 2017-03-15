@@ -20,7 +20,7 @@
     <JobWizardStep
       beforeSave="gw.lob.bp7.line.BP7LineValidation.validateLineStep(policyPeriod.BP7Line)"
       id="LineCoverages"
-      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper);  gw.lob.bp7.BP7PostOnChangeHandler.updateProdComplOpsAggrLimit(policyPeriod.BP7Line)}"
+      onEnter="if (openForEdit) { policyPeriod.BP7Line.syncAllCoverablesAndModifiers(jobWizardHelper);  gw.lob.bp7.BP7PostOnChangeHandler.updateProdComplOpsAggrLimit(policyPeriod.BP7Line); policyPeriod.BP7Line.syncQuestions()}"
       save="policyPeriod.OpenForEdit"
       screen="BP7LineScreen(policyPeriod, openForEdit,jobWizardHelper)"
       title="displaykey.Web.Policy.BP7.BusinessownersLine"/>

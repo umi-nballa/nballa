@@ -11,7 +11,11 @@ uses una.integration.framework.exception.IErrorCode
 enum UnaErrorCode implements IErrorCode {
   INVALID_PI_FILENAME ("ERR-PROPERTY-INSPECTIONS-001", "Inavalid File Name Format"),
   DATA_INSERTION_FAILURE("ERR-PROPERTY-INSPECTIONS-002", "Unable to Insert data into Integration db on the first Payment"),
-  DOCUMENT_UPLOAD_FAILURE("ERR-PROPERTY-INSPECTIONS-003", "Unable to Upload the Inspections ordered report to Onbase")
+  DOCUMENT_UPLOAD_FAILURE("ERR-PROPERTY-INSPECTIONS-003", "Unable to Upload the Inspections ordered report to Onbase"),
+  PATTERN_CODE_NOT_PRESENT("ERR-PROPERTY-INSPECTIONS-004", "Pattern Code is not present"),
+  ASSIGNABLE_QUEUE_NOT_PRESENT("ERR-PROPERTY-INSPECTIONS-005", "Assignable Queue is not present"),
+  GROUP_NOT_PRESENT("ERR-PROPERTY-INSPECTIONS-006","Group is not present"),
+  NOT_ABLE_TO_ASSIGN_ACTIVITY_TO_QUEUE("ERR-PROPERTY-INSPECTIONS-007","Not able to Assign the Activity to the queue ")
 
   var _number: String
   var _message: String

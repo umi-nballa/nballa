@@ -41,6 +41,34 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
 
 
+  static function setProtectionClass(dwelling:Dwelling_HOE):boolean
+  {
+    if(dwelling.HOLocation.DistanceToFireHydrant>1000 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+      {
+        dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+        dwelling.HOLocation.DwellingPCCodeOverridden_Ext= dwelling.HOLocation.DwellingProtectionClasscode.substring(2)
+      }
+
+    if(dwelling.HOLocation.DistanceToFireHydrant<1000 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+    {
+      dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+      dwelling.HOLocation.DwellingPCCodeOverridden_Ext= dwelling.HOLocation.DwellingProtectionClasscode.substring(0,1)
+    }
+
+    if(dwelling.HOLocation.DistanceToFireHydrant<1000 && dwelling.HOLocation.DistanceToFireStation<5 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+    {
+      dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+      dwelling.HOLocation.DwellingPCCodeOverridden_Ext= dwelling.HOLocation.DwellingProtectionClasscode.substring(0,1)
+    }
+
+    if(dwelling.HOLocation.DistanceToFireStation>5 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
+    {
+      dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
+      dwelling.HOLocation.DwellingPCCodeOverridden_Ext= typekey.ProtectionClassCode_Ext.TC_10
+    }
+    return true
+  }
+
   static function isFHFSvisible(tunaresponse:List<String>):boolean
   {
     var retval = false
@@ -913,6 +941,38 @@ class HODwellingUtil_HOE {
     return false
   }
 
+
+  static function getWindpoolCodes(tunaValues : List<PropertyDataModel>, dwelling:Dwelling_HOE) : List<String>
+  {
+    if(dwelling.PolicyPeriod.BaseState.Code!="NC")
+      return getTunaCodes(tunaValues)
+    else
+    {
+      return null//{"Yes","No"}.toList()
+    }
+  }
+
+  static function isNCWindpool(dwelling:Dwelling_HOE):boolean
+  {
+    var countylist = {"Beaufort", "Brunswick", "Camden", "Carteret", "Chowan", "Craven", "Currituck", "Dare", "Hyde", "Jones", "New Hanover", "Onslow"
+    ,"Pamlico",  "Pasquotank", "Pender", "Perquimans", "Tyrrell", "Washington" }
+    if(dwelling.PolicyPeriod.BaseState.Code=="NC" && countylist.contains(dwelling.PolicyPeriod.PrimaryLocation.County))
+      return true
+    else
+      return false
+  }
+
+  static function setNCWindpool(dwelling:Dwelling_HOE) : boolean
+  {
+    if(isNCWindpool(dwelling))
+      dwelling.HOLocation.WindPool_Ext="Yes"
+   // else
+   //   dwelling.HOLocation.WindPool_Ext="no"
+
+      return true
+  }
+
+
   static function getTunaCodes(tunaValues : List<PropertyDataModel>) : List<String> {
     var tunaCodeAndPercent = new ArrayList<String>()
 
@@ -1020,6 +1080,7 @@ class HODwellingUtil_HOE {
 
   /*
    * FLOOD should be available - CA HO, AZ HO, TX HO, SC HO, HI HO, NV HO, HI DP
+   *                             CA HO, AZ HO, TX HO, SC HO, HI HO, NV HO, HI DP
    * Homeowners should be available - SC HO, NV HO, HI DP
    * Dwelling Fire should be available -  TX HO, CA HO, SC HO, HI HO, NV HO, HI DP
    */
@@ -1218,4 +1279,92 @@ class HODwellingUtil_HOE {
     return (dwelling.FloodCoverage_Ext != null and dwelling.FloodCoverage_Ext) or !floodZoneOverideTypes.contains(dwelling.FloodZoneOrOverride) or (dwelling.PostFIRM_Ext != null and dwelling.PostFIRM_Ext)
   }
 
+  static function earthquakezoneValue(dwelling:Dwelling_HOE):ArrayList<typekey.EQTerritoryZone_Ext>
+  {
+    var retarray:ArrayList<typekey.EQTerritoryZone_Ext>= new ArrayList<typekey.EQTerritoryZone_Ext>()
+     /*
+     NC HO, NC LPP
+NC HO, NC LPP
+NC HO, NC LPP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+CA HO, CA DP
+NV HO
+NV HO
+NV HO
+NV HO
+SC HO
+SC HO
+SC HO
+SC HO
+AZ HO
+AZ HO
+
+      */
+    if(dwelling.PolicyPeriod.BaseState.Code=="CA")
+      {
+        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
+            typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType))
+        {
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_A)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_B)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_C)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_D)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_E)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_F)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_G)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_H)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_I)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_J)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_K)
+        }
+      }
+
+      if(dwelling.PolicyPeriod.BaseState.Code=="NC")
+      {
+        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
+            typekey.HOPolicyType_HOE.TC_LPP_EXT==dwelling.HOPolicyType)
+        {
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_3)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_4)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_5)
+          }
+
+
+  }
+
+    if(dwelling.PolicyPeriod.BaseState.Code=="NV" ||dwelling.PolicyPeriod.BaseState.Code=="SC")
+    {
+      if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
+      {
+        retarray.add(typekey.EQTerritoryZone_Ext.TC_1)
+        retarray.add(typekey.EQTerritoryZone_Ext.TC_3)
+        retarray.add(typekey.EQTerritoryZone_Ext.TC_4)
+        retarray.add(typekey.EQTerritoryZone_Ext.TC_2)
+      }
+
+
+    }
+
+      if(dwelling.PolicyPeriod.BaseState.Code=="AZ" )
+      {
+        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
+        {
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_1)
+          retarray.add(typekey.EQTerritoryZone_Ext.TC_2)
+          }
+      }
+
+    return retarray
+
+
+  }
 }// End of class

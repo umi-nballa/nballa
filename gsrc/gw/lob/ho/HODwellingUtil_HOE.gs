@@ -1311,7 +1311,7 @@ AZ HO
       */
     if(dwelling.PolicyPeriod.BaseState.Code=="CA")
       {
-        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
             typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType))
         {
           retarray.add(typekey.EQTerritoryZone_Ext.TC_A)
@@ -1330,7 +1330,7 @@ AZ HO
 
       if(dwelling.PolicyPeriod.BaseState.Code=="NC")
       {
-        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
             typekey.HOPolicyType_HOE.TC_LPP_EXT==dwelling.HOPolicyType)
         {
           retarray.add(typekey.EQTerritoryZone_Ext.TC_3)
@@ -1343,7 +1343,7 @@ AZ HO
 
     if(dwelling.PolicyPeriod.BaseState.Code=="NV" ||dwelling.PolicyPeriod.BaseState.Code=="SC")
     {
-      if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
+      if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
       {
         retarray.add(typekey.EQTerritoryZone_Ext.TC_1)
         retarray.add(typekey.EQTerritoryZone_Ext.TC_3)
@@ -1356,7 +1356,7 @@ AZ HO
 
       if(dwelling.PolicyPeriod.BaseState.Code=="AZ" )
       {
-        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
         {
           retarray.add(typekey.EQTerritoryZone_Ext.TC_1)
           retarray.add(typekey.EQTerritoryZone_Ext.TC_2)

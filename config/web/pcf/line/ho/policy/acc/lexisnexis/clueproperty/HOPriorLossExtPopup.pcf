@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../../../../../pcf.xsd">
   <Popup
     afterCommit="TopLocation.commit(); TopLocation.startEditing(); "
-    afterEnter="if (thisLoss == null and startInEdit == true and openForEdit)                       { thisLoss = createNewLoss(policyPeriod); }"
+    afterEnter="if (thisLoss == null and startInEdit == true and openForEdit &amp;&amp; policyPeriod.HomeownersLine_HOEExists)                       { thisLoss = createNewLoss(policyPeriod); }"
     beforeCommit="thisLoss.ChargeableClaim = una.integration.lexisnexis.util.ClueUtilInfo.calculateChargeable(thisLoss,policyPeriod)"
     canEdit="openForEdit"
     id="HOPriorLossExtPopup"

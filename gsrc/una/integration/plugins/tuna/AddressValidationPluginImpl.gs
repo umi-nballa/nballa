@@ -7,7 +7,7 @@ uses una.integration.service.gateway.tuna.TunaInterface
 uses una.logging.UnaLoggerCategory
 uses java.lang.Exception
 uses java.util.regex.Pattern
-
+uses org.apache.commons.lang3.StringUtils
 
 /**
  * Address Service Plugin Implementation class for validating address from tuna.
@@ -62,8 +62,18 @@ class AddressValidationPluginImpl extends DefaultAddressAutocompletePlugin {
             address.County = finalRes.CountyName
 
             logger.debug("Converting String to State Type " + finalRes.State)
-          } else {
-            throw new gw.api.util.DisplayableException (finalRes.Note)
+          }else if(finalRes.ScrubStatus == 2) {
+            if(StringUtils.isBlank(address.County) == true && StringUtils.isNotBlank(finalRes.CountyName)){
+              address.County = finalRes.CountyName
+            }
+            if(StringUtils.isBlank(finalRes.Note)){
+              throw new gw.api.util.DisplayableException ("Unable to verify address.")
+            }else{
+              throw new gw.api.util.DisplayableException (finalRes.Note)
+            }
+          }
+          else {
+            throw new gw.api.util.DisplayableException ("Undefined TUNA query precision result. Please contact support.")
           }
         } else {
           throw new gw.api.util.DisplayableException (displaykey.AutoFill.Tuna.ZipCode)

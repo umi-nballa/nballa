@@ -46,24 +46,24 @@ abstract class AbstractPolicyPeriodBatchProcess extends BatchProcessBase{
     EligiblePolicyPeriods?.eachWithIndex( \ eligiblePeriod, i -> {
       LOGGER.info("Begin executing batch operation for job number ${eligiblePeriod.Job.JobNumber}; ${i + 1} of ${totalPolicies}")
 
-      gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-        eligiblePeriod = bundle.add(eligiblePeriod)
-        eligiblePeriod = eligiblePeriod.getSlice(getExecutionSliceDate(eligiblePeriod))
+      try{
+        gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+          eligiblePeriod = bundle.add(eligiblePeriod)
+          eligiblePeriod = eligiblePeriod.getSlice(getExecutionSliceDate(eligiblePeriod))
 
-        if(!TerminateRequested){
-          try{
+          if(!TerminateRequested){
             doWorkPerPolicy(eligiblePeriod)
             createActivityPerPolicy(eligiblePeriod)
             incrementOperationsCompleted()
-          }catch(e : Exception){
-            LOGGER.error(PerPolicyExceptionBlock(eligiblePeriod, e))
-            onPerPolicyExceptionOccurred(eligiblePeriod)
-            incrementOperationsFailed()
           }
-        }
-      }, ExecutionUserName)
+        }, ExecutionUserName)
 
-      LOGGER.info("Bundle committed for job number ${eligiblePeriod.Job.JobNumber}")
+        LOGGER.info("Bundle committed for job number ${eligiblePeriod.Job.JobNumber}")
+      }catch(e : Exception){
+        LOGGER.error(PerPolicyExceptionBlock(eligiblePeriod, e))
+        onPerPolicyExceptionOccurred(eligiblePeriod)
+        incrementOperationsFailed()
+      }
     })
 
     try{

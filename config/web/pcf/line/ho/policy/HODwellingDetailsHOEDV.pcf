@@ -380,6 +380,7 @@
           editable="true"
           id="TotalSqFtValUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.TotalSqFtValUserEntered_Ext"
+          requestValidationExpression="VALUE.Numeric ? null : displaykey.Validator.PositiveInteger(VALUE)"
           required="dwelling.OverrideTotalSqFtVal_Ext"
           value="dwelling.TotalSqFtValOverridden_Ext"
           visible="dwelling.OverrideTotalSqFtVal_Ext">
@@ -542,20 +543,20 @@
       <InputSet
         id="CondoValuationIDValue_Ext">
         <InputDivider/>
-        <RangeInput
+        <!-- <RangeInput
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="CondoValuationIDValueTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.CondoValuationIDValue_Ext"
           value="dwelling.CondoValuationIDValue_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.CondoValuationID)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.CondoValuationID)"/> -->
       </InputSet>
-      <Input
+      <!-- <Input
         editable="true"
         id="DwellingReplacement"
         label="displaykey.Web.Homeowners.Dwelling.EstReplacementCost"
         numCols="10"
         required="false"
-        value="dwelling.ReplacementCost"/>
+        value="dwelling.ReplacementCost"/> -->
       <!-- <Input
         id="iso360ValueID_Ext"
         label="displaykey.Web.Homeowners.HOLocation.ISO360ValueID_Ext"
@@ -588,6 +589,7 @@
           editable="true"
           id="ACVValueUserEntered_Ext"
           label="displaykey.Web.Homeowners.HOLocation.ACVValueUserEntered_Ext"
+          requestValidationExpression="VALUE.Numeric ? null : displaykey.Validator.PositiveInteger(VALUE)"
           required="dwelling.HOLocation.OverrideACVValue_Ext"
           value="dwelling.HOLocation.ACVValueOverridden_Ext"
           visible="dwelling.HOLocation.OverrideACVValue_Ext"/>
@@ -792,6 +794,7 @@
           editable="true"
           id="NumUnitsFireDivision_Ext"
           label="displaykey.Web.Homeowners.Dwelling.NumUnitsFireDivision_Ext"
+          requestValidationExpression="VALUE.Numeric ? null : displaykey.Validator.PositiveInteger(VALUE)"
           required="false"
           value="dwelling.NumUnitsFireDivision_Ext"
           visible="dwelling.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT and ( (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_HI or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC)) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_FL or dwelling.PolicyPeriod.BaseState == TC_HI)) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC) )"/>
@@ -854,7 +857,7 @@
             id="homePurchaseDate_Ext"
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseDate_Ext"
             value="dwelling.HomePurchaseDate_Ext"
-            visible="dwelling.HOPolicyType != TC_HO4//dwelling.HomeNewPurchase_Ext &amp;&amp; "/>
+            visible="dwelling.HOPolicyType != TC_HO4 &amp;&amp; dwelling.HomeNewPurchase_Ext "/>
           <Input
             editable="true"
             id="moveInDate_Ext"
@@ -866,7 +869,7 @@
             id="homePurchaseMMYYYY_Ext"
             label="displaykey.Web.Homeowners.HODwelling.HomePurchaseMMYYYY_Ext"
             value="dwelling.HomePurchaseMMYYYY_Ext"
-            visible="true//!dwelling.HomeNewPurchase_Ext"/>
+            visible="!dwelling.HomeNewPurchase_Ext"/>
         </InputSet>
         <InputDivider/>
         <InputSet
@@ -1409,6 +1412,7 @@
             editable="true"
             id="BaseFloodElValUserEntered_Ext"
             label="displaykey.Web.Homeowners.HOLocation.BaseFloodElValUserEntered_Ext"
+            requestValidationExpression="VALUE.Numeric ? null : displaykey.Validator.PositiveInteger(VALUE)"
             required="dwelling.OverrideBaseFloodElVal_Ext"
             value="dwelling.BaseFloodElValOverridden_Ext"
             visible="dwelling.OverrideBaseFloodElVal_Ext"/>
@@ -1486,7 +1490,7 @@
           label="displaykey.Web.Homeowners.Dwelling.EarthquakeCoverage_Ext"
           required="false"
           value="dwelling.EarthquakeCoverage_Ext"
-          visible="((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_CA) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC)">
+          visible="((HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &amp;&amp; (dwelling.PolicyPeriod.BaseState == TC_CA or dwelling.PolicyPeriod.BaseState == TC_SC or dwelling.PolicyPeriod.BaseState == TC_NV or dwelling.PolicyPeriod.BaseState == TC_NC))) or (dwelling.HOPolicyType == TC_DP3_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_CA) or (dwelling.HOPolicyType == TC_LPP_Ext &amp;&amp; dwelling.PolicyPeriod.BaseState == TC_NC) or dwelling.PolicyPeriod.BaseState == TC_AZ">
           <PostOnChange
             target="EarthquakeCovQns_Ext"/>
         </BooleanRadioInput>

@@ -22,7 +22,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
   
   function validateRequiredFields() {
     Context.addToVisited(this, "validateRequiredFields")
-    validateDwellingMainFields()
+   // validateDwellingMainFields()
     validateDwellingProtectionFields()
     validateDwellingConstructionFields()
     validateDataForBatchLoadDataFields()

@@ -40,23 +40,30 @@ abstract class AbstractPolicyPeriodBatchProcess extends BatchProcessBase{
   }
 
   final override function doWork(){
-    EligiblePolicyPeriods?.each( \ eligiblePeriod -> {
-      gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
-        eligiblePeriod = bundle.add(eligiblePeriod)
-        eligiblePeriod = eligiblePeriod.getSlice(getExecutionSliceDate(eligiblePeriod))
+    var totalPolicies = EligiblePolicyPeriods.Count
+    LOGGER.info("Executing batch process ${this.Type.DisplayName}.  Total number of EligiblePolicyPeriods = ${totalPolicies}")
 
-        if(!TerminateRequested){
-          try{
+    EligiblePolicyPeriods?.eachWithIndex( \ eligiblePeriod, i -> {
+      LOGGER.info("Begin executing batch operation for job number ${eligiblePeriod.Job.JobNumber}; ${i + 1} of ${totalPolicies}")
+
+      try{
+        gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+          eligiblePeriod = bundle.add(eligiblePeriod)
+          eligiblePeriod = eligiblePeriod.getSlice(getExecutionSliceDate(eligiblePeriod))
+
+          if(!TerminateRequested){
             doWorkPerPolicy(eligiblePeriod)
             createActivityPerPolicy(eligiblePeriod)
             incrementOperationsCompleted()
-          }catch(e : Exception){
-            LOGGER.error(PerPolicyExceptionBlock(eligiblePeriod, e))
-            onPerPolicyExceptionOccurred(eligiblePeriod)
-            incrementOperationsFailed()
           }
-        }
-      }, ExecutionUserName)
+        }, ExecutionUserName)
+
+        LOGGER.info("Bundle committed for job number ${eligiblePeriod.Job.JobNumber}")
+      }catch(e : Exception){
+        LOGGER.error(PerPolicyExceptionBlock(eligiblePeriod, e))
+        onPerPolicyExceptionOccurred(eligiblePeriod)
+        incrementOperationsFailed()
+      }
     })
 
     try{

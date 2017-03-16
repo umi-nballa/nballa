@@ -3,6 +3,7 @@ package una.rating.ho.common
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses una.rating.util.HOProtectionDetailsMapper
+uses java.util.Date
 
 
 /**
@@ -26,6 +27,8 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _protectionClassCode: String as ProtectionClassCode
   var _bcegGrade : int as BCEGGrade
   var _protectionDetails : String as ProtectionDetails
+  var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
+  var _priorLosses : int as PriorLosses = 0
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line
@@ -44,6 +47,15 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     var dwelling = line?.Dwelling
     var state = line?.BaseState
     _protectionDetails = HOProtectionDetailsMapper.getProtectionDetails(dwelling, state)
+
+    if(line?.HOPriorLosses_Ext != null){
+      _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
+    }
+
+    var policyPeriod = line?.Dwelling?.PolicyPeriod
+    var originalEffectiveDate = policyPeriod?.Policy.OriginalEffectiveDate
+    var editEffectiveDate = policyPeriod?.EditEffectiveDate
+    _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
   }
 
   property get AgeOfHome() : int {
@@ -52,6 +64,18 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
 
    property get YearForAgeOfHomeCalc() : int{
     return Line.Dwelling.OverrideYearbuilt_Ext? Line.Dwelling.YearBuiltOverridden_Ext : Line.Dwelling.YearBuilt
+  }
+
+  private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {
+    if (originalEffectiveDate == null || editEffectiveDate == null){
+      return 0
+    }
+    var time = (editEffectiveDate.YearOfDate - originalEffectiveDate.YearOfDate)
+    if (time <= 0)
+      return 0
+    else {
+      return time
+    }
   }
 
 }

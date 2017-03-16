@@ -64,7 +64,28 @@ class SectionICovTermRuntimeDefaultCalculator extends HOCovTermRuntimeDefaultCal
     }else if(residenceTypeFactor != null){
       result = residenceTypeFactor
     }else{
-      result = genericFactor
+      result = applyExceptionIfNeeded(genericFactor, covTerm)
+    }
+
+    return result
+  }
+
+  private function applyExceptionIfNeeded(factor : Double, covTerm : CovTerm) : Double{
+    var result = factor
+    var coverable = covTerm.Clause.OwningCoverable
+
+    if(coverable typeis Dwelling_HOE
+       and covTerm.PatternCode == "HODW_LossOfUseDwelLimit_HOE"
+       and coverable.HOLine.BaseState == TC_HI
+       and coverable.HOLine.HOPolicyType == TC_HO6){
+
+      if(coverable.PersonalPropertyLimitCovTerm.Value != null){
+        var calculatedDefault = coverable.PersonalPropertyLimitCovTerm.Value * result
+
+        if(calculatedDefault > 25000){
+          result = 25000
+        }
+      }
     }
 
     return result

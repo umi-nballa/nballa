@@ -40,7 +40,11 @@ abstract class AbstractPolicyPeriodBatchProcess extends BatchProcessBase{
   }
 
   final override function doWork(){
+    LOGGER.info("Executing batch process ${this.Type.DisplayName}.  Total number of EligiblePolicyPeriods = ${EligiblePolicyPeriods.Count}")
+
     EligiblePolicyPeriods?.each( \ eligiblePeriod -> {
+      LOGGER.info("Begin executing batch operation for job number ${eligiblePeriod.Job.JobNumber}")
+
       gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
         eligiblePeriod = bundle.add(eligiblePeriod)
         eligiblePeriod = eligiblePeriod.getSlice(getExecutionSliceDate(eligiblePeriod))
@@ -57,6 +61,8 @@ abstract class AbstractPolicyPeriodBatchProcess extends BatchProcessBase{
           }
         }
       }, ExecutionUserName)
+
+      LOGGER.info("Bundle committed for job number ${eligiblePeriod.Job.JobNumber}")
     })
 
     try{

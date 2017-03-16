@@ -22,7 +22,6 @@ class HOCommonDwellingRatingInfo {
   var _otherStructuresIncreasedLimit: BigDecimal as OtherStructuresIncreasedLimit
   var _isPersonalLiabilityLimitIncreased : boolean as IsPersonalLiabilityLimitIncreased
 
-
   construct(dwelling : Dwelling_HOE ){
     _dwellingLimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
     _personalPropertyLimit = (dwelling.HODW_Personal_Property_HOEExists)? dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0

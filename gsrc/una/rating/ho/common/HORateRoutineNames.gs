@@ -137,4 +137,5 @@ public final class HORateRoutineNames {
   public static final var LOSS_FREE_CREDIT_CONTENTS_RATE_ROUTINE : String = "UNAHOLossFreeCreditContentsRateRoutine"
   public static final var COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_DWELLING_RATE_ROUTINE : String = "UNAHOCompleteHomeSprinklerSystemDwellingRateRoutine"
   public static final var LOSS_FREE_CREDIT_DWELLING_RATE_ROUTINE : String = "UNAHOLossFreeCreditDwellingRateRoutine"
+  public static final var VACANY_CLAUSE_COVERAGE_RATE_ROUTINE : String = "UNAHOVacancyClauseCoverageRateRoutine"
 }

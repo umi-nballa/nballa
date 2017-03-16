@@ -40,10 +40,11 @@ abstract class AbstractPolicyPeriodBatchProcess extends BatchProcessBase{
   }
 
   final override function doWork(){
-    LOGGER.info("Executing batch process ${this.Type.DisplayName}.  Total number of EligiblePolicyPeriods = ${EligiblePolicyPeriods.Count}")
+    var totalPolicies = EligiblePolicyPeriods.Count
+    LOGGER.info("Executing batch process ${this.Type.DisplayName}.  Total number of EligiblePolicyPeriods = ${totalPolicies}")
 
-    EligiblePolicyPeriods?.each( \ eligiblePeriod -> {
-      LOGGER.info("Begin executing batch operation for job number ${eligiblePeriod.Job.JobNumber}")
+    EligiblePolicyPeriods?.eachWithIndex( \ eligiblePeriod, i -> {
+      LOGGER.info("Begin executing batch operation for job number ${eligiblePeriod.Job.JobNumber}; ${i + 1} of ${totalPolicies}")
 
       gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
         eligiblePeriod = bundle.add(eligiblePeriod)

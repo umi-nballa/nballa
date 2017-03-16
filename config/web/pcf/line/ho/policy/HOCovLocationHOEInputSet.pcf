@@ -31,7 +31,7 @@
       name="availablePolicyLocations"
       type="PolicyLocation[]"/>
     <RangeInput
-      action="LocationPopup.push(null,covLocation.PolicyLocation, policyPeriod, openForEdit, false, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+      action="LocationPopup.push(null,covLocation.PolicyLocation, policyPeriod, openForEdit, false, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,false)"
       editable="openForEdit"
       id="HOCoveredLocationInput"
       label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
@@ -40,7 +40,7 @@
       valueRange="availablePolicyLocations"
       valueWidth="180">
       <PickerMenuItem
-        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,false)"
         id="NewCovLocation"
         label="displaykey.Web.Policy.LocationContainer.Location.New"
         onPick="covLocation.PolicyLocation = PickedValue;"/>
@@ -55,14 +55,14 @@
             sortBy="unassignedAccountLocation.LocationNum"
             sortOrder="1"/>
           <PickerMenuItem
-            action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+            action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,false)"
             id="unassignedAccountLocation"
             label="unassignedAccountLocation"
             onPick="covLocation.PolicyLocation = PickedValue;"/>
         </MenuItemIterator>
       </MenuItem>
       <PickerMenuItem
-        action="LocationPopup.push(null,covLocation.PolicyLocation, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+        action="LocationPopup.push(null,covLocation.PolicyLocation, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,false)"
         id="EditCovLocation"
         label="displaykey.Web.Policy.LocationContainer.Location.EditLocation"
         onPick="covLocation.PolicyLocation = PickedValue; "

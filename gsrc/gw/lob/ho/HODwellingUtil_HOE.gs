@@ -88,7 +88,8 @@ class HODwellingUtil_HOE {
      if(policyType == null){
        return false
      }
-    if(typekey.HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(policyType) or typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(policyType)){
+    if(typekey.HOPolicyType_HOE.TF_MEDICALPAYMENTSLIMITELIGIBLE.TypeKeys.contains(policyType)
+        or typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(policyType)){
       return true
     }
     return false
@@ -348,12 +349,12 @@ class HODwellingUtil_HOE {
 *  HO Line of business
 */
   static function isFloorLocationVisible(dwelling : Dwelling_HOE) : boolean{
-//    if(dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
-//        dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
-//        dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
-//        (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO)) {
 
-      if(typekey.HOPolicyType_HOE.TF_ALLHOANDTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+      if((dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
+                  dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 or
+            dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HCONB_EXT or
+        (dwelling.Branch.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT
+            and dwelling.ResidenceType == typekey.ResidenceType_HOE.TC_CONDO) )&&
           dwelling.NumberStoriesOrOverride != null
           and dwelling.NumberStoriesOrOverride != typekey.NumberOfStories_HOE.TC_ONESTORY_EXT )
       {
@@ -1311,7 +1312,7 @@ AZ HO
       */
     if(dwelling.PolicyPeriod.BaseState.Code=="CA")
       {
-        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
             typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(dwelling.HOPolicyType))
         {
           retarray.add(typekey.EQTerritoryZone_Ext.TC_A)
@@ -1330,7 +1331,7 @@ AZ HO
 
       if(dwelling.PolicyPeriod.BaseState.Code=="NC")
       {
-        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) ||
             typekey.HOPolicyType_HOE.TC_LPP_EXT==dwelling.HOPolicyType)
         {
           retarray.add(typekey.EQTerritoryZone_Ext.TC_3)
@@ -1343,7 +1344,7 @@ AZ HO
 
     if(dwelling.PolicyPeriod.BaseState.Code=="NV" ||dwelling.PolicyPeriod.BaseState.Code=="SC")
     {
-      if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
+      if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
       {
         retarray.add(typekey.EQTerritoryZone_Ext.TC_1)
         retarray.add(typekey.EQTerritoryZone_Ext.TC_3)
@@ -1356,7 +1357,7 @@ AZ HO
 
       if(dwelling.PolicyPeriod.BaseState.Code=="AZ" )
       {
-        if(typekey.HOPolicyType_HOE.TF_HOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
+        if(typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType))
         {
           retarray.add(typekey.EQTerritoryZone_Ext.TC_1)
           retarray.add(typekey.EQTerritoryZone_Ext.TC_2)

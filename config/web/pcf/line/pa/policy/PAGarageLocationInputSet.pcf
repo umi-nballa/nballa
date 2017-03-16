@@ -28,12 +28,12 @@
       valueWidth="180"
       visible="openForEdit">
       <PickerMenuItem
-        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.PersonalAutoLine.SupportsNonSpecificLocations)"
+        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.PersonalAutoLine.SupportsNonSpecificLocations,false)"
         id="NewGarageLocation"
         label="displaykey.Web.Policy.LocationContainer.Location.New"
         onPick="vehicle.GarageLocation = PickedValue; gw.lob.pa.PAWizardStepHelper.onGarageLocationChange({policyPeriod.PersonalAutoLine, vehicle}, policyPeriod, jobWizardHelper) "/>
       <PickerMenuItem
-        action="LocationPopup.push(null, vehicle.GarageLocation, policyPeriod, openForEdit, true, policyPeriod.PersonalAutoLine.SupportsNonSpecificLocations)"
+        action="LocationPopup.push(null, vehicle.GarageLocation, policyPeriod, openForEdit, true, policyPeriod.PersonalAutoLine.SupportsNonSpecificLocations,false)"
         id="EditGarageLocation"
         label="displaykey.Web.Policy.LocationContainer.Location.EditLocation"
         onPick="vehicle.GarageLocation = PickedValue; gw.lob.pa.PAWizardStepHelper.onGarageLocationChange(findModifiablesToSyncOnEdit(), policyPeriod, jobWizardHelper)"

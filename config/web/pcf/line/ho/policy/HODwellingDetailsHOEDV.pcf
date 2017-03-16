@@ -62,7 +62,7 @@
           initialValue="policyPeriod.Job.Subtype"
           name="jobSubtype"/>
         <RangeInput
-          action="LocationPopup.push(null,dwelling.HOLocation.PolicyLocation, policyPeriod, openForEdit, false, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+          action="LocationPopup.push(null,dwelling.HOLocation.PolicyLocation, policyPeriod, openForEdit, false, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,true)"
           editable="true"
           id="HODwellingLocationInput"
           label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
@@ -71,7 +71,7 @@
           valueRange="policyPeriod.PolicyLocations"
           valueWidth="180">
           <PickerMenuItem
-            action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+            action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,true)"
             id="NewGarageLocation"
             label="displaykey.Web.Policy.LocationContainer.Location.New"
             onPick="dwelling.HOLocation.PolicyLocation = PickedValue; dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"/>
@@ -86,14 +86,14 @@
                 sortBy="unassignedAccountLocation.LocationNum"
                 sortOrder="1"/>
               <PickerMenuItem
-                action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+                action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,true)"
                 id="unassignedAccountLocation"
                 label="unassignedAccountLocation"
                 onPick="dwelling.HOLocation.PolicyLocation = PickedValue; dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"/>
             </MenuItemIterator>
           </MenuItem>
           <PickerMenuItem
-            action="LocationPopup.push(null, dwelling.HOLocation.PolicyLocation, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations)"
+            action="LocationPopup.push(null, dwelling.HOLocation.PolicyLocation, policyPeriod, openForEdit, true, policyPeriod.HomeownersLine_HOE.SupportsNonSpecificLocations,true)"
             id="EditDwellingLocation"
             label="displaykey.Web.Policy.LocationContainer.Location.EditLocation"
             onPick="dwelling.HOLocation.PolicyLocation = PickedValue; dwelling.HOLine.updateBaseStateAndPrimaryLocation(jobWizardHelper)"

@@ -25,8 +25,8 @@ class HOBasePremiumRaterNC {
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
-
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   private var _basePremiumRatingInfo : HOBasePremiumRatingInfo
 
@@ -55,11 +55,10 @@ class HOBasePremiumRaterNC {
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
     if(_basePremiumRatingInfo.ConsentToRate){
       _dwelling.Branch.ConsentToRate_Ext = true
+      createHistoryEventTransaction(_dwelling.PolicyPeriod)
     }
     costs.each(\cost -> cost.addWorksheetEntries(wsc))
     return costs
-
-
   }
 
   /**
@@ -100,6 +99,17 @@ class HOBasePremiumRaterNC {
         TC_RATINGINFO -> _hoRatingInfo,
         TC_DWELLINGRATINGINFO_EXT -> basePremiumRatingInfo,
         TC_COSTDATA -> costData
+    }
+  }
+
+  // Method that created History event for Consent To Rate Identified in Policy transaction
+  public  function createHistoryEventTransaction (policyPeriod : entity.PolicyPeriod){
+    if(policyPeriod != null)    {
+      var msg = displaykey.Web.CTR.History.Event.Msg+ " For Policy Period :  " + policyPeriod.Policy.DisplayName
+      gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
+        var Job = bundle.add(policyPeriod.Job)
+        Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> msg)
+      })
     }
   }
 }

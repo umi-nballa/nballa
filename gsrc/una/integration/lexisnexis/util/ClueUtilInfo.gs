@@ -46,33 +46,33 @@ class ClueUtilInfo {
           if(claim.ClaimDate!=null && pay.ClaimAmount!=null)
             if (period.BaseState.Code == (typekey.State.TC_HI) as String) {
               if (!typekey.LossCause_Ext.TF_HIHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+                if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3) )
                   amount += (pay.ClaimAmount) as int
               }
             } else if (period.BaseState.Code == (typekey.State.TC_NC) as String) {
               if (typekey.LossCause_Ext.TC_LAE.Code != pay.LossCause_Ext.Code)
-                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+                if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                   amount += (pay.ClaimAmount) as int
             }
             else if (period.BaseState.Code == (State.TC_TX) as String) {
                 if (!typekey.LossCause_Ext.TF_TXHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-                  if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+                  if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                     amount += (pay.ClaimAmount) as int
               } else if (period.BaseState.Code == (typekey.State.TC_FL) as String) {
                 if (!typekey.LossCause_Ext.TF_FLSCHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-                  if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+                  if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                     amount += (pay.ClaimAmount) as int
                 }
               }
               else if (period.BaseState.Code == (typekey.State.TC_SC) as String) {
                   if (!typekey.LossCause_Ext.TF_FLSCHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-                    if (period.EditEffectiveDate.addMonths(- 3).differenceInYears(claim.ClaimDate) <= 3)
+                    if (claim.ClaimDate >= (period.EditEffectiveDate.addMonths(-3)).addYears(-3))
                       amount += (pay.ClaimAmount) as int
                 } else if (period.BaseState.Code == (typekey.State.TC_AZ) as String || period.BaseState.Code == (typekey.State.TC_CA) as String || period.BaseState.Code == (typekey.State.TC_NE) as String){
                   if (!typekey.LossCause_Ext.TF_AZCANEHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-                    if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3 && period.BaseState.Code == (typekey.State.TC_NE) as String)
+                    if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3) && period.BaseState.Code == (typekey.State.TC_NE) as String)
                       amount += (pay.ClaimAmount) as int
-                  if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3
+                  if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3)
                       && period.BaseState.Code == (typekey.State.TC_AZ) as String || period.BaseState.Code == (typekey.State.TC_CA) as String)
                     amount += (pay.ClaimAmount) as int
                 }
@@ -87,21 +87,21 @@ class ClueUtilInfo {
         for (pay in claim.ClaimPayment) {
           if (period.BaseState.Code == (typekey.State.TC_HI) as String) {
             if (!typekey.LossCause_Ext.TF_HITDPFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-              if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                 amount += (pay.ClaimAmount) as int
             }
           } else if (period.BaseState.Code == (typekey.State.TC_NC) as String || period.BaseState.Code == (typekey.State.TC_CA) as String) {
             if (!typekey.LossCause_Ext.TF_CANCTDPFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-              if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                 amount += (pay.ClaimAmount) as int
           }
           else if (period.BaseState.Code == (typekey.State.TC_TX) as String) {
               if (!typekey.LossCause_Ext.TF_TXTDPFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+                if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                   amount += (pay.ClaimAmount) as int
             } else if (period.BaseState.Code == (typekey.State.TC_FL) as String){
               if (!typekey.LossCause_Ext.TF_FLTDPFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-                if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+                if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                   amount += (pay.ClaimAmount) as int
               }
             }
@@ -119,18 +119,18 @@ class ClueUtilInfo {
               period.BaseState.Code == (typekey.State.TC_AZ) as String || period.BaseState.Code == (typekey.State.TC_CA) as String) {
             if (!typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code) ||
                 !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-              if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                 amount += (pay.ClaimAmount) as int
             }
           } else if (period.BaseState.Code == (typekey.State.TC_NC) as String) {
             if (!typekey.ExpanedLossCause_Ext.TF_RNLNCHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code) ||
                 !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-              if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                 amount += (pay.ClaimAmount) as int
           } else if (period.BaseState.Code == (typekey.State.TC_SC) as String){
             if (!typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code) ||
                 !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code))
-              if (period.EditEffectiveDate.addMonths(- 3).differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= (period.EditEffectiveDate.addMonths(-3)).addYears(-3))
                 amount += (pay.ClaimAmount) as int
           }
         }
@@ -147,14 +147,14 @@ class ClueUtilInfo {
               period.BaseState.Code == (typekey.State.TC_TX) as String) {
             if (!typekey.ExpanedLossCause_Ext.TF_RNLHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code) ||
                 !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-              if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                 amount += (pay.ClaimAmount) as int
             }
           } else if (period.BaseState.Code == (typekey.State.TC_CA) as String){
             if (!typekey.ExpanedLossCause_Ext.TF_RNLNCHOFILTER.TypeKeys.hasMatch(\elt1 -> pay.ExpandedLossCause_Ext.Code == elt1.Code) ||
                 typekey.ExpanedLossCause_Ext.TC_MOLD_FLOODRELATED != pay.ExpandedLossCause_Ext ||
                 !typekey.LossCause_Ext.TF_RNLFILTER.TypeKeys.hasMatch(\elt1 -> pay.LossCause_Ext.Code == elt1.Code)){
-              if (period.EditEffectiveDate.differenceInYears(claim.ClaimDate) <= 3)
+              if (claim.ClaimDate >= period.EditEffectiveDate.addYears(-3))
                 amount += (pay.ClaimAmount) as int
             }
           }
@@ -166,7 +166,6 @@ class ClueUtilInfo {
         }
       }
     }
-
     return Chargeable_Ext.TC_NO
   }
 

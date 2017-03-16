@@ -31,12 +31,12 @@
       value="vehicle.AccountLocation"
       valueRange="policyPeriod.Policy.Account.AccountLocations">
       <PickerMenuItem
-        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.BusinessAutoLine.SupportsNonSpecificLocations)"
+        action="LocationPopup.push(null, null, policyPeriod, openForEdit, true, policyPeriod.BusinessAutoLine.SupportsNonSpecificLocations,false)"
         id="NewGarageLocation"
         label="displaykey.Web.Policy.LocationContainer.Location.New"
         onPick="vehicle.Location = PickedValue; if (policyPeriod.OpenForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages(policyPeriod.BusinessAutoLine.Vehicles, jobWizardHelper)}"/>
       <PickerMenuItem
-        action="LocationPopup.push(null, vehicle.Location, policyPeriod, openForEdit, true, policyPeriod.BusinessAutoLine.SupportsNonSpecificLocations)"
+        action="LocationPopup.push(null, vehicle.Location, policyPeriod, openForEdit, true, policyPeriod.BusinessAutoLine.SupportsNonSpecificLocations,false)"
         id="EditGarageLocation"
         label="displaykey.Web.Policy.LocationContainer.Location.EditLocation"
         onPick="vehicle.Location = PickedValue; if (policyPeriod.OpenForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncCoverages(policyPeriod.BusinessAutoLine.Vehicles, jobWizardHelper)}"

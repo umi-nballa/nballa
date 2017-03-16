@@ -1,7 +1,6 @@
 package una.rating.ho.tx.ratinginfos
 
 uses java.math.BigDecimal
-uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,6 +18,7 @@ class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDis
   var _burglarAlarmReportCntlStn : boolean as BurglarAlarmReportCntlStn
   var _burglarAlarmReportPoliceStn : boolean as BurglarAlarmReportPoliceStn
   var _windPool : boolean as WindPool
+  var _claimFreeYears : NoClaimFreeYears_Ext as ClaimFreeYears
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
@@ -31,5 +31,6 @@ class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDis
     _burglarAlarmReportCntlStn = dwelling.DwellingProtectionDetails.BurglarAlarmReportCntlStn
     _burglarAlarmReportPoliceStn = dwelling.DwellingProtectionDetails.BurglarAlarmReportPoliceStn
     _windPool = dwelling.HOLocation.OverrideWindPool_Ext? dwelling.HOLocation.WindPoolOverridden_Ext : dwelling.HOLocation.WindPool_Ext
+    _claimFreeYears =  line?.Dwelling?.Branch?.ClaimFreeYear
   }
 }

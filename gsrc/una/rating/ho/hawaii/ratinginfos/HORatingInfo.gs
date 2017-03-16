@@ -15,6 +15,6 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _lossHistoryRatingPlan : BigDecimal as LossHistoryRatingPlan = 0.0
   var _vacancySurcharge : BigDecimal as VacancySurcharge = 0.0
   var _tenantSeasonalSurcharge : BigDecimal as TenantSeasonalSurcharge = 0.0
-
+  var _higherAllPerilDeductible: BigDecimal as HigherAllPerilDeductible = 0.0
 
 }

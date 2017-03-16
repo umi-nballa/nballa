@@ -44,7 +44,7 @@
               sortBy="unassignedAccountLocation.LocationNum"
               sortOrder="1"/>
             <MenuItem
-              action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, supportsNonSpecificLocation);"
+              action="LocationPopup.push(unassignedAccountLocation, null, policyPeriod, openForEdit, true, supportsNonSpecificLocation,false);"
               id="UnassignedAccountLocation"
               label="unassignedAccountLocation"/>
           </MenuItemIterator>
@@ -73,7 +73,7 @@
             hasCheckBoxes="true"
             hideCheckBoxesIfReadOnly="true"
             numEntriesRequired="1"
-            pickLocation="LocationPopup.push(null, null, policyPeriod, openForEdit, true, supportsNonSpecificLocation)"
+            pickLocation="LocationPopup.push(null, null, policyPeriod, openForEdit, true, supportsNonSpecificLocation,false)"
             toRemove="policyPeriod.removeLocation(location)"
             validationLabel="displaykey.Web.Policy.LocationContainer.Locations"
             value="policyPeriod.PolicyLocations">
@@ -95,7 +95,7 @@ restriction on removing the primary location -->
                 value="location == policyPeriod.PrimaryLocation"
                 width="70"/>
               <TextCell
-                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation)"
+                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation,false)"
                 align="left"
                 id="Loc"
                 label="displaykey.Web.Policy.LocationContainer.Location.LocNum"
@@ -110,7 +110,7 @@ restriction on removing the primary location -->
                 value="location.AccountLocation.NonSpecific"
                 width="100"/>
               <TextCell
-                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation)"
+                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation,false)"
                 align="left"
                 id="LocationCode"
                 label="displaykey.Web.Policy.LocationContainer.Location.LocationCode"
@@ -119,7 +119,7 @@ restriction on removing the primary location -->
                 width="100"
                 wrap="true"/>
               <TextCell
-                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation)"
+                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation,false)"
                 align="left"
                 id="LocationName"
                 label="displaykey.Web.Policy.LocationContainer.Location.LocationName"
@@ -127,7 +127,7 @@ restriction on removing the primary location -->
                 value="location.AccountLocation.LocationName"
                 wrap="true"/>
               <TextCell
-                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation)"
+                action="LocationPopup.push(null, location, policyPeriod, openForEdit, true, supportsNonSpecificLocation,false)"
                 align="left"
                 id="Address"
                 label="displaykey.Web.Policy.LocationContainer.Location.CompactAddress"

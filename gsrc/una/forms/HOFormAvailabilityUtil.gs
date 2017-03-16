@@ -15,92 +15,274 @@ uses java.math.BigDecimal
  */
 class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 {
-    var formNumber = this.Pattern.FormNumber//Code
-    var formCode = this.Pattern.Code
-
   override function isAvailable(context: FormInferenceContext, availableStates: Set<Jurisdiction>): boolean {
-
-    var formAttachFlag : boolean    = false
-
-    formAttachFlag= dwellingCoverageValuationMethod(context,availableStates)
-    formAttachFlag= personalPropertyCoveragePropertyValuation(context,availableStates)
-    formAttachFlag= dwellingCoveragePropertyValuation(context,availableStates)
-    formAttachFlag= dwellingCoverage(context,availableStates)
-    formAttachFlag= section1DeductibleCoverage(context,availableStates)
-    formAttachFlag= scheduledPropertyCoverage(context,availableStates)
-    formAttachFlag= carliforniaEarthQuakeCoverage(context,availableStates)
-    formAttachFlag= addnlInsuredLiability(context,availableStates)
-    formAttachFlag= homeOwnersRental(context,availableStates)
-    formAttachFlag= condoUnitOwnerCoverage(context,availableStates)
-    formAttachFlag= windHallDeductible(context,availableStates)
-    formAttachFlag= personalPropertyReplacementCost(context,availableStates)
-    formAttachFlag= suppLossAssessmentCov(context,availableStates)
-    formAttachFlag= personalPropertyOtherResidenes(context,availableStates)
-    formAttachFlag= ccIncreased(context,availableStates)
-    formAttachFlag= firstTimeIMPNotice(context,availableStates)
-    formAttachFlag= namedStorm(context,availableStates)
-    formAttachFlag= covDecreasedLimit1(context,availableStates)
-    formAttachFlag= covDecreasedLimit2(context,availableStates)
-    formAttachFlag= exclusiveCoverage(context,availableStates)
-    formAttachFlag= addlnInsuredPropertyManager(context,availableStates)
-    formAttachFlag= CTR(context,availableStates)
-    formAttachFlag= protectionSystemForCA(context,availableStates)
-    formAttachFlag= protectionSystemHI(context,availableStates)
-    formAttachFlag= protectionSystem(context,availableStates)
-    formAttachFlag= lossAssessmentCoverage(context,availableStates)
-    formAttachFlag= noDwellingFireOtherStructures(context,availableStates)
-    formAttachFlag= businessPropertyIncreasedLimits(context,availableStates)
-    formAttachFlag= homeOwnersOrdianceLaw(context,availableStates)
-    formAttachFlag= residenceHeldOnTrust(context,availableStates)
-    formAttachFlag= residenceHeldOnTrustOnly(context,availableStates)
-    formAttachFlag= lossAssessmentResType(context,availableStates)
-    formAttachFlag= personalPropertyValuationMethod(context,availableStates)
-    formAttachFlag= otherStructuresDecreasedLimit(context,availableStates)
-    formAttachFlag= homeOwnersOtherStructuresDecreasedLimit(context,availableStates)
-    formAttachFlag= hurricaneDeductible(context,availableStates)
-    formAttachFlag= hurricaneDeductibleForDP3(context,availableStates)
-    formAttachFlag= limitedEarthQuake(context,availableStates)
-    formAttachFlag= dwellingFire(context,availableStates)
-    formAttachFlag= dwellingFirePersonalLiability(context,availableStates)
-    formAttachFlag= dwellingFireSignaturePage(context,availableStates)
-    formAttachFlag= diffCovNotSelected(context,availableStates)
-    formAttachFlag= carliforniaEarthQuakeCovNotSelected(context,availableStates)
-    formAttachFlag= premisesLiability(context,availableStates)
-    formAttachFlag= homeOwnersOtherStructures(context,availableStates)
-    formAttachFlag= rewriteForRenewals(context,availableStates)
-    formAttachFlag= rewriteForRenewalsForTX(context,availableStates)
-    formAttachFlag= dwellingFireOrdianceLaw1(context,availableStates)
-    formAttachFlag= dwellingFireOrdianceLaw2(context,availableStates)
-    formAttachFlag= fungiWetDry1(context,availableStates)
-    formAttachFlag= fungiWetDry2(context,availableStates)
-    formAttachFlag= rewriteForRenewalsForHOB(context,availableStates)
-    formAttachFlag= carliforniaEarthQuakeCov(context,availableStates)
-    formAttachFlag= lossAssessment(context,availableStates)
-    formAttachFlag= fungiWetForm(context,availableStates)
-    formAttachFlag= additionalInsured(context,availableStates)
-    formAttachFlag= dwellingFireForTX1(context,availableStates)
-    formAttachFlag= dwellingFireForTX2(context,availableStates)
-    formAttachFlag= unscheduleLimit(context,availableStates)
-    formAttachFlag= section1Deductible(context,availableStates)
-    formAttachFlag= specialLimitsPersonalProperty(context,availableStates)
-    formAttachFlag= propertyIncreasedLimits(context,availableStates)
-    formAttachFlag= rewriteForRenewals2(context,availableStates)
-    formAttachFlag= rewriteForSubmission(context,availableStates)
-    formAttachFlag= rewriteForRenewals3(context,availableStates)
-    formAttachFlag= rewriteForSubmission2(context,availableStates)
-    formAttachFlag= rewriteForRenewals4(context,availableStates)
-    formAttachFlag= rewriteForSubmission3(context,availableStates)
-    formAttachFlag= rewriteForRenewals5(context,availableStates)
-    formAttachFlag= ordianceLaw(context,availableStates)
-
+    var formCode = this.Pattern.Code
+    var formAttachFlag : boolean  = false
+    if(formCode != null){
+      switch(formCode){
+        case "HO04811000" :
+            formAttachFlag = dwellingCoverageValuationMethod1(context,availableStates,formCode)
+            break
+          /*case "UNLPP04761202" :
+              formAttachFlag = dwellingCoverageValuationMethod2(context,availableStates,formCode)
+              break*/
+        case "HO04901000" :
+            formAttachFlag= personalPropertyCoveragePropertyValuation1(context,availableStates,formCode)
+            break
+        case "HO1011093" :
+            formAttachFlag= personalPropertyCoveragePropertyValuation2(context,availableStates,formCode)
+            break
+          /*case "UI04900412" :
+              formAttachFlag= personalPropertyCoveragePropertyValuation3(context,availableStates,formCode)
+              break*/
+        case "TDP0021093" :
+            formAttachFlag= dwellingCoveragePropertyValuation(context,availableStates,formCode)
+            break
+          /*case "UN09560409" :
+              formAttachFlag= dwellingCoverage(context,availableStates,formCode)
+              break*/
+        case "UNLPP03121202" :
+            formAttachFlag= section1DeductibleCoverage1(context,availableStates,formCode)
+            break
+        case "UNLPP03510111" :
+            formAttachFlag= section1DeductibleCoverage2(context,availableStates,formCode)
+            break
+        case "HO04610511" :
+            formAttachFlag= scheduledPropertyCoverage(context,availableStates,formCode)
+            break
+        case "ASP110A0116" :
+            formAttachFlag= carliforniaEarthQuakeCoverage(context,availableStates,formCode)
+            break
+        case "DL24100788" :
+            formAttachFlag= addnlInsuredLiability(context,availableStates,formCode)
+            break
+        case "DL24101202" :
+            formAttachFlag= addnlInsuredLiability(context,availableStates,formCode)
+            break
+        case "DL24110788" :
+            formAttachFlag= homeOwnersRental(context,availableStates,formCode)
+            break
+        case "HO17331000" :
+            formAttachFlag= homeOwnersRental(context,availableStates,formCode)
+            break
+        case "HO17330511" :
+            formAttachFlag= homeOwnersRental(context,availableStates,formCode)
+            break
+        case "HO3801093" :
+            formAttachFlag= homeOwnersRental(context,availableStates,formCode)
+            break
+        case "DP17670788" :
+            formAttachFlag= condoUnitOwnerCoverage(context,availableStates,formCode)
+            break
+          /*case "HO03120511" :
+              formAttachFlag= windHallDeductible(context,availableStates,formCode)
+              break*/
+        case "HO03170901" :
+            formAttachFlag= windHallDeductible(context,availableStates,formCode)
+            break
+        case "HO04071205" :
+            formAttachFlag= personalPropertyReplacementCost(context,availableStates,formCode)
+            break
+        case "HO04350511" :
+            formAttachFlag= suppLossAssessmentCov(context,availableStates,formCode)
+            break
+        case "HO04500511" :
+            formAttachFlag= personalPropertyOtherResidenes(context,availableStates,formCode)
+            break
+        case "HO04531000" :
+            formAttachFlag= ccIncreased(context,availableStates,formCode)
+            break
+        case "INUN10150316" :
+            formAttachFlag= firstTimeIMPNotice(context,availableStates,formCode)
+            break
+        case "UI1100117" :
+            formAttachFlag= namedStorm(context,availableStates,formCode)
+            break
+        case "HO03630612" :
+            formAttachFlag= namedStorm(context,availableStates,formCode)
+            break
+        case "UITX1100117" :
+            formAttachFlag= namedStorm(context,availableStates,formCode)
+            break
+        case "UICOVB0117" :
+            formAttachFlag= covDecreasedLimit1(context,availableStates,formCode)
+            break
+        case "UICOVBD0308" :
+            formAttachFlag= covDecreasedLimit1(context,availableStates,formCode)
+            break
+        case "UIDPCOVB0307" :
+            formAttachFlag= covDecreasedLimit2(context,availableStates,formCode)
+            break
+        case "UN09560409" :
+            formAttachFlag= exclusiveCoverage(context,availableStates,formCode)
+            break
+        case "UN10050308" :
+            formAttachFlag= addlnInsuredPropertyManager(context,availableStates,formCode)
+            break
+        case "UNCTRHO30411" :
+            formAttachFlag= CTR(context,availableStates,formCode)
+            break
+        case "UNCTRHO40411" :
+            formAttachFlag= CTR(context,availableStates,formCode)
+            break
+        case "UNCTRHO60411" :
+            formAttachFlag= CTR(context,availableStates,formCode)
+            break
+        case "DP04700788" :
+            formAttachFlag= protectionSystemForCA(context,availableStates,formCode)
+            break
+        case "DP04701202" :
+            formAttachFlag= protectionSystemHI(context,availableStates,formCode)
+            break
+        case "HO04161000" :
+            formAttachFlag= protectionSystem(context,availableStates,formCode)
+            break
+        case "HO04351000" :
+            formAttachFlag= lossAssessmentCoverage(context,availableStates,formCode)
+            break
+        case "UIDPCOVBX0916" :
+            formAttachFlag= noDwellingFireOtherStructures(context,availableStates,formCode)
+            break
+        case "HO04121000" :
+            formAttachFlag= businessPropertyIncreasedLimits(context,availableStates,formCode)
+            break
+        case "HO04771000" :
+            formAttachFlag= homeOwnersOrdianceLaw(context,availableStates,formCode)
+            break
+        case "HO05431000" :
+            formAttachFlag= residenceHeldOnTrust(context,availableStates,formCode)
+            break
+        case "HO32120612" :
+            formAttachFlag= residenceHeldOnTrustOnly(context,availableStates,formCode)
+            break
+        case "UI04471208" :
+            formAttachFlag= lossAssessmentResType(context,availableStates,formCode)
+            break
+        case "UI04900412" :
+            formAttachFlag= personalPropertyValuationMethod(context,availableStates,formCode)
+            break
+        case "UIOSDL0607" :
+            formAttachFlag= otherStructuresDecreasedLimit(context,availableStates,formCode)
+            break
+        case "UIOSDLAZ0707" :
+            formAttachFlag= homeOwnersOtherStructuresDecreasedLimit(context,availableStates,formCode)
+            break
+        case "UICNA03510117" :
+            formAttachFlag= hurricaneDeductible(context,availableStates,formCode)
+            break
+        case "UICNA04510117" :
+            formAttachFlag= hurricaneDeductibleForDP3(context,availableStates,formCode)
+            break
+        case "UN3030a0116" :
+            formAttachFlag= limitedEarthQuake(context,availableStates,formCode)
+            break
+        case "UNLPP04761202" :
+            formAttachFlag= dwellingFire(context,availableStates,formCode)
+            break
+        case "UNTXDL24100788" :
+            formAttachFlag= dwellingFirePersonalLiability(context,availableStates,formCode)
+            break
+        case "USP000911" :
+            formAttachFlag= dwellingFireSignaturePage(context,availableStates,formCode)
+            break
+        case "UN10070314" :
+            formAttachFlag= diffCovNotSelected(context,availableStates,formCode)
+            break
+        case "UN30300116" :
+            formAttachFlag= carliforniaEarthQuakeCovNotSelected(context,availableStates,formCode)
+            break
+        case "UNTXDL24110788" :
+            formAttachFlag= premisesLiability(context,availableStates,formCode)
+            break
+        case "UICOVBX0916" :
+            formAttachFlag= homeOwnersOtherStructures(context,availableStates,formCode)
+            break
+        case "INEBEE1116" :
+            formAttachFlag= rewriteForRenewals(context,availableStates,formCode)
+            break
+        case "INTXHO1216" :
+            formAttachFlag= rewriteForRenewalsForTX(context,availableStates,formCode)
+            break
+        case "DP04711202" :
+            formAttachFlag= dwellingFireOrdianceLaw1(context,availableStates,formCode)
+            break
+        case "UNLPP04711202" :
+            formAttachFlag= dwellingFireOrdianceLaw2(context,availableStates,formCode)
+            break
+        case "UN09820915" :
+            formAttachFlag= fungiWetDry1(context,availableStates,formCode)
+            break
+        case "UN09830915" :
+            formAttachFlag= fungiWetDry2(context,availableStates,formCode)
+            break
+        case "INRCSR1116" :
+            formAttachFlag= rewriteForRenewalsForHOB(context,availableStates,formCode)
+            break
+        case "ASP1100116" :
+            formAttachFlag= carliforniaEarthQuakeCov(context,availableStates,formCode)
+            break
+        case "UI04640410" :
+            formAttachFlag= lossAssessment(context,availableStates,formCode)
+            break
+        case "HO03330503" :
+            formAttachFlag= fungiWetForm(context,availableStates,formCode)
+            break
+        case "HO3011095" :
+            formAttachFlag= additionalInsured(context,availableStates,formCode)
+            break
+        case "TDP0260401" :
+            formAttachFlag= dwellingFireForTX1(context,availableStates,formCode)
+            break
+        case "TDP0270401" :
+            formAttachFlag= dwellingFireForTX2(context,availableStates,formCode)
+            break
+        case "HO1100792" :
+            formAttachFlag= unscheduleLimit(context,availableStates,formCode)
+            break
+        case "HO03120511" :
+            formAttachFlag= section1Deductible(context,availableStates,formCode)
+            break
+        case "HO32880612" :
+            formAttachFlag= specialLimitsPersonalProperty(context,availableStates,formCode)
+            break
+        case "HO04120511" :
+            formAttachFlag= propertyIncreasedLimits(context,availableStates,formCode)
+            break
+        case "UIIN1100215" :
+            formAttachFlag= rewriteForRenewals2(context,availableStates,formCode)
+            break
+        case "USP000117" :
+            formAttachFlag= rewriteForSubmission(context,availableStates,formCode)
+            break
+        case "PAN0000" :
+            formAttachFlag= rewriteForRenewals3(context,availableStates,formCode)
+            break
+        case "SPACONBN1116" :
+            formAttachFlag= rewriteForSubmission2(context,availableStates,formCode)
+            break
+        case "SPACONBR1116" :
+            formAttachFlag= rewriteForRenewals4(context,availableStates,formCode)
+            break
+        case "SPBN1116" :
+            formAttachFlag= rewriteForSubmission3(context,availableStates,formCode)
+            break
+        case "SPBR1116" :
+            formAttachFlag= rewriteForRenewals5(context,availableStates,formCode)
+            break
+        case "UICOL1005" :
+            formAttachFlag= ordianceLaw(context,availableStates,formCode)
+            break
+        default : return formAttachFlag
+      }
+    }
     return formAttachFlag
   }
 
 
-  public  function dwellingCoverageValuationMethod(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function dwellingCoverageValuationMethod1(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode :String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("HO 04 81") || formNumber.equals("UN LPP 04 76"))
+    if (formCode.equals("HO04811000"))
     {
       if(hoeLine!= null and dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
           dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
@@ -110,11 +292,24 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
     }
-
-  public function personalPropertyCoveragePropertyValuation(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function dwellingCoverageValuationMethod2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("HO 04 90") || formNumber.equals("HO-101") || formNumber.equals("UI 04 90") )
+    if (formCode.equals("UNLPP04761202"))
+    {
+      if(hoeLine!= null and dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
+          dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
+          && dwelling.DPDW_Dwelling_Cov_HOE.DPDW_ValuationMethod_HOE_ExtTerm.Value== tc_ACV)
+
+        return true
+    }
+    return false
+  }
+
+  public function personalPropertyCoveragePropertyValuation1(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("HO04901000") )
     {
 
       if(hoeLine!= null and dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
@@ -125,11 +320,38 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
   }
-
-  public function dwellingCoveragePropertyValuation(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function personalPropertyCoveragePropertyValuation2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("TDP-002"))
+    if (formCode.equals("HO1011093"))
+    {
+
+      if(hoeLine!= null and dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
+          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
+          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost)
+
+        return true
+    }
+    return false
+  }
+  public function personalPropertyCoveragePropertyValuation3(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("UI04900412") )
+    {
+      if(hoeLine!= null and dwelling!=null && dwelling.HODW_Personal_Property_HOEExists &&
+          dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
+          && dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value == tc_PersProp_ReplCost)
+
+        return true
+    }
+    return false
+  }
+
+  public function dwellingCoveragePropertyValuation(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("TDP0021093"))
     {
       if(( hoeLine!= null and dwelling!=null && dwelling.DPDW_Dwelling_Cov_HOEExists &&
           dwelling.DPDW_Dwelling_Cov_HOE.HasDPDW_ValuationMethod_HOE_ExtTerm
@@ -143,10 +365,10 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function dwellingCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function dwellingCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("UN 09 56"))
+    if (formCode.equals("UN09560409"))
     {
       if(hoeLine != null and dwelling!=null && dwelling.HODW_Dwelling_Cov_HOEExists &&
           dwelling.HODW_Dwelling_Cov_HOE.HasHODW_ExecutiveCov_HOE_ExtTerm)
@@ -156,17 +378,23 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function section1DeductibleCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function section1DeductibleCoverage1(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
-    if (formNumber.equals("UN LPP 03 12"))
+    if (formCode.equals("UNLPP03121202"))
     {
       if(hoeLine != null and dwelling!=null && dwelling.HODW_SectionI_Ded_HOEExists &&
           dwelling.HODW_SectionI_Ded_HOE.HasHODW_WindHail_Ded_HOETerm)
 
         return true
     }
-    if (formNumber.equals("UN LPP 03 51"))
+    return false
+  }
+
+  public function section1DeductibleCoverage2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
+    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+    var hoeLine = context.Period.HomeownersLine_HOE
+    if (formCode.equals("UNLPP03510111"))
     {
       if(hoeLine != null and dwelling!=null && dwelling.HODW_SectionI_Ded_HOEExists &&
           dwelling.HODW_SectionI_Ded_HOE.HasHODW_Hurricane_Ded_HOETerm)
@@ -176,11 +404,10 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-
-  public function scheduledPropertyCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function scheduledPropertyCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     //Waiting on Faye for Scheduled coverages
-    if (formNumber.equals("HO 04 61"))
+    if (formCode.equals("HO04610511"))
     {
       if(dwelling!=null && dwelling.HODW_ScheduledProperty_HOEExists &&
           dwelling.HODW_ScheduledProperty_HOE.CovTerms.length>0)
@@ -189,7 +416,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function carliforniaEarthQuakeCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function carliforniaEarthQuakeCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_CA_EQ_COVERAGE_FORM)){
@@ -202,7 +429,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function addnlInsuredLiability(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function addnlInsuredLiability(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_ADDL_INSURED_LIABILITY_0788_FORM) or
@@ -216,7 +443,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
   }
 
 
-  public function homeOwnersRental(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function homeOwnersRental(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_PREMISES_LIABILITY_FORM) or
@@ -229,7 +456,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
   }
-  public  function condoUnitOwnerCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function condoUnitOwnerCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     /* waiting on faye
     if (formCode.equals("UICNA 03 51"))
      {
@@ -258,7 +485,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
     }
 
-  public  function windHallDeductible(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function windHallDeductible(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_WIND_OR_HAIL_DEDUCTIBLE__0511_FORM) or
@@ -272,7 +499,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
 
 
-  public function personalPropertyReplacementCost(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function personalPropertyReplacementCost(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_PERSONAL_PROPERTY_REPLACEMENT_COST_FORM)){
@@ -285,7 +512,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function suppLossAssessmentCov(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function suppLossAssessmentCov(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_SUPP_LOSS_ASSESSMENT_COVERAGE_FORM)){
@@ -299,7 +526,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function personalPropertyOtherResidenes(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function personalPropertyOtherResidenes(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_PERSONAL_PROPERTY_OTHER_RESIDENCES_FORM)){
@@ -313,7 +540,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function ccIncreased(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function ccIncreased(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_CC_INCREASED_FORM)){
@@ -326,7 +553,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function firstTimeIMPNotice(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function firstTimeIMPNotice(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_FIRST_TIME_IMP_NOTICE_FORM)){
@@ -338,7 +565,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function namedStorm(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function namedStorm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_NAMED_STORM_DEDUCTIBLE_TERM_FORM) or
@@ -352,7 +579,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function covDecreasedLimit1(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function covDecreasedLimit1(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_COVB_DECREASED_LIMIT_0117_FORM) or
@@ -370,7 +597,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
 
 
-  public function covDecreasedLimit2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function covDecreasedLimit2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
 
@@ -388,7 +615,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
   }
 
 
-  public function exclusiveCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function exclusiveCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_EXECUTIVE_COVERAGE_FORM)){
@@ -400,7 +627,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function addlnInsuredPropertyManager(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function addlnInsuredPropertyManager(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     var formRet = false
@@ -423,7 +650,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function CTR(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function CTR(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_CONSENT_TO_RATE_HO3_FORM) or
@@ -436,7 +663,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function protectionSystemForCA(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function protectionSystemForCA(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_CA_FL_FORM)){
@@ -455,7 +682,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function protectionSystemHI(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function protectionSystemHI(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DP3_PROTECTION_SYSTEM_HI_FORM)){
@@ -473,7 +700,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
     }
 
-  public function protectionSystem(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function protectionSystem(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_HO3_HO4_HO6_PROTECTION_SYSTEM_HI_FORM)){
@@ -492,7 +719,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function lossAssessmentCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function lossAssessmentCoverage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_LOSS_ASSESSMENT_COVERAGE_FORM)){
@@ -514,7 +741,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function noDwellingFireOtherStructures(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function noDwellingFireOtherStructures(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_NO_DWELLING_FIRE_OTHER_STRUCTURE_FORM)){
@@ -530,7 +757,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function businessPropertyIncreasedLimits(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function businessPropertyIncreasedLimits(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_BUSINESS_PROPERTY_INCREASED_LIMITS_FORM)){
@@ -549,7 +776,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function homeOwnersOrdianceLaw(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function homeOwnersOrdianceLaw(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_HOMEOWENERS_ORDIANCE_LAW_FORM)){
@@ -567,7 +794,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
 
 
-  public function residenceHeldOnTrust(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function residenceHeldOnTrust(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_RESIDENCE_HELD_IN_TRUST_FORM)){
       if(hoeLine != null ){
@@ -575,13 +802,13 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
         var HO4typeKeyCode = typekey.HOPolicyType_HOE.TC_HO4.Code
         var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
-        var org_Type=  hoeLine.Branch.Policy.Account.AccountOrgType.Value
+        var org_Type=  hoeLine.Branch.Policy.Account.AccountOrgType.DisplayName
         var party_residence = hoeLine.Branch.TrustResidings.TrustResident.Code
         var grantor = typekey.TrustResident_Ext.TC_GRANTOR.Code
         var benificiary = typekey.TrustResident_Ext.TC_BENEFICIARY.Code
-        var trusty = typekey.AccountOrgType.TC_TRUST_EXT.Code
+        var trusty = typekey.AccountOrgType.TC_TRUST_EXT.DisplayName
         if(org_Type != null and party_residence != null and( policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode)
-            and org_Type ==  trusty and ( party_residence.contains(grantor)  or party_residence.contains(benificiary) ) ) {
+            and org_Type.equals(trusty) and ( party_residence.contains(grantor)  or party_residence.contains(benificiary) ) ) {
           return true
         }
       }
@@ -589,7 +816,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function residenceHeldOnTrustOnly(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function residenceHeldOnTrustOnly(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_RESIDENCE_HELD_IN_TRUST_ONLY_FORM)){
       if(hoeLine != null){
@@ -597,9 +824,9 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
         var HO4typeKeyCode = typekey.HOPolicyType_HOE.TC_HO4.Code
         var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
-        var org_Type=  hoeLine.Branch.Policy.Account.AccountOrgType.Value
-        var trusty = typekey.AccountOrgType.TC_TRUST_EXT.Code
-        if( org_Type != null and (policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and org_Type ==  trusty )  {
+        var org_Type=  hoeLine.Branch.Policy.Account.AccountOrgType.DisplayName
+        var trusty = typekey.AccountOrgType.TC_TRUST_EXT.DisplayName
+        if( org_Type != null and (policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and org_Type.equals(trusty))  {
           return true
         }
       }
@@ -607,7 +834,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function lossAssessmentResType(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function lossAssessmentResType(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_LOSS_ASSESSMENT_RES_TYPE_FORM)){
@@ -625,7 +852,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function personalPropertyValuationMethod(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function personalPropertyValuationMethod(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_PERSONAL_PROPERTY_VALUATION_METHOD_FORM)){
@@ -638,7 +865,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var isTermExists = dwelling.HODW_Personal_Property_HOE.HasHODW_PropertyValuation_HOE_ExtTerm
         var inputValMethodName = dwelling.HODW_Personal_Property_HOE.HODW_PropertyValuation_HOE_ExtTerm.Value.Code
         var replCost = typekey.ValuationMethod.TC_PERSPROP_REPLCOST.Code
-        var replCostACV = typekey.ValuationMethod.TC_PERSPROP_REPLCOSTVALWACVHOLDBACK.Code
+        var replCostACV = typekey.ValuationMethod.TC_PERSPROP_ACV.Code
         if((policyType == HO3typeKeyCode or  policyType == HO4typeKeyCode or  policyType == HO6typeKeyCode) and isCovExists and isTermExists and  (inputValMethodName == replCost or inputValMethodName == replCostACV ) )  {
           return true
         }
@@ -647,7 +874,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function otherStructuresDecreasedLimit(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function otherStructuresDecreasedLimit(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_OTHER_STRUCTURES_DECREASED_LIMIT_FORM)){
@@ -669,7 +896,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function homeOwnersOtherStructuresDecreasedLimit(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function homeOwnersOtherStructuresDecreasedLimit(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_HOMEOWNERS_OTHER_STRUCTURES_DECREASED_LIMIT_FORM)){
@@ -692,7 +919,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
     }
 
-  public function hurricaneDeductible(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function hurricaneDeductible(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_HURRICANE_DEDUCTIBLE_FORM)){
@@ -711,7 +938,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function hurricaneDeductibleForDP3(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function hurricaneDeductibleForDP3(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_HURRICANE_DEDUCTIBLE_EXCLUDE_DP3_FORM)){
@@ -729,7 +956,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
   }
-  public function limitedEarthQuake(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function limitedEarthQuake(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_CARLIFORNIA_EARTHQUAKE_FORM)){
@@ -743,7 +970,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var HO6typeKeyCode = typekey.HOPolicyType_HOE.TC_HO6.Code
         var jobType= hoeLine.Branch.Job.Subtype.Code
         var policyChange = typekey.Job.TC_POLICYCHANGE.Code
-        if(jobType != policyChange and (isCovExists_1 or isCovExists_2) and (policyType == HO3typeKeyCode or policyType == HO4typeKeyCode or policyType == HO6typeKeyCode) and homeBuilt < 1973 )  {
+        if(jobType != policyChange and (!isCovExists_1 or !isCovExists_2) and (policyType == HO3typeKeyCode or policyType == HO4typeKeyCode or policyType == HO6typeKeyCode) and homeBuilt < 1973 )  {
         return true
       }
       }
@@ -751,7 +978,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function dwellingFire(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function dwellingFire(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_FORM)){
@@ -770,7 +997,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function dwellingFirePersonalLiability(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function dwellingFirePersonalLiability(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_PERSONAL_LIABILITY_FORM)){
@@ -789,7 +1016,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
     }
 
-  public function dwellingFireSignaturePage(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function dwellingFireSignaturePage(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_SIGNATURE_PAGE_FORM)){
@@ -806,7 +1033,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function diffCovNotSelected(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function diffCovNotSelected(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DIFFERENCE_COVERAGE_NOTSELECTD_FORM)){
@@ -826,7 +1053,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function carliforniaEarthQuakeCovNotSelected(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function carliforniaEarthQuakeCovNotSelected(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_CARLIFORNIA_EARTHQUAKE_COVERAGE_NOTSELECTD_FORM)){
@@ -847,7 +1074,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function premisesLiability(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function premisesLiability(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_PREMISES_LIABILITY_SELECTED_FORM)){
@@ -866,7 +1093,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function homeOwnersOtherStructures(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function homeOwnersOtherStructures(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_HOMEOWNERS_OTHERSTRUCTURES_FORM)){
@@ -881,7 +1108,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
   }
-  public  function rewriteForRenewals(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function rewriteForRenewals(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS_FORM)){
@@ -910,7 +1137,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
 
 
-  public function rewriteForRenewalsForTX(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function rewriteForRenewalsForTX(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS_TX_FORM)){
       if(hoeLine != null ){
@@ -932,7 +1159,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function dwellingFireOrdianceLaw1(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function dwellingFireOrdianceLaw1(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_ORDIANCE_LAW1_FORM)){
@@ -952,7 +1179,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-   public function dwellingFireOrdianceLaw2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+   public function dwellingFireOrdianceLaw2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
      var dwelling = context.Period.HomeownersLine_HOE.Dwelling
      var hoeLine = context.Period.HomeownersLine_HOE
      if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_ORDIANCE_LAW2_FORM)){
@@ -972,7 +1199,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
      return false
    }
 
-  public function fungiWetDry1(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function fungiWetDry1(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_FUNGI_WET_DRY1_FORM)){
@@ -990,7 +1217,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function fungiWetDry2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function fungiWetDry2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_FUNGI_WET_DRY2_FORM)){
@@ -1008,7 +1235,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
     }
 
- public function rewriteForRenewalsForHOB(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+ public function rewriteForRenewalsForHOB(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
    var hoeLine = context.Period.HomeownersLine_HOE
    if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS_HOB_FORM)){
@@ -1037,7 +1264,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
    return false
  }
 
-  public function carliforniaEarthQuakeCov(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function carliforniaEarthQuakeCov(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_CARLIFORNIA_EARTHQUAKE_COV_FORM)){
@@ -1055,7 +1282,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public function lossAssessment(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function lossAssessment(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_LOSS_ASSESSMENT_FORM)){
@@ -1072,7 +1299,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
     return false
   }
-  public function fungiWetForm(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function fungiWetForm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_FUNGI_WET_FORM)){
@@ -1094,7 +1321,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-  public  function additionalInsured(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function additionalInsured(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_ADDNL_INSURED_FORM)){
       if(hoeLine != null ){
@@ -1111,7 +1338,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-   public function dwellingFireForTX1( context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+   public function dwellingFireForTX1( context: FormInferenceContext, availableStates: Set<Jurisdiction> , formCode : String) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_TX1_FORM)){
@@ -1130,7 +1357,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-   public function dwellingFireForTX2( context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+   public function dwellingFireForTX2( context: FormInferenceContext, availableStates: Set<Jurisdiction> , formCode : String) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_DWELLING_FIRE_TX2_FORM)){
@@ -1148,7 +1375,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
   }
 
-   public function unscheduleLimit( context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+   public function unscheduleLimit( context: FormInferenceContext, availableStates: Set<Jurisdiction> , formCode : String) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_UNSCHEDULE_LIMIT_FORM)){
@@ -1168,7 +1395,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     return false
     }
 
-    public function section1Deductible( context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+    public function section1Deductible( context: FormInferenceContext, availableStates: Set<Jurisdiction> , formCode : String) : boolean {
         var dwelling = context.Period.HomeownersLine_HOE.Dwelling
         var hoeLine = context.Period.HomeownersLine_HOE
         if(formCode.equals(FormPatternConstants.HO_SECTION1_DEDUCTIBLE_FORM)){
@@ -1188,7 +1415,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         return false
     }
 
-  public function specialLimitsPersonalProperty(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public function specialLimitsPersonalProperty(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_SPECIAL_LIMITS_PERSONAL_PROPERTY_FORM)){
@@ -1214,7 +1441,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
     }
      return false
     }
-    public  function propertyIncreasedLimits(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+    public  function propertyIncreasedLimits(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
       var dwelling = context.Period.HomeownersLine_HOE.Dwelling
       var hoeLine = context.Period.HomeownersLine_HOE
       if(formCode.equals(FormPatternConstants.HO_PROPERTY_INCREASED_LIMITS_FORM)){
@@ -1233,7 +1460,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
       return false
       }
 
-      public function rewriteForRenewals2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+      public function rewriteForRenewals2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
         var hoeLine = context.Period.HomeownersLine_HOE
         if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS2_FORM)){
           if(hoeLine != null ){
@@ -1255,7 +1482,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
   return false
   }
 
-public function rewriteForSubmission(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean  {
+public function rewriteForSubmission(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean  {
   var hoeLine = context.Period.HomeownersLine_HOE
   if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_SUBMISSION_FORM)){
         if(hoeLine != null){
@@ -1276,7 +1503,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
       return false
 }
 
-  public function rewriteForRenewals3(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean  {
+  public function rewriteForRenewals3(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean  {
      var hoeLine = context.Period.HomeownersLine_HOE
       if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS3_FORM)){
       if(hoeLine != null ){
@@ -1297,7 +1524,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
     return false
 }
 
-  public function rewriteForSubmission2(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean  {
+  public function rewriteForSubmission2(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean  {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_SUBMISSION2_FORM)){
@@ -1321,7 +1548,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
     return false
   }
 
-  public function rewriteForRenewals4(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean  {
+  public function rewriteForRenewals4(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean  {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS4_FORM)){
@@ -1345,7 +1572,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
     return false
   }
 
-  public function rewriteForSubmission3(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean  {
+  public function rewriteForSubmission3(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean  {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_SUBMISSION3_FORM)){
@@ -1367,7 +1594,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
     return false
   }
 
-  public function rewriteForRenewals5(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean  {
+  public function rewriteForRenewals5(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean  {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_REWRITE_FOR_RENEWALS5_FORM)){
@@ -1389,7 +1616,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
    return false
   }
 
-  public  function ordianceLaw(context: FormInferenceContext, availableStates: Set<Jurisdiction> ) : boolean {
+  public  function ordianceLaw(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
     var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_ORDIANCE_LAW_FORM)){

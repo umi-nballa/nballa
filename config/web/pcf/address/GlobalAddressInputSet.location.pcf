@@ -31,14 +31,16 @@
       id="AddressOverridden"
       label="displaykey.Web.Account.Locations.AddressOverride"
       required="false"
-      value="addressOwner.Address.addressOverride_Ext">
+      value="addressOwner.Address.addressOverride_Ext"
+      visible="!(addressOwner typeis una.lob.bp7.BP7LocationAddressOwner) and !(addressOwner typeis una.extensions.UnaPolicyLocationAddressOwner)">
       <PostOnChange/>
     </BooleanRadioInput>
     <BooleanRadioInput
       id="AddressScrubbed"
       label="displaykey.Web.Account.Locations.AddressScrubbed"
       required="false"
-      value="addressOwner.Address.addressScrub_Ext">
+      value="addressOwner.Address.addressScrub_Ext"
+      visible="!(addressOwner typeis una.lob.bp7.BP7LocationAddressOwner) and !(addressOwner typeis una.extensions.UnaPolicyLocationAddressOwner)">
       <PostOnChange/>
     </BooleanRadioInput>
     <Input

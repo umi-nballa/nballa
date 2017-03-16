@@ -128,7 +128,7 @@ enhancement NoteEnhancement : Note {
   }
   // uim-svallabhapurapu
   private function policyTemplates() : String[]{
-      return {"New Bsuiness","Inspection Review","Renewal Review", "Alarm Credit Removed"}
+      return {"New Business","Inspection Review","Renewal Review", "Alarm Credit Removed","Renewal Alert Email to Agent","Renewal - Insured's Renewal Notification","Returned Mail - Named Insured","Returned Mail - Additional Insured/Interest","Risk Indicator"}
   }
 
 }

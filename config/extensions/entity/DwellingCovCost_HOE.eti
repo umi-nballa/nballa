@@ -1,7 +1,21 @@
 <?xml version="1.0"?>
-<!--Dwelling Coverage Cost-->
-<subtype xmlns="http://guidewire.com/datamodel" entity="DwellingCovCost_HOE" supertype="HOTaxableCost_HOE">
-  <foreignkey fkentity="DwellingCov_HOE" name="DwellingCov" nullok="false" />
-  <implementsEntity name="Cost" adapter="gw.lob.ho.financials.HomeownersCostAdapter_HOE" />
-  <implementsInterface iface="gw.lob.ho.financials.HOCostMethods_HOE" impl="gw.lob.ho.financials.DwellingCovCostMethodsImpl_HOE"/>
+<!-- Dwelling Coverage Cost -->
+<subtype
+  xmlns="http://guidewire.com/datamodel"
+  entity="DwellingCovCost_HOE"
+  supertype="HOTaxableCost_HOE">
+  <foreignkey
+    fkentity="DwellingCov_HOE"
+    name="DwellingCov"
+    nullok="false"/>
+  <implementsEntity
+    adapter="gw.lob.ho.financials.HomeownersCostAdapter_HOE"
+    name="Cost"/>
+  <implementsInterface
+    iface="gw.lob.ho.financials.HOCostMethods_HOE"
+    impl="gw.lob.ho.financials.DwellingCovCostMethodsImpl_HOE"/>
+  <typekey
+    name="CostType"
+    nullok="true"
+    typelist="HOCostType_Ext"/>
 </subtype>

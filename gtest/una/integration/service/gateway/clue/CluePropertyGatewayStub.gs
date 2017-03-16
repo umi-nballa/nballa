@@ -143,12 +143,13 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
   private  function extractClaimDetails(claim: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.anonymous.elements.ResultsDataset_ClaimsHistory_Claim,
                                         cHistoryType: wsi.schema.una.inscore.xsd.property.cluepropertyv2result.enums.ResultsDataset_ClaimsHistory_Type,referenceNumber:String): HOPriorLoss_Ext {
     var priorLoss = new HOPriorLoss_Ext()
+    var typecodeMapper = gw.api.util.TypecodeMapperUtil.getTypecodeMapper()
     //get claim details
     priorLoss.Reference=referenceNumber
     priorLoss.ClaimDate = claim.ClaimDate
     priorLoss.ClaimAge = claim.ClaimAge.Years as java.lang.String
     priorLoss.ClaimNum = claim.Number
-    priorLoss.ClaimType = cHistoryType.toString()
+    priorLoss.ClaimType = typecodeMapper.getInternalCodeByAlias(ClaimType_Ext.Type.RelativeName, "clue", cHistoryType.toString())
 
     _logger.debug("A Claim has been found " + claim.Number)
 
@@ -163,8 +164,8 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
         _logger.debug("dis = " + p.Disposition as String)
         _logger.debug("amount = " + p.AmountPaid)
         var cPayment = new ClaimPayment_Ext()
-        cPayment.ClaimType = p.CauseOfLoss.toString()
-        cPayment.ClaimDisposition = p.Disposition as String
+        cPayment.ClaimType = typecodeMapper.getInternalCodeByAlias(ClaimType_Ext.Type.RelativeName, "clue", cHistoryType.toString())
+       // cPayment.ClaimDisposition = p.Disposition as String
         cPayment.ClaimAmount = p.AmountPaid
         pArray[i] = cPayment
       }
@@ -172,7 +173,7 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
     }
 
     _logger.debug("Getting claim scope and dispute date Details ")
-    priorLoss.ClaimScope = claim.ScopeOfClaim.toString()
+    priorLoss.ClaimScope = typecodeMapper.getInternalCodeByAlias(ClaimScope_Ext.Type.RelativeName, "clue", claim.ScopeOfClaim.toString())
     priorLoss.DisputeDate = claim.DisputeClearanceDate
     //get policy details
     priorLoss.PolicyNum = claim.Policy.Number

@@ -119,4 +119,22 @@ public final class HORateRoutineNames {
   public static final var PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE :String = "UNAHOProtectiveDeviceCreditRateRoutine"
   public static final var ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE : String = "UNADPAdditionalInsuredPropertyManagerCovRateRoutine"
   public static final var EQ_COVERAGE_RATE_ROUTINE : String = "UNAHOEarthquakeCoverageRateRoutine"
+
+  //base premium rate routines for DP
+  public static final var BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE : String = "UNAHODwellingFireBasePremiumRateRoutine"
+  public static final var BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHODwellingFirePersonalPropertyRateRoutine"
+  public static final var HO_VMM_DWELLING_RATE_ROUTINE : String = "UNAHOVMMDwellingRateRoutine"
+  public static final var HO_VMM_CONTENTS_RATE_ROUTINE : String = "UNAHOVMMContentsRateRoutine"
+  public static final var HO_EXTENDED_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOExtendedCoverageDwellingRateRoutine"
+  public static final var HO_EXTENDED_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOExtendedCoverageContentsRateRoutine"
+  public static final var HO_ADDITIONAL_EXTENDED_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOAdditionalExtendedCoverageDwellingRateRoutine"
+  public static final var HO_ADDITIONAL_EXTENDED_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOAdditionalExtendedCoverageContentsRateRoutine"
+  public static final var HO_ALL_RISKS_SPECIAL_COVERAGE_DWELLING_RATE_ROUTINE : String = "UNAHOAllRiskSpecialCoverageDwellingRateRoutine"
+  public static final var HO_ALL_RISKS_SPECIAL_COVERAGE_CONTENTS_RATE_ROUTINE : String = "UNAHOAllRiskSpecialCoverageContentsRateRoutine"
+  public static final var DP_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNADPReplacementCostPersonalPropertyRateRoutine"
+  public static final var HURRICANE_COV_RATE_ROUTINE : String = "UNAHO3HurricaneCoverageRateRoutine"
+  public static final var COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_CONTENTS_RATE_ROUTINE : String = "UNAHOCompleteHomeSprinklerSystemContentsRateRoutine"
+  public static final var LOSS_FREE_CREDIT_CONTENTS_RATE_ROUTINE : String = "UNAHOLossFreeCreditContentsRateRoutine"
+  public static final var COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_DWELLING_RATE_ROUTINE : String = "UNAHOCompleteHomeSprinklerSystemDwellingRateRoutine"
+  public static final var LOSS_FREE_CREDIT_DWELLING_RATE_ROUTINE : String = "UNAHOLossFreeCreditDwellingRateRoutine"
 }

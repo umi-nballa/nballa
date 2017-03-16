@@ -146,7 +146,7 @@ class PropertyInspectionHelper {
       if(dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext){
         propertyInspectionData.PPC= dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext.Code
       } else{
-        propertyInspectionData.PPC= dwelling_hoe.HOLocation.DwellingProtectionClasscode.Code
+        propertyInspectionData.PPC= dwelling_hoe.HOLocation.DwellingProtectionClasscode
       }
 
       // Square Feet
@@ -183,7 +183,13 @@ class PropertyInspectionHelper {
 
       propertyInspectionData.Pool = dwelling_hoe.HOUWQuestions.swimmingpool ? YES : null
 
-      propertyInspectionData.Stilts= dwelling_hoe.Foundation.Code?.equalsIgnoreCase(FoundationType_HOE.TC_STILTSPILINGS_EXT.Code) ? YES : null
+      if(dwelling_hoe.Foundation.Code?.equalsIgnoreCase(FoundationType_HOE.TC_STILTSPILINGS_EXT.Code)
+      || dwelling_hoe.Foundation.Code?.equalsIgnoreCase(FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT.Code)
+      || dwelling_hoe.Foundation.Code?.equalsIgnoreCase(FoundationType_HOE.TC_POSTPIERBEAMENCLOSED_EXT.Code)){
+        propertyInspectionData.Stilts = "YES"
+      }else{
+        propertyInspectionData.Stilts = null
+      }
 
       propertyInspectionData.Woodburner= dwelling_hoe.HeatSrcWoodBurningStove ? YES : null
 

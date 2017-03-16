@@ -141,11 +141,12 @@ class OFACRequestMapper {
         ofacDTO.FirstName = insured?.FirstName != null ? insured?.FirstName : ""
         ofacDTO.MiddleName = insured?.MiddleName != null ? insured?.MiddleName : ""
         ofacDTO.LastName = insured?.LastName != null ? insured?.LastName : ""
+        }
         if (insured typeis Company){
           if (null != insured.Name)
             ofacDTO.LastName = insured?.Name != null ? insured?.Name : ""
         }
-      }
+
       ofacDTO.AddressStreet1 = insured?.PrimaryAddress?.AddressLine1 != null ? insured?.PrimaryAddress?.AddressLine1 : ""
       ofacDTO.AddressStreet2 = insured?.PrimaryAddress?.AddressLine2 != null ? insured?.PrimaryAddress?.AddressLine2 : ""
       ofacDTO.City = insured?.PrimaryAddress?.City != null ? insured?.PrimaryAddress?.City : ""

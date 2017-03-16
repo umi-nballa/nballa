@@ -116,7 +116,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecialComputerCoverage(dwellingCov, dateRange)
         break
       case HODW_SinkholeLoss_HOE_Ext:
-        rateSinkholeLossCoverage(dwellingCov, dateRange)
+        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
+          rateSinkholeLossCoverage(dwellingCov, dateRange)
         break
       case HODW_SpecificAddAmt_HOE_Ext:
         rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
@@ -199,7 +200,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       }
     }
 
-
     //rating all wind hail included, credit and discounts
     if(!windOrHailExcluded){
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
@@ -224,7 +224,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     updateWindBasePremium()
 
     if(!windOrHailExcluded){
-      rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
+      if(_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade !=99)
+        rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
       rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
       rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
     }

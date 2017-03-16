@@ -127,19 +127,29 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     if(building.CPBldgCovExists){
       addCosts(ratingStep.rateBuildingCoverageWithGroupRates(building.CPBldgCov, sliceRange))
       if(windStormApplicable){
+        var allCostDatas : List<CostData> = {}
+        var costData = ratingStep.rateBuildingLossMitigationCredit(building.CPBldgCov, sliceRange)
+        var wsc = costData.WorksheetEntries?.first()
         if(hurricaneIncluded)
-          addCost(ratingStep.rateBuildingCoverageWithHurricane(building.CPBldgCov, sliceRange))
+          allCostDatas.add(ratingStep.rateBuildingCoverageWithHurricane(building.CPBldgCov, sliceRange))
         else
-          addCost(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBldgCov, sliceRange))
+          allCostDatas.add(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBldgCov, sliceRange))
+        allCostDatas.each( \ cd -> cd.addWorksheetEntry(wsc))
+        addCosts(allCostDatas)
       }
     }
     if(building.CPBPPCovExists){
       addCosts(ratingStep.rateBuildingCoverageWithGroupRates(building.CPBPPCov, sliceRange))
       if(windStormApplicable){
+        var costData = ratingStep.rateBuildingLossMitigationCredit(building.CPBPPCov, sliceRange)
+        var wsc = costData.WorksheetEntries?.first()
+        var allCostDatas : List<CostData> = {}
         if(hurricaneIncluded)
-          addCost(ratingStep.rateBuildingCoverageWithHurricane(building.CPBPPCov, sliceRange))
+          allCostDatas.add(ratingStep.rateBuildingCoverageWithHurricane(building.CPBPPCov, sliceRange))
         else
-          addCost(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBPPCov, sliceRange))
+          allCostDatas.add(ratingStep.rateBuildingCoverageWithNoHurricane(building.CPBPPCov, sliceRange))
+        allCostDatas.each( \ cd -> cd.addWorksheetEntry(wsc))
+        addCosts(allCostDatas)
       }
     }
     if(building.CPOrdinanceorLaw_EXTExists){
@@ -342,7 +352,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     var totalBuildingPremium  : BigDecimal = 0.0
     for(costData in CostDatas){
       if(costData typeis CPBuildingCovCostData){
-        var costEntity = costData.getPopulatedCost(PolicyLine)
+        var costEntity = costData.getExistingCost(PolicyLine)
         if(costEntity.Coverage.PatternCode == "CPBldgCov")
           totalBuildingPremium += costData.ActualTermAmount
       }
@@ -357,7 +367,7 @@ class UNACPRatingEngine extends AbstractRatingEngine<CPLine> {
     var totalContentsPremium  : BigDecimal = 0.0
     for(costData in CostDatas){
       if(costData typeis CPBuildingCovCostData){
-        var costEntity = costData.getPopulatedCost(PolicyLine)
+        var costEntity = costData.getExistingCost(PolicyLine)
         if(costEntity.Coverage.PatternCode == "CPBPPCov")
           totalContentsPremium += costData.ActualTermAmount
       }

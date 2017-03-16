@@ -107,7 +107,6 @@ abstract class QuotePageUtil_HOE {
       //items.each(\ s -> {total += s.ExposureValue})
       result.add(new NameValueCostData_HOE(scheduledItem.DisplayName, "", cost))
     }else if(coverage.PatternCode == "HOLI_AddResidenceRentedtoOthers_HOE"){
-      // Outboard Motors and Watercraft Coverage
       var lineCov = coverage as HomeownersLineCov_HOE
       var coveredLocationItem = (cost as ScheduleLineCovCost_HOE_Ext).CoveredLocationItem
       var key = coveredLocationItem.FixedId

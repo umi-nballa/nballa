@@ -92,7 +92,7 @@
       id="LOBWizardStepGroup"
       label="displaykey.Web.Wizard.LineWizardStepGroup">
       <JobWizardStep
-        beforeSave="if (policyPeriod.PersonalAutoLineExists) { gw.lob.pa.PALineStepsValidator.validatePolicyInfoStep(policyPeriod.PersonalAutoLine) }"
+        beforeSave="gw.policy.PolicyPeriodValidation.validatePolicyInfoScreen(policyPeriod)"
         id="PolicyInfo"
         onChange="handleOnChangeForProduct()"
         onEnter="if (openForEdit) { gw.web.productmodel.ProductModelSyncIssuesHandler.syncPolicyTerm( policyPeriod, jobWizardHelper ) }"

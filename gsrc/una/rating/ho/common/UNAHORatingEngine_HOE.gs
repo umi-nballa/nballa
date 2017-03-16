@@ -180,7 +180,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     if(BaseState == Jurisdiction.TC_FL){
       for(costData in CostDatas){
         if(costData typeis DwellingCovCostData_HOE){
-          var cost = costData.getPopulatedCost(PolicyLine)
+          var cost = costData.getExistingCost(PolicyLine)
           if(cost.Coverage.PatternCode == "HODW_FloodCoverage_HOE_Ext")
             continue
         }

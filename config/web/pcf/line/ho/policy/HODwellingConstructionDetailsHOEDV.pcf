@@ -20,13 +20,20 @@
       recalculateOnRefresh="true"/>
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.setTunaFieldsMatchLevel(tunaAppResponse,dwelling)"
-      name="setTunaFieldsMatchLevel"/>
+      name="setTunaFieldsMatchLevel"
+      recalculateOnRefresh="true"/>
     <Variable
       initialValue="gw.lob.ho.HODwellingUtil_HOE.initializeSingleReturnTypelists(dwelling,tunaAppResponse)"
-      name="initializeTunaSingleReturns"/>
+      name="initializeTunaSingleReturns"
+      recalculateOnRefresh="true"/>
+    <Variable
+      initialValue="gw.lob.ho.HODwellingUtil_HOE.setNCWindpool(dwelling)"
+      name="setNCWindpool"
+      recalculateOnRefresh="true"
+      type="String"/>
     <InputColumn
       labelWidth="350">
-      <InputSet
+      <!-- <InputSet
         id="Yearbuilt_Ext">
         <RangeInput
           available="!dwelling.OverrideYearbuilt_Ext"
@@ -63,8 +70,8 @@
           <PostOnChange
             onChange="pageProcess.retrieveBCEG360Value(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"/>
         </Input>
-      </InputSet>
-      <InputDivider/>
+      </InputSet> -->
+      <!-- <InputDivider/> -->
       <InputSet
         id="NumberOfStories_Ext">
         <RangeInput
@@ -130,7 +137,7 @@
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeUserEntered_Ext"
           required="dwelling.OverrideConstructionType_Ext"
           value="dwelling.ConstTypeOverridden_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling).sort()">
           <PostOnChange/>
         </RangeInput>
         <!-- <Input
@@ -556,7 +563,7 @@
         editable="true"
         id="panelRangeInput"
         label="displaykey.Web.Homeowners.DwellingConstruction.PanelManufacturer"
-        required="true"
+        required="false"
         value="dwelling.PanelManufacturer_Ext"
         valueRange="gw.lob.ho.HODwellingUtil_HOE.getPanelManufacturingRange(dwelling)"/>
       <TypeKeyInput
@@ -669,11 +676,11 @@
         value="dwelling.PropertyCovByStateWndstorm_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWindstormAssociationVisible(dwelling)">
         <PostOnChange
-          onChange="if(dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = true} else if(!dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = null}"/>
+          onChange="if(dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = true} else {dwelling.WHurricaneHailExclusion_Ext = false}"/>
       </BooleanRadioInput>
       <InputSet
         id="WindPool_Ext"
-        visible="dwelling.isBCEGVisible //visibility conditions similar to bceg">
+        visible="dwelling.isWindpoolVisible //visibility conditions similar to bceg">
         <InputDivider/>
         <RangeInput
           available="!dwelling.HOLocation.OverrideWindPool_Ext"
@@ -681,7 +688,7 @@
           id="WindPoolTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.WindPoolTunaReturned_Ext"
           value="dwelling.HOLocation.WindPool_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)//, dwelling)"/>
         <Input
           available="!dwelling.HOLocation.OverrideWindPool_Ext"
           id="WindPoolMatchLevel_Ext"
@@ -749,14 +756,14 @@
           label="displaykey.Web.Homeowners.DwellingConstruction.FBCWindSpeed"
           required="true"
           value="dwelling.FBCWindSpeed_Ext"
-          visible="dwelling.Branch.BaseState.Code!=&quot;FL &quot; || (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002)"/>
+          visible="dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002 &amp;&amp; dwelling.WindMitigation_Ext"/>
         <TypeKeyInput
           editable="true"
           id="windspeedDesign"
           label="displaykey.Web.Homeowners.DwellingConstruction.WindSpeedOfDesign"
           required="true"
           value="dwelling.WindSpeedOfDesign_Ext"
-          visible="dwelling.Branch.BaseState.Code!=&quot;FL &quot; || (dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002)"/>
+          visible="(dwelling.Branch.BaseState.Code == typekey.State.TC_FL.Code &amp;&amp; !dwelling.WHurricaneHailExclusion_Ext &amp;&amp; dwelling.YearBuiltOrOverride&gt;=2002) &amp;&amp; dwelling.WindMitigation_Ext"/>
         <TypeKeyInput
           editable="true"
           id="wbdr"

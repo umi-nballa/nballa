@@ -26,4 +26,16 @@ class HORatingInfo {
   var _affinityDiscount: BigDecimal as AffinityDiscount = 0.0
   var _preferredBuilderCredit : BigDecimal as PreferredBuilderCredit = 0.0
   var _multiLineDiscount : BigDecimal as MultiLineDiscount = 0.0
+
+  //DP premiums
+  var _dwellingFireBasePremium : BigDecimal as DwellingFireBasePremium = 0.0
+  var _dwellingFirePersonalPropertyBasePremium : BigDecimal as DwellingFirePersonalPropertyBasePremium = 0.0
+  var _vmmDwellingPremium : BigDecimal as VMMDwellingPremium = 0.0
+  var _vmmContentsPremium : BigDecimal as VMMContentsPremium = 0.0
+  var _extendedCoverageDwellingPremium : BigDecimal as ExtendedCoverageDwellingPremium = 0.0
+  var _extendedCoverageContentsPremium : BigDecimal as ExtendedCoverageContentsPremium = 0.0
+  var _additionalExtendedCoverageDwellingPremium : BigDecimal as AdditionalExtendedCoverageDwellingPremium = 0.0
+  var _additionalExtendedCoverageContentsPremium : BigDecimal as AdditionalExtendedCoverageContentsPremium = 0.0
+  var _allRiskSpecialCoverageDwellingPremium : BigDecimal as AllRiskSpecialCoverageDwellingPremium = 0.0
+  var _allRiskSpecialCoverageContentsPremium : BigDecimal as AllRiskSpecialCoverageContentsPremium = 0.0
 }

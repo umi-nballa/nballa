@@ -28,6 +28,9 @@ class ETLDirectCovTermPatternCreator extends ETLCovTermPatternCreatorImpl<Direct
     var etlDirectCovTermPattern = new ETLDirectCovTermPattern(etlClausePattern.Bundle)
     etlDirectCovTermPattern = super.setCommonCovTermFields(etlDirectCovTermPattern, etlClausePattern)
     etlDirectCovTermPattern.ValueType = DirectCovTermPattern.ValueType.Code
+	//Extended AggregateModel and RestrictionModel fields for PolicyInquiryService
+    etlDirectCovTermPattern.ModelAgg = DirectCovTermPattern.AggregationModel.Code
+    etlDirectCovTermPattern.ModelRest = DirectCovTermPattern.RestrictionModel.Code
     return etlDirectCovTermPattern
   }
 }

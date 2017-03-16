@@ -103,7 +103,7 @@ class OFACGatewayHelper {
     if (record.RecordDetails.EntityType == ResultEntityType.Individual) {
 
       //add person contact to Map
-      if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.Last != null) {
+      if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.First !="" && record.RecordDetails.Name.Last != null) {
         var person = personList?.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase(record.RecordDetails.Name.First)
             && elt.LastName.equalsIgnoreCase(record.RecordDetails.Name.Last))
         _logger.debug("Adding " + person.Name + " to the AlertList")
@@ -113,7 +113,7 @@ class OFACGatewayHelper {
           return person
        }
       }
-    } else {
+    else {
       // add company contact to the map
       if (record.RecordDetails.Name.Full != null && companyList.HasElements) {
         var company = companyList?.firstWhere(\elt ->
@@ -125,6 +125,7 @@ class OFACGatewayHelper {
           return company
         }
         }
+    }
     }
     _logger.info(CLASS_NAME + ": Exiting returnHITContact method")
     return null

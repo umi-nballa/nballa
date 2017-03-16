@@ -35,6 +35,20 @@ class HOCreateCostDataUtil {
   }
 
   /**
+   * creates cost data for the dwelling level coverages
+   */
+  public static function createCostDataForDwellingCovWithCostType(dwellingCov: DwellingCov_HOE, dateRange: DateRange, routineName: String, rateCache: PolicyPeriodFXRateCache,
+                                                           line: PolicyLine, rateRoutineParameterMap: Map<CalcRoutineParamName, Object>, executor: HORateRoutineExecutor, numDaysInCoverageRatedTerm: int, costType : HOCostType_Ext): CostData {
+    var costData = new DwellingCovCostData_HOE(dateRange.start, dateRange.end, dwellingCov.Currency, rateCache, dwellingCov.FixedId, costType)
+    costData.init(line as HomeownersLine_HOE)
+    costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
+    rateRoutineParameterMap.put(TC_COSTDATA, costData)
+    executor.execute(routineName, dwellingCov, rateRoutineParameterMap, costData)
+    costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  /**
    * creates cost data for the scheduled dwelling coverages
    */
   public static function createCostDataForScheduledDwellingCoverage(dwellingCov: DwellingCov_HOE, dateRange: DateRange, routineName: String, item: ScheduledItem_HOE, rateCache: PolicyPeriodFXRateCache,

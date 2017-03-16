@@ -182,8 +182,6 @@ If Roof Covering does not = Reinforced Concrete then no default response.
 
     public static function setWindSpeedDefaults(bldg:CPBuilding):boolean
     {
-      print("guswind is " + bldg.guswind +" checking if 120 "+ bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 + " checking if100 " + bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100
-      + " checking if 110 " + bldg.guswind>=typekey.CPGustWindSpeedDes_Ext.TC_110 + " ::: ")
 
       if(bldg.Building.YearBuilt>=2002 && bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120)
         bldg.wbdr="Yes"
@@ -373,7 +371,6 @@ Default response to No if Gust Wind Speed of Design = 100 OR = 110
   public static function addRequiredCoverages(building:CPBuilding,cpline:CommercialPropertyLine)
   {
 
-    print("### exists " + cpline.CPFloridaChangesCondoCondition_EXT)
     if(cpline.CPFloridaChangesCondoCondition_EXT.Pattern.getExistence(cpline)==typekey.ExistenceType.TC_REQUIRED && !cpline.CPFloridaChangesCondoCondition_EXTExists )
       cpline.addToCPLineConditions(cpline.CPFloridaChangesCondoCondition_EXT)
   }

@@ -52,11 +52,12 @@ class PropertyInspectionsBRHelper {
   final static var THIRTY = "30|"
   final static var THIRTYONE = "31|"
   final static var THIRTYTWO = "32|"
+  final static var HYPHEN = "-"
   var currentDateYear = DateUtil.currentDate().YearOfDate
-  var zipCode =PropertiesHolder.getProperty("ZipCode")
-  var weatherRelatedLosses ={"flood","freezing water (incl burst pipes)","hail","lightning","weather related water","wind"}
+  var zipCodeList =PropertiesHolder.getProperty("ZipCode")
+  var weatherRelatedLosses ={"FLOOD","FREEZ","HAIL","LIGHT","WEATH","WIND"}
   var report = new HashMap<String, String>()
-  var windOrHailLosses = {"wind", "hail"}
+  var windOrHailLosses = {"WIND", "HAIL"}
   var reportOne = ""
   var reportTwo = ""
   var reportThree = ""
@@ -86,7 +87,7 @@ class PropertyInspectionsBRHelper {
       var priorLosses = Query.make(HOPriorLoss_Ext).compare(HOPriorLoss_Ext#HomeownersLineID, Equals ,policyPeriod.PublicID).select().toList()
       var weatherRelatedLossBROne = priorLosses?.hasMatch( \ priorLoss ->{
        return priorLoss.ClaimPayment.hasMatch( \ claimPayment ->{
-           return (claimPayment.ReportedDate > calendar.getTime() && !weatherRelatedLosses.contains(claimPayment.LossCause_Ext.Code))
+           return (priorLoss.ReportedDate > calendar.getTime() && !weatherRelatedLosses.contains(claimPayment.LossCause_Ext.Code))
        } )
       } )
 
@@ -94,9 +95,13 @@ class PropertyInspectionsBRHelper {
       calendar.add(Calendar.YEAR, -2)
       var windOrHailLossBR19n20 = priorLosses?.hasMatch( \ priorLoss ->{
         return priorLoss.ClaimPayment?.hasMatch( \ claimPayment ->{
-          return (claimPayment.ReportedDate > calendar.getTime() && windOrHailLosses.contains(claimPayment.LossCause_Ext.Code))
+            return (priorLoss.ReportedDate > calendar.getTime() && windOrHailLosses.contains(claimPayment.LossCause_Ext.Code))
         } )
       } )
+
+      calendar = Calendar.getInstance()
+      calendar.add(Calendar.YEAR, -5)
+      var noOfLossesInThePastFiveYears =priorLosses.countWhere( \ priorLoss -> priorLoss.ReportedDate > calendar.getTime())
 
       // Year Built ::
       var yearBuilt  = policyPeriod.HomeownersLine_HOE.Dwelling?.OverrideYearbuilt_Ext ?
@@ -109,7 +114,7 @@ class PropertyInspectionsBRHelper {
       }
 
       // BR.09.02 :: More than 1 loss of any cause in last 5 years
-      if(policyPeriod.Policy.NumPriorLosses> NUMPRIORLOSSES_ONE){
+      if(noOfLossesInThePastFiveYears > NUMPRIORLOSSES_ONE){
         reportOne += TWO
       }
 
@@ -139,7 +144,7 @@ class PropertyInspectionsBRHelper {
       }
 
      //BR.09.10 :: Risk is PC9 or PC10 (excluding CA)
-      var pcCode = dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext ? dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext?.Code : dwelling_hoe.HOLocation.DwellingProtectionClasscode?.Code
+      var pcCode = dwelling_hoe.HOLocation.OverrideDwellingPCCode_Ext ? dwelling_hoe.HOLocation.DwellingPCCodeOverridden_Ext?.Code : dwelling_hoe.HOLocation.DwellingProtectionClasscode
       if(( pcCode == ProtectionClassCode_Ext.TC_9.Code ||
            pcCode == ProtectionClassCode_Ext.TC_10.Code ) &&
            dwelling_State!=(State.TC_CA))  {
@@ -301,7 +306,11 @@ class PropertyInspectionsBRHelper {
       }
 
       //BR.09.29 :: Properties in the zip codes below to supplemental also have a roof top inspection performed, regardless of property age.
-      if(zipCode.contains(dwelling_hoe.HOLocation.PolicyLocation.PostalCode)){
+      var zipCode = dwelling_hoe.HOLocation.PolicyLocation.PostalCode
+      if(zipCode.contains(HYPHEN)){
+        zipCode = zipCode.split(HYPHEN).last()
+      }
+      if(zipCodeList.contains(zipCode)){
         reportOne += THIRTYTWO
       }
       report.put("reportOne",reportOne)

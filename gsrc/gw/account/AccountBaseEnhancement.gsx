@@ -581,22 +581,22 @@ enhancement AccountBaseEnhancement : Account {
     }
     // row 416
     else if(this.AccountOrgType == typekey.AccountOrgType.TC_CORPORATION_EXT
-        and (period.isHOType())){
+        and (period.isHOType() or period.isDFType())){
       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
     }
     // row 417
     else if(this.AccountOrgType == typekey.AccountOrgType.TC_IRA_EXT
-        and (period.isHOType())){
+        and (period.isHOType() or period.isDFType())){
       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
     }
     // row 418
     else if(this.AccountOrgType == typekey.AccountOrgType.TC_ASSOCIATION_EXT
-        and (period.isHOType())){
+        and (period.isHOType() or period.isDFType())){
       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
     }
     // row 419
     else if(this.AccountOrgType == typekey.AccountOrgType.TC_CHURCH_EXT
-        and (period.isHOType())){
+        and (period.isHOType() or period.isDFType())){
       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
     }
   }

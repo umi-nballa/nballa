@@ -190,9 +190,10 @@ class AddressFormatter extends AddressFillableExtensionImpl {
       }
     } else {
       // common case
+      append(sb, fieldId.ADDRESSLINE3, delimiter, addr.AddressLine3)
       append(sb, fieldId.ADDRESSLINE1, delimiter, addr.AddressLine1)
       append(sb, fieldId.ADDRESSLINE2, delimiter, addr.AddressLine2)
-      append(sb, fieldId.ADDRESSLINE3, delimiter, addr.AddressLine3)
+      //append(sb, fieldId.ADDRESSLINE3, delimiter, addr.AddressLine3)
        
       // city, state, zip line
       var cszBuf = new StringBuffer()

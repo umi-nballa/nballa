@@ -33,7 +33,7 @@
       type="String"/>
     <InputColumn
       labelWidth="350">
-      <InputSet
+      <!-- <InputSet
         id="Yearbuilt_Ext">
         <RangeInput
           available="!dwelling.OverrideYearbuilt_Ext"
@@ -70,8 +70,8 @@
           <PostOnChange
             onChange="pageProcess.retrieveBCEG360Value(dwelling);gw.lob.ho.HODwellingUtil_HOE.setPostFIRMValue(dwelling)"/>
         </Input>
-      </InputSet>
-      <InputDivider/>
+      </InputSet> -->
+      <!-- <InputDivider/> -->
       <InputSet
         id="NumberOfStories_Ext">
         <RangeInput
@@ -137,7 +137,7 @@
           label="displaykey.Web.Homeowners.HOLocation.ConstructionTypeUserEntered_Ext"
           required="dwelling.OverrideConstructionType_Ext"
           value="dwelling.ConstTypeOverridden_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getConstructionTypeStateSpecific(dwelling).sort()">
           <PostOnChange/>
         </RangeInput>
         <!-- <Input
@@ -563,7 +563,7 @@
         editable="true"
         id="panelRangeInput"
         label="displaykey.Web.Homeowners.DwellingConstruction.PanelManufacturer"
-        required="true"
+        required="false"
         value="dwelling.PanelManufacturer_Ext"
         valueRange="gw.lob.ho.HODwellingUtil_HOE.getPanelManufacturingRange(dwelling)"/>
       <TypeKeyInput
@@ -676,7 +676,7 @@
         value="dwelling.PropertyCovByStateWndstorm_Ext"
         visible="gw.lob.ho.HODwellingUtil_HOE.isWindstormAssociationVisible(dwelling)">
         <PostOnChange
-          onChange="if(dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = true} else if(!dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = null}"/>
+          onChange="if(dwelling.PropertyCovByStateWndstorm_Ext){dwelling.WHurricaneHailExclusion_Ext = true} else {dwelling.WHurricaneHailExclusion_Ext = false}"/>
       </BooleanRadioInput>
       <InputSet
         id="WindPool_Ext"

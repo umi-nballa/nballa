@@ -280,12 +280,13 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("VisibleToNeighbors", displaykey.Web.Policy.HomeownersLine.Validation.VisiblToNeighbors, "HomeownersDwelling")
     }*/
     // check garage type only for applicable policy types
-    if ((HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
+    //garage field is hidden and not used by UNA
+    /*if ((HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
          HODwelling.HOLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP2)
         and HODwelling.Garage == null
     ) {
       addErrorOrWarning("Garage", displaykey.Web.Policy.HomeownersLine.Validation.GarageType, "HomeownersDwelling")
-    }
+    }*/
   }
   
   function validateDwellingConstructionFields() {

@@ -105,7 +105,18 @@ enhancement CovTermEnhancement: gw.api.domain.covterm.CovTerm {
     if(factor > 1){
       result = factor
     }else if(factor >= 0){
-      result = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
+      var calculatedDefault = getRoundedDefault(sourceLimitValue, factor, dwelling, ROUND_NEAREST)
+
+      //apply unique exception for HI HO6
+      if(dwelling.HOLine.BaseState == TC_HI
+         and dwelling.HOPolicyType == TC_HO6
+         and this.PatternCode == "HODW_LossOfUseDwelLimit_HOE"
+         and configParameterType == TC_LIMITMINFACTOR
+         and calculatedDefault > 25000){
+        result = 25000
+      }else{
+        result = calculatedDefault
+      }
     }
 
     //added special handling for requirement updates for HO Product Model spreadsheet

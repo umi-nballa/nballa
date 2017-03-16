@@ -97,13 +97,14 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
         ActivityUtil.assignActivityToQueue(CSR_FOLLOW_UP_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
       }
 
-      if(policyPeriod.AllContacts*.EmailAddress1!=null){
+      if(policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1!=null){
         var subject = "Policy Inspection -- "+policyPeriod.PrimaryInsuredName +" "+policyPeriod.PolicyNumber
         var emailBody = InspectionsOrderedEmail.renderToString()
         var emailContact = new EmailContact()
-        emailContact.EmailAddress = policyPeriod.AllContacts*.EmailAddress1 as String
+        emailContact.EmailAddress = policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne()
         emailContact.Name=policyPeriod.PrimaryInsuredName
         EmailUtil.sendEmail(emailBody ,emailContact, subject)
+        LOGGER.info("Email is sent to : "+policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne())
       }
 
 

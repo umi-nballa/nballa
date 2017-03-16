@@ -21,6 +21,7 @@ enhancement PCAccountInfoEnhancement : PCAccountInfo
 
     var insuredContactID = account.AccountHolderContact.ID
     var policyPeriod = account.Policies.last().LatestPeriod
+    var policyAdditionalInterests = PolicyInfoUtil.retrieveAdditionalInterests(policyPeriod)
     var primaryPayer = policyPeriod.BillingContact
     if (primaryPayer.ContactDenorm.ID == insuredContactID) {
       this.InsuredIsBilling = true
@@ -28,15 +29,21 @@ enhancement PCAccountInfoEnhancement : PCAccountInfo
       // Mapping Primary Billing Contact (if insured is not primary payer)
       var primaryBillingContact = new PCContactInfo()
       primaryBillingContact.sync(primaryPayer.ContactDenorm)
+      primaryBillingContact.LoanNumber =
+          policyAdditionalInterests?.firstWhere( \ addlInt -> {
+            return addlInt.PolicyAddlInterest.ContactDenorm == primaryPayer.ContactDenorm
+          })?.ContractNumber
       this.PrimaryBillingContact.$TypeInstance = primaryBillingContact
     }
     // Mapping Other Billing Contacts
     var accountBillingContacts = account.getAccountContactsWithRole( typekey.AccountContactRole.TC_BILLINGCONTACT)
-    var addlInterests = PolicyInfoUtil.retrieveAdditionalInterests(policyPeriod)
     accountBillingContacts.where( \ b -> b.Contact.ID != insuredContactID && b.Contact.ID != primaryPayer.ContactDenorm.ID).each( \ b -> {
       var contInfo = new PCContactInfo()
       contInfo.sync( b.Contact )
-      contInfo.LoanNumber = addlInterests?.firstWhere( \ addlInt -> addlInt.PolicyAddlInterest.ContactDenorm == b.Contact)?.ContractNumber
+      contInfo.LoanNumber =
+          policyAdditionalInterests?.firstWhere( \ addlInt -> {
+            return addlInt.PolicyAddlInterest.ContactDenorm == b.Contact
+          })?.ContractNumber
 
       var element = new PCAccountInfo_OtherBillingContacts()
       element.$TypeInstance = contInfo

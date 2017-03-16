@@ -2,7 +2,6 @@ package una.rating.ho.group2.ratinginfos
 
 uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.math.BigDecimal
-uses java.util.Date
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,8 +16,6 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _increasedPersonalPropertyLimit : BigDecimal as IncreasedPersonalPropertyLimit
   var _preferredBuilderExists : boolean as PreferredBuilderExists
   var _preferredFinancialInstitutionExists : boolean as PreferredFinancialInstitutionExists
-  var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
-  var _priorLosses : int as PriorLosses = 0
 
   //windstorm mitigation credit
   var _roofShape : String as RoofShape
@@ -44,15 +41,6 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
       if(line.Branch.PreferredFinInst_Ext != null)
         _preferredFinancialInstitutionExists = true
 
-    var policyPeriod = dwelling?.PolicyPeriod
-    var originalEffectiveDate = policyPeriod?.Policy.OriginalEffectiveDate
-    var editEffectiveDate = policyPeriod?.EditEffectiveDate
-    _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
-
-    if(line?.HOPriorLosses_Ext != null){
-      _priorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES).length
-    }
-
     if(!dwelling.WHurricaneHailExclusion_Ext){
       _swr = dwelling?.SecondaryWaterResis_Ext?.DisplayName
       _roofDeckAttachment = dwelling?.RoofDeckAttachment_Ext?.DisplayName
@@ -66,18 +54,4 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
         _roofShape = dwelling?.RoofShape_Ext?.DisplayName
     }
   }
-
-  private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {
-    if (originalEffectiveDate == null || editEffectiveDate == null){
-      return 0
-    }
-    var time = (editEffectiveDate.YearOfDate - originalEffectiveDate.YearOfDate)
-    if (time <= 0)
-      return 0
-    else {
-      return time
-    }
-  }
-
-
 }

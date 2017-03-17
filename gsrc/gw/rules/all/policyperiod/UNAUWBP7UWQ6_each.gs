@@ -20,10 +20,10 @@ class UNAUWBP7UWQ6_each implements IRuleCondition<PolicyPeriod>{
     {
       if (elt != null)
       {
-        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="BusinessActivitiesAndRevenue")
+        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="InternetRevenuePercentage")
         {
-          var answer = period.getAnswer(elt).toString()
-          if (answer.indexOf("internet")!=-1 && answer.indexOf(">50")!=-1 )
+          var answer = period.getAnswer(elt).IntegerAnswer
+          if (answer>50 )
             return RuleEvaluationResult.execute()
         }
       }

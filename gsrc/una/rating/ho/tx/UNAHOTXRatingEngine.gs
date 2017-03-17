@@ -57,7 +57,8 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       var rateRoutineParameterSet = createDPParameterSet(_basePremiumRatingInfo)
       if(PolicyLine.Dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_ExtExists){
         rateVMMCoverage(PolicyLine.Dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_Ext, dateRange, rateRoutineParameterSet, HOCostType_Ext.TC_DWELLING, HORateRoutineNames.HO_VMM_DWELLING_RATE_ROUTINE)
-        rateVMMCoverage(PolicyLine.Dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_Ext, dateRange, rateRoutineParameterSet, HOCostType_Ext.TC_PERSONALPROPERTY, HORateRoutineNames.HO_VMM_CONTENTS_RATE_ROUTINE)
+        if(PolicyLine.Dwelling?.DPDW_Personal_Property_HOEExists)
+          rateVMMCoverage(PolicyLine.Dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_Ext, dateRange, rateRoutineParameterSet, HOCostType_Ext.TC_PERSONALPROPERTY, HORateRoutineNames.HO_VMM_CONTENTS_RATE_ROUTINE)
       }
     }
     updateTotalBasePremium()
@@ -132,6 +133,10 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HODW_MoldRemediationCov_HOE_Ext:
           rateMoldRemediationCoverage(dwellingCov, dateRange)
           break
+      case HODW_VacancyClause_Ext:
+          if(_dwellingRatingInfo.VacancyPeriod > 60)
+            rateVacancyClauseCoverage(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -140,21 +145,23 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    */
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
-
     if(_isDPPolicyType){
       _dpDiscountOrSurchargeRatingInfo = new HODPDiscountsOrSurchargesRatingInfo(PolicyLine)
       _dpDiscountOrSurchargeRatingInfo.TotalContentsPremium = getDPTotalContentsPremium()
       _dpDiscountOrSurchargeRatingInfo.TotalDwellingPremium = getDPTotalDwellingPremium()
       if(dwelling?.DwellingProtectionDetails?.SprinklerSystemAllAreas){
         rateCompleteHomeSprinklerSystemCredit(dateRange, HOCostType_Ext.TC_COMPLETEHOMESPRINKLERSYSTEMCREDITDWELLING, HORateRoutineNames.COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_DWELLING_RATE_ROUTINE)
-        rateCompleteHomeSprinklerSystemCredit(dateRange, HOCostType_Ext.TC_COMPLETEHOMESPRINKLERSYSTEMCREDITPERSONALPROPERTY, HORateRoutineNames.COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_CONTENTS_RATE_ROUTINE)
+        if(dwelling?.DPDW_Personal_Property_HOEExists)
+          rateCompleteHomeSprinklerSystemCredit(dateRange, HOCostType_Ext.TC_COMPLETEHOMESPRINKLERSYSTEMCREDITPERSONALPROPERTY, HORateRoutineNames.COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_CONTENTS_RATE_ROUTINE)
       }
       if(_dpDiscountOrSurchargeRatingInfo.ClaimFreeYears != NoClaimFreeYears_Ext.TC_0 and _dpDiscountOrSurchargeRatingInfo.ClaimFreeYears != NoClaimFreeYears_Ext.TC_1){
         rateLossFreeCredit(dateRange, HOCostType_Ext.TC_LOSSFREECREDITDWELLING, HORateRoutineNames.LOSS_FREE_CREDIT_DWELLING_RATE_ROUTINE)
+        if(dwelling?.DPDW_Personal_Property_HOEExists)
         rateLossFreeCredit(dateRange, HOCostType_Ext.TC_LOSSFREECREDITPERSONALPROPERTY, HORateRoutineNames.LOSS_FREE_CREDIT_CONTENTS_RATE_ROUTINE)
       }
 
-      if(dwelling?.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT and dwelling?.DPDW_Personal_Property_HOE?.DPDW_PropertyValuation_HOE_ExtTerm.Value == ValuationMethod.TC_PERSPROP_REPLCOST)
+      if(dwelling?.HOPolicyType == HOPolicyType_HOE.TC_TDP3_EXT and dwelling?.DPDW_Personal_Property_HOEExists and
+         dwelling?.DPDW_Personal_Property_HOE?.DPDW_PropertyValuation_HOE_ExtTerm.Value == ValuationMethod.TC_PERSPROP_REPLCOST)
         rateReplacementCostOnPersonalProperty(dateRange)
 
     } else{
@@ -187,10 +194,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       }
 
       rateMaximumDiscountAdjustment(dateRange)
-
-      if(!PolicyLine.AdditionalInsureds.IsEmpty)
-        rateAdditionalInsuredCoverage(dateRange)
     }
+    if(!PolicyLine.AdditionalInsureds.IsEmpty)
+      rateAdditionalInsuredCoverage(dateRange)
   }
 
   /**
@@ -541,6 +547,23 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
     if(_logger.DebugEnabled)
       _logger.debug("Mold Remediation Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Vacancy Clause Coverage coverage
+   */
+  function rateVacancyClauseCoverage(dwellingCov: HODW_VacancyClause_Ext, dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateVacancyClauseCoverage to rate Vacancy Clause Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.VACANY_CLAUSE_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      if (costData.ActualTermAmount == 0)
+        costData.ActualTermAmount = 1
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Vacancy Clause Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**

@@ -1128,7 +1128,8 @@ class HODwellingUtil_HOE {
 
   static function getMatchLevel(thePropertyDataModelList : List<PropertyDataModel>) : typekey.TUNAMatchLevel_Ext {
     var res = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
-    if(thePropertyDataModelList ==null || thePropertyDataModelList.Count < 1){
+    if(thePropertyDataModelList.HasElements == false ||
+        (thePropertyDataModelList.Count == 1 && org.apache.commons.lang3.StringUtils.isEmpty(thePropertyDataModelList[0].Value))){
       res = typekey.TUNAMatchLevel_Ext.TC_NONE
     }else if(thePropertyDataModelList.Count == 1){
       res = typekey.TUNAMatchLevel_Ext.TC_EXACT

@@ -945,10 +945,8 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
       if(hoeLine != null and  dwelling != null  ){
         var isCovExists = dwelling.HODW_SectionI_Ded_HOEExists
         var isTermExists = dwelling.HODW_SectionI_Ded_HOE.HasHODW_Hurricane_Ded_HOETerm
-
         var policyType = hoeLine.HOPolicyType.Code
         var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
-
         if(isCovExists and isTermExists and policyType == DP3typeKeyCode)  {
           return true
         }
@@ -1124,6 +1122,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var rewrite = typekey.Job.TC_REWRITE.Code
         var renewal = typekey.Job.TC_RENEWAL.Code
         var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        var cancellation = typekey.Job.TC_CANCELLATION.Code
         var isCovPresent = dwelling.HODW_EquipBreakdown_HOE_ExtExists
         if((jobType == rewrite or jobType == renewal or jobType == account ) and (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode or policyType == HCONBtypeKeyCode or policyType == TDP1typeKeyCode or policyType == TDP2typeKeyCode or policyType == TDP3typeKeyCode) and isCovPresent ){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
@@ -1148,6 +1147,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var rewrite = typekey.Job.TC_REWRITE.Code
         var renewal = typekey.Job.TC_RENEWAL.Code
         var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+        var cancellation  = typekey.Job.TC_CANCELLATION.Code
         if((jobType == rewrite or jobType == renewal or jobType == account ) and (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode) ){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
           if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
@@ -1246,6 +1246,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
        var rewrite = typekey.Job.TC_REWRITE.Code
        var renewal = typekey.Job.TC_RENEWAL.Code
        var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+       var cancellation  = typekey.Job.TC_CANCELLATION.Code
        var territoryCode = dwelling.HOLocation.TerritoryCodeTunaReturned_Ext
        var territoryCodeArray : String [] = {"2", "3", "4","16C","17","19C","19N"}
        var isConditionPresent = hoeLine.HODW_ReplaceCostCovAPaymentSched_HOEExists
@@ -1254,10 +1255,6 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
          return true
        }
-         /*var transactionTypeCount = hoeLine.Branch.Policy.BoundPeriods.countWhere( \ elt -> elt.Job typeis Renewal)
-         if(transactionTypeCount > 0){
-           return true
-         }*/
        }
      }
    }
@@ -1290,7 +1287,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var isCovExists = dwelling.HODW_LossAssessmentCov_HOE_ExtExists
         var policyType = hoeLine.HOPolicyType.Code
         var DP3typeKeyCode = typekey.HOPolicyType_HOE.TC_DP3_EXT.Code
-        var resType = dwelling.ResidenceType
+        var resType = dwelling.ResidenceType.Code
         var condoTypeCode = typekey.ResidenceType_HOE.TC_CONDO.Code
         if( isCovExists  and policyType == DP3typeKeyCode  and resType == condoTypeCode )  {
           return true
@@ -1471,6 +1468,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
             var jobType= hoeLine.Branch.Job.Subtype.Code
             var rewrite = typekey.Job.TC_REWRITE.Code
             var renewal = typekey.Job.TC_RENEWAL.Code
+            var cancellation  = typekey.Job.TC_CANCELLATION.Code
             if( jobType == rewrite  and (policyType == HO3typeKeyCode or policyType == HO4typeKeyCode or policyType== HO6typeKeyCode) ){
               var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
               if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
@@ -1492,6 +1490,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
           var rewrite = typekey.Job.TC_REWRITE.Code
           var sub = typekey.Job.TC_SUBMISSION.Code
           var rewriteNewAcc = typekey.Job.TC_REWRITENEWACCOUNT.Code
+          var cancellation  = typekey.Job.TC_CANCELLATION.Code
           if( ( jobType == rewrite or  jobType == sub or jobType == rewriteNewAcc ) and policyType == DP3typeKeyCode  ){
             var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
             if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
@@ -1513,6 +1512,7 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
       var rewrite = typekey.Job.TC_REWRITE.Code
       var renewal = typekey.Job.TC_RENEWAL.Code
       var account = typekey.Job.TC_REWRITENEWACCOUNT.Code
+      var cancellation  = typekey.Job.TC_CANCELLATION.Code
       if((jobType == rewrite or jobType == renewal or jobType == account) and policyType == DP3typeKeyCode){
       var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
       if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){

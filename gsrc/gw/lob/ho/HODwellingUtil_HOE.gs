@@ -8,15 +8,14 @@ uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
 uses java.util.ArrayList
 uses una.integration.mapping.tuna.TunaAppResponse
-uses java.util.Set
-uses java.util.SortedSet
+uses java.text.SimpleDateFormat
+uses java.util.Date
 
 /**
  * Created with IntelliJ IDEA.
  * User: svallabhapurapu
  * Date: 8/19/16
- * Time: 6:24 AM
- * To change this template use File | Settings | File Templates.
+ *
  */
 class HODwellingUtil_HOE {
   /*
@@ -39,7 +38,8 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_2 = typekey.ProtectionClassCode_Ext.TC_2.Code
   private static final var PROTECTION_CLASSCODE_3 = typekey.ProtectionClassCode_Ext.TC_3.Code
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
-
+  static var sdfMetricFormat = new SimpleDateFormat("MM/dd/yyyy")
+  static var metricDate: Date
 
   static function setProtectionClass(dwelling:Dwelling_HOE):boolean
   {
@@ -287,7 +287,11 @@ class HODwellingUtil_HOE {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
     }
 
-
+    //Mapping Metrics version date
+    if(tunaAppResponse != null && tunaAppResponse.MetricsVersion.first().NamedValue != null){
+      metricDate = new Date(tunaAppResponse.MetricsVersion.first().NamedValue)
+      dwelling.MetricsVersionDate_Ext = sdfMetricFormat.format(metricDate)
+    }
 
     return false
   }

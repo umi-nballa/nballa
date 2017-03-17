@@ -55,9 +55,9 @@ class PropertyInspectionsBRHelper {
   final static var HYPHEN = "-"
   var currentDateYear = DateUtil.currentDate().YearOfDate
   var zipCodeList =PropertiesHolder.getProperty("ZipCode")
-  var weatherRelatedLosses ={"flood","freezing water (incl burst pipes)","hail","lightning","weather related water","wind"}
+  var weatherRelatedLosses ={"FLOOD","FREEZ","HAIL","LIGHT","WEATH","WIND"}
   var report = new HashMap<String, String>()
-  var windOrHailLosses = {"wind", "hail"}
+  var windOrHailLosses = {"WIND", "HAIL"}
   var reportOne = ""
   var reportTwo = ""
   var reportThree = ""
@@ -87,7 +87,7 @@ class PropertyInspectionsBRHelper {
       var priorLosses = Query.make(HOPriorLoss_Ext).compare(HOPriorLoss_Ext#HomeownersLineID, Equals ,policyPeriod.PublicID).select().toList()
       var weatherRelatedLossBROne = priorLosses?.hasMatch( \ priorLoss ->{
        return priorLoss.ClaimPayment.hasMatch( \ claimPayment ->{
-           return (claimPayment.ReportedDate > calendar.getTime() && !weatherRelatedLosses.contains(claimPayment.LossCause_Ext.Code))
+           return (priorLoss.ReportedDate > calendar.getTime() && !weatherRelatedLosses.contains(claimPayment.LossCause_Ext.Code))
        } )
       } )
 
@@ -95,9 +95,13 @@ class PropertyInspectionsBRHelper {
       calendar.add(Calendar.YEAR, -2)
       var windOrHailLossBR19n20 = priorLosses?.hasMatch( \ priorLoss ->{
         return priorLoss.ClaimPayment?.hasMatch( \ claimPayment ->{
-          return (claimPayment.ReportedDate > calendar.getTime() && windOrHailLosses.contains(claimPayment.LossCause_Ext.Code))
+            return (priorLoss.ReportedDate > calendar.getTime() && windOrHailLosses.contains(claimPayment.LossCause_Ext.Code))
         } )
       } )
+
+      calendar = Calendar.getInstance()
+      calendar.add(Calendar.YEAR, -5)
+      var noOfLossesInThePastFiveYears =priorLosses.countWhere( \ priorLoss -> priorLoss.ReportedDate > calendar.getTime())
 
       // Year Built ::
       var yearBuilt  = policyPeriod.HomeownersLine_HOE.Dwelling?.OverrideYearbuilt_Ext ?
@@ -110,7 +114,7 @@ class PropertyInspectionsBRHelper {
       }
 
       // BR.09.02 :: More than 1 loss of any cause in last 5 years
-      if(policyPeriod.Policy.NumPriorLosses> NUMPRIORLOSSES_ONE){
+      if(noOfLossesInThePastFiveYears > NUMPRIORLOSSES_ONE){
         reportOne += TWO
       }
 

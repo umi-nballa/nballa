@@ -25,6 +25,7 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
   override function doWorkPerPolicy(eligibleRenewalPeriod: PolicyPeriod){
     quotePolicy(eligibleRenewalPeriod)
     issueRenewal(eligibleRenewalPeriod)
+    completeOpenActivities(eligibleRenewalPeriod)
   }
 
   override function createActivityPerPolicy(eligiblePeriod: PolicyPeriod) {
@@ -84,6 +85,10 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
         executeAndAutomaticallyResolveUWIssues(\ -> (eligibleRenewalPeriod.RenewalProcess as AbstractUNARenewalProcess).issueRenewalSansUWIssueEscalation())
       }
     }
+  }
+
+  private function completeOpenActivities(eligibleRenewalPeriod : PolicyPeriod){
+    //TODO tlv complete activities that were a result of the renewal
   }
 
   private function executeAndAutomaticallyResolveUWIssues(executableJobProcess()){

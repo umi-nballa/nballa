@@ -24,6 +24,8 @@ uses una.integration.mapping.hpx.helper.HPXRatingHelper
 uses una.integration.mapping.hpx.helper.HPXInsuranceScoreRatingHelper
 uses java.math.BigDecimal
 uses una.integration.mapping.hpx.helper.HPXHurricaneLossMitigationHelper
+uses una.integration.mapping.hpx.common.HPXEstimatedPremium
+uses una.integration.mapping.hpx.helper.HPXEstimatedPremiumsRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -94,6 +96,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var estimatedWindDiscounts = createEstimatedWindDiscounts(policyPeriod)
     for (discount in estimatedWindDiscounts) {
       dwellingLineBusiness.addChild(new XmlElement("EstimatedWindDiscount", discount))
+    }
+    var estimatedPremiums = createEstimatedPremiums(policyPeriod)
+    for (estimatedPremium in estimatedPremiums) {
+      dwellingLineBusiness.addChild(new XmlElement("EstimatedPremium", estimatedPremium))
     }
     return dwellingLineBusiness
   }
@@ -282,5 +288,13 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
   override function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal {
     var windPremium = policyPeriod.AllCosts.where( \ elt -> elt typeis HomeownersBaseCost_HOE and elt.HOCostType == HOCostType_Ext.TC_WINDBASEPREMIUM )
     return windPremium?.first()?.ActualTermAmount.Amount
+  }
+
+  override function getEstimatedPremiums(policyPeriod : PolicyPeriod) : List<HPXEstimatedPremium> {
+    var estimatedPremiums = new ArrayList<HPXEstimatedPremium>()
+    var jurisdictionState = policyPeriod.BaseState
+    var estimatedPremiumHelper = new HPXEstimatedPremiumsRatingHelper()
+    estimatedPremiums.addAll(estimatedPremiumHelper.getEstimatedPremiums(policyPeriod))
+    return estimatedPremiums
   }
 }

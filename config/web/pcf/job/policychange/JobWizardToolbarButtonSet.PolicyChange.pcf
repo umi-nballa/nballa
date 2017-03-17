@@ -118,7 +118,7 @@
     </ToolbarButton>
     <ToolbarButton
       action="jobWizardHelper.requestIssueJob(policyPeriod)"
-      confirmMessage="displaykey.Job.Operation.IssuePolicy.Confirm"
+      confirmMessage="getIssueMsg()"
       id="BindPolicyChange"
       label="displaykey.Job.Operation.IssuePolicy"
       shortcut="I"
@@ -145,6 +145,13 @@
       }
     }
   }
+}
+
+function getIssueMsg(): String{
+  if(job.SupressPrint)
+    return displaykey.Job.Operation.IssuePolicy.ConfirmwithSuppressPrint
+  else
+    return displaykey.Job.Operation.IssuePolicy.ConfirmwithSuppressPrint
 }]]></Code>
   </ToolbarButtonSet>
 </PCF>

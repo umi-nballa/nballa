@@ -24,7 +24,20 @@
         toolbarButtonSet="JobWizardToolbarButtonSet(period, renewal, jobWizardHelper)"/>
     </Toolbar>
     <PanelRef
-      def="OOSEPanelSet(period, jobWizardHelper)"/>
+      def="OOSEPanelSet(period, jobWizardHelper)">
+      <DetailViewPanel>
+        <InputColumn>
+          <CheckBoxInput
+            boldLabel="true"
+            editable="true"
+            id="SuppressPrint"
+            label="displaykey.Web.Submission.SuppressPrint"
+            labelStyleClass="ext_redLabel"
+            required="false"
+            value="renewal.SupressPrint"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
     <PanelRef
       def="RenewalWizard_PolicyInfoDV(period, renewal)"/>
     <PanelRef

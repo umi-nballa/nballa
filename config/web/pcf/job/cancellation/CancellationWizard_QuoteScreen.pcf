@@ -38,7 +38,20 @@
         shortcut="P"/>
     </Toolbar>
     <PanelRef
-      def="WarningsPanelSet(policyPeriod.getWizardQuoteScreenWarnings())"/>
+      def="WarningsPanelSet(policyPeriod.getWizardQuoteScreenWarnings())">
+      <DetailViewPanel>
+        <InputColumn>
+          <CheckBoxInput
+            boldLabel="true"
+            editable="true"
+            id="SuppressPrint"
+            label="displaykey.Web.Submission.SuppressPrint"
+            labelStyleClass="ext_redLabel"
+            required="false"
+            value="cancellation.SupressPrint"/>
+        </InputColumn>
+      </DetailViewPanel>
+    </PanelRef>
     <PanelRef
       def="Quote_SummaryDV(policyPeriod)">
       <Toolbar/>

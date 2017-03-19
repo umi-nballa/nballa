@@ -48,11 +48,9 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    * Rate the base premium
    */
   override function rateHOBasePremium(dwelling: Dwelling_HOE, rateCache: PolicyPeriodFXRateCache, dateRange: DateRange) {
-    if(!_isLPP) {
-      var rater = new HOBasePremiumRaterNC(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
-      var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
-      addCosts(costs)
-    }
+    var rater = new HOBasePremiumRaterNC(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
+    var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
+    addCosts(costs)
     _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
   }
 
@@ -152,7 +150,11 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
             break
         case HODW_Earthquake_HOE:
-            rateEarthquakeCoverage(dwellingCov, dateRange)
+            if(!_isLPP)
+              rateEarthquakeCoverage(dwellingCov, dateRange)
+            break
+        case HODW_LossAssEQEndorsement_HOE_Ext:
+            rateLossAssessmentEarthquakeCoverage(dwellingCov, dateRange)
             break
        }
     }
@@ -183,6 +185,20 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Earthquake Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the loss assessment earthquake coverage
+  */
+  function rateLossAssessmentEarthquakeCoverage(dwellingCov : HODW_LossAssEQEndorsement_HOE_Ext, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentEarthquakeCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_EQ_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Loss Assessment Earthquake Coverage Rated Successfully", this.IntrinsicType)
   }
 
   function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){

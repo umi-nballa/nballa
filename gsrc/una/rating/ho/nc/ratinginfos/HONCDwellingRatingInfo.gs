@@ -33,6 +33,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _dwellingFireOtherStructuredIncreasedLimit : BigDecimal as DwellingFireOtherStructuredIncreasedLimit
   var _protectionClassCode : String as ProtectionClassCode
   var _vacancyPeriod : int as VacancyPeriod
+  var _lossAssessmentEQLimit : int as LossAssessmentEQLimit
 
   construct(dwelling : Dwelling_HOE){
       super(dwelling)
@@ -92,6 +93,10 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
     if(dwelling?.HODW_VacancyClause_ExtExists){
       _vacancyPeriod = dwelling.HODW_VacancyClause_Ext?.HODW_VacancyFromDateTerm.Value.differenceInDays(dwelling.HODW_VacancyClause_Ext?.HODW_VacancyToDateTerm.Value)
+    }
+
+    if(dwelling?.HODW_LossAssEQEndorsement_HOE_ExtExists){
+      _lossAssessmentEQLimit = dwelling?.HODW_LossAssEQEndorsement_HOE_Ext?.HODW_LossAssEQLimit_HOETerm?.Value?.intValue()
     }
   }
 }

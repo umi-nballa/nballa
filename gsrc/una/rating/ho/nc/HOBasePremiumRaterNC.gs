@@ -24,9 +24,11 @@ class HOBasePremiumRaterNC {
   private var _dwelling: Dwelling_HOE
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
+  private var _isLPP : boolean
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
       HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
-      HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_LPP_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   private var _basePremiumRatingInfo : HOBasePremiumRatingInfo
 
@@ -37,6 +39,7 @@ class HOBasePremiumRaterNC {
     _hoRatingInfo = hoRatingInfo
     _line = line
     _basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
+    _isLPP = (line.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
   }
 
   /**
@@ -45,19 +48,24 @@ class HOBasePremiumRaterNC {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    var nonCostRoutinesToExecute: List<String> = {HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE}
-    var costDatas = executeRoutines(nonCostRoutinesToExecute, dateRange, numDaysInCoverageRatedTerm)
-    var wsc: List<WorksheetEntry> = {}
-    for (costData in costDatas)
-      if (costData.WorksheetEntries.Count > 0)
-        wsc.add(costData.WorksheetEntries.first())
-    routinesToExecute.addAll(baseRoutinesToExecute)
-    costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
-    if(_basePremiumRatingInfo.ConsentToRate){
-      _dwelling.Branch.ConsentToRate_Ext = true
-      createHistoryEventTransaction(_dwelling.PolicyPeriod)
+    if(_isLPP){
+      routinesToExecute.addAll(baseRoutinesToExecute)
+      costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
+    } else {
+      var nonCostRoutinesToExecute: List<String> = {HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE}
+      var costDatas = executeRoutines(nonCostRoutinesToExecute, dateRange, numDaysInCoverageRatedTerm)
+      var wsc: List<WorksheetEntry> = {}
+      for (costData in costDatas)
+        if (costData.WorksheetEntries.Count > 0)
+          wsc.add(costData.WorksheetEntries.first())
+      routinesToExecute.addAll(baseRoutinesToExecute)
+      costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
+      if(_basePremiumRatingInfo.ConsentToRate){
+        _dwelling.Branch.ConsentToRate_Ext = true
+        createHistoryEventTransaction(_dwelling.PolicyPeriod)
+      }
+      costs.each(\cost -> cost.addWorksheetEntries(wsc))
     }
-    costs.each(\cost -> cost.addWorksheetEntries(wsc))
     return costs
   }
 
@@ -86,7 +94,11 @@ class HOBasePremiumRaterNC {
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    routines.add(HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE)
+    if(_isLPP){
+      routines.add(HORateRoutineNames.BASE_PREMIUM_LPP_RATE_ROUTINE)
+    } else {
+      routines.add(HORateRoutineNames.NCRB_PREMIUM_RATE_ROUTINE)
+    }
     return routines
   }
 

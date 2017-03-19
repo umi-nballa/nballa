@@ -15,7 +15,7 @@ class HOProtectionDetailsMapper {
   static final var SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT_PLUS_FIRE_ALARM_TO_CNTL_STN : String = "Smoke or Fire Alarm + Fire Extinguisher + Dead Bolts + Fire alarm reporting to Central Station"
   static final var SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT : String = "Smoke or Fire Alarm + Fire Extinguisher + Dead Bolts"
   static final var BURGLAR_ALARM_TO_CNTL_STN_PLUS_FIRE_ALARM_TO_CNTL_STN : String = "Burglar alarm reporting to Central Station + Fire alarm reporting to Central Station"
-  static final var BURGLAR_ALARM_TO_CNTL_STN_PLUS_CMPLT_HOME_SPRINKLER_SYSTEM : String = "Burglar alarm reporting to Central Station + Complete home sprinkler systems"
+  static final var BURGLAR_ALARM_TO_CNTL_STN_PLUS_CMPLT_HOME_SPRINKLER_SYSTEM : String = "Burglar alarm reporting to Central Station + Complete home sprinkler system"
   static final var BURGLAR_ALARM_TO_CNTL_STN : String = "Burglar alarm reporting to Central Station"
   static final var BURGLAR_ALARM_TO_POLICE_STN : String = "Burglar alarm reporting to Police Station"
   static final var CMPLT_BURGLAR_ALARM : String = "Complete Burglar Alarm"

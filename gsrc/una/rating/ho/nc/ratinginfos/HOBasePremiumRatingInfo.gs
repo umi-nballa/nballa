@@ -75,6 +75,10 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       _insuranceScore = 0
     }
 
+    if(dwelling.FirstTimeDeededHome_Ext){
+      _insuranceScore = ConfigParamsUtil.getInt(TC_DEFAULTCREDITSCORE, dwelling.HOLine.BaseState)
+    }
+
     _consentToRate = Dwelling.Branch.ConsentToRate_Ext
     _maxAgeOfHomeLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, _dwelling.HOLine.BaseState)
   }

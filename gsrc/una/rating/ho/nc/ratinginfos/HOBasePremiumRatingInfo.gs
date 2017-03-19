@@ -77,10 +77,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
 
     _consentToRate = Dwelling.Branch.ConsentToRate_Ext
     _maxAgeOfHomeLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, _dwelling.HOLine.BaseState)
-
-
-
-
   }
 
   property get AgeOfHome() : int {

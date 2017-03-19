@@ -41,6 +41,7 @@ public final class HORateRoutineNames {
   public static final var BURGLAR_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOBurglarProtectiveDeviceCreditRateRoutine"
   public static final var FIRE_PROTECTIVE_DEVICES_CREDIT_RATE_ROUTINE : String = "UNAHOFireProtectiveDevicesCreditRateRoutine"
   public static final var POLICY_FEE_RATE_ROUTINE : String = "UNAHOPolicyFeeRateRoutine"
+  public static final var LPP_POLICY_FEE_RATE_ROUTINE : String = "UNAHOLPPPolicyFeeRateRoutine"
   public static final var MINIMUM_PREMIUM_ADJUSTMENT_RATE_ROUTINE : String = "UNAHOMinimumPremiumAdjustmentRateRoutine"
   public static final var ADDITIONAL_INSURED_RATE_ROUTINE : String = "UNAHOAdditionalInsuredRateRoutine"
   public static final var INCREASED_LIMITS_JEWELRY_WATCHES_FURS : String = "UNAHOIncreasedLimitsJewelryWatchesFursRateRoutine"
@@ -138,4 +139,6 @@ public final class HORateRoutineNames {
   public static final var COMPLETE_HOME_SPRINKLER_SYSTEM_CREDIT_DWELLING_RATE_ROUTINE : String = "UNAHOCompleteHomeSprinklerSystemDwellingRateRoutine"
   public static final var LOSS_FREE_CREDIT_DWELLING_RATE_ROUTINE : String = "UNAHOLossFreeCreditDwellingRateRoutine"
   public static final var VACANY_CLAUSE_COVERAGE_RATE_ROUTINE : String = "UNAHOVacancyClauseCoverageRateRoutine"
+  public static final var FIRE_DEPARTMENT_SERVICE_CHARGE_COV_RATE_ROUTINE : String = "UNAHOFireDepartmentServiceChargeCovRateRoutine"
+  public static final var DWELLING_FIRE_OTHER_STRUCTURES_INCREASED_LIMITS_COV_ROUTINE_NAME : String = "UNAHODwellingFireOtherStructuresIncreasedLimitsCovRateRoutine"
 }

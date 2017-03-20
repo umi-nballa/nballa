@@ -43,6 +43,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   construct(line: HomeownersLine_HOE, minimumRatingLevel: RateBookStatus) {
     super(line, minimumRatingLevel)
     _hoRatingInfo = new HORatingInfo()
+    _hoRatingInfo.PersonalPropertyExists = line.Dwelling.DPDW_Personal_Property_HOEExists
     _dwellingRatingInfo = new HOGroup3DwellingRatingInfo(line.Dwelling)
   }
 
@@ -173,8 +174,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
       rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
     }
-    if(_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000)
-      rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
+
+    if(_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000){
+      if(dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AOPDEDUCTIBLEDWELLING)
+        if(_hoRatingInfo.PersonalPropertyExists){
+          rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AOPDEDUCTIBLEPERSONALPROPERTY)
+        }
+      }
+      else{
+        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
+      }
+
+    }
 
     if(hasNoPriorInsurance())
       rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
@@ -198,6 +210,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
         }
       }
+    }
+
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT){
+      if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+        _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEDWELLING)
+        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEPERSONALPROPERTY)
+
+      }
+      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEDWELLING, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEPERSONALPROPERTY, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+
+
     }
 
     //rating all wind hail included, credit and discounts
@@ -230,8 +255,13 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
     }
 
-    if(PolicyLine.BaseState == Jurisdiction.TC_FL){
-      rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT)
+    if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+      rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDITDWELLING, _hoRatingInfo.FireBasePremiumDwelling)
+      if(_hoRatingInfo.PersonalPropertyExists){
+        rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDITPERSONALPROPERTY, _hoRatingInfo.FireBasePremiumPersonalProperty)
+      }
+    } else{
+      rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT, _hoRatingInfo.TotalBasePremium)
     }
 
     rateMaximumDiscountAdjustmentForAOP(dateRange)
@@ -997,9 +1027,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate Protection Devices Credit
    */
-  function rateProtectiveDeviceCredit(dateRange: DateRange, costType : HOCostType_Ext) {
+  function rateProtectiveDeviceCredit(dateRange: DateRange, costType : HOCostType_Ext, basePremium : BigDecimal) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateProtectiveDeviceCredit", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)

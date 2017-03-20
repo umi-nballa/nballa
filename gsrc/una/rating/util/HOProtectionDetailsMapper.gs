@@ -28,6 +28,7 @@ class HOProtectionDetailsMapper {
   static final var FIRE_ALARM_TO_CNTL_STN_OR_BURGLAR_ALARM_TO_CNTL_STN : String = "Central Station Fire and/or Burglar Alarm"
   static final var FIRE_ALARM_OR_CMPLT_BURGLAR_ALARM : String = "Local Fire and/or Burglar Alarm Systems"
   static final var GATED_COMM_ALL_AREA : String = "Gated Community (all entrances secured)"
+  static final var LOCAL_FIRE_ALARM = "Local Fire Alarm"
 
 
   static function getProtectionDetails(dwelling : Dwelling_HOE, state: Jurisdiction): String {
@@ -109,8 +110,13 @@ class HOProtectionDetailsMapper {
               fireAlarmReportCntlStn, completeLocalBurglarAlarm, completeHomeSprinklerSystem)
           return protectionDetails
       case TC_FL:
+          if(dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+            protectionDetails = extractProtectionDetailsFLDP(fireAlarmReportCntlStn, localFireAlarm, completeHomeSprinklerSystem, automaticSprinklerSystem)
+          } else{
           protectionDetails = extractProtectionDetailsFL(fireAlarmReportCntlStn, fireAlarmReportFireStn, localFireAlarm, burglarAlarmReportCntlStn,
               completeLocalBurglarAlarm, burglarAlarmReportPoliceStn, completeHomeSprinklerSystem, automaticSprinklerSystem)
+          }
+
           return protectionDetails
       case TC_SC:
           protectionDetails = extractProtectionDetailsSC(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
@@ -221,5 +227,19 @@ class HOProtectionDetailsMapper {
         return GATED_COMM_ALL_AREA
       } else
         return NO_PROTECTIVE_DEVICE
+  }
+
+  private static function extractProtectionDetailsFLDP(fireAlarmReportCntlStn : boolean, localFireAlarm : boolean, completeHomeSprinklerSystem : boolean, automaticSprinklerSystem : boolean) : String {
+
+    if(completeHomeSprinklerSystem){
+      return CMPLT_HOME_SPRINKLER_SYSTEM
+    } else if(automaticSprinklerSystem){
+      return AUTO_HOME_SPRINKLER_SYSTEM
+    }  else if(fireAlarmReportCntlStn){
+      return FIRE_ALARM_TO_FIRE_STN
+    }else if(localFireAlarm){
+      return LOCAL_FIRE_ALARM
+    }else
+     return NO_PROTECTIVE_DEVICE
   }
 }

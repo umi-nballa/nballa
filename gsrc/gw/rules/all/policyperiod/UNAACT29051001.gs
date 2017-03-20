@@ -24,8 +24,8 @@ class UNAACT29051001 implements IRuleCondition<PolicyPeriod>{
    {
 
         var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-     activity.assignActivityToQueue(Group.finder.findByPublicId("New Business").AssignableQueues.first(),
-         Group.finder.findByPublicId("New Business"))
+  //   activity.assignActivityToQueue(Group.finder.findByPublicId("New Business").AssignableQueues.first(),
+     //      Group.finder.findByPublicId("New Business"))
       }
    return RuleEvaluationResult.skip()
   }

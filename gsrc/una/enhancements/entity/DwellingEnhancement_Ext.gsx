@@ -220,6 +220,18 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
 
   }
 
+  property get ProtectionClassCodeOrOverride() : String{
+
+    if(this.HOLocation.OverrideDwellingPCCode_Ext and this.HOLocation.OverrideDwellingPCCode_Ext != null){
+      return this.HOLocation.DwellingPCCodeOverridden_Ext
+    } else{
+      return this.HOLocation.DwellingProtectionClasscode
+    }
+
+
+  }
+
+
   property get isPolicyHOTypes() : boolean {
     return typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(this.HOPolicyType) ? true : false
   }

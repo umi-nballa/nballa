@@ -18,7 +18,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _deductibleFactor : boolean as DeductibleFactor = false
   var _acvLossSettlementWindstormHail : boolean as ACVLossSettlementWindstormHail = false
   var _increasedPersonalProperty : boolean as IncreasedPersonalProperty = false
-  var _townHouseOrRowHouse : boolean as TownHouseOrRowHouse = false
   var _personalPropertyReplacementCost : boolean as PersonalPropertyReplacementCost
   var _protectiveDevices : boolean as ProtectiveDevices = false
   var _specifiedAdditionalAmountCovA : boolean as SpecifiedAdditionalAmountCovA = false

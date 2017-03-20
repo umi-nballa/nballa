@@ -27,6 +27,9 @@ class HOCommonBasePremiumRatingInfo {
   var _keyFactorGreaterLimit: int as KeyFactorGreaterLimit
   var _keyFactorLowerBound: BigDecimal as KeyFactorLowerBound
   var _keyFactorUpperBound: BigDecimal as KeyFactorUpperBound
+  var _townhouseOrRowhouse : boolean as TownHouseOrRowHouse
+  var _numberOfFamilies: int as NumberOfFamilies
+  var _townhouseUsage : RatingDwellingUsage_Ext as TownHouseOrRowhouseUsage
 
   construct(dwelling: Dwelling_HOE) {
     var hoLocation = dwelling?.HOLocation
@@ -63,7 +66,6 @@ class HOCommonBasePremiumRatingInfo {
       }
     }
 
-    _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
 
     //var dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
     //var exteriorWallFinish = dwelling.OverrideExteriorWFval_Ext? dwelling.ExteriorWFvalueOverridden_Ext : dwelling.ExteriorWallFinish_Ext
@@ -71,9 +73,23 @@ class HOCommonBasePremiumRatingInfo {
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
 
     _keyFactorGreaterLimit = ConfigParamsUtil.getInt(TC_KEYFACTORGREATERLIMIT, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)
+
     var keyFactorRange = ConfigParamsUtil.getRange(TC_KEYFACTORRANGE, dwelling.CoverableState, dwelling.HOLine.HOPolicyType.Code)
     _keyFactorLowerBound = keyFactorRange.LowerBound
     _keyFactorUpperBound = keyFactorRange.UpperBound
+
+    if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+      _numberOfFamilies = dwelling.NumUnitsFireDivision_Ext.toInt()
+    }else{
+     _numberOfFamilies = 1
+    }
+
+    _protectionClassCode = dwelling.ProtectionClassCodeOrOverride
+
+
+      _personalPropertyLimit = dwelling?.PersonalPropertyLimitCovTerm?.Value
+
+
   }
 
   private function getDiffYears(originalEffectiveDate: Date, editEffectiveDate: Date): int {

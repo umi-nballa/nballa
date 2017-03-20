@@ -13,7 +13,9 @@ public final class HORateRoutineNames {
   public static final var HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE : String = "UNAHOReplacementCostRateRoutine"
   public static final var HO_REPLACEMENT_COST_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHOReplacementCostPersonalPropertyRateRoutine"
   public static final var HOA_PLUS_COVERAGE_RATE_ROUTINE : String = "UNAHOAPlusCoverageRateRoutine"
-  //public static final var DP_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHODPBasePremiumRateRoutine"
+  public static final var DP_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHODPBasePremiumRateRoutine"
+  public static final var DP_DWELLING_BASE_PREMIUM : String = "UNAHODPDwellingBasePremiumRateRoutine"
+  public static final var DP_PERSONAL_PROPERTY_BASE_PREMIUM : String = "UNAHODPPersonalPropertyBasePremiumRateRoutine"
 
   //base premium routines for group 2 states
   public static final var BASE_PREMIUM_SC_RATE_ROUTINE : String = "UNAHOBasePremiumRateRoutine"

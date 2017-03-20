@@ -23,13 +23,13 @@ class UNAACT29051061 implements IRuleCondition<PolicyPeriod>{
        )
     {
         var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-      var queueho:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="UW Queue") as AssignableQueue
-      var queuecl:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="CL UW Queue") as AssignableQueue
+   //   var queueho:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="UW Queue") as AssignableQueue
+      //    var queuecl:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="CL UW Queue") as AssignableQueue
 
-      if(period.HomeownersLine_HOEExists)
-      activity.assignToQueue(queueho)//)assignActivityToQueue(Group.finder.findByPublicId("CL UW Queue").AssignableQueues.first(),Group.finder.findByPublicId("CL UW Queue"))
-      else
-      activity.assignToQueue(queuecl)
+  //    if(period.HomeownersLine_HOEExists)
+      //   activity.assignToQueue(queueho)//)assignActivityToQueue(Group.finder.findByPublicId("CL UW Queue").AssignableQueues.first(),Group.finder.findByPublicId("CL UW Queue"))
+   //   else
+   //   activity.assignToQueue(queuecl)
 
 
 

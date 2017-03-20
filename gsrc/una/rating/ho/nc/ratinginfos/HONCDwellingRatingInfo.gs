@@ -27,6 +27,14 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _eqDeductible : BigDecimal as EQDeductible
   var _ordinanceOrLawLimit : BigDecimal as OrdinanceOrLawLimit
   var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOthersLimit
+  var _firePersonalPropertyLimit : BigDecimal as FirePersonalPropertyLimit
+  var _fireDepartmentServiceChargeLimit : BigDecimal as FireDepartmentServiceChargeLimit
+  var _dwellingFireOrdinanceOrLawLimit : BigDecimal as DwellingFireOrdinanceOrLawLimit
+  var _dwellingFireOtherStructuredIncreasedLimit : BigDecimal as DwellingFireOtherStructuredIncreasedLimit
+  var _protectionClassCode : String as ProtectionClassCode
+  var _vacancyPeriod : int as VacancyPeriod
+  var _lossAssessmentEQLimit : int as LossAssessmentEQLimit
+
   construct(dwelling : Dwelling_HOE){
       super(dwelling)
 
@@ -67,10 +75,28 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value  * dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
     }
 
-
     _otherStructuresRentedToOthersLimit = dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value
 
+    if(dwelling?.DPDW_Personal_Property_HOEExists)
+      _firePersonalPropertyLimit = dwelling.DPDW_Personal_Property_HOE?.DPDW_PersonalPropertyLimit_HOETerm?.Value
 
+    if(dwelling?.HODW_FireDepartServiceCharge_HOE_ExtExists)
+      _fireDepartmentServiceChargeLimit = dwelling?.HODW_FireDepartServiceCharge_HOE_Ext?.HODW_FireDepartmentSC_Limit_HOE_ExtTerm?.Value
 
+    if(dwelling?.DPDW_OrdinanceCov_HOEExists)
+      _dwellingFireOrdinanceOrLawLimit = dwelling.DPDW_OrdinanceCov_HOE?.DPDW_OrdinanceLimit_HOETerm?.Value
+
+    if(dwelling?.DPDW_Other_Structures_HOEExists){
+      _dwellingFireOtherStructuredIncreasedLimit = dwelling.DPDW_Other_Structures_HOE?.DPDW_OtherStructuresLimit_HOETerm?.LimitDifference
+      _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
+    }
+
+    if(dwelling?.HODW_VacancyClause_ExtExists){
+      _vacancyPeriod = dwelling.HODW_VacancyClause_Ext?.HODW_VacancyFromDateTerm.Value.differenceInDays(dwelling.HODW_VacancyClause_Ext?.HODW_VacancyToDateTerm.Value)
+    }
+
+    if(dwelling?.HODW_LossAssEQEndorsement_HOE_ExtExists){
+      _lossAssessmentEQLimit = dwelling?.HODW_LossAssEQEndorsement_HOE_Ext?.HODW_LossAssEQLimit_HOETerm?.Value?.intValue()
+    }
   }
 }

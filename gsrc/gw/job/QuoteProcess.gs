@@ -79,7 +79,6 @@ class QuoteProcess {
      {
        var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC1").atMostOne()
        var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
-       print("in quoteprocess, user is " + user)
        if(user==null)
        {
          user = una.config.activity.OfacUtil.findUserByUsername("su")

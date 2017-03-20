@@ -12,27 +12,23 @@ uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
  * To change this template use File | Settings | File Templates.
  */
 class HOHIBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
-  var _dwelling : Dwelling_HOE as Dwelling
-  var _townhouseOrRowhouse : boolean as TownHouseOrRowHouse
-  var _numberOfFamilies: int as NumberOfFamilies
-  var _townhouseUsage : RatingDwellingUsage_Ext as TownHouseOrRowhouseUsage
+
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
-    _dwelling = dwelling
 
-    if(_dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-      if(_dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_PRIM){
-        if(_dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER){
-          _townhouseUsage = TC_OwnerPrimary
-        } else if(_dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN){
-          _townhouseUsage = TC_TenantPrimary
+    if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+      if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_PRIM){
+        if(dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER){
+          TownHouseOrRowhouseUsage = TC_OwnerPrimary
+        } else if(dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN){
+          TownHouseOrRowhouseUsage = TC_TenantPrimary
         }
-      } else if( _dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC and _dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN){
-        _townhouseUsage = TC_TenantSeasonal
+      } else if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC and dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN){
+        TownHouseOrRowhouseUsage = TC_TenantSeasonal
       }
-      _numberOfFamilies = dwelling.NumUnitsFireDivision_Ext.toInt()
-      if(_townhouseUsage != null){
-        _townhouseOrRowhouse = true
+      NumberOfFamilies = dwelling.NumUnitsFireDivision_Ext.toInt()
+      if(TownHouseOrRowhouseUsage != null){
+        TownHouseOrRowHouse = true
       }
     }
 

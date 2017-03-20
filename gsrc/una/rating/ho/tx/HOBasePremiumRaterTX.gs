@@ -118,7 +118,8 @@ class HOBasePremiumRaterTX {
   private property get baseDPRoutinesToExecute(): List<String> {
      var routinesToExecute: List<String> = {}
     routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE)
-    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE)
+    if(_dwelling?.DPDW_Personal_Property_HOEExists)
+      routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_PERSONAL_PROPERTY_RATE_ROUTINE)
     return routinesToExecute
   }
 

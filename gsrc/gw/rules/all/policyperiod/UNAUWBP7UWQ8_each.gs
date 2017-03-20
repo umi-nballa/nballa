@@ -10,20 +10,25 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAUWCPRule1_each implements IRuleCondition<PolicyPeriod>{
+class UNAUWBP7UWQ8_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
+    if(period.BP7LineExists)
+    {
 
-    if(period.CPLineExists)
+      var questionSet = period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == "BP7UnderwritingQuestions_Ext")
+    questionSet.Questions.each( \ elt ->
+    {
+      if (elt != null)
       {
-        period.CPLine.CPLocations.each( \ elt ->
+        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="HasProductDeliveryService")
         {
-          if(elt.Location.County.equalsIgnoreCase("Hernando"))
+          var answer = period.getAnswer(elt).BooleanAnswer
+          if (answer)
             return RuleEvaluationResult.execute()
-        })
+        }
       }
-
-
-
+    })
+     }
    return RuleEvaluationResult.skip()
   }
 

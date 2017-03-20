@@ -1,7 +1,6 @@
 package una.enhancements.entity
 
 uses gw.api.util.SymbolTableUtil
-uses gw.util.Pair
 
 /**
  * Created with IntelliJ IDEA.

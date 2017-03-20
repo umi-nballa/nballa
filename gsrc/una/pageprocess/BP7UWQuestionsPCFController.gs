@@ -9,7 +9,7 @@ uses java.lang.Integer
  * To change this template use File | Settings | File Templates.
  */
 class BP7UWQuestionsPCFController {
-  private static final var PERCENTAGE_QUESTION_CODES : String[] = {"WholesalePercentageOpenToPublic", "OffPremisesBusinessPercentage", "PercentageOfRetailSalesSpaceWholesale"}
+  private static final var PERCENTAGE_QUESTION_CODES : String[] = {"WholesalePercentageOpenToPublic", "OffPremisesBusinessPercentage", "PercentageOfRetailSalesSpaceWholesale", "InternetRevenuePercentage"}
   private static final var TOTAL_GROSS_RECEIPT_CODE = "TotalAnnualGrossReceipts"
 
   public static function validateAnswer(container : AnswerContainer, question : gw.api.productmodel.Question) : String{
@@ -19,10 +19,7 @@ class BP7UWQuestionsPCFController {
 
     if(PERCENTAGE_QUESTION_CODES.contains(question.CodeIdentifier)){
         var answer = container?.getAnswer(question).IntegerAnswer
-
-      if(PERCENTAGE_QUESTION_CODES.contains(question.CodeIdentifier)){
         throwValidationException = answer > 100
-      }
     }
 
     if(question.CodeIdentifier == TOTAL_GROSS_RECEIPT_CODE){

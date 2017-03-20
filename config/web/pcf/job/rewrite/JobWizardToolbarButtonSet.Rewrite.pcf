@@ -53,7 +53,7 @@
       shortcut="S"/>
     <ToolbarButton
       action="jobWizardHelper.requestIssueJob(policyPeriod)"
-      confirmMessage="displaykey.Job.Operation.IssuePolicy.Confirm"
+      confirmMessage="getIssueMsg()"
       id="BindRewrite"
       label="displaykey.Job.Operation.IssuePolicy"
       shortcut="I"
@@ -65,5 +65,11 @@
       label="displaykey.Job.Operation.Withdraw"
       shortcut="W"
       visible="rewriteProcess.canWithdraw().Okay"/>
+    <Code><![CDATA[function getIssueMsg() : String{
+ if(rewrite.SupressPrint)
+    return displaykey.Job.Operation.IssuePolicy.ConfirmwithSuppressPrint
+  else
+    return displaykey.Job.Operation.IssuePolicy.Confirm
+}]]></Code>
   </ToolbarButtonSet>
 </PCF>

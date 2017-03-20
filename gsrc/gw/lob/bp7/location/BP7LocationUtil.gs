@@ -68,8 +68,8 @@ class BP7LocationUtil {
   {
     if(isNCWindpool(building))
       building.WindPool_Ext="Yes"
-    else
-      building.WindPool_Ext="No"
+  //  else
+  //    building.WindPool_Ext="No"
     return true
   }
 

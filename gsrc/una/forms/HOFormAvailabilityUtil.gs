@@ -1126,8 +1126,10 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var isCovPresent = dwelling.HODW_EquipBreakdown_HOE_ExtExists
         if((jobType == rewrite or jobType == renewal or jobType == account ) and (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode or policyType == HCONBtypeKeyCode or policyType == TDP1typeKeyCode or policyType == TDP2typeKeyCode or policyType == TDP3typeKeyCode) and isCovPresent ){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
-            return true
+          if(allPreviousJobTypeNames.length > 0){
+            if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+              return true
+            }
           }
         }
       }
@@ -1150,9 +1152,11 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var cancellation  = typekey.Job.TC_CANCELLATION.Code
         if((jobType == rewrite or jobType == renewal or jobType == account ) and (policyType == HOAtypeKeyCode or policyType == HOBtypeKeyCode) ){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
-          return true
-        }
+          if(allPreviousJobTypeNames.length > 0){
+            if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+              return true
+            }
+          }
         }
       }
     }
@@ -1252,9 +1256,11 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
        var isConditionPresent = hoeLine.HODW_ReplaceCostCovAPaymentSched_HOEExists
        if((jobType == rewrite or jobType == renewal or jobType == account) and  policyType == HOBtypeKeyCode and territoryCodeArray.contains(territoryCode) and !isConditionPresent ){
          var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-         if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
-         return true
-       }
+         if(allPreviousJobTypeNames.length > 0){
+           if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+             return true
+           }
+         }
        }
      }
    }
@@ -1471,9 +1477,11 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
             var cancellation  = typekey.Job.TC_CANCELLATION.Code
             if( jobType == rewrite  and (policyType == HO3typeKeyCode or policyType == HO4typeKeyCode or policyType== HO6typeKeyCode) ){
               var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-              if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
-              return true
-            }
+              if(allPreviousJobTypeNames.length > 0){
+                if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+                  return true
+                }
+              }
             }
           }
         }
@@ -1493,8 +1501,10 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
           var cancellation  = typekey.Job.TC_CANCELLATION.Code
           if( ( jobType == rewrite or  jobType == sub or jobType == rewriteNewAcc ) and policyType == DP3typeKeyCode  ){
             var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-            if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
-              return true
+            if(allPreviousJobTypeNames.length > 0){
+              if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
+                return true
+              }
             }
           }
         }
@@ -1515,9 +1525,11 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
       var cancellation  = typekey.Job.TC_CANCELLATION.Code
       if((jobType == rewrite or jobType == renewal or jobType == account) and policyType == DP3typeKeyCode){
       var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-      if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
-      return true
-      }
+        if(allPreviousJobTypeNames.length > 0){
+          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+            return true
+          }
+        }
       }
       }
       }
@@ -1539,9 +1551,11 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
         var cancellation = typekey.Job.TC_CANCELLATION.Code
         if( ( jobType == rewrite or  jobType == sub or jobType == rewriteNewAcc ) and (policyType == HOATXtypeKeyCode  or policyType == HCONBtypeKeyCode)){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
-          return true
-        }
+          if(allPreviousJobTypeNames.length > 0){
+            if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
+              return true
+            }
+          }
         }
       }
     }
@@ -1563,9 +1577,11 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
         var cancellation = typekey.Job.TC_CANCELLATION.Code
         if( ( jobType == rewrite or  jobType == renewal or jobType == rewriteNewAcc ) and (policyType == HOATXtypeKeyCode  or policyType == HCONBtypeKeyCode)){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
-          return true
-        }
+          if(allPreviousJobTypeNames.length > 0){
+            if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
+              return true
+            }
+          }
         }
       }
     }
@@ -1585,9 +1601,11 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
         var cancellation = typekey.Job.TC_CANCELLATION.Code
         if( ( jobType == rewrite or  jobType == sub ) and  policyType == HOBtypeKeyCode){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
-          if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
-          return true
-        }
+          if(allPreviousJobTypeNames.length > 0){
+            if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == sub ){
+              return true
+            }
+          }
         }
       }
     }
@@ -1607,9 +1625,11 @@ public function rewriteForSubmission(context: FormInferenceContext, availableSta
         var renewal = typekey.Job.TC_RENEWAL.Code
         if( jobType == rewrite and  policyType == HOBtypeKeyCode ){
           var allPreviousJobTypeNames = hoeLine.Branch.Policy.BoundPeriods*.Job.Subtype.Code.reverse()
+        if(allPreviousJobTypeNames.length > 0){
           if(allPreviousJobTypeNames[0] == cancellation  and allPreviousJobTypeNames[1] == renewal ){
             return true
           }
+        }
         }
       }
     }

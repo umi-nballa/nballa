@@ -314,7 +314,7 @@ enhancement JobWizardHelperEnhancement : JobWizardHelper {
 
   // Method that created History event for CTR Set
   public static function createHistoryEventTransaction (policyPeriod : entity.PolicyPeriod){
-    var msg = displaykey.Web.CTR.History.Event.Msg+ " For Policy Period :  " + policyPeriod.Policy.DisplayName
+    var msg = displaykey.Web.CTR.History.Event.Msg+ " For Policy Period"
      gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       var Job = bundle.add(policyPeriod.Job)
       if(policyPeriod.ConsentToRate_Ext)

@@ -49,7 +49,8 @@ class OFACGateway implements OFACInterface {
       if (ScriptParameters.RunOFACCheck) {
         var clientContext = ofacRequestMapper.buildClientContext()
         var searchConfiguration = ofacRequestMapper.buildSearchConfiguration()
-        var ofacDTOList = ofacRequestMapper.buildOFACInput(policyContacts, policyPeriod)
+        var contactsForOfacCheck=ofacRequestMapper.getLineSpecificContacts(policyContacts,policyPeriod)
+        var ofacDTOList = ofacRequestMapper.buildOFACInput(contactsForOfacCheck, policyPeriod)
         var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
         //Call to OFAC service
         var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)

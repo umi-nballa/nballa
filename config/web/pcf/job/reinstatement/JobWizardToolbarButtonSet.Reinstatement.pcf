@@ -72,7 +72,7 @@
       visible="policyPeriod.JobProcess.canApplyChangesToFutureUnboundRenewal()"/>
     <ToolbarButton
       action="jobWizardHelper.requestIssueJob(policyPeriod)"
-      confirmMessage="displaykey.Job.Operation.EnterReinstating.Confirm"
+      confirmMessage="getReinstateMsg()"
       id="Reinstate"
       label="displaykey.Job.Operation.EnterReinstating"
       shortcut="R"
@@ -84,5 +84,11 @@
       label="displaykey.Job.Operation.Withdraw"
       shortcut="W"
       visible="reinstatementProcess.canWithdraw().Okay"/>
+    <Code><![CDATA[function getReinstateMsg() : String{
+  if(reinstatement.SupressPrint)
+    return displaykey.Job.Operation.EnterReinstating.ConfirmwithSuppressPrint
+   else
+    return displaykey.Job.Operation.EnterReinstating.Confirm
+}]]></Code>
   </ToolbarButtonSet>
 </PCF>

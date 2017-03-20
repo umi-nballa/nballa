@@ -206,6 +206,7 @@ abstract class HPXPolicyMapper {
       var quote = quoteMapper.createQuote(policyPeriod)
       policyInfo.addChild(new XmlElement("QuoteInfo", quote))
     }
+
     var policyFormsMapper = new HPXAllFormsCompositionUnitMapper()
     var allPolicyForms = policyFormsMapper.createDocumentForms(policyPeriod.NewlyAddedForms)
     for (policyForm in allPolicyForms) {
@@ -378,6 +379,21 @@ abstract class HPXPolicyMapper {
     return discounts
   }
 
+  function createEstimatedPremiums(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.EstimatedPremiumType> {
+    var estPremiums = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.EstimatedPremiumType>()
+    var estimatedPremiums = getEstimatedPremiums(policyPeriod)
+    for (estimatedPremium in estimatedPremiums) {
+      var estPremium = new wsi.schema.una.hpx.hpx_application_request.types.complex.EstimatedPremiumType()
+      estPremium.EstimatedPremiumCd = estimatedPremium.Code
+      estPremium.EstimatedPremiumDescription = estimatedPremium.Description
+      estPremium.ExposureAmount.Amt = estimatedPremium.Exposure
+      estPremium.DeductibleAmount.Amt = estimatedPremium.Deductible
+      estPremium.PremiumAmount.Amt = estimatedPremium.Premium
+      estPremiums.add(estPremium)
+    }
+    return estPremiums
+  }
+
   function createAdditionalInterests(additionalInterestDetails : AddlInterestDetail [], coverable : Coverable, mapper : HPXStructureMapper) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.AdditionalInterestType> {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
     var additionalInterests = additionalInterestMapper.createAdditionalInterests(additionalInterestDetails, mapper, coverable)
@@ -443,6 +459,8 @@ abstract class HPXPolicyMapper {
   abstract function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
 
   abstract function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
+
+  abstract function getEstimatedPremiums(policyPeriod : PolicyPeriod) : List<HPXEstimatedPremium>
 
   abstract function getHurricaneWindPremium(policyPeriod : PolicyPeriod) : BigDecimal
 

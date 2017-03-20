@@ -15,7 +15,7 @@ class HOCommonDwellingRatingInfo {
   var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
-  var _totalBasePremium : BigDecimal as TotalBasePremium
+  var _totalBasePremium : BigDecimal as TotalBasePremium = 0.0
   var _policyType : HOPolicyType_HOE as PolicyType
   var _territoryCode : String as TerritoryCode
   var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit

@@ -21,6 +21,7 @@ class HOCommonDwellingRatingInfo {
   var _businessPropertyIncreasedLimit : int as BusinessPropertyIncreasedLimit
   var _otherStructuresIncreasedLimit: BigDecimal as OtherStructuresIncreasedLimit
   var _isPersonalLiabilityLimitIncreased : boolean as IsPersonalLiabilityLimitIncreased
+  var _bcegGrade: typekey.BCEGGrade_Ext as BCEGGrade
 
   construct(dwelling : Dwelling_HOE ){
     _dwellingLimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
@@ -48,6 +49,8 @@ class HOCommonDwellingRatingInfo {
     _otherStructuresLimit = ((dwelling.HODW_Other_Structures_HOEExists)? dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
 
     _territoryCode = (dwelling.HOLocation?.OverrideTerritoryCode_Ext)? dwelling.HOLocation?.TerritoryCodeOverridden_Ext : dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
+
+    _bcegGrade = dwelling?.BCEGOrOverride
   }
 
 }

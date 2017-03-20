@@ -37,6 +37,9 @@
     <Variable
       initialValue="gw.lob.bp7.location.BP7LocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,location,building)"
       name="setTunaFieldsMatchLevel"/>
+    <Variable
+      initialValue="gw.lob.bp7.location.BP7LocationUtil.setNCWindpool(building)"
+      name="setNCWindpool"/>
     <Card
       id="GeneralInfoCard"
       title="displaykey.Web.Policy.LocationContainer.Location.Building.Details">
@@ -50,7 +53,19 @@
               id="mandatory">
               <TitleBar
                 title="displaykey.Web.Policy.BP7.Building.Building"/>
-              <PanelSet/>
+              <PanelSet>
+                <DetailViewPanel>
+                  <InputColumn>
+                    <ButtonInput
+                      action="tunaAppResponse=new una.pageprocess.PropertyInformationCompletePluginImpl().getBOPInformation(building)"
+                      available="building.YearBuilt_Ext!=null"
+                      id="calltuna"
+                      label="&quot;Call Tuna&quot;"
+                      value="&quot;Call Tuna&quot;"
+                      visible="true"/>
+                  </InputColumn>
+                </DetailViewPanel>
+              </PanelSet>
             </PanelRef>
             <DetailViewPanel
               editable="openForEdit">

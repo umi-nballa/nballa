@@ -142,6 +142,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             rateIdentityTheftExpenseCoverage(dwellingCov, dateRange)
             break
         case HODW_CC_EFT_HOE_Ext:
+            if(_dwellingRatingInfo.CCEFTAccessDeviceForgeryCounterfeitMoney > 500)
             rateCreditCardEFTCoverage(dwellingCov, dateRange)
             break
         case HODW_OrdinanceCov_HOE:

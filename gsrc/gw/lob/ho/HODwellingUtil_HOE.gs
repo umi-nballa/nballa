@@ -970,9 +970,9 @@ class HODwellingUtil_HOE {
   static function setNCWindpool(dwelling:Dwelling_HOE) : boolean
   {
     if(isNCWindpool(dwelling))
-      dwelling.HOLocation.WindPool_Ext="Yes"
-   // else
-   //   dwelling.HOLocation.WindPool_Ext="no"
+      dwelling.HOLocation.WindPool_Ext=true
+ else
+      dwelling.HOLocation.WindPool_Ext=false
 
       return true
   }
@@ -1228,9 +1228,9 @@ class HODwellingUtil_HOE {
 
   public static function isWindPoolEligible(theDwelling: Dwelling_HOE) : boolean{
     var resultEligible : boolean = false
-    if(theDwelling.HOLocation.OverrideWindPool_Ext && (theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("TRUE"))){
+    if(theDwelling.HOLocation.OverrideWindPool_Ext && (theDwelling.HOLocation.WindPoolOverridden_Ext)){// || theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("TRUE"))){
        resultEligible = true
-    }else if(theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("TRUE")){
+    }else if(theDwelling?.HOLocation?.WindPool_Ext==true ){//|| theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("TRUE")){
       resultEligible = true
     }
     return resultEligible

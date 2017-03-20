@@ -70,4 +70,24 @@ class CPLocationUtil {
       return new TunaAppResponse()
     }
   }
+
+  static function isNCWindpool(building:CPBuilding):boolean
+  {
+    var countylist = {"Beaufort", "Brunswick", "Camden", "Carteret", "Chowan", "Craven", "Currituck", "Dare", "Hyde", "Jones", "New Hanover", "Onslow"
+        ,"Pamlico",  "Pasquotank", "Pender", "Perquimans", "Tyrrell", "Washington" }
+    if(building.CPLocation.Location.State.Code=="NC" && countylist.contains(building.Branch.PrimaryLocation.County))
+      return true
+    else
+      return false
+  }
+
+  static function setNCWindpool(building:CPBuilding) : boolean
+  {
+    if(isNCWindpool(building))
+      building.Windpoolvalue_Ext="Yes"
+     else
+    building.Windpoolvalue_Ext="No"
+
+    return true
+  }
 }

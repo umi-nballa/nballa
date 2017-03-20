@@ -212,6 +212,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       }
     }
 
+    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT){
+      if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+        _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEDWELLING)
+        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEPERSONALPROPERTY)
+
+      }
+      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEDWELLING, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEPERSONALPROPERTY, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+
+
+    }
+
     //rating all wind hail included, credit and discounts
     if(!windOrHailExcluded){
       rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)

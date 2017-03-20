@@ -253,6 +253,8 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       if(_line.BaseState == typekey.Jurisdiction.TC_NC){
        return new UNAHONCRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       }
+      if(_line.BaseState == typekey.Jurisdiction.TC_HI)
+       return new UNAHOHIRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       //if(_line.BaseState == typekey.Jurisdiction.TC_HI){
        //return new UNAHOHIRatingEngine (_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       //}

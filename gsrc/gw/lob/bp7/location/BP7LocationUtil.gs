@@ -54,4 +54,24 @@ class BP7LocationUtil {
     return true
   }
 
+  static function isNCWindpool(building:BP7Building):boolean
+  {
+    var countylist = {"Beaufort", "Brunswick", "Camden", "Carteret", "Chowan", "Craven", "Currituck", "Dare", "Hyde", "Jones", "New Hanover", "Onslow"
+        ,"Pamlico",  "Pasquotank", "Pender", "Perquimans", "Tyrrell", "Washington" }
+    if(building.Location.Location.State.Code=="NC" && countylist.contains(building.Branch.PrimaryLocation.County))
+      return true
+    else
+      return false
+  }
+
+  static function setNCWindpool(building:BP7Building) : boolean
+  {
+    if(isNCWindpool(building))
+      building.WindPool_Ext="Yes"
+    else
+      building.WindPool_Ext="No"
+    return true
+  }
+
+
 }

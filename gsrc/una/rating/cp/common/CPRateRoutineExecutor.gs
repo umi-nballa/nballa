@@ -17,7 +17,7 @@ class CPRateRoutineExecutor {
 
   var _referenceDate : IReferenceDatePlugin
   var _line : CPLine
-  var _ratingLevel : RateBookStatus
+  var _ratingLevel : RateBookStatus as RatingLevel
   final static var _logger = UnaLoggerCategory.UNA_RATING
   
   construct(referenceDate : IReferenceDatePlugin, line : CPLine, ratingLevel : RateBookStatus) {

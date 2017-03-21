@@ -92,6 +92,32 @@ abstract class JobProcess implements gw.api.job.IJobProcess {
     }
     _branch = period
     _jobTypePermissions = new CombinedPermissionPolicies(jobSpecificTypePermissions, period)
+
+    if (period.BasedOn != null) {
+      setTunaFields(period)
+    }
+  }
+
+
+  private function setTunaFields(branch:PolicyPeriod)
+  {
+    var previousterm = branch.BasedOn
+    if(branch.HomeownersLine_HOEExists)
+    {
+      branch.HomeownersLine_HOE.Dwelling.RoofType=previousterm.HomeownersLine_HOE.Dwelling.RoofType
+      branch.HomeownersLine_HOE.HOLocation.BCEG_Ext=previousterm.HomeownersLine_HOE.HOLocation.BCEG_Ext
+    }
+
+    if(branch.CPLineExists)
+    {
+      branch.CPLine.CPLocations=previousterm.CPLine.CPLocations
+    }
+
+    if(branch.BP7LineExists)
+    {
+      branch.BP7Line.BP7Locations=previousterm.BP7Line.BP7Locations
+    }
+
   }
 
   property get Job() : Job {

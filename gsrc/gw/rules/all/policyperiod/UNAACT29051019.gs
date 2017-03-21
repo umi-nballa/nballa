@@ -26,8 +26,8 @@ class UNAACT29051019 implements IRuleCondition<PolicyPeriod>{
         && !pcodes.containsIgnoreCase(period.ProducerCodeOfRecord.Code.substring(0,5)))
     {
         var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-      activity.assignActivityToQueue(Group.finder.findByPublicId("New Business (Other than Builder)").AssignableQueues.first(),
-          Group.finder.findByPublicId("New Business (Other than Builder)"))
+   //   activity.assignActivityToQueue(Group.finder.findByPublicId("New Business (Other than Builder)").AssignableQueues.first(),
+     //     Group.finder.findByPublicId("New Business (Other than Builder)"))
 
     }
    return RuleEvaluationResult.skip()

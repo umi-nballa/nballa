@@ -27,10 +27,10 @@ class UNAUWBP7Rule45_each implements IRuleCondition<PolicyPeriod>{
 
          } )
 
-         }
+
     if(count==0)
       return RuleEvaluationResult.execute()
-
+      }
  return RuleEvaluationResult.skip()
   }
   }

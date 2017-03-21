@@ -11,6 +11,8 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _aopKeyFactor: BigDecimal as AOPKeyFactor = 0.0
   var _aopBaseClassPremium: BigDecimal as AOPBaseClassPremium = 0.0
   var _adjustedAOPBasePremium: BigDecimal as AdjustedAOPBasePremium = 0.0
+  var _fireBasePremiumDwelling : BigDecimal as FireBasePremiumDwelling = 0.0
+  var _fireBasePremiumPersonalProperty : BigDecimal as FireBasePremiumPersonalProperty = 0.0
   var _finalAdjustedAOPBasePremium: BigDecimal as FinalAdjustedAOPBasePremium = 0.0
   var _keyAOPPremium : BigDecimal as KeyAOPPremium = 0.0
 
@@ -22,6 +24,8 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _finalAdjustedWindBasePremium: BigDecimal as FinalAdjustedWindBasePremium = 0.0
 
   var _protectionConstructionFactor: BigDecimal as ProtectionConstructionFactor = 0.0
+  var _dpPersonalPropertyExists : boolean as PersonalPropertyExists = false
+
 
   //discounts and surcharges for AOP Premium
   var _superiorConstructionDiscountForAOP: BigDecimal as SuperiorConstructionDiscountForAOP = 0.0

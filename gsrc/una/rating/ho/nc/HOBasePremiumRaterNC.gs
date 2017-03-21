@@ -117,7 +117,7 @@ class HOBasePremiumRaterNC {
   // Method that created History event for Consent To Rate Identified in Policy transaction
   public  function createHistoryEventTransaction (policyPeriod : entity.PolicyPeriod){
     if(policyPeriod != null)    {
-      var msg = displaykey.Web.CTR.History.Event.Msg+ " For Policy Period :  " + policyPeriod.Policy.DisplayName
+      var msg = displaykey.Web.CTR.History.Event.Msg+ " For Policy Period "
       gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
         var Job = bundle.add(policyPeriod.Job)
         Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> msg)

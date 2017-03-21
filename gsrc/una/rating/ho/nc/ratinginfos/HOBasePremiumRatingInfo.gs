@@ -18,7 +18,6 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _deductibleFactor : boolean as DeductibleFactor = false
   var _acvLossSettlementWindstormHail : boolean as ACVLossSettlementWindstormHail = false
   var _increasedPersonalProperty : boolean as IncreasedPersonalProperty = false
-  var _townHouseOrRowHouse : boolean as TownHouseOrRowHouse = false
   var _personalPropertyReplacementCost : boolean as PersonalPropertyReplacementCost
   var _protectiveDevices : boolean as ProtectiveDevices = false
   var _specifiedAdditionalAmountCovA : boolean as SpecifiedAdditionalAmountCovA = false
@@ -35,6 +34,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _maxAgeOfHomeLimit : int as MaxAgeOfHomeLimit
   var _acvLossSettlement : boolean as ACVLossSettlement
   var _dwellingRatingInfo : HONCDwellingRatingInfo as DwellingRatingInfo
+  var _dwellingFireLimit : int as DwellingFireLimit
+  var _dwellingFireValuationMethod : ValuationMethod as DwellingFireValuationMethod
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling
@@ -75,11 +76,17 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       _insuranceScore = 0
     }
 
+    if(dwelling.FirstTimeDeededHome_Ext){
+      _insuranceScore = ConfigParamsUtil.getInt(TC_DEFAULTCREDITSCORE, dwelling.HOLine.BaseState)
+    }
+
     _consentToRate = Dwelling.Branch.ConsentToRate_Ext
     _maxAgeOfHomeLimit = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, _dwelling.HOLine.BaseState)
 
-
-
+    if(dwelling?.DPDW_Dwelling_Cov_HOEExists){
+      _dwellingFireLimit = dwelling.DPDW_Dwelling_Cov_HOE?.DPDW_Dwelling_Limit_HOETerm?.Value?.intValue()
+      _dwellingFireValuationMethod = dwelling?.DPDW_Dwelling_Cov_HOE?.DPDW_ValuationMethod_HOE_ExtTerm?.Value
+    }
 
   }
 

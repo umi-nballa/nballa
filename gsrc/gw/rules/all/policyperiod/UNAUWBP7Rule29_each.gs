@@ -15,13 +15,13 @@ class UNAUWBP7Rule29_each implements IRuleCondition<PolicyPeriod>{
     if(period.BP7LineExists)
     {
 
-      var questionSet = period.QuestionSets.firstWhere(\elt -> elt.CodeIdentifier == "BP7_Prequal_Ext")
+      var questionSet = period?.QuestionSets?.firstWhere(\elt -> elt.CodeIdentifier == "BP7_Prequal_Ext")
 
     questionSet?.Questions?.each( \ elt ->
     {
       if (elt != null)
       {
-        if (elt?.isQuestionAvailable(period)  && elt.CodeIdentifier=="BP7_Q7_Cooking_Ext")
+        if (elt?.isQuestionAvailable(period)  && elt?.CodeIdentifier=="BP7_Q7_Cooking_Ext")
         {
           var answeredTrue = period.getAnswerValue(elt)?.toString() as boolean
           if (null != answeredTrue && answeredTrue )

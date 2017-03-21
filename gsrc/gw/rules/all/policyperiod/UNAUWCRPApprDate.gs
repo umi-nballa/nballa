@@ -17,7 +17,7 @@ class UNAUWCRPApprDate implements IRuleCondition<PolicyPeriod> {
 
     if(period.CPLineExists)  {
 
-            if(DateUtil.addMonths(period.AppraisalDate_Ext,30)<new java.util.Date())
+            if(period?.AppraisalDate_Ext!=null && DateUtil.addMonths(period?.AppraisalDate_Ext,30)<new java.util.Date())
               return RuleEvaluationResult.execute()
 
 

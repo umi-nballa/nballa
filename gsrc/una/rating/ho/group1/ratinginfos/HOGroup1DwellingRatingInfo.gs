@@ -59,10 +59,10 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
               _lossAssessmentPolicyForm += "_ExecCov"
           }
         }
-        if(PolicyType == HOPolicyType_HOE.TC_HO6){
-           if(dwelling?.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
-              _lossAssessmentPolicyForm += "_SpecCov"
-           }
+      }
+      if(PolicyType == HOPolicyType_HOE.TC_HO6){
+        if(dwelling?.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+          _lossAssessmentPolicyForm += "_SpecCov"
         }
       }
       _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value?.intValue()

@@ -247,8 +247,12 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
         TC_POLICYLINE -> PolicyLine,
         TC_STATE -> _baseState.Code
     }
+    var costData : CostData
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
-    var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES_EXT)
+    if(_baseState == Jurisdiction.TC_NC and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
+      costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.LPP_POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES_EXT)
+    else
+      costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES_EXT)
     if (costData != null and costData.ActualTermAmount != 0){
       costData.ActualAmount = costData.ActualTermAmount
       addCost(costData)

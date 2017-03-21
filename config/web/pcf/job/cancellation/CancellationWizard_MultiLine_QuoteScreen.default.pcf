@@ -25,7 +25,8 @@
         mode="policyPeriod.Job.Subtype"
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, cancellation, jobWizardHelper)"/>
       <ToolbarButton
-        action="policyPeriod.printDocument(&quot;CancellationQuote&quot;, &quot;Cancellation Quote&quot;)"
+        action="if(!cancellation.SupressPrint){policyPeriod.printDocument(&quot;CancellationQuote&quot;, &quot;Cancellation Quote&quot;)}"
+        available="!cancellation.SupressPrint"
         download="true"
         id="CreateCancellationQuote"
         label="displaykey.Button.PrintQuote"

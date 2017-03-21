@@ -51,12 +51,18 @@
     <Variable
       initialValue="una.productmodel.CPAutoPopulateUtil.setPcfDefaults(cpLine,cpBuilding)"
       name="initializepcf"/>
+    <Variable
+      initialValue="gw.lob.cp.location.CPLocationUtil.setNCWindpool(cpBuilding)"
+      name="setNCWindpool"/>
     <Screen>
       <Toolbar>
         <EditButtons/>
         <ToolbarButton
+          action="tunaAppResponse=new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding)"
+          available="cpBuilding.Building.YearBuilt!=null"
           id="CallTuna"
-          label="&quot;Call Tuna&quot;"/>
+          label="&quot;Call Tuna&quot;"
+          visible="true"/>
       </Toolbar>
       <PanelRef
         def="PreferredCoverageCurrencyPanelSet(cpBuilding, openForEdit, jobWizardHelper)"

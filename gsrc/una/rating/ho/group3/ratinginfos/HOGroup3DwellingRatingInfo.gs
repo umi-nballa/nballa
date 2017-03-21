@@ -34,7 +34,7 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
     _covALimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
-      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value.intValue()
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value?.intValue()
 
       _county = (dwelling?.HOLocation?.PolicyLocation?.County != null)? dwelling?.HOLocation?.PolicyLocation?.County : ""
      if(TerritoryCode != null and TerritoryCode.Numeric)

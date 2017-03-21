@@ -10,7 +10,6 @@ uses gw.plugin.Plugins
 uses gw.plugin.note.impl.LocalNoteTemplateSource
 uses gw.api.email.EmailContact
 uses gw.api.email.EmailUtil
-uses gw.api.util.SymbolTableUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -183,8 +182,9 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
   private function shouldProceedWithAlarmDiscountRemoval() : boolean{
     var renewalEffectiveDate = this._branch.PeriodStart
     var lastAlarmDocumentReceivedDate = this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.AlarmDocumentReceivedDate
-
-    return !this.Job.AlarmCreditRemovalLetterSent and (lastAlarmDocumentReceivedDate == null or lastAlarmDocumentReceivedDate <= renewalEffectiveDate.addYears(-3))
+    var protectionDetails = this._branch.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails
+    var hasAlarmFlags = protectionDetails.FireAlarmReportCntlStn or protectionDetails.BurglarAlarmReportCntlStn or protectionDetails.FireAlarmReportFireStn or protectionDetails.FireAlarmReportPoliceStn
+    return hasAlarmFlags and !this.Job.AlarmCreditRemovalLetterSent and (lastAlarmDocumentReceivedDate == null or lastAlarmDocumentReceivedDate <= renewalEffectiveDate.addYears(-3))
   }
 
   private function resetAlarmFlags(){
@@ -212,9 +212,11 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
 
   function sendEmailToAgentOfRecord(){
     var template =  gw.plugin.Plugins.get(gw.plugin.email.IEmailTemplateSource).getEmailTemplate("AlarmCreditRemovedEmailTemplate.gosu")
+    var producerCodeOfRecord = this._branch.ProducerCodeOfRecord.Contact_Ext
 
     var email = new gw.api.email.Email()
-    email.addToRecipient(new EmailContact(this._branch.ProducerCodeOfRecord.Contact_Ext))
+    var emailContact = new EmailContact(producerCodeOfRecord){:EmailAddress = producerCodeOfRecord.EmailAddress1}
+    email.addToRecipient(emailContact)
     email.Sender = getSender()
     email.Html = true
     email.useEmailTemplate(template, {"pni" -> this._branch.PrimaryNamedInsured.DisplayName, "policyNumber" -> this._branch.PolicyNumber})

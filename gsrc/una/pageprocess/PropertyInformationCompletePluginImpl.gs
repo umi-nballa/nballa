@@ -174,6 +174,7 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.CoverageALimitValue_Ext  = null
     policyPeriod.HomeownersLine_HOE.Dwelling.CondoValuationIDValue_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.MetricsVersionValue_Ext = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.MetricsVersionDate_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.ResultingPrecision_Ext= null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.FirelineAdjHaz_Ext  = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.OverrideFirelineAdjHaz_Ext = false

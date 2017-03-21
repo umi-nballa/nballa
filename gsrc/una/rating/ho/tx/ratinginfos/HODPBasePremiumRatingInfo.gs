@@ -37,7 +37,7 @@ class HODPBasePremiumRatingInfo {
     _increasedOrdinanceOrLawLimit = (_ordinanceOrLawLimit != "5,000")
     _tenantOccupied = (dwelling?.Occupancy == DwellingOccupancyType_HOE.TC_NONOWN)
     _territoryCode = dwelling?.HOLocation?.OverrideTerritoryCode_Ext? (dwelling?.HOLocation?.TerritoryCodeOverridden_Ext) : (dwelling?.HOLocation?.TerritoryCodeTunaReturned_Ext)
-    _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
+    _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext.Code : dwelling?.HOLocation?.DwellingProtectionClasscode?.toString()
     _aopDeductible = dwelling?.HODW_SectionI_Ded_HOE?.HODW_OtherPerils_Ded_HOETerm?.DisplayValue
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
     _dwellingConstructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
@@ -45,8 +45,8 @@ class HODPBasePremiumRatingInfo {
     _windHailExclusion = dwelling.WHurricaneHailExclusion_Ext
     _policyType = dwelling.HOLine?.HOPolicyType
     _dwellingUsage = dwelling?.DwellingUsage
-    //TODO : need  to update the wind pool,tier for TX state
-    _windPool = true
+    _windPool = dwelling.HOLocation.OverrideWindPool_Ext? dwelling.HOLocation.WindPoolOverridden_Ext : dwelling.HOLocation.WindPool_Ext
+    //TODO : need  to update the tier for TX state
     _tier = "Select"
   }
 

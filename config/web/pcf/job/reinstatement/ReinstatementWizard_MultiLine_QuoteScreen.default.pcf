@@ -24,7 +24,8 @@
         mode="policyPeriod.Job.Subtype"
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, reinstatement, jobWizardHelper)"/>
       <ToolbarButton
-        action="policyPeriod.printDocument(&quot;ReinstatementQuote&quot;, &quot;Reinstatement Quote&quot;)"
+        action="if(!reinstatement.SupressPrint){policyPeriod.printDocument(&quot;ReinstatementQuote&quot;, &quot;Reinstatement Quote&quot;)}"
+        available="!reinstatement.SupressPrint"
         download="true"
         id="ReinstateQuote"
         label="displaykey.Button.PrintQuote"

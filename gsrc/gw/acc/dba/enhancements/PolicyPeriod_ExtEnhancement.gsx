@@ -72,7 +72,7 @@ enhancement PolicyPeriod_ExtEnhancement : entity.PolicyPeriod {
   function isEndorseSERPAvailable(policyPeriod : PolicyPeriod):boolean{
     var isCyberOrEPLSERPWasAvailInOrigPolicy = (policyPeriod.BasedOn!=null and (policyPeriod.BasedOn.BP7Line.BP7CyberOneCov_EXTExists or
                                           policyPeriod.BasedOn.BP7Line.BP7EmploymentPracticesLiabilityCov_EXTExists))
-    var isBasedOnWithin30Days = policyPeriod.BasedOn!=null and policyPeriod.BasedOn.Canceled and (policyPeriod.BasedOn.CancellationDate.differenceInDays(java.util.Date.CurrentDate)<=30)
-      return perm.PolicyPeriod.change(policyPeriod) and policyPeriod.Policy.Issued and policyPeriod.BP7LineExists and isCyberOrEPLSERPWasAvailInOrigPolicy and (policyPeriod.BasedOn.Status==TC_Expired or isBasedOnWithin30Days)
+    var isBasedOnWithin30Days = policyPeriod !=null and policyPeriod.Canceled and (policyPeriod.CancellationDate.differenceInDays(java.util.Date.CurrentDate)<=30)
+      return perm.PolicyPeriod.change(policyPeriod) and policyPeriod.Policy.Issued and policyPeriod.BP7LineExists and isCyberOrEPLSERPWasAvailInOrigPolicy and (policyPeriod.Status==TC_Expired or isBasedOnWithin30Days)
   }
 }

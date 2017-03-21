@@ -32,6 +32,7 @@
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, cancellation, jobWizardHelper)"/>
       <ToolbarButton
         action="policyPeriod.printDocument(&quot;CancellationQuote&quot;, &quot;Cancellation Quote&quot;)"
+        available="!cancellation.SupressPrint"
         download="true"
         id="CreateCancellationQuote"
         label="displaykey.Button.PrintQuote"
@@ -39,7 +40,7 @@
     </Toolbar>
     <PanelRef
       def="WarningsPanelSet(policyPeriod.getWizardQuoteScreenWarnings())">
-      <DetailViewPanel>
+      <!-- <DetailViewPanel>
         <InputColumn>
           <CheckBoxInput
             boldLabel="true"
@@ -50,7 +51,7 @@
             required="false"
             value="cancellation.SupressPrint"/>
         </InputColumn>
-      </DetailViewPanel>
+      </DetailViewPanel> -->
     </PanelRef>
     <PanelRef
       def="Quote_SummaryDV(policyPeriod)">

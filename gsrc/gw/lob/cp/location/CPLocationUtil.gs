@@ -85,8 +85,8 @@ class CPLocationUtil {
   {
     if(isNCWindpool(building))
       building.Windpoolvalue_Ext="Yes"
-     else
-    building.Windpoolvalue_Ext="No"
+ //    else
+ //   building.Windpoolvalue_Ext="No"
 
     return true
   }

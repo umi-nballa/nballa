@@ -20,7 +20,7 @@ class UNAUWCRPWindMiti54 implements IRuleCondition<PolicyPeriod> {
       {
           elt.Buildings.each( \ elt1 ->
           {
-            if(DateUtil.addMonths(elt1.windmitidate,54)<new java.util.Date())
+            if(elt1?.windmitidate!=null && DateUtil.addMonths(elt1?.windmitidate,54)<new java.util.Date())
               return RuleEvaluationResult.execute()
 
           })

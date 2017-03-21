@@ -974,8 +974,8 @@ class HODwellingUtil_HOE {
   {
     if(isNCWindpool(dwelling))
       dwelling.HOLocation.WindPool_Ext=true
- else
-      dwelling.HOLocation.WindPool_Ext=false
+// else
+//      dwelling.HOLocation.WindPool_Ext=false
 
       return true
   }

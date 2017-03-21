@@ -60,16 +60,27 @@
       visible="rewriteProcess.canRewrite().Okay"/>
     <ToolbarButton
       action="jobWizardHelper.withdraw(policyPeriod); PolicyFileForward.go(policyPeriod.PolicyNumber);"
-      confirmMessage="displaykey.Job.Operation.Withdraw.Confirm"
       id="WithdrawJob"
       label="displaykey.Job.Operation.Withdraw"
       shortcut="W"
       visible="rewriteProcess.canWithdraw().Okay"/>
+    <ToolbarButton
+      action="job.SupressPrint= true"
+      id="Suppressprint"
+      label="displaykey.Job.Operation.SuppressPrint"/>
     <Code><![CDATA[function getIssueMsg() : String{
- if(rewrite.SupressPrint)
+ if(job.SupressPrint)
     return displaykey.Job.Operation.IssuePolicy.ConfirmwithSuppressPrint
   else
     return displaykey.Job.Operation.IssuePolicy.Confirm
+}
+
+
+function getConfirmMsg() : String{
+    if(job.SupressPrint)
+      return displaykey.Job.Operation.Withdraw.ConfirmwithSuppressPrint
+    else
+ return displaykey.Job.Operation.Withdraw.Confirm
 }]]></Code>
   </ToolbarButtonSet>
 </PCF>

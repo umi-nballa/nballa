@@ -18,7 +18,7 @@ class UNAUWBP7Rule20_each implements IRuleCondition<PolicyPeriod>{
 
     if(period.BP7LineExists)
       {
-       var claimsearch = new GWClaimSearchPlugin()
+     /*  var claimsearch = new GWClaimSearchPlugin()
         var criteria = new ClaimSearchCriteria()
         criteria.Policy = period.Policy
         criteria.PolicyNumber=period.PolicyNumber
@@ -30,7 +30,7 @@ class UNAUWBP7Rule20_each implements IRuleCondition<PolicyPeriod>{
             return RuleEvaluationResult.execute()
 
         })
-
+       */
 
        }
     return RuleEvaluationResult.skip()

@@ -125,11 +125,14 @@
       visible="canBind"/>
     <ToolbarButton
       action="jobWizardHelper.withdraw(policyPeriod); PolicyFileForward.go(policyPeriod.PolicyNumber);"
-      confirmMessage="displaykey.Job.Operation.Withdraw.Confirm"
       id="WithdrawJob"
       label="displaykey.Job.Operation.Withdraw"
       shortcut="W"
       visible="policyChangeProcess.canWithdraw().Okay"/>
+    <ToolbarButton
+      action="job.SupressPrint=true"
+      id="SuppressPrint"
+      label="displaykey.Job.Operation.SuppressPrint"/>
     <Code><![CDATA[function attemptNewVersion() {
   wizard.saveDraft()
   if (jobWizardHelper.revalidateModel()) {
@@ -152,6 +155,16 @@ function getIssueMsg(): String{
     return displaykey.Job.Operation.IssuePolicy.ConfirmwithSuppressPrint
   else
     return displaykey.Job.Operation.IssuePolicy.ConfirmwithSuppressPrint
+}
+
+
+
+
+function getConfirmMsg(): String{
+    if(policyChange.SupressPrint)
+      return displaykey.Job.Operation.Withdraw.ConfirmwithSuppressPrint
+    else
+return displaykey.Job.Operation.Withdraw.Confirm
 }]]></Code>
   </ToolbarButtonSet>
 </PCF>

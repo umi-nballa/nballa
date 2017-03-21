@@ -4,6 +4,7 @@ uses java.util.Set
 uses gw.lob.common.AbstractUnderwriterEvaluator
 uses gw.policy.PolicyEvalContext
 uses gw.lang.reflect.IType
+uses gw.accelerator.ruleeng.RulesEngineInterface
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +32,21 @@ class BP7_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
       }
   }
 
+  function invokeRulesEngine() {
+    RulesEngineInterface.evaluatePolicy(
+        _policyEvalContext,
+            "BP7Line")
+  }
+
+  override function onPrequote() {
+
+    invokeRulesEngine()
+  }
+
+  override function onPreBind(){
+   // invokeRulesEngine()
+
+  }
   /*
    * Validation question response is checked for being true. If true create an underwriting issue
    */

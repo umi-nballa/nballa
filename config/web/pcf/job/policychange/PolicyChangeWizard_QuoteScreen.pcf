@@ -30,7 +30,8 @@
         mode="policyPeriod.Job.Subtype"
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, job, jobWizardHelper)"/>
       <ToolbarButton
-        action="policyPeriod.printDocument(&quot;PolicyChangeQuote&quot;, &quot;Policy Change Quote&quot;)"
+        action="if(!job.SupressPrint){policyPeriod.printDocument(&quot;PolicyChangeQuote&quot;, &quot;Policy Change Quote&quot;)}"
+        available="!job.SupressPrint"
         download="true"
         id="CreatePolicyChangeQuote"
         label="displaykey.Button.PrintQuote"

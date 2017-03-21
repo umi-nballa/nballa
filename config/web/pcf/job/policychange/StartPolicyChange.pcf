@@ -48,6 +48,10 @@
           action="CurrentLocation.cancel()"
           id="Cancel"
           label="displaykey.Button.Cancel"/>
+        <ToolbarButton
+          action="job.SupressPrint= true"
+          id="SuppressPrint"
+          label="displaykey.Web.Submission.SuppressPrint"/>
       </Toolbar>
       <Verbatim
         id="ErrorMessage"
@@ -64,18 +68,6 @@
         label="displaykey.Accelerator.FutureDatedChanges.CannotStartFutureChangeBeyondDate(policyPeriod.TermType == TermType.TC_ANNUAL ? policyPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForAnnualTermPolicy_Ext).addDays(0) : policyPeriod.PeriodEnd.addMonths(ScriptParameters.FutureChangesPermissibleMonthsForOtherTermPolicy_Ext).addDays(0))"
         visible="policyPeriod.canStartFutureChangeOnDate_Ext(effectiveDate)"
         warning="true"/>
-      <DetailViewPanel>
-        <InputColumn>
-          <CheckBoxInput
-            boldLabel="true"
-            editable="true"
-            id="SuppressPrint"
-            label="displaykey.Web.Submission.SuppressPrint"
-            labelStyleClass="ext_redLabel"
-            required="false"
-            value="job.SupressPrint"/>
-        </InputColumn>
-      </DetailViewPanel>
       <DetailViewPanel
         id="StartPolicyChangeDV">
         <InputColumn>

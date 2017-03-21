@@ -24,7 +24,8 @@
         mode="policyPeriod.Job.Subtype"
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, renewal, jobWizardHelper)"/>
       <ToolbarButton
-        action="policyPeriod.printDocument(&quot;RenewalQuote&quot;, &quot;Renewal Quote&quot;)"
+        action="if(!renewal.SupressPrint){policyPeriod.printDocument(&quot;RenewalQuote&quot;, &quot;Renewal Quote&quot;)}"
+        available="!renewal.SupressPrint"
         download="true"
         id="CreateRenewalQuote"
         label="displaykey.Button.PrintQuote"

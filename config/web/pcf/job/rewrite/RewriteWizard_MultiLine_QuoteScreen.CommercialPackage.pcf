@@ -24,7 +24,8 @@
         mode="policyPeriod.Job.Subtype"
         toolbarButtonSet="JobWizardToolbarButtonSet(policyPeriod, job, jobWizardHelper)"/>
       <ToolbarButton
-        action="policyPeriod.printDocument(&quot;RewriteQuote&quot;, &quot;Rewrite Quote&quot;)"
+        action="if(!job.SupressPrint){policyPeriod.printDocument(&quot;RewriteQuote&quot;, &quot;Rewrite Quote&quot;)}"
+        available="!job.SupressPrint"
         download="true"
         id="CreateRewriteQuote"
         label="displaykey.Button.PrintQuote"

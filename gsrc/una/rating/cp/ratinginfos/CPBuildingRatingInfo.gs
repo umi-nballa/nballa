@@ -78,8 +78,7 @@ class CPBuildingRatingInfo {
   var _signsDetachedOutdoorLimit : BigDecimal as SignsDetachedOutdoorLimit
   var _signsDetachedOutdoorConstructionType : ConstructionType_CP as SignsDetachedOutdoorConstructionType
   var _equipmentBreakdownEndorsementLimit : BigDecimal as EquipmentBreakdownEndorsementLimit
-  //TODO : Update the zone number
-  var _zoneNumber : int as ZoneNumber = 1
+  var _zoneNumber : int as ZoneNumber
   //ordinance or law limits
   var _ordOrLawCovALimit : BigDecimal as OrdOrLawCovALimit
   var _ordOrLawCovBLimit : BigDecimal as OrdOrLawCovBLimit
@@ -87,7 +86,6 @@ class CPBuildingRatingInfo {
   var _ordOrLawCovBCCombinedLimit : BigDecimal as OrdOrLawCovBCCombinedLimit
   var _ordOrLawCovABCCombinedLimit : BigDecimal as OrdOrLawCovABCCombinedLimit
   //bceg factor
-  //TODO : Update the bceg terriory name
   var _bcegFactor : String as BCEGFactor
   var _bcegTerritory : String as BCEGTerritory = "Inland (4)"
 
@@ -140,10 +138,10 @@ class CPBuildingRatingInfo {
       if(_yearBuilt <= 1982)
         _designCode = "1982 Or Earlier"
       else
-        _designCode = "1983 To 2001SSS"
+        _designCode = "1983 To 2001"
     }
 
-    if(building.CPLocation.CPLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT){
+    if(building.CPLocation.CPLine.hurricanepercded?.Code != CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT.Code){
       _hurricanePercentage = building.CPLocation.CPLine.hurricanepercded?.DisplayName
       _hurricaneDedType = building.CPLocation.CPLine.hurricanededtype
     }

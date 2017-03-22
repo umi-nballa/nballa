@@ -65,7 +65,25 @@ class CPLocationUtil {
   static function getTunaResponse(polLocation:PolicyLocation)  : TunaAppResponse
   {
     if(polLocation.AssociatedPolicyPeriod.CPLineExists){
-      return new una.pageprocess.PropertyInformationCompletePluginImpl().getTunaInformation(polLocation.AssociatedPolicyPeriod)
+      return new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(polLocation)//getTunaInformation(polLocation.AssociatedPolicyPeriod)
+    }else{
+      return new TunaAppResponse()
+    }
+  }
+
+  static function getTunaResponse(polLocation:CPLocation)  : TunaAppResponse
+  {
+    if(polLocation.Location.AssociatedPolicyPeriod.CPLineExists){
+      return new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(polLocation)//getTunaInformation(polLocation.AssociatedPolicyPeriod)
+    }else{
+      return new TunaAppResponse()
+    }
+  }
+
+  static function getTunaResponse(polLocation:CPBuilding)  : TunaAppResponse
+  {
+    if(polLocation.PolicyPeriod.CPLineExists){
+      return new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(polLocation)//getTunaInformation(polLocation.AssociatedPolicyPeriod)
     }else{
       return new TunaAppResponse()
     }

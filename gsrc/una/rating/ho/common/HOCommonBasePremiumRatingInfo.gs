@@ -79,7 +79,7 @@ class HOCommonBasePremiumRatingInfo {
     _keyFactorUpperBound = keyFactorRange.UpperBound
 
     if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-      _numberOfFamilies = dwelling.NumUnitsFireDivision_Ext.toInt()
+      _numberOfFamilies = dwelling?.NumUnitsFireDivision_Ext?.toInt()
     }else{
      _numberOfFamilies = 1
     }

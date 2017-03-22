@@ -15,7 +15,7 @@ class HOProtectionDetailsMapper {
   static final var SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT_PLUS_FIRE_ALARM_TO_CNTL_STN : String = "Smoke or Fire Alarm + Fire Extinguisher + Dead Bolts + Fire alarm reporting to Central Station"
   static final var SMOKE_OR_FIRE_ALARM_PLUS_FIRE_EXT_PLUS_DEADBOLT : String = "Smoke or Fire Alarm + Fire Extinguisher + Dead Bolts"
   static final var BURGLAR_ALARM_TO_CNTL_STN_PLUS_FIRE_ALARM_TO_CNTL_STN : String = "Burglar alarm reporting to Central Station + Fire alarm reporting to Central Station"
-  static final var BURGLAR_ALARM_TO_CNTL_STN_PLUS_CMPLT_HOME_SPRINKLER_SYSTEM : String = "Burglar alarm reporting to Central Station + Complete home sprinkler systems"
+  static final var BURGLAR_ALARM_TO_CNTL_STN_PLUS_CMPLT_HOME_SPRINKLER_SYSTEM : String = "Burglar alarm reporting to Central Station + Complete home sprinkler system"
   static final var BURGLAR_ALARM_TO_CNTL_STN : String = "Burglar alarm reporting to Central Station"
   static final var BURGLAR_ALARM_TO_POLICE_STN : String = "Burglar alarm reporting to Police Station"
   static final var CMPLT_BURGLAR_ALARM : String = "Complete Burglar Alarm"
@@ -28,6 +28,7 @@ class HOProtectionDetailsMapper {
   static final var FIRE_ALARM_TO_CNTL_STN_OR_BURGLAR_ALARM_TO_CNTL_STN : String = "Central Station Fire and/or Burglar Alarm"
   static final var FIRE_ALARM_OR_CMPLT_BURGLAR_ALARM : String = "Local Fire and/or Burglar Alarm Systems"
   static final var GATED_COMM_ALL_AREA : String = "Gated Community (all entrances secured)"
+  static final var LOCAL_FIRE_ALARM = "Local Fire Alarm"
 
 
   static function getProtectionDetails(dwelling : Dwelling_HOE, state: Jurisdiction): String {
@@ -109,8 +110,13 @@ class HOProtectionDetailsMapper {
               fireAlarmReportCntlStn, completeLocalBurglarAlarm, completeHomeSprinklerSystem)
           return protectionDetails
       case TC_FL:
+          if(dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+            protectionDetails = extractProtectionDetailsFLDP(fireAlarmReportCntlStn, localFireAlarm, completeHomeSprinklerSystem, automaticSprinklerSystem)
+          } else{
           protectionDetails = extractProtectionDetailsFL(fireAlarmReportCntlStn, fireAlarmReportFireStn, localFireAlarm, burglarAlarmReportCntlStn,
               completeLocalBurglarAlarm, burglarAlarmReportPoliceStn, completeHomeSprinklerSystem, automaticSprinklerSystem)
+          }
+
           return protectionDetails
       case TC_SC:
           protectionDetails = extractProtectionDetailsSC(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
@@ -221,5 +227,19 @@ class HOProtectionDetailsMapper {
         return GATED_COMM_ALL_AREA
       } else
         return NO_PROTECTIVE_DEVICE
+  }
+
+  private static function extractProtectionDetailsFLDP(fireAlarmReportCntlStn : boolean, localFireAlarm : boolean, completeHomeSprinklerSystem : boolean, automaticSprinklerSystem : boolean) : String {
+
+    if(completeHomeSprinklerSystem){
+      return CMPLT_HOME_SPRINKLER_SYSTEM
+    } else if(automaticSprinklerSystem){
+      return AUTO_HOME_SPRINKLER_SYSTEM
+    }  else if(fireAlarmReportCntlStn){
+      return FIRE_ALARM_TO_FIRE_STN
+    }else if(localFireAlarm){
+      return LOCAL_FIRE_ALARM
+    }else
+     return NO_PROTECTIVE_DEVICE
   }
 }

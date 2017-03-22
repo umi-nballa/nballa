@@ -16,6 +16,7 @@ uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXAdditionalInterestMapper
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 uses java.math.BigDecimal
+uses una.integration.mapping.hpx.common.HPXEstimatedPremium
 
 /**
  * Created with IntelliJ IDEA.
@@ -227,6 +228,10 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
   }
 
   override function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
+  override function getEstimatedPremiums(policyPeriod : PolicyPeriod) : List<HPXEstimatedPremium> {
     return null
   }
 

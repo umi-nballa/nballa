@@ -13,6 +13,9 @@ uses una.rating.cp.ratinginfos.CPBuildingRatingInfo
 uses gw.lob.cp.rating.CPBuildingCovSpecialCostData
 uses una.rating.cp.costdatas.CPBuildingCovOtherThanHurricaneCostData
 uses una.rating.cp.costdatas.CPBuildingCovHurricaneCostData
+uses gw.rating.rtm.query.RateBookQueryFilter
+uses gw.rating.rtm.query.RatingQueryFacade
+uses java.lang.Comparable
 
 /**
  * Created with IntelliJ IDEA.
@@ -37,6 +40,9 @@ class CPBuildingRatingStep {
     _daysInTerm = daysInTerm
     _rateCache = rateCache
     _buildingRatingInfo = new CPBuildingRatingInfo(building)
+    _buildingRatingInfo.ZoneNumber = getZoneNumber(line, _executor.RatingLevel, "cp_zone_number_and_category_table", {_buildingRatingInfo.TerritoryCode})
+    if(_buildingRatingInfo.ZoneNumber == null)
+      _buildingRatingInfo.ZoneNumber = 1
   }
 
   /**
@@ -391,5 +397,16 @@ class CPBuildingRatingStep {
     return {TC_POLICYLINE         -> _line,
             TC_BUILDINGRATINGINFO_EXT -> _buildingRatingInfo,
             TC_COSTDATA           -> costData}
+  }
+
+  /**
+   * Function which gets the factor from the rate table.
+   */
+  private static function getZoneNumber(line : CPLine, minimumRatingLevel : RateBookStatus, rateTableName : String, params : Comparable[]) : int {
+    var filter = new RateBookQueryFilter(line.Branch.PeriodStart, line.Branch.PeriodEnd, line.PatternCode)
+                {: Jurisdiction = line.BaseState,
+                  : MinimumRatingLevel = minimumRatingLevel}
+    var factor = new RatingQueryFacade().getFactor(filter, rateTableName, params).Factor
+    return factor as int
   }
 }

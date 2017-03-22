@@ -5,6 +5,7 @@ uses gw.lob.common.AbstractUnderwriterEvaluator
 uses gw.policy.PolicyEvalContext
 uses java.util.Set
 uses gw.lang.reflect.IType
+uses gw.accelerator.ruleeng.RulesEngineInterface
 
 /**
  * Created with IntelliJ IDEA.
@@ -33,6 +34,22 @@ class CPP_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     }
   }
 
+
+  function invokeRulesEngine() {
+    RulesEngineInterface.evaluatePolicy(
+        _policyEvalContext,
+            "CPLine")
+  }
+
+  override function onPrequote() {
+
+    invokeRulesEngine()
+  }
+
+  override function onPreBind(){
+    invokeRulesEngine()
+
+  }
   /*
    * Validation question response is checked for being true. If true create an underwriting issue
    */

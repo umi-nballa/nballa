@@ -18,6 +18,10 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _lossAssessmentLimit: int as LossAssessmentLimit
   var _moldRemediationLimit: String as MoldRemediationLimit
   var _tierType : String as TierType
+  var _vacancyPeriod : int as VacancyPeriod
+  var _isVMMCovExists : boolean as IsVMMCovExists
+  var _dwellingFireLimit : BigDecimal as DwellingFireLimit
+
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
 
@@ -46,6 +50,14 @@ class HODwellingRatingInfo extends HOCommonDwellingRatingInfo {
     _lossAssessmentLimit = (dwelling?.HODW_LossAssessmentCov_HOE_ExtExists) ? dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value.intValue() : 0
 
     _county = (dwelling?.HOLocation?.PolicyLocation?.County != null) ? dwelling?.HOLocation?.PolicyLocation?.County : ""
+
+    if(dwelling?.DPDW_Dwelling_Cov_HOEExists)
+      _dwellingFireLimit = dwelling?.DPDW_Dwelling_Cov_HOE?.DPDW_Dwelling_Limit_HOETerm?.Value
+
+    if(dwelling?.HODW_VacancyClause_ExtExists){
+      _vacancyPeriod = dwelling.HODW_VacancyClause_Ext?.HODW_VacancyFromDateTerm.Value.differenceInDays(dwelling.HODW_VacancyClause_Ext?.HODW_VacancyToDateTerm.Value)
+      _isVMMCovExists = dwelling?.HODW_Vandalism_Malicious_Mischief_HOE_ExtExists
+    }
     //todo: Update the tier
     _tierType = "Select"
   }

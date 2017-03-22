@@ -34,6 +34,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private var _discountsOrSurchargeRatingInfo : HOGroup2DiscountsOrSurchargeRatingInfo
   private var _lineRateRoutineParameterMap : Map<CalcRoutineParamName, Object>
   private var _lineRatingInfo : HOGroup2LineRatingInfo
+  private var _hasExecutiveCoverage: boolean as HasExecutiveCoverage
   private var _dwellingRatingInfo : HOGroup2DwellingRatingInfo
 
   construct(line: HomeownersLine_HOE) {
@@ -45,6 +46,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _hoRatingInfo = new HORatingInfo()
     _lineRatingInfo = new HOGroup2LineRatingInfo(line)
     _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
+    _hasExecutiveCoverage = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HasHODW_ExecutiveCov_HOE_ExtTerm ? line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_ExecutiveCov_HOE_ExtTerm?.Value : false
     _dwellingRatingInfo = new HOGroup2DwellingRatingInfo(line.Dwelling)
   }
 
@@ -145,6 +147,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
             rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
+          break
+      case HODW_Earthquake_HOE:
+          rateEarthquakeCoverage(dwellingCov, dateRange)
           break
       }
     }
@@ -256,6 +261,22 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (costData != null)
       addCost(costData)
     _logger.debug("Higher All Peril Deductible Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+  *  Function to rate Earthquake Coverage
+  */
+
+  function rateEarthquakeCoverage(dwellingCov : HODW_Earthquake_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateEarthquakeCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var rateRoutineName = HORateRoutineNames.EQ_COVERAGE_RATE_ROUTINE
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, rateRoutineName, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Earthquake Coverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -526,8 +547,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
-    if (_dwellingRatingInfo.OtherStructuresIncreasedLimit !=0){
-      var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
+      var otherStructuresRatingInfo = new HOOtherStructuresRatingInfo(dwellingCov)
+    if (otherStructuresRatingInfo.IsOtherStructuresIncreasedOrDecreasedLimit){
+      var rateRoutineParameterMap = getOtherStructuresParameterSet(PolicyLine, otherStructuresRatingInfo, PolicyLine.BaseState.Code)
       var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData !=null){
         addCost(costData)
@@ -683,6 +705,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _logger.debug("Age Of Home Discount Rated Successfully", this.IntrinsicType)
   }
 
+
   /**
    *  Function to rate Protection Devices Credit
    */
@@ -724,6 +747,19 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
+
+    }
+  }
+
+  /**
+   *  Returns the parameter set for other structures
+   */
+  private function getOtherStructuresParameterSet (line: PolicyLine, dwellingRatingInfo: HOOtherStructuresRatingInfo, stateCode: String): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> stateCode,
+        TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
+
     }
   }
 

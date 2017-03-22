@@ -8,15 +8,14 @@ uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil
 uses java.util.ArrayList
 uses una.integration.mapping.tuna.TunaAppResponse
-uses java.util.Set
-uses java.util.SortedSet
+uses java.text.SimpleDateFormat
+uses java.util.Date
 
 /**
  * Created with IntelliJ IDEA.
  * User: svallabhapurapu
  * Date: 8/19/16
- * Time: 6:24 AM
- * To change this template use File | Settings | File Templates.
+ *
  */
 class HODwellingUtil_HOE {
   /*
@@ -39,10 +38,12 @@ class HODwellingUtil_HOE {
   private static final var PROTECTION_CLASSCODE_2 = typekey.ProtectionClassCode_Ext.TC_2.Code
   private static final var PROTECTION_CLASSCODE_3 = typekey.ProtectionClassCode_Ext.TC_3.Code
   private static final var PROTECTION_CLASSCODE_5 = typekey.ProtectionClassCode_Ext.TC_5.Code
-
+  static var sdfMetricFormat = new SimpleDateFormat("MM/dd/yyyy")
+  static var metricDate: Date
 
   static function setProtectionClass(dwelling:Dwelling_HOE):boolean
   {
+    if(dwelling.HOLocation.DwellingProtectionClasscode!= null){
     if(dwelling.HOLocation.DistanceToFireHydrant>1000 && dwelling.HOLocation.DwellingProtectionClasscode.indexOf("/")!=-1)
       {
         dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
@@ -65,6 +66,7 @@ class HODwellingUtil_HOE {
     {
       dwelling.HOLocation.OverrideDwellingPCCode_Ext=true
       dwelling.HOLocation.DwellingPCCodeOverridden_Ext= typekey.ProtectionClassCode_Ext.TC_10
+    }
     }
     return true
   }
@@ -97,6 +99,7 @@ class HODwellingUtil_HOE {
 
   static function initializeSingleReturnTypelists(dwelling:Dwelling_HOE, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse):boolean
   {
+    if (tunaAppResponse != null ){
     if(dwelling.HOLocation.BCEGMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
       {
          dwelling.HOLocation.BCEG_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade) as typekey.BCEGGrade_Ext[]).first()
@@ -287,7 +290,11 @@ class HODwellingUtil_HOE {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
     }
 
-
+    }//Mapping Metrics version date
+    if(tunaAppResponse != null && tunaAppResponse.MetricsVersion.first().NamedValue != null){
+      metricDate = new Date(tunaAppResponse.MetricsVersion.first().NamedValue)
+      dwelling.MetricsVersionDate_Ext = sdfMetricFormat.format(metricDate)
+    }
 
     return false
   }
@@ -966,9 +973,9 @@ class HODwellingUtil_HOE {
   static function setNCWindpool(dwelling:Dwelling_HOE) : boolean
   {
     if(isNCWindpool(dwelling))
-      dwelling.HOLocation.WindPool_Ext="Yes"
-   // else
-   //   dwelling.HOLocation.WindPool_Ext="no"
+      dwelling.HOLocation.WindPool_Ext=true
+// else
+//      dwelling.HOLocation.WindPool_Ext=false
 
       return true
   }
@@ -1128,7 +1135,8 @@ class HODwellingUtil_HOE {
 
   static function getMatchLevel(thePropertyDataModelList : List<PropertyDataModel>) : typekey.TUNAMatchLevel_Ext {
     var res = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
-    if(thePropertyDataModelList ==null || thePropertyDataModelList.Count < 1){
+    if(thePropertyDataModelList.HasElements == false ||
+        (thePropertyDataModelList.Count == 1 && org.apache.commons.lang3.StringUtils.isEmpty(thePropertyDataModelList[0].Value))){
       res = typekey.TUNAMatchLevel_Ext.TC_NONE
     }else if(thePropertyDataModelList.Count == 1){
       res = typekey.TUNAMatchLevel_Ext.TC_EXACT
@@ -1223,9 +1231,9 @@ class HODwellingUtil_HOE {
 
   public static function isWindPoolEligible(theDwelling: Dwelling_HOE) : boolean{
     var resultEligible : boolean = false
-    if(theDwelling.HOLocation.OverrideWindPool_Ext && (theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("TRUE"))){
+    if(theDwelling.HOLocation.OverrideWindPool_Ext && (theDwelling.HOLocation.WindPoolOverridden_Ext)){// || theDwelling.HOLocation.WindPoolOverridden_Ext?.equalsIgnoreCase("TRUE"))){
        resultEligible = true
-    }else if(theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("YES") || theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("TRUE")){
+    }else if(theDwelling?.HOLocation?.WindPool_Ext==true ){//|| theDwelling.HOLocation.WindPool_Ext?.equalsIgnoreCase("TRUE")){
       resultEligible = true
     }
     return resultEligible

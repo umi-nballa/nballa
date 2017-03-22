@@ -109,6 +109,7 @@ class RulesEngineInterface {
           false)
 
     } catch (e : Exception) {
+      e.printStackTrace()
       LOGGER.error(e)
       throw e
     }
@@ -253,10 +254,16 @@ class RulesEngineInterface {
       runWithNewBundle : boolean) {
     var entityGraphNodes : List<RuleEntityGraphNode>
 
+    print("ruleValContext   :" + ruleValContext)
+    print("entityGraphNode   :" + entityGraphNode)
+    print("rootObject   :" + rootObject)
+    print("ruleType   :" + ruleType)
+
     if (processGraphDescendants) {
       entityGraphNodes = new ArrayList<RuleEntityGraphNode>()
       entityGraphNodes.add(entityGraphNode)
-      entityGraphNodes.addAll(entityGraphNode.Descendants)
+      if(entityGraphNode?.Descendants!=null)
+        entityGraphNodes.addAll(entityGraphNode?.Descendants)
     } else {
       entityGraphNodes = {entityGraphNode}
     }

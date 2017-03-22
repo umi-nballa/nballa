@@ -11,6 +11,7 @@ uses una.rating.ho.common.HORateRoutineNames
 uses una.rating.ho.group3.ratinginfos.HORatingInfo
 
 uses java.util.Map
+uses una.rating.ho.group3.ratinginfos.HOBasePremiumRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +33,10 @@ class HOBasePremiumRaterGroup3 {
       AOP_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
       WIND_KEY_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_KEYFACTORBASEPREMIUM,
       PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_PROTECTIONCONSTRUCTIONFACTORBASEPREMIUM,
-      HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM
+      HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM,
+      HORateRoutineNames.DP_DWELLING_BASE_PREMIUM -> HOCostType_Ext.TC_FIREDWELLING,
+      HORateRoutineNames.DP_PERSONAL_PROPERTY_BASE_PREMIUM  -> HOCostType_Ext.TC_FIREPERSONALPROPERTY
+
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -48,7 +52,6 @@ class HOBasePremiumRaterGroup3 {
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
     var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    var nonCostRoutinesToExecute: List<String> = {AOP_KEY_FACTOR_RATE_ROUTINE, WIND_KEY_FACTOR_RATE_ROUTINE, PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE}
     var costDatas = executeRoutines(nonCostRoutinesToExecute, dateRange, numDaysInCoverageRatedTerm)
     var wsc: List<WorksheetEntry> = {}
     for (costData in costDatas)
@@ -67,7 +70,7 @@ class HOBasePremiumRaterGroup3 {
     var costs: List<CostData> = {}
     if (!routinesToExecute.Empty) {
       for (routine in routinesToExecute) {
-        var basePremiumRatingInfo = new HOCommonBasePremiumRatingInfo(_dwelling)
+        var basePremiumRatingInfo = new HOBasePremiumRatingInfo(_dwelling)
         var costData = new HomeownersBaseCostData_HOE(dateRange.start, dateRange.end, _line.Branch.PreferredCoverageCurrency, _rateCache, _routinesToCostTypeMapping.get(routine))
         costData.init(_line)
         costData.NumDaysInRatedTerm = numDaysInCoverageRatedTerm
@@ -81,12 +84,29 @@ class HOBasePremiumRaterGroup3 {
     return costs
   }
 
+  private property get nonCostRoutinesToExecute(): List<String>{
+    var routines : List<String> = {}
+
+    if(_line.HOPolicyType != TC_DP3_Ext){
+      routines ={AOP_KEY_FACTOR_RATE_ROUTINE, WIND_KEY_FACTOR_RATE_ROUTINE, PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE}
+    }
+
+    return routines
+  }
+
+
   /**
    *  returns the list of routines to execute
    */
   private property get baseRoutinesToExecute(): List<String> {
     var routines: List<String> = {}
-    if (_line.BaseState == typekey.Jurisdiction.TC_FL){
+
+    if(_line.HOPolicyType == TC_DP3_Ext){
+      routines.add(HORateRoutineNames.DP_DWELLING_BASE_PREMIUM)
+      if(_dwelling.DPDW_Personal_Property_HOEExists){
+        routines.add(HORateRoutineNames.DP_PERSONAL_PROPERTY_BASE_PREMIUM)
+      }
+    }else{
       routines.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
       if (!_dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists){
         routines.add(HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE)
@@ -98,12 +118,12 @@ class HOBasePremiumRaterGroup3 {
   /**
    * Created parameter set to execute the base premium routines
    */
-  private function createParameterSet(costData: CostData, basePremiumRatingInfo: HOCommonBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
+  private function createParameterSet(costData: CostData, basePremiumRatingInfo: HOBasePremiumRatingInfo): Map<CalcRoutineParamName, Object> {
     return {
         TC_POLICYLINE -> _line,
         TC_RATINGINFO -> _hoRatingInfo,
         TC_DWELLINGRATINGINFO_EXT -> basePremiumRatingInfo,
-        TC_State -> _line.BaseState.Code,
+        TC_State -> _line.BaseState,
         TC_COSTDATA -> costData
     }
   }

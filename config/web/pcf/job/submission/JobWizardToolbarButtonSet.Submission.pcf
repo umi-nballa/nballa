@@ -122,13 +122,13 @@
       visible="(submissionProcess.canBind().Okay or submissionProcess.canIssue().Okay) and una.pageprocess.SubmissionWizardHelper.canAllowSubmission(policyPeriod.Policy.Account)">
       <MenuItem
         action="jobWizardHelper.invalidateIterators(); jobWizardHelper.requestIssueJob(policyPeriod, false, true);"
-        confirmMessage="displaykey.Job.Operation.BindOnly.Confirm"
+        confirmMessage="getMsgBind()"
         id="BindOnly"
         label="displaykey.Job.Operation.BindOnly"
         visible="canBind"/>
       <MenuItem
         action="jobWizardHelper.invalidateIterators(); jobWizardHelper.requestIssueJob(policyPeriod, true, true);"
-        confirmMessage="displaykey.Job.Operation.BindAndIssue.Confirm"
+        confirmMessage="getMsgIssue()"
         id="BindAndIssue"
         label="displaykey.Job.Operation.BindAndIssue"
         visible="canIssue"/>
@@ -158,6 +158,10 @@
         shortcut="N"
         visible="submissionProcess.canNotTakeJob().Okay"/>
     </ToolbarButton>
+    <ToolbarButton
+      action="submission.SupressPrint= true"
+      id="SuppressPrint"
+      label="displaykey.Web.Submission.SuppressPrint"/>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 
 function attemptNewVersion() {
@@ -175,6 +179,22 @@ function attemptNewVersion() {
       }
     }
   }
+}
+
+function getMsgBind():String{
+  if(submission.SupressPrint)
+    return displaykey.Job.Operation.BindOnly.ConfirmwithSuppressPrint
+  else
+    return displaykey.Job.Operation.BindOnly.Confirm
+}
+
+
+function getMsgIssue(): String
+{
+  if(submission.SupressPrint)
+    return displaykey.Job.Operation.BindAndIssue.ConfirmwithSuppressPrint
+  else
+    return displaykey.Job.Operation.BindAndIssue.Confirm
 }]]></Code>
   </ToolbarButtonSet>
 </PCF>

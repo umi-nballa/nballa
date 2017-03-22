@@ -19,6 +19,7 @@ uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchConfiguration
 uses wsi.remote.una.ofac.ofac.xgservices_svc.types.complex.SearchInput
 
 uses java.util.ArrayList
+uses gw.plugin.billing.bc800.PolicyInfoUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,6 +41,7 @@ class OFACRequestMapper {
   private static  var searchConfiguration = new SearchConfiguration()
   private static var searchInput = new SearchInput()
   private static var _logger = UnaLoggerCategory.UNA_INTEGRATION
+  final static var TC_ThirdPartyDesignee = "thirdPartyDesignee_Ext"
   construct() {
     setProperties()
   }
@@ -158,5 +160,25 @@ class OFACRequestMapper {
     }
     _logger.info(CLASS_NAME + ": Exiting buildOFACInput method")
     return ofacDTOList
+  }
+
+  /**
+   * This method is to get Line specific Contacts for Ofac
+   */
+  @Param("insuredList", "List of insured to be checked against OFAC")
+  @Param("policyPeriod", "PolicyPeriod")
+  @Returns("List of Contact instance")
+  public function getLineSpecificContacts(insuredList: List<Contact>, policyPeriod: PolicyPeriod): List<Contact>
+  {
+    _logger.info(CLASS_NAME + ": Entering getLineSpecificContacts method")
+    var addlInterests = PolicyInfoUtil.retrieveAdditionalInterests(policyPeriod)
+    if (!policyPeriod.CPLineExists && !policyPeriod.BP7LineExists && addlInterests!=null){
+      insuredList = insuredList.where(\elt -> {
+        var isThirdParty = addlInterests.where(\addlInt -> addlInt.AdditionalInterestType == typekey.AdditionalInterestType.get(TC_ThirdPartyDesignee))*.PolicyAddlInterest*.ContactDenorm.contains(elt)
+        return not isThirdParty
+      })
+    }
+    _logger.info(CLASS_NAME + ":Exiting getLineSpecificContacts method")
+    return insuredList
   }
 }

@@ -21,8 +21,6 @@ uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
  * Created with IntelliJ IDEA.
  * User: ssok
  * Date: 12/9/16
- * Time: 11:00 AM
- * To change this template use File | Settings | File Templates.
  */
 class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   final static var _logger = UnaLoggerCategory.UNA_RATING
@@ -32,6 +30,8 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private var _lineRateRoutineParameterMap : Map<CalcRoutineParamName, Object>
   private var _lineRatingInfo : HONCLineRatingInfo
   private var _dwellingRatingInfo : HONCDwellingRatingInfo
+  private var _isLPP : boolean
+
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -41,7 +41,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _hoRatingInfo = new HORatingInfo()
     _lineRatingInfo = new HONCLineRatingInfo(line)
     _dwellingRatingInfo = new HONCDwellingRatingInfo(line.Dwelling)
-
+    _isLPP = (line.HOPolicyType == HOPolicyType_HOE.TC_LPP_EXT)
   }
 
   /**
@@ -51,6 +51,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     var rater = new HOBasePremiumRaterNC(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
     addCosts(costs)
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
   }
 
   /**
@@ -60,7 +61,6 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _lineRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
     _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
     switch (typeof lineCov) {
-
       case HOLI_PersonalInjuryAggregate_NC_HOE_Ext:
       case HOLI_PersonalInjury_NC_HOE_Ext:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
@@ -74,9 +74,14 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HOSL_OutboardMotorsWatercraft_HOE_Ext:
           rateWatercraftLiabilityCoverage(lineCov, dateRange)
           break
+      case DPLI_Personal_Liability_HOE:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_LIABILITY_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
+      case DPLI_Med_Pay_HOE:
+          updateLineCostData(lineCov, dateRange, HORateRoutineNames.MEDICAL_PAYMENTS_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          break
 /*      default:
           throw new Exception("Cov rate routine note found")*/
-
     }
   }
 
@@ -85,58 +90,73 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
  * Rate the Dwelling level coverages
  */
     override function rateDwellingCoverages(dwellingCov: DwellingCov_HOE, dateRange: DateRange) {
-    switch (typeof dwellingCov) {
-      case HODW_BusinessProperty_HOE_Ext:
-          rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
+      switch (typeof dwellingCov) {
+        case DPDW_Personal_Property_HOE:
+            ratePersonalPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
+            break
+        case HODW_FireDepartServiceCharge_HOE_Ext:
+            rateFireDepartmentServiceChargeCoverage(dwellingCov, dateRange)
+            break
+        case HODW_VacancyClause_Ext:
+            rateVacancyClauseCoverage(dwellingCov, dateRange)
+            break
+        case DPDW_OrdinanceCov_HOE:
+          if(_dwellingRatingInfo.DwellingFireOrdinanceOrLawLimit > 0.1)
+            rateDwellingFireOrdinanceOrLawCoverage(dwellingCov, dateRange)
+           break
+        case DPDW_Other_Structures_HOE:
+            rateDwellingFireOtherStructuresIncreasedLimitsCoverage(dwellingCov, dateRange)
+            break
+        case HODW_BusinessProperty_HOE_Ext:
+            rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
+            break
+        case HODW_CC_EFT_HOE_Ext:
+            rateCreditCardEFTCoverage(dwellingCov, dateRange)
+            break
+        case HODW_Other_Structures_HOE:
+            rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
+            break
+        case HODW_RefrigeratedPP_HOE_Ext:
+          rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
           break
-      case HODW_CC_EFT_HOE_Ext:
-          rateCreditCardEFTCoverage(dwellingCov, dateRange)
-          break
-      case HODW_Other_Structures_HOE:
-          rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
-          break
-      case HODW_RefrigeratedPP_HOE_Ext:
-        rateRefrigeratedPersonalPropertyCoverage(dwellingCov, dateRange)
-        break
-      case HODW_SpecialComp_HOE_Ext:
-          rateSpecialComputerCoverage(dwellingCov, dateRange)
-          break
-      case HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext:
-          rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
-          break
-//      case HODW_ResidenceHeldTrust_NC_HOE_Ext:                              //TODO refactor code because this is taken care of in policy info
-        //          rateResidenceHeldInTrust(dwellingCov, dateRange)
-//          break
-      case HODW_EquipBreakdown_HOE_Ext:
-          rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
-          break
-      case HODW_SpecificOtherStructure_HOE_Ext:
-          rateOtherStructuresRentedToOthersCoverage(dwellingCov, dateRange)
-          break
-      case HODW_PersonalPropertyOffResidence_HOE:
-          ratePersonalPropertyOffResidenceCoverage(dwellingCov, dateRange)
-          break
-      case HODW_SpecialLimitsPP_HOE_Ext:
-          rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
-          break
-      case HODW_LossAssessmentCov_HOE_Ext:
-            rateLossAssessmentCoverage(dwellingCov, dateRange)
-          break
-      case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
-        //  rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
-          break
-      case HODW_PermittedIncOcp_HOE_Ext:
-          ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
-          break
-      case HODW_Earthquake_HOE:
-          rateEarthquakeCoverage(dwellingCov, dateRange)
-          break
-
-
-
-
-    }
-
+        case HODW_SpecialComp_HOE_Ext:
+            rateSpecialComputerCoverage(dwellingCov, dateRange)
+            break
+        case HODW_LimWaterBckSumpDiscOverFlow_NC_HOE_Ext:
+            rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
+            break
+  //      case HODW_ResidenceHeldTrust_NC_HOE_Ext:                              //TODO refactor code because this is taken care of in policy info
+          //          rateResidenceHeldInTrust(dwellingCov, dateRange)
+  //          break
+        case HODW_EquipBreakdown_HOE_Ext:
+            rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
+            break
+        case HODW_SpecificOtherStructure_HOE_Ext:
+            rateOtherStructuresRentedToOthersCoverage(dwellingCov, dateRange)
+            break
+        case HODW_PersonalPropertyOffResidence_HOE:
+            ratePersonalPropertyOffResidenceCoverage(dwellingCov, dateRange)
+            break
+        case HODW_SpecialLimitsPP_HOE_Ext:
+            rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
+            break
+        case HODW_LossAssessmentCov_HOE_Ext:
+              rateLossAssessmentCoverage(dwellingCov, dateRange)
+            break
+        case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
+          //  rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
+            break
+        case HODW_PermittedIncOcp_HOE_Ext:
+            ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
+            break
+        case HODW_Earthquake_HOE:
+            if(!_isLPP)
+              rateEarthquakeCoverage(dwellingCov, dateRange)
+            break
+        case HODW_LossAssEQEndorsement_HOE_Ext:
+            rateLossAssessmentEarthquakeCoverage(dwellingCov, dateRange)
+            break
+       }
     }
 
 /*  *//**
@@ -165,6 +185,20 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Earthquake Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the loss assessment earthquake coverage
+  */
+  function rateLossAssessmentEarthquakeCoverage(dwellingCov : HODW_LossAssEQEndorsement_HOE_Ext, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateLossAssessmentEarthquakeCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_EQ_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Loss Assessment Earthquake Coverage Rated Successfully", this.IntrinsicType)
   }
 
   function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){
@@ -380,8 +414,76 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Business Property Increased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
+  /**
+   * Rate the Personal property - Increased Limits
+   */
+  function ratePersonalPropertyIncreasedLimitsCoverage(dwellingCov: DPDW_Personal_Property_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalPropertyIncreasedLimitsCoverage to rate Personal Property Increased Limits Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.PERSONAL_PROPERTY_INCREASED_LIMIT_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Personal Property Increased Limits Coverage Rated Successfully", this.IntrinsicType)
+  }
 
+  /**
+   * Rate the Other Structures - Increased Limits
+   */
+  function rateDwellingFireOtherStructuresIncreasedLimitsCoverage(dwellingCov: DPDW_Other_Structures_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedLimitsCoverage to rate Other Structures Increased Limits Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.DWELLING_FIRE_OTHER_STRUCTURES_INCREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Other Structures Increased Limits Coverage Rated Successfully", this.IntrinsicType)
+  }
 
+  /**
+   * Rate the Fire Department Service Charge Coverage
+   */
+  function rateFireDepartmentServiceChargeCoverage(dwellingCov: HODW_FireDepartServiceCharge_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateFireDepartmentServiceChargeCoverage to rate Fire Department Service Charge Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.FIRE_DEPARTMENT_SERVICE_CHARGE_COV_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Fire Department Service Charge Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Vacancy Clause Coverage coverage
+   */
+  function rateVacancyClauseCoverage(dwellingCov: HODW_VacancyClause_Ext, dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateVacancyClauseCoverage to rate Vacancy Clause Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.VACANY_CLAUSE_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Vacancy Clause Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate the Dwelling Fire Ordinance Or Law Coverage
+   */
+  function rateDwellingFireOrdinanceOrLawCoverage(dwellingCov: DPDW_OrdinanceCov_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateDwellingFireOrdinanceOrLawCoverage to rate Dwelling Fire Ordinance Or Law Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.ORDINANCE_OR_LAW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Dwelling Fire Ordinance Or Law Coverage Rated Successfully", this.IntrinsicType)
+  }
 
   /**
    *  Returns the parameter set for the Dwelling coverages

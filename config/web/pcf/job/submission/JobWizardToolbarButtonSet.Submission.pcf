@@ -51,6 +51,9 @@
     <Variable
       initialValue="submissionProcess.canIssue().Okay"
       name="canIssue"/>
+    <Variable
+      initialValue="new una.pageprocess.submission.JobWizardToolBarPCFController()"
+      name="pageprocess"/>
     <ToolbarButton
       action="UWActivityPopup.push(policyPeriod, ActivityPattern.finder.getActivityPatternByCode(&quot;uw_review_approved&quot;), &quot;UWApproval&quot;)"
       confirmMessage="displaykey.Job.Operation.ReleaseLockInvalidatesQuoteWarning"
@@ -121,7 +124,7 @@
       shortcut="B"
       visible="(submissionProcess.canBind().Okay or submissionProcess.canIssue().Okay) and una.pageprocess.SubmissionWizardHelper.canAllowSubmission(policyPeriod.Policy.Account)">
       <MenuItem
-        action="jobWizardHelper.invalidateIterators(); jobWizardHelper.requestIssueJob(policyPeriod, false, true);"
+        action="pageprocess.checkOfac(policyPeriod,jobWizardHelper);jobWizardHelper.invalidateIterators(); jobWizardHelper.requestIssueJob(policyPeriod, false, true);"
         confirmMessage="getMsgBind()"
         id="BindOnly"
         label="displaykey.Job.Operation.BindOnly"

@@ -464,6 +464,54 @@ class PropertyInformationCompletePluginImpl {
   }
 
   /**
+   * This function is to call GetPropertyInformation Service which is for CPP Product
+   * Below method is a Post On Change when user enters value in YearBuilt field
+   */
+  public function getCPPInformation(cpLocation: CPLocation) : TunaAppResponse {
+
+    _address = new AddressDTO()
+    logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
+    _address.AddressLine1 = cpLocation.PolicyLocation.AddressLine1
+    _address.City = cpLocation.PolicyLocation.City
+    _address.State = cpLocation.PolicyLocation.State.Code
+    _address.PostalCode = cpLocation.PolicyLocation.PostalCode
+    //_address.YearBuilt = cpLocation.BuYearBuilt
+    try {
+      tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
+      cpLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation" ,""))
+
+      logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
+    } catch (exp: Exception) {
+      logger.error("TunaGateway :  getCPPInformation  " + " : StackTrace = ", exp)
+    }
+    return tunaResponse
+  }
+
+  /**
+   * This function is to call GetPropertyInformation Service which is for CPP Product
+   * Below method is a Post On Change when user enters value in YearBuilt field
+   */
+  public function getCPPInformation(cpLocation: PolicyLocation) : TunaAppResponse {
+
+    _address = new AddressDTO()
+    logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
+    _address.AddressLine1 = cpLocation.AddressLine1
+    _address.City = cpLocation.City
+    _address.State = cpLocation.State.Code
+    _address.PostalCode = cpLocation.PostalCode
+    //_address.YearBuilt = cpBuilding.Building.YearBuilt
+    try {
+      tunaResponse = TUNAGateway.fetchPropertyInformation(_address)
+      cpLocation.Branch.createCustomHistoryEvent(CustomHistoryType.TC_TUNAINITIATED, \ -> displaykey.Web.SubmissionWizard.Tuna.EventMsg("fetchPropertyInformation" ,""))
+
+      logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
+    } catch (exp: Exception) {
+      logger.error("TunaGateway :  getCPPInformation  " + " : StackTrace = ", exp)
+    }
+    return tunaResponse
+  }
+
+  /**
    * Function to retrieve right year built value
    */
 

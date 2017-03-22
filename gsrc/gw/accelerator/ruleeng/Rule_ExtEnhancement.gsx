@@ -36,9 +36,14 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
   @Returns("The Gosu package that contains rules for this rule's target node")
   property get RulePackage() : String {
     if (this.GraphNode != null) {
+
+     // print(" productabbrevforline is " + this.ProductAbbrevForLine + ":" + this.PolicyLine)
+
+      var product:String = this.ProductAbbrevForLine==null && this.PolicyLine=="commercialpropertyline"?"cp":this.ProductAbbrevForLine
+
       var pkgName =
           RulesEngineInterface.RULE_PACKAGE_BASE
-              + "." + this.ProductAbbrevForLine
+              + "." + product//this.ProductAbbrevForLine
               + "." + this.GraphNode.NodeName
       return pkgName.toLowerCase()
     }
@@ -55,18 +60,32 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
     // PolicyLinePattern typekey
     for (node in nodes) {
       //var line = PolicyLinePattern.getByCode(node.NodeName)
+      print(" node is " + node.NodeName)
+
       var line = PolicyLinePatternLookup.getByCode(node.NodeName)
       if (line != null) {
         returnVar = line.PolicyLineSubtype
         break
       }
+      if((line==null) && node.NodeName=="CPLine")
+        {
+          returnVar = node.NodeName
+          break
+        }
     }
+
+    print("get PolicyLine returning " + returnVar)
     return returnVar
   }
 
   @Returns("The abbreviation for the Product that this rule applies to, or \"all\" if it applies to all")
   property get ProductAbbrevForLine() : String {
     var policyLine = this.PolicyLine
+    print("policyline is " + policyLine)
+
+    print("policyline " + displaykey.Accelerator.RulesFramework.PolicyLineAbbrev.All)
+
+//    print("linecode "+ typekey.ProductLookup_Ext.get(policyLine.Code.remove("Line")).Code)
     return (policyLine == null)
         ? displaykey.Accelerator.RulesFramework.PolicyLineAbbrev.All
         : typekey.ProductLookup_Ext.get(policyLine.Code.remove("Line")).Code
@@ -249,6 +268,7 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
   function updateJurisdictions(jurisdictions : Collection<JurisdictionSelection>) {
     if (not this.AllJurisdictions) {
       if (not jurisdictions.hasMatch(\ j -> j.Selected)) {
+        print("3#########")
         throw new DisplayableException(
             displaykey.Accelerator.RulesFramework.Rule_Ext.JurisdictionRequired)
       }
@@ -274,6 +294,7 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
   function updatePolicyTypes(policyTypes : Collection<PolicyTypeSelection>) {
     if (not this.AllPolicyTypes) {
       if (not policyTypes.hasMatch(\ j -> j.Selected)) {
+        print("2@@@@@@@")
         throw new DisplayableException(
             displaykey.Accelerator.RulesFramework.Rule_Ext.PolicyTypeRequired)
       }

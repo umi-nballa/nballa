@@ -15,7 +15,7 @@ class JobWizardToolBarPCFController {
       var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
       ofacInterface.validateOFACEntity(period.AllContacts,period)
 
-      jobWizardHelper.requestQuote(period, null)
+      jobWizardHelper.requestQuote(period, jobWizardHelper.getQuoteStep(period))
       jobWizardHelper.validateAndSaveDraft()
 
    }

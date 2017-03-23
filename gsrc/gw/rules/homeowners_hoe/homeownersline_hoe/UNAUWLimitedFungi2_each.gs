@@ -10,13 +10,13 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAUWLimitedFungi_each implements IRuleCondition<HomeownersLine_HOE>{
+class UNAUWLimitedFungi2_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
 
 
     if( homeowner.Dwelling.HODW_FungiCov_HOEExists && homeowner.Dwelling.HODW_FungiCov_HOE.HasHODW_FungiSectionILimit_HOETerm
-    && homeowner.Dwelling.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm.OptionValue.Value.doubleValue()>homeowner.Dwelling.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm.RuntimeDefault)   //// C H E C K
+    && homeowner.Dwelling.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm.RuntimeDefault.doubleValue()>10000)   //// C H E C K
       {
             return RuleEvaluationResult.execute()
 

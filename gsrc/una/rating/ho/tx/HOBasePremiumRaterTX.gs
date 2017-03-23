@@ -40,7 +40,7 @@ class HOBasePremiumRaterTX {
     _executor = executor
     _hoRatingInfo = hoRatingInfo
     _line = line
-    _isDPPolicyType = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.Dwelling?.HOPolicyType)
+    _isDPPolicyType = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.HOPolicyType)
   }
 
   /**

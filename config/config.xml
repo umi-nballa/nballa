@@ -87,8 +87,8 @@
   -->
 
   <!-- Is clustering enabled? -->
-    <param env="pc_qat" name="ClusteringEnabled" value="true"/>
-
+  <param env="pc_qat" name="ClusteringEnabled" value="true"/>
+  <param env="pc_perf" name="ClusteringEnabled" value="true"/>
   <!--
     Coordinator node sends a heartbeat each interval. Other nodes reset JGroups channel if they do not receive the heartbeat from their coordinator
     for several intervals. This helps to solve the potential problem of nodes which could not join the cluster after a major network failure.
@@ -103,8 +103,8 @@
     to live parameter. Valid IPv4 address is in the range between 224.0.0.0 and 239.255.255.255.
     Valid IPv6 address starts with "ff" (i.e. first eight bits must be "1111 1111")
   -->
-    <param env="pc_qat" name="ClusterMulticastAddress" value="228.9.9.9"/>
-
+  <param env="pc_qat" name="ClusterMulticastAddress" value="228.9.9.9"/>
+  <param env="pc_perf" name="ClusterMulticastAddress" value="228.9.9.9"/>
   <!--   Option to not use leap year days in eff dated calculations -->
   <param name="IgnoreLeapDayForEffDatedCalc" value="true"/>
 
@@ -320,7 +320,7 @@
   <param name="ClaimSystemURL" value="http://assembly:8080/cc" env="pc_asm"/>
   <param name="ClaimSystemURL" value="http://uimasmconver01:8080/cc" env="pc_asm_cnv"/>
   <param name="ClaimSystemURL" value="http://GWQATICCB01/cc" env="pc_qat"/>
-
+  <param name="ClaimSystemURL" value="http://UNAGWSRV10PE/cc" env="pc_perf"/>
 
   <!--
     URL to use in exit points which view items in the Billing system. If integrating with BillingCenter this parameter
@@ -337,6 +337,7 @@
   <param name="BillingSystemURL" value="http://assembly:8580/bc" env="pc_asm"/>
   <param name="BillingSystemURL" value="http://uimasmconver01:8580/bc" env="pc_asm_cnv"/>
   <param name="BillingSystemURL" value="http://GWQATIBCB01/bc" env="pc_qat"/>
+  <param name="BillingSystemURL" value="http://UNAGWSRV14PE/bc" env="pc_perf"/>
 
   <!--
     URL to use in exit points which view items in the Payment system. If integrating with another billing system the
@@ -352,6 +353,7 @@
   <param name="PaymentSystemURL" value="http://assembly:8580/bc" env="pc_asm"/>
   <param name="PaymentSystemURL" value="http://uimasmconver01:8580/bc" env="pc_asm_cnv"/>
   <param name="PaymentSystemURL" value="http://GWQATIBCB01/bc" env="pc_qat"/>
+  <param name="BillingSystemURL" value="http://UNAGWSRV14PE/bc" env="pc_perf"/>
 
   <!--
     In Contact File search, if the number of billing accounts to retrieve exceeds the BillingNumAccountWarningThreshold

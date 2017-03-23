@@ -29,19 +29,21 @@ class AddressValidationUtil {
         logger.info(addressOwner.pperiod?.Policy.Product.Description)
 
       }
-     else if (addressOwner.AutofillEnabled && null != addressOwner.Address) {
+     else if ((addressOwner.AutofillEnabled && null != addressOwner.Address) || (addressOwner typeis UnaPolicyLocationAddressOwner && (addressOwner.pperiod?.Policy.Product.Description == "Homeowners"))) {
         try {
           if(!addressOwner.Address.addressOverride_Ext){
-            gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false);
-            if (null != addressOwner.Address.AddressLine1 && null != addressOwner.Address.City && null != addressOwner.Address.State && null != addressOwner.Address.PostalCode)
+            gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false)
+            if (null != addressOwner.Address.AddressLine1 && null != addressOwner.Address.City && null != addressOwner.Address.State && null != addressOwner.Address.PostalCode){
               addressOwner.Address.addressScrub_Ext = true
+            }
+
           }
         } catch (exp: Exception) {
           addressOwner.Address.addressScrub_Ext = false
           throw exp
         }
       } else {
-        gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false);
+        gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, triggerField, false)
       }
       logger.debug(" Leaving  " + CLASS_NAME + " :: " + " autofillAddress" + "For ScrubStatus ")
     }

@@ -131,6 +131,8 @@ class RateFactorUtil {
         bcegGrade = "99"
       else if(bcegGrade == "NotEligible")
         bcegGrade = "98"
+      if(territoryCode.length > 3)
+        territoryCode.substring(0, 3)
       _bcegFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_bceg", {territoryCode, bcegGrade})
       if(_bcegFactor == null)
         _bcegFactor = 1.0

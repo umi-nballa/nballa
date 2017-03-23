@@ -38,8 +38,8 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _allPerilDeductible = line.Dwelling?.AllPerilsOrAllOtherPerilsCovTerm?.Value
     _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
     _policyType = line.HOPolicyType
-    _protectionClassCode = line.Dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? line.Dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : line.Dwelling?.HOLocation?.DwellingProtectionClassCode
-    _territoryCode = line.Dwelling?.HOLocation?.OverrideTerritoryCode_Ext?  line.Dwelling?.HOLocation?.TerritoryCodeOverridden_Ext : line.Dwelling?.HOLocation?.TerritoryCodeTunaReturned_Ext
+    _protectionClassCode = line.Dwelling?.ProtectionClassCodeOrOverride
+    _territoryCode = line.Dwelling?.TerritoryCodeOrOverride
     if((_territoryCode != null or _territoryCode != "") and _territoryCode?.Numeric){
       _territoryCodeInt = _territoryCode?.toInt()
     }

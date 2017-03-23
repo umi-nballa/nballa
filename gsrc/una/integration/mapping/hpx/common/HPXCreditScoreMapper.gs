@@ -36,8 +36,13 @@ class HPXCreditScoreMapper {
     creditScoreInfo.InquiryOptions = ""
     creditScoreInfo.AKA = ""
     creditScoreInfo.SpecialBillingID = ""
-    creditScoreInfo.OrderDate = report.DateRequestOrdered != null ? new XmlDate(sourceFormat.parse(report.DateRequestOrdered)) : new XmlDate()
-    creditScoreInfo.CompleteDate = report.DateRequestCompleted != null ? new XmlDate(sourceFormat.parse(report.DateRequestCompleted)) : new XmlDate()
+    if(report.DateRequestOrdered != null) {
+      creditScoreInfo.OrderDate = new XmlDate(sourceFormat.parse(report.DateRequestOrdered))
+    }
+    if(report.DateRequestCompleted != null)  {
+      creditScoreInfo.CompleteDate = new XmlDate(sourceFormat.parse(report.DateRequestCompleted))
+    }
+
     var creditMsgs = new List<String>()
     for(message in report.CreditStatusReasons) {
       creditMsgs.add(message.CreditStatusReasonCode + " - " + message.CreditStatusReasonDesc)
@@ -49,7 +54,10 @@ class HPXCreditScoreMapper {
     creditSearchSubjectType.LastName = report.SearchLastName != null ? report.SearchLastName : ""
     creditSearchSubjectType.MiddleName = report.SearchMiddleName != null ? report.SearchMiddleName : ""
     creditSearchSubjectType.SSN = report.SearchSSN != null ? report.SearchSSN : ""
-    creditSearchSubjectType.BirthDate = report.SearchDateOfBirth != null ? new XmlDate(report.SearchDateOfBirth) : new XmlDate()
+    if(report.SearchDateOfBirth != null) {
+      creditSearchSubjectType.BirthDate = new XmlDate(report.SearchDateOfBirth)
+    }
+
     var clueSearchSubjectGenderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.GenderType()
     clueSearchSubjectGenderType.GenderID = report.SearchGender != null ? report.SearchGender : ""
     clueSearchSubjectGenderType.GenderCode = report.SearchGender != null ? report.SearchGender : ""
@@ -68,7 +76,9 @@ class HPXCreditScoreMapper {
     clueResponseSubjectType.LastName = report.LastName != null ? report.LastName : ""
     clueResponseSubjectType.MiddleName = report.MiddleName != null ? report.MiddleName : ""
     clueResponseSubjectType.SSN = report.SSN != null ? report.SSN : ""
-    clueResponseSubjectType.BirthDate = report.DateOfBirth != null ? new XmlDate(report.DateOfBirth) : new XmlDate()
+    if(report.DateOfBirth != null) {
+      clueResponseSubjectType.BirthDate = new XmlDate(report.DateOfBirth)
+    }
     var clueResponseSubjectGenderType = new wsi.schema.una.hpx.hpx_application_request.types.complex.GenderType()
     clueResponseSubjectGenderType.GenderID = report.Gender != null ? report.Gender : ""
     clueResponseSubjectGenderType.GenderCode = report.Gender != null ? report.Gender : ""

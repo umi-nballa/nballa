@@ -178,6 +178,7 @@ class CluePropertyGateway implements CluePropertyInterface {
     //get claim details
     priorLoss.Reference = referenceNumber
     priorLoss.ClaimDate = claim.ClaimDate as Date
+    priorLoss.ReportedDate=claim.ClaimDate as Date
     priorLoss.ClaimAge = claim.ClaimAge.Years as Integer
     priorLoss.ClaimNum = claim.Number
     priorLoss.ClaimType = typecodeMapper.getInternalCodeByAlias(ClaimType_Ext.Type.RelativeName, "clue", cHistoryType.toString())

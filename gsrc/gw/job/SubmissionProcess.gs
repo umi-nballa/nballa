@@ -11,6 +11,7 @@ uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
 uses una.pageprocess.submission.JobWizardToolBarPCFController
+uses una.utils.ActivityUtil
 
 /**
  * Encapsulates the actions taken within a Submission job.
@@ -173,6 +174,7 @@ class SubmissionProcess extends NewTermProcess {
     if(!_branch.ofacdetails.isOFACOrdered){
       var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
       ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
+      ActivityUtil.createOfacActivity(_branch)
       _branch.ofacdetails.isOFACOrdered = true
 
     }

@@ -17,6 +17,7 @@ uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.util.propertyinspections.UnaErrorCode
 uses una.logging.UnaLoggerCategory
 uses una.integration.mapping.document.DocumentActivity
+uses gw.api.system.PLConfigParameters
 
 /**
 * The InboundFileProcessingPlugin implementation to process Inspection Reports
@@ -84,7 +85,7 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
         }
         completeActivity(policyPeriod)
         bundle.commit()
-      }, SUPER_USER)
+      }, PLConfigParameters.UnrestrictedUserName.Value)
     } catch(ex : Exception){
       var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = fileName.substring(0,14)}
       ExceptionUtil.throwException(UnaErrorCode.DOCUMENT_UPLOAD_FAILURE, {fieldError},ex)

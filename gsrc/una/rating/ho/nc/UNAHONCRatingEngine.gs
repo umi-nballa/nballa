@@ -159,6 +159,33 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
        }
     }
 
+/**
+ * Function which rates the discounts and surcharges
+ */
+    override function rateHOLineCosts(dateRange: DateRange) {
+      if(_isLPP){
+        if(PolicyLine.Dwelling?.HeatSrcWoodBurningStove)
+          rateWoodBurningStove(dateRange)
+      }
+    }
+
+  /**
+   *  Function to rate the Wood Burning Stove Premium
+   */
+  function rateWoodBurningStove(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateWoodBurningStove", this.IntrinsicType)
+    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine}
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WOOD_BURNING_STOVE_RATE_ROUTINE, HOCostType_Ext.TC_WOODBURNINGSTOVE,
+                                      RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Wood Burning Stove Premium Rated Successfully", this.IntrinsicType)
+  }
+
 /*  *//**
    * Rate the additional residence rented to others coverage
    *//*

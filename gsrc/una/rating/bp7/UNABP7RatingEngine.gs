@@ -156,6 +156,7 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     var classificationRatingInfo = new BP7ClassificationRatingInfo(classification)
     BP7RatingInfo.NetAdjustmentFactor = RateFactorUtil.setNetAdjustmentFactor(PolicyLine, MinimumRatingLevel, classification.Building)
     BP7RatingInfo.PropertyContentsAdjustmentFactor = RateFactorUtil.setPropertyContentsAdjustmentFactor(PolicyLine, MinimumRatingLevel, classification)
+    BP7RatingInfo.ContentsDeductibleFactor = RateFactorUtil.ContentDeductibleFactor
     var step = new BP7ClassificationStep(PolicyLine, _executor, NumDaysInCoverageRatedTerm, BP7RatingInfo, classificationRatingInfo)
     if(classification.BP7ClassificationBusinessPersonalPropertyExists){
       var businessPersonalPropertyRatingInfo = new BP7BusinessPersonalPropertyRatingInfo(classification?.BP7ClassificationBusinessPersonalProperty)

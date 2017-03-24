@@ -3,10 +3,8 @@ package una.rating.ho.common
 uses gw.rating.AbstractRatingEngine
 uses java.lang.Iterable
 uses gw.rating.CostData
-uses gw.rating.CostData
 uses gw.lob.ho.rating.HomeownersCovCostData_HOE
 uses gw.lob.ho.rating.DwellingCovCostData_HOE
-uses java.util.Map
 uses java.util.Map
 uses una.logging.UnaLoggerCategory
 uses gw.lob.common.util.DateRange
@@ -178,7 +176,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     var totalPremium : BigDecimal = 0.0
     if(BaseState == Jurisdiction.TC_FL){
       for(costData in CostDatas){
-        if(costData typeis DwellingCovCostData_HOE){
+        if(costData typeis DwellingCovCostData_HOE and !(costData typeis ScheduleCovCostData_HOE)){
           var cost = costData.getExistingCost(PolicyLine)
           if(cost.Coverage.PatternCode == "HODW_FloodCoverage_HOE_Ext")
             continue

@@ -10,6 +10,8 @@ uses java.util.Date
 uses gw.api.web.util.TransactionUtil
 uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
+uses una.pageprocess.submission.JobWizardToolBarPCFController
+uses una.utils.ActivityUtil
 
 /**
  * Encapsulates the actions taken within a Submission job.
@@ -19,6 +21,8 @@ uses gw.api.system.PCLoggerCategory
  */
 @Export
 class SubmissionProcess extends NewTermProcess {
+
+  var jobWizardToolBarPCFController = new JobWizardToolBarPCFController()
 
   construct(period : PolicyPeriod) {
     super(period, new SubmissionPermissions(period.Job))
@@ -166,6 +170,14 @@ class SubmissionProcess extends NewTermProcess {
   override function bind() {
     PCProfilerTag.BIND_CHECK_CAN_BIND.execute(\ -> canBind().assertOkay())
     JobProcessLogger.logInfo("Attempting to bind branch: " + _branch)
+
+    if(!_branch.ofacdetails.isOFACOrdered){
+      var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
+      ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
+      ActivityUtil.createOfacActivity(_branch)
+      _branch.ofacdetails.isOFACOrdered = true
+
+    }
 
     // Validate. If anything fails validation, throw an exception
     var alsoTryingToIssue = Job.BindOption == TC_BINDANDISSUE

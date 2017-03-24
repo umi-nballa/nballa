@@ -5,6 +5,7 @@ uses java.util.Set
 uses gw.forms.FormInferenceContext
 uses gw.lob.common.util.FormPatternConstants
 uses java.math.BigDecimal
+uses gw.api.database.Query
 
 /**
  * Created with IntelliJ IDEA.
@@ -272,10 +273,74 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         case "UICOL1005" :
             formAttachFlag= ordianceLaw(context,availableStates,formCode)
             break
+        case "UNAQuote0117" :
+            formAttachFlag = printQuoteForm(context,availableStates,formCode)
+            break
+        case "HO04101000" :
+            formAttachFlag = additionalInterestForm(context,availableStates,formCode)
+            break
+        case "DECLINE0117" :
+            formAttachFlag = DeclineLetterForm(context,availableStates,formCode)
+            break
+        case "HO04481000" :
+            formAttachFlag = OtherStructuresForm(context,availableStates,formCode)
+            break
+        case "HO04651000" :
+            formAttachFlag = SPLimitForm(context,availableStates,formCode)
+            break
+
         default : return formAttachFlag
       }
     }
     return formAttachFlag
+  }
+     public  function SPLimitForm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode :String ) : boolean {
+      //HODW_ScheduledProperty_HOE
+       if(context.Period.HomeownersLine_HOE?.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_MoneyLimit_HOETerm?.LimitDifference > 0 ||
+           context.Period.HomeownersLine_HOE?.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_JewelryWatchesFursLimit_HOETerm?.LimitDifference > 0 ||
+           context.Period.HomeownersLine_HOE?.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_SilverwareGoldwareLimit_HOETerm?.LimitDifference > 0 ||
+           context.Period.HomeownersLine_HOE?.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_FirearmsLimit_HOETerm?.LimitDifference > 0 ||
+           context.Period.HomeownersLine_HOE?.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_ElectronicApparatusLimit_HOETerm?.LimitDifference > 0 ||
+           context.Period.HomeownersLine_HOE?.Dwelling?.HODW_SpecialLimitsPP_HOE_Ext?.HODW_SecurityLimits_HOETerm?.LimitDifference > 0 )
+         return true
+
+       return false
+     }
+
+   public  function OtherStructuresForm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode :String ) : boolean {
+     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
+
+       if(dwelling != null and dwelling.HODW_OtherStructuresOnPremise_HOEExists and
+           (dwelling.HODW_OtherStructuresOnPremise_HOE?.TotalCovLimit >
+               (1.1 * dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value))){
+         return true
+
+     }
+
+     return false
+   }
+   public  function DeclineLetterForm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode :String ) : boolean {
+ /*    var jobletter = Query.make(JobLetter).compare("JobID", Equals ,context.Period.Job.ID )
+     var letters =  Query.make(Letter).subselect("ID", CompareIn, jobletter, "LetterID").select()
+     if(letters != null && letters.hasMatch( \ elt1 -> elt1.RelatedDocumentType == typekey.DocumentType.TC_DECLINE_LETTER))
+              return true      */
+     return false
+   }
+
+   public  function printQuoteForm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode :String ) : boolean {
+       return !context.Period.Job.SupressPrint
+   }
+  public  function additionalInterestForm(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode :String ) : boolean {
+    if(context.Period.BaseState.Code != typekey.State.TC_TX && context.Period.HomeownersLine_HOEExists
+        && (context.Period.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
+        context.Period.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
+        context.Period.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) ){
+         if (!context.Period.HomeownersLine_HOE.AdditionalInsureds.
+             where( \ elt1 -> elt1.PolicyAdditionalInsuredDetails.
+                 hasMatch(\ elt2 -> elt2.AdditionalInsuredType == typekey.AdditionalInsuredType.TC_RESIDENCE_PREMISES)).IsEmpty)
+          return true
+    }
+    return false
   }
 
 
@@ -528,9 +593,8 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
 
   public function personalPropertyOtherResidenes(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
     var dwelling = context.Period.HomeownersLine_HOE.Dwelling
-    var hoeLine = context.Period.HomeownersLine_HOE
     if(formCode.equals(FormPatternConstants.HO_PERSONAL_PROPERTY_OTHER_RESIDENCES_FORM)){
-      if(hoeLine != null and dwelling != null and dwelling.HODW_PersonalPropertyOffResidence_HOEExists and
+      if(dwelling != null and dwelling.HODW_PersonalPropertyOffResidence_HOEExists and
           dwelling.HODW_PersonalPropertyOffResidence_HOE?.HasHOLI_PPOtherResidence_Limit_HOETerm and
           dwelling.HODW_Dwelling_Cov_HOEExists and dwelling.HODW_Dwelling_Cov_HOE?.HasHODW_Dwelling_Limit_HOETerm and
           dwelling.HODW_PersonalPropertyOffResidence_HOE?.HOLI_PPOtherResidence_Limit_HOETerm.Value > (1.1 * dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm.Value)){
@@ -651,12 +715,11 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
   }
 
   public function CTR(context: FormInferenceContext, availableStates: Set<Jurisdiction>, formCode : String ) : boolean {
-    var dwelling = context.Period.HomeownersLine_HOE.Dwelling
-    var hoeLine = context.Period.HomeownersLine_HOE
-    if(formCode.equals(FormPatternConstants.HO_CONSENT_TO_RATE_HO3_FORM) or
-        formCode.equals(FormPatternConstants.HO_CONSENT_TO_RATE_HO4_FORM) or
-        formCode.equals(FormPatternConstants.HO_CONSENT_TO_RATE_HO6_FORM)){
-      if(hoeLine != null and dwelling != null and context.Period.ConsentToRateReceived_Ext){
+     if((context.Period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
+        context.Period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
+        context.Period.HomeownersLine_HOE?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6 )
+        && context.Period.BaseState == typekey.State.TC_NC.Code ){
+      if(!context.Period.ConsentToRateReceived_Ext && context.Period.ConsentToRate_Ext){
         return true
       }
     }

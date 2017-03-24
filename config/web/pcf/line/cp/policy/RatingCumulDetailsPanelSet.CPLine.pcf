@@ -126,16 +126,15 @@
                     formatType="currency"
                     id="totprem"
                     value="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
-                  <MonetaryAmountCell
-                    footerSumValue="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
-                    formatType="currency"
-                    id="Ctr"
-                    value="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
+                  <Cell
+                    id="ctr"
+                    value="building.Branch.Factor_Ext"
+                    wrap="true"/>
                   <MonetaryAmountCell
                     footerSumValue="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
                     formatType="currency"
                     id="PremAftCTR"
-                    value="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
+                    value="building?.PolicyPeriod?.Factor_Ext!=null?costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency).multiply(building.PolicyPeriod.Factor_Ext):costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
                 </Row>
               </RowIterator>
             </RowIterator>
@@ -219,17 +218,16 @@
                   footerSumValue="cost.ActualAmountBilling"
                   formatType="currency"
                   id="diffprem2"
-                  value="cost.ActualAmountBilling"/>
+                  value="cost.BasedOn!=null?cost.ActualAmountBilling.subtract(cost.BasedOn.ActualAmountBilling):cost.ActualAmountBilling"
+                  valueVisible="!(cost.Branch.Job typeis Submission)"/>
                 <MonetaryAmountCell
                   footerSumValue="cost.ActualAmountBilling"
                   formatType="currency"
                   id="totprem2"
                   value="cost.ActualAmountBilling"/>
-                <MonetaryAmountCell
-                  footerSumValue="cost.ActualAmountBilling"
-                  formatType="currency"
+                <Cell
                   id="ctr22"
-                  value="cost.ActualAmountBilling"/>
+                  value="cost.Branch.Factor_Ext"/>
                 <MonetaryAmountCell
                   footerSumValue="cost.ActualAmountBilling"
                   formatType="currency"

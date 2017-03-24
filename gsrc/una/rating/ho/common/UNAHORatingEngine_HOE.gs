@@ -2,7 +2,6 @@ package una.rating.ho.common
 
 uses gw.rating.AbstractRatingEngine
 uses java.lang.Iterable
-uses java.util.List
 uses gw.rating.CostData
 uses gw.rating.CostData
 uses gw.lob.ho.rating.HomeownersCovCostData_HOE

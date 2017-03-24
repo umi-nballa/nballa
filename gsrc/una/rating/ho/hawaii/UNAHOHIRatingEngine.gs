@@ -61,8 +61,8 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       var dwelling = PolicyLine.Dwelling
       _discountsOrSurchargeRatingInfo = new HOHIDiscountsOrSurchargeRatingInfo (PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
 
-      rateHigherAllPerilDeductible(dateRange)
-      rateAgeOfHomeDiscount(dateRange)
+      rateHigherAllPerilDeductible(dateRange)  // HO3
+      rateAgeOfHomeDiscount(dateRange)       // HO3
 
       if (PolicyLine.Branch.QualifiesAffinityDisc_Ext) {
         rateAffinityDiscount(dateRange)
@@ -83,18 +83,18 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         rateMultiLineDiscount(dateRange)
       }
 
-      rateMaximumDiscountAdjustment(dateRange)
+      rateMaximumDiscountAdjustment(dateRange)       //HO3
 
       //update the total base premium with the discounts and surcharges
       updateTotalBasePremium()
 
       if (dwelling?.HODW_Personal_Property_HOEExists and (!HasExecutiveCoverage)){
         if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value == tc_PersProp_ReplCost){
-          ratePersonalPropertyReplacementCost(dateRange)
+          ratePersonalPropertyReplacementCost(dateRange)       //HO3
         }
       }
 
-      rateProtectiveDeviceCredit(dateRange)
+      rateProtectiveDeviceCredit(dateRange)          //HO3
     }
 
     override function rateDwellingCoverages(dwellingCov: DwellingCov_HOE, dateRange: DateRange){
@@ -112,6 +112,9 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_EquipBreakdown_HOE_Ext:
             rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
             break
+
+        //HO3 starts here
+
         case HODW_Personal_Property_HOE:
             if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
               rateIncreasedPersonalPropertyHO(dwellingCov, dateRange)
@@ -120,6 +123,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
             break
         case HODW_LossAssessmentCov_HOE_Ext:
+            if(PolicyLine.HOPolicyType != HOPolicyType_HOE.TC_HO4)
               rateLossAssessmentCoverage(dwellingCov, dateRange)
             break
         case HODW_ScheduledProperty_HOE:
@@ -163,6 +167,13 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         /*case HODW_HurricaneCov_HOE_Ext:
             rateHurricaneCoverage(dwellingCov, dateRange)
             break*/
+
+        // HO4
+
+        case HODW_BuildingAdditions_HOE_Ext:
+            if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4)
+              rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
+            break
       }
     }
 
@@ -171,6 +182,9 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 //      case HOLI_AdditionalInsuredSchedPropertyManager:
 //          rateAdditionalInsuredPropertyManager(lineCov, dateRange)
 //          break
+
+      //HO3 starts here
+
       case HOSL_OutboardMotorsWatercraft_HOE_Ext:
           rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)
           break
@@ -442,6 +456,20 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Hurricane Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Rate the Building Additions And Alterations Increased Limits Coverage
+   */
+  function rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov: HODW_BuildingAdditions_HOE_Ext, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.BUILDING_ADDITIONS_AND_ALTERATIONS_INCREASED_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Building Additions And Alterations Increased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
   function rateMultiLineDiscount(dateRange: DateRange) {

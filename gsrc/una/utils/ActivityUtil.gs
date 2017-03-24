@@ -71,4 +71,32 @@ class ActivityUtil {
         ExceptionUtil.throwException(UnaErrorCode.GROUP_NOT_PRESENT, {fieldError})
       }
     }
+
+  // function to create ofac Activity
+  public static function createOfacActivity(period : PolicyPeriod){
+    if(period.ofaccontact!= null && period.ofaccontact?.atMostOneWhere( \ elt -> elt.OverrideHit == false)?.OverrideHit != true)
+    {
+      var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC1").atMostOne()
+      var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
+      if(user==null)
+      {
+        user = una.config.activity.OfacUtil.findUserByUsername("su")
+      }
+      //_branch.Job.createRoleActivity(typekey.UserRole.TC_CUSTOMERREP,pattern,"Ofac Check","Please check for OFAC hit",user)//,una.config.activity.OfacUtil.findUserByUsername("ofaccsr"))
+      if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC1")==null)
+      {
+        var activity =  pattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
+        activity.assign(user.RootGroup,user)
+      }
+
+      //create custom history event
+      period.createCustomHistoryEvent(CustomHistoryType.TC_OFACSUBMITTEDTOCOMPLIANCE,\->" identified on OFAC list and submitted to Compliance ")
+    } //}
+
+  }
+
+
+
+
+
   }

@@ -19,6 +19,10 @@
     <Require
       name="activity"
       type="Activity"/>
+    <Variable
+      initialValue="new util.TemplateSearchResults()"
+      name="templateInfo"
+      type="util.TemplateSearchResults"/>
     <Toolbar>
       <ToolbarButton
         action="DocumentCreationInfo.setCommitRequested(true)"
@@ -29,6 +33,6 @@
         updateVisible="!gw.api.web.document.DocumentsHelper.isDocumentAssistantEnabled()"/>
     </Toolbar>
     <PanelRef
-      def="NewTemplateDocumentDV(DocumentCreationInfo, DocumentCreationInfo.Document, account, policyPeriod, job, activity,null,null,null)"/>
+      def="NewTemplateDocumentDV(DocumentCreationInfo, DocumentCreationInfo.Document, account, policyPeriod, job, activity,null,null,null,templateInfo)"/>
   </Screen>
 </PCF>

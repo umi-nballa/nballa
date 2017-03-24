@@ -31,6 +31,9 @@
     <Require
       name="symbolTable"
       type="java.util.Map&lt;String, Object&gt;"/>
+    <Require
+      name="templateInfo"
+      type="util.TemplateSearchResults"/>
     <Variable
       initialValue="document.Language"
       name="language"
@@ -47,6 +50,9 @@
       initialValue="emailTemplate == null"
       name="noDefaultTemplate"
       type="Boolean"/>
+    <Variable
+      initialValue="new gw.api.contact.ContactEmailAutocompleteHandler(account.AccountContacts.map(\contact -&gt; contact.Contact))"
+      name="autoCompleteHandler"/>
     <InputColumn>
       <Label
         label="displaykey.Web.DocumentCreation.DocumentContents.Header"/>
@@ -61,7 +67,7 @@
         onPick="resetTemplateBasedInfo()"
         pickLocation="DocumentTemplateSearchPopup.push(policyPeriod, account)"
         required="true"
-        value="DocumentCreationInfo.DocumentTemplateDescriptor"/>
+        value="templateInfo.TemplateName"/>
       <Input
         editable="true"
         id="Language"
@@ -112,6 +118,54 @@
           required="!web.document.DocumentsHelper.isDocumentAssistantEnabled()"
           value="DocumentCreationInfo.File"/> -->
       </InputSet>
+      <Label
+        label="&quot;CC Recipient&quot;"/>
+      <ListViewInput
+        editable="true"
+        id="CcRecipientLVInput"
+        label="displaykey.Web.Email.CCRecipients"
+        labelAbove="true">
+        <Toolbar
+          visible="true">
+          <IteratorButtons
+            addVisible="true"
+            iterator="CcRecipientLV"
+            removeVisible="true"/>
+        </Toolbar>
+        <ListViewPanel
+          editable="true"
+          id="CcRecipientLV"
+          visible="true">
+          <RowIterator
+            editable="true"
+            elementName="CcRecipient"
+            toCreateAndAdd="var ccRecip = new util.CCRecipients(); templateInfo.addTOCCRecipients(ccRecip,templateInfo); return ccRecip;"
+            toRemove="templateInfo.CCRecipients.remove(CcRecipient); "
+            value="templateInfo.CCRecipients">
+            <Row
+              editable="true">
+              <TextCell
+                editable="true"
+                id="CcName"
+                label="displaykey.Web.Email.Name"
+                numCols="15"
+                value="CcRecipient.Name">
+                <PostOnChange
+                  onChange="var emailForName = autoCompleteHandler.getEmailForName(CcRecipient.Name); if (emailForName != null) { CcRecipient.EmailAddress = emailForName }"
+                  target="DATA_ONLY"/>
+              </TextCell>
+              <TextCell
+                editable="true"
+                id="CcEmail"
+                label="displaykey.Web.Email.EmailAddress"
+                numCols="15"
+                required="true"
+                value="CcRecipient.EmailAddress"
+                visible="false"/>
+            </Row>
+          </RowIterator>
+        </ListViewPanel>
+      </ListViewInput>
       <CheckBoxInput
         editable="true"
         id="certifiedmail"
@@ -184,13 +238,12 @@
 
 function resetTemplateBasedInfo() {
   DocumentCreationInfo.setDocumentFilePath(null)
-  DocumentCreationInfo.Document.Name = DocumentCreationInfo.DocumentTemplateDescriptor.Name
-  DocumentCreationInfo.Document.MimeType = DocumentCreationInfo.DocumentTemplateDescriptor.MimeType
-  DocumentCreationInfo.Document.SecurityType = DocumentCreationInfo.DocumentTemplateDescriptor.DefaultSecurityType
-  DocumentCreationInfo.Document.Type = DocumentCreationInfo.DocumentTemplateDescriptor.TemplateType
-  DocumentCreationInfo.Document.Section = (DocumentCreationInfo.DocumentTemplateDescriptor.getMetadataPropertyValue( "section" ) as String)
-  DocumentCreationInfo.Document.Locale = DocumentCreationInfo.DocumentTemplateDescriptor.Locale
-  
+  DocumentCreationInfo.Document?.Name = DocumentCreationInfo?.DocumentTemplateDescriptor.Name
+  DocumentCreationInfo.Document?.MimeType = DocumentCreationInfo?.DocumentTemplateDescriptor.MimeType
+  DocumentCreationInfo.Document?.SecurityType = DocumentCreationInfo?.DocumentTemplateDescriptor?.DefaultSecurityType
+  DocumentCreationInfo.Document?.Type = DocumentCreationInfo?.DocumentTemplateDescriptor?.TemplateType
+  DocumentCreationInfo.Document?.Section = (DocumentCreationInfo?.DocumentTemplateDescriptor?.getMetadataPropertyValue( "section" ) as String)
+  DocumentCreationInfo.Document?.Locale = DocumentCreationInfo.DocumentTemplateDescriptor.Locale
   for (dynamicWidgetInfo in DocumentCreationInfo.DynamicWidgetInformation) {
     DocumentCreationInfo.setDefaultContextObjectValue(dynamicWidgetInfo.Name, eval(dynamicWidgetInfo.DefaultValueExpression))
     DocumentCreationInfo.setPossibleContextObjectValues(dynamicWidgetInfo.Name, eval(dynamicWidgetInfo.PossibleValuesExpression) as Object[])

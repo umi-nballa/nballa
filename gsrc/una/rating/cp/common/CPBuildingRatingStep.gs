@@ -41,7 +41,7 @@ class CPBuildingRatingStep {
     _rateCache = rateCache
     _buildingRatingInfo = new CPBuildingRatingInfo(building)
     _buildingRatingInfo.ZoneNumber = getZoneNumber(line, _executor.RatingLevel, "cp_zone_number_and_category_table", {_buildingRatingInfo.TerritoryCode})
-    if(_buildingRatingInfo.ZoneNumber == null)
+    if(_buildingRatingInfo.ZoneNumber == null || _buildingRatingInfo.ZoneNumber == 0)
       _buildingRatingInfo.ZoneNumber = 1
   }
 

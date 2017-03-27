@@ -31,10 +31,13 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     producerChanged()
     blockRewritePolicy()
     blockSpecificConstructionTypes()
-     createOfacUWIssue()
+    createOfacUWIssue(true)
   }
+   override function onPreBind() {
+     createOfacUWIssue(false)
+   }
 
-  private function createOfacUWIssue()
+  private function createOfacUWIssue(isOnQuote:boolean)
   {
     var period = _policyEvalContext.Period
 
@@ -44,7 +47,12 @@ class DefaultUnderwriterEvaluator extends AbstractUnderwriterEvaluator {
         \ -> "Underwriting review required for OFAC"
     var longDescription =
         \ -> "Underwriting review is required for OFAC "
-    _policyEvalContext.addIssue("OfacCheck","OfacCheck",shortDescription,longDescription)
+    if(isOnQuote){
+      _policyEvalContext.addIssue("OfacCheckOnQuote","OfacCheckOnQuote",shortDescription,longDescription)
+    } else{
+      _policyEvalContext.addIssue("OfacCheck","OfacCheck",shortDescription,longDescription)
+    }
+
        }
 
 

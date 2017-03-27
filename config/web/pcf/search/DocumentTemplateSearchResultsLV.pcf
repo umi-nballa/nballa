@@ -6,7 +6,7 @@
     id="DocumentTemplateSearchResultsLV">
     <Require
       name="documentTemplateSearchResultsList"
-      type="gw.plugin.document.IDocumentTemplateDescriptor[]"/>
+      type="Template_Ext[]"/>
     <RowIterator
       editable="false"
       elementName="documentTemplateSearchResult"
@@ -24,18 +24,18 @@
         <Cell
           id="DocumentType"
           label="displaykey.Web.DocumentTemplateSearch.DocumentType"
-          sortBy="documentTemplateSearchResult.TemplateType"
-          value="documentTemplateSearchResult.TemplateType as DocumentType"/>
+          sortBy="documentTemplateSearchResult.Type"
+          value="documentTemplateSearchResult.Type"/>
         <Cell
           id="Language"
           label="displaykey.Web.DocumentTemplateSearch.Language"
           sortBy="documentTemplateSearchResult.Language"
-          value="gw.api.util.LocaleUtil.toLanguageType(documentTemplateSearchResult.Language)"
+          value="documentTemplateSearchResult.Language//gw.api.util.LocaleUtil.toLanguageType(documentTemplateSearchResult.Language)"
           visible="LanguageType.getTypeKeys( false ).Count &gt; 1"/>
         <Cell
           id="DateModified"
           label="displaykey.Web.DocumentTemplateSearch.DateModified"
-          value="documentTemplateSearchResult.DateModified"/>
+          value="documentTemplateSearchResult.UpdateTime//DateModified"/>
         <Cell
           id="EffectiveDate"
           label="displaykey.Web.DocumentTemplateSearch.EffectiveDate"
@@ -43,7 +43,7 @@
         <Cell
           id="ExpirationDate"
           label="displaykey.Web.DocumentTemplateSearch.ExpirationDate"
-          value="documentTemplateSearchResult.DateExpiration"/>
+          value="documentTemplateSearchResult.DateExpires//DateExpiration"/>
       </Row>
     </RowIterator>
   </ListViewPanel>

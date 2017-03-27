@@ -92,7 +92,8 @@
           formatType="currency"
           id="diffprem"
           label="&quot;Difference in Premium&quot;"
-          value="cost.ActualAmountBilling"/>
+          value="cost.Branch.BasedOn!=null?cost.ActualAmountBilling-cost.BasedOn.ActualAmountBilling:cost.ActualAmountBilling"
+          valueVisible="!(cost.Branch.Job typeis Submission)"/>
         <MonetaryAmountCell
           align="right"
           enableSort="false"
@@ -101,14 +102,11 @@
           id="totprem"
           label="&quot;Total Premium&quot;"
           value="cost.ActualAmountBilling"/>
-        <MonetaryAmountCell
-          align="right"
+        <Cell
           enableSort="false"
-          footerSumValue="cost.ActualAmountBilling"
-          formatType="currency"
           id="ctrprem"
-          label="&quot;Difference in Premium&quot;"
-          value="cost.ActualAmountBilling"/>
+          label="&quot;Consent to Rate&quot;"
+          value="cost.Branch?.Factor_Ext"/>
         <MonetaryAmountCell
           align="right"
           enableSort="false"
@@ -116,7 +114,7 @@
           formatType="currency"
           id="premaftctr"
           label="&quot;Premium after CTR&quot;"
-          value="cost.ActualAmountBilling"/>
+          value="cost.Branch?.Factor_Ext!=null?cost.ActualAmountBilling.multiply(cost.Branch?.Factor_Ext):cost.ActualAmountBilling"/>
       </Row>
     </RowIterator>
   </ListViewPanel>

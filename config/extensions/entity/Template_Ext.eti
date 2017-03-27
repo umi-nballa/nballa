@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<entity
+  xmlns="http://guidewire.com/datamodel"
+  desc="UNA Templates for CC"
+  entity="Template_Ext"
+  final="false"
+  table="template_ext"
+  type="retireable">
+  <column
+    desc="The ID of the document template."
+    name="TemplateID"
+    nullok="true"
+    type="varchar">
+    <columnParam
+      name="size"
+      value="60"/>
+  </column>
+  <column
+    desc="The name of the document template."
+    name="Name"
+    nullok="true"
+    type="shorttext"/>
+  <typekey
+    desc="The type which will be assigned to documents created from this document template"
+    name="Type"
+    nullok="true"
+    typelist="DocumentType"/>
+  <column
+    desc="The date/time on which the document template starts to be effective."
+    name="DateEffective"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="The date/time on which the document template expires."
+    name="DateExpires"
+    nullok="true"
+    type="datetime"/>
+  <column
+    desc="Form Number"
+    name="FormNo"
+    nullok="true"
+    type="shorttext"/>
+  <column
+    desc="Edition Date"
+    name="EditionDate"
+    nullok="true"
+    type="datetime"/>
+  <typekey
+    desc="The state (modeled as Jursidiction) to which the document template should apply. The Jurisdiction must be associated with JurisdictionType.TC_INSURANCE."
+    name="State"
+    nullok="true"
+    typelist="Jurisdiction"/>
+  <typekey
+    columnName="Language"
+    desc="Language"
+    name="Language"
+    nullok="true"
+    typelist="LanguageType"/>
+  <column
+    columnName="Keywords"
+    desc="keywords"
+    name="Keywords"
+    nullok="true"
+    type="shorttext"/>
+</entity>

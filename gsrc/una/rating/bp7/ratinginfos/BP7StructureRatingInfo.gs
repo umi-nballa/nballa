@@ -43,6 +43,9 @@ class BP7StructureRatingInfo {
     _businessIncomeExtraExpenseNumberOfMonths = line?.BP7BuildingBusinessIncomeExtraExpense_EXT?.BP7NumberOfMonths_EXTTerm?.DisplayValue
     _businessLiabilityOccurrenceLimit = line?.BP7BusinessLiability?.BP7EachOccLimitTerm?.Value.intValue()
     _protectionClassCode = building?.OverrideDwellingPCCode_Ext? building?.DwellingPCCodeOverridden_Ext : building?.DwellingProtectionClassCode
+    if(_protectionClassCode.contains('/')){
+          _protectionClassCode= _protectionClassCode.split('/')[0]
+    }
     _protectionClassCodeInt = (_protectionClassCode == "8B")? 9 : _protectionClassCode?.toInt()
 
     _classificationClassCode = building.Classifications?.first().ClassCode_Ext

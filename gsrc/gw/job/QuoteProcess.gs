@@ -20,6 +20,7 @@ uses gw.web.productmodel.ProductModelSyncIssueWrapper
 uses java.lang.Exception
 uses una.integration.service.gateway.ofac.OFACGateway
 uses una.integration.service.gateway.ofac.OFACInterface
+uses una.integration.service.gateway.ofac.OFACGatewayHelper
 
 /**
  * Encapsulates the actions taken when Quoting.  While this class is not a JobProcess, it encapsulates
@@ -74,7 +75,11 @@ class QuoteProcess {
 //      var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
 //      ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
 //    }
-
+    //Added OFAC call only for new added contact when Transaction is of type PolicyChange and Renewal
+    if(_branch.Job typeis PolicyChange || _branch.Job typeis Renewal){
+      var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
+      ofacInterface.validateOFACEntity(new OFACGatewayHelper().getNewlyAddedContactOnPolicyPeriod(_branch),_branch)
+    }
       PCProfilerTag.QUOTE_SYNC.execute(\ -> {
       _oosSliceDates = _branch.OOSSliceDates
       _oosSlices = _branch.getOOSSlices(_oosSliceDates)

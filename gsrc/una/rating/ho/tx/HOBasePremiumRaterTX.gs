@@ -98,7 +98,7 @@ class HOBasePremiumRaterTX {
         routines.add(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HO_REPLACEMENT_COST_DWELLING_RATE_ROUTINE, HOCostType_EXT.TC_REPLACEMENTCOSTCOVERAGEWITHROOFSURFACING)
       }
-      if (_dwelling.HODW_AdditionalPerilCov_HOE_ExtExists){
+      if (_dwelling.HODW_AdditionalPerilCov_HOE_ExtExists and _line.HOPolicyType == HOPolicyType_HOE.TC_HOA_EXT){
         routines.add(HORateRoutineNames.HOA_PLUS_COVERAGE_RATE_ROUTINE)
         _routinesToCostTypeMapping.put(HORateRoutineNames.HOA_PLUS_COVERAGE_RATE_ROUTINE, HOCostType_Ext.TC_HOAPLUSCOVERAGE)
       }

@@ -4,7 +4,7 @@
   xsi:noNamespaceSchemaLocation="../../../../../pcf.xsd">
   <Popup
     id="DocumentTemplateSearchPopup"
-    returnType="gw.plugin.document.IDocumentTemplateDescriptor"
+    returnType="Template_Ext"
     title="displaykey.Web.TabBar.Search.DocumentTemplates">
     <LocationEntryPoint
       signature="DocumentTemplateSearchPopup()"/>
@@ -31,15 +31,15 @@
           updateVisible="false"/> -->
       </Toolbar>
       <SearchPanel
-        criteriaName="documentTemplateSearchCriteria"
+        criteriaName="TemplateSearchCriteria"
         resultCachingEnabled="false"
         resultsName="documentTemplateSearchResultsList"
-        search="symbolNames != null ? documentTemplateSearchCriteria.performSearch(symbolNames) : documentTemplateSearchCriteria.performSearch(new gw.document.LocationSymbolProvider(CurrentLocation))"
-        searchCriteria="new DocumentTemplateSearchCriteria()"
-        searchOnEnter="true"
-        searchResultsType="gw.plugin.document.IDocumentTemplateDescriptor[]">
+        search="TemplateSearchCriteria.performSearch(TemplateSearchCriteria)//symbolNames != null ? documentTemplateSearchCriteria.performSearch(symbolNames) : documentTemplateSearchCriteria.performSearch(new gw.document.LocationSymbolProvider(CurrentLocation))//DocTemplateSearchRslt_Ext//"
+        searchCriteria="createSearchCriteria()//new DocumentTemplateSearchCriteria()"
+        searchOnEnter="false"
+        searchResultsType="Template_Ext[]">
         <PanelRef
-          def="DocumentTemplateSearchDV(documentTemplateSearchCriteria)"/>
+          def="DocumentTemplateSearchDV(TemplateSearchCriteria)"/>
         <PanelRef
           def="DocumentTemplateSearchResultsLV(documentTemplateSearchResultsList)">
           <TitleBar
@@ -53,5 +53,16 @@
         </PanelRef>
       </SearchPanel>
     </Screen>
+    <Code><![CDATA[uses util.TemplateSearchCriteria
+
+function createSearchCriteria() : TemplateSearchCriteria {
+  var rtn = new TemplateSearchCriteria()
+  //rtn.State = policyPeriod.BaseState
+ // rtn.LobCode = Claim.LOBCode
+  rtn.Language=typekey.LanguageType.TC_EN_US
+  rtn.effectiveDate = policyPeriod.PeriodStart
+  
+  return rtn
+}]]></Code>
   </Popup>
 </PCF>

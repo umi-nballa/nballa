@@ -11,12 +11,12 @@ class JobWizardToolBarPCFController {
 
 
     function checkOfac(period : PolicyPeriod, jobWizardHelper : JobWizardHelper){
-      period.SubmissionProcess.edit()
+      if(!period.ofacdetails.isOFACOrdered){
       var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
       ofacInterface.validateOFACEntity(period.AllContacts,period)
+      period.ofacdetails.isOFACOrdered = true
 
-      jobWizardHelper.requestQuote(period, jobWizardHelper.getQuoteStep(period))
-      jobWizardHelper.validateAndSaveDraft()
+      }
 
    }
 

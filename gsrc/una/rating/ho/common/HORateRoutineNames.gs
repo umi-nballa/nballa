@@ -146,4 +146,5 @@ public final class HORateRoutineNames {
   public static final var FIRE_DEPARTMENT_SERVICE_CHARGE_COV_RATE_ROUTINE : String = "UNAHOFireDepartmentServiceChargeCovRateRoutine"
   public static final var DWELLING_FIRE_OTHER_STRUCTURES_INCREASED_LIMITS_COV_ROUTINE_NAME : String = "UNAHODwellingFireOtherStructuresIncreasedLimitsCovRateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_HI_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovHIRateRoutine"
+  public static final var WOOD_BURNING_STOVE_RATE_ROUTINE : String = "UNAHOWoodBurningStoveRateRoutine"
 }

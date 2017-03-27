@@ -515,7 +515,8 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         formCode.equals(FormPatternConstants.HO_UNIT_OWNER_RENTAL_1000_FORM) or
         formCode.equals(FormPatternConstants.HO_UNIT_OWNER_RENTAL_0511_FORM) or
         formCode.equals(FormPatternConstants.HO_UNIT_OWNER_RENTAL_1093_FORM)){
-      if(hoeLine != null and dwelling != null and dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN){
+      if(hoeLine != null and dwelling != null and dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_NONOWN
+          && hoeLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT ){
         return true
       }
     }

@@ -116,7 +116,6 @@ class HOProtectionDetailsMapper {
           protectionDetails = extractProtectionDetailsFL(fireAlarmReportCntlStn, fireAlarmReportFireStn, localFireAlarm, burglarAlarmReportCntlStn,
               completeLocalBurglarAlarm, burglarAlarmReportPoliceStn, completeHomeSprinklerSystem, automaticSprinklerSystem)
           }
-
           return protectionDetails
       case TC_SC:
           protectionDetails = extractProtectionDetailsSC(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
@@ -127,8 +126,8 @@ class HOProtectionDetailsMapper {
               dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6){
              protectionDetails = extractProtectionDetailsHIHO(fireAlarmReportCntlStn, localFireAlarm, burglarAlarmReportCntlStn,
                 completeLocalBurglarAlarm, completeHomeSprinklerSystem, gatedCommunity)
-             return protectionDetails
            }
+           return protectionDetails
     }
     return protectionDetails
   }

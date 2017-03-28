@@ -16,7 +16,7 @@ class UNAUWLimitedFungi_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
     if( homeowner.Dwelling.HODW_FungiCov_HOEExists && homeowner.Dwelling.HODW_FungiCov_HOE.HasHODW_FungiSectionILimit_HOETerm
-    && homeowner.Dwelling.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm.OptionValue.Value.doubleValue()>5000)   //// C H E C K
+    && homeowner.Dwelling.HODW_FungiCov_HOE.HODW_FungiSectionILimit_HOETerm.OptionValue.Value.doubleValue()>homeowner.Dwelling.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm.RuntimeDefault)   //// C H E C K
       {
             return RuleEvaluationResult.execute()
 

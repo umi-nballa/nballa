@@ -501,7 +501,7 @@ enhancement AccountBaseEnhancement : Account {
          LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.LimitedLiabilityPartnershipAsThePrimaryNamedInsured)
        }
            // row 475 (web.Account.AccountOrgType.Warning.ListTheNameOfTheSoleProprietor)
-      else if (this.AccountOrgType == typekey.AccountOrgType.TC_SOLEPROPSHIP) {
+      else if (this.AccountOrgType == typekey.AccountOrgType.TC_SOLEPROPRIETOR_EXT) {
           LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.ListTheNameOfTheSoleProprietor)
        }
          // row 476 (web.Account.AccountOrgType.Warning.CorporationAsThePrimaryNamedInsured)
@@ -533,7 +533,7 @@ enhancement AccountBaseEnhancement : Account {
                   LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.CooperativeAsPNI)
        }
                       // row 48
-       else if (this.AccountOrgType == typekey.AccountOrgType.TC_NONPROFIT) {
+       else if (this.AccountOrgType == typekey.AccountOrgType.TC_NONPROFIT_EXT) {
                     LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
         }
                       // row 484
@@ -583,6 +583,7 @@ enhancement AccountBaseEnhancement : Account {
     else if(this.AccountOrgType == typekey.AccountOrgType.TC_CORPORATION_EXT
         and (period.isHOType() or period.isDFType())){
       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
+      LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.CorporationAsThePrimaryNamedInsured)
     }
     // row 417
     else if(this.AccountOrgType == typekey.AccountOrgType.TC_IRA_EXT
@@ -599,6 +600,7 @@ enhancement AccountBaseEnhancement : Account {
         and (period.isHOType() or period.isDFType())){
       LocationUtil.addRequestScopedWarningMessage(displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
     }
+
   }
     // row 420   - call on post on change of field
   function raiseWarning_LLC(period : PolicyPeriod) {

@@ -19,8 +19,10 @@ class UNAAddressDiscrepancy_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
 
-   // if(homeowner.Dwelling.HODW_DifferenceConditions_HOE_ExtExists  )
-   //   return RuleEvaluationResult.execute()
+   if((typekey.HOPolicyType_HOE.TF_ALLDPTDPLPP.TypeKeys.contains(homeowner.Dwelling.HOPolicyType) &&   homeowner.Dwelling.HOLocation.PolicyLocation.AddressType==typekey.AddressType.TC_BILLING)
+   ||
+       (typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(homeowner.Dwelling.HOPolicyType) &&   homeowner.Dwelling.HOLocation.PolicyLocation.AddressType!=typekey.AddressType.TC_BILLING))
+      return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()
   }

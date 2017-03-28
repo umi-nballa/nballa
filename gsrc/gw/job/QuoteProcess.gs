@@ -20,6 +20,7 @@ uses gw.web.productmodel.ProductModelSyncIssueWrapper
 uses java.lang.Exception
 uses una.integration.service.gateway.ofac.OFACGateway
 uses una.integration.service.gateway.ofac.OFACInterface
+uses una.integration.service.gateway.ofac.OFACGatewayHelper
 
 /**
  * Encapsulates the actions taken when Quoting.  While this class is not a JobProcess, it encapsulates
@@ -70,29 +71,15 @@ class QuoteProcess {
   function requestQuote(jobWizardHelper : JobWizardHelper, valLevel : ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean) {   JobProcessLogger.logInfo("Quote requested for branch " + _branch + "(Rating style: " + ratingStyle + ")")
 /*   // code for Clue Check for Ofac ,Uncomment once data Governance is approved
  if(_branch.HomeownersLine_HOE.ClueHit_Ext)     {*/
-    if(_branch.NewSubmission){
+//    if(_branch.NewSubmission){
+//      var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
+//      ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
+//    }
+    //Added OFAC call only for new added contact when Transaction is of type PolicyChange and Renewal
+    if(_branch.Job typeis PolicyChange || _branch.Job typeis Renewal){
       var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
-      ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
+      ofacInterface.validateOFACEntity(new OFACGatewayHelper().getNewlyAddedContactOnPolicyPeriod(_branch),_branch)
     }
-
-   if(_branch.ofaccontact!=null && _branch.ofaccontact.length>0)
-     {
-       var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC1").atMostOne()
-       var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
-       if(user==null)
-       {
-         user = una.config.activity.OfacUtil.findUserByUsername("su")
-       }
-         //_branch.Job.createRoleActivity(typekey.UserRole.TC_CUSTOMERREP,pattern,"Ofac Check","Please check for OFAC hit",user)//,una.config.activity.OfacUtil.findUserByUsername("ofaccsr"))
-       if(_branch.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC1")==null)
-         {
-          var activity =  pattern.createJobActivity(_branch.Bundle, _branch.Job, null, null, null, null, null, null, null)
-          activity.assign(user.RootGroup,user)
-         }
-
-       //create custom history event
-       _branch.createCustomHistoryEvent(CustomHistoryType.TC_OFACSUBMITTEDTOCOMPLIANCE,\->" identified on OFAC list and submitted to Compliance ")
-     } //}
       PCProfilerTag.QUOTE_SYNC.execute(\ -> {
       _oosSliceDates = _branch.OOSSliceDates
       _oosSlices = _branch.getOOSSlices(_oosSliceDates)

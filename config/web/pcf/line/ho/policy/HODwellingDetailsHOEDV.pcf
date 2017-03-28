@@ -398,8 +398,8 @@
           id="PropFloodValTunaReturned_Ext"
           label="displaykey.Web.Homeowners.HOLocation.PropFloodValTunaReturned_Ext"
           required="!dwelling.OverridePropFloodVal_Ext"
-          value="dwelling.PropFloodVal_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)">
+          value="dwelling.PropFloodVal_Ext "
+          valueRange="if(dwelling.PropFloodVal_Ext == null ){ return gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood)}">
           <PostOnChange/>
         </RangeInput>
         <Input
@@ -542,7 +542,7 @@
       </InputSet>
       <InputSet
         id="CondoValuationIDValue_Ext">
-        <InputDivider/>
+        <!-- <InputDivider/> -->
         <!-- <RangeInput
           editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
           id="CondoValuationIDValueTunaReturned_Ext"
@@ -1640,6 +1640,7 @@ function initializeTunaCodes() : TunaCodesBO {
   
   initialTunaCodesBO.BCEGValues = bcegCodes
   return initialTunaCodesBO
-}]]></Code>
+}
+]]></Code>
   </DetailViewPanel>
 </PCF>

@@ -34,7 +34,9 @@ class HPXClueReportMapper {
     }
     claimElement.ClaimID = priorLoss.ID != null ? priorLoss.ID : ""
     claimElement.addChild(new XmlElement("ClueHeader", createClueHeader(priorLoss.ClueReport)))
-    claimElement.ClaimDate = priorLoss.ClaimDate != null ? new XmlDate(sourceFormat.parse(priorLoss.ClaimDate)) : new XmlDate()
+    if(priorLoss.ClaimDate != null) {
+      claimElement.ClaimDate = new XmlDate(priorLoss.ClaimDate)
+    }
     claimElement.ClaimAge = priorLoss.ClaimAge != null ? priorLoss.ClaimAge : ""
     claimElement.ClaimNumber = priorLoss.ClaimNum != null ? priorLoss.ClaimNum : ""
     claimElement.addChild(new XmlElement("PolicySummary", policyMapper.createPriorLossPolicySummaryInfo(priorLoss)))
@@ -65,10 +67,14 @@ class HPXClueReportMapper {
     clueHeaderType.QuotebackID = clueReport.QuotebackID != null ? clueReport.QuotebackID : ""
     clueHeaderType.CaseID = clueReport.QuotebackID != null ? clueReport.QuotebackID : ""
     clueHeaderType.ReferenceNumber = clueReport.ReferenceNumber != null ? clueReport.ReferenceNumber : ""
-    clueHeaderType.OrderDate = clueReport.OrderDate != null ? new XmlDate(sourceFormat.parse(clueReport.OrderDate)) : new XmlDate()
+    if(clueReport.OrderDate != null) {
+      clueHeaderType.OrderDate = new XmlDate(sourceFormat.parse(clueReport.OrderDate))
+    }
     clueHeaderType.Requestor = clueReport.Requestor != null ? clueReport.Requestor : ""
     clueHeaderType.AccountNumber = clueReport.AccountNumber != null ? clueReport.AccountNumber : ""
-    clueHeaderType.CompleteDate = clueReport.CompleteDate != null ? new XmlDate(sourceFormat.parse(clueReport.CompleteDate)) : new XmlDate()
+    if(clueReport.CompleteDate != null) {
+      clueHeaderType.CompleteDate = new XmlDate(sourceFormat.parse(clueReport.CompleteDate))
+    }
     clueHeaderType.ClueProcessingStatus = clueReport.ProcessingStatus != null ? clueReport.ProcessingStatus : ""
     clueHeaderType.ClueTotalRiskClaims = clueReport.RiskClaims != null ? clueReport.RiskClaims : ""
     clueHeaderType.ClueTotalSubjectClaims = clueReport.SubjectClaims != null ? clueReport.SubjectClaims : ""
@@ -107,7 +113,9 @@ class HPXClueReportMapper {
     genderType.GenderCode = person.Gender.Code != null ? person.Gender.Code: ""
     genderType.GenderDesc = person.Gender.Description != null ? person.Gender.Description: ""
     clueSearchSubjectType.addChild(new XmlElement("Gender", genderType))
-    clueSearchSubjectType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
+    if(person.DateOfBirth != null) {
+      clueSearchSubjectType.BirthDate = new XmlDate(person.DateOfBirth)
+    }
     contactMechanismType.HomePhone = person.HomePhone != null ? person.HomePhone : ""
     clueSearchSubjectType.addChild(new XmlElement("ContactMechanism", contactMechanismType))
     return clueSearchSubjectType
@@ -190,7 +198,9 @@ class HPXClueReportMapper {
     claimantType.LastName = person.LastName != null ? person.LastName : ""
     claimantType.FullName = person.DisplayName != null ? person.DisplayName : ""
     claimantType.SSN = person.SSNOfficialID != null ? person.SSNOfficialID : ""
-    claimantType.BirthDate = person.DateOfBirth != null ? new XmlDate(person.DateOfBirth) : new XmlDate()
+    if(person.DateOfBirth != null) {
+      claimantType.BirthDate = new XmlDate(person.DateOfBirth)
+    }
     claimantType.ClueMatchIndicator = priorLoss.CluePropertyMatch.ClaimantMatchIndicator != null ?  priorLoss.CluePropertyMatch.ClaimantMatchIndicator.Code : typekey.ClueMatchIndicator_Ext.TC_NOMATCH
     physicalAddressType.AddressLine1 = person.PrimaryAddress.AddressLine1 != null ? person.PrimaryAddress.AddressLine1 : ""
     physicalAddressType.City = person.PrimaryAddress.City != null ? person.PrimaryAddress.City : ""

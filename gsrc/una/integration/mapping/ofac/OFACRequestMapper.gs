@@ -172,12 +172,32 @@ class OFACRequestMapper {
   {
     _logger.info(CLASS_NAME + ": Entering getLineSpecificContacts method")
     var addlInterests = PolicyInfoUtil.retrieveAdditionalInterests(policyPeriod)
-    if (!policyPeriod.CPLineExists && !policyPeriod.BP7LineExists && addlInterests!=null){
+    if(addlInterests!=null){
+    //Only add Additional Interest in case of CP lines else Ignore Contact
+    if (!policyPeriod.CPLineExists && !policyPeriod.BP7LineExists && !policyPeriod.BOPLineExists){
       insuredList = insuredList.where(\elt -> {
         var isThirdParty = addlInterests.where(\addlInt -> addlInt.AdditionalInterestType == typekey.AdditionalInterestType.get(TC_ThirdPartyDesignee))*.PolicyAddlInterest*.ContactDenorm.contains(elt)
         return not isThirdParty
       })
     }
+    //For all Policy line ignore OFAC hit for Additional Interest Type "Others" and "Property Manager"
+    if(policyPeriod.HomeownersLine_HOEExists ||policyPeriod.CPLineExists ||policyPeriod.BP7LineExists ||policyPeriod.BOPLineExists) {
+     insuredList=insuredList.where( \ elt -> {
+       var isOtherNPropertyManager= addlInterests.where(\addlInt -> addlInt.AdditionalInterestType == typekey.AdditionalInterestType.TC_OTHER_EXT || addlInt.AdditionalInterestType == typekey.AdditionalInterestType.TC_PROPERTYMANAGER_EXT)*.PolicyAddlInterest*.ContactDenorm.contains(elt)
+       return not isOtherNPropertyManager
+     })
+    }
+    //Except CPP Line ignore OFAC hit for Additional Interest Type "Condo/Homeowners Association" and "Power of Attorney"
+    if(policyPeriod.HomeownersLine_HOEExists ||policyPeriod.BP7LineExists ||policyPeriod.BOPLineExists) {
+      insuredList=insuredList.where( \ elt -> {
+        var isOtherNPropertyManager= addlInterests.where(\addlInt -> addlInt.AdditionalInterestType == typekey.AdditionalInterestType.TC_CONDOHOMEOWNERS_EXT || addlInt.AdditionalInterestType == typekey.AdditionalInterestType.TC_POWEROFATTORNEY_EXT)*.PolicyAddlInterest*.ContactDenorm.contains(elt)
+        return not isOtherNPropertyManager
+      })
+    }
+    }
+    //TODO:For CPP Line ignore OFAC hit for Additional Insured
+    if(policyPeriod.CPLineExists ){
+          }
     _logger.info(CLASS_NAME + ":Exiting getLineSpecificContacts method")
     return insuredList
   }

@@ -49,6 +49,9 @@
     <Screen
       editable="true"
       id="ContactDetailScreen">
+      <TitleBar
+        id="title"
+        title="setTitle()"/>
       <Toolbar>
         <ToolbarButton
           action="duplicateContactsPopupHelper.checkForDuplicatesOrUpdate(\ -&gt; CurrentLocation.pickValueAndCommit(policyAddlInsuredDetail))"
@@ -71,7 +74,17 @@
       <PanelRef
         def="NewPolicyContactRoleDetailsCV(policyAddlInsured, false)"/>
     </Screen>
-    <Code><![CDATA[function setPolicyAddInsuredDetail ():PolicyAddlInsuredDetail{  
+    <Code><![CDATA[function setTitle():String{
+ var title =  displaykey.Web.Contact.NewContact("Additional Interest")
+  print("******** Print Title" + title)
+  if (trustFlag)  {
+    print("****^^^" + title)
+    title = displaykey.Web.Contact.NewContact("Trustee")
+   }
+    return title
+}
+
+function setPolicyAddInsuredDetail ():PolicyAddlInsuredDetail{  
   var AddInsured = line.addNewAdditionalInsuredDetailOfContactType(contactType, additionalInsuredType)
     if(trustFlag)
      { AddInsured.AdditionalInsuredType = typekey.AdditionalInsuredType.TC_TRUESTEE_EXT }

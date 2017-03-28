@@ -130,4 +130,19 @@ class OFACGatewayHelper {
     _logger.info(CLASS_NAME + ": Exiting returnHITContact method")
     return null
   }
+
+  // Function is to get newly added Contact on Policy Period
+  public function getNewlyAddedContactOnPolicyPeriod(policyPeriod: PolicyPeriod): List<Contact> {
+    _logger.info(CLASS_NAME + ": Entering getNewlyAddedContactOnPolicyPeriod method")
+    var newlyAddedContacts=new ArrayList<Contact>()
+    var previousPeriod=policyPeriod.BasedOn
+    var previousContact=previousPeriod.AllContacts
+    newlyAddedContacts=policyPeriod?.AllContacts?.where( \  elt -> {
+        var isExistingContact= previousContact?.contains(elt )
+        return not isExistingContact
+      })
+    _logger.info(CLASS_NAME + ": Exiting getNewlyAddedContactOnPolicyPeriod method")
+    return newlyAddedContacts
+    }
+
 }

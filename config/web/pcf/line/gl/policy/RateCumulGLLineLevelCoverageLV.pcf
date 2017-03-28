@@ -77,6 +77,44 @@
           id="Amount"
           label="displaykey.Web.Policy.BA.Premium"
           value="cost.ActualAmountBilling"/>
+        <MonetaryAmountCell
+          align="right"
+          enableSort="false"
+          footerSumValue="cost.ActualAmountBilling"
+          formatType="currency"
+          id="minprem"
+          label="&quot;Minimum Premium&quot;"
+          value="cost.ActualAmountBilling"/>
+        <MonetaryAmountCell
+          align="right"
+          enableSort="false"
+          footerSumValue="cost.ActualAmountBilling"
+          formatType="currency"
+          id="diffprem"
+          label="&quot;Difference in Premium&quot;"
+          value="cost.Branch.BasedOn!=null?cost.ActualAmountBilling-cost.BasedOn.ActualAmountBilling:cost.ActualAmountBilling"
+          valueVisible="!(cost.Branch.Job typeis Submission)"/>
+        <MonetaryAmountCell
+          align="right"
+          enableSort="false"
+          footerSumValue="cost.ActualAmountBilling"
+          formatType="currency"
+          id="totprem"
+          label="&quot;Total Premium&quot;"
+          value="cost.ActualAmountBilling"/>
+        <Cell
+          enableSort="false"
+          id="ctrprem"
+          label="&quot;Consent to Rate&quot;"
+          value="cost.Branch?.Factor_Ext"/>
+        <MonetaryAmountCell
+          align="right"
+          enableSort="false"
+          footerSumValue="cost.ActualAmountBilling"
+          formatType="currency"
+          id="premaftctr"
+          label="&quot;Premium after CTR&quot;"
+          value="cost.Branch?.Factor_Ext!=null?cost.ActualAmountBilling.multiply(cost.Branch?.Factor_Ext):cost.ActualAmountBilling"/>
       </Row>
     </RowIterator>
   </ListViewPanel>

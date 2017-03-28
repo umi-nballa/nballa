@@ -50,6 +50,21 @@
               <Cell
                 id="Amount"
                 value="displaykey.Web.Quote.CumulDetail.Default.Amount"/>
+              <Cell
+                id="MinPrem"
+                value="&quot;Minimum Premium&quot;"/>
+              <Cell
+                id="DiffPrem"
+                value="&quot;Difference In Premium&quot;"/>
+              <Cell
+                id="TotPrem"
+                value="&quot;Total Premium&quot;"/>
+              <Cell
+                id="ctr"
+                value="&quot;Consent to Rate&quot;"/>
+              <Cell
+                id="premctr"
+                value="&quot;Premium after CTR&quot;"/>
             </Row>
             <RowIterator
               editable="false"
@@ -95,6 +110,31 @@
                     formatType="currency"
                     id="Amount"
                     value="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
+                  <MonetaryAmountCell
+                    footerSumValue="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
+                    formatType="currency"
+                    id="MinPrem"
+                    value="costsByBuilding.get(building).min().ActualAmount//period.PreferredSettlementCurrency)"/>
+                  <MonetaryAmountCell
+                    footerSumValue="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
+                    formatType="currency"
+                    id="DiffPrem"
+                    value="building.PolicyPeriod.Job typeis PolicyChange?costsByBuilding.get(building).subtract(costsByBuilding.get(building.BasedOn)).AmountSum(period.PreferredSettlementCurrency):costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
+                    visible="true//building.PolicyPeriod.Job typeis PolicyChange?true:false"/>
+                  <MonetaryAmountCell
+                    footerSumValue="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
+                    formatType="currency"
+                    id="totprem"
+                    value="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
+                  <Cell
+                    id="ctr"
+                    value="building.Branch.Factor_Ext"
+                    wrap="true"/>
+                  <MonetaryAmountCell
+                    footerSumValue="costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"
+                    formatType="currency"
+                    id="PremAftCTR"
+                    value="building?.PolicyPeriod?.Factor_Ext!=null?costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency).multiply(building.PolicyPeriod.Factor_Ext):costsByBuilding.get(building).AmountSum(period.PreferredSettlementCurrency)"/>
                 </Row>
               </RowIterator>
             </RowIterator>
@@ -126,6 +166,26 @@
                 id="StateAmount"
                 value="displaykey.Web.Quote.CumulDetail.Default.Amount"
                 width="100"/>
+              <Cell
+                id="minprem1"
+                value="&quot;Minimum Premium&quot;"
+                width="100"/>
+              <Cell
+                id="diffprem1"
+                value="&quot;Difference In Premium&quot;"
+                width="100"/>
+              <Cell
+                id="totprem1"
+                value="&quot;Total Premium&quot;"
+                width="100"/>
+              <Cell
+                id="ctr1"
+                value="&quot;Consent to Rate&quot;"
+                width="100"/>
+              <Cell
+                id="premactr"
+                value="&quot;Premium After CTR&quot;"
+                width="100"/>
             </Row>
             <RowIterator
               editable="false"
@@ -148,6 +208,30 @@
                   footerSumValue="cost.ActualAmountBilling"
                   formatType="currency"
                   id="Amount"
+                  value="cost.ActualAmountBilling"/>
+                <MonetaryAmountCell
+                  footerSumValue="cost.ActualAmountBilling"
+                  formatType="currency"
+                  id="minprem2"
+                  value="cost.ActualAmountBilling"/>
+                <MonetaryAmountCell
+                  footerSumValue="cost.ActualAmountBilling"
+                  formatType="currency"
+                  id="diffprem2"
+                  value="cost.BasedOn!=null?cost.ActualAmountBilling.subtract(cost.BasedOn.ActualAmountBilling):cost.ActualAmountBilling"
+                  valueVisible="!(cost.Branch.Job typeis Submission)"/>
+                <MonetaryAmountCell
+                  footerSumValue="cost.ActualAmountBilling"
+                  formatType="currency"
+                  id="totprem2"
+                  value="cost.ActualAmountBilling"/>
+                <Cell
+                  id="ctr22"
+                  value="cost.Branch.Factor_Ext"/>
+                <MonetaryAmountCell
+                  footerSumValue="cost.ActualAmountBilling"
+                  formatType="currency"
+                  id="premaftctr2"
                   value="cost.ActualAmountBilling"/>
               </Row>
             </RowIterator>

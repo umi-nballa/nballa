@@ -8,8 +8,6 @@ uses una.config.ConfigParamsUtil
  * Created with IntelliJ IDEA.
  * User: ssok
  * Date: 12/9/16
- * Time: 1:15 PM
- * To change this template use File | Settings | File Templates.
  */
 class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _windHailExclusion: boolean as WindHailExclusion = false
@@ -36,6 +34,12 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _dwellingRatingInfo : HONCDwellingRatingInfo as DwellingRatingInfo
   var _dwellingFireLimit : int as DwellingFireLimit
   var _dwellingFireValuationMethod : ValuationMethod as DwellingFireValuationMethod
+  var _aopDeductible : int as AOPDeductible
+  var _hurricanePercentage : BigDecimal as HurricanePercentage
+  var _windOrHailPercentage : int as WindOrHailPercentage
+  var _roofType : String as RoofType
+  var _numOfTimesRenewed : int as NumOfTimesRenewed
+  var _numOfLosses : int as NumOfLosses
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling
@@ -88,9 +92,34 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       _dwellingFireValuationMethod = dwelling?.DPDW_Dwelling_Cov_HOE?.DPDW_ValuationMethod_HOE_ExtTerm?.Value
     }
 
+    if(dwelling?.HODW_SectionI_Ded_HOEExists){
+      _aopDeductible = dwelling?.HODW_SectionI_Ded_HOE?.HODW_OtherPerils_Ded_HOETerm?.Value.intValue()
+      _hurricanePercentage = dwelling?.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm?.Value
+      _windOrHailPercentage = dwelling?.HODW_SectionI_Ded_HOE?.HODW_WindHail_Ded_HOETerm?.Value.intValue()
+    }
+    _roofType = dwelling?.RoofTypeOrOverride?.Description
+    var termNumber = dwelling?.HOLine?.Branch?.LatestPeriod.TermNumber
+    if(termNumber == null || termNumber == 0)
+      _numOfTimesRenewed = 0
+    else
+      _numOfTimesRenewed = (termNumber - 1)
+    _numOfLosses = dwelling?.HOLine?.HOPriorLosses_Ext?.Count
   }
 
   property get AgeOfHome() : int {
     return  this.Dwelling.PolicyPeriod?.EditEffectiveDate.YearOfDate - _yearOfConstruction
+  }
+
+  property get NoPriorInsurance() : boolean {
+    var priorPoliciesWithNoPriorInsurance = _dwelling?.Branch?.Policy?.PriorPolicies?.where( \ pp -> pp.CarrierType == CarrierType_Ext.TC_NOPRIORINS)
+    if(priorPoliciesWithNoPriorInsurance.Count > 0){
+      for(priorPolicy in priorPoliciesWithNoPriorInsurance){
+        if(priorPolicy.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_PRIORCOVERAGELAPSEDOVER45DAYS ||
+            priorPolicy.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_PRIORCOVERAGELAPSEDOVER60DAYS ||
+            priorPolicy.ReasonNoPriorIns_Ext == ReasonNoPriorIns_Ext.TC_NOINSURANCEEVERCARRIEDATTHISPROPERTY)
+          return true
+      }
+    }
+    return false
   }
 }

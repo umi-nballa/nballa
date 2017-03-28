@@ -67,9 +67,9 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       if (PolicyLine.Branch.QualifiesAffinityDisc_Ext) {
         rateAffinityDiscount(dateRange)
       }
-
-      rateLossHistoryCredit(dateRange)
-
+      if(_discountsOrSurchargeRatingInfo.ClaimFreeYears != 0 and _discountsOrSurchargeRatingInfo.PriorLosses != 0){
+        rateLossHistoryCredit(dateRange)
+      }
       if(_discountsOrSurchargeRatingInfo.DwellingOccupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT){
         rateVacancySurcharge(dateRange)
       }

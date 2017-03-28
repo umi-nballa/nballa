@@ -238,6 +238,8 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       return new UNAHOHIRatingEngine (_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
      if(_line.BaseState == typekey.Jurisdiction.TC_TX)
        return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
+     if(_line.BaseState == typekey.Jurisdiction.TC_NC)
+       return new UNAHONCRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
      return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     } else {
       if(_line.BaseState == typekey.Jurisdiction.TC_TX)
@@ -253,7 +255,8 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       if(_line.BaseState == typekey.Jurisdiction.TC_NC){
        return new UNAHONCRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
       }
-      if(_line.BaseState == typekey.Jurisdiction.TC_HI and _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3)
+      if(_line.BaseState == typekey.Jurisdiction.TC_HI and (_line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
+          _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4))
        return new UNAHOHIRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
     }
     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)

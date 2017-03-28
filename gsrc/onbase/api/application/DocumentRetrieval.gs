@@ -8,6 +8,7 @@ uses onbase.api.services.datamodels.OnBaseDocument
 
 uses java.lang.StringBuilder
 uses onbase.api.AePopUtils
+uses una.utils.PropertiesHolder
 
 /**
  *
@@ -61,7 +62,7 @@ class DocumentRetrieval {
    */
   public function getDocumentWebURL(docId: String, webClientType: Settings.OnBaseWebClientType): String {
 //    return ScriptParameters.getParameterValue("OnBaseURL") + "/docpop/docpop.aspx?clientType=" + webClientType + "&docid=" + docId
-    return ScriptParameters.OnBaseURL + "/docpop/docpop.aspx?clientType=" + webClientType + "&docid=" + docId
+    return PropertiesHolder.getProperty(Settings.ONBASE_URL_PROP) + "/docpop/docpop.aspx?clientType=" + webClientType + "&docid=" + docId
 
   }
 }

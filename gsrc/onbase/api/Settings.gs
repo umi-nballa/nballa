@@ -55,6 +55,8 @@ class Settings {
     claim, policy, billing
   }
 
+  public static final var ONBASE_URL_PROP: String = "OnBaseURL"
+
   /** OnBase document security type */
   public static final var DocumentSecurity: DocumentSecurityType = DocumentSecurityType.TC_UNRESTRICTED
   /** OnBase document type */

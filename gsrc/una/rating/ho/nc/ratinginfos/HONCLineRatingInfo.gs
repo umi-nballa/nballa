@@ -15,6 +15,7 @@ class HONCLineRatingInfo {
   var _totalBasePremium: BigDecimal as TotalBasePremium
   var _firePersonalLiabilityLimit : BigDecimal as FirePersonalLiabilityLimit
   var _fireMedicalPaymentsLimit : BigDecimal as FireMedicalPaymentsLimit
+  var _additionalResidencesRentedToOthers: int as AdditionalResidencesRentedToOthers
 
   construct(line: HomeownersLine_HOE){
     _personalInjuryAgg = line.HOLI_PersonalInjuryAggregate_NC_HOE_ExtExists
@@ -23,6 +24,10 @@ class HONCLineRatingInfo {
       _fireMedicalPaymentsLimit = line.DPLI_Med_Pay_HOE?.DPLI_MedPay_Limit_HOETerm?.Value
     if(line.DPLI_Personal_Liability_HOEExists)
       _firePersonalLiabilityLimit = line.DPLI_Personal_Liability_HOE?.DPLI_LiabilityLimit_HOETerm?.Value
-//    _numberOfResidenceFamily = line.HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations*.NumberOfFamilies.atMostOne()
+
+
+  _numberOfResidenceFamily = line.HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations*.NumberOfFamilies.atMostOne()
+
+
   }
 }

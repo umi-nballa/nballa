@@ -101,7 +101,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
         break
       case HODW_Personal_Property_HOE:
-        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 and dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
+        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
           rateIncreasedPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_BusinessProperty_HOE_Ext:
@@ -442,12 +442,10 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
     var otherStructuresRatingInfo = new HOOtherStructuresRatingInfo(dwellingCov)
-    if(otherStructuresRatingInfo.IsOtherStructuresIncreasedOrDecreasedLimit){
-      var rateRoutineParameterMap = getOtherStructuresCovParameterSet(PolicyLine, otherStructuresRatingInfo)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null){
-        addCost(costData)
-      }
+    var rateRoutineParameterMap = getOtherStructuresCovParameterSet(PolicyLine, otherStructuresRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
     }
     _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)
   }

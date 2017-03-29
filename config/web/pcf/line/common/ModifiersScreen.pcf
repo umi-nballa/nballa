@@ -65,20 +65,21 @@
             labelStyleClass="ext_redLabel"
             value="policyPeriod.ConsentToRate_Ext">
             <PostOnChange
-              onChange="gw.job.JobWizardHelperEnhancement.createHistoryEventTransaction(policyPeriod)"/>
+              onChange="gw.job.JobWizardHelperEnhancement.createHistoryEventTransaction(policyPeriod);if(policyPeriod.ConsentToRate_Ext==1){policyPeriod.Rule180_Ext=0}"/>
           </CheckBoxInput>
           <Input
             editable="true"
             id="Factor_Extc"
             label="displaykey.Web.ModifiersScreen.Factor_Ext"
             value="policyPeriod?.Factor_Ext"
-            visible="policyPeriod.ConsentToRateReceived_Ext == true"/>
+            visible="policyPeriod.ConsentToRate_Ext == true"/>
           <CheckBoxInput
-            editable="policyPeriod.ConsentToRateReceived_Ext == null || policyPeriod.ConsentToRateReceived_Ext == false"
+            editable="policyPeriod.ConsentToRate_Ext == null || policyPeriod.ConsentToRate_Ext == false"
             id="Rule180_Ext"
             label="displaykey.Web.ModifiersScreen.Rule180_Ext"
             value="policyPeriod.Rule180_Ext">
-            <PostOnChange/>
+            <PostOnChange
+              onChange="if(policyPeriod.Rule180_Ext==1){policyPeriod.ConsentToRate_Ext=0}"/>
           </CheckBoxInput>
           <Input
             editable="true"

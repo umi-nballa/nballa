@@ -121,13 +121,6 @@ class HOProtectionDetailsMapper {
           protectionDetails = extractProtectionDetailsSC(localFireAlarm, localSmokeAlarm, fireExtinguishers, deadbolts, burglarAlarmReportCntlStn,
               fireAlarmReportCntlStn, completeLocalBurglarAlarm, completeHomeSprinklerSystem)
           return protectionDetails
-      /*case TC_HI:
-          if(dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
-              dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6){
-             protectionDetails = extractProtectionDetailsHIHO(fireAlarmReportCntlStn, localFireAlarm, burglarAlarmReportCntlStn,
-                completeLocalBurglarAlarm, completeHomeSprinklerSystem, gatedCommunity)
-           }
-           return protectionDetails*/
     }
     return protectionDetails
   }
@@ -214,22 +207,6 @@ class HOProtectionDetailsMapper {
     } else
       return NO_PROTECTIVE_DEVICE
   }
-
-  /*private static function extractProtectionDetailsHIHO(fireAlarmReportCntlStn : boolean, localFireAlarm : boolean, burglarAlarmReportCntlStn :
-      boolean, completeLocalBurglarAlarm : boolean, completeHomeSprinklerSystem : boolean, gatedCommunity : boolean) : String {
-
-
-      if(fireAlarmReportCntlStn or burglarAlarmReportCntlStn){
-        return FIRE_ALARM_TO_CNTL_STN_OR_BURGLAR_ALARM_TO_CNTL_STN
-      } else if(localFireAlarm or completeLocalBurglarAlarm){
-        return FIRE_ALARM_OR_CMPLT_BURGLAR_ALARM
-      } else if(completeHomeSprinklerSystem){
-        return CMPLT_HOME_SPRINKLER_SYSTEM
-      }else if(gatedCommunity){
-        return GATED_COMM_ALL_AREA
-      } else
-        return NO_PROTECTIVE_DEVICE
-  }*/
 
   private static function extractProtectionDetailsFLDP(fireAlarmReportCntlStn : boolean, localFireAlarm : boolean, completeHomeSprinklerSystem : boolean, automaticSprinklerSystem : boolean) : String {
 

@@ -23,6 +23,7 @@ class HPXHODwellConstructionMapper {
     construction.BldgArea.UnitMeasurementCd = "Sqft"
     construction.addChild(new XmlElement("RoofingMaterial", createRoofingMaterial(policyPeriod)))
     construction.InsurerConstructionClassCd = policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionCode != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionCode : ""
+    construction.addChild(new XmlElement("WindstormMitigation", createWindMitigation(policyPeriod)))
     return construction
   }
 
@@ -31,5 +32,21 @@ class HPXHODwellConstructionMapper {
     roofingMaterial.RoofMaterialCd = policyPeriod.HomeownersLine_HOE.Dwelling.RoofType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.RoofType : typekey.RoofType.TC_OTHER
     roofingMaterial.RoofMaterialDesc = policyPeriod.HomeownersLine_HOE.Dwelling.RoofType != null ? policyPeriod.HomeownersLine_HOE.Dwelling.RoofType.Description : ""
     return roofingMaterial
+  }
+
+  function createWindMitigation(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.WindMitigationType {
+    var windMitigation = new wsi.schema.una.hpx.hpx_application_request.types.complex.WindMitigationType()
+    windMitigation.RoofDecking = policyPeriod.HomeownersLine_HOE.Dwelling.RoofDecking_Ext.Description
+    windMitigation.OpeningProtection = policyPeriod.HomeownersLine_HOE.Dwelling.OpeningProtection_Ext.Description
+    windMitigation.WindSpeed = policyPeriod.HomeownersLine_HOE.Dwelling.FBCWindSpeed_Ext.Description
+    windMitigation.WindBorneDebrisRegion = policyPeriod.HomeownersLine_HOE.Dwelling.WindBorneDebrisRegion_Ext.Description
+    windMitigation.InternalPressureDesign = policyPeriod.HomeownersLine_HOE.Dwelling.InternalPressureDsgn_Ext.Description
+    windMitigation.SecondaryWaterResistance = policyPeriod.HomeownersLine_HOE.Dwelling.SecondaryWaterResis_Ext.Description
+    windMitigation.RoofWallConnection = policyPeriod.HomeownersLine_HOE.Dwelling.RoofWallConnection_Ext.Description
+    windMitigation.RoofCover = policyPeriod.HomeownersLine_HOE.Dwelling.RoofCover_Ext.Description
+    windMitigation.RoofDeckAttachment = policyPeriod.HomeownersLine_HOE.Dwelling.RoofDeckAttachment_Ext.Description
+    windMitigation.DoorStrength = policyPeriod.HomeownersLine_HOE.Dwelling.DoorStrength_Ext.Description
+    windMitigation.Terrain = policyPeriod.HomeownersLine_HOE.Dwelling.Terrain_Ext.Description
+    return windMitigation
   }
 }

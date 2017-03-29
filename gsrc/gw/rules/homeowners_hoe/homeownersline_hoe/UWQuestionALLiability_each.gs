@@ -13,8 +13,8 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UWQuestionALLiability_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner.Dwelling.HOUWQuestions.businessconduct)
-     if(!homeowner.Dwelling.HOUWQuestions.commercialliability){
+    if(homeowner.Dwelling.HOUWQuestions.businessconduct && homeowner.Dwelling.HOUWQuestions.daycare && homeowner.Dwelling.HOUWQuestions.daycareregs )
+     if(homeowner.Dwelling.HOUWQuestions.commercialliability){
         return RuleEvaluationResult.execute()
     }
    return RuleEvaluationResult.skip()

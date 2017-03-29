@@ -96,8 +96,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-          if (dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
-            rateIncreasedPersonalProperty(dwellingCov, dateRange)
+          rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_BusinessProperty_HOE_Ext:
           rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
@@ -569,13 +568,11 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
-      var otherStructuresRatingInfo = new HOOtherStructuresRatingInfo(dwellingCov)
-    if (otherStructuresRatingInfo.IsOtherStructuresIncreasedOrDecreasedLimit){
-      var rateRoutineParameterMap = getOtherStructuresParameterSet(PolicyLine, otherStructuresRatingInfo, PolicyLine.BaseState.Code)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData !=null){
-        addCost(costData)
-      }
+    var otherStructuresRatingInfo = new HOOtherStructuresRatingInfo(dwellingCov)
+    var rateRoutineParameterMap = getOtherStructuresParameterSet(PolicyLine, otherStructuresRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData !=null){
+      addCost(costData)
     }
     if (_logger.DebugEnabled)
       _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)

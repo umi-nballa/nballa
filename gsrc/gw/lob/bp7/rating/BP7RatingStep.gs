@@ -21,7 +21,6 @@ abstract class BP7RatingStep {
     var costData = createCostData(coverage, sliceToRate)
     var parameterSet = createParameterSet(coverage, costData)
     _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
-
     return costData
   }
   

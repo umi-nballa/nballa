@@ -15,10 +15,13 @@ class BP7RatingInfo {
   var _buildingBaseRate : BigDecimal as BuildingBaseRate = 1.0
   var _businessPersonalPropertyBaseRate : BigDecimal as BusinessPersonalPropertyBaseRate = 1.0
   var _contentsDeductibleFactor : BigDecimal as ContentsDeductibleFactor = 1.0
+  var _premiumNOCTR : BigDecimal as PremiumNoCTR = 0.0
+  var _actualCalculatedAmount : BigDecimal as ActualCalculatedAmount = 0.0
 
   construct(line : BP7Line){
-    var policyPeriod = line.AssociatedPolicyPeriod
-    if(policyPeriod?.ConsentToRateReceived_Ext || policyPeriod?.Rule180_Ext)
+    var policyPeriod = line.Branch
+    if(policyPeriod?.ConsentToRate_Ext || policyPeriod?.Rule180_Ext)
       _otherAdjustmentFactor = policyPeriod?.Factor_Ext
+    print(policyPeriod?.ConsentToRate_Ext + " " + policyPeriod?.Factor_Ext + " " + _otherAdjustmentFactor)
   }
 }

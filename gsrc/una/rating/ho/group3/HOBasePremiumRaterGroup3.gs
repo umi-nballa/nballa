@@ -38,6 +38,7 @@ class HOBasePremiumRaterGroup3 {
       HORateRoutineNames.DP_PERSONAL_PROPERTY_BASE_PREMIUM  -> HOCostType_Ext.TC_FIREPERSONALPROPERTY
 
   }
+  private var EC = false
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
     _rateCache = rateCache
@@ -105,6 +106,12 @@ class HOBasePremiumRaterGroup3 {
       routines.add(HORateRoutineNames.DP_DWELLING_BASE_PREMIUM)
       if(_dwelling.DPDW_Personal_Property_HOEExists){
         routines.add(HORateRoutineNames.DP_PERSONAL_PROPERTY_BASE_PREMIUM)
+      }
+      if(EC){
+        routines.add(HORateRoutineNames.DP_EC_DWELLING_BASE_PREMIUM)
+        if(_dwelling.DPDW_Personal_Property_HOEExists){
+          routines.add(HORateRoutineNames.DP_EC_PERSONAL_PROPERTY_BASE_PREMIUM)
+        }
       }
     }else{
       routines.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)

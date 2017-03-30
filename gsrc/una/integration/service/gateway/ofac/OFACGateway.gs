@@ -50,18 +50,20 @@ class OFACGateway implements OFACInterface {
         var clientContext = ofacRequestMapper.buildClientContext()
         var searchConfiguration = ofacRequestMapper.buildSearchConfiguration()
         var contactsForOfacCheck=ofacRequestMapper.getLineSpecificContacts(policyContacts,policyPeriod)
-        var ofacDTOList = ofacRequestMapper.buildOFACInput(contactsForOfacCheck, policyPeriod)
-        var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
-        //Call to OFAC service
-        var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
-        _logger.debug("result:" + result)
+        if (contactsForOfacCheck.HasElements) {
+          var ofacDTOList = ofacRequestMapper.buildOFACInput(contactsForOfacCheck, policyPeriod)
+          var searchInput = ofacRequestMapper.buildSearchInput(ofacDTOList)
+          //Call to OFAC service
+          var result = ofacCommunicator.returnOFACSearchResults(clientContext, searchConfiguration, searchInput)
+          _logger.debug("result:" + result)
 
-        if(result != null) {
-          var contactList = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
-          policyPeriod.ofacdetails.isOFACOrdered = true
-          //contactAndScoreMap should be null in case of no - HIT only
-          if (contactList.Count >= 1) {
-            ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
+          if(result != null) {
+            var contactList = ofacHelper.checkAndMapResponseForAlerts(policyContacts, policyPeriod, result)
+            policyPeriod.ofacdetails.isOFACOrdered = true
+            //contactAndScoreMap should be null in case of no - HIT only
+            if (contactList.Count >= 1) {
+              ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
+            }
           }
         }
       } else {

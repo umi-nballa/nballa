@@ -15,8 +15,8 @@ class AddressDTO {
   /**
    * Public identifier for the address within Insurance Suite
    */
-  @JsonProperty
-  var _publicID : String as PublicID
+  /*@JsonProperty    --portal
+  var _publicID : String as PublicID*/
 
   /**
    * Display name for the address

@@ -1,6 +1,7 @@
 package una.integration.mapping.document
 
 uses una.utils.ActivityUtil
+uses gw.api.database.Query
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,7 +33,7 @@ class DocumentActivity {
   final static var REVIEW_INSPECTION_UW = "review_inspection_uw"
   final static var VENDOR_WIND_MIT_INSPECTION = "vendor_wind_mit_inspection"
   final static var CSR_QUEUE="CSR Queue"
-  final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority Inspection Review"
+  final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority  Inspection Review"
   final static var UW_INSPECTION_REVIEW_QUEUE = "UW Inspection Review"
   final static var CSR_INSPECTION_QUEUE = "CSR Inspection Queue"
   final static var SENIOR_UW_QUEUE = "Senior UW Queue"
@@ -167,8 +168,10 @@ class DocumentActivity {
 
   private function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
     var activity = ActivityUtil.createActivityAutomatically(period, patternCode)
-    if(activity.canAssign()){
-      ActivityUtil.assignActivityToQueue(queue, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+    // As the queue is mapped to different Groups
+    var assignableQueue = Query.make(AssignableQueue).compare(AssignableQueue#Name, Equals, queue).select().AtMostOneRow
+    if(assignableQueue!=null && activity.canAssign()){
+      ActivityUtil.assignActivityToQueue(queue, (assignableQueue.Group) as String,activity)
     }
   }
 

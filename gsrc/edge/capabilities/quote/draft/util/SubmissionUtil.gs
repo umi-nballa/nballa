@@ -24,7 +24,7 @@ class SubmissionUtil {
     selectUWCompany(branch)
 
     // Set the branch name so that we can identify the quote in the portal.  Maps to quote type enum values
-    branch.BranchName = "CUSTOM"
+    branch.BranchName = typekey.RatingStyle.TC_QUICKQUOTE//"CUSTOM"
 
     branch.SubmissionProcess.beginEditing()
     branch.TermType = termType == null ? typekey.TermType.TC_ANNUAL : termType

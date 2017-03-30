@@ -7,8 +7,8 @@ uses gw.xml.ws.annotation.WsiExportable
 @WsiExportable("http://guidewire.com/pc/ws/gw/webservice/pc/pc700/community/datamodel/ProducerCodeDTO")
 final class ProducerCodeDTO {
 
-  @JsonProperty
-  var _publicID : String as PublicID
+ /* @JsonProperty
+  var _publicID : String as PublicID*/
 
   @JsonProperty
   var _code: String as Code

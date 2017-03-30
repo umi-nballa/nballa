@@ -9,8 +9,8 @@ class PolicySummaryDTO {
   @JsonProperty
   var _policyLines : PolicyLineDTO[] as PolicyLines
 
-  @JsonProperty
-  var _policyId : String as PolicyId
+  /*@JsonProperty
+  var _policyId : String as PolicyId*/
 
   @JsonProperty
   var _policyNumber : String as PolicyNumber

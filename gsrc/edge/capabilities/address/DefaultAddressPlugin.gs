@@ -26,7 +26,7 @@ class DefaultAddressPlugin implements IAddressPlugin {
   }
   
   public static function fillAddress(res : AddressDTO, address : Address) {
-    res.PublicID = address.PublicID
+    //res.PublicID = address.PublicID
     res.DisplayName = address.DisplayName
     res.AddressLine1 = address.AddressLine1
     res.AddressLine1Kanji = address.AddressLine1Kanji

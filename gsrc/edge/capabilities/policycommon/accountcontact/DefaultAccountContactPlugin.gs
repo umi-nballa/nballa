@@ -26,7 +26,7 @@ class DefaultAccountContactPlugin implements IAccountContactPlugin{
   }
 
   private function fillContact(aContact : Contact, dto : AccountContactDTO){
-    dto.PublicID = aContact.PublicID
+    //dto.PublicID = aContact.PublicID
     dto.Subtype = aContact.Subtype.Code
     dto.DisplayName = aContact.DisplayName
     dto.ContactName = aContact.Name

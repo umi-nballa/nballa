@@ -19,6 +19,8 @@ uses java.util.Date
 uses gw.api.database.IQueryBeanResult
 uses java.lang.IllegalArgumentException
 uses gw.job.UNAHORenewalProcess
+uses una.utils.ActivityUtil
+uses una.integration.mapping.document.DocumentActivity
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -237,6 +239,10 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
   }
 
   private function onDocumentAdded(document : Document) {
+
+    var docActivity = new DocumentActivity()
+    docActivity.mapDocActivity(document, document.PolicyPeriod)
+
     if(document.Type == TC_ONBASE and document.OnBaseDocumentSubtype == tc_incorr_consent_to_rate){
       var openRenewal = document.Policy.OpenRenewalJob
 

@@ -10,7 +10,7 @@ class DefaultProducerCodePlugin implements IProducerCodePlugin {
 
   override function toDTO(aProducerCode: ProducerCode): ProducerCodeDTO {
     final var dto = new ProducerCodeDTO()
-    dto.PublicID = aProducerCode.PublicID
+    //dto.PublicID = aProducerCode.PublicID
     dto.Code = aProducerCode.Code
     dto.Description = aProducerCode.Description
     dto.DisplayValue = aProducerCode.Description != null ? aProducerCode.Code + " " + aProducerCode.Description : aProducerCode.Code

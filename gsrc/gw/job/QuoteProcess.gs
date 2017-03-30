@@ -76,9 +76,11 @@ class QuoteProcess {
 //      ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
 //    }
     //Added OFAC call only for new added contact when Transaction is of type PolicyChange and Renewal
-    if(_branch.Job typeis PolicyChange || _branch.Job typeis Renewal){
-      var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
-      ofacInterface.validateOFACEntity(new OFACGatewayHelper().getNewlyAddedContactOnPolicyPeriod(_branch),_branch)
+    if (_branch.Job typeis PolicyChange || _branch.Job typeis Renewal){
+      var ofacInterface = una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
+      if (new OFACGatewayHelper().getNewlyAddedContactOnPolicyPeriod(_branch).size() > 0){
+        ofacInterface.validateOFACEntity(new OFACGatewayHelper().getNewlyAddedContactOnPolicyPeriod(_branch), _branch)
+      }
     }
       PCProfilerTag.QUOTE_SYNC.execute(\ -> {
       _oosSliceDates = _branch.OOSSliceDates

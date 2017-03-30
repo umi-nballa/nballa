@@ -33,7 +33,10 @@ class BP7BuildingStep extends BP7RatingStep {
     var costData = createCostData(coverage, sliceToRate)
     var parameterSet = createParameterSetForBP7Structure(coverage, costData, bp7StructureRatingInfo)
     _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
-
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
   }
 
@@ -41,7 +44,10 @@ class BP7BuildingStep extends BP7RatingStep {
     var costData = createCostData(coverage, sliceToRate)
     var parameterSet = createBuildingParameterSet(coverage, costData, buildingRatingInfo)
     _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
-
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
   }
 

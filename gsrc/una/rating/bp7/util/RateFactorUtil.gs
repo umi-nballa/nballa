@@ -162,11 +162,16 @@ class RateFactorUtil {
   static function setBuildingDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, building : BP7Building) : BigDecimal{
     var windOrHailPercentage = line.BP7LocationPropertyDeductibles_EXT?.BP7WindHailDeductible_EXTTerm?.DisplayValue
     _buildingDeductibleFactor = 1.0
+    var bppLimit : BigDecimal = 0.0
+    var accountsReceivableLimit : BigDecimal = 0.0
+    var valuablePapersLimit : BigDecimal = 0.0
     if(windOrHailPercentage != "Not Applicable"){
       var optionalDeductible = line.BP7LocationPropertyDeductibles_EXT?.BP7OptionalDeductible_EXTTerm?.Value
-      var bppLimit = building.Classifications.first()?.BP7ClassificationBusinessPersonalProperty?.BP7BusnPrsnlPropLimitTerm?.Value
-      var accountsReceivableLimit = building.Classifications.first()?.BP7ClassificationAccountsReceivable?.BP7LimitatDescribedPremises_EXTTerm?.Value
-      var valuablePapersLimit = building.Classifications.first()?.BP7ClassificationValuablePapers?.BP7LimitDescribedPremises_EXTTerm?.Value
+      if(building.Classifications.first()?.BP7ClassificationBusinessPersonalPropertyExists){
+        bppLimit = building.Classifications.first()?.BP7ClassificationBusinessPersonalProperty?.BP7BusnPrsnlPropLimitTerm?.Value
+        accountsReceivableLimit = building.Classifications.first()?.BP7ClassificationAccountsReceivable?.BP7LimitatDescribedPremises_EXTTerm?.Value
+        valuablePapersLimit = building.Classifications.first()?.BP7ClassificationValuablePapers?.BP7LimitDescribedPremises_EXTTerm?.Value
+      }
       var buildingLimit = building?.BP7Structure?.BP7BuildingLimitTerm?.Value
       var totalLimit = buildingLimit + bppLimit + valuablePapersLimit + accountsReceivableLimit
       _buildingDeductibleFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_windstorm_hail_deductible", {totalLimit, windOrHailPercentage, optionalDeductible})
@@ -182,11 +187,16 @@ class RateFactorUtil {
   static function setContentDeductibleFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, classification : BP7Classification){
     var windOrHailPercentage = line.BP7LocationPropertyDeductibles_EXT?.BP7WindHailDeductible_EXTTerm?.DisplayValue
     _contentDeductibleFactor = 1.0
+    var bppLimit : BigDecimal = 0.0
+    var accountsReceivableLimit : BigDecimal = 0.0
+    var valuablePapersLimit : BigDecimal = 0.0
     if(windOrHailPercentage != "Not Applicable"){
       var optionalDeductible = line.BP7LocationPropertyDeductibles_EXT?.BP7OptionalDeductible_EXTTerm?.Value
-      var bppLimit = classification?.BP7ClassificationBusinessPersonalProperty?.BP7BusnPrsnlPropLimitTerm?.Value
-      var accountsReceivableLimit = classification?.BP7ClassificationAccountsReceivable?.BP7LimitatDescribedPremises_EXTTerm?.Value
-      var valuablePapersLimit = classification?.BP7ClassificationValuablePapers?.BP7LimitDescribedPremises_EXTTerm?.Value
+      if(classification.BP7ClassificationBusinessPersonalPropertyExists){
+        bppLimit = classification?.BP7ClassificationBusinessPersonalProperty?.BP7BusnPrsnlPropLimitTerm?.Value
+        accountsReceivableLimit = classification?.BP7ClassificationAccountsReceivable?.BP7LimitatDescribedPremises_EXTTerm?.Value
+        valuablePapersLimit = classification?.BP7ClassificationValuablePapers?.BP7LimitDescribedPremises_EXTTerm?.Value
+      }
       var buildingLimit = classification?.Building?.BP7Structure?.BP7BuildingLimitTerm?.Value
       var totalLimit = buildingLimit + bppLimit + valuablePapersLimit + accountsReceivableLimit
       _contentDeductibleFactor = getRateTableFactor(line, minimumRatingLevel, "bp7_windstorm_hail_deductible", {totalLimit, windOrHailPercentage, optionalDeductible})

@@ -93,9 +93,9 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
     }
 
     if(dwelling?.HODW_SectionI_Ded_HOEExists){
-      _aopDeductible = dwelling?.HODW_SectionI_Ded_HOE?.HODW_OtherPerils_Ded_HOETerm?.Value.intValue()
+      _aopDeductible = dwelling?.HODW_SectionI_Ded_HOE?.HODW_OtherPerils_Ded_HOETerm?.Value?.intValue()
       _hurricanePercentage = dwelling?.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm?.Value
-      _windOrHailPercentage = dwelling?.HODW_SectionI_Ded_HOE?.HODW_WindHail_Ded_HOETerm?.Value.intValue()
+      _windOrHailPercentage = dwelling?.HODW_SectionI_Ded_HOE?.HODW_WindHail_Ded_HOETerm?.Value?.intValue()
     }
     _roofType = dwelling?.RoofTypeOrOverride?.Description
     var termNumber = dwelling?.HOLine?.Branch?.LatestPeriod.TermNumber

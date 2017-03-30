@@ -16,6 +16,7 @@ uses una.rating.ho.common.HOOtherStructuresRatingInfo
 uses una.rating.ho.common.HOCommonRateRoutinesExecutor
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
+uses una.rating.ho.common.HOAddResidenceRentedToOthersCovRatingInfo
 
 /**
  * Created with IntelliJ IDEA.
@@ -66,7 +67,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.PERSONAL_INJURY_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
           break
       case HOLI_AddResidenceRentedtoOthers_HOE:
-          updateLineCostData(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_ROUTINE_NAME, _lineRateRoutineParameterMap)
+          rateAddResidenceRentedToOthersCoverage(lineCov, dateRange)
           break
       case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
           updateLineCostData(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME, _lineRateRoutineParameterMap)
@@ -186,21 +187,23 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Wood Burning Stove Premium Rated Successfully", this.IntrinsicType)
   }
 
-/*  *//**
-   * Rate the additional residence rented to others coverage
-   *//*
-  function rateAdditionalResidenceRentedToOthersCoverage(lineCov: HOLI_AddResidenceRentedtoOthers_HOE, dateRange: DateRange) {
-    if(_logger.DebugEnabled)
-      _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalResidenceRentedToOthersCoverage to rate Additional Residence Rented To Others Coverage", this.IntrinsicType)
-    var lineRatingInfo = new HONCLineRatingInfo(lineCov.HOLine)
-    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine, lineRatingInfo, PolicyLine.BaseState.Code)
-    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null){
-      addCost(costData)
+
+   /* Rate the additional residence rented to others coverage
+   */
+  function rateAddResidenceRentedToOthersCoverage(lineCov: HOLI_AddResidenceRentedtoOthers_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateAddResidenceRentedToOthersCoverage", this.IntrinsicType)
+    for (item in lineCov.CoveredLocations) {
+      var rateRoutineParameterMap = getAddResidenceRentedToOthersCovParameterSet(PolicyLine, item)
+      var costData = HOCreateCostDataUtil.createCostDataForAdditionalScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_RESIDENCE_RENTED_TO_OTHERS_COVERAGE_ROUTINE_NAME, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      if (costData != null)
+        addCost(costData)
     }
-    if(_logger.DebugEnabled)
-      _logger.debug("Additional Residence Rented To Others Coverage Rated Successfully", this.IntrinsicType)
-  }*/
+    if (_logger.DebugEnabled)
+      _logger.debug("Additional Residence - Rented To Others Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
 
   function rateEarthquakeCoverage(dwellingCov : HODW_Earthquake_HOE, dateRange : DateRange){
     if (_logger.DebugEnabled)
@@ -334,10 +337,10 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 //    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
 //    if (costData != null)
 //      addCost(costData)
-//    _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
+//    _logger.debug
 //  }
 
-  /**
+  /**("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
    *  Rate the Permitted Incidental Occupancies Coverage
    */
   function ratePermittedIncidentalOccupanciesCoverage(dwellingCov: HODW_PermittedIncOcp_HOE_Ext, dateRange: DateRange) {
@@ -557,6 +560,16 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_POLICYLINE -> line,
         TC_RATINGINFO -> _hoRatingInfo,
         TC_DWELLINGRATINGINFO_EXT -> basePremiumRatingInfo
+    }
+  }
+
+  /**
+   * Returns the parameter set for the Additional Residence Rented To Others
+   */
+  private function getAddResidenceRentedToOthersCovParameterSet(line: PolicyLine, item: CoveredLocation_HOE): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_ADDRESIDENCERENTEDTOOTHERSRATINGINFO_EXT -> new HOAddResidenceRentedToOthersCovRatingInfo(item)
     }
   }
 

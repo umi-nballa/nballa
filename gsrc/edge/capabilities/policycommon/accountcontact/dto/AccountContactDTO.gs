@@ -23,11 +23,11 @@ class AccountContactDTO {
   @Required(Expr.eq(Validation.getContext("AccountEmailRequired"), true))
   var _emailAddress1 : String as EmailAddress1
 
-  @JsonProperty
-  var _publicID : String as PublicID
+  /*@JsonProperty    --portal
+  var _publicID : String as PublicID*/
 
-  @JsonProperty
-  var _tempID : Integer as TempID
+ /* @JsonProperty
+  var _tempID : Integer as TempID*/
 
   @JsonReadOnlyProperty// ReadOnly
   var _displayName : String as DisplayName

@@ -1961,9 +1961,25 @@
 			<xsd:element name="NumGuestRooms" type="xsd:byte" minOccurs="0"/>
 			<xsd:element name="BldgPermitDt" type="xsd:date" minOccurs="0"/>
 			<xsd:element name="DemolishionOrRemodelingDesc" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="WindstormMitigationProgramCd" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="WindstormMitigation" type="WindMitigationType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="WindMitigationType">
+        <xsd:sequence>
+            <xsd:element name="RoofCover" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="RoofDecking" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="RoofWallConnection" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="RoofShape" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="SecondaryWaterResistance" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="OpeningProtection" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="WindBorneDebrisRegion" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="InternalPressureDesign" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="RoofDeckAttachment" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Terrain" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="WindSpeed" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="DoorStrength" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="LengthTimeOccupancyTypeType">
 		<xsd:sequence>
 			<xsd:element name="NumUnits" type="xsd:string"/>

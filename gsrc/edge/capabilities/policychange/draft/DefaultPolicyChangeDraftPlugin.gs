@@ -82,7 +82,7 @@ class DefaultPolicyChangeDraftPlugin implements IPolicyChangeDraftPlugin {
     dto.TransactionCost = AmountDTO.fromMonetaryAmount(period.TransactionCostRPT)
     dto.PolicyAddress = _addressPlugin.toDto(period.PolicyAddress)
     var address = period.PolicyAddress.Address
-    dto.PolicyAddress.PublicID = period.PolicyAddress.PublicID
+    //dto.PolicyAddress.PublicID = period.PolicyAddress.PublicID
     dto.PolicyAddress.DisplayName = period.PolicyAddress.Address.DisplayName
     dto.PolicyAddress.AddressType = period.PolicyAddress.AddressType
     dto.Lobs = _lobPlugin.toDraftDTO(period)

@@ -6,6 +6,8 @@ uses gw.api.util.Logger
 uses java.util.Map
 
 uses org.apache.commons.lang.StringEscapeUtils
+uses una.utils.PropertiesHolder
+
 /**
  * Created with IntelliJ IDEA.
  * User: CMattox
@@ -16,7 +18,7 @@ uses org.apache.commons.lang.StringEscapeUtils
 class DocPopUtils {
   private static final var logger = Logger.forCategory("Document.OnBaseDMS")
 
-  private static final var DocPopURL = ScriptParameters.OnBaseURL.toLowerCase() + "/docpop/docpop.aspx"
+  private static final var DocPopURL = PropertiesHolder.getProperty(Settings.ONBASE_URL_PROP) + "/docpop/docpop.aspx"
 
   /**
    * Url for DocPop

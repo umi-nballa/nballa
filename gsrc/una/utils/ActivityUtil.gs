@@ -77,16 +77,14 @@ class ActivityUtil {
     if(period.ofaccontact!= null && period.ofaccontact?.atMostOneWhere( \ elt -> elt.OverrideHit == false)?.OverrideHit != true)
     {
       var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC1").atMostOne()
-      var user = una.config.activity.OfacUtil.findUserByUsername("ofaccsr")
-      if(user==null)
-      {
-        user = una.config.activity.OfacUtil.findUserByUsername("su")
-      }
+
       //_branch.Job.createRoleActivity(typekey.UserRole.TC_CUSTOMERREP,pattern,"Ofac Check","Please check for OFAC hit",user)//,una.config.activity.OfacUtil.findUserByUsername("ofaccsr"))
       if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC1")==null)
       {
         var activity =  pattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-        activity.assign(user.RootGroup,user)
+        //activity.assign(user.RootGroup,user)
+        var queueho:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="CSR Queue") as AssignableQueue
+        activity.assignToQueue(queueho)
       }
 
       //create custom history event

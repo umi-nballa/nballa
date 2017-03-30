@@ -16,6 +16,9 @@ public final class HORateRoutineNames {
   public static final var DP_BASE_PREMIUM_RATE_ROUTINE : String = "UNAHODPBasePremiumRateRoutine"
   public static final var DP_DWELLING_BASE_PREMIUM : String = "UNAHODPDwellingBasePremiumRateRoutine"
   public static final var DP_PERSONAL_PROPERTY_BASE_PREMIUM : String = "UNAHODPPersonalPropertyBasePremiumRateRoutine"
+  public static final var DP_EC_DWELLING_BASE_PREMIUM : String = "UNAHODPECDwellingBasePremiumRateRoutine"
+  public static final var DP_EC_PERSONAL_PROPERTY_BASE_PREMIUM : String = "UNAHODPECPersonalPropertyBasePremiumRateRoutine"
+
 
   //base premium routines for group 2 states
   public static final var BASE_PREMIUM_SC_RATE_ROUTINE : String = "UNAHOBasePremiumRateRoutine"
@@ -147,4 +150,6 @@ public final class HORateRoutineNames {
   public static final var DWELLING_FIRE_OTHER_STRUCTURES_INCREASED_LIMITS_COV_ROUTINE_NAME : String = "UNAHODwellingFireOtherStructuresIncreasedLimitsCovRateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_HI_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovHIRateRoutine"
   public static final var WOOD_BURNING_STOVE_RATE_ROUTINE : String = "UNAHOWoodBurningStoveRateRoutine"
+  public static final var WIND_EXCLUSION_CREDIT_DWELLING : String =  "UNAHODPWindExclusionCreditDwelling"
+  public static final var WIND_EXCLUSION_CREDIT_PERSONAL_PROPERTY : String = "UNAHODPWindExclusionCreditPersonalProperty"
 }

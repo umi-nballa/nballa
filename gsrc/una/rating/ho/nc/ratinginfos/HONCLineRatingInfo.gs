@@ -26,7 +26,7 @@ class HONCLineRatingInfo {
       _firePersonalLiabilityLimit = line.DPLI_Personal_Liability_HOE?.DPLI_LiabilityLimit_HOETerm?.Value
 
 
-  _numberOfResidenceFamily = line.HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations*.NumberOfFamilies.atMostOne()
+  _numberOfResidenceFamily = line?.HOLI_AddResidenceRentedtoOthers_HOE?.CoveredLocations*.NumberOfFamilies?.atMostOne()
 
 
   }

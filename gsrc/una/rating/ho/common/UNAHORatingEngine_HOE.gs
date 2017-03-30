@@ -337,6 +337,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     } else if (_baseState == typekey.Jurisdiction.TC_NV){
       if (line.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION)
         return true
+    } else if (_baseState == typekey.Jurisdiction.TC_HI){
+      if (line.Branch.Job.Subtype == typekey.Job.TC_RENEWAL)
+        return true
     }
     return false
   }

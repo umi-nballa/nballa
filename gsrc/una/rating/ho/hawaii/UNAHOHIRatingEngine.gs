@@ -64,8 +64,8 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _discountsOrSurchargeRatingInfo = new HOHIDiscountsOrSurchargeRatingInfo (PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
       _protectiveDeviceRatingInfo = new HOHIProtectiveDeviceDetailsRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
 
-      rateHigherAllPerilDeductible(dateRange)  // HO3
-      rateAgeOfHomeDiscount(dateRange)       // HO3
+      rateHigherAllPerilDeductible(dateRange)
+      rateAgeOfHomeDiscount(dateRange)
 
       if (PolicyLine.Branch.QualifiesAffinityDisc_Ext) {
         rateAffinityDiscount(dateRange)
@@ -86,18 +86,18 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         rateMultiLineDiscount(dateRange)
       }
 
-      rateMaximumDiscountAdjustment(dateRange)       //HO3
+      rateMaximumDiscountAdjustment(dateRange)
 
       //update the total base premium with the discounts and surcharges
       updateTotalBasePremium()
 
       if (dwelling?.HODW_Personal_Property_HOEExists and (!HasExecutiveCoverage)){
         if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value == tc_PersProp_ReplCost){
-          ratePersonalPropertyReplacementCost(dateRange)       //HO3
+          ratePersonalPropertyReplacementCost(dateRange)
         }
       }
 
-      rateProtectiveDeviceCredit(dateRange)          //HO3
+      rateProtectiveDeviceCredit(dateRange)
     }
 
     override function rateDwellingCoverages(dwellingCov: DwellingCov_HOE, dateRange: DateRange){
@@ -115,11 +115,9 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_EquipBreakdown_HOE_Ext:
             rateEquipmentBreakdownCoverage(dwellingCov, dateRange)
             break
-
-        //HO3 starts here
-
         case HODW_Personal_Property_HOE:
-            rateIncreasedPersonalPropertyHO(dwellingCov, dateRange)
+            if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
+              rateIncreasedPersonalPropertyHO(dwellingCov, dateRange)
             break
         case HODW_Other_Structures_HOE:
             rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
@@ -170,8 +168,6 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             rateHurricaneCoverage(dwellingCov, dateRange)
             break*/
 
-        // HO4
-
         case HODW_BuildingAdditions_HOE_Ext:
             if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4)
               rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
@@ -184,8 +180,6 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 //      case HOLI_AdditionalInsuredSchedPropertyManager:
 //          rateAdditionalInsuredPropertyManager(lineCov, dateRange)
 //          break
-
-      //HO3 starts here
 
       case HOSL_OutboardMotorsWatercraft_HOE_Ext:
           rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)

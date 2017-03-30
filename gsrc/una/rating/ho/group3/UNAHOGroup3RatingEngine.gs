@@ -80,6 +80,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
         rateUnitOwnersRentedToOthersCoverage(lineCov, dateRange)
         break
+
     }
   }
 
@@ -160,6 +161,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateBuildingAdditionsCoverage(dwellingCov, dateRange)
         }
         break
+
     }
   }
 
@@ -188,8 +190,16 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
     }
 
-    if(hasNoPriorInsurance())
-      rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
+    if(hasNoPriorInsurance()){
+      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT){
+        rateNoPriorInsurance(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_NOPRIORINSURANCEDWELLING)
+        if(_hoRatingInfo.PersonalPropertyExists){
+          rateNoPriorInsurance(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_NOPRIORINSURANCEPERSONALPROPERTY)
+        }
+      }else{
+        rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
+      }
+    }
 
     if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
       if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
@@ -216,13 +226,23 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
         _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
         rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEDWELLING)
-        rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEPERSONALPROPERTY)
+
+        if(_hoRatingInfo.PersonalPropertyExists){
+          rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEPERSONALPROPERTY)
+        }
 
       }
       rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEDWELLING, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
-      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEPERSONALPROPERTY, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+      if(_hoRatingInfo.PersonalPropertyExists){
+        rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEPERSONALPROPERTY, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+      }
 
-
+      if(windOrHailExcluded){
+        rateWindHailExclusionCredit(dateRange,  _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_WINDEXCLUSIONCREDITDWELLING, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
+        if(_hoRatingInfo.PersonalPropertyExists){
+          rateWindHailExclusionCredit(dateRange,  _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_WINDEXCLUSIONCREDITPERSONALPROPERTY, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
+        }
+      }
     }
 
     //rating all wind hail included, credit and discounts
@@ -281,6 +301,22 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         ratePersonalPropertyReplacementCost(dateRange)
       }
     }
+
+  }
+
+
+  function rateWindHailExclusionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateWindHailExclusionCredit", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("No rateWindHailExclusionCredit Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -628,6 +664,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(_logger.DebugEnabled)
       _logger.debug("No Prior Insurance Rated Successfully", this.IntrinsicType)
   }
+
+
+
 
   /**
    *  Function to rate the Mature Homeowner Discount

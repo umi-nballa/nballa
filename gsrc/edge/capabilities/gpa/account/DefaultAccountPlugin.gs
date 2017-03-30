@@ -97,7 +97,7 @@ class DefaultAccountPlugin implements IAccountPlugin {
       return null
     }
     final var dto = new AccountDTO()
-    dto.PublicID = anAccount.PublicID
+    //dto.PublicID = anAccount.PublicID
     dto.AccountNumber = anAccount.AccountNumber
     dto.StatusDisplayName = anAccount.AccountStatus.DisplayName
     dto.AccountCreatedDate = anAccount.CreateTime

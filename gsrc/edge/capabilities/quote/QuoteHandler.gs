@@ -472,7 +472,8 @@ class QuoteHandler implements IRpcHandler  {
    */
   private function getSubmissionByJob(number : String) : Submission {
     final var foundSubmission = Query.make(Submission).compare("JobNumber", Equals, number).select().FirstResult
-    if (foundSubmission == null || !SubmissionAuthorizer.canAccess(foundSubmission) ){
+    //if (foundSubmission == null || !SubmissionAuthorizer.canAccess(foundSubmission) ){   --portal
+      if (foundSubmission == null  ){
       throw new EntityNotFoundException() {: Message = "Submission not found" }
     }
     return foundSubmission
@@ -483,9 +484,9 @@ class QuoteHandler implements IRpcHandler  {
    * Runs code within a transaction bundle.
    */
   protected function  withBundledSubmission<T>(qdd : QuoteDataDTO, cb(sub : Submission) : T) : T {
-    if(!_sessionPlugin.validateAndRefreshSession(qdd.SessionUUID, qdd.QuoteID)){
-      throw new JsonRpcSecurityException(){:Message = "Invalid session"}
-    }
+    /*if(!_sessionPlugin.validateAndRefreshSession(qdd.SessionUUID, qdd.QuoteID)){
+      throw new JsonRpcSecurityException(){:Message = "Invalid session"}     --portal
+    }*/
     final var sub = getSubmissionByJob(qdd.QuoteID)
     return Bundle.resolveInTransaction(\ b -> cb(b.add(sub)))
   }

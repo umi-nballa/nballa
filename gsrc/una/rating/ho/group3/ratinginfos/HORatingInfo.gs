@@ -13,6 +13,8 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _adjustedAOPBasePremium: BigDecimal as AdjustedAOPBasePremium = 0.0
   var _fireBasePremiumDwelling : BigDecimal as FireBasePremiumDwelling = 0.0
   var _fireBasePremiumPersonalProperty : BigDecimal as FireBasePremiumPersonalProperty = 0.0
+  var _fireECBasePremiumDwelling: BigDecimal as FireECBasePremiumDwelling = 0.0
+  var _fireECBasePremiumPersonalProperty : BigDecimal as FireECBasePremiumPersonalProperty = 0.0
   var _finalAdjustedAOPBasePremium: BigDecimal as FinalAdjustedAOPBasePremium = 0.0
   var _keyAOPPremium : BigDecimal as KeyAOPPremium = 0.0
 

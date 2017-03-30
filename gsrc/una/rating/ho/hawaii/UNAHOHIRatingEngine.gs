@@ -16,6 +16,7 @@ uses una.rating.ho.hawaii.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
 uses una.rating.ho.hawaii.ratinginfos.HOAddResidenceRentedToOthersCovRatingInfo
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HOHIProtectiveDeviceDetailsRatingInfo
 uses gw.rating.CostData
 
 /**
@@ -30,6 +31,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     private static final var CLASS_NAME = UNAHOHIRatingEngine.Type.DisplayName
     private var _hoRatingInfo: HORatingInfo
     private var _discountsOrSurchargeRatingInfo : HOHIDiscountsOrSurchargeRatingInfo
+    private var _protectiveDeviceRatingInfo : HOHIProtectiveDeviceDetailsRatingInfo
     private var _lineRateRoutineParameterMap : Map<CalcRoutineParamName, Object>
     private var _lineRatingInfo : HOLineRatingInfo
     private var _dwellingRatingInfo : HOHIDwellingRatingInfo
@@ -60,6 +62,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     override function rateHOLineCosts(dateRange: DateRange){
       var dwelling = PolicyLine.Dwelling
       _discountsOrSurchargeRatingInfo = new HOHIDiscountsOrSurchargeRatingInfo (PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
+      _protectiveDeviceRatingInfo = new HOHIProtectiveDeviceDetailsRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
 
       rateHigherAllPerilDeductible(dateRange)  // HO3
       rateAgeOfHomeDiscount(dateRange)       // HO3
@@ -116,8 +119,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         //HO3 starts here
 
         case HODW_Personal_Property_HOE:
-            if(dwellingCov.HODW_PersonalPropertyLimit_HOETerm.LimitDifference > 0)
-              rateIncreasedPersonalPropertyHO(dwellingCov, dateRange)
+            rateIncreasedPersonalPropertyHO(dwellingCov, dateRange)
             break
         case HODW_Other_Structures_HOE:
             rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
@@ -262,12 +264,10 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
-    if (_dwellingRatingInfo.OtherStructuresIncreasedLimit != 0){
-      var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-      if (costData != null){
-        addCost(costData)
-      }
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
     }
     if (_logger.DebugEnabled)
       _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)
@@ -514,7 +514,7 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   function rateProtectiveDeviceCredit(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateProtectiveDeviceCredit", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var rateRoutineParameterMap = getHOLineProtectiveDeviceDetailsParameterSet(PolicyLine, _protectiveDeviceRatingInfo, PolicyLine.BaseState)
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.ProtectiveDevicesDiscount = costData?.ActualTermAmount
@@ -743,9 +743,15 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           TC_STATE -> state,
           TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
       }
-
-
     }
+
+  private function getHOLineProtectiveDeviceDetailsParameterSet(line: PolicyLine, protectiveDeviceRatingInfo: HOHIProtectiveDeviceDetailsRatingInfo, state: Jurisdiction): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> state,
+        TC_PROTECTIVEDEVICEDETAILSRATINGINFO_EXT -> protectiveDeviceRatingInfo
+    }
+  }
 
   /**
    * Returns the parameter set with a rating info

@@ -42,7 +42,21 @@ class BP7ClassificationStep extends BP7RatingStep {
     var costData = createCostData(coverage, sliceToRate)
     var parameterSet = createParameterSetForBP7BPP(coverage, costData, businessPersonalPropertyRatingInfo)
     _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
+    return costData
+  }
 
+  override function rate(coverage : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine> {
+    var costData = createCostData(coverage, sliceToRate)
+    var parameterSet = createParameterSet(coverage, costData)
+    _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
   }
 

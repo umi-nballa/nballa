@@ -6,10 +6,8 @@
   effDatedBranchType="PolicyPeriod"
   entity="BP7Cost"
   exportable="true"
-  extendable="true"
   final="false"
   loadable="false"
-  platform="false"
   table="bp7cost"
   type="effdated">
   <implementsInterface
@@ -31,4 +29,28 @@
     getterScriptability="doesNotExist"
     name="Transactions"
     setterScriptability="hidden"/>
+  <column
+    desc="premium with no CTR applied"
+    name="PremiumNoCTR_Ext"
+    nullok="true"
+    type="decimal">
+    <columnParam
+      name="precision"
+      value="18"/>
+    <columnParam
+      name="scale"
+      value="2"/>
+  </column>
+  <column
+    desc="actual term amount with no min premium applied"
+    name="ActualCalculatedTermAmount_Ext"
+    nullok="true"
+    type="decimal">
+    <columnParam
+      name="precision"
+      value="18"/>
+    <columnParam
+      name="scale"
+      value="2"/>
+  </column>
 </entity>

@@ -11,8 +11,8 @@ uses edge.capabilities.gpa.currency.dto.CurrencyDTO
 
 class AccountDTO {
 
-  @JsonProperty
-  var _publicID : String as PublicID
+  /*@JsonProperty
+  var _publicID : String as PublicID*/
 
   @JsonProperty
   var _accountNumber : String as AccountNumber

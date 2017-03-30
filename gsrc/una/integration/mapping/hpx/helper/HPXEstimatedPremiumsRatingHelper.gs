@@ -44,7 +44,7 @@ class HPXEstimatedPremiumsRatingHelper {
     ratingInfo.EarthquakeDeductible = deductible
     ratingInfo.EarthquakeConstructionType = period.HomeownersLine_HOE.Dwelling.EarthquakeConstrn_Ext
     ratingInfo.EarthquakeGrading = period.HomeownersLine_HOE.Dwelling.BCEGOrOverride?.Value
-    ratingInfo.EarthquakeTerritoryValue = period.HomeownersLine_HOE.Dwelling.EarthquakeTerOverridden_Ext
+    ratingInfo.EarthquakeTerritoryValue = period.HomeownersLine_HOE.Dwelling.EarthQuakeTerritoryOrOverride
     ratingInfo.YearBuilt = period.HomeownersLine_HOE.Dwelling.YearBuilt
     var hoRatingInfo = new una.rating.ho.group1.ratinginfos.HORatingInfo()
     var parameterMap = new HashMap<CalcRoutineParamName, Object>()  {

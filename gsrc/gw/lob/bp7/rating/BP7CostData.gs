@@ -3,11 +3,14 @@ package gw.lob.bp7.rating
 uses gw.rating.CostDataWithOverrideSupport
 uses gw.lob.common.util.DateRange
 uses gw.financials.PolicyPeriodFXRateCache
+uses java.math.BigDecimal
 
 abstract class BP7CostData<R extends BP7Cost> extends CostDataWithOverrideSupport<R, BP7Line> {
 
   private var _coverageID : Key
   private var _coverableID : Key
+  var _premiumNoCTR_Ext : BigDecimal as PremiumNoCTR_Ext
+  var _actualCalculatedTermAmount_Ext : BigDecimal as ActualCalculatedTermAmount_Ext
 
   construct(coverage : Key,
             coverable : Key,
@@ -29,10 +32,14 @@ abstract class BP7CostData<R extends BP7Cost> extends CostDataWithOverrideSuppor
     super(c)
     _coverageID = c.Coverage.FixedId
     _coverableID = c.Coverable.FixedId
+    _actualCalculatedTermAmount_Ext = c.ActualCalculatedTermAmount_Ext
+    _premiumNoCTR_Ext = c.PremiumNoCTR_Ext
   }
   
   override function setSpecificFieldsOnCost(line : BP7Line, cost : R) {
     cost.setFieldValue("Line", line.FixedId)
+    cost.setFieldValue("PremiumNoCTR_Ext", _premiumNoCTR_Ext)
+    cost.setFieldValue("ActualCalculatedTermAmount_Ext", _actualCalculatedTermAmount_Ext)
   }
 
   protected override property get KeyValues() : List<Object> {

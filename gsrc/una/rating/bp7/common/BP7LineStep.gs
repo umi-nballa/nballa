@@ -69,7 +69,22 @@ class BP7LineStep extends BP7RatingStep {
     costData.StandardBaseRate = 0.0
     costData.StandardAdjRate = 0.0
     costData.StandardTermAmount = 0.0
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     costData.copyStandardColumnsToActualColumns()
+    return costData
+  }
+
+  override function rate(coverage : Coverage, sliceToRate : DateRange) : CostData<Cost, PolicyLine> {
+    var costData = createCostData(coverage, sliceToRate)
+    var parameterSet = createParameterSet(coverage, costData)
+    _executor.execute(getRateRoutineCode(coverage.Pattern), coverage, parameterSet, costData)
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
   }
 
@@ -84,6 +99,10 @@ class BP7LineStep extends BP7RatingStep {
         var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_ORDINANCEORLAWCOVERAGE1)
         var parameterSet = createParameterSet(lineCov, costData)
         _executor.execute(BP7RateRoutineNames.BP7_ORDINANCE_OR_LAW_COVERAGE_1_RATE_ROUTINE, lineCov, parameterSet, costData)
+        costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+        costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+        _bp7RatingInfo.ActualCalculatedAmount = 0.0
+        _bp7RatingInfo.PremiumNoCTR = 0.0
         costDatas.add(costData)
       }
 
@@ -92,6 +111,10 @@ class BP7LineStep extends BP7RatingStep {
         var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_ORDINANCEORLAWCOVERAGE3)
         var parameterSet = createParameterSet(lineCov, costData)
         _executor.execute(BP7RateRoutineNames.BP7_ORDINANCE_OR_LAW_COVERAGE_3_RATE_ROUTINE, lineCov, parameterSet, costData)
+        costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+        costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+        _bp7RatingInfo.ActualCalculatedAmount = 0.0
+        _bp7RatingInfo.PremiumNoCTR = 0.0
         costDatas.add(costData)
       }
 
@@ -99,6 +122,10 @@ class BP7LineStep extends BP7RatingStep {
         var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_ORDINANCEORLAWCOVERAGE2)
         var parameterSet = createParameterSet(lineCov, costData)
         _executor.execute(BP7RateRoutineNames.BP7_ORDINANCE_OR_LAW_COVERAGE_2_RATE_ROUTINE, lineCov, parameterSet, costData)
+        costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+        costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+        _bp7RatingInfo.ActualCalculatedAmount = 0.0
+        _bp7RatingInfo.PremiumNoCTR = 0.0
         costDatas.add(costData)
       }
     }
@@ -117,7 +144,10 @@ class BP7LineStep extends BP7RatingStep {
     var costData = createCostData(lineCov, sliceToRate)
     var parameterSet = createParameterSet(lineCov, costData)
     _executor.execute(getRateRoutineCode(lineCov.Pattern), lineCov, parameterSet, costData)
-
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
 
   }
@@ -127,7 +157,10 @@ class BP7LineStep extends BP7RatingStep {
     var termAmount : BigDecimal = 100.0
     var parameterSet = createTerrorismParameterSet(costData, basePremiumForTerrorismCoverage)
     _executor.execute(getRateRoutineCode(lineCov.Pattern), lineCov, parameterSet, costData)
-
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
   }
 
@@ -138,7 +171,10 @@ class BP7LineStep extends BP7RatingStep {
     var costData = createCostData(lineCov, sliceToRate, BP7CostType_Ext.TC_MEDICALPAYMENTINCREASE)
     var parameterSet = createParameterSet(lineCov, costData)
     _executor.execute(getRateRoutineCode(lineCov.Pattern), lineCov, parameterSet, costData)
-
+    costData.PremiumNoCTR_Ext = _bp7RatingInfo.PremiumNoCTR
+    costData.ActualCalculatedTermAmount_Ext = _bp7RatingInfo.ActualCalculatedAmount
+    _bp7RatingInfo.ActualCalculatedAmount = 0.0
+    _bp7RatingInfo.PremiumNoCTR = 0.0
     return costData
   }
 
@@ -168,6 +204,7 @@ class BP7LineStep extends BP7RatingStep {
   private function createLineParameterSet(costData : BP7CostData<BP7Cost>) : Map<CalcRoutineParamName, Object>{
     return
         {TC_POLICYLINE         -> _line,
+         TC_RATINGINFO         -> _bp7RatingInfo,
          TC_COSTDATA           -> costData}
   }
 
@@ -178,6 +215,7 @@ class BP7LineStep extends BP7RatingStep {
     return
         {TC_POLICYLINE         -> _line,
          TC_TERRORISMBASEPREMIUM_EXT -> basePremiumForTerrorismCoverage,
+         TC_RATINGINFO         -> _bp7RatingInfo,
          TC_COSTDATA        -> costData}
   }
 

@@ -4,6 +4,8 @@ uses una.rating.ho.common.HOCommonDiscountsOrSurchargeRatingInfo
 uses java.math.BigDecimal
 uses una.config.ConfigParamsUtil
 uses una.rating.util.HOProtectionDetailsMapper
+uses una.rating.util.HOConstructionTypeMapper
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -19,6 +21,7 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _aopDeductibleLimit : BigDecimal as AOPDeductibleLimit
   var _hurricanePercentage : String as HurricanePercentage
   var _bcegGrade : int as BCEGGrade
+  var _constructionType: RateTableConstructionType_Ext as ConstructionType
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
@@ -40,5 +43,8 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
       _aopDeductibleLimit = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm?.Value
       _hurricanePercentage = line.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm?.Value as String
     }
+
+    _constructionType = HOConstructionTypeMapper.setConstructionType(line.Dwelling, line.Dwelling.HOLine.BaseState)
+
   }
 }

@@ -153,7 +153,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           break
       case HODW_Personal_Property_HOE:
           if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
-          if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
             rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_OrdinanceCov_HOE:

@@ -98,6 +98,8 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       _windOrHailPercentage = dwelling?.HODW_SectionI_Ded_HOE?.HODW_WindHail_Ded_HOETerm?.Value?.intValue()
     }
     _roofType = dwelling?.RoofTypeOrOverride?.Description
+
+    //TODO : Need to update the num of times renewed logic
     var termNumber = dwelling?.HOLine?.Branch?.LatestPeriod.TermNumber
     if(termNumber == null || termNumber == 0)
       _numOfTimesRenewed = 0

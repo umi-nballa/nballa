@@ -6,6 +6,11 @@ uses gw.job.uw.UWAuthorityBlocksProgressException
 uses una.integration.batch.AbstractPolicyPeriodBatchProcess
 uses java.util.Date
 uses gw.job.AbstractUNARenewalProcess
+uses gw.plugin.note.impl.LocalNoteTemplateSource
+uses java.util.ArrayList
+uses java.util.HashSet
+uses java.lang.reflect.Array
+uses java.lang.System
 
 /**
  * Created with IntelliJ IDEA.
@@ -88,7 +93,33 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
   }
 
   private function completeOpenActivities(eligibleRenewalPeriod : PolicyPeriod){
-    //TODO tlv complete activities that were a result of the renewal
+    var completedActivities = new HashSet<String>()
+
+    eligibleRenewalPeriod.Renewal
+        .AllOpenActivities
+        .where( \ elt -> {return {ISSUED_PATTERN_CODE, ISSUANCE_FAILED_PATTERN_CODE}.contains(elt.ActivityPattern.Code) == false} )
+        .each( \ elt ->
+    {
+
+      eligibleRenewalPeriod.Bundle.add(elt)
+      elt.complete()
+
+      completedActivities.add(elt.DisplayName)
+    })
+
+    if(completedActivities.HasElements) {
+      var plugin = new LocalNoteTemplateSource()
+      plugin.setParameters({})
+      var noteTemplate = plugin.getNoteTemplate("RenewalAutoCompleteBatch.gosu")
+
+      var note = new Note(eligibleRenewalPeriod.Renewal)
+
+      note.useTemplate(noteTemplate)
+      note.Policy = eligibleRenewalPeriod.Policy
+      note.Level = eligibleRenewalPeriod.Policy
+
+      note.Body += System.lineSeparator() + org.apache.commons.lang3.StringUtils.join(completedActivities, System.lineSeparator())
+    }
   }
 
   private function executeAndAutomaticallyResolveUWIssues(executableJobProcess()){

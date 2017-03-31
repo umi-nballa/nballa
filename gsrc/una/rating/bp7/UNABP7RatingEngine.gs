@@ -278,9 +278,6 @@ class UNABP7RatingEngine extends UNABP7AbstractRatingEngine<BP7Line> {
     }
   }
 
-  function hasRateForClassGroup(classification: BP7Classification): boolean {
-    return not {"17", "19", "20", "21"}.contains(classification.ClassificationClassGroup)
-  }
   /**
   * function that returns the total cost to calculate the terrorism coverage
    */

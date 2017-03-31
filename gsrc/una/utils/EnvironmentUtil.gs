@@ -18,7 +18,7 @@ class EnvironmentUtil {
   public static final var QA_ENVIRONMENT: String = "pc_qa"
   public static final var UAT_ENVIRONMENT: String = "pc_uat"
   public static final var QAT_ENVIRONMENT: String = "pc_qat"
-  public static final var PERF_ENVIRONMENT: String = "pc_perf"
+  public static final var PERF_ENVIRONMENT: String = "pc_per"
   public static final var PROD_ENVIRONMENT: String = "prd"
 
   static property get PolicyCenterRuntime(): String {

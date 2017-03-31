@@ -1186,6 +1186,8 @@ class HODwellingUtil_HOE {
     dwelling.ConstructionTypeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ConstructionType)
     dwelling.ConstructionTypeMatchLvlL2_Ext = getMatchLevel(tunaAppResponse.ConstructionType)
 
+      dwelling.HOLocation.ResFireDeptMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+
 
 
     dwelling.YearBuiltMatchLevel_Ext = getMatchLevel(tunaAppResponse.YearBuilt)

@@ -10,7 +10,7 @@ class SubmissionUtil {
   /**
    * Creates a new submission.
    */
-  public static function newSubmission(account : Account, productCode:String, periodStartDate: Date, policyAddress : AddressDTO, termType : typekey.TermType, _addressPlugin : IAddressPlugin) : Submission {
+  public static function newSubmission(account : Account, productCode:String, periodStartDate: Date, policyAddress : AddressDTO, termType : typekey.TermType, _addressPlugin : IAddressPlugin, ratingStyle:String=null) : Submission {
     var producerSelection = getProducerSelection(account, periodStartDate)
     var productSelection = getProductSelection(productCode)
 
@@ -24,7 +24,11 @@ class SubmissionUtil {
     selectUWCompany(branch)
 
     // Set the branch name so that we can identify the quote in the portal.  Maps to quote type enum values
-    branch.BranchName = typekey.RatingStyle.TC_QUICKQUOTE//"CUSTOM"
+    if (ratingStyle != null && RatingStyle.get(ratingStyle) != null) {
+      branch.BranchName = (RatingStyle.get(ratingStyle)) as String
+    } else {
+      branch.BranchName = "CUSTOM"
+    }
 
     branch.SubmissionProcess.beginEditing()
     branch.TermType = termType == null ? typekey.TermType.TC_ANNUAL : termType

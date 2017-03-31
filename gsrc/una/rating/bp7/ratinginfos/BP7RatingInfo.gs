@@ -22,6 +22,5 @@ class BP7RatingInfo {
     var policyPeriod = line.Branch
     if(policyPeriod?.ConsentToRate_Ext || policyPeriod?.Rule180_Ext)
       _otherAdjustmentFactor = policyPeriod?.Factor_Ext
-    print(policyPeriod?.ConsentToRate_Ext + " " + policyPeriod?.Factor_Ext + " " + _otherAdjustmentFactor)
   }
 }

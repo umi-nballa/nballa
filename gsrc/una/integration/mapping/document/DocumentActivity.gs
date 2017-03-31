@@ -8,6 +8,9 @@ uses gw.api.database.Query
  * User: pyerrumsetty
  * Date: 3/1/17
  * Time: 11:43 AM
+ *
+ * 03/30/2017 - Chris Mattox  - Refactored and added missing case for TC_INCORR_RETURNED_MAIL_WITH_FORWARDING_ORDER
+ *
  */
 
 
@@ -52,6 +55,7 @@ class DocumentActivity {
     switch (document.OnBaseDocumentSubtype) {
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_LETTER:// fall through
+      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_WITH_FORWARDING_ORDER:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_ADDITIONAL_INSURED:
         patternCode = POLICY_INSURED_RETURNED_MAIL
         queue = CSR_QUEUE
@@ -66,8 +70,8 @@ class DocumentActivity {
         break
 
         //  Policy DE Endorsement Request
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_HAIL_RESISTANT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_AFFINITY_DISCOUNT:// fall through
+      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_HAIL_RESISTANT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_INSURED_TENANT_CREDIT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_MULTILINE_DISCOUNT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROTECTIVE_DEVICE_CREDIT:// fall through
@@ -154,11 +158,6 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_WIND_MITIGATION_INSPECTION:
           patternCode = VENDOR_WIND_MIT_INSPECTION
           queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION:
-          patternCode = REVIEW_INSPECTION_PRIORITY
-          queue = PRIORITY_INSPECTION_REVIEW_QUEUE
           break
     }
 

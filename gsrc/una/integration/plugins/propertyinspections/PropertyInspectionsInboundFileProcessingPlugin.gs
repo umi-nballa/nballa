@@ -29,10 +29,9 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
    final static var DATE_FORMAT_RECEIVED = "MMddyyyy"
    final static var LAST_INSPECTION_DATE_FORMAT = "yyyy-MM-dd"
    final static var NOTES_SUBJECT = "Inspection Vendors"
-  final static var UNIVERSAL_INSURANCE_MANAGERS_GROUP = "Universal Insurance Manager's Inc"
-  final static var CSR_FOLLOW_UP_QUEUE = "CSR Follow up Queue"
-  final static var INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE = "inspection_ordered"
-  var CLASS_NAME=PropertyInspectionsInboundFileProcessingPlugin.Type.DisplayName
+   final static var CSR_FOLLOW_UP_QUEUE = "CSR Follow up Queue"
+   final static var INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE = "inspection_ordered"
+   var CLASS_NAME=PropertyInspectionsInboundFileProcessingPlugin.Type.DisplayName
 
   /**
    * The BeanIO Stream Name to read the inbound file
@@ -94,10 +93,11 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       policyChangePeriod.PolicyChangeProcess.bind()
       var activity = ActivityUtil.createActivityAutomatically(policyChangePeriod, INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE)
       if(activity.canAssign()){
-        ActivityUtil.assignActivityToQueue(CSR_FOLLOW_UP_QUEUE, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+        ActivityUtil.assignActivityToQueue(CSR_FOLLOW_UP_QUEUE, CSR_FOLLOW_UP_QUEUE,activity)
       }
 
-      if(policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1!=null){
+      if(policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne()!= null &&
+          policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne() != " "){
         var subject = "Policy Inspection -- "+policyPeriod.PrimaryInsuredName +" "+policyPeriod.PolicyNumber
         var emailBody = InspectionsOrderedEmail.renderToString()
         var emailContact = new EmailContact()
@@ -106,7 +106,6 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
         EmailUtil.sendEmail(emailBody ,emailContact, subject)
         LOGGER.info("Email is sent to : "+policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne())
       }
-
 
       LOGGER.debug("The Policy Change transaction successfully completed : "+policyNumber)
     }

@@ -1,12 +1,16 @@
 package una.integration.mapping.document
 
 uses una.utils.ActivityUtil
+uses gw.api.database.Query
 
 /**
  * Created with IntelliJ IDEA.
  * User: pyerrumsetty
  * Date: 3/1/17
  * Time: 11:43 AM
+ *
+ * 03/30/2017 - Chris Mattox  - Refactored and added missing case for TC_INCORR_RETURNED_MAIL_WITH_FORWARDING_ORDER
+ *
  */
 
 
@@ -29,7 +33,7 @@ class DocumentActivity {
   final static var REVIEW_INSPECTION_UW = "review_inspection_uw"
   final static var VENDOR_WIND_MIT_INSPECTION = "vendor_wind_mit_inspection"
   final static var CSR_QUEUE="CSR Queue"
-  final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority Inspection Review"
+  final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority  Inspection Review"
   final static var UW_INSPECTION_REVIEW_QUEUE = "UW Inspection Review"
   final static var CSR_INSPECTION_QUEUE = "CSR Inspection Queue"
   final static var SENIOR_UW_QUEUE = "Senior UW Queue"
@@ -51,6 +55,7 @@ class DocumentActivity {
     switch (document.OnBaseDocumentSubtype) {
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_LETTER:// fall through
+      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_WITH_FORWARDING_ORDER:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_ADDITIONAL_INSURED:
         patternCode = POLICY_INSURED_RETURNED_MAIL
         queue = CSR_QUEUE
@@ -65,8 +70,8 @@ class DocumentActivity {
         break
 
         //  Policy DE Endorsement Request
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_HAIL_RESISTANT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_AFFINITY_DISCOUNT:// fall through
+      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_HAIL_RESISTANT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_INSURED_TENANT_CREDIT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_MULTILINE_DISCOUNT:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROTECTIVE_DEVICE_CREDIT:// fall through
@@ -154,11 +159,6 @@ class DocumentActivity {
           patternCode = VENDOR_WIND_MIT_INSPECTION
           queue = CSR_QUEUE
           break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION:
-          patternCode = REVIEW_INSPECTION_PRIORITY
-          queue = PRIORITY_INSPECTION_REVIEW_QUEUE
-          break
     }
 
     if(patternCode != null && queue != null) {
@@ -168,8 +168,10 @@ class DocumentActivity {
 
   private function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
     var activity = ActivityUtil.createActivityAutomatically(period, patternCode)
-    if(activity.canAssign()){
-      ActivityUtil.assignActivityToQueue(queue, UNIVERSAL_INSURANCE_MANAGERS_GROUP,activity)
+    // As the queue is mapped to different Groups
+    var assignableQueue = Query.make(AssignableQueue).compare(AssignableQueue#Name, Equals, queue).select().AtMostOneRow
+    if(assignableQueue!=null && activity.canAssign()){
+      ActivityUtil.assignActivityToQueue(queue, (assignableQueue.Group) as String,activity)
     }
   }
 

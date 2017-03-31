@@ -69,13 +69,13 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Properties with buried fuel tanks are not eligible for coverage")
     }
 
-    if(HODwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_GASOLINEDIESEL)
+    if(HODwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_GASOLINEDIESEL || HODwelling.HOUWQuestions.typefuel2==typekey.HOTypeFuel_Ext.TC_GASOLINEDIESEL)
     {
       // policyTypeValid = false
       addErrorOrWarning("Properties with gasoline or diesel fuel tanks are not eligible for coverage")
     }
 
-    if(HODwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_OTHER)
+    if(HODwelling.HOUWQuestions.typefuel==typekey.HOTypeFuel_Ext.TC_OTHER || HODwelling.HOUWQuestions.typefuel2==typekey.HOTypeFuel_Ext.TC_OTHER)
     {
       // policyTypeValid = false
       addErrorOrWarning("Fuel type ‘Other’ requires Underwriting review and approval prior to binding")    //uwissue

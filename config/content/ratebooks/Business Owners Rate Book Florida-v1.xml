@@ -25,7 +25,7 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-20 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2017-03-29 18:17:03.212</LastStatusChangeDate>
+    <LastStatusChangeDate>2017-03-30 14:03:26.564</LastStatusChangeDate>
     <LastTableRowEdit>2017-03-02 14:22:16.099</LastTableRowEdit>
     <PolicyLine>BP7Line</PolicyLine>
     <RateBookCalcRoutines>
@@ -169,10 +169,6 @@
         <CalcRoutineDefinition public-id="pcdb:15401"/>
         <RateBook public-id="pcbd:1701"/>
       </RateBookCalcRoutine>
-      <RateBookCalcRoutine public-id="pcdb:21601">
-        <CalcRoutineDefinition public-id="pcdb:15501"/>
-        <RateBook public-id="pcbd:1701"/>
-      </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pcdb:21901">
         <CalcRoutineDefinition public-id="pcdb:15701"/>
         <RateBook public-id="pcbd:1701"/>
@@ -185,12 +181,16 @@
         <CalcRoutineDefinition public-id="pcdb:16001"/>
         <RateBook public-id="pcbd:1701"/>
       </RateBookCalcRoutine>
-      <RateBookCalcRoutine public-id="pcdb:22788">
-        <CalcRoutineDefinition public-id="pcdb:16503"/>
-        <RateBook public-id="pcbd:1701"/>
-      </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pcdb:27001">
         <CalcRoutineDefinition public-id="pcdb:20201"/>
+        <RateBook public-id="pcbd:1701"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pcdb:31570">
+        <CalcRoutineDefinition public-id="pcdb:15501"/>
+        <RateBook public-id="pcbd:1701"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pcdb:31601">
+        <CalcRoutineDefinition public-id="pcdb:16503"/>
         <RateBook public-id="pcbd:1701"/>
       </RateBookCalcRoutine>
     </RateBookCalcRoutines>
@@ -1167,15 +1167,6 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:4703">
-    <CalcRoutineParameterSet public-id="pcbd:4201"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>true</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:4701">
     <CalcRoutineParameterSet public-id="pcbd:4201"/>
     <Code>policyline</Code>
@@ -1184,6 +1175,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:4703">
+    <CalcRoutineParameterSet public-id="pcbd:4201"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>true</Writable>
   </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pcbd:359801">
     <RateTable public-id="pcbd:21901"/>
@@ -1352,6 +1352,15 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pcbp7:630ad378a819c515">
+    <CalcRoutineParameterSet public-id="pcbp7:39256bc00eae2b4a"/>
+    <Code>coverage</Code>
+    <CoveragePattern/>
+    <ParamType>entity.BP7BuildingCov</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable/>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbp7:fd1d480004483248">
     <CalcRoutineParameterSet public-id="pcbp7:39256bc00eae2b4a"/>
     <Code>building</Code>
@@ -1366,15 +1375,6 @@
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.BP7BusinessOwnersLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable/>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbp7:630ad378a819c515">
-    <CalcRoutineParameterSet public-id="pcbp7:39256bc00eae2b4a"/>
-    <Code>coverage</Code>
-    <CoveragePattern/>
-    <ParamType>entity.BP7BuildingCov</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable/>
@@ -1784,14 +1784,14 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcbd:5037">
+  <CalcRoutineParameter public-id="pcbd:5038">
     <CalcRoutineParameterSet public-id="pcbd:4456"/>
-    <Code>buildingRatingInfo_Ext</Code>
+    <Code>ratinginfo</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7StructureRatingInfo</ParamType>
+    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
-    <Writable>false</Writable>
+    <Writable>true</Writable>
   </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5036">
     <CalcRoutineParameterSet public-id="pcbd:4456"/>
@@ -1802,14 +1802,14 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:5038">
+  <CalcRoutineParameter public-id="pcbd:5037">
     <CalcRoutineParameterSet public-id="pcbd:4456"/>
-    <Code>ratinginfo</Code>
+    <Code>buildingRatingInfo_Ext</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7RatingInfo</ParamType>
+    <ParamType>una.rating.bp7.ratinginfos.BP7StructureRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
-    <Writable>true</Writable>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pcbd:359739">
     <RateTable public-id="pcbd:21807"/>
@@ -80476,20 +80476,20 @@
     <WrapperClass/>
     <Writable>true</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:4902">
-    <CalcRoutineParameterSet public-id="pcbd:4402"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:4904">
     <CalcRoutineParameterSet public-id="pcbd:4402"/>
     <Code>lineRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.bp7.ratinginfos.BP7LineRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:4902">
+    <CalcRoutineParameterSet public-id="pcbd:4402"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -84060,15 +84060,6 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcbd:5102">
-    <CalcRoutineParameterSet public-id="pcbd:4501"/>
-    <Code>buildingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7BuildingRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5103">
     <CalcRoutineParameterSet public-id="pcbd:4501"/>
     <Code>ratinginfo</Code>
@@ -84077,6 +84068,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>true</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:5102">
+    <CalcRoutineParameterSet public-id="pcbd:4501"/>
+    <Code>buildingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.bp7.ratinginfos.BP7BuildingRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5101">
     <CalcRoutineParameterSet public-id="pcbd:4501"/>
@@ -93072,15 +93072,6 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:5201">
-    <CalcRoutineParameterSet public-id="pcbd:4601"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5203">
     <CalcRoutineParameterSet public-id="pcbd:4601"/>
     <Code>ratinginfo</Code>
@@ -93089,6 +93080,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>true</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:5201">
+    <CalcRoutineParameterSet public-id="pcbd:4601"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pcbd:12901">
     <Code>BP7ClassificationAccountsReceivableRateRoutine</Code>
@@ -98743,7 +98743,7 @@
         <Value>BP7 EMPA Surcharge Rate Routine</Value>
       </CalcRoutineDefinition_Description_L10N>
     </Description_L10N_ARRAY>
-    <Jurisdiction/>
+    <Jurisdiction>FL</Jurisdiction>
     <Name>BP7 EMPA Surcharge Rate Routine</Name>
     <Name_L10N_ARRAY>
       <CalcRoutineDefinition_Name_L10N public-id="pcdb:8003">
@@ -98752,7 +98752,7 @@
         <Value>BP7 EMPA Surcharge Rate Routine</Value>
       </CalcRoutineDefinition_Name_L10N>
     </Name_L10N_ARRAY>
-    <ParameterSet public-id="pcbd:4401"/>
+    <ParameterSet public-id="pcdb:7902"/>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
     <Steps>
       <CalcStepDefinition public-id="pcdb:43922">
@@ -98887,6 +98887,33 @@
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
+  <CalcRoutineParameterSet public-id="pcdb:7902">
+    <Code>BP7PolicyLineParamSet</Code>
+    <IncludesCost>true</IncludesCost>
+    <Name>BP7 Policy Line Parameter Set</Name>
+    <Name_L10N_ARRAY/>
+    <Parameters>
+      <CalcRoutineParameter public-id="pcdb:8803">
+        <CalcRoutineParameterSet public-id="pcdb:7902"/>
+        <Code>policyline</Code>
+        <CoveragePattern/>
+        <ParamType>entity.PolicyLine</ParamType>
+        <UseWrapper>false</UseWrapper>
+        <WrapperClass/>
+        <Writable>false</Writable>
+      </CalcRoutineParameter>
+    </Parameters>
+    <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
+  </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pcdb:8803">
+    <CalcRoutineParameterSet public-id="pcdb:7902"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pcdb:16001">
     <Code>BP7EmploymentPracticesLiabilityRateRoutine</Code>
     <Description>BP7 Employment Practices Liability Rate Routine</Description>
@@ -103530,15 +103557,6 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pcbd:5302">
-    <CalcRoutineParameterSet public-id="pcbd:4701"/>
-    <Code>locationRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.bp7.ratinginfos.BP7LocationRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcbd:5303">
     <CalcRoutineParameterSet public-id="pcbd:4701"/>
     <Code>ratinginfo</Code>
@@ -103547,6 +103565,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>true</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcbd:5302">
+    <CalcRoutineParameterSet public-id="pcbd:4701"/>
+    <Code>locationRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.bp7.ratinginfos.BP7LocationRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
   </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pcbd:14435">
     <Code>BP7LocationAddlInsdGrantorOfFranchiseRateRoutine</Code>
@@ -105266,20 +105293,20 @@
     </Parameters>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcdb:7301">
-    <CalcRoutineParameterSet public-id="pcdb:6601"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcdb:7201">
     <CalcRoutineParameterSet public-id="pcdb:6601"/>
     <Code>minimumPremiumAdjustment_Ext</Code>
     <CoveragePattern/>
     <ParamType>java.math.BigDecimal</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcdb:7301">
+    <CalcRoutineParameterSet public-id="pcdb:6601"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -106999,7 +107026,7 @@
         <Value>BP7 Policy Fee Rate Routine</Value>
       </CalcRoutineDefinition_Name_L10N>
     </Name_L10N_ARRAY>
-    <ParameterSet public-id="pcbd:4401"/>
+    <ParameterSet public-id="pcdb:7902"/>
     <PolicyLinePatternCode>BP7Line</PolicyLinePatternCode>
     <Steps>
       <CalcStepDefinition public-id="pcdb:42201">

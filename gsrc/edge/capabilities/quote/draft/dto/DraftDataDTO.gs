@@ -67,4 +67,7 @@ class DraftDataDTO {
   /** The term type of the submission e.g. Annual, HalfYear, Other, etc. */
   @JsonProperty
   var _termType : typekey.TermType as TermType
+
+  @JsonProperty
+  var _ratingStyle : String as RatingStyle
 }

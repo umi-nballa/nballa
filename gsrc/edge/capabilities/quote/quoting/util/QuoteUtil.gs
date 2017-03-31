@@ -23,8 +23,7 @@ class QuoteUtil {
    * Returns a base (non-custom) policy period for the submission.
    */
   public static function getBasePeriod(sub : Submission) : PolicyPeriod {
-    //var period = sub.ActivePeriods.firstWhere(\ p -> p.BranchName == "CUSTOM")
-    var period = sub.ActivePeriods.firstWhere(\ p -> p.BranchName == typekey.RatingStyle.TC_QUICKQUOTE)
+    var period = sub.ActivePeriods.firstWhere(\ p -> p.BranchName == "CUSTOM")
     // Submissions created from GPA have no "CUSTOM" branch, defaults to the selected branch
     return period == null ? sub.SelectedVersion : period
   }

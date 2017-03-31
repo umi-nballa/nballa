@@ -103,7 +103,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     final var account = _accountPlugin.updateOrCreateNewQuoteAccount(existingAccount, productCode, data.AccountHolder, data.PolicyAddress)
     ensureProductAvailable(account, data)
 
-    final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin)
+    final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin,data.RatingStyle)
     aSubmission.ActivePeriods.each(\period -> period.syncQuestions(draftQuestions(aSubmission)))
     _lobPlugin.updateNewDraftSubmission(aSubmission.SelectedVersion, data.Lobs)
     return aSubmission

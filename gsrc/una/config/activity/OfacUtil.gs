@@ -33,17 +33,13 @@ class OfacUtil {
     if(activity.ActivityPattern.Code.equalsIgnoreCase("OFAC1"))
     {
       var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC2").atMostOne()//ompliance").atMostOne()
-      var user = una.config.activity.OfacUtil.findUserByUsername("compuser")
-      //print("compliance user is "+ user)
-      if(user==null)
-      {
-        user = una.config.activity.OfacUtil.findUserByUsername("su")
-      }
 
       if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC2")==null)
       {
       var cactivity = pattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-      cactivity.assign(user.RootGroup,user)
+      //cactivity.assign(user.RootGroup,user)
+        var queueho:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="Compliance OFAC") as AssignableQueue
+        cactivity.assignToQueue(queueho)
        }
 
       sendEmailForActivity(activity, csrowner, "csrtocomp")
@@ -54,18 +50,15 @@ class OfacUtil {
           {
 
             var pattern = ActivityPattern.finder.findActivityPatternsByCode("OFAC3").atMostOne()
-            var user = activity.Job.Underwriter
-            //print("uwreview activity user is "+ user)
 
-            if(user==null)
-            {
-              user = una.config.activity.OfacUtil.findUserByUsername("su")
-            }
             if(period.Job.AllOpenActivities.firstWhere( \ elt -> elt.ActivityPattern.Code=="OFAC3")==null)
             {
 
               var cactivity = pattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-            cactivity.assign(user.RootGroup,user)
+              var queueho:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="CL UW Follow up Queue") as AssignableQueue
+              cactivity.assignToQueue(queueho)
+
+              //cactivity.assign(user.RootGroup,user)
             }
 
             sendEmailForActivity(activity, findUserByUsername("compuser").Contact,"comptouw")
@@ -106,8 +99,8 @@ class OfacUtil {
             }
             )
 
-            toemail.setEmailAddress("skashyap@uihna.com")//setEmailAddress(activity.AssignedUser.Contact.EmailAddress1)
-            toemail.Name = "Srinand"
+            toemail.setEmailAddress("vmallad@uihna.com")//setEmailAddress(activity.AssignedUser.Contact.EmailAddress1)
+            toemail.Name = "Vittal"
             //email.addToRecipient(toemail)
           }
 
@@ -123,8 +116,8 @@ class OfacUtil {
           }
           )
 
-          toemail.setEmailAddress("skashyap@uihna.com")//setEmailAddress(activity.Job.Underwriter.Contact.EmailAddress1)
-          toemail.Name = "Srinand"
+          toemail.setEmailAddress("vmallad@uihna.com")//setEmailAddress(activity.Job.Underwriter.Contact.EmailAddress1)
+          toemail.Name = "Vittal"
           //email.addToRecipient(toemail)
         }
 
@@ -140,8 +133,8 @@ class OfacUtil {
           }
           )
           //var toemail = new EmailContact()
-          toemail.setEmailAddress("skashyap@uihna.com")//activity.AssignedUser.Contact.EmailAddress1)
-          toemail.Name = "Srinand"
+          toemail.setEmailAddress("vmallad@uihna.com")//activity.AssignedUser.Contact.EmailAddress1)
+          toemail.Name = "Vittal"
           //email.addToRecipient(toemail)
         }
 

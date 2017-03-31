@@ -239,7 +239,7 @@
           label="displaykey.Web.Homeowners.HOLocation.DisToFireStation"
           required="true"
           value="dwelling.HOLocation.DistanceToFireStation"
-          visible="(gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)) &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT) || (dwelling.HOLocation.DwellingProtectionClasscode!=null &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT)">
+          visible="(gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass)))// &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT) || (dwelling.HOLocation.DwellingProtectionClasscode!=null &amp;&amp; dwelling.HOLocation.DwellingPCCodeMatchLevel_Ext!=typekey.TunaMatchLevel_Ext.TC_EXACT)">
           <PostOnChange
             onChange="gw.lob.ho.HODwellingUtil_HOE.setProtectionClass(dwelling)"/>
         </Input>

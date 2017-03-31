@@ -51,7 +51,7 @@ class HODwellingValidation_HOE extends PCValidationBase {
       addErrorOrWarning("Occupancy", displaykey.Web.Policy.HomeownersLine.Validation.DwellingOccupancyRequired, "HomeownersDwelling")
     }
 
-    if(HODwelling.HOUWQuestions.HOHomesharing_Ext)
+    if(HODwelling.HOUWQuestions.HOHomesharing_Ext || HODwelling.HOUWQuestions.homesharing2)
     {
       // policyTypeValid = false
       addErrorOrWarning("Properties made available for home sharing, trading or exchange are not eligible for coverage")

@@ -33,7 +33,7 @@
       initialValue="thePeriod.HOTransactions.where(\ tx -&gt; tx.Cost typeis entity.DwellingCovCost_HOE or tx.Cost typeis entity.HomeownersCovCost_HOE).sortBy(\ t -&gt; gw.lob.ho.TransactionHelper_HOE.getDescription(t,&quot;&quot;))"
       name="coverageTx"/>
     <Variable
-      initialValue="coverageTx.where(\ tx -&gt; tx.HomeownersCost.Coverage.Pattern.CoverageCategoryID.equals(&quot;HODW_SectionI_HOE&quot;))"
+      initialValue="coverageTx?.where(\ tx -&gt; tx.HomeownersCost.Coverage.Pattern.CoverageCategoryID.equals(&quot;HODW_SectionI_HOE&quot;))"
       name="sectionOneTx"/>
     <Variable
       initialValue="coverageTx.where(\ tx -&gt; tx.HomeownersCost.Coverage.Pattern.CoverageCategoryID.equals(&quot;HODW_SectionII_HOE&quot;))"

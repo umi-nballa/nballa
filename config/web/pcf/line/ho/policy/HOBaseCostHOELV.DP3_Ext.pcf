@@ -9,53 +9,70 @@
       name="line"
       type="HomeownersLine_HOE"/>
     <Variable
-      initialValue="line.VersionList.HomeownersCosts.where(\ cvl -&gt; cvl.AllVersions.first() typeis HomeownersBaseCost_HOE).flatMap(\ h -&gt; h.AllVersions)"
+      initialValue="una.pageprocess.QuoteScreenPCFController.getPrimaryCosts(line)"
       name="costs"/>
     <Variable
       initialValue="costs.AnyProrated"
       name="proRated"/>
+    <RowIterator
+      canPick="false"
+      editable="false"
+      elementName="name"
+      id="setionICovIterator"
+      value="{line}">
+      <Row>
+        <TextCell
+          bold="true"
+          enableSort="false"
+          id="SectionIDescription"
+          label="displaykey.Web.PolicyLine.Coverages.Description"
+          value="gw.api.web.HtmlUtil.indent(line.Pattern.getCoverageCategory(&quot;HODW_SectionI_HOE&quot;).DisplayName, ScriptParameters.HOQuoteLevel1Indent)"/>
+        <Cell
+          id="SectionIValue"
+          label="displaykey.Web.Homeowners.Quote.ValueIncludedInBase"/>
+        <Cell
+          align="right"
+          enableSort="false"
+          id="SectionITermAmount"
+          visible="proRated"/>
+        <DateCell
+          align="right"
+          enableSort="false"
+          id="SectionIEffDate"
+          label="displaykey.Web.Quote.CumulDetail.Default.PeriodStart"
+          visible="proRated"/>
+        <DateCell
+          align="right"
+          enableSort="false"
+          id="SectionIExpDate"
+          label="displaykey.Web.Quote.CumulDetail.Default.PeriodEnd"
+          visible="proRated"/>
+        <Cell
+          align="right"
+          enableSort="false"
+          id="SectionIProration"
+          label="displaykey.Web.SubmissionWizard.Quote.WC.Prorata"
+          visible="proRated"/>
+        <Cell
+          id="SectionIPremium"
+          label="displaykey.Web.Policy.BA.Premium"/>
+      </Row>
+    </RowIterator>
     <RowSetRef
-      def="HOBaseCostCommonHOERowSet(line, costs, proRated)"/>
-    <Row>
-      <TextCell
-        id="SectionIDescription"
-        value="gw.api.web.HtmlUtil.indent(line.Pattern.getCoverageCategory(&quot;HODW_SectionI_HOE&quot;).DisplayName, ScriptParameters.HOQuoteLevel1Indent)"/>
-      <Cell
-        id="SectionIValue"/>
-      <Cell
-        align="right"
-        enableSort="false"
-        id="SectionITermAmount"
-        visible="proRated"/>
-      <DateCell
-        align="right"
-        enableSort="false"
-        id="SectionIEffDate"
-        visible="proRated"/>
-      <DateCell
-        align="right"
-        enableSort="false"
-        id="SectionIExpDate"
-        visible="proRated"/>
-      <Cell
-        align="right"
-        enableSort="false"
-        id="SectionIProration"
-        visible="proRated"/>
-      <Cell
-        id="SectionIPremium"/>
-    </Row>
-    <RowSetRef
-      def="HOBaseCostWithDefaultHOERowSet(line.Dwelling.HODW_Dwelling_Cov_HOE, &quot;Limit_HO6_HOE&quot;, proRated)"
+      def="HOPrimaryCostRowSet(line.Dwelling.DPDW_Dwelling_Cov_HOE)"
       id="DwellingCovRows"/>
     <RowSetRef
-      def="HOBaseCostWithValueHOERowSet(line.Dwelling.HODW_Personal_Property_HOE, &quot;HODW_PersonalPropertyLimit_HOE&quot;, proRated)"
+      def="HOPrimaryCostRowSet(line.Dwelling.DPDW_Personal_Property_HOE)"
       id="PersonalPropertyCovRows"/>
     <RowSetRef
-      def="HOBaseCostWithDefaultHOERowSet(line.Dwelling.HODW_Loss_Of_Use_HOE, &quot;HODW_LossOfUsePropLimit_HOE&quot;, proRated)"
+      def="HOPrimaryCostRowSet(line.Dwelling.DPDW_Other_Structures_HOE)"
+      id="OtherStructureRows"/>
+    <RowSetRef
+      def="HOPrimaryCostRowSet(line.Dwelling.DPDW_FairRentalValue_Ext)"
       id="LossOfUseCovRows"/>
     <Row>
       <TextCell
+        bold="true"
         id="SectionIIDescription"
         value="gw.api.web.HtmlUtil.indent(line.Pattern.getCoverageCategory(&quot;HODW_SectionII_HOE&quot;).DisplayName, ScriptParameters.HOQuoteLevel1Indent)"/>
       <Cell
@@ -84,10 +101,15 @@
         id="SectionIIPremium"/>
     </Row>
     <RowSetRef
-      def="HOBaseCostWithDefaultHOERowSet(line.HOLI_Personal_Liability_HOE, &quot;HOLI_Liability_Limit_HOE&quot;, proRated)"
+      def="HOPrimaryCostRowSet(line.DPLI_Personal_Liability_HOE)"
       id="PersonalLiabilityCovRows"/>
     <RowSetRef
-      def="HOBaseCostWithDefaultHOERowSet(line.HOLI_Med_Pay_HOE, &quot;HOLI_MedPay_Limit_HOE&quot;, proRated)"
+      def="HOPrimaryCostRowSet(line.DPLI_Med_Pay_HOE)"
       id="MedPayCovRows"/>
+    <RowSetRef
+      def="HOPrimaryCostRowSet(line.DPLI_Premise_Liability_HOE_Ext)"
+      id="PremiseLiability"/>
+    <RowSetRef
+      def="HOSectionICostModelRowSet(line.Dwelling.HODW_SectionI_Ded_HOE)"/>
   </ListViewPanel>
 </PCF>

@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../../pcf.xsd">
+  <RowSet
+    id="HOSectionICostModelRowSet">
+    <Require
+      name="sectionIDeductible"
+      type="Coverage"/>
+    <RowIterator
+      editable="false"
+      elementName="costModel"
+      id="HOCostModelIterator"
+      pageSize="0"
+      value="una.pageprocess.QuoteScreenPCFController.getCostModels(sectionIDeductible)"
+      visible="sectionIDeductible != null">
+      <IteratorSort
+        sortBy="costModel.EffectiveDate"
+        sortOrder="1"/>
+      <Row>
+        <Cell
+          bold="true"
+          id="Cov"
+          value="gw.api.web.HtmlUtil.indent(sectionIDeductible.Pattern.Name, ScriptParameters.HOQuoteLevel1Indent)"/>
+        <Cell
+          align="right"
+          id="CovLimitValue"
+          value="costModel.LimitDisplayValue"/>
+        <Cell
+          id="cell3434"/>
+        <DateCell
+          id="CostEffectiveDate"
+          value="costModel.EffectiveDate"/>
+        <DateCell
+          id="CostExpirationDate"
+          value="costModel.ExpirationDate"/>
+        <Cell
+          align="right"
+          id="Proration"
+          value="costModel.ProrationDisplayValue"/>
+        <Cell
+          align="right"
+          formatType="currency"
+          id="CostPremium"
+          value="costModel.PremiumDisplayValue"/>
+      </Row>
+      <RowIterator
+        editable="false"
+        elementName="term"
+        id="TermsIterator"
+        pageSize="0"
+        value="sectionIDeductible.CovTerms.where(\ ct -&gt; !ct.Pattern.CodeIdentifier.equals(sectionIDeductible.LimitTerm.PatternCode))">
+        <Row>
+          <Cell
+            id="TermName"
+            value="gw.api.web.HtmlUtil.indent(term.Pattern.Name, ScriptParameters.HOQuoteLevel2Indent)"/>
+          <Cell
+            align="right"
+            id="TermLimitValue"
+            value="term.DisplayValue"/>
+          <Cell
+            id="Cell1"/>
+          <DateCell
+            id="TermEffectiveDate"/>
+          <DateCell
+            id="TermExpDate"/>
+          <Cell
+            id="Cell2"/>
+          <Cell
+            align="right"
+            id="termValue"/>
+        </Row>
+      </RowIterator>
+    </RowIterator>
+  </RowSet>
+</PCF>

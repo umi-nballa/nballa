@@ -34,7 +34,7 @@ abstract class QuotePageUtil_HOE {
     for(cost in allCosts){
       currentCov = getCoverageForCost(cost)
       // decide if new group
-      var isLow = CoverageSummaryUtil_HOE.isLowLevelCost(currentCov) 
+      var isLow = CoverageSummaryUtil_HOE.isLowLevelCost(currentCov)
       if(not (currentCov == prevCov and isLow)){
         // create new group
         var groupCost: HomeownersCost_HOE
@@ -54,6 +54,14 @@ abstract class QuotePageUtil_HOE {
       
       prevCov = currentCov
     }
+
+    var includedCovs = allCosts?.first().Branch.HomeownersLine_HOE.AllCoverages.where( \ cov -> cov.CoverageCategory.Code != "HODW_SectionI_HOE" and cov.CoverageCategory != "HODW_SectionII_HOE" and !allCosts.contains(cov.Cost))?.toSet()
+
+    includedCovs?.each( \ includedCov -> {
+      var covCostData = new CoverageCostData_HOE(includedCov, null)
+      structuredData.add(covCostData)
+    })
+
     return structuredData
   }
 

@@ -13,6 +13,9 @@ class TransactionHelper_HOE {
       subDesc = cost.ScheduledItem.DisplayName
     }
     var covDesc = cost.Coverage.Pattern.DisplayName
+    if(subDesc == null){
+      subDesc = ""
+    }
     return (covDesc == null or covDesc.Empty ? def : covDesc) +
            (subDesc.Empty ? "" : "\n" + gw.api.web.HtmlUtil.indent(subDesc, ScriptParameters.HOQuoteLevel2Indent))
   }

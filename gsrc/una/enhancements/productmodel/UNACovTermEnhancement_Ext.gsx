@@ -30,19 +30,11 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
   public property get LimitDifference() : BigDecimal{
     var result : BigDecimal
     var patternDefault = this.Pattern.getDefaultValue(null)
+    var bigDecimalValue = BigDecimalValue
+    var trueDefault = TrueDefault
 
-    if(BigDecimalValue != null){//after this check, we can safely assume a "Value" of BigDecimal
-      if(BasedOnBigDecimalValue != null){
-        result = BigDecimalValue.subtract(BasedOnBigDecimalValue)
-      }else if(RuntimeDefault != null){
-        result = BigDecimalValue.subtract(RuntimeDefault)
-      }else if(patternDefault != null){
-        if(this typeis OptionCovTerm){
-          result = BigDecimalValue.subtract(this.Pattern.getCovTermOpt(patternDefault).Value)
-        }else if(this typeis DirectCovTerm){
-          result = BigDecimalValue.subtract(new BigDecimal(patternDefault))
-        }
-      }
+    if(bigDecimalValue != null and trueDefault != null){
+      result = bigDecimalValue.subtract(trueDefault)
     }
 
     return result
@@ -98,13 +90,31 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
   /*
     returns the "BigDecimal" value of this coverage term.
   */
-  protected property get BigDecimalValue() : BigDecimal{
+  public property get BigDecimalValue() : BigDecimal{
     var result : BigDecimal
 
     if(this typeis OptionCovTerm){
       result = this.Value
     }else if(this typeis DirectCovTerm){
       result = this.Value
+    }
+
+    return result
+  }
+
+  public property get TrueDefault() : BigDecimal{
+    var result : BigDecimal
+    var runtimeDefault = RuntimeDefault
+    var patternDefault = this.Pattern.getDefaultValue(null)
+
+    if(runtimeDefault != null){
+      result = runtimeDefault
+    }else if(patternDefault != null){
+      if(this typeis OptionCovTerm){
+        result = this.Pattern.getCovTermOpt(patternDefault).Value
+      }else if(this typeis DirectCovTerm){
+        result = new BigDecimal(patternDefault)
+      }
     }
 
     return result

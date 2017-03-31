@@ -27,10 +27,12 @@
       initialValue="line.VersionList.HOLineCoverages.where( \ c -&gt; c.AllVersions.first().CoverageCategory.Code.equals(&quot;HODW_SectionII_HOE&quot;)).flatMap(\ c -&gt; c.Costs).flatMap(\ c -&gt; c.AllVersions).toList()"
       name="CostsSectionII"/>
     <Variable
-      initialValue="getOtherCosts()"
-      name="CostsAdditionalCovs"/>
+      initialValue="una.pageprocess.QuoteScreenPCFController.getAdditionalCoverageCosts(dwelling)"
+      name="CostsAdditionalCovs"
+      recalculateOnRefresh="true"
+      type="List&lt;HomeownersCost_HOE&gt;"/>
     <Variable
-      initialValue="(line.HomeownersCosts.whereTypeIs(HomeownersLineCost_EXT).where( \ cost -&gt; cost.HOCostType != null)) as List&lt;entity.HomeownersLineCost_EXT&gt;"
+      initialValue="(line.HomeownersCosts.whereTypeIs(HomeownersLineCost_EXT).where( \ cost -&gt; cost.HOCostType != null and !typekey.HOCostType_Ext.TF_SECTIONIDEDCOSTS.TypeKeys.contains(cost.HOCostType))) as List&lt;entity.HomeownersLineCost_EXT&gt;"
       name="OtherCosts"/>
     <Variable
       initialValue="line.HomeownersCosts.whereTypeIs(HOTaxCost_HOE) as List&lt;entity.HOTaxCost_HOE&gt;"
@@ -60,28 +62,6 @@
                 </ListViewInput>
               </InputColumn>
             </DetailViewPanel>
-            <DetailViewPanel
-              visible="not CostsSectionI.Empty">
-              <InputColumn>
-                <Label
-                  label="line.Pattern.getCoverageCategory(&quot;HODW_SectionI_HOE&quot;).DisplayName + displaykey.Web.Homeowners.Quote.IncrLimitSuffix"/>
-              </InputColumn>
-            </DetailViewPanel>
-            <PanelRef
-              def="HOCostHOEDV(CostsSectionI)"
-              id="sectionIIncreasedLimitsCosts"
-              visible="not CostsSectionI.Empty"/>
-            <DetailViewPanel
-              visible="not CostsSectionII.Empty">
-              <InputColumn>
-                <Label
-                  label="line.Pattern.getCoverageCategory(&quot;HODW_SectionII_HOE&quot;).DisplayName + displaykey.Web.Homeowners.Quote.IncrLimitSuffix"/>
-              </InputColumn>
-            </DetailViewPanel>
-            <PanelRef
-              def="HOCostHOEDV(CostsSectionII)"
-              id="sectionIIIncreasedLimitsCosts"
-              visible="not CostsSectionII.Empty"/>
             <DetailViewPanel
               visible="not CostsAdditionalCovs.Empty">
               <InputColumn>
@@ -119,11 +99,5 @@
       def="HOCostHOEFeesDV(feeCosts)"
       id="FeeTaxCosts"
       visible="not feeCosts.Empty"/>
-    <Code><![CDATA[function getOtherCosts():List<HomeownersCost_HOE>{
-  var allOtherCosts : List<HomeownersCost_HOE>
-  allOtherCosts = dwelling.VersionList.Coverages.where( \ c -> not c.AllVersions.first().CoverageCategory.Code.equals("HODW_SectionI_HOE")).flatMap(\ c -> c.Costs).flatMap(\ c -> c.AllVersions).toList()
-  allOtherCosts.addAll(line.VersionList.HOLineCoverages.where(\ c -> not c.AllVersions.first().CoverageCategory.Code.equals("HODW_SectionII_HOE")).flatMap(\ c -> c.Costs).flatMap(\ c -> c.AllVersions.toList()))
-  return allOtherCosts
-}]]></Code>
   </PanelSet>
 </PCF>

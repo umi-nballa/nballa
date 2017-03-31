@@ -100,13 +100,13 @@ class CoverageSummaryUtil_HOE {
    * and false if the cost is calculated at the coverage level
    */
   static function isLowLevelCost(coverage: Coverage): boolean{
-    var isLow = coverage.PatternCode.equals("HOLI_OtherInsuredResidence_HOE")
-      || coverage.PatternCode.equals("HODW_SpecificStructuresOffPremise_HOE")
-      || coverage.PatternCode.equals("HODW_SpecialLimitsCovC_HOE")
-      || coverage.PatternCode.equals("HODW_ScheduledProperty_HOE")
-      || coverage.PatternCode.equals("HOSL_OutboardMotorsWatercraft_HOE_Ext")
-      || coverage.PatternCode.equals("HOSL_WatercraftLiabilityCov_HOE_Ext")
-      || coverage.PatternCode.equals("HOLI_AddResidenceRentedtoOthers_HOE")
+    var isLow = coverage.PatternCode?.equals("HOLI_OtherInsuredResidence_HOE")
+      || coverage.PatternCode?.equals("HODW_SpecificStructuresOffPremise_HOE")
+      || coverage.PatternCode?.equals("HODW_SpecialLimitsCovC_HOE")
+      || coverage.PatternCode?.equals("HODW_ScheduledProperty_HOE")
+      || coverage.PatternCode?.equals("HOSL_OutboardMotorsWatercraft_HOE_Ext")
+      || coverage.PatternCode?.equals("HOSL_WatercraftLiabilityCov_HOE_Ext")
+      || coverage.PatternCode?.equals("HOLI_AddResidenceRentedtoOthers_HOE")
     return isLow
   }
   
@@ -115,8 +115,8 @@ class CoverageSummaryUtil_HOE {
    */
   static function isSpecialCoverage(coverage: Coverage): boolean{
     var isLow = isLowLevelCost(coverage) 
-      || coverage.PatternCode.equals("HODW_PersonalPropertyOffResidence_HOE")
-      || coverage.PatternCode.equals("HODW_OtherStructuresOnPremise_HOE")
+      || coverage.PatternCode?.equals("HODW_PersonalPropertyOffResidence_HOE")
+      || coverage.PatternCode?.equals("HODW_OtherStructuresOnPremise_HOE")
     return isLow
   }
 }

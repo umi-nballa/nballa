@@ -32,14 +32,12 @@
               initialValue="group.Cost"
               name="cost"/>
             <IteratorSort
-              sortBy="group.Coverage.Pattern.CoverageCategory.Priority"
+              sortBy="group.Coverage.DisplayName"
               sortOrder="1"/>
             <IteratorSort
-              sortBy="group.Coverage.Pattern.Priority"
+              sortBy="group.TotalCost"
+              sortDirection="descending"
               sortOrder="2"/>
-            <IteratorSort
-              sortBy="group.Cost.EffDate"
-              sortOrder="3"/>
             <Row
               id="covLevelCost">
               <TextCell
@@ -48,7 +46,7 @@
                 footerLabel="displaykey.Web.Policy.BA.Subtotal"
                 id="Description"
                 label="displaykey.Web.PolicyLine.Coverages.Description"
-                value="cost//gw.lob.ho.rating.QuotePageUtil_HOE.getCoverageNameForAdditionalCov(coverage.Pattern as String)"/>
+                value="cost != null ? cost : group.Coverage.DisplayName//gw.lob.ho.rating.QuotePageUtil_HOE.getCoverageNameForAdditionalCov(coverage.Pattern as String)"/>
               <Cell
                 align="right"
                 enableSort="false"
@@ -81,7 +79,7 @@
                 enableSort="false"
                 id="Proration"
                 label="displaykey.Web.SubmissionWizard.Quote.WC.Prorata"
-                value="group.LowLevelCost ? null : gw.api.util.StringUtil.formatNumber(cost.Proration, &quot;#0.0000&quot;)"
+                value="!group.LowLevelCost and cost != null ? gw.api.util.StringUtil.formatNumber(cost.Proration, &quot;#0.0000&quot;) : null"
                 visible="proRated"/>
               <Cell
                 align="right"
@@ -90,7 +88,7 @@
                 formatType="currency"
                 id="Amount"
                 label="displaykey.Web.Policy.BA.Premium"
-                value="group.LowLevelCost ? null : cost.ActualAmount"/>
+                value="group.LowLevelCost ? null : una.pageprocess.QuoteScreenPCFController.getPremiumDisplayValue(cost)"/>
             </Row>
             <RowIterator
               editable="false"
@@ -202,7 +200,7 @@
                   align="right"
                   formatType="currency"
                   id="Amount"
-                  value="lineCost.ActualAmount"/>
+                  value="una.pageprocess.QuoteScreenPCFController.getPremiumDisplayValue(lineCost)"/>
               </Row>
               <RowIterator
                 editable="false"

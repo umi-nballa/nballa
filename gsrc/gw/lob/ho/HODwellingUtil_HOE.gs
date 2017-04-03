@@ -224,7 +224,7 @@ class HODwellingUtil_HOE {
     if(dwelling.RoofShapeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.RoofType = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofCover) as typekey.RoofType[]).first()
+      dwelling.RoofShape_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.RoofType) as typekey.RoofShape_Ext[]).first()
     }
     if(dwelling.ConstructionTypeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -282,13 +282,19 @@ class HODwellingUtil_HOE {
     if(dwelling.ExteriorWFvalMatchLevelL2_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.ExteriorWallFinishL1_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]).first()
+      dwelling.ExteriorWallFinishL2_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WallFinish) as typekey.ExteriorWallFinish_Ext[]).first()
     }
 
     if(dwelling.TotalSqFtValMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
       dwelling.SquareFootage_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.SquareFootage)).first()
     }
+
+    if(dwelling.HOLocation.ResFireDeptMatchLevel_Ext == tc_exact){
+
+      dwelling.HOLocation.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass).first()
+    }
+
 
     }//Mapping Metrics version date
     if(tunaAppResponse != null && tunaAppResponse.MetricsVersion.first().NamedValue != null){
@@ -1224,7 +1230,7 @@ class HODwellingUtil_HOE {
   // get YearBuild
   static function getNumStories(dwelling : Dwelling_HOE) : String {
 
-    return dwelling?.OverrideStoriesNumber_Ext ? dwelling.NoOfStoriesOverridden_Ext : dwelling.StoriesNumber
+    return dwelling?.OverrideStoriesNumber_Ext ? dwelling.NoofStoriesOverridden_Ext : dwelling.StoriesNumber
   }
 
   static function getConstructionType(dwelling:Dwelling_HOE) : String {

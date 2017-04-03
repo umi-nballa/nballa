@@ -418,14 +418,14 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   }
 
   /**
-   * Rate Unit Owners Rented To Others Coverage
-   */
+ * Rate Unit Owners Rented To Others Coverage
+ */
   function rateUnitOwnersRentedToOthersCoverage(lineCov: HOLI_UnitOwnersRentedtoOthers_HOE_Ext, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersRentedToOthersCoverage to rate Unit Owners Rented To Others Coverage", this.IntrinsicType)
     var lineRatingInfo = new HOGroup3LineRatingInfo (lineCov)
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
-                                   TC_POLICYLINE -> PolicyLine,
-                                   TC_RATINGINFO -> _hoRatingInfo}
+        TC_POLICYLINE -> PolicyLine,
+        TC_RATINGINFO -> _hoRatingInfo}
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)

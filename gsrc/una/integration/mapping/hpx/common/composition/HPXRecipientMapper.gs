@@ -110,8 +110,8 @@ class HPXRecipientMapper {
   }
 
   private function createFormsRequestForCreditReport(policyPeriod : PolicyPeriod, forms : Form []) : List<String> {
-    if (policyPeriod.HomeownersLine_HOEExists and (policyPeriod.HomeownersLine_HOE?.HOPriorLosses_Ext.where( \ elt -> elt.ClueReport != null).length > 0 or
-        policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0)) {
+    if (policyPeriod.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured).CreditReportsExt?.length > 0 or
+        policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt?.length > 0) {
       var hpxRequestMapper = new HPXRequestMapper()
       var formsRequestsForRecipientType : List<String> = new()
       var compositionUnitMapper = new HPXCreditReportCompositionUnitMapper()

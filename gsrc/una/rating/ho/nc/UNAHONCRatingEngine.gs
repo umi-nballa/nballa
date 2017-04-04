@@ -149,6 +149,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
           rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
             break
+
         case HODW_PermittedIncOcp_HOE_Ext:
             ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
             break
@@ -158,6 +159,12 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             break
         case HODW_LossAssEQEndorsement_HOE_Ext:
             rateLossAssessmentEarthquakeCoverage(dwellingCov, dateRange)
+            break
+        //TODO fix the 30000 limit once the limit is defaulted
+        case HODW_Dwelling_Cov_HOE:
+           if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6 and dwellingCov?.HODW_Dwelling_Limit_HOETerm?.Value > 30000){
+             rateUnitOwnersCovAIncreasedLimit(dwellingCov, dateRange)
+            }
             break
        }
     }
@@ -234,7 +241,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-    * Rate Loss Assessment Coverage
+    * Rate Unit Owners Cov A Special Limits Coverage
    */
 
   function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){
@@ -249,7 +256,20 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
 
   }
 
-
+  /**
+    * Rate Unit-Owners Coverage A Increased Limits
+   */
+  function rateUnitOwnersCovAIncreasedLimit(dwellingCov : HODW_Dwelling_Cov_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovAIncreasedLimit ", this.IntrinsicType)
+    _dwellingRatingInfo.KeyPremium = _hoRatingInfo.KeyPremium
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Unit Owners CovA Increased Limit Rated Successfully", this.IntrinsicType)
+  }
 
   /**
    * Rate the watercraft liability coverage for Texas

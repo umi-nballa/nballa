@@ -34,6 +34,9 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _protectionClassCode : String as ProtectionClassCode
   var _vacancyPeriod : int as VacancyPeriod
   var _lossAssessmentEQLimit : int as LossAssessmentEQLimit
+  var _keyPremium: BigDecimal as KeyPremium = 0.0
+
+
 
   construct(dwelling : Dwelling_HOE){
       super(dwelling)
@@ -51,8 +54,10 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
       _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
 
-      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm?.Value
-      if(dwelling.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
+
+      _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value
+
+      if(dwelling?.HODW_UnitOwnersCovASpecialLimits_HOE_ExtExists){
         _unitOwnersCoverageASpecialLimitsExists = true
       }
 
@@ -98,5 +103,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
     if(dwelling?.HODW_LossAssEQEndorsement_HOE_ExtExists){
       _lossAssessmentEQLimit = dwelling?.HODW_LossAssEQEndorsement_HOE_Ext?.HODW_LossAssEQLimit_HOETerm?.Value?.intValue()
     }
-  }
+
+
+   }
 }

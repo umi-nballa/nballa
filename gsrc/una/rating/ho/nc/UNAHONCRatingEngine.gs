@@ -33,6 +33,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   private var _dwellingRatingInfo : HONCDwellingRatingInfo
   private var _isLPP : boolean
 
+
   construct(line: HomeownersLine_HOE) {
     this(line, RateBookStatus.TC_ACTIVE)
   }
@@ -142,10 +143,11 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
             break
         case HODW_LossAssessmentCov_HOE_Ext:
+           if (_dwellingRatingInfo.LossAssessmentLimit > 1000)
               rateLossAssessmentCoverage(dwellingCov, dateRange)
             break
         case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
-          //  rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
+          rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov, dateRange)
             break
         case HODW_PermittedIncOcp_HOE_Ext:
             ratePermittedIncidentalOccupanciesCoverage(dwellingCov, dateRange)
@@ -231,11 +233,15 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       _logger.debug("Loss Assessment Earthquake Coverage Rated Successfully", this.IntrinsicType)
   }
 
+  /**
+    * Rate Loss Assessment Coverage
+   */
+
   function rateUnitOwnerCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext , dateRange : DateRange){
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnerCovASpecialLimitsCoverage", this.IntrinsicType)
       var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
-      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
       if (costData != null)
         addCost(costData)
     if (_logger.DebugEnabled)

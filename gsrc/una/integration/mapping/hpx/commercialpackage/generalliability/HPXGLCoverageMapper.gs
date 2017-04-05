@@ -1,7 +1,7 @@
 package una.integration.mapping.hpx.commercialpackage.generalliability
 
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
-
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +20,11 @@ class HPXGLCoverageMapper extends HPXCoverageMapper {
   override function createDeductibleScheduleList(currentCoverage : Coverage, transactions : java.util.List<Transaction>)
       : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeductibleType> {
     return null
+  }
+
+  override function getIncludedPremium(coverage : Coverage) : BigDecimal {
+    var includedPremium : BigDecimal
+    return includedPremium
   }
 
   override function createCoverableInfo(currentCoverage: Coverage): wsi.schema.una.hpx.hpx_application_request.types.complex.CoverableType {

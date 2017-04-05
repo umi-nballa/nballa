@@ -70,6 +70,31 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     return null
   }
 
+  override function getIncludedPremium(coverage : Coverage) : BigDecimal {
+    var includedPremium : BigDecimal
+    switch (coverage.PatternCode) {
+      case "HODW_Dwelling_Cov_HOE" :
+          if (coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
+              coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
+            var baseCost = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersBaseCost_HOE).where( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_BASEPREMIUM or
+                                                                                                                                   elt.HOCostType == typekey.HOCostType_Ext.TC_AOPBASEPREMIUM or
+                                                                                                                                   elt.HOCostType == typekey.HOCostType_Ext.TC_WINDBASEPREMIUM)
+            includedPremium = baseCost.sum( \ elt -> elt.ActualTermAmount_amt)
+          }
+          break
+      case "HODW_Personal_Property_HOE" :
+          if (coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4) {
+            var baseCost = coverage.PolicyLine.AssociatedPolicyPeriod.AllCosts.whereTypeIs(HomeownersBaseCost_HOE).where( \ elt -> elt.HOCostType == typekey.HOCostType_Ext.TC_BASEPREMIUM or
+                elt.HOCostType == typekey.HOCostType_Ext.TC_AOPBASEPREMIUM or
+                elt.HOCostType == typekey.HOCostType_Ext.TC_WINDBASEPREMIUM)
+            includedPremium = baseCost.sum( \ elt -> elt.ActualTermAmount_amt)
+          }
+          break
+    }
+
+    return includedPremium
+  }
+
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
     switch (currentCovTerm.PatternCode) {
       case "HOPL_LossAssCovLimit_HOE" :

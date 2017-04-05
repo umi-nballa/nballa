@@ -82,6 +82,8 @@ class HPXCPPolicyConditionMapper extends HPXPolicyConditionMapper {
                                                             deductiblePercentage == typekey.CPHurricanePercDed_Ext.TC_HURRICANEDEDNOTAPPLICABLE_EXT ? 0 : 0 : 0
       deductible.CoverageCd = currentPolicyCondition.PatternCode
       deductible.CoverageSubCd = deductibleType
+      deductible.NetChangeAmt.Amt = 0
+      deductible.WrittenAmt.Amt = 0
       deductible.DeductibleDesc = ""
       deductible.FormatText = ""
       deductibles.add(deductible)

@@ -48,6 +48,11 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
     return coverable
   }
 
+  override function getIncludedPremium(coverage : Coverage) : BigDecimal {
+    var includedPremium : BigDecimal
+    return includedPremium
+  }
+
   override function getCostCoverage(cost : Cost) : Coverage {
     var result : Coverage
 

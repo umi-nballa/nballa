@@ -255,6 +255,12 @@ abstract class HPXCoverageMapper {
           currentPremium = currentPremium + covCost.ActualAmount.Amount
         }
       }
+      if (currentPremium == 0.00) {
+        var includedPremium = getIncludedPremium(currentCoverage)
+        if (includedPremium != null) {
+          currentPremium = includedPremium
+        }
+      }
       cov.WrittenAmt.Amt = currentPremium != null ? currentPremium : 0.00
       cov.ProRateFactor = cost?.Proration != null ? cost?.Proration : 0.00
       cov.NetChangeAmt.Amt = cost?.Amount != null ? cost.Amount.Amount : 0.00
@@ -343,4 +349,5 @@ abstract class HPXCoverageMapper {
 
   abstract function getCostCoverage(cost : Cost) : Coverage
 
+  abstract function getIncludedPremium(coverage : Coverage) : BigDecimal
 }

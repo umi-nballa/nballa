@@ -3,6 +3,7 @@ package una.integration.mapping.hpx.businessowners
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses gw.api.domain.covterm.OptionCovTerm
 uses gw.xml.XmlElement
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -113,6 +114,12 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       coverable.LocationNo = classification?.Building?.Location?.Location?.LocationNum != null ? classification?.Building?.Location?.Location?.LocationNum : ""
     }
     return coverable
+  }
+
+
+  override function getIncludedPremium(coverage : Coverage) : BigDecimal {
+    var includedPremium : BigDecimal
+    return includedPremium
   }
 
   override function createOptionLimitInfo(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {

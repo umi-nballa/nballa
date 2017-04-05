@@ -17,7 +17,15 @@ enhancement HOLocationEnhancement_Ext : entity.HOLocation_HOE
       return this.DwellingProtectionClasscode
   }
 
+  property get WindPoolAsYESNO_Ext(): String
+  {
+    return (this.WindPool_Ext == true)? displaykey.Button.Yes: displaykey.Button.No
+  }
 
+  property set WindPoolAsYESNO_Ext(data: String)
+  {
+    this.WindPool_Ext = (data?.toUpperCase() == displaykey.Button.Yes.toUpperCase())
+  }
 
   property get territoryCodeOrOverride(): String
   {

@@ -119,7 +119,7 @@ class HODwellingUtil_HOE {
     if(dwelling.HOLocation.WindPoolMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.HOLocation.WindPool_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool) ).first()
+      dwelling.HOLocation.WindPoolAsYESNO_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool) ).first()
     }
     if(dwelling.HOLocation.DistBOWMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -150,11 +150,7 @@ class HODwellingUtil_HOE {
 
       dwelling.HOLocation.PolicyLocation.Longitude_Ext = tunaAppResponse.Longitude
     }
-    if(dwelling.HOLocation.WindPoolMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
-    {
 
-      dwelling.HOLocation.WindPool_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool) ).first()
-    }
     if(dwelling.HOLocation.ISO360MatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
@@ -1173,7 +1169,6 @@ class HODwellingUtil_HOE {
     dwelling.HOLocation.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
     dwelling.HOLocation.LatitudeMatchLevel_Ext = (tunaAppResponse.Latitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
     dwelling.HOLocation.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
-    dwelling.HOLocation.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
     dwelling.HOLocation.ISO360MatchLevel_Ext = getMatchLevel(tunaAppResponse.ISO360Value)
     //dwelling.HOLocation.WindpoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
     dwelling.HOLocation.ACVValueMatchLevel_Ext = getMatchLevel(tunaAppResponse.ACV)

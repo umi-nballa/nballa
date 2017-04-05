@@ -1,0 +1,18 @@
+package rules.EventMessage.EventFired_dir.ACCIR010AcceleratorIvansRule_dir.ACCIR011PolicyPeriod_dir
+
+@gw.rules.RuleName("ACCIR021RewritePeriod")
+internal class ACCIR021RewritePeriod {
+  static function doCondition(messageContext : entity.MessageContext) : boolean {
+/*start00rule*/
+return messageContext.EventName == acc.appliedsystems.AcceleratorTransport.REWRITEPERIOD_MSG
+/*end00rule*/
+}
+
+  static function doAction(messageContext : entity.MessageContext, actions : gw.rules.Action) {
+/*start00rule*/
+var pp = (messageContext.Root as PolicyPeriod)
+var payload = "${pp.Status}:${pp.Job.JobNumber}"
+messageContext.createMessage(payload)
+/*end00rule*/
+  }
+}

@@ -35,6 +35,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _vacancyPeriod : int as VacancyPeriod
   var _lossAssessmentEQLimit : int as LossAssessmentEQLimit
   var _keyPremium: BigDecimal as KeyPremium = 0.0
+  var _buildingAdditionsAndAlterationsIncreasedLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
 
 
 
@@ -54,6 +55,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _isPermittedIncidentalOccupancyExtendSectionIICoverage = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_ExtendSectionCov_HOETerm?.Value
       _permittedIncidentalOccupancyOtherStructuresLimit = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_Limit_HOETerm?.Value
 
+      _buildingAdditionsAndAlterationsIncreasedLimit = dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
 
       _lossAssessmentLimit = dwelling?.HODW_LossAssessmentCov_HOE_Ext?.HOPL_LossAssCovLimit_HOETerm.Value
 

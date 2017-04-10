@@ -1,22 +1,22 @@
 package una.integration.plugins.propertyinspections
 
 uses gw.api.database.Query
+uses gw.api.email.EmailContact
+uses gw.job.uw.UWAuthorityBlocksProgressException
 uses gw.pl.persistence.core.Bundle
 uses org.apache.commons.io.FilenameUtils
+uses una.integration.emailtemplate.InspectionsOrderedEmail
 uses una.integration.framework.file.inbound.model.FileRecordInfo
+uses una.integration.framework.file.inbound.model.FileRecords
 uses una.integration.framework.file.inbound.plugin.InboundFileProcessingPlugin
 uses una.integration.util.propertyinspections.PropertyInspectionsInboundUtil
 uses una.logging.UnaLoggerCategory
 uses una.model.PropertyInspectionsInboundData
+uses una.utils.ActivityUtil
+uses una.utils.EmailUtil
 
 uses java.text.SimpleDateFormat
 uses java.util.Date
-uses una.integration.framework.file.inbound.model.FileRecords
-uses una.utils.ActivityUtil
-uses gw.api.email.EmailContact
-uses una.utils.EmailUtil
-uses una.integration.emailtemplate.InspectionsOrderedEmail
-uses java.lang.Exception
 
 /**
  * The InboundFileProcessingPlugin implementation to process Inspection Vendors inbound files
@@ -79,7 +79,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var formatter = new SimpleDateFormat(DATE_FORMAT_RECEIVED)
       var date = formatter.parse((FilenameUtils.removeExtension(fileName)).substring(17,25))
       var sdf= new SimpleDateFormat(LAST_INSPECTION_DATE_FORMAT)
-      var lastInspectionDate : Date = (sdf.format(date)) as Date
+      var lastInspectionDate = (sdf.format(date)) as Date
       var policyChange = new PolicyChange()
       policyChange = bundle.add(policyChange)
       policyChange.Description = POLICY_CHANGE_DESCRIPTION
@@ -88,7 +88,11 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var policyChangePeriod = policyChange.Periods.length == 1 ? policyChange.Periods[0] : null
       policyChangePeriod.DateLastInspection_Ext= lastInspectionDate
       policyChangePeriod.addNote(NoteTopicType.TC_GENERAL, NOTES_SUBJECT,policyRecord.Notes)
-      policyChangePeriod.PolicyChangeProcess.requestQuote()
+      try {
+        policyChangePeriod.PolicyChangeProcess.requestQuote()
+      }catch(uwException : UWAuthorityBlocksProgressException){
+        clearUWIssues(uwException.BlockingIssues?.toList())
+      }
       policyChangePeriod.markValidQuote()
       policyChangePeriod.PolicyChangeProcess.bind()
       var activity = ActivityUtil.createActivityAutomatically(policyChangePeriod, INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE)
@@ -111,4 +115,16 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
     }
     LOGGER.debug("Exiting the function processDetailRecord() of "+CLASS_NAME)
   }
+
+  /**
+   * Auto approves the blocking UW Issues.
+   */
+  private function clearUWIssues(blockingIssues : List<UWIssue>){
+    blockingIssues?.each( \  uwIssue -> {
+      uwIssue.createAutoApproval()
+      uwIssue.Approval.AutomaticApprovalCause = "Systematically approved to enable auto-issuance of Policy Change transaction"
+      uwIssue.createApprovalHistoryFromCurrentValues()
+    })
+  }
+
 }

@@ -16,12 +16,18 @@ class HPXPaymentOptionMapper {
     var paymentOptions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType>()
     var paymntOptions = policyPeriod.retrievePaymentPlans()
     var installmentOptions = paymntOptions.InstallmentPlans
+    var selectedPaymentPlan = policyPeriod.SelectedPaymentPlan
     for (installmentOption in installmentOptions) {
       var paymentOption = new wsi.schema.una.hpx.hpx_application_request.types.complex.PaymentOptionType()
       paymentOption.InstallmentInfo.InstallmentDesc = installmentOption.Name
       var numberOfInstallments = 0
       if (!installmentOption.Name.equals("Annual")) {
         numberOfInstallments = installmentOption.Name.substring(0,2)
+      }
+      if (selectedPaymentPlan.Name.equals(installmentOption.Name)) {
+        paymentOption.SelectedPaymentPlan = true
+      } else {
+        paymentOption.SelectedPaymentPlan = false
       }
       paymentOption.InstallmentInfo.InstallmentNumber = numberOfInstallments
       paymentOption.InstallmentInfo.InstallmentDownPaymentAmt.Amt = installmentOption.DownPayment

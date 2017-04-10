@@ -23,6 +23,8 @@ class HOCommonDwellingRatingInfo {
   var _isPersonalLiabilityLimitIncreased : boolean as IsPersonalLiabilityLimitIncreased
   var _bcegGrade: typekey.BCEGGrade_Ext as BCEGGrade
 
+
+
   construct(dwelling : Dwelling_HOE ){
     _dwellingLimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
     _personalPropertyLimit = (dwelling.HODW_Personal_Property_HOEExists)? dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0
@@ -35,9 +37,12 @@ class HOCommonDwellingRatingInfo {
         _specifiedAdditionalAmount = dwelling?.HODW_SpecificAddAmt_HOE_Ext?.HODW_AdditionalAmtInsurance_HOETerm?.DisplayValue
       }
     }
-    if(dwelling.HODW_Personal_Property_HOEExists){
+    if(dwelling.HODW_Personal_Property_HOEExists and PolicyType != HOPolicyType_HOE.TC_HO6){
       _personalPropertyIncreasedLimit = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
-    }
+      } else if (dwelling.HODW_Personal_Property_HOEExists and PersonalPropertyLimit > 30000){
+      _personalPropertyIncreasedLimit = (PersonalPropertyLimit - 30000)
+      }
+
     if(dwelling.HODW_Other_Structures_HOEExists){
       _otherStructuresIncreasedLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
     }
@@ -51,6 +56,6 @@ class HOCommonDwellingRatingInfo {
     _territoryCode = (dwelling.HOLocation?.OverrideTerritoryCode_Ext)? dwelling.HOLocation?.TerritoryCodeOverridden_Ext : dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
 
     _bcegGrade = dwelling?.BCEGOrOverride
-  }
 
+  }
 }

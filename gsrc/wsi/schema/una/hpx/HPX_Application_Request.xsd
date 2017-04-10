@@ -1547,6 +1547,7 @@
 			<xsd:element name="BillingPeriod" type="BillingPeriodType" minOccurs="0"/>
 			<xsd:element name="SignatureInfo" type="SignatureInfoType" minOccurs="0"/>
 			<xsd:element name="PostmarkDt" type="xsd:date" minOccurs="0"/>
+			<xsd:element name="SelectedPaymentPlan" type="xsd:string" maxOccurs="1" />			
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="InsuredFullToBePaidAmtType">
@@ -4374,9 +4375,9 @@
 	</xsd:complexType>
 	<xsd:complexType name="MedicalDiagnosisType">
 		<xsd:sequence>
-			<xsd:element name="ClaimInjuryMedicalDiagnosisID" type="xsd:string"/>
-			<xsd:element name="ClaimInjuryMedicalDiagnosisICDCode" type="xsd:string"/>
-			<xsd:element name="ClaimInjuryMedicalDiagnosisDesc" type="xsd:string"/>
+			<xsd:element name="ClaimInjuryMedicalDiagnosisID" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimInjuryMedicalDiagnosisICDCode" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ClaimInjuryMedicalDiagnosisDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ClaimInjuryMedicalNotes" type="ClaimInjuryMedicalNotesType" minOccurs="0"/>
 			<xsd:element name="ClaimInjuryProviderName" type="ClaimInjuryProviderNameType" minOccurs="0"/>
 			<xsd:element name="isConpensability" type="xsd:string"/>
@@ -4395,12 +4396,12 @@
 			<xsd:element name="DamageDescription" type="xsd:string"/>
 			<xsd:element name="isThirdPartyLoss" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isInsuredsLoss" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="ClaimInjuryBodyParts" type="ClaimInjuryBodyPartsType"/>
+			<xsd:element name="ClaimInjuryBodyParts" type="ClaimInjuryBodyPartsType" minOccurs="0"/>
 			<xsd:element name="isTreatementReceived" type="xsd:string"/>
 			<xsd:element name="DisabledDueToAccident" type="DisabledDueToAccidentType"/>
 			<xsd:element name="wasAbulanceUsed" type="xsd:string"/>
 			<xsd:element name="isLostWages" type="xsd:string"/>
-			<xsd:element name="MedicalDiagnosis" type="MedicalDiagnosisType"/>
+			<xsd:element name="MedicalDiagnosis" type="MedicalDiagnosisType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="ClaimIncidentTypeType">
@@ -5313,12 +5314,12 @@
 			<xsd:element name="DamageDescription" type="xsd:string"/>
 			<xsd:element name="isThirdPartyLoss" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="isInsuredsLoss" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="ClaimInjuryBodyParts" type="ClaimInjuryBodyPartsType"/>
+			<xsd:element name="ClaimInjuryBodyParts" type="ClaimInjuryBodyPartsType" minOccurs="0"/>
 			<xsd:element name="isTreatementReceived" type="xsd:string"/>
 			<xsd:element name="DisabledDueToAccident" type="DisabledDueToAccidentType"/>
 			<xsd:element name="wasAbulanceUsed" type="xsd:string"/>
 			<xsd:element name="isLostWages" type="xsd:string"/>
-			<xsd:element name="MedicalDiagnosis" type="MedicalDiagnosisType"/>
+			<xsd:element name="MedicalDiagnosis" type="MedicalDiagnosisType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="WitnessType">

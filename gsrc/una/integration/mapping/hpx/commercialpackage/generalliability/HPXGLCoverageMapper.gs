@@ -43,6 +43,9 @@ class HPXGLCoverageMapper extends HPXCoverageMapper {
       case GLCovCost:
           result = cost.Coverage
           break
+      case GLLineCovCost:
+          result = cost.Coverage
+          break
       case GLCovExposureCost:
           result = cost.Coverage
           break

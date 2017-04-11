@@ -103,6 +103,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
           return createOrdinanceLawLimit(coverage, currentCovTerm, transactions)
       case "HODW_AdditionalAmtInsurance_HOE" :
           return createAdditionalDwellingCovLimit(coverage, currentCovTerm, transactions)
+      case "HODW_TreesandPlantsLimit_HOE" :
+          return createTreesAndPlantsCovLimit(coverage, currentCovTerm, transactions)
       default :
         return super.createOptionLimitInfo(coverage, currentCovTerm, transactions)
     }
@@ -131,9 +133,9 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     var max = currentCovTerm.AvailableOptions.max()
-    limit.CurrentTermAmt.Amt = 0
     limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
+    limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100
     limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
@@ -157,6 +159,23 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     limit.FormatText = ""
     limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
         " | Max: " + max
+    limit.CoverageCd = coverage.PatternCode
+    limit.CoverageSubCd = currentCovTerm.PatternCode
+    limit.WrittenAmt.Amt = 0
+    return limit
+  }
+
+  function createTreesAndPlantsCovLimit(coverage : Coverage, currentCovTerm : OptionCovTerm, transactions : java.util.List<Transaction>) : wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType {
+    var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
+    limit.Description = currentCovTerm.Pattern.Name
+    var value = currentCovTerm.Value
+    var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
+    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.FormatPct = getCovTermPercentage(value, valueType)
+    limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100
+    limit.Rate = 0.00
+    limit.FormatText = ""
+    limit.LimitDesc = ""
     limit.CoverageCd = coverage.PatternCode
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.WrittenAmt.Amt = 0
@@ -315,7 +334,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
+            limit.NetChangeAmt.Amt = 0
             break
           }
         }
@@ -355,7 +374,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
+            limit.NetChangeAmt.Amt = 0
             limit.Rate = ratingHelper.getRate(currentCoverage.PolicyLine.AssociatedPolicyPeriod, trx.Cost.NameOfCoverable, "BaseRate")
             break
           }
@@ -393,7 +412,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
+            limit.NetChangeAmt.Amt = 0
             break
           }
         }
@@ -430,7 +449,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       for (trx in transactions) {
         if(trx.Cost typeis ScheduleCovCost_HOE){
           if((trx.Cost as ScheduleCovCost_HOE).ScheduledItem.FixedId.equals(item.FixedId)) {
-            limit.NetChangeAmt.Amt = trx.Cost.ActualAmount.Amount
+            limit.NetChangeAmt.Amt = 0
             break
           }
         }

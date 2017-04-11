@@ -20,6 +20,7 @@ uses una.rating.ho.group2.ratinginfos.HOGroup2LineRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.group2.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo
+uses java.math.BigDecimal
 
 /**
  * Created with IntelliJ IDEA.
@@ -96,7 +97,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-          rateIncreasedPersonalProperty(dwellingCov, dateRange)
+           rateIncreasedPersonalProperty(dwellingCov, dateRange)
           break
       case HODW_BusinessProperty_HOE_Ext:
           rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
@@ -182,7 +183,8 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateMultiLineDiscount(dateRange)
     }
 
-    if(_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade != 99)
+
+   if((dwelling?.HOLine?.HODW_WindstromHailExc_HOE_ExtExists == false) and (_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade != 99))
       rateBuildingCodeEffectivenessGradingCredit(dateRange)
 
      rateLossHistoryCredit(dateRange)
@@ -210,7 +212,9 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(dwelling.DwellingProtectionDetails.GatedCommunity){
       rateGatedCommunityDiscount(dateRange)
     }
-
+    //if(windOrHailExcluded){
+      //rateWindHailExclusionCredit(dateRange, HOCostType_Ext.TC_WINDEXCLUSIONCREDITDWELLING, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
+   // }
     if(PolicyLine.HOPolicyType != HOPolicyType_HOE.TC_HO4 and !dwelling.WHurricaneHailExclusion_Ext)
       rateWindStormMitigationCredit(dateRange)
 
@@ -360,6 +364,23 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     }
     _logger.debug("Windstorm Mitigation Credit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   * Rate Wind/Hail Exclusion Credit
+   */
+  function rateWindHailExclusionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateWindHailExclusionCredit", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("No rateWindHailExclusionCredit Rated Successfully", this.IntrinsicType)
   }
 
   /**

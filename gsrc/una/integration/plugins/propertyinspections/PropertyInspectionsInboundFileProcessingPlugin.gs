@@ -2,7 +2,6 @@ package una.integration.plugins.propertyinspections
 
 uses gw.api.database.Query
 uses gw.api.email.EmailContact
-uses gw.job.uw.UWAuthorityBlocksProgressException
 uses gw.pl.persistence.core.Bundle
 uses org.apache.commons.io.FilenameUtils
 uses una.integration.emailtemplate.InspectionsOrderedEmail
@@ -88,11 +87,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       var policyChangePeriod = policyChange.Periods.length == 1 ? policyChange.Periods[0] : null
       policyChangePeriod.DateLastInspection_Ext= lastInspectionDate
       policyChangePeriod.addNote(NoteTopicType.TC_GENERAL, NOTES_SUBJECT,policyRecord.Notes)
-      try {
-        policyChangePeriod.PolicyChangeProcess.requestQuote()
-      }catch(uwException : UWAuthorityBlocksProgressException){
-        clearUWIssues(uwException.BlockingIssues?.toList())
-      }
+      policyChangePeriod.PolicyChangeProcess.requestQuote()
       policyChangePeriod.markValidQuote()
       policyChangePeriod.PolicyChangeProcess.bind()
       var activity = ActivityUtil.createActivityAutomatically(policyChangePeriod, INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE)
@@ -114,17 +109,6 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       LOGGER.debug("The Policy Change transaction successfully completed : "+policyNumber)
     }
     LOGGER.debug("Exiting the function processDetailRecord() of "+CLASS_NAME)
-  }
-
-  /**
-   * Auto approves the blocking UW Issues.
-   */
-  private function clearUWIssues(blockingIssues : List<UWIssue>){
-    blockingIssues?.each( \  uwIssue -> {
-      uwIssue.createAutoApproval()
-      uwIssue.Approval.AutomaticApprovalCause = "Systematically approved to enable auto-issuance of Policy Change transaction"
-      uwIssue.createApprovalHistoryFromCurrentValues()
-    })
   }
 
 }

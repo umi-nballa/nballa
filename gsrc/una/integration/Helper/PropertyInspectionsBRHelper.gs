@@ -309,7 +309,7 @@ class PropertyInspectionsBRHelper {
       //BR.09.29 :: Properties in the zip codes below to supplemental also have a roof top inspection performed, regardless of property age.
       var zipCode = dwelling_hoe.HOLocation.PolicyLocation.PostalCode
       if(zipCode.contains(HYPHEN)){
-        zipCode = zipCode.split(HYPHEN).last()
+        zipCode = zipCode.split(HYPHEN).first()
       }
       if(zipCodeList.contains(zipCode)){
         reportOne += THIRTYTWO

@@ -283,50 +283,71 @@ class LexisFirstServicePayload {
    */
   private function coverageInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
     //Mapping Coverage Details
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != 0){
+       lexisDTO.CoverageTypeCode1 = COVERAGE_DWELLING
+       lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value) as String
+      } else if(policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode1 = COVERAGE_DWELLING
-      lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value : "") as String
-      lexisDTO.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value : "") as String
+      lexisDTO.CoverageAmount1 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm.Value) as String
+    }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value != 0)
+      lexisDTO.Deductible1 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value) as String
+
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
-      lexisDTO.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value != null ?
-        policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value : "") as String
-      lexisDTO.Deductible2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm.Value : "") as String
+      lexisDTO.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value) as String
+      } else if(policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value != 0){
+      lexisDTO.CoverageTypeCode2 = COVERAGE_PERSONAL_PROPERTY
+      lexisDTO.CoverageAmount2 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm.Value != 0)
+      lexisDTO.Deductible2 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_AllPeril_HOE_ExtTerm.Value) as String
+
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
-      lexisDTO.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value != null ?
-            policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value : "") as String
-      lexisDTO.Deductible3 = ""
+      lexisDTO.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value) as String
+      } else if(policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value != 0){
+      lexisDTO.CoverageTypeCode3 = COVERAGE_OTHER_STRUCTURES
+      lexisDTO.CoverageAmount3 = (policyPeriod.HomeownersLine_HOE.Dwelling.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode4 = COVERAGE_LOSS_OF_USE
-      lexisDTO.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value : "") as String
-      lexisDTO.Deductible4 = ""
+      lexisDTO.CoverageAmount4 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_Loss_Of_Use_HOE.HODW_LossOfUseDwelLimit_HOETerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode5 = COVERAGE_PERSONAL_LIABILITY
-      lexisDTO.CoverageAmount5 = (policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value : "") as String
-      lexisDTO.Deductible5 = ""
+      lexisDTO.CoverageAmount5 = (policyPeriod.HomeownersLine_HOE.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm.Value) as String
+      } else if(policyPeriod.HomeownersLine_HOE.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value != 0){
+      lexisDTO.CoverageTypeCode5 = COVERAGE_PERSONAL_LIABILITY
+      lexisDTO.CoverageAmount5 = (policyPeriod.HomeownersLine_HOE.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode6 = COVERAGE_MEDICAL_PAYMENTS
-      lexisDTO.CoverageAmount6 = (policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value : "") as String
-      lexisDTO.Deductible6 = ""
+      lexisDTO.CoverageAmount6 = (policyPeriod.HomeownersLine_HOE.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm.Value) as String
+      } else if(policyPeriod.HomeownersLine_HOE.DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm.Value != 0){
+      lexisDTO.CoverageTypeCode6 = COVERAGE_MEDICAL_PAYMENTS
+      lexisDTO.CoverageAmount6 = (policyPeriod.HomeownersLine_HOE.DPLI_Med_Pay_HOE.DPLI_MedPay_Limit_HOETerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_HurricaneCov_HOE_Ext.HODW_HurricaneConstructionType_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_HurricaneCov_HOE_Ext.HODW_HurricaneConstructionType_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode7 = COVERAGE_HURRICANE
-      lexisDTO.CoverageAmount7 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_HurricaneCov_HOE_Ext.HODW_HurricaneConstructionType_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_HurricaneCov_HOE_Ext.HODW_HurricaneConstructionType_HOETerm.Value : "") as String
-      lexisDTO.Deductible7 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value : "") as String
+      lexisDTO.CoverageAmount7 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_HurricaneCov_HOE_Ext.HODW_HurricaneConstructionType_HOETerm.Value) as String
+      if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value != 0)
+        lexisDTO.Deductible7 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_SectionI_Ded_HOE.HODW_Hurricane_Ded_HOETerm.Value) as String
+    }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode8 = COVERAGE_FLOOD
-      lexisDTO.CoverageAmount8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value  : "") as String
-      lexisDTO.Deductible8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value != null ?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value : "") as String
+      lexisDTO.CoverageAmount8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value) as String
+      if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Dwelling_HOETerm.Value != 0)
+      lexisDTO.Deductible8 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCov_Ded_HOETerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.HOLI_BusinessPursuits_HOE_Ext.HOLI_NumClercEmp_HOE_ExtTerm.Value != null && policyPeriod.HomeownersLine_HOE.HOLI_BusinessPursuits_HOE_Ext.HOLI_NumClercEmp_HOE_ExtTerm.Value != 0) {
       lexisDTO.CoverageTypeCode9 = COVERAGE_BUSINESS_PURSUIT
-      lexisDTO.CoverageAmount9 = (policyPeriod.HomeownersLine_HOE.HOLI_BusinessPursuits_HOE_Ext.HOLI_NumClercEmp_HOE_ExtTerm.Value != null?
-          policyPeriod.HomeownersLine_HOE.HOLI_BusinessPursuits_HOE_Ext.HOLI_NumClercEmp_HOE_ExtTerm.Value:"") as String
-      lexisDTO.Deductible9 = ""
+      lexisDTO.CoverageAmount9 = (policyPeriod.HomeownersLine_HOE.HOLI_BusinessPursuits_HOE_Ext.HOLI_NumClercEmp_HOE_ExtTerm.Value) as String
+      }
+    if(policyPeriod.HomeownersLine_HOE.Dwelling.HODW_MoldRemediationCov_HOE_Ext.HODW_MoldRemedCovLimit_HOETerm.Value != null && policyPeriod.HomeownersLine_HOE.Dwelling.HODW_MoldRemediationCov_HOE_Ext.HODW_MoldRemedCovLimit_HOETerm.Value != 0){
       lexisDTO.CoverageTypeCode10 = COVERAGE_MOLD
-      lexisDTO.CoverageAmount10 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_MoldRemediationCov_HOE_Ext.HODW_MoldRemedCovLimit_HOETerm.Value != null?
-          policyPeriod.HomeownersLine_HOE.Dwelling.HODW_MoldRemediationCov_HOE_Ext.HODW_MoldRemedCovLimit_HOETerm.Value:"") as String
-      lexisDTO.Deductible10 = ""
+      lexisDTO.CoverageAmount10 = (policyPeriod.HomeownersLine_HOE.Dwelling.HODW_MoldRemediationCov_HOE_Ext.HODW_MoldRemedCovLimit_HOETerm.Value) as String
+      }
   }
 
   /**
@@ -352,8 +373,8 @@ class LexisFirstServicePayload {
    */
   private function paymentInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
     //Mapping Billing related details
-    lexisDTO.TotalPolicyPremium = policyPeriod.TotalPremiumRPT_amt
-    if(lexisDTO.ActionCode != LexisFirstMessageTransportImpl.REINSTATEPERIOD_LEXIS_FIRST_MSG){
+    lexisDTO.TotalPolicyPremium = policyPeriod.TotalCostRPT
+    if(lexisDTO.ActionCode == NEW_BUSINESS_PAYER || lexisDTO.ActionCode == RENEWAL_POLICY_PAYER){
     var billingSummary = billingSummaryPlugin.retrievePolicyBillingSummary(policyPeriod.PolicyNumber, (policyPeriod.PolicyTerm.MostRecentTerm) as int)
     var sortedInvoices = billingSummary.Invoices.sort(\elt1, elt2 -> elt1.InvoiceDueDate.before(elt2.InvoiceDueDate))
     var firstUnpaidInvoice = sortedInvoices.firstWhere(\elt -> elt.Unpaid.Amount > 0)
@@ -378,18 +399,23 @@ class LexisFirstServicePayload {
   private function endorsementInfo(policyPeriod: PolicyPeriod,lexisDTO: LexisFirstFileData){
     //Endorsement Details
     try{
-    lexisDTO.EndorsementState1 = policyPeriod.BaseState.Code
-    lexisDTO.EndorsementState2 = policyPeriod.BaseState.Code
-    lexisDTO.EndorsementState3 = policyPeriod.BaseState.Code
-    lexisDTO.EndorsementState4 = policyPeriod.BaseState.Code
-    lexisDTO.EndorsementState5 = policyPeriod.BaseState.Code
     matchedRecords.retainAll(policyPeriod.Forms.FormNumber)
     var size = matchedRecords.size()
     lexisDTO.Endorsement1 = (size>=1?matchedRecords[0]:"") as String
+    if(lexisDTO.Endorsement1 != null && lexisDTO.Endorsement1 != "")
+    lexisDTO.EndorsementState1 = policyPeriod.BaseState.Code
     lexisDTO.Endorsement2 = (size>1?matchedRecords[1]:"") as String
+    if(lexisDTO.Endorsement2 != null && lexisDTO.Endorsement2 != "")
+    lexisDTO.EndorsementState2 = policyPeriod.BaseState.Code
     lexisDTO.Endorsement3 = (size>2?matchedRecords[2]:"") as String
+    if(lexisDTO.Endorsement3 != null && lexisDTO.Endorsement3 != "")
+    lexisDTO.EndorsementState3 = policyPeriod.BaseState.Code
     lexisDTO.Endorsement4 = (size>3?matchedRecords[3]:"") as String
+    if(lexisDTO.Endorsement4 != null && lexisDTO.Endorsement4 != "")
+    lexisDTO.EndorsementState4 = policyPeriod.BaseState.Code
     lexisDTO.Endorsement5 = (size>4?matchedRecords[4]:"") as String
+    if(lexisDTO.Endorsement5 != null && lexisDTO.Endorsement5 != "")
+    lexisDTO.EndorsementState5 = policyPeriod.BaseState.Code
     }catch(exp:Exception){
       _logger.error("Lexis First creating endorsementInfo Error::::" + exp)
     }

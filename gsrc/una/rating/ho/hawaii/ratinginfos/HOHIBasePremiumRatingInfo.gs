@@ -13,6 +13,10 @@ uses una.rating.ho.common.HOCommonBasePremiumRatingInfo
  */
 class HOHIBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
 
+  var _protectionClass: int as ProtectionClass
+  var _protectiveDevices : boolean as ProtectiveDevices = false
+
+
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
 
@@ -32,7 +36,7 @@ class HOHIBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
       }
     }
 
-    ProtectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext.Code.toInt() : dwelling?.HOLocation?.DwellingProtectionClassCode.toInt()
+    _protectionClass = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext.Code.toInt() : dwelling?.HOLocation?.DwellingProtectionClassCode.toInt()
 
   }
 

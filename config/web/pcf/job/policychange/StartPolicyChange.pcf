@@ -9,6 +9,7 @@
     canVisit="perm.PolicyPeriod.view(policyPeriod) and perm.PolicyChange.create"
     countsAsWork="false"
     id="StartPolicyChange"
+    infoBar="PolicyFileMenuInfoBar(policyPeriod, job.SupressPrint)"
     parent="PolicyFile(policyPeriod, policyPeriod.EditEffectiveDate)"
     startInEditMode="true"
     title="displaykey.Web.PolicyChange.StartPolicyChange">
@@ -48,10 +49,6 @@
           action="CurrentLocation.cancel()"
           id="Cancel"
           label="displaykey.Button.Cancel"/>
-        <ToolbarButton
-          action="job.SupressPrint= true"
-          id="SuppressPrint"
-          label="displaykey.Web.Submission.SuppressPrint"/>
       </Toolbar>
       <Verbatim
         id="ErrorMessage"
@@ -129,6 +126,15 @@
             required="job.ReasonforChange_Ext != null &amp;&amp; job.Reason1_Ext == null &amp;&amp; job.Reason2_Ext == null &amp;&amp; job.Reason3_Ext == null"
             value="job.ReasonFreeForm_Ext"
             visible="policyPeriod.HomeownersLine_HOEExists"/>
+          <CheckBoxInput
+            editable="true"
+            id="SuppressPrint"
+            label="displaykey.una.cancellation.SupressPrint"
+            required="false"
+            value="job.SupressPrint"
+            visible="!initiateSERP">
+            <PostOnChange/>
+          </CheckBoxInput>
         </InputColumn>
       </DetailViewPanel>
     </Screen>

@@ -50,6 +50,18 @@
       def="QuestionSetsDV(preQualQuestionSets, policyPeriod, null)"
       id="PreQualQuestionSetsDV"
       visible="true"/>
+    <DetailViewPanel>
+      <InputColumn>
+        <CheckBoxInput
+          align="left"
+          editable="true"
+          id="SuppressPrint"
+          label="displaykey.una.cancellation.SupressPrint"
+          value="submission.SupressPrint">
+          <PostOnChange/>
+        </CheckBoxInput>
+      </InputColumn>
+    </DetailViewPanel>
     <Code><![CDATA[function changePolicyType(period : PolicyPeriod) {
   PolicyPeriod.HomeownersLine_HOE.Dwelling.setPolicyTypeAndDefaults()
   if (PolicyPeriod.OpenForEdit) {

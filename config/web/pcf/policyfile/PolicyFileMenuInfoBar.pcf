@@ -7,6 +7,9 @@
     <Require
       name="policyPeriod"
       type="PolicyPeriod"/>
+    <Require
+      name="suppressPrintElected"
+      type="boolean"/>
     <InfoBarElement
       icon="&quot;infobar_PolicyFile.png&quot;"
       id="PolicyFileLabel"
@@ -30,6 +33,11 @@
     <InfoBarElement
       id="StatusAndExpDate"
       label="formatStatusLabel(policyPeriod)"/>
+    <InfoBarElement
+      icon="&quot;warn.png&quot;"
+      id="SuppressPrint"
+      label="displaykey.una.cancellation.SupressPrint + &quot; Elected&quot;"
+      visible="suppressPrintElected"/>
     <Code><![CDATA[
 function formatStatusLabel(pp : PolicyPeriod) : String {
   if (pp.Canceled) {

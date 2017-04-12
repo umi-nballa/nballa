@@ -9,6 +9,7 @@
     canVisit="perm.PolicyPeriod.view(policyPeriod) and perm.Cancellation.create"
     countsAsWork="false"
     id="StartCancellation"
+    infoBar="PolicyFileMenuInfoBar(policyPeriod, job.SupressPrint)"
     parent="PolicyFile(policyPeriod, policyPeriod.EditEffectiveDate)"
     startInEditMode="true"
     title="displaykey.Web.Cancellation.StartCancellation(policyPeriod.PolicyNumberDisplayString)">
@@ -63,10 +64,6 @@
           action="CurrentLocation.cancel()"
           id="Cancel"
           label="displaykey.Button.Cancel"/>
-        <ToolbarButton
-          action="job.SupressPrint= true"
-          id="SuppressPrint"
-          label="displaykey.Web.Submission.SuppressPrint"/>
       </Toolbar>
       <Verbatim
         id="ErrorMessage"
@@ -204,6 +201,14 @@
             required="false"
             value="pcfController.NumberOfDaysNotice"
             visible="job.Source == TC_CARRIER"/>
+          <CheckBoxInput
+            editable="true"
+            id="SuppressPrint"
+            label="displaykey.una.cancellation.SupressPrint"
+            required="false"
+            value="job.SupressPrint">
+            <PostOnChange/>
+          </CheckBoxInput>
         </InputColumn>
         <InputColumn
           width="50%"/>

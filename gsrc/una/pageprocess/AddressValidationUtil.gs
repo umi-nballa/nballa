@@ -37,9 +37,19 @@ class AddressValidationUtil {
               addressOwner.Address.addressScrub_Ext = true
             }
 
+            if(addressOwner typeis una.extensions.UnaPolicyLocationAddressOwner) {
+              addressOwner.AddressScrub_Ext = true
+            }
           }
         } catch (exp: Exception) {
-          addressOwner.Address.addressScrub_Ext = false
+
+          if(addressOwner typeis una.extensions.UnaPolicyLocationAddressOwner) {
+            addressOwner.AddressScrub_Ext = false
+           }
+
+          if(addressOwner.Address != null){
+            addressOwner.Address.addressScrub_Ext = false
+          }
           throw exp
         }
       } else {

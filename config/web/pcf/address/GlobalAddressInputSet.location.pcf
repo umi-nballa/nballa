@@ -70,8 +70,7 @@
       value="addressOwner.AddressDelegate.AddressLine1"
       visible="addressOwner.isVisible(fieldId.ADDRESSLINE1)">
       <PostOnChange
-        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;AddressLine1&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
-        target="globalAddressContainer"/>
+        onChange="try{una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;AddressLine1&quot;, false);} catch(exp: java.lang.Exception){throw exp}finally{addressScrubState();}  // validating Address from Tuna Service and saving Scrub Status"/>
     </Input>
     <Input
       available="addressOwner.isAvailable(fieldId.ADDRESSLINE2)"
@@ -104,8 +103,7 @@
       value="addressOwner.AddressDelegate.City"
       visible="addressOwner.isVisible(fieldId.CITY)">
       <PostOnChange
-        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;City&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
-        target="globalAddressContainer"/>
+        onChange="try{una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;City&quot;, false);} catch(exp: java.lang.Exception){throw exp}finally{addressScrubState();}  // validating Address from Tuna Service and saving Scrub Status"/>
     </AddressAutoFillInput>
     <TextInput
       autoComplete="countyhandler"
@@ -119,8 +117,7 @@
       value="addressOwner.AddressDelegate.County"
       visible="addressOwner.isVisible(fieldId.COUNTY)">
       <PostOnChange
-        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;County&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
-        target="globalAddressContainer"/>
+        onChange="try{una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;County&quot;, false);} catch(exp: java.lang.Exception){throw exp}finally{addressScrubState();}  // validating Address from Tuna Service and saving Scrub Status"/>
     </TextInput>
     <RangeInput
       available="addressOwner.isAvailable(fieldId.STATE)"
@@ -134,8 +131,7 @@
       valueWidth="228"
       visible="addressOwner.isVisible(fieldId.STATE)">
       <PostOnChange
-        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;State&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
-        target="globalAddressContainer"/>
+        onChange="try{una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;State&quot;, false);} catch(exp: java.lang.Exception){throw exp}finally{addressScrubState();}  // validating Address from Tuna Service and saving Scrub Status"/>
     </RangeInput>
     <AddressAutoFillInput
       action="gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;PostalCode&quot;)"
@@ -154,8 +150,7 @@
       value="addressOwner.AddressDelegate.PostalCode"
       visible="addressOwner.isVisible(fieldId.POSTALCODE)">
       <PostOnChange
-        onChange="una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;PostalCode&quot;, false) // validating Address from Tuna Service and saving Scrub Status"
-        target="globalAddressContainer"/>
+        onChange="try{una.pageprocess.AddressValidationUtil.autofillAddress(addressOwner, &quot;PostalCode&quot;, false);} catch(exp: java.lang.Exception){throw exp}finally{addressScrubState();}  // validating Address from Tuna Service and saving Scrub Status"/>
     </AddressAutoFillInput>
     <Code><![CDATA[uses una.lob.bp7.BP7LocationAddressOwner
 uses una.extensions.UnaPolicyLocationAddressOwner
@@ -168,6 +163,12 @@ function getStates():State[]{
         return typekey.State.TF_CPPANDBOPSTATE.TypeKeys  
   }
       return contact.AddressAutocompleteUtil.getStates(addressOwner.AddressDelegate.Country)
+  }
+  
+  public function addressScrubState(){
+    if(addressOwner typeis una.extensions.UnaPolicyLocationAddressOwner) {
+      addressOwner.PolicyLocation.AccountLocation.addressScrub_Ext = addressOwner.AddressScrub_Ext
+    }
   }]]></Code>
   </InputSet>
 </PCF>

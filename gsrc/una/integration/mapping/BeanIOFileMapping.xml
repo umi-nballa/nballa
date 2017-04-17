@@ -1,27 +1,16 @@
 <beanio xmlns="http://www.beanio.org/2012/03">
-
-<!--  Sample Outbound File layout configuration
-        <stream name="CommissionOutboundIntegration" format="delimited">
-            <parser>
-                <property name="delimiter" value="|" />
-            </parser>
-            <record name="CommissionOutboundRecord" class="una.integration.commission.outbound.persistence.CommissionFileData">
-                <field name="policyNumber"/>
-                <field name="policyEffectiveDate" format="yyyyMMdd"/>
-                <field name="policyExpirationDate" format="yyyyMMdd"/>
-                <field name="agentNumber"/>
-                <field name="transactionAmount" format="000000000.00+;000000000.00-"/>
-                <field name="transactionDate" format="yyyyMMdd"/>
-                <field name="transactionType"/>
-            </record>
-        </stream>
--->
+    <!--
+        Record Names should be any of the following names:
+            HeaderRecord          : Represents the file header record, if exists
+            BatchHeaderRecord     : Represents the batch header record, if file contains multiple batches. Ex: parent record and child records
+            DetailRecord          : Represents the detail record
+            BatchTrailerRecord    : Represents the batch trailer record, if the file contains multiple batches.
+            TrailerRecord         : Represents the file trailer record, if exists
+    -->
 
     <!--  LexisFirst Outbound File layout configuration-->
     <stream name="LexisFirstOutBoundIntegration" format="fixedlength">
-
-        <record name="PolicyPeriodRecord" class="una.model.LexisFirstFileData">
-
+        <record name="DetailRecord" class="una.model.LexisFirstFileData">
             <field name="recordTypeIndicator" length="1" justify="left" />
             <field name="customerTransactionID" length="10" justify="left" />
             <field name="transactionCreationDate" length="8"  justify="left"/>
@@ -131,10 +120,8 @@
 
     <!--  Property Inspection Outbound File layout configuration-->
     <stream name="PropertyInspectionNewBusinessIntegration" format="fixedlength">
-
-        <record name="PolicyPeriodRecord" class="una.model.PropertyInspectionData">
+        <record name="DetailRecord" class="una.model.PropertyInspectionData">
             <field name="retrieve_Date" length="50" justify="left"/>
-
             <field name="A00_Pnum" length="50" justify="left" />
             <field name="A06_Edition" length="50" justify="left" />
             <field name="state" length="50" justify="left" />
@@ -218,7 +205,7 @@
 
     <!-- Error Records file layout configuration : Used for all inbound integrations -->
     <stream name="FailedRecordsFileMapping" format="fixedlength">
-        <record name="FailedRecord" class="map">
+        <record name="DetailRecord" class="map">
             <field name="recordText" type="string" length="unbounded"/>
         </record>
     </stream>

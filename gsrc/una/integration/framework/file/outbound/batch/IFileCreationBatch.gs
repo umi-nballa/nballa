@@ -1,6 +1,7 @@
 package una.integration.framework.file.outbound.batch
 
 uses una.integration.framework.file.IFileIntegration
+uses una.integration.framework.file.outbound.model.OutboundFile
 uses una.integration.framework.file.outbound.persistence.OutboundFileData
 uses una.integration.framework.file.outbound.persistence.OutboundFileProcess
 
@@ -26,10 +27,11 @@ interface IFileCreationBatch extends IFileIntegration {
 
   /**
    * Function to prepare data (header, details and trailer record) to write to the file.
+   * @param outboundFileProcess - the file process instance
    * @param  entities - integration database entities.
-   * @return List<Object> - ordered list of objects needs to flush to the file.
+   * @return OutboundFile - ordered list of objects needs to flush to the file.
    */
-  function prepareDataForFile(entities: List< OutboundFileData >): List<Object>
+  function prepareDataForFile(outboundFileProcess: OutboundFileProcess, entities: List< OutboundFileData >): OutboundFile
 
   /**
    * Function to create name of the file.
@@ -40,9 +42,9 @@ interface IFileCreationBatch extends IFileIntegration {
   /**
    * If this batch is not using BeanIO for file creation, write code to create file in this function.
    * @param outboundFileProcess - the file process instance
-   * @param fileRecords - the list of records to be written to the file.
+   * @param outboundFile - represents the records to be written to the file.
    */
-  function createFile(outboundFileProcess: OutboundFileProcess, fileRecords: List<Object>)
+  function createFile(outboundFileProcess: OutboundFileProcess, outboundFile: OutboundFile)
 
   /**
    * Custom processing after the file creation.

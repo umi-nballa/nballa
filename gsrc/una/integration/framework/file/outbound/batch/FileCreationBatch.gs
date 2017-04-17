@@ -4,9 +4,12 @@ uses gw.api.util.DateUtil
 uses gw.processes.BatchProcessBase
 uses una.integration.framework.exception.ErrorTypeInfo
 uses una.integration.framework.exception.ExceptionUtil
+uses una.integration.framework.file.outbound.model.OutboundFile
+uses una.integration.framework.file.outbound.model.OutboundFileBatch
 uses una.integration.framework.file.outbound.persistence.OutboundFileData
 uses una.integration.framework.file.outbound.persistence.OutboundFileException
 uses una.integration.framework.file.outbound.persistence.OutboundFileProcess
+uses una.integration.framework.file.outbound.persistence.OutboundFileProcessDAO
 uses una.integration.framework.persistence.context.PersistenceContext
 uses una.integration.framework.persistence.dao.IntegrationBaseDAO
 uses una.integration.framework.persistence.util.ProcessStatus
@@ -27,7 +30,7 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
   final static var _logger = UnaLoggerCategory.UNA_INTEGRATION
 
   protected var _userName: String
-  protected var _outboundFileProcessDAO: IntegrationBaseDAO
+  protected var _outboundFileProcessDAO: OutboundFileProcessDAO
   protected var _outboundFileExceptionDAO: IntegrationBaseDAO
   protected var _dataEntityDAO: IntegrationBaseDAO
 
@@ -45,7 +48,7 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
   override function doWork() {
     _logger.info("{} batch process is started now", this.Type)
     var startTime = DateUtil.currentDate()
-    _outboundFileProcessDAO = _outboundFileProcessDAO?: new(OutboundFileProcess)
+    _outboundFileProcessDAO = _outboundFileProcessDAO?: new()
     _outboundFileExceptionDAO = _outboundFileExceptionDAO?: new(OutboundFileException)
     _dataEntityDAO = _dataEntityDAO?: new(FileDataMapping)
     // Creating outbound file process record
@@ -80,9 +83,9 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
             }
           }
         })
-        var fileOutObjects = prepareDataForFile(processedEntities)
-        if (fileOutObjects.HasElements) {
-          createFile(outboundFileProcess, fileOutObjects)
+        var outboundFile = prepareDataForFile(outboundFileProcess, processedEntities)
+        if (outboundFile.Batches.HasElements && outboundFile.Batches.first().DetailRecords.HasElements) {
+          createFile(outboundFileProcess, outboundFile)
         }
         outboundFileProcess.Status = Processed
         afterFileCreation(processedEntities)
@@ -124,20 +127,24 @@ abstract class FileCreationBatch extends BatchProcessBase implements IFileCreati
 
   /**
    * To be overridden by sub classes to convert the given entity list into the model object list used to write to the file.
+   * @param outboundFileProcess - the file process instance
    * @param entities the list of data entities
-   * @return List<Object> the list of objects to write to the file.
+   * @return OutboundFile represents the objects to write to the file.
    */
-  override function prepareDataForFile(entities: List< OutboundFileData >): List<Object> {
-    return entities
+  override function prepareDataForFile(outboundFileProcess: OutboundFileProcess, entities: List< OutboundFileData >): OutboundFile {
+    var outboundFile : OutboundFile = new()
+    outboundFile.Batches.add(new OutboundFileBatch())
+    outboundFile.Batches.first().DetailRecords = entities
+    return outboundFile
   }
 
   /**
    * This function should be implemented by subclasses if the BeanIOStreamName is not configured
    */
-  override function createFile(outboundFileProcess: OutboundFileProcess, fileRecords: List<Object>) {
+  override function createFile(outboundFileProcess: OutboundFileProcess, outboundFile: OutboundFile) {
     if (FileDataMapping.BeanIOStreamName != null) {
       outboundFileProcess.FileName = getFileName(outboundFileProcess.CreateTime)
-      BeanIOHelper.writeFile(FileDataMapping.BeanIOStreamName, outboundFileProcess.FileName, fileRecords)
+      BeanIOHelper.writeFile(FileDataMapping.BeanIOStreamName, outboundFileProcess.FileName, outboundFile)
     } else {
       ExceptionUtil.throwException(ErrorCode.INCOMPLETE_FILE_CREATION)
     }

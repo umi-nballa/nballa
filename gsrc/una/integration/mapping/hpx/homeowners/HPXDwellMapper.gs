@@ -51,8 +51,16 @@ class HPXDwellMapper implements HPXStructureMapper {
 
   function createDwellRating(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType {
     var dwellRating = new wsi.schema.una.hpx.hpx_application_request.types.complex.DwellRatingType()
-    dwellRating.TerritoryCd = policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0] != null ?
-                                                policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0].Code : ""
+      dwellRating.TerritoryCd = policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0] != null ?
+                                                  policyPeriod.HomeownersLine_HOE.Dwelling.PolicyLocations[0].TerritoryCodes[0].Code : ""
+      dwellRating.FeetToHydrant = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistanceToFireHydrant
+      dwellRating.VacantNewPurchase = policyPeriod.HomeownersLine_HOE.Dwelling.HomeNewPurchase_Ext
+      dwellRating.FloodZone = policyPeriod.HomeownersLine_HOE.Dwelling.FloodZoneOrOverride
+      dwellRating.PreferredRisk = policyPeriod.RiskIndicator_Ext
+      dwellRating.MilesToStation = policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistanceToFireStation
+      dwellRating.RentalProperty = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingRentedEverToOthers_Ext
+      dwellRating.PostFirm = policyPeriod.HomeownersLine_HOE.Dwelling.PostFIRM_Ext
+      dwellRating.Elevation = policyPeriod.HomeownersLine_HOE.Dwelling.AbveBlwBaseFldElvtn_Ext
     return dwellRating
   }
 

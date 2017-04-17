@@ -24,6 +24,7 @@ class HPXHODwellConstructionMapper {
     construction.addChild(new XmlElement("RoofingMaterial", createRoofingMaterial(policyPeriod)))
     construction.InsurerConstructionClassCd = policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionCode != null ? policyPeriod.HomeownersLine_HOE.Dwelling.ConstructionCode : ""
     construction.addChild(new XmlElement("WindstormMitigation", createWindMitigation(policyPeriod)))
+    construction.Foundation = policyPeriod.HomeownersLine_HOE.Dwelling.Foundation.DisplayName
     return construction
   }
 

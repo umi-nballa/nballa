@@ -12,6 +12,7 @@ uses una.integration.framework.util.PropertiesHolder
 uses una.logging.UnaLoggerCategory
 
 uses java.io.File
+uses java.lang.System
 
 /**
  * The inbound file handler plugin base class to read and process the file directly without using Integration Database.
@@ -43,7 +44,13 @@ abstract class InboundFileProcessingPlugin implements InboundIntegrationHandlerP
    */
   override function processFailedRecords(fileRecords: FileRecords, filePath: java.nio.file.Path) {
     _logger.debug("Using default error file creation for the file: " + filePath.toAbsolutePath() as String)
-    BeanIOHelper.createFileWithErrorRecords(fileRecords, filePath)
+    // Logging of the error records which are failed while processing
+    var fileName = filePath.toAbsolutePath().getFileName() as String
+    BeanIOHelper.logErrorRecords(fileRecords, fileName)
+    // Creating error file with the failed records
+    var errorFilePath = filePath.Parent.Parent.toAbsolutePath() + "/error/"
+    var errorFileName = System.currentTimeMillis()+".RecordError."+ fileName
+    BeanIOHelper.createFileWithErrorRecords(fileRecords, errorFileName, errorFilePath)
   }
 
   /**

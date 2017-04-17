@@ -127,12 +127,14 @@
         required="false"
         value="pcfController.NumberOfDaysNotice"
         visible="cancellation.Source == TC_CARRIER"/>
-      <!-- <CheckBoxInput
+      <CheckBoxInput
         editable="true"
         id="SuppressPrint"
         label="displaykey.una.cancellation.SupressPrint"
         required="false"
-        value="cancellation.SupressPrint"/> -->
+        value="cancellation.SupressPrint">
+        <PostOnChange/>
+      </CheckBoxInput>
     </InputColumn>
     <Code><![CDATA[function applyCancellationDateChange() {
   try{

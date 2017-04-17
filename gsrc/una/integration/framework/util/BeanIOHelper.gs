@@ -9,10 +9,11 @@ uses una.integration.framework.exception.FieldErrorInformation
 uses una.integration.framework.file.inbound.model.BatchRecords
 uses una.integration.framework.file.inbound.model.FileRecordInfo
 uses una.integration.framework.file.inbound.model.FileRecords
+uses una.integration.framework.file.outbound.model.OutboundFile
+uses una.integration.framework.file.outbound.model.OutboundFileBatch
 uses una.logging.UnaLoggerCategory
 
 uses java.io.File
-uses java.lang.System
 uses java.util.ArrayList
 uses java.util.HashMap
 uses java.util.Map
@@ -134,9 +135,9 @@ final class BeanIOHelper {
    * Creates a file with given fileName and records based on the given stream name and corresponding mapping in the file mapping.
    * @param streamName the name of the stream in the mapping file corresponding to the input file
    * @param fileName absolute path of the file name.
-   * @param records the list of records in the order to be written to the file.
+   * @param outboundFile represents the records to be written to the file.
    */
-  static function writeFile(streamName: String, fileName: String, records: List<Object>) {
+  static function writeFile(streamName: String, fileName: String, outboundFile: OutboundFile) {
     initStreamFactory()
 
     // If directory doesn't exist, then create it.
@@ -150,12 +151,32 @@ final class BeanIOHelper {
     var file = new File(fileName)
 
     var beanWriter = _streamFactory.createWriter(streamName, file)
+    var numOfRecords = 0
     try {
-      records.each( \ record -> {
-        beanWriter.write(record)
+      if (outboundFile.HeaderRecord != null) {
+        beanWriter.write(HEADER_RECORD_NAME, outboundFile.HeaderRecord)
+        numOfRecords++
+      }
+      outboundFile.Batches.each( \ batch -> {
+        if (batch.BatchHeader != null) {
+          beanWriter.write(BATCH_HEADER_RECORD_NAME, batch.BatchHeader)
+          numOfRecords++
+        }
+        batch.DetailRecords.each( \ detailRecord -> {
+          beanWriter.write(DETAIL_RECORD_NAME, detailRecord)
+          numOfRecords++
+        })
+        if (batch.BatchTrailer != null) {
+          beanWriter.write(BATCH_TRAILER_RECORD_NAME, batch.BatchTrailer)
+          numOfRecords++
+        }
       })
+      if (outboundFile.TrailerRecord != null) {
+        beanWriter.write(TRAILER_RECORD_NAME, outboundFile.TrailerRecord)
+        numOfRecords++
+      }
       beanWriter.flush()
-      _logger.debug("${records.Count} records written to the file ${fileName}")
+      _logger.debug("${numOfRecords} records written to the file ${fileName}")
     } finally {
       beanWriter.close()
     }
@@ -164,14 +185,11 @@ final class BeanIOHelper {
   /**
    * Creates an error file with the records that can't be processed due to errors.
    * @param fileRecords all the records from the input file.
-   * @param path the input file path
+   * @param errorFileName the name of the error file to be created.
+   * @param errorFilePath the destination error file path
    */
-  static function createFileWithErrorRecords(fileRecords: FileRecords, path: java.nio.file.Path) {
+  static function createFileWithErrorRecords(fileRecords: FileRecords, errorFileName: String, errorFilePath: String) {
     if (fileRecords.Batches.hasMatch( \ batch -> batch.BatchHeaderRecord?.Failed or batch.DetailRecords.hasMatch( \ detailRecord -> detailRecord.Failed))) {
-      var fileName = path.toAbsolutePath().getFileName() as String
-      var fieldErrors = new ArrayList<FieldErrorInformation>()
-      fieldErrors.add(new FieldErrorInformation(){:FieldName = "fileName", :FieldValue = fileName})
-
       var errorRecords = new ArrayList<Map<String,String>>()
       if (fileRecords.HeaderRecord != null) {
         errorRecords.add(new HashMap<String, String>(){"recordText"->fileRecords.HeaderRecord.RecordText})
@@ -179,25 +197,38 @@ final class BeanIOHelper {
       fileRecords.Batches.where( \ batch -> batch.BatchHeaderRecord?.Failed or batch.DetailRecords.hasMatch( \ detailRecord -> detailRecord.Failed)).each( \ batch -> {
         if (batch.BatchHeaderRecord != null) {
           errorRecords.add(new HashMap<String, String>(){"recordText"->batch.BatchHeaderRecord.RecordText})
-          if (batch.BatchHeaderRecord.Failed) {
-            fieldErrors.add(batch.BatchHeaderRecord.FieldErrorInfo)
-          }
         }
         batch.DetailRecords.each( \ detailRecord -> {
           if (batch.BatchHeaderRecord.Failed or detailRecord.Failed) {
             errorRecords.add(new HashMap<String, String>(){"recordText"->detailRecord.RecordText})
-            if (detailRecord.Failed) {
-              fieldErrors.add(detailRecord.FieldErrorInfo)
-            }
           }
         })
       })
-      // Logging the error details
-      ExceptionUtil.suppressException(ErrorCode.ERROR_RECORD_FILE, fieldErrors, null)
-      // Creating the error file with error records
-      var errorFilePath = path.Parent.Parent.toAbsolutePath() + "/error/"
-      var errorFileName = System.currentTimeMillis()+".RecordError."+ fileName
-      BeanIOHelper.writeFile(ERROR_FILE_STREAM_NAME, errorFilePath + errorFileName, errorRecords)
+      var errorFile: OutboundFile = new()
+      errorFile.Batches.add(new OutboundFileBatch())
+      errorFile.Batches.first().DetailRecords = errorRecords
+      BeanIOHelper.writeFile(ERROR_FILE_STREAM_NAME, errorFilePath + errorFileName, errorFile)
     }
   }
+
+  /**
+   * Creates an error file with the records that can't be processed due to errors.
+   * @param fileRecords all the records from the input file.
+   * @param fileName the input file name
+   */
+  static function logErrorRecords(fileRecords: FileRecords, fileName: String) {
+    if (fileRecords.Batches.hasMatch( \ batch -> batch.BatchHeaderRecord?.Failed or batch.DetailRecords.hasMatch( \ detailRecord -> detailRecord.Failed))) {
+      var fieldErrors = new ArrayList<FieldErrorInformation>()
+      fieldErrors.add(new FieldErrorInformation(){:FieldName = "fileName", :FieldValue = fileName})
+      fileRecords.Batches.where( \ batch -> batch.BatchHeaderRecord?.Failed or batch.DetailRecords.hasMatch( \ detailRecord -> detailRecord.Failed)).each( \ batch -> {
+        if (batch.BatchHeaderRecord != null && batch.BatchHeaderRecord.Failed) {
+          fieldErrors.add(batch.BatchHeaderRecord.FieldErrorInfo)
+        }
+        batch.DetailRecords.where( \ detailRecord -> detailRecord.Failed).each( \ detailRecord -> fieldErrors.add(detailRecord.FieldErrorInfo))
+      })
+      // Logging the error details
+      ExceptionUtil.suppressException(ErrorCode.ERROR_RECORD_FILE, fieldErrors, null)
+    }
+  }
+
 }

@@ -1,27 +1,16 @@
 <beanio xmlns="http://www.beanio.org/2012/03">
-
-<!--  Sample Outbound File layout configuration
-        <stream name="CommissionOutboundIntegration" format="delimited">
-            <parser>
-                <property name="delimiter" value="|" />
-            </parser>
-            <record name="CommissionOutboundRecord" class="una.integration.commission.outbound.persistence.CommissionFileData">
-                <field name="policyNumber"/>
-                <field name="policyEffectiveDate" format="yyyyMMdd"/>
-                <field name="policyExpirationDate" format="yyyyMMdd"/>
-                <field name="agentNumber"/>
-                <field name="transactionAmount" format="000000000.00+;000000000.00-"/>
-                <field name="transactionDate" format="yyyyMMdd"/>
-                <field name="transactionType"/>
-            </record>
-        </stream>
--->
+    <!--
+        Record Names should be any of the following names:
+            HeaderRecord          : Represents the file header record, if exists
+            BatchHeaderRecord     : Represents the batch header record, if file contains multiple batches. Ex: parent record and child records
+            DetailRecord          : Represents the detail record
+            BatchTrailerRecord    : Represents the batch trailer record, if the file contains multiple batches.
+            TrailerRecord         : Represents the file trailer record, if exists
+    -->
 
     <!--  LexisFirst Outbound File layout configuration-->
     <stream name="LexisFirstOutBoundIntegration" format="fixedlength">
-
-        <record name="PolicyPeriodRecord" class="una.model.LexisFirstFileData">
-
+        <record name="DetailRecord" class="una.model.LexisFirstFileData">
             <field name="recordTypeIndicator" length="1" justify="left" />
             <field name="customerTransactionID" length="10" justify="left" />
             <field name="transactionCreationDate" length="8"  justify="left"/>
@@ -129,84 +118,6 @@
         </record>
     </stream>
 
-    <!--  Property Inspection Outbound File layout configuration-->
-    <stream name="PropertyInspectionNewBusinessIntegration" format="fixedlength">
-
-        <record name="PolicyPeriodRecord" class="una.model.PropertyInspectionData">
-            <field name="retrieve_Date" length="50" justify="left"/>
-
-            <field name="A00_Pnum" length="50" justify="left" />
-            <field name="A06_Edition" length="50" justify="left" />
-            <field name="state" length="50" justify="left" />
-            <field name="county" length="50" justify="left" />
-            <field name="lob" length="50" justify="left" />
-            <field name="propTransaction" length="50" justify="left" />
-            <field name="agentCode" length="50" justify="left" />
-            <field name="agentName" length="50" justify="left" />
-            <field name="agentPhone" length="50" justify="left" />
-            <field name="agentFax" length="50" justify="left" />
-            <field name="insuredName" length="50" justify="left" />
-            <field name="insuredPhoneNumber" length="50" justify="left" />
-
-            <field name="mailingStreet" length="50" justify="left" />
-            <field name="mailingLine2" length="50" justify="left" />
-            <field name="mailingCity" length="50" justify="left" />
-            <field name="mailingState" length="50" justify="left" />
-            <field name="mailingZip" length="50" justify="left" />
-
-            <field name="locationStreet" length="50" justify="left" />
-            <field name="locationLine2" length="50" justify="left" />
-            <field name="locationCity" length="50" justify="left" />
-            <field name="locationState" length="50" justify="left" />
-            <field name="locationZip" length="50" justify="left" />
-
-            <field name="priorCarrier" length="50" justify="left" />
-            <field name="effDate" length="50" justify="left" />
-            <field name="priorExp" length="10" justify="left" />
-            <field name="creditScore" length="50" justify="left" />
-            <field name="chargableLoss" length="50" justify="left" />
-            <field name="anyLoss" length="50" justify="left" />
-
-            <field name="windHailLoss" length="50" justify="left" />
-            <field name="form" length="50" justify="left" />
-            <field name="homeAge" length="50" justify="left" />
-            <field name="roofAge" length="50" justify="left"/>
-            <field name="construction" length="50" justify="left"/>
-            <field name="yearBuilt" length="50" justify="left"/>
-            <field name="ppc" length="50" justify="left" />
-
-            <field name="sqFeet" length="50" justify="left" />
-            <field name="fireLineScore" length="50" justify="left" />
-            <field name="shia" length="50" justify="left" />
-            <field name="inspecttedYears" length="50" justify="left" />
-            <field name="covALimit" length="50" justify="left" />
-            <field name="HO0442" length="50" justify="left" />
-            <field name="UI106" length="50" justify="left" />
-            <field name="DP176X" length="50" justify="left" />
-            <field name="pool" length="50" justify="left" />
-            <field name="stilts" length="50" justify="left" />
-            <field name="woodburner" length="50" justify="left" />
-            <field name="ISO360Value" length="50" justify="left" />
-            <field name="firelineOverride" length="50" justify="left" />
-            <field name="manualEntry" length="50" justify="left" />
-            <field name="appendix" length="50" justify="left"/>
-            <field name="roofShape" length="50" justify="left" />
-            <field name="roofTypeDesc" length="50" justify="left" />
-            <field name="constructionDesc" length="50" justify="left" />
-            <field name="numUnit" length="50" justify="left" />
-            <field name="numStories" length="50" justify="left" />
-            <field name="reportOne" length="100" justify="left"/>
-            <field name="reportTwo" length="50" justify="left" />
-            <field name="reportThree" length="50" justify="left"/>
-            <field name="reportFour" length="50" justify="left"/>
-            <field name="reportFive" length="50" justify="left"/>
-            <field name="reportSix" length="50" justify="left"/>
-            <field name="reportSeven" length="50" justify="left"/>
-            <field name="reportEight" length="50" justify="left"/>
-            <field name="roofType" length="50" justify="left"/>
-        </record>
-    </stream>
-
     <!--  Property Inspection Inbound File layout configuration-->
     <stream name="PropertyInspectionsInboundFileMapping" format="csv">
         <record name="DetailRecord" class="una.model.PropertyInspectionsInboundData">
@@ -218,7 +129,7 @@
 
     <!-- Error Records file layout configuration : Used for all inbound integrations -->
     <stream name="FailedRecordsFileMapping" format="fixedlength">
-        <record name="FailedRecord" class="map">
+        <record name="DetailRecord" class="map">
             <field name="recordText" type="string" length="unbounded"/>
         </record>
     </stream>

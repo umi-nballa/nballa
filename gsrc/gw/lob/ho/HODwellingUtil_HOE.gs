@@ -1200,7 +1200,7 @@ class HODwellingUtil_HOE {
     dwelling.ExteriorWFvalMatchLevelL1_Ext = getMatchLevel(tunaAppResponse.WallFinish)
     dwelling.ExteriorWFvalMatchLevelL2_Ext = getMatchLevel(tunaAppResponse.WallFinish)
 
-
+    dwelling.HOLocation.PolicyLocation.AccountLocation.addressScrub_Ext = (tunaAppResponse.Status == 0 && tunaAppResponse.ScrubStatus == 1)
     dwelling.TotalSqFtValMatchLevel_Ext = getMatchLevel(tunaAppResponse.SquareFootage)
     }
 

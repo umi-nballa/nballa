@@ -12,24 +12,16 @@ uses una.model.PropertyInspectionData
  */
 enum FileIntegrationMapping implements IFileDataMapping {
 
-// Sample Mapping - this will be deleted after one actual implementation
-//  LockboxWholeSaleInbound(LockboxWholeSaleInboundData,DataTable.WholesaleLockBoxFileThree,BeanIOStream.LockboxWholeSaleInboundIntegration),
-//  LockboxRetailInbound (LockboxRetailInboundData, DataTable.RetailLockBoxFileThree, BeanIOStream.LockboxRetailInboundIntegration)
     LexisFirstOutbound(LexisFirstFileData,DataTable.LexisFirstOutboundFileData,BeanIOStream.LexisFirstOutBoundIntegration),
-    PropertyInspectionNewBusiness(PropertyInspectionData,DataTable.PropertyInspectionsNBData,BeanIOStream.PropertyInspectionNewBusinessIntegration)
+    PropertyInspectionNewBusiness(PropertyInspectionData,DataTable.PropertyInspectionsNBData,null)
 
   enum DataTable {
-   RetailLockBoxFileThree ,
-   WholesaleLockBoxFileThree,
    LexisFirstOutboundFileData,
    PropertyInspectionsNBData
   }
 
   enum BeanIOStream {
-    LockboxRetailInboundIntegration ,
-    LockboxWholeSaleInboundIntegration,
-    LexisFirstOutBoundIntegration,
-    PropertyInspectionNewBusinessIntegration
+    LexisFirstOutBoundIntegration
   }
 
   var _dataClass: IGosuClass

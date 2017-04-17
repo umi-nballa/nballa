@@ -10,9 +10,9 @@ uses una.integration.framework.file.outbound.persistence.OutboundFileData
 interface IFileDataTransport extends IFileIntegration {
 
   /**
-   * Creates the outbound file data object for the given payload.
+   * Creates the outbound file data object(s) for the given payload.
    * @param payload
    * @returns OutboundFileData
    */
-  function createOutboundFileData(payload: String): OutboundFileData
+  function createOutboundFileData(payload: String): List<OutboundFileData>
 }

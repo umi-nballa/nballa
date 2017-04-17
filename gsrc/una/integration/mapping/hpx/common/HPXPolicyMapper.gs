@@ -220,10 +220,10 @@ abstract class HPXPolicyMapper {
     var questionAnswers = policyPeriod.PeriodAnswers
     for (q in questionAnswers) {
       var question = new wsi.schema.una.hpx.hpx_application_request.types.complex.QuestionAnswerType()
-      question.QuestionText = q.Question.Text
+      question.QuestionText = q.Question.Text != null ? q.Question.Text : ""
       question.QuestionCd = q.QuestionCode
       question.YesNoCd = q.BooleanAnswer != null ? q.BooleanAnswer : 0
-      question.Explanation = q.Question.SupplementalTexts.atMostOne().Text != null ? q.Question.SupplementalTexts.atMostOne().Text : ""
+      question.Explanation = q?.Question?.SupplementalTexts?.atMostOne()?.Text != null ? q.Question.SupplementalTexts.atMostOne().Text : ""
       questions.add(question)
     }
     return questions

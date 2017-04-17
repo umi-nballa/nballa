@@ -1,5 +1,6 @@
 package una.integration.framework.file.outbound.plugin
 
+uses gw.api.util.DateUtil
 uses una.integration.framework.exception.ExceptionUtil
 uses una.integration.framework.messaging.AbstractMessageTransport
 uses una.integration.framework.persistence.context.PersistenceContext
@@ -26,12 +27,21 @@ abstract class OutboundFileDataTransport extends AbstractMessageTransport implem
     try {
       if (payload != null && payload.trim().NotBlank) {
         PersistenceContext.runWithNewTransaction( \-> {
-          var outboundEntity = createOutboundFileData(payload)
-          outboundEntity.Status = ProcessStatus.UnProcessed
-          outboundEntity.CreateUser = this.IntrinsicType.RelativeName
-          outboundEntity.UpdateUser = outboundEntity.CreateUser
-          outboundEntity.RetryCount = 0
-          outboundEntityDAO.insert(outboundEntity)
+          createOutboundFileData(payload)?.each( \ outboundEntity -> {
+            if (outboundEntity.ID == null) {
+              outboundEntity.Status = ProcessStatus.UnProcessed
+              outboundEntity.CreateUser = this.IntrinsicType.RelativeName
+              outboundEntity.UpdateUser = outboundEntity.CreateUser
+              outboundEntity.RetryCount = 0
+              outboundEntityDAO.insert(outboundEntity)
+            } else {
+              outboundEntity.Status = ProcessStatus.UnProcessed
+              outboundEntity.UpdateUser = this.IntrinsicType.RelativeName
+              outboundEntity.UpdateTime = DateUtil.currentDate()
+              outboundEntity.RetryCount = 0
+              outboundEntityDAO.update(outboundEntity)
+            }
+          })
         })
         message.reportAck()
       } else {

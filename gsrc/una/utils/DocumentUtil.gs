@@ -8,6 +8,12 @@ uses java.nio.file.Files
 uses java.io.FileInputStream
 uses una.model.DocumentDTO
 uses java.lang.IllegalArgumentException
+uses org.apache.commons.fileupload.FileItem
+uses org.apache.commons.fileupload.disk.DiskFileItem
+uses javax.activation.MimetypesFileTypeMap
+uses java.io.File
+uses java.net.URLConnection
+uses org.apache.tika.Tika
 
 /**
  * Created with IntelliJ IDEA.
@@ -45,7 +51,7 @@ class DocumentUtil {
       doc.OnBaseDocumentSubtype = docDTO.OnBaseDocumentSubype
       doc.Status = typekey.DocumentStatusType.TC_APPROVED
       doc.Type = typekey.DocumentType.TC_ONBASE
-      doc.MimeType = Files.probeContentType(docDTO.File.toPath())
+      doc.MimeType = getMimeType(docDTO.File)
       doc.DMS = true
       //  Archive file with DMS
       inputStream = new FileInputStream(docDTO.File)
@@ -55,5 +61,11 @@ class DocumentUtil {
     return doc
   }
 
+  private static function getMimeType(file: File): String  {
+    var mimeType = ""
+    var tika = new Tika()
+    mimeType = tika.detect(file)
+    return mimeType
+  }
 
 }

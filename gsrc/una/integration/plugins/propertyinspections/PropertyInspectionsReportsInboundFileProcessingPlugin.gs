@@ -84,6 +84,8 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
           LOGGER.info("Document upload is done :: "+fileName.substring(0,14))
         }
         completeActivity(policyPeriod)
+        bundle.add(policyPeriod)
+        policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_INSPECTIONRECEIVED_EXT, \ -> displaykey.Web.InspectionReceived.Event.Msg)
         bundle.commit()
       }, PLConfigParameters.UnrestrictedUserName.Value)
     } catch(ex : Exception){

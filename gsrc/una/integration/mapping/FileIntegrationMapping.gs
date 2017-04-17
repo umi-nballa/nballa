@@ -13,7 +13,7 @@ uses una.model.PropertyInspectionData
 enum FileIntegrationMapping implements IFileDataMapping {
 
     LexisFirstOutbound(LexisFirstFileData,DataTable.LexisFirstOutboundFileData,BeanIOStream.LexisFirstOutBoundIntegration),
-    PropertyInspectionNewBusiness(PropertyInspectionData,DataTable.PropertyInspectionsNBData,BeanIOStream.PropertyInspectionNewBusinessIntegration)
+    PropertyInspectionNewBusiness(PropertyInspectionData,DataTable.PropertyInspectionsNBData,null)
 
   enum DataTable {
    LexisFirstOutboundFileData,
@@ -21,8 +21,7 @@ enum FileIntegrationMapping implements IFileDataMapping {
   }
 
   enum BeanIOStream {
-    LexisFirstOutBoundIntegration,
-    PropertyInspectionNewBusinessIntegration
+    LexisFirstOutBoundIntegration
   }
 
   var _dataClass: IGosuClass

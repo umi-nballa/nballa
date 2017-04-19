@@ -47,41 +47,47 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
   override function process(data: Object) {
     LOGGER.debug("Entering process() of "+CLASS_NAME)
     var fileName = (data as java.nio.file.Path ).toAbsolutePath().getFileName() as String
+    var policyNumberFromFileName = fileName.substring(0,14)
     try{
-      var policyNumber = fileName.substring(0,14)
-      var policyPeriod = Query.make(PolicyPeriod).compare(PolicyPeriod#PolicyNumber, Equals, policyNumber).select().last()
+      var policyPeriod = Query.make(PolicyPeriod).compare(PolicyPeriod#PolicyNumber, Equals, policyNumberFromFileName).select().last()
 
       gw.transaction.Transaction.runWithNewBundle(\bundle ->{
         bundle.add(policyPeriod)
-        var filePathString = (data as java.nio.file.Path ).toAbsolutePath() as String
+
         policyPeriod.addNote(NoteTopicType.TC_GENERAL, "Inspection has been received","Inspection has been received")
-        var documentDTO = new DocumentDTO()
-        var documentActivity = new DocumentActivity()
-        var document = new Document()
-        if(Policy.finder.findPolicyByPolicyNumber(fileName.substring(0,14))!=null){
-          documentDTO.Policy = Policy.finder.findPolicyByPolicyNumber(fileName.substring(0,14))
-          documentDTO.Description = "Inspection Report Received"
+        var policy = Policy.finder.findPolicyByPolicyNumber(policyNumberFromFileName)
+
+        if(policy !=  null){
           var filePath = (data as java.nio.file.Path ).toAbsolutePath()
-          var file = new File(filePath as String)
+          var filePathString = filePath as String
+          var file = new File(filePathString)
+          var uwInspectionIssue = false
+          var documentDTO = new DocumentDTO()
           documentDTO.File = file
           documentDTO.OnBaseDocumentType = typekey.OnBaseDocumentType_Ext.TC_INSPECTIONS
+          documentDTO.Policy = Policy.finder.findPolicyByPolicyNumber(policyNumberFromFileName)
+          documentDTO.Account = documentDTO.Policy.Account
+          documentDTO.Description = "Inspection Report Received"
+
           if(filePathString.containsIgnoreCase(MAJOR_ISSUES_FOLDER)){
             documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION
-            document.OnBaseDocumentSubtype = OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION
-            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+            uwInspectionIssue = true
           } else if(filePathString.containsIgnoreCase(MINOR_ISSUES_FOLDER)){
             documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_UW_INSPECTION
-            document.OnBaseDocumentSubtype = OnBaseDocumentSubtype_Ext.TC_INSP_UW_INSPECTION
-            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+            uwInspectionIssue = true
           } else if(filePathString.containsIgnoreCase(RATING_OR_COVERAGE_ISSUES_FOLDER)){
             documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW
-            document.OnBaseDocumentSubtype = OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW
-            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+            uwInspectionIssue = true
           } else if(filePathString.containsIgnoreCase(NO_UW_INSPECTION_ISSUES)){
             documentDTO.OnBaseDocumentSubype = OnBaseDocumentSubtype_Ext.TC_INSP_INSPECTION_WITH_NO_CONCERN
           }
-          DocumentUtil.createDocument(documentDTO)
-          LOGGER.info("Document upload is done :: "+fileName.substring(0,14))
+
+          var document = DocumentUtil.createDocument(documentDTO)
+          if(uwInspectionIssue) {
+            var documentActivity = new DocumentActivity()
+            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+          }
+          LOGGER.info("Document upload is done :: "+ policyNumberFromFileName)
         }
         completeActivity(policyPeriod)
         bundle.add(policyPeriod)
@@ -89,7 +95,7 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
         bundle.commit()
       }, PLConfigParameters.UnrestrictedUserName.Value)
     } catch(ex : Exception){
-      var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = fileName.substring(0,14)}
+      var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = policyNumberFromFileName}
       ExceptionUtil.throwException(UnaErrorCode.DOCUMENT_UPLOAD_FAILURE, {fieldError},ex)
     }
 

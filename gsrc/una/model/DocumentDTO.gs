@@ -16,6 +16,7 @@ class DocumentDTO {
 
   var _account: entity.Account as Account
   var _policy: entity.Policy  as Policy
+  var _policyPeriod: entity.PolicyPeriod as PolicyPeriod
   var _description: String as Description
   var _file: File as File
   var _onBaseDocType: typekey.OnBaseDocumentType_Ext as OnBaseDocumentType
@@ -23,9 +24,10 @@ class DocumentDTO {
 
   construct() {}
 
-  construct(account: Account, policy: Policy, file: File, docType: OnBaseDocumentType_Ext, docSubType: OnBaseDocumentSubtype_Ext, description: String) {
+  construct(account: Account, policy: Policy, policyPeriod: PolicyPeriod, file: File, docType: OnBaseDocumentType_Ext, docSubType: OnBaseDocumentSubtype_Ext, description: String) {
     _account = account
     _policy = policy
+    _policyPeriod = policyPeriod
     _file = file
     _onBaseDocType = docType
     _onBaseDocSubtype = docSubType

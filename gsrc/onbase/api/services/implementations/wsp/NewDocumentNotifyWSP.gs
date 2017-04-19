@@ -171,11 +171,18 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
 
     var asyncdoc = asyncarchivequery.select().AtMostOneRow
     if (asyncdoc != null) {
-      var properties = (message.MessageXml as MessageData_MessageContent).DequeuePCDocumentMessage.DocumentProperties
+      var dequeueMessage = (message.MessageXml as MessageData_MessageContent).DequeuePCDocumentMessage
+      var keywords = dequeueMessage.Keywords
+      var properties = dequeueMessage.DocumentProperties
       Transaction.runWithNewBundle(\bundle -> {
         asyncdoc = bundle.add(asyncdoc)
         asyncdoc.DocUID = properties.DocumentHandle
+        asyncdoc.Name = properties.DocName
         asyncdoc.PendingDocUID = null
+        asyncdoc.DMS = true
+        asyncdoc.OnBaseDocumentType = getOnBaseDocumentType(keywords)
+        asyncdoc.OnBaseDocumentSubtype = getOnBaseDocumentSubtype(keywords)
+        asyncdoc.Description = keywords.StandAlone.Description_Collection.Description.first()
         asyncdoc.DateModified = getDateStored(properties)
       }, User.util.UnrestrictedUser)
     } else {

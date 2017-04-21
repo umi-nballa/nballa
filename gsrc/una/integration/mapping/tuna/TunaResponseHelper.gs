@@ -242,6 +242,14 @@ class TunaResponseHelper {
         case ROOF_TYPE:
             var typeValue  = typeCodeMapper.getInternalCodeByAlias("RoofShape_Ext", "tuna", dataNumValue)
             return typeValue
+
+        case DISTANCE_TO_COAST:
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("DistToCoastOverridden_Ext", "tuna", dataNumValue)
+            return typeValue
+
+        case DISTANCE_TO_MAJOR_BOW:
+            var typeValue  = typeCodeMapper.getInternalCodeByAlias("DistBOWOverridden_Ext", "tuna", dataNumValue)
+            return typeValue
        }
      return dataNumValue
   }

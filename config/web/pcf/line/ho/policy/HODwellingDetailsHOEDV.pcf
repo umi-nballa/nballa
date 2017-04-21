@@ -437,7 +437,7 @@
           label="displaykey.Web.Homeowners.HOLocation.DistanceToCoast_Ext"
           sortValueRange="false"
           value="dwelling.HOLocation.DistToCoast_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast) as typekey.DistToCoastOverridden_Ext[]"/>
         <Input
           available="!dwelling.HOLocation.OverrideDistToCoast_Ext"
           id="DistToCoastMatchLevel_Ext"
@@ -471,9 +471,9 @@
           label="displaykey.Web.Homeowners.HOLocation.DistBOW_Ext"
           sortValueRange="false"
           value="dwelling.HOLocation.DistBOW_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW)">
+          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW) as typekey.DistBOWOverridden_Ext[]">
           <PostOnChange
-            onChange="dwelling.HOLocation.DistBOWNamedValue_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DistBOW_Ext,tunaAppResponse.DistanceToMajorBOW)"/>
+            onChange="dwelling.HOLocation.DistBOWNamedValue_Ext=gw.lob.ho.HODwellingUtil_HOE.getDependentCode(dwelling.HOLocation.DistBOW_Ext as String,tunaAppResponse.DistanceToMajorBOW)"/>
         </RangeInput>
         <Input
           available="!dwelling.HOLocation.OverrideDistBOW_Ext"

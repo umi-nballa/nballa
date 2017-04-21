@@ -112,7 +112,7 @@ abstract class HPXCoverageMapper {
     var value = currentCovTerm.Value
     var valueType = currentCovTerm.Pattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
-    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
     limit.Rate = 0.00
     limit.CoverageCd = coverage.PatternCode
@@ -130,7 +130,7 @@ abstract class HPXCoverageMapper {
     var value = currentCovTerm.OptionValue.Value as double
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     limit.CurrentTermAmt.Amt = getCovTermAmount(value, valueType)
-    limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
+    limit.NetChangeAmt.Amt = 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
     limit.Rate = 0.00
     limit.CoverageCd = coverage.PatternCode

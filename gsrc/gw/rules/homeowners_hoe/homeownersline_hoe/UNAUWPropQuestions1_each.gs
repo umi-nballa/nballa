@@ -18,12 +18,12 @@ class UNAUWPropQuestions1_each implements IRuleCondition<HomeownersLine_HOE>{
     if(homeowner.Dwelling.BarrierIsland_Ext  || homeowner.Dwelling.FloodZoneOrOverride==typekey.FloodZoneOverridden_Ext.TC_V ||
         homeowner.Dwelling.PropertyLocatedIn_Ext &&
            ( ((homeowner.Dwelling.HOLocation.DistToCoast_Ext!=null
-      && Integer.parseInt(homeowner.Dwelling.HOLocation.DistToCoast_Ext)<2500 && homeowner.Dwelling.HOLocation?.DistBOWNamedValue_Ext?.contains("Gulf")) ||
+      && typekey.DistToCoastOverridden_Ext.TF_LESSTHAN2500FEET.TypeKeys.contains(homeowner.Dwelling.HOLocation.DistToCoast_Ext) && homeowner.Dwelling.HOLocation?.DistBOWNamedValue_Ext?.contains("Gulf")) ||
         (typekey.DistToCoastOverridden_Ext.TF_LESSTHAN2500FEET.TypeKeys.contains(homeowner.Dwelling.HOLocation.DistToCoastOverridden_Ext)
              && homeowner.Dwelling.HOLocation?.DistBOWNVOverridden_Ext?.contains("Gulf")) )
       ||
         ((homeowner.Dwelling.HOLocation.DistToCoast_Ext!=null
-            && Integer.parseInt(homeowner.Dwelling.HOLocation.DistToCoast_Ext)<1000 && homeowner.Dwelling.HOLocation?.DistBOWNamedValue_Ext?.contains("Atlantic")) ||
+            && typekey.DistToCoastOverridden_Ext.TF_LESSTHAN1000FEET.TypeKeys.contains(homeowner.Dwelling.HOLocation.DistToCoast_Ext) && homeowner.Dwelling.HOLocation?.DistBOWNamedValue_Ext?.contains("Atlantic")) ||
             (typekey.DistToCoastOverridden_Ext.TF_LESSTHAN1000FEET.TypeKeys.contains(homeowner.Dwelling.HOLocation.DistToCoastOverridden_Ext)
                 && homeowner.Dwelling.HOLocation?.DistBOWNVOverridden_Ext?.contains("Atlantic")) ) )
    )

@@ -34,7 +34,7 @@ abstract class HPXCompositionUnitMapper {
     }
     documentForm.FormEdition = formEdition
     documentForm.IsDeclarationOrSchedule = isDeclarationOrSchedule
-    documentForm.FormPattern = formPattern
+    documentForm.FormPattern = formPattern != null ? formPattern : ""
     documentForm.Description = formDescription
     return documentForm
   }

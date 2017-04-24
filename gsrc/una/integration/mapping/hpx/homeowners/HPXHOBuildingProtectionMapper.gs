@@ -30,6 +30,7 @@ class HPXHOBuildingProtectionMapper {
                                                     policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType.Description : ""
     bldgProtection.ProtectionDeviceSprinklerInd = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType != typekey.SprinklerSystemType_HOE.TC_NONE ?
                                                     policyPeriod.HomeownersLine_HOE.Dwelling.DwellingProtectionDetails.SprinklerSystemType : false
+    bldgProtection.CityLimits = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingLocation == typekey.DwellingLocationType_HOE.TC_CITY ? true : false
     return bldgProtection
   }
 }

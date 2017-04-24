@@ -16,6 +16,8 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _increasedPersonalPropertyLimit : BigDecimal as IncreasedPersonalPropertyLimit
   var _preferredBuilderExists : boolean as PreferredBuilderExists
   var _preferredFinancialInstitutionExists : boolean as PreferredFinancialInstitutionExists
+  var _windHailExcluded : boolean as WindHailExcluded = false
+
 
   //windstorm mitigation credit
   var _roofShape : String as RoofShape
@@ -52,6 +54,10 @@ class HOGroup2DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
         _roofShape = "Other"
       else
         _roofShape = dwelling?.RoofShape_Ext?.DisplayName
+    }
+
+    if(dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists){
+      _windHailExcluded = true
     }
   }
 }

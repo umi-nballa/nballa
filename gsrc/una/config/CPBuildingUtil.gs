@@ -184,9 +184,9 @@ If Roof Covering does not = Reinforced Concrete then no default response.
     {
 
       if(bldg.Building.YearBuilt>=2002 && bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120)
-        bldg.wbdr="Yes"
+        bldg.wbdr=true
       if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))
-        bldg.wbdr="No"
+        bldg.wbdr=false
       return true
     }
 
@@ -194,9 +194,9 @@ If Roof Covering does not = Reinforced Concrete then no default response.
   {
 
     if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
-      bldg.wbdr="Yes"
+      bldg.wbdr=true
     if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))
-      bldg.wbdr="No"
+      bldg.wbdr=false
 
 
     if(bldg?.Building?.YearBuilt<2002 && bldg.RoofTypeCP==typekey.RoofType_CP.TC_REINFORCEDCONCRETE_EXT)
@@ -351,9 +351,9 @@ Default the response to Yes if Gust Wind Speed of Design =>120
 Default response to No if Gust Wind Speed of Design = 100 OR = 110
      */
     if(bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_GTEQ120 && bldg.Building.YearBuilt>=2002)
-      bldg.wbdr="Yes"
+      bldg.wbdr=true
     if(bldg.Building.YearBuilt>=2002 && (bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_100 || bldg.guswind==typekey.CPGustWindSpeedDes_Ext.TC_110))//110))
-      bldg.wbdr="No"
+      bldg.wbdr=false
 
 
 

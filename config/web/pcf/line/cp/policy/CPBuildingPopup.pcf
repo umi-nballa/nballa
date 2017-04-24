@@ -165,7 +165,7 @@
                 validationExpression="cpBuilding.validateYearBuilt(cpBuilding.Building.YearBuilt)"
                 value="cpBuilding.Building.YearBuilt">
                 <PostOnChange
-                  onChange="una.config.CPBuildingUtil.setYearBasedDefaults(cpBuilding);new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding)"/>
+                  onChange="una.config.CPBuildingUtil.setYearBasedDefaults(cpBuilding);new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding);una.config.CPBuildingUtil.setResDefaults(cpBuilding)"/>
               </TextInput>
               <TextInput
                 align="left"
@@ -452,7 +452,7 @@
                   required="cpBuilding.windstormexcl==false &amp;&amp; cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"
                   value="cpBuilding.terexp"
                   visible="cpBuilding.windstormexcl==false //&amp;&amp; cpBuilding.windmiti5!=false//una.config.CPBuildingUtil.isVisible(cpBuilding)"/>
-                <TextInput
+                <BooleanRadioInput
                   align="left"
                   editable="cpBuilding.windmiti5==true"
                   id="wdbr"
@@ -502,7 +502,7 @@
                   id="DistToCoastTunaReturned_Ext"
                   label="displaykey.Web.CP.CPLocation.DistanceToCoast_Ext"
                   value="cpBuilding.DistToCoast_Ext"
-                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)"/>
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast) as typekey.DistToCoastOverridden_Ext[]"/>
                 <Input
                   available="!cpBuilding.OverrideDistToCoast_Ext"
                   id="DistToCoastMatchLevel_Ext"

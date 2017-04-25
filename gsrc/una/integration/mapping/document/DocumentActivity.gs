@@ -2,7 +2,7 @@ package una.integration.mapping.document
 
 uses una.utils.ActivityUtil
 uses gw.api.database.Query
-
+uses una.logging.UnaLoggerCategory
 /**
  * Created with IntelliJ IDEA.
  * User: pyerrumsetty
@@ -20,8 +20,10 @@ uses gw.api.database.Query
 
 class DocumentActivity {
 
+  final static var LOGGER = UnaLoggerCategory.INTEGRATION
+
   final static var UNIVERSAL_INSURANCE_MANAGERS_GROUP = "Universal Insurance Manager's Inc"
-  
+
   public final static var POLICY_INSURED_RETURNED_MAIL: String = "policy_insured_returned_mail"
   public final static var POLICY_MORTGAGEE_RETURNED_MAIL: String = "policy_mortgagee_returned_mail"
   public final static var REVIEW_RISK_AND_LARGE_LOSS_REPORTS: String = "review_risk_and_large_loss_reports"
@@ -64,7 +66,7 @@ class DocumentActivity {
   public final static var OTHER_INCOMING_RECEIVED: String = "other_incoming_received"
   public final static var INCORR_OTHER_INCOMING_RECEIVED: String = OTHER_INCOMING_RECEIVED
   public final static var STATEMENT_OF_NO_LOSS: String = "BOPCRP_stmt_no_loss_received"
-  
+
   // Queues
   final static var CSR_QUEUE="CSR Queue"
   final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority  Inspection Review"
@@ -75,16 +77,31 @@ class DocumentActivity {
   final static var SPECIAL_HANDLING_QUEUE = "Special Handling"
   final static var CL_UW_QUEUE = "CL UW Queue"
   
-  function mapDocActivity(document: Document, period: PolicyPeriod) {
+  static function mapDocActivity(document: Document, period: PolicyPeriod) {
 
-    if(document.OnBaseDocumentType == typekey.OnBaseDocumentType_Ext.TC_IN_CORR){
-      createInCorrespondenceDocActivity(document , period)
-    } else if(document.OnBaseDocumentType == typekey.OnBaseDocumentType_Ext.TC_INSPECTIONS){
-      createInspectionsDocActivity(document , period)
+    LOGGER.debug("Map Document to an Activity - Doc Type:{}, SubType:{}", document.OnBaseDocumentType, document.OnBaseDocumentSubtype)
+    switch(document.OnBaseDocumentType) {
+      
+      // Incoming Correspondence documents
+      case typekey.OnBaseDocumentType_Ext.TC_IN_CORR:
+          createInCorrespondenceDocActivity(document , period)
+      break
+      // Inspection documents
+      case typekey.OnBaseDocumentType_Ext.TC_INSPECTIONS:
+          createInspectionsDocActivity(document , period)
+      break
+      
+      case typekey.OnBaseDocumentType_Ext.TC_RISK_RPT_LRG_LOSS:
+          //  Review Risk and  large loss reports
+          if(document.OnBaseDocumentSubtype == typekey.OnBaseDocumentSubtype_Ext.TC_RRLL_RISK_REPORT_AND_LARGE_LOSS) {
+            createActivityAndAssignToQueue(period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, SENIOR_UW_QUEUE)
+          }
+      break
     }
+    
   }
 
-  function createInCorrespondenceDocActivity(document: Document, period: PolicyPeriod) {
+  static function createInCorrespondenceDocActivity(document: Document, period: PolicyPeriod) {
 
     var patternCode: String = null
     var queue: String = null
@@ -117,18 +134,13 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_CONSENT_TO_RATE:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_OTHER_INCOMING:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_ENDORSEMENT_REQUEST:// fall through
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_AGE_CHANGE_REQUEST:// fall through
+      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_AGENT_CHANGE_REQUEST:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_MORTGAGE_CHANGE_REQUEST:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_ELEVATION_CERTIFICATE:
           patternCode = POLICY_DE_ENDORSEMENT_REQUEST
           queue = CSR_QUEUE
           break
 
-      //  Review Risk and  large loss reports
-      case typekey.OnBaseDocumentSubtype_Ext.TC_RRLL_RISK_REPORT_AND_LARGE_LOSS:
-          patternCode = REVIEW_RISK_AND_LARGE_LOSS_REPORTS
-          queue = SENIOR_UW_QUEUE
-          break
 
       //  Review and approve UW Endorsement
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PHOTOS_REQUESTED:// fall through
@@ -170,7 +182,7 @@ class DocumentActivity {
     }
   }
 
-  function createInspectionsDocActivity(document: Document, period: PolicyPeriod) {
+  static function createInspectionsDocActivity(document: Document, period: PolicyPeriod) {
 
     var patternCode: String = null
     var queue: String = null
@@ -199,184 +211,6 @@ class DocumentActivity {
           //  If the vendor changes, we should just remove the DMI prefix
           period.Policy.newDMIWindMitInspRecd_ExtNote().Body = "A new Wind Mitigation Inspection document has be received."
           break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_ENDREQ_AGENT_CHANGE_REQUEST:
-          patternCode = AGENCY_POLICY_CHANGE_REQUEST
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_ENDORSEMENT_REQUEST:
-          patternCode = POLICY_DE_ENDROSEMENT_REQUEST
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_RETMAIL_RETURNED_MAIL_LETTER:
-          patternCode = POLICY_INSURED_RETURNED_MAIL
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_WIND_MITIGATION_INSPECTION:
-          patternCode = VENDOR_WIND_MIT_INSPECTION
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_ADDITIONAL_INSURED:
-          patternCode = BOPCRP_RETURNED_EMAIL_ADD_INSD_INT
-          queue = CL_UW_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_ADDITIONAL_INSURED:
-          patternCode = BOPCRP_RETURNED_MAIL_INSURED
-          queue = CL_UW_QUEUE
-          break
-
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW:
-          patternCode = BOPCRP_REVIEW_INSPECTION
-          queue = CL_UW_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_INSURED_TENANT_CREDIT:
-          patternCode = BOP_REVIEW_TENANT_INSP
-          queue = CL_UW_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_CONSENT_TO_RATE:
-          patternCode = BOPCRP_CTR_RECEIVED
-          queue = CL_UW_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_SPRINKLER_DOCUMENTATION:
-          patternCode = BOPCRP_SPRINKLER_INSP_RECEIVED
-          queue = CL_UW_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_AIR_TESTING_CERTIFICATE:
-          patternCode = AIR_CERTIFICATE_REQUIRED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROTECTIVE_DEVICE_CREDIT:
-          patternCode = PROTECTIVE_DEVICE_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_APPLIANCE_CERTIFICATION:
-          patternCode = APPLIANCE_CERT_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_AFFINITY_DISCOUNT:
-          patternCode = AFFINITY_DISCOUNT_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_APPRAISAL_FOR_SCHEDULED_PERSONAL_PROPERTY:
-          patternCode = APPRAISAL_FOR_SPP_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_EARTHQUAKE_RETROFIT_CERTIFICATION:
-          patternCode = EARTHQUAKE_RETROFIT_CERTIFICATION_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_ELEVATION_CERTIFICATE:
-          patternCode = FLOOD_ELEVATION_CERTIFICATE
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_FAMILY_DAY_CARE_CERTFICATE:
-          patternCode = FAMILY_DAY_CARE_CERTFICATE
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_HAZARD_REMOVAL_FORM:
-          patternCode = HAZARD_REMOVAL_FORM_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_LETTER_OF_EXPERIENCE:
-          patternCode = LETTER_OF_EXPERIENCE_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PHOTOS_REQUESTED :
-          patternCode = PHOTOS_REQUESTED_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PRE_PURCHASE_INSPECTION :
-          patternCode = PRE_PURCHASE_INSPECTION
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PRIOR_CLAIM_INFORMATION:
-          patternCode = PRIOR_CLAIM_INFORMATION_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_PRIOR_INSURANCE:
-          patternCode = PROOF_OF_PRIOR_INSURANCE_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_PROOF_OF_REPAIRS:
-          patternCode = PROOF_OF_REPAIRS_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_REPLACEMENT_COST_ESTIMATOR:
-          patternCode = REPLACEMENT_COST_ESTIMATOR_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_REQUEST_FOR_INFORMATION:
-          patternCode = REQUEST_FOR_INFORMATION_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_REQUEST_FOR_INFORMATION:
-          patternCode = REQUEST_FOR_INFORMATION_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_SPRINKLER_DOCUMENTATION:
-          patternCode = SPRINKLER_DOCUMENTATION_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_STATEMENT_OF_NO_LOSS:
-          patternCode = STATEMENT_OF_NO_LOSS_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_SYSTEM_INSPECTION_FORM_4_POINT:
-          patternCode = SYSTEM_INSPECTION_FORM_4_POINT_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_WINDSTORM_HURRICANE_AND_HAIL_EXCLUSION:
-          patternCode = WINDSTORM_HURRICANE_AND_HAIL_EXCLUSION_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_OTHER_INCOMING:
-          patternCode = INCORR_OTHER_INCOMING_RECEIVED
-          queue = CSR_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_OTHER_INCOMING:
-          patternCode = OTHER_INCOMING_RECEIVED
-          queue = CL_UW_QUEUE
-          break
-
-      case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_STATEMENT_OF_NO_LOSS:
-          patternCode = STATEMENT_OF_NO_LOSS
-          queue = CL_UW_QUEUE
-          break
-
-
     }
 
     if(patternCode != null && queue != null) {
@@ -384,12 +218,13 @@ class DocumentActivity {
     }
   }
 
-  private function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
+  private static function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
     var activity = ActivityUtil.createActivityAutomatically(period, patternCode)
 
     // As the queue is mapped to different Groups
     var assignableQueue = Query.make(AssignableQueue).compare(AssignableQueue#Name, Equals, queue).select().AtMostOneRow
     if(assignableQueue!=null && activity.canAssign()){
+      LOGGER.debug("Assign Activity:{} to Queue:{}", patternCode, queue)
       ActivityUtil.assignActivityToQueue(queue, (assignableQueue.Group) as String,activity)
     }
   }

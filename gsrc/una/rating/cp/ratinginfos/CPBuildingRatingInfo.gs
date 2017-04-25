@@ -41,7 +41,7 @@ class CPBuildingRatingInfo {
   var _windSpeedOfDesign : int as WindSpeedOfDesign
   var _windSpeedOfLocation : String as WindSpeedOfLocation
   var _roofShape : String as RoofShape
-  var _windBorneDebris : String as WIndBorneDebris
+  var _windBorneDebris : Boolean as WIndBorneDebris
   var _designExposure : String as DesignExposure
   var _designCode : String as DesignCode
   var _newConstruction : boolean as NewConstruction

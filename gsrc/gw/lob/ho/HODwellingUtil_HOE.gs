@@ -1111,6 +1111,9 @@ class HODwellingUtil_HOE {
             (dwelling.PolicyPeriod.BaseState==TC_CA || dwelling.PolicyPeriod.BaseState==TC_TX || dwelling.PolicyPeriod.BaseState==TC_SC || dwelling.PolicyPeriod.BaseState==TC_HI
                 || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
             typeOfPolicy.add(elt)
+        }else if(elt.Code == TypeofPolicy_Ext.TC_AUTO && ((typekey.HOPolicyType_Hoe.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+             (dwelling.PolicyPeriod.BaseState==TC_AZ)))){
+            typeOfPolicy.add(elt)
         }
       }
     })

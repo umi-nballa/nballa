@@ -19,8 +19,8 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-21 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2017-04-10 16:25:58.730</LastStatusChangeDate>
-    <LastTableRowEdit>2017-04-10 12:03:49.007</LastTableRowEdit>
+    <LastStatusChangeDate>2017-04-24 16:39:13.828</LastStatusChangeDate>
+    <LastTableRowEdit>2017-04-24 16:27:57.290</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines>
       <RateBookCalcRoutine public-id="pc:12010">
@@ -601,7 +601,7 @@
       <RateTable public-id="pc:7022">
         <BasedOnTable/>
         <Definition public-id="pc:3001"/>
-        <LastTableRowEdit>2017-03-23 12:36:22.163</LastTableRowEdit>
+        <LastTableRowEdit>2017-04-24 15:36:02.400</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:404"/>
@@ -777,7 +777,7 @@
       <RateTable public-id="pcab:10601">
         <BasedOnTable/>
         <Definition public-id="pcab:3801"/>
-        <LastTableRowEdit>2017-03-20 09:43:34.788</LastTableRowEdit>
+        <LastTableRowEdit>2017-04-24 16:27:57.290</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:404"/>
@@ -942,7 +942,7 @@
       <RateTable public-id="pcdb:29503">
         <BasedOnTable/>
         <Definition public-id="pc:2202"/>
-        <LastTableRowEdit>2017-02-28 14:51:37.264</LastTableRowEdit>
+        <LastTableRowEdit>2017-04-24 15:38:39.161</LastTableRowEdit>
         <NormalizedRowCount/>
         <QueryStrategy>Memory</QueryStrategy>
         <RateBook public-id="pc:404"/>
@@ -9991,15 +9991,6 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:3801">
-    <CalcRoutineParameterSet public-id="pc:3501"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>true</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3803">
     <CalcRoutineParameterSet public-id="pc:3501"/>
     <Code>state</Code>
@@ -10008,6 +9999,15 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3801">
+    <CalcRoutineParameterSet public-id="pc:3501"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>true</Writable>
   </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3802">
     <CalcRoutineParameterSet public-id="pc:3501"/>
@@ -12006,11 +12006,11 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:3901">
+  <CalcRoutineParameter public-id="pc:3903">
     <CalcRoutineParameterSet public-id="pc:3601"/>
-    <Code>lineRatingInfo_Ext</Code>
+    <Code>state</Code>
     <CoveragePattern/>
-    <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2LineRatingInfo</ParamType>
+    <ParamType>typekey.Jurisdiction</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -12024,11 +12024,11 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3903">
+  <CalcRoutineParameter public-id="pc:3901">
     <CalcRoutineParameterSet public-id="pc:3601"/>
-    <Code>state</Code>
+    <Code>lineRatingInfo_Ext</Code>
     <CoveragePattern/>
-    <ParamType>typekey.Jurisdiction</ParamType>
+    <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2LineRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -40885,6 +40885,15 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:203">
+    <CalcRoutineParameterSet public-id="pc:201"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.tx.ratinginfos.HOLineRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:202">
     <CalcRoutineParameterSet public-id="pc:201"/>
     <Code>policyline</Code>
@@ -40899,15 +40908,6 @@
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>typekey.Jurisdiction</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:203">
-    <CalcRoutineParameterSet public-id="pc:201"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.tx.ratinginfos.HOLineRatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -41186,15 +41186,6 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:901">
-    <CalcRoutineParameterSet public-id="pc:601"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:903">
     <CalcRoutineParameterSet public-id="pc:601"/>
     <Code>dwellingRatingInfo_Ext</Code>
@@ -41213,13 +41204,22 @@
     <WrapperClass/>
     <Writable>true</Writable>
   </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:901">
+    <CalcRoutineParameterSet public-id="pc:601"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <DefaultRateFactorRow public-id="pc:74578">
     <RateTable public-id="pc:7022"/>
     <bit1/>
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1696.0000000</dec1>
+    <dec1>1803.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -41306,7 +41306,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1825.0000000</dec1>
+    <dec1>1816.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -41567,7 +41567,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>475.0000000</dec1>
+    <dec1>473.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -41654,7 +41654,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>2641.0000000</dec1>
+    <dec1>2638.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -41741,7 +41741,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>717.0000000</dec1>
+    <dec1>652.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -41828,7 +41828,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1475.0000000</dec1>
+    <dec1>1405.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -41915,7 +41915,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>758.0000000</dec1>
+    <dec1>755.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42002,7 +42002,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1863.0000000</dec1>
+    <dec1>2091.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42089,7 +42089,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>497.0000000</dec1>
+    <dec1>495.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42176,7 +42176,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>585.0000000</dec1>
+    <dec1>588.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42437,7 +42437,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>595.0000000</dec1>
+    <dec1>592.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42611,7 +42611,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>852.0000000</dec1>
+    <dec1>811.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42698,7 +42698,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>589.0000000</dec1>
+    <dec1>561.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -42872,7 +42872,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>645.0000000</dec1>
+    <dec1>614.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -43046,7 +43046,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>598.0000000</dec1>
+    <dec1>595.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -43394,7 +43394,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1449.0000000</dec1>
+    <dec1>1159.0000000</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -45369,7 +45369,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -45398,7 +45398,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -45717,7 +45717,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -45746,7 +45746,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -46065,7 +46065,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -46094,7 +46094,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -46413,7 +46413,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -46442,7 +46442,7 @@
     <bit2/>
     <date1/>
     <date2/>
-    <dec1>1.0000000</dec1>
+    <dec1>0E-7</dec1>
     <dec2/>
     <dec3/>
     <dec4/>
@@ -57454,15 +57454,6 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:3603">
-    <CalcRoutineParameterSet public-id="pc:3301"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group2.ratinginfos.HORatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:3602">
     <CalcRoutineParameterSet public-id="pc:3301"/>
     <Code>policyline</Code>
@@ -57477,6 +57468,15 @@
     <Code>dwellingRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.group2.ratinginfos.HOGroup2DwellingRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:3603">
+    <CalcRoutineParameterSet public-id="pc:3301"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group2.ratinginfos.HORatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -57975,7 +57975,7 @@
     <int7/>
     <int8/>
     <str1>26 - 50 HP</str1>
-    <str2>15 to 26 ft</str2>
+    <str2>16 to 26 ft</str2>
     <str3/>
     <str4/>
     <str5/>
@@ -58033,7 +58033,7 @@
     <int7/>
     <int8/>
     <str1>Less than 26 hp</str1>
-    <str2>15 to 26 ft</str2>
+    <str2>16 to 26 ft</str2>
     <str3/>
     <str4/>
     <str5/>
@@ -58091,7 +58091,7 @@
     <int7/>
     <int8/>
     <str1>26 - 50 HP</str1>
-    <str2>15 to 26 ft</str2>
+    <str2>16 to 26 ft</str2>
     <str3/>
     <str4/>
     <str5/>
@@ -58149,7 +58149,7 @@
     <int7/>
     <int8/>
     <str1>Less than 26 hp</str1>
-    <str2>15 to 26 ft</str2>
+    <str2>16 to 26 ft</str2>
     <str3/>
     <str4/>
     <str5/>
@@ -58207,7 +58207,7 @@
     <int7/>
     <int8/>
     <str1>26 - 50 HP</str1>
-    <str2>15 to 26 ft</str2>
+    <str2>16 to 26 ft</str2>
     <str3/>
     <str4/>
     <str5/>
@@ -58265,7 +58265,7 @@
     <int7/>
     <int8/>
     <str1>Less than 26 hp</str1>
-    <str2>15 to 26 ft</str2>
+    <str2>16 to 26 ft</str2>
     <str3/>
     <str4/>
     <str5/>
@@ -64068,20 +64068,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1403">
-    <CalcRoutineParameterSet public-id="pc:1101"/>
-    <Code>ratinginfo</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1402">
     <CalcRoutineParameterSet public-id="pc:1101"/>
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1403">
+    <CalcRoutineParameterSet public-id="pc:1101"/>
+    <Code>ratinginfo</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group1.ratinginfos.HORatingInfo</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -95538,6 +95538,15 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
+  <CalcRoutineParameter public-id="pc:2416">
+    <CalcRoutineParameterSet public-id="pc:2108"/>
+    <Code>dwellingRatingInfo_Ext</Code>
+    <CoveragePattern/>
+    <ParamType>una.rating.ho.group2.ratinginfos.HOBasePremiumRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2417">
     <CalcRoutineParameterSet public-id="pc:2108"/>
     <Code>policyline</Code>
@@ -95555,15 +95564,6 @@
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>true</Writable>
-  </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2416">
-    <CalcRoutineParameterSet public-id="pc:2108"/>
-    <Code>dwellingRatingInfo_Ext</Code>
-    <CoveragePattern/>
-    <ParamType>una.rating.ho.group2.ratinginfos.HOBasePremiumRatingInfo</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
   </CalcRoutineParameter>
   <CalcRoutineDefinition public-id="pcab:3302">
     <Code>UNAHOBuildingAdditionsAndAlterationsIncreasedLimitsRateRoutine</Code>
@@ -106551,20 +106551,20 @@
     <WrapperClass/>
     <Writable>false</Writable>
   </CalcRoutineParameter>
-  <CalcRoutineParameter public-id="pc:2201">
-    <CalcRoutineParameterSet public-id="pc:1901"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:2203">
     <CalcRoutineParameterSet public-id="pc:1901"/>
     <Code>state</Code>
     <CoveragePattern/>
     <ParamType>java.lang.String</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:2201">
+    <CalcRoutineParameterSet public-id="pc:1901"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -108002,20 +108002,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pcab:1402">
-    <CalcRoutineParameterSet public-id="pcab:1301"/>
-    <Code>policyline</Code>
-    <CoveragePattern/>
-    <ParamType>entity.PolicyLine</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pcab:1401">
     <CalcRoutineParameterSet public-id="pcab:1301"/>
     <Code>outboardMotorsAndWatercraftRatingInfo_Ext</Code>
     <CoveragePattern/>
     <ParamType>una.rating.ho.group2.ratinginfos.HOOutboardMotorsAndWatercraftRatingInfo</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pcab:1402">
+    <CalcRoutineParameterSet public-id="pcab:1301"/>
+    <Code>policyline</Code>
+    <CoveragePattern/>
+    <ParamType>entity.PolicyLine</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>
@@ -109738,20 +109738,20 @@
     </Parameters>
     <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
   </CalcRoutineParameterSet>
-  <CalcRoutineParameter public-id="pc:1102">
-    <CalcRoutineParameterSet public-id="pc:801"/>
-    <Code>state</Code>
-    <CoveragePattern/>
-    <ParamType>java.lang.String</ParamType>
-    <UseWrapper>false</UseWrapper>
-    <WrapperClass/>
-    <Writable>false</Writable>
-  </CalcRoutineParameter>
   <CalcRoutineParameter public-id="pc:1101">
     <CalcRoutineParameterSet public-id="pc:801"/>
     <Code>policyline</Code>
     <CoveragePattern/>
     <ParamType>entity.PolicyLine</ParamType>
+    <UseWrapper>false</UseWrapper>
+    <WrapperClass/>
+    <Writable>false</Writable>
+  </CalcRoutineParameter>
+  <CalcRoutineParameter public-id="pc:1102">
+    <CalcRoutineParameterSet public-id="pc:801"/>
+    <Code>state</Code>
+    <CoveragePattern/>
+    <ParamType>java.lang.String</ParamType>
     <UseWrapper>false</UseWrapper>
     <WrapperClass/>
     <Writable>false</Writable>

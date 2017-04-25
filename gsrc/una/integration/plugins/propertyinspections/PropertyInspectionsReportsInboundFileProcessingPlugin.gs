@@ -2,9 +2,6 @@ package una.integration.plugins.propertyinspections
 
 
 uses gw.plugin.integration.inbound.InboundIntegrationHandlerPlugin
-uses gw.plugin.Plugins
-uses gw.plugin.document.IDocumentContentSource
-uses gw.transaction.Transaction
 
 uses java.io.File
 uses una.model.DocumentDTO

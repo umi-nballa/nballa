@@ -14,7 +14,7 @@ class UW2IndOccpancySecondary_each implements IRuleCondition<PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
     if(period.Policy.Account.AccountOrgType == AccountOrgType.TC_TWOINDOTHERTHANSPOUSAL_EXT
-        && period.HomeownersLine_HOE?.Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_SECONDARYRES ){
+        && period.HomeownersLine_HOE?.Dwelling.DwellingUsage == tc_sec ){
         return RuleEvaluationResult.execute()
       }
    return RuleEvaluationResult.skip()

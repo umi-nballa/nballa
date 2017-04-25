@@ -2,7 +2,7 @@ package una.integration.mapping.document
 
 uses una.utils.ActivityUtil
 uses gw.api.database.Query
-
+uses una.logging.UnaLoggerCategory
 /**
  * Created with IntelliJ IDEA.
  * User: pyerrumsetty
@@ -19,6 +19,8 @@ uses gw.api.database.Query
  */
 
 class DocumentActivity {
+
+  final static var LOGGER = UnaLoggerCategory.INTEGRATION
 
   final static var UNIVERSAL_INSURANCE_MANAGERS_GROUP = "Universal Insurance Manager's Inc"
 
@@ -75,8 +77,9 @@ class DocumentActivity {
   final static var SPECIAL_HANDLING_QUEUE = "Special Handling"
   final static var CL_UW_QUEUE = "CL UW Queue"
   
-  function mapDocActivity(document: Document, period: PolicyPeriod) {
+  static function mapDocActivity(document: Document, period: PolicyPeriod) {
 
+    LOGGER.debug("Map Document to an Activity - Doc Type:{}, SubType:{}", document.OnBaseDocumentType, document.OnBaseDocumentSubtype)
     switch(document.OnBaseDocumentType) {
       
       // Incoming Correspondence documents
@@ -98,7 +101,7 @@ class DocumentActivity {
     
   }
 
-  function createInCorrespondenceDocActivity(document: Document, period: PolicyPeriod) {
+  static function createInCorrespondenceDocActivity(document: Document, period: PolicyPeriod) {
 
     var patternCode: String = null
     var queue: String = null
@@ -179,7 +182,7 @@ class DocumentActivity {
     }
   }
 
-  function createInspectionsDocActivity(document: Document, period: PolicyPeriod) {
+  static function createInspectionsDocActivity(document: Document, period: PolicyPeriod) {
 
     var patternCode: String = null
     var queue: String = null
@@ -215,12 +218,13 @@ class DocumentActivity {
     }
   }
 
-  private function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
+  private static function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
     var activity = ActivityUtil.createActivityAutomatically(period, patternCode)
 
     // As the queue is mapped to different Groups
     var assignableQueue = Query.make(AssignableQueue).compare(AssignableQueue#Name, Equals, queue).select().AtMostOneRow
     if(assignableQueue!=null && activity.canAssign()){
+      LOGGER.debug("Assign Activity:{} to Queue:{}", patternCode, queue)
       ActivityUtil.assignActivityToQueue(queue, (assignableQueue.Group) as String,activity)
     }
   }

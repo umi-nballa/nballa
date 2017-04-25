@@ -10,6 +10,7 @@ uses java.util.ArrayList
 uses una.integration.mapping.tuna.TunaAppResponse
 uses java.text.SimpleDateFormat
 uses java.util.Date
+uses config.locale.en_US.typelist
 
 /**
  * Created with IntelliJ IDEA.
@@ -124,7 +125,7 @@ class HODwellingUtil_HOE {
     if(dwelling.HOLocation.DistBOWMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.HOLocation.DistBOW_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW) ).first()
+      dwelling.HOLocation.DistBOW_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToMajorBOW) as typekey.DistBOWOverridden_Ext[] ).first()
     }
     if(dwelling.HOLocation.DistBOWNVMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -134,7 +135,7 @@ class HODwellingUtil_HOE {
     if(dwelling.HOLocation.DistToCoastMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
 
-      dwelling.HOLocation.DistToCoast_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast)).first()
+      dwelling.HOLocation.DistToCoast_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast) as typekey.DistToCoastOverridden_Ext[]).first()
     }
     if(dwelling.HOLocation.TerritoryCodeMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT)
     {
@@ -1109,6 +1110,9 @@ class HODwellingUtil_HOE {
         }else if(elt.Code == TypeofPolicy_Ext.TC_DWELLINGFIRE && ((typekey.HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
             (dwelling.PolicyPeriod.BaseState==TC_CA || dwelling.PolicyPeriod.BaseState==TC_TX || dwelling.PolicyPeriod.BaseState==TC_SC || dwelling.PolicyPeriod.BaseState==TC_HI
                 || dwelling.PolicyPeriod.BaseState==TC_NV)) || (dwelling.HOPolicyType == TC_DP3_Ext && dwelling.PolicyPeriod.BaseState==TC_HI))){
+            typeOfPolicy.add(elt)
+        }else if(elt.Code == TypeofPolicy_Ext.TC_AUTO && ((typekey.HOPolicyType_Hoe.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) &&
+             (dwelling.PolicyPeriod.BaseState==TC_AZ)))){
             typeOfPolicy.add(elt)
         }
       }

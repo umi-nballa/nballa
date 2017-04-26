@@ -40,38 +40,43 @@ class DocumentActivity {
   public final static var REVIEW_INSPECTION_PRIORITY: String = "review_inspection_priority"
   public final static var REVIEW_INSPECTION_CS: String = "review_inspection_cs"
   public final static var REVIEW_INSPECTION_UW: String = "review_inspection_uw"
+  public final static var COMMERCIAL_INSPECTION: String = "commercial_rpt_inspection"
   public final static var VENDOR_WIND_MIT_INSPECTION: String = "vendor_wind_mit_inspection"
-  public final static var AGENCY_POLICY_CHANGE_REQUEST: String = "agency_policy_change_request"
-  public final static var BOPCRP_RETURNED_EMAIL_ADD_INSD_INT: String = "BOPCRP_returned_mail_add_insd_int"
-  public final static var BOPCRP_RETURNED_MAIL_INSURED: String = "BOPCRP_returned_mail_insured"
-  public final static var BOPCRP_REVIEW_INSPECTION: String = "BOPCRP_review_inspection"
-  public final static var BOP_REVIEW_TENANT_INSP: String = "BOP_review_tenant_insp"
-  public final static var BOPCRP_CTR_RECEIVED: String = "BOPCRP_ctr_received"
-  public final static var BOPCRP_SPRINKLER_INSP_RECEIVED: String = "BOPCRP_sprinkler_insp_received"
-  public final static var AIR_CERTIFICATE_REQUIRED: String = "air_certificate_required"
-  public final static var PROTECTIVE_DEVICE_RECEIVED: String = "protective_device_received"
-  public final static var APPLIANCE_CERT_RECEIVED: String = "appliance_cert_received"
-  public final static var AFFINITY_DISCOUNT_RECEIVED: String = "affinity_discount_received"
-  public final static var APPRAISAL_FOR_SPP_RECEIVED: String = "appraisal_for_spp_received"
-  public final static var EARTHQUAKE_RETROFIT_CERTIFICATION_RECEIVED: String = "earthquake_retrofit_certification_received"
-  public final static var FLOOD_ELEVATION_CERTIFICATE: String = "flood_elevation_certificate_received"
-  public final static var FAMILY_DAY_CARE_CERTFICATE: String = "daycare_certificate_received"
-  public final static var HAZARD_REMOVAL_FORM_RECEIVED: String = "hazard_removal_form_received"
-  public final static var LETTER_OF_EXPERIENCE_RECEIVED: String = "letter_of_experience_received"
-  public final static var PHOTOS_REQUESTED_RECEIVED: String = "photos_requested_received"
-  public final static var PRE_PURCHASE_INSPECTION: String = "prepurchase_received"
-  public final static var PRIOR_CLAIM_INFORMATION_RECEIVED: String = "prior_claim_info_received"
-  public final static var PROOF_OF_PRIOR_INSURANCE_RECEIVED: String = "proof_of_prior_ins_received"
-  public final static var PROOF_OF_REPAIRS_RECEIVED: String = "proof_of_prior_repairs_received"
-  public final static var REPLACEMENT_COST_ESTIMATOR_RECEIVED: String = "replacement_cost_estimator_received"
-  public final static var REQUEST_FOR_INFORMATION_RECEIVED: String = "request_for_info_received"
-  public final static var SPRINKLER_DOCUMENTATION_RECEIVED: String = "sprinkler_doc_received"
-  public final static var STATEMENT_OF_NO_LOSS_RECEIVED: String = "stmt_no_loss_received"
-  public final static var SYSTEM_INSPECTION_FORM_4_POINT_RECEIVED: String = "system_insp_4pt_received"
-  public final static var WINDSTORM_HURRICANE_AND_HAIL_EXCLUSION_RECEIVED: String = "wind_hurricane_hail_rej_received"
-  public final static var OTHER_INCOMING_RECEIVED: String = "other_incoming_received"
-  public final static var INCORR_OTHER_INCOMING_RECEIVED: String = OTHER_INCOMING_RECEIVED
-  public final static var STATEMENT_OF_NO_LOSS: String = "BOPCRP_stmt_no_loss_received"
+
+  //  Arpita added these. They were not in the document Bernie and Prathyush created. Commenting out for now, since they were added to
+  // a switch that would never called.
+
+//  public final static var AGENCY_POLICY_CHANGE_REQUEST: String = "agency_policy_change_request"
+//  public final static var BOPCRP_RETURNED_EMAIL_ADD_INSD_INT: String = "BOPCRP_returned_mail_add_insd_int"
+//  public final static var BOPCRP_RETURNED_MAIL_INSURED: String = "BOPCRP_returned_mail_insured"
+//  public final static var BOPCRP_REVIEW_INSPECTION: String = "BOPCRP_review_inspection"
+//  public final static var BOP_REVIEW_TENANT_INSP: String = "BOP_review_tenant_insp"
+//  public final static var BOPCRP_CTR_RECEIVED: String = "BOPCRP_ctr_received"
+//  public final static var BOPCRP_SPRINKLER_INSP_RECEIVED: String = "BOPCRP_sprinkler_insp_received"
+//  public final static var AIR_CERTIFICATE_REQUIRED: String = "air_certificate_required"
+//  public final static var PROTECTIVE_DEVICE_RECEIVED: String = "protective_device_received"
+//  public final static var APPLIANCE_CERT_RECEIVED: String = "appliance_cert_received"
+//  public final static var AFFINITY_DISCOUNT_RECEIVED: String = "affinity_discount_received"
+//  public final static var APPRAISAL_FOR_SPP_RECEIVED: String = "appraisal_for_spp_received"
+//  public final static var EARTHQUAKE_RETROFIT_CERTIFICATION_RECEIVED: String = "earthquake_retrofit_certification_received"
+//  public final static var FLOOD_ELEVATION_CERTIFICATE: String = "flood_elevation_certificate_received"
+//  public final static var FAMILY_DAY_CARE_CERTFICATE: String = "daycare_certificate_received"
+//  public final static var HAZARD_REMOVAL_FORM_RECEIVED: String = "hazard_removal_form_received"
+//  public final static var LETTER_OF_EXPERIENCE_RECEIVED: String = "letter_of_experience_received"
+//  public final static var PHOTOS_REQUESTED_RECEIVED: String = "photos_requested_received"
+//  public final static var PRE_PURCHASE_INSPECTION: String = "prepurchase_received"
+//  public final static var PRIOR_CLAIM_INFORMATION_RECEIVED: String = "prior_claim_info_received"
+//  public final static var PROOF_OF_PRIOR_INSURANCE_RECEIVED: String = "proof_of_prior_ins_received"
+//  public final static var PROOF_OF_REPAIRS_RECEIVED: String = "proof_of_prior_repairs_received"
+//  public final static var REPLACEMENT_COST_ESTIMATOR_RECEIVED: String = "replacement_cost_estimator_received"
+//  public final static var REQUEST_FOR_INFORMATION_RECEIVED: String = "request_for_info_received"
+//  public final static var SPRINKLER_DOCUMENTATION_RECEIVED: String = "sprinkler_doc_received"
+//  public final static var STATEMENT_OF_NO_LOSS_RECEIVED: String = "stmt_no_loss_received"
+//  public final static var SYSTEM_INSPECTION_FORM_4_POINT_RECEIVED: String = "system_insp_4pt_received"
+//  public final static var WINDSTORM_HURRICANE_AND_HAIL_EXCLUSION_RECEIVED: String = "wind_hurricane_hail_rej_received"
+//  public final static var OTHER_INCOMING_RECEIVED: String = "other_incoming_received"
+//  public final static var INCORR_OTHER_INCOMING_RECEIVED: String = OTHER_INCOMING_RECEIVED
+//  public final static var STATEMENT_OF_NO_LOSS: String = "BOPCRP_stmt_no_loss_received"
 
   // Queues
   public final static var CSR_QUEUE: String ="CSR Queue"
@@ -216,6 +221,10 @@ class DocumentActivity {
           //  Create a note. As per Gary London "Wind mitigation inspections are handled by Don Meyer Inspections, using the note title “DMI Wind Mit Insp Recd” should be acceptable."
           //  If the vendor changes, we should just remove the DMI prefix
           period.Policy.newDMIWindMitInspRecd_ExtNote().Body = "A new Wind Mitigation Inspection document has be received."
+          break
+      case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_COMMERCIAL_REPORT:
+          patternCode = COMMERCIAL_INSPECTION
+          queue = CSR_QUEUE
           break
     }
 

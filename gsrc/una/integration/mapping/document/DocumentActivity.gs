@@ -3,6 +3,12 @@ package una.integration.mapping.document
 uses una.utils.ActivityUtil
 uses gw.api.database.Query
 uses una.logging.UnaLoggerCategory
+uses onbase.api.application.DocumentLinking
+uses onbase.api.Settings.DocumentLinkType
+uses gw.transaction.AbstractBundleTransactionCallback
+uses gw.pl.persistence.core.Bundle
+uses java.lang.Exception
+
 /**
  * Created with IntelliJ IDEA.
  * User: pyerrumsetty
@@ -68,14 +74,14 @@ class DocumentActivity {
   public final static var STATEMENT_OF_NO_LOSS: String = "BOPCRP_stmt_no_loss_received"
 
   // Queues
-  final static var CSR_QUEUE="CSR Queue"
-  final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority  Inspection Review"
-  final static var UW_INSPECTION_REVIEW_QUEUE = "UW Inspection Review"
-  final static var CSR_INSPECTION_QUEUE = "CSR Inspection Queue"
-  final static var SENIOR_UW_QUEUE = "Senior UW Queue"
-  final static var ENDORSEMENTS_QUEUE = "Endorsements"
-  final static var SPECIAL_HANDLING_QUEUE = "Special Handling"
-  final static var CL_UW_QUEUE = "CL UW Queue"
+  public final static var CSR_QUEUE: String ="CSR Queue"
+  public final static var PRIORITY_INSPECTION_REVIEW_QUEUE: String = "Priority  Inspection Review"
+  public final static var UW_INSPECTION_REVIEW_QUEUE: String = "UW Inspection Review"
+  public final static var CSR_INSPECTION_QUEUE: String = "CSR Inspection Queue"
+  public final static var SENIOR_UW_QUEUE: String = "Senior UW Queue"
+  public final static var ENDORSEMENTS_QUEUE: String = "Endorsements"
+  public final static var SPECIAL_HANDLING_QUEUE: String = "Special Handling"
+  public final static var CL_UW_QUEUE: String = "CL UW Queue"
   
   static function mapDocActivity(document: Document, period: PolicyPeriod) {
 
@@ -94,7 +100,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentType_Ext.TC_RISK_RPT_LRG_LOSS:
           //  Review Risk and  large loss reports
           if(document.OnBaseDocumentSubtype == typekey.OnBaseDocumentSubtype_Ext.TC_RRLL_RISK_REPORT_AND_LARGE_LOSS) {
-            createActivityAndAssignToQueue(period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, SENIOR_UW_QUEUE)
+            createActivityAndAssignToQueue(document, period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, SENIOR_UW_QUEUE)
           }
       break
     }
@@ -178,7 +184,7 @@ class DocumentActivity {
     }
 
     if(patternCode != null && queue != null) {
-      createActivityAndAssignToQueue(period, patternCode, queue)
+      createActivityAndAssignToQueue(document, period, patternCode, queue)
     }
   }
 
@@ -214,19 +220,33 @@ class DocumentActivity {
     }
 
     if(patternCode != null && queue != null) {
-      createActivityAndAssignToQueue(period, patternCode, queue)
+      createActivityAndAssignToQueue(document, period, patternCode, queue)
     }
   }
 
-  private static function createActivityAndAssignToQueue(period: PolicyPeriod, patternCode: String, queue: String) {
-    var activity = ActivityUtil.createActivityAutomatically(period, patternCode)
+  private static function createActivityAndAssignToQueue(document: Document, period: PolicyPeriod, patternCode: String, queue: String) {
+     try {
 
-    // As the queue is mapped to different Groups
-    var assignableQueue = Query.make(AssignableQueue).compare(AssignableQueue#Name, Equals, queue).select().AtMostOneRow
-    if(assignableQueue!=null && activity.canAssign()){
-      LOGGER.debug("Assign Activity:{} to Queue:{}", patternCode, queue)
-      ActivityUtil.assignActivityToQueue(queue, (assignableQueue.Group) as String,activity)
-    }
+       var activity: Activity = null
+
+       gw.transaction.Transaction.runWithNewBundle(\bun -> {
+         activity = ActivityUtil.createActivityAutomatically(period, patternCode)
+
+         // As the queue is mapped to different Groups
+         var assignableQueue = Query.make(AssignableQueue).compare(AssignableQueue#Name, Equals, queue).select().AtMostOneRow
+         if(assignableQueue!=null && activity.canAssign()){
+           LOGGER.debug("Assign Activity:{} to Queue:{}", patternCode, queue)
+           ActivityUtil.assignActivityToQueue(queue, (assignableQueue.Group) as String,activity)
+         }
+       })
+
+       if(activity != null) {
+         var docLinking = new DocumentLinking()
+         docLinking.linkDocumentToEntity(activity, document, DocumentLinkType.activityid)
+       }
+     } catch(e: Exception) {
+
+     }
   }
 
 }

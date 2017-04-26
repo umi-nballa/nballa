@@ -89,7 +89,6 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
         completeActivity(policyPeriod)
         bundle.add(policyPeriod)
         policyPeriod.createCustomHistoryEvent(CustomHistoryType.TC_INSPECTIONRECEIVED_EXT, \ -> displaykey.Web.InspectionReceived.Event.Msg)
-        bundle.commit()
       }, PLConfigParameters.UnrestrictedUserName.Value)
     } catch(ex : Exception){
       var fieldError = new FieldErrorInformation()  {:FieldName = "document upload", :FieldValue = policyNumberFromFileName}
@@ -112,7 +111,6 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
         newBundle.add(activity)
         notes = activity.newNote()
         notes.Author =  User.util.CurrentUser
-        newBundle.commit()
       })
      ActivityUtil.completeActivity(activity,notes,policyPeriod)
     }

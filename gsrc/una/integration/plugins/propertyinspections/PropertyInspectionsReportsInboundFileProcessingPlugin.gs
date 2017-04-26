@@ -82,7 +82,7 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
           var document = DocumentUtil.createDocument(documentDTO)
           if(uwInspectionIssue) {
             var documentActivity = new DocumentActivity()
-            documentActivity.createInspectionsDocActivity(document,policyPeriod)
+            documentActivity.mapDocActivity(document,policyPeriod)
           }
           LOGGER.info("Document upload is done :: "+ policyNumberFromFileName)
         }

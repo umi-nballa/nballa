@@ -64,15 +64,29 @@ class DefaultQuoteDraftAccountPlugin implements IDraftAccountPlugin {
   }
 
 
+//  /**
+//   * Returns the AccountProducerCode entity to be used for new accounts
+//   */
+//  protected function retrieveProducerCode(productCode : String) : AccountProducerCode {
+//    final var producerCodeCriteria = new ProducerCodeSearchCriteria()
+//    producerCodeCriteria.Code = "portal"
+//
+//    final var producerCode = producerCodeCriteria.performSearch().FirstResult
+//
+//    var accountProducerCode = new AccountProducerCode()
+//    accountProducerCode.ProducerCode = producerCode
+//    return accountProducerCode
+//  }
+
   /**
-   * Returns the AccountProducerCode entity to be used for new accounts
-   */
-  protected function retrieveProducerCode(productCode : String) : AccountProducerCode {
+  * Returns the AccountProducerCode entity to be used for new accounts
+  */
+  protected function retrieveProducerCode(producerCodeString : String) : AccountProducerCode {
     final var producerCodeCriteria = new ProducerCodeSearchCriteria()
-    producerCodeCriteria.Code = "portal"
-    
+    producerCodeCriteria.Code = producerCodeString
+
     final var producerCode = producerCodeCriteria.performSearch().FirstResult
-    
+
     var accountProducerCode = new AccountProducerCode()
     accountProducerCode.ProducerCode = producerCode
     return accountProducerCode
@@ -96,7 +110,8 @@ class DefaultQuoteDraftAccountPlugin implements IDraftAccountPlugin {
     /** Account is also unique non-referencable entity at this moment. */
     final var account = Account.createAccountForContact(contact)
     account.OriginationDate = Date.Today
-    account.addToProducerCodes(retrieveProducerCode(productCode))
+    //account.addToProducerCodes(retrieveProducerCode(productCode))
+    account.addToProducerCodes(retrieveProducerCode(accountHolder.ProducerCode))
     account.updateAccountHolderContact()
 
     return account

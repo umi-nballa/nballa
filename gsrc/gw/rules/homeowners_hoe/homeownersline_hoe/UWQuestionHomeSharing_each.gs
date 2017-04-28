@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +13,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionHomeSharing_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var isUsedForHomeSharing = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.IS_DWELLING_USED_FOR_HOME_SHARING.QuestionCode).BooleanAnswer
 
-    if(homeowner?.Dwelling.HOUWQuestions.HOHomesharing_Ext)
-      return RuleEvaluationResult.execute()
-
-   return RuleEvaluationResult.skip()
+    return (isUsedForHomeSharing) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
 
 

@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,12 +13,8 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionFlood_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var hasFloodCoverageInPlace = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.HAS_FLOOD_COVERAGE_DF.QuestionCode).BooleanAnswer
 
-    if(!homeowner.Dwelling.HOUWQuestions.floodcovnfip){
-        return RuleEvaluationResult.execute()
-    }
-   return RuleEvaluationResult.skip()
+    return (hasFloodCoverageInPlace != null and !hasFloodCoverageInPlace) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
-
-
 }

@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,14 +13,23 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionBusCov_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-
-    if (homeowner.Dwelling.HOUWQuestions.businessconduct && homeowner.Dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER )
-      if(homeowner.Dwelling.HOUWQuestions.whattypeofbus == typekey.HOTypeofBusiness_Ext.TC_HOMEOFFICE &&
-          !homeowner.Dwelling.HOUWQuestions.businesspol){
-        return RuleEvaluationResult.execute()
-    }
-   return RuleEvaluationResult.skip()
+    return (shouldExecuteRule(homeowner)) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
 
+  private function shouldExecuteRule(hoLine : HomeownersLine_HOE) : boolean{
+    var conductsBusinessCode = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(hoLine.HOPolicyType) ? DwellingUWQuestionCodes.CONDUCTS_BUSINESS_DF.QuestionCode : DwellingUWQuestionCodes.CONDUCTS_BUSINESS_DF.QuestionCode
+    var conductsBusinessFromInsuredLocation = hoLine.Branch.getAnswerForQuestionCode(conductsBusinessCode).BooleanAnswer
+
+    var hasBusinessPolicyCode = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(hoLine.HOPolicyType) ? DwellingUWQuestionCodes.HAS_BUSINESS_POLICY_DF.QuestionCode : DwellingUWQuestionCodes.HAS_BUSINESS_POLICY_HO.QuestionCode
+    var hasBusinessPolicy = hoLine.Branch.getAnswerForQuestionCode(hasBusinessPolicyCode).BooleanAnswer
+
+    var typeOfBusinessCode = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(hoLine.HOPolicyType) ? DwellingUWQuestionCodes.TYPE_OF_BUSINESS_DF.QuestionCode : DwellingUWQuestionCodes.TYPE_OF_BUSINESS_HO.QuestionCode
+    var typeOfBusiness = hoLine.Branch.getAnswerForQuestionCode(typeOfBusinessCode).ChoiceAnswer.ChoiceCode
+
+    return conductsBusinessFromInsuredLocation
+       and hoLine.Dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER
+       and typeOfBusiness?.equalsIgnoreCase("HomeOffice")
+       and hasBusinessPolicy != null and !hasBusinessPolicy
+  }
 
 }

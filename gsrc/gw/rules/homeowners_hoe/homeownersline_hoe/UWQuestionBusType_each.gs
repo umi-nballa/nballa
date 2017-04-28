@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,14 +13,14 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionBusType_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var conductsBusinessAtInsuredLocation = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.CONDUCTS_BUSINESS_HO.QuestionCode).BooleanAnswer
+    var typeOfBusinessConducted = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.TYPE_OF_BUSINESS_HO.QuestionCode).ChoiceAnswer.ChoiceCode
+    var businessTypesToEvaluate = {"Retail", "Service", "HomeOffice", "Other"}
 
-    if (homeowner.Dwelling.HOUWQuestions.businessconduct &&  homeowner.Dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER &&
-      (homeowner.Dwelling.HOUWQuestions.whattypeofbus == typekey.HOTypeofBusiness_Ext.TC_HOMEOFFICE ||
-          homeowner.Dwelling.HOUWQuestions.whattypeofbus == typekey.HOTypeofBusiness_Ext.TC_RETAIL   ||
-          homeowner.Dwelling.HOUWQuestions.whattypeofbus == typekey.HOTypeofBusiness_Ext.TC_SERVICE  ||
-          homeowner.Dwelling.HOUWQuestions.whattypeofbus == typekey.HOTypeofBusiness_Ext.TC_OTHER )) {
-        return RuleEvaluationResult.execute()
+    if(conductsBusinessAtInsuredLocation and typeOfBusinessConducted != null and businessTypesToEvaluate.containsIgnoreCase(typeOfBusinessConducted) and homeowner.Dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER){
+      return RuleEvaluationResult.execute()
+    }else{
+      return RuleEvaluationResult.skip()
     }
-   return RuleEvaluationResult.skip()
-   }
+  }
 }

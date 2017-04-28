@@ -12,6 +12,7 @@ uses java.lang.Integer
 uses java.util.Date
 uses java.util.HashMap
 uses java.math.BigDecimal
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * This is the helper class for property inspections which will insert the data into integration database
@@ -181,7 +182,7 @@ class PropertyInspectionHelper {
 
       propertyInspectionData.DP176X= (policyPeriod.Forms.hasMatch( \ form -> form.DisplayName.equalsIgnoreCase("DP176X"))) ? YES : null
 
-      propertyInspectionData.Pool = dwelling_hoe.HOUWQuestions.swimmingpool ? YES : null
+      propertyInspectionData.Pool = dwelling_hoe.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.HAS_SWIMMING_POOL.QuestionCode).BooleanAnswer  ? YES : null
 
       if(dwelling_hoe.Foundation.Code?.equalsIgnoreCase(FoundationType_HOE.TC_STILTSPILINGS_EXT.Code)
       || dwelling_hoe.Foundation.Code?.equalsIgnoreCase(FoundationType_HOE.TC_POSTPIERBEAMOPEN_EXT.Code)

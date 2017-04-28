@@ -70,23 +70,6 @@ class HOE_UnderwriterEvaluator extends AbstractUnderwriterEvaluator {
     invokeRulesEngine()
     //This method will be called to create UW Issues related to Credit
     createsCreditRelatedUwIssuesForHO()
-    createDwellingRelatedUwIssuesForHOPB()
-  }
-
-  private function createDwellingRelatedUwIssuesForHOPB()
-  {
-
-    var hoLine = _policyEvalContext.Period.HomeownersLine_HOE
-
-    //if(!hoLine.Dwelling.HOUWQuestions.moldrem)
-    if((hoLine.Dwelling.HOUWQuestions.moldrem!=null && !hoLine.Dwelling.HOUWQuestions.moldrem) || (hoLine.Dwelling.HOUWQuestions.moldremediated!=null && !hoLine.Dwelling.HOUWQuestions.moldremediated ))
-
-    {
-      var moldremm = \ -> "Properties  with prior prior unremediated mold issues are ineligible for coverage"
-      _policyEvalContext.addIssue("HOMold", "HOMold",moldremm, moldremm)
-
-    }
-
   }
 
 

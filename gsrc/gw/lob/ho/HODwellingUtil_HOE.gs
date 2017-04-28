@@ -1383,4 +1383,10 @@ AZ HO
 
 
   }
+
+  public static function validateUWQuestions(policyPeriod : PolicyPeriod){
+    gw.question.IncorrectAnswerProcessor.processIncorrectAnswers(policyPeriod, new java.util.HashMap<gw.api.productmodel.Question, String>())
+    gw.validation.PCValidationContext.doPageLevelValidation(\ context -> new gw.policy.PolicyPeriodValidation(context, policyPeriod).validateDwellingUWQuestions())
+  }
+
 }// End of class

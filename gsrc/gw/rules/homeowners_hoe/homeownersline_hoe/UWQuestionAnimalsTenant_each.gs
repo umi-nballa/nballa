@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,9 +13,16 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionAnimalsTenant_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-    if( homeowner.Dwelling.HOUWQuestions.tenfarm && homeowner.Dwelling.Occupancy != typekey.DwellingOccupancyType_HOE.TC_OWNER ){
-        return RuleEvaluationResult.execute()
+    var result : RuleEvaluationResult
+
+    var tenantOwnsViciousAnimals = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.TENANT_KEEPS_BITING_ANIMALS_DF.QuestionCode).BooleanAnswer
+
+    if(tenantOwnsViciousAnimals and homeowner.Dwelling.Occupancy != typekey.DwellingOccupancyType_HOE.TC_OWNER ){
+      result = RuleEvaluationResult.execute()
+    }else{
+      result = RuleEvaluationResult.skip()
     }
-   return RuleEvaluationResult.skip()
+
+    return result
    }
 }

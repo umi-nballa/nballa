@@ -1,0 +1,26 @@
+<?xml version="1.0"?>
+<PCF
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="../../../../../../pcf.xsd">
+  <DetailViewPanel
+    id="HOUnderwritingQuestionsDV">
+    <Require
+      name="policyPeriod"
+      type="PolicyPeriod"/>
+    <Variable
+      initialValue="policyPeriod.Policy.Product.getQuestionSetById(&quot;HODwellingUWQuestions_Ext&quot;)"
+      name="uwQuestions"
+      recalculateOnRefresh="true"/>
+    <InputColumn>
+      <InputSet
+        visible="true">
+        <ListViewInput
+          def="QuestionSetLV(uwQuestions, policyPeriod, null)"
+          editable="true"
+          labelAbove="true">
+          <Toolbar/>
+        </ListViewInput>
+      </InputSet>
+    </InputColumn>
+  </DetailViewPanel>
+</PCF>

@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,9 +13,16 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionMixOfBreedTenant_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-    if (homeowner.Dwelling.HOUWQuestions.tendogs && homeowner.Dwelling.Occupancy != typekey.DwellingOccupancyType_HOE.TC_OWNER ){
-        return RuleEvaluationResult.execute()
+    var result : RuleEvaluationResult
+
+    var tenantOwnsAggressiveDogs = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.OWNS_AGGRESSIVE_DOG_DF.QuestionCode).BooleanAnswer
+
+    if (tenantOwnsAggressiveDogs and homeowner.Dwelling.Occupancy != typekey.DwellingOccupancyType_HOE.TC_OWNER ){
+      result =  RuleEvaluationResult.execute()
+    }else{
+      result = RuleEvaluationResult.skip()
     }
-   return RuleEvaluationResult.skip()
+
+    return result
    }
 }

@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,12 +13,8 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionNoOfRental_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var numberOfRentalUnits = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.TOTAL_RENTAL_UNITS_COMMON_OWNERSHIP_DF.QuestionCode).ChoiceAnswer.ChoiceCode
 
-    if(typekey.HOTotalRentalCommon_Ext.TF_UWRULENOOFRENTAL.TypeKeys.contains(homeowner.Dwelling.HOUWQuestions.norental )){
-        return RuleEvaluationResult.execute()
-    }
-   return RuleEvaluationResult.skip()
+    return (numberOfRentalUnits != null and {"6", "7", "8", "9", "10", "MoreThanTen"}.containsIgnoreCase(numberOfRentalUnits)) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
-
-
 }

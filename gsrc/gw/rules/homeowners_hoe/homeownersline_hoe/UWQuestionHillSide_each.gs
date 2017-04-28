@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,11 +13,9 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionHillSide_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var isBuiltOnSteepHillside = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.BUILT_ON_STEEP_HILLSIDE_DF.QuestionCode).BooleanAnswer
 
-    if(homeowner.Dwelling.HOUWQuestions.hilslide){
-        return RuleEvaluationResult.execute()
-    }
-   return RuleEvaluationResult.skip()
+    return (isBuiltOnSteepHillside) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
 
 

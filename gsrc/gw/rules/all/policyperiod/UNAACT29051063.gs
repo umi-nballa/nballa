@@ -3,6 +3,10 @@ package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses gw.accelerator.ruleeng.IRuleAction
+uses edge.util.helper.UserUtil
+uses gw.api.database.Query
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,28 +14,34 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Date: 2/7/17
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
+ *
+ * TLV 4/17/17 - fixed as part of CR102.  Original implementation did not work.
  */
-class UNAACT29051063 implements IRuleCondition<PolicyPeriod>{
+class UNAACT29051063 implements IRuleCondition<PolicyPeriod>, IRuleAction<PolicyPeriod, PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
+    var result : RuleEvaluationResult
 
-//If Current term within 75 days of expiration create activity and include in Renewal Workplan
-
-
-
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("validate_multipolicy_discount")
-    if (period.HomeownersLine_HOEExists)
-    {
-        var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-    //  var queueho:AssignableQueue = AssignableQueue.finder.findVisibleQueuesForUser(User.util.CurrentUser).firstWhere( \ elt -> elt.DisplayName=="CSR Queue") as AssignableQueue
-
-     // activity.assignToQueue(queueho)//)assignActivityToQueue(Group.finder.findByPublicId("CL UW Queue").AssignableQueues.first(),Group.finder.findByPublicId("CL UW Queue"))
-
-
-
-
+    if (shouldCreateMultiLineValidationActivity(period)){
+      result = RuleEvaluationResult.execute()
+    }else{
+      result = RuleEvaluationResult.skip()
     }
-   return RuleEvaluationResult.skip()
+
+   return result
   }
 
+  private function shouldCreateMultiLineValidationActivity(period: PolicyPeriod): boolean {
+    return period.HomeownersLine_HOEExists
+       and period.Renewal != null
+       and period.HomeownersLine_HOE.MultiPolicyDiscount_Ext
+       and java.util.Date.CurrentDate.addDays(75).afterOrEqualsIgnoreTime(period.EditEffectiveDate)
+       and !period.Job.AllOpenActivities.hasMatch(\activity -> activity.ActivityPattern.Code == "validate_multipolicy_discount")
+  }
+
+  override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult) {
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("validate_multipolicy_discount")
+    var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+    ActivityUtil.assignActivityToQueue("CSR Queue", "CSR Queue", activity)
+  }
 }
 

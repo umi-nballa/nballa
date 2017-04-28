@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,10 +13,10 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionOccupancy_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-    if(homeowner.Dwelling.HOUWQuestions.unoccupied9 &&
-        homeowner.Dwelling.Occupancy ==  DwellingOccupancyType_HOE.TC_OWNER)
-      return RuleEvaluationResult.execute()
-     return RuleEvaluationResult.skip()
+    var isOwnerOccupied = homeowner.Dwelling.Occupancy ==  DwellingOccupancyType_HOE.TC_OWNER
+    var unOccupiedForOver9Months = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.UNOCCUPIED_OVER_9_MONTHS_HO.QuestionCode).BooleanAnswer
+
+    return (isOwnerOccupied and unOccupiedForOver9Months) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
 
 

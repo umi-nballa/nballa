@@ -344,6 +344,25 @@ class PolicyPeriodValidation extends PCValidationBase {
     gw.validation.PCValidationContext.doPageLevelValidation(\ context -> new gw.policy.PolicyPeriodValidation(context, period).validatePreQualAnswers())
   }
 
+  public function validateDwellingUWQuestions(){
+    var answers = Period.PeriodAnswers.where(\ answer -> answer.Question.QuestionSet.CodeIdentifier == "HODwellingUWQuestions_Ext")
+    var questions = Period.QuestionSets.singleWhere( \ qSet -> qSet.CodeIdentifier == "HODwellingUWQuestions_Ext")
+
+    new AnswerValidation(Context, Period, answers, "Underwriting").validate()
+    var messagesMap : Map<PeriodAnswer, String> = {}
+
+    answers.each( \ answer -> {
+      var question = questions.getQuestion(answer.QuestionCode)
+      var errorMessage = question.getAnswerMessage(answer)
+
+      if(errorMessage != null){
+        messagesMap.put(answer, errorMessage)
+      }
+    })
+
+    messagesMap?.eachKeyAndValue( \ key, value ->  Result.addWarning(key, "default", value))
+  }
+
   /**
    * Return an error string if this policy has been rewritten to a new account from another policy AND the period
    * start date of this period overlaps with its source policy. Otherwise return null.

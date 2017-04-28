@@ -8,6 +8,7 @@ uses java.lang.Integer
 uses java.util.Calendar
 uses java.util.HashMap
 uses una.utils.PropertiesHolder
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * This is the helper class for property inspections which will insert the data into integration database
@@ -119,8 +120,8 @@ class PropertyInspectionsBRHelper {
         reportOne += TWO
       }
 
-      // BR.09.03 :: Risk has a swimming pool
-      if(dwelling_hoe.HOUWQuestions.swimmingpool){
+//      // BR.09.03 :: Risk has a swimming pool
+      if(dwelling_hoe.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.HAS_SWIMMING_POOL.QuestionCode).BooleanAnswer){
         reportOne+= SIX
       }
 

@@ -113,7 +113,7 @@ enhancement PolicyLocationEnhancement : PolicyLocation {
 
   function bindBuildingAutoNumberSequence() {
     renumberBuilding()
-    this.BuildingAutoNumberSeq.bind(CurrentAndFutureBuildings, entity.Building.Type.TypeInfo.getProperty( "BuildingNum" ))
+    this.BuildingAutoNumberSeq?.bind(CurrentAndFutureBuildings, entity.Building.Type.TypeInfo.getProperty( "BuildingNum" ))
   }
 
   function renumberBuilding() {

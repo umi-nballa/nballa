@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,13 +13,15 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UNAUWAnimalLiabilityLim_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var result : RuleEvaluationResult
 
+    if( homeowner.HOLI_AnimalLiabilityCov_HOE_ExtExists and homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.OWNS_AGGRESSIVE_DOG_HO.QuestionCode).BooleanAnswer){
+      result = RuleEvaluationResult.execute()
+    }else{
+      result = RuleEvaluationResult.skip()
+    }
 
-
-    if( homeowner.HOLI_AnimalLiabilityCov_HOE_ExtExists && homeowner.Dwelling.HOUWQuestions.mixbreedofdog)
-      return RuleEvaluationResult.execute()
-
-   return RuleEvaluationResult.skip()
+    return result
   }
 
 

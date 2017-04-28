@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,15 +13,11 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionDayCare_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var isBusinessConducted = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.CONDUCTS_BUSINESS_HO.QuestionCode).BooleanAnswer
+    var typeOfBusiness = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.TYPE_OF_BUSINESS_HO.QuestionCode).ChoiceAnswer.ChoiceCode
+    var evaluatedChoices = {"ChildDaycare", "AssistedLiving", "AdultDaycare"}
 
-    if(homeowner.Dwelling.HOUWQuestions.businessconduct){
-      if(homeowner.Dwelling.HOUWQuestions.typebusiness == typekey.HOTypeofBusiness_Ext.TC_CHILDDAYCARE ||
-         homeowner.Dwelling.HOUWQuestions.typebusiness == typekey.HOTypeofBusiness_Ext.TC_ADULTDAYCARE ||
-          homeowner.Dwelling.HOUWQuestions.typebusiness == typekey.HOTypeofBusiness_Ext.TC_ASSISTEDLIVING ){
-        return RuleEvaluationResult.execute()
-    }
-  }
-    return RuleEvaluationResult.skip()
+    return (isBusinessConducted and typeOfBusiness != null and evaluatedChoices.containsIgnoreCase(typeOfBusiness)) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
 
 }

@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,12 +13,14 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionVacant_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var willBeUnderConstruction : boolean
 
-    if(homeowner.Dwelling.HOUWQuestions.constvac){
-        return RuleEvaluationResult.execute()
+    if(HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(homeowner.HOPolicyType)){
+      willBeUnderConstruction = (homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.WILL_BE_UNDER_CONSTRUCTION_DF.QuestionCode).BooleanAnswer)
+    }else{
+      willBeUnderConstruction = (homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.WILL_BE_UNDER_CONSTRUCTION_HO.QuestionCode).BooleanAnswer)
     }
-   return RuleEvaluationResult.skip()
+
+    return (willBeUnderConstruction) ? RuleEvaluationResult.execute() : RuleEvaluationResult.skip()
   }
-
-
 }

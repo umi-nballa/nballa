@@ -222,6 +222,8 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     {
       this.DwellingProtectionDetails.DeadboltsNumber = null
     }
+
+    gw.lob.ho.HODwellingUtil_HOE.validateUWQuestions(this.Branch)
   }
   
   /**

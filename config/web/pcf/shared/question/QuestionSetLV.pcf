@@ -14,7 +14,7 @@
       name="onChangeBlock"
       type="block()"/>
     <Variable
-      initialValue="questionSet.getOrderedQuestions().where(\ q -&gt; answerContainer.getAnswer(q) != null and q.isQuestionVisible(answerContainer))"
+      initialValue="questionSet.Questions.where(\ q -&gt; answerContainer.getAnswer(q) != null and q.isQuestionVisible(answerContainer))"
       name="questions"
       recalculateOnRefresh="true"/>
     <!-- Iterate and display all questions based on their type -->
@@ -24,7 +24,7 @@
       pageSize="0"
       value="questions">
       <IteratorSort
-        sortBy="question.Priority"
+        sortBy="question.getDisplayOrder(answerContainer.AssociatedPolicyPeriod)"
         sortOrder="1"/>
       <Row>
         <Cell

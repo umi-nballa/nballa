@@ -2,6 +2,7 @@ package gw.rules.homeowners_hoe.homeownersline_hoe
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.UNAProductModelUtil.DwellingUWQuestionCodes
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,12 +13,18 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class UWQuestionALreg_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var result : RuleEvaluationResult
 
+    var conductsBusinessFromHome = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.CONDUCTS_BUSINESS_HO.QuestionCode).BooleanAnswer
+    var isChildDaycare = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.TYPE_OF_BUSINESS_HO.QuestionCode).ChoiceAnswer.ChoiceCode == "ChildDaycare"
+    var isRegisteredWithDepartmentOfChildrenAndFamilies = homeowner.Branch.getAnswerForQuestionCode(DwellingUWQuestionCodes.IS_DAYCARE_REGISTERED_HO.QuestionCode).BooleanAnswer
 
-    if(homeowner.Dwelling.HOUWQuestions.businessconduct)
-      if(!homeowner.Dwelling.HOUWQuestions.daycareregs){
-        return RuleEvaluationResult.execute()
-      }
-    return RuleEvaluationResult.skip()
+    if(conductsBusinessFromHome and isChildDaycare and !isRegisteredWithDepartmentOfChildrenAndFamilies){
+      result = RuleEvaluationResult.execute()
+    }else{
+      result = RuleEvaluationResult.skip()
+    }
+
+    return result
   }
 }

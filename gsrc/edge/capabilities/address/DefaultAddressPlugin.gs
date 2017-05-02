@@ -65,6 +65,7 @@ class DefaultAddressPlugin implements IAddressPlugin {
     address.State = dto.State
     address.PostalCode = dto.PostalCode
     address.Country = dto.Country
+    address.County = dto.County
     address.AddressType = dto.AddressType
   }
 

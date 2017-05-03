@@ -16,8 +16,8 @@ class HOCommonRateRoutinesExecutor {
   /**
    * Rate Equipment breakdown coverage
    */
-  static function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange, line: PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int): CostData {
-    var rateRoutineParameterMap = getHOCWParameterSet(line)
+  static function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange, line: PolicyLine, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, numDaysInCoverageRatedTerm: int, discountOrSurchargeRatingInfo: HOCommonDiscountsOrSurchargeRatingInfo): CostData {
+    var rateRoutineParameterMap = getHOCWDiscountsAndSurchargesParameterSet(line, discountOrSurchargeRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.EQUIPMENT_BREAKDOWN_COV_ROUTINE_NAME, rateCache, line, rateRoutineParameterMap, executor, numDaysInCoverageRatedTerm)
     return costData
   }

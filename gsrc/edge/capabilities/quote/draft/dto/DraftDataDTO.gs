@@ -70,4 +70,7 @@ class DraftDataDTO {
 
   @JsonProperty
   var _ratingStyle : String as RatingStyle
+
+  @JsonProperty
+  var _policyType : String as PolicyType
 }

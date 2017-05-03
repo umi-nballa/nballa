@@ -14,15 +14,18 @@ class HOSpecialLimitsPersonalPropertyRatingInfo {
   var _firearmsLimit: int as FirearmsLimit
   var _electronicApparatusLimit: int as ElectronicApparatusLimit
   var _coverageCLimit: int as CoverageCLimit
+  var _jewelryAndFursLimit: int as JewelryAndFursLimit
+
   construct(dwellingCov: DwellingCov_HOE) {
     if (dwellingCov typeis HODW_SpecialLimitsPP_HOE_Ext){
-      _jewelryWatchesAndFurLimit = dwellingCov.HODW_JewelryWatchesFursLimit_HOETerm?.Value.intValue()
-      _moneyLimit = dwellingCov.HODW_MoneyLimit_HOETerm?.Value.intValue()
-      _electronicApparatusLimit = dwellingCov.HODW_ElectronicApparatusLimit_HOETerm?.Value.intValue()
-      _securityLimit = dwellingCov.HODW_SecurityLimits_HOETerm?.Value.intValue()
-      _firearmsLimit = dwellingCov.HODW_FirearmsLimit_HOETerm?.Value.intValue()
-      _silverwareGoldwareAndPewterwareLimit = dwellingCov.HODW_SilverwareGoldwareLimit_HOETerm?.Value.intValue()
-      _coverageCLimit = dwellingCov.Dwelling.PersonalPropertyLimitCovTerm.Value.intValue()
+      _jewelryWatchesAndFurLimit = dwellingCov?.HODW_JewelryWatchesFursLimit_HOETerm?.Value?.intValue()
+      _moneyLimit = dwellingCov?.HODW_MoneyLimit_HOETerm?.Value?.intValue()
+      _electronicApparatusLimit = dwellingCov?.HODW_ElectronicApparatusLimit_HOETerm?.Value?.intValue()
+      _securityLimit = dwellingCov?.HODW_SecurityLimits_HOETerm?.Value?.intValue()
+      _firearmsLimit = dwellingCov?.HODW_FirearmsLimit_HOETerm?.Value?.intValue()
+      _silverwareGoldwareAndPewterwareLimit = dwellingCov?.HODW_SilverwareGoldwareLimit_HOETerm?.Value?.intValue()
+      _coverageCLimit = dwellingCov?.Dwelling.PersonalPropertyLimitCovTerm?.Value?.intValue()
+      _jewelryAndFursLimit = dwellingCov?.HODW_JewelryFursSingleItemLimit_HOETerm?.Value?.intValue()
     }
   }
 }

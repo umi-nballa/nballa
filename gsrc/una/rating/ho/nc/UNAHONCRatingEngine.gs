@@ -56,6 +56,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     addCosts(costs)
     _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
     _dwellingRatingInfo.KeyPremium = _hoRatingInfo.KeyPremium
+    _discountsOrSurchargeRatingInfo = new HONCDiscountsOrSurchargeRatingInfo (PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
   }
 
   /**
@@ -187,6 +188,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         if(PolicyLine.Dwelling?.HeatSrcWoodBurningStove)
           rateWoodBurningStove(dateRange)
       }
+
     }
 
   /**
@@ -389,12 +391,15 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    * Rate Equipment breakdown coverage
    */
   function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange) {
-    _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
-    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
+    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, _discountsOrSurchargeRatingInfo)
     if (costData != null)
       addCost(costData)
-    _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
+    if (_logger.DebugEnabled)
+      _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
   }
+
 
   /**
    * Rate Water backup Sump Overflow coverage

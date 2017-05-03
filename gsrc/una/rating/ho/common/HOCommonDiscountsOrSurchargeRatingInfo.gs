@@ -29,6 +29,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
   var _protectionDetails : String as ProtectionDetails
   var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
   var _priorLosses : int as PriorLosses = 0
+  var _state : String as State
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     _line = line
@@ -38,6 +39,7 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _allPerilDeductible = line.Dwelling?.AllPerilsOrAllOtherPerilsCovTerm?.Value
     _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
     _policyType = line.HOPolicyType
+    _state = line.BaseState
     _protectionClassCode = line.Dwelling?.ProtectionClassCodeOrOverride
     _territoryCode = line.Dwelling?.TerritoryCodeOrOverride
     if((_territoryCode != null or _territoryCode != "") and _territoryCode?.Numeric){

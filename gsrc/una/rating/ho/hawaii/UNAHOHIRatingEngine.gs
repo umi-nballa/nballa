@@ -18,6 +18,8 @@ uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.hawaii.ratinginfos.HOHIProtectiveDeviceDetailsRatingInfo
 uses gw.rating.CostData
+uses pcf.PolicyInfoInputSet
+uses pcf.AdditionalInsuredInfoDV
 
 /**
  * Created with IntelliJ IDEA.
@@ -85,6 +87,16 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
         rateMultiLineDiscount(dateRange)
       }
+
+      if (PolicyLine.AdditionalInsureds.hasMatch
+          ( \ elt1 -> elt1.PolicyAdditionalInsuredDetails.hasMatch( \ elt2 -> elt2.AdditionalInsuredType == typekey.AdditionalInsuredType.TC_PROPERTY_MANAGER ))){
+        rateAdditionalInsuredPropertyManager(dateRange)
+      }
+
+
+
+
+
 
       rateMaximumDiscountAdjustment(dateRange)
 
@@ -160,7 +172,10 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_Dwelling_Cov_HOE:
             if (HasExecutiveCoverage)
               rateExecutiveCoverage(dwellingCov, dateRange)
-            break
+            if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+              rateUnitOwnersCoverageA (dwellingCov, dateRange)
+   }
+      break
         case HODW_BusinessProperty_HOE_Ext:
             rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
             break
@@ -172,15 +187,12 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4)
               rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
             break
+
       }
     }
 
   override function rateLineCoverages(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
-    switch (typeof lineCov) {         //TODO addins_update
-//      case HOLI_AdditionalInsuredSchedPropertyManager:
-//          rateAdditionalInsuredPropertyManager(lineCov, dateRange)
-//          break
-
+    switch (typeof lineCov) {
       case HOSL_OutboardMotorsWatercraft_HOE_Ext:
           rateOutboardMotorsAndWatercraftCoverage(lineCov, dateRange)
           break
@@ -196,32 +208,36 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       case HOLI_Personal_Liability_HOE:
           rateIncreasedSectionIILimits(lineCov, dateRange)
           break
+      case HOLI_UnitOwnersRentedtoOthers_HOE_Ext:
+          rateUnitOwnersRentedToOthersCoverage(lineCov, dateRange)
+          break
     }
   }
 
   function rateEquipmentBreakdownCoverage(dwellingCov: HODW_EquipBreakdown_HOE_Ext, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateEquipmentBreakdownCoverage to rate Equipment Breakdown Coverage", this.IntrinsicType)
-    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCommonRateRoutinesExecutor.rateEquipmentBreakdownCoverage(dwellingCov, dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, _discountsOrSurchargeRatingInfo)
     if (costData != null)
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Equipment Breakdown Coverage Rated Successfully", this.IntrinsicType)
   }
 
-  //TODO addins_update
-//  function rateAdditionalInsuredPropertyManager(lineCov: HOLI_AdditionalInsuredSchedPropertyManager, dateRange: DateRange) {
-//    if (_logger.DebugEnabled)
-//      _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredPropertyManager", this.IntrinsicType)
-//    for (item in lineCov.scheduledItem_Ext) {
-//      var rateRoutineParameterMap = _lineRateRoutineParameterMap
-//      var costData = HOCreateCostDataUtil.createCostDataForScheduledLineCoverage(lineCov, dateRange, HORateRoutineNames.ADDITIONAL_INSURED_PROPERTY_MANAGER_RATE_ROUTINE, item, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-//      if (costData != null)
-//        addCost(costData)
-//    }
-//    if (_logger.DebugEnabled)
-//      _logger.debug("rateAdditionalInsuredPropertyManager Rated Successfully", this.IntrinsicType)
-//  }
+
+  function rateAdditionalInsuredPropertyManager( dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+       _logger.debug("Entering " + CLASS_NAME + ":: rateAdditionalInsuredPropertyManager", this.IntrinsicType)
+        var rateRoutineParameterMap = _lineRateRoutineParameterMap
+        var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.ADDITIONAL_INSURED_RATE_ROUTINE,
+                    typekey.HOCostType_Ext.TC_ADDITIONALINSURED, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+        addCost(costData)
+    if (_logger.DebugEnabled)
+        _logger.debug("rateAdditionalInsuredPropertyManager Rated Successfully", this.IntrinsicType)
+    }
+
+
   function rateWaterBackupSumpOverflowCoverage(dwellingCov: HODW_WaterBackUpSumpOverflow_HOE_Ext, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateWaterBackupSumpOverflowCoverage to rate Water Backup Sump Overflow Coverage", this.IntrinsicType)
@@ -338,6 +354,38 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Special Computer Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+ * Rate Unit Owners Rented To Others Coverage
+ */
+  function rateUnitOwnersRentedToOthersCoverage(lineCov: HOLI_UnitOwnersRentedtoOthers_HOE_Ext, dateRange: DateRange) {
+    _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersRentedToOthersCoverage to rate Unit Owners Rented To Others Coverage", this.IntrinsicType)
+    _lineRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+    var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
+        TC_POLICYLINE -> PolicyLine,
+        TC_RATINGINFO -> _hoRatingInfo,
+        TC_STATE -> BaseState,
+        TC_LINERATINGINFO_EXT -> _lineRatingInfo}
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    _logger.debug("Unit Owners Rented To Others Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+  /**
+   * Rate Unit-Owners Coverage A
+   */
+  function rateUnitOwnersCoverageA(dwellingCov: HODW_Dwelling_Cov_HOE, dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCoverageA to rate Unit-Owners Coverage A", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet (PolicyLine, BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Unit Owners Coverage A Rated Successfully", this.IntrinsicType)
   }
 
   /**

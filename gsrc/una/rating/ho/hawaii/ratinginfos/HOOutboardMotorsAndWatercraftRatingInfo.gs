@@ -10,7 +10,7 @@ class HOOutboardMotorsAndWatercraftRatingInfo {
   var _overallLength: String as OverallLength
   var _medPayLimit: int as MedPayLimit
   var _personalLiabilityLimit: int as PersonalLiabilityLimit
-  var _horsePower: String as HorsePower
+  var _horsepower: typekey.Horsepower_Ext as Horsepower
 
   construct(item: HOscheduleItem_HOE_Ext, lineCov: HomeownersLineCov_HOE) {
     _waterCraftName = item.watercraftName
@@ -19,6 +19,7 @@ class HOOutboardMotorsAndWatercraftRatingInfo {
 
     _medPayLimit = (lineCov.HOLine.HOLI_Med_Pay_HOEExists) ? lineCov.HOLine.HOLI_Med_Pay_HOE?.HOLI_MedPay_Limit_HOETerm?.Value?.intValue() : 0
     _personalLiabilityLimit = (lineCov.HOLine.HOLI_Personal_Liability_HOEExists) ? lineCov.HOLine.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.Value?.intValue() : 0
-    _horsePower = item.horsepower.DisplayName
+
+    _horsepower = item.horsepower
    }
 }

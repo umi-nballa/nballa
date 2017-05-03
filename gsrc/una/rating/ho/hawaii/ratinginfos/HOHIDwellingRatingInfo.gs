@@ -1,6 +1,7 @@
 package una.rating.ho.hawaii.ratinginfos
 
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
+uses una.rating.ho.hawaii.ratinginfos.HOHIBasePremiumRatingInfo
 uses java.math.BigDecimal
 
 /**
@@ -26,6 +27,11 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _ageOfHome: int as AgeOfHome = 0
   var _yearBuilt: int as YearBuilt
   var _numberOfStories: int as NumberOfStories
+  var _numberOfUnits: int as NumberOfUnits
+  var _ordinanceOrLawLimit: BigDecimal as OrdinanceOrLawLimit
+  var _ordinanceOrLawIncreasedLimit : boolean as OrdinanceOrLawIncreasedLimit = false
+  var _floorLevel : int as FloorLevel
+
 
   construct(dwelling: Dwelling_HOE){
     super(dwelling)
@@ -65,6 +71,20 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
        _ageOfHome = dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate - AgeOfHome
        _numberOfStories = getNumberOfStoriesForDwelling(dwelling)
     }
+
+    _numberOfUnits = dwelling?.NumUnitsFireDivision_Ext
+
+    _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value
+
+    if(_ordinanceOrLawLimit > .10){
+      _ordinanceOrLawIncreasedLimit = true
+    }
+
+    _floorLevel = dwelling?.FloorLocation_Ext?.toInt()
+
+
+
+
   }
 
   private static function getNumberOfStoriesForDwelling(dwelling : Dwelling_HOE) : int{

@@ -13,8 +13,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class CovCLimit500000_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
-  if( homeowner.Dwelling.DPDW_Personal_Property_HOEExists
-    and homeowner.Dwelling.DPDW_Personal_Property_HOE.DPDW_PersonalPropertyLimit_HOETerm?.Value > HOE_UWConstant.covCLimit_500000){
+  if( homeowner.Dwelling.PersonalPropertyLimitCovTerm.Value > HOE_UWConstant.covCLimit_500000){
         return RuleEvaluationResult.execute()
     }
    return RuleEvaluationResult.skip()

@@ -254,11 +254,6 @@ class RulesEngineInterface {
       runWithNewBundle : boolean) {
     var entityGraphNodes : List<RuleEntityGraphNode>
 
-    print("ruleValContext   :" + ruleValContext)
-    print("entityGraphNode   :" + entityGraphNode)
-    print("rootObject   :" + rootObject)
-    print("ruleType   :" + ruleType)
-
     if (processGraphDescendants) {
       entityGraphNodes = new ArrayList<RuleEntityGraphNode>()
       entityGraphNodes.add(entityGraphNode)

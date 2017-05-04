@@ -69,6 +69,10 @@ class RuleEntityGraph {
   @Returns("The matching node")
   @Throws(Exception, "Thrown if no matching node (or more than one) is found")
   function findNamedNode(node : String) : RuleEntityGraphNode {
+    if(_nodesByName.Empty){
+      RuleEntityGraphBuilder.buildRuleGraph()
+    }
+
     LOGGER.debug("Finding node named " + node)
     var matches = _nodesByName[node.toLowerCase()]
 
@@ -89,6 +93,10 @@ class RuleEntityGraph {
   @Param("path", "The path from the root to the node")
   @Returns("The node at the given path")
   function findByPath(path : String) : RuleEntityGraphNode {
+    if(_nodesByPath.Empty){
+      RuleEntityGraphBuilder.buildRuleGraph()
+    }
+
     return _nodesByPath[path]
   }
 

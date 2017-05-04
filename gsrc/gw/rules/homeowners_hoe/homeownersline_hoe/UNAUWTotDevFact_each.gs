@@ -20,8 +20,8 @@ class UNAUWTotDevFact_each implements IRuleCondition<HomeownersLine_HOE>{
 //Total Deviation Factor > 2.5
 
     var help = new HPXRatingHelper()
-    if(help.getConsentToRateTotalDeviationPercent(homeowner.AssociatedPolicyPeriod)>2.5)
-         return RuleEvaluationResult.execute()
+//    if(help.getConsentToRateTotalDeviationPercent(homeowner.AssociatedPolicyPeriod)>2.5)
+//         return RuleEvaluationResult.execute()
 
     return RuleEvaluationResult.skip()
 

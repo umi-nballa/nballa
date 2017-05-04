@@ -4,27 +4,14 @@
   coverageCategory="BP7BuildingOptionalGrp_EXT"
   coverageSubtype="BP7BuildingCov"
   coveredPartyType="FirstParty"
-  existence="Electable"
   lookupTableName="BP7BuildingCov"
   owningEntityType="BP7Building"
   policyLinePattern="BP7Line"
   priority="6260"
   public-id="BP7SinkholeLossCoverage_EXT"
   referenceDateByType="PolicyTerm">
+  <ExistenceScript><![CDATA[return una.pageprocess.BP7PCFController.isSinkholeLossCovRequired(BP7Building)]]></ExistenceScript>
   <CovTerms>
-    <DirectCovTermPattern
-      aggregationModel="po"
-      codeIdentifier="SinkholeLossCovLimit_EXT"
-      coverageColumn="DirectTerm1"
-      lookupTableName="BP7BuildingCovTerm"
-      modelType="Limit"
-      priority="100"
-      public-id="SinkholeLossCovLimit_EXT"
-      required="true"
-      restrictionModel="bld"
-      valueType="money">
-      <LimitsSet/>
-    </DirectCovTermPattern>
     <DirectCovTermPattern
       aggregationModel="po"
       codeIdentifier="SinkholeLossCovDeduc_EXT"

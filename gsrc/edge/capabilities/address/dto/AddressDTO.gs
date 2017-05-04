@@ -95,6 +95,9 @@ class AddressDTO {
   @AddressField
   var _country : typekey.Country as Country
 
+  @JsonProperty
+  var _county : String as County
+
   /**
    * Type of the address (e.g. home, work)
    */

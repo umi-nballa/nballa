@@ -6,6 +6,7 @@ uses edge.capabilities.quote.questionset.util.QuestionSetUtil
 uses edge.util.MapUtil
 uses java.util.Arrays
 uses edge.di.annotations.ForAllGwNodes
+uses org.apache.commons.lang3.StringUtils
 uses java.lang.IllegalArgumentException
 uses edge.exception.DtoValidationException
 uses edge.capabilities.policycommon.availability.IProductAvailabilityPlugin
@@ -106,6 +107,11 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin,data.RatingStyle)
     aSubmission.ActivePeriods.each(\period -> period.syncQuestions(draftQuestions(aSubmission)))
     _lobPlugin.updateNewDraftSubmission(aSubmission.SelectedVersion, data.Lobs)
+
+    if(StringUtils.isNotBlank(data.PolicyType)) {
+      aSubmission.LatestPeriod.HomeownersLine_HOE.HOPolicyType = typekey.HOPolicyType_HOE.get(data.PolicyType)
+    }
+
     return aSubmission
   }
 

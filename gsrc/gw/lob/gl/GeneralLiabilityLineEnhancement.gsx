@@ -3,6 +3,7 @@ uses gw.api.productmodel.Schedule
 uses gw.lob.gl.schedule.GLScheduleHelper
 
 uses java.lang.Integer
+uses una.utils.CPPUtil
 
 enhancement GeneralLiabilityLineEnhancement : GeneralLiabilityLine
 {
@@ -18,6 +19,7 @@ enhancement GeneralLiabilityLineEnhancement : GeneralLiabilityLine
   function addExposureWM() : GLExposure {
     var eu = new GLExposure(this.Branch)
     eu.GLLine = this
+    eu.ClassCode = CPPUtil.PACKAGE_RISK_TO_GL_CLASS_CODES.get(this.Branch.Policy.PackageRisk)
     return eu.VersionList.AllVersions.single()
   }
 

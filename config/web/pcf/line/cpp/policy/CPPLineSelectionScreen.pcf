@@ -31,8 +31,12 @@
           editable="true"
           id="PackageRisk"
           label="displaykey.Web.CommercialPackage.PackageRiskType"
+          onPick="una.utils.CPPUtil.setClassCodes(policyPeriod)"
           required="true"
-          value="policyPeriod.Policy.PackageRisk"/>
+          value="policyPeriod.Policy.PackageRisk">
+          <PostOnChange
+            onChange="una.utils.CPPUtil.setClassCodes(policyPeriod)"/>
+        </TypeKeyInput>
         <InputDivider/>
         <ListViewInput
           boldLabel="true"

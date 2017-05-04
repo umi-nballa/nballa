@@ -4,7 +4,7 @@
   coverageCategory="BP7LineAddlGrp"
   coverageSubtype="BP7LineCov"
   coveredPartyType="FirstParty"
-  existence="Required"
+  existence="Electable"
   lookupTableName="BP7LineCov"
   owningEntityType="BP7BusinessOwnersLine"
   policyLinePattern="BP7Line"
@@ -12,5 +12,8 @@
   public-id="BP7CapLossesFromCertfdActsTerrsm"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return una.productmodel.CoveragesUtil.isCoverageAvailable("BP7CapLossesFromCertfdActsTerrsm", BP7BusinessOwnersLine)]]></AvailabilityScript>
+  <InitializeScript><![CDATA[if(BP7CapLossesFromCertfdActsTerrsm.BP7Line.BP7ExclCertfdActsTerrsmCovFireLossesExists){
+  BP7CapLossesFromCertfdActsTerrsm.BP7Line.BP7ExclCertfdActsTerrsmCovFireLosses.remove()
+}]]></InitializeScript>
   <CovTerms/>
 </CoveragePattern>

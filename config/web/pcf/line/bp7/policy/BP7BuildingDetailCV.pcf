@@ -95,7 +95,7 @@
                   required="true"
                   value="building.PredominentOccType_Ext">
                   <PostOnChange
-                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;;building.setDefaultClassificationArea();una.pageprocess.BP7PCFController.removeProductsCompletedOpernsUnrelatedtoBuilOwnersExcl(building);synchPM()"/>
+                    onChange="if(building.NoOfUnits_Ext != null and building.PredominentOccType_Ext == typekey.BP7PredominentOccType_Ext.TC_TENANT){building.removeUnits()};building.NoOfUnits_Ext = null;;building.setDefaultClassificationArea();una.pageprocess.BP7PCFController.removeProductsCompletedOpernsUnrelatedtoBuilOwnersExcl(building);una.pageprocess.BP7PCFController.isSinkholeLossCovRequired(building);synchPM()"/>
                 </TypeKeyInput>
                 <TypeKeyInput
                   editable="true"
@@ -187,6 +187,7 @@
                     </RowIterator>
                   </ListViewPanel>
                 </ListViewInput>
+                <InputDivider/>
                 <BooleanRadioInput
                   editable="true"
                   id="Sprinklered"

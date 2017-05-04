@@ -144,4 +144,16 @@ class BP7PCFController {
     }
     return false
   }
+
+  static function isSinkholeLossCovRequired(bp7Building:BP7Building):ExistenceType{
+    var result : ExistenceType = null
+    if(bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_BUILDINGOWNER || bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_BOOCCUPANT ||
+        bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMASSOCIATION){
+          result = TC_ELECTABLE
+    }else if(bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_TENANT || bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_CONDOUNITOWNEROCCUPANT ||
+        bp7Building.PredominentOccType_Ext != typekey.BP7PredominentOccType_Ext.TC_CONDOMINIUMUNITOWNER){
+      result = TC_REQUIRED
+    }
+    return result
+  }
 }

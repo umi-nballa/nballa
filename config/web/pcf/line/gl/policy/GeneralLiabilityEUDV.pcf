@@ -68,19 +68,15 @@
                 valueRange="getPolicyLocationsFilteredByNonSpecificLocationSupport()">
                 <PostOnChange/>
               </RangeCell>
-              <PickerCell
+              <Cell
                 available="exposure.LocationWM != null"
-                editable="true"
                 id="ClassCode"
-                inputConversion="findFirstMatchingClassCode(VALUE, exposure)"
                 label="displaykey.Web.Policy.GL.ExposureUnits.ClassCode"
                 numCols="5"
-                outputConversion="VALUE == null ? &quot;&quot; : VALUE.Code"
-                pickLocation="GLClassCodeSearchPopup.push(policyPeriod.GLLine, exposure)"
                 required="true"
                 value="exposure.ClassCode">
                 <PostOnChange/>
-              </PickerCell>
+              </Cell>
               <Cell
                 id="ClassCodeDescription"
                 label="displaykey.Web.Policy.GL.ExposureUnits.Description"
@@ -120,13 +116,10 @@
                   value="version.LocationWM">
                   <PostOnChange/>
                 </Cell>
-                <PickerCell
+                <Cell
                   editable="version.LocationWM != null"
                   id="ClassCode"
-                  inputConversion="findFirstMatchingClassCode(VALUE, version)"
                   numCols="5"
-                  outputConversion="VALUE == null ? &quot;&quot; : VALUE.Code"
-                  pickLocation="GLClassCodeSearchPopup.push(policyPeriod.GLLine, version)"
                   required="true"
                   value="version.ClassCode"/>
                 <Cell

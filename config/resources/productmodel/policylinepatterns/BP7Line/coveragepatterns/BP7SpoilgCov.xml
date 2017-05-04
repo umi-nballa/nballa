@@ -12,6 +12,7 @@
   public-id="BP7SpoilgCov"
   referenceDateByType="PolicyTerm">
   <AvailabilityScript><![CDATA[return BP7Classification.spoilgCovAvailable()]]></AvailabilityScript>
+  <ExistenceScript/>
   <CovTerms>
     <DirectCovTermPattern
       aggregationModel="po"
@@ -251,5 +252,45 @@
       priority="60"
       public-id="BP7PerishableStockDesc"
       required="true"/>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="PowerOutLimit_EXT"
+      coverageColumn="DirectTerm2"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="160"
+      public-id="PowerOutLimit_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="z3si6g1tfq62v0m33kmi23hrjt8"
+          currency="usd"
+          maxVal="5000"
+          minVal="1"
+          public-id="z3si6g1tfq62v0m33kmi23hrjt8"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
+    <DirectCovTermPattern
+      aggregationModel="po"
+      codeIdentifier="BrkdwnandContamtnLimit_EXT"
+      coverageColumn="DirectTerm3"
+      lookupTableName="BP7ClassificationCovTerm"
+      modelType="Limit"
+      priority="260"
+      public-id="BrkdwnandContamtnLimit_EXT"
+      required="true"
+      restrictionModel="bipd"
+      valueType="money">
+      <LimitsSet>
+        <CovTermLimits
+          codeIdentifier="ze8i8ofir16u30taesqjknj2kqb"
+          currency="usd"
+          maxVal="5000"
+          minVal="1"
+          public-id="ze8i8ofir16u30taesqjknj2kqb"/>
+      </LimitsSet>
+    </DirectCovTermPattern>
   </CovTerms>
 </CoveragePattern>

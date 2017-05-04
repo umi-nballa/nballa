@@ -83,6 +83,9 @@ class CoveragesUtil {
       case "HODW_Comp_Earthquake_CA_HOE_Ext":
         result = isComprehensiveEarthquakeCoverageAvailable(coverable as Dwelling_HOE)
         break
+      case "BP7FLChngsEmployPracLiabInsCov_EXT":
+        result = isFLChngsEmployPracLiabInsCovAvailable(coverable as BP7BusinessOwnersLine)
+        break
       default:
         break
     }
@@ -122,6 +125,9 @@ class CoveragesUtil {
         break
       case "HODW_WindstromHailExc_HOE_Ext":
         result = isWindstormOrHailExclusionAvailableHO(coverable as HomeownersLine_HOE)
+        break
+      case "BP7ExclCertfdActsTerrsmCovFireLosses":
+        result = isBP7ExclCertfdActsTerrsmCovFireLossesAvailable(coverable as BP7BusinessOwnersLine)
         break
       default:
         //do nothing intentionally
@@ -351,6 +357,13 @@ class CoveragesUtil {
     return result
   }
 
+  private static function isFLChngsEmployPracLiabInsCovAvailable(bp7Line:BP7BusinessOwnersLine) : boolean{
+    if(bp7Line.BP7EmploymentPracticesLiabilityCov_EXTExists){
+      return true
+    }
+    return false
+  }
+
   private static function isWindstormExteriorPaintExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var result = true
     var dependentCovTerm = ConfigParamsUtil.getString(TC_WindHailExclusionCoverageTermPair, hoLine.BaseState)
@@ -387,6 +400,12 @@ class CoveragesUtil {
   private static function isWindstormOrHailExclusionAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
     if(bp7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue!=null &&
         bp7Line.BP7LocationPropertyDeductibles_EXT.BP7WindHailDeductible_EXTTerm.OptionValue.OptionCode.equalsIgnoreCase("NA_EXT")){
+      return true
+    }
+    return false
+  }
+  private static function isBP7ExclCertfdActsTerrsmCovFireLossesAvailable(bp7Line:BP7BusinessOwnersLine):boolean{
+    if(!bp7Line.BP7CapLossesFromCertfdActsTerrsmExists){
       return true
     }
     return false

@@ -30,7 +30,8 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _increasedPersonalPropertyPremium: BigDecimal as IncreasedPersonalPropertyPremium = 0.0
   var _coverageLimitForDeductible : BigDecimal as CoverageLimitForDeductible = 0
   var _aopDeductibleLimit : BigDecimal as AOPDeductibleLimit
-
+  var _hurricaneScreenedEnclosureLimit : BigDecimal as HurricaneScreenedEnclosureLimit = 0.0
+  var _hurricaneDeductibleLimit : BigDecimal as HurricaneDeductible = 0.0
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
     _covALimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0)
@@ -69,5 +70,8 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
     if(dwelling.HODW_SectionI_Ded_HOEExists){
       _aopDeductibleLimit = dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm?.Value
     }
+    _hurricaneScreenedEnclosureLimit = dwelling?.HODW_LimitedScreenCov_HOE_Ext?.HODW_LimitedScreenLimit_HOETerm?.Value
+
+    _hurricaneDeductibleLimit = dwelling.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm?.Value
   }
 }

@@ -1,6 +1,8 @@
 package una.rating.ho.group3.ratinginfos
 
 uses java.math.BigDecimal
+uses una.rating.util.HOConstructionTypeMapper
+
 /**
  * Created with IntelliJ IDEA.
  * User: bduraiswamy
@@ -23,6 +25,12 @@ class HOWindResistiveFeaturesCreditRatingInfo {
   var _terrain : String as Terrain
   var _windPremium : BigDecimal as WindPremium
   private static final var YEAR_2002 : int = 2002
+  var _territoryCode : String as TerritoryCode
+  var _constructionType: RateTableConstructionType_Ext as ConstructionType
+
+
+
+
 
   construct(dwelling : Dwelling_HOE){
     _yearOfConstruction = dwelling.OverrideYearbuilt_Ext? dwelling.YearBuiltOverridden_Ext : dwelling.YearBuilt
@@ -39,6 +47,9 @@ class HOWindResistiveFeaturesCreditRatingInfo {
     _roofDeckAttachment = dwelling.RoofDeckAttachment_Ext.DisplayName
     _doorStrength = dwelling.DoorStrength_Ext.DisplayName
     _terrain = dwelling.Terrain_Ext.DisplayName
+    _territoryCode = dwelling?.TerritoryCodeOrOverride
+    _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
+
   }
 
   property get isNewerConstruction() : boolean {

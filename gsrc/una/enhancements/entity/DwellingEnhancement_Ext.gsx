@@ -37,9 +37,9 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     var result : DirectCovTerm
 
     if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(this.HOPolicyType)){
-      result = this.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm
-    }else{
       result = this.DPDW_Other_Structures_HOE.DPDW_OtherStructuresLimit_HOETerm
+    }else{
+      result = this.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm
     }
 
     return result
@@ -260,7 +260,7 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     return coverable.FloodRiskType_Ext
   }
 
-  function isFloodExcludedZipCode(dwelling : Dwelling_HOE):boolean{
+  function isFloodEligibleZipCode(dwelling: Dwelling_HOE):boolean{
     var zipCodeExists:boolean
     var floodExcludedZips = ConfigParamsUtil.getList(TC_FloodExcludedZipCodes, dwelling.PolicyLine.BaseState)
     if(floodExcludedZips.HasElements){

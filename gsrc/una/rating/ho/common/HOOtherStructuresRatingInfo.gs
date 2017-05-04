@@ -15,8 +15,10 @@ class HOOtherStructuresRatingInfo {
   var _absoluteWindhailExcluded : boolean as AbsoluteWindHailExcluded
   var _unitOwnersCoverageASpecialCoverage : boolean as UnitOwnersCoverageASpecial
   var _otherStructuresRentedToOthersLimit : BigDecimal as OtherStructuresRentedToOtherLimits
+  var _policyType :  typekey.HOPolicyType_HOE as PolicyType
+  var _protectionClassCode : typekey.ProtectionClassCode_Ext as ProtectionClassCode
   construct(dwellingCov: DwellingCov_HOE) {
-    var limitDifference = dwellingCov.Dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.LimitDifference
+    var limitDifference = dwellingCov.Dwelling.OtherStructuresLimitCovTerm.LimitDifference
     if (limitDifference != 0){
       _isOtherStructuresIncreasedOrDecreasedLimit = true
     }
@@ -25,5 +27,8 @@ class HOOtherStructuresRatingInfo {
     _otherStructuresIncreasedOrDecreasedLimit = limitDifference
     _absoluteWindhailExcluded = dwellingCov.Dwelling.HOLine.HODW_AbsoluteWindHailExc_HOE_ExtExists
     _otherStructuresRentedToOthersLimit = dwellingCov.Dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
+    _policyType = dwellingCov.Branch.HomeownersLine_HOE.HOPolicyType
+    _protectionClassCode = dwellingCov.Dwelling.ProtectionClassCodeOrOverride
+
   }
 }

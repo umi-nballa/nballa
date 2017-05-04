@@ -13,14 +13,20 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  */
 class CovLimit750000_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
+    var isFirePolicy = HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(homeowner.HOPolicyType)
+    var dwellingLimit = homeowner.Dwelling.DwellingLimitCovTerm.Value
+    var uwThreshold = HOE_UWConstant.covALimit_750000
+    var baseState = homeowner.BaseState
+    var shouldEvaluate = true
 
-   if( homeowner.Dwelling.DPDW_Dwelling_Cov_HOEExists
-    and homeowner.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm?.Value > HOE_UWConstant.covALimit_750000){
-
-    return RuleEvaluationResult.execute()
+    if(isFirePolicy and baseState != TC_CA){
+      shouldEvaluate = homeowner.Dwelling.ResidenceType == TC_Condo
     }
-   return RuleEvaluationResult.skip()
+
+    if(shouldEvaluate and dwellingLimit > uwThreshold){
+      return RuleEvaluationResult.execute()
+    }else{
+      return RuleEvaluationResult.skip()
+    }
   }
-
-
 }

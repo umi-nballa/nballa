@@ -14,8 +14,7 @@ uses una.lob.ho.HOE_UWConstant
 class CovLimit1500000_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-   if( homeowner.Dwelling.DPDW_Dwelling_Cov_HOEExists
-    and homeowner.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm?.Value > HOE_UWConstant.covALimit_1500000){
+   if( homeowner.Dwelling.DwellingLimitCovTerm.Value > HOE_UWConstant.covALimit_1500000){
     return RuleEvaluationResult.execute()
     }
    return RuleEvaluationResult.skip()

@@ -27,8 +27,8 @@ class BP7BuildingRatingInfo {
       _detachedLimit = building?.BP7LocationOutdoorSigns_EXT?.DetachedLimit_EXTTerm?.Value
     }
     if(building.BP7SinkholeLossCoverage_EXTExists){
-      _sinkholeCovLimit = building?.BP7SinkholeLossCoverage_EXT?.SinkholeLossCovLimit_EXTTerm?.Value
       _sinkholeDeductible = building?.BP7SinkholeLossCoverage_EXT?.SinkholeLossCovDeduc_EXTTerm?.DisplayValue
+      //_sinkholeCovLimit = _sinkholeDeductible * building.Classifications.firstWhere( \ elt -> elt.BP7ClassificationBusinessPersonalPropertyExists).BP7ClassificationBusinessPersonalProperty.BP7BusnPrsnlPropLimitTerm.Value
       _territoryCode = building?.Location?.OverrideTerritoryCode_Ext? building?.Location?.TerritoryCodeOverridden_Ext : building?.Location?.TerritoryCodeTunaReturned_Ext
     }
     if(building.BP7DamagePremisisRentedToYou_EXTExists){

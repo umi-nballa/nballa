@@ -35,10 +35,13 @@ class HOBasePremiumRaterGroup3 {
       PROTECTION_CONSTRUCTION_FACTOR_RATE_ROUTINE -> HOCostType_Ext.TC_PROTECTIONCONSTRUCTIONFACTORBASEPREMIUM,
       HORateRoutineNames.WIND_BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_WINDBASEPREMIUM,
       HORateRoutineNames.DP_DWELLING_BASE_PREMIUM -> HOCostType_Ext.TC_FIREDWELLING,
-      HORateRoutineNames.DP_PERSONAL_PROPERTY_BASE_PREMIUM  -> HOCostType_Ext.TC_FIREPERSONALPROPERTY
+      HORateRoutineNames.DP_PERSONAL_PROPERTY_BASE_PREMIUM  -> HOCostType_Ext.TC_FIREPERSONALPROPERTY,
+      HORateRoutineNames.DP_EC_DWELLING_BASE_PREMIUM -> HOCostType_Ext.TC_FIREECDWELLING,
+      HORateRoutineNames.DP_EC_PERSONAL_PROPERTY_BASE_PREMIUM -> HOCostType_Ext.TC_FIREECPERSONALPROPERTY
 
   }
-  private var EC = false
+  //todo fix once ec is available
+  private var EC = true
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
     _rateCache = rateCache

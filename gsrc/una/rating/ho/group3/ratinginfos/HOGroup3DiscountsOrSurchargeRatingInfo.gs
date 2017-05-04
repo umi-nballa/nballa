@@ -22,6 +22,14 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
   var _hurricanePercentage : String as HurricanePercentage
   var _bcegGrade : int as BCEGGrade
   var _constructionType: RateTableConstructionType_Ext as ConstructionType
+  var _dwellingConstructionType : ConstructionType_HOE as DwellingConstructionType
+  var _windMitigation : Boolean as WindMitigation
+  var _consecutiveYrsWithUniversal: int as ConsecutiveYrsWithUniversal
+  var _creditScore: int as CreditScore = 0
+  var _priorLosses: int as PriorLosses = 0
+  var _noHitOrScoreIndicator: Boolean as NoHitOrScoreIndicator = false
+  var _sectionbECDwellingAdjustmentFactor : BigDecimal as SectionbECDwellingAdjustmentFactor = 0.00
+  var _sectionbECPersonalPropertyAdjustmentFactor : BigDecimal as SectionbECPersonalPropertyAdjustmentFactor = 0.00
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
@@ -45,6 +53,25 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     }
 
     _constructionType = HOConstructionTypeMapper.setConstructionType(line.Dwelling, line.Dwelling.HOLine.BaseState)
+    _dwellingConstructionType = line.Dwelling.ConstructionType
+    _windMitigation = line.Dwelling.WindMitigation_Ext
+
+    if (line.Branch?.CreditInfoExt?.CreditReport?.CreditScore != null) {
+      _creditScore = line.Branch?.CreditInfoExt?.CreditReport?.CreditScore as int
+    } else if (line.Branch?.CreditInfoExt?.CreditLevel != null){
+      _creditScore = line.Branch?.CreditInfoExt.CreditLevel.Description.toInt()
+    }
+
+    if (line.Branch?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_HIT or
+        line.Branch?.CreditInfoExt?.CreditReport?.CreditStatus == typekey.CreditStatusExt.TC_NO_SCORE){
+      _noHitOrScoreIndicator = true
+    }
+
+    _consecutiveYrsWithUniversal = line?.Branch?.Policy?.OriginalEffectiveDate?.differenceInYears(line.Branch.EditEffectiveDate)
+    _priorLosses = line.HOPriorLosses_Ext?.Count
+
 
   }
+
+
 }

@@ -21,6 +21,7 @@ uses una.rating.ho.group3.ratinginfos.HOFloodCoverageRatingInfo
 uses gw.rating.CostData
 uses una.rating.ho.group3.ratinginfos.HOGroup3LineLevelRatingInfo
 uses una.rating.ho.group3.ratinginfos.HOWindResistiveFeaturesCreditRatingInfo
+uses una.rating.ho.common.HomeownersLineCostData_HOE
 
 /**
  * Created with IntelliJ IDEA.
@@ -109,6 +110,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
         break
       case HODW_Other_Structures_HOE:
+      case DPDW_Other_Structures_HOE:
         rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov, dateRange)
         break
       case HODW_LossAssessmentCov_HOE_Ext:
@@ -118,7 +120,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecialComputerCoverage(dwellingCov, dateRange)
         break
       case HODW_SinkholeLoss_HOE_Ext:
-        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
           rateSinkholeLossCoverage(dwellingCov, dateRange)
         break
       case HODW_SpecificAddAmt_HOE_Ext:
@@ -172,138 +173,234 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var dwelling = PolicyLine.Dwelling
     _discountsOrSurchargeRatingInfo = new HOGroup3DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
     var windOrHailExcluded = _discountsOrSurchargeRatingInfo.WindOrHailExcluded
-    var constructionType = dwelling.OverrideConstructionType_Ext? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
-    if(constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
-      rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM)
-    }
-
-    if(_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000){
-      if(dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
-        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AOPDEDUCTIBLEDWELLING)
-        if(_hoRatingInfo.PersonalPropertyExists){
-          rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AOPDEDUCTIBLEPERSONALPROPERTY)
-        }
-      }
-      else{
-        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP)
-      }
-
-    }
-
-    if(hasNoPriorInsurance()){
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT){
-        rateNoPriorInsurance(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_NOPRIORINSURANCEDWELLING)
-        if(_hoRatingInfo.PersonalPropertyExists){
-          rateNoPriorInsurance(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_NOPRIORINSURANCEPERSONALPROPERTY)
-        }
-      }else{
-        rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
-      }
-    }
-
-    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
-      if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
-        rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
-      }
-
-      rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
-
-      if(PolicyLine.Branch.PreferredBuilder_Ext != null and _discountsOrSurchargeRatingInfo.AgeOfHome < 10)
-        ratePreferredBuilderCredit(dateRange)
-
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
-        if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-          _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
-          rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
-        }
-        if(isMatureHomeOwnerDiscountApplicable(PolicyLine)){
-          rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
-        }
-      }
-    }
-
-    if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT){
-      if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-        _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+    var constructionType = dwelling.OverrideConstructionType_Ext ? dwelling.ConstTypeOverridden_Ext : dwelling.ConstructionType
+    if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT) {
+      if (dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+        _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric ? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
         rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEDWELLING)
-
-        if(_hoRatingInfo.PersonalPropertyExists){
+        if (_hoRatingInfo.PersonalPropertyExists){
           rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEPERSONALPROPERTY)
         }
-
       }
       rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEDWELLING, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
-      if(_hoRatingInfo.PersonalPropertyExists){
+      if (_hoRatingInfo.PersonalPropertyExists){
         rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEPERSONALPROPERTY, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
       }
 
-      if(windOrHailExcluded){
-        rateWindHailExclusionCredit(dateRange,  _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_WINDEXCLUSIONCREDITDWELLING, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
-        if(_hoRatingInfo.PersonalPropertyExists){
-          rateWindHailExclusionCredit(dateRange,  _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_WINDEXCLUSIONCREDITPERSONALPROPERTY, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
+      if (windOrHailExcluded){
+        rateWindHailExclusionCredit(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_WINDEXCLUSIONCREDITDWELLING, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
+        if (_hoRatingInfo.PersonalPropertyExists){
+          rateWindHailExclusionCredit(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_WINDEXCLUSIONCREDITPERSONALPROPERTY, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING)
         }
       }
-    }
-
-    //rating all wind hail included, credit and discounts
-    if(!windOrHailExcluded){
-      rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND)
-      if(constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT.Code)
-        rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTWINDPREMIUM)
-      if(_discountsOrSurchargeRatingInfo.BCEGGrade == BCEG_CODE_FOR_NON_PARTICIPATION)
-        rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)
-
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)
-        if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
-          rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEWINDPREMIUM)
-
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
-        rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
-        if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
-          _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
-          rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEWIND)
+      if (hasNoPriorInsurance()){
+        rateNoPriorInsurance(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_NOPRIORINSURANCEDWELLING)
+        if (_hoRatingInfo.PersonalPropertyExists){
+          rateNoPriorInsurance(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_NOPRIORINSURANCEPERSONALPROPERTY)
         }
       }
-    }
 
-    updateWindBasePremium()
-
-    if(!windOrHailExcluded){
-      if(_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade !=99)
-        rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT)
-      rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT )
-      rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
-    }
-
-    if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+      if (_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000){
+        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_AOPDEDUCTIBLEDWELLING, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE )
+        if (_hoRatingInfo.PersonalPropertyExists){
+          rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_AOPDEDUCTIBLEPERSONALPROPERTY, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE )
+        }
+      }
       rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDITDWELLING, _hoRatingInfo.FireBasePremiumDwelling)
-      if(_hoRatingInfo.PersonalPropertyExists){
+      if (_hoRatingInfo.PersonalPropertyExists){
         rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDITPERSONALPROPERTY, _hoRatingInfo.FireBasePremiumPersonalProperty)
       }
-    } else{
-      rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT, _hoRatingInfo.TotalBasePremium)
-    }
 
-    rateMaximumDiscountAdjustmentForAOP(dateRange)
+      if(dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT or dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY
+          or dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ){
+        rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.FireBasePremiumDwelling, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONPERSONALPROPERTY, HORateRoutineNames.DP_SUPERIOR_CONSTRUCTION_DISCOUNT_RATE_ROUTINE)
+        if(_hoRatingInfo.PersonalPropertyExists){
+          rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.FireBasePremiumPersonalProperty, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONPERSONALPROPERTY, HORateRoutineNames.DP_SUPERIOR_CONSTRUCTION_DISCOUNT_RATE_ROUTINE)
+        }
 
-    updateFinalAdjustedAOPBasePremium()
-
-    _hoRatingInfo.FinalAdjustedWindBasePremium = _hoRatingInfo.AdjustedWindBasePremium + _hoRatingInfo.BuildingCodeComplianceGradingCredit + _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction + _hoRatingInfo.AdjustmentToBCEGAndWPDCCredit
-    _hoRatingInfo.TotalBasePremium = _hoRatingInfo.FinalAdjustedAOPBasePremium + _hoRatingInfo.FinalAdjustedWindBasePremium
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
-
-    if(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists and PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
-      ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
-    }
-
-    if (dwelling?.HODW_Personal_Property_HOEExists){
-      if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value != ValuationMethod.TC_PERSPROP_ACV){
-        ratePersonalPropertyReplacementCost(dateRange)
       }
+
+
+      //TODO update when extended coverage added
+      var extendedCoverage = true
+      if (extendedCoverage){
+
+        //deductible
+        if(windOrHailExcluded){
+          if(_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000){
+            rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_AOPDEDUCTIBLEECDWELLING, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_EXCLUDED )
+            if (_hoRatingInfo.PersonalPropertyExists){
+              rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_AOPDEDUCTIBLEECPERSONALPROPERTY, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_EXCLUDED )
+            }
+          }
+        } else {
+          rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_AOPDEDUCTIBLEECDWELLING, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_DWELLING )
+          if (_hoRatingInfo.PersonalPropertyExists){
+            rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_AOPDEDUCTIBLEECPERSONALPROPERTY, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_PERSONAL_PROPERTY )
+          }
+        }
+
+        if(dwelling.BCEGOrOverride == typekey.BCEGGrade_Ext.TC_98 or dwelling.BCEGOrOverride == typekey.BCEGGrade_Ext.TC_99 ){
+          rateBCEGNonParticipatingSurcharge(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_ECBCEGNONPARTICIPATINGRISKSDWELLING, HORateRoutineNames.BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE )
+          if(_hoRatingInfo.PersonalPropertyExists){
+            rateBCEGNonParticipatingSurcharge(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_ECBCEGNONPARTICIPATINGRISKSPERSONALPROPERTY, HORateRoutineNames.BUILDING_CODE_NON_PARTICIPATING_RISKS_SURCHARGE_RATE_ROUTINE )
+          }
+        }else{
+          rateWindPremium(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_WINDPREMIUMBCEGECDWELLING, HORateRoutineNames.WIND_PREMIUM_BCEG_DWELLING_RATE_ROUTINE )
+          if(_hoRatingInfo.PersonalPropertyExists){
+            rateWindPremium(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_WINDPREMIUMBCEGECPERSONALPROPERTY, HORateRoutineNames.WIND_PREMIUM_BCEG_PERSONAL_PROPERTY_RATE_ROUTINE )
+          }
+
+        }
+
+        if(dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_FIRERESISTIVE_EXT or dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_CONCRETEANDMASONRY
+            or dwelling.ConstructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT ){
+          rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONECDWELLING, HORateRoutineNames.DP_SUPERIOR_CONSTRUCTION_DISCOUNT_EC_RATE_ROUTINE)
+          if(_hoRatingInfo.PersonalPropertyExists){
+            rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONECPERSONALPROPERTY, HORateRoutineNames.DP_SUPERIOR_CONSTRUCTION_DISCOUNT_EC_RATE_ROUTINE)
+          }
+
+        }
+
+        if (dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+          _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric ? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+          rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEECDWELLING)
+          if(_hoRatingInfo.PersonalPropertyExists){
+            rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEECPERSONALPROPERTY)
+          }
+        }
+
+        rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEECDWELLING, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+        if (_hoRatingInfo.PersonalPropertyExists){
+          rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEECPERSONALPROPERTY, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+        }
+
+        if (hasNoPriorInsurance()){
+          rateNoPriorInsurance(dateRange, _hoRatingInfo.FireECBasePremiumDwelling, HOCostType_Ext.TC_NOPRIORINSURANCEECDWELLING)
+          if (_hoRatingInfo.PersonalPropertyExists){
+            rateNoPriorInsurance(dateRange, _hoRatingInfo.FireECBasePremiumPersonalProperty, HOCostType_Ext.TC_NOPRIORINSURANCEECPERSONALPROPERTY)
+          }
+        }
+
+        updateSectionBECTotals()
+        calculateAdjustmentFactor(dateRange)
+
+        if(windOrHailExcluded) {
+          rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.SectionbECDwellingTotal, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDITDWELLING, HORateRoutineNames.DP_BCEG_DWELLING)
+          rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.SectionbECDwellingTotal, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDITDWELLING, HORateRoutineNames.WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_DWELLING)
+          rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDITDWELLING)
+
+          if(_hoRatingInfo.PersonalPropertyExists){
+            rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.SectionbECPersonalPropertyTotal, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDITPERSONALPROPERTY, HORateRoutineNames.DP_BCEG_PERSONAL_PROPERTY)
+            rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.SectionbECPersonalPropertyTotal, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDITPERSONALPROPERTY, HORateRoutineNames.WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_PERSONAL_PROPERTY)
+            rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDITPERSONALPROPERTY)
+          }
+        }
+
+      }
+    } else {                       //HO3, HO4, HO6 POLICYTYPES
+
+      if (constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT){
+        rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTAOPPREMIUM, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE)
+      }
+
+      if (_discountsOrSurchargeRatingInfo.AOPDeductibleLimit != 1000){
+        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORAOP, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE )
+      }
+
+      if (hasNoPriorInsurance()){
+        rateNoPriorInsurance(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_NOPRIORINSURANCE)
+      }
+
+      if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
+        if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
+          rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEAOPPREMIUM)
+        }
+
+        rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGE, HORateRoutineNames.AGE_OF_HOME_DISCOUNT_RATE_ROUTINE)
+
+        if (PolicyLine.Branch.PreferredBuilder_Ext != null and _discountsOrSurchargeRatingInfo.AgeOfHome < 10)
+          ratePreferredBuilderCredit(dateRange)
+
+        if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+          if (dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+            _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric ? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+            rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
+          }
+          if (isMatureHomeOwnerDiscountApplicable(PolicyLine)){
+            rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
+          }
+          if (dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
+            ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
+          }
+        }
+      }
+
+      //rating all wind hail included, credit and discounts
+      if (!windOrHailExcluded){
+        rateHigherAllPerilDeductible(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_DEDUCTIBLEFACTORWIND, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE )
+        if (constructionType == typekey.ConstructionType_HOE.TC_SUPERIORNONCOMBUSTIBLE_EXT.Code)
+          rateSuperiorConstructionDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONDISCOUNTWINDPREMIUM, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE)
+        if (_discountsOrSurchargeRatingInfo.BCEGGrade == BCEG_CODE_FOR_NON_PARTICIPATION)
+          rateBuildingCodeNonParticipatingRisks(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_BUILDINGCODENONPARTICIPATINGRISKSSURCHARGE)
+
+        if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 || PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)
+          if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
+            rateSeasonalOrSecondaryResidenceSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGEWINDPREMIUM)
+
+        if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3){
+          rateAgeOfHomeDiscount(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_AGEOFHOMEPREMIUMMODIFIER, HORateRoutineNames.AGE_OF_HOME_PREMIUM_MODIFIER_RATE_ROUTINE)
+          if (dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
+            _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric ? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
+            rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.WindBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEWIND)
+          }
+        }
+
+        if (_discountsOrSurchargeRatingInfo.BCEGGrade != 98 and _discountsOrSurchargeRatingInfo.BCEGGrade != 99){
+          rateBuildingCodeComplianceGradingCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_BUILDINGCODECOMPLIANCEGRADECREDIT, HORateRoutineNames.BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE)
+        }
+        rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange, _hoRatingInfo.AdjustedWindBasePremium, HOCostType_Ext.TC_WINDSTORMRESISTIVEFEATURESCREDIT, HORateRoutineNames.WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE)
+        rateAdjustmentToBCEGAndWPDCCredit(dateRange, HOCostType_Ext.TC_ADJUSTMENTTOBCEGANDWPDCCREDIT)
+      }
+
+      if (dwelling?.HODW_Personal_Property_HOEExists){
+        if (dwelling?.HODW_Personal_Property_HOE?.HODW_PropertyValuation_HOE_ExtTerm?.Value != ValuationMethod.TC_PERSPROP_ACV){
+          ratePersonalPropertyReplacementCost(dateRange)
+        }
+      }
+
+      rateProtectiveDeviceCredit(dateRange, HOCostType_Ext.TC_PROTECTIVEDEVICECREDIT, _hoRatingInfo.TotalBasePremium)
+
+      updateWindBasePremium()
+
+      rateMaximumDiscountAdjustmentForAOP(dateRange)
+
+      updateFinalAdjustedAOPBasePremium()
+
+      _hoRatingInfo.FinalAdjustedWindBasePremium = _hoRatingInfo.AdjustedWindBasePremium + _hoRatingInfo.BuildingCodeComplianceGradingCredit + _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction + _hoRatingInfo.AdjustmentToBCEGAndWPDCCredit
+      _hoRatingInfo.TotalBasePremium = _hoRatingInfo.FinalAdjustedAOPBasePremium + _hoRatingInfo.FinalAdjustedWindBasePremium
+      _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     }
+
+
+
 
   }
 
+
+  function rateWindPremium(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateWindPremium", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("rateWindPremium Rated Successfully", this.IntrinsicType)
+  }
 
   function rateWindHailExclusionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
     if(_logger.DebugEnabled)
@@ -316,7 +413,21 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       addCost(costData)
     }
     if(_logger.DebugEnabled)
-      _logger.debug("No rateWindHailExclusionCredit Rated Successfully", this.IntrinsicType)
+      _logger.debug("rateWindHailExclusionCredit Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateBCEGNonParticipatingSurcharge(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateBCEGNonParticipatingSurcharge", this.IntrinsicType)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("rateBCEGNonParticipatingSurcharge Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -475,14 +586,28 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    * Rate Other structures - Increased or decreased Limits coverage
    */
-  function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: HODW_Other_Structures_HOE, dateRange: DateRange) {
+  function rateOtherStructuresIncreasedOrDecreasedLimits(dwellingCov: DwellingCov_HOE, dateRange: DateRange) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateOtherStructuresIncreasedOrDecreasedLimits to rate Other Structures Increased Or Decreased Limits Coverage", this.IntrinsicType)
     var otherStructuresRatingInfo = new HOOtherStructuresRatingInfo(dwellingCov)
     var rateRoutineParameterMap = getOtherStructuresCovParameterSet(PolicyLine, otherStructuresRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData : CostData
+    if(dwellingCov.Dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+      costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_DWELLING )
+    } else{
+      costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.OTHER_STRUCTURES_INCREASED_OR_DECREASED_LIMITS_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    }
     if (costData != null){
       addCost(costData)
     }
+    //TODO update with extended coverage check
+    var EC = true
+    if(EC){
+      costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.DP_OTHER_STRUCTURES, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_EC)
+      if (costData != null){
+        addCost(costData)
+      }
+    }
+
     _logger.debug("Other Structures Increased Or Decreased Limits Coverage Rated Successfully", this.IntrinsicType)
   }
 
@@ -631,11 +756,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate the Superior Construction Discount
    */
-  function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+  function rateSuperiorConstructionDiscount(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateSuperiorConstructionDiscount", this.IntrinsicType)
     _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.SUPERIOR_CONSTRUCTION_DISCOUNT_ROUTINE, costType,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
@@ -706,11 +831,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate the Deductible Factor
    */
-  function rateHigherAllPerilDeductible(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+  function rateHigherAllPerilDeductible(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateHigherAllPerilDeductible", this.IntrinsicType)
     _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE, costType,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       if(_discountsOrSurchargeRatingInfo.WindOrHailExcluded)
@@ -757,11 +882,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate the Building Code Compliance Grading Credit
    */
-  function rateBuildingCodeComplianceGradingCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+  function rateBuildingCodeComplianceGradingCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateBuildingCodeComplianceGradingCredit", this.IntrinsicType)
     _discountsOrSurchargeRatingInfo.TotalBasePremium = basePremium
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.BUILDING_CODE_COMPLIANCE_GRADING_CREDIT_RATE_ROUTINE, costType,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       _hoRatingInfo.BuildingCodeComplianceGradingCredit = costData?.ActualTermAmount
@@ -773,12 +898,12 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    *  Function to rate the Windstorm Resistive Features Of Residential Construction Credit
    */
-  function rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext) {
+  function rateWindstormResistiveFeaturesOfResidentialConstructionCredit(dateRange: DateRange, basePremium : BigDecimal, costType : HOCostType_Ext, rateRoutineName : String) {
     _logger.debug("Entering " + CLASS_NAME + ":: rateWindstormResistiveFeaturesOfResidentialConstructionCredit", this.IntrinsicType)
     var windResistiveFeaturesCreditRatingInfo = new HOWindResistiveFeaturesCreditRatingInfo(PolicyLine.Dwelling)
     windResistiveFeaturesCreditRatingInfo.WindPremium = basePremium
     var rateRoutineParameterMap = getWPDCParameterSet(PolicyLine, windResistiveFeaturesCreditRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE, costType,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction = costData?.ActualTermAmount
@@ -932,6 +1057,19 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _logger.debug("Scheduled Personal Property Coverage Rated Successfully", this.IntrinsicType)
   }
 
+  private function calculateAdjustmentFactor(dateRange: DateRange){
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.DP_SUBTOTAL_ADJUSTMENT_FACTOR_DWELLING_RATE_ROUTINE, HOCostType_Ext.TC_FIREECDWELLING,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _discountsOrSurchargeRatingInfo.SectionbECDwellingAdjustmentFactor = costData.ActualTermAmount
+    _hoRatingInfo.SectionbECDwellingAdjustmentFactor = costData.ActualTermAmount
+    costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.DP_SUBTOTAL_ADJUSTMENT_FACTOR_PERSONAL_PROPERTY_RATE_ROUTINE, HOCostType_Ext.TC_FIREECPERSONALPROPERTY,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _discountsOrSurchargeRatingInfo.SectionbECPersonalPropertyAdjustmentFactor = costData.ActualTermAmount
+    _hoRatingInfo.SectionbECPersonalPropertyAdjustmentFactor = costData.ActualTermAmount
+
+  }
+
   /**
    *  Returns the parameter set for the line level coverages
    */
@@ -1014,7 +1152,8 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   private function getWPDCParameterSet(line : PolicyLine, windResistiveFeaturesCreditRatingInfo : HOWindResistiveFeaturesCreditRatingInfo) : Map<CalcRoutineParamName, Object>{
     return {
         TC_POLICYLINE -> line,
-        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> windResistiveFeaturesCreditRatingInfo
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> windResistiveFeaturesCreditRatingInfo,
+        TC_RATINGINFO -> _hoRatingInfo
     }
   }
 
@@ -1121,4 +1260,31 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     }
     return false
   }
+
+  private function sectionbECDwellingTotal() : BigDecimal{
+    var sectionBDwellingCostTypes = {HOCostType_Ext.TC_AOPDEDUCTIBLEECDWELLING, HOCostType_Ext.TC_ECBCEGNONPARTICIPATINGRISKSDWELLING, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONECDWELLING, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEECDWELLING,
+        HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEECDWELLING, HOCostType_Ext.TC_NOPRIORINSURANCEECDWELLING, HOCostType_Ext.TC_WINDPREMIUMBCEGECDWELLING}
+
+    var costDatas = this.CostDatas.where( \ elt -> elt typeis HomeownersLineCostData_HOE and sectionBDwellingCostTypes.contains(elt.CostType_Ext))
+
+    return costDatas.sum(\ elt -> elt.ActualTermAmount)
+  }
+
+
+  private function sectionbECPersonalPropertyTotal() : BigDecimal{
+    var sectionBDwellingCostTypes = {HOCostType_Ext.TC_AOPDEDUCTIBLEECPERSONALPROPERTY, HOCostType_Ext.TC_ECBCEGNONPARTICIPATINGRISKSPERSONALPROPERTY, HOCostType_Ext.TC_SUPERIORCONSTRUCTIONECPERSONALPROPERTY, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEECPERSONALPROPERTY,
+        HOCostType_Ext.TC_AGEOFHOMEDISCOUNTORSURCHARGEECPERSONALPROPERTY, HOCostType_Ext.TC_NOPRIORINSURANCEECPERSONALPROPERTY, HOCostType_Ext.TC_WINDPREMIUMBCEGECPERSONALPROPERTY}
+
+    var costDatas = this.CostDatas.where( \ elt -> elt typeis HomeownersLineCostData_HOE and sectionBDwellingCostTypes.contains(elt.CostType_Ext))
+
+    return costDatas.sum(\ elt -> elt.ActualTermAmount)
+  }
+
+  private function updateSectionBECTotals(){
+    _hoRatingInfo.SectionbECDwellingTotal = sectionbECDwellingTotal()
+    _hoRatingInfo.SectionbECPersonalPropertyTotal = sectionbECPersonalPropertyTotal()
+
+  }
+
+
 }

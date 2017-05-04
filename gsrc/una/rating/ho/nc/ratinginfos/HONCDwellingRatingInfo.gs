@@ -31,7 +31,6 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _fireDepartmentServiceChargeLimit : BigDecimal as FireDepartmentServiceChargeLimit
   var _dwellingFireOrdinanceOrLawLimit : BigDecimal as DwellingFireOrdinanceOrLawLimit
   var _dwellingFireOtherStructuredIncreasedLimit : BigDecimal as DwellingFireOtherStructuredIncreasedLimit
-  var _protectionClassCode : String as ProtectionClassCode
   var _vacancyPeriod : int as VacancyPeriod
   var _lossAssessmentEQLimit : int as LossAssessmentEQLimit
   var _keyPremium: BigDecimal as KeyPremium = 0.0
@@ -95,7 +94,6 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
     if(dwelling?.DPDW_Other_Structures_HOEExists){
       _dwellingFireOtherStructuredIncreasedLimit = dwelling.DPDW_Other_Structures_HOE?.DPDW_OtherStructuresLimit_HOETerm?.LimitDifference
-      _protectionClassCode = dwelling?.HOLocation?.OverrideDwellingPCCode_Ext? dwelling?.HOLocation?.DwellingPCCodeOverridden_Ext : dwelling?.HOLocation?.DwellingProtectionClassCode
     }
 
     if(dwelling?.HODW_VacancyClause_ExtExists){

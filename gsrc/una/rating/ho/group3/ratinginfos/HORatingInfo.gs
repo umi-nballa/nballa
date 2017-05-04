@@ -28,6 +28,12 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _protectionConstructionFactor: BigDecimal as ProtectionConstructionFactor = 0.0
   var _dpPersonalPropertyExists : boolean as PersonalPropertyExists = false
 
+  var _sectionbECDwellingTotal : BigDecimal as SectionbECDwellingTotal = 0
+  var _sectionbECPersonalPropertyTotal : BigDecimal as SectionbECPersonalPropertyTotal = 0
+  var _sectionbECDwellingAdjustmentFactor : BigDecimal as SectionbECDwellingAdjustmentFactor = 0.00
+  var _sectionbECPersonalPropertyAdjustmentFactor : BigDecimal as SectionbECPersonalPropertyAdjustmentFactor = 0.00
+  var _ECKeyFactorDwelling : BigDecimal as ECKeyFactorDwelling
+  var _ECKeyFactorPersonalProperty : BigDecimal as ECKeyFactorPersonalProperty
 
   //discounts and surcharges for AOP Premium
   var _superiorConstructionDiscountForAOP: BigDecimal as SuperiorConstructionDiscountForAOP = 0.0
@@ -49,4 +55,20 @@ class HORatingInfo extends una.rating.ho.common.HORatingInfo {
   var _buildingCodeComplianceGradingCredit : BigDecimal as BuildingCodeComplianceGradingCredit = 0.0
   var _windstormResistiveFeaturesOfResidentialConstruction : BigDecimal as WindstormResistiveFeaturesOfResidentialConstruction = 0.0
   var _adjustmentToBCEGAndWPDCCredit : BigDecimal as AdjustmentToBCEGAndWPDCCredit = 0.0
+
+  property set SectionbECDwellingTotal(SectionBTotal : BigDecimal){
+    _sectionbECDwellingTotal = this.FireECBasePremiumDwelling + SectionBTotal
+  }
+
+  property get SectionbECDwellingTotal() : BigDecimal{
+     return _sectionbECDwellingTotal
+  }
+
+  property set SectionbECPersonalPropertyTotal(SectionBTotal : BigDecimal){
+    _sectionbECPersonalPropertyTotal = this.FireECBasePremiumPersonalProperty + SectionBTotal
+  }
+
+  property get SectionbECPersonalPropertyTotal() : BigDecimal{
+    return _sectionbECPersonalPropertyTotal
+  }
 }

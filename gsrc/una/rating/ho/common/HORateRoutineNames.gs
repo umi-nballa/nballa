@@ -63,6 +63,9 @@ public final class HORateRoutineNames {
   public static final var FIGA_SURCHARGE_RATE_ROUTINE : String = "UNAHOFIGASurchargeRateRoutine"
   public static final var EMPA_SURCHARGE_RATE_ROUTINE : String = "UNAHOEMPASurchargeRateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_GROUP2_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovGroup2RateRoutine"
+  public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_EXCLUDED : String = "UNAHODPHigherAllPerilDeductibleECWindExcluded"
+  public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_DWELLING : String = "UNAHODPHigherAllPerilDeductibleECWindIncludedDwelling"
+  public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_PERSONAL_PROPERTY : String = "UNAHODPHigherAllPerilDeductibleECWindIncludedPersonalProperty"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -109,6 +112,8 @@ public final class HORateRoutineNames {
   public static final var TOWNHOUSE_OR_ROWHOUSE_SURCHARGE_RATE_ROUTINE : String = "UNAHOTownhouseOrRowhouseSurchargeRateRoutine"
   public static final var BRUSH_HAZARD_SURCHARGE_RATE_ROUTINE : String = "UNAHOBrushHazardSurchargeRateRoutine"
   public static final var ADJUSTMENT_TO_BCEG_AND_WPDC_CREDIT_RATE_ROUTINE : String = "UNAHOAdjustmentToBCEGAndWPDCCreditRateRoutine"
+  public static final var WIND_PREMIUM_BCEG_DWELLING_RATE_ROUTINE : String = "UNAHODPWindPremiumBCEGDwelling"
+  public static final var WIND_PREMIUM_BCEG_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHODPWindPremiumBCEGPersonalProperty"
 
   public static final var CC_EFT_ACCESSDEVICE_FORGERY_AND_COUNTERFEIT_MONEY : String = "UNAHOCCEFTAccessDeviceForgeryAndCounterfeitMoney"
   public static final var RESIDENCE_HELD_IN_TRUST_RATE_ROUTINE : String = "UNAHOResidenceHeldInTrustRateRoutine"
@@ -152,4 +157,15 @@ public final class HORateRoutineNames {
   public static final var WOOD_BURNING_STOVE_RATE_ROUTINE : String = "UNAHOWoodBurningStoveRateRoutine"
   public static final var WIND_EXCLUSION_CREDIT_DWELLING : String =  "UNAHODPWindExclusionCreditDwelling"
   public static final var WIND_EXCLUSION_CREDIT_PERSONAL_PROPERTY : String = "UNAHODPWindExclusionCreditPersonalProperty"
+  public static final var DP_SUPERIOR_CONSTRUCTION_DISCOUNT_RATE_ROUTINE : String = "UNAHODPSuperiorConstructionDiscount"
+  public static final var DP_SUPERIOR_CONSTRUCTION_DISCOUNT_EC_RATE_ROUTINE : String = "UNAHODPSuperiorConstructionDiscountEC"
+  public static final var DP_SUBTOTAL_ADJUSTMENT_FACTOR_DWELLING_RATE_ROUTINE : String = "UNAHODPSubtotalBAdjustmentFactorRateRoutineDwelling"
+  public static final var DP_SUBTOTAL_ADJUSTMENT_FACTOR_PERSONAL_PROPERTY_RATE_ROUTINE : String = "UNAHODPSubtotalBAdjustmentFactorRateRoutinePersonalProperty"
+  public static final var DP_BCEG_DWELLING : String = "UNAHODPBCEGRateRoutineDwelling"
+  public static final var DP_BCEG_PERSONAL_PROPERTY : String = "UNAHODPBCEGRateRoutinePersonalProperty"
+  public static final var WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_DWELLING : String = "UNAHODPWPDCCreditRateRoutineDwelling"
+  public static final var WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_PERSONAL_PROPERTY : String = "UNAHODPWPDCCreditRateRoutinePersonalProperty"
+  public static final var DP_OTHER_STRUCTURES : String = "UNAHODPOtherStructures"
+
+
 }

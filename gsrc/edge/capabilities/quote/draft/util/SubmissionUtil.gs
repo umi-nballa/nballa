@@ -4,13 +4,15 @@ uses edge.capabilities.address.dto.AddressDTO
 uses java.util.Date
 uses edge.util.helper.JurisdictionUtil
 uses edge.capabilities.address.IAddressPlugin
+uses edge.capabilities.quote.draft.dto.DraftDataDTO
+uses org.apache.commons.lang3.StringUtils
 
 class SubmissionUtil {
 
   /**
    * Creates a new submission.
    */
-  public static function newSubmission(account : Account, productCode:String, periodStartDate: Date, policyAddress : AddressDTO, termType : typekey.TermType, _addressPlugin : IAddressPlugin, ratingStyle:String=null) : Submission {
+  public static function newSubmission(account : Account, productCode:String, periodStartDate: Date, policyAddress : AddressDTO, termType : typekey.TermType, _addressPlugin : IAddressPlugin, ratingStyle:String=null, policyType:String=null) : Submission {
     var producerSelection = getProducerSelection(account, periodStartDate)
     var productSelection = getProductSelection(productCode)
 
@@ -30,6 +32,10 @@ class SubmissionUtil {
       branch.BranchName = "CUSTOM"
     }
 
+    if(StringUtils.isNotBlank(policyType)) {
+      sub.LatestPeriod.HomeownersLine_HOE.HOPolicyType = typekey.HOPolicyType_HOE.get(policyType)
+    }
+
     branch.SubmissionProcess.beginEditing()
     branch.TermType = termType == null ? typekey.TermType.TC_ANNUAL : termType
 
@@ -40,6 +46,18 @@ class SubmissionUtil {
     updateAddress(branch, policyAddress, _addressPlugin)
 
     return sub
+  }
+
+  public static function updateSubmission(submission : Submission, data : DraftDataDTO) {
+
+    if(data.QuoteType != null){
+      submission.QuoteType = data.QuoteType
+    }
+
+  }
+
+  public static function updateSubmissionFlow(submission : Submission, data : DraftDataDTO) {
+    submission.LatestPeriod.SubmissionProcess.GeneratePaymentPlans = data.GeneratePaymentPlan
   }
 
   protected static function selectUWCompany(branch:PolicyPeriod) {

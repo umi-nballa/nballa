@@ -111,7 +111,9 @@ class DefaultBindingPlugin implements IBindingPlugin {
   
   protected function getBindingForQuote(sub : Submission, period : PolicyPeriod) : BindingDataDTO {
     final var res = new BindingDataDTO()
-    res.PaymentPlans = _paymentPlanPlugin.getAvailablePaymentPlans(period)
+    if(period.SubmissionProcess.GeneratePaymentPlans){
+      res.PaymentPlans = _paymentPlanPlugin.getAvailablePaymentPlans(period)
+    }
     fillContact(res, sub)
     return res
   }

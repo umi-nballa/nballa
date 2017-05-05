@@ -112,6 +112,9 @@ class AddressDTO {
   @JsonProperty  
   var _autofilled : Boolean as IsAutofilled
 
+  @JsonProperty
+  var _addressScrubed : Boolean as AddressScrubed
+
   /**
    * A string representation of the address
    */

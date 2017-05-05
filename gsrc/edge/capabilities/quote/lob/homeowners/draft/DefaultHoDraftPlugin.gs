@@ -43,7 +43,11 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       return
     }
     final var hoLine = period.HomeownersLine_HOE
-    hoLine.HOPolicyType = HOPolicyType_HOE.TC_HO3
+
+    if(hoLine.HOPolicyType == null){
+      hoLine.HOPolicyType = HOPolicyType_HOE.TC_HO3
+    }
+
     hoLine.Dwelling.setPolicyTypeAndDefaults()
 
     hoLine.syncQuestions(getLineQuestionSets(period))

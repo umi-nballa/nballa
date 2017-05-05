@@ -19,7 +19,7 @@ uses java.lang.Exception
  * Default implementation of quoting plugin.
  */
 class DefaultQuotePlugin implements IQuotePlugin {
-  
+
   private static final var LOGGER = Logger.forCategory(DefaultQuotePlugin.Type.QName)
   
   private var _lobPlugin : ILobQuotingPlugin <QuoteLobDataDTO>
@@ -35,7 +35,7 @@ class DefaultQuotePlugin implements IQuotePlugin {
 
 
   override function quoteAllOfferings(sub : Submission) {
-    createInitialOfferings(sub)
+    //createInitialOfferings(sub)
     editPeriod(sub.SelectedVersion)
     doQuote(sub)
   }
@@ -156,6 +156,8 @@ class DefaultQuotePlugin implements IQuotePlugin {
     for (period in submission.ActivePeriods) {
       quoteSinglePeriod(period)
     }
+
+       //quoteSinglePeriod(submission.LatestPeriod)
   }
   
   

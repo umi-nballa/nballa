@@ -13,7 +13,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNABaseFloodElevTuna2_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner?.Dwelling.OverrideBaseFloodElVal_Ext || homeowner.Dwelling.BaseFloodElVal_Ext==null)
+    if(homeowner?.Dwelling.FloodCoverage_Ext && (homeowner?.Dwelling.OverrideBaseFloodElVal_Ext || homeowner.Dwelling.BaseFloodElVal_Ext==null))
       return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()

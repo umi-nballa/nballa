@@ -14,7 +14,7 @@ class UNAUWWindPoolWindCov_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
          //43,63,554,34,38, or 715
-    if(homeowner.Dwelling.HOLocation.WindPool_Ext!=null || homeowner.Dwelling.HOLocation.WindPoolOverridden_Ext!=null &&
+    if((homeowner.Dwelling.HOLocation.WindPool_Ext!=null || homeowner.Dwelling.HOLocation.WindPoolOverridden_Ext!=null) &&
     !homeowner.HODW_WindHurricaneHailExc_HOE_ExtExists &&
         (homeowner.Dwelling.HOLocation.territoryCodeOrOverride!="43" &&
             homeowner.Dwelling.HOLocation.territoryCodeOrOverride!="63" &&

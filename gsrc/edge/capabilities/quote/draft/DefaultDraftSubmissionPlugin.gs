@@ -104,13 +104,10 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     final var account = _accountPlugin.updateOrCreateNewQuoteAccount(existingAccount, productCode, data.AccountHolder, data.PolicyAddress)
     ensureProductAvailable(account, data)
 
-    final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin,data.RatingStyle)
+    final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin,data.RatingStyle, data.PolicyType)
     aSubmission.ActivePeriods.each(\period -> period.syncQuestions(draftQuestions(aSubmission)))
     _lobPlugin.updateNewDraftSubmission(aSubmission.SelectedVersion, data.Lobs)
 
-    if(StringUtils.isNotBlank(data.PolicyType)) {
-      aSubmission.LatestPeriod.HomeownersLine_HOE.HOPolicyType = typekey.HOPolicyType_HOE.get(data.PolicyType)
-    }
 
     return aSubmission
   }
@@ -146,7 +143,9 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     }
 
     QuestionSetUtil.update(submission.SelectedVersion, draftQuestions(submission), qsAnswers)
-    
+
+    SubmissionUtil.updateSubmission(submission, data)
+
     _lobPlugin.updateExistingDraftSubmission(submission.SelectedVersion, data.Lobs)
   }
 

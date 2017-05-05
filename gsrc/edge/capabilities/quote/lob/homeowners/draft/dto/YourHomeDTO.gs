@@ -54,7 +54,7 @@ class YourHomeDTO {
   @JsonProperty @Required
   var hODW_HODebrisRemoval_HOE_Ext : int as HODW_HODebrisRemoval_HOE_Ext
   @JsonProperty @Required
-  var hOPL_SpecialLimitDeductibleAssessment_HOETerm : int as HOPL_SpecialLimitDeductibleAssessment_HOETerm
+  var hOPL_SpecialLimitDeductibleAssessment_HOETerm : String as HOPL_SpecialLimitDeductibleAssessment_HOETerm
   @JsonProperty @Required
   var hOPL_LossAssCovLimit_HOETerm : int as HOPL_LossAssCovLimit_HOETerm
   @JsonProperty @Required

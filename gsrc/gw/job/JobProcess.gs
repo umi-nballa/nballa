@@ -75,6 +75,7 @@ abstract class JobProcess implements gw.api.job.IJobProcess {
 
   var _isQuoting : boolean as readonly IsQuoting = false
   var _beanCache : WeakHashMap<MultiKey, Object> as BeanCache = {}
+  var _generatePaymentPlans : boolean as GeneratePaymentPlans = true
 
   /**
    * Constructor

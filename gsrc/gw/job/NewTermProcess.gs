@@ -20,6 +20,11 @@ abstract class NewTermProcess extends JobProcess {
   }
 
   override function setPaymentInfoWithNewQuote() {
+
+    if(this.GeneratePaymentPlans == false){
+      return
+    }
+
     // Retrieve all payment plans from billing
     var paymentPlans = _branch.retrievePaymentPlansWithoutSettingBillingAmounts()
 

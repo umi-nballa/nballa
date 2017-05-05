@@ -72,5 +72,11 @@ class DraftDataDTO {
   var _ratingStyle : String as RatingStyle
 
   @JsonProperty
+  var _quoteType : typekey.QuoteType as QuoteType
+
+  @JsonProperty
   var _policyType : String as PolicyType
+
+  @JsonProperty
+  var _generatePaymentPlan : Boolean as GeneratePaymentPlan
 }

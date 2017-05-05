@@ -25,6 +25,7 @@ uses edge.security.authorization.Authorizer
 uses edge.el.Expr
 uses edge.aspects.validation.annotations.Context
 uses edge.PlatformSupport.Bundle
+uses edge.capabilities.quote.draft.util.SubmissionUtil
 
 /**
  * Quoting handler. Manages quoting session.
@@ -274,6 +275,7 @@ class QuoteHandler implements IRpcHandler  {
     Bundle.transaction(\ bundle -> {
       sub = bundle.add(sub)
       try{
+        SubmissionUtil.updateSubmissionFlow(sub, qdd.DraftData)
         _quotingPlugin.quoteAllOfferings(sub)
       } catch(uwe : UnderwritingException) {
         //set flag for use later

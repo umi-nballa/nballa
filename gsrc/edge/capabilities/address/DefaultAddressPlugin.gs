@@ -67,6 +67,10 @@ class DefaultAddressPlugin implements IAddressPlugin {
     address.Country = dto.Country
     address.County = dto.County
     address.AddressType = dto.AddressType
+
+    if(dto.AddressScrubed != null){
+      address.addressScrub_Ext =  dto.AddressScrubed
+    }
   }
 
   /** Customers can use this to compare base fields on the address. */

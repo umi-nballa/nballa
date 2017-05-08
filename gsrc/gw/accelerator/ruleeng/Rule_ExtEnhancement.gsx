@@ -64,8 +64,6 @@ enhancement Rule_ExtEnhancement : entity.Rule_Ext {
           break
         }
     }
-
-    print("get PolicyLine returning " + returnVar)
     return returnVar
   }
 

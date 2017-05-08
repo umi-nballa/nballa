@@ -1,8 +1,9 @@
-
 package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.ActivityUtil
+uses gw.accelerator.ruleeng.IRuleAction
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,23 +12,26 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAACT29051009 implements IRuleCondition<PolicyPeriod>{
+class UNAACT29051009 implements IRuleCondition<PolicyPeriod> ,IRuleAction<PolicyPeriod, PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
     //If renewal review for agent codes (agency number) 89070, 89076, and hits an underwriting issue
 
     var pcodes = {"89070", "89076"}
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("geico_review_and_approve_renewal")
-    if (period.Job.Subtype==typekey.Job.TC_RENEWAL && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED
+
+    if (period.Job.Subtype==typekey.Job.TC_RENEWAL && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED  &&  !period.UWIssuesActiveOnly.IsEmpty
         && pcodes.containsIgnoreCase(period.ProducerCodeOfRecord.Code.substring(0,5)))
     {
-        var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
- //     activity.assignActivityToQueue(Group.finder.findByPublicId("GEICO").AssignableQueues.first(),
-   //       Group.finder.findByPublicId("GEICO"))
+      return RuleEvaluationResult.execute()
 
     }
    return RuleEvaluationResult.skip()
   }
 
+  override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("geico_review_and_approve_renewal")
+    var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+    ActivityUtil.assignActivityToQueue("GEICO", "Universal Insurance Manager's Inc", activity)
+  }
 }
 

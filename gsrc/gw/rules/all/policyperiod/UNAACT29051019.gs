@@ -1,8 +1,9 @@
-
 package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses gw.accelerator.ruleeng.IRuleAction
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,7 +12,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class UNAACT29051019 implements IRuleCondition<PolicyPeriod>{
+class UNAACT29051019 implements IRuleCondition<PolicyPeriod>, IRuleAction<PolicyPeriod, PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
 
@@ -21,17 +22,20 @@ class UNAACT29051019 implements IRuleCondition<PolicyPeriod>{
 
 
     var pcodes = {"3668", "28500", "28000", "28300", "28301", "28400", "90194", "29000", "89070", "89076"}
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("review_and_approve_bound_referral")
-    if (period.Job.Subtype==typekey.Job.TC_SUBMISSION && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED
+
+    if (period.Job.Subtype==typekey.Job.TC_SUBMISSION && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED   &&  !period.UWIssuesActiveOnly.IsEmpty
         && !pcodes.containsIgnoreCase(period.ProducerCodeOfRecord.Code.substring(0,5)))
     {
-        var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-   //   activity.assignActivityToQueue(Group.finder.findByPublicId("New Business (Other than Builder)").AssignableQueues.first(),
-     //     Group.finder.findByPublicId("New Business (Other than Builder)"))
+        return RuleEvaluationResult.execute()
 
     }
    return RuleEvaluationResult.skip()
   }
 
+  override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
+    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("review_and_approve_bound_referral")
+    var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+    ActivityUtil.assignActivityToQueue("CL UW Queue", "Universal Insurance Manager's Inc", activity)
+  }
 }
 

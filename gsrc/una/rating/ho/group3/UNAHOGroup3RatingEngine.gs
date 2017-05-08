@@ -327,7 +327,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
             _discountsOrSurchargeRatingInfo.NumOfUnitsWithinFireDivision = dwelling?.NumUnitsFireDivision_Ext.Numeric ? dwelling?.NumUnitsFireDivision_Ext.toInt() : 0
             rateTownhouseOrRowhouseSurcharge(dateRange, _hoRatingInfo.AdjustedAOPBasePremium, HOCostType_Ext.TC_TOWNHOUSEORROWHOUSESURCHARGEAOP)
           }
-          if (isMatureHomeOwnerDiscountApplicable(PolicyLine)){
+          if (isMatureHomeOwnerDiscountApplicable(PolicyLine) and not dwelling.IsSecondary){
             rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
           }
           if (dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){

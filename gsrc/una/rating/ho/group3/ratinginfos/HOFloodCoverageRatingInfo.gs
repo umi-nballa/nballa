@@ -23,7 +23,7 @@ class HOFloodCoverageRatingInfo {
   construct(floodCov : HODW_FloodCoverage_HOE_Ext){
     var dwelling = floodCov?.Dwelling
     _elevationDifference = dwelling?.AbveBlwBaseFldElvtn_Ext
-    _floodRiskType = dwelling?.getFloodRiskTypeValue(dwelling)
+    _floodRiskType = dwelling?.FloodRiskType_Ext
     _hasBasement = dwelling?.BasementHome_Ext
     _elevatedRiskCredit = dwelling?.ElevatedRiskCredit_Ext
     _postFirm = dwelling?.PostFIRM_Ext

@@ -1,8 +1,9 @@
-
 package gw.rules.all.policyperiod
 
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
+uses una.utils.ActivityUtil
+uses gw.accelerator.ruleeng.IRuleAction
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,10 +12,28 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
  * Time: 11:07 AM
  * To change this template use File | Settings | File Templates.
  */
-class DocBOPCPPWindHail implements IRuleCondition<PolicyPeriod>{
+class DocBOPCPPWindHail implements IRuleCondition<PolicyPeriod> , IRuleAction<PolicyPeriod, PolicyPeriod>{
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult {
 
-    var activityPattern = ActivityPattern.finder.getActivityPatternByCode("wind_hurricane_hail_rej_followup")
+    if(isEligible(period))
+      return RuleEvaluationResult.execute()
+
+   return RuleEvaluationResult.skip()
+  }
+
+
+   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
+     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("wind_hurricane_hail_rej_followup")
+     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
+     ActivityUtil.assignActivityToQueue("CSR Follow up Queue", "Universal Insurance Manager's Inc", activity)
+
+     var list = new AgentDocList_Ext(target)
+     list.DocumentName = "Wind or Hail Rejection"
+     target.addToAgentDocs(list)
+   }
+
+  function isEligible(period : PolicyPeriod):boolean{
+
     var windpoolBOP = "Yes"
     var windpoolCPP = "Yes"
 
@@ -36,23 +55,16 @@ class DocBOPCPPWindHail implements IRuleCondition<PolicyPeriod>{
       }
     }
 
-      if(period.BaseState.Code == typekey.State.TC_FL && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
-                if (period.BP7LineExists && windpoolBOP == "No" && period.BP7Line.ExclusionsFromCoverable?.hasMatch( \ elt -> elt.PatternCode == "BP7WindstormOrHailExcl_EXT")){
-                            var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-                           var list = new AgentDocList_Ext(period)
-                           list.DocumentName = "Wind or Hail Rejection"
-                           period.addToAgentDocs(list)
-                     }
-                else if (period.CPLineExists && windpoolCPP == "No" && period.CPLine.ExclusionsFromCoverable?.hasMatch( \ elt -> elt.PatternCode == "CPWindorHailExclusion_EXT")){
-                       var activity =  activityPattern.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-                      var list = new AgentDocList_Ext(period)
-                      list.DocumentName = "Wind or Hail Rejection"
-                      period.addToAgentDocs(list)
-                    }
+    if(period.BaseState.Code == typekey.State.TC_FL && period.Status == typekey.PolicyPeriodStatus.TC_QUOTED){
+      if (period.BP7LineExists && windpoolBOP == "No" && period.BP7Line.ExclusionsFromCoverable?.hasMatch( \ elt -> elt.PatternCode == "BP7WindstormOrHailExcl_EXT")){
+        return true
       }
-   return RuleEvaluationResult.skip()
+      else if (period.CPLineExists && windpoolCPP == "No" && period.CPLine.ExclusionsFromCoverable?.hasMatch( \ elt -> elt.PatternCode == "CPWindorHailExclusion_EXT")){
+        return true
+      }
+    }
+    return false
   }
-
 }
 
 

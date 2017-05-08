@@ -10,7 +10,7 @@
   priority="14000"
   public-id="HODW_SinkholeLoss_HOE_Ext"
   referenceDateByType="PolicyTerm">
-  <AvailabilityScript><![CDATA[return(Dwelling_HOE.Branch.Job typeis PolicyChange)?false:true]]></AvailabilityScript>
+  <AvailabilityScript><![CDATA[return (Dwelling_HOE.Branch.Job typeis PolicyChange)? Dwelling_HOE.HODW_SinkholeLoss_HOE_ExtExists : true]]></AvailabilityScript>
   <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage(HODW_SinkholeLoss_HOE_Ext.PatternCode, HODW_SinkholeLoss_HOE_Ext.Dwelling)]]></InitializeScript>
   <ExistenceScript><![CDATA[return (Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3)? ExistenceType.TC_ELECTABLE : 
 (Dwelling_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 || 

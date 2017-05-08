@@ -33,12 +33,13 @@ class Rule_ExtSorter {
       var ruleNodes = _xml.Children.where( \ child -> RULE_TYPES.containsIgnoreCase(child.QName.LocalPart))
       var metaDataNodes : List<XmlElement> = {}
 
-      ruleNodes.sortBy(\ row -> row.getAttributeValue(PUBLIC_ID))
+      ruleNodes.sortBy(\ row -> row.getAttributeValue("RuleClass"))
 
       ruleNodes?.each( \ ruleNode -> {
         newChildren.add(ruleNode)
         var relatedNodes = _xml.Children.where( \ child -> RELATED_ENTITY_NODES.containsIgnoreCase(child.QName.LocalPart) and child.getAttributeValue("Rule")?.equalsIgnoreCase(ruleNode.getAttributeValue("id")))
         relatedNodes.sortBy(\ node -> node.getAttributeValue(PUBLIC_ID))
+
 
         newChildren.addAll(relatedNodes)
       })

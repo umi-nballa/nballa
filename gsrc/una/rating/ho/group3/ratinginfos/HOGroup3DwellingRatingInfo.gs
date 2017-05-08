@@ -15,7 +15,6 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _county : String as County
   var _covALimit : BigDecimal as CovALimit
   var _ordinanceOrLawLimit : String as ordinanceOrLawLimit
-  var _ppIncreasedLimit : BigDecimal as PPIncreasedLimit
   var _limitedScreenCovLimit : int as LimitedScreenCovLimit
   var _hurricanePercentage : String as HurricanePercentage
   var _limitedFungiWetOrDryRotOrBacteriaSectionILimit : int as LimitedFungiWetOrDryRotOrBacteriaSectionILimit

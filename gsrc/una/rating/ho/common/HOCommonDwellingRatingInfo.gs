@@ -40,7 +40,7 @@ class HOCommonDwellingRatingInfo {
       }
     }
     if(dwelling.HODW_Personal_Property_HOEExists and PolicyType != HOPolicyType_HOE.TC_HO6){
-      _personalPropertyIncreasedLimit = dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.LimitDifference
+      _personalPropertyIncreasedLimit = dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.LimitDifference
       } else if (dwelling.HODW_Personal_Property_HOEExists and PersonalPropertyLimit > 30000){
       _personalPropertyIncreasedLimit = (PersonalPropertyLimit - 30000)
       }

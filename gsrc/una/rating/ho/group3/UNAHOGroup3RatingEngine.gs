@@ -103,7 +103,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateWaterBackupSumpOverflowCoverage(dwellingCov, dateRange)
         break
       case HODW_Personal_Property_HOE:
-        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
+        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 and _dwellingRatingInfo.IncreasedPersonalPropertyPremium > 0)
           rateIncreasedPersonalProperty(dwellingCov, dateRange)
         break
       case HODW_BusinessProperty_HOE_Ext:

@@ -81,12 +81,7 @@ class ActivityUtil {
       if (pattern != null and period.Job.AllOpenActivities.firstWhere(\elt -> elt.ActivityPattern.Code == "OFAC1") == null)
       {
         var activity = pattern?.createJobActivity(period.Bundle, period.Job, null, null, null, null, null, null, null)
-
-        var queue: AssignableQueue = AssignableQueue.finder?.findVisibleQueuesForUser(User.util.CurrentUser)?.firstWhere(\elt -> elt.DisplayName == "CSR Queue") as AssignableQueue
-
-        if (activity != null and queue != null){
-          activity.assignToQueue(queue)
-        }
+        assignActivityToQueue("CSR Queue", "CSR Queue", activity)
       }
 
       //create custom history event

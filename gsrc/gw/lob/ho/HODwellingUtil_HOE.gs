@@ -1135,9 +1135,6 @@ class HODwellingUtil_HOE {
     return false
   }
 
-  static function totalBCEG(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse) : boolean {
-    return true
-  }
 
   static function getMatchLevel(thePropertyDataModelList : List<PropertyDataModel>) : typekey.TUNAMatchLevel_Ext {
     var res = typekey.TUNAMatchLevel_Ext.TC_USERSELECTED
@@ -1232,9 +1229,6 @@ class HODwellingUtil_HOE {
     return dwelling?.OverrideStoriesNumber_Ext ? dwelling.NoofStoriesOverridden_Ext : dwelling.StoriesNumber
   }
 
-  static function getConstructionType(dwelling:Dwelling_HOE) : String {
-    return ""
-  }
 
   public static function isWindPoolEligible(theDwelling: Dwelling_HOE) : boolean{
     var resultEligible : boolean = false

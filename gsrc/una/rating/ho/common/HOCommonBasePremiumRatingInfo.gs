@@ -57,13 +57,11 @@ class HOCommonBasePremiumRatingInfo {
       _noHitOrScoreIndicator = true
     }
 
-    if(dwelling.FirstTimeDeededHome_Ext){
-      if(_creditScore == null or _creditScore == 0){
+    if(dwelling.FirstTimeDeededHome_Ext and dwelling.BuilderWarranty_Ext){
         if(Jurisdiction.TF_FIRSTTIMEDEEDEDHOMETYPES.TypeKeys.contains(dwelling.HOLine.BaseState)){
           _noHitOrScoreIndicator = false
           _creditScore = ConfigParamsUtil.getInt(TC_DEFAULTCREDITSCORE, dwelling.HOLine.BaseState)
         }
-      }
     }
 
 

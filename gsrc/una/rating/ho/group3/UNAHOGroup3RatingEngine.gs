@@ -1228,7 +1228,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       totalDiscountAmount += _hoRatingInfo.AgeOfHomeDiscount
     if (_hoRatingInfo.HigherAllPerilDeductibleAOP < 0)
       totalDiscountAmount += _hoRatingInfo.HigherAllPerilDeductibleAOP
-    _hoRatingInfo.DiscountAdjustment = rateMaximumDiscountAdjustment(dateRange, totalDiscountAmount, _hoRatingInfo.AdjustedBaseClassPremium)
+    _hoRatingInfo.DiscountAdjustment = rateMaximumDiscountAdjustment(dateRange, totalDiscountAmount, _hoRatingInfo.AdjustedAOPBasePremium)
   }
 
   private function determineAge(year : int) : int{

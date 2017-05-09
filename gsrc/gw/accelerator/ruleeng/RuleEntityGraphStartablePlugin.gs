@@ -9,6 +9,7 @@ uses gw.api.startable.StartablePluginCallbackHandler
  * RuleEntityGraphStartablePlugin dynamically rebuilds the entity graph based
  * on the data model on startup.
  */
+@Distributed
 class RuleEntityGraphStartablePlugin implements IStartablePlugin {
   /** The state of the plugin. */
   var _state = StartablePluginState.Stopped

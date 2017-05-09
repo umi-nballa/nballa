@@ -16,7 +16,7 @@ class UNAUWI484919_each implements IRuleCondition<PolicyPeriod>
   override function evaluateRuleCriteria(period : PolicyPeriod) : RuleEvaluationResult
   {
 
-    if(period.PrimaryLocation.State.Code=="FL" && period.PrimaryLocation.County.equalsIgnoreCase("coastal"))
+    if(period.PrimaryLocation.State.Code=="FL" && period.PrimaryLocation.County != null && period.PrimaryLocation.County.equalsIgnoreCase("coastal"))
       {
         if(period.CPLineExists)
           {

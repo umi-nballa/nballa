@@ -174,9 +174,12 @@ class SubmissionProcess extends NewTermProcess {
     if(!_branch.ofacdetails.isOFACOrdered){
       var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
       ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
-      ActivityUtil.createOfacActivity(_branch)
-      _branch.ofacdetails.isOFACOrdered = true
 
+      if(_branch.ofaccontact.HasElements){
+        ActivityUtil.createOfacActivity(_branch)
+      }
+
+      _branch.ofacdetails.isOFACOrdered = true
     }
 
     // Validate. If anything fails validation, throw an exception

@@ -33,21 +33,21 @@ class HPXRoofAttachmentRatingHelper {
   function getRoofAttachmentPre2001A(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var estimatedDiscount = new HPXEstimatedDiscount()
     var ratingHelper = new HPXRatingHelper()
-    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_terrain_B_FL", typekey.Jurisdiction.TC_FL, {"Non-FBC", "A", "Toe Nails", "None", "Other Roof", "No SWR"})
+    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_terrain_B_FL", typekey.Jurisdiction.TC_FL, {"Non-FBC", "A", "Toe Nails", "None", "Other Roof", typekey.SecondaryWaterResis_Ext.TC_NOSWR.DisplayName})
     return estimatedDiscount.getEstimatedDiscount(ratingFactor, 0.00, "PRE_2001_MAX_ROOF_ATTACHMENT_A_DISCOUNT", "Maximum Discount for Roof Attachment A")
   }
 
   function getRoofAttachmentPre2001B(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var estimatedDiscount = new HPXEstimatedDiscount()
     var ratingHelper = new HPXRatingHelper()
-    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_terrain_B_FL", typekey.Jurisdiction.TC_FL, {"Non-FBC", "B", "Toe Nails", "None", "Other Roof", "No SWR"})
+    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_terrain_B_FL", typekey.Jurisdiction.TC_FL, {"Non-FBC", "B", "Toe Nails", "None", "Other Roof", typekey.SecondaryWaterResis_Ext.TC_NOSWR.DisplayName})
     return estimatedDiscount.getEstimatedDiscount(ratingFactor, 0.00, "PRE_2001_MAX_ROOF_ATTACHMENT_B_DISCOUNT", "Maximum Discount for Roof Attachment B")
   }
 
   function getRoofAttachmentPre2001C(policyPeriod : PolicyPeriod) : HPXEstimatedDiscount {
     var estimatedDiscount = new HPXEstimatedDiscount()
     var ratingHelper = new HPXRatingHelper()
-    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_terrain_B_FL", typekey.Jurisdiction.TC_FL, {"Non-FBC", "C", "Toe Nails", "None", "Other Roof", "No SWR"})
+    var ratingFactor = ratingHelper.getRatingFactor(policyPeriod, "ho_windstorm_loss_reduction_terrain_B_FL", typekey.Jurisdiction.TC_FL, {"Non-FBC", "C", "Toe Nails", "None", "Other Roof", typekey.SecondaryWaterResis_Ext.TC_NOSWR.DisplayName})
     return estimatedDiscount.getEstimatedDiscount(ratingFactor, 0.00, "PRE_2001_MAX_ROOF_ATTACHMENT_C_DISCOUNT", "Maximum Discount for Roof Attachment C")
   }
 }

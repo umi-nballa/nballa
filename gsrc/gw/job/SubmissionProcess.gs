@@ -12,6 +12,7 @@ uses java.lang.Exception
 uses gw.api.system.PCLoggerCategory
 uses una.pageprocess.submission.JobWizardToolBarPCFController
 uses una.utils.ActivityUtil
+uses una.config.activity.OFACWorkController
 
 /**
  * Encapsulates the actions taken within a Submission job.
@@ -175,9 +176,9 @@ class SubmissionProcess extends NewTermProcess {
       var ofacInterface=una.integration.service.gateway.plugin.GatewayPlugin.makeOfacGateway()
       ofacInterface.validateOFACEntity(_branch.AllContacts,_branch)
 
-      if(_branch.ofaccontact.HasElements){
-        ActivityUtil.createOfacActivity(_branch)
-      }
+      _branch.ofaccontact.each( \ ofacContact -> {
+        new OFACWorkController().beginWorkItemFlow(_branch, ofacContact)
+      })
 
       _branch.ofacdetails.isOFACOrdered = true
     }

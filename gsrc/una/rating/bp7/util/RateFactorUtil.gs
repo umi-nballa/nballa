@@ -205,6 +205,13 @@ class RateFactorUtil {
     }
   }
 
+  static function setSprinklerFactor(building : BP7Building){
+    if(!building.Sprinklered){
+      _sprinklerFactorForBPP = 1.0
+      _sprinklerFactorForBuildings = 1.0
+    }
+  }
+
   /**
   *  Sets the building adjustment factor
    */
@@ -212,6 +219,7 @@ class RateFactorUtil {
     setBuildingDeductibleFactor(line, minimumRatingLevel, building)
     setBCEGFactor(line, minimumRatingLevel, building)
     setWindExclusionFactor(line, minimumRatingLevel, building)
+    setSprinklerFactor(building)
     var propertyBuildingAdjustmentFactor = _buildingDeductibleFactor * _windExclusionFactor * _sprinklerFactorForBuildings * _bcegFactor
     return (Math.round((propertyBuildingAdjustmentFactor*100) as float))/100.00
   }
@@ -221,8 +229,9 @@ class RateFactorUtil {
    */
   static function setPropertyContentsAdjustmentFactor(line : BP7Line, minimumRatingLevel : RateBookStatus, classification : BP7Classification) : BigDecimal{
     setContentDeductibleFactor(line, minimumRatingLevel, classification)
-    setBCEGFactor(line, minimumRatingLevel, classification?.building)
-    setWindExclusionFactor(line, minimumRatingLevel, classification?.building)
+    setBCEGFactor(line, minimumRatingLevel, classification?.Building)
+    setWindExclusionFactor(line, minimumRatingLevel, classification?.Building)
+    setSprinklerFactor(classification?.Building)
     var propertyContentAdjustmentFactor = _contentDeductibleFactor * _windExclusionFactor * _sprinklerFactorForBPP * _bcegFactor
     return (Math.round((propertyContentAdjustmentFactor*100) as float))/100.00
   }

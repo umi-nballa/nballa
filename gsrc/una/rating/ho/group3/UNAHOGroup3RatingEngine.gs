@@ -129,7 +129,6 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecialLimitsPersonalPropertyCoverage(dwellingCov, dateRange)
         break
       case HODW_OrdinanceCov_HOE:
-      if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)
         rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
         break
       case HODW_LimitedScreenCov_HOE_Ext:

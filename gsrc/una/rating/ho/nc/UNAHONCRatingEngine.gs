@@ -18,6 +18,7 @@ uses una.rating.ho.common.HOSpecialLimitsPersonalPropertyRatingInfo
 uses una.rating.ho.common.HOWatercraftLiabilityCovRatingInfo
 uses una.rating.ho.common.HOAddResidenceRentedToOthersCovRatingInfo
 uses una.rating.ho.common.HOScheduledPersonalPropertyRatingInfo
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -188,8 +189,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         if(PolicyLine.Dwelling?.HeatSrcWoodBurningStove)
           rateWoodBurningStove(dateRange)
       }
-
-    }
+  }
 
   /**
    *  Function to rate the Wood Burning Stove Premium
@@ -250,6 +250,23 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       addCost(costData)
     if (_logger.DebugEnabled)
       _logger.debug("Loss Assessment Earthquake Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
+   *  Function to rate the Affinity discount
+   */
+  function rateAffinityDiscount(dateRange: DateRange) {
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateAffinityDiscount", this.IntrinsicType)
+    var rateRoutineParameterMap = getHODiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.AFFINITY_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_AFFINITYDISCOUNT,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+      _hoRatingInfo.AffinityDiscount = costData?.ActualTermAmount
+    }
+    if (_logger.DebugEnabled)
+      _logger.debug("Affinity Discount Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -674,6 +691,14 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     return {
         TC_POLICYLINE -> PolicyLine,
         TC_OUTBOARDMOTORSANDWATERCRAFTRATINGINFO_Ext -> new HOWatercraftLiabilityCovRatingInfo(item, lineCov)
+    }
+  }
+
+  private function getHODiscountsOrSurchargesParameterSet(line: PolicyLine, discountOrSurchargeRatingInfo: HONCDiscountsOrSurchargeRatingInfo, state: Jurisdiction): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> state,
+        TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
     }
   }
 

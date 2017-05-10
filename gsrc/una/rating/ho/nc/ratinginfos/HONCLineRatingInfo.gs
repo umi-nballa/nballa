@@ -16,6 +16,7 @@ class HONCLineRatingInfo {
   var _firePersonalLiabilityLimit : BigDecimal as FirePersonalLiabilityLimit
   var _fireMedicalPaymentsLimit : BigDecimal as FireMedicalPaymentsLimit
   var _additionalResidencesRentedToOthers: int as AdditionalResidencesRentedToOthers
+  var _line : HomeownersLine_HOE as Line
 
   construct(line: HomeownersLine_HOE){
     _personalInjuryAgg = line.HOLI_PersonalInjuryAggregate_NC_HOE_ExtExists
@@ -29,5 +30,14 @@ class HONCLineRatingInfo {
   _numberOfResidenceFamily = line?.HOLI_AddResidenceRentedtoOthers_HOE?.CoveredLocations*.NumberOfFamilies?.atMostOne()
 
 
+  }
+
+
+  property get AgeOfHome() : int {
+    return  this.Line?.Dwelling?.PolicyPeriod?.EditEffectiveDate.YearOfDate -  YearForAgeOfHomeCalc
+  }
+
+  property get YearForAgeOfHomeCalc() : int{
+    return Line.Dwelling.OverrideYearbuilt_Ext? Line.Dwelling.YearBuiltOverridden_Ext : Line.Dwelling.YearBuilt
   }
 }

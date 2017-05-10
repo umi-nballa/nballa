@@ -35,7 +35,7 @@
       label="displaykey.Web.ActivityDetail.Button.Skip"
       visible="activity.canSkip()"/>
     <ToolbarButton
-      action="if(activity.SubStatus== &quot;Suspended&quot;)activity.SubStatus=&quot;&quot;;web.activity.ActivityUtil.completeActivity(activity, note); web.workspace.WorkspaceUtil.closeWorksheetIfActiveAndRefreshTop(CurrentLocation);una.config.activity.OfacUtil.createPostCompleteActivityForOfac(activity)"
+      action="if(activity.SubStatus== &quot;Suspended&quot;)activity.SubStatus=&quot;&quot;;web.activity.ActivityUtil.completeActivity(activity, note); web.workspace.WorkspaceUtil.closeWorksheetIfActiveAndRefreshTop(CurrentLocation); new una.config.activity.OFACWorkController().advanceWorkItems({activity})"
       hideIfReadOnly="true"
       id="ActivityDetailToolbarButtons_CompleteButton"
       label="displaykey.Web.ActivityDetail.Button.Complete"

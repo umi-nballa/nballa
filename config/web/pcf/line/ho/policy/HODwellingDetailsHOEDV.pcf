@@ -692,6 +692,7 @@
           required="true"
           value="dwelling.OccupancyVacant"
           visible="dwelling.Occupancy == typekey.DwellingOccupancyType_HOE.TC_VACANT"/> -->
+        <InputDivider/>
         <BooleanRadioInput
           editable="true"
           id="MultiPolicyDiscount_Ext"
@@ -700,23 +701,44 @@
           visible="gw.lob.ho.HODwellingUtil_HOE.isMultiPolicyDiscountAvailable(policyPeriod)">
           <PostOnChange/>
         </BooleanRadioInput>
-        <RangeInput
-          editable="true"
-          id="HOPolicyType"
-          label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
-          required="false"
-          value="(dwelling.PolicyLine as HomeownersLine_HOE).TypeofPolicy_Ext"
-          valueRange="gw.lob.ho.HODwellingUtil_HOE.getTypeOfPolicy(dwelling)"
+        <ListViewInput
+          labelAbove="true"
           visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext">
-          <PostOnChange/>
-        </RangeInput>
-        <Input
-          editable="true"
-          id="PolicyNumber_Ext"
-          label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
-          numEntriesPerColumn="14"
-          value="(dwelling.PolicyLine as HomeownersLine_HOE).PolicyNumber_Ext"
-          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"/>
+          <Toolbar>
+            <IteratorButtons
+              addLabel="displaykey.Button.Add"
+              iterator="MultiPolicyPoliciesLV"
+              removeLabel="displaykey.Button.Remove"/>
+          </Toolbar>
+          <ListViewPanel
+            id="MultiPolicyPoliciesLV">
+            <RowIterator
+              checkBoxVisible="true"
+              editable="true"
+              elementName="multiDiscPolicy"
+              hasCheckBoxes="true"
+              toCreateAndAdd="return new MultiPolicyDiscPolicy_Ext(policyPeriod)"
+              toRemove="dwelling.Branch.removeFromMultiPolicyDiscountPolicies_Ext(multiDiscPolicy)"
+              value="dwelling.Branch.MultiPolicyDiscountPolicies_Ext">
+              <Row>
+                <RangeCell
+                  editable="true"
+                  id="TypeofPolicy"
+                  label="displaykey.Web.Homeowners.TypeofPolicy_Ext"
+                  required="false"
+                  value="multiDiscPolicy.PolicyType"
+                  valueRange="gw.lob.ho.HODwellingUtil_HOE.getTypeOfPolicy(dwelling)"/>
+                <Cell
+                  editable="true"
+                  id="PolicyNumber"
+                  label="displaykey.Web.Homeowners.Dwelling.CAFirelineInfo.PolicyNumber_Ext"
+                  required="false"
+                  value="multiDiscPolicy.PolicyNumber"/>
+              </Row>
+            </RowIterator>
+          </ListViewPanel>
+        </ListViewInput>
+        <InputDivider/>
         <BooleanRadioInput
           editable="true"
           id="InsuredTenantDiscount_Ext"

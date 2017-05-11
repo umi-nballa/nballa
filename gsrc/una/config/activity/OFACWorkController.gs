@@ -58,9 +58,8 @@ class OFACWorkController {
 
       var nextActivity = pattern.createJobActivity(gw.transaction.Transaction.Current, ofacContact.Branch.Job, null, null, null, null, null, null, null)
 
-      nextActivity.AssociatedEntity = ofacContact
-
       if(nextActivity != null){
+        nextActivity.AssociatedEntity = ofacContact
         ActivityUtil.assignActivityToQueue(queue, queue, nextActivity)
       }
 

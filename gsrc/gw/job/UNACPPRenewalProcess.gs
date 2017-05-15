@@ -1,6 +1,7 @@
 package gw.job
 
 uses gw.api.job.JobProcessLogger
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,7 +18,7 @@ class UNACPPRenewalProcess extends AbstractUNARenewalProcess {
   }
 
   override function pendingRenewalFirstCheck(){
-    createRenewalActivity(TC_UNDERWRITER, REVIEW_RENEWAL_ACTIVITY)
+    createRenewalActivity(REVIEW_RENEWAL_ACTIVITY, ActivityUtil.ACTIVITY_QUEUE.CL_UW)
     super.pendingRenewalFirstCheck()
   }
 

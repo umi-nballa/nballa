@@ -11,6 +11,7 @@ uses java.util.ArrayList
 uses java.util.HashSet
 uses java.lang.reflect.Array
 uses java.lang.System
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -140,8 +141,10 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
 
   private function createAutoIssuedRenewalActivity(policyPeriod : PolicyPeriod, patternCode : String) {
     var pattern = ActivityPattern.finder.findActivityPatternsByCode(patternCode)?.atMostOne()
-    var activity = pattern.createPolicyActivity(policyPeriod.Bundle, policyPeriod.Policy, null, null, null, null, null, null, null)
-    activity.assignActivityToQueue(null, null)  //TODO tlv this needs to be assigned and the subject / description need to be defined by busine
+    var activity = pattern.createJobActivity(policyPeriod.Bundle, policyPeriod.Job, null, null, null, null, null, null, null)
+    var queue = (policyPeriod.HomeownersLine_HOEExists) ? ActivityUtil.ACTIVITY_QUEUE.RENEWALS : ActivityUtil.ACTIVITY_QUEUE.CL_UW
+
+    ActivityUtil.assignActivityToQueue(queue, queue, activity)
   }
 
   override function doWorkPerBatchRun(){

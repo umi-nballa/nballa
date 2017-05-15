@@ -4,8 +4,6 @@ package gw.rules.all.policyperiod
 uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
 uses gw.accelerator.ruleeng.IRuleAction
-uses edge.util.helper.UserUtil
-uses gw.api.database.Query
 uses una.utils.ActivityUtil
 
 /**
@@ -41,7 +39,7 @@ class UNAACT29051063 implements IRuleCondition<PolicyPeriod>, IRuleAction<Policy
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult) {
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("validate_multipolicy_discount")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue("CSR Queue", "CSR Queue", activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR, ActivityUtil.ACTIVITY_QUEUE.CSR, activity)
   }
 }
 

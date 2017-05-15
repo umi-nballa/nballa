@@ -29,7 +29,7 @@ class DocAffinityDiscount implements IRuleCondition<PolicyPeriod> , IRuleAction<
     //Create Activity
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("affinity_discount_follow_up")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue("CSR Follow up Queue", "Universal Insurance Manager's Inc", activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, activity)
 
     // add the document to the list on period
     var list = new AgentDocList_Ext(target)

@@ -24,7 +24,7 @@ class DocAlarmCertificate implements IRuleCondition<PolicyPeriod>,IRuleAction<Po
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult) {
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("protective_device_follow_up")
       var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-      ActivityUtil.assignActivityToQueue("CSR Follow up Queue", "Universal Insurance Manager's Inc", activity)
+      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, activity)
 
       var list = new AgentDocList_Ext(target)
       list.DocumentName = "Alarm Certificate or Billing Statement"

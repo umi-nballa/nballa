@@ -15,9 +15,34 @@ uses una.integration.mapping.document.DocumentActivity
  * Time: 4:10 PM
  */
 class ActivityUtil {
+  public enum ACTIVITY_QUEUE {
+    NEW_BUSINESS("New Business (Other than Builder)"),
+    BUILDER_ACCOUNTS("Builder Accounts"),
+    GEICO("Geico"),
+    UW_ENDORSEMENTS("UW Endorsements"),
+    RENEWALS("Renewals"),
+    UW_INSPECTION_REVIEW("UW Inspection Review"),
+    PRIORITY_INSPECTION_REVIEW("Priority  Inspection Review"),
+    JUNIOR_UW("Junior UW Queue"),
+    SENIOR_UW("Senior UW Queue"),
+    SPECIAL_HANDLING("Special Handling Queue"),
+    CSR("CSR Queue"),
+    CSR_INSPECTION("CSR Inspection Queue"),
+    CSR_FOLLOW_UP("CSR Follow up Queue"),
+    CL_UW("CL UW Queue"),
+    CL_SR_UW("CL Sr UW Queue"),
+    COMPLIANCE_OFAC("Compliance OFAC"),
+    CSR_MANAGER("CSR Manager Queue"),
+    CL_UW_FOLLOW_UP("CL UW Follow up Queue")
+
+    private var _name : String as QueueName
+
+    private construct(name : String){
+      this._name = name
+    }
+  }
 
   //Function to check open activities
-
   public static function hasOpenActivity(period: PolicyPeriod, subject: String): Boolean {
     var openActivities = Activity.finder.findOpenActivitiesByPolicy(period.Policy)
     for (activity in openActivities) {

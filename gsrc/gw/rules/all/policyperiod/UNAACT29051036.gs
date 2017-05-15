@@ -4,6 +4,7 @@ uses gw.accelerator.ruleeng.IRuleCondition
 uses gw.accelerator.ruleeng.RuleEvaluationResult
 uses gw.accelerator.ruleeng.IRuleAction
 uses una.utils.ActivityUtil
+uses una.utils.ActivityUtil.ACTIVITY_QUEUE
 
 /**
  * Created with IntelliJ IDEA.
@@ -29,7 +30,7 @@ class UNAACT29051036 implements IRuleCondition<PolicyPeriod>  , IRuleAction<Poli
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_review_new_bus_app")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue("CL UW Queue", "Universal Insurance Manager's Inc", activity)
+    ActivityUtil.assignActivityToQueue(ACTIVITY_QUEUE.CL_UW, ACTIVITY_QUEUE.CL_UW, activity)
   }
 }
 

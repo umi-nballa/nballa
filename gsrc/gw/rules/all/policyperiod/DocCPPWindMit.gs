@@ -28,7 +28,7 @@ class DocCPPWindMit implements IRuleCondition<PolicyPeriod>, IRuleAction<PolicyP
     override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("CRP_current_wind_mitigation")
       var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-      ActivityUtil.assignActivityToQueue("CL UW Queue", "Universal Insurance Manager's Inc", activity)
+      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW, ActivityUtil.ACTIVITY_QUEUE.CL_UW, activity)
       var list = new AgentDocList_Ext(target)
       list.DocumentName = "Wind Mitigation Forms"
       target.addToAgentDocs(list)

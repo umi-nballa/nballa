@@ -28,7 +28,6 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
    final static var DATE_FORMAT_RECEIVED = "MMddyyyy"
    final static var LAST_INSPECTION_DATE_FORMAT = "yyyy-MM-dd"
    final static var NOTES_SUBJECT = "Inspection Vendors"
-   final static var CSR_FOLLOW_UP_QUEUE = "CSR Follow up Queue"
    final static var INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE = "inspection_ordered"
    var CLASS_NAME=PropertyInspectionsInboundFileProcessingPlugin.Type.DisplayName
 
@@ -92,7 +91,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       policyChangePeriod.PolicyChangeProcess.bind()
       var activity = ActivityUtil.createActivityAutomatically(policyChangePeriod, INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE)
       if(activity.canAssign()){
-        ActivityUtil.assignActivityToQueue(CSR_FOLLOW_UP_QUEUE, CSR_FOLLOW_UP_QUEUE,activity)
+        ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP,activity)
       }
 
       if(policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne()!= null &&

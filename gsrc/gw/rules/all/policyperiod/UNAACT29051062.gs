@@ -33,7 +33,7 @@ class UNAACT29051062 implements IRuleCondition<PolicyPeriod> , IRuleAction<Polic
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("critical360_data_changed")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue("CSR Queue", "Universal Insurance Manager's Inc", activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR, ActivityUtil.ACTIVITY_QUEUE.CSR, activity)
   }
 }
 

@@ -29,7 +29,7 @@ class UNAACT29051053 implements IRuleCondition<PolicyPeriod>, IRuleAction<Policy
     override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_renewal_payment_not_received")
       var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-      ActivityUtil.assignActivityToQueue("CL UW Queue", "Universal Insurance Manager's Inc", activity)
+      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW, ActivityUtil.ACTIVITY_QUEUE.CL_UW, activity)
     }
 
 }

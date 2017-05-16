@@ -53,6 +53,12 @@ class QuoteUtil {
     }
   }
 
+  public static function fillBasePropertyTotalAmount(dto : QuoteDTO, pp : PolicyPeriod){
+    if(pp.TotalCostRPT != null) {
+      dto.Total = AmountDTO.fromMonetaryAmount(pp.TotalCostRPT)
+    }
+  }
+
   private static function monthsBetweenPeriodStartAndEnd(start: Date, end: Date) : int{
     var startCalendar = new GregorianCalendar();
     startCalendar.setTime(start);

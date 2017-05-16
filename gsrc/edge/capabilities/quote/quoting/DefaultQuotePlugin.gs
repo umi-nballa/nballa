@@ -25,6 +25,7 @@ class DefaultQuotePlugin implements IQuotePlugin {
   private var _lobPlugin : ILobQuotingPlugin <QuoteLobDataDTO>
   private var _validationLevelPlugin : IQuoteValidationLevelPlugin
 
+
   @ForAllGwNodes
   @Param("lobPlugin", "Line-of-business extension plugin")
   @Param("validationLevelPlugin", "Validation level plugin")
@@ -77,9 +78,13 @@ class DefaultQuotePlugin implements IQuotePlugin {
 
   override function toQuoteDTO(period : PolicyPeriod) : QuoteDTO {
     final var res = new QuoteDTO()
-    QuoteUtil.fillBaseProperties(res, period)
-    res.IsCustom = period == QuoteUtil.getBasePeriod(period.Submission)
-    res.Lobs = _lobPlugin.getQuoteDetails(period)
+    if(period.SubmissionProcess?.OutputPremiumOnly == false) {
+      QuoteUtil.fillBaseProperties(res, period)
+      res.IsCustom = period == QuoteUtil.getBasePeriod(period.Submission)
+      res.Lobs = _lobPlugin.getQuoteDetails(period)
+    } else{
+      QuoteUtil.fillBasePropertyTotalAmount(res, period)
+    }
     return res
   }
 
@@ -272,4 +277,5 @@ class DefaultQuotePlugin implements IQuotePlugin {
   protected function hasCustomQuote(sub : Submission) : boolean {
     return sub.ActivePeriods.length >= 2
   }
+
 }

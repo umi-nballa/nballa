@@ -84,7 +84,6 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       }
 
       if(PolicyLine.MultiPolicyDiscount_Ext){
-        _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
         rateMultiLineDiscount(dateRange)
       }
 
@@ -530,13 +529,25 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   function rateMultiLineDiscount(dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateMultiLineDiscount", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MULTI_LINE_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_MULTILINEDISCOUNT,
-        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null){
-      addCost(costData)
-      _hoRatingInfo.MultiLineDiscount = costData?.ActualTermAmount
+    var costMap = new java.util.HashMap<typekey.TypeofPolicy_Ext, CostData>()
+    var policyTypes = PolicyLine.Branch.MultiPolicyDiscountPolicies_Ext*.PolicyType.toSet()
+    if(policyTypes.contains(typekey.TypeofPolicy_Ext.TC_HOMEOWNER) and policyTypes.contains(typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE) ){
+      policyTypes.remove(typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE)
     }
+
+    policyTypes.each( \ elt -> {
+      _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = elt
+      var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+      var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MULTI_LINE_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_MULTILINEDISCOUNT,
+          RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      costMap.put(elt, costData)
+    })
+
+    var actualCost = costMap.values().first()
+    actualCost.ActualTermAmount = costMap.values()*.ActualTermAmount.sum()
+    addCost(actualCost)
+    _hoRatingInfo.MultiLineDiscount = actualCost?.ActualTermAmount
+
     if(_logger.DebugEnabled)
       _logger.debug("Multi Line Discount Rated Successfully", this.IntrinsicType)
   }

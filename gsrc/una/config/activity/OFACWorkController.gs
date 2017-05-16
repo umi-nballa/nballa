@@ -15,7 +15,7 @@ uses gw.api.email.EmailUtil
  * TLV - refactored 5/9/17  (renamed from OFACUtil.gs to OFACWorkController.gs)
  */
 class OFACWorkController {
-  private static final var OFAC_ACTIVITY_PATTERN_CODES_TO_QUEUE : Map<String, String> = {"OFAC1" -> "CSR Queue", "OFAC2" -> "Compliance OFAC", "OFAC3" -> "CSR Manager Queue"}
+  private static final var OFAC_ACTIVITY_PATTERN_CODES_TO_QUEUE : Map<String, String> = {"OFAC1" -> ActivityUtil.ACTIVITY_QUEUE.CSR, "OFAC2" -> ActivityUtil.ACTIVITY_QUEUE.COMPLIANCE_OFAC, "OFAC3" -> ActivityUtil.ACTIVITY_QUEUE.CSR_MANAGER}
   private static final var ACTIVITY_PATTERN_KEYS = {"OFAC1", "OFAC2", "OFAC3"}
   private static final var NUM_STEPS = ACTIVITY_PATTERN_KEYS.size()
   private static final var OFAC_COMPLIANCE_EMAIL = "Compliance@uihna.com"

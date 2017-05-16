@@ -10,6 +10,7 @@ uses gw.plugin.Plugins
 uses gw.plugin.note.impl.LocalNoteTemplateSource
 uses gw.api.email.EmailContact
 uses gw.api.email.EmailUtil
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -158,7 +159,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     var consentToRateActivityPattern = ActivityPattern.finder.findActivityPatternsByCode(CONSENT_TO_RATE_ACTIVITY_PATTERN).atMostOne()
 
     if(shouldRequestConsentToRate()){
-      var consentToRateActivity = createRenewalActivity(TC_UNDERWRITER, CONSENT_TO_RATE_ACTIVITY_PATTERN)
+      var consentToRateActivity = createRenewalActivity(CONSENT_TO_RATE_ACTIVITY_PATTERN, ActivityUtil.ACTIVITY_QUEUE.JUNIOR_UW)
 
       Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)

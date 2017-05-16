@@ -9,6 +9,7 @@ uses gw.plugin.job.IPolicyRenewalPlugin
 uses java.lang.Throwable
 uses gw.job.uw.UWAuthorityBlocksProgressException
 uses gw.api.web.job.JobWizardHelper
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -183,11 +184,15 @@ abstract class AbstractUNARenewalProcess extends RenewalProcess{
     }
   }
 
-  protected final function createRenewalActivity(role : typekey.UserRole, pattern : String) : Activity{
+  protected final function createRenewalActivity(pattern : String, queue : String) : Activity{
     var result : Activity
 
     var activityPattern = ActivityPattern.finder.findActivityPatternsByCode(pattern).single()
-    result = this.Job?.createRoleActivity(typekey.UserRole.TC_UNDERWRITER, activityPattern, activityPattern.Subject, activityPattern.Description)
+    result = activityPattern.createJobActivity(this.Job.Bundle, this.Job, null, null, null, null, null, null, null)
+
+    if(result !=  null){
+      ActivityUtil.assignActivityToQueue(queue, queue, result)
+    }
 
     return result
   }

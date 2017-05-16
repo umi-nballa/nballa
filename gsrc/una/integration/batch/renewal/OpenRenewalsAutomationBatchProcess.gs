@@ -6,6 +6,7 @@ uses java.util.Date
 uses gw.api.database.Query
 uses gw.plugin.Plugins
 uses gw.plugin.job.IPolicyRenewalPlugin
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -40,8 +41,10 @@ class OpenRenewalsAutomationBatchProcess extends AbstractPolicyPeriodBatchProces
   override function createActivityPerPolicy(eligiblePeriod: PolicyPeriod) {
     if(eligiblePeriod.Status != TC_RENEWING){
       var pattern = ActivityPattern.finder.findActivityPatternsByCode(ACTIVITY_PATTERN).atMostOne()
-      var activity = pattern?.createPolicyActivity(eligiblePeriod.Bundle, eligiblePeriod.Policy, null, null, null, null, null, null, null)
-      //activity.assignActivityToQueue(null, null)  //TODO tlv this needs to be assigned and the subject / description need to be defined by business
+      var activity = pattern?.createJobActivity(eligiblePeriod.Bundle, eligiblePeriod.Job, null, null, null, null, null, null, null)
+      var queue = (eligiblePeriod.HomeownersLine_HOEExists) ? ActivityUtil.ACTIVITY_QUEUE.RENEWALS : ActivityUtil.ACTIVITY_QUEUE.CL_UW
+
+      ActivityUtil.assignActivityToQueue(queue, queue, activity)
     }
   }
 

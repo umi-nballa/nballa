@@ -29,7 +29,7 @@ class DocBOPCPPTerrorism implements IRuleCondition<PolicyPeriod> , IRuleAction<P
    override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_terrorism_rejection_required")
      var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-     ActivityUtil.assignActivityToQueue("CL UW Follow up Queue", "Universal Insurance Manager's Inc", activity)
+     ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CL_UW_FOLLOW_UP, activity)
      var list = new AgentDocList_Ext(target)
      list.DocumentName = "Terrorism Rejection"
      target.addToAgentDocs(list)

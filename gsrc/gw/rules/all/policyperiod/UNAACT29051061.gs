@@ -27,9 +27,9 @@ class UNAACT29051061 implements IRuleCondition<PolicyPeriod> , IRuleAction<Polic
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("pending_reinstatement_risk_indicator")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
     if(target.HomeownersLine_HOEExists)
-      ActivityUtil.assignActivityToQueue("UW Queue", "Universal Insurance Manager's Inc", activity)
+      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.JUNIOR_UW, ActivityUtil.ACTIVITY_QUEUE.JUNIOR_UW, activity)
     else
-      ActivityUtil.assignActivityToQueue("CL UW Queue", "Universal Insurance Manager's Inc", activity)
+      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW, ActivityUtil.ACTIVITY_QUEUE.CL_UW, activity)
   }
 }
 

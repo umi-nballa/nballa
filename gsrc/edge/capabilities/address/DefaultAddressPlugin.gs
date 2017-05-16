@@ -55,6 +55,10 @@ class DefaultAddressPlugin implements IAddressPlugin {
   }
 
   override function updateFromDTO(address : Address, dto : AddressDTO) {
+    if(dto == null){
+      return
+    }
+
     address.AddressLine1 = dto.AddressLine1
     address.AddressLine1Kanji = dto.AddressLine1Kanji
     address.AddressLine2 = dto.AddressLine2

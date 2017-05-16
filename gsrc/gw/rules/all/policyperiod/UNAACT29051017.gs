@@ -32,7 +32,7 @@ class UNAACT29051017 implements IRuleCondition<PolicyPeriod>, IRuleAction<Policy
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("review_and_approve_uw_endorsement")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue("Endorsements", "Universal Insurance Manager's Inc", activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.UW_ENDORSEMENTS, ActivityUtil.ACTIVITY_QUEUE.UW_ENDORSEMENTS, activity)
   }
 }
 

@@ -79,4 +79,7 @@ class DraftDataDTO {
 
   @JsonProperty
   var _generatePaymentPlan : Boolean as GeneratePaymentPlan
+
+  @JsonProperty
+  var _premiumOnly : Boolean as PremiumOnly
 }

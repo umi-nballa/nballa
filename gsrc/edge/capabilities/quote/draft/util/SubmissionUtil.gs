@@ -58,6 +58,7 @@ class SubmissionUtil {
 
   public static function updateSubmissionFlow(submission : Submission, data : DraftDataDTO) {
     submission.LatestPeriod.SubmissionProcess.GeneratePaymentPlans = data.GeneratePaymentPlan
+    submission.LatestPeriod.SubmissionProcess.OutputPremiumOnly = data.PremiumOnly
   }
 
   protected static function selectUWCompany(branch:PolicyPeriod) {

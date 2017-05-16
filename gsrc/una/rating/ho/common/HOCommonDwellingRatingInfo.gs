@@ -27,6 +27,7 @@ class HOCommonDwellingRatingInfo {
   var _constructionType : typekey.RateTableConstructionType_Ext as ConstructionType
 
 
+
   construct(dwelling : Dwelling_HOE ){
     _dwellingLimit = ((dwelling.HODW_Dwelling_Cov_HOEExists)? dwelling.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value : 0) as int
     _personalPropertyLimit = (dwelling.HODW_Personal_Property_HOEExists)? dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value : 0
@@ -46,14 +47,14 @@ class HOCommonDwellingRatingInfo {
       }
 
     if(dwelling.HODW_Other_Structures_HOEExists){
-      _otherStructuresIncreasedLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
+      _otherStructuresIncreasedLimit = dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
     }
 
     _businessPropertyIncreasedLimit = (dwelling?.HODW_BusinessProperty_HOE_Ext?.HODW_OnPremises_Limit_HOETerm?.LimitDifference?.intValue())
     if(dwelling.HOLine?.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.LimitDifference > 0)
       _isPersonalLiabilityLimitIncreased = true
 
-    _otherStructuresLimit = ((dwelling.HODW_Other_Structures_HOEExists)? dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
+    _otherStructuresLimit = ((dwelling?.HODW_Other_Structures_HOEExists)? dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
 
     _territoryCode = (dwelling.HOLocation?.OverrideTerritoryCode_Ext)? dwelling.HOLocation?.TerritoryCodeOverridden_Ext : dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
 

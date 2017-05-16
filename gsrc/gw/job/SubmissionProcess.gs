@@ -24,6 +24,7 @@ uses una.config.activity.OFACWorkController
 class SubmissionProcess extends NewTermProcess {
 
   var jobWizardToolBarPCFController = new JobWizardToolBarPCFController()
+  var _outputPremiumOnly : boolean as OutputPremiumOnly
 
   construct(period : PolicyPeriod) {
     super(period, new SubmissionPermissions(period.Job))

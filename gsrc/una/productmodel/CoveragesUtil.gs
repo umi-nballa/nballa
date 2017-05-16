@@ -86,6 +86,21 @@ class CoveragesUtil {
       case "BP7FLChngsEmployPracLiabInsCov_EXT":
         result = isFLChngsEmployPracLiabInsCovAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_Personal_Property_HOE":
+      case "HODW_RefrigeratedPP_HOE_Ext":
+      case "HODW_SpecialLimitsPP_HOE_Ext":
+      case "HODW_ScheduledProperty_HOE":
+        result = isFLHO3PersPropCoveragesAvailable(coverable as Dwelling_HOE)
+        break
+      case "HODW_SpecialComp_HOE_Ext":
+        result = isSpecialCompCovAvailable(coverable as Dwelling_HOE)
+        break
+      case "HODW_BusinessProperty_HOE_Ext":
+        result = isBusinessPropertyCovAvailable(coverable as Dwelling_HOE)
+        break
+      case "HOPS_GolfCartPD_HOE_Ext":
+        result = isGolfCartPDCovAvailable(coverable as HomeownersLine_HOE)
+        break
       default:
         break
     }
@@ -363,6 +378,32 @@ class CoveragesUtil {
     }
     return false
   }
+
+  private static function isFLHO3PersPropCoveragesAvailable(dwelling:Dwelling_HOE) : boolean{
+    return (dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3 && !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists)
+  }
+
+  private static function isSpecialCompCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    return (dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3 && !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists &&
+        !dwelling.HODW_SpecialPersonalProperty_HOE_ExtExists)
+  }
+
+  private static function isBusinessPropertyCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    if(dwelling.HOLine.BaseState == TC_HI){
+      return !(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
+    }else if(dwelling.CoverableState==TC_FL && dwelling.HOPolicyType == TC_HO3 && !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
+      return true
+    }
+    return false
+  }
+
+  private static function isGolfCartPDCovAvailable(hoLine : HomeownersLine_HOE) : boolean{
+    if(hoLine.BaseState==TC_FL && hoLine.HOPolicyType == TC_HO3 && !hoLine.HODW_PersonalPropertyExc_HOE_ExtExists){
+      return true
+    }
+    return false
+  }
+
 
   private static function isWindstormExteriorPaintExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var result = true

@@ -3,6 +3,7 @@ package una.rating.ho.hawaii.ratinginfos
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
 uses una.rating.ho.hawaii.ratinginfos.HOHIBasePremiumRatingInfo
 uses java.math.BigDecimal
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -31,6 +32,8 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _ordinanceOrLawLimit: BigDecimal as OrdinanceOrLawLimit
   var _ordinanceOrLawIncreasedLimit : boolean as OrdinanceOrLawIncreasedLimit = false
   var _floorLevel : int as FloorLevel
+  var covALimit : BigDecimal as CovALimit
+  var unitOwnersCovABaseLimit : int as UnitOwnersCovABaseLimit
 
 
   construct(dwelling: Dwelling_HOE){
@@ -44,6 +47,10 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
     if(dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_PRIM and dwelling?.Occupancy == typekey.DwellingOccupancyType_HOE.TC_OWNER){
         _hasExecutiveEndorsement = true
     }
+
+    covALimit = dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value
+    unitOwnersCovABaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovALimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+
     if (dwelling?.HODW_PermittedIncOcp_HOE_ExtExists){
       _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value
       _isPermittedIncidentalOccupancyInOtherStructures = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODW_OtherStructure_HOETerm?.Value

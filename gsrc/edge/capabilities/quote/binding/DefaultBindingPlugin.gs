@@ -17,6 +17,7 @@ class DefaultBindingPlugin implements IBindingPlugin {
   
   private var _addressPlugin : IAddressPlugin
 
+
   @ForAllGwNodes
   @Param("paymentPlugin", "Policy payment processing plugin. It is invoked during bind phase inside binding bundle.")
   @Param("paymentPlanPlugin", "Plugin used to deal with payment plan selection and conversion.")
@@ -28,6 +29,11 @@ class DefaultBindingPlugin implements IBindingPlugin {
 
 
   override function getBindingData(submission : Submission) : BindingDataDTO {
+
+    if(submission.LatestPeriod.SubmissionProcess?.OutputPremiumOnly) {
+      return null
+    }
+
     if (submission.ResultingBoundPeriod != null) {
       return getBindingForBoundPeriod(submission, submission.ResultingBoundPeriod)
     }
@@ -142,6 +148,5 @@ class DefaultBindingPlugin implements IBindingPlugin {
     res.ContactPhone = contact.Subtype == typekey.Contact.TC_PERSON ? contact.HomePhone : contact.WorkPhone
     res.ContactEmail = contact.EmailAddress1
   }
-
 
 }

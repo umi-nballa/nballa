@@ -2,6 +2,7 @@ package una.rating.ho.nc.ratinginfos
 
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
 uses java.math.BigDecimal
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,6 +39,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
 
 
+
   construct(dwelling : Dwelling_HOE){
       super(dwelling)
 
@@ -62,6 +64,8 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _unitOwnersCoverageASpecialLimitsExists = true
       }
 
+
+
     if(dwelling.HODW_Earthquake_HOEExists){
       _eqDeductible = dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.Value
       if( _eqDeductible> 0.05){
@@ -81,7 +85,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
       _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value  * dwelling?.HODW_BuildingAdditions_HOE_Ext?.HODW_BuildAddInc_HOETerm?.Value
     }
 
-    _otherStructuresRentedToOthersLimit = dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value
+    _otherStructuresRentedToOthersLimit = dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
 
     if(dwelling?.DPDW_Personal_Property_HOEExists)
       _firePersonalPropertyLimit = dwelling.DPDW_Personal_Property_HOE?.DPDW_PersonalPropertyLimit_HOETerm?.Value

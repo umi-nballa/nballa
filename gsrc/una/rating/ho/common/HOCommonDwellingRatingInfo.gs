@@ -13,7 +13,7 @@ class HOCommonDwellingRatingInfo {
 
   var _specifiedAdditionalAmount : String as SpecifiedAdditionalAmount
   var _personalPropertyLimit : BigDecimal as PersonalPropertyLimit
-  var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit
+  var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit = 0.0
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
   var _totalBasePremium : BigDecimal as TotalBasePremium = 0.0

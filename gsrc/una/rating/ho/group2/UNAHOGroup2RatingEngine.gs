@@ -99,7 +99,7 @@ class UNAHOGroup2RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
       case HODW_Personal_Property_HOE:
-        if(PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO4){
+        if(PolicyLine.HOPolicyType != typekey.HOPolicyType_HOE.TC_HO4 and _dwellingRatingInfo.PersonalPropertyIncreasedLimit > 0 ){
            rateIncreasedPersonalProperty(dwellingCov, dateRange)
           }
           break

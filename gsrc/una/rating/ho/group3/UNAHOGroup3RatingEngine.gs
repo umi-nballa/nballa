@@ -120,7 +120,9 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateSpecialComputerCoverage(dwellingCov, dateRange)
         break
       case HODW_SinkholeLoss_HOE_Ext:
+        if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_DP3_EXT){
           rateSinkholeLossCoverage(dwellingCov, dateRange)
+        }
         break
       case HODW_SpecificAddAmt_HOE_Ext:
         rateSpecifiedAdditionalAmountCoverage(dwellingCov, dateRange)
@@ -329,9 +331,7 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if (isMatureHomeOwnerDiscountApplicable(PolicyLine) and not dwelling.IsSecondary){
             rateMatureHomeOwnerDiscount(dateRange, HOCostType_Ext.TC_MATUREHOMEOWNERDISCOUNT)
           }
-          if (dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
-            ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
-          }
+
         }
       }
 
@@ -379,6 +379,11 @@ class UNAHOGroup3RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       _hoRatingInfo.FinalAdjustedWindBasePremium = _hoRatingInfo.AdjustedWindBasePremium + _hoRatingInfo.BuildingCodeComplianceGradingCredit + _hoRatingInfo.WindstormResistiveFeaturesOfResidentialConstruction + _hoRatingInfo.AdjustmentToBCEGAndWPDCCredit
       _hoRatingInfo.TotalBasePremium = _hoRatingInfo.FinalAdjustedAOPBasePremium + _hoRatingInfo.FinalAdjustedWindBasePremium
       _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
+      if (dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
+        ratePersonalPropertyExclusion(dwelling.HOLine.HODW_PersonalPropertyExc_HOE_Ext, dateRange)
+      }
+
     }
 
 

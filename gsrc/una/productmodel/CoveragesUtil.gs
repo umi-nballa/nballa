@@ -380,28 +380,46 @@ class CoveragesUtil {
   }
 
   private static function isFLHO3PersPropCoveragesAvailable(dwelling:Dwelling_HOE) : boolean{
-    return (dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3 && !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists)
+    var result = true
+
+    if(dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3){
+      result = !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists
+    }
+
+    return result
   }
 
   private static function isSpecialCompCovAvailable(dwelling:Dwelling_HOE) : boolean{
-    return (dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3 && !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists &&
-        !dwelling.HODW_SpecialPersonalProperty_HOE_ExtExists)
+    var result = true
+
+    if(dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3){
+      result = !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists
+    }
+
+    if(dwelling.Branch.BaseState==TC_CA && (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO4 || dwelling.HOPolicyType == TC_HO6)){
+      result = !dwelling.HODW_SpecialPersonalProperty_HOE_ExtExists
+    }
+    return result
   }
 
   private static function isBusinessPropertyCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    var result = true
     if(dwelling.HOLine.BaseState == TC_HI){
-      return !(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
-    }else if(dwelling.CoverableState==TC_FL && dwelling.HOPolicyType == TC_HO3 && !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists){
-      return true
+      result = !(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
+    }else if(dwelling.CoverableState==TC_FL && dwelling.HOPolicyType == TC_HO3){
+      result = !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists
     }
-    return false
+    return result
   }
 
   private static function isGolfCartPDCovAvailable(hoLine : HomeownersLine_HOE) : boolean{
-    if(hoLine.BaseState==TC_FL && hoLine.HOPolicyType == TC_HO3 && !hoLine.HODW_PersonalPropertyExc_HOE_ExtExists){
-      return true
+    var result = true
+
+    if(hoLine.BaseState==TC_FL && hoLine.HOPolicyType == TC_HO3){
+      result = !hoLine.HODW_PersonalPropertyExc_HOE_ExtExists
     }
-    return false
+
+    return result
   }
 
 

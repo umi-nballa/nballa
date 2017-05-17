@@ -135,7 +135,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var max = currentCovTerm.AvailableOptions.max()
     limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
-    limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100
+    limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ?
+        coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100 : 0
     limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = "Location:" + (coverage.OwningCoverable.PolicyLocations.where( \ elt -> elt.PrimaryLoc).first()).addressString(",", true, true) +
@@ -172,7 +173,8 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
     var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
     limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference : 0
     limit.FormatPct = getCovTermPercentage(value, valueType)
-    limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100
+    limit.CurrentTermAmt.Amt = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ?
+        coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * limit.FormatPct /100 : 0
     limit.Rate = 0.00
     limit.FormatText = ""
     limit.LimitDesc = ""
@@ -266,7 +268,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var value = currentCovTerm.OptionValue.Value
       var valueType = currentCovTerm.OptionValue.CovTermPattern.ValueType
       var dwellingLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-      deductible.FormatCurrencyAmt.Amt = getCovTermAmountFromMixed(dwellingLimit, value, valueType)
+      deductible.FormatCurrencyAmt.Amt = dwellingLimit != null ? getCovTermAmountFromMixed(dwellingLimit, value, valueType) : 0
       deductible.FormatPct = getCovTermPercentageFromMixed(dwellingLimit, value, valueType)
       deductible.CoverageCd = coverage.PatternCode
       deductible.CoverageSubCd = currentCovTerm.PatternCode

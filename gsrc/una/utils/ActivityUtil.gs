@@ -84,7 +84,7 @@ class ActivityUtil {
   public static function assignActivityToQueue(queueName: String, groupName: String, activity: Activity) {
     var group = Query.make(Group).compare(Group#Name, Equals, groupName).select().AtMostOneRow
     if (group != null) {
-      var assignableQueue = group.AssignableQueues.where(\elt -> elt.Name == queueName).last()
+      var assignableQueue = group.AssignableQueues.where(\elt -> elt.Name.equalsIgnoreCase(queueName.trim())).last()
       if (assignableQueue != null) {
         activity.assignActivityToQueue(assignableQueue, group)
       } else {

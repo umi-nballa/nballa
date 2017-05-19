@@ -159,7 +159,7 @@ class UNAHORenewalProcess extends AbstractUNARenewalProcess {
     var consentToRateActivityPattern = ActivityPattern.finder.findActivityPatternsByCode(CONSENT_TO_RATE_ACTIVITY_PATTERN).atMostOne()
 
     if(shouldRequestConsentToRate()){
-      var consentToRateActivity = createRenewalActivity(CONSENT_TO_RATE_ACTIVITY_PATTERN, ActivityUtil.ACTIVITY_QUEUE.JUNIOR_UW)
+      var consentToRateActivity = createRenewalActivity(CONSENT_TO_RATE_ACTIVITY_PATTERN, ActivityUtil.ACTIVITY_QUEUE.JUNIOR_UW.QueueName)
 
       Job.addToFormsEvents(new FormsEvent(Job){:EventType = FormsEventType.TC_SENDCONSENTTORATE})
       Job.createCustomHistoryEvent(CustomHistoryType.TC_CTRIDENDIFIED, \ -> displaykey.Web.CTR.History.Event.Msg)

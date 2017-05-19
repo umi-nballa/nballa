@@ -18,7 +18,7 @@ class UNACPPRenewalProcess extends AbstractUNARenewalProcess {
   }
 
   override function pendingRenewalFirstCheck(){
-    createRenewalActivity(REVIEW_RENEWAL_ACTIVITY, ActivityUtil.ACTIVITY_QUEUE.CL_UW)
+    createRenewalActivity(REVIEW_RENEWAL_ACTIVITY, ActivityUtil.ACTIVITY_QUEUE.CL_UW.QueueName)
     super.pendingRenewalFirstCheck()
   }
 

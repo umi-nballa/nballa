@@ -25,7 +25,7 @@ class DocBOPCPPWindHail implements IRuleCondition<PolicyPeriod> , IRuleAction<Po
    override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
      var activityPattern = ActivityPattern.finder.getActivityPatternByCode("wind_hurricane_hail_rej_followup")
      var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-     ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, activity)
+     ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, activity)
 
      var list = new AgentDocList_Ext(target)
      list.DocumentName = "Wind or Hail Rejection"

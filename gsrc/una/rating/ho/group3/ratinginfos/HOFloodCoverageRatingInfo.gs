@@ -16,7 +16,7 @@ class HOFloodCoverageRatingInfo {
   var _hasBasement : boolean as HasBasement
   var _elevatedRiskCredit : boolean as ElevatedRiskCredit
   var _postFirm : boolean as PostFirm
-  var _floodZone : String as FloodZone
+  var _floodZone : typekey.FloodZoneOverridden_Ext as FloodZone
   var _floodDeductible : int as FloodDeductible
   var _lossOfUseLimit : BigDecimal as LossOfUseLimit
 
@@ -37,13 +37,7 @@ class HOFloodCoverageRatingInfo {
   }
 
   property get isUnnumberedAZone() : boolean{
-    if(_floodZone?.startsWith("A"))
-      if(_floodZone != "AE" && _floodZone != "AO" && _floodZone != "AH"){
-        var str = _floodZone?.substring(1, _floodZone.length())
-        if(!str?.Numeric)
-          return true
-      }
-    return false
+    return typekey.FloodZoneOverridden_Ext.TF_UNNUMBEREDA.TypeKeys.contains(_floodZone)
   }
 
 }

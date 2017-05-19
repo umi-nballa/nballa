@@ -75,7 +75,9 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
     final var dwelling = hoLine.Dwelling
 
-    _addressPlugin.updateFromDTO(period.PolicyAddress.Address, update.PolicyAddress)
+    if(update.PolicyAddress != null) {
+        _addressPlugin.updateFromDTO(period.PolicyAddress.Address, update.PolicyAddress)
+      }
     QuestionSetUtil.update(hoLine, getLineQuestionSets(period), update.PreQualQuestionSets)
     QuestionSetUtil.update(period, getPolicyQuestionSets(period), update.PreQualQuestionSets)
     updateYourHome(dwelling, update.YourHome)

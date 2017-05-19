@@ -31,7 +31,7 @@ class UNAACT29051008 implements IRuleCondition<PolicyPeriod> , IRuleAction<Polic
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("geico_review_and_approve_submission")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue("Builder Accounts", "Universal Insurance Manager's Inc", activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.BUILDER_ACCOUNTS, ActivityUtil.ACTIVITY_QUEUE.BUILDER_ACCOUNTS, activity)
   }
 
 }

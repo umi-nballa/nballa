@@ -54,11 +54,10 @@
         </PanelColumn>
       </PanelRow>
     </Screen>
-    <Code><![CDATA[uses gw.api.web.activity.ActivityUtil
-
+    <Code><![CDATA[
 function createActivity() : Activity {
   var a = activityPattern.createJobActivity( policyPeriod.Job.Bundle, policyPeriod.Job, null, null, null, null, null, null, null )
-  ActivityUtil.setPreviousUserOnNewActivity(a, User.util.CurrentUser)
+  gw.api.web.activity.ActivityUtil.setPreviousUserOnNewActivity(a, User.util.CurrentUser)
   return a
 }]]></Code>
   </Popup>

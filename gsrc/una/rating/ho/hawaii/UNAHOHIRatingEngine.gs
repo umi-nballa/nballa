@@ -22,7 +22,7 @@ uses pcf.PolicyInfoInputSet
 uses pcf.AdditionalInsuredInfoDV
 
 /**
- * Created with IntelliJ IDEA.
+ * Created withrentedtoothers IntelliJ IDEA.
  * User: ssok
  * Date: 1/31/17
  * Time: 2:17 PM
@@ -84,7 +84,6 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
       }
 
       if(PolicyLine.MultiPolicyDiscount_Ext){
-        _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = PolicyLine.TypeofPolicy_Ext
         rateMultiLineDiscount(dateRange)
       }
 
@@ -92,8 +91,6 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           ( \ elt1 -> elt1.PolicyAdditionalInsuredDetails.hasMatch( \ elt2 -> elt2.AdditionalInsuredType == typekey.AdditionalInsuredType.TC_PROPERTY_MANAGER ))){
         rateAdditionalInsuredPropertyManager(dateRange)
       }
-
-
 
 
 
@@ -172,9 +169,9 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_Dwelling_Cov_HOE:
             if (HasExecutiveCoverage)
               rateExecutiveCoverage(dwellingCov, dateRange)
-            if (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
-              rateUnitOwnersCoverageA (dwellingCov, dateRange)
-   }
+            if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6 and dwellingCov?.HODW_Dwelling_Limit_HOETerm?.Value > 30000){
+              rateUnitOwnersCovAIncreasedLimit(dwellingCov, dateRange)
+             }
       break
         case HODW_BusinessProperty_HOE_Ext:
             rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
@@ -186,6 +183,9 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         case HODW_BuildingAdditions_HOE_Ext:
             if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4)
               rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
+            break
+        case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
+            rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov, dateRange)
             break
 
       }
@@ -301,6 +301,20 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
+   * Rate Unit-Owners Coverage A Increased Limits
+   */
+  function rateUnitOwnersCovAIncreasedLimit(dwellingCov : HODW_Dwelling_Cov_HOE, dateRange : DateRange){
+    if (_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovAIncreasedLimit ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null)
+      addCost(costData)
+    if (_logger.DebugEnabled)
+      _logger.debug("Unit Owners CovA Increased Limit Rated Successfully", this.IntrinsicType)
+  }
+
+  /**
    * Rate the Scheduled Personal property
    */
   function rateScheduledPersonalProperty(dwellingCov: HODW_ScheduledProperty_HOE, dateRange: DateRange) {
@@ -373,20 +387,18 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     _logger.debug("Unit Owners Rented To Others Coverage Rated Successfully", this.IntrinsicType)
   }
 
-
   /**
-   * Rate Unit-Owners Coverage A
+   *  Rate the Unit Owners CovA Special Limits Coverage
    */
-  function rateUnitOwnersCoverageA(dwellingCov: HODW_Dwelling_Cov_HOE, dateRange: DateRange) {
-    if (_logger.DebugEnabled)
-      _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCoverageA to rate Unit-Owners Coverage A", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOParameterSet (PolicyLine, BaseState, _dwellingRatingInfo)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+  function rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov: HODW_UnitOwnersCovASpecialLimits_HOE_Ext, dateRange: DateRange){
+    _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovASpecialLimitsCoverage ", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_SPECIAL_LIMITS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-    if (_logger.DebugEnabled)
-      _logger.debug("Unit Owners Coverage A Rated Successfully", this.IntrinsicType)
+    _logger.debug("Unit Owners CovA Special Limits Coverage Rated Successfully", this.IntrinsicType)
   }
+
 
   /**
    * Rate Refrigerated Personal Property coverage
@@ -517,13 +529,25 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   function rateMultiLineDiscount(dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateMultiLineDiscount", this.IntrinsicType)
-    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MULTI_LINE_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_MULTILINEDISCOUNT,
-        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
-    if (costData != null){
-      addCost(costData)
-      _hoRatingInfo.MultiLineDiscount = costData?.ActualTermAmount
+    var costMap = new java.util.HashMap<typekey.TypeofPolicy_Ext, CostData>()
+    var policyTypes = PolicyLine.Branch.MultiPolicyDiscountPolicies_Ext*.PolicyType.toSet()
+    if(policyTypes.contains(typekey.TypeofPolicy_Ext.TC_HOMEOWNER) and policyTypes.contains(typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE) ){
+      policyTypes.remove(typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE)
     }
+
+    policyTypes.each( \ elt -> {
+      _discountsOrSurchargeRatingInfo.TypeOfPolicyForMultiLine = elt
+      var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+      var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.MULTI_LINE_DISCOUNT_RATE_ROUTINE, HOCostType_Ext.TC_MULTILINEDISCOUNT,
+          RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+      costMap.put(elt, costData)
+    })
+
+    var actualCost = costMap.values().first()
+    actualCost.ActualTermAmount = costMap.values()*.ActualTermAmount.sum()
+    addCost(actualCost)
+    _hoRatingInfo.MultiLineDiscount = actualCost?.ActualTermAmount
+
     if(_logger.DebugEnabled)
       _logger.debug("Multi Line Discount Rated Successfully", this.IntrinsicType)
   }

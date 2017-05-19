@@ -43,7 +43,7 @@ class HOGroup3DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
     _windOrHailExcluded = line.Dwelling.HOLine.HODW_WindstromHailExc_HOE_ExtExists
 
     if(PolicyType == typekey.HOPolicyType_HOE.TC_HO3)
-      _coverageLimitForDeductible = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm.Value
+      _coverageLimitForDeductible = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value
     else if(PolicyType == typekey.HOPolicyType_HOE.TC_HO4 || PolicyType == typekey.HOPolicyType_HOE.TC_HO6)
       _coverageLimitForDeductible = line.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
 

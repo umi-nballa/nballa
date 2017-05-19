@@ -13,7 +13,7 @@ class HOCommonDwellingRatingInfo {
 
   var _specifiedAdditionalAmount : String as SpecifiedAdditionalAmount
   var _personalPropertyLimit : BigDecimal as PersonalPropertyLimit
-  var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit
+  var _personalPropertyIncreasedLimit : BigDecimal as PersonalPropertyIncreasedLimit = 0.0
   var _dwellingLimit : int as DwellingLimit
   var _otherStructuresLimit : int as OtherStructuresLimit
   var _totalBasePremium : BigDecimal as TotalBasePremium = 0.0
@@ -25,6 +25,7 @@ class HOCommonDwellingRatingInfo {
   var _bcegGrade: typekey.BCEGGrade_Ext as BCEGGrade
   var _protectionClassCode : typekey.ProtectionClassCode_Ext as ProtectionClassCode
   var _constructionType : typekey.RateTableConstructionType_Ext as ConstructionType
+
 
 
   construct(dwelling : Dwelling_HOE ){
@@ -46,14 +47,14 @@ class HOCommonDwellingRatingInfo {
       }
 
     if(dwelling.HODW_Other_Structures_HOEExists){
-      _otherStructuresIncreasedLimit = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
+      _otherStructuresIncreasedLimit = dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.LimitDifference
     }
 
     _businessPropertyIncreasedLimit = (dwelling?.HODW_BusinessProperty_HOE_Ext?.HODW_OnPremises_Limit_HOETerm?.LimitDifference?.intValue())
     if(dwelling.HOLine?.HOLI_Personal_Liability_HOE?.HOLI_Liability_Limit_HOETerm?.LimitDifference > 0)
       _isPersonalLiabilityLimitIncreased = true
 
-    _otherStructuresLimit = ((dwelling.HODW_Other_Structures_HOEExists)? dwelling.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
+    _otherStructuresLimit = ((dwelling?.HODW_Other_Structures_HOEExists)? dwelling?.HODW_Other_Structures_HOE?.HODW_OtherStructures_Limit_HOETerm?.Value : 0) as int
 
     _territoryCode = (dwelling.HOLocation?.OverrideTerritoryCode_Ext)? dwelling.HOLocation?.TerritoryCodeOverridden_Ext : dwelling.HOLocation?.TerritoryCodeTunaReturned_Ext
 

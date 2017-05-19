@@ -86,6 +86,21 @@ class CoveragesUtil {
       case "BP7FLChngsEmployPracLiabInsCov_EXT":
         result = isFLChngsEmployPracLiabInsCovAvailable(coverable as BP7BusinessOwnersLine)
         break
+      case "HODW_Personal_Property_HOE":
+      case "HODW_RefrigeratedPP_HOE_Ext":
+      case "HODW_SpecialLimitsPP_HOE_Ext":
+      case "HODW_ScheduledProperty_HOE":
+        result = isFLHO3PersPropCoveragesAvailable(coverable as Dwelling_HOE)
+        break
+      case "HODW_SpecialComp_HOE_Ext":
+        result = isSpecialCompCovAvailable(coverable as Dwelling_HOE)
+        break
+      case "HODW_BusinessProperty_HOE_Ext":
+        result = isBusinessPropertyCovAvailable(coverable as Dwelling_HOE)
+        break
+      case "HOPS_GolfCartPD_HOE_Ext":
+        result = isGolfCartPDCovAvailable(coverable as HomeownersLine_HOE)
+        break
       default:
         break
     }
@@ -363,6 +378,50 @@ class CoveragesUtil {
     }
     return false
   }
+
+  private static function isFLHO3PersPropCoveragesAvailable(dwelling:Dwelling_HOE) : boolean{
+    var result = true
+
+    if(dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3){
+      result = !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists
+    }
+
+    return result
+  }
+
+  private static function isSpecialCompCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    var result = true
+
+    if(dwelling.Branch.BaseState==TC_FL && dwelling.HOPolicyType == TC_HO3){
+      result = !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists
+    }
+
+    if(dwelling.Branch.BaseState==TC_CA && (dwelling.HOPolicyType == TC_HO3 || dwelling.HOPolicyType == TC_HO4 || dwelling.HOPolicyType == TC_HO6)){
+      result = !dwelling.HODW_SpecialPersonalProperty_HOE_ExtExists
+    }
+    return result
+  }
+
+  private static function isBusinessPropertyCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    var result = true
+    if(dwelling.HOLine.BaseState == TC_HI){
+      result = !(dwelling.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC)
+    }else if(dwelling.CoverableState==TC_FL && dwelling.HOPolicyType == TC_HO3){
+      result = !dwelling.HOLine.HODW_PersonalPropertyExc_HOE_ExtExists
+    }
+    return result
+  }
+
+  private static function isGolfCartPDCovAvailable(hoLine : HomeownersLine_HOE) : boolean{
+    var result = true
+
+    if(hoLine.BaseState==TC_FL && hoLine.HOPolicyType == TC_HO3){
+      result = !hoLine.HODW_PersonalPropertyExc_HOE_ExtExists
+    }
+
+    return result
+  }
+
 
   private static function isWindstormExteriorPaintExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{
     var result = true

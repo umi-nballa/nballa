@@ -40,11 +40,14 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
   var _roofType : String as RoofType
   var _numOfTimesRenewed : int as NumOfTimesRenewed
   var _numOfLosses : int as NumOfLosses
+  var _affinityDiscountAgeOfHome : int as AffinityDiscountAgeOfHome
+
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     _dwelling = dwelling
     _windHailExclusion = dwelling.HOLine.HODW_AbsoluteWindHailExc_HOE_ExtExists
     _yearOfConstruction = dwelling.OverrideYearbuilt_Ext? dwelling.YearBuiltOverridden_Ext : dwelling.YearBuilt
+    _affinityDiscount =  dwelling.PolicyLine.Branch.QualifiesAffinityDisc_Ext
 
     _increasedLiability = (dwelling.HOLine.HOLI_Personal_Liability_HOEExists)? dwelling.HOLine.HOLI_Personal_Liability_HOE.HOLI_Liability_Limit_HOETerm?.Value : 0
     _increasedMedicalPayments = (dwelling.HOLine.HOLI_Med_Pay_HOEExists) ? dwelling.HOLine.HOLI_Med_Pay_HOE.HOLI_MedPay_Limit_HOETerm?.Value : 0
@@ -69,6 +72,7 @@ class HOBasePremiumRatingInfo extends HOCommonBasePremiumRatingInfo{
 
     _ordinanceOrLawValue = dwelling?.HODW_OrdinanceCov_HOE.HODW_OrdinanceLimit_HOETerm?.Value
     _affinityDiscount = dwelling.HOLine.Branch.QualifiesAffinityDisc_Ext
+    _affinityDiscountAgeOfHome = ConfigParamsUtil.getInt(TC_AffinityDiscountAgeOfHome, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
 
     if (dwelling.HOLine.Branch?.CreditInfoExt?.CreditReport?.CreditScore != null) {
       _insuranceScore = dwelling.HOLine.Branch?.CreditInfoExt?.CreditReport?.CreditScore as int

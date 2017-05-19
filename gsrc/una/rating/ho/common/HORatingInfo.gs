@@ -17,4 +17,5 @@ class HORatingInfo {
   var _multiLineDiscount : BigDecimal as MultiLineDiscount = 0.0
   var _protectiveDevicesDiscount : BigDecimal as ProtectiveDevicesDiscount = 0.0
   var _discountAdjustment : BigDecimal as DiscountAdjustment = 0.0
+  var _affinityDiscount : BigDecimal as AffinityDiscount = 0.0
 }

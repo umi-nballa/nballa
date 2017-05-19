@@ -170,6 +170,11 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
   }
 
   override function toDTO(period : PolicyPeriod) : DraftDataDTO {
+
+    if(period.SubmissionProcess?.OutputPremiumOnly){
+      return null
+    }
+
     final var res = new DraftDataDTO()
     final var submission = period.Submission
     res.AccountHolder = _accountPlugin.toDto(submission.Policy.Account)
@@ -237,5 +242,6 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
       throw new IllegalArgumentException("Quote request is incompatible with the existing quote, product is not available at the given date.")
     }
   }
+
 
 }

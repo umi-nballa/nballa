@@ -12,7 +12,7 @@ uses edge.capabilities.quote.questionset.dto.QuestionSetAnswersDTO
 class HoDraftDataExtensionDTO implements IDraftLobExtensionDTO {
 
   /** Address of this dwelling. */
-  @JsonProperty @Required
+  @JsonProperty
   var _policyAddress: AddressDTO as PolicyAddress
 
   @JsonProperty

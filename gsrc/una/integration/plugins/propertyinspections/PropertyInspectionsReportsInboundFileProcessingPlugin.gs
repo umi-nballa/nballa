@@ -25,7 +25,6 @@ class PropertyInspectionsReportsInboundFileProcessingPlugin implements InboundIn
   final static var UNIVERSAL_INSURANCE_MANAGERS_GROUP = "Universal Insurance Manager's Inc"
   final static var PRIORITY_INSPECTION_REVIEW_QUEUE = "Priority Inspection Review"
   final static var UW_INSPECTION_REVIEW_QUEUE = "UW Inspection Review"
-  final static var CSR_INSPECTION_QUEUE = "CSR Inspection Queue"
   final static var REVIEW_INSPECTION_PRIORITY_PATTERN_CODE = "review_inspection_priority"
   final static var REVIEW_INSPECTION_UW_PATTERN_CODE = "review_inspection_uw"
   final static var REVIEW_INSPECTION_CS_PATTERN_CODE = "review_inspection_cs"

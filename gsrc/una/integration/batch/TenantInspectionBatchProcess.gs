@@ -3,6 +3,7 @@ package una.integration.batch
 uses gw.api.database.Query
 uses java.lang.Exception
 uses java.util.Date
+uses una.utils.ActivityUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -59,7 +60,8 @@ class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
   override function createActivityPerPolicy(eligiblePeriod : PolicyPeriod){
     var activityPattern = ActivityPattern.finder.findActivityPatternsByCode(ACTIVITY_PATTERN).atMostOne()
     var activity = activityPattern?.createPolicyActivity(eligiblePeriod.Bundle, eligiblePeriod.Policy, null, null, null, null, null, null, null)
-    activity.assignActivityToQueue(null, null)
+
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW, ActivityUtil.ACTIVITY_QUEUE.CL_UW, activity)
   }
 
   override property get PerBatchRunExceptionBlock(): block(Exception): String {

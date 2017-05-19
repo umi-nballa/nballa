@@ -77,14 +77,9 @@ class DocumentActivity {
 //  public final static var STATEMENT_OF_NO_LOSS: String = "BOPCRP_stmt_no_loss_received"
 
   // Queues
-  public final static var CSR_QUEUE: String ="CSR Queue"
-  public final static var PRIORITY_INSPECTION_REVIEW_QUEUE: String = "Priority  Inspection Review"
   public final static var UW_INSPECTION_REVIEW_QUEUE: String = "UW Inspection Review"
-  public final static var CSR_INSPECTION_QUEUE: String = "CSR Inspection Queue"
-  public final static var SENIOR_UW_QUEUE: String = "Senior UW Queue"
   public final static var ENDORSEMENTS_QUEUE: String = "Endorsements"
   public final static var SPECIAL_HANDLING_QUEUE: String = "Special Handling"
-  public final static var CL_UW_QUEUE: String = "CL UW Queue"
   
   static function mapDocActivity(document: Document, period: PolicyPeriod) {
 
@@ -103,7 +98,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentType_Ext.TC_RISK_RPT_LRG_LOSS:
           //  Review Risk and  large loss reports
           if(document.OnBaseDocumentSubtype == typekey.OnBaseDocumentSubtype_Ext.TC_RRLL_RISK_REPORT_AND_LARGE_LOSS) {
-            createActivityAndAssignToQueue(document, period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, SENIOR_UW_QUEUE)
+            createActivityAndAssignToQueue(document, period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW)
           }
       break
     }
@@ -121,7 +116,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_WITH_FORWARDING_ORDER:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_ADDITIONAL_INSURED:
         patternCode = POLICY_INSURED_RETURNED_MAIL
-        queue = CSR_QUEUE
+        queue = ActivityUtil.ACTIVITY_QUEUE.CSR
         break
 
       //  Mortgagee Returned mail
@@ -129,7 +124,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_MORTGAGE_FORWARDED:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_LIENHOLDER:
         patternCode = POLICY_MORTGAGEE_RETURNED_MAIL
-        queue = CSR_QUEUE
+        queue = ActivityUtil.ACTIVITY_QUEUE.CSR
         break
 
         //  Policy DE Endorsement Request
@@ -147,7 +142,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_MORTGAGE_CHANGE_REQUEST:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_ELEVATION_CERTIFICATE:
           patternCode = POLICY_DE_ENDORSEMENT_REQUEST
-          queue = CSR_QUEUE
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR
           break
 
 
@@ -200,29 +195,29 @@ class DocumentActivity {
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION:
           patternCode = REVIEW_INSPECTION_PRIORITY
-          queue = PRIORITY_INSPECTION_REVIEW_QUEUE
+          queue = ActivityUtil.ACTIVITY_QUEUE.PRIORITY_INSPECTION_REVIEW
           break
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW:
           patternCode = REVIEW_INSPECTION_CS
-          queue = CSR_INSPECTION_QUEUE
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR_INSPECTION
           break
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_UW_INSPECTION:
           patternCode = REVIEW_INSPECTION_UW
-          queue = UW_INSPECTION_REVIEW_QUEUE
+          queue = ActivityUtil.ACTIVITY_QUEUE.UW_INSPECTION_REVIEW
           break
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_WIND_MITIGATION_INSPECTION:
           patternCode = VENDOR_WIND_MIT_INSPECTION
-          queue = CSR_QUEUE
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR
           //  Create a note. As per Gary London "Wind mitigation inspections are handled by Don Meyer Inspections, using the note title “DMI Wind Mit Insp Recd” should be acceptable."
           //  If the vendor changes, we should just remove the DMI prefix
           period.Policy.newDMIWindMitInspRecd_ExtNote().Body = "A new Wind Mitigation Inspection document has be received."
           break
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_COMMERCIAL_REPORT:
           patternCode = COMMERCIAL_INSPECTION
-          queue = CSR_QUEUE
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR
           break
     }
 

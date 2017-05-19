@@ -21,6 +21,8 @@ uses java.lang.IllegalArgumentException
 uses gw.job.UNAHORenewalProcess
 uses una.utils.ActivityUtil
 uses una.integration.mapping.document.DocumentActivity
+uses gw.transaction.AbstractBundleTransactionCallback
+uses gw.pl.persistence.core.Bundle
 
 /**
  * Hyland Build Version: 16.0.0.999
@@ -132,15 +134,17 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
     var date = getDateStored(properties)
     var policyNumber = keywords.StandAlone.PolicyNumber_Collection.PolicyNumber.first()
     var policy: Policy = null
-
+    var job: Job = null
     if (policyNumber.HasContent) {
       policy = Policy.finder.findPolicyByPolicyNumber(policyNumber)
-      if (policy == null) {
+      job = Job.finder.findJobByJobNumber(policyNumber)
+      if (policy == null && job == null) {
         throw(new IllegalArgumentException(displaykey.Accelerator.OnBase.MessageBroker.Error.STR_GW_InvalidPolicyNumber(policyNumber)))
       }
     }
 
-    var period = policy.LatestPeriod
+    var period = policy != null?  policy.LatestPeriod : job.LatestPeriod
+
     // note that a user must be provided as the inbound-integration does not have a user context.
     Transaction.runWithNewBundle(\bundle -> {
       var doc = new Document()
@@ -156,11 +160,13 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
       doc.MimeType = properties.MimeType
       doc.DateModified = date
       doc.Policy = policy
+      doc.Job = job
       doc.PolicyPeriod = period
       doc.DMS = true
-
       onDocumentAdded(doc)
     }, User.util.UnrestrictedUser)
+
+
 
     return response
   }
@@ -247,14 +253,16 @@ class NewDocumentNotifyWSP implements MessageProcessingInterface {
 
   private function onDocumentAdded(document : Document) {
 
-    var docActivity = new DocumentActivity()
-    docActivity.mapDocActivity(document, document.PolicyPeriod)
+    if(document != null) {
+      var docActivity = new DocumentActivity()
+      docActivity.mapDocActivity(document, document.PolicyPeriod)
 
-    if(document.Type == TC_ONBASE and document.OnBaseDocumentSubtype == tc_incorr_consent_to_rate){
-      var openRenewal = document.Policy.OpenRenewalJob
+      if(document.Type == TC_ONBASE and document.OnBaseDocumentSubtype == tc_incorr_consent_to_rate){
+        var openRenewal = document.Policy.OpenRenewalJob
 
-      if(openRenewal != null and openRenewal.LatestPeriod.HomeownersLine_HOEExists){
-        (openRenewal.LatestPeriod.JobProcess as UNAHORenewalProcess).onUploadConsentToRateForm()
+        if(openRenewal != null and openRenewal.LatestPeriod.HomeownersLine_HOEExists){
+          (openRenewal.LatestPeriod.JobProcess as UNAHORenewalProcess).onUploadConsentToRateForm()
+        }
       }
     }
   }

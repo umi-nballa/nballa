@@ -191,7 +191,7 @@ class HPXDwellingCoverageMapper extends HPXCoverageMapper{
       var personalPropertyLimit = coverage.PolicyLine.AssociatedPolicyPeriod.HomeownersLine_HOE.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm
       var value = currentCovTerm.Value != null ? new BigDecimal(currentCovTerm.Value as double - personalPropertyLimit.Value as double *0.10) : 0.00
       limit.CurrentTermAmt.Amt = value
-      limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference - personalPropertyLimit.LimitDifference*(0.10 as BigDecimal) : 0
+      limit.NetChangeAmt.Amt = coverage.OwningCoverable.BasedOnUntyped != null ? currentCovTerm.LimitDifference - (personalPropertyLimit.LimitDifference != null ? personalPropertyLimit.LimitDifference*(0.10 as BigDecimal) : 0) : 0
       limit.FormatPct = 0
       limit.Rate = 0.00
       limit.CoverageCd = coverage.PatternCode

@@ -734,7 +734,7 @@ class PolicyPeriodValidation extends PCValidationBase {
     }
     //410
     if (period.Policy.Account.AccountOrgType == typekey.AccountOrgType.TC_TRUST_EXT && (period.isHOType() || period.isDFType())
-        && period.TrustResidings.hasMatch( \ elt1 -> !elt1.IsPerson )) {
+        && period.TrustResidings.hasMatch( \ elt1 -> !elt1.isTrustPartOfOrg )) {
       Result.addWarning(period , "default",displaykey.Web.Account.AccountOrgType.Warning.RiskIsIneligible)
     }
   }

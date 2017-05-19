@@ -5,6 +5,7 @@ uses gw.api.util.Logger
 uses onbase.api.Settings
 
 uses java.util.ArrayList
+uses gw.pl.persistence.core.Bundle
 
 /**
  *
@@ -27,8 +28,8 @@ class DocumentLinking {
    * @param document The document to be linked to the entity.
    * @param linkType The document link type.
    */
-  public function linkDocumentToEntity(entity: KeyableBean, document: Document, linkType: Settings.DocumentLinkType) {
-    linkDocumentsToEntity(entity, new Document[]{document}, linkType)
+  public function linkDocumentToEntity(entity: KeyableBean, document: Document, linkType: Settings.DocumentLinkType, bundle: Bundle) {
+    linkDocumentsToEntity(entity, new Document[]{document}, linkType, bundle)
   }
 
   /**
@@ -38,19 +39,27 @@ class DocumentLinking {
    * @param documents The list of document ids to be linked to the entity.
    * @param linkType The document link type.
    */
-  public function linkDocumentsToEntity(entity: KeyableBean, documents: Document[], linkType: Settings.DocumentLinkType) {
+  public function linkDocumentsToEntity(entity: KeyableBean, documents: Document[], linkType: Settings.DocumentLinkType, bundle: Bundle) {
     if (logger.DebugEnabled) {
       logger.debug("Running method DocumentLinking.linkDocumentToEntity(" + entity + "," + documents + "," + linkType + ")")
     }
-    var user = User.util.CurrentUser == null ? User.util.UnrestrictedUser : User.util.CurrentUser
-    gw.transaction.Transaction.runWithNewBundle(\bundle -> {
-      foreach (doc in documents) {
-        var link = new OnBaseDocumentLink_Ext()
-        link.LinkType = linkType
-        link.LinkedEntity = entity.PublicID
-        link.Document = doc
-      }
-    }, user)
+
+    if(bundle == null) {
+      gw.transaction.Transaction.runWithNewBundle(\bun -> {
+         linkDocuments(entity, documents, linkType, bun)
+      }, User.util.CurrentUser == null ? User.util.UnrestrictedUser : User.util.CurrentUser)
+    } else {
+       linkDocuments(entity, documents, linkType, bundle)
+    }
+  }
+
+  private function linkDocuments(entity: KeyableBean, documents: Document[], linkType: Settings.DocumentLinkType, bundle: Bundle) {
+    foreach (doc in documents) {
+      var link = bundle.add(new OnBaseDocumentLink_Ext())
+      link.LinkType = linkType
+      link.LinkedEntity = entity.PublicID
+      link.Document = doc
+    }
   }
 
   /**

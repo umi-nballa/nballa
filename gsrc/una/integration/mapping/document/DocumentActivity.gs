@@ -5,8 +5,6 @@ uses gw.api.database.Query
 uses una.logging.UnaLoggerCategory
 uses onbase.api.application.DocumentLinking
 uses onbase.api.Settings.DocumentLinkType
-uses gw.transaction.AbstractBundleTransactionCallback
-uses gw.pl.persistence.core.Bundle
 uses java.lang.Exception
 
 /**
@@ -251,7 +249,7 @@ class DocumentActivity {
 
        if(activity != null) {
          var docLinking = new DocumentLinking()
-         docLinking.linkDocumentToEntity(activity, document, DocumentLinkType.activityid)
+         docLinking.linkDocumentToEntity(activity, document, DocumentLinkType.activityid, gw.transaction.Transaction.getCurrent())
        }
      } catch(e: Exception) {
 

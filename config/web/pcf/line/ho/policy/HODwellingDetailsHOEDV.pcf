@@ -213,7 +213,8 @@
       </InputSet>
       <InputSet
         visible="dwelling.HOLocation.PolicyLocation != null">
-        <InputDivider/>
+        <InputDivider
+          visible="gw.lob.ho.HODwellingUtil_HOE.isFHFSvisible(gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass))"/>
         <!-- <PickerInput
           editable="true"
           id="LocalTaxJurisdictionId"
@@ -738,7 +739,8 @@
             </RowIterator>
           </ListViewPanel>
         </ListViewInput>
-        <InputDivider/>
+        <InputDivider
+          visible="(dwelling.PolicyLine as HomeownersLine_HOE).MultiPolicyDiscount_Ext"/>
         <BooleanRadioInput
           editable="true"
           id="InsuredTenantDiscount_Ext"

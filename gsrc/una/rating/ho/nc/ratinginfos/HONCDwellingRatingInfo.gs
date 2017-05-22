@@ -22,6 +22,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isPermittedIncidentalOccupancyExtendSectionIICoverage: boolean as IsPermittedIncidentalOccupancyExtendSectionIICoverage = false
   var _lossAssessmentLimit: BigDecimal as LossAssessmentLimit
   var _unitOwnersCoverageASpecialLimitsExists : boolean as UnitOwnersCoverageASpecialLimitsExists = false
+  var _unitOwnersCovABaseLimit : int as UnitOwnersCovABaseLimit
   var _higherEQDeductible : boolean as HigherEQDeductible = false
   var _eqZone : String as EQZone
   var _eqConstruction : typekey.EarthquakeConstrn_Ext as EQConstruction
@@ -64,6 +65,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _unitOwnersCoverageASpecialLimitsExists = true
       }
 
+     _unitOwnersCovABaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovALimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
 
 
     if(dwelling.HODW_Earthquake_HOEExists){

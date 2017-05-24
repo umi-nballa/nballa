@@ -283,6 +283,8 @@ class CoveragesUtil {
 
 
   public static function getAvailableValuationMethods(covTerm: TypekeyCovTerm): List<gw.entity.TypeKey>{
+    var results : List<gw.entity.TypeKey>
+    var line = covTerm.Clause.PolicyLine
 
     if(covTerm == null){
       return null
@@ -303,8 +305,18 @@ class CoveragesUtil {
       policyType = (covTerm.Clause.OwningCoverable as HomeownersLine_HOE).HOPolicyType
     }
 
-    return covTerm.Pattern.OrderedAvailableValues
-        .where( \ elt -> elt.hasCategory(policyType) and elt.hasCategory(state))
+    results = covTerm.Pattern.OrderedAvailableValues.where( \ elt -> elt.hasCategory(policyType) and elt.hasCategory(state))
+
+
+    if(line typeis HomeownersLine_HOE and covTerm.Pattern == "HODW_DwellingValuation_HOE_Ext"){
+      var restrictedTerritories = ConfigParamsUtil.getList(TC_ReplacementCostWithRoofSurfacePaymentTerritories, line.BaseState, line.HOPolicyType.Code)
+
+      if(restrictedTerritories?.containsIgnoreCase(line.Dwelling.TerritoryCodeOrOverride)){
+        results = results.where( \ result -> result.Code == "ReplWRoof")
+      }
+    }
+
+    return results
 
   }
 

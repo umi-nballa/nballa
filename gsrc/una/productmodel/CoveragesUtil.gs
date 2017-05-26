@@ -189,6 +189,9 @@ class CoveragesUtil {
       case "CPFloridaChangesCondoCondition_EXT":
           result = getFloridaChangesCondoExistence(coverable as CommercialPropertyLine)
           break
+      case "BP7CrossSuitsExcl_EXt":
+          result = getCrossSuitsExistence(coverable as BP7BusinessOwnersLine)
+          break
       default:
         break
     }
@@ -535,6 +538,16 @@ class CoveragesUtil {
     if(line.AssociatedPolicyPeriod.Policy.PackageRisk==typekey.PackageRisk.TC_CONDOMINIUMASSOCIATION)
       result = TC_REQUIRED
     else
+      result = TC_ELECTABLE
+
+    return result
+  }
+
+  private static function getCrossSuitsExistence(bp7Line : BP7BusinessOwnersLine) : ExistenceType{
+    var result : ExistenceType
+    if(bp7Line.AssociatedPolicyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).Count>=1){
+      result = TC_REQUIRED
+    }else
       result = TC_ELECTABLE
 
     return result

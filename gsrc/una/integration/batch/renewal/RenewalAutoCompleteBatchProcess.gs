@@ -142,7 +142,7 @@ class RenewalAutoCompleteBatchProcess extends AbstractPolicyPeriodBatchProcess {
   private function createAutoIssuedRenewalActivity(policyPeriod : PolicyPeriod, patternCode : String) {
     var pattern = ActivityPattern.finder.findActivityPatternsByCode(patternCode)?.atMostOne()
     var activity = pattern.createJobActivity(policyPeriod.Bundle, policyPeriod.Job, null, null, null, null, null, null, null)
-    var queue = (policyPeriod.HomeownersLine_HOEExists) ? ActivityUtil.ACTIVITY_QUEUE.RENEWALS : ActivityUtil.ACTIVITY_QUEUE.CL_UW
+    var queue = (policyPeriod.HomeownersLine_HOEExists) ? ActivityUtil.ACTIVITY_QUEUE.RENEWALS.QueueName : ActivityUtil.ACTIVITY_QUEUE.CL_UW.QueueName
 
     ActivityUtil.assignActivityToQueue(queue, queue, activity)
   }

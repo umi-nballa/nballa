@@ -91,7 +91,7 @@ class PropertyInspectionsInboundFileProcessingPlugin extends InboundFileProcessi
       policyChangePeriod.PolicyChangeProcess.bind()
       var activity = ActivityUtil.createActivityAutomatically(policyChangePeriod, INSPECTION_ORDERED_ACTIVITY_PATTERN_CODE)
       if(activity.canAssign()){
-        ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP,activity)
+        ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR_FOLLOW_UP.QueueName,activity)
       }
 
       if(policyChangePeriod.PolicyContactRoles*.AccountContactRole*.AccountContact*.Contact*.EmailAddress1.atMostOne()!= null &&

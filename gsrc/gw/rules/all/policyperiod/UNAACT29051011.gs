@@ -30,7 +30,7 @@ class UNAACT29051011 implements IRuleCondition<PolicyPeriod> ,IRuleAction<Policy
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("geico_review_and_approve_endorsement")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.GEICO, ActivityUtil.ACTIVITY_QUEUE.GEICO, activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.GEICO.QueueName, ActivityUtil.ACTIVITY_QUEUE.GEICO.QueueName, activity)
   }
 }
 

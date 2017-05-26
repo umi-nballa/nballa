@@ -104,6 +104,7 @@
       visible="(cancellationProcess.ActiveCancellationWorkflow != null and cancellationProcess.ActiveCancellationWorkflow.isTriggerAvailable(&quot;Rescind&quot;)) or cancellationProcess.canWithdraw().Okay">
       <MenuItem
         action="if (jobWizardHelper.revalidateModel()) { cancellationProcess.ActiveCancellationWorkflow.invokeTrigger(&quot;Rescind&quot;); wizard.finish(); PleaseBePatientPopup.push(policyPeriod, jobWizardHelper, null, new gw.job.patience.BranchStatus( jobWizardHelper, &quot;Rescinding&quot; )); }"
+        confirmMessage="getRescindMessage()"
         id="RescindCancellation"
         label="displaykey.Job.Operation.Rescind"
         shortcut="R"
@@ -119,18 +120,26 @@
     <Code><![CDATA[function getCancelNowMessage() : String {
   var renewals = policyPeriod.FutureRenewals
   if (renewals.isEmpty()) {
-    return displaykey.Job.Operation.CancelPolicy.Confirm
+    return policyPeriod.Job.SupressPrint ? displaykey.Job.Operation.CancelPolicy.ConfirmWithSuppressPrint : displaykey.Job.Operation.CancelPolicy.Confirm
   } else {
     if (policyPeriod.CancellationProcess.hasBoundRenewalToCancel()) {
-      return displaykey.Job.Operation.CancelPolicy.ConfirmBoundRenewal
+      return policyPeriod.Job.SupressPrint ? displaykey.Job.Operation.CancelPolicy.ConfirmWithSuppressPrintBoundRenewal : displaykey.Job.Operation.CancelPolicy.ConfirmBoundRenewal
     } else if (policyPeriod.CancellationProcess.hasOpenRenewalToWithdraw()) {
-      return displaykey.Job.Operation.CancelPolicy.ConfirmUnboundRenewal( renewals.first().Job.JobNumber )
+      return policyPeriod.Job.SupressPrint ? displaykey.Job.Operation.CancelPolicy.ConfirmWithSuppressPrintUnboundRenewal(renewals.first().Job.JobNumber) : displaykey.Job.Operation.CancelPolicy.ConfirmUnboundRenewal( renewals.first().Job.JobNumber )
     } else {
-      return displaykey.Job.Operation.CancelPolicy.Confirm
+      return policyPeriod.Job.SupressPrint ? displaykey.Job.Operation.CancelPolicy.ConfirmWithSuppressPrint : displaykey.Job.Operation.CancelPolicy.Confirm
     }
   }
 }
 
-]]></Code>
+function getRescindMessage() : String{
+  var result : String
+  
+  if(policyPeriod.Job.SupressPrint){
+    result = "Are you sure you want to rescind the Cancellation with Suppress Print?"
+  }
+  
+  return result
+}]]></Code>
   </ToolbarButtonSet>
 </PCF>

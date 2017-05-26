@@ -30,7 +30,7 @@ class UNAACT29051036 implements IRuleCondition<PolicyPeriod>  , IRuleAction<Poli
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_review_new_bus_app")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue(ACTIVITY_QUEUE.CL_UW, ACTIVITY_QUEUE.CL_UW, activity)
+    ActivityUtil.assignActivityToQueue(ACTIVITY_QUEUE.CL_UW.QueueName, ACTIVITY_QUEUE.CL_UW.QueueName, activity)
   }
 }
 

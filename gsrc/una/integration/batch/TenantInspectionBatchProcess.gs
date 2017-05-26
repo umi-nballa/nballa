@@ -61,7 +61,7 @@ class TenantInspectionBatchProcess extends AbstractPolicyPeriodBatchProcess {
     var activityPattern = ActivityPattern.finder.findActivityPatternsByCode(ACTIVITY_PATTERN).atMostOne()
     var activity = activityPattern?.createPolicyActivity(eligiblePeriod.Bundle, eligiblePeriod.Policy, null, null, null, null, null, null, null)
 
-    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW, ActivityUtil.ACTIVITY_QUEUE.CL_UW, activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW.QueueName, ActivityUtil.ACTIVITY_QUEUE.CL_UW.QueueName, activity)
   }
 
   override property get PerBatchRunExceptionBlock(): block(Exception): String {

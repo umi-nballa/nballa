@@ -21,7 +21,7 @@
       id="RenewalWizard_RenewalScreen">
       <Toolbar>
         <EditButtons
-          updateConfirmMessage="displaykey.Job.Operation.SendToRenewal.Confirm"/>
+          updateConfirmMessage="getRenewConfirmMessage()"/>
       </Toolbar>
       <DetailViewPanel>
         <InputColumn>
@@ -34,5 +34,16 @@
         </InputColumn>
       </DetailViewPanel>
     </Screen>
+    <Code><![CDATA[function getRenewConfirmMessage() : String{
+  var result : String
+  
+  if(renewal.SupressPrint){
+    result =  displaykey.Job.Operation.SendToRenewal.SuppressPrintConfirm
+  }else{
+    result = displaykey.Job.Operation.SendToRenewal.Confirm
+  }
+  
+  return result
+}]]></Code>
   </Popup>
 </PCF>

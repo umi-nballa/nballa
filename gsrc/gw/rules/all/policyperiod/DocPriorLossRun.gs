@@ -29,7 +29,7 @@ class DocPriorLossRun implements IRuleCondition<PolicyPeriod> , IRuleAction<Poli
     override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
       var activityPattern = ActivityPattern.finder.getActivityPatternByCode("BOPCRP_prior_loss_runs_required")
       var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW_FOLLOW_UP, ActivityUtil.ACTIVITY_QUEUE.CL_UW_FOLLOW_UP, activity)
+      ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CL_UW_FOLLOW_UP.QueueName, ActivityUtil.ACTIVITY_QUEUE.CL_UW_FOLLOW_UP.QueueName, activity)
       var list = new AgentDocList_Ext(target)
       list.DocumentName = "Prior Loss Runs"
       target.addToAgentDocs(list)

@@ -28,7 +28,7 @@ class UNAACT29051016 implements IRuleCondition<PolicyPeriod> , IRuleAction<Polic
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult){
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("review_risk_and_large_loss_reports")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW, ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW, activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW.QueueName, ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW.QueueName, activity)
   }
 }
 

@@ -98,7 +98,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentType_Ext.TC_RISK_RPT_LRG_LOSS:
           //  Review Risk and  large loss reports
           if(document.OnBaseDocumentSubtype == typekey.OnBaseDocumentSubtype_Ext.TC_RRLL_RISK_REPORT_AND_LARGE_LOSS) {
-            createActivityAndAssignToQueue(document, period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW)
+            createActivityAndAssignToQueue(document, period, REVIEW_RISK_AND_LARGE_LOSS_REPORTS, ActivityUtil.ACTIVITY_QUEUE.SENIOR_UW.QueueName)
           }
       break
     }
@@ -116,7 +116,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_WITH_FORWARDING_ORDER:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_ADDITIONAL_INSURED:
         patternCode = POLICY_INSURED_RETURNED_MAIL
-        queue = ActivityUtil.ACTIVITY_QUEUE.CSR
+        queue = ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName
         break
 
       //  Mortgagee Returned mail
@@ -124,7 +124,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_MORTGAGE_FORWARDED:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_RETURNED_MAIL_LIENHOLDER:
         patternCode = POLICY_MORTGAGEE_RETURNED_MAIL
-        queue = ActivityUtil.ACTIVITY_QUEUE.CSR
+        queue = ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName
         break
 
         //  Policy DE Endorsement Request
@@ -142,7 +142,7 @@ class DocumentActivity {
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_MORTGAGE_CHANGE_REQUEST:// fall through
       case typekey.OnBaseDocumentSubtype_Ext.TC_INCORR_ELEVATION_CERTIFICATE:
           patternCode = POLICY_DE_ENDORSEMENT_REQUEST
-          queue = ActivityUtil.ACTIVITY_QUEUE.CSR
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName
           break
 
 
@@ -195,29 +195,29 @@ class DocumentActivity {
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_PRIORITY_PROPERTY_INSPECTION:
           patternCode = REVIEW_INSPECTION_PRIORITY
-          queue = ActivityUtil.ACTIVITY_QUEUE.PRIORITY_INSPECTION_REVIEW
+          queue = ActivityUtil.ACTIVITY_QUEUE.PRIORITY_INSPECTION_REVIEW.QueueName
           break
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_POLICY_REPORT_REVIEW:
           patternCode = REVIEW_INSPECTION_CS
-          queue = ActivityUtil.ACTIVITY_QUEUE.CSR_INSPECTION
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR_INSPECTION.QueueName
           break
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_UW_INSPECTION:
           patternCode = REVIEW_INSPECTION_UW
-          queue = ActivityUtil.ACTIVITY_QUEUE.UW_INSPECTION_REVIEW
+          queue = ActivityUtil.ACTIVITY_QUEUE.UW_INSPECTION_REVIEW.QueueName
           break
 
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_WIND_MITIGATION_INSPECTION:
           patternCode = VENDOR_WIND_MIT_INSPECTION
-          queue = ActivityUtil.ACTIVITY_QUEUE.CSR
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName
           //  Create a note. As per Gary London "Wind mitigation inspections are handled by Don Meyer Inspections, using the note title “DMI Wind Mit Insp Recd” should be acceptable."
           //  If the vendor changes, we should just remove the DMI prefix
           period.Policy.newDMIWindMitInspRecd_ExtNote().Body = "A new Wind Mitigation Inspection document has be received."
           break
       case typekey.OnBaseDocumentSubtype_Ext.TC_INSP_COMMERCIAL_REPORT:
           patternCode = COMMERCIAL_INSPECTION
-          queue = ActivityUtil.ACTIVITY_QUEUE.CSR
+          queue = ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName
           break
     }
 

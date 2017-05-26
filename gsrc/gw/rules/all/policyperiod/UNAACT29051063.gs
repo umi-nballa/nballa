@@ -39,7 +39,7 @@ class UNAACT29051063 implements IRuleCondition<PolicyPeriod>, IRuleAction<Policy
   override function satisfied(target: PolicyPeriod, context: PolicyPeriod, result: RuleEvaluationResult) {
     var activityPattern = ActivityPattern.finder.getActivityPatternByCode("validate_multipolicy_discount")
     var activity =  activityPattern.createJobActivity(target.Bundle, target.Job, null, null, null, null, null, null, null)
-    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR, ActivityUtil.ACTIVITY_QUEUE.CSR, activity)
+    ActivityUtil.assignActivityToQueue(ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName, ActivityUtil.ACTIVITY_QUEUE.CSR.QueueName, activity)
   }
 }
 

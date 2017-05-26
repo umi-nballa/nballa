@@ -169,7 +169,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
             break
         //TODO fix the 30000 limit once the limit is defaulted
         case HODW_Dwelling_Cov_HOE:
-           if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6 and dwellingCov?.HODW_Dwelling_Limit_HOETerm?.Value > 30000){
+          if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6 and dwellingCov?.HODW_Dwelling_Limit_HOETerm?.Value > 30000){
              rateUnitOwnersCovAIncreasedLimit(dwellingCov, dateRange)
             }
             break
@@ -286,12 +286,11 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   }
 
   /**
-    * Rate Unit-Owners Coverage A Increased Limits
+   * Rate Unit-Owners Coverage A Increased Limits
    */
   function rateUnitOwnersCovAIncreasedLimit(dwellingCov : HODW_Dwelling_Cov_HOE, dateRange : DateRange){
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersCovAIncreasedLimit ", this.IntrinsicType)
-
     var rateRoutineParameterMap = getHOParameterSet(PolicyLine, PolicyLine.BaseState, _dwellingRatingInfo)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.UNIT_OWNERS_COVA_INCREASED_LIMIT_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)

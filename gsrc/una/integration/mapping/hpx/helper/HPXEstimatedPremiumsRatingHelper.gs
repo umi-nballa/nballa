@@ -21,7 +21,10 @@ class HPXEstimatedPremiumsRatingHelper {
 
   function getEstimatedPremiums(policyPeriod : PolicyPeriod) : List<HPXEstimatedPremium> {
     var estimatedPremiums = new ArrayList<HPXEstimatedPremium>()
-    if (policyPeriod.HomeownersLine_HOEExists) {
+    if (policyPeriod.HomeownersLine_HOEExists and
+        (policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
+         policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 or
+         policyPeriod.HomeownersLine_HOE.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6)) {
       var jurisdictionState = policyPeriod.BaseState
       switch (jurisdictionState) {
         case typekey.Jurisdiction.TC_CA :

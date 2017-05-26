@@ -42,7 +42,7 @@ class OpenRenewalsAutomationBatchProcess extends AbstractPolicyPeriodBatchProces
     if(eligiblePeriod.Status != TC_RENEWING){
       var pattern = ActivityPattern.finder.findActivityPatternsByCode(ACTIVITY_PATTERN).atMostOne()
       var activity = pattern?.createJobActivity(eligiblePeriod.Bundle, eligiblePeriod.Job, null, null, null, null, null, null, null)
-      var queue = (eligiblePeriod.HomeownersLine_HOEExists) ? ActivityUtil.ACTIVITY_QUEUE.RENEWALS : ActivityUtil.ACTIVITY_QUEUE.CL_UW
+      var queue = (eligiblePeriod.HomeownersLine_HOEExists) ? ActivityUtil.ACTIVITY_QUEUE.RENEWALS.QueueName : ActivityUtil.ACTIVITY_QUEUE.CL_UW.QueueName
 
       ActivityUtil.assignActivityToQueue(queue, queue, activity)
     }

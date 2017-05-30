@@ -66,18 +66,18 @@ class DefaultSearchPlugin implements ISearchPlugin {
       return searchResultsToDTO(accounts.toTypedArray(), policies.toTypedArray())
     }
 
-    //Accounts
-    var accounts = new ArrayList<Account>()
-    var account = getAccountByAccountNumber(searchParam)
-    if (account != null){
-      accounts.add(account)
-    }
+      //Accounts
+      var accounts = new ArrayList<Account>()
+      var account = getAccountByAccountNumber(searchParam)
+      if (account != null){
+        accounts.add(account)
+      }
 
-    //Policies
-    var policies = new ArrayList<Policy>()
-    var policy = getPolicyByPolicyNumber(searchParam)
-    if (policy != null){
-      policies.add(policy)
+      //Policies
+      var policies = new ArrayList<Policy>()
+      var policy = getPolicyByPolicyNumber(searchParam)
+      if (policy != null){
+        policies.add(policy)
     }
 
     return searchResultsToDTO(accounts.toTypedArray(), policies.toTypedArray())

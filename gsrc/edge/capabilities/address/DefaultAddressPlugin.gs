@@ -39,6 +39,7 @@ class DefaultAddressPlugin implements IAddressPlugin {
     res.PostalCode = address.PostalCode
     res.Country = address.Country
     res.AddressType = address.AddressType
+    res.County = address.County
   }
 
   public static function fillAddress(res : AddressDTO, address : AddressFillableExtension) {
@@ -52,6 +53,7 @@ class DefaultAddressPlugin implements IAddressPlugin {
     res.State = address.State
     res.PostalCode = address.PostalCode
     res.Country = address.Country
+    res.County = address.County
   }
 
   override function updateFromDTO(address : Address, dto : AddressDTO) {
@@ -95,6 +97,9 @@ class DefaultAddressPlugin implements IAddressPlugin {
       return true
     }
     if (addr1.PostalCode != addr2.PostalCode) {
+      return true
+    }
+    if (addr1.County != addr2.County) {
       return true
     }
     return false

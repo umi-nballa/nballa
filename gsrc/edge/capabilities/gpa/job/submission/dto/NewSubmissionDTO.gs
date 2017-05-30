@@ -28,6 +28,6 @@ class NewSubmissionDTO {
   @JsonProperty @Required
   var _producerCode : String as ProducerCode
 
-  @JsonProperty @Required
+  @JsonProperty
   var _ratingStyle : String as RatingStyle
 }

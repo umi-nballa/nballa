@@ -12,7 +12,7 @@ class SubmissionUtil {
   /**
    * Creates a new submission.
    */
-  public static function newSubmission(account : Account, productCode:String, periodStartDate: Date, policyAddress : AddressDTO, termType : typekey.TermType, _addressPlugin : IAddressPlugin, ratingStyle:String=null, policyType:String=null) : Submission {
+  public static function newSubmission(account : Account, productCode:String, periodStartDate: Date, policyAddress : AddressDTO, termType : typekey.TermType, _addressPlugin : IAddressPlugin, ratingStyle:String=null) : Submission {
     var producerSelection = getProducerSelection(account, periodStartDate)
     var productSelection = getProductSelection(productCode)
 
@@ -32,12 +32,10 @@ class SubmissionUtil {
       branch.BranchName = "CUSTOM"
     }
 
-    if(StringUtils.isNotBlank(policyType)) {
-      sub.LatestPeriod.HomeownersLine_HOE.HOPolicyType = typekey.HOPolicyType_HOE.get(policyType)
-    }
-
     branch.SubmissionProcess.beginEditing()
     branch.TermType = termType == null ? typekey.TermType.TC_ANNUAL : termType
+
+    branch.SourceSystem_Ext = SourceSystem_Ext.TC_GUIDEWIRE //Default to Guidewire
 
     /*
      * Account holder address could differ from policy address, unlink and update it if necessary.
@@ -52,6 +50,20 @@ class SubmissionUtil {
 
     if(data.QuoteType != null){
       submission.QuoteType = data.QuoteType
+    }
+
+    var branch = submission.LatestPeriod
+
+    if(data.Bankruptcy != null){
+      branch.bankruptcy_Ext = data.Bankruptcy
+    }
+
+    if(data.RiskIndicator != null){
+      branch.RiskIndicator_Ext = data.RiskIndicator
+    }
+
+    if(data.ReinsuranceFacultative != null){
+      branch.Reinsurance_Ext = data.ReinsuranceFacultative
     }
 
   }

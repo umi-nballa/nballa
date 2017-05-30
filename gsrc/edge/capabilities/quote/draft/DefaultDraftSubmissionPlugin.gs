@@ -104,7 +104,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     final var account = _accountPlugin.updateOrCreateNewQuoteAccount(existingAccount, productCode, data.AccountHolder, data.PolicyAddress)
     ensureProductAvailable(account, data)
 
-    final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin,data.RatingStyle, data.PolicyType)
+    final var aSubmission = SubmissionUtil.newSubmission(account, productCode, data.PeriodStartDate, data.PolicyAddress, data.TermType, _addressPlugin,data.RatingStyle)
     aSubmission.ActivePeriods.each(\period -> period.syncQuestions(draftQuestions(aSubmission)))
     _lobPlugin.updateNewDraftSubmission(aSubmission.SelectedVersion, data.Lobs)
 
@@ -121,7 +121,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
 
     validateAddress(data.PolicyAddress)
 
-    //For product avaibility check
+    //For product availability check
     final var postCodeChanged = data.PolicyAddress.PostalCode != submission.SelectedVersion.PolicyAddress.Address.PostalCode
     //For address change persistence
     final var addressChanged = _addressPlugin.doAddressesDiffer(data.PolicyAddress, _addressPlugin.toDto(submission.SelectedVersion.PolicyAddress.Address))

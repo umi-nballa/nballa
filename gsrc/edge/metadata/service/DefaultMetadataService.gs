@@ -10,7 +10,7 @@ uses java.util.IdentityHashMap
 uses edge.jsonmapper.JsonReadOnlyProperty
 
 /** Default implementation of the metadata service. */
-final class DefaultMetadataService implements IMetadataService {
+final class   DefaultMetadataService implements IMetadataService {
 
   /** Service instance. */
   public static final var SERVICE : IMetadataService = new DefaultMetadataService(DefaultMetadataGenerator.INSTANCE)

@@ -75,7 +75,13 @@ class DraftDataDTO {
   var _quoteType : typekey.QuoteType as QuoteType
 
   @JsonProperty
-  var _policyType : String as PolicyType
+  var _bankruptcy : Boolean as Bankruptcy
+
+  @JsonProperty
+  var _riskIndicator : Boolean as RiskIndicator
+
+  @JsonProperty
+  var _reinsuranceFacultative : Boolean as ReinsuranceFacultative
 
   @JsonProperty
   var _generatePaymentPlan : Boolean as GeneratePaymentPlan

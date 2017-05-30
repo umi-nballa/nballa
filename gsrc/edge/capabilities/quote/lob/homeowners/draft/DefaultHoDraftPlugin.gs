@@ -10,10 +10,6 @@ uses edge.capabilities.quote.lob.homeowners.draft.dto.ConstructionDTO
 uses edge.capabilities.quote.lob.homeowners.draft.util.ConstructionUtil
 uses edge.capabilities.quote.lob.homeowners.draft.util.YourHomeUtil
 uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
-uses edge.capabilities.quote.coverage.util.CoverageUtil
-uses edge.capabilities.quote.coverage.dto.CoverageDTO
-uses edge.capabilities.quote.coverage.util.TermUtil
-uses edge.capabilities.quote.coverage.dto.TermDTO
 uses edge.capabilities.quote.lob.homeowners.draft.dto.RatingDTO
 uses edge.capabilities.quote.lob.homeowners.draft.util.RatingUtil
 uses edge.capabilities.quote.questionset.util.QuestionSetUtil
@@ -37,19 +33,23 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     return code == "Homeowners"
   }
 
-
   override function updateNewDraftSubmission(period: PolicyPeriod, update: HoDraftDataExtensionDTO) {
     if (!period.HomeownersLine_HOEExists) {
       return
     }
     final var hoLine = period.HomeownersLine_HOE
 
-    if(hoLine.HOPolicyType == null){
+    if(update.PolicyType != null) {
+      hoLine.HOPolicyType = HOPolicyType_HOE.get(update.PolicyType)
+    } else if(hoLine.HOPolicyType == null) {
       hoLine.HOPolicyType = HOPolicyType_HOE.TC_HO3
     }
 
     hoLine.Dwelling.setPolicyTypeAndDefaults()
 
+//    QuestionSetUtil.update(hoLine, getLineQuestionSets(period), update.PreQualQuestionSets)
+//    QuestionSetUtil.update(period, getPolicyQuestionSets(period), update.PreQualQuestionSets)
+//CLM - Commenting out for now, the above lines add the answers if supplied
     hoLine.syncQuestions(getLineQuestionSets(period))
     period.syncQuestions(getPolicyQuestionSets(period))
 
@@ -59,13 +59,12 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateRating(hoLine.Dwelling, update.Rating)
   }
 
-
-
   override function updateExistingDraftSubmission(period: PolicyPeriod, update: HoDraftDataExtensionDTO) {
     if (!period.HomeownersLine_HOEExists) {
       return
     }
     final var hoLine = period.HomeownersLine_HOE
+
     if(hoLine.HOPolicyType == null){
 
       hoLine.HOPolicyType = HOPolicyType_HOE.TC_HO3
@@ -85,8 +84,6 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateRating(dwelling, update.Rating)
   }
 
-
-
   override function toDraftDTO(period: PolicyPeriod): HoDraftDataExtensionDTO {
     final var hoLine = period.HomeownersLine_HOE
     if (hoLine == null) {
@@ -96,7 +93,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     final var res = new HoDraftDataExtensionDTO()
 
     res.PolicyAddress = _addressPlugin.toDto(period.PolicyAddress.Address)
-    res.PreQualQuestionSets = QuestionSetUtil.toAnswersDTO(getLineQuestionSets(period).concat(getPolicyQuestionSets(period)), period)
+    res.PreQualQuestionSets = QuestionSetUtil.toAnswersDTO(getPolicyQuestionSets(period).concat(getLineQuestionSets(period)), period)
     res.YourHome = toYourHomeDTO(hoLine.Dwelling)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
@@ -111,7 +108,9 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
   /** Policy-level question sets. */
   protected function getPolicyQuestionSets(period : PolicyPeriod) : QuestionSet[] {
-    return {QuestionSetUtil.getByCode("HOGAGenericPreQual_HOE")}
+
+    return period.Policy.Product.getQuestionSetsByType(typekey.QuestionSetType.TC_PREQUAL)
+    //{QuestionSetUtil.getByCode("HOGAGenericPreQual_HOE")} CLM - Changed for
   }
 
   /**

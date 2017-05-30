@@ -103,7 +103,7 @@ class AddressDTO {
    */
   @JsonProperty
   var _addressType : typekey.AddressType as AddressType
-     
+
   /**
    * True when city and state are populated based on the postal code.
    * False when the postal code is not used to populate those fields or when the 
@@ -125,7 +125,8 @@ class AddressDTO {
     "City : " + City + "\n" +
     "State : " + State + "\n" +
     "Postal Code : " + PostalCode + "\n" +
-    "Country : " + Country + "\n"
+    "Country : " + Country + "\n" +
+    "County : " + County + "\n"
     )
   }
   

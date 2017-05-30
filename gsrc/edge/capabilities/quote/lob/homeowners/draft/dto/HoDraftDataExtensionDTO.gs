@@ -5,11 +5,12 @@ uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
 uses edge.capabilities.address.dto.AddressDTO
 uses edge.capabilities.quote.questionset.dto.QuestionSetAnswersDTO
+uses edge.capabilities.quote.lob.dto.UnaLobDataDTO
 
 /**
  * Homeowners extension for quote draft.
  */
-class HoDraftDataExtensionDTO implements IDraftLobExtensionDTO {
+class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensionDTO {
 
   /** Address of this dwelling. */
   @JsonProperty

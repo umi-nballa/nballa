@@ -233,6 +233,45 @@
                   label="displaykey.Web.Building.Monitored"
                   value="building.Monitored_Ext"/>
                 <InputDivider/>
+                <InputSet>
+                  <Label
+                    id="improvements"
+                    label="displaykey.Web.Building.Improvements_Ext"/>
+                  <TextInput
+                    align="left"
+                    editable="true"
+                    formatType="exactNumber"
+                    id="HeatingUpgrade"
+                    label="displaykey.Web.Homeowners.DwellingConstruction.HeatingReplaced"
+                    maxChars="4"
+                    validationExpression="(building.YearBuilt_Ext != null and building.HeatingUpgradeDate_Ext &lt; building.YearBuilt_Ext) ? displaykey.Web.Homeowners.DwellingConstruction.HeatUpgradeYearErrorMsg : null"
+                    value="building.HeatingUpgradeDate_Ext"/>
+                  <TextInput
+                    align="left"
+                    editable="true"
+                    id="PlumbingUpgrade"
+                    label="displaykey.Web.Homeowners.DwellingConstruction.PlumbingReplaced"
+                    maxChars="4"
+                    validationExpression="(building.YearBuilt_Ext != null and building.PlumbingUpgradeDate_Ext &lt; building.YearBuilt_Ext) ? displaykey.Web.Homeowners.DwellingConstruction.PlumbingUpgradeYearErrorMsg : null"
+                    value="building.PlumbingUpgradeDate_Ext"/>
+                  <TextInput
+                    align="left"
+                    editable="true"
+                    id="RoofingUpgrade"
+                    label="displaykey.Web.Homeowners.DwellingConstruction.RoofingReplaced"
+                    maxChars="4"
+                    validationExpression="(building.YearBuilt_Ext != null and building.RoofingUpgradeDate_Ext &lt; building.YearBuilt_Ext) ? displaykey.Web.Homeowners.DwellingConstruction.RoofingUpgradeYearErrorMsg : null"
+                    value="building.RoofingUpgradeDate_Ext"/>
+                  <TextInput
+                    align="left"
+                    editable="true"
+                    id="ElectricalSystemUpgrade"
+                    label="displaykey.Web.Homeowners.DwellingConstruction.WiringReplaced"
+                    maxChars="4"
+                    validationExpression="(building.YearBuilt_Ext != null and building.ElectricalSysUpgradeDate_Ext &lt; building.YearBuilt_Ext) ? displaykey.Web.Homeowners.DwellingConstruction.ElectricalUpgradeYearErrorMsg : null"
+                    value="building.ElectricalSysUpgradeDate_Ext"/>
+                </InputSet>
+                <InputDivider/>
                 <InputSet
                   id="Windpoolvalue_Ext">
                   <RangeInput
@@ -376,12 +415,17 @@
                   id="respondingFire"
                   label="displaykey.Web.Location.RespondingFireDepartment"
                   value="location.FireDepartment_Ext"/> -->
-                <TypeKeyInput
+                <!-- <TypeKeyInput
                   editable="true"
                   id="FeetToHydrant"
                   label="displaykey.Web.Policy.BP7.Location.FeetToHydrant "
                   required="true"
-                  value="location.FeetToHydrant"/>
+                  value="location.FeetToHydrant"/> -->
+                <BooleanRadioInput
+                  editable="true"
+                  id="FireHydrantDistance_Ext"
+                  label="displaykey.Web.BOP.BP7Location.FireHydrantDistance_Ext"
+                  value="building.FireHydrantDistance_Ext"/>
                 <BooleanRadioInput
                   editable="true"
                   id="windPoolElig"

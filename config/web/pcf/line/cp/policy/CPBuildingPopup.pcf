@@ -815,8 +815,7 @@
               </InputGroup> -->
               <InputDivider/>
               <Label
-                label="displaykey.Web.Policy.CP.Location.CPBuilding.Improvements"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
+                label="displaykey.Web.Policy.CP.Location.CPBuilding.Improvements"/>
               <TextInput
                 align="left"
                 editable="true"
@@ -824,42 +823,37 @@
                 id="LastUpdateHeating"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateHeating"
                 maxChars="4"
-                required="true"
+                required="cpBuilding.PolicyPeriod.Policy.PackageRisk==TC_APARTMENT"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Heating.YearAdded)"
-                value="cpBuilding.Building.Heating.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
+                value="cpBuilding.Building.Heating.YearAdded"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="LastUpdatePlumbing"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdatePlumbing"
                 maxChars="4"
-                required="true"
+                required="cpBuilding.PolicyPeriod.Policy.PackageRisk==TC_APARTMENT"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Plumbing.YearAdded)"
-                value="cpBuilding.Building.Plumbing.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
+                value="cpBuilding.Building.Plumbing.YearAdded"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="LastUpdateRoofing"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateRoofing"
                 maxChars="4"
-                required="true"
+                required="cpBuilding.PolicyPeriod.Policy.PackageRisk==TC_APARTMENT || cpBuilding.PolicyPeriod.Policy.PackageRisk==TC_CONDOMINIUMASSOCIATION"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Roofing.YearAdded)"
-                value="cpBuilding.Building.Roofing.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; (new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt &gt;20)  &amp;&amp; (cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONARCHITECTURALSHINGLE_EXT || cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_COMPOSITIONIMPACTRESISTSHINGLES_EXT || cpBuilding?.RoofTypeCP==typekey.RoofType_CP.TC_ASPHALTCOMP_EXT)"/>
+                value="cpBuilding.Building.Roofing.YearAdded"/>
               <TextInput
                 align="left"
                 editable="true"
                 id="LastUpdateWiring"
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.LastUpdateWiring"
                 maxChars="4"
-                required="true"
+                required="cpBuilding.PolicyPeriod.Policy.PackageRisk==TC_APARTMENT"
                 validationExpression="cpBuilding.validateYearLastUpdate(cpBuilding.Building.Wiring.YearAdded)"
-                value="cpBuilding.Building.Wiring.YearAdded"
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50) &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
-              <InputDivider
-                visible="cpBuilding!=null &amp;&amp; cpBuilding?.Building!=null &amp;&amp; cpBuilding?.Building?.YearBuilt!=null &amp;&amp; ((new java.util.Date().YearOfDate - cpBuilding?.Building?.YearBuilt) &gt;50)  &amp;&amp; cpBuilding?.OccupancyType==typekey.CPOccupancyType_Ext.TC_NONRESIDENTIAL &amp;&amp; cpBuilding?.CPBldgCov?.CPBldgCovLimitTerm?.Value?.doubleValue()&gt;150000"/>
+                value="cpBuilding.Building.Wiring.YearAdded"/>
+              <InputDivider/>
               <Label
                 label="displaykey.Web.Policy.CP.Location.CPBuilding.Other"/>
               <TypeKeyInput

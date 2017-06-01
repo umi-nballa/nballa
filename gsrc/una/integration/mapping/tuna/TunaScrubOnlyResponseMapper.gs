@@ -3,7 +3,7 @@ package una.integration.mapping.tuna
 uses una.logging.UnaLoggerCategory
 uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
 uses java.lang.Exception
-
+uses org.apache.commons.lang3.StringUtils
 
 /**
  * Created for mapping the GetPropertyInformationScrubOnly response
@@ -21,12 +21,17 @@ class TunaScrubOnlyResponseMapper extends TunaResponseMapper {
    * @return response
    */
   override function tunaAppResponse(tunaResponse: PropertyGeographyModel): TunaAppResponse {
+
     response = new TunaAppResponse()
     try {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " tunaAppResponse" + "For response Mapping ", this.IntrinsicType)
       response.Status = tunaResponse.Status
       response.ScrubStatus = tunaResponse.Address.ScrubStatus
-      response.AddressLine1 = tunaResponse.Address.Street.Number + " " + tunaResponse.Address.Street.Name + " " + tunaResponse.Address.Street.Type
+      response.AddressLine1 = tunaResponse.Address.Street.Number + " "
+          + (StringUtils.isNotBlank(tunaResponse.Address.Street.PreDirection)? tunaResponse.Address.Street.PreDirection + " " : "" )
+          + tunaResponse.Address.Street.Name
+          + (StringUtils.isNotBlank(tunaResponse.Address.Street.Type)? " " + tunaResponse.Address.Street.Type : "" )
+          + (StringUtils.isNotBlank(tunaResponse.Address.Street.PostDirection)? " " + tunaResponse.Address.Street.PostDirection : "")
       response.City = tunaResponse.Address.City
       response.PostalCode = tunaResponse.Address.Zipcode.Minor.length != 0 ? tunaResponse.Address.Zipcode.Major + "-" + tunaResponse.Address.Zipcode.Minor :tunaResponse.Address.Zipcode.Major
       response.State = tunaResponse.Address.State

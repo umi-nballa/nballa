@@ -8,6 +8,7 @@ uses wsi.remote.una.tuna.quoteservice.types.complex.PropertyGeographyModel
 uses java.lang.Double
 uses java.lang.Exception
 uses java.util.ArrayList
+uses org.apache.commons.lang3.StringUtils
 
 /**
  * Created for mapping the GetPropertyInformation response
@@ -31,7 +32,11 @@ class TunaInformationResponseMapper extends TunaResponseMapper {
       logger.debug(" Entering  " + CLASS_NAME + " :: " + " tunaAppResponse" + "For response Mapping ", this.IntrinsicType)
       response.Status = tunaResponse.Status
       response.ScrubStatus = tunaResponse.Address.ScrubStatus
-      response.AddressLine1 = tunaResponse.Address.Street.Number + " " + tunaResponse.Address.Street.Name + " " + tunaResponse.Address.Street.Type
+      response.AddressLine1 = tunaResponse.Address.Street.Number + " "
+          + (StringUtils.isNotBlank(tunaResponse.Address.Street.PreDirection)? tunaResponse.Address.Street.PreDirection + " " : "" )
+          + tunaResponse.Address.Street.Name
+          + (StringUtils.isNotBlank(tunaResponse.Address.Street.Type)? " " + tunaResponse.Address.Street.Type : "" )
+          + (StringUtils.isNotBlank(tunaResponse.Address.Street.PostDirection)? " " + tunaResponse.Address.Street.PostDirection : "")
       response.City = tunaResponse.Address.City
       response.PostalCode = tunaResponse.Address.Zipcode.Major + "-" + tunaResponse.Address.Zipcode.Minor
       response.State = tunaResponse.Address.State

@@ -405,15 +405,12 @@
     name="BCEGMatchLevel_Ext"
     nullok="true"
     typelist="TUNAMatchLevel_Ext"/>
-  <column
+  <typekey
     desc="BCEG Grade Entered by User"
     name="BCEGOverridden_Ext"
     nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
+    typelist="BCEGGrade_Ext">
+  </typekey>
   <column
     desc="Dwelling Protection Class lookup on address field and Distance to Fire Station based on ISO classification manual"
     name="FireProtectionClassCode"
@@ -423,15 +420,12 @@
       name="size"
       value="100"/>
   </column>
-  <column
+  <typekey
     desc="Dwelling Protection Class Code Overridden"
     name="FirePCCodeOverridden_Ext"
     nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
+    typelist="ProtectionClassCode_Ext">
+  </typekey>
   <typekey
     desc="Dwelling Protection Class Code Match Level from TUNA"
     name="FirePCCodeMatchLevel_Ext"

@@ -24,21 +24,13 @@ class CoveragesValidation_HOE extends PCValidationBase {
   
   override function validateImpl() {
     Context.addToVisited(this, "validateImpl")
-    checkEmptyLocations()
     checkEmptyScheduledItems()
     _dwelling.Coverages.each(\ d -> checkUniqueDescription(d))
     _dwelling.Coverages.each(\ d -> checkUniqueDwellingLocation(d))
     _holine.HOLineCoverages.each(\ d -> checkUniqueLocation(d))
     validateDeductibleAmounts()
   }
-  
-  function checkEmptyLocations() {
-    if (_holine.HOLI_OtherInsuredResidence_HOEExists) {
-      if (_holine.HOLI_OtherInsuredResidence_HOE.CoveredLocations.length == 0) {
-        Result.addError(_dwelling, "default", displaykey.Web.Policy.HomeownersLine.Validation.OtherInsuredResidenceEmpty)
-      }
-    }
-  }
+
   
   function checkEmptyScheduledItems() {
     if (_dwelling.HODW_SpecificStructuresOffPremise_HOEExists) {

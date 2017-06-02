@@ -2,10 +2,10 @@ package edge.capabilities.quote.lob.homeowners.draft.dto
 
 uses edge.capabilities.quote.lob.dto.IDraftLobExtensionDTO
 uses edge.jsonmapper.JsonProperty
-uses edge.aspects.validation.annotations.Required
 uses edge.capabilities.address.dto.AddressDTO
 uses edge.capabilities.quote.questionset.dto.QuestionSetAnswersDTO
 uses edge.capabilities.quote.lob.dto.UnaLobDataDTO
+uses edge.capabilities.policy.coverages.UNACoverageDTO
 
 /**
  * Homeowners extension for quote draft.
@@ -29,4 +29,7 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
   /** Additional details about rating. */
   @JsonProperty
   var _rating : RatingDTO as Rating
+
+  @JsonProperty
+  var _coverages : UNACoverageDTO[] as Coverages
 }

@@ -969,10 +969,7 @@ class HOFormAvailabilityUtil extends AbstractSimpleAvailabilityForm
         var isTermExists = dwelling.HODW_Other_Structures_HOE.HasHODW_OtherStructures_Limit_HOETerm
         var otherStTermLimitValue = dwelling.HODW_Other_Structures_HOE.HODW_OtherStructures_Limit_HOETerm.Value
         var isDwellCovExists = dwelling.HODW_Dwelling_Cov_HOEExists
-        var isDwellCovLimitExists = dwelling.HODW_Dwelling_Cov_HOE.HasHODW_Dwelling_Limit_HOETerm
-        var isHO6CovLimitExists = dwelling.HODW_Dwelling_Cov_HOE.HasLimit_HO6_HOETerm
-        var dwellTermLimitValue = dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
-        var HO6TermLimitValue = dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
+        var isDwellCovLimitExists = dwelling.HODW_Dwelling_Cov_HOE.HasHODW_Dwelling_Limit_HOETerm        var dwellTermLimitValue = dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value
         var policyType = hoeLine.HOPolicyType.Code
         var HO3typeKeyCode = typekey.HOPolicyType_HOE.TC_HO3.Code
         if( isCovExists and isTermExists and isDwellCovExists and isDwellCovLimitExists and (policyType == HO3typeKeyCode) and  (otherStTermLimitValue < dwellTermLimitValue *  BigDecimal.valueOf(0.20)) )  {

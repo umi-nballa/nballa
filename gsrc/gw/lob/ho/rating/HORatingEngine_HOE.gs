@@ -177,9 +177,6 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
         rateMedPay(cov, cov.HOLI_MedPay_Limit_HOETerm.OptionValue,
                   theDefaultValue(cov.HOLI_MedPay_Limit_HOETerm.Pattern))
         break
-      case HOLI_OtherInsuredResidence_HOE :
-        rateOtherResidence(cov)
-        break
       case DPLI_Med_Pay_HOE : 
         rateMedPayDP2(cov, cov.DPLI_MedPay_Limit_HOETerm.OptionValue,
                   theDefaultValue(cov.DPLI_MedPay_Limit_HOETerm.Pattern))
@@ -330,55 +327,6 @@ class HORatingEngine_HOE extends AbstractRatingEngine<productmodel.HomeownersLin
     }
   }
 
-  private function rateOtherResidence(cov : HOLI_OtherInsuredResidence_HOE) {
-    // retrieve scheduled items in seq by policy location
-    var ratedportion : BigDecimal = 0
-    var currentloc : entity.PolicyLocation
-    for (loc in cov.CoveredLocations.sortBy(\ c -> c.PolicyLocation)) {
-      if (currentloc != null and currentloc <> loc.PolicyLocation) {
-        //rate that location and reset the value
-        rateSingleOtherResidence(cov, currentloc, ratedportion)
-        ratedportion = 0
-      }
-      currentloc = loc.PolicyLocation
-      ratedportion = ratedportion + loc.LocationLimit.Code as BigDecimal
-    }
-    rateSingleOtherResidence(cov, currentloc, ratedportion)
-  }
-  
-  private function rateSingleOtherResidence( cov : HOLI_OtherInsuredResidence_HOE, loc : PolicyLocation, ratedportion : BigDecimal) {
-    var dwellingValue = getDwellingValue(cov.HOLine.Dwelling)
-    if(dwellingValue != null and ratedportion > 0 ){
-      var start = cov.SliceDate
-      var end = getNextSliceDateAfter(start)
-      var cost = new HOLocationCovCostData_HOE(start, end, cov.Currency, RateCache, cov.FixedId, loc.FixedId)
-      cost.NumDaysInRatedTerm = this.NumDaysInCoverageRatedTerm
-      
-      cost.Basis = ratedportion
-      var increasedLimFac : BigDecimal = 7
-      switch (ratedportion) {
-        case 50000 :
-          increasedLimFac = 7
-          break
-        case 75000 :
-          increasedLimFac = 8
-          break
-        case 100000 :
-          increasedLimFac = 11
-          break
-        case 200000 :
-          increasedLimFac = 15
-          break
-        case 10000 :
-          increasedLimFac = 18
-      }
-      cost.StandardBaseRate    = increasedLimFac
-      cost.StandardAdjRate     = increasedLimFac * getUWCompanyRateFactor(cov.HOLine)
-      cost.StandardTermAmount  = (cost.StandardAdjRate).setScale( this.RoundingLevel, java.math.RoundingMode.HALF_UP ) 
-      cost.copyStandardColumnsToActualColumns()  
-      addCost(cost)
-    }
-  }
   
 /*  
   private function rateWatercraftLiability(cov : HOLI_WaterCraft_Liability_HOE) {

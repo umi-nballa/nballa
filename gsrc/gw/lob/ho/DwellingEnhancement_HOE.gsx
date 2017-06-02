@@ -90,55 +90,6 @@ enhancement DwellingEnhancement_HOE : entity.Dwelling_HOE {
     if (this.Garage == null) {
       this.Garage = "None"
     }
-    //Commenting the default logic as not needed after 12.02.03
-    /*
-    var validType = false
-    if(this.ResidenceType != null)
-    {
-      validType =this.ResidenceType.Categories.hasMatch(\ cat -> cat.Code == this.HOPolicyType.Code)
-    }
-    
-    //Set the default for Residence Type only if there was no value was chosen or the previous choses value 
-    //is not applicable for the policy type
-    if (!validType) {
-      switch(this.HOPolicyType){
-        case "HO3": {
-          this.ResidenceType = ResidenceType_HOE.TC_FAM1
-          break
-        }
-        case "HO4": {
-          this.ResidenceType =  ResidenceType_HOE.TC_APT
-          break
-        }
-        case "HO6": {
-          this.ResidenceType =  ResidenceType_HOE.TC_CONDO
-          break
-        }
-        case "DP2": {
-          this.ResidenceType =  ResidenceType_HOE.TC_FAM1
-          break
-        } 
-        default: {
-          this.ResidenceType = null
-        }
-      }
-
-      // TODO: UNDO THIS ONCE RESIDENCE REQUIREMENTS ARE IN!!!!!!!!!!!!!!!!!!!
-      // UNA temporary fix for continuting testing only
-      if (this.ResidenceType == null) this.ResidenceType = ResidenceType_HOE.TC_FAM1
-    }
-    
-    //Set the default for Dwelling Occupancy to Non Owner for HO4 and Owner for others only if there is not a
-    //value already chosen
-    if (this.Occupancy == null) {
-      if (this.HOPolicyType != HOPolicyType_HOE.TC_HO4) {
-        this.Occupancy = DwellingOccupancyType_HOE.TC_OWNER
-      }
-      else {
-        this.Occupancy = DwellingOccupancyType_HOE.TC_NONOWN
-      }
-    }
-   */
   }
 
   /**

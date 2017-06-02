@@ -82,17 +82,7 @@ enhancement HomeownersLineEnhancement_HOE : entity.HomeownersLine_HOE {
     for (pl in this.Branch.PolicyLocations) {
       if (pl.FixedId != this.Dwelling.HOLocation.PolicyLocation.FixedId) {
         if (locFilter == true) { // If the locations already on the coverage filter out those locations
-          if (covPattern.matches("HOLI_OtherInsuredResidence_HOE")) {
-            for (covLoc in this.HOLI_OtherInsuredResidence_HOE.CoveredLocations)
-            //The if statement checks that Policy Location is not already on one of the scheduled items and
-            // also ensures that we are not adding duplicate entries to the return list
-            if (this.HOLI_OtherInsuredResidence_HOE.CoveredLocations.
-                  where(\ cl -> cl.PolicyLocation.FixedId == pl.FixedId ).length == 0 and
-                  polLocs.where(\ p -> p.FixedId == pl.FixedId ).Count == 0) {
-              polLocs.add(pl)
-            }
-          }
-          else if (covPattern.matches("HOLI_AddResidenceRentedtoOthers_HOE")) {
+          if (covPattern.matches("HOLI_AddResidenceRentedtoOthers_HOE")) {
             for (covLoc in this.HOLI_AddResidenceRentedtoOthers_HOE.CoveredLocations)
               //The if statement checks that Policy Location is not already on one of the scheduled items and
                 // also ensures that we are not adding duplicate entries to the return list

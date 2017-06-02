@@ -1,9 +1,8 @@
 package una.enhancements.productmodel
 
 uses gw.api.domain.covterm.CovTerm
-uses java.math.BigDecimal
-uses gw.api.domain.covterm.OptionCovTerm
-uses gw.api.domain.covterm.DirectCovTerm
+uses java.lang.UnsupportedOperationException
+
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,6 +12,17 @@ uses gw.api.domain.covterm.DirectCovTerm
  * To change this template use File | Settings | File Templates.
  */
 enhancement UNACoverageEnhancement : entity.Coverage {
+  public property get Scheduled() : boolean{
+    var result : boolean
+
+    if(this.PolicyLine.Branch.HomeownersLine_HOEExists){
+      result = {"HODW_ScheduledProperty_HOE", "HOSL_WatercraftLiabilityCov_HOE_Ext", "HOSL_OutboardMotorsWatercraft_HOE_Ext", "HOLI_AddResidenceRentedtoOthers_HOE"}.containsIgnoreCase(this.PatternCode)
+    }else{
+      throw new UnsupportedOperationException("The Scheduled enhancement property is not yet implemented for ${this.PolicyLine}")
+    }
+
+    return result
+  }
 
   public property get LimitTerm() : CovTerm{
     var result : CovTerm

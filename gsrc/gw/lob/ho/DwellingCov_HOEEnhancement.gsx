@@ -41,15 +41,8 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
   property get TotalCovLimit() : BigDecimal {
     var limit : BigDecimal
     switch(this.Dwelling.HOPolicyType){
-      case HOPolicyType_HOE.TC_DP2:
-          limit = dwellingCovLimitDP2()
-          break
       case HOPolicyType_HOE.TC_HO3:
           limit = dwellingCovLimitHO3()
-          break
-      case HOPolicyType_HOE.TC_HO4:
-      case HOPolicyType_HOE.TC_HO6:
-          limit = dwellingCovLimitHO4_6()
           break
     }
     return limit
@@ -88,21 +81,6 @@ enhancement DwellingCov_HOEEnhancement : entity.DwellingCov_HOE {
       limit = calculateDollarFromPercentage(dwelling.DwellingLimitCovTerm.Value, percentageOfDwellingLimit)
     } else {
       limit = dwellingCovLimitHO()
-    }
-    return limit
-  }
-
-  private function dwellingCovLimitHO4_6() : BigDecimal {
-    var limit : BigDecimal
-    switch(this.PatternCode){
-      case "HODW_Personal_Property_HOE":
-          limit = this.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value
-          break
-      case "HODW_Dwelling_Cov_HOE":
-          limit = this.Dwelling.HODW_Dwelling_Cov_HOE.Limit_HO6_HOETerm.Value
-          break
-        default:
-        limit = dwellingCovLimitHO()
     }
     return limit
   }

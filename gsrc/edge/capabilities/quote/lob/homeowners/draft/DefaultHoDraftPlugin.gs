@@ -15,6 +15,11 @@ uses edge.capabilities.quote.lob.homeowners.draft.util.RatingUtil
 uses edge.capabilities.quote.questionset.util.QuestionSetUtil
 uses edge.PlatformSupport.Logger
 uses edge.PlatformSupport.Reflection
+uses edge.capabilities.policy.coverages.UNACoverageDTO
+uses edge.capabilities.policy.coverages.UNAScheduledItemDTO
+uses java.lang.IllegalStateException
+uses java.lang.Exception
+uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
@@ -55,7 +60,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
     updateConstruction(hoLine.Dwelling, update.Construction)
     setHiddenConstructionFields(hoLine.Dwelling)
-
+    updateCoverages(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
   }
 
@@ -81,6 +86,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     QuestionSetUtil.update(period, getPolicyQuestionSets(period), update.PreQualQuestionSets)
     updateYourHome(dwelling, update.YourHome)
     updateConstruction(dwelling, update.Construction)
+    updateCoverages(period, update)
     updateRating(dwelling, update.Rating)
   }
 
@@ -97,6 +103,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     res.YourHome = toYourHomeDTO(hoLine.Dwelling)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
+    res.Coverages = toCoveragesDTO(hoLine)
     return res
   }
 
@@ -181,6 +188,10 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     return res
   }
 
+  protected function toCoveragesDTO(hoLine : HomeownersLine_HOE) : UNACoverageDTO[]{
+    return CoveragesUtil.fillBaseProperties(hoLine.Branch)
+  }
+
   /**
    * Converts YourHome / Location into the YourHome DTO (if it is applicable at a given stage).
    * <p>This implementation
@@ -221,5 +232,10 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     final var clonedAddress = policyOwnerAddress.copy() as Address
     period.Policy.Account.AccountHolderContact.PrimaryAddress = clonedAddress
     return clonedAddress
+  }
+
+  private function updateCoverages(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    CoveragesUtil.initCoverages(period)
+    CoveragesUtil.updateFrom(period, update.Coverages)
   }
 }

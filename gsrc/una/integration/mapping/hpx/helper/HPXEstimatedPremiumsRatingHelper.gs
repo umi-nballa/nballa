@@ -43,9 +43,8 @@ class HPXEstimatedPremiumsRatingHelper {
     var costData = new HomeownersBaseCostData_HOE(dateRange.Start, dateRange.End, period.PreferredCoverageCurrency, rateCache, HOCostType_Ext.TC_BASEPREMIUM)
     costData.init(period.HomeownersLine_HOE)
     var ratingInfo = new HOGroup1DwellingRatingInfo(period.HomeownersLine_HOE.Dwelling)
-    ratingInfo.EarthquakeLimitedLimit = period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value
+    ratingInfo.EarthquakeLimitedLimit = period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ? period.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value : 0.0
     ratingInfo.EarthquakeDeductible = deductible
-    ratingInfo.EarthquakeConstructionType = period.HomeownersLine_HOE.Dwelling.EarthquakeConstrn_Ext
     ratingInfo.EarthquakeGrading = period.HomeownersLine_HOE.Dwelling.BCEGOrOverride?.Value
     ratingInfo.EarthquakeTerritoryValue = period.HomeownersLine_HOE.Dwelling.EarthQuakeTerritoryOrOverride
     ratingInfo.YearBuilt = period.HomeownersLine_HOE.Dwelling.YearBuilt
@@ -64,7 +63,7 @@ class HPXEstimatedPremiumsRatingHelper {
   function getCaliforniaLimitedEarthquakePremiumEstimate(policyPeriod : PolicyPeriod) : HPXEstimatedPremium {
     var estimatedPremium = new HPXEstimatedPremium()
     var exposure = 0
-    var deductible = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * 0.15
+    var deductible = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm != null ? policyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value * 0.15 : 0.0
     var policyType = policyPeriod.HomeownersLine_HOE.Dwelling.HOLine.HOPolicyType
     if(policyType == HOPolicyType_HOE.TC_HO4 or policyType == HOPolicyType_HOE.TC_HO6){
       exposure = 5000
@@ -75,7 +74,7 @@ class HPXEstimatedPremiumsRatingHelper {
     estimatedPremium.Code = "LimitedEarthquakePremiumEstimate"
     estimatedPremium.Description = "Estimated Premium if Limited Earthquake coverage is selected"
     estimatedPremium.Deductible = deductible
-    estimatedPremium.Exposure = policyPeriod.HomeownersLine_HOE.Dwelling.DwellingLimitCovTerm.Value
+    estimatedPremium.Exposure = exposure
     return estimatedPremium
   }
 }

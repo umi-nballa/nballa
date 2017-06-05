@@ -206,7 +206,6 @@ abstract class HPXPolicyMapper {
       var quote = quoteMapper.createQuote(policyPeriod)
       policyInfo.addChild(new XmlElement("QuoteInfo", quote))
     }
-
     var policyFormsMapper = new HPXAllFormsCompositionUnitMapper()
     var allPolicyForms = policyFormsMapper.createDocumentForms(policyPeriod.NewlyAddedForms)
     for (policyForm in allPolicyForms) {
@@ -373,7 +372,7 @@ abstract class HPXPolicyMapper {
       discount.DiscountCd = estimatedDiscount.Code
       discount.DiscountDescription = estimatedDiscount.Description
       discount.DiscountPercent.Amt = estimatedDiscount.Percent
-      discount.DiscountAmount.Amt = estimatedDiscount.Percent * windPremium / 100
+      discount.DiscountAmount.Amt = windPremium != null ? estimatedDiscount.Percent * windPremium / 100 : 0
       discounts.add(discount)
     }
     return discounts

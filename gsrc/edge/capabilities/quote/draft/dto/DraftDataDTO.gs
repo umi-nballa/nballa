@@ -58,7 +58,7 @@ class DraftDataDTO {
   var _periodEndDate : Date as PeriodEndDate
   
   @JsonProperty
-  var _preQualQuestionSets : QuestionSetAnswersDTO[] as PreQualQuestionSets
+  var _questionAnswers : QuestionSetAnswersDTO[] as QuestionAnswers
   
   /** Line-of-business extensions for the draft object. */
   @JsonProperty

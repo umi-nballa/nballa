@@ -89,10 +89,10 @@ class HPXInsuranceScoreRatingHelper {
     var creditScore = ratingInfo.CreditScore
     var numYears = ratingInfo.ConsecutiveYrsWithUniversal
     var numLosses = ratingInfo.PriorLosses
-    var ratingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {numYears, creditScore} )
-    var ratingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, ratingFactors)
-    var maxRatingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {0, 0} )
-    var maxRatingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, maxRatingFactors)
+    var ratingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {numYears, creditScore, numLosses} )
+    var ratingFactor = ratingFactors.get("factor")
+    var maxRatingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {0, 0, 100} )
+    var maxRatingFactor = maxRatingFactors.get("factor")
     maximumSurcharge.Percent = (ratingFactor != null ? maxRatingFactor - ratingFactor : maxRatingFactor - 1)*100
     maximumSurcharge.Code = "MAX_INSCORE_SURCHARGE"
     maximumSurcharge.Description = "Maximum Surcharge if Insurance Score is decreased"
@@ -106,22 +106,13 @@ class HPXInsuranceScoreRatingHelper {
     var creditScore = ratingInfo.CreditScore
     var numYears = ratingInfo.ConsecutiveYrsWithUniversal
     var numLosses = ratingInfo.PriorLosses
-    var ratingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {numYears, creditScore} )
-    var ratingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, ratingFactors)
-    var minRatingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {4, 997} )
-    var minRatingFactor = getRatingFactorFromRatingFactorsForPriorLosses(numLosses, minRatingFactors)
+    var ratingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {numYears, creditScore, numLosses} )
+    var ratingFactor = ratingFactors.get("factor")
+    var minRatingFactors = ratingHelper.getRatingFactors(policyPeriod, "ho_customer_matrix_factors_una", typekey.Jurisdiction.TC_NV, {9,997 ,0} )
+    var minRatingFactor = minRatingFactors.get("factor")
     maximumDiscount.Percent = (ratingFactor != null ? ratingFactor - minRatingFactor : 1 - minRatingFactor)*100
     maximumDiscount.Code = "MAX_INSCORE_DISCOUNT"
     maximumDiscount.Description = "Maximum Discount if Insurance Score is increased"
     return maximumDiscount
-  }
-
-  function getRatingFactorFromRatingFactorsForPriorLosses(numLosses : int, factors : Map<String, BigDecimal>) : BigDecimal {
-    var factorName =  numLosses == 1 ? "OnePriorLosses" :
-        numLosses == 2 ? "TwoPriorLosses" :
-            numLosses == 3 ? "ThreePriorLosses" :
-                numLosses >= 4 ? "MoreThanFourPriorLosses" : "ZeroPriorLosses"
-    var factor = (BigDecimal)factors.get(factorName)
-    return factor
   }
 }

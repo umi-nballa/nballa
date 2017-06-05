@@ -135,7 +135,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
       _addressPlugin.updateFromDTO(submission.SelectedVersion.PolicyAddress.Address, data.PolicyAddress)
     }
 
-    final var qsAnswers = MapUtil.groupUnique(Arrays.asList(data.PreQualQuestionSets), \ i -> i.Code, \ i -> i)
+    final var qsAnswers = MapUtil.groupUnique(Arrays.asList(data.QuestionAnswers), \ i -> i.Code, \ i -> i)
 
     if (submission.SelectedVersion.PeriodStart != data.PeriodStartDate){
 
@@ -186,7 +186,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     res.AccountNumber = submission.Policy.Account.AccountNumber
     res.TermType = period.TermType
 
-    res.PreQualQuestionSets = draftQuestions(submission)
+    res.QuestionAnswers = draftQuestions(submission)
       .map(\q -> QuestionSetUtil.toAnswersDTO(q, period))
     res.Lobs = _lobPlugin.toDraftDTO(period)
     return res

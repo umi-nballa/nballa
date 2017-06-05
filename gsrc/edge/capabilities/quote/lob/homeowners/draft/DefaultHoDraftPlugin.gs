@@ -16,13 +16,10 @@ uses edge.capabilities.quote.questionset.util.QuestionSetUtil
 uses edge.PlatformSupport.Logger
 uses edge.PlatformSupport.Reflection
 uses edge.capabilities.policy.coverages.UNACoverageDTO
-uses edge.capabilities.policy.coverages.UNAScheduledItemDTO
-uses java.lang.IllegalStateException
-uses java.lang.Exception
 uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
-
+  private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
   final private static var _logger = new Logger(Reflection.getRelativeName(DefaultHoDraftPlugin))
 
   /** Plugin used to deal with addresses. */
@@ -52,8 +49,8 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
     hoLine.Dwelling.setPolicyTypeAndDefaults()
 
-//    QuestionSetUtil.update(hoLine, getLineQuestionSets(period), update.PreQualQuestionSets)
-//    QuestionSetUtil.update(period, getPolicyQuestionSets(period), update.PreQualQuestionSets)
+//    QuestionSetUtil.update(hoLine, getLineQuestionSets(period), update.QuestionAnswers)
+//    QuestionSetUtil.update(period, getPolicyQuestionSets(period), update.QuestionAnswers)
 //CLM - Commenting out for now, the above lines add the answers if supplied
     hoLine.syncQuestions(getLineQuestionSets(period))
     period.syncQuestions(getPolicyQuestionSets(period))
@@ -82,8 +79,9 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     if(update.PolicyAddress != null) {
         _addressPlugin.updateFromDTO(period.PolicyAddress.Address, update.PolicyAddress)
       }
-    QuestionSetUtil.update(hoLine, getLineQuestionSets(period), update.PreQualQuestionSets)
-    QuestionSetUtil.update(period, getPolicyQuestionSets(period), update.PreQualQuestionSets)
+
+    var policyQuestionSets = getPolicyQuestionSets(period)
+    QuestionSetUtil.update(period, policyQuestionSets, update.QuestionAnswers)
     updateYourHome(dwelling, update.YourHome)
     updateConstruction(dwelling, update.Construction)
     updateCoverages(period, update)
@@ -99,7 +97,8 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     final var res = new HoDraftDataExtensionDTO()
 
     res.PolicyAddress = _addressPlugin.toDto(period.PolicyAddress.Address)
-    res.PreQualQuestionSets = QuestionSetUtil.toAnswersDTO(getPolicyQuestionSets(period).concat(getLineQuestionSets(period)), period)
+    var policyQuestionSets = getPolicyQuestionSets(period)
+    res.QuestionAnswers = QuestionSetUtil.toAnswersDTO(policyQuestionSets, period)
     res.YourHome = toYourHomeDTO(hoLine.Dwelling)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
@@ -115,9 +114,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
   /** Policy-level question sets. */
   protected function getPolicyQuestionSets(period : PolicyPeriod) : QuestionSet[] {
-
-    return period.Policy.Product.getQuestionSetsByType(typekey.QuestionSetType.TC_PREQUAL)
-    //{QuestionSetUtil.getByCode("HOGAGenericPreQual_HOE")} CLM - Changed for
+    return period.Policy.Product.QuestionSets.where( \ questionSet -> HO_QUESTION_SET_CODES.containsIgnoreCase(questionSet.CodeIdentifier))
   }
 
   /**

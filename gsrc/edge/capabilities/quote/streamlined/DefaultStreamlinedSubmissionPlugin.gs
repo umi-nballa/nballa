@@ -159,7 +159,7 @@ class DefaultStreamlinedSubmissionPlugin implements IStreamlinedSubmissionPlugin
     res.AccountNumber = submission.Policy.Account.AccountNumber
     res.TermType = period.TermType
 
-    res.PreQualQuestionSets = draftQuestions(submission)
+    res.QuestionAnswers = draftQuestions(submission)
       .map(\q -> QuestionSetUtil.toAnswersDTO(q, period))
     res.Lobs = _lobPlugin.toDraftDTO(period)
     return res

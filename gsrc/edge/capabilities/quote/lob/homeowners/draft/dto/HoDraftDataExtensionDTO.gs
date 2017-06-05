@@ -17,7 +17,7 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
   var _policyAddress: AddressDTO as PolicyAddress
 
   @JsonProperty
-  var _preQualQuestionSets : QuestionSetAnswersDTO[] as PreQualQuestionSets
+  var _questionAnswers : QuestionSetAnswersDTO[] as QuestionAnswers
 
   /** Additional details about construction. */
   @JsonProperty

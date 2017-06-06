@@ -134,6 +134,8 @@ class CluePropertyGateway implements CluePropertyInterface {
             clueReportExt.NodeLocation = clueReport.Admin.ReportCode
             clueReportExt.RiskClaims = totalRiskClaims.toString()
             clueReportExt.SubjectClaims = totalSubjectClaims.toString()
+            clueReportExt.SpecialBillingID = clueReport.Admin.SpecialBillingId
+
             for (cHistory in cHistories) {
               var claims = cHistory.Claim
               var cHistoryType = cHistory.Type
@@ -503,6 +505,7 @@ class CluePropertyGateway implements CluePropertyInterface {
         subject.Address.add(addressSub1)
       }
 	  clueReportExt.MailAddress = mailingAddress
+      print(clueReportExt.MailAddress.AddressLine1)
       lexOrderAddress.Address.add(address1)
       lexOrder.Products.ClueProperty[0].MailingAddress = address1
     }

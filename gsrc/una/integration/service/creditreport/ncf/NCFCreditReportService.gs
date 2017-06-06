@@ -129,6 +129,7 @@ class NCFCreditReportService implements ICreditReportService {
                 .withDateRequestCompleted(ncfReport.Admin.DateRequestCompleted)
                 .withStatus(ncfReport.Admin.Status.toString())
                 .withReportCode(ncfReport.Admin.ReportCode)
+                .withSpecialBillingID(ncfReport.Admin.SpecialBillingId)
                 .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
                 .create()
           }

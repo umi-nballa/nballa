@@ -79,6 +79,7 @@ class HPXClueReportMapper {
     clueHeaderType.ClueTotalRiskClaims = clueReport.RiskClaims != null ? clueReport.RiskClaims : ""
     clueHeaderType.ClueTotalSubjectClaims = clueReport.SubjectClaims != null ? clueReport.SubjectClaims : ""
     clueHeaderType.NodeLocation = clueReport.NodeLocation != null ? clueReport.NodeLocation : ""
+    clueHeaderType.SpecialBillingID = clueReport.SpecialBillingID != null ? clueReport.SpecialBillingID : ""
     return clueHeaderType
   }
 

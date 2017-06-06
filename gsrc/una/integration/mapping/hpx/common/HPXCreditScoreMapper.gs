@@ -35,7 +35,7 @@ class HPXCreditScoreMapper {
     creditScoreInfo.ProcessingStatus = report.Status != null ? report.Status : ""
     creditScoreInfo.InquiryOptions = ""
     creditScoreInfo.AKA = ""
-    creditScoreInfo.SpecialBillingID = ""
+    creditScoreInfo.SpecialBillingID = report.SpecialBillingID != null ? report.SpecialBillingID : ""
     if(report.DateRequestOrdered != null) {
       creditScoreInfo.OrderDate = new XmlDate(sourceFormat.parse(report.DateRequestOrdered))
     }

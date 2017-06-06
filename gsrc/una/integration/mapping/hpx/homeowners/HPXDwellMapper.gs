@@ -46,6 +46,10 @@ class HPXDwellMapper implements HPXStructureMapper {
       dwell.addChild(new XmlElement("Watercraft", watercraft))
     }
     dwell.SwimmingPoolInd = policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists != null ? policyPeriod.HomeownersLine_HOE.Dwelling.SwimmingPoolExists : false
+    var underwritingQuestions = createUnderwritingQuestionSet(policyPeriod)
+    for (uvw in underwritingQuestions) {
+      dwell.addChild(new XmlElement("UnderwritingQuestion", uvw))
+    }
     return dwell
   }
 
@@ -133,5 +137,24 @@ class HPXDwellMapper implements HPXStructureMapper {
       watercrafts.add(watercraft)
     }
     return watercrafts
+  }
+
+
+  function createUnderwritingQuestionSet(policyPeriod: PolicyPeriod): List<wsi.schema.una.hpx.hpx_application_request.types.complex.UnderwritingQuestionType> {
+    var questions = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.UnderwritingQuestionType>()
+    var qs = policyPeriod.QuestionSets.where( \ elt -> elt.CodeIdentifier.equals("HODwellingUWQuestions_Ext")).first()//Policy.Product.getQuestionSetById("HODwellingUWQuestions_Ext")
+    for (q in qs.Questions) {
+      var question = new wsi.schema.una.hpx.hpx_application_request.types.complex.UnderwritingQuestionType()
+      question.QuestionText = q.Text != null ? q.Text : ""
+      question.QuestionCd = q.CodeIdentifier
+      var answer = policyPeriod.getAnswerForQuestionCode((q.CodeIdentifier))
+      var answerValue = answer.AnswerValue
+      if (answerValue == null) {
+        continue
+      }
+      question.Answer = answerValue
+      questions.add(question)
+    }
+    return questions
   }
 }

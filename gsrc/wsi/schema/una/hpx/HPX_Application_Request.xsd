@@ -864,6 +864,13 @@
 			<xsd:element name="QuestionOccurrenceInfo" type="QuestionOccurrenceInfoType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="UnderwritingQuestionType">
+        <xsd:sequence>
+            <xsd:element name="QuestionCd" type="xsd:string"/>
+            <xsd:element name="QuestionText" type="xsd:string"/>
+            <xsd:element name="Answer" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="RealEstateEquityAmtType">
 		<xsd:sequence>
 			<xsd:element name="Amt" type="xsd:float"/>
@@ -2461,7 +2468,7 @@
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
             <xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
-			<xsd:element name="QuestionAnswer" type="QuestionAnswerType" minOccurs="0" maxOccurs="unbounded"/>
+			<xsd:element name="UnderwritingQuestion" type="UnderwritingQuestionType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="DwellStateSupplement" type="DwellStateSupplementType" minOccurs="0"/>
 			<xsd:element name="MinPremInd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="InspectionInfo" type="InspectionInfoType" minOccurs="0"/>

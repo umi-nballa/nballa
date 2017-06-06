@@ -58,7 +58,7 @@ class CreditReportResponse {
   private var _dateRequestCompleted : String as DateRequestCompleted
   private var _status : String as Status
   private var _reportCode : String as ReportCode
-
+  private var _specialBillingID : String as SpecialBillingID
 
   construct() {
   }
@@ -112,6 +112,7 @@ class CreditReportResponse {
     private var _reportCode : String
 
     private var _referenceNumber : String
+    private var _specialBillingID : String
  
     construct() {
     }
@@ -327,6 +328,13 @@ class CreditReportResponse {
       return this
     }
 
+    public function withSpecialBillingID(specialBillingID:String) : Builder {
+
+      this._specialBillingID = specialBillingID
+
+      return this
+    }
+
     public function create() : CreditReportResponse {
         
       return new CreditReportResponse(this)
@@ -367,6 +375,7 @@ class CreditReportResponse {
     this.DateRequestCompleted = builder._dateRequestCompleted
     this.Status = builder._status
     this.ReportCode = builder._reportCode
+    this.SpecialBillingID = builder._specialBillingID
     this._reasons.putAll(builder._reasons)
     builder._reasons.clear()
     builder._reasons = null

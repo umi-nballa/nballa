@@ -167,6 +167,7 @@ class CreditReportRequestDispatcher extends PCValidationBase {
     creditReportExt.ReportCode = creditReportResponse.ReportCode
     creditReportExt.DateOfBirth = creditReportResponse.DateOfBirth
     creditReportExt.Gender = creditReportResponse.Gender
+    creditReportExt.SpecialBillingID = creditReportResponse.SpecialBillingID
 
   }
 }

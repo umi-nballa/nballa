@@ -36,6 +36,8 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _yearBuilt : int as YearBuilt
   var _isEQCompCovConstructionRetrofit : boolean as IsEQCompConstructionRetrofit = false
   var _isEQLtdCovConstructionRetrofit : boolean as IsEQLtdConstructionRetrofit = false
+  var _higherEQOrdinanceOrLaw: boolean as HigherEQOrdOrLaw = false
+  var _higherEQDeductible: boolean as HigherEQDeductible = false
 
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
@@ -101,7 +103,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       }
     }
     if(dwelling?.HODW_Limited_Earthquake_CA_HOEExists or dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists){
-      _earthquakeTerritoryValue = dwelling.EarthQuakeTerritoryOrOverride
+      _earthquakeTerritoryValue = dwelling?.EarthQuakeTerritoryOrOverride
       _earthquakeConstructionType = dwelling?.EarthquakeConstrn_Ext
     }
     if(dwelling?.HODW_Earthquake_HOEExists){
@@ -111,8 +113,8 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _earthquakeConstructionType = dwelling?.EarthquakeConstrn_Ext
       }
       _earthquakeDeductible = dwelling?.HODW_Earthquake_HOE?.HODW_EarthquakeDed_HOETerm?.Value
-      _earthquakeTerritoryValueInt = dwelling.EarthQuakeTerritoryOrOverride?.toInt()
-      _earthquakeGrading = dwelling.BCEGOrOverride?.Value
+      _earthquakeTerritoryValueInt = dwelling?.EarthQuakeTerritoryOrOverride?.toInt()
+      _earthquakeGrading = dwelling?.BCEGOrOverride?.Value
       if(dwelling?.HODW_SpecificOtherStructure_HOE_ExtExists and
           dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HasHODW_IncreasedLimit_HOETerm){
         _otherStructuresRentedToOthersLimit = dwelling?.HODW_SpecificOtherStructure_HOE_Ext?.HODW_IncreasedLimit_HOETerm?.Value
@@ -135,6 +137,15 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       if(dwelling?.HODW_OrdinanceCov_HOEExists and dwelling?.HODW_OrdinanceCov_HOE?.HasHODW_OrdinanceLimit_HOETerm){
          _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value
       }
+
+      if(_ordinanceOrLawLimit > .10){
+        _higherEQOrdinanceOrLaw = true
+      }
+
+      if(_earthquakeDeductible > .10){
+        _higherEQDeductible = true
+      }
+
     }
   }
 }

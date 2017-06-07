@@ -56,6 +56,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _hasEarthquakeComprehensiveCoverage = line?.Dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists
     _hasEarthquakeCoverage = line?.Dwelling?.HODW_Earthquake_HOEExists
 
+
     if(line?.Dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
       if(PolicyLine.BaseState == Jurisdiction.TC_AZ){
         if(line?.Dwelling?.DwellingProtectionDetails?.GatedCommunity or (line?.Dwelling?.DwellingProtectionDetails?.FireAlarmReportCntlStn and
@@ -66,6 +67,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           _hasSeasonalOrSecondaryResidenceSurcharge = true
       }
     }
+
+
 
     _dwellingRatingInfo = new HOGroup1DwellingRatingInfo(line.Dwelling)
 
@@ -203,7 +206,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           }
           break
       case HODW_Earthquake_HOE:
-          if (HasEarthquakeCoverage and (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ)
+          if (HasEarthquakeCoverage and (PolicyLine.BaseState == typekey.Jurisdiction.TC_NV or PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ) and
+              (_dwellingRatingInfo.BCEGGrade != typekey.BCEGGrade_Ext.TC_99 and _dwellingRatingInfo.BCEGGrade != typekey.BCEGGrade_Ext.TC_98)
               and (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6)){
             rateEarthquakeCoverage(dwellingCov, dateRange)
           }

@@ -1,10 +1,9 @@
 package edge.capabilities.quote.lob.homeowners.draft.util
 
 uses edge.capabilities.policy.coverages.UNACoverageDTO
-uses java.lang.IllegalStateException
-uses java.lang.Exception
 uses edge.capabilities.policy.coverages.UNAScheduledItemDTO
 uses edge.capabilities.policy.coverages.UNACoverageTermDTO
+uses gw.api.domain.Clause
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,7 +37,7 @@ final class CoveragesUtil {
 
   public static function updateFrom(period : PolicyPeriod, coverageDTOs : UNACoverageDTO[]){
     coverageDTOs?.each( \ coverageDTO -> {
-      var entityCov = getCoverage(coverageDTO.Code, period)
+      var entityCov = getOrCreateCoverageConditionOrExclusion(coverageDTO.Code, period) as Coverage
 
       updateCoverageTerms(coverageDTO, entityCov)
       updateScheduledItems(coverageDTO, entityCov)
@@ -92,36 +91,18 @@ final class CoveragesUtil {
     return result
   }
 
-  private static function getCoverage(coveragePattern : String, period : PolicyPeriod) : Coverage{
-    var result = period.AllCoverables*.CoveragesFromCoverable.firstWhere( \ cov -> cov.Pattern.CodeIdentifier?.equalsIgnoreCase(coveragePattern))
+  private static function getOrCreateCoverageConditionOrExclusion(clausePattern: String, period: PolicyPeriod) : Clause{
+    var result : Clause
 
-    if(result == null){
-      result = createCoverage(coveragePattern, period)
+    var currentClause = period.AllExclusionsConditionsAndCoverages.firstWhere( \ clause -> clause.Pattern.CodeIdentifier.equalsIgnoreCase(clausePattern))
+
+    if(currentClause != null){
+      result = currentClause
+    }else{
+      result = period.getOwningCoverable(clausePattern, period).createCoverageConditionOrExclusion(clausePattern)
     }
 
     return result
-  }
-
-  private static function createCoverage(coveragePattern : String, period : PolicyPeriod) : Coverage{
-    var associatedCoverable : Coverable
-
-    try{
-      var owningEntityType = gw.api.productmodel.ClausePattern.OWNING_ENTITY_TYPE.get(coveragePattern)
-
-      if(period.HomeownersLine_HOEExists){ //may revisit for refactor when Commercial Lines are implemented.
-        if(owningEntityType.equalsIgnoreCase("Dwelling_HOE")){
-          associatedCoverable = period.HomeownersLine_HOE.Dwelling
-        }else if(owningEntityType.equalsIgnoreCase("HomeownersLine_HOE")){
-          associatedCoverable = period.HomeownersLine_HOE
-        }else{
-          throw new Exception("Coverage pattern ${coveragePattern} does not exist or have an owning coverable.")
-        }
-      }
-    }catch(e : Exception){
-      throw new IllegalStateException(e.Message)
-    }
-
-    return associatedCoverable.createCoverage(coveragePattern)
   }
 
   public static function initCoverages(period : PolicyPeriod){

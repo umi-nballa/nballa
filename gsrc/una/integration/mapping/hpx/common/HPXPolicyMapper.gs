@@ -62,11 +62,11 @@ abstract class HPXPolicyMapper {
     policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompanyInfo(policyPeriod)))
     var allCosts = policyPeriod.AllCosts.sum(\ elt -> elt.ActualTermAmount)
     policySummaryInfo.WrittenAmt.Amt = allCosts.Amount
-    var glCosts = policyPeriod.GLLineExists ? policyPeriod.GLLine.Costs.sum(\ elt -> elt.ActualTermAmount).Amount : 0
+    var glCosts = policyPeriod.GLLineExists ? policyPeriod.GLLine.Costs.sum(\ elt -> elt.ActualTermAmount).Amount : null
     policySummaryInfo.GeneralLiabilityWrittenAmt.Amt = glCosts
-    var cpBuildingCosts = policyPeriod.CPLineExists ?  policyPeriod.CPLine.Costs.whereTypeIs(CPBuildingCovCost).sum(\ elt -> elt.ActualTermAmount).Amount : 0
+    var cpBuildingCosts = policyPeriod.CPLineExists ?  policyPeriod.CPLine.Costs.whereTypeIs(CPBuildingCovCost).sum(\ elt -> elt.ActualTermAmount).Amount : null
     policySummaryInfo.CommercialPropertyBuildingWrittenAmt.Amt = cpBuildingCosts
-    var cpLineCosts = policyPeriod.CPLineExists ? policyPeriod.CPLine.Costs.whereTypeIs(CPLineCovCost).sum(\ elt -> elt.ActualTermAmount).Amount : 0
+    var cpLineCosts = policyPeriod.CPLineExists ? policyPeriod.CPLine.Costs.whereTypeIs(CPLineCovCost).sum(\ elt -> elt.ActualTermAmount).Amount : null
     policySummaryInfo.CommercialPropertyLineWrittenAmt.Amt = cpLineCosts
     return policySummaryInfo
   }

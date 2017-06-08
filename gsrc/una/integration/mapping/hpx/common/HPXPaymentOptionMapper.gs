@@ -24,7 +24,7 @@ class HPXPaymentOptionMapper {
       if (!installmentOption.Name.equals("Annual")) {
         numberOfInstallments = installmentOption.Name.substring(0,2)
       }
-      if (selectedPaymentPlan.Name.equals(installmentOption.Name)) {
+      if (selectedPaymentPlan != null and selectedPaymentPlan.Name.equals(installmentOption.Name)) {
         paymentOption.SelectedPaymentPlan = true
       } else {
         paymentOption.SelectedPaymentPlan = false

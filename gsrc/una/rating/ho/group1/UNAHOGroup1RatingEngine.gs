@@ -1082,6 +1082,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       totalDiscountAmount += _hoRatingInfo.HigherAllPerilDeductible
     if (_hoRatingInfo.BuildingCodeEffectivenessGradingCredit < 0)
       totalDiscountAmount += _hoRatingInfo.BuildingCodeEffectivenessGradingCredit
+    if (_hoRatingInfo.PrivateFireCompanyDiscount < 0)
+      totalDiscountAmount += _hoRatingInfo.PrivateFireCompanyDiscount
     _hoRatingInfo.DiscountAdjustment = rateMaximumDiscountAdjustment(dateRange, totalDiscountAmount, _hoRatingInfo.AdjustedBaseClassPremium)
   }
 

@@ -90,7 +90,15 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       } else if(PolicyType == HOPolicyType_HOE.TC_HO3){
         _earthquakeLimitedLimit = dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_EQDwellingLimit_HOE_ExtTerm?.Value
         _yearBuilt = dwelling?.YearBuilt
-        _isEQLtdCovConstructionRetrofit = dwelling?.HODW_Limited_Earthquake_CA_HOE?.HasHODW_Retrofitted_HOE_ExtTerm
+
+
+        if (dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_Retrofitted_HOE_ExtTerm?.Value == 1.0){
+          _isEQLtdCovConstructionRetrofit = false
+        }
+        else{
+          _isEQLtdCovConstructionRetrofit = true
+        }
+
       }
     }
     if (dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists){
@@ -104,8 +112,11 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
     if(dwelling?.HODW_Limited_Earthquake_CA_HOEExists or dwelling?.HODW_Comp_Earthquake_CA_HOE_ExtExists){
       _earthquakeTerritoryValue = dwelling?.EarthQuakeTerritoryOrOverride
-      _earthquakeConstructionType = dwelling?.EarthquakeConstrn_Ext
+      if (ConstructionType == RateTableConstructionType_Ext.TC_FRAME){
+        _earthquakeConstructionType = EarthquakeConstrn_Ext.TC_FRAME
+      }
     }
+
     if(dwelling?.HODW_Earthquake_HOEExists){
       if(baseState == Jurisdiction.TC_AZ){
           _earthquakeConstructionType = EarthquakeConstrn_Ext.TC_FRAME

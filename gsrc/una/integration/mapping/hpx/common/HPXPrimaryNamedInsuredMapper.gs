@@ -49,9 +49,11 @@ class HPXPrimaryNamedInsuredMapper {
     var businessDescription = policyContactRole.Branch.Policy.Account.BusOpsDesc
     var legalEntityType = entityType.Description
     var SICCode = policyContactRole.Branch.PrimaryNamedInsured.IndustryCode
+    var dba = contact.DbaName_Ext
     businessInfo.NatureBusinessCd = legalEntityType
     businessInfo.OperationsDesc = businessDescription
     businessInfo.SICCd = SICCode
+    businessInfo.DBA = dba
     return businessInfo
   }
 }

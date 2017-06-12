@@ -66,6 +66,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateLineCoverages(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
     _lineRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
     _lineRateRoutineParameterMap = getLineCovParameterSet(PolicyLine, _lineRatingInfo, PolicyLine.BaseState)
+    _discountsOrSurchargeRatingInfo = new HONCDiscountsOrSurchargeRatingInfo (PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
     switch (typeof lineCov) {
       case HOLI_PersonalInjuryAggregate_NC_HOE_Ext:
       case HOLI_PersonalInjury_NC_HOE_Ext:
@@ -88,6 +89,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           break
 /*      default:
           throw new Exception("Cov rate routine note found")*/
+
     }
   }
 
@@ -185,11 +187,17 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
  * Function which rates the discounts and surcharges
  */
     override function rateHOLineCosts(dateRange: DateRange) {
+      var dwelling = PolicyLine.Dwelling
+      _discountsOrSurchargeRatingInfo = new HONCDiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
       if(_isLPP){
         if(PolicyLine.Dwelling?.HeatSrcWoodBurningStove)
           rateWoodBurningStove(dateRange)
       }
-  }
+      if ((dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC) and dwelling.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6){
+        rateSeasonalOrSecondaryResidence(dateRange)
+      }
+
+      }
 
   /**
    *  Function to rate the Wood Burning Stove Premium
@@ -197,8 +205,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   function rateWoodBurningStove(dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateWoodBurningStove", this.IntrinsicType)
-    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
-        TC_POLICYLINE -> PolicyLine}
+    var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {TC_POLICYLINE -> PolicyLine}
     var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WOOD_BURNING_STOVE_RATE_ROUTINE, HOCostType_Ext.TC_WOODBURNINGSTOVE,
                                       RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
@@ -207,6 +214,18 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Wood Burning Stove Premium Rated Successfully", this.IntrinsicType)
   }
+     /**
+     * Function To rate seasonal or secondary residence
+      */
+    function rateSeasonalOrSecondaryResidence(dateRange: DateRange) {
+     _logger.debug("Entering " + CLASS_NAME + ":: rateSeasonalOrSecondaryResidenceSurcharge", this.IntrinsicType)
+      var costData = HOCommonRateRoutinesExecutor.rateSeasonalOrSecondaryResidenceSurcharge(dateRange, PolicyLine, Executor, RateCache, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_SEASONALORSECONDARYRESIDENCESURCHARGE, _discountsOrSurchargeRatingInfo)
+      if (costData != null and costData.ActualTermAmount != 0){
+        _hoRatingInfo.SeasonalSecondaryResidenceSurcharge = costData.ActualTermAmount
+        addCost(costData)
+        }
+      _logger.debug("Seasonal And Secondary Residence Surcharge Rated Successfully", this.IntrinsicType)
+    }
 
 
    /* Rate the additional residence rented to others coverage
@@ -663,6 +682,8 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
   }
 
+
+
   /**
    * Returns the parameter set for the Scheduled Personal Property Cov
    */
@@ -700,6 +721,7 @@ class UNAHONCRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_DISCOUNTORSURCHARGERATINGINFO_EXT -> discountOrSurchargeRatingInfo
     }
   }
+
 
   /**
    * Returns the parameter set with a rating info

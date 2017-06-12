@@ -309,4 +309,16 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
     return countyExists
   }
+
+  function dwellingUsageValues(dwelling : Dwelling_HOE):List<DwellingUsage_HOE>{
+    if (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO4){
+      return DwellingUsage_HOE.TF_ALLEXCEPTRENTAL.TypeKeys
+    }
+    //DE1340/CR 151 - TX TDPs
+    if (this.HOLine.JobType == TC_Submission && this.HOLine.BaseState == TC_TX &&
+        (this.HOLine.HOPolicyType == "TDP1_Ext" || this.HOLine.HOPolicyType == "TDP2_Ext" || this.HOLine.HOPolicyType == "TDP3_Ext")){
+      return DwellingUsage_HOE.TF_ALLEXCEPTSECONDARY.TypeKeys
+    }
+    return typekey.DwellingUsage_HOE.TF_ALL.TypeKeys
+  }
 }

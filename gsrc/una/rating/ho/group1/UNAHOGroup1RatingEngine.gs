@@ -1037,14 +1037,18 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateUnitOwnersRentalToOthers(lineCov: HOLI_UnitOwnersRentedtoOthers_HOE_Ext, dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateUnitOwnersRentalToOthers to rate Unit Owners Rental To Others Coverage", this.IntrinsicType)
-
+    _lineRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     //need to update with the total base premium
     var rateRoutineParameterMap : Map<CalcRoutineParamName, Object> = {
-        TC_POLICYLINE -> PolicyLine,
-        TC_STATE -> PolicyLine.BaseState.Code,
-        TC_BASEPREMIUM -> _hoRatingInfo.TotalBasePremium}
+      TC_POLICYLINE -> PolicyLine,
+      TC_STATE -> PolicyLine.BaseState.Code,
+      TC_BASEPREMIUM -> _hoRatingInfo.TotalBasePremium,
+      typekey.CalcRoutineParamName.TC_LINERATINGINFO_EXT ->_lineRatingInfo
+
+
+    }
     var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.UNIT_OWNERS_RENTED_TO_OTHERS_COV_ROUTINE_NAME,
-        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+        RateCache,PolicyLine , rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       if (costData.ActualTermAmount == 0)
         costData.ActualTermAmount = 1

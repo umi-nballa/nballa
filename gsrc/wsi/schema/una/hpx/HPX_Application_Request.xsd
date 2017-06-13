@@ -570,6 +570,17 @@
 			<xsd:element name="Coverable" type="CoverableType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="ExposureType">
+        <xsd:sequence>
+            <xsd:element name="Location" type="xsd:string"/>
+            <xsd:element name="Classification" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ClassCode" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="PremiumExposure" type="xsd:double" minOccurs="0"/>
+            <xsd:element name="PremiuumBasis" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="CoverageDescription" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="Premium" type="xsd:double" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="PolicyAmtType">
 		<xsd:sequence>
 			<xsd:element name="Amt" type="xsd:float"/>
@@ -3373,6 +3384,7 @@
 			<xsd:element name="SpecialPlanGroupDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="PolicyStatusCd" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="PolicyStatusDesc" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="GLExposure" type="ExposureType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Exclusion" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="PolicyCondition" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>

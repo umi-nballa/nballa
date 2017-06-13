@@ -183,10 +183,10 @@ abstract class HPXPolicyMapper {
     var priorPoliciesMapper = new HPXPriorPolicyMapper()
     var producerMapper = new HPXProducerMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyInfoType()
-    policyInfo.LOBCd = policyPeriod.HomeownersLine_HOEExists != null ? typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE :
-                       policyPeriod.BP7LineExists != null ? typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
-                       policyPeriod.CPLineExists != null ? typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :
-                       policyPeriod.GLLineExists != null ? typekey.PolicyLine.TC_GENERALLIABILITYLINE : ""
+    policyInfo.LOBCd = policyPeriod.HomeownersLine_HOEExists ? typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE :
+                       policyPeriod.BP7LineExists ? typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
+                       policyPeriod.CPLineExists ? typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :
+                       policyPeriod.GLLineExists ? typekey.PolicyLine.TC_GENERALLIABILITYLINE : ""
     policyInfo.PolicyNumber = policyPeriod.PolicyNumber != null ? policyPeriod.PolicyNumber : ""
     policyInfo.AccountNumberId = policyPeriod.Policy.Account.AccountNumber
     policyInfo.PolicyTermCd = policyPeriod.TermType

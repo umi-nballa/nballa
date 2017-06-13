@@ -8,12 +8,9 @@ uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyM
 uses una.integration.mapping.hpx.common.HPXProducerMapper
 uses gw.xml.XmlElement
 uses una.integration.mapping.hpx.common.HPXAdditionalInsuredMapper
-uses una.integration.mapping.hpx.commercialpackage.commercialproperty.HPXCPCoverageMapper
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
-uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
 uses una.integration.mapping.hpx.common.HPXClassificationMapper
-uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLExclusionMapper
 uses una.integration.mapping.hpx.common.HPXExclusionMapper
 uses una.integration.mapping.hpx.common.HPXPolicyConditionMapper
 uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
@@ -31,6 +28,7 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
 
   function createCommercialPackagePolicy(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType {
     var commercialPackagePolicy = new wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackagePolicyType()
+    var commercialPackageLineBusiness = createCommercialPackageLineBusiness(policyPeriod)
     var commercialPropertyPolicyLine = new HPXCPPolicyMapper()
     var additionalNamedInsuredMapper = new HPXAdditionalNameInsuredMapper()
     var additionalInsuredMapper = new HPXAdditionalInsuredMapper()
@@ -49,9 +47,62 @@ class HPXCommercialPackagePolicyMapper extends HPXPolicyMapper {
     commercialPackagePolicy.addChild(new XmlElement("PolicyInfo", createPolicyDetails(policyPeriod)))
     commercialPackagePolicy.addChild(new XmlElement("Producer", producerMapper.createProducer(policyPeriod)))
     commercialPackagePolicy.addChild(new XmlElement("Location", locationMapper.createBillingLocation(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement("PolicySummaryInfo", commercialPropertyPolicyLine.createPolicySummaryInfo(policyPeriod)))
-    commercialPackagePolicy.addChild(new XmlElement("CommercialPackageLineBusiness", commercialPropertyPolicyLine.createCommercialPropertyLineBusiness(policyPeriod)))
+    commercialPackagePolicy.addChild(new XmlElement("PolicySummaryInfo", createPolicySummaryInfo(policyPeriod)))
+    var commericalProperties = commercialPropertyPolicyLine.createCommercialProperties(policyPeriod)
+    for (dwell in commericalProperties.$Children) {commercialPackageLineBusiness.addChild(dwell)}
+    commercialPackagePolicy.addChild(new XmlElement("CommercialPackageLineBusiness", commercialPackageLineBusiness))
     return commercialPackagePolicy
+  }
+
+  function createCommercialPackageLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType {
+    var commercialPropertyLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType()
+    var generalLiabilityPolicyLine = new una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyMapper()
+    // If it contains General Liability Line, include the coverages along with the Commercial Property Line Level Coverages
+    if(policyPeriod.GLLineExists) {
+      var glLineExposures = generalLiabilityPolicyLine.createGeneralLiabilityLineExposures(policyPeriod)
+      for (exposure in glLineExposures) { commercialPropertyLineBusiness.addChild(new XmlElement("GLExposure", exposure)) }
+    }
+    if(policyPeriod.GLLineExists) {
+      var glLineCovs = generalLiabilityPolicyLine.createGeneralLiabilityLineCoverages(policyPeriod)
+      for (cov in glLineCovs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
+    }
+    if(policyPeriod.GLLineExists) {
+      var glLineExlcs = generalLiabilityPolicyLine.createGeneralLiabilityLineExclusions(policyPeriod)
+      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Exclusion", glLineExlc)) }
+    }
+    if(policyPeriod.GLLineExists) {
+      var glLineConds = generalLiabilityPolicyLine.createGeneralLiabilityLinePolicyConditions(policyPeriod)
+      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("PolicyCondition", glLineCond)) }
+    }
+    if(policyPeriod.CPLineExists) {
+      var cpLineCovs = createCommericalPropertyLineCoverages(policyPeriod)
+      for (cov in cpLineCovs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
+    }
+    if(policyPeriod.CPLineExists) {
+      var cpLineExlcs = createCommericalPropertyLineExclusions(policyPeriod)
+      for (cpLineExlc in cpLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Exclusion", cpLineExlc)) }
+    }
+    if(policyPeriod.CPLineExists) {
+      var cpLineConds = createCommericalPropertyLinePolicyConditions(policyPeriod)
+      for (cpLineCond in cpLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("PolicyCondition", cpLineCond)) }
+    }
+    var questions = createQuestionSet(policyPeriod)
+    for (question in questions) {
+      commercialPropertyLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
+    }
+    return commercialPropertyLineBusiness
+  }
+
+  function createCommericalPropertyLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineCoverages(policyPeriod, policyPeriod.CPLine)
+  }
+
+  function createCommericalPropertyLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLineExclusions(policyPeriod, policyPeriod.CPLine)
+  }
+
+  function createCommericalPropertyLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
+    return createLinePolicyConditions(policyPeriod, policyPeriod.CPLine)
   }
 
   override function getCoverages(policyPeriod: PolicyPeriod): List<Coverage> {

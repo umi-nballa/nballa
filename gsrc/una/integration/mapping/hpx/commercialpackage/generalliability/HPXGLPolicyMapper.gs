@@ -1,8 +1,6 @@
 package una.integration.mapping.hpx.commercialpackage.generalliability
 
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
-uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
-uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
 uses una.integration.mapping.hpx.common.HPXStructureMapper
 uses una.integration.mapping.hpx.common.HPXClassificationMapper
@@ -12,6 +10,7 @@ uses una.integration.mapping.hpx.common.HPXEstimatedDiscount
 uses java.math.BigDecimal
 uses una.integration.mapping.hpx.common.HPXEstimatedPremium
 
+
 /**
  * Created with IntelliJ IDEA.
  * User: HMachin
@@ -20,6 +19,22 @@ uses una.integration.mapping.hpx.common.HPXEstimatedPremium
  * To change this template use File | Settings | File Templates.
  */
 class HPXGLPolicyMapper extends HPXPolicyMapper {
+  function createGeneralLiabilityLineExposures(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.ExposureType> {
+    var exposures = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.ExposureType>()
+    var exps = policyPeriod.GLLineExists ? policyPeriod.GLLine.Exposures : null
+    for (exp in exps) {
+      var exposure = new wsi.schema.una.hpx.hpx_application_request.types.complex.ExposureType()
+      exposure.Location = exp.Location.LocationNum
+      exposure.Classification = exp.ClassCode.Classification
+      exposure.ClassCode = exp.ClassCode
+      exposure.PremiumExposure = exp.BasisAmount
+      exposure.PremiuumBasis = exp.ClassCode.Basis.Description
+      exposure.CoverageDescription = getCostCoverage(exp.Costs.first()).DisplayName != null ? getCostCoverage(exp.Costs.first()).DisplayName : "Commercial General Liability"
+      exposure.Premium = exp.Costs.sum(\ elt -> elt.ActualTermAmount)
+      exposures.add(exposure)
+    }
+    return exposures
+  }
 
   function createGeneralLiabilityLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
     return createLineCoverages(policyPeriod, policyPeriod.GLLine)

@@ -158,9 +158,6 @@ class DefaultStreamlinedSubmissionPlugin implements IStreamlinedSubmissionPlugin
     res.ProductName = submission.Policy.Product.DisplayName
     res.AccountNumber = submission.Policy.Account.AccountNumber
     res.TermType = period.TermType
-
-    res.QuestionAnswers = draftQuestions(submission)
-      .map(\q -> QuestionSetUtil.toAnswersDTO(q, period))
     res.Lobs = _lobPlugin.toDraftDTO(period)
     return res
   }

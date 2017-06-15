@@ -1,9 +1,6 @@
 package una.integration.mapping.hpx.commercialpackage.commercialproperty
 
 uses una.integration.mapping.hpx.common.HPXPolicyMapper
-uses una.integration.mapping.hpx.common.HPXLocationMapper
-uses una.integration.mapping.hpx.helper.HPXPolicyPeriodHelper
-uses una.integration.mapping.hpx.commercialpackage.generalliability.HPXGLPolicyMapper
 uses gw.xml.XmlElement
 uses gw.lang.reflect.IType
 uses una.integration.mapping.hpx.common.HPXCoverageMapper
@@ -27,42 +24,11 @@ uses una.integration.mapping.hpx.common.HPXEstimatedPremium
  */
 class HPXCPPolicyMapper extends HPXPolicyMapper {
 
-  function createCommercialPropertyLineBusiness(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType {
+  function createCommercialProperties(policyPeriod : PolicyPeriod) : wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType {
     var commercialPropertyLineBusiness = new wsi.schema.una.hpx.hpx_application_request.types.complex.CommercialPackageLineBusinessType()
-    var generalLiabilityPolicyLine = new HPXGLPolicyMapper()
-
-    // If it contains General Liability Line, include the coverages
-    if(policyPeriod.GLLineExists) {
-      var glLineCovs = generalLiabilityPolicyLine.createGeneralLiabilityLineCoverages(policyPeriod)
-      for (cov in glLineCovs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
-    }
-    if(policyPeriod.GLLineExists) {
-      var glLineExlcs = generalLiabilityPolicyLine.createGeneralLiabilityLineExclusions(policyPeriod)
-      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Exclusion", glLineExlc)) }
-    }
-    if(policyPeriod.GLLineExists) {
-      var glLineConds = generalLiabilityPolicyLine.createGeneralLiabilityLinePolicyConditions(policyPeriod)
-      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("PolicyCondition", glLineCond)) }
-    }
-    if(policyPeriod.CPLineExists) {
-      var glLineCovs = createCommericalPropertyLineCoverages(policyPeriod)
-      for (cov in glLineCovs) { commercialPropertyLineBusiness.addChild(new XmlElement("Coverage", cov)) }
-    }
-    if(policyPeriod.CPLineExists) {
-      var glLineExlcs = createCommericalPropertyLineExclusions(policyPeriod)
-      for (glLineExlc in glLineExlcs) { commercialPropertyLineBusiness.addChild(new XmlElement("Exclusion", glLineExlc)) }
-    }
-    if(policyPeriod.CPLineExists) {
-      var glLineConds = createCommericalPropertyLinePolicyConditions(policyPeriod)
-      for (glLineCond in glLineConds) { commercialPropertyLineBusiness.addChild(new XmlElement("PolicyCondition", glLineCond)) }
-    }
     var buildings = createStructuresInfo(policyPeriod)
     for (building in buildings) {
       commercialPropertyLineBusiness.addChild(new XmlElement("Dwell", building))
-    }
-    var questions = createQuestionSet(policyPeriod)
-    for (question in questions) {
-      commercialPropertyLineBusiness.addChild(new XmlElement("QuestionAnswer", question))
     }
     return commercialPropertyLineBusiness
   }
@@ -110,18 +76,6 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
       structures.add(building)
     }
     return structures
-  }
-
-  function createCommericalPropertyLineCoverages(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLineCoverages(policyPeriod, policyPeriod.CPLine)
-  }
-
-  function createCommericalPropertyLineExclusions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLineExclusions(policyPeriod, policyPeriod.CPLine)
-  }
-
-  function createCommericalPropertyLinePolicyConditions(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.CoverageType> {
-    return createLinePolicyConditions(policyPeriod, policyPeriod.CPLine)
   }
 
   override function getLocation(coverable : Coverable) : PolicyLocation {

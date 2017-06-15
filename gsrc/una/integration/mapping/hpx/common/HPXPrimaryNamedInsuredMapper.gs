@@ -39,6 +39,21 @@ class HPXPrimaryNamedInsuredMapper {
       }
     }
     insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("PrincipalInfo" , principalInfo))
+    var businessInfo = createBusinessInfo(contact, policyContactRole, entityType)
+    insuredOrPrincipal.InsuredOrPrincipalInfo.addChild(new XmlElement("BusinessInfo" , businessInfo))
     return insuredOrPrincipal
+  }
+
+  private function createBusinessInfo(contact : Contact, policyContactRole : PolicyContactRole, entityType : AccountOrgType) : wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessInfoType {
+    var businessInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.BusinessInfoType()
+    var businessDescription = policyContactRole.Branch.Policy.Account.BusOpsDesc
+    var legalEntityType = entityType.Description
+    var SICCode = policyContactRole.Branch.PrimaryNamedInsured.IndustryCode
+    var dba = contact.DbaName_Ext
+    businessInfo.NatureBusinessCd = legalEntityType
+    businessInfo.OperationsDesc = businessDescription
+    businessInfo.SICCd = SICCode
+    businessInfo.DBA = dba
+    return businessInfo
   }
 }

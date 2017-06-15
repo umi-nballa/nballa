@@ -38,6 +38,7 @@ class HPXGeneralPartyInfoMapper {
     addr.StateProvCd = address.State.Code
     addr.StateProv = address.State.Description
     addr.PostalCode = address.PostalCode
+    addr.CareOf = address.AddressLine3
     return addr
   }
 

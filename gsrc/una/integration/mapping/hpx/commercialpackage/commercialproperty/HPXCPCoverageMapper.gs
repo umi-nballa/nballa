@@ -50,6 +50,14 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
 
   override function getIncludedPremium(coverage : Coverage) : BigDecimal {
     var includedPremium : BigDecimal
+    switch (coverage.PatternCode) {
+      case "CPTerrorismCoverage_EXT" :
+        if (coverage typeis CommercialPropertyCov) {
+          var costs = coverage.LineCosts
+          includedPremium = costs.sum( \ elt -> elt.ActualTermAmount)
+        }
+        break
+    }
     return includedPremium
   }
 

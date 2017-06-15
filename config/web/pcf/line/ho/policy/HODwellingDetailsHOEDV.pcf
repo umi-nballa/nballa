@@ -826,7 +826,7 @@
           id="DwellingUse"
           label="displaykey.Web.Homeowners.Dwelling.DwellingUsage_Ext"
           value="dwelling.DwellingUsage"
-          valueRange="return (dwelling.HOPolicyType == HOPolicyType_HOE.TC_HO4) ? DwellingUsage_HOE.TF_ALLEXCEPTRENTAL.TypeKeys : typekey.DwellingUsage_HOE.TF_ALL.TypeKeys ">
+          valueRange="dwelling.dwellingUsageValues(dwelling)">
           <PostOnChange
             onChange="if(dwelling.NumOfMonthsConsUnOccupancy_Ext != null &amp;&amp; (dwelling.DwellingUsage != typekey.DwellingUsage_HOE.TC_SEC or dwelling.DwellingUsage != TC_SEAS)) dwelling.NumOfMonthsConsUnOccupancy_Ext = null"/>
         </RangeInput>

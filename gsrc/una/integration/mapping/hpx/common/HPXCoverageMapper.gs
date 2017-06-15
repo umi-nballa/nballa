@@ -257,7 +257,7 @@ abstract class HPXCoverageMapper {
       }
       if (currentPremium == 0.00) {
         var includedPremium = getIncludedPremium(currentCoverage)
-        if (includedPremium != null) {
+        if (includedPremium != null and includedPremium <> 0.00) {
           currentPremium = includedPremium
         }
       }

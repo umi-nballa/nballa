@@ -58,6 +58,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateConstruction(hoLine.Dwelling, update.Construction)
     setHiddenConstructionFields(hoLine.Dwelling)
     updateCoverages(period, update)
+    synchronizeConditionsAndExclusions(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
   }
 
@@ -85,6 +86,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateYourHome(dwelling, update.YourHome)
     updateConstruction(dwelling, update.Construction)
     updateCoverages(period, update)
+    synchronizeConditionsAndExclusions(period, update)
     updateRating(dwelling, update.Rating)
   }
 
@@ -234,5 +236,20 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private function updateCoverages(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
     CoveragesUtil.initCoverages(period)
     CoveragesUtil.updateFrom(period, update.Coverages)
+  }
+
+  private function synchronizeConditionsAndExclusions(period: PolicyPeriod, update: HoDraftDataExtensionDTO){
+    period.AllCoverables.each(\ coverable -> {
+      coverable.syncExclusions()
+      coverable.syncConditions()
+    })
+
+    if(update.ExcludePersonalProperty){
+      if(!period.HomeownersLine_HOE.hasExclusion("HODW_PersonalPropertyExc_HOE_Ext")){
+        period.HomeownersLine_HOE.createExclusion("HODW_PersonalPropertyExc_HOE_Ext")
+      }
+    }else{
+      period.AllExclusions.removeWhere( \ exclusion -> exclusion.PatternCode.equalsIgnoreCase("HODW_PersonalPropertyExc_HOE_Ext"))
+    }
   }
 }

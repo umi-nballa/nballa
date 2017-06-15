@@ -60,6 +60,14 @@ abstract class HPXPolicyMapper {
     uwCompany.UWCompanyRoleID = "InsuranceCarrier"
     uwCompany.addChild(new XmlElement("InsuranceProvider", createInsuranceProvider()))
     policySummaryInfo.addChild(new XmlElement("UWCompany", createUWCompanyInfo(policyPeriod)))
+    var allCosts = policyPeriod.AllCosts.sum(\ elt -> elt.ActualTermAmount)
+    policySummaryInfo.WrittenAmt.Amt = allCosts.Amount
+    var glCosts = policyPeriod.GLLineExists ? policyPeriod.GLLine.Costs.sum(\ elt -> elt.ActualTermAmount).Amount : null
+    policySummaryInfo.GeneralLiabilityWrittenAmt.Amt = glCosts
+    var cpBuildingCosts = policyPeriod.CPLineExists ?  policyPeriod.CPLine.Costs.whereTypeIs(CPBuildingCovCost).sum(\ elt -> elt.ActualTermAmount).Amount : null
+    policySummaryInfo.CommercialPropertyBuildingWrittenAmt.Amt = cpBuildingCosts
+    var cpLineCosts = policyPeriod.CPLineExists ? policyPeriod.CPLine.Costs.whereTypeIs(CPLineCovCost).sum(\ elt -> elt.ActualTermAmount).Amount : null
+    policySummaryInfo.CommercialPropertyLineWrittenAmt.Amt = cpLineCosts
     return policySummaryInfo
   }
 
@@ -175,10 +183,10 @@ abstract class HPXPolicyMapper {
     var priorPoliciesMapper = new HPXPriorPolicyMapper()
     var producerMapper = new HPXProducerMapper()
     var policyInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.PolicyInfoType()
-    policyInfo.LOBCd = policyPeriod.HomeownersLine_HOEExists != null ? typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE :
-                       policyPeriod.BP7LineExists != null ? typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
-                       policyPeriod.CPLineExists != null ? typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :
-                       policyPeriod.GLLineExists != null ? typekey.PolicyLine.TC_GENERALLIABILITYLINE : ""
+    policyInfo.LOBCd = policyPeriod.HomeownersLine_HOEExists ? typekey.PolicyLine.TC_HOMEOWNERSLINE_HOE :
+                       policyPeriod.BP7LineExists ? typekey.PolicyLine.TC_BP7BUSINESSOWNERSLINE :
+                       policyPeriod.CPLineExists ? typekey.PolicyLine.TC_COMMERCIALPROPERTYLINE :
+                       policyPeriod.GLLineExists ? typekey.PolicyLine.TC_GENERALLIABILITYLINE : ""
     policyInfo.PolicyNumber = policyPeriod.PolicyNumber != null ? policyPeriod.PolicyNumber : ""
     policyInfo.AccountNumberId = policyPeriod.Policy.Account.AccountNumber
     policyInfo.PolicyTermCd = policyPeriod.TermType

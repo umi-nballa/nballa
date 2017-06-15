@@ -134,7 +134,6 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     if (addressChanged) {
       _addressPlugin.updateFromDTO(submission.SelectedVersion.PolicyAddress.Address, data.PolicyAddress)
     }
-
     final var qsAnswers = MapUtil.groupUnique(Arrays.asList(data.QuestionAnswers), \ i -> i.Code, \ i -> i)
 
     if (submission.SelectedVersion.PeriodStart != data.PeriodStartDate){

@@ -2,7 +2,7 @@ package una.rating.ho.group1.ratinginfos
 
 uses una.rating.ho.common.HOCommonDwellingRatingInfo
 uses java.math.BigDecimal
-
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -38,10 +38,14 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _isEQLtdCovConstructionRetrofit : boolean as IsEQLtdConstructionRetrofit = false
   var _higherEQOrdinanceOrLaw: boolean as HigherEQOrdOrLaw = false
   var _higherEQDeductible: boolean as HigherEQDeductible = false
+  var caUnitOwnersCovASpecialBaseLimit: int as CAUnitOwnersCovASpecialBaseLimit
+
 
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     var baseState = dwelling?.PolicyLine.BaseState
+
+    caUnitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_CAUnitOwnersSpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
 
     if (dwelling?.HODW_FungiCov_HOEExists){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm?.Value.intValue()
@@ -156,6 +160,9 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
       if(_earthquakeDeductible > .10){
         _higherEQDeductible = true
       }
+
+
+
 
     }
   }

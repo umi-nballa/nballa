@@ -45,7 +45,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     super(dwelling)
     var baseState = dwelling?.PolicyLine.BaseState
 
-    caUnitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_CAUnitOwnersSpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+    caUnitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovASpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
 
     if (dwelling?.HODW_FungiCov_HOEExists){
       _limitedFungiWetOrDryRotOrBacteriaSectionILimit = dwelling?.HODW_FungiCov_HOE?.HODW_FungiSectionILimit_HOETerm?.Value.intValue()

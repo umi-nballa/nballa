@@ -445,6 +445,10 @@ class PropertyInformationCompletePluginImpl {
    */
   public function getCPPInformation(cpBuilding: CPBuilding) : TunaAppResponse {
 
+    if(cpBuilding == null){
+      return null
+    }
+
     _address = new AddressDTO()
     logger.info(" Entering  " + CLASS_NAME + " :: " + " getCPPInformation" + "For BuildingLocation ", this.IntrinsicType)
     _address.AddressLine1 = cpBuilding.CPLocation.PolicyLocation.AddressLine1

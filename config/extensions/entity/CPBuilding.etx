@@ -385,15 +385,11 @@
     name="roofcvatach"
     nullok="true"
     typelist="CPRoofCoveringAttach_Ext"/>
-  <column
+  <typekey
     desc="BCEG Grade Returned by Tuna"
     name="BCEG_Ext"
     nullok="true"
-    type="varchar">
-    <columnParam
-      name="size"
-      value="100"/>
-  </column>
+    typelist="BCEGGrade_Ext"/>
   <column
     default="0"
     desc="Override BCEG returned from TUNA"
@@ -409,8 +405,7 @@
     desc="BCEG Grade Entered by User"
     name="BCEGOverridden_Ext"
     nullok="true"
-    typelist="BCEGGrade_Ext">
-  </typekey>
+    typelist="BCEGGrade_Ext"/>
   <column
     desc="Dwelling Protection Class lookup on address field and Distance to Fire Station based on ISO classification manual"
     name="FireProtectionClassCode"
@@ -424,8 +419,7 @@
     desc="Dwelling Protection Class Code Overridden"
     name="FirePCCodeOverridden_Ext"
     nullok="true"
-    typelist="ProtectionClassCode_Ext">
-  </typekey>
+    typelist="ProtectionClassCode_Ext"/>
   <typekey
     desc="Dwelling Protection Class Code Match Level from TUNA"
     name="FirePCCodeMatchLevel_Ext"

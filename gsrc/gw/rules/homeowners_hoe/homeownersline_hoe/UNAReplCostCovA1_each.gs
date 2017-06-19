@@ -14,12 +14,15 @@ uses java.lang.Double
 class UNAReplCostCovA1_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
+    var covA = homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.doubleValue()
+    var replCost = homeowner.Dwelling.CoverageAEstRepCostValue_Ext?.toDouble()
 
-    if(homeowner.Dwelling.HODW_Dwelling_Cov_HOEExists && homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HasHODW_DwellingValuation_HOE_ExtTerm
-    && typekey.ValuationMethod.TF_COVAFILTER.TypeKeys.contains(homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOE_ExtTerm)
-    && Double.parseDouble(homeowner.Dwelling.CoverageALimitValue_Ext)<homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.doubleValue())
+    if((homeowner.Dwelling.HODW_Dwelling_Cov_HOEExists && homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HasHODW_DwellingValuation_HOE_ExtTerm
+    && typekey.ValuationMethod.TF_COVAFILTER.TypeKeys.contains(homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOE_ExtTerm.Value))
+    && ((covA < replCost) ||(covA > (replCost * 1.5)) )) {
+
         return RuleEvaluationResult.execute()
-
+    }
 
 
     return RuleEvaluationResult.skip()

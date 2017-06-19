@@ -18,7 +18,7 @@ class UNAUWOthStrRes4_each implements IRuleCondition<HomeownersLine_HOE>{
       {
         homeowner.Dwelling.HODW_OtherStructuresOnPremise_HOE.ScheduledItems.each( \ elt ->
         {
-          if(Double.parseDouble(elt.AdditionalLimit.Value.toString())>0.5*Double.parseDouble(homeowner.Dwelling.CoverageALimitValue_Ext))
+          if(Double.parseDouble(elt.AdditionalLimit.Value.toString())>0.5*Double.parseDouble(homeowner.Dwelling.CoverageAEstRepCostValue_Ext))
               return RuleEvaluationResult.execute()
 
 

@@ -58,7 +58,7 @@
       <Toolbar>
         <EditButtons/>
         <ToolbarButton
-          action="tunaAppResponse=new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding)"
+          action="callTuna()"
           available="cpBuilding.Building.YearBuilt!=null"
           id="CallTuna"
           label="&quot;Call Tuna&quot;"
@@ -469,7 +469,7 @@
                   editable="cpLine.AssociatedPolicyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE  || (cpLine.AssociatedPolicyPeriod.Job.Subtype==typekey.Job.TC_POLICYCHANGE &amp;&amp; cpLine.AssociatedPolicyPeriod.EditEffectiveDate==cpLine.AssociatedPolicyPeriod.PeriodStart)"
                   id="WindpoolvalueTunaReturned_Ext"
                   label="displaykey.Web.CP.CPLocation.WindpoolvalueTunaReturned_Ext"
-                  value="cpBuilding.Windpoolvalue_Ext"
+                  value="cpBuilding.WindPoolAsYESNO_Ext"
                   valueRange="gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool)"/>
                 <Input
                   available="!cpBuilding.OverrideWindPool_Ext"
@@ -1081,6 +1081,12 @@
 function setCPClassCode():boolean
 {
   return false
+}
+
+function callTuna(){
+  tunaAppResponse=new una.pageprocess.PropertyInformationCompletePluginImpl().getCPPInformation(cpBuilding) 
+  setTunaFieldsMatchLevel = gw.lob.cp.location.CPLocationUtil.setTunaFieldsMatchLevel(tunaAppResponse,cpBuilding)
+  gw.lob.cp.location.CPLocationUtil.initializeSingleReturnTypelists(cpBuilding, tunaAppResponse)
 }]]></Code>
   </Popup>
 </PCF>

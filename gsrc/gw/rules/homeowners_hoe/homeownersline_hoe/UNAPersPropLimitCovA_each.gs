@@ -16,7 +16,7 @@ class UNAPersPropLimitCovA_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
     if(homeowner.Dwelling.HODW_Personal_Property_HOEExists && homeowner.Dwelling.HODW_Personal_Property_HOE.HasHODW_PersonalPropertyLimit_HOETerm
-        && homeowner.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.doubleValue()>0.5*Double.parseDouble(homeowner.Dwelling.CoverageALimitValue_Ext))
+        && homeowner.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.doubleValue()>0.5*Double.parseDouble(homeowner.Dwelling.CoverageAEstRepCostValue_Ext))
         return RuleEvaluationResult.execute()
 
 

@@ -17,7 +17,7 @@ class UNAUWEQCovA_each implements IRuleCondition<HomeownersLine_HOE>{
 
 
     if( homeowner.Dwelling.HODW_Comp_Earthquake_CA_HOE_ExtExists && homeowner.Dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HasHODW_EQCovA_HOETerm &&
-        (homeowner.Dwelling.CoverageALimitValue_Ext!=null && Double.parseDouble(homeowner.Dwelling.CoverageALimitValue_Ext)!=
+        (homeowner.Dwelling.CoverageAEstRepCostValue_Ext!=null && Double.parseDouble(homeowner.Dwelling.CoverageAEstRepCostValue_Ext)!=
     homeowner.Dwelling.HODW_Comp_Earthquake_CA_HOE_Ext.HODW_EQCovA_HOETerm.Value.doubleValue()))
       {
             return RuleEvaluationResult.execute()

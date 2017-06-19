@@ -171,7 +171,7 @@ class PropertyInformationCompletePluginImpl {
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DistBOWNVOverridden_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.OverrideDistBOWNamedValue_Ext = false
     policyPeriod.HomeownersLine_HOE.Dwelling.NoteDetail_Ext= null
-    policyPeriod.HomeownersLine_HOE.Dwelling.CoverageALimitValue_Ext  = null
+    policyPeriod.HomeownersLine_HOE.Dwelling.CoverageAEstRepCostValue_Ext  = null
     policyPeriod.HomeownersLine_HOE.Dwelling.CondoValuationIDValue_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.MetricsVersionValue_Ext = null
     policyPeriod.HomeownersLine_HOE.Dwelling.MetricsVersionDate_Ext = null

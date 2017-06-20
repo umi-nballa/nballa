@@ -32,7 +32,7 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
   var _aopDeductibleLimit : BigDecimal as AOPDeductibleLimit
   var _hurricaneScreenedEnclosureLimit : BigDecimal as HurricaneScreenedEnclosureLimit = 0.0
   var _hurricaneDeductibleLimit : BigDecimal as HurricaneDeductible = 0.0
-  var _unitOwnersCovASpecialBaseLimit: int as UnitOwnersCovASpecialBaseLimit
+
 
   construct(dwelling : Dwelling_HOE){
     super(dwelling)
@@ -76,6 +76,6 @@ class HOGroup3DwellingRatingInfo extends HOCommonDwellingRatingInfo{
 
     _hurricaneDeductibleLimit = dwelling.HODW_SectionI_Ded_HOE?.HODW_Hurricane_Ded_HOETerm?.Value
 
-    _unitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovASpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+
   }
 }

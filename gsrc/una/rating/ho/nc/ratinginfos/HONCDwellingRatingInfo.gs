@@ -37,7 +37,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _lossAssessmentEQLimit : int as LossAssessmentEQLimit
   var _keyPremium: BigDecimal as KeyPremium = 0.0
   var _buildingAdditionsAndAlterationsIncreasedLimit : BigDecimal as BuildingAdditionsAndAlterationsLimit
-  var _unitOwnersCovASpecialBaseLimit: int as UnitOwnersCovASpecialBaseLimit
+
 
 
 
@@ -65,8 +65,8 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _unitOwnersCoverageASpecialLimitsExists = true
       }
 
-     _unitOwnersCovABaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovALimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
-     _unitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovASpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+
+
 
     if(dwelling.HODW_Earthquake_HOEExists){
       _eqDeductible = dwelling.HODW_Earthquake_HOE.HODW_EarthquakeDed_HOETerm.Value

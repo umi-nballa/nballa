@@ -2,6 +2,7 @@ package una.rating.ho.common
 
 uses java.math.BigDecimal
 uses una.rating.util.HOConstructionTypeMapper
+uses una.config.ConfigParamsUtil
 
 /**
  * Created with IntelliJ IDEA.
@@ -25,6 +26,7 @@ class HOCommonDwellingRatingInfo {
   var _bcegGrade: typekey.BCEGGrade_Ext as BCEGGrade
   var _protectionClassCode : typekey.ProtectionClassCode_Ext as ProtectionClassCode
   var _constructionType : typekey.RateTableConstructionType_Ext as ConstructionType
+  var _unitOwnersCovASpecialBaseLimit: int as UnitOwnersCovASpecialBaseLimit
 
 
 
@@ -61,5 +63,6 @@ class HOCommonDwellingRatingInfo {
     _bcegGrade = dwelling?.BCEGOrOverride
     _protectionClassCode = dwelling?.ProtectionClassCodeOrOverride
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
+    _unitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovASpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
   }
 }

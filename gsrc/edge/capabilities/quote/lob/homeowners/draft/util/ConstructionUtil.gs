@@ -233,13 +233,15 @@ final class ConstructionUtil {
 
   private static function mapConstructionType(data : Dwelling_HOE, dto : ConstructionDTO, direction: MapDTODirection){
     if(MapDTODirection.FROM.equals(direction)) {
-      if (dto.ConstructionType.ValueOrOverrideValue == typekey.ConstructionType_HOE.TC_OTHER) {
+      data.ConstructionType = dto.ConstructionType
+      if (dto.ConstructionType == typekey.ConstructionType_HOE.TC_OTHER) {
         data.ConstructionTypeOther= dto.ConstructionTypeDescription
       }
       if (dto.ConstructionTypeFloor2.ValueOrOverrideValue == typekey.ConstructionType_HOE.TC_OTHER) {
         data.ConstructionTypeLevel2Other = dto.ConstructionTypeLevel2Description
       }
     } else {
+      dto.ConstructionType = data.ConstructionType
       if (data.ConstructionType == typekey.ConstructionType_HOE.TC_OTHER) {
         dto.ConstructionTypeDescription = data.ConstructionTypeOther
       }

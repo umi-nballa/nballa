@@ -19,8 +19,8 @@ class ConstructionDTO {
   /** Type of the construction of this structure. */
   @JsonProperty
   @Required
-  @TunaValue(Dwelling_HOE#ConstructionType, Dwelling_HOE#ConstructionTypeMatchLevel_Ext, Dwelling_HOE#OverrideConstructionType_Ext, Dwelling_HOE#ConstTypeOverridden_Ext)
-  var _constructionType: TunaValueDTO as ConstructionType
+  //@TunaValue(Dwelling_HOE#ConstructionType, Dwelling_HOE#ConstructionTypeMatchLevel_Ext, Dwelling_HOE#OverrideConstructionType_Ext, Dwelling_HOE#ConstTypeOverridden_Ext)
+  var _constructionType: ConstructionType_HOE as ConstructionType
 
   @JsonProperty
   @DetailOf("ConstructionType.Value", ConstructionType_HOE.TC_OTHER)
@@ -200,10 +200,10 @@ class ConstructionDTO {
   @JsonProperty
   var _upstairsLaundrySurcharge: Boolean as UpstairsLaundrySurcharge
 
-//  @JsonProperty
-//  @Required
-//  @TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext)
-//  var _windPool: TunaValueDTO as WindPool
+  @JsonProperty
+  @Required
+  //@TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext)
+  var _windPool: Boolean as WindPool
 
   /** Type of wiring in the building. */
   @JsonProperty

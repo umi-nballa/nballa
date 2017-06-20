@@ -292,7 +292,7 @@ class HODwellingUtil_HOE {
       dwelling.HOLocation.ResFireDept_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass).first()
     }
 
-    dwelling.CoverageALimitValue_Ext = getTunaCodes(tunaAppResponse.CoverageLimit)?.first()
+    dwelling.CoverageAEstRepCostValue_Ext = getTunaCodes(tunaAppResponse.CoverageLimit)?.first()
 
     dwelling.MetricsVersionValue_Ext = getTunaCodes(tunaAppResponse.MetricsVersion)?.first()
 

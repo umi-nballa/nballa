@@ -213,8 +213,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           }
           break
       case HODW_UnitOwnersCovASpecialLimits_HOE_Ext:
-          if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6 and
-              (PolicyLine.BaseState == typekey.Jurisdiction.TC_AZ or PolicyLine.BaseState == typekey.Jurisdiction.TC_NV)){
+          if(PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6){
               rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov, dateRange)
           }
           break

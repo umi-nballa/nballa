@@ -41,25 +41,68 @@ class CPLocationUtil {
           location?.LongitudeMatchLevel_Ext = (tunaAppResponse.Longitude != null) ? typekey.TUNAMatchLevel_Ext.TC_EXACT : typekey.TUNAMatchLevel_Ext.TC_NONE
           location?.TerritoryCodeMatchLevel_Ext = getMatchLevelString(tunaAppResponse.TerritoryCodes)
           location?.PropFloodValMatchLevel_Ext = getMatchLevel(tunaAppResponse.PropertyFlood)
+
+          if(location?.TerritoryCodeMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            location.TerritoryCodeTunaReturned_Ext = tunaAppResponse.CPPTerritoryCodes.first()
+          }
+
+          if(location?.PropFloodValMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            location.PropFloodVal_Ext = gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.PropertyFlood).first()
+          }
+
+          if(location?.LatitudeMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            location.Latitude_Ext = tunaAppResponse.Latitude
+          }
+
+          if(location?.LongitudeMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            location.Longitude_Ext = tunaAppResponse.Longitude
+          }
         }
       return true
 
     }
 
+    static function initializeSingleReturnTypelists(building:CPBuilding, tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse){
+      if(building!=null && tunaAppResponse!=null){
+        if(building.BCEGMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            building.BCEG_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.BCEGGrade) as typekey.BCEGGrade_Ext[]).first()
+          }
+
+        if(building.WindPoolMatchLevel_Ext ==typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            building.WindPoolAsYESNO_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.WindPool) ).first()
+          }
+
+        if(building.FirePCCodeMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+            building.FireProtectionClassCode = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.ProtectionClass).first())
+        }
+
+        if(building.FiredeptnamedvalMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+          building.Firedeptnmval_Ext = gw.lob.ho.HODwellingUtil_HOE.getDependentCodes(tunaAppResponse.ProtectionClass).first()
+        }
+
+        if(building.DistToCoastMatchLevel_Ext == typekey.TUNAMatchLevel_Ext.TC_EXACT){
+          building.DistToCoast_Ext = (gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.DistanceToCoast) as typekey.DistToCoastOverridden_Ext[]).first()
+        }
+
+        building.MetricsVersionValue_Ext = gw.lob.ho.HODwellingUtil_HOE.getTunaCodes(tunaAppResponse.MetricsVersion)?.first()
+        building.NoteDetail_Ext = tunaAppResponse.NoteDetail
+        building.ResultingPrecision_Ext = tunaAppResponse.ResultingPrecision
+      }
+    }
+
     static function setTunaFieldsMatchLevel(tunaAppResponse:una.integration.mapping.tuna.TunaAppResponse, building:CPBuilding) : boolean
       {
     /************ location entity *****/
-    if(building!=null && tunaAppResponse!=null)
+      if(building!=null && tunaAppResponse!=null)
       {
-    building?.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
-    building?.FirePCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
-    building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-    building?.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
-
-    building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
-
+          building?.BCEGMatchLevel_Ext = getMatchLevel(tunaAppResponse.BCEGGrade)
+          building?.FirePCCodeMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
+          building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+          building?.DistToCoastMatchLevel_Ext = getMatchLevel(tunaAppResponse.DistanceToCoast)
+          building?.WindPoolMatchLevel_Ext = getMatchLevel(tunaAppResponse.WindPool)
+          building.FiredeptnamedvalMatchLevel_Ext = getMatchLevel(tunaAppResponse.ProtectionClass)
        }
-    return true
+      return true
   }
 
   static function getTunaResponse(polLocation:PolicyLocation)  : TunaAppResponse

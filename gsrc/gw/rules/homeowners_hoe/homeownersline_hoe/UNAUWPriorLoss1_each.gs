@@ -21,18 +21,24 @@ class UNAUWPriorLoss1_each implements IRuleCondition<HomeownersLine_HOE>{
    // Source “CLUE” - HOPriorLoss_Ext .Source_Ext
    // Claim Amount - HOPriorLosses_Ext.ClaimPayment. ClaimAmount
 
-    homeowner.HOPriorLosses_Ext.each( \ elt ->
+   if( homeowner.HOPriorLosses_Ext.hasMatch( \ elt ->
     {
-      elt.ClaimPayment.each( \ elt1 ->
-      {
-        if(elt1.LossCause_Ext == typekey.LossCause_Ext.TC_EXTEN && DateUtil.addYears(elt.ClaimDate as java.util.Date, 5)>new java.util.Date())
-          return RuleEvaluationResult.execute()
-      }
-      )
-    }
-    )
+        return elt.ClaimPayment.hasMatch( \ elt1 ->
+        {
+          if(elt1.LossCause_Ext == typekey.LossCause_Ext.TC_EXTEN && DateUtil.addYears(elt.ClaimDate, 5)>new java.util.Date())  {
+              return true
+            }
+          else{
+              return false
+          }
+        })
+    }) ){
+     return RuleEvaluationResult.execute()
+   } else{
+     return RuleEvaluationResult.skip()
+   }
 
-    return RuleEvaluationResult.skip()
+
 
 }
 }

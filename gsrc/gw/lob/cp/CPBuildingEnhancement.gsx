@@ -36,6 +36,16 @@ enhancement CPBuildingEnhancement : CPBuilding {
     return this.Coverages.where(\ c -> c.CPBlanket != null).map(\ c -> c.CPBlanket).toList()
   }
 
+  property set WindPoolAsYESNO_Ext(value: String)
+  {
+    this.Windpoolvalue_Ext = (value?.toUpperCase() == displaykey.Button.Yes.toUpperCase())
+  }
+
+  property get WindPoolAsYESNO_Ext(): String
+  {
+    return (this.Windpoolvalue_Ext == true)? displaykey.Button.Yes: displaykey.Button.No
+  }
+
   function firstMatchingClassCode(code : String) : CPClassCode {
     var criteria = new CPClassCodeSearchCriteria()
     criteria.Code = code

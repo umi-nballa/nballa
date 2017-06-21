@@ -15,14 +15,9 @@ class UNAUWAgentNotes_each implements IRuleCondition<HomeownersLine_HOE>{
 
 //If Exterior Wall Construction = "Concrete Block", "Poured Concrete", "Solid Brick/Stone", "Fire Resistive", "Non Combustible", "Masonry Non Combustible"
 
-    if(homeowner.AssociatedPolicyPeriod.Notes.firstWhere( \ elt -> elt.Author.UserType==typekey.UserType.TC_PRODUCER)!=null)
-
-
-        return RuleEvaluationResult.execute()
-
-
-
-
+    if(homeowner.AssociatedPolicyPeriod.Submission.Notes.hasMatch( \ elt -> elt.Author.UserType == typekey.UserType.TC_PRODUCER)) {
+      return RuleEvaluationResult.execute()
+    }
 
     return RuleEvaluationResult.skip()
 

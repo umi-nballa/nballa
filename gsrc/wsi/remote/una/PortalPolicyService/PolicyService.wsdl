@@ -4,17 +4,76 @@
     <s:schema targetNamespace="http://policyservice.policy.api.uihna.com/" elementFormDefault="qualified">
       <s:import namespace="PersonalLines"/>
       <s:import namespace="CommercialLines"/>
-      <s:element name="UpdatePersonalPolicy">
+      <s:element name="PersonalPolicy_UPSERT">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" ref="s1:PolicyDetailResponse"/>
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="tns:Policies"/>
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="UpdatePersonalPolicyResponse">
+      <s:complexType name="Policies">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PersonalPolicy" type="s1:PolicyDetailRequest"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CommercialPolicy" type="s2:PolicyDetailRequest"/>
+          <s:element minOccurs="1" maxOccurs="1" name="policyEdition" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="premiumAmt" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="balanceTotal" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="balanceDue" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="balanceDueDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Histories" type="tns:ArrayOfPolicyHistoryRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyHistoryRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyHistoryRequest" nillable="true" type="tns:PolicyHistoryRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyHistoryRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyEdition" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExpirationDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ModifiedDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CreateDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Success" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="tns:ArrayOfPolicyHistoryNotesRequest"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Premiums" type="tns:ArrayOfPolicyHistoryPremiumRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyHistoryNotesRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyHistoryNotesRequest" nillable="true" type="tns:PolicyHistoryNotesRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyHistoryNotesRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DateEntered" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EnteredBy" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DateLastUpdated" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Remarks" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyHistoryPremiumRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyHistoryPremiumRequest" nillable="true" type="tns:PolicyHistoryPremiumRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyHistoryPremiumRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TransactionDate" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AmountPaid" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="BalanceDue" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PersonalPolicy_UPSERTResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="UpdatePersonalPolicyResult" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="PersonalPolicy_UPSERTResult" type="s:string"/>
           </s:sequence>
         </s:complexType>
       </s:element>
@@ -29,23 +88,22 @@
         </s:sequence>
         <s:anyAttribute/>
       </s:complexType>
-      <s:element name="UpdateCommercialPolicy">
+      <s:element name="CommercialPolicy_UPSERT">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="1" maxOccurs="1" ref="s2:PolicyDetailResponse"/>
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="tns:Policies"/>
           </s:sequence>
         </s:complexType>
       </s:element>
-      <s:element name="UpdateCommercialPolicyResponse">
+      <s:element name="CommercialPolicy_UPSERTResponse">
         <s:complexType>
           <s:sequence>
-            <s:element minOccurs="0" maxOccurs="1" name="UpdateCommercialPolicyResult" type="s:string"/>
+            <s:element minOccurs="0" maxOccurs="1" name="CommercialPolicy_UPSERTResult" type="s:string"/>
           </s:sequence>
         </s:complexType>
       </s:element>
     </s:schema>
     <s:schema targetNamespace="PersonalLines" elementFormDefault="qualified">
-      <s:element name="PolicyDetailResponse" nillable="true" type="s1:PolicyDetailRequest"/>
       <s:complexType name="PolicyDetailRequest">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="Policy" type="s1:Policy"/>
@@ -77,6 +135,8 @@
         <s:attribute name="groupLine" type="s:string"/>
         <s:attribute name="groupLineCode" type="s:string"/>
         <s:attribute name="name" type="s:string"/>
+        <s:attribute name="name2" type="s:string"/>
+        <s:attribute name="email" type="s:string"/>
         <s:attribute name="nextBillAct" type="s:string"/>
         <s:attribute name="nextBillActDt" type="s:string"/>
         <s:attribute name="nextPolicyAct" type="s:string"/>
@@ -97,6 +157,17 @@
         <s:attribute name="state" type="s:string"/>
         <s:attribute name="zip" type="s:string"/>
         <s:attribute name="unitNo" type="s:string"/>
+        <s:attribute name="country" type="s:string"/>
+        <s:attribute name="longitude" type="s:string"/>
+        <s:attribute name="latitude" type="s:string"/>
+        <s:attribute name="comments" type="s:string"/>
+        <s:attribute name="streetNumber" type="s:string"/>
+        <s:attribute name="preDirection" type="s:string"/>
+        <s:attribute name="postDirection" type="s:string"/>
+        <s:attribute name="type" type="s:string"/>
+        <s:attribute name="zipCodeMinor" type="s:string"/>
+        <s:attribute name="streetName" type="s:string"/>
+        <s:attribute name="origNum" type="s:string"/>
       </s:complexType>
       <s:complexType name="PhoneInfo">
         <s:attribute name="phoneNum" type="s:string"/>
@@ -120,6 +191,7 @@
         </s:sequence>
         <s:attribute name="agentName" type="s:string"/>
         <s:attribute name="agentNum" type="s:string"/>
+        <s:attribute name="subAgentName" type="s:string"/>
         <s:attribute name="branchName" type="s:string"/>
         <s:attribute name="email" type="s:string"/>
       </s:complexType>
@@ -217,6 +289,12 @@
         <s:attribute name="wiringYr" type="s:string"/>
         <s:attribute name="yrBuilt" type="s:string"/>
         <s:attribute name="NSDed" type="s:string"/>
+        <s:attribute name="EQDed" type="s:string"/>
+        <s:attribute name="WHDollar" type="s:string"/>
+        <s:attribute name="hurricaneDollar" type="s:string"/>
+        <s:attribute name="NSDollar" type="s:string"/>
+        <s:attribute name="EQDollar" type="s:string"/>
+        <s:attribute name="FloodDed" type="s:string"/>
       </s:complexType>
       <s:complexType name="Coverage">
         <s:attribute name="allPerilDeduct" type="s:string"/>
@@ -233,6 +311,12 @@
         <s:attribute name="covEPrem" type="s:string"/>
         <s:attribute name="covFLimit" type="s:string"/>
         <s:attribute name="covFPrem" type="s:string"/>
+        <s:attribute name="FloodDWLimit" type="s:string"/>
+        <s:attribute name="FloodDWPrem" type="s:string"/>
+        <s:attribute name="FloodPPLimit" type="s:string"/>
+        <s:attribute name="FloodPPPrem" type="s:string"/>
+        <s:attribute name="FloodAELimit" type="s:string"/>
+        <s:attribute name="FloodAEPrem" type="s:string"/>
       </s:complexType>
       <s:complexType name="ItemNotes">
         <s:sequence>
@@ -312,7 +396,6 @@
       </s:complexType>
     </s:schema>
     <s:schema targetNamespace="CommercialLines" elementFormDefault="qualified">
-      <s:element name="PolicyDetailResponse" nillable="true" type="s2:PolicyDetailRequest"/>
       <s:complexType name="PolicyDetailRequest">
         <s:sequence>
           <s:element minOccurs="0" maxOccurs="1" name="Policy" type="s2:Policy"/>
@@ -370,6 +453,7 @@
         <s:attribute name="City" type="s:string"/>
         <s:attribute name="State" type="s:string"/>
         <s:attribute name="Zip" type="s:string"/>
+        <s:attribute name="Country" type="s:string"/>
         <s:attribute name="ssnInd" type="s:string"/>
         <s:attribute name="ssnFein" type="s:string"/>
         <s:attribute name="DaytimePhone" type="s:string"/>
@@ -397,6 +481,8 @@
         </s:sequence>
         <s:attribute name="agentName" type="s:string"/>
         <s:attribute name="agentNum" type="s:string"/>
+        <s:attribute name="subAgentName" type="s:string"/>
+        <s:attribute name="branchName" type="s:string"/>
         <s:attribute name="email" type="s:string"/>
       </s:complexType>
       <s:complexType name="Addr">
@@ -404,6 +490,7 @@
         <s:attribute name="addr2" type="s:string"/>
         <s:attribute name="addrTypeCd" type="s:string"/>
         <s:attribute name="city" type="s:string"/>
+        <s:attribute name="county" type="s:string"/>
         <s:attribute name="state" type="s:string"/>
         <s:attribute name="zip" type="s:string"/>
       </s:complexType>
@@ -519,6 +606,17 @@
         <s:attribute name="State" type="s:string"/>
         <s:attribute name="Zip" type="s:string"/>
         <s:attribute name="County" type="s:string"/>
+        <s:attribute name="unitNo" type="s:string"/>
+        <s:attribute name="country" type="s:string"/>
+        <s:attribute name="longitude" type="s:string"/>
+        <s:attribute name="latitude" type="s:string"/>
+        <s:attribute name="comments" type="s:string"/>
+        <s:attribute name="streetNumber" type="s:string"/>
+        <s:attribute name="preDirection" type="s:string"/>
+        <s:attribute name="postDirection" type="s:string"/>
+        <s:attribute name="type" type="s:string"/>
+        <s:attribute name="zipCodeMinor" type="s:string"/>
+        <s:attribute name="streetName" type="s:string"/>
       </s:complexType>
       <s:complexType name="Notes">
         <s:sequence>
@@ -578,51 +676,51 @@
       </s:complexType>
     </s:schema>
   </wsdl:types>
-  <wsdl:message name="UpdatePersonalPolicySoapIn">
-    <wsdl:part name="parameters" element="tns:UpdatePersonalPolicy"/>
+  <wsdl:message name="PersonalPolicy_UPSERTSoapIn">
+    <wsdl:part name="parameters" element="tns:PersonalPolicy_UPSERT"/>
   </wsdl:message>
-  <wsdl:message name="UpdatePersonalPolicySoapOut">
-    <wsdl:part name="parameters" element="tns:UpdatePersonalPolicyResponse"/>
+  <wsdl:message name="PersonalPolicy_UPSERTSoapOut">
+    <wsdl:part name="parameters" element="tns:PersonalPolicy_UPSERTResponse"/>
   </wsdl:message>
-  <wsdl:message name="UpdatePersonalPolicyQuoteAuthenticationHeader">
+  <wsdl:message name="PersonalPolicy_UPSERTQuoteAuthenticationHeader">
     <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
   </wsdl:message>
-  <wsdl:message name="UpdateCommercialPolicySoapIn">
-    <wsdl:part name="parameters" element="tns:UpdateCommercialPolicy"/>
+  <wsdl:message name="CommercialPolicy_UPSERTSoapIn">
+    <wsdl:part name="parameters" element="tns:CommercialPolicy_UPSERT"/>
   </wsdl:message>
-  <wsdl:message name="UpdateCommercialPolicySoapOut">
-    <wsdl:part name="parameters" element="tns:UpdateCommercialPolicyResponse"/>
+  <wsdl:message name="CommercialPolicy_UPSERTSoapOut">
+    <wsdl:part name="parameters" element="tns:CommercialPolicy_UPSERTResponse"/>
   </wsdl:message>
-  <wsdl:message name="UpdateCommercialPolicyQuoteAuthenticationHeader">
+  <wsdl:message name="CommercialPolicy_UPSERTQuoteAuthenticationHeader">
     <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
   </wsdl:message>
   <wsdl:portType name="PolicyServiceSoap">
-    <wsdl:operation name="UpdatePersonalPolicy">
-      <wsdl:input message="tns:UpdatePersonalPolicySoapIn"/>
-      <wsdl:output message="tns:UpdatePersonalPolicySoapOut"/>
+    <wsdl:operation name="PersonalPolicy_UPSERT">
+      <wsdl:input message="tns:PersonalPolicy_UPSERTSoapIn"/>
+      <wsdl:output message="tns:PersonalPolicy_UPSERTSoapOut"/>
     </wsdl:operation>
-    <wsdl:operation name="UpdateCommercialPolicy">
-      <wsdl:input message="tns:UpdateCommercialPolicySoapIn"/>
-      <wsdl:output message="tns:UpdateCommercialPolicySoapOut"/>
+    <wsdl:operation name="CommercialPolicy_UPSERT">
+      <wsdl:input message="tns:CommercialPolicy_UPSERTSoapIn"/>
+      <wsdl:output message="tns:CommercialPolicy_UPSERTSoapOut"/>
     </wsdl:operation>
   </wsdl:portType>
   <wsdl:binding name="PolicyServiceSoap" type="tns:PolicyServiceSoap">
     <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="UpdatePersonalPolicy">
-      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/UpdatePersonalPolicy" style="document"/>
+    <wsdl:operation name="PersonalPolicy_UPSERT">
+      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/PersonalPolicy_UPSERT" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
-        <soap:header message="tns:UpdatePersonalPolicyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+        <soap:header message="tns:PersonalPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateCommercialPolicy">
-      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/UpdateCommercialPolicy" style="document"/>
+    <wsdl:operation name="CommercialPolicy_UPSERT">
+      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/CommercialPolicy_UPSERT" style="document"/>
       <wsdl:input>
         <soap:body use="literal"/>
-        <soap:header message="tns:UpdateCommercialPolicyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+        <soap:header message="tns:CommercialPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
       </wsdl:input>
       <wsdl:output>
         <soap:body use="literal"/>
@@ -631,21 +729,21 @@
   </wsdl:binding>
   <wsdl:binding name="PolicyServiceSoap12" type="tns:PolicyServiceSoap">
     <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
-    <wsdl:operation name="UpdatePersonalPolicy">
-      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/UpdatePersonalPolicy" style="document"/>
+    <wsdl:operation name="PersonalPolicy_UPSERT">
+      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/PersonalPolicy_UPSERT" style="document"/>
       <wsdl:input>
         <soap12:body use="literal"/>
-        <soap12:header message="tns:UpdatePersonalPolicyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+        <soap12:header message="tns:PersonalPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
       </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal"/>
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="UpdateCommercialPolicy">
-      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/UpdateCommercialPolicy" style="document"/>
+    <wsdl:operation name="CommercialPolicy_UPSERT">
+      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/CommercialPolicy_UPSERT" style="document"/>
       <wsdl:input>
         <soap12:body use="literal"/>
-        <soap12:header message="tns:UpdateCommercialPolicyQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+        <soap12:header message="tns:CommercialPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
       </wsdl:input>
       <wsdl:output>
         <soap12:body use="literal"/>

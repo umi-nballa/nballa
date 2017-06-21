@@ -28,12 +28,16 @@ class ConstructionDTO {
 
   /** Type of the construction of the second floor of this structure. */
   @JsonProperty
-  @TunaValue(Dwelling_HOE#ConstructionTypeL2_Ext, Dwelling_HOE#ConstructionTypeMatchLvlL2_Ext, Dwelling_HOE#OverrideConstructionTypeL2_Ext, Dwelling_HOE#ConstTypeOverriddenL2_Ext)
-  var _constructionTypeFloor2: TunaValueDTO as ConstructionTypeFloor2
+  //@TunaValue(Dwelling_HOE#ConstructionTypeL2_Ext, Dwelling_HOE#ConstructionTypeMatchLvlL2_Ext, Dwelling_HOE#OverrideConstructionTypeL2_Ext, Dwelling_HOE#ConstTypeOverriddenL2_Ext)
+  var _constructionTypeFloor2: ConstructionType_HOE as ConstructionTypeFloor2
 
   @JsonProperty
-  @DetailOf("ConstructionTypeFloor2.Value", ConstructionType_HOE.TC_OTHER)
+  @DetailOf("ConstructionTypeFloor2", ConstructionType_HOE.TC_OTHER)
   var _constructionTypeLevel2Description: String as ConstructionTypeLevel2Description
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _doorStrength: DoorStrength_Ext as DoorStrength
 
   /** Electrical type of the building. */
   @JsonProperty
@@ -74,11 +78,18 @@ class ConstructionDTO {
   var _exteriorWallFinishLevel2Description: String as ExteriorWallFinishLevel2Description
 
   @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _fbcWindSpeed: FBCWindSpeed_Ext as FBCWindSpeed
+
+  @JsonProperty
   var _floorLocation: String as FloorLocation
 
   @JsonProperty
   @Required
   var _foundationHeight: FoundationHeight_Ext as FoundationHeight
+
+  @JsonProperty
+  var _foundationProtected: Boolean as FoundationProtected
 
   @JsonProperty
   @Required
@@ -92,31 +103,37 @@ class ConstructionDTO {
   @DetailOf("FoundationType", FoundationType_HOE.TC_OTHER)
   var _foundationTypeDescription: String as FoundationTypeDescription
 
+  @JsonProperty
+  var _hailResistantRoofCredit: Boolean as HailResistantRoofCredit
+
   /** Type of garage on this building. */
   @JsonProperty
   @Required
   var _hasGarage: boolean as HasGarage
 
   @JsonProperty
-  var _hasHeatSrcCentralElectric: boolean as HasHeatSrcCentralElectric
+  var _hasHeatSrcCentralElectric: Boolean as HasHeatSrcCentralElectric
 
   @JsonProperty
-  var _hasHeatSrcCentralNaturalGas: boolean as HasHeatSrcCentralNaturalGas
+  var _hasHeatSrcCentralNaturalGas: Boolean as HasHeatSrcCentralNaturalGas
 
   @JsonProperty
-  var _hasHeatSrcCentralPropane: boolean as HasHeatSrcCentralPropane
+  var _hasHeatSrcCentralPropane: Boolean as HasHeatSrcCentralPropane
 
   @JsonProperty
-  var _hasHeatSrcCentralOther: boolean as HasHeatSrcCentralOther
+  var _hasHeatSrcCentralOther: Boolean as HasHeatSrcCentralOther
 
   @JsonProperty
-  var _hasHeatSrcFireplace: boolean as HasHeatSrcFireplace
+  var _hasHeatSrcFireplace: Boolean as HasHeatSrcFireplace
 
   @JsonProperty
-  var _hasHeatSrcPortableAllFuelTypes: boolean as HasHeatSrcPortableAllFuelTypes
+  var _hasHeatSrcPortableAllFuelTypes: Boolean as HasHeatSrcPortableAllFuelTypes
 
   @JsonProperty
-  var _hasHeatSrcWoodBurningStove: boolean as HasHeatSrcWoodBurningStove
+  var _hasHeatSrcWoodBurningStove: Boolean as HasHeatSrcWoodBurningStove
+
+  @JsonProperty
+  var _hasWindMitForm: Boolean as HasWindMitForm
 
   @JsonProperty
   var _heatingUpgradeExists: Boolean as HeatingUpgradeExists
@@ -126,10 +143,18 @@ class ConstructionDTO {
   var _heatingUpgradeYear: Integer as HeatingUpgradeYear
 
   @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _internalPressureDesign: InternalPressureDsgn_Ext as InternalPressureDesign
+
+  @JsonProperty
   var _numberOfAmps: NumberofAmps_Ext as NumberOfAmps
 
   @JsonProperty
   var _numberOfRoofLayers: Integer as NumberOfRoofLayers
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _openingProtection : OpeningProtection_Ext as OpeningProtection
 
   @JsonProperty
   var _panelManufacturer: PanelManufacturer_Ext as PanelManufacturer
@@ -155,11 +180,26 @@ class ConstructionDTO {
   @Required
   var _primaryHeatingType: HeatingType_HOE as PrimaryHeatingType
 
+  @JsonProperty
+  var _propertyContainsAsbestos: Boolean as PropertyContainsAsbestos
+
   /** Type of primary heating. */
   /* @JsonProperty
    @DetailOf("PrimaryHeatingType", HeatingType_HOE.TC_NONE_EXT)//TC_OTHER  --Portal
    var _primaryHeatingTypeDescription : String as PrimaryHeatingTypeDescription
  */
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _roofCover: RoofCover_Ext as RoofCover
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _roofDeckAttachment: RoofDeckAttachment_Ext as RoofDeckAttachment
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _roofDecking: RoofDecking_Ext as RoofDecking
 
   @JsonProperty
   @Required
@@ -173,8 +213,8 @@ class ConstructionDTO {
   @JsonProperty
   @Required
   //@FilterBy("HOSpecific")
-  @TunaValue(Dwelling_HOE#RoofType, Dwelling_HOE#RoofTypeMatchLevel_Ext, Dwelling_HOE#OverrideRoofType_Ext, Dwelling_HOE#RoofingMaterialOverridden_Ext)
-  var _roofType: TunaValueDTO as RoofType
+  //@TunaValue(Dwelling_HOE#RoofType, Dwelling_HOE#RoofTypeMatchLevel_Ext, Dwelling_HOE#OverrideRoofType_Ext, Dwelling_HOE#RoofingMaterialOverridden_Ext)
+  var _roofType: RoofType as RoofType
 
   @JsonProperty
   @DetailOf("RoofType", RoofType.TC_OTHER)
@@ -188,8 +228,16 @@ class ConstructionDTO {
   var _roofUpgradeYear: Integer as RoofUpgradeYear
 
   @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _roofWallConnection: RoofWallConnection_Ext as RoofWallConnection
+
+  @JsonProperty
   @Required
   var _secondaryHeatingExists: boolean as SecondaryHeatingExists
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _secondaryWaterResistance: SecondaryWaterResis_Ext as SecondaryWaterResistance
 
   /** Reference to number of stories in this building. */
   @JsonProperty
@@ -198,12 +246,30 @@ class ConstructionDTO {
   var _storiesNumber: TunaValueDTO as StoriesNumber
 
   @JsonProperty
+  var _supplementalHeatingSurcharge: Boolean as SupplementalHeatingSurcharge
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _terrain : Terrain_Ext as Terrain
+
+  @JsonProperty
   var _upstairsLaundrySurcharge: Boolean as UpstairsLaundrySurcharge
 
   @JsonProperty
   @Required
   //@TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext)
   var _windPool: Boolean as WindPool
+
+  @JsonProperty
+  var _windHurrHailExcl: Boolean as WindStormHurricaneHailExclusion
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _windBorneDebrisRegion: WindBorneDebrisRegion_Ext as WindBorneDebrisRegion
+
+  @JsonProperty
+  @DetailOf("HasWindMitForm", true)
+  var _WindSpeedOfDesign: WindSpeedOfDesign_Ext as WindSpeedOfDesign
 
   /** Type of wiring in the building. */
   @JsonProperty

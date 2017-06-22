@@ -243,7 +243,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     var totalPolicyPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
         TC_POLICYLINE -> PolicyLine,
-        TC_STATE -> _baseState.Code,
+        TC_STATE -> _baseState,
         TC_TOTALPOLICYPREMIUM_EXT -> totalPolicyPremium
     }
     var costData : CostData

@@ -2,7 +2,6 @@ package edge.capabilities.quote.lob.homeowners.draft.util
 
 uses java.lang.UnsupportedOperationException
 uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
-uses java.util.Date
 
 final class YourHomeUtil {
   construct() {
@@ -14,12 +13,12 @@ final class YourHomeUtil {
   public static function fillBaseProperties(dto : YourHomeDTO, data : Dwelling_HOE) {
     dto.DistanceToFireHydrant = data.HOLocation.DistanceToFireHydrant
     dto.DistanceToFireStation = data.HOLocation.DistanceToFireStation
-    dto.NearCommercial = data.HOLocation.NearCommercial
-    dto.ResidenceType  = data.ResidenceType
     dto.DwellingLocation =   data.DwellingLocation
-    dto.FloodingOrFireHazard = data.HOLocation.FloodingHazard
     dto.DwellingUsage = data.DwellingUsage
-    dto.Occupancy = data.Occupancy  
+    dto.FloodingOrFireHazard = data.HOLocation.FloodingHazard
+    dto.NearCommercial = data.HOLocation.NearCommercial
+    dto.Occupancy = data.Occupancy
+    dto.ResidenceType  = data.ResidenceType
   }
 
   /**
@@ -38,6 +37,11 @@ final class YourHomeUtil {
     data.HOLocation.FloodingHazard = dto.FloodingOrFireHazard
     data.DwellingUsage = dto.DwellingUsage
     data.Occupancy = dto.Occupancy
+
+
+
+
+
     var pattern = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Dwelling_Cov_HOE")
     //Added for portal GPA - Start
     var patternStructures = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Other_Structures_HOE")
@@ -80,6 +84,7 @@ final class YourHomeUtil {
     } else {
       data.setCoverageConditionOrExclusionExists(pattern, false)
     }
+
   }
 
 }

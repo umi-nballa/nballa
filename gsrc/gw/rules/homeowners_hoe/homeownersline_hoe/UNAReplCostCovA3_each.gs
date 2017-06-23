@@ -17,7 +17,7 @@ class UNAReplCostCovA3_each implements IRuleCondition<HomeownersLine_HOE>{
 
     if(homeowner.Dwelling.HODW_Dwelling_Cov_HOEExists && homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HasHODW_DwellingValuation_HOE_ExtTerm
     && typekey.ValuationMethod.TF_COVAFILTER.TypeKeys.contains(homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_DwellingValuation_HOE_ExtTerm)
-    && Double.parseDouble(homeowner.Dwelling.CoverageALimitValue_Ext)<0.9*homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.doubleValue())
+    && Double.parseDouble(homeowner.Dwelling.CoverageAEstRepCostValue_Ext)<0.9*homeowner.Dwelling.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.Value.doubleValue())
         return RuleEvaluationResult.execute()
 
 

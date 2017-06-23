@@ -25,7 +25,6 @@ class PropertyInspectionsBRHelper {
   final static var COVERAGE_LIMIT_900 = 900000
   final static var COVERAGE_LIMIT_ONE_POINT_FIVE = 1500000
   final static var HO_PREQUAL_EXT = "HO_PreQual_Ext"
-  final static var LAPSE_IN_3_YEARS = "HO_Lapse3yearas_Ext"
   final static var LAPSE_IN_30_DAYS = "HO_Lapse_Ext"
   final static var ADJUSTEDHAZARDSCORE_4 = 4 as String
   final static var ONE = "1|"
@@ -263,19 +262,9 @@ class PropertyInspectionsBRHelper {
         reportThree += TWENTYSIXA
       }
 
-      // BR.09.23 :: Lapse in coverage in the last 3 years. No prior insurance or No need listed as prior carrier and purchase date over 45 days ago
-       if(policyPeriod.getAnswer( policyPeriod.Policy?.Product?.getQuestionSetById(HO_PREQUAL_EXT)?.getQuestion(LAPSE_IN_3_YEARS))?.BooleanAnswer){
-           reportOne += TWENTYSEVEN
-       }
-
       // BR.09.24 :: Lapse in coverage in the last 3 years. No prior insurance or No need listed as prior carrier and purchase date over 45 days ago
        if(policyPeriod.Policy?.PriorPolicies*.CarrierType*.Code.contains(CarrierType_Ext.TC_NOPRIORINS.Code)){
           reportOne += TWENTYSEVEN
-       }
-
-       //BR.09.25 :: Lapse in coverage in the last 3 years. No prior insurance or No need listed as prior carrier and purchase date over 45 days ago
-       if(policyPeriod.getAnswer( policyPeriod.Policy?.Product?.getQuestionSetById(HO_PREQUAL_EXT)?.getQuestion(LAPSE_IN_30_DAYS))?.BooleanAnswer){
-         reportOne += TWENTYSEVEN
        }
 
      //BR.09.26 :: Credit score less than 626 in conjunction with an underwriting rule

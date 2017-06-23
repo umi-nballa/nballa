@@ -22,7 +22,7 @@ class UNAUWPersProp50CovA_each implements IRuleCondition<HomeownersLine_HOE>{
             homeowner.HOPolicyType==typekey.HOPolicyType_HOE.TC_HOB_EXT ||
             typekey.HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(homeowner.HOPolicyType)) && */
          homeowner.Dwelling.HODW_Personal_Property_HOEExists && homeowner.Dwelling.HODW_Personal_Property_HOE.HasHODW_PersonalPropertyLimit_HOETerm &&
-    homeowner.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.doubleValue()>0.5*Double.parseDouble(homeowner.Dwelling.CoverageALimitValue_Ext))
+    homeowner.Dwelling.HODW_Personal_Property_HOE.HODW_PersonalPropertyLimit_HOETerm.Value.doubleValue()>0.5*Double.parseDouble(homeowner.Dwelling.CoverageAEstRepCostValue_Ext))
       return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()

@@ -184,7 +184,8 @@ class ConfigParamsUtil {
 
     if(configParamType != null){
       var retrievedConfigParam = getConfigParameter(configParamType, state, null)
-      results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
+      if(retrievedConfigParam!=null)
+        results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
     }
 
     return results
@@ -356,7 +357,8 @@ class ConfigParamsUtil {
 
     if(configParamType != null){
       var retrievedConfigParam = getConfigParameter(configParamType, state, configFilter)
-      results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
+      if(retrievedConfigParam!=null)
+        results = retrievedConfigParam.Value?.split(",")*.trim() as List<String>
     }
 
     return results

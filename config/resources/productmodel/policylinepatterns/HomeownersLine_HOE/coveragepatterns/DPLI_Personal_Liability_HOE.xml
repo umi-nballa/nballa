@@ -11,9 +11,11 @@
   public-id="DPLI_Personal_Liability_HOE"
   rICoverageGroupType="Liability"
   referenceDateByType="PolicyTerm">
-  <ExistenceScript><![CDATA[return (HomeownersLine_HOE.Branch.BaseState == TC_TX? ExistenceType.TC_REQUIRED : ExistenceType.TC_SUGGESTED)
-
-]]></ExistenceScript>
+  <InitializeScript><![CDATA[una.productmodel.CoveragesUtil.initCoverage("DPLI_Personal_Liability_HOE", DPLI_Personal_Liability_HOE.HOLine)]]></InitializeScript>
+  <OnRemovalScript><![CDATA[if(DPLI_Personal_Liability_HOE.HOLine.DPLI_Med_Pay_HOEExists){
+  DPLI_Personal_Liability_HOE.HOLine.DPLI_Med_Pay_HOE.remove()
+}]]></OnRemovalScript>
+  <ExistenceScript><![CDATA[return (HomeownersLine_HOE.Branch.BaseState == TC_TX ? ExistenceType.TC_ELECTABLE : ExistenceType.TC_SUGGESTED)]]></ExistenceScript>
   <CovTerms>
     <OptionCovTermPattern
       aggregationModel="po"
@@ -59,9 +61,7 @@
           optionCode="300k"
           priority="11013"
           public-id="z3qhsh2eag7b46d0psc67nq1n3b"
-          value="300000.0000">
-          <AvailabilityScript/>
-        </CovTermOpt>
+          value="300000.0000"/>
         <CovTermOpt
           codeIdentifier="znfie8q3etnk352b3iljcnba7t8"
           currency="usd"

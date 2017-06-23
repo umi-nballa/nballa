@@ -53,6 +53,7 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
     var coverable = this.Clause.OwningCoverable
     var uneditableCovTerms = ConfigParamsUtil.getList(TC_UneditableCoverageTerms, coverable.PolicyLine.BaseState)
     var configResult = ConfigParamsUtil.getBoolean(ConfigParameterType_Ext.TC_ISCOVERAGETERMEDITABLE, coverable.PolicyLine.BaseState, this.PatternCode)
+    var uneditableCovTermsHIDP3 = ConfigParamsUtil.getList(TC_UneditableCoverageTerms, coverable.PolicyLine.BaseState,"DP3_Ext")
 
     if(this.Clause.OwningCoverable typeis CPBuilding)
       {
@@ -71,7 +72,7 @@ enhancement UNACovTermEnhancement_Ext : gw.api.domain.covterm.CovTerm {
           return false
       }
 
-   if(uneditableCovTerms.contains(this.PatternCode) or configResult != null){
+   if(uneditableCovTerms.contains(this.PatternCode) or uneditableCovTermsHIDP3.contains(this.PatternCode) or configResult != null){
       result = false
     }else if(coverable typeis Dwelling_HOE){
       var min = this.getMinAllowedLimitValue(coverable)

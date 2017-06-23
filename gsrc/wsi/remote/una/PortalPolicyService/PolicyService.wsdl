@@ -1,0 +1,761 @@
+<?xml version="1.0"?>
+<wsdl:definitions targetNamespace="http://policyservice.policy.api.uihna.com/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="PersonalLines" xmlns:s2="CommercialLines" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:tns="http://policyservice.policy.api.uihna.com/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema targetNamespace="http://policyservice.policy.api.uihna.com/" elementFormDefault="qualified">
+      <s:import namespace="PersonalLines"/>
+      <s:import namespace="CommercialLines"/>
+      <s:element name="PersonalPolicy_UPSERT">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="tns:Policies"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Policies">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PersonalPolicy" type="s1:PolicyDetailRequest"/>
+          <s:element minOccurs="0" maxOccurs="1" name="CommercialPolicy" type="s2:PolicyDetailRequest"/>
+          <s:element minOccurs="1" maxOccurs="1" name="policyEdition" nillable="true" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="premiumAmt" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="balanceTotal" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="balanceDue" nillable="true" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="balanceDueDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Histories" type="tns:ArrayOfPolicyHistoryRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyHistoryRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyHistoryRequest" nillable="true" type="tns:PolicyHistoryRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyHistoryRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="PolicyNumber" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="PolicyEdition" type="s:int"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ExpirationDate" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="ModifiedDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="CreateDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="Success" nillable="true" type="s:boolean"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Message" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="tns:ArrayOfPolicyHistoryNotesRequest"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Premiums" type="tns:ArrayOfPolicyHistoryPremiumRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyHistoryNotesRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyHistoryNotesRequest" nillable="true" type="tns:PolicyHistoryNotesRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyHistoryNotesRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Title" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DateEntered" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="EnteredBy" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="DateLastUpdated" nillable="true" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Remarks" type="s:string"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfPolicyHistoryPremiumRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyHistoryPremiumRequest" nillable="true" type="tns:PolicyHistoryPremiumRequest"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="PolicyHistoryPremiumRequest">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="TransactionDate" type="s:dateTime"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Description" type="s:string"/>
+          <s:element minOccurs="1" maxOccurs="1" name="EffectiveDate" type="s:dateTime"/>
+          <s:element minOccurs="1" maxOccurs="1" name="AmountPaid" type="s:decimal"/>
+          <s:element minOccurs="1" maxOccurs="1" name="BalanceDue" type="s:decimal"/>
+        </s:sequence>
+      </s:complexType>
+      <s:element name="PersonalPolicy_UPSERTResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="PersonalPolicy_UPSERTResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="QuoteAuthenticationHeader" type="tns:QuoteAuthenticationHeader"/>
+      <s:complexType name="QuoteAuthenticationHeader">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Group" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Passkey" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Id" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string"/>
+        </s:sequence>
+        <s:anyAttribute/>
+      </s:complexType>
+      <s:element name="CommercialPolicy_UPSERT">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="model" type="tns:Policies"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CommercialPolicy_UPSERTResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CommercialPolicy_UPSERTResult" type="s:string"/>
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+    <s:schema targetNamespace="PersonalLines" elementFormDefault="qualified">
+      <s:complexType name="PolicyDetailRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Policy" type="s1:Policy"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Policy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Cust" type="s1:Cust"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BillingInfo" type="s1:BillingInfo"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Agency" type="s1:Agency"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TransRecaps" type="s1:TransRecaps"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PolicyLoan" type="s1:PolicyLoan"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Home" type="s1:Home"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Installments" type="s1:Installments"/>
+        </s:sequence>
+        <s:attribute name="policyNum" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Cust">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Addr" type="s1:Addr"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PhoneInfo" type="s1:PhoneInfo"/>
+        </s:sequence>
+        <s:attribute name="coApplFirstName" type="s:string"/>
+        <s:attribute name="companionAcctDisc" type="s:string"/>
+        <s:attribute name="company" type="s:string"/>
+        <s:attribute name="companyCode" type="s:string"/>
+        <s:attribute name="effDt" type="s:string"/>
+        <s:attribute name="expDt" type="s:string"/>
+        <s:attribute name="groupLine" type="s:string"/>
+        <s:attribute name="groupLineCode" type="s:string"/>
+        <s:attribute name="name" type="s:string"/>
+        <s:attribute name="name2" type="s:string"/>
+        <s:attribute name="email" type="s:string"/>
+        <s:attribute name="nextBillAct" type="s:string"/>
+        <s:attribute name="nextBillActDt" type="s:string"/>
+        <s:attribute name="nextPolicyAct" type="s:string"/>
+        <s:attribute name="nextPolicyActDt" type="s:string"/>
+        <s:attribute name="programCode" type="s:string"/>
+        <s:attribute name="ratingState" type="s:string"/>
+        <s:attribute name="ratingStateCode" type="s:string"/>
+        <s:attribute name="renewalType" type="s:string"/>
+        <s:attribute name="status" type="s:string"/>
+        <s:attribute name="term" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Addr">
+        <s:attribute name="addr1" type="s:string"/>
+        <s:attribute name="addr2" type="s:string"/>
+        <s:attribute name="addrTypeCd" type="s:string"/>
+        <s:attribute name="city" type="s:string"/>
+        <s:attribute name="county" type="s:string"/>
+        <s:attribute name="state" type="s:string"/>
+        <s:attribute name="zip" type="s:string"/>
+        <s:attribute name="unitNo" type="s:string"/>
+        <s:attribute name="country" type="s:string"/>
+        <s:attribute name="longitude" type="s:string"/>
+        <s:attribute name="latitude" type="s:string"/>
+        <s:attribute name="comments" type="s:string"/>
+        <s:attribute name="streetNumber" type="s:string"/>
+        <s:attribute name="preDirection" type="s:string"/>
+        <s:attribute name="postDirection" type="s:string"/>
+        <s:attribute name="type" type="s:string"/>
+        <s:attribute name="zipCodeMinor" type="s:string"/>
+        <s:attribute name="streetName" type="s:string"/>
+        <s:attribute name="origNum" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="PhoneInfo">
+        <s:attribute name="phoneNum" type="s:string"/>
+        <s:attribute name="phoneTypeCd" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="BillingInfo">
+        <s:attribute name="balDue" type="s:string"/>
+        <s:attribute name="billType" type="s:string"/>
+        <s:attribute name="lastPaymentAmt" type="s:string"/>
+        <s:attribute name="lastPaymentDt" type="s:string"/>
+        <s:attribute name="lastTransProcessed" type="s:string"/>
+        <s:attribute name="payType" type="s:string"/>
+        <s:attribute name="prevBalDue" type="s:string"/>
+        <s:attribute name="totalPremPaid" type="s:string"/>
+        <s:attribute name="totalTermPrem" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Agency">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Addr" type="s1:Addr"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PhoneInfo" type="s1:PhoneInfo"/>
+        </s:sequence>
+        <s:attribute name="agentName" type="s:string"/>
+        <s:attribute name="agentNum" type="s:string"/>
+        <s:attribute name="subAgentName" type="s:string"/>
+        <s:attribute name="branchName" type="s:string"/>
+        <s:attribute name="email" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="TransRecaps">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TransRecap" type="s1:TransRecap"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TransRecap">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TransReason" type="s:string"/>
+        </s:sequence>
+        <s:attribute name="amtPd" type="s:string"/>
+        <s:attribute name="balanceDue" type="s:string"/>
+        <s:attribute name="carryDt" type="s:string"/>
+        <s:attribute name="cash" type="s:string"/>
+        <s:attribute name="currAct" type="s:string"/>
+        <s:attribute name="dbCycleDt" type="s:string"/>
+        <s:attribute name="effDt" type="s:string"/>
+        <s:attribute name="enteredDt" type="s:string"/>
+        <s:attribute name="nextBillAct" type="s:string"/>
+        <s:attribute name="nextBillActDt" type="s:string"/>
+        <s:attribute name="nextPolicyAct" type="s:string"/>
+        <s:attribute name="nsfFees" type="s:string"/>
+        <s:attribute name="prevBalDue" type="s:string"/>
+        <s:attribute name="svcCharge" type="s:string"/>
+        <s:attribute name="totalPd" type="s:string"/>
+        <s:attribute name="transTransnum" type="s:string"/>
+        <s:attribute name="transType" type="s:string"/>
+        <s:attribute name="escrow" type="s:string"/>
+        <s:attribute name="fees" type="s:string"/>
+        <s:attribute name="inforcePrem" type="s:string"/>
+        <s:attribute name="polFees" type="s:string"/>
+        <s:attribute name="taxes" type="s:string"/>
+        <s:attribute name="transWritPrem" type="s:string"/>
+        <s:attribute name="bookDt" type="s:string"/>
+        <s:attribute name="checkDt" type="s:string"/>
+        <s:attribute name="checkNum" type="s:string"/>
+        <s:attribute name="checkReason" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="PolicyLoan">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Addr" type="s1:Addr"/>
+        </s:sequence>
+        <s:attribute name="loanName" type="s:string"/>
+        <s:attribute name="loanName2" type="s:string"/>
+        <s:attribute name="loanNum" type="s:string"/>
+        <s:attribute name="loanType" type="s:string"/>
+        <s:attribute name="loanType2" type="s:string"/>
+        <s:attribute name="origNum" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Home">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Props" type="s1:Props"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Loan" type="s1:Loan"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Endorsements" type="s1:Endorsements"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Claims" type="s1:Claims"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Props">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Prop" type="s1:Prop"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Prop">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Coverage" type="s1:Coverage"/>
+          <s:element minOccurs="0" maxOccurs="1" name="ItemNotes" type="s1:ItemNotes"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="LossHist" type="s1:LossHist"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Addr" type="s1:Addr"/>
+        </s:sequence>
+        <s:attribute name="constructType" type="s:string"/>
+        <s:attribute name="form" type="s:string"/>
+        <s:attribute name="ftToHydrant" type="s:string"/>
+        <s:attribute name="heatYr" type="s:string"/>
+        <s:attribute name="lossFree" type="s:string"/>
+        <s:attribute name="milesToFireDept" type="s:string"/>
+        <s:attribute name="numApts" type="s:string"/>
+        <s:attribute name="numFamilies" type="s:string"/>
+        <s:attribute name="numRooms" type="s:string"/>
+        <s:attribute name="numStories" type="s:string"/>
+        <s:attribute name="numUnits" type="s:string"/>
+        <s:attribute name="occupancy" type="s:string"/>
+        <s:attribute name="plumbingYr" type="s:string"/>
+        <s:attribute name="protectClass" type="s:string"/>
+        <s:attribute name="ratePlan" type="s:string"/>
+        <s:attribute name="replaceCost" type="s:string"/>
+        <s:attribute name="roofType" type="s:string"/>
+        <s:attribute name="roofYr" type="s:string"/>
+        <s:attribute name="territory" type="s:string"/>
+        <s:attribute name="totalSqFt" type="s:string"/>
+        <s:attribute name="unitNum" type="s:string"/>
+        <s:attribute name="userLineCode" type="s:string"/>
+        <s:attribute name="wiringYr" type="s:string"/>
+        <s:attribute name="yrBuilt" type="s:string"/>
+        <s:attribute name="NSDed" type="s:string"/>
+        <s:attribute name="EQDed" type="s:string"/>
+        <s:attribute name="WHDollar" type="s:string"/>
+        <s:attribute name="hurricaneDollar" type="s:string"/>
+        <s:attribute name="NSDollar" type="s:string"/>
+        <s:attribute name="EQDollar" type="s:string"/>
+        <s:attribute name="FloodDed" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Coverage">
+        <s:attribute name="allPerilDeduct" type="s:string"/>
+        <s:attribute name="covALimit" type="s:string"/>
+        <s:attribute name="covAPrem" type="s:string"/>
+        <s:attribute name="covBLimit" type="s:string"/>
+        <s:attribute name="covBPrem" type="s:string"/>
+        <s:attribute name="covCLimit" type="s:string"/>
+        <s:attribute name="covCPrem" type="s:string"/>
+        <s:attribute name="hurricaneDeduct" type="s:string"/>
+        <s:attribute name="covDLimit" type="s:string"/>
+        <s:attribute name="covDPrem" type="s:string"/>
+        <s:attribute name="covELimit" type="s:string"/>
+        <s:attribute name="covEPrem" type="s:string"/>
+        <s:attribute name="covFLimit" type="s:string"/>
+        <s:attribute name="covFPrem" type="s:string"/>
+        <s:attribute name="FloodDWLimit" type="s:string"/>
+        <s:attribute name="FloodDWPrem" type="s:string"/>
+        <s:attribute name="FloodPPLimit" type="s:string"/>
+        <s:attribute name="FloodPPPrem" type="s:string"/>
+        <s:attribute name="FloodAELimit" type="s:string"/>
+        <s:attribute name="FloodAEPrem" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="ItemNotes">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Note" type="s1:Note"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Note">
+        <s:attribute name="enteredDt" type="s:string"/>
+        <s:attribute name="remarks" type="s:string"/>
+        <s:attribute name="title" type="s:string"/>
+        <s:attribute name="updatedDt" type="s:string"/>
+        <s:attribute name="userId" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="LossHist">
+        <s:attribute name="lossAmt" type="s:string"/>
+        <s:attribute name="lossDt" type="s:string"/>
+        <s:attribute name="lossType" type="s:string"/>
+        <s:attribute name="paidClaim" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Loan">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Addr" type="s1:Addr"/>
+          <s:element minOccurs="0" maxOccurs="1" name="PhoneInfo" type="s1:PhoneInfo"/>
+        </s:sequence>
+        <s:attribute name="loanName" type="s:string"/>
+        <s:attribute name="loanName2" type="s:string"/>
+        <s:attribute name="loanNum" type="s:string"/>
+        <s:attribute name="loanType" type="s:string"/>
+        <s:attribute name="loanType2" type="s:string"/>
+        <s:attribute name="origNum" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Endorsements">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Endorsement" type="s1:Endorsement"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Endorsement">
+        <s:attribute name="description" type="s:string"/>
+        <s:attribute name="editionDt" type="s:string"/>
+        <s:attribute name="endNum" type="s:string"/>
+        <s:attribute name="itemNum" type="s:string"/>
+        <s:attribute name="limit" type="s:string"/>
+        <s:attribute name="parm1" type="s:string"/>
+        <s:attribute name="parm2" type="s:string"/>
+        <s:attribute name="premium" type="s:string"/>
+        <s:attribute name="parm3" type="s:string"/>
+        <s:attribute name="parm4" type="s:string"/>
+        <s:attribute name="parm5" type="s:string"/>
+        <s:attribute name="parm6" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Claims">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Claim" type="s1:Claim"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Claim">
+        <s:attribute name="claimNum" type="s:string"/>
+        <s:attribute name="lossDt" type="s:string"/>
+        <s:attribute name="lossPd" type="s:string"/>
+        <s:attribute name="lossRes" type="s:string"/>
+        <s:attribute name="reportedDt" type="s:string"/>
+        <s:attribute name="status" type="s:string"/>
+        <s:attribute name="type" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Installments">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Installment" type="s1:Installment"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Installment">
+        <s:attribute name="InstallNum" type="s:string"/>
+        <s:attribute name="InstallStatus" type="s:string"/>
+        <s:attribute name="InstallDt" type="s:string"/>
+        <s:attribute name="InstallAmt" type="s:string"/>
+        <s:attribute name="InstallAmtDue" type="s:string"/>
+        <s:attribute name="InstallTransCd" type="s:string"/>
+      </s:complexType>
+    </s:schema>
+    <s:schema targetNamespace="CommercialLines" elementFormDefault="qualified">
+      <s:complexType name="PolicyDetailRequest">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Policy" type="s2:Policy"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Policy">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Cust" type="s2:Cust"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="BillingInfo" type="s2:BillingInfo"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Agency" type="s2:Agency"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TransRecaps" type="s2:TransRecaps"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Units" type="s2:Units"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Notes" type="s2:Notes"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Claims" type="s2:Claims"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Loans" type="s2:Loans"/>
+          <s:element minOccurs="0" maxOccurs="1" name="Installments" type="s2:Installments"/>
+        </s:sequence>
+        <s:attribute name="policyNum" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Cust">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Names" type="s2:Names"/>
+        </s:sequence>
+        <s:attribute name="companionAcctDisc" type="s:string"/>
+        <s:attribute name="company" type="s:string"/>
+        <s:attribute name="companyCode" type="s:string"/>
+        <s:attribute name="effDt" type="s:string"/>
+        <s:attribute name="expDt" type="s:string"/>
+        <s:attribute name="groupLine" type="s:string"/>
+        <s:attribute name="groupLineCode" type="s:string"/>
+        <s:attribute name="NameType" type="s:string"/>
+        <s:attribute name="OpsDesc" type="s:string"/>
+        <s:attribute name="programCode" type="s:string"/>
+        <s:attribute name="ratingState" type="s:string"/>
+        <s:attribute name="ratingStateCode" type="s:string"/>
+        <s:attribute name="renewalType" type="s:string"/>
+        <s:attribute name="status" type="s:string"/>
+        <s:attribute name="term" type="s:string"/>
+        <s:attribute name="nextBillAct" type="s:string"/>
+        <s:attribute name="nextBillActDt" type="s:string"/>
+        <s:attribute name="nextPolicyAct" type="s:string"/>
+        <s:attribute name="nextPolicyActDt" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Names">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Name" type="s2:Name"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Name">
+        <s:attribute name="NameType" type="s:string"/>
+        <s:attribute name="Name1" type="s:string"/>
+        <s:attribute name="Name2" type="s:string"/>
+        <s:attribute name="Addr1" type="s:string"/>
+        <s:attribute name="Addr2" type="s:string"/>
+        <s:attribute name="City" type="s:string"/>
+        <s:attribute name="State" type="s:string"/>
+        <s:attribute name="Zip" type="s:string"/>
+        <s:attribute name="Country" type="s:string"/>
+        <s:attribute name="ssnInd" type="s:string"/>
+        <s:attribute name="ssnFein" type="s:string"/>
+        <s:attribute name="DaytimePhone" type="s:string"/>
+        <s:attribute name="eMailAddr" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="BillingInfo">
+        <s:attribute name="balDue" type="s:string"/>
+        <s:attribute name="billType" type="s:string"/>
+        <s:attribute name="lastPaymentAmt" type="s:string"/>
+        <s:attribute name="lastPaymentDt" type="s:string"/>
+        <s:attribute name="lastTransProcessed" type="s:string"/>
+        <s:attribute name="payPlan" type="s:string"/>
+        <s:attribute name="payType" type="s:string"/>
+        <s:attribute name="prevBalDue" type="s:string"/>
+        <s:attribute name="totalPremPaid" type="s:string"/>
+        <s:attribute name="totalTermPrem" type="s:string"/>
+        <s:attribute name="lastBilledAmt" type="s:string"/>
+        <s:attribute name="lastBilledDt" type="s:string"/>
+        <s:attribute name="dueDt" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Agency">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Addr" type="s2:Addr"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="PhoneInfo" type="s2:PhoneInfo"/>
+        </s:sequence>
+        <s:attribute name="agentName" type="s:string"/>
+        <s:attribute name="agentNum" type="s:string"/>
+        <s:attribute name="subAgentName" type="s:string"/>
+        <s:attribute name="branchName" type="s:string"/>
+        <s:attribute name="email" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Addr">
+        <s:attribute name="addr1" type="s:string"/>
+        <s:attribute name="addr2" type="s:string"/>
+        <s:attribute name="addrTypeCd" type="s:string"/>
+        <s:attribute name="city" type="s:string"/>
+        <s:attribute name="county" type="s:string"/>
+        <s:attribute name="state" type="s:string"/>
+        <s:attribute name="zip" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="PhoneInfo">
+        <s:attribute name="phoneNum" type="s:string"/>
+        <s:attribute name="phoneTypeCd" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="TransRecaps">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="TransRecap" type="s2:TransRecap"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="TransRecap">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="Comments" type="s:string"/>
+          <s:element minOccurs="0" maxOccurs="1" name="TransReason" type="s:string"/>
+        </s:sequence>
+        <s:attribute name="currAct" type="s:string"/>
+        <s:attribute name="dbCycleDt" type="s:string"/>
+        <s:attribute name="effDt" type="s:string"/>
+        <s:attribute name="enteredDt" type="s:string"/>
+        <s:attribute name="escrow" type="s:string"/>
+        <s:attribute name="fees" type="s:string"/>
+        <s:attribute name="inforcePrem" type="s:string"/>
+        <s:attribute name="nextBillActDt" type="s:string"/>
+        <s:attribute name="nextPolicyAct" type="s:string"/>
+        <s:attribute name="polFees" type="s:string"/>
+        <s:attribute name="prevBalDue" type="s:string"/>
+        <s:attribute name="taxes" type="s:string"/>
+        <s:attribute name="transTransnum" type="s:string"/>
+        <s:attribute name="transType" type="s:string"/>
+        <s:attribute name="transWritPrem" type="s:string"/>
+        <s:attribute name="amtPd" type="s:string"/>
+        <s:attribute name="balanceDue" type="s:string"/>
+        <s:attribute name="carryDt" type="s:string"/>
+        <s:attribute name="cash" type="s:string"/>
+        <s:attribute name="nextBillAct" type="s:string"/>
+        <s:attribute name="nsfFees" type="s:string"/>
+        <s:attribute name="svcCharge" type="s:string"/>
+        <s:attribute name="totalPd" type="s:string"/>
+        <s:attribute name="bookDt" type="s:string"/>
+        <s:attribute name="nextPolicyActDt" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Units">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Unit" type="s2:Unit"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Unit">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Endorsement" type="s2:Endorsement"/>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Coverage" type="s2:Coverage"/>
+          <s:element minOccurs="0" maxOccurs="1" name="LocAddr" type="s2:LocAddr"/>
+        </s:sequence>
+        <s:attribute name="unitDescription" type="s:string"/>
+        <s:attribute name="locationNo" type="s:string"/>
+        <s:attribute name="buildingNo" type="s:string"/>
+        <s:attribute name="unitNo" type="s:string"/>
+        <s:attribute name="yrBuilt" type="s:string"/>
+        <s:attribute name="numStories" type="s:string"/>
+        <s:attribute name="deductibleType" type="s:string"/>
+        <s:attribute name="deductibleAmt" type="s:string"/>
+        <s:attribute name="deductibelType2" type="s:string"/>
+        <s:attribute name="deductibleAmt2" type="s:string"/>
+        <s:attribute name="sqFeet" type="s:string"/>
+        <s:attribute name="userLine" type="s:string"/>
+        <s:attribute name="TheftExclusion" type="s:string"/>
+        <s:attribute name="territory" type="s:string"/>
+        <s:attribute name="rateLevel" type="s:string"/>
+        <s:attribute name="classCode" type="s:string"/>
+        <s:attribute name="construction" type="s:string"/>
+        <s:attribute name="occupancy" type="s:string"/>
+        <s:attribute name="roofCode" type="s:string"/>
+        <s:attribute name="policyType" type="s:string"/>
+        <s:attribute name="bcegCode" type="s:string"/>
+        <s:attribute name="roofShape" type="s:string"/>
+        <s:attribute name="distanceCoast" type="s:string"/>
+        <s:attribute name="swr" type="s:string"/>
+        <s:attribute name="terrainExp" type="s:string"/>
+        <s:attribute name="protClass" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Endorsement">
+        <s:attribute name="endNum" type="s:string"/>
+        <s:attribute name="endDescr" type="s:string"/>
+        <s:attribute name="editionDt" type="s:string"/>
+        <s:attribute name="limit" type="s:string"/>
+        <s:attribute name="parm1" type="s:string"/>
+        <s:attribute name="parm2" type="s:string"/>
+        <s:attribute name="parm5" type="s:string"/>
+        <s:attribute name="parm3" type="s:string"/>
+        <s:attribute name="parm4" type="s:string"/>
+        <s:attribute name="parm6" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Coverage">
+        <s:attribute name="coverageCode" type="s:string"/>
+        <s:attribute name="coverageDescription" type="s:string"/>
+        <s:attribute name="covPremium" type="s:string"/>
+        <s:attribute name="Limit1" type="s:string"/>
+        <s:attribute name="Limit2" type="s:string"/>
+        <s:attribute name="Limit3" type="s:string"/>
+        <s:attribute name="Limit4" type="s:string"/>
+        <s:attribute name="Limit5" type="s:string"/>
+        <s:attribute name="Deductible" type="s:string"/>
+        <s:attribute name="Deductible2" type="s:string"/>
+        <s:attribute name="Exposure" type="s:string"/>
+        <s:attribute name="DeductibleType" type="s:string"/>
+        <s:attribute name="DeductibleType2" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="LocAddr">
+        <s:attribute name="address1" type="s:string"/>
+        <s:attribute name="address2" type="s:string"/>
+        <s:attribute name="City" type="s:string"/>
+        <s:attribute name="State" type="s:string"/>
+        <s:attribute name="Zip" type="s:string"/>
+        <s:attribute name="County" type="s:string"/>
+        <s:attribute name="unitNo" type="s:string"/>
+        <s:attribute name="country" type="s:string"/>
+        <s:attribute name="longitude" type="s:string"/>
+        <s:attribute name="latitude" type="s:string"/>
+        <s:attribute name="comments" type="s:string"/>
+        <s:attribute name="streetNumber" type="s:string"/>
+        <s:attribute name="preDirection" type="s:string"/>
+        <s:attribute name="postDirection" type="s:string"/>
+        <s:attribute name="type" type="s:string"/>
+        <s:attribute name="zipCodeMinor" type="s:string"/>
+        <s:attribute name="streetName" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Notes">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Note" type="s2:Note"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Note">
+        <s:attribute name="enteredDt" type="s:string"/>
+        <s:attribute name="remarks" type="s:string"/>
+        <s:attribute name="title" type="s:string"/>
+        <s:attribute name="updatedDt" type="s:string"/>
+        <s:attribute name="userId" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Claims">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Claim" type="s2:Claim"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Claim">
+        <s:attribute name="claimNum" type="s:string"/>
+        <s:attribute name="lossDt" type="s:string"/>
+        <s:attribute name="lossPd" type="s:string"/>
+        <s:attribute name="lossRes" type="s:string"/>
+        <s:attribute name="reportedDt" type="s:string"/>
+        <s:attribute name="status" type="s:string"/>
+        <s:attribute name="type" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Loans">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Loan" type="s2:Loan"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Loan">
+        <s:attribute name="loanName" type="s:string"/>
+        <s:attribute name="loanName2" type="s:string"/>
+        <s:attribute name="loanAddr1" type="s:string"/>
+        <s:attribute name="loanAddr2" type="s:string"/>
+        <s:attribute name="loanCity" type="s:string"/>
+        <s:attribute name="loanState" type="s:string"/>
+        <s:attribute name="loanZip" type="s:string"/>
+        <s:attribute name="loanType" type="s:string"/>
+        <s:attribute name="unitNo" type="s:string"/>
+      </s:complexType>
+      <s:complexType name="Installments">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Installment" type="s2:Installment"/>
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Installment">
+        <s:attribute name="InstallNum" type="s:string"/>
+        <s:attribute name="InstallStatus" type="s:string"/>
+        <s:attribute name="InstallDt" type="s:string"/>
+        <s:attribute name="InstallDueDt" type="s:string"/>
+        <s:attribute name="InstallAmt" type="s:string"/>
+        <s:attribute name="InstallAmtDue" type="s:string"/>
+        <s:attribute name="InstallTransCd" type="s:string"/>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="PersonalPolicy_UPSERTSoapIn">
+    <wsdl:part name="parameters" element="tns:PersonalPolicy_UPSERT"/>
+  </wsdl:message>
+  <wsdl:message name="PersonalPolicy_UPSERTSoapOut">
+    <wsdl:part name="parameters" element="tns:PersonalPolicy_UPSERTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="PersonalPolicy_UPSERTQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:message name="CommercialPolicy_UPSERTSoapIn">
+    <wsdl:part name="parameters" element="tns:CommercialPolicy_UPSERT"/>
+  </wsdl:message>
+  <wsdl:message name="CommercialPolicy_UPSERTSoapOut">
+    <wsdl:part name="parameters" element="tns:CommercialPolicy_UPSERTResponse"/>
+  </wsdl:message>
+  <wsdl:message name="CommercialPolicy_UPSERTQuoteAuthenticationHeader">
+    <wsdl:part name="QuoteAuthenticationHeader" element="tns:QuoteAuthenticationHeader"/>
+  </wsdl:message>
+  <wsdl:portType name="PolicyServiceSoap">
+    <wsdl:operation name="PersonalPolicy_UPSERT">
+      <wsdl:input message="tns:PersonalPolicy_UPSERTSoapIn"/>
+      <wsdl:output message="tns:PersonalPolicy_UPSERTSoapOut"/>
+    </wsdl:operation>
+    <wsdl:operation name="CommercialPolicy_UPSERT">
+      <wsdl:input message="tns:CommercialPolicy_UPSERTSoapIn"/>
+      <wsdl:output message="tns:CommercialPolicy_UPSERTSoapOut"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="PolicyServiceSoap" type="tns:PolicyServiceSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="PersonalPolicy_UPSERT">
+      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/PersonalPolicy_UPSERT" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:PersonalPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CommercialPolicy_UPSERT">
+      <soap:operation soapAction="http://policyservice.policy.api.uihna.com/CommercialPolicy_UPSERT" style="document"/>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:CommercialPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="PolicyServiceSoap12" type="tns:PolicyServiceSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="PersonalPolicy_UPSERT">
+      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/PersonalPolicy_UPSERT" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:PersonalPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CommercialPolicy_UPSERT">
+      <soap12:operation soapAction="http://policyservice.policy.api.uihna.com/CommercialPolicy_UPSERT" style="document"/>
+      <wsdl:input>
+        <soap12:body use="literal"/>
+        <soap12:header message="tns:CommercialPolicy_UPSERTQuoteAuthenticationHeader" part="QuoteAuthenticationHeader" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="PolicyService">
+    <wsdl:port name="PolicyServiceSoap" binding="tns:PolicyServiceSoap">
+      <soap:address location="http://portalgwdev01:3274/Services/Policy/PolicyService.asmx"/>
+    </wsdl:port>
+    <wsdl:port name="PolicyServiceSoap12" binding="tns:PolicyServiceSoap12">
+      <soap12:address location="http://portalgwdev01:3274/Services/Policy/PolicyService.asmx"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

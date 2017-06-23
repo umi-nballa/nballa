@@ -240,9 +240,11 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
   function ratePolicyFee(line: HomeownersLine_HOE) {
     if(_logger.isDebugEnabled())
       _logger.debug("Entering :: ratePolicyFee:", this.IntrinsicType)
+    var totalPolicyPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
         TC_POLICYLINE -> PolicyLine,
-        TC_STATE -> _baseState.Code
+        TC_STATE -> _baseState,
+        TC_TOTALPOLICYPREMIUM_EXT -> totalPolicyPremium
     }
     var costData : CostData
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
@@ -250,8 +252,9 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
       costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.LPP_POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES_EXT)
     else
       costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.POLICY_FEE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_POLICYFEES_EXT)
-    if (costData != null and costData.ActualTermAmount != 0){
+    if (costData != null){
       costData.ActualAmount = costData.ActualTermAmount
+      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
       addCost(costData)
     }
     if(_logger.isDebugEnabled())
@@ -273,6 +276,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.FIGA_SURCHARGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_FIGASURCHARGE_EXT)
     if (costData != null){
       costData.ActualAmount = costData.ActualTermAmount
+      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
       addCost(costData)
     }
     if(_logger.isDebugEnabled())
@@ -288,12 +292,14 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     var totalPolicyPremium = CostDatas.sum(\costData -> costData.ActualTermAmount)
     var rateRoutineParameterMap: Map<CalcRoutineParamName, Object> = {
         TC_POLICYLINE -> PolicyLine,
-        TC_STATE -> _baseState.Code
+        TC_STATE -> _baseState,
+        TC_TOTALPOLICYPREMIUM_EXT -> totalPolicyPremium
     }
     var dateRange = new DateRange(line.Branch.PeriodStart, line.Branch.PeriodEnd)
     var costData = HOCreateCostDataUtil.createCostDataForTaxCosts(dateRange, HORateRoutineNames.EMPA_SURCHARGE_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, line.Branch.NumDaysInPeriod, ChargePattern.TC_EMPASURCHARGE_EXT)
     if (costData != null){
       costData.ActualAmount = costData.ActualTermAmount
+      costData.ProrationMethod = typekey.ProrationMethod.TC_FLAT
       addCost(costData)
     }
     if(_logger.isDebugEnabled())
@@ -332,7 +338,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
     if (_baseState == typekey.Jurisdiction.TC_AZ and  _baseState == typekey.Jurisdiction.TC_SC) {
       return false
     } else if (_baseState == typekey.Jurisdiction.TC_TX or _baseState == typekey.Jurisdiction.TC_CA or  _baseState == typekey.Jurisdiction.TC_FL or _baseState == typekey.Jurisdiction.TC_NC) {
-      if (line.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE and line.Branch.Job.Subtype != typekey.Job.TC_CANCELLATION)
+      if (line.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE)
         return true
     } else if (_baseState == typekey.Jurisdiction.TC_NV){
       if (line.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION)
@@ -346,7 +352,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
 
   private function isFIGASurchargeApplicable() : boolean{
     if(_baseState == typekey.Jurisdiction.TC_FL){
-      if (PolicyLine.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION || PolicyLine.Branch.Job.Subtype == typekey.Job.TC_RENEWAL)
+      if (PolicyLine.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE)
         return true
     }
     return false
@@ -354,7 +360,7 @@ class UNAHORatingEngine_HOE<L extends HomeownersLine_HOE> extends AbstractRating
 
   private function isEMPASurchargeApplicable() : boolean{
     if(_baseState == typekey.Jurisdiction.TC_FL){
-      if (PolicyLine.Branch.Job.Subtype == typekey.Job.TC_SUBMISSION)
+      if (PolicyLine.Branch.Job.Subtype != typekey.Job.TC_POLICYCHANGE)
         return true
     }
     return false

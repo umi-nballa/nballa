@@ -65,7 +65,7 @@ class HONCDwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _unitOwnersCoverageASpecialLimitsExists = true
       }
 
-     _unitOwnersCovABaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovALimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+
 
 
     if(dwelling.HODW_Earthquake_HOEExists){

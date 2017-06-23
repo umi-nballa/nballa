@@ -245,9 +245,7 @@ class CoverageTermAvailabilityUtil {
     return result
   }
 
-  private static function isAggLimitOptionAvailable (option: gw.api.productmodel.CovTermOpt, _glline:GLLine):boolean
-  {
-     //if(_glline.GLCGLCovExists && _glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value?.equals(option?.Value))
+  private static function isAggLimitOptionAvailable (option: gw.api.productmodel.CovTermOpt, _glline:GLLine):boolean  {
     if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==100000.0000 && (option?.Value.doubleValue()==100000.0000 || option?.Value.doubleValue()==200000.0000))
        return true
     if(_glline?.GLCGLCov?.GLCGLOccLimitTerm?.OptionValue?.Value.doubleValue()==300000.0000 && (option?.Value.doubleValue()==300000.0000 || option?.Value.doubleValue()==600000.0000))
@@ -323,11 +321,6 @@ class CoverageTermAvailabilityUtil {
     }
     return result
   }
-    /*if(bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm != null && bp7Line.BP7CyberOneCov_EXT.CoverageOptions_EXTTerm.Value == typekey.BP7CoverageOptions_Ext.TC_LIMITED){
-      return true
-    }
-    return false
-  }*/
 
   private static function isOptionAvailableForCyberOneCovDeduct(option : gw.api.productmodel.CovTermOpt, bp7Line:BP7BusinessOwnersLine):boolean{
     var result = true
@@ -536,6 +529,7 @@ class CoverageTermAvailabilityUtil {
     var result = true
     var allowedLimitsPersonalLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Personal_Liability_HOE.PatternCode)
     var allowedLimitsPremiseLiability = ConfigParamsUtil.getList(TC_FIREDWELLINGMEDICALPAYMENTSRESTRICTEDOPTIONS, hoLine.BaseState, hoLine.DPLI_Premise_Liability_HOE_Ext.PatternCode)
+    var restrictiveOptions = {"1000","3000","5000"}
 
      if(hoLine.BaseState == TC_CA){
        if({3000d,5000d}.contains(covTermOpt.Value.doubleValue())){
@@ -545,12 +539,24 @@ class CoverageTermAvailabilityUtil {
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
         result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }
-
       if(1000d == covTermOpt.Value.doubleValue()){
         result = hoLine.Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER
       }
     }
 
+    if (hoLine.BaseState == TC_HI and hoLine.HOPolicyType == TC_DP3_Ext){
+      if(restrictiveOptions.contains(covTermOpt.OptionCode)){
+        if(hoLine.DPLI_Personal_Liability_HOEExists && hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value!=null){
+          if(covTermOpt.OptionCode == "1000"){
+            result = hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value == 100000bd
+          }else if(covTermOpt.OptionCode == "3000"){
+            result = hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value == 300000bd
+          }else if(covTermOpt.OptionCode == "5000"){
+            result = hoLine.DPLI_Personal_Liability_HOE.DPLI_LiabilityLimit_HOETerm.Value == 500000bd
+          }
+        }
+      }
+    }
     return result
   }
 

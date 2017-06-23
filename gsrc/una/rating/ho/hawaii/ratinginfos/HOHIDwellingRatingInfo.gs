@@ -36,6 +36,7 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var unitOwnersCovABaseLimit : int as UnitOwnersCovABaseLimit
 
 
+
   construct(dwelling: Dwelling_HOE){
     super(dwelling)
     if(PolicyType == HOPolicyType_HOE.TC_DP3_EXT){
@@ -50,6 +51,7 @@ class HOHIDwellingRatingInfo extends HOCommonDwellingRatingInfo {
 
     covALimit = dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value
     unitOwnersCovABaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovALimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+
 
     if (dwelling?.HODW_PermittedIncOcp_HOE_ExtExists){
       _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value

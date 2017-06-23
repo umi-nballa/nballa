@@ -182,7 +182,7 @@ class QueryPolicyAPI {
    */
   private function populatePolicyInformation(policy: Policy, job: Job, info: PolicyInfoForOnBase) {
     info.PublicID = policy.PublicID
-    var policyPeriod = policy.MostRecentBoundPeriodOnMostRecentTerm //policy.Periods[0]
+    var policyPeriod = policy.LatestPeriod //policy.Periods[0]
 
     info.PolicyNumber = policyPeriod.PolicyNumber
     info.PolicyType = policy.Product.Abbreviation

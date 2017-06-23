@@ -44,6 +44,14 @@
         target="globalAddressContainer"/>
     </TypeKeyInput>
     <Input
+      available="addressOwner.isAvailable(fieldId.ADDRESSLINE3)"
+      editable="addressOwner.isEditable(fieldId.ADDRESSLINE3)"
+      id="AddressLine3"
+      label="displaykey.Web.AddressBook.AddressInputSet.Address3"
+      required="addressOwner.isRequired(fieldId.ADDRESSLINE3)"
+      value="addressOwner.AddressDelegate.AddressLine3"
+      visible="addressOwner.isVisible(fieldId.ADDRESSLINE3)"/>
+    <Input
       available="addressOwner.isAvailable(fieldId.ADDRESSLINE1)"
       editable="addressOwner.isEditable(fieldId.ADDRESSLINE1)"
       id="AddressLine1"
@@ -59,14 +67,6 @@
       required="addressOwner.isRequired(fieldId.ADDRESSLINE2)"
       value="addressOwner.AddressDelegate.AddressLine2"
       visible="addressOwner.isVisible(fieldId.ADDRESSLINE2)"/>
-    <Input
-      available="addressOwner.isAvailable(fieldId.ADDRESSLINE3)"
-      editable="addressOwner.isEditable(fieldId.ADDRESSLINE3)"
-      id="AddressLine3"
-      label="displaykey.Web.AddressBook.AddressInputSet.Address3"
-      required="addressOwner.isRequired(fieldId.ADDRESSLINE3)"
-      value="addressOwner.AddressDelegate.AddressLine3"
-      visible="addressOwner.isVisible(fieldId.ADDRESSLINE3)"/>
     <AddressAutoFillInput
       action="gw.api.contact.AddressAutocompleteUtil.autofillAddress(addressOwner.AddressDelegate, &quot;PostalCode&quot;)"
       actionAvailable="addressOwner.AutofillIconEnabled"

@@ -2,6 +2,16 @@
 <extension
   xmlns="http://guidewire.com/datamodel"
   entityName="PolicyContactRole">
+  <column-override
+    desc="Internal field for sharing and revisioning the role's company name."
+    name="CompanyNameInternal"
+    nullok="true"
+    supportsLinguisticSearch="true"
+    type="companyname">
+    <columnParam
+      name="logicalSize"
+      value="100"/>
+  </column-override>
   <!-- <implementsEntity name="PolicyContactRoleKanjiIndexDelegate"/> -->
   <column
     desc="Internal field for sharing and revisioning the role's company name in Kanji.  Used only for Japanese names and will be null otherwise."

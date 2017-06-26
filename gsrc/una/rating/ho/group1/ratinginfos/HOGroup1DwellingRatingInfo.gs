@@ -41,6 +41,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var caUnitOwnersCovASpecialBaseLimit: int as CAUnitOwnersCovASpecialBaseLimit
 
 
+
   construct(dwelling: Dwelling_HOE) {
     super(dwelling)
     var baseState = dwelling?.PolicyLine.BaseState
@@ -93,8 +94,13 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _earthquakeLimitedLimit = dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_EQCovCPersonalProperty_HOE_ExtTerm?.Value
       } else if(PolicyType == HOPolicyType_HOE.TC_HO3){
         _earthquakeLimitedLimit = dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_EQDwellingLimit_HOE_ExtTerm?.Value
-        _yearBuilt = dwelling?.YearBuilt
 
+         if (dwelling?.OverrideYearbuilt_Ext == true){
+           _yearBuilt = dwelling?.YearBuiltOrOverride
+         }
+         else{
+          _yearBuilt =  dwelling?.YearBuilt
+          }
 
         if (dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_Retrofitted_HOE_ExtTerm?.Value == 1.0){
           _isEQLtdCovConstructionRetrofit = false

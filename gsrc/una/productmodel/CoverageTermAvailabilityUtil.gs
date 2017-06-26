@@ -480,13 +480,13 @@ class CoverageTermAvailabilityUtil {
       var valueRestrictedOptions = (filterPrefix!=null && allPerilsValue!=null) ? ConfigParamsUtil.getList(configType, state, StringUtils.join({filterPrefix, allPerilsValue.asString()})):null
       var defaultRestrictedOptions = filterPrefix!=null ?ConfigParamsUtil.getList(configType, state, filterPrefix):null
 
-      if(namedStormRestrictedOptions != null){
+      if(namedStormRestrictedOptions.HasElements){
         result = namedStormRestrictedOptions.contains(optionValue)
-      }else if(nonHurricaneWindRestrictedOptions != null){
+      }else if(nonHurricaneWindRestrictedOptions.HasElements){
         result = nonHurricaneWindRestrictedOptions.contains(optionValue)
-      }else if(valueRestrictedOptions != null){
+      }else if(valueRestrictedOptions.HasElements){
         result = valueRestrictedOptions.contains(optionValue)
-      }else if(defaultRestrictedOptions != null){
+      }else if(defaultRestrictedOptions.HasElements){
         result = defaultRestrictedOptions.contains(optionValue)
       }
     }
@@ -535,9 +535,9 @@ class CoverageTermAvailabilityUtil {
        if({3000d,5000d}.contains(covTermOpt.Value.doubleValue())){
          result = hoLine.DPLI_Personal_Liability_HOEExists
       }else if(hoLine.DPLI_Premise_Liability_HOE_ExtExists and hoLine.Dwelling.Occupancy == TC_NONOWN){
-        result = allowedLimitsPremiseLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
+        result = allowedLimitsPremiseLiability?.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }else if(hoLine.DPLI_Personal_Liability_HOEExists){
-        result = allowedLimitsPersonalLiability.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
+        result = allowedLimitsPersonalLiability?.hasMatch( \ limit -> limit?.toDouble() == covTermOpt.Value.doubleValue())
       }
       if(1000d == covTermOpt.Value.doubleValue()){
         result = hoLine.Dwelling.Occupancy == DwellingOccupancyType_HOE.TC_OWNER

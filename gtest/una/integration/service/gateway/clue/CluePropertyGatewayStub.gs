@@ -44,12 +44,12 @@ class CluePropertyGatewayStub implements CluePropertyInterface {
    * Creates an order xml from the homeowner details in the provided policy period, then contacts the
    * LexisNexis web service to receive a result report. The result xml is then parsed and ententies are created from its contents.
    */
-  @Param("pPeriod", "The Policy Period with homeowner details to create the order from." +
-      " The resulting prior losses will be linked back to this period also.")
+  @Param("pPeriod", "The Policy Period with homeowner details to create the order from.")
+  @Param("accountNumber", "The Lexis Nexis Account number to use for the report order.")
   @Throws(DisplayableException, "If the web service is not available")
-  function orderClueProperty(pPeriod: PolicyPeriod) {
+  override function orderClueProperty(pPeriod: PolicyPeriod, accountNumber : String) {
     //attempt to create the order xml
-    var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, LEX_ACCOUNT_NUMBER)
+    var orderXml = createOrderXml(pPeriod, LEX_CLIENT_ID, accountNumber != null ? accountNumber : LEX_ACCOUNT_NUMBER)
     var result: String
     _logger.info("CLUE Request or sending order :" + orderXml)
     try {

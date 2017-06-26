@@ -8,6 +8,5 @@ package una.integration.service.gateway.clue
  * To change this template use File | Settings | File Templates.
  */
 interface CluePropertyInterface {
-  function orderClueProperty(pPeriod: PolicyPeriod)
-
+  function orderClueProperty(pPeriod: PolicyPeriod, accountNumber : String)
  }

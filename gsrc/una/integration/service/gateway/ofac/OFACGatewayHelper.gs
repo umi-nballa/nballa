@@ -131,6 +131,29 @@ class OFACGatewayHelper {
     return null
   }
 
+  // Function to check against some known OFAC hits and retunr a Contact for a dummy check
+  public function returnHITContact(policyContacts: List<Contact>): Contact {
+    _logger.info(CLASS_NAME + ": Entering returnHITContact method")
+    var personList = retrievePersonContactList(policyContacts)
+   // var companyList = retrieveCompanyContactList(policyContacts)
+
+    //if (record.RecordDetails.EntityType == ResultEntityType.Individual) {
+    //add person contact to Map
+    //if (record.RecordDetails.Name.First != null && record.RecordDetails.Name.First !="" && record.RecordDetails.Name.Last != null) {
+    var person = personList?.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase("Rashid")
+        && elt.LastName.equalsIgnoreCase("AL-MAGHRIBI"))
+    if (person ==null)
+      person = personList?.firstWhere(\elt -> elt.FirstName.equalsIgnoreCase("Dawood")
+          && elt.LastName.equalsIgnoreCase("ibrahim"))
+    _logger.debug("Adding " + person.Name + " to the AlertList")
+    if (person != null)
+      return person
+    //}
+    //}
+    _logger.info(CLASS_NAME + ": Exiting returnHITContact method for known OFAC hits")
+    return null
+  }
+
   // Function is to get newly added Contact on Policy Period
   public function getNewlyAddedContactOnPolicyPeriod(policyPeriod: PolicyPeriod): List<Contact> {
     _logger.info(CLASS_NAME + ": Entering getNewlyAddedContactOnPolicyPeriod method")

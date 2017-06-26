@@ -7,6 +7,7 @@ uses una.integration.service.transport.ofac.OFACCommunicator
 uses una.logging.UnaLoggerCategory
 
 uses java.lang.Exception
+uses java.util.ArrayList
 
 /**
  * Created with IntelliJ IDEA.
@@ -65,6 +66,15 @@ class OFACGateway implements OFACInterface {
               ofacResponseMapper.mapOFACResponse(contactList, policyPeriod)
             }
           }
+        }
+      }else if(ScriptParameters.RunOFACCheck){
+        var ofacList = new ArrayList<Contact>()
+        var contact = ofacHelper.returnHITContact(policyContacts)
+        if (contact!=null)ofacList.add(contact)
+        if (ofacList.Count >= 1) {
+          policyPeriod.ofacdetails.isOFACOrdered = true
+          ofacResponseMapper.mapOFACResponse(ofacList, policyPeriod)
+
         }
       } else {
         _logger.warn("OFAC Check is skipped because the script parameter 'RunOFACCheck' is set to false.")

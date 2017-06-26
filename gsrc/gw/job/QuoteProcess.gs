@@ -68,7 +68,8 @@ class QuoteProcess {
    * @ratingStyle metadata passed on for use by the rating engine
    * @param warningsThrowException Do warnings throw validation exceptions
    */
-  function requestQuote(jobWizardHelper : JobWizardHelper, valLevel : ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean) {   JobProcessLogger.logInfo("Quote requested for branch " + _branch + "(Rating style: " + ratingStyle + ")")
+  function requestQuote(jobWizardHelper : JobWizardHelper, valLevel : ValidationLevel, ratingStyle : RatingStyle, warningsThrowException : boolean) {
+    JobProcessLogger.logInfo("Quote requested for branch " + _branch + "(Rating style: " + ratingStyle + ")")
 /*   // code for Clue Check for Ofac ,Uncomment once data Governance is approved
  if(_branch.HomeownersLine_HOE.ClueHit_Ext)     {*/
 //    if(_branch.NewSubmission){

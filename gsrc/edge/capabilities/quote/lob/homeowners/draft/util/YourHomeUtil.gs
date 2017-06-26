@@ -47,53 +47,55 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.HOLocation.FloodingHazard = dto.FloodingOrFireHazard
     data.DwellingUsage = dto.DwellingUsage
     data.Occupancy = dto.Occupancy
+    data.PolicyPeriod.CreditInfoExt.CreditReport.CreditStatus = dto.CreditStatus
+    data.PolicyPeriod.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext = dto.FirstTimeDeededHome_Ext
+    data.PolicyPeriod.HomeownersLine_HOE.ClueHit_Ext = dto.ClueHit_Ext
 
 
 
 
-
-    var pattern = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Dwelling_Cov_HOE")
-    //Added for portal GPA - Start
-    var patternStructures = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Other_Structures_HOE")
-    var patternProperty = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Personal_Property_HOE")
-    var patternLossOfUse = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Loss_Of_Use_HOE")
-    /*var pattern4 = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HOLI_Personal_Liability_HOE") - Not Required
-    var pattern5 = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HOLI_Med_Pay_HOE") - Not Required*/
-    var patternEFT = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_CC_EFT_HOE_Ext")
-    var patternFireDepartmentService = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_FireDepartmentService_HOE_Ext")
-    var patternHODebrisRemoval = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_HODebrisRemoval_HOE_Ext")
-    var patternLossAssessmentCov = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_LossAssessmentCov_HOE_Ext")
-    var patternTreesandPlans = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_TreesandPlans_HOE_Ext")
-    var patternHurricane = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_SectionI_Ded_HOE")
-   //Added for portal GPA -End
-
-    if (data.ReplacementCost != null) {
-      data.setCoverageConditionOrExclusionExists(pattern, true)
-      //Added for portal GPA -START
-      data.setCoverageConditionOrExclusionExists(patternStructures, true)
-      data.setCoverageConditionOrExclusionExists(patternProperty, true)
-      data.setCoverageConditionOrExclusionExists(patternLossOfUse, true)
-      data.setCoverageConditionOrExclusionExists(patternEFT, true)
-      data.setCoverageConditionOrExclusionExists(patternFireDepartmentService, true)
-      data.setCoverageConditionOrExclusionExists(patternHODebrisRemoval, true)
-      data.setCoverageConditionOrExclusionExists(patternLossAssessmentCov, true)
-      data.setCoverageConditionOrExclusionExists(patternTreesandPlans, true)
-      data.setCoverageConditionOrExclusionExists(patternHurricane, true)
-      //Added for portal GPA -End
-
-      if (data.HODW_Dwelling_Cov_HOE.HasHODW_Dwelling_Limit_HOETerm){
-        data.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.setValue(data.ReplacementCost)
-
-        data.PolicyPeriod.CreditInfoExt.CreditReport.CreditStatus = CreditStatusExt.TC_CREDIT_RECEIVED
-        data.PolicyPeriod.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext =true
-        data.PolicyPeriod.HomeownersLine_HOE.ClueHit_Ext = true
-        data.policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClasscode = dto.DwellingProtectionClasscode
-        data.policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.TerritoryCodeTunaReturned_Ext =dto.TerritoryCodeTunaReturned_Ext
-
-      }
-    } else {
-      data.setCoverageConditionOrExclusionExists(pattern, false)
-    }
+//    var pattern = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Dwelling_Cov_HOE")
+//    //Added for portal GPA - Start
+//    var patternStructures = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Other_Structures_HOE")
+//    var patternProperty = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Personal_Property_HOE")
+//    var patternLossOfUse = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Loss_Of_Use_HOE")
+//    /*var pattern4 = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HOLI_Personal_Liability_HOE") - Not Required
+//    var pattern5 = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HOLI_Med_Pay_HOE") - Not Required*/
+//    var patternEFT = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_CC_EFT_HOE_Ext")
+//    var patternFireDepartmentService = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_FireDepartmentService_HOE_Ext")
+//    var patternHODebrisRemoval = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_HODebrisRemoval_HOE_Ext")
+//    var patternLossAssessmentCov = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_LossAssessmentCov_HOE_Ext")
+//    var patternTreesandPlans = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_TreesandPlans_HOE_Ext")
+//    var patternHurricane = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_SectionI_Ded_HOE")
+//   //Added for portal GPA -End
+//
+//    if (data.ReplacementCost != null) {
+//      data.setCoverageConditionOrExclusionExists(pattern, true)
+//      //Added for portal GPA -START
+//      data.setCoverageConditionOrExclusionExists(patternStructures, true)
+//      data.setCoverageConditionOrExclusionExists(patternProperty, true)
+//      data.setCoverageConditionOrExclusionExists(patternLossOfUse, true)
+//      data.setCoverageConditionOrExclusionExists(patternEFT, true)
+//      data.setCoverageConditionOrExclusionExists(patternFireDepartmentService, true)
+//      data.setCoverageConditionOrExclusionExists(patternHODebrisRemoval, true)
+//      data.setCoverageConditionOrExclusionExists(patternLossAssessmentCov, true)
+//      data.setCoverageConditionOrExclusionExists(patternTreesandPlans, true)
+//      data.setCoverageConditionOrExclusionExists(patternHurricane, true)
+//      //Added for portal GPA -End
+//
+//      if (data.HODW_Dwelling_Cov_HOE.HasHODW_Dwelling_Limit_HOETerm){
+//        data.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.setValue(data.ReplacementCost)
+//
+//        data.PolicyPeriod.CreditInfoExt.CreditReport.CreditStatus = dto.CreditStatus
+//        data.PolicyPeriod.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext = dto.FirstTimeDeededHome_Ext
+//        data.PolicyPeriod.HomeownersLine_HOE.ClueHit_Ext = dto.ClueHit_Ext
+//        //data.policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClasscode = dto.DwellingProtectionClasscode
+//        //data.policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.TerritoryCodeTunaReturned_Ext =dto.TerritoryCodeTunaReturned_Ext.
+//
+//      }
+//    } else {
+//      data.setCoverageConditionOrExclusionExists(pattern, false)
+//    }
 
   }
 

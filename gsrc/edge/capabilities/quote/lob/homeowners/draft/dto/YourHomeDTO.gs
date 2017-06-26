@@ -15,7 +15,7 @@ class YourHomeDTO {
   var clueHit_Ext : boolean as ClueHit_Ext
 
   @JsonProperty @Required
-  var creditStatus : String as CreditStatus
+  var creditStatus : CreditStatusExt as CreditStatus
 
   @JsonProperty @Required
   var _distToFireHydrant : int as DistanceToFireHydrant

@@ -272,6 +272,7 @@ class QuoteHandler implements IRpcHandler  {
      * if quote fails.
      */
     var uwExceptionEncounteredFlag = false
+    var uwException: UnderwritingException = null
     Bundle.transaction(\ bundle -> {
       sub = bundle.add(sub)
       try{
@@ -280,6 +281,7 @@ class QuoteHandler implements IRpcHandler  {
       } catch(uwe : UnderwritingException) {
         //set flag for use later
         uwExceptionEncounteredFlag = true
+        uwException = uwe
         // if an Exception is thrown during quoting, we should withdraw all but one period
         final var base = QuoteUtil.getBasePeriod(sub)
         sub.SelectedVersion = base
@@ -294,7 +296,7 @@ class QuoteHandler implements IRpcHandler  {
 
     if(uwExceptionEncounteredFlag) {
       //send generic underwriting message back to the client
-      throw new UnderwritingException()
+      throw new UnderwritingException(uwException)
     }
 
     return toDTO(qdd.SessionUUID, sub)

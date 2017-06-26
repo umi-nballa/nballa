@@ -2,8 +2,11 @@ package edge.capabilities.quote.lob.homeowners.draft.util
 
 uses java.lang.UnsupportedOperationException
 uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
+uses edge.capabilities.quote.draft.dto.BaseTunaValueUtil
+uses gw.lang.reflect.IType
 
-final class YourHomeUtil {
+final class YourHomeUtil extends BaseTunaValueUtil {
+
   construct() {
     throw new UnsupportedOperationException("This is an utility class.")
   }
@@ -11,6 +14,9 @@ final class YourHomeUtil {
    * Fills Guidewire-provided properties on the dto.
    */
   public static function fillBaseProperties(dto : YourHomeDTO, data : Dwelling_HOE) {
+
+    mapTunaFields(data.HOLocation, dto, YourHomeDTO, TO)
+
     dto.DistanceToFireHydrant = data.HOLocation.DistanceToFireHydrant
     dto.DistanceToFireStation = data.HOLocation.DistanceToFireStation
     dto.DwellingLocation =   data.DwellingLocation
@@ -29,6 +35,10 @@ final class YourHomeUtil {
     if (dto == null) {
       return
     }
+
+    mapTunaFields(data.HOLocation, dto, YourHomeDTO, FROM)
+
+
     data.HOLocation.DistanceToFireHydrant = dto.DistanceToFireHydrant
     data.HOLocation.DistanceToFireStation = dto.DistanceToFireStation
     data.HOLocation.NearCommercial = dto.NearCommercial
@@ -86,5 +96,6 @@ final class YourHomeUtil {
     }
 
   }
+
 
 }

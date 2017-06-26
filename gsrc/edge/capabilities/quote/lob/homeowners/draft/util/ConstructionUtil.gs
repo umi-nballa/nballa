@@ -4,11 +4,15 @@ uses java.lang.UnsupportedOperationException
 uses edge.capabilities.quote.lob.homeowners.draft.dto.ConstructionDTO
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses gw.lang.reflect.IPropertyInfo
+uses edge.capabilities.quote.draft.dto.BaseTunaValueUtil
+uses gw.lang.reflect.IType
 
 /**
  * Utilities used to work with OOTB construction screen (building materials, wind class, etc...)
  */
-final class ConstructionUtil {
+final class ConstructionUtil extends BaseTunaValueUtil {
+
+
   construct() {
     throw new UnsupportedOperationException("This is an utility class.")
   }
@@ -18,7 +22,7 @@ final class ConstructionUtil {
    */
   public static function fillBaseProperties(dto : ConstructionDTO, data : Dwelling_HOE) {
 
-    mapTunaFields(data, dto, TO)
+    mapTunaFields(data, dto, ConstructionDTO, TO)
     mapFieldsWithAdditionalLogic(data, dto, TO)
 
     dto.DoorStrength = data.DoorStrength_Ext
@@ -121,7 +125,7 @@ final class ConstructionUtil {
       return
     }
 
-    mapTunaFields(data, dto, FROM)
+    mapTunaFields(data, dto, ConstructionDTO, FROM)
     mapFieldsWithAdditionalLogic(data, dto, FROM)
 
     data.DoorStrength_Ext = dto.DoorStrength
@@ -248,23 +252,6 @@ final class ConstructionUtil {
     data.beforeSavingDwellingConstructionPage()
   }
 
-  private static function mapTunaFields(data : Dwelling_HOE, dto : ConstructionDTO, direction: MapDTODirection) {
-    ConstructionDTO.TypeInfo.Properties.where( \ pInfo -> pInfo.FeatureType == TunaValueDTO.Type).each( \ propInfo -> mapTunaValue(data, dto, propInfo, direction))
-  }
-
-  private static function mapTunaValue(data : Dwelling_HOE, dto : ConstructionDTO, tunaDtoProp: IPropertyInfo, direction: MapDTODirection) {
-    if(MapDTODirection.FROM.equals(direction) && dto != null) {
-      var tunaDTO = tunaDtoProp.Accessor.getValue(dto) as TunaValueDTO
-      if(tunaDTO != null) {
-        tunaDTO.initialize(tunaDtoProp)
-        tunaDTO.setValuesOnEntity(data)
-      }
-    }  else {
-      var tunaDTO = new TunaValueDTO(tunaDtoProp)
-      tunaDTO.getValuesFromEntity(data)
-      tunaDtoProp.Accessor.setValue(dto, tunaDTO)
-    }
-  }
 
   private static function mapFieldsWithAdditionalLogic(data: Dwelling_HOE, dto: ConstructionDTO, direction: MapDTODirection) {
     mapConstructionType(data, dto, direction)
@@ -274,17 +261,14 @@ final class ConstructionUtil {
 
   private static function mapConstructionType(data : Dwelling_HOE, dto : ConstructionDTO, direction: MapDTODirection){
     if(MapDTODirection.FROM.equals(direction)) {
-      data.ConstructionType = dto.ConstructionType
-      if (dto.ConstructionType == typekey.ConstructionType_HOE.TC_OTHER) {
+      if (dto.ConstructionType.ValueOrOverrideValue == typekey.ConstructionType_HOE.TC_OTHER) {
         data.ConstructionTypeOther= dto.ConstructionTypeDescription
       }
-      data.ConstructionTypeL2_Ext = dto.ConstructionTypeFloor2
-      if (dto.ConstructionTypeFloor2 == typekey.ConstructionType_HOE.TC_OTHER) {
+
+      if (dto.ConstructionTypeFloor2.ValueOrOverrideValue == typekey.ConstructionType_HOE.TC_OTHER) {
         data.ConstructionTypeLevel2Other = dto.ConstructionTypeLevel2Description
       }
     } else {
-      dto.ConstructionType = data.ConstructionType
-      dto.ConstructionTypeFloor2 = data.ConstructionTypeL2_Ext
 
       if (data.ConstructionType == typekey.ConstructionType_HOE.TC_OTHER) {
         dto.ConstructionTypeDescription = data.ConstructionTypeOther
@@ -322,21 +306,17 @@ final class ConstructionUtil {
 
   private static function mapRoofType(data : Dwelling_HOE, dto : ConstructionDTO, direction: MapDTODirection){
     if(MapDTODirection.FROM.equals(direction) && dto.RoofType != null) {
-      data.RoofType = dto.RoofType
-      if (dto.RoofType == typekey.RoofType.TC_OTHER) {
+
+      if (dto.RoofType.ValueOrOverrideValue == typekey.RoofType.TC_OTHER) {
         data.RoofTypeDescription = dto.RoofTypeDescription
       }
     } else {
-      dto.RoofType = data.RoofType
       if (data.RoofType == typekey.RoofType.TC_OTHER) {
         dto.RoofTypeDescription = data.RoofTypeDescription
       }
     }
   }
 
-  private enum MapDTODirection {
-    TO(),
-    FROM()
-  }
+
 
 }

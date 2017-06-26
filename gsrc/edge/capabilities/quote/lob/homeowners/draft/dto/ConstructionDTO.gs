@@ -19,8 +19,8 @@ class ConstructionDTO {
   /** Type of the construction of this structure. */
   @JsonProperty
   @Required
-  //@TunaValue(Dwelling_HOE#ConstructionType, Dwelling_HOE#ConstructionTypeMatchLevel_Ext, Dwelling_HOE#OverrideConstructionType_Ext, Dwelling_HOE#ConstTypeOverridden_Ext)
-  var _constructionType: ConstructionType_HOE as ConstructionType
+  @TunaValue(Dwelling_HOE#ConstructionType, Dwelling_HOE#ConstructionTypeMatchLevel_Ext, Dwelling_HOE#OverrideConstructionType_Ext, Dwelling_HOE#ConstTypeOverridden_Ext)
+  var _constructionType: TunaValueDTO as ConstructionType
 
   @JsonProperty
   @DetailOf("ConstructionType.Value", ConstructionType_HOE.TC_OTHER)
@@ -28,11 +28,11 @@ class ConstructionDTO {
 
   /** Type of the construction of the second floor of this structure. */
   @JsonProperty
-  //@TunaValue(Dwelling_HOE#ConstructionTypeL2_Ext, Dwelling_HOE#ConstructionTypeMatchLvlL2_Ext, Dwelling_HOE#OverrideConstructionTypeL2_Ext, Dwelling_HOE#ConstTypeOverriddenL2_Ext)
-  var _constructionTypeFloor2: ConstructionType_HOE as ConstructionTypeFloor2
+  @TunaValue(Dwelling_HOE#ConstructionTypeL2_Ext, Dwelling_HOE#ConstructionTypeMatchLvlL2_Ext, Dwelling_HOE#OverrideConstructionTypeL2_Ext, Dwelling_HOE#ConstTypeOverriddenL2_Ext)
+  var _constructionTypeFloor2: TunaValueDTO as ConstructionTypeFloor2
 
   @JsonProperty
-  @DetailOf("ConstructionTypeFloor2", ConstructionType_HOE.TC_OTHER)
+  @DetailOf("ConstructionTypeFloor2.Value", ConstructionType_HOE.TC_OTHER)
   var _constructionTypeLevel2Description: String as ConstructionTypeLevel2Description
 
   @JsonProperty
@@ -213,8 +213,8 @@ class ConstructionDTO {
   @JsonProperty
   @Required
   //@FilterBy("HOSpecific")
-  //@TunaValue(Dwelling_HOE#RoofType, Dwelling_HOE#RoofTypeMatchLevel_Ext, Dwelling_HOE#OverrideRoofType_Ext, Dwelling_HOE#RoofingMaterialOverridden_Ext)
-  var _roofType: RoofType as RoofType
+  @TunaValue(Dwelling_HOE#RoofType, Dwelling_HOE#RoofTypeMatchLevel_Ext, Dwelling_HOE#OverrideRoofType_Ext, Dwelling_HOE#RoofingMaterialOverridden_Ext)
+  var _roofType: TunaValueDTO as RoofType
 
   @JsonProperty
   @DetailOf("RoofType", RoofType.TC_OTHER)
@@ -257,7 +257,7 @@ class ConstructionDTO {
 
   @JsonProperty
   @Required
-  //@TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext)
+  @TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext)
   var _windPool: Boolean as WindPool
 
   @JsonProperty

@@ -3,14 +3,11 @@ package edge.capabilities.quote.lob.homeowners.draft.dto
 uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
 uses edge.aspects.validation.annotations.TypeKeyIn
-uses edge.aspects.validation.annotations.Range
-uses edge.aspects.validation.annotations.Year
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
 
 class YourHomeDTO {
-
   @JsonProperty @Required
   var clueHit_Ext : boolean as ClueHit_Ext
 
@@ -63,5 +60,26 @@ class YourHomeDTO {
   @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext)
   var territoryCodeTunaReturned_Ext : TunaValueDTO as TerritoryCodeTunaReturned_Ext
 
+  //TODO tlv the below fields need to be mapped
+  @JsonProperty
+  private var _builderWarranty : Boolean as BuilderWarranty
 
+  @JsonProperty
+  private var _baseFloodElevationLevel : AbveBlwBaseFldElvtn_Ext as BaseFloodElevationLevel
+
+  @JsonProperty
+  private var _multiPolicyDiscount : Boolean as MultiPolicyDiscount
+
+  @JsonProperty
+  @DetailOf("MultiPolicyDiscount", true)
+  private var _firePolicyNumber : String as FirePolicyNumber
+
+  @JsonProperty
+  @DetailOf("MultiPolicyDiscount", true)
+  private var _floodPolicyNumber : String as FloodPolicyNumber
+
+  @JsonProperty
+  @DetailOf("MultiPolicyDiscount", true)
+  private var _homeownersPolicyNumber : String as HomeownersPolicyNumber
+  //TODO end fields that need to be mapped
 }

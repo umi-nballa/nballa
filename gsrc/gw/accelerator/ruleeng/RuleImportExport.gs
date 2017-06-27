@@ -12,6 +12,8 @@ uses java.io.File
 uses java.lang.StringBuilder
 uses java.util.Collection
 uses una.logging.UnaLoggerCategory
+uses org.apache.xmlgraphics.image.codec.util.PropertyUtil
+uses una.utils.PropertiesHolder
 
 /**
  * Class RuleImportExport manages importing and exporting Rule_Ext instances.
@@ -32,7 +34,8 @@ class RuleImportExport {
   @Returns("An import file, based on the permissions of the current user")
   static property get ImportFile() : File {
     if (perm.System.devruleadmin) {
-      return new File(RULE_FILE_LOCAL)
+      var path = PropertiesHolder.getProperty("RulesFilePath")?: RULE_FILE_LOCAL
+      return new File(path)
     }
     else {
       return new File(RULE_FILE_TMP)
@@ -73,14 +76,12 @@ class RuleImportExport {
 
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       // Retire all rules in the system to replace them with the imported file
-      _logger.info("Path is " + new File("").AbsolutePath)
-      _logger.info("Path is " + new File("").CanonicalPath)
-      _logger.info("RULE_FILE_LOCAL" +RULE_FILE_LOCAL)
+      _logger.info("RULE_FILE_LOCAL" +ImportFile.AbsolutePath)
       Query.make(Rule_Ext).select().each(
           \rule -> bundle.add(rule).remove())
       bundle.commit()
       //"./modules/configuration/config/resources/rulesframework/Rule_Ext.xml"
-      var rulesFile = new File(RULE_FILE_LOCAL)
+      var rulesFile = ImportFile//new File(RULE_FILE_LOCAL)
       var fullstr = rulesFile.read()
 
       var import = new ImportToolsAPI()

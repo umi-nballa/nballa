@@ -17,7 +17,7 @@ class CLUEReportOrderingPlugin extends ReportOrderingPlugin<ReportRequestDTO, CL
   @InjectableNode
   construct(){}
 
-  function orderReport(reportRequest : ReportRequestDTO) : CLUEReportResponseDTO{
+  override function orderReport(reportRequest : ReportRequestDTO) : CLUEReportResponseDTO{
     return super.orderReport(reportRequest)
   }
 

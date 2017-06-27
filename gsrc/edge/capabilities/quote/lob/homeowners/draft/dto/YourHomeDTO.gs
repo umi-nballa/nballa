@@ -5,7 +5,8 @@ uses edge.aspects.validation.annotations.Required
 uses edge.aspects.validation.annotations.TypeKeyIn
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
+uses java.lang.Integer
+uses java.util.Date
 
 class YourHomeDTO {
   @JsonProperty @Required
@@ -71,15 +72,88 @@ class YourHomeDTO {
   private var _multiPolicyDiscount : Boolean as MultiPolicyDiscount
 
   @JsonProperty
-  @DetailOf("MultiPolicyDiscount", true)
+  private var _insuredTenantDiscount : Boolean as InsuredTenantDiscount
+
+  @JsonProperty
+  private var _protectedSubdivision : Boolean as ProtectedSubdivision
+
+  @JsonProperty
+  private var _subdivisionName : typekey.SubdivisionName_Ext as SubdivisionName
+
+  @JsonProperty
   private var _firePolicyNumber : String as FirePolicyNumber
 
   @JsonProperty
-  @DetailOf("MultiPolicyDiscount", true)
   private var _floodPolicyNumber : String as FloodPolicyNumber
 
   @JsonProperty
-  @DetailOf("MultiPolicyDiscount", true)
   private var _homeownersPolicyNumber : String as HomeownersPolicyNumber
+
+  @JsonProperty
+  private var _unitsBetweenFirewalls : Integer as NumberOfUnitsBetweenFirewalls
+
+  @JsonProperty
+  private var _isDwellingEverRented : Boolean as IsRentedToOthers
+
+  @JsonProperty
+  private var _isNewPurchase : Boolean as IsNewPurchase
+
+  @JsonProperty
+  private var _purchaseDate : Date as PurchaseDate
+
+  @JsonProperty
+  private var _moveInDate : Date as MoveInDate
+
+  @JsonProperty
+  private var _priorResidenceType : typekey.PriorResidenceWas_Ext as PriorResidenceType
+
+  @JsonProperty
+  private var _isPostFirm : Boolean as IsPostFirm
+
+
+  //Flood Coverage-related fields
+  @JsonProperty
+  private var _priorFloodInsuranceProvider : PriorFloodInsProvider_Ext as PriorFloodInsuranceProvider
+
+  @JsonProperty
+  private var _priorFloodInsuranceExpirationDate : Date as PriorFloodInsuranceExpirationDate
+
+  @JsonProperty
+  private var _floodCoverageBasement : Boolean as HasBasementForFloodCoverage
+
+  @JsonProperty
+  private var _isLocatedOnBarrierIsland : Boolean as IsOnBarrierIsland
+
+  @JsonProperty
+  private var _isPropertyInNonNFIPCommunity : Boolean as IsPropertyInNonNFIPCommunity
+
+  @JsonProperty
+  private var _hasPropertyEverSustainedFloodDamage : Boolean as HasPropertyEverSustainedFloodDamage
+
+  @JsonProperty
+  private var _elevatedRiskCredit : Boolean as ElevatedRiskCredit
+
+  //Earthquake coverage-related fields
+  @JsonProperty
+  private var _hasPreExistingEarthquakeDamage : Boolean as HasPreExistingDamage_EQCoverage
+
+  @JsonProperty
+  private var _isBuiltOnSteepGrade_EQCoverage : Boolean as IsBuiltOnSteepGrade_EQCoverage
+
+  @JsonProperty
+  private var _isDwellingBolted_EQCoverage : Boolean as IsDwellingBolted_EQCoverage
+
+  @JsonProperty
+  private var _hasCrippleWalls_EQCoverage : Boolean as HasCrippleWalls_EQCoverage
+
+  @JsonProperty
+  private var _isHotWaterHeaterSecured : Boolean as IsHotWaterHeaterSecured_EQCoverage
+
+  @JsonProperty
+  private var _isMasonryChimneyStrapped : Masonrychimney_Ext as IsMasonryChimneyStrapped_EQCoverage
+
+  @JsonProperty
+  private var _construction_EQCoverage : EarthquakeConstrn_Ext as Construction_EQCoverage
+
   //TODO end fields that need to be mapped
 }

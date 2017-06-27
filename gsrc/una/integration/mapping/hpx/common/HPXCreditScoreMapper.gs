@@ -49,6 +49,12 @@ class HPXCreditScoreMapper {
     }
     creditScoreInfo.CreditResponseMessage = creditMsgs
 
+    var creditGeneralMsgs = new List<String>()
+    for(message in report.CreditGeneralMessage) {
+      creditMsgs.add(message.CreditStatusReasonDesc)
+    }
+    creditScoreInfo.CreditGeneralMessage = creditGeneralMsgs
+
     var creditSearchSubjectType = new wsi.schema.una.hpx.hpx_application_request.types.complex.ClueSearchSubjectType()
     creditSearchSubjectType.FirstName = report.SearchFirstName != null ? report.SearchFirstName : ""
     creditSearchSubjectType.LastName = report.SearchLastName != null ? report.SearchLastName : ""

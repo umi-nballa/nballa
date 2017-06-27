@@ -10,6 +10,6 @@ class HoMetadataPlugin implements ILobMetadataPlugin {
 
 
   override function getQuestionSetCodes(): String[] {
-    return { "HO_PreQual_Ext" }//"HOGAGenericPreQual_HOE" }
+    return { "HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
   }
 }

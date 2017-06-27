@@ -87,6 +87,7 @@ final class CoveragesUtil {
           result.OverallLengthTypeCode = scheduledWatercraft.overallLength.Code
           result.SpeedRatingTypeCode = scheduledWatercraft.speedRating.Code
           result.HorsePowerTypeCode = scheduledWatercraft.horsepower.Code
+          result.MotorDescription = scheduledWatercraft.MotorADesc
           break
     }
 

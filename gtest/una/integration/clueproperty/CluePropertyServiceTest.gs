@@ -107,7 +107,7 @@ class CluePropertyServiceTest extends UnaIntTestBase {
     Logger.info("Entering the test method 'testCluePropertyService'")
     var ex: Exception = null
     try {
-      clueproperty.orderClueProperty(policyPeriod)
+      clueproperty.orderClueProperty(policyPeriod, null)
     } catch (e: Exception) {
       ex = e;
       Logger.info("Error in LexisNexis CLUE webservice invocation")
@@ -124,7 +124,7 @@ class CluePropertyServiceTest extends UnaIntTestBase {
     Logger.info("Entering the test method 'testCluePropertyServiceFailure'")
     var ex: Exception = null
     try {
-      clueproperty.orderClueProperty(null)
+      clueproperty.orderClueProperty(null, null)
     } catch (e: Exception) {
       ex = e;
       Logger.info("Error in LexisNexis CLUE webservice invocation")

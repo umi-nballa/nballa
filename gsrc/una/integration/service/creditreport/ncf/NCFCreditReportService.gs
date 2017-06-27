@@ -64,6 +64,7 @@ class NCFCreditReportService implements ICreditReportService {
             var result = Result.parse(xmlResponse)
             var ncfReport = NcfReport.parse(getNCF(result).Report)
             var score = getOrderResponseScore(ncfReport)
+            var messages = getOrderResponseMessages(ncfReport)
             //var alertScoring = ncfReport.Report.AlertsScoring.Scoring
             var subject = ncfReport.Report.SearchDataset.Subjects.firstWhere(\ s -> s.Subject.Type == SearchDataset_Subjects_Subject_Type.Primary)
             var address = ncfReport.Report.SearchDataset.Addresses.Address.firstWhere(\ s -> s.Ref == "1")
@@ -131,6 +132,7 @@ class NCFCreditReportService implements ICreditReportService {
                 .withReportCode(ncfReport.Admin.ReportCode)
                 .withSpecialBillingID(ncfReport.Admin.SpecialBillingId)
                 .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
+                .withMessages(messages)
                 .create()
           }
         }
@@ -265,6 +267,21 @@ class NCFCreditReportService implements ICreditReportService {
       }
     }
   
+    return result
+  }
+
+  @Param("ncfReport", "Instance of NcfReport, taken from the response of the web service")
+  @Returns("List containing the vendor report messages")
+  private static function getOrderResponseMessages(ncfReport : NcfReport) : List<String> {
+
+    var result : List<String> = new List<String>()
+
+    if (ncfReport != null) {
+      foreach (item in ncfReport.Report.AlertsScoring.General) {
+          result.add(item)
+      }
+    }
+
     return result
   }
 

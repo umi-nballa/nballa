@@ -99,7 +99,6 @@ final class ConstructionUtil extends BaseTunaValueUtil {
     dto.Terrain = data.Terrain_Ext
     dto.UpstairsLaundrySurcharge = data.UpstairsLndrySurcharge_Ext
     dto.WindBorneDebrisRegion = data.WindBorneDebrisRegion_Ext
-    dto.WindPool = data.HOLocation.WindPool_Ext
     dto.WindSpeedOfDesign = data.WindSpeedOfDesign_Ext
     dto.WindStormHurricaneHailExclusion = data.WHurricaneHailExclusion_Ext
 
@@ -236,7 +235,6 @@ final class ConstructionUtil extends BaseTunaValueUtil {
     data.UpstairsLndrySurcharge_Ext = dto.UpstairsLaundrySurcharge
 
     data.WHurricaneHailExclusion_Ext = dto.WindStormHurricaneHailExclusion
-    data.HOLocation.WindPool_Ext = dto.WindPool
     data.WindBorneDebrisRegion_Ext = dto.WindBorneDebrisRegion
     data.WindMitigation_Ext = dto.HasWindMitForm
     data.WindSpeedOfDesign_Ext = dto.WindSpeedOfDesign

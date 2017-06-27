@@ -15,7 +15,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
    */
   public static function fillBaseProperties(dto : YourHomeDTO, data : Dwelling_HOE) {
 
-    mapTunaFields(data.HOLocation, dto, YourHomeDTO, TO)
+    mapTunaFields(data, dto, YourHomeDTO, TO)
 
     dto.DistanceToFireHydrant = data.HOLocation.DistanceToFireHydrant
     dto.DistanceToFireStation = data.HOLocation.DistanceToFireStation
@@ -36,7 +36,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
       return
     }
 
-    mapTunaFields(data.HOLocation, dto, YourHomeDTO, FROM)
+    mapTunaFields(data, dto, YourHomeDTO, FROM)
 
 
     data.HOLocation.DistanceToFireHydrant = dto.DistanceToFireHydrant

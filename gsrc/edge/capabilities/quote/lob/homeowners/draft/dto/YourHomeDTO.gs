@@ -27,7 +27,7 @@ class YourHomeDTO {
   var _dwellingLocation : typekey.DwellingLocationType_HOE as DwellingLocation
 
   @JsonProperty @Required
-  @TunaValue(HOLocation_HOE#DwellingProtectionClasscode, HOLocation_HOE#DwellingPCCodeMatchLevel_Ext, HOLocation_HOE#OverrideDwellingPCCode_Ext, HOLocation_HOE#DwellingPCCodeOverridden_Ext)
+  @TunaValue(HOLocation_HOE#DwellingProtectionClasscode, HOLocation_HOE#DwellingPCCodeMatchLevel_Ext, HOLocation_HOE#OverrideDwellingPCCode_Ext, HOLocation_HOE#DwellingPCCodeOverridden_Ext, Dwelling_HOE#HOLocation)
   var _dwellingProtectionClasscode : TunaValueDTO as DwellingProtectionClasscode
 
   @JsonProperty @Required
@@ -55,12 +55,12 @@ class YourHomeDTO {
   var _residenceType : typekey.ResidenceType_HOE as ResidenceType
 
   @JsonProperty @Required
-  @TunaValue(HOLocation_HOE#ResFireDept_Ext, HOLocation_HOE#ResFireDeptMatchLevel_Ext, HOLocation_HOE#OverrideResFireDept_Ext, HOLocation_HOE#ResFireDeptOverridden_Ext)
+  @TunaValue(HOLocation_HOE#ResFireDept_Ext, HOLocation_HOE#ResFireDeptMatchLevel_Ext, HOLocation_HOE#OverrideResFireDept_Ext, HOLocation_HOE#ResFireDeptOverridden_Ext, Dwelling_HOE#HOLocation)
   var _respondingFireDept : TunaValueDTO as RespondingFireDept
 
 
   @JsonProperty @Required
-  @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext)
+  @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext, Dwelling_HOE#HOLocation)
   var territoryCodeTunaReturned_Ext : TunaValueDTO as TerritoryCodeTunaReturned_Ext
 
 

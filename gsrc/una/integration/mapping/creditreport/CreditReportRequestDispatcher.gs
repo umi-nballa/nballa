@@ -136,6 +136,15 @@ class CreditReportRequestDispatcher extends PCValidationBase {
         })
      }
 
+    if(creditReportResponse.Messages <> null){
+      for(message in creditReportResponse.Messages) {
+        var creditMessage  = new CreditStatusReason(_policyPeriod)
+        creditMessage.CreditStatusReasonDesc = message
+        creditReportExt.addToCreditStatusReasons(creditMessage)
+      }
+    }
+
+
     creditReportExt.FirstName = creditReportResponse.FirstName
     creditReportExt.MiddleName = creditReportResponse.MiddleName
     creditReportExt.LastName = creditReportResponse.LastName

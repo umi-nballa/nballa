@@ -24,6 +24,7 @@ class TunaValue implements IAnnotation {
   var _matchLevelProp: PropertyReference as MatchLevelPropertyReference
   var _isOverriddenProp: PropertyReference as IsOverriddenPropertyReference
   var _overrideValueProp: PropertyReference as OverrideValuePropertyReference
+  var _childPropertyRef: PropertyReference as ChildPropertyReference
 
   /**
    *
@@ -37,6 +38,21 @@ class TunaValue implements IAnnotation {
     this._matchLevelProp = tunaMatchLvlPropertyReference
     this._isOverriddenProp = isOverriddenPropertyReference
     this._overrideValueProp = overriddenValuePropertyReference
+  }
+
+  /**
+   *
+   * @Param valuePropertyReference - The Field that the Tuna Value maps to.
+   * @Param tunaMatchLvlPropertyReference - The Field that the TunaMatchLevel maps to.
+   * @Param isOverriddenPropertyReference - The Field that the Tuna Value IsOverridden maps to.
+   * @Param overriddenValuePropertyReference - The Field that the Tuna Override value maps to.
+   */
+  construct(valuePropertyReference: PropertyReference, tunaMatchLvlPropertyReference: PropertyReference, isOverriddenPropertyReference: PropertyReference, overriddenValuePropertyReference: PropertyReference, childPropertyReference: PropertyReference) {
+    this._valueProp = valuePropertyReference
+    this._matchLevelProp = tunaMatchLvlPropertyReference
+    this._isOverriddenProp = isOverriddenPropertyReference
+    this._overrideValueProp = overriddenValuePropertyReference
+    this._childPropertyRef = childPropertyReference
   }
 
   property get ValueType() : IType {

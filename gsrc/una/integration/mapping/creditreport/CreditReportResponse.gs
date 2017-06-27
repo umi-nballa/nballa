@@ -36,6 +36,7 @@ class CreditReportResponse {
   // This may need to be persisted for post notification or reporting purposes to customers 
   // who have received adverse or substandard rates. This is usually state-driven.
   private var _reasons : Map<String, String> as Reasons =  new HashMap<String, String>()
+  private var _messages : List<String> as Messages =  new List<String>()
 
   // These fields are added so that we can persist them in CreditReportExt and 
   // it can be searched based on values of these fields before re ordering the credit report.
@@ -102,6 +103,7 @@ class CreditReportResponse {
     private var _statusCode : CreditStatusExt
     private var _statusDescription : String    
     private var _reasons : Map<String, String> = new HashMap<String, String>()
+    private var _messages : List<String> as Messages =  new List<String>()
     // Header fields from credit report
     private var _pncAccount : String
     private var _productReference : String
@@ -272,6 +274,21 @@ class CreditReportResponse {
       return this
     }
 
+    public function withMessage(messages : String) : Builder {
+
+      this._messages.add(messages)
+
+      return this
+    }
+
+    public function withMessages(messages : List<String>) : Builder {
+
+      if(messages != null) {
+        this._messages.addAll(messages)
+      }
+      return this
+    }
+
     public function withReferenceNumber(referenceNumber:String) : Builder {
 
       this._referenceNumber = referenceNumber
@@ -377,6 +394,7 @@ class CreditReportResponse {
     this.ReportCode = builder._reportCode
     this.SpecialBillingID = builder._specialBillingID
     this._reasons.putAll(builder._reasons)
+    this._messages.addAll(builder._messages)
     builder._reasons.clear()
     builder._reasons = null
 

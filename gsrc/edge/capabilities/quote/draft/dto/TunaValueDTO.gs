@@ -6,6 +6,11 @@ uses gw.entity.ITypeList
 uses gw.entity.TypeKey
 uses gw.lang.reflect.IPropertyInfo
 uses gw.lang.reflect.features.IPropertyReference
+uses gw.lang.reflect.features.PropertyReference
+uses java.lang.Exception
+uses gw.lang.reflect.TypeSystem
+uses java.lang.Class
+
 /**
  * Created with IntelliJ IDEA.
  * User: CMattox
@@ -16,7 +21,7 @@ uses gw.lang.reflect.features.IPropertyReference
 class TunaValueDTO {
 
   @JsonProperty
-  var _value : String as Value
+  var _value : Object as Value
 
   @JsonProperty
   var _tunaMatchLevel : TUNAMatchLevel_Ext as TunaMatchLevel
@@ -25,7 +30,7 @@ class TunaValueDTO {
   var _overridden : Boolean as Overridden
 
   @JsonProperty
-  var _overrideValue : String as OverrideValue
+  var _overrideValue : Object as OverrideValue
 
   var _annotation: TunaValue
 
@@ -87,20 +92,31 @@ class TunaValueDTO {
   function setValuesOnEntity(bean: KeyableBean) {
     if(bean != null){
       var annotation = getAnnotation()
-      annotation.ValuePropertyReference?.set(bean, this.TypeListValue != null ? this.TypeListValue : this._value)
-      annotation.MatchLevelPropertyReference?.set(bean, this._tunaMatchLevel)
-      annotation.IsOverriddenPropertyReference?.set(bean, this._overridden)
-      annotation.OverrideValuePropertyReference?.set(bean, this.TypeListOverrideValue != null ? this.TypeListOverrideValue : this._overrideValue)
+      setValue(bean, annotation.ValuePropertyReference, this.TypeListValue != null ? this.TypeListValue : this._value)
+      setValue(bean, annotation.MatchLevelPropertyReference, this._tunaMatchLevel)
+      setValue(bean, annotation.IsOverriddenPropertyReference, this._overridden)
+      setValue(bean, annotation.OverrideValuePropertyReference, this.TypeListOverrideValue != null ? this.TypeListOverrideValue : this._overrideValue)
     }
   }
 
   function getValuesFromEntity(bean: KeyableBean) {
     if(bean != null) {
       var annotation = getAnnotation()
-      _value = annotation.ValuePropertyReference.get(bean) as String
-      _tunaMatchLevel = annotation.MatchLevelPropertyReference?.get(bean) as TUNAMatchLevel_Ext
-      _overridden = (annotation.IsOverriddenPropertyReference?.get(bean) ?: false) as Boolean
-      _overrideValue = annotation.OverrideValuePropertyReference?.get(bean) as String
+
+      _value = getValue(bean, annotation.ValuePropertyReference) as String
+      _tunaMatchLevel = getValue(bean, annotation.MatchLevelPropertyReference) as TUNAMatchLevel_Ext
+      _overridden = getValue(bean, annotation.IsOverriddenPropertyReference) as Boolean
+      _overrideValue = getValue(bean, annotation.OverrideValuePropertyReference) as String
     }
+  }
+
+  private function setValue(bean: KeyableBean, propRef: PropertyReference, obj: Object) {
+    var childRef = getAnnotation().ChildPropertyReference
+    propRef?.set(childRef == null ? bean : childRef.get(bean), obj)
+  }
+
+  private function getValue(bean: KeyableBean, propRef: PropertyReference): Object {
+    var childRef = getAnnotation().ChildPropertyReference
+    return propRef?.get(childRef == null ? bean : childRef.get(bean))
   }
 }

@@ -28,7 +28,7 @@ class HPXGLPolicyMapper extends HPXPolicyMapper {
       exposure.Classification = exp.ClassCode.Classification
       exposure.ClassCode = exp.ClassCode
       exposure.PremiumExposure = exp.BasisAmount
-      exposure.PremiuumBasis = exp.ClassCode.Basis.Description
+      exposure.PremiumBasis = exp.ClassCode.Basis.Description
       exposure.CoverageDescription = getCostCoverage(exp.Costs.first()).DisplayName != null ? getCostCoverage(exp.Costs.first()).DisplayName : "Commercial General Liability"
       exposure.Premium = exp.Costs.sum(\ elt -> elt.ActualTermAmount)
       exposures.add(exposure)

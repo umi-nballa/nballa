@@ -586,14 +586,7 @@ class HODwellingUtil_HOE {
        if(dwelling.RoofDecking_Ext == null){dwelling.RoofDecking_Ext = typekey.RoofDecking_Ext.TC_OTHERROOFDECK}
        if(dwelling.OpeningProtection_Ext == null){ dwelling.OpeningProtection_Ext = typekey.OpeningProtection_Ext.TC_UNKNOWN}
        if(dwelling.InternalPressureDsgn_Ext == null){dwelling.InternalPressureDsgn_Ext = typekey.InternalPressureDsgn_Ext.TC_ENCLOSED}
-       //Defect De372 : set value based roof type
-       if(dwelling.SecondaryWaterResis_Ext == null){
-         if(dwelling.RoofType == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT || (dwelling.OverrideRoofType_Ext && dwelling.RoofingMaterialOverridden_Ext == typekey.RoofType.TC_REINFORCEDCONCRETE_EXT)){
-           dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_NOSWR
-         } else {
-           dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_UNKNOWN
-         }
-       }
+       if(dwelling.SecondaryWaterResis_Ext == null){dwelling.SecondaryWaterResis_Ext = typekey.SecondaryWaterResis_Ext.TC_NOSWR}
 
        // Set default value based on county
        if(result != null){

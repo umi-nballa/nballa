@@ -7,9 +7,7 @@ uses gw.entity.TypeKey
 uses gw.lang.reflect.IPropertyInfo
 uses gw.lang.reflect.features.IPropertyReference
 uses gw.lang.reflect.features.PropertyReference
-uses java.lang.Exception
-uses gw.lang.reflect.TypeSystem
-uses java.lang.Class
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +19,7 @@ uses java.lang.Class
 class TunaValueDTO {
 
   @JsonProperty
+  @DetailOf("Overridden", false)//Required if not overridden
   var _value : Object as Value
 
   @JsonProperty
@@ -30,6 +29,7 @@ class TunaValueDTO {
   var _overridden : Boolean as Overridden
 
   @JsonProperty
+  @DetailOf("Overridden")//Required if overridden
   var _overrideValue : Object as OverrideValue
 
   var _annotation: TunaValue
@@ -69,24 +69,12 @@ class TunaValueDTO {
     return getAnnotation().ValueType typeis ITypeList ? (getAnnotation().ValueType as ITypeList).getTypeKey(_overrideValue) : null
   }
 
-  property get ValueOrOverrideValue(): String {
+  property get ValueOrOverrideValue(): Object {
       return (this._overridden and this._overrideValue != null ? this._overrideValue : this._value)
   }
 
-  property get ValuePropertyName(): String {
-    return getAnnotation().ValuePropertyName
-  }
-
-  property get MatchLevelPropertyName(): String {
-    return getAnnotation().MatchLevelPropertyName
-  }
-
-  property get IsOverriddenPropertyName(): String {
-    return getAnnotation().IsOverriddenPropertyName
-  }
-
-  property get OverrideValuePropertyName(): String {
-    return getAnnotation().OverrideValuePropertyName
+  static function GetValueOrOverride(inst: TunaValueDTO): Object {
+    return inst.ValueOrOverrideValue
   }
 
   function setValuesOnEntity(bean: KeyableBean) {

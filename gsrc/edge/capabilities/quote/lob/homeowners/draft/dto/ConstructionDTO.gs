@@ -10,6 +10,7 @@ uses edge.capabilities.quote.lob.homeowners.draft.metadata.UpgradeYear
 uses edge.jsonmapper.JsonProperty
 
 uses java.lang.Integer
+uses edge.aspects.validation.annotations.Augment
 
 /**
  * Additional building details for the Construction page.
@@ -292,4 +293,8 @@ class ConstructionDTO {
   @Year
   @NotAFutureYear
   var _yearBuilt: int as YearBuilt
+//  @JsonProperty @Required
+//  @Augment({"Value","OverrideValue"}, {new Year(), new NotAFutureYear()})
+//  @TunaValue(Dwelling_HOE#YearBuilt, Dwelling_HOE#YearbuiltMatchLevel_Ext, Dwelling_HOE#OverrideYearbuilt_Ext, Dwelling_HOE#YearBuiltOverridden_Ext)
+//  var _yearBuilt : TunaValueDTO as YearBuilt
 }

@@ -7,13 +7,24 @@ uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
 uses java.lang.Integer
 uses java.util.Date
+uses java.lang.Integer
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
+uses edge.aspects.validation.annotations.Year
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
+uses edge.aspects.validation.annotations.Augment
+uses edge.aspects.validation.annotations.TypeKeyNotIn
 
 class YourHomeDTO {
+
   @JsonProperty @Required
   var clueHit_Ext : boolean as ClueHit_Ext
 
   @JsonProperty @Required
   var creditStatus : CreditStatusExt as CreditStatus
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#DistanceToCoast_Ext, HOLocation_HOE#DistToCoastMatchLevel_Ext, HOLocation_HOE#OverrideDistToCoast_Ext, HOLocation_HOE#DistToCoastOverridden_Ext)
+  var _distanceToCoast : TunaValueDTO as DistanceToCoast
 
   @JsonProperty @Required
   var _distToFireHydrant : int as DistanceToFireHydrant
@@ -37,6 +48,10 @@ class YourHomeDTO {
   @JsonProperty @Required
   var _floodingOrFireHazard : boolean as FloodingOrFireHazard
 
+  @JsonProperty
+  @TunaValue(Dwelling_HOE#PropFloodVal_Ext, Dwelling_HOE#PropFloodValMatchLevel_Ext, Dwelling_HOE#OverridePropFloodVal_Ext, Dwelling_HOE#PropFloodValOverridden_Ext)
+  var _floodZone : TunaValueDTO as FloodZone
+
   @JsonProperty @Required
   var _nearCommercial : boolean as NearCommercial
 
@@ -44,7 +59,7 @@ class YourHomeDTO {
   var _occupancy : typekey.DwellingOccupancyType_HOE  as Occupancy
 
   @JsonProperty @Required
-  @TypeKeyIn({
+  @TypeKeyNotIn({
       typekey.ResidenceType_HOE.TC_CONDO,  //fam1
       typekey.ResidenceType_HOE.TC_DIYCONSTRUCTION_EXT,  //fam2
       typekey.ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT, //townrow
@@ -56,10 +71,14 @@ class YourHomeDTO {
   @TunaValue(HOLocation_HOE#ResFireDept_Ext, HOLocation_HOE#ResFireDeptMatchLevel_Ext, HOLocation_HOE#OverrideResFireDept_Ext, HOLocation_HOE#ResFireDeptOverridden_Ext, Dwelling_HOE#HOLocation)
   var _respondingFireDept : TunaValueDTO as RespondingFireDept
 
+  @JsonProperty
+  @TunaValue(Dwelling_HOE#SquareFootage_Ext, Dwelling_HOE#TotalSqFtValMatchLevel_Ext, Dwelling_HOE#OverrideTotalSqFtVal_Ext, Dwelling_HOE#TotalSqFtValOverridden_Ext)
+  var _squareFootage : TunaValueDTO as SquareFootage
 
   @JsonProperty @Required
   @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext, Dwelling_HOE#HOLocation)
-  var territoryCodeTunaReturned_Ext : TunaValueDTO as TerritoryCodeTunaReturned_Ext
+  var _territoryCodeTunaReturned_Ext: TunaValueDTO as TerritoryCodeTunaReturned_Ext
+
 
   //TODO tlv the below fields need to be mapped
   @JsonProperty

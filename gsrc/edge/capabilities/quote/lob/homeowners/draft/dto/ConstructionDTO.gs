@@ -258,7 +258,7 @@ class ConstructionDTO {
 
   @JsonProperty
   @Required
-  @TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext, Dwelling_HOE#HOLocation)
+  @TunaValue(HOLocation_HOE#WindPool_Ext, HOLocation_HOE#WindPoolMatchLevel_Ext, HOLocation_HOE#OverrideWindPool_Ext, HOLocation_HOE#WindPoolOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _windPool: TunaValueDTO as WindPool
 
   @JsonProperty

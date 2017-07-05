@@ -7,7 +7,6 @@ uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
 uses java.lang.Integer
 uses java.util.Date
-uses java.lang.Integer
 uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
 uses edge.aspects.validation.annotations.Year
 uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
@@ -16,6 +15,18 @@ uses edge.aspects.validation.annotations.TypeKeyNotIn
 
 class YourHomeDTO {
 
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#ACVValue_Ext, HOLocation_HOE#ACVValueMatchLevel_Ext, HOLocation_HOE#OverrideACVValue_Ext, HOLocation_HOE#ACVValueOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _actualCashValue : TunaValueDTO as ActualCashValue
+
+  @JsonProperty
+  @TunaValue(Dwelling_HOE#BaseFloodElVal_Ext, Dwelling_HOE#BaseFloodElValMatchLevel_Ext, Dwelling_HOE#OverrideBaseFloodElVal_Ext, Dwelling_HOE#BaseFloodElValOverridden_Ext)
+  var _baseFloodElevation : TunaValueDTO as BaseFloodElevation
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#BCEG_Ext, HOLocation_HOE#BCEGMatchLevel_Ext, HOLocation_HOE#OverrideBCEG_Ext, HOLocation_HOE#BCEGOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _bcegGrade : TunaValueDTO as BCEGGrade
+
   @JsonProperty @Required
   var clueHit_Ext : boolean as ClueHit_Ext
 
@@ -23,8 +34,16 @@ class YourHomeDTO {
   var creditStatus : CreditStatusExt as CreditStatus
 
   @JsonProperty
-  @TunaValue(HOLocation_HOE#DistanceToCoast_Ext, HOLocation_HOE#DistToCoastMatchLevel_Ext, HOLocation_HOE#OverrideDistToCoast_Ext, HOLocation_HOE#DistToCoastOverridden_Ext)
+  @TunaValue(HOLocation_HOE#DistanceToCoast_Ext, HOLocation_HOE#DistToCoastMatchLevel_Ext, HOLocation_HOE#OverrideDistToCoast_Ext, HOLocation_HOE#DistToCoastOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _distanceToCoast : TunaValueDTO as DistanceToCoast
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#DistBOW_Ext, HOLocation_HOE#DistBOWMatchLevel_Ext, HOLocation_HOE#OverrideDistBOW_Ext, HOLocation_HOE#DistBOWOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _distanceToBOW : TunaValueDTO as DistanceToBodyOfWater
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#DistBOWNamedValue_Ext, HOLocation_HOE#DistBOWNVMatchLevel_Ext, HOLocation_HOE#OverrideDistBOWNamedValue_Ext, HOLocation_HOE#DistBOWNVOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _distanceToBOWNV : TunaValueDTO as DistanceToBodyOfWaterNamedValue
 
   @JsonProperty @Required
   var _distToFireHydrant : int as DistanceToFireHydrant
@@ -35,12 +54,44 @@ class YourHomeDTO {
   @JsonProperty @Required
   var _dwellingLocation : typekey.DwellingLocationType_HOE as DwellingLocation
 
-  @JsonProperty @Required
-  @TunaValue(HOLocation_HOE#DwellingProtectionClasscode, HOLocation_HOE#DwellingPCCodeMatchLevel_Ext, HOLocation_HOE#OverrideDwellingPCCode_Ext, HOLocation_HOE#DwellingPCCodeOverridden_Ext, Dwelling_HOE#HOLocation)
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#DwellingProtectionClasscode, HOLocation_HOE#DwellingPCCodeMatchLevel_Ext, HOLocation_HOE#OverrideDwellingPCCode_Ext, HOLocation_HOE#DwellingPCCodeOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _dwellingProtectionClasscode : TunaValueDTO as DwellingProtectionClasscode
 
   @JsonProperty @Required
   var _dwellingUseage :  typekey.DwellingUsage_HOE as DwellingUsage
+
+  @JsonProperty
+  @TunaValue(Dwelling_HOE#EarthQuakeTer_Ext, Dwelling_HOE#EarthquakeTerMatchLevel_Ext, Dwelling_HOE#OverrideEarthquakeTer_Ext, Dwelling_HOE#EarthquakeTerOverridden_Ext)
+  var _earthQuakeTerritory : TunaValueDTO as EarthQuakeTerritory
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#Fireaccess_Ext, HOLocation_HOE#FireaccessMatchLevel_Ext, HOLocation_HOE#OverrideFireaccess_Ext, HOLocation_HOE#FireaccessOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireAccess : TunaValueDTO as FireAccess
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#FirelineAdjHaz_Ext, HOLocation_HOE#FirelineAdjHazMatchLevel_Ext, HOLocation_HOE#OverrideFirelineAdjHaz_Ext, HOLocation_HOE#FirelineAdjHazOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireLineAdjHazardScore : TunaValueDTO as FireLineAdjHazardScore
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#FirelineFuel_Ext, HOLocation_HOE#FirelineFuelMatchLevel_Ext, HOLocation_HOE#OverrideFirelineFuel_Ext, HOLocation_HOE#FirelineFuelOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireLineFuel : TunaValueDTO as FireLineFuel
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#Firelinemthlvl_Ext, HOLocation_HOE#FirelinemthlvlMatchLevel_Ext, HOLocation_HOE#OverrideFirelnmthlevelval_Ext, HOLocation_HOE#FirelinemhlvlOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireLineMatch : TunaValueDTO as FireLineMatch
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#FirelineSHIA_Ext, HOLocation_HOE#FirelineSHIAMatchLevel_Ext, HOLocation_HOE#OverrideFirelineSHIA_Ext, HOLocation_HOE#FirelineSHIAOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireLineSHIA : TunaValueDTO as FireLineSHIA
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#FirelinePrHaz_Ext, HOLocation_HOE#FirelinePropHazMatchLevel_Ext, HOLocation_HOE#OverrideFirelinePropHaz_Ext, HOLocation_HOE#FirelinePropHazOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireLinePropHaz : TunaValueDTO as FireLinePropHaz
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#Fireslope_Ext, HOLocation_HOE#FireslopeMatchLevel_Ext, HOLocation_HOE#OverrideFireslope_Ext, HOLocation_HOE#FireslopeOverridden_Ext, {Dwelling_HOE#HOLocation})
+  var _fireSlope : TunaValueDTO as FireSlope
 
   @JsonProperty @Required
   var firstTimeDeededHome_Ext : boolean as FirstTimeDeededHome_Ext
@@ -51,6 +102,14 @@ class YourHomeDTO {
   @JsonProperty
   @TunaValue(Dwelling_HOE#PropFloodVal_Ext, Dwelling_HOE#PropFloodValMatchLevel_Ext, Dwelling_HOE#OverridePropFloodVal_Ext, Dwelling_HOE#PropFloodValOverridden_Ext)
   var _floodZone : TunaValueDTO as FloodZone
+
+  @JsonProperty
+  @TunaValue(PolicyLocation#Latitude_Ext, PolicyLocation#LatitudeMatchLevel_Ext, PolicyLocation#OverrideLatitude_Ext, PolicyLocation#LatitudeOverridden_Ext, {Dwelling_HOE#HOLocation, HOLocation_HOE#PolicyLocation})
+  var _locationLatitude : TunaValueDTO as LocationLatitude
+
+  @JsonProperty
+  @TunaValue(PolicyLocation#Longitude_Ext, PolicyLocation#LongitudeMatchLevel_Ext, PolicyLocation#OverrideLongitude_Ext, PolicyLocation#LongitudeOverridden_Ext, {Dwelling_HOE#HOLocation, HOLocation_HOE#PolicyLocation})
+  var _locationLongitude: TunaValueDTO as LocationLongitude
 
   @JsonProperty @Required
   var _nearCommercial : boolean as NearCommercial
@@ -68,7 +127,7 @@ class YourHomeDTO {
   var _residenceType : typekey.ResidenceType_HOE as ResidenceType
 
   @JsonProperty @Required
-  @TunaValue(HOLocation_HOE#ResFireDept_Ext, HOLocation_HOE#ResFireDeptMatchLevel_Ext, HOLocation_HOE#OverrideResFireDept_Ext, HOLocation_HOE#ResFireDeptOverridden_Ext, Dwelling_HOE#HOLocation)
+  @TunaValue(HOLocation_HOE#ResFireDept_Ext, HOLocation_HOE#ResFireDeptMatchLevel_Ext, HOLocation_HOE#OverrideResFireDept_Ext, HOLocation_HOE#ResFireDeptOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _respondingFireDept : TunaValueDTO as RespondingFireDept
 
   @JsonProperty
@@ -76,7 +135,7 @@ class YourHomeDTO {
   var _squareFootage : TunaValueDTO as SquareFootage
 
   @JsonProperty @Required
-  @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext, Dwelling_HOE#HOLocation)
+  @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _territoryCodeTunaReturned_Ext: TunaValueDTO as TerritoryCodeTunaReturned_Ext
 
 
@@ -125,6 +184,10 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _priorResidenceType : typekey.PriorResidenceWas_Ext as PriorResidenceType
+
+  @JsonProperty
+  @TunaValue(HOLocation_HOE#ISO360ValueID_Ext, HOLocation_HOE#ISO360MatchLevel_Ext, HOLocation_HOE#OverrideISO360_Ext, HOLocation_HOE#ISO360Overridden_Ext, {Dwelling_HOE#HOLocation})
+  private var _iso360ValueID : Boolean as ISO360ValueID
 
   @JsonProperty
   private var _isPostFirm : Boolean as IsPostFirm

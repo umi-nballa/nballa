@@ -200,7 +200,25 @@ class HPXRatingHelper {
     return factor.Factor as BigDecimal
   }
 
+  function getRatingFactorForGenericInput(policyPeriod : PolicyPeriod, table : String, jurisdictionState : String, input : List<Object>) : BigDecimal {
+    var minimumRatingLevel = typekey.RateBookStatus.TC_STAGE
+    var filter = new RateBookQueryFilter(policyPeriod.PeriodStart, policyPeriod.PeriodEnd, policyPeriod.HomeownersLine_HOE.PatternCode)
+        {: Jurisdiction = jurisdictionState,
+            : MinimumRatingLevel = minimumRatingLevel}
+    var factor = new RatingQueryFacade().getFactor(filter, table, input)
+    return factor.Factor as BigDecimal
+  }
+
   function getRatingFactors(policyPeriod : PolicyPeriod, table : String, jurisdictionState : String, input : List<int>) : Map<String, BigDecimal> {
+    var minimumRatingLevel = typekey.RateBookStatus.TC_STAGE
+    var filter = new RateBookQueryFilter(policyPeriod.PeriodStart, policyPeriod.PeriodEnd, policyPeriod.HomeownersLine_HOE.PatternCode)
+        {: Jurisdiction = jurisdictionState,
+            : MinimumRatingLevel = minimumRatingLevel}
+    var factors = new RatingQueryFacade().getAllFactors(filter, table, input)
+    return factors as Map<String, BigDecimal>
+  }
+
+  function getRatingFactorsForGenericInput(policyPeriod : PolicyPeriod, table : String, jurisdictionState : String, input : List<Object>) : Map<String, BigDecimal> {
     var minimumRatingLevel = typekey.RateBookStatus.TC_STAGE
     var filter = new RateBookQueryFilter(policyPeriod.PeriodStart, policyPeriod.PeriodEnd, policyPeriod.HomeownersLine_HOE.PatternCode)
         {: Jurisdiction = jurisdictionState,

@@ -185,6 +185,10 @@ class HPXCPPolicyMapper extends HPXPolicyMapper {
     return null
   }
 
+  override function getEstimatedBCEGDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    return null
+  }
+
   override function getEstimatedPremiums(policyPeriod : PolicyPeriod) : List<HPXEstimatedPremium> {
     return null
   }

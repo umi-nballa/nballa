@@ -26,6 +26,7 @@ uses java.math.BigDecimal
 uses una.integration.mapping.hpx.helper.HPXHurricaneLossMitigationHelper
 uses una.integration.mapping.hpx.common.HPXEstimatedPremium
 uses una.integration.mapping.hpx.helper.HPXEstimatedPremiumsRatingHelper
+uses una.integration.mapping.hpx.helper.HPXEstimatedBCEGRatingHelper
 
 /**
  * Created with IntelliJ IDEA.
@@ -96,6 +97,10 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var estimatedWindDiscounts = createEstimatedWindDiscounts(policyPeriod)
     for (discount in estimatedWindDiscounts) {
       dwellingLineBusiness.addChild(new XmlElement("EstimatedWindDiscount", discount))
+    }
+    var estimatedBCEGDiscounts = createEstimatedBCEGDiscounts(policyPeriod)
+    for (discount in estimatedBCEGDiscounts) {
+      dwellingLineBusiness.addChild(new XmlElement("EstimatedBCEGDiscount", discount))
     }
     var estimatedPremiums = createEstimatedPremiums(policyPeriod)
     for (estimatedPremium in estimatedPremiums) {
@@ -282,6 +287,14 @@ class HPXDwellingPolicyMapper extends HPXPolicyMapper {
     var jurisdictionState = policyPeriod.BaseState
     var hurricaneWindHelper = new HPXHurricaneLossMitigationHelper()
     estimatedDiscounts.addAll(hurricaneWindHelper.getEstimatedDiscounts(policyPeriod))
+    return estimatedDiscounts
+  }
+
+  override function getEstimatedBCEGDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount> {
+    var estimatedDiscounts = new ArrayList<HPXEstimatedDiscount>()
+    var jurisdictionState = policyPeriod.BaseState
+    var bcegHelper = new HPXEstimatedBCEGRatingHelper()
+    estimatedDiscounts.addAll(bcegHelper.getEstimatedDiscounts(policyPeriod))
     return estimatedDiscounts
   }
 

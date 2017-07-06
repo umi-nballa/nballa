@@ -21,6 +21,7 @@ class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDis
   var _claimFreeYears : NoClaimFreeYears_Ext as ClaimFreeYears
   var _totalContentsPremium : BigDecimal as TotalContentsPremium
   var _totalDwellingPremium : BigDecimal as TotalDwellingPremium
+  var _dwellingUsage : typekey.DwellingUsage_HOE as DwellingUsage
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)
@@ -34,5 +35,6 @@ class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDis
     _burglarAlarmReportPoliceStn = dwelling.DwellingProtectionDetails.BurglarAlarmReportPoliceStn
     _windPool = dwelling.HOLocation.OverrideWindPool_Ext? dwelling.HOLocation.WindPoolOverridden_Ext : dwelling.HOLocation.WindPool_Ext
     _claimFreeYears =  line?.Dwelling?.Branch?.ClaimFreeYear
+    _dwellingUsage = line.Dwelling.DwellingUsage
   }
 }

@@ -61,7 +61,6 @@ class YourHomeDTO {
   @TunaValue(HOLocation_HOE#TerritoryCodeTunaReturned_Ext, HOLocation_HOE#TerritoryCodeMatchLevel_Ext, HOLocation_HOE#OverrideTerritoryCode_Ext, HOLocation_HOE#TerritoryCodeOverridden_Ext, Dwelling_HOE#HOLocation)
   var territoryCodeTunaReturned_Ext : TunaValueDTO as TerritoryCodeTunaReturned_Ext
 
-  //TODO tlv the below fields need to be mapped
   @JsonProperty
   private var _builderWarranty : Boolean as BuilderWarranty
 
@@ -99,10 +98,13 @@ class YourHomeDTO {
   private var _isNewPurchase : Boolean as IsNewPurchase
 
   @JsonProperty
-  private var _purchaseDate : Date as PurchaseDate
+  private var _purchaseDateNew : Date as PurchaseDateNew
 
   @JsonProperty
-  private var _moveInDate : Date as MoveInDate
+  private var _purchaseDateOld : String as PurchaseDateOld
+
+  @JsonProperty
+  private var _moveInDate : String as MoveInDate
 
   @JsonProperty
   private var _priorResidenceType : typekey.PriorResidenceWas_Ext as PriorResidenceType
@@ -135,7 +137,7 @@ class YourHomeDTO {
 
   //Earthquake coverage-related fields
   @JsonProperty
-  private var _hasPreExistingEarthquakeDamage : Boolean as HasPreExistingDamage_EQCoverage
+  private var _hasPreExistingEarthquakeDamage : PreExstngEarthqukeDmg_Ext as HasPreExistingDamage_EQCoverage
 
   @JsonProperty
   private var _isBuiltOnSteepGrade_EQCoverage : Boolean as IsBuiltOnSteepGrade_EQCoverage
@@ -144,7 +146,7 @@ class YourHomeDTO {
   private var _isDwellingBolted_EQCoverage : Boolean as IsDwellingBolted_EQCoverage
 
   @JsonProperty
-  private var _hasCrippleWalls_EQCoverage : Boolean as HasCrippleWalls_EQCoverage
+  private var _hasCrippleWalls_EQCoverage : Cripplewalls_Ext as HasCrippleWalls_EQCoverage
 
   @JsonProperty
   private var _isHotWaterHeaterSecured : Boolean as IsHotWaterHeaterSecured_EQCoverage
@@ -155,5 +157,4 @@ class YourHomeDTO {
   @JsonProperty
   private var _construction_EQCoverage : EarthquakeConstrn_Ext as Construction_EQCoverage
 
-  //TODO end fields that need to be mapped
 }

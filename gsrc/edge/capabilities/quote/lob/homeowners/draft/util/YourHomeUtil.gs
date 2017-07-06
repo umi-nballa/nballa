@@ -3,7 +3,7 @@ package edge.capabilities.quote.lob.homeowners.draft.util
 uses java.lang.UnsupportedOperationException
 uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
 uses edge.capabilities.quote.draft.dto.BaseTunaValueUtil
-uses gw.lang.reflect.IType
+uses java.lang.Integer
 
 final class YourHomeUtil extends BaseTunaValueUtil {
 
@@ -25,6 +25,37 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.NearCommercial = data.HOLocation.NearCommercial
     dto.Occupancy = data.Occupancy
     dto.ResidenceType  = data.ResidenceType
+    dto.BuilderWarranty = data.BuilderWarranty_Ext
+    dto.BaseFloodElevationLevel = data.AbveBlwBaseFldElvtn_Ext
+    dto.MultiPolicyDiscount = data.HOLine.MultiPolicyDiscount_Ext
+    dto.InsuredTenantDiscount = data.InsuredTenantDiscount_Ext
+    dto.ProtectedSubdivision = data.HOLocation.ProtectedSubDivision_Ext
+    dto.SubdivisionName = data.HOLocation.SubdivisionName_Ext
+    dto.FirePolicyNumber = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE).PolicyNumber
+    dto.FloodPolicyNumber = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == typekey.TypeofPolicy_Ext.TC_FLOOD).PolicyNumber
+    dto.HomeownersPolicyNumber  = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == typekey.TypeofPolicy_Ext.TC_HOMEOWNER).PolicyNumber
+    dto.NumberOfUnitsBetweenFirewalls = Integer.valueOf(data.NumUnitsFireDivision_Ext)
+    dto.IsRentedToOthers = data.DwellingRentedEverToOthers_Ext
+    dto.IsNewPurchase = data.HomeNewPurchase_Ext
+    dto.PurchaseDateNew = data.HomePurchaseDate_Ext
+    dto.PurchaseDateOld = data.HomePurchaseMMYYYY_Ext
+    dto.MoveInDate = data.MoveInDate_Ext
+    dto.PriorResidenceType = data.PriorResidenceWas_Ext
+    dto.IsPostFirm = data.PostFIRM_Ext
+    dto.PriorFloodInsuranceProvider = data.PriorFloodInsProvider_Ext
+    dto.PriorFloodInsuranceExpirationDate = data.ExpirationDate
+    dto.HasBasementForFloodCoverage = data.BasementHome_Ext
+    dto.IsOnBarrierIsland = data.BarrierIsland_Ext
+    dto.IsPropertyInNonNFIPCommunity = data.PropertyLocatedIn_Ext
+    dto.HasPropertyEverSustainedFloodDamage = data.SustainedFloodDmge_Ext
+    dto.ElevatedRiskCredit = data.ElevatedRiskCredit_Ext
+    dto.HasPreExistingDamage_EQCoverage = data.PreExstngEarthqukeDmg_Ext
+    dto.IsBuiltOnSteepGrade_EQCoverage = data.Dwellingbuilt_Ext
+    dto.IsDwellingBolted_EQCoverage = data.Dwellingbolted_Ext
+    dto.HasCrippleWalls_EQCoverage = data.Cripplewalls_Ext
+    dto.IsHotWaterHeaterSecured_EQCoverage = data.BldngFrameHeater_Ext
+    dto.IsMasonryChimneyStrapped_EQCoverage = data.Masonrychimney_Ext
+    dto.Construction_EQCoverage = data.EarthquakeConstrn_Ext
   }
 
   /**
@@ -38,7 +69,6 @@ final class YourHomeUtil extends BaseTunaValueUtil {
 
     mapTunaFields(data, dto, YourHomeDTO, FROM)
 
-
     data.HOLocation.DistanceToFireHydrant = dto.DistanceToFireHydrant
     data.HOLocation.DistanceToFireStation = dto.DistanceToFireStation
     data.HOLocation.NearCommercial = dto.NearCommercial
@@ -50,54 +80,57 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.PolicyPeriod.CreditInfoExt.CreditReport.CreditStatus = dto.CreditStatus
     data.PolicyPeriod.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext = dto.FirstTimeDeededHome_Ext
     data.PolicyPeriod.HomeownersLine_HOE.ClueHit_Ext = dto.ClueHit_Ext
-
-
-
-
-//    var pattern = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Dwelling_Cov_HOE")
-//    //Added for portal GPA - Start
-//    var patternStructures = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Other_Structures_HOE")
-//    var patternProperty = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Personal_Property_HOE")
-//    var patternLossOfUse = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_Loss_Of_Use_HOE")
-//    /*var pattern4 = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HOLI_Personal_Liability_HOE") - Not Required
-//    var pattern5 = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HOLI_Med_Pay_HOE") - Not Required*/
-//    var patternEFT = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_CC_EFT_HOE_Ext")
-//    var patternFireDepartmentService = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_FireDepartmentService_HOE_Ext")
-//    var patternHODebrisRemoval = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_HODebrisRemoval_HOE_Ext")
-//    var patternLossAssessmentCov = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_LossAssessmentCov_HOE_Ext")
-//    var patternTreesandPlans = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_TreesandPlans_HOE_Ext")
-//    var patternHurricane = data.PolicyPeriod.HomeownersLine_HOE.Pattern.getCoveragePattern("HODW_SectionI_Ded_HOE")
-//   //Added for portal GPA -End
-//
-//    if (data.ReplacementCost != null) {
-//      data.setCoverageConditionOrExclusionExists(pattern, true)
-//      //Added for portal GPA -START
-//      data.setCoverageConditionOrExclusionExists(patternStructures, true)
-//      data.setCoverageConditionOrExclusionExists(patternProperty, true)
-//      data.setCoverageConditionOrExclusionExists(patternLossOfUse, true)
-//      data.setCoverageConditionOrExclusionExists(patternEFT, true)
-//      data.setCoverageConditionOrExclusionExists(patternFireDepartmentService, true)
-//      data.setCoverageConditionOrExclusionExists(patternHODebrisRemoval, true)
-//      data.setCoverageConditionOrExclusionExists(patternLossAssessmentCov, true)
-//      data.setCoverageConditionOrExclusionExists(patternTreesandPlans, true)
-//      data.setCoverageConditionOrExclusionExists(patternHurricane, true)
-//      //Added for portal GPA -End
-//
-//      if (data.HODW_Dwelling_Cov_HOE.HasHODW_Dwelling_Limit_HOETerm){
-//        data.HODW_Dwelling_Cov_HOE.HODW_Dwelling_Limit_HOETerm.setValue(data.ReplacementCost)
-//
-//        data.PolicyPeriod.CreditInfoExt.CreditReport.CreditStatus = dto.CreditStatus
-//        data.PolicyPeriod.HomeownersLine_HOE?.Dwelling.FirstTimeDeededHome_Ext = dto.FirstTimeDeededHome_Ext
-//        data.PolicyPeriod.HomeownersLine_HOE.ClueHit_Ext = dto.ClueHit_Ext
-//        //data.policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.DwellingProtectionClasscode = dto.DwellingProtectionClasscode
-//        //data.policyPeriod.HomeownersLine_HOE.Dwelling.HOLocation.TerritoryCodeTunaReturned_Ext =dto.TerritoryCodeTunaReturned_Ext.
-//
-//      }
-//    } else {
-//      data.setCoverageConditionOrExclusionExists(pattern, false)
-//    }
-
+    data.BuilderWarranty_Ext = dto.BuilderWarranty
+    data.AbveBlwBaseFldElvtn_Ext = dto.BaseFloodElevationLevel
+    data.HOLine.MultiPolicyDiscount_Ext = dto.MultiPolicyDiscount
+    data.InsuredTenantDiscount_Ext = dto.InsuredTenantDiscount
+    data.HOLocation.ProtectedSubDivision_Ext = dto.ProtectedSubdivision
+    data.HOLocation.SubdivisionName_Ext = dto.SubdivisionName
+    addOrRemovePolicyFromMultiDiscount(dto.FirePolicyNumber, data, typekey.TypeofPolicy_Ext.TC_DWELLINGFIRE)
+    addOrRemovePolicyFromMultiDiscount(dto.FloodPolicyNumber, data, typekey.TypeofPolicy_Ext.TC_FLOOD)
+    addOrRemovePolicyFromMultiDiscount(dto.HomeownersPolicyNumber, data, typekey.TypeofPolicy_Ext.TC_HOMEOWNER)
+    data.NumUnitsFireDivision_Ext = Integer.toString(dto.NumberOfUnitsBetweenFirewalls)
+    data.DwellingRentedEverToOthers_Ext = dto.IsRentedToOthers
+    data.HomeNewPurchase_Ext = dto.IsNewPurchase
+    data.HomePurchaseDate_Ext = dto.PurchaseDateNew
+    data.HomePurchaseMMYYYY_Ext = dto.PurchaseDateOld
+    data.MoveInDate_Ext = dto.MoveInDate
+    data.PriorResidenceWas_Ext = dto.PriorResidenceType
+    data.PostFIRM_Ext = dto.IsPostFirm
+    data.PriorFloodInsProvider_Ext = dto.PriorFloodInsuranceProvider
+    data.ExpirationDate = dto.PriorFloodInsuranceExpirationDate
+    data.BasementHome_Ext = dto.HasBasementForFloodCoverage
+    data.BarrierIsland_Ext = dto.IsOnBarrierIsland
+    data.PropertyLocatedIn_Ext = dto.IsPropertyInNonNFIPCommunity
+    data.SustainedFloodDmge_Ext = dto.HasPropertyEverSustainedFloodDamage
+    data.ElevatedRiskCredit_Ext = dto.ElevatedRiskCredit
+    data.PreExstngEarthqukeDmg_Ext = dto.HasPreExistingDamage_EQCoverage
+    data.Dwellingbuilt_Ext = dto.IsBuiltOnSteepGrade_EQCoverage
+    data.Dwellingbolted_Ext = dto.IsDwellingBolted_EQCoverage
+    data.Cripplewalls_Ext = dto.HasCrippleWalls_EQCoverage
+    data.BldngFrameHeater_Ext = dto.IsHotWaterHeaterSecured_EQCoverage
+    data.Masonrychimney_Ext = dto.IsMasonryChimneyStrapped_EQCoverage
+    data.EarthquakeConstrn_Ext = dto.Construction_EQCoverage
   }
 
+  private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){
+    var multiPolicyDiscount = data.PolicyPeriod.MultiPolicyDiscountPolicies_Ext.firstWhere( \ p -> p.PolicyType == policyType)
+    if(policyNumber != null && !policyNumber.Empty){
+      if(multiPolicyDiscount == null){
+        addPolicyNumberToMultiDiscount(policyNumber, data, policyType)
+      }
+      else if(!policyNumber.equals(multiPolicyDiscount.PolicyNumber)){
+        data.PolicyPeriod.removeFromMultiPolicyDiscountPolicies_Ext(multiPolicyDiscount)
+        addPolicyNumberToMultiDiscount(policyNumber, data, policyType)
+      }
+    }
+    else if((policyNumber == null || policyNumber.Empty) && multiPolicyDiscount != null){
+      data.PolicyPeriod.removeFromMultiPolicyDiscountPolicies_Ext(multiPolicyDiscount)
+    }
+  }
 
+  private static function addPolicyNumberToMultiDiscount(policyNumber : String, data : Dwelling_HOE,  policyType : typekey.TypeofPolicy_Ext){
+    var policyForDiscount = new MultiPolicyDiscPolicy_Ext(data.PolicyPeriod)
+    data.PolicyPeriod.addToMultiPolicyDiscountPolicies_Ext(policyForDiscount)
+  }
 }

@@ -6,6 +6,8 @@ uses edge.capabilities.address.dto.AddressDTO
 uses edge.capabilities.quote.questionset.dto.QuestionSetAnswersDTO
 uses edge.capabilities.quote.lob.dto.UnaLobDataDTO
 uses edge.capabilities.policy.coverages.UNACoverageDTO
+uses edge.capabilities.quote.draft.dto.AdditionalInsuredDTO
+uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
 
 /**
  * Homeowners extension for quote draft.
@@ -35,4 +37,10 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
 
   @JsonProperty
   var _excludePersonalProperty : Boolean as ExcludePersonalProperty
+
+  @JsonProperty
+  var _additionalInsureds : AdditionalInsuredDTO[] as AdditionalInsureds
+
+  @JsonProperty
+  var _additionalInterests : DwellingAdditionalInterestDTO[] as AdditionalInterests
 }

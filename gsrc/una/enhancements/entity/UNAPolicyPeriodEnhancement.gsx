@@ -54,6 +54,14 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
     return results
   }
 
+  public property get PolicyAdditionalInsureds() : List<PolicyAddlInsured>{
+    return this.PolicyContactRoles.whereTypeIs(PolicyAddlInsured)?.toList()
+  }
+
+  public property get DwellingAdditionalInterests() : List<entity.HODwellingAddlInt_HOE>{
+    return this.HomeownersLine_HOE.Dwelling.AdditionalInterests?.toList()
+  }
+
   @Param("questionCode", "A String code identifier for the question for which an answer is desired.")
   @Returns("")
   public function getAnswerForQuestionCode(questionCode : String) : PCAnswerDelegate{

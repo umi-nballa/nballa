@@ -119,4 +119,16 @@ class AccountContactDTO {
 
   @JsonProperty
   var _maritalStatus : typekey.MaritalStatus as MaritalStatus
+
+  public property get ContactType() : typekey.ContactType{
+    var result : ContactType
+
+    if(this.Subtype?.equalsIgnoreCase("Person")){
+      result = ContactType.TC_PERSON
+    }else if(this.Subtype?.equalsIgnoreCase("Company")){
+      result = ContactType.TC_COMPANY
+    }
+
+    return result
+  }
 }

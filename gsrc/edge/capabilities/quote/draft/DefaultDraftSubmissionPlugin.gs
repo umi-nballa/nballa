@@ -82,8 +82,6 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
       throw new DtoValidationException() { :Message="Policy address required for initial submission" }
     }
 
-    validateAddress(data.PolicyAddress)
-
     var existingAccount : Account = null;
 
     // If an account number was provided with the submission then the submission will be created using

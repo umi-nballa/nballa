@@ -4,7 +4,6 @@ uses edge.capabilities.policy.coverages.UNACoverageDTO
 uses edge.capabilities.policy.coverages.UNAScheduledItemDTO
 uses edge.capabilities.policy.coverages.UNACoverageTermDTO
 uses gw.api.domain.Clause
-uses java.lang.reflect.Array
 uses java.util.ArrayList
 
 /**

@@ -20,8 +20,9 @@ uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
 uses edge.capabilities.quote.draft.dto.AdditionalInsuredDTO
 uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
 uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
-uses edge.capabilities.quote.lob.homeowners.draft.util.EdgePolicyContactMapper
+uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
 uses java.lang.Integer
+uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
@@ -69,6 +70,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateCoverages(period, update)
     synchronizeConditionsAndExclusions(period, update)
     updateAdditionalInsureds(period, update)
+    updateAdditionalNamedInsureds(period, update)
     updateAdditionalInterests(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
   }
@@ -99,6 +101,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateCoverages(period, update)
     synchronizeConditionsAndExclusions(period, update)
     updateAdditionalInsureds(period, update)
+    updateAdditionalNamedInsureds(period, update)
     updateAdditionalInterests(period, update)
     updateRating(dwelling, update.Rating)
   }
@@ -269,11 +272,19 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   }
 
   private function updateAdditionalInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
-    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalInsuredDTO>(_accountContactPlugin).updateFrom(period, update.AdditionalInsureds?.toList())
+    //new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalInsureds?.toList())
   }
 
-  private function toAdditionalInsuredsDTO(period : PolicyPeriod) : AdditionalInsuredDTO[]{
-    return new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalInsuredDTO>(_accountContactPlugin).fillBaseProperties(period)
+  private function toAdditionalInsuredsDTO(period : PolicyPeriod) : AdditionalInsuredDTO []{
+    return null// new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalInsuredDTO >(_accountContactPlugin).fillBaseProperties(period)
+  }
+
+  private function updateAdditionalNamedInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalNamedInsureds.toList())
+  }
+
+  private function toAdditionalNamedInsuredsDTO(period : PolicyPeriod) : AdditionalNamedInsuredDTO []{
+    return new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).fillBaseProperties(period)
   }
 
   private function updateAdditionalInterests(period : PolicyPeriod, update : HoDraftDataExtensionDTO){

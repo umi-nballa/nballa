@@ -167,6 +167,10 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
          dwelling?.DPDW_Personal_Property_HOE?.DPDW_PropertyValuation_HOE_ExtTerm.Value == ValuationMethod.TC_PERSPROP_REPLCOST)
         rateReplacementCostOnPersonalProperty(dateRange)
 
+      if(PolicyLine.HODW_WindHurricaneHailExc_HOE_ExtExists){
+        rateWindstormHurricaneHailExclusion(dateRange)
+      }
+
     } else{
       if (dwelling?.DwellingUsage == typekey.DwellingUsage_HOE.TC_SEC){
         rateSeasonalOrSecondaryResidenceSurcharge(dateRange)
@@ -199,6 +203,23 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(!PolicyLine.AdditionalInsureds.IsEmpty)
       rateAdditionalInsuredCoverage(dateRange)
   }
+
+  /**
+   * Rate Wind/Hail Exclusion Credit
+   */
+  function rateWindstormHurricaneHailExclusion(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateWindHailExclusionCredit", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, _discountOrSurchargeRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.WIND_EXCLUSION_CREDIT_DWELLING, HOCostType_Ext.TC_WINDEXCLUSIONCREDITDWELLING,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("No rateWindHailExclusionCredit Rated Successfully", this.IntrinsicType)
+  }
+
 
   /**
    *  Function to rate the Age of Home Discount or Surcharge
@@ -467,7 +488,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalLiability to rate Personal Liability Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine)
-    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.PERSONAL_LIABILITY_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.DWELLING_FIRE_PREMISE_LIABILITY_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null and costData.ActualTermAmount != 0){
       addCost(costData)
     }

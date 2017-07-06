@@ -219,6 +219,17 @@ abstract class HPXPolicyMapper {
     for (policyForm in allPolicyForms) {
       policyInfo.addChild(new XmlElement("Form", policyForm))
     }
+    var uwDeclined = policyPeriod.UWIssuesActiveOnly.length
+    if (uwDeclined) {
+      var declinationReasons = createDeclinationReasons(policyPeriod)
+      var declinationReasonsCredit = createDeclinationReasonsCredit(policyPeriod)
+      if (declinationReasonsCredit != null) {
+        declinationReasons.addAll(createDeclinationReasonsCredit(policyPeriod))
+      }
+      for (reason in declinationReasons) {
+        policyInfo.addChild(new XmlElement("DeclinationInfo", reason))
+      }
+    }
     return policyInfo
   }
 
@@ -353,6 +364,7 @@ abstract class HPXPolicyMapper {
       discount.DiscountCd = getDiscountCostType(cost)
       discount.DiscountDescription = cost.DisplayName
       discount.DiscountAmount.Amt = cost.ActualTermAmount.Amount
+      discount.DiscountPercent.Amt = cost.ActualBaseRate != null ? cost.ActualBaseRate * 100 : 0
       discounts.add(discount)
     }
     return discounts
@@ -386,6 +398,21 @@ abstract class HPXPolicyMapper {
     return discounts
   }
 
+  function createEstimatedBCEGDiscounts(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType> {
+    var discounts = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType>()
+    var estimatedDiscounts = getEstimatedBCEGDiscounts(policyPeriod)
+    var windPremium = getHurricaneWindPremium(policyPeriod)
+    for (estimatedDiscount in estimatedDiscounts) {
+      var discount = new wsi.schema.una.hpx.hpx_application_request.types.complex.DiscountType()
+      discount.DiscountCd = estimatedDiscount.Code
+      discount.DiscountDescription = estimatedDiscount.Description
+      discount.DiscountPercent.Amt = estimatedDiscount.Percent
+      discount.DiscountAmount.Amt = windPremium != null ? estimatedDiscount.Percent * windPremium / 100 : 0
+      discounts.add(discount)
+    }
+    return discounts
+  }
+
   function createEstimatedPremiums(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.EstimatedPremiumType> {
     var estPremiums = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.EstimatedPremiumType>()
     var estimatedPremiums = getEstimatedPremiums(policyPeriod)
@@ -405,6 +432,52 @@ abstract class HPXPolicyMapper {
     var additionalInterestMapper = new HPXAdditionalInterestMapper()
     var additionalInterests = additionalInterestMapper.createAdditionalInterests(additionalInterestDetails, mapper, coverable)
     return additionalInterests
+  }
+
+
+ function createDeclinationReasons(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType> {
+   var declinationReasons : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType>
+   if (policyPeriod.Job typeis Submission) {
+     declinationReasons = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType>()
+      if ((policyPeriod.Job as Submission).RejectReason != null) {
+        var declination = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType()
+        declination.DeclinationReasonCategory =  "UserEntered"
+        declination.DeclinationReasonCd = (policyPeriod.Job as Submission).RejectReason
+        declination.DeclinationReasonDescription = (policyPeriod.Job as Submission).RejectReasonText
+        declinationReasons.add(declination)
+      }
+     // UW Issues
+     var uwIssues = policyPeriod.UWIssuesActiveOnly
+     for (issue in uwIssues) {
+       var uwReason = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType()
+       uwReason.DeclinationReasonCategory =  "UWReason"
+       uwReason.DeclinationReasonCd = issue.IssueType.Code
+       uwReason.DeclinationReasonDescription = issue.DisplayName
+       declinationReasons.add(uwReason)
+     }
+   }
+   return declinationReasons
+ }
+
+  function createDeclinationReasonsCredit(policyPeriod : PolicyPeriod) : java.util.List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType> {
+    var declinationReasons : List<wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType>
+    var creditReportsInsured = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyPriNamedInsured).CreditReportsExt
+    var creditReportsAdditionalNamedInsured = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured).CreditReportsExt
+    var creditReportsAdditionalInsured = policyPeriod.PolicyContactRoles.whereTypeIs(PolicyAddlInsured).CreditReportsExt
+    var creditReasons = creditReportsInsured.CreditStatusReasons.toList()
+    creditReasons.addAll(creditReportsAdditionalNamedInsured.CreditStatusReasons.toList())
+    creditReasons.addAll(creditReportsAdditionalInsured.CreditStatusReasons.toList())
+    if (!creditReasons.Empty) {
+      declinationReasons = new java.util.ArrayList<wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType>()
+      for (reason in creditReasons.where( \ elt -> elt.CreditStatusReasonCode != null)) {
+        var declination = new wsi.schema.una.hpx.hpx_application_request.types.complex.DeclinationInfoType()
+        declination.DeclinationReasonCategory =  "CreditStatus"
+        declination.DeclinationReasonCd = reason.CreditStatusReasonCode
+        declination.DeclinationReasonDescription = reason.CreditStatusReasonDesc
+        declinationReasons.add(declination)
+      }
+    }
+    return declinationReasons
   }
 
   abstract function getCoverages(policyPeriod : PolicyPeriod) : java.util.List<Coverage>
@@ -464,6 +537,8 @@ abstract class HPXPolicyMapper {
   abstract function getDiscountCostTypes() : String[]
 
   abstract function getEstimatedInsScoreDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
+
+  abstract function getEstimatedBCEGDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
 
   abstract function getEstimatedWindDiscounts(policyPeriod : PolicyPeriod) : List<HPXEstimatedDiscount>
 

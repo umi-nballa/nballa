@@ -101,6 +101,10 @@ final class ValidationFunctions {
     return values.contains(key);
   }
 
+  public static function typekeyNotIn(key : TypeKey, values : TypeKey[]) : boolean {
+    return !values.contains(key);
+  }
+
   public static function isEmpty(str:String):boolean {
     return !str.HasContent
   }

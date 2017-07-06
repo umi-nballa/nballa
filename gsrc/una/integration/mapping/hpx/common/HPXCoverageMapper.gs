@@ -234,6 +234,7 @@ abstract class HPXCoverageMapper {
     limit.CoverageSubCd = currentCovTerm.PatternCode
     limit.LimitDesc = ""
     limit.WrittenAmt.Amt = 0
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
     return limit
   }
 

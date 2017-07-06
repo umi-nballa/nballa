@@ -19,6 +19,8 @@ class HODiscountsOrSurchargesRatingInfo extends una.rating.ho.common.HOCommonDis
   var _burglarAlarmReportPoliceStn : boolean as BurglarAlarmReportPoliceStn
   var _windPool : boolean as WindPool
   var _claimFreeYears : NoClaimFreeYears_Ext as ClaimFreeYears
+  var _totalContentsPremium : BigDecimal as TotalContentsPremium
+  var _totalDwellingPremium : BigDecimal as TotalDwellingPremium
 
   construct(line: HomeownersLine_HOE, totalBasePremium: BigDecimal) {
     super(line, totalBasePremium)

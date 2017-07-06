@@ -19,7 +19,7 @@
     <CascadedLookup>true</CascadedLookup>
     <EffectiveDate>2000-06-15 00:00:00.000</EffectiveDate>
     <ExpirationDate/>
-    <LastStatusChangeDate>2017-07-06 09:02:42.008</LastStatusChangeDate>
+    <LastStatusChangeDate>2017-07-06 11:35:57.769</LastStatusChangeDate>
     <LastTableRowEdit>2017-04-25 10:26:38.923</LastTableRowEdit>
     <PolicyLine>HomeownersLine_HOE</PolicyLine>
     <RateBookCalcRoutines>
@@ -197,6 +197,10 @@
       </RateBookCalcRoutine>
       <RateBookCalcRoutine public-id="pcss:11902">
         <CalcRoutineDefinition public-id="pcdb:22003"/>
+        <RateBook public-id="pc:301"/>
+      </RateBookCalcRoutine>
+      <RateBookCalcRoutine public-id="pcss:11903">
+        <CalcRoutineDefinition public-id="pcss:7201"/>
         <RateBook public-id="pc:301"/>
       </RateBookCalcRoutine>
     </RateBookCalcRoutines>
@@ -87773,6 +87777,178 @@
     </Steps>
     <Version>1</Version>
   </CalcRoutineDefinition>
+  <CalcRoutineDefinition public-id="pcss:7201">
+    <Code>UNAHODPPremiseLiabilityRateRoutine</Code>
+    <Description/>
+    <Description_L10N_ARRAY/>
+    <Jurisdiction>TX</Jurisdiction>
+    <Name>HO DP Premise Liability</Name>
+    <Name_L10N_ARRAY/>
+    <ParameterSet public-id="pc:401"/>
+    <PolicyLinePatternCode>HomeownersLine_HOE</PolicyLinePatternCode>
+    <Steps>
+      <CalcStepDefinition public-id="pcss:29359">
+        <CalcRoutineDefinition public-id="pcss:7201"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>AdjustedRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35069">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcss:29359"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>BaseRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>2</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcss:29360">
+        <CalcRoutineDefinition public-id="pcss:7201"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>TermAmount</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35070">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcss:29360"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>costdata</InScopeParam>
+            <InScopeValue>AdjustedRate</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.math.BigDecimal</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>3</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcss:29361">
+        <CalcRoutineDefinition public-id="pcss:7201"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>BaseRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35071">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pcss:11914">
+                <ConstantValue>"Coverage D"</ConstantValue>
+                <CovTermCode/>
+                <InScopeParam/>
+                <InScopeValue/>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>java.lang.String</InScopeValueType>
+                <Operand public-id="pcss:35071"/>
+                <OperandType>constant</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>coverage</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+              <CalcStepDefinitionArgument public-id="pcss:11915">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+                <InScopeValue>PremiseLiabilityLimit</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pcss:35071"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>limit</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+              <CalcStepDefinitionArgument public-id="pcss:11916">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+                <InScopeValue>NumberOfFamilies</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pcss:35071"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>numberOfFamilies</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pcss:29361"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.Integer</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pcss:10408">
+                <ColumnName>factor</ColumnName>
+                <Operand public-id="pcss:35071"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>dp_base_premium_computation_tx</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+    </Steps>
+    <Version>1</Version>
+  </CalcRoutineDefinition>
   <CalcRoutineDefinition public-id="pcdb:21501">
     <Code>UNAHODwellingFireBasePremiumRateRoutine</Code>
     <Description>HO Dwelling Fire Base Premium Rate Routine</Description>
@@ -99216,7 +99392,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>1</SortOrder>
+        <SortOrder>4</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -99252,7 +99428,7 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>2</SortOrder>
+        <SortOrder>6</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
@@ -99288,10 +99464,205 @@
           </CalcStepDefinitionOperand>
         </Operands>
         <SectionComment/>
-        <SortOrder>3</SortOrder>
+        <SortOrder>7</SortOrder>
         <StepType>assignment</StepType>
         <StoreLocation/>
         <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcss:29355">
+        <CalcRoutineDefinition public-id="pc:101"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35065">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcss:29355"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+            <InScopeValue>DPPolicy</InScopeValue>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>boolean</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>inscope</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>1</SortOrder>
+        <StepType>if</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcss:29356">
+        <CalcRoutineDefinition public-id="pc:101"/>
+        <InScopeParam>costdata</InScopeParam>
+        <InScopeValue>BaseRate</InScopeValue>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35066">
+            <ArgumentSourceSetCode>DEFAULT</ArgumentSourceSetCode>
+            <ArgumentSources>
+              <CalcStepDefinitionArgument public-id="pcss:11910">
+                <ConstantValue>"Coverage C"</ConstantValue>
+                <CovTermCode/>
+                <InScopeParam/>
+                <InScopeValue/>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>java.lang.String</InScopeValueType>
+                <Operand public-id="pcss:35066"/>
+                <OperandType>constant</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>coverage</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+              <CalcStepDefinitionArgument public-id="pcss:11911">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+                <InScopeValue>DPMedPayLimit</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pcss:35066"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>limit</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+              <CalcStepDefinitionArgument public-id="pcss:11912">
+                <ConstantValue/>
+                <CovTermCode/>
+                <InScopeParam>lineRatingInfo_Ext</InScopeParam>
+                <InScopeValue>NumberOfFamilies</InScopeValue>
+                <InScopeValueIsModifier>false</InScopeValueIsModifier>
+                <InScopeValueType>int</InScopeValueType>
+                <Operand public-id="pcss:35066"/>
+                <OperandType>inscope</OperandType>
+                <OverrideSource>true</OverrideSource>
+                <Parameter>numberOfFamilies</Parameter>
+                <ParameterType/>
+                <VariableFieldName/>
+                <VariableName/>
+              </CalcStepDefinitionArgument>
+            </ArgumentSources>
+            <CalcStep public-id="pcss:29356"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType>java.lang.Integer</InScopeValueType>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>ratetable</OperandType>
+            <OperatorType>store</OperatorType>
+            <ReturnFactorColumns>
+              <CalcStepDefinitionRateFactor public-id="pcss:10406">
+                <ColumnName>factor</ColumnName>
+                <Operand public-id="pcss:35066"/>
+              </CalcStepDefinitionRateFactor>
+            </ReturnFactorColumns>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode>dp_base_premium_computation_tx</TableCode>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>2</SortOrder>
+        <StepType>assignment</StepType>
+        <StoreLocation/>
+        <StoreType>java.math.BigDecimal</StoreType>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcss:29357">
+        <CalcRoutineDefinition public-id="pc:101"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35067">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcss:29357"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>3</SortOrder>
+        <StepType>else</StepType>
+        <StoreLocation/>
+        <StoreType/>
+      </CalcStepDefinition>
+      <CalcStepDefinition public-id="pcss:29358">
+        <CalcRoutineDefinition public-id="pc:101"/>
+        <InScopeParam/>
+        <InScopeValue/>
+        <Notes/>
+        <Operands>
+          <CalcStepDefinitionOperand public-id="pcss:35068">
+            <ArgumentSourceSetCode/>
+            <ArgumentSources/>
+            <CalcStep public-id="pcss:29358"/>
+            <ConstantValue/>
+            <CovTermCode/>
+            <FunctionName/>
+            <InScopeParam/>
+            <InScopeValue/>
+            <InScopeValueIsModifier>false</InScopeValueIsModifier>
+            <InScopeValueType/>
+            <LeftParenthesisGroup/>
+            <LogicalNot/>
+            <OperandOrder>0</OperandOrder>
+            <OperandType>constant</OperandType>
+            <OperatorType/>
+            <ReturnFactorColumns/>
+            <RightParenthesisGroup/>
+            <RoundingScaleType/>
+            <TableCode/>
+            <VariableFieldName/>
+            <VariableName/>
+          </CalcStepDefinitionOperand>
+        </Operands>
+        <SectionComment/>
+        <SortOrder>5</SortOrder>
+        <StepType>endif</StepType>
+        <StoreLocation/>
+        <StoreType/>
       </CalcStepDefinition>
     </Steps>
     <Version>1</Version>

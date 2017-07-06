@@ -25,6 +25,7 @@ public final class HORateRoutineNames {
 
   public static final var MEDICAL_PAYMENTS_ROUTINE_NAME : String = "UNAHOMedicalPaymentsRateRoutine"
   public static final var PERSONAL_LIABILITY_ROUTINE_NAME : String = "UNAHOPersonalLiabilityRateRoutine"
+  public static final var DWELLING_FIRE_PREMISE_LIABILITY_ROUTINE_NAME : String =  "UNAHODPPremiseLiabilityRateRoutine"
   public static final var RESIDENTIAL_GLASS_COV_ROUTINE_NAME : String = "UNAHOResidentialGlassCovRateRoutine"
   public static final var LOSS_ASSESSMENT_COVERAGE_RATE_ROUTINE : String = "UNAHOLossAssessmentCovRateRoutine"
   public static final var MOLD_REMEDIATION_COV_ROUTINE_NAME : String = "UNAHOMoldRemediationCovRateRoutine"

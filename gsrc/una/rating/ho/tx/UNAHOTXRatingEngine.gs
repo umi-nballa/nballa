@@ -71,6 +71,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   override function rateLineCoverages(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
     switch (typeof lineCov) {
       case HOLI_Med_Pay_HOE:
+      case DPLI_Med_Pay_HOE:
           rateMedicalPayments(lineCov, dateRange)
           break
       case HOLI_Personal_Liability_HOE:
@@ -90,6 +91,9 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
           break
       case HOSL_WatercraftLiabilityCov_HOE_Ext:
           rateWatercraftLiabilityCoverage(lineCov, dateRange)
+          break
+      case DPLI_Premise_Liability_HOE_Ext:
+          rateDPPremiseLiabilityCoverage(lineCov, dateRange)
           break
     }
   }
@@ -432,7 +436,7 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
   /**
    * Rate the medical payments coverage
    */
-  function rateMedicalPayments(lineCov: HOLI_Med_Pay_HOE, dateRange: DateRange) {
+  function rateMedicalPayments(lineCov: HomeownersLineCov_HOE, dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateMedicalPayments to rate Medical Payments Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine)
@@ -448,6 +452,18 @@ class UNAHOTXRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
    *  Rate the personal liability coverage
    */
   function ratePersonalLiability(lineCov: HOLI_Personal_Liability_HOE, dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalLiability to rate Personal Liability Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine)
+    var costData = HOCreateCostDataUtil.createCostDataForLineCoverages(lineCov, dateRange, HORateRoutineNames.PERSONAL_LIABILITY_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null and costData.ActualTermAmount != 0){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("Personal Liability Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+  function rateDPPremiseLiabilityCoverage(lineCov: DPLI_Premise_Liability_HOE_Ext, dateRange: DateRange) {
     if(_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: ratePersonalLiability to rate Personal Liability Coverage", this.IntrinsicType)
     var rateRoutineParameterMap = getLineCovParameterSet(PolicyLine)

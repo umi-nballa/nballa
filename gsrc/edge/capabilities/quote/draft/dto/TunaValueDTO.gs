@@ -7,9 +7,8 @@ uses gw.entity.TypeKey
 uses gw.lang.reflect.IPropertyInfo
 uses gw.lang.reflect.features.IPropertyReference
 uses gw.lang.reflect.features.PropertyReference
-uses java.lang.Exception
-uses gw.lang.reflect.TypeSystem
-uses java.lang.Class
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
+uses gw.lang.reflect.IType
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,6 +20,7 @@ uses java.lang.Class
 class TunaValueDTO {
 
   @JsonProperty
+  @DetailOf("Overridden", false)//Required if not overridden
   var _value : Object as Value
 
   @JsonProperty
@@ -30,6 +30,7 @@ class TunaValueDTO {
   var _overridden : Boolean as Overridden
 
   @JsonProperty
+  @DetailOf("Overridden")//Required if overridden
   var _overrideValue : Object as OverrideValue
 
   var _annotation: TunaValue
@@ -49,10 +50,6 @@ class TunaValueDTO {
     getAnnotation()
   }
 
-  public function initialize(propRef: IPropertyReference) {
-    initialize(propRef.PropertyInfo)
-  }
-
   private function getAnnotation(): TunaValue {
     if(_annotation == null) {
       _annotation = _propInfo != null ? _propInfo.getAnnotation(TunaValue)?.Instance as TunaValue
@@ -61,33 +58,26 @@ class TunaValueDTO {
     return _annotation
   }
 
+  private function getTypeKey(typeCode: String): TypeKey {
+    var featType = getAnnotation().ValuePropertyReference.PropertyInfo.FeatureType
+    return featType typeis ITypeList ? (featType as ITypeList).getTypeKey(_value) : null
+  }
+
   property get TypeListValue(): TypeKey {
-    return getAnnotation().ValueType typeis ITypeList ? (getAnnotation().ValueType as ITypeList).getTypeKey(_value) : null
+    return getTypeKey(_value)
   }
 
   property get TypeListOverrideValue(): TypeKey {
-    return getAnnotation().ValueType typeis ITypeList ? (getAnnotation().ValueType as ITypeList).getTypeKey(_overrideValue) : null
+    return getTypeKey(_overrideValue)
   }
 
-  property get ValueOrOverrideValue(): String {
+  property get ValueOrOverrideValue(): Object {
       return (this._overridden and this._overrideValue != null ? this._overrideValue : this._value)
   }
 
-  property get ValuePropertyName(): String {
-    return getAnnotation().ValuePropertyName
-  }
-
-  property get MatchLevelPropertyName(): String {
-    return getAnnotation().MatchLevelPropertyName
-  }
-
-  property get IsOverriddenPropertyName(): String {
-    return getAnnotation().IsOverriddenPropertyName
-  }
-
-  property get OverrideValuePropertyName(): String {
-    return getAnnotation().OverrideValuePropertyName
-  }
+//  static function GetValueOrOverride(inst: TunaValueDTO): Object {
+//    return inst.ValueOrOverrideValue
+//  }
 
   function setValuesOnEntity(bean: KeyableBean) {
     if(bean != null){
@@ -111,12 +101,28 @@ class TunaValueDTO {
   }
 
   private function setValue(bean: KeyableBean, propRef: PropertyReference, obj: Object) {
-    var childRef = getAnnotation().ChildPropertyReference
-    propRef?.set(childRef == null ? bean : childRef.get(bean), obj)
+    propRef?.set(getPropOwningBean(bean), obj)
   }
 
   private function getValue(bean: KeyableBean, propRef: PropertyReference): Object {
-    var childRef = getAnnotation().ChildPropertyReference
-    return propRef?.get(childRef == null ? bean : childRef.get(bean))
+    return propRef?.get(getPropOwningBean(bean))
   }
+
+  private function getPropOwningBean(bean: KeyableBean) : Object {
+
+    var childNodeRefArray = getAnnotation().ChildNodePropRefs
+
+    if(childNodeRefArray == null) {
+      return bean
+    }
+
+    var childNodeValue: Object = null
+
+    childNodeRefArray?.each( \ childPropRef -> {
+      childNodeValue = childPropRef.get((childNodeValue?: bean as KeyableBean))
+    })
+
+    return childNodeValue
+  }
+
 }

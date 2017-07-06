@@ -134,6 +134,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.LimitDesc = ""
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return limit
     }  else {
       return super.createOptionLimitInfo(coverage, currentCovTerm, transactions)
@@ -153,6 +154,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.CoverageSubCd = currentCovTerm.PatternCode
       limit.LimitDesc = ""
       limit.WrittenAmt.Amt = 0
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return limit
     } else if (currentCovTerm.PatternCode == "BP7CovType2" or currentCovTerm.PatternCode == "BP7MaintenanceAgreement1") {
       var limit = new wsi.schema.una.hpx.hpx_application_request.types.complex.LimitType()
@@ -165,6 +167,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
       limit.LimitDesc = ""
       limit.CoverageCd = coverage.PatternCode
       limit.CoverageSubCd = currentCovTerm.PatternCode
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(coverage)))
       return limit
     } else {
       return super.createOtherOptionCovTerm(coverage, currentCovTerm, transactions)
@@ -218,6 +221,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -251,6 +255,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -284,6 +289,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -316,6 +322,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -348,6 +355,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -379,6 +387,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -411,6 +420,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -443,6 +453,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -475,6 +486,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -507,6 +519,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -539,6 +552,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -571,6 +585,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -603,6 +618,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -635,6 +651,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -667,6 +684,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -699,6 +717,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           }
         }
       }
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits
@@ -724,6 +743,7 @@ class HPXBP7CoverageMapper extends HPXCoverageMapper{
           "| PropertyDescription: " + (currentCoverage.OwningCoverable as BP7Building).Building.Description +
           "| Description: " + item.LongStringCol1
       limit.WrittenAmt.Amt = 0
+      limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
       limits.add(limit)
     }
     return limits

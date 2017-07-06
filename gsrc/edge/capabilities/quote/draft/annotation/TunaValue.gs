@@ -1,10 +1,7 @@
 package edge.capabilities.quote.draft.annotation
 
 uses gw.lang.reflect.features.PropertyReference
-uses gw.lang.reflect.IType
 uses gw.lang.annotation.AnnotationUsage
-uses java.lang.IllegalArgumentException
-uses gw.lang.reflect.features.IPropertyReference
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,9 +21,9 @@ class TunaValue implements IAnnotation {
   var _matchLevelProp: PropertyReference as MatchLevelPropertyReference
   var _isOverriddenProp: PropertyReference as IsOverriddenPropertyReference
   var _overrideValueProp: PropertyReference as OverrideValuePropertyReference
-  var _childPropertyRef: PropertyReference as ChildPropertyReference
+  var _childNodePropertyRefs: PropertyReference[] as ChildNodePropRefs
 
-  /**
+ /**
    *
    * @Param valuePropertyReference - The Field that the Tuna Value maps to.
    * @Param tunaMatchLvlPropertyReference - The Field that the TunaMatchLevel maps to.
@@ -47,32 +44,11 @@ class TunaValue implements IAnnotation {
    * @Param isOverriddenPropertyReference - The Field that the Tuna Value IsOverridden maps to.
    * @Param overriddenValuePropertyReference - The Field that the Tuna Override value maps to.
    */
-  construct(valuePropertyReference: PropertyReference, tunaMatchLvlPropertyReference: PropertyReference, isOverriddenPropertyReference: PropertyReference, overriddenValuePropertyReference: PropertyReference, childPropertyReference: PropertyReference) {
+  construct(valuePropertyReference: PropertyReference, tunaMatchLvlPropertyReference: PropertyReference, isOverriddenPropertyReference: PropertyReference, overriddenValuePropertyReference: PropertyReference, childPropertyReferences: PropertyReference[]) {
     this._valueProp = valuePropertyReference
     this._matchLevelProp = tunaMatchLvlPropertyReference
     this._isOverriddenProp = isOverriddenPropertyReference
     this._overrideValueProp = overriddenValuePropertyReference
-    this._childPropertyRef = childPropertyReference
+    this._childNodePropertyRefs = childPropertyReferences
   }
-
-  property get ValueType() : IType {
-    return _valueProp.PropertyInfo.FeatureType
-  }
-
-  property get ValuePropertyName(): String {
-    return _valueProp.PropertyInfo.Name
-  }
-
-  property get MatchLevelPropertyName(): String {
-    return _matchLevelProp.PropertyInfo.Name
-  }
-
-  property get IsOverriddenPropertyName(): String {
-    return _isOverriddenProp.PropertyInfo.Name
-  }
-
-  property get OverrideValuePropertyName(): String {
-    return _overrideValueProp.PropertyInfo.Name
-  }
-
 }

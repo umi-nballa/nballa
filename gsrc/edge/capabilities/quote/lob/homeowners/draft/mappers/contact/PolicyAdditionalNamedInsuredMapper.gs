@@ -24,16 +24,6 @@ class PolicyAdditionalNamedInsuredMapper extends PolicyContactMapper<PolicyAddlN
     entity.DescOfInterest_HOE = dto.DescriptionOfInterest
   }
 
-  override function toDTO(period: PolicyPeriod): List<AdditionalNamedInsuredDTO> {
-    var results : List<AdditionalNamedInsuredDTO> = {}
-
-    period.PolicyContactRoles.whereTypeIs(PolicyAddlNamedInsured)?.each( \ additionalNamedInsured -> {
-      results.add(toDTO(additionalNamedInsured))
-    })
-
-    return results
-  }
-
   override function toDTO(role: PolicyAddlNamedInsured): AdditionalNamedInsuredDTO {
     var result : AdditionalNamedInsuredDTO
 

@@ -2,6 +2,7 @@ package edge.capabilities.quote.lob.homeowners.draft.mappers.contact
 
 uses edge.capabilities.quote.draft.dto.PolicyContactDTO
 uses java.lang.Integer
+uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +13,18 @@ uses java.lang.Integer
  */
 abstract class PolicyContactMapper<T extends PolicyContactRole, E extends PolicyContactDTO>{
   public abstract function updateContactRole(entity : T, dto : E)
-  public abstract function toDTO(period : PolicyPeriod) : List<E>
+
+  public function toDTO(period: PolicyPeriod, contactPlugin : IAccountContactPlugin): List<E> {
+    var results : List<E> = {}
+
+    period.PolicyContactRoles.whereTypeIs(T)?.each( \ contact -> {
+      var dto = toDTO(contact)
+      dto.Contact = contactPlugin.toDTO(contact.ContactDenorm)
+      results.add(dto)
+    })
+
+    return results
+  }
 
   public function createContact(period: PolicyPeriod, previousIndex: Integer, dto: E) : Contact{
     var result : Contact

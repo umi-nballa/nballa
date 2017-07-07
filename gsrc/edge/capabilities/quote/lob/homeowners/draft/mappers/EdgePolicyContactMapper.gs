@@ -52,7 +52,7 @@ class EdgePolicyContactMapper<T extends PolicyContactRole, E extends PolicyConta
   }
 
   public function fillBaseProperties(period : PolicyPeriod) : List<PolicyContactDTO>{
-    return _mapper.toDTO(period)
+    return _mapper.toDTO(period, _contactPlugin)
   }
 
   private function mapContactDetails(contact : Contact) : AccountContactDTO{

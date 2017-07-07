@@ -23,16 +23,6 @@ class PolicyAdditionalInsuredMapper extends PolicyContactMapper<PolicyAddlInsure
     }
   }
 
-  override function toDTO(period: PolicyPeriod): List<AdditionalInsuredDTO> {
-    var results : List<AdditionalInsuredDTO> = {}
-
-    period.PolicyContactRoles.whereTypeIs(PolicyAddlInsured).each( \ pcr -> {
-      results.add(toDTO(pcr))
-    })
-
-    return results
-  }
-
   override function toDTO(role: PolicyAddlInsured): AdditionalInsuredDTO {
     var result = new AdditionalInsuredDTO()
 

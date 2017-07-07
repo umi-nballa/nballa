@@ -30,16 +30,6 @@ class PolicyAdditionalInterestMapper extends PolicyContactMapper<PolicyAddlInter
     entityInterest.VestingInfo_Ext = dto.VestingInfo
   }
 
-  public override function toDTO(period: PolicyPeriod): List<DwellingAdditionalInterestDTO> {
-    var results : List<DwellingAdditionalInterestDTO> = {}
-
-    period.PolicyContactRoles.whereTypeIs(PolicyAddlInterest)?.each( \ additionalInterest -> {
-      results.add(toDTO(additionalInterest))
-    })
-
-    return results
-  }
-
   protected override function toDTO(role: PolicyAddlInterest): DwellingAdditionalInterestDTO {
     var result = new DwellingAdditionalInterestDTO()
 

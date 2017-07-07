@@ -27,7 +27,7 @@ class HOFloodCoverageRatingInfo {
     _hasBasement = dwelling?.BasementHome_Ext
     _elevatedRiskCredit = dwelling?.ElevatedRiskCredit_Ext
     _postFirm = dwelling?.PostFIRM_Ext
-    _floodZone = dwelling?.OverridePropFloodVal_Ext? dwelling?.PropFloodValOverridden_Ext : dwelling?.PropFloodVal_Ext
+    _floodZone = dwelling?.OverridePropFloodVal_Ext ? dwelling?.PropFloodValOverridden_Ext : dwelling?.PropFloodVal_Ext
     _lossOfUseLimit = dwelling?.HODW_Loss_Of_Use_HOE?.HODW_LossOfUseDwelLimit_HOETerm?.Value
 
     _floodDwellingLimit = floodCov?.HODW_FloodCov_Dwelling_HOETerm?.Value

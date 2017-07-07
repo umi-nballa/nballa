@@ -17,6 +17,12 @@ uses edge.PlatformSupport.Logger
 uses edge.PlatformSupport.Reflection
 uses edge.capabilities.policy.coverages.UNACoverageDTO
 uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
+uses edge.capabilities.quote.draft.dto.AdditionalInsuredDTO
+uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
+uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
+uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
+uses java.lang.Integer
+uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
@@ -25,10 +31,14 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   /** Plugin used to deal with addresses. */
   private var _addressPlugin : IAddressPlugin
 
+  private var _accountContactPlugin : IAccountContactPlugin
+
   @InjectableNode
   @Param("addressPlugin", "Plugin used to deal with house addresses")
-  construct(addressPlugin : IAddressPlugin) {
+  @Param("contactPlugin", "Plugin used to deal with contact updates")
+  construct(addressPlugin : IAddressPlugin, contactPlugin : IAccountContactPlugin) {
     this._addressPlugin = addressPlugin
+    this._accountContactPlugin = contactPlugin
   }
 
   override function compatibleWithProduct(code: String): boolean {
@@ -59,6 +69,9 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     setHiddenConstructionFields(hoLine.Dwelling)
     updateCoverages(period, update)
     synchronizeConditionsAndExclusions(period, update)
+    updateAdditionalInsureds(period, update)
+    updateAdditionalNamedInsureds(period, update)
+    updateAdditionalInterests(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
   }
 
@@ -87,6 +100,9 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateConstruction(dwelling, update.Construction)
     updateCoverages(period, update)
     synchronizeConditionsAndExclusions(period, update)
+    updateAdditionalInsureds(period, update)
+    updateAdditionalNamedInsureds(period, update)
+    updateAdditionalInterests(period, update)
     updateRating(dwelling, update.Rating)
   }
 
@@ -105,6 +121,8 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
     res.Coverages = toCoveragesDTO(hoLine)
+    res.AdditionalInsureds = toAdditionalInsuredsDTO(period)
+    res.AdditionalInterests = toAdditionalInterestsDTO(period)
     return res
   }
 
@@ -251,5 +269,29 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     }else{
       period.AllExclusions.removeWhere( \ exclusion -> exclusion.PatternCode.equalsIgnoreCase("HODW_PersonalPropertyExc_HOE_Ext"))
     }
+  }
+
+  private function updateAdditionalInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    new EdgePolicyContactMapper<PolicyAddlInsured, AdditionalInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalInsureds?.toList())
+  }
+
+  private function toAdditionalInsuredsDTO(period : PolicyPeriod) : AdditionalInsuredDTO []{
+    return new EdgePolicyContactMapper<PolicyAddlInsured, AdditionalInsuredDTO >(_accountContactPlugin).fillBaseProperties(period)
+  }
+
+  private function updateAdditionalNamedInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalNamedInsureds.toList())
+  }
+
+  private function toAdditionalNamedInsuredsDTO(period : PolicyPeriod) : AdditionalNamedInsuredDTO []{
+    return new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).fillBaseProperties(period)
+  }
+
+  private function updateAdditionalInterests(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    new EdgePolicyContactMapper<PolicyAddlInterest, DwellingAdditionalInterestDTO>(_accountContactPlugin).updateFrom(period, update.AdditionalInterests?.toList())
+  }
+
+  private function toAdditionalInterestsDTO(period : PolicyPeriod) : DwellingAdditionalInterestDTO[]{
+    return new EdgePolicyContactMapper<PolicyAddlInterest, DwellingAdditionalInterestDTO>(_accountContactPlugin).fillBaseProperties(period)
   }
 }

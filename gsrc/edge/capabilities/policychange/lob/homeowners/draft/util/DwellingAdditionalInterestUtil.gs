@@ -22,7 +22,7 @@ class DwellingAdditionalInterestUtil {
         : Description = additionalInterest.AddlInterestDesc,
         : CertificateRequired = additionalInterest.CertRequired,
         : EffectiveDate = additionalInterest.AddlIntEffDate,
-        : PolicyAdditionalInterest = contactDTO
+        : Contact = contactDTO
     }
   }
 
@@ -44,7 +44,7 @@ class DwellingAdditionalInterestUtil {
 
 
         accountContactPlugin.updateContact(
-            item.PolicyAddlInterest.AccountContactRole.AccountContact.Contact, dto.PolicyAdditionalInterest)
+            item.PolicyAddlInterest.AccountContactRole.AccountContact.Contact, dto.Contact)
 
       })
     } else {

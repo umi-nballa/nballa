@@ -30,6 +30,8 @@ class HOCommonBasePremiumRatingInfo {
   var _townhouseOrRowhouse : boolean as TownHouseOrRowHouse
   var _numberOfFamilies: int as NumberOfFamilies
   var _townhouseUsage : RatingDwellingUsage_Ext as TownHouseOrRowhouseUsage
+  var _extendedCoverage : boolean as ExtendedCoverage
+  var _occupancy : typekey.DwellingOccupancyType_HOE as OccupancyType
 
   construct(dwelling: Dwelling_HOE) {
     var hoLocation = dwelling?.HOLocation
@@ -76,6 +78,7 @@ class HOCommonBasePremiumRatingInfo {
     _keyFactorLowerBound = keyFactorRange.LowerBound
     _keyFactorUpperBound = keyFactorRange.UpperBound
 
+    //TODO Update when number of families is implemented
     if(dwelling?.ResidenceType == ResidenceType_HOE.TC_TOWNHOUSEROWHOUSE_EXT){
       _numberOfFamilies = dwelling?.NumUnitsFireDivision_Ext?.toInt()
     }else{
@@ -83,10 +86,10 @@ class HOCommonBasePremiumRatingInfo {
     }
 
     _protectionClassCode = dwelling.ProtectionClassCodeOrOverride
-
-
-      _personalPropertyLimit = dwelling?.PersonalPropertyLimitCovTerm?.Value
-
+    _personalPropertyLimit = dwelling?.PersonalPropertyLimitCovTerm?.Value
+    //TODO Update when Extended Coverage gets implemented
+    _extendedCoverage = true
+    _occupancy = dwelling.Occupancy
 
   }
 

@@ -1161,6 +1161,11 @@
 	<xsd:complexType name="EndorsementInfoType">
 		<xsd:sequence>
 			<xsd:element name="SequenceNumber" type="xsd:byte"/>
+            <xsd:element name="ChangeReason1" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ChangeReason2" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ChangeReason3" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ChangeReasonDescription" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="ChangeReasonFreeform" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="EffectiveDt" type="xsd:date"/>
 			<xsd:element name="ExpirationDt" type="xsd:date"/>
 			<xsd:element name="ProRateFactor" type="xsd:float"/>
@@ -1803,6 +1808,7 @@
 			<xsd:element name="OfferingDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="PersApplicationInfo" type="PersApplicationInfoType" minOccurs="0"/>
 			<xsd:element name="Coverage" type="CoverageType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="DeclinationInfo" type="DeclinationInfoType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="SubLocationType">
@@ -2579,6 +2585,7 @@
 			<xsd:element name="Discount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="EstimatedInsScoreDiscount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="EstimatedWindDiscount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="EstimatedBCEGDiscount" type="DiscountType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="EstimatedPremium" type="EstimatedPremiumType" minOccurs="0" maxOccurs="unbounded"/>
 		</xsd:sequence>
 	</xsd:complexType>
@@ -2634,6 +2641,13 @@
 			<xsd:element name="OtherOrPriorPolicy" type="OtherOrPriorPolicyType"/>
 		</xsd:sequence>
 	</xsd:complexType>
+    <xsd:complexType name="DeclinationInfoType">
+        <xsd:sequence>
+            <xsd:element name="DeclinationReasonCategory" type="xsd:string"/>
+            <xsd:element name="DeclinationReasonCd" type="xsd:string"/>
+            <xsd:element name="DeclinationReasonDescription" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
 	<xsd:complexType name="CancelNonRenewInfoType">
 		<xsd:sequence>
 			<xsd:element name="BusinessPurposeTypeCd" type="xsd:string"/>
@@ -5857,6 +5871,7 @@
 			<xsd:element name="InvoiceNumber" type="xsd:string"/>
 			<xsd:element name="BillingStatementDueDate" type="xsd:date"/>
 			<xsd:element name="PaymentDueDate" type="xsd:date"/>
+            <xsd:element name="MailingDate" type="xsd:date"/>
 			<xsd:element name="isDue" type="xsd:string"/>
 			<xsd:element name="isClosed" type="xsd:string"/>
 			<xsd:element name="isPaid" type="xsd:string"/>

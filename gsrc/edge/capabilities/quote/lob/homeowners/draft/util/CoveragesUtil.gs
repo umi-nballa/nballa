@@ -4,8 +4,8 @@ uses edge.capabilities.policy.coverages.UNACoverageDTO
 uses edge.capabilities.policy.coverages.UNAScheduledItemDTO
 uses edge.capabilities.policy.coverages.UNACoverageTermDTO
 uses gw.api.domain.Clause
-uses java.lang.reflect.Array
 uses java.util.ArrayList
+uses edge.capabilities.address.dto.AddressDTO
 
 /**
  * Created with IntelliJ IDEA.
@@ -73,12 +73,13 @@ final class CoveragesUtil {
       case "CoveredLocation_HOE":
           var scheduledLocationItem = scheduledItem as CoveredLocation_HOE
           result.NumberOfFamilies = scheduledLocationItem.NumberOfFamilies
+          result.Address = new AddressDTO()
           result.Address.AddressLine1 = scheduledLocationItem.PolicyLocation.AddressLine1
-          scheduledLocationItem.PolicyLocation.City = result.Address.City
-          scheduledLocationItem.PolicyLocation.State = result.Address.State
-          scheduledLocationItem.PolicyLocation.PostalCode = result.Address.PostalCode
-          scheduledLocationItem.PolicyLocation.Country = result.Address.Country
-          scheduledLocationItem.PolicyLocation.AddressType = result.Address.AddressType
+          result.Address.City = scheduledLocationItem.PolicyLocation.City
+          result.Address.State = scheduledLocationItem.PolicyLocation.State
+          result.Address.PostalCode = scheduledLocationItem.PolicyLocation.PostalCode
+          result.Address.Country = scheduledLocationItem.PolicyLocation.Country
+          result.Address.AddressType = scheduledLocationItem.PolicyLocation.AddressType
           break
       case "HOscheduleItem_HOE_Ext":
           var scheduledWatercraft = scheduledItem as HOscheduleItem_HOE_Ext

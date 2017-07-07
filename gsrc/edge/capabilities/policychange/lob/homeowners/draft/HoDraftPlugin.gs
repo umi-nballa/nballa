@@ -37,7 +37,7 @@ class HoDraftPlugin implements ILobDraftPlugin <HoDraftDataExtensionDTO> {
     _entityCreationContextProvider = new EntityCreationContextProvider()
 
     _additionalInterestUpdater = new ArrayUpdater<Dwelling_HOE,HODwellingAddlInt_HOE,DwellingAdditionalInterestDTO>(authzProvider) {
-        : ToCreateAndAdd = \ dwelling, dto -> dwelling.createAndAddAdditionalInterestDetail(typekey.ContactType.get(dto.PolicyAdditionalInterest.Subtype)) as HODwellingAddlInt_HOE,
+        : ToCreateAndAdd = \ dwelling, dto -> dwelling.createAndAddAdditionalInterestDetail(typekey.ContactType.get(dto.Contact.Subtype)) as HODwellingAddlInt_HOE,
         : ToRemove = \ dwelling, e -> dwelling.removeFromAdditionalInterestDetails(e) ,
         : ToAdd = \ dwelling, e -> dwelling.addToAdditionalInterestDetails(e),
         : DtoKey = \ dto -> dto.FixedId,

@@ -18,7 +18,10 @@ class HOLineRatingInfo {
   var _animalLiabilityLimit: int as AnimalLiabilityLimit = 0
   var _totalBasePremium: BigDecimal as TotalBasePremium
   var _numberOfLocations : int as NumberOfLocations
-
+  var _dpMedPayLimit : int as DPMedPayLimit = 0
+  var _dpPolicy : boolean as DPPolicy = false
+  var _numberOfFamilies : int as NumberOfFamilies = 0
+  var _dpPremiseLiabilityLimit : int as PremiseLiabilityLimit = 0
   construct() {
   }
 
@@ -30,9 +33,19 @@ class HOLineRatingInfo {
     if(line.HOLI_PersonalInjury_HOEExists)
     _personalInjuryLimit = line.HOLI_PersonalInjury_HOE?.HOLI_PersonalInjuryLimit_HOE_ExtTerm?.Value?.intValue()
     if(line.HOLI_AnimalLiabilityCov_HOE_ExtExists)
-    _animalLiabilityLimit = line.HOLI_AnimalLiabilityCov_HOE_Ext?.HOLI_AnimalLiabLimit_HOETerm?.Value.intValue()
-
+    _animalLiabilityLimit = line.HOLI_AnimalLiabilityCov_HOE_Ext?.HOLI_AnimalLiabLimit_HOETerm?.Value?.intValue()
+    if(line.DPLI_Med_Pay_HOEExists){
+      _dpMedPayLimit = line.DPLI_Med_Pay_HOE?.DPLI_MedPay_Limit_HOETerm?.Value?.intValue()
+    }
     if(line.HOLI_AddResidenceRentedtoOthers_HOEExists)
       _numberOfLocations = line.HOLI_AddResidenceRentedtoOthers_HOE?.CoveredLocations?.Count
+    _dpPolicy = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(line.HOPolicyType)
+    if(line.DPLI_Premise_Liability_HOE_ExtExists){
+      _dpPremiseLiabilityLimit = line.DPLI_Premise_Liability_HOE_Ext?.DPLI_Premise_LiabilityLimit_HOETerm?.Value?.intValue()
+    }
+
+    //TODO update code when Number of Families is implemented
+    _numberOfFamilies = 1
+
   }
 }

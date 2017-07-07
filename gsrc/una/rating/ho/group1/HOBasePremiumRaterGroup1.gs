@@ -38,11 +38,24 @@ class HOBasePremiumRaterGroup1 {
    *  Rating engine will call this function to rate the base premium
    */
   function rateBasePremium(dateRange: DateRange, numDaysInCoverageRatedTerm: int): List<CostData> {
-    var routinesToExecute: List<String> = {}
     var costs: List<CostData> = {}
-    routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
+    var routinesToExecute = rateRoutinesToExecute()
     costs.addAll(executeRoutines(routinesToExecute, dateRange, numDaysInCoverageRatedTerm))
     return costs
+  }
+
+  function rateRoutinesToExecute() : List<String>{
+    var routinesToExecute: List<String> = {}
+
+    if(_line.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+
+    } else{
+      routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
+    }
+
+
+    return routinesToExecute
+
   }
 
   /**

@@ -116,6 +116,7 @@ class HPXCPCoverageMapper extends HPXCoverageMapper{
     limit.LimitDesc = "PropertyDescription:" + (currentCoverage.OwningCoverable as CPBuilding).Building.Description +
                       "| Location:" + currentCoverage.OwningCoverable.PolicyLocations.first().addressString(",", true, true) + " |"
     limit.WrittenAmt.Amt = 0
+    limit.addChild(new XmlElement("Coverable", createCoverableInfo(currentCoverage)))
     limits.add(limit)
     return limits
   }

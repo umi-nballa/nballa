@@ -3,10 +3,10 @@ package edge.capabilities.policychange.lob.homeowners.draft.dto
 uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
 uses java.util.Date
-uses edge.capabilities.policycommon.accountcontact.dto.AccountContactDTO
 uses java.lang.Long
+uses edge.capabilities.quote.draft.dto.PolicyContactDTO
 
-class DwellingAdditionalInterestDTO {
+class DwellingAdditionalInterestDTO extends PolicyContactDTO{
 
   /** Unique fixed ID for the additional interest */
   @JsonProperty
@@ -26,15 +26,18 @@ class DwellingAdditionalInterestDTO {
 
   /** Is a certificate required for this additional interest */
   @JsonProperty
-  var _certificateRequired : boolean as CertificateRequired
+  var _certificateRequired : Boolean as CertificateRequired
 
   /** Effective Date for this additional interest */
   @JsonProperty @Required
   var _effectiveDate : Date as EffectiveDate
 
-  /** A contact representing the additional interest */
-  @JsonProperty @Required
-  var _policyAdditionalInterest : AccountContactDTO as PolicyAdditionalInterest
+  @JsonProperty
+  private var _interestTypeIfOther : String as InterestTypeIfOther
 
+  @JsonProperty
+  private var _vestingInfoRequired : Boolean as IsVestingInfoRequired
 
+  @JsonProperty
+  private var _vestingInfo : String as VestingInfo
 }

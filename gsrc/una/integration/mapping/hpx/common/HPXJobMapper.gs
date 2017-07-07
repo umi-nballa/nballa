@@ -66,6 +66,13 @@ class HPXJobMapper {
     var premiumMapper = new HPXPremiumMapper()
     var endorsementInfo = new wsi.schema.una.hpx.hpx_application_request.types.complex.EndorsementInfoType()
     endorsementInfo.SequenceNumber = policyPeriod.Job.JobNumber.substring(2)
+    if (policyPeriod.Job typeis PolicyChange) {
+      endorsementInfo.ChangeReasonDescription = (policyPeriod.Job as PolicyChange).ReasonforChange_Ext.DisplayName
+      endorsementInfo.ChangeReason1 = (policyPeriod.Job as PolicyChange).Reason1_Ext.DisplayName
+      endorsementInfo.ChangeReason2 = (policyPeriod.Job as PolicyChange).Reason2_Ext.DisplayName
+      endorsementInfo.ChangeReason3 = (policyPeriod.Job as PolicyChange).Reason3_Ext.DisplayName
+      endorsementInfo.ChangeReasonFreeform = (policyPeriod.Job as PolicyChange).ReasonFreeForm_Ext
+    }
     endorsementInfo.EffectiveDt = policyPeriod.EffectiveDatedFields.EffectiveDate != null ? new XmlDate(policyPeriod.EffectiveDatedFields.EffectiveDate) : null
     endorsementInfo.ExpirationDt = policyPeriod.EffectiveDatedFields.ExpirationDate != null ? new XmlDate(policyPeriod.EffectiveDatedFields.ExpirationDate) : null
     // premiums

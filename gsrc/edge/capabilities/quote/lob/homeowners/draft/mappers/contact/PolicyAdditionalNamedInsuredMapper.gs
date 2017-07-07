@@ -23,4 +23,14 @@ class PolicyAdditionalNamedInsuredMapper extends PolicyContactMapper<PolicyAddlN
     entity.ContactRelationship_Ext = dto.RelationshipToPrimaryInsured
     entity.DescOfInterest_HOE = dto.DescriptionOfInterest
   }
+
+  override function toDTO(role: PolicyAddlNamedInsured): AdditionalNamedInsuredDTO {
+    var result : AdditionalNamedInsuredDTO
+
+    result.RelationshipToPrimaryInsured = role.ContactRelationship_Ext
+    result.DescriptionOfInterest = role.DescOfInterest_HOE
+    result.DBAName = role.ContactDenorm.DbaName_Ext
+
+    return result
+  }
 }

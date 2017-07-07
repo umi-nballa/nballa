@@ -34,7 +34,7 @@ class YourHomeDTO {
   var creditStatus : CreditStatusExt as CreditStatus
 
   @JsonProperty
-  @TunaValue(HOLocation_HOE#DistanceToCoast_Ext, HOLocation_HOE#DistToCoastMatchLevel_Ext, HOLocation_HOE#OverrideDistToCoast_Ext, HOLocation_HOE#DistToCoastOverridden_Ext, {Dwelling_HOE#HOLocation})
+  @TunaValue(HOLocation_HOE#DistToCoast_Ext, HOLocation_HOE#DistToCoastMatchLevel_Ext, HOLocation_HOE#OverrideDistToCoast_Ext, HOLocation_HOE#DistToCoastOverridden_Ext, {Dwelling_HOE#HOLocation})
   var _distanceToCoast : TunaValueDTO as DistanceToCoast
 
   @JsonProperty

@@ -29,4 +29,19 @@ class PolicyAdditionalInterestMapper extends PolicyContactMapper<PolicyAddlInter
     entityInterest.VestingInfoRequired_Ext = dto.IsVestingInfoRequired
     entityInterest.VestingInfo_Ext = dto.VestingInfo
   }
+
+  protected override function toDTO(role: PolicyAddlInterest): DwellingAdditionalInterestDTO {
+    var result = new DwellingAdditionalInterestDTO()
+
+    result.ContractNumber = role.AdditionalInterestDetails.first().ContractNumber
+    result.Type = role.AdditionalInterestDetails.first().AdditionalInterestType
+    result.InterestTypeIfOther = role.AdditionalInterestDetails.first().InterestTypeIfOther_Ext
+    result.Description = (role.AdditionalInterestDetails.first() as HODwellingAddlInt_HOE).AddlInterestDesc
+    result.CertificateRequired = role.AdditionalInterestDetails.first().CertRequired
+    result.EffectiveDate = (role.AdditionalInterestDetails.first() as HODwellingAddlInt_HOE).AddlIntEffDate
+    result.IsVestingInfoRequired = role.AdditionalInterestDetails.first().VestingInfoRequired_Ext
+    result.VestingInfo = role.AdditionalInterestDetails.first().VestingInfo_Ext
+
+    return result
+  }
 }

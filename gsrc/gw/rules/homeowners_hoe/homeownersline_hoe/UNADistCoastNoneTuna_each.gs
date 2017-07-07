@@ -13,7 +13,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNADistCoastNoneTuna_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner?.Dwelling.HOLocation.DistanceToCoast_Ext == null &&  homeowner?.Dwelling.FloodCoverage_Ext &&
+    if(homeowner?.Dwelling.HOLocation.DistToCoast_Ext == null &&  homeowner?.Dwelling.FloodCoverage_Ext &&
     homeowner.HOLocation.PolicyLocation.State.Code=="FL")
       return RuleEvaluationResult.execute()
 

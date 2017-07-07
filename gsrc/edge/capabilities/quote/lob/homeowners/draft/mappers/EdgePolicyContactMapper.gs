@@ -4,13 +4,11 @@ uses java.lang.Comparable
 uses edge.capabilities.quote.draft.dto.PolicyContactDTO
 uses java.lang.Integer
 uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
-uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
-uses java.lang.UnsupportedOperationException
 uses edge.capabilities.policycommon.accountcontact.dto.AccountContactDTO
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyContactMapper
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalNamedInsuredMapper
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalInterestMapper
-uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
+uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalInsuredMapper
 
 /**
  * Created with IntelliJ IDEA.
@@ -28,14 +26,6 @@ class EdgePolicyContactMapper<T extends PolicyContactRole, E extends PolicyConta
   construct(contactPlugin : IAccountContactPlugin){
     _contactPlugin = contactPlugin
     _mapper = getPolicyContactMapper()
-
-    if(T.Type == entity.PolicyAddlInterest){
-      _toDTO = \ a -> {return toAdditionalInterestDTO(a)}
-    }else if(T.Type == PolicyAddlNamedInsured){
-      _toDTO = \ a -> {return toAdditionalNamedInsuredDTO(a)}
-    }else{
-      throw new UnsupportedOperationException("Type of Policy Contact Role is not supported.")
-    }
   }
 
   public function updateFrom(period : PolicyPeriod, dtos : List<E>){
@@ -61,39 +51,8 @@ class EdgePolicyContactMapper<T extends PolicyContactRole, E extends PolicyConta
     })
   }
 
-  public function fillBaseProperties(period : PolicyPeriod) : List<E>{
-    var results : List<E> = {}
-
-    period.PolicyContactRoles.whereTypeIs(T)?.each( \ role -> {
-      results.add(_toDTO(role))
-    })
-
-    return results
-  }
-
-  private function toAdditionalNamedInsuredDTO(role: T) : E{
-    var result : E
-
-    result.Contact = mapContactDetails(role.ContactDenorm)
-    (result as AdditionalNamedInsuredDTO ).RelationshipToPrimaryInsured = (role as PolicyAddlNamedInsured).ContactRelationship_Ext
-
-    return result
-  }
-
-  private function toAdditionalInterestDTO(role : T) : E{
-    var result : E
-
-    result.Contact = mapContactDetails(role.ContactDenorm)
-    (result as DwellingAdditionalInterestDTO).ContractNumber = (role as PolicyAddlInterest).AdditionalInterestDetails.first().ContractNumber
-    (result as DwellingAdditionalInterestDTO).Type = (role as PolicyAddlInterest).AdditionalInterestDetails.first().AdditionalInterestType
-    (result as DwellingAdditionalInterestDTO).InterestTypeIfOther = (role as PolicyAddlInterest).AdditionalInterestDetails.first().InterestTypeIfOther_Ext
-    (result as DwellingAdditionalInterestDTO).Description = ((role as PolicyAddlInterest).AdditionalInterestDetails.first() as HODwellingAddlInt_HOE).AddlInterestDesc
-    (result as DwellingAdditionalInterestDTO).CertificateRequired = (role as PolicyAddlInterest).AdditionalInterestDetails.first().CertRequired
-    (result as DwellingAdditionalInterestDTO).EffectiveDate = ((role as PolicyAddlInterest).AdditionalInterestDetails.first() as HODwellingAddlInt_HOE).AddlIntEffDate
-    (result as DwellingAdditionalInterestDTO).IsVestingInfoRequired = (role as PolicyAddlInterest).AdditionalInterestDetails.first().VestingInfoRequired_Ext
-    (result as DwellingAdditionalInterestDTO).VestingInfo = (role as PolicyAddlInterest).AdditionalInterestDetails.first().VestingInfo_Ext
-
-    return result
+  public function fillBaseProperties(period : PolicyPeriod) : List<PolicyContactDTO>{
+    return _mapper.toDTO(period, _contactPlugin)
   }
 
   private function mapContactDetails(contact : Contact) : AccountContactDTO{
@@ -107,6 +66,8 @@ class EdgePolicyContactMapper<T extends PolicyContactRole, E extends PolicyConta
       result = new PolicyAdditionalNamedInsuredMapper()
     }else if(T.Type == PolicyAddlInterest){
       result = new PolicyAdditionalInterestMapper()
+    }else if(T.Type == PolicyAddlInsured){
+      result = new PolicyAdditionalInsuredMapper()
     }
 
     return result

@@ -27,7 +27,9 @@ abstract class BaseTunaValueUtil {
     }  else {
       var tunaDTO = new TunaValueDTO(tunaDtoProp)
       tunaDTO.getValuesFromEntity(data)
-      tunaDtoProp.Accessor.setValue(dtoInstance, tunaDTO)
+      if(tunaDTO.Value != null || tunaDTO.OverrideValue != null) {
+        tunaDtoProp.Accessor.setValue(dtoInstance, tunaDTO)
+      }
     }
   }
 

@@ -1334,10 +1334,10 @@
 			<xsd:element name="ProducerRoleID" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Producer" type="ProducerType" minOccurs="0"/>
 			<xsd:element name="GroupCode" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PrimaryPostalAddress" type="PrimaryPostalAddressType" minOccurs="0"/>
+			<xsd:element name="PrimaryPostalAddress" type="PostalAddressType" minOccurs="0"/>
 			<xsd:element name="ProducerCode" type="ProducerCodeType" minOccurs="0"/>
 			<xsd:element name="ProducerLicenses" type="ProducerLicensesType" minOccurs="0"/>
-			<xsd:element name="PrimaryContactMechanism" type="PrimaryContactMechanismType" minOccurs="0"/>
+			<xsd:element name="PrimaryContactMechanism" type="ContactMechanismType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="RenewalTermType">
@@ -4729,8 +4729,8 @@
 			<xsd:element name="FullName" type="xsd:string"/>
 			<xsd:element name="DBA" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ExtendedNameInsured" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PrimaryInsuredPostalAddress" type="PrimaryInsuredPostalAddressType" minOccurs="0"/>
-			<xsd:element name="PrimaryInsuredPhysicalAddress" type="PrimaryInsuredPhysicalAddressType" minOccurs="0"/>
+			<xsd:element name="PrimaryInsuredPostalAddress" type="PostalAddressType" minOccurs="0"/>
+			<xsd:element name="PrimaryInsuredPhysicalAddress" type="PhysicalAddressType" minOccurs="0"/>
 			<xsd:element name="PersonHolder" type="PersonHolderType" minOccurs="0"/>
 			<xsd:element name="OrganizationHolder" type="OrganizationHolderType" minOccurs="0"/>
 			<xsd:element name="ClueMatchIndicator" type="xsd:string" minOccurs="0"/>
@@ -5125,16 +5125,16 @@
 	</xsd:complexType>
 	<xsd:complexType name="PremiumScheduleType">
 		<xsd:sequence>
-			<xsd:element name="PremiumScheduleID" type="xsd:string"/>
+			<xsd:element name="PremiumScheduleID" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Seq" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="ValidFrom" type="xsd:string"/>
-			<xsd:element name="ValidThru" type="xsd:string"/>
-			<xsd:element name="DueDate" type="xsd:string"/>
-			<xsd:element name="PremiumAmt" type="xsd:string"/>
-			<xsd:element name="ChargeAmt" type="xsd:string"/>
-			<xsd:element name="PaymentAmt" type="xsd:string"/>
+			<xsd:element name="ValidFrom" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ValidThru" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="DueDate" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PremiumAmt" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="ChargeAmt" type="xsd:string" minOccurs="0"/>
+			<xsd:element name="PaymentAmt" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="PaymentDate" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="ChargeType" type="ChargeTypeType"/>
+			<xsd:element name="ChargeType" type="ChargeTypeType" minOccurs="0"/>
 		</xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="NextPremiumScheduleType">

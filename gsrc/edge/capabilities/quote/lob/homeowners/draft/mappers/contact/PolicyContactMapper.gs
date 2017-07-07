@@ -12,6 +12,7 @@ uses java.lang.Integer
  */
 abstract class PolicyContactMapper<T extends PolicyContactRole, E extends PolicyContactDTO>{
   public abstract function updateContactRole(entity : T, dto : E)
+  public abstract function toDTO(period : PolicyPeriod) : List<E>
 
   public function createContact(period: PolicyPeriod, previousIndex: Integer, dto: E) : Contact{
     var result : Contact
@@ -27,18 +28,6 @@ abstract class PolicyContactMapper<T extends PolicyContactRole, E extends Policy
     return result
   }
 
-  //public abstract function toDTO(period : PolicyPeriod) : List<E>
-
-//  public function toDTO(period : PolicyPeriod) : List<E>{
-//    var results : List<E> = {}
-//
-//    period.PolicyContactRoles.whereTypeIs(T)?.each( \ role -> {
-//      results.add(toDTO(role))
-//    })
-//
-//    return results
-//  }
-
-  protected abstract function createContactRole(period : PolicyPeriod, previousIndex : Integer, contact : Contact)
-//  protected abstract function toDTO(role : T) : E
+  protected abstract function createContactRole(period : PolicyPeriod, portalIndex : Integer, contact : Contact)
+  protected abstract function toDTO(role : T) : E
 }

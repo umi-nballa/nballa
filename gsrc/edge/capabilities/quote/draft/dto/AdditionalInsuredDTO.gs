@@ -1,4 +1,7 @@
 package edge.capabilities.quote.draft.dto
+
+uses edge.jsonmapper.JsonProperty
+
 /**
  * Created with IntelliJ IDEA.
  * User: TVang
@@ -7,5 +10,6 @@ package edge.capabilities.quote.draft.dto
  * To change this template use File | Settings | File Templates.
  */
 class AdditionalInsuredDTO extends PolicyContactDTO{
-
+  @JsonProperty
+  private var _additionalInsuredType : typekey.AdditionalInsuredType as Type
 }

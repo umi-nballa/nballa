@@ -24,7 +24,8 @@ class HOBasePremiumRaterGroup1 {
   private var _hoRatingInfo: HORatingInfo
   private var _line: HomeownersLine_HOE
   private var _routinesToCostTypeMapping: Map<String, HOCostType_Ext> = {
-      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
+      HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM,
+      HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE -> HOCostType_Ext.TC_BASEPREMIUM
   }
   construct(dwelling: Dwelling_HOE, line: HomeownersLine_HOE, executor: HORateRoutineExecutor, rateCache: PolicyPeriodFXRateCache, hoRatingInfo: HORatingInfo) {
     _dwelling = dwelling
@@ -48,7 +49,7 @@ class HOBasePremiumRaterGroup1 {
     var routinesToExecute: List<String> = {}
 
     if(_line.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
-
+      routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_DWELLING_FIRE_RATE_ROUTINE)
     } else{
       routinesToExecute.add(HORateRoutineNames.BASE_PREMIUM_RATE_ROUTINE)
     }

@@ -24,7 +24,7 @@ class TrustDTO {
   private var _isPartyToTrustACorporation : Boolean as IsPartyToTrustACorporation
 
   @JsonProperty
-  private var _trustResident : String as TrustResident
+  private var _trustResident : typekey.TrustResident_Ext as TrustResident
 
   @JsonProperty
   private var _isTrustRevocable : Boolean as IsTrustTypeLivingAndRevocable

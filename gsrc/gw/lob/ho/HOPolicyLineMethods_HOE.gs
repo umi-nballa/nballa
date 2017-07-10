@@ -233,22 +233,14 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
   override function createRatingEngine(method : RateMethod, parameters : Map<RateEngineParameter, Object>) : AbstractRatingEngine<HomeownersLine_HOE> {
    if(method == RateMethod.TC_SYSTABLE) {
       return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
-    } else if(typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(_line.Dwelling?.HOPolicyType)){
-     if(_line.BaseState == typekey.Jurisdiction.TC_HI)
-      return new UNAHOHIRatingEngine (_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-     if(_line.BaseState == typekey.Jurisdiction.TC_TX)
-       return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-     if(_line.BaseState == typekey.Jurisdiction.TC_NC)
-       return new UNAHONCRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
     } else {
-      if(_line.BaseState == typekey.Jurisdiction.TC_TX)
+     if(_line.BaseState == typekey.Jurisdiction.TC_TX)
         return new UNAHOTXRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-      if(_line.BaseState == typekey.Jurisdiction.TC_AZ || _line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_CA)
+     if(_line.BaseState == typekey.Jurisdiction.TC_AZ || _line.BaseState == typekey.Jurisdiction.TC_NV || _line.BaseState == typekey.Jurisdiction.TC_CA)
         return new UNAHOGroup1RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-      if(_line.BaseState == typekey.Jurisdiction.TC_SC)
+     if(_line.BaseState == typekey.Jurisdiction.TC_SC)
         return new UNAHOGroup2RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-      if((_line.BaseState == typekey.Jurisdiction.TC_FL)
+     if((_line.BaseState == typekey.Jurisdiction.TC_FL)
           and (_line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
               _line.Dwelling?.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO6))
         return new UNAHOGroup3RatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
@@ -257,10 +249,10 @@ class HOPolicyLineMethods_HOE extends AbstractPolicyLineMethodsImpl
       }
       if(_line.BaseState == typekey.Jurisdiction.TC_HI)
        return new UNAHOHIRatingEngine(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-    return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
-    //return new UNAHORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE, parameters[RateEngineParameter.TC_RATEBOOKSTATUS] as RateBookStatus)
-  }
-      }
+     return new HORatingEngine_HOE(_line as productmodel.HomeownersLine_HOE)
+
+    }
+   }
 
   override property get SupportsNonSpecificLocations() : boolean {
     return true

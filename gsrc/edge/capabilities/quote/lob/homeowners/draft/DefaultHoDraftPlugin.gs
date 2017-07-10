@@ -17,15 +17,21 @@ uses edge.PlatformSupport.Logger
 uses edge.PlatformSupport.Reflection
 uses edge.capabilities.policy.coverages.UNACoverageDTO
 uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
+uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeProtectionDTO
+uses edge.capabilities.quote.lob.homeowners.draft.util.YourHomeProtectionUtil
 uses edge.capabilities.quote.draft.dto.AdditionalInsuredDTO
 uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
 uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
-uses java.lang.Integer
 uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
+uses edge.capabilities.quote.draft.dto.TrustDTO
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
+  private final static var PORTAL_EXCLUSIONS_AND_CONDITIONS = {"HODW_PersonalPropertyExc_HOE_Ext",
+                                                               "HODW_LossSettlement_HOE",
+                                                               "HODW_CashSettlementWindOrHailRoofSurfacing_HOE",
+                                                               "HODW_ReplaceCostCovAPaymentSched_HOE"}
   final private static var _logger = new Logger(Reflection.getRelativeName(DefaultHoDraftPlugin))
 
   /** Plugin used to deal with addresses. */
@@ -68,10 +74,11 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateConstruction(hoLine.Dwelling, update.Construction)
     setHiddenConstructionFields(hoLine.Dwelling)
     updateCoverages(period, update)
-    synchronizeConditionsAndExclusions(period, update)
+    updateConditionsAndExclusions(period, update)
     updateAdditionalInsureds(period, update)
     updateAdditionalNamedInsureds(period, update)
     updateAdditionalInterests(period, update)
+    updateTrusts(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
   }
 
@@ -97,12 +104,14 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     var policyQuestionSets = getPolicyQuestionSets(period)
     QuestionSetUtil.update(period, policyQuestionSets, update.QuestionAnswers)
     updateYourHome(dwelling, update.YourHome)
+    updateYourHomeProtection(dwelling, update.YourHomeProtection)
     updateConstruction(dwelling, update.Construction)
     updateCoverages(period, update)
-    synchronizeConditionsAndExclusions(period, update)
+    updateConditionsAndExclusions(period, update)
     updateAdditionalInsureds(period, update)
     updateAdditionalNamedInsureds(period, update)
     updateAdditionalInterests(period, update)
+    updateTrusts(period, update)
     updateRating(dwelling, update.Rating)
   }
 
@@ -118,11 +127,16 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     var policyQuestionSets = getPolicyQuestionSets(period)
     res.QuestionAnswers = QuestionSetUtil.toAnswersDTO(policyQuestionSets, period)
     res.YourHome = toYourHomeDTO(hoLine.Dwelling)
+    res.YourHomeProtection = toYourHomeProtectionDTO(hoLine.Dwelling)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
     res.Coverages = toCoveragesDTO(hoLine)
+    res.ConditionsAndExclusions = toConditionsAndExclusionsDTO(period)
     res.AdditionalInsureds = toAdditionalInsuredsDTO(period)
     res.AdditionalInterests = toAdditionalInterestsDTO(period)
+    res.AdditionalNamedInsureds = toAdditionalNamedInsuredsDTO(period)
+    res.Trusts = toTrustDTOs(period)
+
     return res
   }
 
@@ -161,6 +175,14 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     YourHomeUtil.updateFrom(dwelling, dto)
   }
 
+
+  /**
+   * Updates home related protection properties. Do nothing is <code>dto</code> is <code>null</code>.
+   * <p>This implementation delegates all the work to YourHomeProtectionUtil
+   */
+  protected function updateYourHomeProtection(dwelling : Dwelling_HOE, dto : YourHomeProtectionDTO) {
+    YourHomeProtectionUtil.updateFrom(dwelling, dto)
+  }
 
   /**
    * Sets a construction fields hidden from a customer but required by the quoting process. This implementation sets
@@ -209,6 +231,18 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     return CoveragesUtil.fillBaseProperties(hoLine.Branch)
   }
 
+  protected function toConditionsAndExclusionsDTO(period : PolicyPeriod) : List<String>{
+    var results : List<String> = {}
+
+    PORTAL_EXCLUSIONS_AND_CONDITIONS.each( \ conditionOrExclusion -> {
+      if(period.HomeownersLine_HOE.CoveragesConditionsAndExclusionsFromCoverable*.Pattern*.CodeIdentifier?.containsIgnoreCase(conditionOrExclusion)){
+        results.add(conditionOrExclusion)
+      }
+    })
+
+    return results
+  }
+
   /**
    * Converts YourHome / Location into the YourHome DTO (if it is applicable at a given stage).
    * <p>This implementation
@@ -224,6 +258,11 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     return res
   }
 
+  protected function toYourHomeProtectionDTO(dwelling : Dwelling_HOE) : YourHomeProtectionDTO {
+    final var res = new YourHomeProtectionDTO()
+    YourHomeProtectionUtil.fillBaseProperties(res, dwelling)
+    return res
+  }
 
   /**
    * Updates a contact address (but not a policy) address on the submission. If address is shared between policy and
@@ -256,19 +295,21 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     CoveragesUtil.updateFrom(period, update.Coverages)
   }
 
-  private function synchronizeConditionsAndExclusions(period: PolicyPeriod, update: HoDraftDataExtensionDTO){
+  private function updateConditionsAndExclusions(period: PolicyPeriod, update: HoDraftDataExtensionDTO){
     period.AllCoverables.each(\ coverable -> {
       coverable.syncExclusions()
       coverable.syncConditions()
     })
 
-    if(update.ExcludePersonalProperty){
-      if(!period.HomeownersLine_HOE.hasExclusion("HODW_PersonalPropertyExc_HOE_Ext")){
-        period.HomeownersLine_HOE.createExclusion("HODW_PersonalPropertyExc_HOE_Ext")
+    PORTAL_EXCLUSIONS_AND_CONDITIONS.each( \ conditionOrExclusion -> {
+      if(update.ConditionsAndExclusions.containsIgnoreCase(conditionOrExclusion)){
+        if(period.HomeownersLine_HOE.isCoverageConditionOrExclusionAvailable(conditionOrExclusion) and !period.HomeownersLine_HOE.hasCoverageConditionOrExclusion(conditionOrExclusion)){
+          period.HomeownersLine_HOE.createCoverageConditionOrExclusion(conditionOrExclusion)
+        }
+      }else{
+        period.AllExclusionsConditionsAndCoverages?.atMostOneWhere( \ elt -> elt.Pattern.CodeIdentifier?.equalsIgnoreCase(conditionOrExclusion))?.remove()
       }
-    }else{
-      period.AllExclusions.removeWhere( \ exclusion -> exclusion.PatternCode.equalsIgnoreCase("HODW_PersonalPropertyExc_HOE_Ext"))
-    }
+    })
   }
 
   private function updateAdditionalInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
@@ -293,5 +334,65 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
   private function toAdditionalInterestsDTO(period : PolicyPeriod) : DwellingAdditionalInterestDTO[]{
     return new EdgePolicyContactMapper<PolicyAddlInterest, DwellingAdditionalInterestDTO>(_accountContactPlugin).fillBaseProperties(period)
+  }
+
+  private function updateTrusts(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    if(update != null){
+      var trustEntities = period.TrustResidings?.orderBy(\ trust -> trust.PortalIndex)
+      var trustDTOs = update.Trusts
+      var entityCount = trustEntities.Count
+      var dtoCount = trustDTOs.Count
+
+      if(dtoCount > entityCount){
+        for(i in entityCount..dtoCount - 1){
+          var trust = new HOTrustResiding_Ext(period)
+          trust.PortalIndex = (trustEntities.last().PortalIndex == null ? 0 : trustEntities.last().PortalIndex + 1)
+          updateTrust(trust, trustDTOs[i])
+        }
+      }else if(dtoCount < entityCount){
+        for(i in dtoCount..entityCount - 1){
+          trustEntities[i].remove()
+        }
+      }
+
+      trustEntities = period.TrustResidings?.orderBy(\ trust -> trust.PortalIndex)
+
+      trustDTOs?.eachWithIndex( \ dto, i -> {
+        updateTrust(trustEntities[i], dto)
+      })
+
+      //renumber portal indices after updating
+      var newIndex = 0
+      trustEntities.each( \ trust -> {
+        trust.PortalIndex = newIndex
+        newIndex++
+      })
+    }
+  }
+
+  private function toTrustDTOs(period : PolicyPeriod) : TrustDTO[]{
+    var results : List<TrustDTO> = {}
+
+    period.TrustResidings.each( \ trust -> {
+      var dto = new TrustDTO()
+      dto.IsTrustTypeLivingAndRevocable = trust.TypeOfTrustRevocable
+      dto.NameOfBeneficiary = trust.NameOfBeneficiary
+      dto.NameOfGrantor = trust.NameOfGrantor
+      dto.IsPartyToTrustACorporation = !trust.IsPerson
+      //TODO tlv this is where we will map other fields for trusts and for the address.  There is a CR for this
+
+      results.add(dto)
+    })
+
+    return results
+  }
+
+  private function updateTrust(trustEntity : HOTrustResiding_Ext, trustDTO : TrustDTO){
+    trustEntity.TrustResident = trustDTO.TrustResident
+    trustEntity.IsPerson = !trustDTO.IsPartyToTrustACorporation
+    trustEntity.NameOfBeneficiary = trustDTO.NameOfBeneficiary
+    trustEntity.NameOfGrantor = trustDTO.NameOfGrantor
+    trustEntity.TypeOfTrustRevocable = trustDTO.IsTrustTypeLivingAndRevocable
+    //TODO tlv this is where we'll add an address - i think there is a CR for this.
   }
 }

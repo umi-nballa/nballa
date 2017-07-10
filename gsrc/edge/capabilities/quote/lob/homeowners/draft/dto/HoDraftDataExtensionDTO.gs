@@ -30,6 +30,9 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
   @JsonProperty
   var _yourHome : YourHomeDTO as YourHome
 
+  @JsonProperty
+  var _yourHomeProtection : YourHomeProtectionDTO as YourHomeProtection
+
   /** Additional details about rating. */
   @JsonProperty
   var _rating : RatingDTO as Rating
@@ -38,7 +41,8 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
   var _coverages : UNACoverageDTO[] as Coverages
 
   @JsonProperty
-  var _excludePersonalProperty : Boolean as ExcludePersonalProperty
+  var _clauseDTO : List<String> as ConditionsAndExclusions
+
 
   @JsonProperty
   var _additionalInsureds : AdditionalInsuredDTO [] as AdditionalInsureds

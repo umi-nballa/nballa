@@ -4,7 +4,6 @@ uses java.lang.Comparable
 uses edge.capabilities.quote.draft.dto.PolicyContactDTO
 uses java.lang.Integer
 uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
-uses edge.capabilities.policycommon.accountcontact.dto.AccountContactDTO
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyContactMapper
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalNamedInsuredMapper
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAdditionalInterestMapper
@@ -20,7 +19,6 @@ uses edge.capabilities.quote.lob.homeowners.draft.mappers.contact.PolicyAddition
 class EdgePolicyContactMapper<T extends PolicyContactRole, E extends PolicyContactDTO> {
   private static final var PORTAL_INDEX_FIELD_NAME = "PortalIndex"
   private var _mapper : PolicyContactMapper
-  private var _toDTO : block(role : T) : E
   private var _contactPlugin : IAccountContactPlugin
 
   construct(contactPlugin : IAccountContactPlugin){
@@ -49,14 +47,17 @@ class EdgePolicyContactMapper<T extends PolicyContactRole, E extends PolicyConta
       _contactPlugin.updateContact(contactRoles[i].ContactDenorm, dto.Contact)
       _mapper.updateContactRole(contactRoles[i], dto)
     })
+
+    //renumber portal indices after updating
+    var newIndex = 0
+    contactRoles.each( \ contactRole -> {
+      contactRole.setFieldValue(PORTAL_INDEX_FIELD_NAME, newIndex)
+      newIndex++
+    })
   }
 
   public function fillBaseProperties(period : PolicyPeriod) : List<PolicyContactDTO>{
     return _mapper.toDTO(period, _contactPlugin)
-  }
-
-  private function mapContactDetails(contact : Contact) : AccountContactDTO{
-    return _contactPlugin.toDTO(contact)
   }
 
   private function getPolicyContactMapper() : PolicyContactMapper{

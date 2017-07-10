@@ -41,7 +41,8 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
   var _coverages : UNACoverageDTO[] as Coverages
 
   @JsonProperty
-  var _excludePersonalProperty : Boolean as ExcludePersonalProperty
+  var _clauseDTO : List<String> as ConditionsAndExclusions
+
 
   @JsonProperty
   var _additionalInsureds : AdditionalInsuredDTO [] as AdditionalInsureds

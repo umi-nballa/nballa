@@ -280,7 +280,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   }
 
   private function updateAdditionalNamedInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
-    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalNamedInsureds.toList())
+    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalNamedInsureds?.toList())
   }
 
   private function toAdditionalNamedInsuredsDTO(period : PolicyPeriod) : AdditionalNamedInsuredDTO []{

@@ -17,11 +17,12 @@ uses edge.PlatformSupport.Logger
 uses edge.PlatformSupport.Reflection
 uses edge.capabilities.policy.coverages.UNACoverageDTO
 uses edge.capabilities.quote.lob.homeowners.draft.util.CoveragesUtil
+uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeProtectionDTO
+uses edge.capabilities.quote.lob.homeowners.draft.util.YourHomeProtectionUtil
 uses edge.capabilities.quote.draft.dto.AdditionalInsuredDTO
 uses edge.capabilities.policycommon.accountcontact.IAccountContactPlugin
 uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
-uses java.lang.Integer
 uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
@@ -97,6 +98,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     var policyQuestionSets = getPolicyQuestionSets(period)
     QuestionSetUtil.update(period, policyQuestionSets, update.QuestionAnswers)
     updateYourHome(dwelling, update.YourHome)
+    updateYourHomeProtection(dwelling, update.YourHomeProtection)
     updateConstruction(dwelling, update.Construction)
     updateCoverages(period, update)
     synchronizeConditionsAndExclusions(period, update)
@@ -118,6 +120,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     var policyQuestionSets = getPolicyQuestionSets(period)
     res.QuestionAnswers = QuestionSetUtil.toAnswersDTO(policyQuestionSets, period)
     res.YourHome = toYourHomeDTO(hoLine.Dwelling)
+    res.YourHomeProtection = toYourHomeProtectionDTO(hoLine.Dwelling)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
     res.Coverages = toCoveragesDTO(hoLine)
@@ -161,6 +164,14 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     YourHomeUtil.updateFrom(dwelling, dto)
   }
 
+
+  /**
+   * Updates home related protection properties. Do nothing is <code>dto</code> is <code>null</code>.
+   * <p>This implementation delegates all the work to YourHomeProtectionUtil
+   */
+  protected function updateYourHomeProtection(dwelling : Dwelling_HOE, dto : YourHomeProtectionDTO) {
+    YourHomeProtectionUtil.updateFrom(dwelling, dto)
+  }
 
   /**
    * Sets a construction fields hidden from a customer but required by the quoting process. This implementation sets
@@ -224,6 +235,11 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     return res
   }
 
+  protected function toYourHomeProtectionDTO(dwelling : Dwelling_HOE) : YourHomeProtectionDTO {
+    final var res = new YourHomeProtectionDTO()
+    YourHomeProtectionUtil.fillBaseProperties(res, dwelling)
+    return res
+  }
 
   /**
    * Updates a contact address (but not a policy) address on the submission. If address is shared between policy and
@@ -280,7 +296,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   }
 
   private function updateAdditionalNamedInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
-    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalNamedInsureds.toList())
+    new EdgePolicyContactMapper<PolicyAddlNamedInsured, AdditionalNamedInsuredDTO >(_accountContactPlugin).updateFrom(period, update.AdditionalNamedInsureds?.toList())
   }
 
   private function toAdditionalNamedInsuredsDTO(period : PolicyPeriod) : AdditionalNamedInsuredDTO []{

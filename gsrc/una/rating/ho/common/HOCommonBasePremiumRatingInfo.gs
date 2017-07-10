@@ -32,6 +32,7 @@ class HOCommonBasePremiumRatingInfo {
   var _townhouseUsage : RatingDwellingUsage_Ext as TownHouseOrRowhouseUsage
   var _extendedCoverage : boolean as ExtendedCoverage
   var _occupancy : typekey.DwellingOccupancyType_HOE as OccupancyType
+  var _usageType : typekey.DwellingUsage_HOE as DwellingUsageType
 
   construct(dwelling: Dwelling_HOE) {
     var hoLocation = dwelling?.HOLocation
@@ -90,6 +91,7 @@ class HOCommonBasePremiumRatingInfo {
     //TODO Update when Extended Coverage gets implemented
     _extendedCoverage = true
     _occupancy = dwelling.Occupancy
+    _usageType = dwelling.DwellingUsage
 
   }
 

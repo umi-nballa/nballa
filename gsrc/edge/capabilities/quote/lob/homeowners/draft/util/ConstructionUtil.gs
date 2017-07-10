@@ -124,7 +124,9 @@ final class ConstructionUtil extends BaseTunaValueUtil {
       return
     }
 
+    // Map values for all Tuna fields
     mapTunaFields(data, dto, ConstructionDTO, FROM)
+    // Handle additional logic go tuna related fields
     mapFieldsWithAdditionalLogic(data, dto, FROM)
 
     data.DoorStrength_Ext = dto.DoorStrength

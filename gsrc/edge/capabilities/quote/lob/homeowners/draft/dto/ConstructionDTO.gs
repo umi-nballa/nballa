@@ -6,7 +6,6 @@ uses edge.capabilities.quote.draft.annotation.TunaValue
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
 uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.UpgradeYear
 uses edge.jsonmapper.JsonProperty
 
 uses java.lang.Integer
@@ -140,7 +139,7 @@ class ConstructionDTO {
   var _heatingUpgradeExists: Boolean as HeatingUpgradeExists
 
   @JsonProperty
-  @UpgradeYear("HeatingUpgradeExists")
+  //@UpgradeYear("HeatingUpgradeExists")
   var _heatingUpgradeYear: Integer as HeatingUpgradeYear
 
   @JsonProperty
@@ -173,7 +172,7 @@ class ConstructionDTO {
   var _plumbingUpgradeExists: Boolean as PlumbingUpgradeExists
 
   @JsonProperty
-  @UpgradeYear("PlumbingUpgradeExists")
+  //@UpgradeYear("PlumbingUpgradeExists")
   var _plumbingUpgradeYear: Integer as PlumbingUpgradeYear
 
   /** Type of primary heating. */
@@ -225,7 +224,7 @@ class ConstructionDTO {
   var _roofUpgradeExists: Boolean as RoofUpgradeExists
 
   @JsonProperty
-  @UpgradeYear("RoofUpgradeExists")
+  //@UpgradeYear("RoofUpgradeExists")
   var _roofUpgradeYear: Integer as RoofUpgradeYear
 
   @JsonProperty
@@ -285,16 +284,16 @@ class ConstructionDTO {
   var _wiringUpgradeExists: Boolean as WiringUpgradeExists
 
   @JsonProperty
-  @UpgradeYear("WiringUpgradeExists")
+  //@UpgradeYear("WiringUpgradeExists")
   var _wiringUpgradeYear: Integer as WiringUpgradeYear
 
   @JsonProperty
   @Required
-  @Year
-  @NotAFutureYear
-  var _yearBuilt: int as YearBuilt
+  //@Year
+  //@NotAFutureYear
+  //var _yearBuilt: int as YearBuilt
 //  @JsonProperty @Required
 //  @Augment({"Value","OverrideValue"}, {new Year(), new NotAFutureYear()})
-//  @TunaValue(Dwelling_HOE#YearBuilt, Dwelling_HOE#YearbuiltMatchLevel_Ext, Dwelling_HOE#OverrideYearbuilt_Ext, Dwelling_HOE#YearBuiltOverridden_Ext)
-//  var _yearBuilt : TunaValueDTO as YearBuilt
+  @TunaValue(Dwelling_HOE#YearBuilt, Dwelling_HOE#YearbuiltMatchLevel_Ext, Dwelling_HOE#OverrideYearbuilt_Ext, Dwelling_HOE#YearBuiltOverridden_Ext)
+  var _yearBuilt : TunaValueDTO as YearBuilt
 }

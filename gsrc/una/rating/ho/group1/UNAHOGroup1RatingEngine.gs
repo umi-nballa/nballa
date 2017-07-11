@@ -81,6 +81,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     var rater = new HOBasePremiumRaterGroup1(dwelling, PolicyLine, Executor, RateCache, _hoRatingInfo)
     var costs = rater.rateBasePremium(dateRange, this.NumDaysInCoverageRatedTerm)
     addCosts(costs)
+    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
   }
 
   /**
@@ -1199,7 +1200,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         _hoRatingInfo.GatedCommunityDiscount + _hoRatingInfo.PrivateFireCompanyDiscount + _hoRatingInfo.VacancySurcharge + _hoRatingInfo.BuildingCodeEffectivenessGradingCredit +
         _hoRatingInfo.AffinityDiscount + _hoRatingInfo.DiscountAdjustment
     )
-    _dwellingRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
+
 
   }
 }

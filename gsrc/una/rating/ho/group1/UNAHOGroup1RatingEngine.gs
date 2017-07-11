@@ -218,6 +218,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
               rateUnitOwnersCovASpecialLimitsCoverage(dwellingCov, dateRange)
           }
           break
+      case HODW_Vandalism_Malicious_Mischief_HOE_Ext:
+          rateVMMCoverage(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -333,7 +336,20 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_HO3 and PolicyLine.HODW_CashSettlementWindOrHailRoofSurfacing_HOEExists)
       rateACVLossSettlementOnRoofSurfacing(dateRange)
   }
-
+  /**
+   * Rate VMM coverage
+   */
+  function rateVMMCoverage(dwellingCov: HODW_Vandalism_Malicious_Mischief_HOE_Ext, dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateVMMCoverage to rate VMM Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.HO_VMM_DWELLING_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_VANDALISMMALICIOUSMISCHIEFLIMITATION)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
+  }
   /**
    *  Function to rate the Deductible Factor
    */

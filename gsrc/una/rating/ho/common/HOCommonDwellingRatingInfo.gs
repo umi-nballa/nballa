@@ -27,6 +27,7 @@ class HOCommonDwellingRatingInfo {
   var _protectionClassCode : typekey.ProtectionClassCode_Ext as ProtectionClassCode
   var _constructionType : typekey.RateTableConstructionType_Ext as ConstructionType
   var _unitOwnersCovASpecialBaseLimit: int as UnitOwnersCovASpecialBaseLimit
+  var _isDPPolicyType : boolean as IsDPPolicy
 
 
 
@@ -64,5 +65,6 @@ class HOCommonDwellingRatingInfo {
     _protectionClassCode = dwelling?.ProtectionClassCodeOrOverride
     _constructionType = HOConstructionTypeMapper.setConstructionType(dwelling, dwelling.HOLine.BaseState)
     _unitOwnersCovASpecialBaseLimit = ConfigParamsUtil.getInt(TC_UnitOwnersCovASpecialBaseLimit, dwelling.HOLine.BaseState, dwelling.HOPolicyType)
+    _isDPPolicyType = typekey.HOPolicyType_HOE.TF_FIRETYPES.TypeKeys.contains(dwelling.HOPolicyType)
   }
 }

@@ -39,7 +39,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
   var _higherEQOrdinanceOrLaw: boolean as HigherEQOrdOrLaw = false
   var _higherEQDeductible: boolean as HigherEQDeductible = false
   var caUnitOwnersCovASpecialBaseLimit: int as CAUnitOwnersCovASpecialBaseLimit
-
+  var _modifiedReplacementCost : BigDecimal as ModifiedReplacementCost
 
 
   construct(dwelling: Dwelling_HOE) {
@@ -126,6 +126,12 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
         _earthquakeConstructionType = EarthquakeConstrn_Ext.TC_FRAME
       }
     }
+
+    if(dwelling.HODW_SpecificAddAmt_HOE_ExtExists){
+      _modifiedReplacementCost = dwelling.HODW_SpecificAddAmt_HOE_Ext.HODW_AdditionalAmtInsurance_HOETerm.Value
+    }
+
+
 
     if(dwelling?.HODW_Earthquake_HOEExists){
       if(baseState == Jurisdiction.TC_AZ){

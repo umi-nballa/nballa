@@ -112,7 +112,7 @@ final class ConstructionUtil extends BaseTunaValueUtil {
     }
 
 
-    dto.YearBuilt = data.YearBuilt
+    //dto.YearBuilt = data.YearBuilt
   }
 
   /**
@@ -247,7 +247,7 @@ final class ConstructionUtil extends BaseTunaValueUtil {
     }
 
 
-    data.YearBuilt = dto.YearBuilt
+    //data.YearBuilt = dto.YearBuilt
 
     data.beforeSavingDwellingConstructionPage()
   }

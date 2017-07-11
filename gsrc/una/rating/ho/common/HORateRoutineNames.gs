@@ -168,6 +168,7 @@ public final class HORateRoutineNames {
   public static final var WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_DWELLING : String = "UNAHODPWPDCCreditRateRoutineDwelling"
   public static final var WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_PERSONAL_PROPERTY : String = "UNAHODPWPDCCreditRateRoutinePersonalProperty"
   public static final var DP_OTHER_STRUCTURES : String = "UNAHODPOtherStructures"
+  public static final var DP_PLANTS_TREES_SHRUBS : String = "UNAHODPPlantsTreesShrubs"
 
 
 }

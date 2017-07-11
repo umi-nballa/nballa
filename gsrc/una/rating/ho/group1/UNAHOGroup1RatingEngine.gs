@@ -221,6 +221,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_Vandalism_Malicious_Mischief_HOE_Ext:
           rateVMMCoverage(dwellingCov, dateRange)
           break
+      case HODW_PlantsShrubsTrees_HOE_Ext:
+          ratePlantsTreesShrubsCoverage(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -350,6 +353,29 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if(_logger.DebugEnabled)
       _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
   }
+
+
+  /**
+   * Rate VMM coverage
+   */
+  function ratePlantsTreesShrubsCoverage(dwellingCov: HODW_PlantsShrubsTrees_HOE_Ext, dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateVMMCoverage to rate VMM Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.DP_PLANTS_TREES_SHRUBS, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_PLANTSTREESSHRUBS)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
+  }
+
+
+
+
+
+
+
   /**
    *  Function to rate the Deductible Factor
    */

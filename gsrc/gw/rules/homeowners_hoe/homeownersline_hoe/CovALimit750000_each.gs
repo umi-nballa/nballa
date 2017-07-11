@@ -15,7 +15,7 @@ class CovALimit750000_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
    if( homeowner.Dwelling.DPDW_Dwelling_Cov_HOEExists
-    and homeowner.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm?.Value < HOE_UWConstant.covALimit_750000){
+    and homeowner.Dwelling.DPDW_Dwelling_Cov_HOE.DPDW_Dwelling_Limit_HOETerm?.Value < HOE_UWConstant.covALimit_75000){
 
     return RuleEvaluationResult.execute()
     }

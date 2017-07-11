@@ -25,7 +25,7 @@ class PolicyAdditionalNamedInsuredMapper extends PolicyContactMapper<PolicyAddlN
   }
 
   override function toDTO(role: PolicyAddlNamedInsured): AdditionalNamedInsuredDTO {
-    var result : AdditionalNamedInsuredDTO
+    var result = new AdditionalNamedInsuredDTO()
 
     result.RelationshipToPrimaryInsured = role.ContactRelationship_Ext
     result.DescriptionOfInterest = role.DescOfInterest_HOE

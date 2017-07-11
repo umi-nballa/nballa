@@ -43,7 +43,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.PriorResidenceType = data.PriorResidenceWas_Ext
     dto.IsPostFirm = data.PostFIRM_Ext
     dto.PriorFloodInsuranceProvider = data.PriorFloodInsProvider_Ext
-    dto.PriorFloodInsuranceExpirationDate = data.ExpirationDate
+    dto.PriorFloodInsuranceExpirationDate = data.PriorFloodInsuranceExpirationDate_Ext
     dto.HasBasementForFloodCoverage = data.BasementHome_Ext
     dto.IsOnBarrierIsland = data.BarrierIsland_Ext
     dto.IsPropertyInNonNFIPCommunity = data.PropertyLocatedIn_Ext
@@ -99,9 +99,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.PostFIRM_Ext = dto.IsPostFirm
 
     data.PriorFloodInsProvider_Ext = dto.PriorFloodInsuranceProvider
-    if(data.PriorFloodInsProvider_Ext != null && data.PriorFloodInsProvider_Ext != PriorFloodInsProvider_Ext.TC_NONE) {
-      data.ExpirationDate = dto.PriorFloodInsuranceExpirationDate
-    }
+    data.PriorFloodInsuranceExpirationDate_Ext = dto.PriorFloodInsuranceExpirationDate
 
     data.BasementHome_Ext = dto.HasBasementForFloodCoverage
     data.BarrierIsland_Ext = dto.IsOnBarrierIsland

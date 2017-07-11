@@ -92,7 +92,7 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     if (dwelling?.HODW_Limited_Earthquake_CA_HOEExists){
       if(PolicyType == HOPolicyType_HOE.TC_HO4 or PolicyType == HOPolicyType_HOE.TC_HO6){
         _earthquakeLimitedLimit = dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_EQCovCPersonalProperty_HOE_ExtTerm?.Value
-      } else if(PolicyType == HOPolicyType_HOE.TC_HO3){
+      } else if(PolicyType == HOPolicyType_HOE.TC_HO3 or PolicyType == HOPolicyType_HOE.TC_DP3_EXT){
         _earthquakeLimitedLimit = dwelling?.HODW_Limited_Earthquake_CA_HOE?.HODW_EQDwellingLimit_HOE_ExtTerm?.Value
 
          if (dwelling?.OverrideYearbuilt_Ext == true){

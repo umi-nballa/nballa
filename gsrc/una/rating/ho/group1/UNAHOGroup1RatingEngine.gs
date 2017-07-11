@@ -194,11 +194,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
       case HODW_Limited_Earthquake_CA_HOE:
-          if (HasEarthquakeLimitedCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA and
-             (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6
-             or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)){
             rateEarthquakeLimitedCovCA(dwellingCov, dateRange)
-          }
           break
       case HODW_Comp_Earthquake_CA_HOE_Ext:
           if (HasEarthquakeComprehensiveCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA

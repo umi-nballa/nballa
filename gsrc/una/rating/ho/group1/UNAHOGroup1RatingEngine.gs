@@ -194,11 +194,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           rateBuildingAdditionsAndAlterationsIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
       case HODW_Limited_Earthquake_CA_HOE:
-          if (HasEarthquakeLimitedCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA and
-             (PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO4 or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO6
-             or PolicyLine.HOPolicyType == HOPolicyType_HOE.TC_HO3)){
             rateEarthquakeLimitedCovCA(dwellingCov, dateRange)
-          }
           break
       case HODW_Comp_Earthquake_CA_HOE_Ext:
           if (HasEarthquakeComprehensiveCoverage and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA
@@ -238,8 +234,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       rateAgeOfHomeDiscount(dateRange)
     }
     if (dwelling.HODW_DifferenceConditions_HOE_ExtExists){
-      if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
-          (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA))
         rateDifferenceInConditions(dwelling.HODW_DifferenceConditions_HOE_Ext, dateRange)
     }
     if (HasSeasonalOrSecondaryResidenceSurcharge){
@@ -654,7 +648,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateDifferenceInConditions", this.IntrinsicType)
     var lineLevelRatingInfo = new HOGroup1LineLevelRatingInfo(PolicyLine)
-    lineLevelRatingInfo.TotalBasePremium = _hoRatingInfo.AdjustedBaseClassPremium
+    lineLevelRatingInfo.TotalBasePremium = _hoRatingInfo.TotalBasePremium
     var rateRoutineParameterMap = getHOLineParameterSet(PolicyLine, lineLevelRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.DIFFERENCE_IN_CONDITIONS_RATE_ROUTINE, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.DifferenceInConditions = costData.ActualTermAmount

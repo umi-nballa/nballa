@@ -27,6 +27,8 @@ uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 uses edge.capabilities.quote.draft.dto.TrustDTO
 uses edge.capabilities.reports.dto.clue.PriorLossDTO
 uses edge.capabilities.reports.dto.clue.ClaimPaymentDTO
+uses edge.capabilities.policy.dto.PriorPolicyDTO
+uses edge.capabilities.policy.util.PriorPolicyUtil
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
@@ -74,7 +76,9 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 //CLM - Commenting out for now, the above lines add the answers if supplied
     hoLine.syncQuestions(getLineQuestionSets(period))
     period.syncQuestions(getPolicyQuestionSets(period))
-
+    updateYourHome(hoLine.Dwelling, update.YourHome)
+    updateYourHomeProtection(hoLine.Dwelling, update.YourHomeProtection)
+    updatePriorPolicy(period,update.PriorPolicy)
     updateConstruction(hoLine.Dwelling, update.Construction)
     setHiddenConstructionFields(hoLine.Dwelling)
     updateCoverages(period, update)
@@ -110,6 +114,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     QuestionSetUtil.update(period, policyQuestionSets, update.QuestionAnswers)
     updateYourHome(dwelling, update.YourHome)
     updateYourHomeProtection(dwelling, update.YourHomeProtection)
+    updatePriorPolicy(period,update.PriorPolicy)
     updateConstruction(dwelling, update.Construction)
     updateCoverages(period, update)
     updateConditionsAndExclusions(period, update)
@@ -134,6 +139,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     res.QuestionAnswers = QuestionSetUtil.toAnswersDTO(policyQuestionSets, period)
     res.YourHome = toYourHomeDTO(hoLine.Dwelling)
     res.YourHomeProtection = toYourHomeProtectionDTO(hoLine.Dwelling)
+    res.PriorPolicy = toPriorPolicyDTO(period)
     res.Construction = toConstructionDTO(hoLine.Dwelling)
     res.Rating = toRatingDTO(hoLine.Dwelling)
     res.Coverages = toCoveragesDTO(hoLine)
@@ -189,6 +195,10 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
    */
   protected function updateYourHomeProtection(dwelling : Dwelling_HOE, dto : YourHomeProtectionDTO) {
     YourHomeProtectionUtil.updateFrom(dwelling, dto)
+  }
+
+  protected function updatePriorPolicy(policyPeriod : PolicyPeriod, dto : PriorPolicyDTO){
+    PriorPolicyUtil.updateFrom(policyPeriod,dto)
   }
 
   /**
@@ -269,6 +279,10 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     final var res = new YourHomeProtectionDTO()
     YourHomeProtectionUtil.fillBaseProperties(res, dwelling)
     return res
+  }
+
+  protected function toPriorPolicyDTO(policyPeriod : PolicyPeriod) : PriorPolicyDTO{
+    return PriorPolicyUtil.fillBaseProperties(policyPeriod)
   }
 
   /**

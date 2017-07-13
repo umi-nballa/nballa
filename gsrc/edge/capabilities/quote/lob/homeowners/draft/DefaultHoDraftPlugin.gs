@@ -25,13 +25,17 @@ uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalI
 uses edge.capabilities.quote.lob.homeowners.draft.mappers.EdgePolicyContactMapper
 uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 uses edge.capabilities.quote.draft.dto.TrustDTO
+uses edge.capabilities.reports.dto.clue.PriorLossDTO
+uses edge.capabilities.reports.dto.clue.ClaimPaymentDTO
 
 class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   private final static var HO_QUESTION_SET_CODES = {"HO_PreQual_Ext", "HODwellingUWQuestions_Ext"}
   private final static var PORTAL_EXCLUSIONS_AND_CONDITIONS = {"HODW_PersonalPropertyExc_HOE_Ext",
                                                                "HODW_LossSettlement_HOE",
                                                                "HODW_CashSettlementWindOrHailRoofSurfacing_HOE",
-                                                               "HODW_ReplaceCostCovAPaymentSched_HOE"}
+                                                               "HODW_ReplaceCostCovAPaymentSched_HOE",
+                                                               "HOLI_ActualCashValueLossSettlement_Ext",
+                                                               "HODW_LossPayableClause_HOE"}
   final private static var _logger = new Logger(Reflection.getRelativeName(DefaultHoDraftPlugin))
 
   /** Plugin used to deal with addresses. */
@@ -79,6 +83,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateAdditionalNamedInsureds(period, update)
     updateAdditionalInterests(period, update)
     updateTrusts(period, update)
+    updatePriorLosses(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
   }
 
@@ -99,7 +104,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
     if(update.PolicyAddress != null) {
         _addressPlugin.updateFromDTO(period.PolicyAddress.Address, update.PolicyAddress)
-      }
+    }
 
     var policyQuestionSets = getPolicyQuestionSets(period)
     QuestionSetUtil.update(period, policyQuestionSets, update.QuestionAnswers)
@@ -112,6 +117,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateAdditionalNamedInsureds(period, update)
     updateAdditionalInterests(period, update)
     updateTrusts(period, update)
+    updatePriorLosses(period, update)
     updateRating(dwelling, update.Rating)
   }
 
@@ -136,6 +142,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     res.AdditionalInterests = toAdditionalInterestsDTO(period)
     res.AdditionalNamedInsureds = toAdditionalNamedInsuredsDTO(period)
     res.Trusts = toTrustDTOs(period)
+    res.SelfReportedPriorLosses = toSelfReportPriorLosses(period)
 
     return res
   }
@@ -347,7 +354,6 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
         for(i in entityCount..dtoCount - 1){
           var trust = new HOTrustResiding_Ext(period)
           trust.PortalIndex = (trustEntities.last().PortalIndex == null ? 0 : trustEntities.last().PortalIndex + 1)
-          updateTrust(trust, trustDTOs[i])
         }
       }else if(dtoCount < entityCount){
         for(i in dtoCount..entityCount - 1){
@@ -387,6 +393,27 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     return results
   }
 
+  private function toSelfReportPriorLosses(period : PolicyPeriod) : PriorLossDTO[]{
+    var results : List<PriorLossDTO> = {}
+
+    period.HomeownersLine_HOE.HOPriorLosses_Ext?.where( \ priorLoss -> priorLoss.Source == TC_INSURED)
+                                               ?.each( \ priorLoss -> {
+      var lossDTO = new PriorLossDTO()
+      lossDTO.Source = priorLoss.Source
+      lossDTO.Status = priorLoss.ClaimStatus
+      lossDTO.DateOfLoss = priorLoss.ReportedDate
+
+      if(priorLoss.ClaimPayment.HasElements){
+        //we assume only one claim payment since that's how Portal processes the two fields we are setting (lives at the prior loss level)
+        lossDTO.ClaimPayments = {new ClaimPaymentDTO(){:Amount = priorLoss.ClaimPayment.first().ClaimAmount, :LossCause = priorLoss.ClaimPayment.first().LossCause_Ext}}
+      }
+
+      results.add(lossDTO)
+    })
+
+    return results
+  }
+
   private function updateTrust(trustEntity : HOTrustResiding_Ext, trustDTO : TrustDTO){
     trustEntity.TrustResident = trustDTO.TrustResident
     trustEntity.IsPerson = !trustDTO.IsPartyToTrustACorporation
@@ -394,5 +421,44 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     trustEntity.NameOfGrantor = trustDTO.NameOfGrantor
     trustEntity.TypeOfTrustRevocable = trustDTO.IsTrustTypeLivingAndRevocable
     //TODO tlv this is where we'll add an address - i think there is a CR for this.
+  }
+
+  private function updatePriorLosses(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    if(update != null){
+      //losses need to be added to current bundle because of the soft relationship between losses and HOLine
+      //remove all and re-add all user-reported losses
+      var lossEntities = period.HomeownersLine_HOE.HOPriorLosses_Ext.where( \ priorLoss -> priorLoss.Source == TC_INSURED)
+
+      lossEntities?.each( \ loss -> {edge.PlatformSupport.Bundle.getCurrent().add(loss)
+        loss.remove()
+      })
+
+
+      update.SelfReportedPriorLosses?.each( \ dto -> {
+        var entityLoss = new HOPriorLoss_Ext(period)
+        period.HomeownersLine_HOE.addToHOPriorLosses_Ext(entityLoss)
+        updatePriorLoss(entityLoss, dto)
+      })
+    }
+  }
+
+  private function updatePriorLoss(priorLoss : HOPriorLoss_Ext, dto : PriorLossDTO){
+    priorLoss.ClaimDesc = dto.Description
+    priorLoss.ClaimStatus = dto.Status
+    priorLoss.ReportedDate = dto.DateOfLoss
+    priorLoss.LocationOfLoss = dto.LossLocation
+    priorLoss.Source = TC_INSURED
+
+    //clear and then re-populate.  would only ever truly expect one from portal since fields are up one level.
+    //leaving fields at this level for consistency sake with our data model
+    priorLoss.ClaimPayment?.each( \ entityPayment -> entityPayment?.remove())
+
+    dto.ClaimPayments?.each( \ dtoPayment -> {
+      var newPayment = new ClaimPayment_Ext(priorLoss)
+      newPayment.ClaimAmount = dtoPayment.Amount
+      newPayment.LossCause_Ext = dtoPayment.LossCause
+
+      priorLoss.addToClaimPayment(newPayment)
+    })
   }
 }

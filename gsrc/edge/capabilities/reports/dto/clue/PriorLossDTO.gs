@@ -24,8 +24,11 @@ class PriorLossDTO {
   private var _catCode : String as CATCode
 
   @JsonProperty
-  private var _status : String as Status
+  private var _status : Status_Ext as Status
 
   @JsonProperty
   private var _claimPayments : List<ClaimPaymentDTO> as ClaimPayments
+
+  @JsonProperty
+  private var _source : Source_Ext as Source
 }

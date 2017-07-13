@@ -10,6 +10,7 @@ uses edge.capabilities.quote.draft.dto.AdditionalInsuredDTO
 uses edge.capabilities.policychange.lob.homeowners.draft.dto.DwellingAdditionalInterestDTO
 uses edge.capabilities.quote.draft.dto.AdditionalNamedInsuredDTO
 uses edge.capabilities.quote.draft.dto.TrustDTO
+uses edge.capabilities.reports.dto.clue.PriorLossDTO
 
 /**
  * Homeowners extension for quote draft.
@@ -55,4 +56,7 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
 
   @JsonProperty
   var _trusts : TrustDTO[] as Trusts
+
+  @JsonProperty
+  var _selfReportedLosses : PriorLossDTO[] as SelfReportedPriorLosses
 }

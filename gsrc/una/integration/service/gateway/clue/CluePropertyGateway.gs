@@ -232,7 +232,7 @@ class CluePropertyGateway implements CluePropertyInterface {
       }
       priorLoss.ClaimPayment = pArray
     }
-    priorLoss.Source_Ext = typekey.Source_Ext.TC_CLUE
+    priorLoss.Source = typekey.Source_Ext.TC_CLUE
     priorLoss.ChargeableClaim = una.integration.lexisnexis.util.ClueUtilInfo.calculateChargeable(priorLoss, period)
     _logger.debug("Getting claim scope and dispute date Details ")
     priorLoss.ClaimScope = typecodeMapper.getInternalCodeByAlias(ClaimScope_Ext.Type.RelativeName, "clue", claim.ScopeOfClaim.toString())
@@ -320,7 +320,7 @@ class CluePropertyGateway implements CluePropertyInterface {
 
     //This loss was retrieved from LexisNexis
     priorLoss.ManuallyAddedLoss = false
-    priorLoss.Source_Ext = Source_Ext.TC_CLUE
+    priorLoss.Source = Source_Ext.TC_CLUE
 
     return priorLoss
   }

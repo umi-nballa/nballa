@@ -34,7 +34,7 @@ class UNAUWPriorLoss41_each implements IRuleCondition<HomeownersLine_HOE>{
                    && DateUtil.addYears(elt.ClaimDate as java.util.Date,3)>new java.util.Date() )
                {
                  clmcount++
-                 if(elt.Source_Ext==typekey.Source_Ext.TC_UNACLAIM)
+                 if(elt.Source==typekey.Source_Ext.TC_UNACLAIM)
                    unacount++
 
                }

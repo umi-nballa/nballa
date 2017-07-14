@@ -229,6 +229,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   override function rateHOLineCosts(dateRange: DateRange) {
     var dwelling = PolicyLine.Dwelling
     _discountsOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
+    _discountsOrSurchargeRatingInfo.TotalBasePremium = _dwellingRatingInfo.TotalBasePremium
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
         (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and PolicyLine.BaseState == typekey.Jurisdiction.TC_NV)){
       rateAgeOfHomeDiscount(dateRange)
@@ -276,8 +277,6 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         rateBuildingCodeEffectivenessGradingCredit(dateRange)
     }
 
-    if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
-        _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6)
       rateHigherAllPerilDeductible(dateRange)
 
     if ((_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
@@ -377,7 +376,13 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateHigherAllPerilDeductible", this.IntrinsicType)
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE, HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE,
+    var rateRoutineName : String
+    if(PolicyLine.HOPolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+      rateRoutineName = HORateRoutineNames.DP_DEDUCTIBLE
+    } else{
+      rateRoutineName = HORateRoutineNames.HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE
+    }
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, rateRoutineName , HOCostType_Ext.TC_HIGHERALLPERILDEDUCTIBLE,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.HigherAllPerilDeductible = costData?.ActualTermAmount
     if (costData != null)

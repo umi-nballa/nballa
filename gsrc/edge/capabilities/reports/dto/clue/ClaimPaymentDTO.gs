@@ -19,4 +19,7 @@ class ClaimPaymentDTO {
 
   @JsonProperty
   private var _catIndicator : Boolean as CATIndicator
+
+  @JsonProperty
+  private var _lossCause : typekey.LossCause_Ext as LossCause
 }

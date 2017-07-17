@@ -89,6 +89,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateTrusts(period, update)
     updatePriorLosses(period, update)
     updateRating(hoLine.Dwelling, update.Rating)
+    updateAdditionalParameters(period, update)
   }
 
   override function updateExistingDraftSubmission(period: PolicyPeriod, update: HoDraftDataExtensionDTO) {
@@ -124,6 +125,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
     updateTrusts(period, update)
     updatePriorLosses(period, update)
     updateRating(dwelling, update.Rating)
+    updateAdditionalParameters(period, update)
   }
 
   override function toDraftDTO(period: PolicyPeriod): HoDraftDataExtensionDTO {
@@ -474,5 +476,25 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
 
       priorLoss.addToClaimPayment(newPayment)
     })
+  }
+
+  private function updateAdditionalParameters(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    if(update != null){
+      period.Policy.Account.OwnershipInterestLLC_Ext = update.AreAllOwnershipInterestsLLCs
+      period.Policy.Account.UnderCommonOwnership_Ext = update.PropertiesUnderCommonOwnership
+      period.Policy.Account.OccupyPrimaryResidence_Ext = update.IsDwellingOccupiedAsPrimaryResidenceByAllOwners
+      period.Policy.Account.AccountOrgType = update.OwnershipEntityType
+      period.Policy.Account.OtherOrgTypeDescription = update.OwnershipEntityTypeOtherDescription
+    }
+  }
+
+  private function mapReturnedAdditionalParameters(period : PolicyPeriod, update : HoDraftDataExtensionDTO){
+    if(update != null){
+      update.PropertiesUnderCommonOwnership = period.Policy.Account.UnderCommonOwnership_Ext
+      update.AreAllOwnershipInterestsLLCs = period.Policy.Account.OwnershipInterestLLC_Ext
+      update.IsDwellingOccupiedAsPrimaryResidenceByAllOwners = period.Policy.Account.OccupyPrimaryResidence_Ext
+      update.OwnershipEntityType = period.Policy.Account.AccountOrgType
+      update.OwnershipEntityTypeOtherDescription = period.Policy.Account.OtherOrgTypeDescription
+    }
   }
 }

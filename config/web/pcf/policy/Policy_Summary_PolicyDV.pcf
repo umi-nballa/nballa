@@ -113,17 +113,16 @@
         id="RiskLocation"
         label="riskAddress()"
         value="policyPeriod.getLocationValue(policyPeriod)"/>
-      <!-- <CheckBoxInput
-        id="ConsenttoRate_Ext"
-        label="displaykey.Web.ModifiersScreen.ConsenttoRate_Ext"
-        value="policyPeriod.ConsentToRateReceived_Ext">
-        <PostOnChange/>
-      </CheckBoxInput> -->
       <BooleanRadioInput
         id="ConsentToRate"
         label="displaykey.Web.Policy.UWCompanies.ConsentToRate_Ext"
         required="true"
         value="policyPeriod.ConsentToRate_Ext"
+        visible="policyPeriod.HomeownersLine_HOEExists and policyPeriod.BaseState==typekey.Jurisdiction.TC_NC"/>
+      <CheckBoxInput
+        id="ConsenttoRatereceived_Ext"
+        label="displaykey.Web.SubmissionWizard.PolicyInfo.ConsentToRateReceived_Ext"
+        value="policyPeriod.ConsentToRateReceived_Ext"
         visible="policyPeriod.HomeownersLine_HOEExists and policyPeriod.BaseState==typekey.Jurisdiction.TC_NC"/>
       <BooleanRadioInput
         id="bankruptcy"

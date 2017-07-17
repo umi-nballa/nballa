@@ -17,7 +17,7 @@ uses gw.accelerator.ruleeng.RuleEvaluationResult
 class UNAUWCTRReq_each implements IRuleCondition<HomeownersLine_HOE>{
   override function evaluateRuleCriteria(homeowner : HomeownersLine_HOE) : RuleEvaluationResult {
 
-    if(homeowner.AssociatedPolicyPeriod.ConsentToRate_Ext && !homeowner.AssociatedPolicyPeriod.ConsentToRateReceived_Ext)
+    if(homeowner.AssociatedPolicyPeriod.ConsentToRate_Ext && (homeowner.AssociatedPolicyPeriod.ConsentToRateReceived_Ext!=null && !homeowner.AssociatedPolicyPeriod.ConsentToRateReceived_Ext))
       return RuleEvaluationResult.execute()
 
    return RuleEvaluationResult.skip()

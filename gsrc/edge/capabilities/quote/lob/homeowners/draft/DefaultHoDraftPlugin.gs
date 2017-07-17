@@ -485,6 +485,12 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       period.Policy.Account.OccupyPrimaryResidence_Ext = update.IsDwellingOccupiedAsPrimaryResidenceByAllOwners
       period.Policy.Account.AccountOrgType = update.OwnershipEntityType
       period.Policy.Account.OtherOrgTypeDescription = update.OwnershipEntityTypeOtherDescription
+      if(period.CreditInfoExt == null){
+        period.CreditInfoExt = new CreditInfoExt(period)
+
+      }
+
+      period.CreditInfoExt.CreditLevel = update.CreditLevel
     }
   }
 
@@ -495,6 +501,7 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
       update.IsDwellingOccupiedAsPrimaryResidenceByAllOwners = period.Policy.Account.OccupyPrimaryResidence_Ext
       update.OwnershipEntityType = period.Policy.Account.AccountOrgType
       update.OwnershipEntityTypeOtherDescription = period.Policy.Account.OtherOrgTypeDescription
+      update.CreditLevel = period.CreditInfoExt.CreditLevel
     }
   }
 }

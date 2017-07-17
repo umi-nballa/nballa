@@ -78,4 +78,7 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
 
   @JsonProperty
   var _ownershipEntityTypeOtherDescription : String as OwnershipEntityTypeOtherDescription
+
+  @JsonProperty
+  var _creditLevel : CreditLevelExt as CreditLevel
 }

@@ -2,15 +2,10 @@ package edge.capabilities.quote.lob.homeowners.draft.dto
 
 uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
-uses edge.aspects.validation.annotations.TypeKeyIn
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
 uses java.lang.Integer
 uses java.util.Date
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
-uses edge.aspects.validation.annotations.Year
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
-uses edge.aspects.validation.annotations.Augment
 uses edge.aspects.validation.annotations.TypeKeyNotIn
 
 class YourHomeDTO {
@@ -246,6 +241,9 @@ class YourHomeDTO {
   var _affinityGroupName : String as AffinityGroupName
 
   @JsonProperty
+  var _preferredBuilderName : String as PreferredBuilderName
+
+  @JsonProperty
   private var _doesStoveSitOnNonCombustibleBase : Boolean as DoesStoveSitOnNonCombustibleBase
 
   @JsonProperty
@@ -253,4 +251,7 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _isStoveULListed : Boolean as IsStoveULListed
+
+  @JsonProperty
+  private var _floodRiskType : FloodRiskType_Ext as FloodRiskType
 }

@@ -239,4 +239,10 @@ class YourHomeDTO {
   @JsonProperty
   private var _construction_EQCoverage : EarthquakeConstrn_Ext as Construction_EQCoverage
 
+  @JsonProperty
+  var _hasAffinityDiscount : boolean as HasAffinityDiscount
+
+  @JsonProperty
+  var _affinityGroupName : String as AffinityGroupName
+
 }

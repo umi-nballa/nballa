@@ -1,9 +1,11 @@
 package edge.capabilities.quote.lob.homeowners.draft.util
 
-uses java.lang.UnsupportedOperationException
-uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
 uses edge.capabilities.quote.draft.dto.BaseTunaValueUtil
+uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
+
 uses java.lang.Integer
+uses java.lang.UnsupportedOperationException
+uses gw.api.database.Query
 
 final class YourHomeUtil extends BaseTunaValueUtil {
 
@@ -56,6 +58,8 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.IsHotWaterHeaterSecured_EQCoverage = data.BldngFrameHeater_Ext
     dto.IsMasonryChimneyStrapped_EQCoverage = data.Masonrychimney_Ext
     dto.Construction_EQCoverage = data.EarthquakeConstrn_Ext
+    dto.HasAffinityDiscount = data.PolicyPeriod.QualifiesAffinityDisc_Ext
+    dto.AffinityGroupName = data.PolicyPeriod.PolicyTerm.AffinityGroup?.Name
   }
 
   /**
@@ -113,6 +117,8 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.BldngFrameHeater_Ext = dto.IsHotWaterHeaterSecured_EQCoverage
     data.Masonrychimney_Ext = dto.IsMasonryChimneyStrapped_EQCoverage
     data.EarthquakeConstrn_Ext = dto.Construction_EQCoverage
+    data.PolicyPeriod.QualifiesAffinityDisc_Ext = dto.HasAffinityDiscount
+    updateAffinityGroup(dto,data.PolicyPeriod)
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){
@@ -135,4 +141,25 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     var policyForDiscount = new MultiPolicyDiscPolicy_Ext(data.PolicyPeriod)
     data.PolicyPeriod.addToMultiPolicyDiscountPolicies_Ext(policyForDiscount)
   }
+
+  private static function updateAffinityGroup(dto : YourHomeDTO, policyPeriod : PolicyPeriod){
+    if(!dto.AffinityGroupName.Empty){
+      var query = Query.make(AffinityGroup)
+      query.compare("Name",Equals,dto.AffinityGroupName)
+      var results = query.select()
+
+      if(!results.Empty){
+        var affinityGroup = policyPeriod.PolicyTerm.AffinityGroup
+        policyPeriod.PolicyTerm.AffinityGroup = results.first()
+      }else{
+        var affinityGroup = new AffinityGroup()
+        affinityGroup.Name = dto.AffinityGroupName
+        affinityGroup.AffinityGroupType = AffinityGroupType.TC_OPEN
+        policyPeriod.PolicyTerm.AffinityGroup = affinityGroup
+      }
+    }else if(policyPeriod.PolicyTerm.AffinityGroup != null && dto.AffinityGroupName.Empty){
+      policyPeriod.PolicyTerm.AffinityGroup.remove()
+    }
+  }
+
 }

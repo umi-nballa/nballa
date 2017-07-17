@@ -56,6 +56,9 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.IsHotWaterHeaterSecured_EQCoverage = data.BldngFrameHeater_Ext
     dto.IsMasonryChimneyStrapped_EQCoverage = data.Masonrychimney_Ext
     dto.Construction_EQCoverage = data.EarthquakeConstrn_Ext
+    dto.DoesStoveSitOnNonCombustibleBase = data.Sittingonnoncombustiblebase
+    dto.DoesStoveMeetOrdinancesAndCodes = data.HeatSrcInstalledbyLicIns
+    dto.IsStoveULListed = data.ULListedstoveandchimneyflue
   }
 
   /**
@@ -113,6 +116,9 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.BldngFrameHeater_Ext = dto.IsHotWaterHeaterSecured_EQCoverage
     data.Masonrychimney_Ext = dto.IsMasonryChimneyStrapped_EQCoverage
     data.EarthquakeConstrn_Ext = dto.Construction_EQCoverage
+    data.HeatSrcInstalledbyLicIns = dto.DoesStoveMeetOrdinancesAndCodes
+    data.Sittingonnoncombustiblebase = dto.DoesStoveSitOnNonCombustibleBase
+    data.ULListedstoveandchimneyflue = dto.IsStoveULListed
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){

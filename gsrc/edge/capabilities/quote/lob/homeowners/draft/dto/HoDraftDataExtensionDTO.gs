@@ -63,4 +63,19 @@ class HoDraftDataExtensionDTO extends UnaLobDataDTO implements IDraftLobExtensio
 
   @JsonProperty
   var _priorPolicy : PriorPolicyDTO as PriorPolicy
+
+  @JsonProperty
+  var _propertiesUnderCommonOwnership : NumberPrptiesCmmnOwnr_Ext as PropertiesUnderCommonOwnership
+
+  @JsonProperty
+  var _areAllOwnershipInterestsLLCs : Boolean as AreAllOwnershipInterestsLLCs
+
+  @JsonProperty
+  var _isDwellingOccupiedAsPrimaryResidenceByAllOwners : Boolean as IsDwellingOccupiedAsPrimaryResidenceByAllOwners
+
+  @JsonProperty
+  var _ownershipEntityType : AccountOrgType as OwnershipEntityType
+
+  @JsonProperty
+  var _ownershipEntityTypeOtherDescription : String as OwnershipEntityTypeOtherDescription
 }

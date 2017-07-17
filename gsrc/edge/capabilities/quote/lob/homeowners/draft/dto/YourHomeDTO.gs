@@ -2,16 +2,18 @@ package edge.capabilities.quote.lob.homeowners.draft.dto
 
 uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
+uses edge.aspects.validation.annotations.TypeKeyIn
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
 uses java.lang.Integer
 uses java.util.Date
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
+uses edge.aspects.validation.annotations.Year
+uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
+uses edge.aspects.validation.annotations.Augment
 uses edge.aspects.validation.annotations.TypeKeyNotIn
-uses edge.capabilities.address.dto.AddressDTO
 
 class YourHomeDTO {
-  @JsonProperty
-  var _riskAddress : AddressDTO as RiskAddress
 
   @JsonProperty
   @TunaValue(HOLocation_HOE#ACVValue_Ext, HOLocation_HOE#ACVValueMatchLevel_Ext, HOLocation_HOE#OverrideACVValue_Ext, HOLocation_HOE#ACVValueOverridden_Ext, {Dwelling_HOE#HOLocation})
@@ -236,6 +238,12 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _construction_EQCoverage : EarthquakeConstrn_Ext as Construction_EQCoverage
+
+  @JsonProperty
+  var _hasAffinityDiscount : boolean as HasAffinityDiscount
+
+  @JsonProperty
+  var _affinityGroupName : String as AffinityGroupName
 
   @JsonProperty
   private var _doesStoveSitOnNonCombustibleBase : Boolean as DoesStoveSitOnNonCombustibleBase

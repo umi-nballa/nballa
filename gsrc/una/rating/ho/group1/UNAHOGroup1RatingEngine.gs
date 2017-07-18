@@ -220,6 +220,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       case HODW_PlantsShrubsTrees_HOE_Ext:
           ratePlantsTreesShrubsCoverage(dwellingCov, dateRange)
           break
+      case HODW_DifferenceConditions_HOE_Ext:
+          rateDifferenceInConditions(dwellingCov, dateRange)
+          break
     }
   }
 
@@ -235,9 +238,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA)){
       rateAgeOfHomeDiscount(dateRange)
     }
-    if (dwelling.HODW_DifferenceConditions_HOE_ExtExists){
-        rateDifferenceInConditions(dwelling.HODW_DifferenceConditions_HOE_Ext, dateRange)
-    }
+
     if (HasSeasonalOrSecondaryResidenceSurcharge){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 ||
           _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6) {
@@ -258,6 +259,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3)
         rateConcreteTileRoofDiscount(dateRange)
     }
+
+
 
     if (PolicyLine.BaseState == Jurisdiction.TC_AZ){
       if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 || _discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO4 ||
@@ -306,6 +309,11 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       if(firelineAdjustedHazardScore != null)
         if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )
           rateBrushHazardSurcharge(dateRange)
+
+      if(_discountsOrSurchargeRatingInfo.PolicyType == TC_DP3_Ext and dwellingRoofType == typekey.RoofType.TC_WOODSHAKE_EXT){
+        rateWoodShakeRoofSurcharge(dateRange)
+      }
+
     }
 
     if(PolicyLine.BaseState == Jurisdiction.TC_NV or PolicyLine.BaseState == Jurisdiction.TC_AZ or
@@ -350,7 +358,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
 
 
   /**
-   * Rate VMM coverage
+   * Rate Plants
    */
   function ratePlantsTreesShrubsCoverage(dwellingCov: HODW_PlantsShrubsTrees_HOE_Ext, dateRange: DateRange) {
     if(_logger.DebugEnabled)
@@ -364,7 +372,21 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
       _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
   }
 
-
+  /**
+   * Rate Wood Shake Roof
+   */
+  function rateWoodShakeRoofSurcharge(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateVMMCoverage to rate VMM Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_WOODSHAKEROOF,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
+  }
 
 
 

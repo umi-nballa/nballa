@@ -66,6 +66,9 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.IsStoveULListed = data.ULListedstoveandchimneyflue
     dto.PreferredBuilderName = data.Branch.PreferredBuilder_Ext
     dto.FloodRiskType = data.FloodRiskType_Ext
+    dto.CoastLocation = data.CoastLocation_Ext
+    dto.OnBarrierIsland = data.BarrierIsland_Ext
+    dto.ElectricalType = data.ElectricalType
   }
 
   /**
@@ -130,6 +133,9 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.ULListedstoveandchimneyflue = dto.IsStoveULListed
     data.Branch.PreferredBuilder_Ext = dto.PreferredBuilderName
     data.FloodRiskType_Ext = dto.FloodRiskType
+    data.CoastLocation_Ext = dto.CoastLocation
+    data.BarrierIsland_Ext = dto.OnBarrierIsland
+    data.ElectricalType = dto.ElectricalType
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){

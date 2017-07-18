@@ -254,4 +254,13 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _floodRiskType : FloodRiskType_Ext as FloodRiskType
+  @JsonProperty
+  var _coastLocation : CoastLocation_Ext as CoastLocation
+
+  @JsonProperty
+  var _onBarrierIsland : Boolean as OnBarrierIsland
+
+  @JsonProperty
+  var _electricalType : BreakerType_HOE as ElectricalType
+
 }

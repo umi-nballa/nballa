@@ -231,7 +231,8 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
     _discountsOrSurchargeRatingInfo = new HOGroup1DiscountsOrSurchargeRatingInfo(PolicyLine, _hoRatingInfo.AdjustedBaseClassPremium)
     _discountsOrSurchargeRatingInfo.TotalBasePremium = _dwellingRatingInfo.TotalBasePremium
     if (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO3 or
-        (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and PolicyLine.BaseState == typekey.Jurisdiction.TC_NV)){
+        (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_HO6 and PolicyLine.BaseState == typekey.Jurisdiction.TC_NV) or
+          (_discountsOrSurchargeRatingInfo.PolicyType == typekey.HOPolicyType_HOE.TC_DP3_EXT and PolicyLine.BaseState == typekey.Jurisdiction.TC_CA)){
       rateAgeOfHomeDiscount(dateRange)
     }
     if (dwelling.HODW_DifferenceConditions_HOE_ExtExists){

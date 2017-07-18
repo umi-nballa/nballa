@@ -310,8 +310,14 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
         if(Integer.parseInt(firelineAdjustedHazardScore?.Code) > 6 )
           rateBrushHazardSurcharge(dateRange)
 
-      if(_discountsOrSurchargeRatingInfo.PolicyType == TC_DP3_Ext and dwellingRoofType == typekey.RoofType.TC_WOODSHAKE_EXT){
-        rateWoodShakeRoofSurcharge(dateRange)
+      if(_discountsOrSurchargeRatingInfo.PolicyType == TC_DP3_Ext){
+         if( dwellingRoofType == typekey.RoofType.TC_WOODSHAKE_EXT){
+           rateWoodShakeRoofSurcharge(dateRange)
+         }
+         if(dwelling.SupplHeatingSurcharge_Ext){
+           rateSupplementalHeatingSurcharge(dateRange)
+         }
+
       }
 
     }
@@ -362,14 +368,14 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function ratePlantsTreesShrubsCoverage(dwellingCov: HODW_PlantsShrubsTrees_HOE_Ext, dateRange: DateRange) {
     if(_logger.DebugEnabled)
-      _logger.debug("Entering " + CLASS_NAME + ":: rateVMMCoverage to rate VMM Coverage", this.IntrinsicType)
+      _logger.debug("Entering " + CLASS_NAME + ":: ratePlantsTreesShrubsCoverage", this.IntrinsicType)
     var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState.Code)
     var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.DP_PLANTS_TREES_SHRUBS, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm, HOCostType_Ext.TC_PLANTSTREESSHRUBS)
     if (costData != null){
       addCost(costData)
     }
     if(_logger.DebugEnabled)
-      _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
+      _logger.debug("ratePlantsTreesShrubsCoverage Rated Successfully", this.IntrinsicType)
   }
 
   /**
@@ -377,17 +383,32 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
    */
   function rateWoodShakeRoofSurcharge(dateRange: DateRange) {
     if(_logger.DebugEnabled)
-      _logger.debug("Entering " + CLASS_NAME + ":: rateVMMCoverage to rate VMM Coverage", this.IntrinsicType)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateWoodShakeRoofSurcharge", this.IntrinsicType)
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.PROTECTIVE_DEVICE_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_WOODSHAKEROOF,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.DP_WOOD_SHAKE_ROOF, HOCostType_Ext.TC_WOODSHAKEROOF,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null){
       addCost(costData)
     }
     if(_logger.DebugEnabled)
-      _logger.debug("VMM Coverage Rated Successfully", this.IntrinsicType)
+      _logger.debug("rateWoodShakeRoofSurcharge Rated Successfully", this.IntrinsicType)
   }
 
+  /**
+   * Rate Supplemental heating Surcharge
+   */
+  function rateSupplementalHeatingSurcharge(dateRange: DateRange) {
+    if(_logger.DebugEnabled)
+      _logger.debug("Entering " + CLASS_NAME + ":: rateSupplementalHeatingSurcharge", this.IntrinsicType)
+    var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.DP_SUPPLEMENTAL_HEATING_SURCHARGE, HOCostType_Ext.TC_SUPPLEMENTALHEATINGSURCHARGE,
+        RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    if (costData != null){
+      addCost(costData)
+    }
+    if(_logger.DebugEnabled)
+      _logger.debug("rateSupplementalHeatingSurcharge Rated Successfully", this.IntrinsicType)
+  }
 
 
 

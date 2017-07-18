@@ -172,6 +172,7 @@ public final class HORateRoutineNames {
   public static final var DP_OTHER_STRUCTURES : String = "UNAHODPOtherStructures"
   public static final var DP_PLANTS_TREES_SHRUBS : String = "UNAHODPPlantsTreesShrubs"
   public static final var DP_WOOD_SHAKE_ROOF : String = "UNAHODPWoodShakeRoof"
+  public static final var DP_SUPPLEMENTAL_HEATING_SURCHARGE : String = "UNAHODPSupplementalHeatingSurcharge"
 
 
 }

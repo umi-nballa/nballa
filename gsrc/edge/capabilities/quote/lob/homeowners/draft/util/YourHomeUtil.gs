@@ -59,8 +59,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.IsMasonryChimneyStrapped_EQCoverage = data.Masonrychimney_Ext
     dto.Construction_EQCoverage = data.EarthquakeConstrn_Ext
     dto.HasAffinityDiscount = data.PolicyPeriod.QualifiesAffinityDisc_Ext
-    dto.AffinityGroupName = data.PolicyPeriod.PolicyTerm.AffinityGroup?.Name
-
+    dto.PreferredEmployerName = data.PolicyPeriod.PreferredEmpGroup_Ext
     dto.DoesStoveSitOnNonCombustibleBase = data.Sittingonnoncombustiblebase
     dto.DoesStoveMeetOrdinancesAndCodes = data.HeatSrcInstalledbyLicIns
     dto.IsStoveULListed = data.ULListedstoveandchimneyflue
@@ -110,10 +109,8 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.MoveInDate_Ext = dto.MoveInDate
     data.PriorResidenceWas_Ext = dto.PriorResidenceType
     data.PostFIRM_Ext = dto.IsPostFirm
-
     data.PriorFloodInsProvider_Ext = dto.PriorFloodInsuranceProvider
     data.PriorFloodInsuranceExpirationDate_Ext = dto.PriorFloodInsuranceExpirationDate
-
     data.BasementHome_Ext = dto.HasBasementForFloodCoverage
     data.BarrierIsland_Ext = dto.IsOnBarrierIsland
     data.PropertyLocatedIn_Ext = dto.IsPropertyInNonNFIPCommunity
@@ -127,7 +124,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.Masonrychimney_Ext = dto.IsMasonryChimneyStrapped_EQCoverage
     data.EarthquakeConstrn_Ext = dto.Construction_EQCoverage
     data.PolicyPeriod.QualifiesAffinityDisc_Ext = dto.HasAffinityDiscount
-    updateAffinityGroup(dto,data.PolicyPeriod)
+    data.PolicyPeriod.PreferredEmpGroup_Ext = dto.PreferredEmployerName
     data.HeatSrcInstalledbyLicIns = dto.DoesStoveMeetOrdinancesAndCodes
     data.Sittingonnoncombustiblebase = dto.DoesStoveSitOnNonCombustibleBase
     data.ULListedstoveandchimneyflue = dto.IsStoveULListed
@@ -157,26 +154,6 @@ final class YourHomeUtil extends BaseTunaValueUtil {
   private static function addPolicyNumberToMultiDiscount(policyNumber : String, data : Dwelling_HOE,  policyType : typekey.TypeofPolicy_Ext){
     var policyForDiscount = new MultiPolicyDiscPolicy_Ext(data.PolicyPeriod)
     data.PolicyPeriod.addToMultiPolicyDiscountPolicies_Ext(policyForDiscount)
-  }
-
-  private static function updateAffinityGroup(dto : YourHomeDTO, policyPeriod : PolicyPeriod){
-    if(!dto.AffinityGroupName.Empty){
-      var query = Query.make(AffinityGroup)
-      query.compare("Name",Equals,dto.AffinityGroupName)
-      var results = query.select()
-
-      if(!results.Empty){
-        var affinityGroup = policyPeriod.PolicyTerm.AffinityGroup
-        policyPeriod.PolicyTerm.AffinityGroup = results.first()
-      }else{
-        var affinityGroup = new AffinityGroup()
-        affinityGroup.Name = dto.AffinityGroupName
-        affinityGroup.AffinityGroupType = AffinityGroupType.TC_OPEN
-        policyPeriod.PolicyTerm.AffinityGroup = affinityGroup
-      }
-    }else if(policyPeriod.PolicyTerm.AffinityGroup != null && dto.AffinityGroupName.Empty){
-      policyPeriod.PolicyTerm.AffinityGroup.remove()
-    }
   }
 
 }

@@ -238,7 +238,7 @@ class YourHomeDTO {
   var _hasAffinityDiscount : boolean as HasAffinityDiscount
 
   @JsonProperty
-  var _affinityGroupName : String as AffinityGroupName
+  var _preferredEmployerName : String as PreferredEmployerName
 
   @JsonProperty
   var _preferredBuilderName : String as PreferredBuilderName

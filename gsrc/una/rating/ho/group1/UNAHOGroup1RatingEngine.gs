@@ -320,6 +320,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
          if(dwelling.SupplHeatingSurcharge_Ext){
            rateSupplementalHeatingSurcharge(dateRange)
          }
+         rateLossHistoryCredit(dateRange)
 
       }
 
@@ -444,8 +445,15 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   function rateLossHistoryCredit(dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateLossHistoryCredit", this.IntrinsicType)
+    var costType : typekey.HOCostType_Ext
+    if(PolicyLine.HOPolicyType == TC_DP3_Ext){
+      costType = HOCostType_Ext.TC_PRIORCLAIMHISTORYSURCHARGE
+    }else{
+      costType = HOCostType_Ext.TC_LOSSHISTORYCREDIT
+    }
+
     var rateRoutineParameterMap = getHOLineDiscountsOrSurchargesParameterSet(PolicyLine, _discountsOrSurchargeRatingInfo, PolicyLine.BaseState)
-    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.LOSS_HISTORY_CREDIT_RATE_ROUTINE, HOCostType_Ext.TC_LOSSHISTORYCREDIT,
+    var costData = HOCreateCostDataUtil.createCostDataForHOLineCosts(dateRange, HORateRoutineNames.LOSS_HISTORY_CREDIT_RATE_ROUTINE, costType,
         RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     _hoRatingInfo.LossHistoryRatingPlan = costData?.ActualTermAmount
     if (costData != null)

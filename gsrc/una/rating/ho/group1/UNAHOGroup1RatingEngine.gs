@@ -163,6 +163,9 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
           if (!HasExecutiveCoverage)
             rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
           break
+      case DPDW_OrdinanceCov_HOE:
+          rateOrdinanceOrLawCoverage(dwellingCov, dateRange)
+          break
       case HODW_BusinessProperty_HOE_Ext:
           rateBusinessPropertyIncreasedLimitsCoverage(dwellingCov, dateRange)
           break
@@ -767,7 +770,7 @@ class UNAHOGroup1RatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> 
   /**
    * Rate the Ordinance Or Law Coverage
    */
-  function rateOrdinanceOrLawCoverage(dwellingCov: HODW_OrdinanceCov_HOE, dateRange: DateRange) {
+  function rateOrdinanceOrLawCoverage(dwellingCov: DwellingCov_HOE, dateRange: DateRange) {
     if (_logger.DebugEnabled)
       _logger.debug("Entering " + CLASS_NAME + ":: rateOrdinanceOrLawCoverage to rate Ordinance Or Law Coverage", this.IntrinsicType)
     if (_dwellingRatingInfo.PolicyType == HOPolicyType_HOE.TC_HO4) {

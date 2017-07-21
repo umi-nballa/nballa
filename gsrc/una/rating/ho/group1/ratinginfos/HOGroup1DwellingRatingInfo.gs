@@ -79,6 +79,8 @@ class HOGroup1DwellingRatingInfo extends HOCommonDwellingRatingInfo {
     }
     if (dwelling?.HODW_OrdinanceCov_HOEExists){
       _ordinanceOrLawLimit = dwelling?.HODW_OrdinanceCov_HOE?.HODW_OrdinanceLimit_HOETerm?.Value
+    }else if(dwelling.DPDW_OrdinanceCov_HOEExists){
+      _ordinanceOrLawLimit = dwelling.DPDW_OrdinanceCov_HOE.DPDW_OrdinanceLimit_HOETerm.Value
     }
     if (dwelling?.HODW_PermittedIncOcp_HOE_ExtExists){
       _isPermittedIncidentalOccupancyInDwelling = dwelling?.HODW_PermittedIncOcp_HOE_Ext?.HODWDwelling_HOETerm?.Value

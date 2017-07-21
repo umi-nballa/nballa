@@ -121,12 +121,12 @@ class AccountContactDTO {
   var _maritalStatus : typekey.MaritalStatus as MaritalStatus
 
   public property get ContactType() : typekey.ContactType{
-    var result : ContactType
+    var result : typekey.ContactType
 
     if(this.Subtype?.equalsIgnoreCase("Person")){
-      result = ContactType.TC_PERSON
+      result = typekey.ContactType.TC_PERSON
     }else if(this.Subtype?.equalsIgnoreCase("Company")){
-      result = ContactType.TC_COMPANY
+      result = typekey.ContactType.TC_COMPANY
     }
 
     return result

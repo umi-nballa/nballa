@@ -1,9 +1,11 @@
 package edge.capabilities.quote.lob.homeowners.draft.util
 
-uses java.lang.UnsupportedOperationException
-uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
 uses edge.capabilities.quote.draft.dto.BaseTunaValueUtil
+uses edge.capabilities.quote.lob.homeowners.draft.dto.YourHomeDTO
+
 uses java.lang.Integer
+uses java.lang.UnsupportedOperationException
+uses gw.api.database.Query
 
 final class YourHomeUtil extends BaseTunaValueUtil {
 
@@ -56,6 +58,16 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.IsHotWaterHeaterSecured_EQCoverage = data.BldngFrameHeater_Ext
     dto.IsMasonryChimneyStrapped_EQCoverage = data.Masonrychimney_Ext
     dto.Construction_EQCoverage = data.EarthquakeConstrn_Ext
+    dto.HasAffinityDiscount = data.PolicyPeriod.QualifiesAffinityDisc_Ext
+    dto.PreferredEmployerName = data.PolicyPeriod.PreferredEmpGroup_Ext
+    dto.DoesStoveSitOnNonCombustibleBase = data.Sittingonnoncombustiblebase
+    dto.DoesStoveMeetOrdinancesAndCodes = data.HeatSrcInstalledbyLicIns
+    dto.IsStoveULListed = data.ULListedstoveandchimneyflue
+    dto.PreferredBuilderName = data.Branch.PreferredBuilder_Ext
+    dto.FloodRiskType = data.FloodRiskType_Ext
+    dto.CoastLocation = data.CoastLocation_Ext
+    dto.OnBarrierIsland = data.BarrierIsland_Ext
+    dto.ElectricalType = data.ElectricalType
   }
 
   /**
@@ -97,10 +109,8 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.MoveInDate_Ext = dto.MoveInDate
     data.PriorResidenceWas_Ext = dto.PriorResidenceType
     data.PostFIRM_Ext = dto.IsPostFirm
-
     data.PriorFloodInsProvider_Ext = dto.PriorFloodInsuranceProvider
     data.PriorFloodInsuranceExpirationDate_Ext = dto.PriorFloodInsuranceExpirationDate
-
     data.BasementHome_Ext = dto.HasBasementForFloodCoverage
     data.BarrierIsland_Ext = dto.IsOnBarrierIsland
     data.PropertyLocatedIn_Ext = dto.IsPropertyInNonNFIPCommunity
@@ -113,6 +123,16 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.BldngFrameHeater_Ext = dto.IsHotWaterHeaterSecured_EQCoverage
     data.Masonrychimney_Ext = dto.IsMasonryChimneyStrapped_EQCoverage
     data.EarthquakeConstrn_Ext = dto.Construction_EQCoverage
+    data.PolicyPeriod.QualifiesAffinityDisc_Ext = dto.HasAffinityDiscount
+    data.PolicyPeriod.PreferredEmpGroup_Ext = dto.PreferredEmployerName
+    data.HeatSrcInstalledbyLicIns = dto.DoesStoveMeetOrdinancesAndCodes
+    data.Sittingonnoncombustiblebase = dto.DoesStoveSitOnNonCombustibleBase
+    data.ULListedstoveandchimneyflue = dto.IsStoveULListed
+    data.Branch.PreferredBuilder_Ext = dto.PreferredBuilderName
+    data.FloodRiskType_Ext = dto.FloodRiskType
+    data.CoastLocation_Ext = dto.CoastLocation
+    data.BarrierIsland_Ext = dto.OnBarrierIsland
+    data.ElectricalType = dto.ElectricalType
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){
@@ -135,4 +155,5 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     var policyForDiscount = new MultiPolicyDiscPolicy_Ext(data.PolicyPeriod)
     data.PolicyPeriod.addToMultiPolicyDiscountPolicies_Ext(policyForDiscount)
   }
+
 }

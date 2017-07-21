@@ -24,7 +24,7 @@
             elementName="priorPolicy"
             hasCheckBoxes="true"
             hideCheckBoxesIfReadOnly="true"
-            toCreateAndAdd="var pp = new PriorPolicy(); policyPeriod.Policy.addToPriorPolicies(pp); return pp;"
+            toCreateAndAdd="var pp = new PriorPolicy(); pp.EffectiveDate = new java.util.Date(); policyPeriod.Policy.addToPriorPolicies(pp); return pp; "
             toRemove="policyPeriod.Policy.removeFromPriorPolicies(priorPolicy)"
             value="policyPeriod.Policy.PriorPolicies">
             <Row>
@@ -62,7 +62,8 @@
                 id="EffectiveDate"
                 label="displaykey.Web.Policy.PriorPolicy.EffectiveDate"
                 required="false"
-                value="priorPolicy.EffectiveDate"/>
+                value="priorPolicy.EffectiveDate"
+                visible="false"/>
               <DateCell
                 editable="true"
                 id="ExpirationDate"

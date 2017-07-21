@@ -31,6 +31,12 @@ class HOGroup1DiscountsOrSurchargeRatingInfo extends HOCommonDiscountsOrSurcharg
       if(line.Branch.PreferredFinInst_Ext != null)
         _preferredFinancialInstitutionExists = true
     }
+
+    if(line.BaseState == Jurisdiction.TC_CA and PolicyType == TC_DP3_Ext){
+      PriorLosses = line?.HOPriorLosses_Ext?.where( \ elt -> elt.ChargeableClaim == typekey.Chargeable_Ext.TC_YES and elt.ClaimAge <= 3).length
+    }
+
+
   }
 
   override property get YearForAgeOfHomeCalc() : int{

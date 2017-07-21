@@ -2,15 +2,10 @@ package edge.capabilities.quote.lob.homeowners.draft.dto
 
 uses edge.jsonmapper.JsonProperty
 uses edge.aspects.validation.annotations.Required
-uses edge.aspects.validation.annotations.TypeKeyIn
 uses edge.capabilities.quote.draft.dto.TunaValueDTO
 uses edge.capabilities.quote.draft.annotation.TunaValue
 uses java.lang.Integer
 uses java.util.Date
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.DetailOf
-uses edge.aspects.validation.annotations.Year
-uses edge.capabilities.quote.lob.homeowners.draft.metadata.NotAFutureYear
-uses edge.aspects.validation.annotations.Augment
 uses edge.aspects.validation.annotations.TypeKeyNotIn
 
 class YourHomeDTO {
@@ -238,5 +233,34 @@ class YourHomeDTO {
 
   @JsonProperty
   private var _construction_EQCoverage : EarthquakeConstrn_Ext as Construction_EQCoverage
+
+  @JsonProperty
+  var _hasAffinityDiscount : boolean as HasAffinityDiscount
+
+  @JsonProperty
+  var _preferredEmployerName : String as PreferredEmployerName
+
+  @JsonProperty
+  var _preferredBuilderName : String as PreferredBuilderName
+
+  @JsonProperty
+  private var _doesStoveSitOnNonCombustibleBase : Boolean as DoesStoveSitOnNonCombustibleBase
+
+  @JsonProperty
+  private var _doesStoveMeetOrdinanceAndCodes : Boolean as  DoesStoveMeetOrdinancesAndCodes
+
+  @JsonProperty
+  private var _isStoveULListed : Boolean as IsStoveULListed
+
+  @JsonProperty
+  private var _floodRiskType : FloodRiskType_Ext as FloodRiskType
+  @JsonProperty
+  var _coastLocation : CoastLocation_Ext as CoastLocation
+
+  @JsonProperty
+  var _onBarrierIsland : Boolean as OnBarrierIsland
+
+  @JsonProperty
+  var _electricalType : BreakerType_HOE as ElectricalType
 
 }

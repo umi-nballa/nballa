@@ -37,7 +37,6 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     _coverageALimit = line.Dwelling?.HODW_Dwelling_Cov_HOE?.HODW_Dwelling_Limit_HOETerm?.Value
     _personalPropertyLimit = line.Dwelling?.HODW_Personal_Property_HOE?.HODW_PersonalPropertyLimit_HOETerm?.Value
     _allPerilDeductible = line.Dwelling?.AllPerilsOrAllOtherPerilsCovTerm?.Value
-    _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
     _policyType = line.HOPolicyType
     _state = line.BaseState
     _protectionClassCode = line.Dwelling?.ProtectionClassCodeOrOverride
@@ -58,6 +57,15 @@ class HOCommonDiscountsOrSurchargeRatingInfo {
     var originalEffectiveDate = policyPeriod?.Policy.OriginalEffectiveDate
     var editEffectiveDate = policyPeriod?.EditEffectiveDate
     _consecutiveYrsWithUniversal = getDiffYears(originalEffectiveDate, editEffectiveDate)
+
+    if(_policyType == typekey.HOPolicyType_HOE.TC_DP3_EXT){
+      _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState, _policyType)
+    } else{
+      _maxAgeOfHome = ConfigParamsUtil.getInt(TC_AgeOfHomeGreaterLimit, line.BaseState)
+
+    }
+
+
   }
 
   property get AgeOfHome() : int {

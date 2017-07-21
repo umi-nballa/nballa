@@ -17,6 +17,9 @@
     <include path="AdditionalNamedInsuredOtherCandidates[].Account.AccountContacts[].Contact.Person.PrimaryAddress.State" type="typekey.State" propertyInclusionType="NORMAL"/>
     <include path="AdditionalNamedInsuredOtherCandidates[].Account.AccountContacts[].Contact.Person.Suffix" type="typekey.NameSuffix" propertyInclusionType="NORMAL"/>
     <include path="AltBillingAccountNumber" type="java.lang.String" propertyInclusionType="NORMAL"/>
+    <include path="Answers[].BooleanAnswer" type="java.lang.Boolean" propertyInclusionType="NORMAL"/>
+    <include path="Answers[].Question.QuestionSet.QuestionSetType" type="typekey.QuestionSetType" propertyInclusionType="NORMAL"/>
+    <include path="Answers[].QuestionCode" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="BillingAccountNumber" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="BillingMethod.Code" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="Cancellation.CancelReasonCode" type="typekey.ReasonCode" propertyInclusionType="NORMAL"/>
@@ -190,6 +193,7 @@
     <include path="HomeownersLine_HOE.HomeownersCosts[].(entity-ScheduleLineCovCost_HOE_Ext).LineScheduledItem.watercraftName" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="HomeownersLine_HOE.HomeownersCosts[].(entity-ScheduleLineCovCost_HOE_Ext).LineScheduledItem.watercraftType" type="typekey.WatercraftType_Ext" propertyInclusionType="NORMAL"/>
     <include path="HomeownersLine_HOE.HomeownersCosts[].ActualAmount_amt" type="java.math.BigDecimal" propertyInclusionType="NORMAL"/>
+    <include path="HomeownersLine_HOE.HomeownersCosts[].ChargePattern" type="typekey.ChargePattern" propertyInclusionType="NORMAL"/>
     <include path="HomeownersLine_HOE.HomeownersCosts[].Coverage.CovTerms[].PatternCode" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="HomeownersLine_HOE.HomeownersCosts[].Coverage.CovTerms[].ValueAsString" type="java.lang.String" propertyInclusionType="NORMAL"/>
     <include path="HomeownersLine_HOE.HomeownersCosts[].Coverage.CovTerms[].ValueTypeName" type="java.lang.String" propertyInclusionType="NORMAL"/>
@@ -285,8 +289,8 @@
     <include path="SelectedPaymentPlan.DownPayment_amt" type="java.math.BigDecimal" propertyInclusionType="NORMAL"/>
     <include path="SelectedPaymentPlan.InvoiceFrequency" type="typekey.BillingPeriodicity" propertyInclusionType="NORMAL"/>
     <include path="SelectedPaymentPlan.NumberOfPayments" type="int" propertyInclusionType="NORMAL"/>
-    <include path="TotalPremiumRPT_amt" type="java.math.BigDecimal" propertyInclusionType="NORMAL"/>
-    <include path="TransactionPremiumRPT_amt" type="java.math.BigDecimal" propertyInclusionType="NORMAL"/>
+    <include path="TotalCostRPT_amt" type="java.math.BigDecimal" propertyInclusionType="NORMAL"/>
+    <include path="TransactionCostRPT_amt" type="java.math.BigDecimal" propertyInclusionType="NORMAL"/>
     <include path="UWCompany.NAICCode" type="java.lang.String" propertyInclusionType="NORMAL"/>
   </includes>
 </gx-model>

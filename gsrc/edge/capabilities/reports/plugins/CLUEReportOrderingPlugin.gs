@@ -36,7 +36,7 @@ class CLUEReportOrderingPlugin extends ReportOrderingPlugin<ReportRequestDTO, CL
       priorLossDTO.Description = priorLoss.ClaimDesc
       priorLossDTO.CATCode = priorLoss.CatastropheInica
       priorLossDTO.LossLocation = priorLoss.LocationOfLoss
-      priorLossDTO.Status = priorLoss.ClaimStatus.Description
+      priorLossDTO.Status = priorLoss.ClaimStatus
       priorLossDTO.ClaimPayments = {}
 
       priorLoss.ClaimPayment?.each( \ claimPayment -> {

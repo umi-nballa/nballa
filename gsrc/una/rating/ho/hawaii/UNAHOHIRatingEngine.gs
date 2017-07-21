@@ -238,15 +238,16 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
     }
 
 
+  /**
+   * Rate Water backup Sump Overflow coverage
+   */
   function rateWaterBackupSumpOverflowCoverage(dwellingCov: HODW_WaterBackUpSumpOverflow_HOE_Ext, dateRange: DateRange) {
-    if (_logger.DebugEnabled)
-      _logger.debug("Entering " + CLASS_NAME + ":: rateWaterBackupSumpOverflowCoverage to rate Water Backup Sump Overflow Coverage", this.IntrinsicType)
-    var rateRoutineParameterMap = HOCommonRateRoutinesExecutor.getHOCWParameterSet(PolicyLine)
-    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.WATER_BACKUP_SUMP_OVERFLOW_COV_ROUTINE_NAME, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
+    _logger.debug("Entering " + CLASS_NAME + ":: rateWaterBackupSumpOverflowCoverage to rate Water Backup Sump Overflow Coverage", this.IntrinsicType)
+    var rateRoutineParameterMap = getDwellingCovParameterSet(PolicyLine, _dwellingRatingInfo, PolicyLine.BaseState)
+    var costData = HOCreateCostDataUtil.createCostDataForDwellingCoverage(dwellingCov, dateRange, HORateRoutineNames.WATER_BACKUP_AND_SUMP_OVERFLOW, RateCache, PolicyLine, rateRoutineParameterMap, Executor, this.NumDaysInCoverageRatedTerm)
     if (costData != null)
       addCost(costData)
-    if (_logger.DebugEnabled)
-      _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
+    _logger.debug("Water Backup Sump Overflow Coverage Rated Successfully", this.IntrinsicType)
   }
 
   function rateIncreasedPersonalProperty(dwellingCov: DPDW_Personal_Property_HOE, dateRange: DateRange) {
@@ -800,6 +801,17 @@ class UNAHOHIRatingEngine extends UNAHORatingEngine_HOE<HomeownersLine_HOE> {
         TC_POLICYLINE -> line,
         TC_STATE -> stateCode,
         TC_LINERATINGINFO_EXT -> lineRatingInfo
+    }
+  }
+
+  /**
+   *  Returns the parameter set for the Dwelling coverages
+   */
+  private function getDwellingCovParameterSet(line: PolicyLine, dwellingRatingInfo: HOHIDwellingRatingInfo, stateCode: Jurisdiction): Map<CalcRoutineParamName, Object> {
+    return {
+        TC_POLICYLINE -> line,
+        TC_STATE -> stateCode,
+        TC_DWELLINGRATINGINFO_EXT -> dwellingRatingInfo
     }
   }
 

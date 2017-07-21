@@ -67,6 +67,7 @@ public final class HORateRoutineNames {
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_EXCLUDED : String = "UNAHODPHigherAllPerilDeductibleECWindExcluded"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_DWELLING : String = "UNAHODPHigherAllPerilDeductibleECWindIncludedDwelling"
   public static final var HIGHER_ALL_PERIL_DEDUCTIBLE_RATE_ROUTINE_EC_WIND_INCLUDED_PERSONAL_PROPERTY : String = "UNAHODPHigherAllPerilDeductibleECWindIncludedPersonalProperty"
+  public static final var DP_DEDUCTIBLE : String = "UNAHODPDeductible"
 
   //group1 routines
   //TODO : Need to update the routine names for group1 states
@@ -156,6 +157,7 @@ public final class HORateRoutineNames {
   public static final var FIRE_DEPARTMENT_SERVICE_CHARGE_COV_RATE_ROUTINE : String = "UNAHOFireDepartmentServiceChargeCovRateRoutine"
   public static final var DWELLING_FIRE_OTHER_STRUCTURES_INCREASED_LIMITS_COV_ROUTINE_NAME : String = "UNAHODwellingFireOtherStructuresIncreasedLimitsCovRateRoutine"
   public static final var OUTBOARD_MOTORS_AND_WATERCRAFT_COV_HI_ROUTINE_NAME : String = "UNAHOOutboardMotorsAndWatercraftCovHIRateRoutine"
+  public static final var WATER_BACKUP_AND_SUMP_OVERFLOW : String = "UNADPWaterBackupSumpOverflow"
   public static final var WOOD_BURNING_STOVE_RATE_ROUTINE : String = "UNAHOWoodBurningStoveRateRoutine"
   public static final var WIND_EXCLUSION_CREDIT_DWELLING : String =  "UNAHODPWindExclusionCreditDwelling"
   public static final var WIND_EXCLUSION_CREDIT_PERSONAL_PROPERTY : String = "UNAHODPWindExclusionCreditPersonalProperty"
@@ -169,6 +171,8 @@ public final class HORateRoutineNames {
   public static final var WINDSTORM_RESISTIVE_FEATURES_OF_RESIDENTIAL_CONSTRUCTION_CREDIT_RATE_ROUTINE_PERSONAL_PROPERTY : String = "UNAHODPWPDCCreditRateRoutinePersonalProperty"
   public static final var DP_OTHER_STRUCTURES : String = "UNAHODPOtherStructures"
   public static final var DP_PLANTS_TREES_SHRUBS : String = "UNAHODPPlantsTreesShrubs"
+  public static final var DP_WOOD_SHAKE_ROOF : String = "UNAHODPWoodShakeRoof"
+  public static final var DP_SUPPLEMENTAL_HEATING_SURCHARGE : String = "UNAHODPSupplementalHeatingSurcharge"
 
 
 }

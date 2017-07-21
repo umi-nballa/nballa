@@ -36,7 +36,7 @@ class HOCostModel {
   property get PremiumDisplayValue() : String{
     var premium = Premium
 
-    if(premium != null and premium > 0bd){
+    if(premium != null and premium != 0bd){
       return premium?.asMoney()
     }else{
       return displaykey.una.Included

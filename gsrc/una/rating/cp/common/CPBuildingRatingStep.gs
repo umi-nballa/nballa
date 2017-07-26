@@ -16,6 +16,8 @@ uses una.rating.cp.costdatas.CPBuildingCovHurricaneCostData
 uses gw.rating.rtm.query.RateBookQueryFilter
 uses gw.rating.rtm.query.RatingQueryFacade
 uses java.lang.Comparable
+uses java.lang.NumberFormatException
+uses java.lang.Integer
 
 /**
  * Created with IntelliJ IDEA.
@@ -406,7 +408,9 @@ class CPBuildingRatingStep {
     var filter = new RateBookQueryFilter(line.Branch.PeriodStart, line.Branch.PeriodEnd, line.PatternCode)
                 {: Jurisdiction = line.BaseState,
                   : MinimumRatingLevel = minimumRatingLevel}
-    var factor = new RatingQueryFacade().getFactor(filter, rateTableName, params).Factor
+
+    var factor = new RatingQueryFacade().getAllFactors(filter, rateTableName, params).values().atMostOneWhere( \ elt -> elt typeis Integer)
+
     return factor as int
   }
 }

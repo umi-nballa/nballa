@@ -7,6 +7,7 @@ uses edge.capabilities.quote.draft.annotation.TunaValue
 uses java.lang.Integer
 uses java.util.Date
 uses edge.aspects.validation.annotations.TypeKeyNotIn
+uses java.math.BigDecimal
 
 class YourHomeDTO {
 
@@ -262,5 +263,8 @@ class YourHomeDTO {
 
   @JsonProperty
   var _electricalType : BreakerType_HOE as ElectricalType
+
+  @JsonProperty
+  private var _estimatedReplacementCost : BigDecimal as EstimatedReplacementCost
 
 }

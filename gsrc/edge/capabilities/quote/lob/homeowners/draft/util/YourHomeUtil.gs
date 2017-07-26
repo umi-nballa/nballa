@@ -68,6 +68,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     dto.CoastLocation = data.CoastLocation_Ext
     dto.OnBarrierIsland = data.BarrierIsland_Ext
     dto.ElectricalType = data.ElectricalType
+    dto.EstimatedReplacementCost = data.CoverageAEstRepCostValue_Ext?.toBigDecimal()
   }
 
   /**
@@ -133,6 +134,7 @@ final class YourHomeUtil extends BaseTunaValueUtil {
     data.CoastLocation_Ext = dto.CoastLocation
     data.BarrierIsland_Ext = dto.OnBarrierIsland
     data.ElectricalType = dto.ElectricalType
+    data.CoverageAEstRepCostValue_Ext = dto.EstimatedReplacementCost?.toPlainString()
   }
 
   private static function addOrRemovePolicyFromMultiDiscount(policyNumber : String, data : Dwelling_HOE, policyType : typekey.TypeofPolicy_Ext){

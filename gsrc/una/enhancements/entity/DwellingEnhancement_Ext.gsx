@@ -321,4 +321,14 @@ enhancement DwellingEnhancement_Ext : entity.Dwelling_HOE {
     }
     return typekey.DwellingUsage_HOE.TF_ALL.TypeKeys
   }
+
+  //FL HO, FL DP, CA HO, CA DP, NC HO, NC DP, SC HO, TX HO, TX TDP, NV HO
+  function isPaidNonWeatherClaimsFieldVisible(dwelling:Dwelling_HOE):boolean{
+    if( (dwelling.PolicyPeriod.BaseState == TC_NC || dwelling.PolicyPeriod.BaseState == TC_FL || dwelling.PolicyPeriod.BaseState == TC_CA || dwelling.PolicyPeriod.BaseState == TC_SC
+        || dwelling.PolicyPeriod.BaseState == TC_TX || dwelling.PolicyPeriod.BaseState == TC_NV) && (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or
+            HOPolicyType_HOE.TF_ALLTDPTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_DP3_Ext) ){
+      return true
+    }
+    return false
+  }
 }

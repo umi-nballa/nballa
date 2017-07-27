@@ -770,7 +770,7 @@
         <InputDivider/>
         <InputSet
           id="bceg_Ext"
-          visible="dwelling.isBCEGVisible//dwelling.HOLocation.PolicyLocation.State.Code!=&quot;CA&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;HI&quot; &amp;&amp; dwelling.HOLocation.PolicyLocation.State.Code!=&quot;TX&quot; ">
+          visible="dwelling.isBCEGVisible ">
           <RangeInput
             available="!dwelling.HOLocation.OverrideBCEG_Ext"
             editable="policyPeriod.Job.Subtype!=typekey.Job.TC_POLICYCHANGE"
@@ -1449,6 +1449,24 @@
           value="dwelling.EarthquakeConstrn_Ext"
           visible="dwelling.EarthquakeCoverage_Ext!=null &amp;&amp; dwelling.EarthquakeCoverage_Ext &amp;&amp; dwelling.isEarthQuakeConstructionVisible"/>
       </InputSet>
+      <Input
+        editable="true"
+        id="PaidWeatherClaims_Ext"
+        label="displaykey.Web.Homeowners.Dwelling.PaidWeatherClaims_Ext"
+        value="dwelling.PaidWeatherClaims_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_NC &amp;&amp; (HOPolicyType_HOE.TF_ALLHOTYPES.TypeKeys.contains(dwelling.HOPolicyType) or dwelling.HOPolicyType == TC_LPP_Ext)"/>
+      <Input
+        editable="true"
+        id="PaidNonWeatherClaims_Ext"
+        label="displaykey.Web.Homeowners.Dwelling.PaidNonWeatherClaims_Ext"
+        value="dwelling.PaidNonWeatherClaims_Ext"
+        visible="dwelling.isPaidNonWeatherClaimsFieldVisible(dwelling)"/>
+      <Input
+        editable="true"
+        id="PaidNonCATClaims_Ext"
+        label="displaykey.Web.Homeowners.Dwelling.PaidNonCATClaims_Ext"
+        value="dwelling.PaidNonCATClaims_Ext"
+        visible="dwelling.PolicyPeriod.BaseState == TC_CA &amp;&amp; dwelling.HOPolicyType == TC_DP3_Ext"/>
     </InputColumn>
     <Code><![CDATA[uses gw.api.util.DisplayableException
 uses gw.api.util.LocationUtil

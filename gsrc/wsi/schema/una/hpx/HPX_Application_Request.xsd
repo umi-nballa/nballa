@@ -1328,6 +1328,7 @@
 			<xsd:element name="OrganizationID" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OrganizationName" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Code" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="AgentCode" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OfficeLocation" type="OfficeLocationType" minOccurs="0"/>
 			<xsd:element name="OrganizationDesc" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="OrganizationType" type="OrganizationTypeType" minOccurs="0"/>
@@ -5168,7 +5169,10 @@
 			<xsd:element name="calcTotalCharge" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="calcTotalChargeWithDerrama" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="calcTotalPayment" type="xsd:string" minOccurs="0"/>
-		</xsd:sequence>
+            <xsd:element name="isDue" type="xsd:string"/>
+            <xsd:element name="isClosed" type="xsd:string"/>
+            <xsd:element name="isPaid" type="xsd:string"/>
+        </xsd:sequence>
 	</xsd:complexType>
 	<xsd:complexType name="SecondaryPolicyHolderType">
 		<xsd:sequence>
@@ -5233,7 +5237,7 @@
 			<xsd:element name="UWCompanyBranch" type="UWCompanyBranchType" minOccurs="0"/>
 			<xsd:element name="UWTier" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="Producer" type="ProducerType" minOccurs="0"/>
-			<xsd:element name="ProducerCode" type="ProducerCodeType" minOccurs="0"/>
+			<xsd:element name="ProducerCode" type="ProducerCodeType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="Agency" type="AgencyType" minOccurs="0"/>
 			<xsd:element name="AgencyBranch" type="AgencyBranchType" minOccurs="0"/>
 			<xsd:element name="InsuranceProduct" type="InsuranceProductType" minOccurs="0"/>
@@ -5817,7 +5821,7 @@
 			<xsd:element name="ReceivedBy" type="ReceivedByType"/>
 			<xsd:element name="ReceivedAmount" type="xsd:byte"/>
 			<xsd:element name="ReceivedDate" type="xsd:date"/>
-			<xsd:element name="ProcessingDate" type="xsd:date"/>
+			<xsd:element name="ProcessingDate" type="xsd:date" minOccurs="0"/>
 			<xsd:element name="PaymentMethodType" type="PaymentMethodTypeType"/>
 			<xsd:element name="PaymentTransactionStatus" type="PaymentTransactionStatusType"/>
 			<xsd:element name="PaymentTransactionStatusReason" type="PaymentTransactionStatusReasonType"/>
@@ -5836,7 +5840,7 @@
 			<xsd:element name="ReceivedBy" type="ReceivedByType"/>
 			<xsd:element name="ReceivedAmount" type="xsd:byte"/>
 			<xsd:element name="ReceivedDate" type="xsd:date"/>
-			<xsd:element name="ProcessingDate" type="xsd:date"/>
+			<xsd:element name="ProcessingDate" type="xsd:date" minOccurs="0"/>
 			<xsd:element name="PaymentMethodType" type="PaymentMethodTypeType"/>
 			<xsd:element name="PaymentTransactionStatus" type="PaymentTransactionStatusType"/>
 			<xsd:element name="PaymentTransactionStatusReason" type="PaymentTransactionStatusReasonType"/>

@@ -386,7 +386,6 @@ class CovTermInputSetPCFController {
     }else if(hoLine.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
       hoLine.Dwelling.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
     }
-      print (hoLine.Dwelling.FloodRiskType_Ext)
 
   }
 

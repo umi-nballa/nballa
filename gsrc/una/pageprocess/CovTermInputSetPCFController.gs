@@ -9,6 +9,7 @@ uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController
 uses una.productmodel.runtimedefaults.CoverageTermsRuntimeDefaultController.CovTermDefaultContext
 uses java.math.BigDecimal
 uses gw.api.domain.covterm.OptionCovTerm
+uses gw.api.domain.covterm.TypekeyCovTerm
 
 /**
  * Created with IntelliJ IDEA.
@@ -32,6 +33,9 @@ class CovTermInputSetPCFController {
       }else if(covTerm typeis BooleanCovTerm){
         onChangeBooleanCovTerm(covTerm)
       }
+        else if(covTerm typeis TypekeyCovTerm){
+          onChangeTypekeyCovTerm(covTerm)
+        }
     }else if(coverable typeis CPBuilding){
       if(covTerm.PatternCode == "SinkholeLimit_EXT"){
         una.productmodel.CPAutoPopulateUtil.setTermValue(covTerm)
@@ -356,4 +360,34 @@ class CovTermInputSetPCFController {
     }
     return result
   }
+
+  private static function onChangeTypekeyCovTerm(covTerm : TypekeyCovTerm){
+    var coverable = covTerm.Clause.OwningCoverable
+    var hoLine : entity.HomeownersLine_HOE
+
+    if(coverable typeis Dwelling_HOE){
+      hoLine = coverable.HOLine
+    }else if(coverable typeis entity.HomeownersLine_HOE){
+      hoLine = coverable
+    }
+
+    switch(covTerm.PatternCode){
+      case "HODW_FloodCoverageType":
+        setFloodRiskType(hoLine)
+      break
+    }
+  }
+
+  private static function setFloodRiskType(hoLine : entity.HomeownersLine_HOE){
+    if(hoLine.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DPPA){
+      hoLine.Dwelling.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
+    }else if(hoLine.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_PPA){
+      hoLine.Dwelling.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_PREFERRED
+    }else if(hoLine.Dwelling.HODW_FloodCoverage_HOE_Ext.HODW_FloodCoverageTypeTerm.Value == TC_DA){
+      hoLine.Dwelling.FloodRiskType_Ext = typekey.FloodRiskType_Ext.TC_STANDARD
+    }
+      print (hoLine.Dwelling.FloodRiskType_Ext)
+
+  }
+
 }

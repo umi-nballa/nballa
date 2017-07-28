@@ -4730,8 +4730,8 @@
 			<xsd:element name="FullName" type="xsd:string"/>
 			<xsd:element name="DBA" type="xsd:string" minOccurs="0"/>
 			<xsd:element name="ExtendedNameInsured" type="xsd:string" minOccurs="0"/>
-			<xsd:element name="PrimaryInsuredPostalAddress" type="PostalAddressType" minOccurs="0"/>
-			<xsd:element name="PrimaryInsuredPhysicalAddress" type="PhysicalAddressType" minOccurs="0"/>
+			<xsd:element name="PrimaryInsuredPostalAddress" type="PrimaryInsuredPostalAddressType" minOccurs="0"/>
+			<xsd:element name="PrimaryInsuredPhysicalAddress" type="PrimaryInsuredPhysicalAddressType" minOccurs="0"/>
 			<xsd:element name="PersonHolder" type="PersonHolderType" minOccurs="0"/>
 			<xsd:element name="OrganizationHolder" type="OrganizationHolderType" minOccurs="0"/>
 			<xsd:element name="ClueMatchIndicator" type="xsd:string" minOccurs="0"/>
@@ -5927,7 +5927,7 @@
 	</xsd:complexType>
 	<xsd:complexType name="PublishDocumentRequestType">
 		<xsd:sequence>
-			<xsd:element name="DocumentAttachment" type="DocumentAttachmentType" minOccurs="0"/>
+			<xsd:element name="DocumentAttachment" type="DocumentAttachmentType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="PolInfoTypeRq" type="PolicyDocumentPublishType" minOccurs="0"/>
 			<xsd:element name="ClaimsDocumentPublish" type="ClaimsDocumentPublishType" minOccurs="0" maxOccurs="unbounded"/>
 			<xsd:element name="BillingDocumentPublish" type="BillingDocumentPublishType" minOccurs="0"/>

@@ -102,25 +102,6 @@ enhancement JobWizardHelperEnhancement : JobWizardHelper {
     requestQuote(policyPeriod, nextStep, ValidationLevel.TC_QUOTABLE, RatingStyle.TC_DEFAULT)
   }
 
-  /**
-   * Start of accelerator code
-   * The requestQuote method is overridden with a boolean parameter to say whether or not we want to only run rating for Quick Rate
-   * The boolean value is passed in by the QuickRate button in PCF code
-   * This function does two things to make the QuickRate functionality work the way we expect
-   * First, the current wizard step is saved, so that it can be set back once we are done rating.  The rating process would normally move the wizard forward
-   * Second, it resets the PolicyPeriod back in to edit mode once rating is done
-   *
-   * @param policyPeriod   - relevant policy period
-   * @param nextStep   - next step in the jobWizard
-   * @param rateOnly  - This is really only usef for overriding the above method
-   */
-  function requestQuote(policyPeriod : PolicyPeriod, nextStep : String, rateOnly : boolean) {
-    var step = this.CurrentStep
-    requestQuote(policyPeriod, nextStep, TC_QUOTABLE, TC_DEFAULT)
-    policyPeriod.edit()
-    this.goDirectlyToStep(step)
-  }
-
   function requestQuote(policyPeriod : PolicyPeriod, nextStep : String, validationLevel : ValidationLevel, rStyle : RatingStyle) {
     var jobProcessAction = getJobProcessAction(policyPeriod.Submission.QuoteType, policyPeriod, nextStep, validationLevel, rStyle)
     doWithUWRedirect(policyPeriod, "BlocksQuote", false, \ -> {

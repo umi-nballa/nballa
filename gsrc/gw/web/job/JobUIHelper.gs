@@ -1,7 +1,6 @@
 package gw.web.job
 
 uses gw.lang.Export
-uses gw.pl.currency.MonetaryAmount
 
 /**
  * Helper functions to Job UI elements
@@ -101,30 +100,4 @@ class JobUIHelper {
         job.AuditInformation.AuditScheduleType.DisplayName.toLowerCase(), job.JobNumber)
     return ""
   }
-
-  public static function getPremium(policyPeriod : PolicyPeriod) : String {
-    var premiumAmount  = new MonetaryAmount()
-    if(policyPeriod.HomeownersLine_HOEExists){
-      //premiumAmount =  policyPeriod.HomeownersLine_HOE.VersionList.HomeownersCosts.flatMap(\c -> c.AllVersions).where(\c -> c.Coverable != null).AmountSum(policyPeriod.PreferredSettlementCurrency)
-      premiumAmount =  policyPeriod.HomeownersLine_HOE.VersionList.HomeownersCosts.flatMap(\c -> c.AllVersions).AmountSum(policyPeriod.PreferredSettlementCurrency)
-    }
-    if(policyPeriod.BOPLineExists){
-      premiumAmount =   policyPeriod.BOPLine.VersionList.BOPCosts.flatMap(\c -> c.AllVersions).AmountSum(policyPeriod.PreferredSettlementCurrency)
-    }
-    if(policyPeriod.BP7LineExists){
-      premiumAmount =   policyPeriod.BP7Line.VersionList.BP7Costs.flatMap(\c -> c.AllVersions).AmountSum(policyPeriod.PreferredSettlementCurrency)
-    }
-    if(policyPeriod.CPLineExists){
-      premiumAmount =   policyPeriod.CPLine.VersionList.CPCosts.flatMap(\c -> c.AllVersions).AmountSum(policyPeriod.PreferredSettlementCurrency)
-      if(policyPeriod.GLLineExists){
-      var GlPremiumAmount =   policyPeriod.GLLine.VersionList.GLCosts.flatMap(\c -> c.AllVersions).AmountSum(policyPeriod.PreferredSettlementCurrency)
-        premiumAmount = premiumAmount.add(GlPremiumAmount)
-      }
-    }
-    if(policyPeriod.PersonalAutoLineExists){
-      premiumAmount =   policyPeriod.PersonalAutoLine.VersionList.PACosts.flatMap(\c -> c.AllVersions).where(\c -> c.Vehicle != null).AmountSum(policyPeriod.PreferredSettlementCurrency)
-    }
-    return premiumAmount.DisplayValue
-  }
-
 }

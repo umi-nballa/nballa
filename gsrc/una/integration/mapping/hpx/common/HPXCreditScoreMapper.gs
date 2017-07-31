@@ -51,7 +51,7 @@ class HPXCreditScoreMapper {
 
     var creditGeneralMsgs = new List<String>()
     for(message in report.CreditGeneralMessage) {
-      creditMsgs.add(message.CreditStatusReasonDesc)
+      creditGeneralMsgs.add(message.CreditStatusReasonDesc)
     }
     creditScoreInfo.CreditGeneralMessage = creditGeneralMsgs
 
@@ -115,6 +115,46 @@ class HPXCreditScoreMapper {
     riskResponseAddressType.PostalCode = report.AddressZip != null ? report.AddressZip : ""
     creditResponseAddressType.addChild(new XmlElement("RiskAddress", riskResponseAddressType))
     creditScoreInfo.addChild(new XmlElement("CreditResponseAddress", creditResponseAddressType))
+
+    if(report.CreditAccountSummary != null) {
+      var creditAccountReview = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditAccountReviewType()
+      creditAccountReview.DateOldestTrade = report.CreditAccountSummary.DateOldestTrade != null ? report.CreditAccountSummary.DateOldestTrade : ""
+      creditAccountReview.DateLatestTrade = report.CreditAccountSummary.DateLatestTrade != null ? report.CreditAccountSummary.DateLatestTrade : ""
+      creditAccountReview.DateLatestActivity = report.CreditAccountSummary.DateLatestActivity != null ? report.CreditAccountSummary.DateLatestActivity : ""
+      creditAccountReview.IncludeBankruptcies = report.CreditAccountSummary.IncludeBankruptcies != null ? report.CreditAccountSummary.IncludeBankruptcies : ""
+      creditAccountReview.IncludePublicRecords = report.CreditAccountSummary.IncludePublicRecords != null ? report.CreditAccountSummary.IncludePublicRecords : ""
+      creditAccountReview.IncludeCollectionRecords = report.CreditAccountSummary.IncludeCollectionRecords != null ? report.CreditAccountSummary.IncludeCollectionRecords : ""
+      foreach(credAcctSummary in report.CreditAccountSummary.CreditAccountSummaryType) {
+        var credAcctSummaryType = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditAccountSummaryTypeType()
+        credAcctSummaryType.AccountType = credAcctSummary.AccountType != null ? credAcctSummary.AccountType : ""
+        credAcctSummaryType.NumberOfAccounts = credAcctSummary.NumberOfAccounts != null ? credAcctSummary.NumberOfAccounts : ""
+        credAcctSummaryType.TotalOwed = credAcctSummary.TotalOwed != null ? credAcctSummary.TotalOwed : ""
+        credAcctSummaryType.TotalPastDue = credAcctSummary.TotalPastDue != null ? credAcctSummary.TotalPastDue : ""
+        credAcctSummaryType.HighAmount = credAcctSummary.HighAmount != null ? credAcctSummary.HighAmount : ""
+        creditAccountReview.addChild(new XmlElement("CreditAccountSummaryType", credAcctSummaryType))
+      }
+      foreach(creditAcctAct in report.CreditAccountSummary.CreditAccountActivity) {
+        var creditAccountActivity = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditAccountActivityType()
+        creditAccountActivity.DateReported = creditAcctAct.DateReported != null ? creditAcctAct.DateReported : ""
+        creditAccountActivity.CurrentStatus = creditAcctAct.CurrentStatus != null ? creditAcctAct.CurrentStatus : ""
+        creditAccountActivity.HighCredit = creditAcctAct.HighCredit != null ? creditAcctAct.HighCredit : ""
+        creditAccountActivity.NowOwes = creditAcctAct.NowOwes != null ? creditAcctAct.NowOwes : ""
+        creditAccountActivity.PastDue = creditAcctAct.PastDue != null ? creditAcctAct.PastDue : ""
+        creditAccountActivity.Terms = creditAcctAct.Terms != null ? creditAcctAct.Terms : ""
+        creditAccountActivity.MonthsRev = creditAcctAct.MonthsRev != null ? creditAcctAct.MonthsRev : ""
+        creditAccountActivity.DateOpened = creditAcctAct.DateOpened != null ? creditAcctAct.DateOpened : ""
+        creditAccountActivity.AcctType = creditAcctAct.AcctType != null ? creditAcctAct.AcctType : ""
+        creditAccountActivity.FirmName = creditAcctAct.FirmName != null ? creditAcctAct.FirmName : ""
+        creditAccountActivity.FirmNumber = creditAcctAct.FirmNumber != null ? creditAcctAct.FirmNumber : ""
+        foreach(credMsg in creditAcctAct.CreditAccountActivityMsg)  {
+          var msg = new wsi.schema.una.hpx.hpx_application_request.types.complex.CreditAccountActivityMsgType()
+          msg.CreditAccountActivityMsgTxt = credMsg.CreditAccountActivityMsg != null ? credMsg.CreditAccountActivityMsg : ""
+          creditAccountActivity.addChild(new XmlElement("CreditAccountActivityMsg", msg))
+        }
+        creditAccountReview.addChild(new XmlElement("CreditAccountActivity", creditAccountActivity))
+      }
+      creditScoreInfo.addChild(new XmlElement("CreditAccountReview", creditAccountReview))
+     }
 
     //creditScores
     creditScores.add(creditScoreInfo)

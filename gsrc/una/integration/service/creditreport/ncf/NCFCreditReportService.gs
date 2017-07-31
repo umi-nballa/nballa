@@ -22,6 +22,8 @@ uses java.text.SimpleDateFormat
 uses java.io.FileNotFoundException
 uses gw.api.util.DisplayableException
 uses gw.xml.ws.WebServiceException
+uses wsi.schema.una.inscore.lexisnexis.ncfv2rev1result.anonymous.attributes.Summary_AccountSummaries_Account_Type
+
 /**
  * Returns hardwired response 
  */
@@ -68,6 +70,7 @@ class NCFCreditReportService implements ICreditReportService {
             //var alertScoring = ncfReport.Report.AlertsScoring.Scoring
             var subject = ncfReport.Report.SearchDataset.Subjects.firstWhere(\ s -> s.Subject.Type == SearchDataset_Subjects_Subject_Type.Primary)
             var address = ncfReport.Report.SearchDataset.Addresses.Address.firstWhere(\ s -> s.Ref == "1")
+            var creditAccountSummary = getReportSummary(ncfReport)
             /**
              * Reported current address from vendor dataset may need to be persisted 
              * for clarification purposes by Reps with the customer. For this purpose,
@@ -133,6 +136,7 @@ class NCFCreditReportService implements ICreditReportService {
                 .withSpecialBillingID(ncfReport.Admin.SpecialBillingId)
                 .withReasons(score != null ? score.ReasonCodes.mapToKeyAndValue(\ a -> a.Code , \ a -> a.Description):null)
                 .withMessages(messages)
+                .withCreditAccountSummary(creditAccountSummary)
                 .create()
           }
         }
@@ -303,5 +307,62 @@ class NCFCreditReportService implements ICreditReportService {
     }
 
      return ncf
+  }
+
+  /**
+   *  Only get 1 score in the event of an automatic switch.
+   *  The system will switch from 1 vendor to the other if
+   *  the first is down or a no hit.  You will get an additional
+   *  text message if you get the score from your alternate vendor.
+   */
+  @Param("ncfReport", "Instance of NcfReport, taken from the response of the web service")
+  @Returns("Instance containing the vendor score report")
+  private static function getReportSummary(ncfReport : NcfReport) : CreditAccountSummary_Ext {
+
+    var result : CreditAccountSummary_Ext = new CreditAccountSummary_Ext()
+
+    if (ncfReport != null) {
+      if (ncfReport.Report.Summary != null) {
+        result.DateOldestTrade = ncfReport.Report.Summary.DateOldestTrade != null ? ncfReport.Report.Summary.DateOldestTrade : ""
+        result.DateLatestTrade = ncfReport.Report.Summary.DateLatestTrade != null ? ncfReport.Report.Summary.DateLatestTrade : ""
+        result.DateLatestActivity = ncfReport.Report.Summary.DateLatestActivity != null ? ncfReport.Report.Summary.DateLatestActivity : ""
+        result.IncludeBankruptcies = ncfReport.Report.Summary.IncludesBankruptcies.Flag != null ? ncfReport.Report.Summary.IncludesBankruptcies.Flag : ""
+        result.IncludePublicRecords = ncfReport.Report.Summary.IncludesOtherRecords.PublicRecords != null ? ncfReport.Report.Summary.IncludesOtherRecords.PublicRecords : ""
+        result.IncludeCollectionRecords = ncfReport.Report.Summary.IncludesOtherRecords.Collection != null ? ncfReport.Report.Summary.IncludesOtherRecords.Collection : ""
+        foreach (account in ncfReport.Report.Summary.AccountSummaries.Account){
+          var credSummaryType = new CreditAccountSummaryType()
+          credSummaryType.AccountType = account.Type != null ? account.Type.name() : ""
+          credSummaryType.NumberOfAccounts = account.NumberAccounts != null ? account.NumberAccounts : ""
+          credSummaryType.TotalOwed = account.TotalOwed != null ? account.TotalOwed : ""
+          credSummaryType.TotalPastDue = account.TotalPastDue != null ? account.TotalPastDue : ""
+          credSummaryType.HighAmount = account.HighAmount != null ? account.HighAmount : ""
+          result.addToCreditAccountSummaryType(credSummaryType)
+        }
+      }
+      foreach(creditTrade in ncfReport.Report.TradeAccountActivity.CreditTrades.CreditTrade)     {
+        var credAcctAct : CreditAccountActivity_Ext = new CreditAccountActivity_Ext()
+        credAcctAct.DateReported = creditTrade.DateReported != null ?  creditTrade.DateReported : ""
+        credAcctAct.CurrentStatus = creditTrade.CurrentRate != null ? creditTrade.CurrentRate : ""
+        credAcctAct.HighCredit = creditTrade.HighestAmount != null ? creditTrade.HighestAmount : ""
+        credAcctAct.NowOwes = creditTrade.BalanceAmount != null ? creditTrade.BalanceAmount : ""
+        credAcctAct.PastDue = creditTrade.PastDueAmount != null ? creditTrade.PastDueAmount : ""
+        credAcctAct.Terms = creditTrade.Account.Terms != null ? creditTrade.Account.Terms : ""
+        credAcctAct.MonthsRev = creditTrade.Account.MonthsReviewed != null ? creditTrade.Account.MonthsReviewed : ""
+        credAcctAct.DateOpened = creditTrade.DateOpened != null ? creditTrade.DateOpened : ""
+        credAcctAct.AcctType = creditTrade.Account.Type != null ? creditTrade.Account.Type.name() : ""
+        credAcctAct.FirmName = creditTrade.ReportingMember.Name != null ? creditTrade.ReportingMember.Name : ""
+        credAcctAct.FirmNumber = creditTrade.ReportingMember.Number != null ? creditTrade.ReportingMember.Number : ""
+        foreach(msg in creditTrade.Messages.Message) {
+          var message : CreditAccountActivityMsg  = new CreditAccountActivityMsg()
+          message.CreditAccountActivityMsg = msg != null ? msg : ""
+          credAcctAct.addToCreditAccountActivityMsg(message)
+        }
+        result.addToCreditAccountActivity(credAcctAct)
+      }
+    }
+
+
+
+    return result
   }
 }

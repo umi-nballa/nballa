@@ -28,6 +28,7 @@ class PolicyAdditionalInterestMapper extends PolicyContactMapper<PolicyAddlInter
     entityInterest.InterestTypeIfOther_Ext = dto.InterestTypeIfOther
     entityInterest.VestingInfoRequired_Ext = dto.IsVestingInfoRequired
     entityInterest.VestingInfo_Ext = dto.VestingInfo
+    entityInterest.PolicyAddlInterest.ContactDenorm.DbaName_Ext = dto.DBAName
   }
 
   protected override function toDTO(role: PolicyAddlInterest): DwellingAdditionalInterestDTO {
@@ -41,6 +42,7 @@ class PolicyAdditionalInterestMapper extends PolicyContactMapper<PolicyAddlInter
     result.EffectiveDate = (role.AdditionalInterestDetails.first() as HODwellingAddlInt_HOE).AddlIntEffDate
     result.IsVestingInfoRequired = role.AdditionalInterestDetails.first().VestingInfoRequired_Ext
     result.VestingInfo = role.AdditionalInterestDetails.first().VestingInfo_Ext
+    result.DBAName = role.ContactDenorm.DbaName_Ext
 
     return result
   }

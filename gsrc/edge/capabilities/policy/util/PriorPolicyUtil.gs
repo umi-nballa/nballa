@@ -37,7 +37,8 @@ class PriorPolicyUtil extends BaseTunaValueUtil{
         priorPolicyDTO.Tenure = priorPolicy.Tenure_Ext
         results.add(priorPolicyDTO)
       }
-      return results[0]
+
+      return results.first()
     }
 
     /**

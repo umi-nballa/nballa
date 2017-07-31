@@ -319,20 +319,20 @@ class DefaultHoDraftPlugin implements ILobDraftPlugin<HoDraftDataExtensionDTO>{
   }
 
   private function updateConditionsAndExclusions(period: PolicyPeriod, update: HoDraftDataExtensionDTO){
-    period.AllCoverables.each(\ coverable -> {
-      coverable.syncExclusions()
-      coverable.syncConditions()
-    })
+      period.AllCoverables.each(\ coverable -> {
+        coverable.syncExclusions()
+        coverable.syncConditions()
+      })
 
-    PORTAL_EXCLUSIONS_AND_CONDITIONS.each( \ conditionOrExclusion -> {
-      if(update.ConditionsAndExclusions.containsIgnoreCase(conditionOrExclusion)){
-        if(period.HomeownersLine_HOE.isCoverageConditionOrExclusionAvailable(conditionOrExclusion) and !period.HomeownersLine_HOE.hasCoverageConditionOrExclusion(conditionOrExclusion)){
-          period.HomeownersLine_HOE.createCoverageConditionOrExclusion(conditionOrExclusion)
+      PORTAL_EXCLUSIONS_AND_CONDITIONS.each( \ conditionOrExclusion -> {
+        if(update.ConditionsAndExclusions?.containsIgnoreCase(conditionOrExclusion)){
+          if(period.HomeownersLine_HOE.isCoverageConditionOrExclusionAvailable(conditionOrExclusion) and !period.HomeownersLine_HOE.hasCoverageConditionOrExclusion(conditionOrExclusion)){
+            period.HomeownersLine_HOE.createCoverageConditionOrExclusion(conditionOrExclusion)
+          }
+        }else{
+          period.AllExclusionsConditionsAndCoverages?.atMostOneWhere( \ elt -> elt.Pattern.CodeIdentifier?.equalsIgnoreCase(conditionOrExclusion))?.remove()
         }
-      }else{
-        period.AllExclusionsConditionsAndCoverages?.atMostOneWhere( \ elt -> elt.Pattern.CodeIdentifier?.equalsIgnoreCase(conditionOrExclusion))?.remove()
-      }
-    })
+      })
   }
 
   private function updateAdditionalInsureds(period : PolicyPeriod, update : HoDraftDataExtensionDTO){

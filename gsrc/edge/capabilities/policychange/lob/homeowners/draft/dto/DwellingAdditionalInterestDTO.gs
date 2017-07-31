@@ -40,4 +40,7 @@ class DwellingAdditionalInterestDTO extends PolicyContactDTO{
 
   @JsonProperty
   private var _vestingInfo : String as VestingInfo
+
+  @JsonProperty
+  private var _dbaName : String as DBAName
 }

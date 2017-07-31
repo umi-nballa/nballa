@@ -77,4 +77,8 @@ enhancement UNAPolicyPeriodEnhancement : entity.PolicyPeriod {
 
     return result
   }
+
+  public property get IsPortalQuote() : boolean{
+    return this.SourceSystem_Ext != null and typekey.SourceSystem_Ext.TF_PORTALSOURCES.TypeKeys.contains(this.SourceSystem_Ext)
+  }
 }

@@ -3,10 +3,12 @@ package gw.job
 uses gw.job.uw.UWAuthorityBlocksProgressException
 uses gw.job.uw.UWIssueAutomaticApprovabilityAnalyzer
 uses gw.policy.PolicyEvaluator
+uses edge.util.helper.UserUtil
+uses gw.api.job.JobProcessLogger
 
 @Export
 class JobProcessUWIssueEvaluator {
-
+   private static final var _PORTAL_CHECKING_SETS : List<UWIssueCheckingSet> = {UWIssueCheckingSet.TC_PREQUOTE, UWIssueCheckingSet.TC_PREBIND}
   /**
    * This class is used to define the mappings of which "checking sets" (groups of UW Issue types)
    * are evaluated when a given job type reaches a certain "blocking point"
@@ -74,8 +76,20 @@ class JobProcessUWIssueEvaluator {
    */
   function evaluateAndFindBlockingUWIssuesInSlices(branch : PolicyPeriod, blockingPoint : UWIssueBlockingPoint, oosSlices_ : entity.PolicyPeriod[]) : entity.UWIssue[] {
     for (ooseSlice in oosSlices_) {
-      for (checkingSet in checkingSetsFor(blockingPoint)) {
-        evaluateUWIssues(ooseSlice, checkingSet)
+      //never run UW Issues for
+
+      if(typekey.SourceSystem_Ext.TF_NONPORTALSOURCES.TypeKeys.contains(branch.SourceSystem_Ext) /**or branch.SourceSystem_Ext == TC_MyUniversal and UserUtil.getUserByName("PortalUser") != User.util.CurrentUser **/){ //TODO tlv - will need to change this to the actual portal user id when that is defined
+        for (checkingSet in checkingSetsFor(blockingPoint)) {
+          evaluateUWIssues(ooseSlice, checkingSet)
+        }
+      }else if(branch.SourceSystem_Ext == TC_MYUniversal and branch.Submission.QuoteType == QuoteType.TC_FULL){//only process during full quote if source system == myuniversal
+        _PORTAL_CHECKING_SETS.each( \ portalCheckingSet -> {
+          evaluateUWIssues(ooseSlice, portalCheckingSet)
+        })
+      }else{
+        if(JobProcessLogger.DebugEnabled){
+          JobProcessLogger.logDebug("Bypassing underwriting rules check for Source System ${branch.SourceSystem_Ext} and user ${User}")
+        }
       }
     }
     

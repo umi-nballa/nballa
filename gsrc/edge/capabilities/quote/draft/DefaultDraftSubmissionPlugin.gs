@@ -21,6 +21,7 @@ uses edge.PlatformSupport.Bundle
 uses edge.security.EffectiveUserProvider
 uses edge.security.authorization.AuthorityType
 uses edge.exception.EntityPermissionException
+uses edge.capabilities.gpa.job.dto.UWIssueDTO
 
 /*
  * Default implementation of draft submission plugin.
@@ -179,6 +180,7 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     res.ProductName = submission.Policy.Product.DisplayName
     res.AccountNumber = submission.Policy.Account.AccountNumber
     res.TermType = period.TermType
+    res.UWIssues = toUWIssuesDTO(period, res)
     res.Lobs = _lobPlugin.toDraftDTO(period)
     return res
   }
@@ -234,5 +236,20 @@ class DefaultDraftSubmissionPlugin implements IDraftSubmissionPlugin {
     }
   }
 
+  private function toUWIssuesDTO(branch : PolicyPeriod, data : DraftDataDTO) : List<UWIssueDTO>{
+    var results : List<UWIssueDTO> = {}
 
+    if(branch.UWIssuesActiveOnly.HasElements){
+      branch.UWIssuesActiveOnly?.each( \ uwIssue -> {
+        var uwIssueDTO = new UWIssueDTO()
+        uwIssueDTO.LongDescription = uwIssue.LongDescription
+        uwIssueDTO.ShortDescription = uwIssue.ShortDescription
+        uwIssueDTO.BlockingPoint = uwIssue.CurrentBlockingPoint
+
+        results.add(uwIssueDTO)
+      })
+    }
+
+    return results
+  }
 }

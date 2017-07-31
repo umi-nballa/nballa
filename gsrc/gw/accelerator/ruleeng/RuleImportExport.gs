@@ -49,14 +49,15 @@ class RuleImportExport {
   @Returns("A status message.")
   static function exportRules(rules : Collection<Rule_Ext>) : String{
     var writer = new XmlExporterXmlWriter(rules)
-    rules.each(\ rule -> {
-      writer.addAll(rule.Jobs.toList())
-      writer.addAll(rule.Jurisdictions.toList())
-      writer.addAll(rule.PolicyTypes.toList())
+    rules.orderBy( \ rule -> rule.PublicID)?.each( \ rule -> {
+      writer.addAll(rule.Jobs.orderBy(\ job -> job.PublicID))
+      writer.addAll(rule.Jurisdictions.orderBy(\ jurisdiction -> jurisdiction.PublicID))
+      writer.addAll(rule.PolicyTypes.orderBy(\ policyType -> policyType.PublicID))
       if (rule typeis ValidationRule_Ext) {
         writer.addAll(rule.VehicleTypes.toList())
       }
     })
+
     var bundle = Transaction.newBundle()
     writer.finishExport(bundle)
 
@@ -77,9 +78,7 @@ class RuleImportExport {
     gw.transaction.Transaction.runWithNewBundle(\ bundle -> {
       // Retire all rules in the system to replace them with the imported file
       _logger.info("RULE_FILE_LOCAL" +ImportFile.AbsolutePath)
-      Query.make(Rule_Ext).select().each(
-          \rule -> bundle.add(rule).remove())
-      bundle.commit()
+
       //"./modules/configuration/config/resources/rulesframework/Rule_Ext.xml"
       var rulesFile = ImportFile//new File(RULE_FILE_LOCAL)
       var fullstr = rulesFile.read()

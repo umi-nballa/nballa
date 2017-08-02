@@ -275,6 +275,10 @@ class CovTermInputSetPCFController {
   }
 
   private static function onLossAssessmentCovLimitChanged(term : OptionCovTerm, hoLine : entity.HomeownersLine_HOE){
+    if(hoLine.Dwelling.HODW_LossAssEQEndorsement_HOE_ExtExists && hoLine.Dwelling.HODW_LossAssessmentCov_HOE_ExtExists){
+      hoLine.Dwelling.HODW_LossAssEQEndorsement_HOE_Ext.HODW_LossAssEQLimit_HOETerm.Value = hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.OptionValue.Value
+    }
+
     if(hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_LossAssCovLimit_HOETerm.Value > 2000bd){
       if(hoLine.HOPolicyType == TC_HO6 and hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HasHOPL_Deductible_HOETerm){
         hoLine.Dwelling.HODW_LossAssessmentCov_HOE_Ext.HOPL_Deductible_HOETerm.Value = hoLine.Dwelling.HODW_SectionI_Ded_HOE.HODW_OtherPerils_Ded_HOETerm.Value

@@ -155,6 +155,8 @@ final class YourHomeUtil extends BaseTunaValueUtil {
 
   private static function addPolicyNumberToMultiDiscount(policyNumber : String, data : Dwelling_HOE,  policyType : typekey.TypeofPolicy_Ext){
     var policyForDiscount = new MultiPolicyDiscPolicy_Ext(data.PolicyPeriod)
+    policyForDiscount.PolicyNumber = policyNumber
+    policyForDiscount.PolicyType = policyType
     data.PolicyPeriod.addToMultiPolicyDiscountPolicies_Ext(policyForDiscount)
   }
 

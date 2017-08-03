@@ -120,6 +120,9 @@ class AccountContactDTO {
   @JsonProperty
   var _maritalStatus : typekey.MaritalStatus as MaritalStatus
 
+  @JsonProperty
+  var _portalContactHash : String as PortalContactHash
+
   public property get ContactType() : typekey.ContactType{
     var result : typekey.ContactType
 

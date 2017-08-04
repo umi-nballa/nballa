@@ -101,6 +101,9 @@ class CoveragesUtil {
       case "HOPS_GolfCartPD_HOE_Ext":
         result = isGolfCartPDCovAvailable(coverable as HomeownersLine_HOE)
         break
+      case "HODW_LimitedScreenCov_HOE_Ext":
+        result = isLimitedScreenCovAvailable(coverable as Dwelling_HOE)
+        break
       default:
         break
     }
@@ -463,6 +466,21 @@ class CoveragesUtil {
 
     return result
   }
+
+  private static function isLimitedScreenCovAvailable(dwelling:Dwelling_HOE) : boolean{
+    var result = true
+
+    if(dwelling.HOLine.BaseState==TC_FL && dwelling.HOLine.HOPolicyType == TC_HO3){
+      result = !dwelling.WHurricaneHailExclusion_Ext
+    }
+
+    if(dwelling.HOLine.BaseState==TC_FL && dwelling.HOLine.HOPolicyType == TC_DP3_Ext){
+      result = !dwelling.WHurricaneHailExclusion_Ext and dwelling.ResidenceType != TC_CONDO
+    }
+
+    return result
+  }
+
 
 
   private static function isWindstormExteriorPaintExclusionAvailable(hoLine : HomeownersLine_HOE) : boolean{

@@ -185,7 +185,7 @@ class QueryPolicyAPI {
     var policyPeriod = policy.LatestPeriod //policy.Periods[0]
 
     info.PolicyNumber = policyPeriod.PolicyNumber
-    info.PolicyType = policy.Product.Abbreviation
+    info.PolicyType = policyPeriod.HomeownersLine_HOEExists ? policyPeriod.HomeownersLine_HOE.HOPolicyType : policy.Product.Abbreviation
     info.IssuedDate = policy.IssueDate
     info.Underwriter = policy.getUserRoleAssignmentByRole(typekey.UserRole.TC_UNDERWRITER).AssignedUser.DisplayName
 
@@ -236,4 +236,5 @@ class QueryPolicyAPI {
     info.JobStatus = job.DisplayStatus
     info.JobType = job.DisplayType
   }
+
 }

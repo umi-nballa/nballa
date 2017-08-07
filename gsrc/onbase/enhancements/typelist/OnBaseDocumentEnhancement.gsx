@@ -7,7 +7,9 @@ package onbase.enhancements.typelist
  * To change this template use File | Settings | File Templates.
  */
 enhancement OnBaseDocumentEnhancement : typekey.OnBaseDocumentType_Ext {
+
   public static function getByName(name: String): OnBaseDocumentType_Ext {
-    return typekey.OnBaseDocumentType_Ext.getTypeKeys().firstWhere( \ elt -> elt.DisplayName.equalsIgnoreCase(name))
+    return new DocumentTypeUtil().getByName<OnBaseDocumentType_Ext>(OnBaseDocumentType_Ext, name)
   }
+
 }
